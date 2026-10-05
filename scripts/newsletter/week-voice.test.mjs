@@ -55,6 +55,33 @@ test('a long lead title falls back to a shorter subject instead of cutting mid-w
   assert.match(plain(v.sentences.at(-1)), /^Off Broadway, five shows opened, led by OB 1 \(79\)\.$/);
 });
 
+test('calendar counts keep "slow week" / "N other shows" true when some openings are too thinly reviewed to name', () => {
+  const v = composeWeekVoice({ bw: [o('Big Show', 80, 30)], counts: { bw: 3, ob: 0 } });
+  assert.equal(v.subject, 'Big Show and 2 other shows open on Broadway this week');
+  assert.doesNotMatch(plain(v.sentences.join(' ')), /slow week|just one/);
+});
+
+test('"draws the most reviews" is only said when strictly true (count tie → plain grade)', () => {
+  const ob = (t, s, c) => o(t, s, c, { category: 'off-broadway' });
+  const v = composeWeekVoice({ ob: [ob('Tied Lead', 50, 10), ob('Tied Other', 48, 10)] });
+  const text = plain(v.sentences.join(' '));
+  assert.doesNotMatch(text, /most reviews/);
+  assert.match(text, /Tied Lead opens off-Broadway to a weak 50\./);
+});
+
+test('Free Shakespeare in the Park is never called off-Broadway', () => {
+  const sitp = o('Twelfth Night', 82, 20, { category: 'off-broadway' });
+  sitp.show.venue = 'Delacorte Theater';
+  const w = composeWeekVoice({ ob: [sitp] });
+  assert.equal(w.subject, 'Twelfth Night opens at Free Shakespeare in the Park in a quiet week');
+  assert.doesNotMatch(w.subject + plain(w.sentences.join(' ')), /off-Broadway|Off Broadway/);
+});
+
+test('sentences are plain text (generate.mjs italicizes; the preheader must stay tag-free)', () => {
+  const v = composeWeekVoice({ bw: [o('Paranormal Activity', 77.57, 30)], ob: [o('The Real Ivanov', 53, 6, { category: 'off-broadway' })] });
+  assert.ok(v.sentences.every(s => !/[<>]/.test(s)));
+});
+
 test('no scored New York opening → null (caller keeps the old subject)', () => {
   assert.equal(composeWeekVoice({ bw: [], ob: [] }), null);
 });
@@ -77,4 +104,17 @@ test('subject scorer keeps input (most-reviewed) order even when a later show is
   });
   assert.deepEqual(c.filter(x => /opening/.test(x.kind)).map(x => x.show.id), ['m', 's', 'g']);
   assert.equal(c[0].show.id, 'm');
+});
+
+test('a gold second opening still lifts the week above a score mover (the lead is never pushed down)', () => {
+  const lead = { id: 'l', slug: 'l', title: 'Lead', category: 'off-broadway' };
+  const gold = { id: 'g', slug: 'g', title: 'Gold', category: 'off-broadway' };
+  const mover = { id: 'mv', slug: 'mv', title: 'Mover', category: 'broadway' };
+  const scores = { l: 70, g: 92 };
+  const c = scoreCandidates({
+    obOpenings: [{ show: lead }, { show: gold }],
+    topMover: { show: mover, before: 70, after: 73, delta: 3 },
+    aggregateScore: (id) => ({ avg: scores[id] }),
+  });
+  assert.deepEqual(c.slice(0, 3).map(x => x.show.id), ['l', 'g', 'mv']);
 });

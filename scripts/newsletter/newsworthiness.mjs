@@ -153,17 +153,12 @@ export function scoreCandidates(input) {
   // WE_OPENING_SECONDARY_BASE above).
   // Opening candidates keep their INPUT order (generate.mjs sorts them most-
   // reviewed-first via scripts/lib/opening-story-order.js — owner decision
-  // 2026-10-04, BRO-3921): openingRankCap lowers any later opening's weight
-  // to just under the previous one, so a gold bump can still lift an opening
-  // above an unrelated story (a closing, a recoupment) but can never let a
-  // thinly reviewed show jump the week's most-reviewed opening. Shared across
-  // the Broadway and Off-Broadway loops so Broadway still leads Off-Broadway.
-  let openingRankCap = Infinity;
-  const capOpeningWeight = (w) => {
-    const capped = w > openingRankCap ? openingRankCap - WEIGHTS.WE_OPENING_RANK_EPSILON : w;
-    openingRankCap = capped;
-    return capped;
-  };
+  // 2026-10-04, BRO-3921). rankOpeningsInInputOrder (below, after both loops)
+  // gives each market's openings that market's BEST weight, stepping down by
+  // epsilon in input order: a gold bump anywhere in the list still lifts the
+  // week's openings above an unrelated story (a closing, a recoupment), but a
+  // thinly reviewed show never jumps the most-reviewed opening, and Broadway
+  // still leads Off-Broadway.
   for (const item of (input.bwOpenings || [])) {
     const s = item.show || item; // backward compat if a bare show is passed
     const isReopen = !!item.isReopening;
@@ -172,7 +167,7 @@ export function scoreCandidates(input) {
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const isWeEdition = (input.edition || 'broadway') === 'west-end';
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.BW_OPENING_GOLD_BUMP : 0;
-    const weight = isWeEdition ? WEIGHTS.BW_OPENING_WE_SECONDARY_BASE : capOpeningWeight(WEIGHTS.BW_OPENING_BASE + goldBump);
+    const weight = isWeEdition ? WEIGHTS.BW_OPENING_WE_SECONDARY_BASE : WEIGHTS.BW_OPENING_BASE + goldBump;
     const verb = isReopen ? 'reopens' : 'opens';
     // "on Broadway" is redundant in the Broadway edition (the whole email IS
     // Broadway) but essential context in the WE edition — mirrors how the
@@ -257,7 +252,7 @@ export function scoreCandidates(input) {
     const headline = verdict
       ? `${s.title} ${verb} ${loc} to ${verdict}`
       : `${s.title} ${verb} ${loc}`;
-    out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: capOpeningWeight(WEIGHTS.OB_OPENING_BASE + goldBump), headline, show: s, slug: s.slug,
+    out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
       verdictTier: tier, verdictPrefix: `${s.title} ${verb} ${loc} to `, openingVenue: isShakespeareInThePark ? 'Free Shakespeare in the Park' : 'off-Broadway' });
   }
 
@@ -348,9 +343,23 @@ export function scoreCandidates(input) {
     });
   }
 
+  if ((input.edition || 'broadway') !== 'west-end') rankOpeningsInInputOrder(out);
   // Sort by weight DESC
   out.sort((a, b) => b.weight - a.weight);
   return out;
+}
+
+// See the note above the Broadway-openings loop in scoreCandidates.
+export function rankOpeningsInInputOrder(out) {
+  const eps = WEIGHTS.WE_OPENING_RANK_EPSILON;
+  let ceiling = Infinity;
+  for (const kinds of [['bw-opening', 'bw-reopening'], ['ob-opening', 'ob-reopening']]) {
+    const group = out.filter(c => kinds.includes(c.kind));
+    if (!group.length) continue;
+    const top = Math.min(Math.max(...group.map(c => c.weight)), ceiling);
+    group.forEach((c, i) => { c.weight = top - i * eps; });
+    ceiling = group[group.length - 1].weight - eps;
+  }
 }
 
 // Opening kinds name a SPECIFIC show — two different shows opening the same

@@ -2905,10 +2905,17 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // newsworthiness subject/lede below. NEWSLETTER_VOICE=legacy turns it off.
 const { composeWeekVoice } = await import('./week-voice.mjs');
 const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening']);
+// The voice says "this week", so it only names and counts shows whose opening
+// night fell in the week: the OB section's 14-day grace catch-ups stay out,
+// and so does any section NEWSLETTER_DROP_SECTIONS removed from the body.
+// counts are calendar counts (incl. openings too thinly reviewed to name) so
+// "just two openings" is never said of a week that had three.
+const _calendarOpenings = (cat) => openingEventsForWeek(cat).filter(e => !excludedShowIds.has(e.show.id)).length;
 const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_OPENING_KINDS.has(newsworthyCandidates[0]?.kind))
   ? composeWeekVoice({
-    bw: bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
-    ob: obEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
+    bw: _dropSet.has('broadway-openings') ? [] : bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
+    ob: _dropSet.has('offbroadway-openings') ? [] : obEvents.filter(e => inWeek(e.show.openingDate)).map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
+    counts: { bw: _calendarOpenings('broadway'), ob: _calendarOpenings('off-broadway') },
   })
   : null;
 // SUBJECT_OVERRIDE / LEDE_OVERRIDE let an editor hand-set the subject and lede
@@ -3044,7 +3051,10 @@ const _opener = _weOpener || _bwOpener;
 const _withOpener = (sentences) => _opener ? [_opener, ...sentences] : sentences;
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
-  for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
+  // Week voice replaces the news sentences (openings only), so a closing the
+  // news sentences would have carried must come back as context here.
+  const _usedKinds = _weekVoice ? [] : _ledeParts.kinds;
+  for (const c of [_boxOfficeCtx(), _closingCtx(_usedKinds), _comingUpCtx()]) if (c) _ctx.push(c);
 }
 // De-dupe {id, slug, title} refs by id (falls back to slug) — subject and
 // lede draw from the same candidate list, so the same show commonly appears
@@ -3134,7 +3144,12 @@ const ledeBulletsHtml = ledeBullets.length ? ledeBullets.map(b =>
   `<div style="font-size:13px;color:#9ca3af;line-height:1.5;margin-top:5px;"><span style="color:#d4a574;font-weight:700;">${b.tag}</span><span style="color:#4b5563;">&nbsp;·&nbsp;</span>${italicizeLede(b.brief, _ledeTitleSet)}</div>`).join('') : '';
 // Preheader = first two sentences only — inbox preview text must stay tight
 // no matter how expanded the visible lede gets.
-const ledePlain = stripEmphasisMarkers(((_weekVoice && !process.env.LEDE_OVERRIDE) ? _weekVoice.sentences : _ledeParts.sentences).slice(0, 2).join(' ') || ledeText);
+// LEDE_OVERRIDE previews its own first two sentences, never the scorer's
+// unrelated news.
+const _preheaderSentences = process.env.LEDE_OVERRIDE
+  ? (ledeText || '').split(/(?<=[.!?])\s+/)
+  : (_weekVoice ? _weekVoice.sentences : _ledeParts.sentences);
+const ledePlain = stripEmphasisMarkers(_preheaderSentences.slice(0, 2).join(' ') || ledeText);
 
 const yearForFooter = weekEndDate.getFullYear();
 
