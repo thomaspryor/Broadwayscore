@@ -116,3 +116,21 @@ test('runGhWithFallback: buffer fits a 100-run listing (>1 MB; the 1 MB default 
   runGhWithFallback(['x'], { exec: (cmd, args, opts) => { seen = opts; return '{}'; } });
   assert.ok(seen.maxBuffer >= 16 * 1024 * 1024);
 });
+
+// BRO-4676: a busy slot must not starve a stranded run forever.
+test('BRO-4676 aging: busy slot + stranded run past threshold → re-run; only young runs → wait', () => {
+  const { decideSweep, AGED_RETRY_MINUTES } = require('./land-queue-backoff.js');
+  const now = Date.parse('2026-10-05T05:30:00Z');
+  const mk = (id, minAgo) => ({
+    id, status: 'completed', conclusion: 'cancelled', run_attempt: 1, head_branch: `land/${id}`, head_sha: `s${id}`,
+    created_at: new Date(now - 600 * 60000).toISOString(), updated_at: new Date(now - minAgo * 60000).toISOString(),
+  });
+  const busy = { busy: true, blockers: [{ id: 1, branch: 'land/x', status: 'in_progress', why: 'holds-slot' }] };
+  const stale = mk(37259496468, AGED_RETRY_MINUTES + 60);
+  const fresh = mk(2, 5);
+  const refs = new Map([stale, fresh].map((r) => [r.head_branch, r.head_sha]));
+  const aged = decideSweep({ slot: busy, cancelledRuns: [stale, fresh], refs, now });
+  assert.equal(aged.action, 'inspect');
+  assert.deepEqual(aged.candidates.map((r) => r.id), [37259496468]);
+  assert.equal(decideSweep({ slot: busy, cancelledRuns: [fresh], refs, now }).action, 'wait');
+});

@@ -38,6 +38,12 @@ const MAX_AGE_HOURS = 24;
 // every listed run (20 per status) with room to spare.
 const MAX_JOB_LOOKUPS = 25;
 const MAX_INSPECT = 10;
+// BRO-4676: under a sustained burst the slot is never free, so waiting alone
+// starves a stranded run (2026-10-05: ~95 min). Once a run has sat cancelled
+// this long with the slot busy, it is re-run anyway and competes in the
+// pending slot like a fresh push. Measured from the cancel (updated_at), so
+// each aged attempt is spaced AGED_RETRY_MINUTES apart.
+const AGED_RETRY_MINUTES = 30;
 
 /** The status-filtered listings that find in-flight landing runs. */
 function slotQueries(repo) {
@@ -130,20 +136,38 @@ function supersededByNewerRun(candidate, latestForBranch) {
   return Boolean(latestForBranch && candidate && String(latestForBranch.id) !== String(candidate.id));
 }
 
+/** Stranded candidates cancelled more than agedMinutes ago, oldest first. */
+function pickAgedCandidates(candidates, { now = Date.now(), agedMinutes = AGED_RETRY_MINUTES } = {}) {
+  const since = (r) => Date.parse(r.updated_at || r.created_at);
+  return (candidates || []).filter((r) => now - since(r) > agedMinutes * 60000)
+    .sort((a, b) => since(a) - since(b));
+}
+
 /**
  * One sweep decision. `slot` = {busy, blockers} from the in-flight check. Busy (or no
  * verdict) → wait, no attempt spent. Free → the candidates to inspect, oldest
  * first, capped; the caller re-runs the FIRST one decideLandRetry accepts.
  */
 function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT } = {}) {
-  if (!slot || slot.busy) return { action: 'wait', reason: 'slot-busy', blockers: (slot && slot.blockers) || [] };
+  if (!slot || slot.busy) {
+    const blockers = (slot && slot.blockers) || [];
+    // Aging (BRO-4676): a busy slot never blocks a run stranded past the threshold.
+    // The caller re-runs at most the FIRST accepted candidate, so one per sweep.
+    // And never while an earlier re-run is still in flight: sweeps fire on every
+    // Land completion, and a second re-run would evict the first from the pending
+    // slot (spending its attempt) at sweep speed, not every AGED_RETRY_MINUTES.
+    if (slot && slot.rerunInFlight) return { action: 'wait', reason: 'rerun-in-flight', blockers };
+    const aged = pickAgedCandidates(pickStrandedCandidates(cancelledRuns, { refs, now }), { now }).slice(0, maxInspect);
+    if (slot && aged.length) return { action: 'inspect', reason: 'aged-slot-busy', aged: true, candidates: aged, blockers };
+    return { action: 'wait', reason: 'slot-busy', blockers };
+  }
   const candidates = pickStrandedCandidates(cancelledRuns, { refs, now }).slice(0, maxInspect);
   if (!candidates.length) return { action: 'idle', reason: 'nothing-stranded' };
   return { action: 'inspect', candidates };
 }
 
 module.exports = {
-  LANDING_WORKFLOWS, IN_FLIGHT_STATUSES, STALE_BLOCKER_HOURS, MAX_AGE_HOURS, MAX_JOB_LOOKUPS, MAX_INSPECT,
-  slotQueries, landJobInSlot, inFlightBlocker, orderForSlotCheck,
+  LANDING_WORKFLOWS, IN_FLIGHT_STATUSES, STALE_BLOCKER_HOURS, MAX_AGE_HOURS, MAX_JOB_LOOKUPS, MAX_INSPECT, AGED_RETRY_MINUTES,
+  pickAgedCandidates, slotQueries, landJobInSlot, inFlightBlocker, orderForSlotCheck,
   pickStrandedCandidates, supersededByNewerRun, decideSweep,
 };

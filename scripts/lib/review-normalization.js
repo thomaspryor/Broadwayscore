@@ -1841,6 +1841,13 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   // the real review ends up buried (invalid tier + circular duplicateOf) and never
   // scores. Byline-explosion detector: scripts/audit-review-url-clusters.js.
   //
+  // No critic-authority guard here, deliberately (BRO-2274): the BRO-730 guard in
+  // gather-reviews.js protects a real second review from being lost, but one canonical URL (query-ID params kept) is
+  // one article, so two differently named critics on one canonical URL means one
+  // byline is wrong (corpus 2026-10-05: 154 such groups, e.g. nytimes
+  // Brantley+Isherwood). A guard would resurrect byline explosion. Pinned by
+  // tests/unit/review-normalization-pass0.test.mjs.
+  //
   // The same-outlet gate is REQUIRED: aggregator roundup URLs are legitimately
   // shared across outlets (one WET/Show-Score/Stagedoor roundup URL backs the
   // Telegraph, FT, Guardian star-stubs — distinct outlets, distinct scores; see
