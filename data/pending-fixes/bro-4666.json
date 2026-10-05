@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4666",
   "planId": "eec586ed-1998-41c5-9a6f-9e13dbcfdc60",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -47,5 +47,23 @@
       }
     ],
     "changes": []
-  }
+  },
+  "executedAt": "2026-10-05T06:29:19.609Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for harry-potter"
+    }
+  ]
 }
