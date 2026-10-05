@@ -328,6 +328,9 @@ jobs:
       # 2026-09-29 (BRO-3425): + image-presence (imageless scored shows vs the
       # self-heal threshold) and outlet-registry-live-data (null-domain ceiling,
       # domain collisions) — same shape, reddened main 2026-09-29.
+      # BRO-4750: + tour-runtime-coverage (every national tour carries a runtime and
+      # synopsis unless a documented gap) — shows.json changes daily and new tours
+      # appear, so it would redden main with no code change.
       - name: Live-data assertions (moved from test.yml unit batch)
         if: always()
-        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs tests/unit/venue-complex-live-data.test.mjs
+        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs tests/unit/venue-complex-live-data.test.mjs tests/unit/tour-runtime-coverage.test.mjs
