@@ -94,7 +94,7 @@ function isGoldTier(score, category) {
 // would write. "Rises 12 pts" is data-speak; "opens to decent reviews" reads
 // like a newsletter. Returns the tier key (not the phrase) so callers can
 // pick a variant for repetition-avoidance — see VERDICT_VARIANTS.
-function reviewVerdictTier(score, category) {
+export function reviewVerdictTier(score, category) {
   if (score == null) return null;
   const goldMin = (category === 'west-end' || category === 'off-west-end') ? SCORE_GOLD_MIN_WE : SCORE_GOLD_MIN_NYC;
   if (score >= goldMin) return 'rave';
@@ -109,7 +109,7 @@ function reviewVerdictTier(score, category) {
 // say "opens to decent reviews. … opens to decent reviews." First sentence
 // always uses the default; subsequent same-tier sentences cycle through
 // variants. Subject line always uses the default (it's only one shot).
-const VERDICT_VARIANTS = {
+export const VERDICT_VARIANTS = {
   rave:   ['rave reviews', 'near-universal praise', 'glowing notices'],
   strong: ['strong reviews', 'enthusiastic notices', 'warm critical reception'],
   decent: ['decent reviews', 'a mostly-positive reception', 'broadly favorable notices'],

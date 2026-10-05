@@ -2896,6 +2896,21 @@ const newsworthyInputs = {
 };
 
 const newsworthyCandidates = scoreCandidates(newsworthyInputs);
+// Owner-approved week voice (BRO-3921, 2026-10-04): when a New York opening is
+// the week's top story, the subject says how many shows opened and the lede
+// characterises the week (packed / steady / slow) — "Schmigadoon! and 5 other
+// shows open on Broadway this week". Lead = most reviews, then score (the
+// same order bwO/obO render their cards in). Every other week (a closing or
+// mover leads, a quiet Broadway week, the West End edition) keeps the
+// newsworthiness subject/lede below. NEWSLETTER_VOICE=legacy turns it off.
+const { composeWeekVoice } = await import('./week-voice.mjs');
+const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening']);
+const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_OPENING_KINDS.has(newsworthyCandidates[0]?.kind))
+  ? composeWeekVoice({
+    bw: bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
+    ob: obEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
+  })
+  : null;
 // SUBJECT_OVERRIDE / LEDE_OVERRIDE let an editor hand-set the subject and lede
 // for a special issue the auto-scorer can't rank well — e.g. a marquee opening
 // that has no critic score yet (Shakespeare in the Park), or a post-ceremony
@@ -2904,7 +2919,9 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // show references, same reasoning as LEDE_OVERRIDE below.
 const _subjectResult = process.env.SUBJECT_OVERRIDE
   ? { subject: process.env.SUBJECT_OVERRIDE, showRefs: [] }
-  : buildSubjectFromCandidates(newsworthyCandidates);
+  : _weekVoice
+    ? { subject: _weekVoice.subject, showRefs: [{ id: _weekVoice.lead.id, slug: _weekVoice.lead.slug, title: _weekVoice.lead.title }] }
+    : buildSubjectFromCandidates(newsworthyCandidates);
 const _subjectRaw = _subjectResult.subject;
 
 // ── Lede composition ─────────────────────────────────────────────────────────
@@ -3084,6 +3101,15 @@ if (process.env.LEDE_OVERRIDE) {
   ledeText = _withOpener(_ledeParts.sentences.slice(0, _maxLedeSentences)).join(' ') || '';
   ledeShowRefs = _ledeParts.showRefs.slice(0, _maxLedeSentences);
 }
+// Week voice replaces the news sentences of the primary paragraph (see
+// _weekVoice above); style-specific context (expanded-para's box-office /
+// closing / coming-up sentences, expanded-two's second paragraph,
+// expanded-brief's strip) is kept as it was.
+if (_weekVoice && !process.env.LEDE_OVERRIDE) {
+  const _extra = LEDE_STYLE === 'expanded-para' ? _ctx : [];
+  ledeText = _weekVoice.sentences.concat(_extra.map(c => c.text)).join(' ');
+  ledeShowRefs = _weekVoice.showRefs.concat(_extra.map(c => c.showRef));
+}
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
 // (or a future marker-aware scorer) left in, so they never render literally.
 const subjectLine = stripEmphasisMarkers(_subjectRaw);
@@ -3108,7 +3134,7 @@ const ledeBulletsHtml = ledeBullets.length ? ledeBullets.map(b =>
   `<div style="font-size:13px;color:#9ca3af;line-height:1.5;margin-top:5px;"><span style="color:#d4a574;font-weight:700;">${b.tag}</span><span style="color:#4b5563;">&nbsp;·&nbsp;</span>${italicizeLede(b.brief, _ledeTitleSet)}</div>`).join('') : '';
 // Preheader = first two sentences only — inbox preview text must stay tight
 // no matter how expanded the visible lede gets.
-const ledePlain = stripEmphasisMarkers(_ledeParts.sentences.slice(0, 2).join(' ') || ledeText);
+const ledePlain = stripEmphasisMarkers(((_weekVoice && !process.env.LEDE_OVERRIDE) ? _weekVoice.sentences : _ledeParts.sentences).slice(0, 2).join(' ') || ledeText);
 
 const yearForFooter = weekEndDate.getFullYear();
 
@@ -3252,6 +3278,7 @@ sections.reclassify(classifyEntry);
 // silently-skipped sections in regression tests / CI.
 sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   subject: subjectLine,
+  lede: ledeText,
   // The A-<weekStart> slug is edition-agnostic, so the edition stamp is how
   // create-broadcast-draft.mjs detects a WE draft built on Broadway HTML
   // (or vice versa) when both editions share an out dir.
