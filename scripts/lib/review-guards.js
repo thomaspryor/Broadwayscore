@@ -3936,6 +3936,66 @@ function buildMultiProdYearGuard(shows) {
  * this predicate doesn't have.
  */
 /**
+ * BRO-3135: where did a body-less file's score come from?
+ *
+ * A body-less review-texts file (no fullText) can only be scored from a star
+ * field, and with no body there is nothing to cross-check that the number
+ * belongs to THIS production. Provenance decides whether it can be trusted:
+ *   - 'page-parsed'          the star was read off the review's own page by an
+ *                            outlet extractor (The Stage stage-star-svg, json-ld,
+ *                            ...: any source in OUTLET_VERIFIED_SOURCES, which
+ *                            excludes the aggregator sources).
+ *   - 'aggregator-inherited' relayed by a roundup/listing (LBO, StageDoor, WET,
+ *                            Show Score, ...) or of unknown origin.
+ * An explicit data.scoreProvenance stamp wins over inference.
+ * Returns null when the file has a body or carries no star/score at all.
+ * @param {object} data review-text record
+ * @returns {'page-parsed'|'aggregator-inherited'|null}
+ */
+function bodylessScoreProvenance(data) {
+  if (!data) return null;
+  if (typeof data.fullText === 'string' && data.fullText.trim().length >= 200) return null;
+  const hasScore = !!(data.aggregatorStars || data.originalScore != null
+    || typeof data.originalScoreNormalized === 'number');
+  if (!hasScore) return null;
+  if (data.scoreProvenance === 'page-parsed' || data.scoreProvenance === 'aggregator-inherited') {
+    return data.scoreProvenance;
+  }
+  const { OUTLET_VERIFIED_SOURCES } = require('./score-extractors'); // lazy: avoid load-order coupling
+  const sources = [data.originalScoreSource, data.aggregatorStarsSource, data.scoreSource];
+  return sources.some((s) => s && OUTLET_VERIFIED_SOURCES.has(s)) ? 'page-parsed' : 'aggregator-inherited';
+}
+
+/**
+ * BRO-3135: does the body-less file's own excerpt text name this show's venue
+ * or a cast member? The only production evidence available without a body.
+ * Strict (needs a real venue/cast hit): a missing signal means "not corroborated".
+ */
+function bodylessCorroboratedByProduction(data, show) {
+  if (data && data.productionCorroborated === true) return true;
+  const excerpts = require('./excerpt-fields').getExcerpts(data || {}).join(' ').toLowerCase();
+  if (!excerpts || !show) return false;
+  const venue = String(show.venue || '').toLowerCase().replace(/\b(theat(re|er)|the)\b/g, '').replace(/\s+/g, ' ').trim();
+  if (venue.length >= 6 && excerpts.includes(venue)) return true;
+  const cast = Array.isArray(show.cast) ? show.cast : [];
+  return cast.some((c) => {
+    const name = String((c && (c.name || c.actor)) || c || '').toLowerCase().trim();
+    return name.length >= 6 && excerpts.includes(name);
+  });
+}
+
+/**
+ * BRO-3135: the single exclusion predicate shared by explainExclusion() and
+ * rebuild-all-reviews.js's inline loop. humanReviewScore is a human's verdict,
+ * so it is exempt.
+ */
+function isBodylessAggregatorScoreUncorroborated(data, show) {
+  return !!data && !(data.humanReviewScore >= 1)
+    && bodylessScoreProvenance(data) === 'aggregator-inherited'
+    && !bodylessCorroboratedByProduction(data, show);
+}
+
+/**
  * Named non-review URL rule (BRO-4101), as a pure predicate shared by
  * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
  * 2026-09-25 only explainExclusion had it, so the rule never reached
@@ -4321,6 +4381,9 @@ function explainExclusion(data, show, filePath) {
   // about the URL or source. Same direct-check pattern as
   // wrongProductionManualClear elsewhere in this file.
   if (isNamedNonReviewUrlRecord(data)) return 'namedNonReviewUrl';
+  // BRO-3135: body-less + aggregator-inherited score + no production evidence.
+  // humanReviewScore is a human's verdict, so it is exempt.
+  if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
   if (
     (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
@@ -5323,6 +5386,9 @@ module.exports = {
   pickRerouteTarget,
   isIncludableForRebuild,
   isNamedNonReviewUrlRecord,
+  bodylessScoreProvenance,
+  isBodylessAggregatorScoreUncorroborated,
+  bodylessCorroboratedByProduction,
   explainExclusion,
   duplicateOfInheritedFlag,
   hasStructuralStarScore,

@@ -258,6 +258,11 @@ const FLAG_FIELDS = new Set([
   // detection the same way wrongProductionReason/-Note did above.
   'nonReviewFlag', 'nonReviewContent', 'contentVerification',
   'classifiedAt', 'textFetchedAt', 'isNonReviewReason',
+  // BRO-3135: bodyless-aggregator-score gate reads the score fields, their
+  // source labels, the provenance stamp and the corroboration override.
+  'scoreProvenance', 'productionCorroborated', 'aggregatorStars', 'originalScore',
+  'originalScoreNormalized', 'originalScoreSource', 'aggregatorStarsSource',
+  'scoreSource', 'humanReviewScore',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
@@ -1099,6 +1104,12 @@ function decideInclusion(review, show, guards) {
   if (typeof guards.isNamedNonReviewUrlRecord === 'function' && guards.isNamedNonReviewUrlRecord(review)) {
     return { included: false, reason: 'namedNonReviewUrl' };
   }
+  // Mirrors rebuild-all-reviews.js's skippedBodylessAggregatorScore (BRO-3135,
+  // same predicate).
+  if (typeof guards.isBodylessAggregatorScoreUncorroborated === 'function'
+      && guards.isBodylessAggregatorScoreUncorroborated(review, show)) {
+    return { included: false, reason: 'bodylessAggregatorScoreUncorroborated' };
+  }
   // Stale "Cross-market: London outlet" flag on a Broadway/off-Broadway show
   // (BRO-4185 E) — mirrors rebuild-all-reviews.js's reverse self-heal block,
   // including its registry-domain, own-window and filed-under-other-show ctx.
@@ -1456,6 +1467,11 @@ function main() {
         // Edits inside non-review-url-patterns.js / unvetted-serp-sources.js are
         // NOT visible here — use a direct corpus scan for those.
         && (baseline.isNamedNonReviewUrlRecord?.toString() || '') === (working.isNamedNonReviewUrlRecord?.toString() || '')
+        // BRO-3135 body-less aggregator-score gate: the predicate AND the two
+        // helpers it delegates to (toString() of a caller misses callee edits).
+        && (baseline.isBodylessAggregatorScoreUncorroborated?.toString() || '') === (working.isBodylessAggregatorScoreUncorroborated?.toString() || '')
+        && (baseline.bodylessScoreProvenance?.toString() || '') === (working.bodylessScoreProvenance?.toString() || '')
+        && (baseline.bodylessCorroboratedByProduction?.toString() || '') === (working.bodylessCorroboratedByProduction?.toString() || '')
         // Pre-window predicate + its THRESHOLD CONSTANTS. Constants are compared
         // by value, not via toString() — the function body reads free variables
         // (PRE_WINDOW_DAYS), so a constant-only edit leaves the source identical.
