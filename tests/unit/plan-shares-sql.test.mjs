@@ -78,3 +78,27 @@ test('diary_shares SQL assertions pass on a local Postgres', (t) => {
   assert.match(out, /all assertions passed/);
   assert.match(out, /with notes off, NO row carries a text key/, 'the notes-privacy assertion must have run');
 });
+
+// Welcome email (BRO-4620): welcome_emails table + welcome_email_candidates().
+// Same harness and stub; the stub's auth.users carries the GoTrue columns the
+// candidates function reads.
+const welcomeTests = join(root, 'tests/sql/welcome-emails.test.sql');
+const welcomeMigrations = readdirSync(migDir)
+  .filter((f) => f.endsWith('.sql'))
+  .sort()
+  .filter((f) => /welcome_emails|welcome_email_candidates/.test(readFileSync(join(migDir, f), 'utf-8').replace(/--[^\n]*/g, '')))
+  .map((f) => join(migDir, f));
+
+test('welcome_emails SQL assertions pass on a local Postgres', (t) => {
+  assert.ok(welcomeMigrations.some((f) => /20261004b_welcome_emails\.sql$/.test(f)), 'welcome migration found');
+  if (!hasPostgres()) {
+    if (process.env.CI) assert.fail('no PostgreSQL server binaries on this CI runner; the SQL tests did not run');
+    t.skip('no local PostgreSQL server binaries (set PG_BIN to run)');
+    return;
+  }
+  const r = spawnSync('bash', [harness, ...welcomeMigrations, welcomeTests], { encoding: 'utf-8', timeout: 240_000 });
+  const out = `${r.stdout}\n${r.stderr}`;
+  assert.equal(r.status, 0, `harness failed:\n${out.slice(-3000)}`);
+  assert.match(out, /all assertions passed/);
+  assert.match(out, /a second claim for the same account inserts nothing/, 'the once-only claim assertion must have run');
+});

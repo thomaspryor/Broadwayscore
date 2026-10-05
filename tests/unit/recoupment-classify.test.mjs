@@ -156,4 +156,53 @@ describe('buildPrompt', () => {
     assert.ok(p.includes('productionMatch'));
     assert.ok(p.includes('PRIOR production'));
   });
+
+  it('with a show, names this production and the tour / pre-preview rules (BRO-4623)', () => {
+    const p = buildPrompt('Death of a Salesman', 'http://x', 'body', {
+      venue: 'Winter Garden Theatre', previewsStartDate: '2026-03-06', openingDate: '2026-04-09', status: 'closed', closingDate: '2026-08-09',
+    });
+    assert.ok(p.includes('This production: Broadway, at the Winter Garden Theatre, first preview 2026-03-06, opened 2026-04-09, closed 2026-08-09'));
+    assert.ok(p.includes("BEFORE this production's first preview"));
+    assert.ok(p.includes('national tour'));
+    assert.ok(p.includes('productionType'));
+  });
+});
+
+// BRO-4623: classifyArticle with opts.show runs the wrong-production guard,
+// so the Friday scanner, the RSS poller and the reconciler all reject these.
+describe('classifyArticle with opts.show (production guard)', () => {
+  const DEATH_OF_A_SALESMAN = { id: 'death-of-a-salesman-2026', slug: 'death-of-a-salesman', previewsStartDate: '2026-03-06', openingDate: '2026-04-09' };
+  const BEETLEJUICE_2025 = { id: 'beetlejuice-2025', slug: 'beetlejuice-2025', previewsStartDate: null, openingDate: '2025-10-08' };
+  const THE_OUTSIDERS = { id: 'the-outsiders-2024', slug: 'the-outsiders', previewsStartDate: '2024-03-16', openingDate: '2024-04-11' };
+  const GIANT = { id: 'giant-2026', slug: 'giant', openingDate: '2026-03-23' };
+  const exact = (extra) => ({ recouped: true, productionMatch: 'exact', confidence: 'high', evidence: 'recouped', ...extra });
+
+  it('death-of-a-salesman: 2012 recoupedDate (Friday run 37083591866) -> wrong-production', async () => {
+    const v = await classifyArticle('Death of a Salesman', 'https://www.theatermania.com/broadway/news/broadways-death-of-a-salesman-recoups-capitalizati_56835.html/',
+      longBody('Death of a Salesman has recouped'), { show: DEATH_OF_A_SALESMAN, openaiFn: fakeOpenAI(exact({ recoupedDate: '2012-05-16' })) });
+    assert.equal(v.recouped, false);
+    assert.equal(v.productionMatch, 'wrong-production');
+    assert.match(v.guardReason, /2012-05-16/);
+  });
+
+  it('beetlejuice-2025: national-tour article -> wrong-production', async () => {
+    const v = await classifyArticle('Beetlejuice', 'https://playbill.com/article/beetlejuice-national-tour-recoups',
+      longBody('The national tour of Beetlejuice has recouped after just 11 months'), { show: BEETLEJUICE_2025, openaiFn: fakeOpenAI(exact({ recoupedDate: '2023-10-30' })) });
+    assert.equal(v.productionMatch, 'wrong-production');
+  });
+
+  it("the-outsiders: the article's own og:title says North American Tour -> wrong-production", async () => {
+    const html = `<html><head><meta property="og:title" content="'The Outsiders' Recoups $11 Million North American Tour"></head><body>${longBody('The Outsiders recouped')}</body></html>`;
+    const v = await classifyArticle('The Outsiders (2024 Broadway production)', 'https://deadline.com/2026/05/the-outsiders-broadway-recoup-1236698348/',
+      html, { show: THE_OUTSIDERS, openaiFn: fakeOpenAI(exact({ recoupedDate: '2026-05-20' })) });
+    assert.equal(v.productionMatch, 'wrong-production');
+    assert.match(v.guardReason, /tour/);
+  });
+
+  it('a genuine post-opening recoupment passes untouched (Giant, 2026-05)', async () => {
+    const verdict = exact({ recoupedDate: '2026-05-19', productionType: 'broadway' });
+    const v = await classifyArticle('Giant', 'https://www.nytimes.com/2026/05/19/theater/giant.html',
+      longBody("Broadway's Giant turns a profit in 10 weeks"), { show: GIANT, openaiFn: fakeOpenAI(verdict) });
+    assert.deepEqual(v, verdict);
+  });
 });

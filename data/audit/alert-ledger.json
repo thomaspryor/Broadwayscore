@@ -151,7 +151,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-05T01:03:37.240Z",
-      "lastSeen": "2026-10-05T01:22:29.460Z",
+      "lastSeen": "2026-10-05T01:26:24.063Z",
       "lastNotifiedAt": "2026-10-05T01:03:37.240Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 121,
@@ -4827,13 +4827,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-05T01:20:36.953Z",
+      "lastSeen": "2026-10-05T01:30:43.970Z",
       "lastNotifiedAt": "2026-10-04T19:37:48.299Z",
       "lastSurfacedAt": "2026-10-04T19:37:48.299Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 19
+      "silentRefires": 20
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -9963,7 +9963,7 @@
       "resolvedAt": "2026-10-04T23:01:31.282Z"
     },
     "land:land/bro-4620-welcome-email": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4620-welcome-email",
       "firstSeen": "2026-10-04T22:27:39.723Z",
@@ -9974,7 +9974,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-05T01:25:51.910Z"
     },
     "review-gap:opening-window:slam-frank-off-broadway-2026": {
       "status": "open",
@@ -10008,7 +10009,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every Broadway production of the title links its tour; other shows and markets do not\"",
       "firstSeen": "2026-10-05T00:05:43.346Z",
       "incidentOpenedAt": "2026-10-05T00:05:43.346Z",
-      "lastSeen": "2026-10-05T01:22:29.435Z",
+      "lastSeen": "2026-10-05T01:26:24.056Z",
       "lastNotifiedAt": "2026-10-05T00:05:43.346Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,

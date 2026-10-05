@@ -36,6 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
@@ -154,6 +155,7 @@ function main() {
     if (s.slug) showsBySlug[s.slug] = s;
     if (s.id) showsBySlug[s.id] = s;
   }
+  const showKeyIndex = buildShowKeyIndex(showsArray);
 
   const pending = loadJSON(PENDING_PATH, { shows: {} });
   const archive = loadJSON(ARCHIVE_PATH, { shows: {} });
@@ -215,9 +217,13 @@ function main() {
 
   // Requeue (push into commercial-research-queue.json, tag with trigger reason).
   // The queue is consumed by deep-research-commercial.js at its next run.
+  // Pending keys are often show IDs (batch research keys by show.id); the
+  // queue must carry the SLUG, or deep-research researches "<id>" and writes
+  // it back as entry.slug / commercial.shows[<id>] (BRO-4623).
   for (const { slug, entry } of requeuedActions) {
-    if (!queueFile.shows.includes(slug)) queueFile.shows.push(slug);
-    queueFile.triggers[slug] = 'sweep-requeue-low-conf';
+    const queueSlug = resolveCommercialSlug(slug, entry, showKeyIndex).slug;
+    if (!queueFile.shows.includes(queueSlug)) queueFile.shows.push(queueSlug);
+    queueFile.triggers[queueSlug] = 'sweep-requeue-low-conf';
     pending.shows[slug] = { ...entry, lastRequeuedAt: now };
   }
   if (requeuedActions.length > 0) {

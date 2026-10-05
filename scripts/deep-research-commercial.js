@@ -32,6 +32,7 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const { createRunBudget } = require('./lib/run-budget');
 const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-scope');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 // ---------------------------------------------------------------------------
@@ -501,12 +502,24 @@ async function main() {
   let targetSlugs = [];
   let queuedSlugs = [];
   let sixMonthSlugs = [];
+  // BRO-4623: every target is canonicalized to the show SLUG before it
+  // becomes a pending key, analysis.slug or a commercial.json key. The queue
+  // holds show IDs (sweep-pending-commercial.js re-queues pending keys, e.g.
+  // paranormal-activity-2026), and this script used to copy them verbatim
+  // into analysis.slug and commercial.shows[<id>] = {designation:'TBD'},
+  // which the apply steps then published as ID-keyed duplicates.
+  const showKeyIndex = buildShowKeyIndex(allShows);
+  const toSlug = (t) => resolveCommercialSlug(t, null, showKeyIndex).slug;
+  const queuedTriggers = {};
 
   // Consume queue file if requested (highest priority)
   if (USE_QUEUE) {
     try {
       const queue = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
-      queuedSlugs = (queue.shows || []).filter(slug => {
+      // Capture triggers now: the queue file is cleared below, so the old
+      // per-target re-read always fell back to 'queued'.
+      for (const [k, v] of Object.entries(queue.triggers || {})) queuedTriggers[toSlug(k)] = v;
+      queuedSlugs = [...new Set((queue.shows || []).map(toSlug))].filter(slug => {
         const entry = commShows[slug];
         if (!FORCE && entry && (entry.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
           console.log(`  Skipping queued ${slug} — max attempts (${entry.researchAttempts}) reached`);
@@ -527,7 +540,7 @@ async function main() {
   }
 
   if (SHOW_LIST) {
-    targetSlugs = SHOW_LIST;
+    targetSlugs = [...new Set(SHOW_LIST.map(toSlug))];
   } else if (ALL_TBD) {
     // Shows with TBD designation (Broadway only, not maxed out)
     const tbdSlugs = Object.entries(commShows)
@@ -604,6 +617,10 @@ async function main() {
     targetSlugs = queuedSlugs;
   }
 
+  // Every tier (queue, --shows, TBD keys, uncovered, 6-month) ends up keyed
+  // by slug, whatever form its source used (BRO-4623).
+  targetSlugs = [...new Set(targetSlugs.map(toSlug))];
+
   // Canonical scope gate — covers ALL selection tiers including the queue
   // file and --shows. The queue writers filtered on `market` for months
   // ('broadway' = NYC city, so every Off-Broadway show passed) and 25+ OB
@@ -613,7 +630,7 @@ async function main() {
     const show = showBySlug[slug];
     if (isCommercialScope(show)) return true;
     const why = show ? show.category : 'not in shows.json';
-    if (FORCE && SHOW_LIST && SHOW_LIST.includes(slug)) {
+    if (FORCE && SHOW_LIST && SHOW_LIST.map(toSlug).includes(slug)) {
       console.log(`  ⚠ ${slug} out of commercial scope (${why}) — researching anyway (--shows + --force)`);
       return true;
     }
@@ -711,13 +728,7 @@ async function main() {
     // Determine trigger reason
     let trigger = 'manual';
     if (queuedSlugs.includes(slug)) {
-      // Read trigger from queue if present
-      try {
-        const queueData = JSON.parse(fs.readFileSync(QUEUE_PATH, 'utf8'));
-        trigger = (queueData.triggers || {})[slug] || 'queued';
-      } catch (e) {
-        trigger = 'queued';
-      }
+      trigger = queuedTriggers[slug] || 'queued';
     } else if (sixMonthSlugs.includes(slug)) {
       trigger = '6-month';
     } else if (ALL_TBD) {

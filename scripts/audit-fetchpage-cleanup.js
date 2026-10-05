@@ -31,6 +31,13 @@
  *      handler, always-reachable via a `finally`/`.finally()`, or reachable
  *      on the plain success path.
  *
+ * A call to runMain() from scripts/lib/run-main.js (BRO-4623) counts as SAFE
+ * on its own: runMain awaits main, runs its teardowns and then calls
+ * process.exit() unconditionally, on success and failure alike. Without this
+ * the audit only saw `cleanup` passed BY REFERENCE (`teardown: [cleanup]`),
+ * which is not a call, and reported the correctly wired
+ * reconcile-recoupment-claims.js as UNSAFE_NO_CALL.
+ *
  * This is a heuristic over syntax structure, not real control-flow/reachability
  * analysis (no CFG, no dead-code elimination, no cross-function call-graph —
  * a cleanup call sitting in an unreachable branch or an uninvoked helper
@@ -46,6 +53,7 @@ const walk = require('acorn-walk');
 
 const SCRIPTS_DIR = path.join(__dirname);
 const SCRAPER_REQUIRE_RE = /^\.\/lib\/scraper(?:\.js)?$/;
+const RUN_MAIN_REQUIRE_RE = /^\.\/lib\/run-main(?:\.js)?$/;
 
 // Highest-frequency cron-critical scripts named in the card — reported first.
 const PRIORITY = [
@@ -78,9 +86,12 @@ function findCandidates() {
 function resolveBindings(ast) {
   const cleanupNames = new Set();
   const moduleNames = new Set();
+  // runMain (scripts/lib/run-main.js) always ends in process.exit().
+  const runMainNames = new Set();
+  const runMainModuleNames = new Set();
   let requiresScraper = false;
 
-  function isScraperRequireCall(node) {
+  function isRequireOf(node, re) {
     return (
       node &&
       node.type === 'CallExpression' &&
@@ -89,11 +100,26 @@ function resolveBindings(ast) {
       node.arguments.length === 1 &&
       node.arguments[0].type === 'Literal' &&
       typeof node.arguments[0].value === 'string' &&
-      SCRAPER_REQUIRE_RE.test(node.arguments[0].value)
+      re.test(node.arguments[0].value)
     );
+  }
+  const isScraperRequireCall = (node) => isRequireOf(node, SCRAPER_REQUIRE_RE);
+
+  function bindRunMain(idNode, initNode) {
+    if (!isRequireOf(initNode, RUN_MAIN_REQUIRE_RE)) return;
+    if (idNode.type === 'ObjectPattern') {
+      for (const prop of idNode.properties) {
+        if (prop.type !== 'Property') continue;
+        const keyName = prop.key.type === 'Identifier' ? prop.key.name : prop.key.value;
+        if (keyName === 'runMain' && prop.value.type === 'Identifier') runMainNames.add(prop.value.name);
+      }
+    } else if (idNode.type === 'Identifier') {
+      runMainModuleNames.add(idNode.name);
+    }
   }
 
   function bindFromPattern(idNode, initNode) {
+    bindRunMain(idNode, initNode);
     if (!isScraperRequireCall(initNode)) return;
     if (idNode.type === 'ObjectPattern') {
       for (const prop of idNode.properties) {
@@ -133,7 +159,7 @@ function resolveBindings(ast) {
     },
   });
 
-  return { cleanupNames, moduleNames, requiresScraper };
+  return { cleanupNames, moduleNames, runMainNames, runMainModuleNames, requiresScraper };
 }
 
 /**
@@ -146,11 +172,22 @@ function resolveBindings(ast) {
  * CatchClause, or the callback argument of a `.catch(`/`.finally(` call,
  * flips inCatch/inFinally for everything visited beneath it.
  */
-function findCallSites(ast, { cleanupNames, moduleNames }) {
+function findCallSites(ast, { cleanupNames, moduleNames, runMainNames = new Set(), runMainModuleNames = new Set() }) {
   const sites = [];
 
   function isTrackedCall(node) {
     if (node.callee.type === 'Identifier' && cleanupNames.has(node.callee.name)) return 'cleanup()';
+    if (node.callee.type === 'Identifier' && runMainNames.has(node.callee.name)) return 'runMain()';
+    if (
+      node.callee.type === 'MemberExpression' &&
+      !node.callee.computed &&
+      node.callee.object.type === 'Identifier' &&
+      runMainModuleNames.has(node.callee.object.name) &&
+      node.callee.property.type === 'Identifier' &&
+      node.callee.property.name === 'runMain'
+    ) {
+      return `${node.callee.object.name}.runMain()`;
+    }
     if (
       node.callee.type === 'MemberExpression' &&
       !node.callee.computed &&
@@ -219,10 +256,14 @@ function classify(sites) {
 }
 
 function auditFile(file) {
-  const filePath = path.join(SCRIPTS_DIR, file);
+  return auditSource(file, fs.readFileSync(path.join(SCRIPTS_DIR, file), 'utf8'));
+}
+
+/** Pure core of auditFile (source text in, verdict out); exported for tests. */
+function auditSource(file, source) {
   // Strip a leading shebang line — acorn has no allowHashBang option in the
   // version pinned here and treats '#' as a syntax error at 1:1.
-  const src = fs.readFileSync(filePath, 'utf8').replace(/^#!.*/, '');
+  const src = String(source).replace(/^#!.*/, '');
   let ast;
   try {
     ast = acorn.parse(src, { ecmaVersion: 2022, sourceType: 'script', locations: true, allowReturnOutsideFunction: true });
@@ -285,11 +326,13 @@ function main() {
 
   const unsafeCount = byVerdict.UNSAFE_CATCH_ONLY.length + byVerdict.UNSAFE_NO_CALL.length;
   console.log(`\n${unsafeCount} of ${results.length} candidates flagged UNSAFE (same bug class as #438/#914).`);
-  console.log('Advisory only — always exits 0. Fix pattern: call cleanup() in a .finally() around main(), see recover-serp-text.js (commit 9140d034c37).');
+  console.log('Advisory only — always exits 0. Fix pattern: end the script with runMain(main, { teardown: [cleanup] }) from scripts/lib/run-main.js (BRO-4623), or call cleanup() in a .finally() around main() as recover-serp-text.js does (commit 9140d034c37).');
 }
 
 function verdictIcon(v) {
   return v === 'SAFE' ? '✅' : v.startsWith('UNSAFE') ? '🔴' : '⚠️';
 }
 
-main();
+module.exports = { auditSource, classify };
+
+if (require.main === module) main();

@@ -3,6 +3,7 @@
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { VALID_DESIGNATIONS, canonicalDesignation } = require('./commercial-designations');
+const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
@@ -56,7 +57,16 @@ function isReviewHold(entry) {
 // field — recoupedSource is prose in many writers (see e.g.
 // scripts/backfill-commercial-o4mini.js:57,69 which writes
 // "Reddit post-mortem: did not come close…" there).
-function isAutoApplyableClaim(entry, autoApplyClaimsFrom) {
+//
+// `show` (REQUIRED: the shows.json record of the commercial.json key the
+// claim will be written to) runs the BRO-4623 production check on claims
+// already sitting in the queue: a recoupedDate before the production's first
+// preview, or a recoupedSource URL about a tour / West End / Off-Broadway run
+// (playbill.com/article/beetlejuice-national-tour-recoups on
+// beetlejuice-2025), is never auto-applied. A claim whose show cannot be
+// resolved is refused too (manual review): the check cannot run without it,
+// and every auto-apply source (Friday scan, RSS poll) scans shows.json shows.
+function isAutoApplyableClaim(entry, autoApplyClaimsFrom, show) {
   if (!Array.isArray(autoApplyClaimsFrom) || autoApplyClaimsFrom.length === 0) return false;
   if (!autoApplyClaimsFrom.includes(entry.detectedBy)) return false;
   if (entry.confidence !== 'high') return false;
@@ -66,7 +76,34 @@ function isAutoApplyableClaim(entry, autoApplyClaimsFrom) {
   // YYYY/YYYY-MM date; otherwise route to manual review.
   const date = cleanNullish(entry.recoupedDate);
   if (!date || !RECOUPED_DATE_RE.test(date)) return false;
+  if (!show) return false;
+  if (!checkRecoupmentProduction({ show, recoupedDate: date, url: cleanNullish(entry.recoupedSource) }).ok) return false;
   return true;
+}
+
+// Loss designations a verified recoupment contradicts (validate-data.js
+// rejects Fizzle/Flop with recouped:true).
+const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Flop']);
+
+/**
+ * What a verified recoupment claim may do to the existing designation
+ * (BRO-4623 item 5). classify-stale-closures.js auto-labels a closed show
+ * "Fizzle" 30 days after closing when it finds no recoupment news; Purpose
+ * then recouped ~9 months after closing via the revived NY State tax credit.
+ *   'keep'  - no loss designation in the way; the claim overlays as before
+ *   'reset' - an INFERRED Fizzle/Flop (classifiedBy classify-stale-closures,
+ *             no human lock): the evidence it was inferred from is gone, so
+ *             the designation goes back to TBD for research/model to set
+ *   'block' - a human-locked (humanReviewedDesignation) or otherwise
+ *             non-inferred loss designation: a human decides, never auto
+ */
+function recoupClaimDesignationAction(existing) {
+  if (!existing) return 'keep';
+  const designation = canonicalDesignation(existing.designation) || existing.designation;
+  if (!LOSS_DESIGNATIONS.has(designation)) return 'keep';
+  if (existing.humanReviewedDesignation === true) return 'block';
+  if (existing.classifiedBy === 'classify-stale-closures') return 'reset';
+  return 'block';
 }
 
 // Build the commercial.json entry from a pending-review entry. When applying
@@ -105,6 +142,14 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   if (recoupedDate) result.recoupedDate = recoupedDate;
   if (recoupedSource) result.recoupedSource = recoupedSource;
   if (notes) result.notes = notes;
+  if (isClaimAutoApply && entry.recouped === true && recoupClaimDesignationAction(existing) === 'reset') {
+    // The inferred "closed, no recoupment found" Fizzle is contradicted by a
+    // verified recoupment: drop it and its inference stamps.
+    result.designation = designation || 'TBD';
+    delete result.classifiedBy;
+    delete result.classifiedAt;
+    delete result.classifiedReason;
+  }
   if (Array.isArray(entry.sources) && entry.sources.length > 0) {
     const normalized = normalizeSources(entry.sources);
     if (normalized.length > 0) {
@@ -128,5 +173,6 @@ module.exports = {
   hasRecoupedClaim,
   isReviewHold,
   isAutoApplyableClaim,
+  recoupClaimDesignationAction,
   buildCommercialEntry,
 };
