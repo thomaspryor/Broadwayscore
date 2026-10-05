@@ -5,7 +5,9 @@
 #   bash scripts/lib/push-with-retry.sh [max_retries] [branch]
 #
 # Defaults: 7 retries, main branch.
-# Exits 0 on success, 1 on failure. Failure covers all THREE loop exits, not
+# Exits 0 on success, 4 when a LOCAL pre-push hook rejected the push (BRO-2879:
+# deterministic, so it stops after the first such attempt and prints the hook's
+# own text; ledger reason "hook-rejected"), 1 on any other failure. Failure covers all THREE loop exits, not
 # just exhaustion: the overall-deadline abort and the early break to the Git
 # Data API fallback exit 1 too. The durable ledger row says which one fired
 # (retries-exhausted / retries-exhausted(deadline) / retries-exhausted(early-fallback)).
@@ -201,8 +203,56 @@ git_push() {
   # `if git_push ...` form. Under `timeout -k 10` the flag also flushes partial
   # progress before the kill where the old code emitted zero bytes, which is
   # precisely the rc=124 case this exists to diagnose.
+  #
+  # BRO-2879: stderr is captured to a temp file, replayed (credential-redacted)
+  # once git returns, and classified, so the retry loop can tell a deterministic
+  # LOCAL pre-push hook rejection from a race. This is the ONE place all three
+  # git_push_traced exits funnel through, so the classification cannot be missed
+  # by the skip-diagnostics or mktemp-fail-open paths. Cost: --progress lines
+  # now appear when the push returns rather than live (a timeout kill still
+  # replays whatever git wrote before dying). Fail-open: no mktemp or no node
+  # means the push runs as before and the attempt stays "race-or-other".
+  _PUSH_LAST_CLASS="race-or-other"
+  _PUSH_LAST_HOOK_TEXT=""
+  local _perr _prc=0
+  _perr=$(mktemp 2>/dev/null) || _perr=""
+  if [ -z "$_perr" ]; then
+    _timeout "$GIT_NET_TIMEOUT_SEC" \
+      git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
+    return $?
+  fi
+  chmod 600 "$_perr" 2>/dev/null || true
   _timeout "$GIT_NET_TIMEOUT_SEC" \
-    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@"
+    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@" 2>"$_perr" || _prc=$?
+  _redact_creds <"$_perr" >&2 || true
+  case "$_prc" in
+    0|124|137|143) ;;  # success, or a timeout kill whose silence is not a hook verdict
+    *)
+      if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
+        _PUSH_LAST_CLASS=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" classify-push-stderr "$_perr" 2>/dev/null || echo "race-or-other")
+        if [ "$_PUSH_LAST_CLASS" = "hook-rejected" ]; then
+          _PUSH_LAST_HOOK_TEXT=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" hook-text "$_perr" 2>/dev/null || true)
+        fi
+      fi
+      ;;
+  esac
+  rm -f "$_perr" 2>/dev/null || true
+  return $_prc
+}
+
+# BRO-2879: a local pre-push hook rejection is a pure function of the tree being
+# pushed, so attempts 2..N (each a fetch + rebase) can never succeed, and the
+# Git Data API fallback's disqualifier list would point the operator at the
+# wrong machinery. Stop at once, say what the hook said, exit 4 (1 stays
+# "exhausted"; 4 = "a local hook said no, retrying is futile"). The first-write-
+# wins ledger row records "hook-rejected" instead of retries-exhausted.
+abort_if_hook_rejected() {
+  [ "${_PUSH_LAST_CLASS:-}" = "hook-rejected" ] || return 0
+  echo "::error::push-with-retry: push attempt $1 was REJECTED BY A LOCAL PRE-PUSH HOOK — a deterministic rejection of the tree being pushed, not a race or a timeout. Not retrying (the identical rejection would repeat on every attempt) and skipping the Git Data API fallback. Fix what the hook names and push again. Hook output:"
+  printf '%s\n' "${_PUSH_LAST_HOOK_TEXT:-"(the hook printed nothing)"}" | sed 's/^/    hook: /'
+  record_push_failure "hook-rejected" "$1"
+  restore_head_if_moved "hook-rejected"
+  exit 4
 }
 
 # BRO-3213: --progress above answers "pack generation vs Writing-objects
@@ -1805,6 +1855,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # and a 90s hang produced identical log text.
     pre_push_rc=$?
     echo "  Pre-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$pre_push_rc")"
+    abort_if_hook_rejected "$i"
   fi
 
   echo "Push failed (attempt $i/$MAX_RETRIES), fetching remote and rebasing..."
@@ -2466,7 +2517,9 @@ for i in $(seq 1 "$MAX_RETRIES"); do
       # transport hang, not the lost write race it looked like. The rc makes
       # that readable directly off the log instead of by timestamp archaeology.
       post_push_rc=$?
-      echo "  Post-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$post_push_rc") — will retry after backoff"
+      echo "  Post-resolution push (attempt $i) FAILED in $((SECONDS - push_start))s — $(describe_push_rc "$post_push_rc")"
+      abort_if_hook_rejected "$i"
+      echo "  will retry after backoff"
     fi
   fi
 

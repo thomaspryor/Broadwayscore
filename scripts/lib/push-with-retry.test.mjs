@@ -8,7 +8,7 @@
 // directly, so that coverage lives in the shell-script test family instead.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { redactCurlTrace, classifyStallPhase } from './push-diagnostics.js';
+import { redactCurlTrace, classifyStallPhase, classifyPushStderr, extractHookText } from './push-diagnostics.js';
 
 test('redactCurlTrace strips an embedded URL-userinfo token', () => {
   // Real line captured via `GIT_TRACE_CURL=1 GIT_TRACE_CURL_NO_DATA=1 git fetch
@@ -159,4 +159,40 @@ test('redactCurlTrace strips compound query-string param names (api_key, client_
   assert.ok(!redacted.includes('SECRETVALUE1'), `api_key must be redacted: ${redacted}`);
   assert.ok(!redacted.includes('SECRETVALUE2'), `client_secret must be redacted: ${redacted}`);
   assert.ok(!redacted.includes('SECRETVALUE3'), `oauth_token must be redacted: ${redacted}`);
+});
+
+// BRO-2879: hook rejection vs race.
+test('classifyPushStderr: bare "failed to push" after hook output is hook-rejected', () => {
+  const err = '=== PRE-PUSH BLOCKED: help-flag guard ===\nRule B: no --help check\nerror: failed to push some refs to \'git@github.com:o/r.git\'\n';
+  assert.equal(classifyPushStderr(err), 'hook-rejected');
+});
+
+test('classifyPushStderr: every remote-side rejection stays race-or-other', () => {
+  for (const marker of [
+    ' ! [rejected]        main -> main (fetch first)',
+    ' ! [rejected]        main -> main (non-fast-forward)',
+    ' ! [remote rejected] main -> main (pre-receive hook declined)',
+    'hint: Updates were rejected because the remote contains work',
+  ]) {
+    assert.equal(classifyPushStderr(`${marker}\nerror: failed to push some refs to x`), 'race-or-other', marker);
+  }
+});
+
+test('classifyPushStderr: a hook that blocks a non-fast-forward push is still a race', () => {
+  const err = '=== PRE-PUSH BLOCKED: non-fast-forward push to main ===\nerror: failed to push some refs to x';
+  assert.equal(classifyPushStderr(err), 'race-or-other');
+});
+
+test('classifyPushStderr: empty / timeout-silent / unrelated output is never hook-rejected', () => {
+  assert.equal(classifyPushStderr(''), 'race-or-other');
+  assert.equal(classifyPushStderr(undefined), 'race-or-other');
+  assert.equal(classifyPushStderr('fatal: unable to access x: Could not resolve host'), 'race-or-other');
+});
+
+test('extractHookText: keeps the hook words, drops progress + failure lines, redacts credentials', () => {
+  const err = 'Enumerating objects: 5, done.\rCounting objects: 100% (5/5)\n=== PRE-PUSH BLOCKED ===\nsee https://x-access-token:SECRET1234@github.com/o/r\nerror: failed to push some refs to x\n';
+  const out = extractHookText(err);
+  assert.match(out, /PRE-PUSH BLOCKED/);
+  assert.ok(!out.includes('Enumerating') && !out.includes('failed to push'));
+  assert.ok(!out.includes('SECRET1234'));
 });

@@ -681,7 +681,45 @@ function formatTrace2Timeline(timeline, children) {
   return `${secs}s ${where}${inFlightNote}`;
 }
 
+// BRO-2879: tell a LOCAL pre-push hook rejection apart from a race. A hook that
+// exits non-zero makes git print the hook's own output and then a bare
+// "error: failed to push some refs" with NO per-ref status line. Every real
+// remote-side rejection (lost race, protected branch, remote hook) carries a
+// "! [rejected]" / "! [remote rejected]" line, and a hook that itself blocks a
+// non-fast-forward push says so in its text, so any of those markers keeps the
+// attempt in the retry class. Empty input (a timeout kill prints nothing) is
+// never a hook rejection. Conservative by construction: a false "race-or-other"
+// costs a few futile retries (today's behaviour), a false "hook-rejected" would
+// abort a recoverable push.
+const NOT_HOOK_MARKERS = [
+  /\[rejected\]/,
+  /\[remote rejected\]/,
+  /fetch first/i,
+  /non-fast-forward/i,
+  /Updates were rejected/i,
+];
+function classifyPushStderr(text) {
+  const t = String(text || '');
+  if (!/error: failed to push some refs/.test(t)) return 'race-or-other';
+  if (NOT_HOOK_MARKERS.some((re) => re.test(t))) return 'race-or-other';
+  return 'hook-rejected';
+}
+
+// The hook's own words, for the "stated cause": stderr minus git's progress
+// chatter and its trailing failure/hint lines, credential-redacted, last 40 lines.
+function extractHookText(text) {
+  const lines = String(text || '')
+    .split(/\r|\n/)
+    .map((l) => l.replace(/\s+$/, ''))
+    .filter((l) => l.trim() !== '')
+    .filter((l) => !/^(Enumerating|Counting|Compressing|Writing|Delta compression|Total|Everything up-to-date) /.test(l))
+    .filter((l) => !/^error: failed to push some refs/.test(l) && !/^hint:/.test(l));
+  return redactCurlTrace(lines.slice(-40).join('\n'));
+}
+
 module.exports = {
+  classifyPushStderr,
+  extractHookText,
   redactCurlTrace,
   classifyStallPhase,
   classifyStallService,

@@ -1007,6 +1007,8 @@ on:
       # (aborts the whole script under set -euo pipefail, skipping every
       # remaining retry AND the Git Data API fallback).
       - 'scripts/lib/push-with-retry.push-rc-diagnosis.test.sh'
+      # BRO-2879: local pre-push hook rejection stops after one attempt, exit 4.
+      - 'scripts/lib/push-with-retry.hook-rejection.test.sh'
       # BRO-2951: bash unit test for the github.com remote-slug and
       # checkout-extraheader parsers. Covered by the scripts/lib/** push glob
       # above for TRIGGERING, but .test.sh files are each run by their own
@@ -4856,6 +4858,11 @@ jobs:
         # class an independent review caught in this change's first draft.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.push-rc-diagnosis.test.sh
+
+      - name: Run push-with-retry hook-rejection test (bash integration)
+        # BRO-2879: real failing pre-push hook => 1 attempt, exit 4, hook text printed.
+        if: always()
+        run: bash scripts/lib/push-with-retry.hook-rejection.test.sh
 
       - name: Run push-with-retry stall-diagnostics test (bash integration)
         # BRO-3213: a killed git_push must say WHICH network phase it died in.
