@@ -68,7 +68,14 @@ async function main(argv = process.argv.slice(2)) {
   const plan = planNotification(decisions, notified);
   console.log(`[owner-decisions] ${decisions.length} open decision(s) on ${issues.length} open card(s); ${plan.fresh.length} new, ${notified.length} already told`);
 
-  if (plan.fresh.length === 0) return 0;
+  if (plan.fresh.length === 0) {
+    // Nothing new, but drop answered cards from the told-set so a card that
+    // is later re-marked gets announced again.
+    if (!dryRun && plan.nextNotified.length !== notified.length) {
+      router.patchCondition(CONDITION_KEY, { notifiedIds: plan.nextNotified });
+    }
+    return 0;
+  }
   const email = formatEmail(plan);
   if (dryRun) {
     console.log(`\n--- would email (dry run) ---\nSubject: ${email.title}\n\n${email.description}`);

@@ -22,7 +22,7 @@
 
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 
-const MAX_LISTED = 15;
+const MAX_LISTED = 35; // the first run carries the 31-card backlog; one email, not three days of them
 const MAX_QUESTION_CHARS = 220;
 const MARKER_RE = /^\s*(?:[-*>]\s+)?\**DECISION NEEDED\**\s*:\s*\**\s*(\S.*)$/i;
 
