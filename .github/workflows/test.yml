@@ -2715,6 +2715,7 @@ on:
       - 'scripts/.human-caller-digest-baseline.json'
       - 'scripts/audit-alert-senders.test.mjs'
       # BRO-2221: pins time-bomb fixes under the +45d clock shift
+      - 'scripts/audit-time-bomb-tests.js'
       - 'scripts/audit-time-bomb-tests.test.mjs'
       # Outlet stub-rate monitor (card #100): detects a broken article
       # extractor (site redesign silently breaking extraction, e.g.
