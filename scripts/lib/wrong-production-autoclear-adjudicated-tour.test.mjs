@@ -16,6 +16,7 @@ const {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearWrongProductionUkDualMarket,
   isAdjudicatedTourVerdict,
+  supersedeAdjudicatedTourVerdict,
 } = require('./wrong-production-autoclear');
 
 const review = (over = {}) => ({
@@ -45,6 +46,10 @@ describe('adjudicated tour verdict vs declared windows (BRO-2841)', () => {
   it('date outside the window does not clear', () => {
     assert.strictEqual(shouldAutoClearWrongProductionPriorRun(review({ publishDate: '2026-09-01' }), priorShow), false);
   });
+  it('tour verdict does not yield to a non-tour priorRuns window', () => {
+    const sitDown = { priorRuns: [{ openingDate: '2026-06-15', closingDate: '2026-07-27', venue: 'Sadler\'s Wells' }] };
+    assert.strictEqual(shouldAutoClearWrongProductionPriorRun(review(), sitDown), false);
+  });
   it('non-tour adjudicated verdicts are never overridden by a window', () => {
     const r = review({ wrongProductionReason: 'contamination-adjudicated: film-tv' });
     assert.strictEqual(shouldAutoClearWrongProductionPriorRun(r, priorShow), false);
@@ -53,5 +58,12 @@ describe('adjudicated tour verdict vs declared windows (BRO-2841)', () => {
     assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(review(), {
       isLondonMarketShow: true, isUkUrl: false, outletIsDualOrUk: true, outletIsLondonRegion: true,
     }), false);
+  });
+  it('supersede strips adjudicator markers and sets allowTourSignal', () => {
+    const d = review({ incompleteReason: 'wrong_content', incompleteDetail: 'contamination-adjudicated: national-tour' });
+    supersedeAdjudicatedTourVerdict(d);
+    assert.strictEqual(d.wrongProductionReason, undefined);
+    assert.strictEqual(d.incompleteReason, undefined);
+    assert.strictEqual(d.allowTourSignal, true);
   });
 });

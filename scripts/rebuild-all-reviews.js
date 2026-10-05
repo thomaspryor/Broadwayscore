@@ -90,6 +90,7 @@ const {
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearWrongProductionTourLeg,
   isAdjudicatedTourVerdict,
+  supersedeAdjudicatedTourVerdict,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
   isDatedGuardNote,
@@ -1621,6 +1622,8 @@ const crossShowFingerprints = new Map();
         // "anticipatory_pre_opening_post"); ALL operator-set reasons are protected.
         if (shouldAutoClearWrongProductionPriorRun(d, showRecord) || shouldAutoClearWrongProductionTourLeg(d, showRecord)) {
           const wasNote = d.wrongProductionNote || d.wrongProductionReason || '(no marker)';
+          // BRO-2841: read BEFORE the note is deleted below (the predicate keys on it).
+          const wasAdjudicatedTour = isAdjudicatedTourVerdict(d);
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: priorRuns/tourLegs covers publishDate (was: ${wasNote})`;
           d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
@@ -1639,15 +1642,10 @@ const crossShowFingerprints = new Map();
             delete d.anticipatoryGateDaysBeforeOpening;
           } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
             delete d.wrongProductionReason;
-          } else if (isAdjudicatedTourVerdict(d)) {
-            // BRO-2841: adjudicator's national-tour verdict superseded by the
-            // declared window. Drop its reason + wrong_content markers so the
-            // file is not left looking manually flagged / incomplete.
-            delete d.wrongProductionReason;
-            if (d.incompleteReason === 'wrong_content' && /^contamination-adjudicated:/.test(d.incompleteDetail || '')) {
-              delete d.incompleteReason;
-              delete d.incompleteDetail;
-            }
+          } else if (wasAdjudicatedTour) {
+            // BRO-2841: see supersedeAdjudicatedTourVerdict (marker cleanup +
+            // allowTourSignal so the tour guard/adjudicator cannot flap).
+            supersedeAdjudicatedTourVerdict(d);
           }
           // Card #1902: see the dateless-revival auto-clear above — same gate.
           if (isStaleScoreInput(d, showRecord, fp)) {
