@@ -80,7 +80,7 @@ function shouldEmailAlert(severity) {
 // red" emails in 20 min on 2026-09-23 through a 24h cooldown).
 // Alert text is plain text: escape it and keep its line breaks, or a
 // multi-line list collapses into one paragraph and a "<" eats the rest of the
-// line (BRO-4719). No caller passes HTML in title/description.
+// line (BRO-4719). No caller passes HTML in title, description or fields.
 function textToHtml(text) {
   return String(text == null ? '' : text)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -94,7 +94,7 @@ function buildAlertEmail({ title, description, severity = 'error', fields = [], 
   const label = subjectLabel !== undefined && subjectLabel !== null ? subjectLabel : (severityLabel[severity] || 'ALERT');
   const labelPrefix = label ? `[${label}] ` : '';
   const color = !label ? '#222' : severity === 'error' ? '#e74c3c' : severity === 'warning' ? '#f39c12' : '#3498db';
-  const fieldsHtml = fields.map(f => `<li><strong>${f.name}:</strong> ${f.value}</li>`).join('\n');
+  const fieldsHtml = fields.map(f => `<li><strong>${textToHtml(f.name)}:</strong> ${textToHtml(f.value)}</li>`).join('\n');
   const html = `
     <div style="font-family: system-ui, sans-serif; max-width: 600px;">
       <h2 style="color: ${color}">
