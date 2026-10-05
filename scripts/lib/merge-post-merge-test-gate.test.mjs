@@ -1006,3 +1006,58 @@ test('BRO-2793: the Land gate (land-gate-delta) also blocks a new aggregate viol
   assert.equal(decideGateDelta({ gate: 'unit-tests-node', base: mk([V_OLD]), branch: mk([V_OLD]) }).verdict, 'pass');
   assert.equal(decideGateDelta({ gate: 'unit-tests-node', base: mk([V_OLD]), branch: mk([V_OLD, V_NEW]) }).verdict, 'fail');
 });
+
+// BRO-2874: an unparseable non-zero merged run is re-run once before blocking.
+test('runTestGate: unparseable first run that PASSES on re-run is not blocked (BRO-2874)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  let calls = 0;
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => (++calls === 1
+      ? { status: null, signal: 'SIGTERM', stdout: 'TimeoutError: linear\n', stderr: '' }
+      : { status: 0, stdout: 'ok\n', stderr: '' }),
+    makeBaselineCheckout: () => { throw new Error('baseline must not be built'); },
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(calls, 2);
+  assert.equal(result.passed, true);
+  assert.match(result.output, /re-ran once/);
+});
+
+test('runTestGate: unparseable on BOTH runs blocks, and never claims NEW/collision (BRO-2874)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  let calls = 0;
+  for (const withBaseline of [true, false]) {
+    calls = 0;
+    const result = runTestGate({
+      cwd: dir,
+      changedFiles: ['scripts/lib/review-file-writer.js'],
+      execFn: () => { calls++; return { status: 7, stdout: 'crash\n', stderr: '' }; },
+      makeBaselineCheckout: withBaseline ? () => ({ dir, prepared: true }) : null,
+      removeBaselineCheckout: () => {},
+    });
+    assert.equal(calls, 2);
+    assert.equal(result.passed, false);
+    assert.match(result.reason, /status=7/);
+    if (withBaseline) {
+      assert.match(result.output, /baseline was NOT consulted/);
+      assert.match(result.reason, /baseline NOT consulted/);
+    }
+    assert.doesNotMatch(result.reason, /NEW|collision/);
+  }
+});
+
+test('runTestGate: a parseable failure is NOT re-run (BRO-2874)', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  let calls = 0;
+  runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => { calls++; return { status: 1, stdout: 'TAP version 13\nnot ok 1 - boom\n  ---\n  duration_ms: 1\n  ...\n', stderr: '' }; },
+  });
+  assert.equal(calls, 1);
+});

@@ -477,7 +477,7 @@ function describeExit(result) {
 // merged-tree failure) — every existing caller/test that doesn't pass them
 // is unaffected. Only invoked when the merged-tree run FAILS; a clean merge
 // never builds a baseline checkout.
-function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null } = {}) {
+function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineCheckout = null, removeBaselineCheckout = null, retryUnparseable = true } = {}) {
   if (!shouldRunTestGate(changedFiles)) {
     return { ran: false, passed: true, output: '', reason: 'no scripts/lib/, scripts/, or .github/workflows/ files changed' };
   }
@@ -505,8 +505,22 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       reason: 'no test files found for changed paths (scripts/lib/*.test.mjs, tests/unit/<basename>.test.mjs)',
     };
   }
-  const result = execFn(cwd, testFiles);
-  const output = `${result.stdout || ''}${result.stderr || ''}`;
+  let result = execFn(cwd, testFiles);
+  let output = `${result.stdout || ''}${result.stderr || ''}`;
+  // BRO-2874: a non-zero exit with ZERO parseable failures is a process-level
+  // death (timeout, ENOBUFS, a flaky network retry loop in the full run), not
+  // an assertion failure. Run once more before believing it: a death that
+  // reproduces is real, one that does not was environmental. The retry's result
+  // replaces the first, so everything downstream (baseline diff, reason) sees
+  // whatever the second run actually produced.
+  let retriedUnparseable = false;
+  if (retryUnparseable && result.status !== 0 && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
+    retriedUnparseable = true;
+    const first = describeExit(result);
+    result = execFn(cwd, testFiles);
+    output = `${result.stdout || ''}${result.stderr || ''}`;
+    output += `\n\n⚠ post-merge test floor: first merged run died unparseably (${first}); re-ran once, second run: ${describeExit(result)}`;
+  }
   const mergedPassed = result.status === 0;
 
   if (mergedPassed || !makeBaselineCheckout) {
@@ -535,7 +549,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: mergedPassed,
       output,
-      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}`,
+      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}${retriedUnparseable ? ' (passed on re-run after an unparseable first run)' : ''}`,
     };
   }
 
@@ -556,8 +570,8 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
     return {
       ran: true,
       passed: false,
-      output: `${output}\n\n⚠ post-merge test floor: merged tree exited non-zero but no individual test failure could be parsed (crash/timeout/syntax error, not a normal assertion failure) — blocking as a fail-safe rather than risk a silent pass`,
-      reason: `ran ${testFiles.length} file(s); merged run failed unparseably (${describeExit(result)})`,
+      output: `${output}\n\n⚠ post-merge test floor: merged tree exited non-zero but no individual test failure could be parsed (crash/timeout/syntax error, not a normal assertion failure)${retriedUnparseable ? ' on BOTH the first run and the re-run' : ''}. The origin/main baseline was NOT consulted, so this is NOT established as a NEW failure or a branch collision — blocking as a fail-safe rather than risk a silent pass`,
+      reason: `ran ${testFiles.length} file(s); merged run failed unparseably${retriedUnparseable ? ' twice' : ''} (${describeExit(result)}); baseline NOT consulted`,
     };
   }
   let checkout = null;
