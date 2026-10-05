@@ -10,7 +10,7 @@ const lines = readFileSync(WORKFLOW, 'utf8').split('\n');
 
 // Returns the offending handler text if the line masks the push status.
 export function maskedPushHandler(line) {
-  const m = line.match(/push-with-retry\.sh\s*(?:\|\|\s*(.*))?$/);
+  const m = line.match(/push-with-retry\.sh(?:\s+[^|\s]\S*)*\s*(?:\|\|\s*(.*))?$/);
   if (!m || line.trim().startsWith('#') || !m[1]) return null;
   const handler = m[1].trim();
   return /\bexit\s+[1-9]/.test(handler) || /\breturn\s+[1-9]/.test(handler) ? null : handler;
@@ -21,6 +21,7 @@ test('detector flags masking and accepts re-raise', () => {
   assert.ok(maskedPushHandler('bash scripts/lib/push-with-retry.sh || true'));
   assert.ok(maskedPushHandler('bash scripts/lib/push-with-retry.sh || :'));
   assert.equal(maskedPushHandler('bash scripts/lib/push-with-retry.sh || { echo "w"; exit 1; }'), null);
+  assert.ok(maskedPushHandler('bash scripts/lib/push-with-retry.sh 5 main || echo w'));
   assert.equal(maskedPushHandler('bash scripts/lib/push-with-retry.sh'), null);
   assert.equal(maskedPushHandler('# bash scripts/lib/push-with-retry.sh || echo hi'), null);
 });
