@@ -38,6 +38,7 @@ import {
   getReportedInvestorMultiple,
   publicSourceText,
   isEstimatedCapitalization,
+  isUnannouncedRecoupment,
 } from './commercial-display';
 import commercialData from '../../data/commercial.json';
 import grossesHistoryData from '../../data/grosses-history.json';
@@ -497,6 +498,8 @@ export function getShowsAtRisk(): AtRiskShow[] {
  * Get shows that recouped within the specified number of months.
  * weeksToRecoup is null when only the recoupment year is known (or the date
  * is inconsistent with the run); those rows stay listed with a blank week count.
+ * A recoupment that was never announced is not news and has no reliable date,
+ * so it is left out (isUnannouncedRecoupment).
  */
 export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[] {
   const results: RecentRecoupmentShow[] = [];
@@ -505,6 +508,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     if (!data.recouped || !data.recoupedDate) continue;
+    if (isUnannouncedRecoupment(data)) continue;
 
     const recoupDate = new Date(data.recoupedDate + '-01');
     if (isNaN(recoupDate.getTime()) || recoupDate < cutoffDate) continue;
@@ -621,6 +625,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     recoupedSource: publicSourceText(data.recoupedSource),
     trend: running ? getRecoupmentTrend(slug) : 'unknown',
     recouped: data.recouped,
+    recoupmentNotAnnounced: isUnannouncedRecoupment(data),
     recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
   };
 }
