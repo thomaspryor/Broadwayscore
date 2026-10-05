@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 // Shape written by scripts/lib/account-metrics.js buildDashboardData (BRO-4615).
 interface Step { shown: number; started: number; completed: number; acted: number }
+type WelcomeStep = Record<'shown' | 'picked' | 'skipped_shows' | 'import_tapped' | 'imported' | 'completed' | 'closed_early' | 'searched' | 'switched_market', number>;
 interface SourceRow extends Step { source: string; label: string; device: 'mobile' | 'desktop' | 'other' }
 interface Payload {
   generatedAt: string;
@@ -12,7 +13,7 @@ interface Payload {
     excluded?: { yours: number; test: number };
     people?: { joined: string | null; lastSignIn: string | null; provider: string; saved: boolean }[]; newLast7: number; newLast30: number;
     signedInLast7: number; signedInLast30: number; providers: Record<string, number>;
-    withRating: number; withWatchlist: number; withList: number; withAnything: number;
+    withRating: number; withWatchlist: number; withList: number; withSeen?: number; withAnything: number;
     ratings: number; watchlistItems: number; lists: number;
   } | null;
   daily: { date: string; newAccounts: number; signedInUsers: number | null }[];
@@ -20,6 +21,8 @@ interface Payload {
   active: { dau: number; wau: number; mau: number } | null;
   actions: { event: string; label: string; last7: number; last30: number; users30: number }[] | null;
   funnel: { sources: SourceRow[]; totals: Record<'mobile' | 'desktop' | 'other' | 'all', Step> } | null;
+  // Absent in files written before the welcome screen was tracked.
+  welcome?: Record<'mobile' | 'desktop' | 'other' | 'all', WelcomeStep> | null;
   alerts?: { key: string; title: string; description: string }[];
   failed: string[];
   cached?: boolean;
@@ -59,6 +62,7 @@ const FAILED_LABELS: Record<string, string> = {
   daily: 'signed-in people per day',
   actions: 'what signed-in people did',
   funnel: 'the sign-up funnel',
+  welcome: 'the welcome screen',
   health: 'the sign-in and saving alerts',
 };
 
@@ -106,8 +110,30 @@ function FunnelBars({ step, title, noPrompt }: { step: Step; title: string; noPr
     ['Finished signing in', step.completed],
     ['Then saved something', step.acted],
   ];
+  return <Bars title={title} rows={rows} />;
+}
+
+/** The welcome screen: each row as a share of everyone who saw it. */
+function WelcomeBars({ step, title }: { step: WelcomeStep; title: string }) {
+  return (
+    <Bars
+      title={title}
+      base="first"
+      rows={[
+        ['Saw the welcome screen', step.shown],
+        ['Saved shows from it', step.picked],
+        ['Imported from another app', step.imported],
+        ['Reached the end', step.completed],
+      ]}
+    />
+  );
+}
+
+/** base 'prev': % of the row above (a funnel). 'first': % of the first row. */
+function Bars({ title, rows, base = 'prev' }: { title: string; rows: [string, number][]; base?: 'prev' | 'first' }) {
   // Every step can exceed the one before it (the iPhone app logs finishes without a sign-in box).
   const max = Math.max(1, ...rows.map(([, n]) => n));
+  const of = (i: number) => rows[base === 'first' ? 0 : i - 1][1];
   return (
     <div className="min-w-0">
       <div className="text-sm font-semibold text-white mb-2">{title}</div>
@@ -116,7 +142,7 @@ function FunnelBars({ step, title, noPrompt }: { step: Step; title: string; noPr
           <div className="flex justify-between text-xs text-gray-400">
             <span>{label}</span>
             <span className="tabular-nums text-gray-300">
-              {fmtN(n)}{i > 0 && rows[i - 1][1] > 0 && n <= rows[i - 1][1] ? ` (${pctOf(n, rows[i - 1][1])})` : ''}
+              {fmtN(n)}{i > 0 && of(i) > 0 && n <= of(i) ? ` (${pctOf(n, of(i))})` : ''}
             </span>
           </div>
           <div className="h-2 bg-surface-overlay rounded mt-1 overflow-hidden">
@@ -203,7 +229,7 @@ export default function Dashboard() {
             value={fmtN(data?.active?.wau)}
             lines={data?.active ? ['used the site in the last 7 days', `${data.active.dau} in the last 24 hours · ${data.active.mau} in 30 days`] : ['not available this run']}
           />
-          <Tile label="Saved something" value={fmtN(a.withAnything)} lines={[`${pctOf(a.withAnything, a.total)} of accounts`, `${a.withRating} rated · ${a.withWatchlist} watchlist · ${a.withList} lists`]} />
+          <Tile label="Saved something" value={fmtN(a.withAnything)} lines={[`${pctOf(a.withAnything, a.total)} of accounts`, `${a.withRating} rated · ${a.withWatchlist} watchlist · ${a.withList} lists${a.withSeen ? ` · ${a.withSeen} seen` : ''}`]} />
         </div>
       )}
 
@@ -216,7 +242,7 @@ export default function Dashboard() {
       {data?.funnel && (
         <Card
           title="Sign-up funnel, last 30 days"
-          note="Each device is counted once, at the first place it saw the sign-in box. “Saved something” = rated a show, used the watchlist or a list."
+          note="Each device is counted once, at the first place it saw the sign-in box. “Saved something” = rated a show, used the watchlist or a list, or saved shows on the welcome screen."
         >
           <div className="grid sm:grid-cols-2 gap-6">
             <FunnelBars step={data.funnel.totals.mobile} title="Phones" />
@@ -251,6 +277,28 @@ export default function Dashboard() {
               </table>
             </div>
           )}
+        </Card>
+      )}
+
+      {data?.welcome && data.welcome.all.shown > 0 && (
+        <Card
+          title="Welcome screen, last 30 days"
+          note="Shown once, after a first sign-in. Each device is counted once. “Closed it early” = closed with the X before the last step; any shows they had picked were still saved."
+        >
+          <div className="grid sm:grid-cols-2 gap-6">
+            {data.welcome.mobile.shown > 0 && <WelcomeBars step={data.welcome.mobile} title="Phones" />}
+            {data.welcome.desktop.shown > 0 && <WelcomeBars step={data.welcome.desktop} title="Computers" />}
+            {data.welcome.other.shown > 0 && <WelcomeBars step={data.welcome.other} title="Other" />}
+          </div>
+          <p className="text-sm text-gray-300 mt-4">
+            {[
+              `${data.welcome.all.closed_early} closed it early`,
+              `${data.welcome.all.skipped_shows} skipped picking shows`,
+              `${data.welcome.all.import_tapped} tapped an app to import from`,
+              `${data.welcome.all.searched} searched for a show`,
+              `${data.welcome.all.switched_market} switched Broadway / West End`,
+            ].join(' · ')}
+          </p>
         </Card>
       )}
 
