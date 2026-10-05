@@ -44,7 +44,7 @@ function roundupDateFromSlug(slugOrUrl) {
  * the slug isn't a tour roundup, the match isn't a Broadway show, or a tour
  * entry for that production (or another of its title) already exists.
  */
-function tourCandidateFor(slug, matchedShow, shows) {
+function tourCandidateFor(slug, matchedShow, shows, { predecessorEnds = null, segmentStart = null } = {}) {
   if (!isNationalTourRoundupSlug(slug) || !matchedShow) return null;
   if ((matchedShow.category || 'broadway') !== 'broadway') return null;
   const title = String(matchedShow.title || '').trim().toLowerCase();
@@ -56,7 +56,12 @@ function tourCandidateFor(slug, matchedShow, shows) {
     if (s.category !== 'tour' || !s.tourOf) return false;
     const parent = byId.get(s.tourOf);
     const sameTitle = s.tourOf === matchedShow.id || (!!parent && String(parent.title || '').trim().toLowerCase() === title);
-    return sameTitle && !(s.status === 'closed' && s.closingDate);
+    if (!sameTitle || (s.status === 'closed' && s.closingDate)) return false;
+    // A running tour its schedule page shows ending before this one starts
+    // (tour-discovery.js lifecyclePlan, BRO-4724): the tour booked after its
+    // layoff is a candidate now, not only once the first is marked closed.
+    const end = predecessorEnds && predecessorEnds[s.id];
+    return !(end && segmentStart && !s.closingDate && end < segmentStart);
   });
   if (hasTour) return null;
   return { broadwayShowId: matchedShow.id, title: matchedShow.title };
@@ -73,6 +78,10 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   if (!Array.isArray(rows)) rows = [];
   const byId = new Map(rows.map(r => [r.broadwayShowId, r]));
   const fromSchedule = r => !!r && r.source === 'tourstoyou';
+  // What a schedule page said this run about how it splits (tour-discovery.js
+  // lifecyclePlan): never carried over from an earlier run (BRO-4724).
+  const PAGE_FACTS = ['splitAt', 'predecessorEnds'];
+  const dropStale = (row, c) => { if (fromSchedule(c)) for (const k of PAGE_FACTS) if (!(k in c)) delete row[k]; return row; };
   for (const c of candidates) {
     let prev = byId.get(c.broadwayShowId);
     // A BWW roundup and a Tours To You listing of one show are two sources
@@ -94,7 +103,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
       const asked = !fromSchedule(prev) && prev.notifiedAt ? { notifiedAt: prev.notifiedAt } : {};
       const row = { ...keep, ...asked, ...schedule, ...roundup, firstSeen: keep.firstSeen || now, lastSeen: now };
       if (!schedule.ambiguous) delete row.ambiguous;
-      byId.set(c.broadwayShowId, row);
+      byId.set(c.broadwayShowId, dropStale(row, c));
       continue;
     }
     // A different roundup for the same show is a later tour (BRO-4262): start
@@ -105,7 +114,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
     const row = { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now };
     // A tour no longer ambiguous (one company left) is decided normally.
     if (!c.ambiguous) delete row.ambiguous;
-    byId.set(c.broadwayShowId, row);
+    byId.set(c.broadwayShowId, dropStale(row, c));
   }
   const out = [...byId.values()].sort((a, b) => a.broadwayShowId.localeCompare(b.broadwayShowId));
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
@@ -124,7 +133,7 @@ function openTourCandidates(rows, shows) {
     // A tour found running on Tours To You (tour-discovery.js) has no roundup
     // slug; the same "no open tour of this title" test applies.
     const slug = r.source === 'tourstoyou' ? 'national-tour' : (r.slug || 'national-tour');
-    return !!show && !!tourCandidateFor(slug, show, shows);
+    return !!show && !!tourCandidateFor(slug, show, shows, r.source === 'tourstoyou' ? { predecessorEnds: r.predecessorEnds, segmentStart: r.segmentStart } : {});
   });
 }
 

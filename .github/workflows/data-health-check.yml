@@ -332,6 +332,21 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/check-priority-queue-health.js --alert
 
+      # BRO-4719: email the owner when a card newly carries a "DECISION
+      # NEEDED:" line or the awaiting-owner label. Runs here, not on the Mac
+      # (owner 2026-10-05: "don't rely on the Mac Studio"). Each card is
+      # announced once; the told-set rides alert-ledger.json, committed by the
+      # ledger step below.
+      - name: Email owner about new decisions
+        # lint-allow-swallow: advisory email; a Linear/Resend outage only delays the email to the next daily run and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/notify-owner-decisions.js
+
       # BRO-4487: cancel auto-filed alert cards whose condition has cleared in
       # the ledger (untouched backlog cards filed for exactly that condition
       # only; see scripts/lib/resolved-alert-card-sweep.js). Max 25 per run.

@@ -286,6 +286,25 @@ test('P0-8: "no public announcement" and editorial records read "Not publicly an
   assert.equal(noAnnouncement.qualifier, 'Not publicly announced');
   assert.equal(noAnnouncement.confidence.level, 'medium');
 
+  // BRO-4722: the live Lion King / Aladdin wording.
+  const doesNot = getRecoupmentAttribution({
+    ...base,
+    recouped: true,
+    recoupedDate: '1999',
+    recoupedSource: 'Disney does not announce recoupments. Recouped status follows from more than $2B in Broadway grosses; the 1999 date is an estimate.',
+    sources: [tradeSource],
+  });
+  assert.equal(doesNot.qualifier, 'Not publicly announced');
+  assert.equal(doesNot.confidence.level, 'medium');
+  // An announcement is never downgraded.
+  const announced = getRecoupmentAttribution({
+    ...base,
+    recouped: true,
+    recoupedSource: 'Producers announced recoupment on October 3, 2013, after 30 weeks',
+    sources: [tradeSource],
+  });
+  assert.equal(announced.qualifier, null);
+
   const flagged = getRecoupmentAttribution({
     ...base,
     recouped: true,
@@ -361,4 +380,12 @@ test('P1-3: one break-even everywhere: model when it clears the floor, else week
   assert.equal(getBreakEven({ ...withModel, modelMethod: 'ai-estimated' }), 600_000);
   assert.equal(getBreakEven({ ...withModel, modelBreakeven: null }), 600_000);
   assert.equal(getBreakEven({ modelBreakeven: null, weeklyRunningCost: null }), null);
+});
+
+test('BRO-4721: a Nonprofit production never shows a modeled % recouped (no investors to repay)', () => {
+  const base = { recouped: null, modelRecoupmentPct: [-2, 6.6, 14.8], modelDataQuality: 'medium', modelMethod: 'weekly-model' };
+  assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'Nonprofit', status: 'open' }), 'none');
+  assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'TBD', status: 'open' }), 'model');
+  // A recoupment record still wins for any designation.
+  assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'Nonprofit', recouped: true }), 'announced');
 });

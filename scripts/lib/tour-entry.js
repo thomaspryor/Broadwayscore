@@ -14,6 +14,7 @@
  */
 
 const { tourInheritance, toursOfTitle, tourImageProblems } = require('./tour-family');
+const { distinctWorksOfTitle } = require('./tour-history');
 
 // How a tour's launch was confirmed (decideTourDates launchSource) and what
 // the entry records for it. One row per source so a new source cannot fall
@@ -50,11 +51,20 @@ function baseSlug(parentId) {
  * @param {string} [args.roundupUrl] BWW national-tour roundup (none for a tour found running on Tours To You)
  * @param {string} [args.scheduleUrl] Tours To You page used
  * @param {Set<string>} [args.retiredIds] ids from data/retired-show-ids.json
+ * @param {Object<string,string>} [args.knownEnds] running tours' last engagement, by id, where
+ *   the schedule page shows them ending before this one (tour-discovery.js lifecyclePlan)
  * @param {Date} [args.now]
  * @returns {{entry: object} | {skip: string}}
  */
-function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds = null, now = new Date() }) {
+function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds = null, knownEnds = null, now = new Date() }) {
   if (!parent || (parent.category || 'broadway') !== 'broadway') return { skip: 'parent is not a Broadway show' };
+  // Two different works share the title (A Christmas Carol: Jack Thorne's
+  // play and the Dickens solo shows): the title alone can't say which one
+  // tours, and a wrong parent hands the tour the wrong cast and images.
+  // Only works of the parent's kind compete: the Frozen musical is not mistaken
+  // for the 2004 play (BRO-4724 ship-check).
+  const works = distinctWorksOfTitle(parent.title, shows, parent.type);
+  if (works.length > 1) return { skip: `"${parent.title}" names ${works.length} different Broadway works (${works.map(g => g.join('+')).join(' / ')}); which one tours is not clear` };
   if (!roundupUrl && !scheduleUrl) return { skip: 'no evidence URL (roundup or schedule)' };
   if (!decision || decision.problem) return { skip: `dates: ${(decision && decision.problem) || 'no decision'}` };
   const launch = decision.write && decision.write.openingDate;
@@ -70,9 +80,12 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   // tour arrived only after it opened).
   const upcoming = launch > today;
 
-  // A second tour must start after every earlier tour of the title has closed.
+  // A second tour must start after every earlier tour of the title has
+  // closed, or is shown by its schedule ending first (a tour booked after a
+  // layoff, BRO-4724).
   const earlier = toursOfTitle(parent.title, shows);
-  const stillOpen = earlier.find(t => !t.closingDate || t.closingDate >= launch);
+  const endOf = t => t.closingDate || (knownEnds && knownEnds[t.id]) || null;
+  const stillOpen = earlier.find(t => !endOf(t) || endOf(t) >= launch);
   if (stillOpen) return { skip: `tour ${stillOpen.id} is still open or overlaps ${launch}` };
 
   const id = `${baseSlug(parent.id)}-tour-${launch.slice(0, 4)}`;

@@ -11,6 +11,8 @@ import { isCategoryEnabled } from '@/lib/markets';
 import Breadcrumb from '@/components/Breadcrumb';
 import BrowseListClient from '@/components/BrowseListClient';
 import HowThisWorks from '@/components/HowThisWorks';
+import ToursByCity from '@/components/ToursByCity';
+import { getTourCities } from '@/lib/data-tour-cities';
 import type { BrowseShow } from '@/components/BrowseListClient';
 
 // "How This Works" default per market. The Broadway outlets (NYT, Vulture,
@@ -196,7 +198,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
   // Compute section group labels (server-side, since sectionGroup uses ComputedShow)
   const sectionLabels = config.sectionGroup
-    ? shows.map(show => config.sectionGroup!(show, getShowById))
+    ? shows.map(show => config.sectionGroup!(show, getShowById, { getShowGrosses }))
     : undefined;
 
   // Determine available sorts and filters for this page
@@ -265,6 +267,9 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
           sectionLabels={sectionLabels}
           upcomingContext={config.slug.startsWith('upcoming-')}
         />
+
+        {/* National tours: links into the /tours/<city> pages (BRO-4723) */}
+        {config.source === 'tour' && <ToursByCity cities={Array.from(getTourCities().values())} />}
 
         {/* Related Categories */}
         {relatedPages.length > 0 && (

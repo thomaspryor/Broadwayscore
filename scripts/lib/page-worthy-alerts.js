@@ -119,6 +119,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // Mac is dead. It cannot go through the digest: the digest is what is missing.
   'mac:morning-digest-missing',
 
+  // Owner request 2026-10-05 (BRO-4719): "How will I ever know that they're
+  // waiting on me for a decision? I didn't even know they existed!" and "don't
+  // rely on the Mac Studio". scripts/notify-owner-decisions.js (CI, daily)
+  // emails only when a card NEWLY carries a "DECISION NEEDED:" line or the
+  // awaiting-owner label; each card is announced once, max one email per 20h.
+  'owner-decisions:new',
+
   // Production feature down for real users (BRO-4603): signed-in users cannot
   // sign in or save ratings, or can see data that is not theirs, and the
   // self-heal did not fix it. test-ugc-roundtrip.yml routes this only when an

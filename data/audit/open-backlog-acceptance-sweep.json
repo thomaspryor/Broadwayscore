@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-05T11:21:34.697Z",
+  "generatedAt": "2026-10-05T15:40:11.140Z",
   "shadow": true,
-  "checkoutSha": "aad311b145f44859d50ee4a00aa53e8673596e23",
-  "totalCandidates": 1627,
-  "eligibleCandidates": 119,
-  "checked": 15,
+  "checkoutSha": "4aedc00ba6b034de953b4a3e25c09308cfbc4196",
+  "totalCandidates": 700,
+  "eligibleCandidates": 50,
+  "checked": 14,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 8,
+    "pass": 7,
     "fail": 0,
     "unverifiable": 7
   },
@@ -54,16 +54,16 @@
       "name": "main Data Validation red: critic-consensus.json orphan key sylvia-off-west-end-2026 (SHOW_NOT_IN_DB) fails audit-critic-consensus-contamination --gate",
       "verifyCmd": "node scripts/audit-critic-consensus-contamination.js --gate",
       "detail": null
-    },
-    {
-      "id": "BRO-4228",
-      "name": "Missing show: The Turn of the Screw",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
     }
   ],
   "failing": [],
   "unverifiable": [
+    {
+      "id": "BRO-4716",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 147202ms (timeout — no verdict)"
+    },
     {
       "id": "BRO-4638",
       "name": "Mac-to-cloud step 1: retire Mac opening-night monitor after verifying cloud watch",
@@ -80,7 +80,7 @@
       "id": "BRO-4549",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 136919ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 114072ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4447",
@@ -92,19 +92,13 @@
       "id": "BRO-4410",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 103995ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 78509ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4265",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"verified TodayTix-gap shows carry a real Ticketmaster link\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 65064ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-4239",
-      "name": "Cloud parity: drift check between Mac setup and cloud copies (phase 3)",
-      "verifyCmd": "node --test scripts/check-cloud-parity.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-cloud-parity.test.mjs"
+      "detail": "check killed by SIGTERM after 39451ms (timeout — no verdict)"
     }
   ]
 }

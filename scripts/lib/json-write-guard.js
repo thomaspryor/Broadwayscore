@@ -212,6 +212,40 @@ function mergeMapRecords(snapshotMap, mutatedMap, freshMap) {
   return merged;
 }
 
+/**
+ * After a merged save, hand the caller back its OWN record objects, refilled
+ * in place with the written content. Callers often hold references to records
+ * across several saves (fetch-tour-images.js keeps `tour` from a filtered
+ * list); swapping in freshly parsed copies made every edit through such a
+ * reference after the first save invisible to the next merge (BRO-4726: 15
+ * tours updated, 1 persisted). Records the caller never had pass through.
+ */
+function keepCallerRecords(shape, idKey, callerRecords, finalRecords) {
+  const refill = (own, written) => {
+    if (!own || own === written || !isPlainObject(own) || !isPlainObject(written)) return written;
+    for (const k of Object.keys(own)) delete own[k];
+    return Object.assign(own, written);
+  };
+  // The container is refilled in place too, for callers holding the list
+  // itself (`const shows = data.shows`). A caller iterating data.shows while
+  // saving inside the loop follows the merged order: a concurrent add or
+  // delete between saves can shift what it visits next.
+  if (shape === 'array') {
+    if (!Array.isArray(callerRecords)) return finalRecords;
+    const ownById = new Map(callerRecords.map((r) => [r && r[idKey], r]));
+    const next = finalRecords.map((r) => refill(ownById.get(r[idKey]), r));
+    // Index assignment, not splice(...next): spreading 100k+ records overflows the stack.
+    callerRecords.length = next.length;
+    for (let i = 0; i < next.length; i++) callerRecords[i] = next[i];
+    return callerRecords;
+  }
+  if (!isPlainObject(callerRecords)) return finalRecords;
+  const next = {};
+  for (const key of Object.keys(finalRecords)) next[key] = refill(callerRecords[key], finalRecords[key]);
+  for (const key of Object.keys(callerRecords)) delete callerRecords[key];
+  return Object.assign(callerRecords, next);
+}
+
 function mergeRecords(shape, idKey, snapshot, mutated, fresh) {
   if (shape === 'array') return mergeArrayRecords(snapshot, mutated, fresh, idKey);
   return mergeMapRecords(snapshot, mutated, fresh);
@@ -332,7 +366,7 @@ function createJsonWriteGuard(filePath, opts = {}) {
       // see shows-write-guard.js for why this matters for checkpointing
       // callers that save() the same object twice in a loop.
       if (finalData !== data) {
-        data[recordsKey] = finalData[recordsKey];
+        data[recordsKey] = keepCallerRecords(shape, idKey, data[recordsKey], finalData[recordsKey]);
         for (const key of Object.keys(finalData)) {
           if (key !== recordsKey) data[key] = finalData[key];
         }

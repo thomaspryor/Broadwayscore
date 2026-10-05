@@ -1275,12 +1275,15 @@ function urlLooksLikeReview(url, showTitle) {
   // Beaches 2026-04-22: rejected all outlet URLs (NYT/Guardian/People/EW/TimeOut/TheWrap/NYDN/NYT/…)
   // via outlet-domain-supplement urlTitleCheck before this fallback.
   //
+  // Guard (BRO-3711): the comma tail must be an article-led subtitle. "America, Who
+  // Hurt You?" is not "America" + subtitle; "Captain America: Brave New World" matched it.
+  //
   // Guard: short title must contain ≥1 meaningful word (length > 2, non-stopword).
   // Without this, "Oh, Mary!" → short "Oh" → zero meaningful words → urlTitleWordsPass
   // fail-opens (titleWords.length === 0 branch) and accepts ANY URL as valid. Affected
   // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
-  const { shortTitleCandidate } = require('./title-normalization');
-  const shortTitle = shortTitleCandidate(showTitle);
+  const { shortTitleCandidate, hasSubtitleTail } = require('./title-normalization');
+  const shortTitle = hasSubtitleTail(showTitle) ? shortTitleCandidate(showTitle) : null;
   if (shortTitle) {
     const shortMeaningfulWords = shortTitle
       .toLowerCase()
@@ -3935,6 +3938,87 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
+// BRO-3135 rollout date for unstamped files (see isBodylessAggregatorScoreUncorroborated).
+const BODYLESS_GATE_EFFECTIVE_FROM = '2026-09-01';
+
+/**
+ * BRO-3135: where did a body-less file's score come from?
+ *
+ * A body-less review-texts file (no fullText) can only be scored from a star
+ * field, and with no body there is nothing to cross-check that the number
+ * belongs to THIS production. Provenance decides whether it can be trusted:
+ *   - 'page-parsed'          the star was read off the review's own page by an
+ *                            outlet extractor (The Stage stage-star-svg, json-ld,
+ *                            ...: any source in OUTLET_VERIFIED_SOURCES, which
+ *                            excludes the aggregator sources).
+ *   - 'aggregator-inherited' relayed by a roundup/listing (LBO, StageDoor, WET,
+ *                            Show Score, ...) or of unknown origin.
+ * An explicit data.scoreProvenance stamp wins over inference.
+ * Returns null when the file has a body or carries no star/score at all.
+ * @param {object} data review-text record
+ * @returns {'page-parsed'|'aggregator-inherited'|null}
+ */
+function bodylessScoreProvenance(data) {
+  if (!data) return null;
+  if (typeof data.fullText === 'string' && data.fullText.trim().length >= 200) return null;
+  const hasScore = !!(data.aggregatorStars || data.originalScore != null
+    || typeof data.originalScoreNormalized === 'number');
+  if (!hasScore) return null;
+  if (data.scoreProvenance === 'page-parsed' || data.scoreProvenance === 'aggregator-inherited') {
+    return data.scoreProvenance;
+  }
+  const { OUTLET_VERIFIED_SOURCES } = require('./score-extractors'); // lazy: avoid load-order coupling
+  const sources = [data.originalScoreSource, data.aggregatorStarsSource, data.scoreSource];
+  return sources.some((s) => s && OUTLET_VERIFIED_SOURCES.has(s)) ? 'page-parsed' : 'aggregator-inherited';
+}
+
+/**
+ * BRO-3135: does the body-less file's own excerpt text name this show's venue
+ * or a cast member? The only production evidence available without a body.
+ * Strict (needs a real venue/cast hit): a missing signal means "not corroborated".
+ */
+function bodylessCorroboratedByProduction(data, show) {
+  if (data && data.productionCorroborated === true) return true;
+  if (!data || !show) return false;
+  // Excerpts plus page-fetched outlet text (walled-page headline/standfirst).
+  const raw = [...require('./excerpt-fields').getExcerpts(data), data.outletHeadline, data.outletStandfirst]
+    .filter((v) => typeof v === 'string').join(' ');
+  // Normalise BOTH sides identically so "Hampstead Theatre Downstairs" matches
+  // prose that says "Hampstead Theatre Downstairs".
+  const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b(theat(re|er)|the)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  const text = ` ${norm(raw)} `;
+  if (text.trim() === '') return false;
+  const venue = norm(show.venue);
+  if (venue.length >= 6 && text.includes(` ${venue} `)) return true;
+  const cast = Array.isArray(show.cast) ? show.cast : [];
+  return cast.some((c) => {
+    const name = norm((c && (c.name || c.actor)) || c);
+    return name.length >= 6 && text.includes(` ${name} `);
+  });
+}
+
+/**
+ * BRO-3135: the single exclusion predicate shared by explainExclusion() and
+ * rebuild-all-reviews.js's inline loop. humanReviewScore is a human's verdict,
+ * so it is exempt.
+ */
+function isBodylessAggregatorScoreUncorroborated(data, show) {
+  if (!data || data.humanReviewScore >= 1) return false;
+  if (bodylessScoreProvenance(data) !== 'aggregator-inherited') return false;
+  // Rollout scope: an inferred (unstamped) verdict only applies to files first
+  // seen on/after BODYLESS_GATE_EFFECTIVE_FROM. Legacy stubs (scan 2026-10-05:
+  // ~200 files, 142 with no firstSeenAt, e.g. StageDoor-relayed Guardian stars
+  // on 2021 West End shows) were never audited for this, so excluding them
+  // retroactively would silently drop ~100 live reviews. An explicit
+  // scoreProvenance stamp always applies.
+  if (!data.scoreProvenance) {
+    const seen = typeof data.firstSeenAt === 'string' ? data.firstSeenAt.slice(0, 10) : '';
+    if (seen < BODYLESS_GATE_EFFECTIVE_FROM) return false; // '' (no firstSeenAt) sorts first
+  }
+  return !bodylessCorroboratedByProduction(data, show);
+}
+
 /**
  * Named non-review URL rule (BRO-4101), as a pure predicate shared by
  * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
@@ -4321,6 +4405,9 @@ function explainExclusion(data, show, filePath) {
   // about the URL or source. Same direct-check pattern as
   // wrongProductionManualClear elsewhere in this file.
   if (isNamedNonReviewUrlRecord(data)) return 'namedNonReviewUrl';
+  // BRO-3135: body-less + aggregator-inherited score + no production evidence.
+  // humanReviewScore is a human's verdict, so it is exempt.
+  if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
   if (
     (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
@@ -5323,6 +5410,9 @@ module.exports = {
   pickRerouteTarget,
   isIncludableForRebuild,
   isNamedNonReviewUrlRecord,
+  bodylessScoreProvenance,
+  isBodylessAggregatorScoreUncorroborated,
+  bodylessCorroboratedByProduction,
   explainExclusion,
   duplicateOfInheritedFlag,
   hasStructuralStarScore,

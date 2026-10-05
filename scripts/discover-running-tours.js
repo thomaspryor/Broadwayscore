@@ -19,6 +19,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { PAGES_API, slugKeys, titleKeys, runningTourCandidate, dedupeCandidates } = require('./lib/tour-discovery');
 const { recordTourCandidates } = require('./lib/tour-roundup-candidate');
+const { STALE_DAYS, orderForCheck, nextCoverage, stalePages } = require('./lib/tours-to-you-coverage');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -27,9 +28,14 @@ const CANDIDATES = path.join(ROOT, 'data', 'audit', 'tour-roundup-candidates.jso
 const USAGE = `discover-running-tours.js — find national tours on the road now (BRO-4325)
   --record   record candidates (default: report only)`;
 
-/** Every show page slug on Tours To You (WordPress pages API, 100 a page). */
+/**
+ * Every show page on Tours To You (WordPress pages API, 100 a page): slugs,
+ * plus each page's last edit (`modified`) so edited pages are read first.
+ * Returns an array of slugs carrying a `.modified` map.
+ */
 async function listShowPages(fetchText) {
   const out = [];
+  const modified = {};
   for (let page = 1; page <= 50; page++) {
     let rows;
     try {
@@ -40,18 +46,30 @@ async function listShowPages(fetchText) {
       throw e;
     }
     if (!Array.isArray(rows) || rows.length === 0) break;
-    out.push(...rows.map(r => r.slug).filter(Boolean));
+    for (const r of rows) {
+      if (!r.slug) continue;
+      out.push(r.slug);
+      // modified_gmt is UTC without a zone suffix (plain `modified` is site-local).
+      if (r.modified_gmt) modified[r.slug] = `${r.modified_gmt}Z`;
+    }
     if (rows.length < 100) break;
   }
-  return [...new Set(out)];
+  const slugs = [...new Set(out)];
+  slugs.modified = modified;
+  return slugs;
 }
 
 /**
- * @param {{shows: object[], budget?: {exceeded: () => boolean}, log?: Function}} args
- * @returns {Promise<{candidates: object[], ambiguous: string[], checked: number, pages: number}>}
+ * Reads the Broadway-titled show pages, least-recently-read first (BRO-4725),
+ * until the budget runs out; the rest wait for the next run, which starts
+ * with them. `coverage` is the previous run's map (tours-to-you-coverage.js);
+ * the returned one stamps every page read now.
+ * @param {{shows: object[], budget?: object, coverage?: object, fallback?: Function, log?: Function}} args
+ * @returns {Promise<{candidates: object[], ambiguous: string[], reopen: object[], undecided: object[], checked: number, pages: number, eligible: number, coverage: object, rateLimited: number, failed: number}>}
  */
-async function discoverRunningTours({ shows, budget = null, log = console.log }) {
-  const { fetchText } = require('./enrich-tour-dates');
+async function discoverRunningTours({ shows, budget = null, coverage = {}, fallback = null, log = console.log }) {
+  const { politeFetchText, stats, looksLikeShowPage } = require('./lib/tours-to-you');
+  const fetchText = url => politeFetchText(url, { budget, log });
   const slugs = await listShowPages(fetchText);
   // Only pages whose title is a Broadway show are worth a fetch.
   const broadwayKeys = new Set();
@@ -60,30 +78,47 @@ async function discoverRunningTours({ shows, budget = null, log = console.log })
   log(`Tours To You: ${slugs.length} show pages, ${worth.length} with a Broadway title`);
   if (slugs.length < 100) throw new Error(`only ${slugs.length} show pages listed; the pages API may have changed`);
 
+  const order = orderForCheck(worth, coverage, slugs.modified || {});
   const found = [];
-  let checked = 0;
-  for (const slug of worth) {
-    if (budget && budget.exceeded()) { log(`Time budget reached after ${checked} page(s); the rest wait for the next run`); break; }
+  const reopen = [];
+  const undecided = [];
+  const read = [];
+  let failed = 0;
+  const limitedBefore = stats.rateLimited;
+  for (const slug of order) {
+    if (budget && budget.exceeded()) { log(`Time budget reached after ${read.length} page(s); ${order.length - read.length - failed} wait for the next run, which starts with them`); break; }
     const scheduleUrl = `https://tourstoyou.org/shows/${slug}/`;
     let html = '';
-    try { html = await fetchText(scheduleUrl); } catch (e) { log(`  ${slug}: ${e.message}`); continue; }
-    checked++;
+    try { html = await politeFetchText(scheduleUrl, { budget, fallback, log }); } catch (e) { failed++; log(`  ${slug}: ${e.message}`); continue; }
+    // A challenge or error body must not stamp the page as read.
+    if (!looksLikeShowPage(html)) { failed++; log(`  ${slug}: answer is not a Tours To You page`); continue; }
+    read.push(slug);
     const r = runningTourCandidate({ slug, scheduleUrl, html, shows });
+    // A closed tour the page lists again (BRO-4724): back from a layoff, or
+    // the page doesn't say. Deduped by tour id (two pages, one tour).
+    for (const x of (r.lifecycle && r.lifecycle.reopen) || []) if (!reopen.some(y => y.id === x.id)) reopen.push({ ...x, scheduleUrl });
+    for (const x of (r.lifecycle && r.lifecycle.undecided) || []) if (!undecided.some(y => y.id === x.id)) undecided.push({ ...x, scheduleUrl });
     if (r.candidate) {
       log(`  running: ${slug} -> ${r.candidate.broadwayShowId} since ${r.candidate.segmentStart}`);
       found.push(r.candidate);
     }
   }
+  const next = nextCoverage(coverage, worth, read);
+  const stale = stalePages(next);
+  log(`Read ${read.length} of ${worth.length} page(s) this run (${failed} failed, ${stats.rateLimited - limitedBefore} rate-limited answer(s)); ${stale.length} not read in over ${STALE_DAYS} days`);
   const { candidates, ambiguous } = dedupeCandidates(found);
   for (const a of ambiguous) log(`  ambiguous (two tours running at once), left for the owner: ${a}`);
-  return { candidates, ambiguous, checked, pages: slugs.length };
+  return { candidates, ambiguous, reopen, undecided, checked: read.length, failed, pages: slugs.length, eligible: worth.length, coverage: next, rateLimited: stats.rateLimited - limitedBefore };
 }
 
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
-  const { candidates } = await discoverRunningTours({ shows });
+  // Standalone: read in the landing job's order, but leave its state alone.
+  let coverage = {};
+  try { coverage = (JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'tour-autocreate.json'), 'utf8')).discovery || {}).coverage || {}; } catch { /* first run */ }
+  const { candidates } = await discoverRunningTours({ shows, coverage });
   console.log(`\n${candidates.length} running tour(s) of Broadway shows`);
   if (argv.includes('--record')) {
     const n = recordTourCandidates(CANDIDATES, candidates);

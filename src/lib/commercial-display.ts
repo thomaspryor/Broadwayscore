@@ -77,7 +77,8 @@ export function isClosedWithoutRecouping(
  *    (Sprint 2 guarantees every recouped:true entry is cited or carries
  *    humanReviewedDesignation:true, but the rule keys off recouped alone so
  *    an uncited entry can never fall through to a dual display.)
- *  - 'none' for a closed show with a final designation (isFinalClosedOutcome).
+ *  - 'none' for a closed show with a final designation (isFinalClosedOutcome),
+ *    and for any Nonprofit production (no investors to repay).
  *  - 'model': model output exists and clears the quality floor.
  *  - 'none': nothing trustworthy to show. The legacy AI research estimate
  *    (estimatedRecoupmentPct) is deliberately NOT a fallback — it is
@@ -88,6 +89,8 @@ export function getRecoupmentDisplayMode(
 ): RecoupmentDisplayMode {
   if (commercial.recouped === true) return 'announced';
   if (isFinalClosedOutcome(commercial)) return 'none';
+  // Nonprofit productions raise no investor capital, so a modeled "% recouped" means nothing (BRO-4721).
+  if (commercial.designation === 'Nonprofit') return 'none';
   if (commercial.modelRecoupmentPct && meetsModelQualityFloor(commercial)) {
     return 'model';
   }
@@ -192,11 +195,35 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     notes: publicSourceText(commercial.notes) ?? undefined,
     sources: commercial.sources?.map(({ type, url, date }) => ({ type, url, date })),
     investorMultiple: commercial.investorMultiple,
+    nonprofitOrg: getNonprofitProducer(commercial) ?? undefined,
     modelRecoupmentPct: commercial.modelRecoupmentPct,
     modelBreakeven: commercial.modelBreakeven,
     modelDataQuality: commercial.modelDataQuality,
     modelMethod: commercial.modelMethod,
   };
+}
+
+/**
+ * The nonprofit company behind a production (commercial.json nonprofitOrg:
+ * Manhattan Theatre Club, Lincoln Center Theater, Roundabout, Second Stage),
+ * when publishable. Null for commercial productions.
+ */
+export function getNonprofitProducer(commercial: Pick<ShowCommercial, 'nonprofitOrg'>): string | null {
+  return publicSourceText(commercial.nonprofitOrg);
+}
+
+/**
+ * The line under the designation naming the nonprofit producer: a Nonprofit
+ * show reads "A Manhattan Theatre Club production (nonprofit)"; a commercial
+ * outcome on a nonprofit production (an enhancement) reads "Nonprofit
+ * producer: Lincoln Center Theater". Null when there is no nonprofit producer.
+ */
+export function getNonprofitProducerLine(
+  commercial: Pick<ShowCommercial, 'nonprofitOrg' | 'designation'>
+): string | null {
+  const org = getNonprofitProducer(commercial);
+  if (!org) return null;
+  return commercial.designation === 'Nonprofit' ? `A ${org} production (nonprofit)` : `Nonprofit producer: ${org}`;
 }
 
 /**
@@ -251,9 +278,11 @@ export function getWeeklyCostSourceLabel(
 // recoupedSource prose that says outright there was no announcement. Used
 // ONLY to downgrade the label ("Not publicly announced"), never to claim an
 // announcement, so a missed phrase under-claims instead of fabricating one.
-// (Aladdin: "Disney never formally announces recoupment.")
+// (Aladdin: "Disney never formally announces recoupment."; Lion King and
+// Aladdin later read "Disney does not announce recoupments.", which the
+// pattern missed, so both printed as announced: BRO-4722.)
 const NOT_ANNOUNCED_RE =
-  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\beditorial\b/i;
+  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\b(?:does|do|did) not (?:formally |publicly )?announce(?:s|ments?)?\b|\beditorial\b/i;
 
 const NOT_ANNOUNCED_LABEL = 'Not publicly announced';
 

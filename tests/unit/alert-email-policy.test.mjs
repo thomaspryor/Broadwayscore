@@ -72,3 +72,15 @@ test('sendAlert: policy suppression does NOT fire the ::error:: delivery-failed 
     console.error = orig;
   }
 });
+
+test('buildAlertEmail keeps line breaks, escapes text, and honours subjectLabel (BRO-4719)', async () => {
+  const { buildAlertEmail } = require('../../scripts/lib/discord-notify.js');
+  const plain = buildAlertEmail({ title: 'Disk full', description: 'a\nb <c>', severity: 'error' });
+  assert.equal(plain.subject, '[CRITICAL] Disk full');
+  assert.match(plain.html, /a<br>b &lt;c&gt;/);
+  const withFields = buildAlertEmail({ title: 't', description: 'd', fields: [{ name: 'Keys', value: 'A: bad\nB: <low>' }] });
+  assert.match(withFields.html, /A: bad<br>B: &lt;low&gt;/);
+  const unlabelled = buildAlertEmail({ title: '2 new decisions are waiting on you', description: 'x', severity: 'error', subjectLabel: '' });
+  assert.equal(unlabelled.subject, '2 new decisions are waiting on you');
+  assert.doesNotMatch(unlabelled.html, /CRITICAL/);
+});

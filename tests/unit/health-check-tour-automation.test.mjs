@@ -15,7 +15,7 @@ test('nothing to report = no digest rows', () => {
   assert.deepEqual(tourAutomationResults({
     sweep: { generatedAt: fresh(5, now), held: [] },
     dates: { generatedAt: fresh(5, now), tours: [{ id: 'a', problem: null }] },
-    autocreate: { generatedAt: fresh(100, now), created: [] },
+    autocreate: { generatedAt: fresh(30, now), created: [] },
   }, now), []);
 });
 
@@ -55,4 +55,17 @@ test('a failed running-tour discovery warns; a working one is quiet (BRO-4325)',
   assert.deepEqual(rows.map(r => [r.name, r.status]), [['Data: running-tour discovery failed', 'warn']]);
   assert.match(rows[0].message, /only 12 show pages/);
   assert.equal(classifyHealthCheck(rows[0].name), 'visitors');
+});
+
+test('reopened tours and closed tours listing new dates are reported (BRO-4724)', () => {
+  const quiet = tourAutomationResults({ autocreate: { generatedAt: fresh(1, EARLY), created: [], reopened: [], lifecycle: { reopen: [], undecided: [] } } }, EARLY);
+  assert.deepEqual(quiet, []);
+  const rows = tourAutomationResults({ autocreate: { generatedAt: fresh(1, EARLY), created: [], reopened: ['shucked-tour-2024'],
+    lifecycle: { reopen: [], undecided: [{ id: 'a-beautiful-noise-the-neil-diamond-musical-tour-2024', closingDate: '2026-07-12', resumes: '2026-10-30', reason: 'closing 2026-07-12 was checked by hand' }] } } }, EARLY);
+  assert.deepEqual(rows.map(r => [r.name, r.status]), [
+    ['Data: closed national tours reopened automatically', 'warn'],
+    ['Data: closed national tour lists new dates', 'warn'],
+  ]);
+  assert.match(rows[1].message, /checked by hand/);
+  for (const r of rows) assert.equal(classifyHealthCheck(r.name), 'visitors', r.name);
 });

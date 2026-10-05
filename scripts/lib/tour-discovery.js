@@ -16,11 +16,12 @@
  */
 
 const { foldDiacritics } = require('./title-match');
-const { parseTourSchedule, segmentTourRows, currentSegment } = require('./tour-schedule');
+const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment } = require('./tour-schedule');
+const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
 const { toursOfTitle } = require('./tour-family');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
-const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link`;
+const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt`;
 
 /** Title or slug to a comparable key: "Moulin Rouge! The Musical" -> moulin-rouge. */
 function titleKey(s) {
@@ -91,6 +92,66 @@ function upcomingSegments(segments, now = new Date()) {
     .sort((a, b) => a.start - b.start);
 }
 
+const isoDay = d => d.toISOString().slice(0, 10);
+
+/**
+ * What the page says about the title's tracked tours (BRO-4724), from its
+ * engagements and History tab (tour-history.js isSeparateTour):
+ *  - a closed tour whose segment carries rows after its closing date: those
+ *    rows are a new tour (cut there, so they become their own segment), the
+ *    same tour back (reopen: clear the closing), or the page doesn't say
+ *    (undecided: nothing changes);
+ *  - a running tour whose segment ends before a later block the evidence
+ *    calls a separate tour: it ends with its segment (knownEnds), so the
+ *    later tour can be created before it launches instead of only after the
+ *    first is marked closed.
+ * Pure.
+ * @param {{segments: object[], html: string, tours: object[]}} args tours of ONE title
+ * @returns {{cuts: string[], reopen: object[], undecided: object[], knownEnds: Object<string,string>}}
+ */
+/**
+ * Why a closed tour the page lists again must not be reopened by itself, or
+ * null. A person checked its closing (hand-verified / humanCorrectedClosingDate),
+ * or another tracked tour of the title launched after it closed and still runs
+ * at the resumed dates, so those rows are that tour's (BRO-4724 ship-check).
+ */
+function reopenBlocker(tour, tours, resumes) {
+  if (!tour) return 'tour not found';
+  if (tour.humanCorrectedClosingDate === true || /hand-verified/i.test(String(tour.closingDateSource || ''))) {
+    return `closing ${tour.closingDate} was checked by hand`;
+  }
+  const close = String(tour.closingDate || '').slice(0, 10);
+  const other = (tours || []).find(o => o.id !== tour.id && o.openingDate && o.openingDate > close
+    && (!o.closingDate || String(o.closingDate).slice(0, 10) >= resumes));
+  return other ? `${other.id} launched after it closed and covers ${resumes}` : null;
+}
+
+function lifecyclePlan({ segments, html, tours }) {
+  const plan = { cuts: [], reopen: [], undecided: [], knownEnds: {} };
+  for (const t of tours || []) {
+    if (!t.openingDate) continue;
+    const seg = pickSegment(segments, t, '');
+    if (!seg) continue;
+    if (t.closingDate) {
+      const close = String(t.closingDate).slice(0, 10);
+      const after = seg.rows.filter(r => isoDay(r.start) > close);
+      if (!after.length) continue;
+      const d = isSeparateTour({ html, earlierLaunch: t.openingDate, laterStart: after[0].start });
+      const facts = { id: t.id, closingDate: close, resumes: isoDay(after[0].start), reason: d.reason };
+      const blocked = d.separate === false ? reopenBlocker(t, tours, facts.resumes) : null;
+      if (d.separate === true) plan.cuts.push(close);
+      else if (d.separate === false && !blocked) plan.reopen.push(facts);
+      else plan.undecided.push(blocked ? { ...facts, reason: blocked } : facts);
+      continue;
+    }
+    const next = segments.slice(segments.indexOf(seg) + 1).find(s => s.rows.length > 1);
+    if (!next || next.start <= seg.end) continue;
+    const d = isSeparateTour({ html, earlierLaunch: t.openingDate, laterStart: next.start, afterNewYork: next.afterNewYork });
+    if (d.separate === true) plan.knownEnds[t.id] = isoDay(seg.end);
+  }
+  return plan;
+}
+
 /**
  * The tour on this schedule page that is running now, or failing that one
  * booked to launch soon, as a candidate row, or {skip} saying why not. A
@@ -101,10 +162,15 @@ function upcomingSegments(segments, now = new Date()) {
 function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date() }) {
   const rows = parseTourSchedule(html);
   if (!rows.length) return { skip: 'schedule parsed to no engagements' };
-  const segments = segmentTourRows(rows);
+  // The title's tracked tours decide how this page splits (BRO-4724).
+  const titleParent = parentForSlug(slug, shows, null);
+  const tracked = titleParent ? toursOfTitle(titleParent.title, shows) : [];
+  const plan = lifecyclePlan({ segments: segmentTourRows(rows), html, tours: tracked });
+  const segments = splitSegmentsAt(segmentTourRows(rows), plan.cuts);
+  const lifecycle = { reopen: plan.reopen, undecided: plan.undecided };
   const running = currentSegment(segments, now);
   const options = [...(running ? [running] : []), ...upcomingSegments(segments, now).filter(s => s !== running)];
-  if (!options.length) return { skip: 'no tour running now or booked to launch' };
+  if (!options.length) return { skip: 'no tour running now or booked to launch', lifecycle };
   let skip = null;
   for (const seg of options) {
     const segStart = seg.start.toISOString().slice(0, 10);
@@ -112,10 +178,18 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
     if (!parent) { skip = skip || 'no Broadway show of this title'; continue; }
     // Already tracked: a tour of the title that covers this segment. Recording
     // it again would replace that tour's candidate row (and its createdTourId).
-    const covering = toursOfTitle(parent.title, shows).find(t => t.openingDate
-      && (!t.closingDate || t.closingDate >= segStart)
+    // A running tour the page shows ending before this segment (knownEnds)
+    // doesn't cover it.
+    const endOf = t => t.closingDate || plan.knownEnds[t.id] || null;
+    const ofTitle = toursOfTitle(parent.title, shows);
+    const covering = ofTitle.find(t => t.openingDate
+      && (!endOf(t) || endOf(t) >= segStart)
       && t.openingDate <= seg.end.toISOString().slice(0, 10));
     if (covering) { skip = skip || `already tracked as ${covering.id}`; continue; }
+    // Carried to create-tour-entries.js, which re-splits the page the same
+    // way and lets a running predecessor that ends first stand aside.
+    const predecessorEnds = Object.fromEntries(ofTitle.filter(t => !t.closingDate && plan.knownEnds[t.id] && plan.knownEnds[t.id] < segStart).map(t => [t.id, plan.knownEnds[t.id]]));
+    const cuts = plan.cuts.filter(c => c < segStart);
     return {
       candidate: {
         broadwayShowId: parent.id,
@@ -126,10 +200,15 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
         tourScheduleSlug: slug,
         segmentStart: segStart,
         ...(seg !== running ? { upcoming: true } : {}),
+        // Only when the page needs them; recordTourCandidates drops a stale
+        // value an earlier run recorded.
+        ...(cuts.length ? { splitAt: cuts } : {}),
+        ...(Object.keys(predecessorEnds).length ? { predecessorEnds } : {}),
       },
+      lifecycle,
     };
   }
-  return { skip };
+  return { skip, lifecycle };
 }
 
 /**
@@ -158,4 +237,4 @@ function dedupeCandidates(candidates) {
   return { candidates: out, ambiguous };
 }
 
-module.exports = { PAGES_API, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, upcomingSegments, runningTourCandidate, dedupeCandidates };
+module.exports = { PAGES_API, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, dedupeCandidates };

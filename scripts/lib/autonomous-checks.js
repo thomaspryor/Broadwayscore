@@ -73,6 +73,8 @@ const BUILD_ENV = Object.freeze({
   SKIP_HEAVY_PREBUILD: 'true',
 });
 
+const CHECKS_GITCONFIG = '[gc]\n\tauto = 0\n\tautoDetach = false\n[maintenance]\n\tauto = false\n[receive]\n\tautogc = false\n';
+
 // `home` lets a caller create ONE throwaway HOME for a whole run and delete it
 // afterwards. Without it every call minted a new temp dir and never removed
 // it — 64 were sitting on the Mac when ship-check looked (2026-07-25).
@@ -80,6 +82,12 @@ function checksEnv({ env = process.env, build = false, home = null } = {}) {
   const out = {};
   for (const k of KEEP_ENV) if (env[k] !== undefined) out[k] = env[k];
   out.HOME = home || fs.mkdtempSync(path.join(os.tmpdir(), 'auto-checks-home-'));
+  // The checks' temp-git-repo tests rm their repos in teardown; git's detached
+  // auto-maintenance (spawned by receive-pack in local bare remotes, which
+  // ignores GIT_CONFIG_COUNT env) writing into them makes that ENOTEMPTY. The
+  // fresh HOME has no global config, so set it here (BRO-4749).
+  const gitconfig = path.join(out.HOME, '.gitconfig');
+  if (!fs.existsSync(gitconfig)) fs.writeFileSync(gitconfig, CHECKS_GITCONFIG);
   out.GIT_TERMINAL_PROMPT = '0';
   if (build) Object.assign(out, BUILD_ENV);
   return out;

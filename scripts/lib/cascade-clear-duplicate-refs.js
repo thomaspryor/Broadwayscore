@@ -44,6 +44,24 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 /**
+ * Reset the crossOutletDuplicate flag + its companion fields on `data` (pure:
+ * mutates only the object, no I/O, so each caller keeps its own writer).
+ * Shared by the cascade-clear call sites above and the audit's --fix sweep
+ * (audit-duplicate-of-url-mismatch.js, BRO-3872) so both clear identically.
+ * Stamps crossOutletClearReason only; deliberately NOT duplicateClearReason
+ * (see the breadcrumb note in cascadeClearDuplicateRefs).
+ */
+function clearCrossOutletFields(data, reason) {
+  data.crossOutletClearReason = reason;
+  data.crossOutletDuplicate = false;
+  delete data.crossOutletPrimaryFile;
+  delete data.crossOutletSimilarity;
+  delete data.crossOutletMethod;
+  delete data.crossOutletFlaggedAt;
+  return data;
+}
+
+/**
  * Scan a directory for sibling .json files whose `duplicateOf` references
  * the to-be-deleted filename, and clear the references. Returns the list
  * of affected sibling files (relative names) so the caller can log.
@@ -119,12 +137,7 @@ function cascadeClearDuplicateRefs(dirPath, deletedFilename, opts = {}) {
     }
     if (dupTextOfDangling) delete data.duplicateTextOf;
     if (crossOutletDangling) {
-      data.crossOutletClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
-      data.crossOutletDuplicate = false;
-      delete data.crossOutletPrimaryFile;
-      delete data.crossOutletSimilarity;
-      delete data.crossOutletMethod;
-      delete data.crossOutletFlaggedAt;
+      clearCrossOutletFields(data, `cascade-cleared: sibling ${deletedFilename} was deleted`);
     }
     try {
       writeFile(siblingPath, data);
@@ -140,4 +153,4 @@ function cascadeClearDuplicateRefs(dirPath, deletedFilename, opts = {}) {
   return cleared;
 }
 
-module.exports = { cascadeClearDuplicateRefs };
+module.exports = { cascadeClearDuplicateRefs, clearCrossOutletFields };

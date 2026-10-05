@@ -66,7 +66,7 @@ export function serializeShowForClient(
     isRevival: show.isRevival ?? undefined,
     season: show.season ?? undefined,
     reviewYearNote: show.reviewYearNote ?? undefined,
-    tourNowNext: show.category === 'tour' ? getTourNowNextForShow(show.id) : undefined,
+    tourNowNext: show.category === 'tour' ? getTourNowNextForShow(show) : undefined,
     images: show.images,
     criticScore: show.criticScore
       ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
@@ -83,7 +83,7 @@ export function serializeShowForClient(
     ageRecommendation: show.ageRecommendation ?? undefined,
     creativeTeam: show.creativeTeam,
     runtime: show.runtime ?? undefined,
-    ticketLinks: show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show.id),
+    ticketLinks: show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show),
     subtitle: show.subtitle,
     subtitleColor: show.subtitleColor,
     // Market-specific overrides

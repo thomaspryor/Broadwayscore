@@ -43,9 +43,10 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     expect(hasBySeasonHeader || has2024Season).toBeTruthy();
   });
 
-  test('download buttons are present', async ({ page }) => {
-    await expect(page.getByRole('button', { name: /JSON/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /CSV/i })).toBeVisible();
+  // BRO-4721: the JSON/CSV "(soon)" buttons were removed until downloads ship.
+  test('no placeholder download buttons', async ({ page }) => {
+    await expect(page.getByRole('button', { name: /JSON/i })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /CSV/i })).toHaveCount(0);
   });
 
   test('back link returns to homepage', async ({ page }) => {

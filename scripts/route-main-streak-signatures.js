@@ -165,7 +165,7 @@ async function main() {
 
   // The job THIS script runs inside (test-summary / "Test Summary") is
   // excluded: its own "Check results" step fails whenever ANY sibling job
-  // fails (that's its entire job — `contains(needs.*.result, 'failure')`),
+  // fails (that's its entire job — any needs result other than success/skipped),
   // so including it would manufacture a signature that names the aggregator,
   // not a root cause, on every single red push. Matched by display NAME
   // (`--exclude-job`, passed literally from test.yml) because `gh run view

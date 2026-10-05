@@ -30,7 +30,6 @@ import AtRiskCard from '@/components/biz/AtRiskCard';
 import RecoupmentTable from '@/components/biz/RecoupmentTable';
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import DesignationLegend from '@/components/biz/DesignationLegend';
-import GatedDownloadButtons from '@/components/biz/GatedDownloadButtons';
 import BizPageTracker from '@/components/biz/BizPageTracker';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 
@@ -242,7 +241,9 @@ export default function BizDashboard() {
                 </Link>
               </p>
             </div>
-            <GatedDownloadButtons />
+            {/* JSON/CSV download buttons removed (owner decision, BRO-4721): they
+                only opened a waitlist and read as unfinished. GatedDownloadButtons
+                is kept for when downloads ship. */}
           </div>
         </div>
 

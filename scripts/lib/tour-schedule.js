@@ -24,12 +24,17 @@
  */
 
 const { foldDiacritics } = require('./title-match');
+const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
 
 const DAY = 86400000;
 // Tours lay off for a summer (Hadestown: June to October) without ending, so
 // only a gap past six months, or a New York run, starts a new tour.
 const SEGMENT_GAP_DAYS = 180;
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+// Tours To You's legend marks: rescheduled (^ # +), venue season (§ † ‡ ❖),
+// non-Equity (*), cancelled (♦, handled by the caller), info (ℹ).
+const FOOTNOTE_MARKS = /[§†‡❖◆✦*¤♦^#+ℹ]/g;
 
 function decode(s) {
   return String(s || '')
@@ -59,12 +64,18 @@ function monthIndex(name) {
  * @returns {{start: Date, end: Date}|null}
  */
 function parseDateRange(cell) {
-  const s = decode(cell).replace(/[♦§*†]/g, '').replace(/\s*[-–—]\s*/g, '–').trim();
+  // Footnote marks after the date ("May 9-28, 2023 +") are the page's legend
+  // (BRO-4723: Hamilton's "+" rows failed to parse and vanished).
+  const s = decode(cell).replace(FOOTNOTE_MARKS, '').replace(/\s*[-–—]\s*/g, '–').trim();
   let m = s.match(/^([A-Za-z]+)\.? (\d{1,2}), (\d{4})–([A-Za-z]+)\.? (\d{1,2}), (\d{4})$/);
   if (m) {
     const a = utc(+m[3], monthIndex(m[1]), +m[2]);
-    const b = utc(+m[6], monthIndex(m[4]), +m[5]);
-    return a && b ? { start: a, end: b } : null;
+    let b = utc(+m[6], monthIndex(m[4]), +m[5]);
+    // "November 17, 2022–January 14, 2022" (Lion King, BRO-4723): a range that
+    // ends in an earlier month of the same year crosses New Year; the end year
+    // is the typo.
+    if (a && b && b < a && +m[6] === +m[3] && monthIndex(m[4]) < monthIndex(m[1])) b = utc(+m[6] + 1, monthIndex(m[4]), +m[5]);
+    return a && b && b >= a ? { start: a, end: b } : null;
   }
   m = s.match(/^([A-Za-z]+)\.? (\d{1,2})–([A-Za-z]+)\.? (\d{1,2}), (\d{4})$/);
   if (m) {
@@ -97,6 +108,7 @@ function parseTourSchedule(html) {
   const rows = [];
   const seen = new Set();
   for (const table of String(html || '').match(/<table[\s\S]*?<\/table>/g) || []) {
+    const tableRows = [];
     for (const tr of table.match(/<tr[\s\S]*?<\/tr>/g) || []) {
       const cells = (tr.match(/<t[dh][^>]*>[\s\S]*?<\/t[dh]>/g) || []).map(c => c.replace(/^<t[dh][^>]*>|<\/t[dh]>$/g, ''));
       if (cells.length < 3) continue;
@@ -105,15 +117,67 @@ function parseTourSchedule(html) {
       if (!range) continue;
       // Footnote marks on the city ("Chicago, IL ❖", "Dallas, TX †", "Pueblo, CO *")
       // are Tours To You's legend, not part of the name (BRO-4601).
-      const city = decode(cells[0]).replace(/\s*[§†‡❖◆✦*¤]+\s*/g, ' ').replace(/\s+/g, ' ').trim();
+      const city = decode(cells[0]).replace(FOOTNOTE_MARKS, ' ').replace(/\s+/g, ' ').trim();
       const venue = decode(cells[1]);
-      const key = `${city}|${venue}|${range.start.toISOString()}`;
+      tableRows.push({ city, venue, start: range.start, end: range.end });
+    }
+    for (const r of fixYearTypos(tableRows)) {
+      const key = `${r.city}|${r.venue}|${r.start.toISOString()}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      rows.push({ city, venue, start: range.start, end: range.end });
+      rows.push(r);
     }
   }
   return rows.sort((a, b) => a.start - b.start);
+}
+
+const shiftYears = (d, n) => utc(d.getUTCFullYear() + n, d.getUTCMonth(), d.getUTCDate());
+
+/**
+ * Tours To You lists a table's engagements in date order, so a row a year off
+ * from both neighbours, which sits between them once the year is fixed, has a
+ * typo'd year (The Book of Mormon's "Manhattan, KS February 18-19, 2024"
+ * between two February 2025 stops, BRO-4723). Pure; rows in table order.
+ */
+function fixYearTypos(rows) {
+  return rows.map((r, i) => {
+    const prev = rows[i - 1];
+    const next = rows[i + 1];
+    if (!prev || !next || prev.start > next.start) return r;
+    for (const n of [1, -1]) {
+      const off = n === 1 ? r.start < prev.start && r.start < next.start : r.start > prev.start && r.start > next.start;
+      if (!off || Math.abs(r.start - prev.start) < 200 * DAY) continue;
+      const start = shiftYears(r.start, n);
+      const end = shiftYears(r.end, n);
+      if (start && end && start >= prev.start && start <= next.start) return { ...r, start, end };
+    }
+    return r;
+  });
+}
+
+/**
+ * One company's path through rows that may hold several companies at once
+ * (Hamilton's "Past Seasons" table runs the Angelica, Philip and And Peggy
+ * companies together; The Lion King's runs two; BRO-4723). From the first
+ * row, repeatedly take the earliest row starting on or after the current one
+ * ends, stopping at a gap over gapDays. A company cannot play two cities at
+ * once, so a schedule with no overlaps comes back unchanged. Pure; rows sorted
+ * by start. Returns the path and the rows left out.
+ */
+function singleCompanyPath(rows, gapDays = SEGMENT_GAP_DAYS) {
+  if (!rows.length) return { kept: [], dropped: [] };
+  // Same start: the row that ends first is this company's next stop, the
+  // longer one is the other company's sit-down.
+  const order = [...rows].sort((x, y) => x.start - y.start || x.end - y.end);
+  const kept = [order[0]];
+  for (const r of order.slice(1)) {
+    const cur = kept[kept.length - 1];
+    if (r.start < cur.end) continue;
+    if ((r.start - cur.end) / DAY > gapDays) break;
+    kept.push(r);
+  }
+  const keep = new Set(kept);
+  return { kept, dropped: rows.filter(r => !keep.has(r)) };
 }
 
 const isNewYorkRun = r => /^new york,? ny\b|^broadway\b/i.test(r.city);
@@ -433,13 +497,16 @@ function statedClosedRanges(source) {
  * @param {string} scheduleHtml Tours To You page
  * @param {string} wikiText Wikipedia raw wikitext of the show's article
  * @param {Date} [now]
- * @param {{seenAt?: string, segmentStart?: string, roundupDate?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running; roundupDate is the BWW roundup's slug date (BRO-4563)
+ * @param {{seenAt?: string, segmentStart?: string, roundupDate?: string, cuts?: string[]}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running; roundupDate is the BWW roundup's slug date (BRO-4563); cuts split segments where a tracked tour closed (BRO-4724)
  * @returns {{write: {openingDate?: string, closingDate?: string}, notes: string[], problem?: string}}
  */
 function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = {}) {
   const rows = parseTourSchedule(scheduleHtml);
   if (rows.length === 0) return { write: {}, notes: [], problem: 'schedule page parsed to zero engagements (layout change or wrong page)' };
-  const segments = segmentTourRows(rows);
+  // opts.cuts: dates a tracked tour of the title closed mid-segment, the rows
+  // after which the page's history calls a new tour (tour-discovery.js
+  // lifecyclePlan, BRO-4724).
+  const segments = splitSegmentsAt(segmentTourRows(rows), opts.cuts);
   const seg = pickSegment(segments, tour, wikiText, opts);
   if (!seg) return { write: {}, notes: [`${segments.length} segment(s), none matches this tour`], problem: 'no schedule segment matches this tour' };
 
@@ -480,7 +547,12 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   // York run sits between them (a new production, not a summer layoff).
   const idx = segments.indexOf(seg);
   const next = segments.slice(idx + 1).find(s => s.rows.length > 1);
-  const separateTourStarted = next && next.afterNewYork && next.start <= now;
+  // Or when the page's history names the later block as another tour
+  // (BRO-4724: "2nd North American Tour (2027–"), so a tour followed by a
+  // separately booked one closes once that one starts. The tracked launch
+  // first, as lifecyclePlan uses: the page may have dropped the early rows.
+  const separateTourStarted = next && next.start <= now
+    && (next.afterNewYork || isSeparateTour({ html: scheduleHtml, earlierLaunch: tour.openingDate || launch || seg.start, laterStart: next.start }).separate === true);
   const launchYear = (launch || seg.start).getUTCFullYear();
   // Stated on the schedule page's history note or in a Wikipedia section
   // heading ("=== North American tour (2024–2026) ===").
@@ -533,6 +605,8 @@ module.exports = {
   duplicateScheduleOf,
   parseDateRange,
   parseTourSchedule,
+  fixYearTypos,
+  singleCompanyPath,
   segmentTourRows,
   pickSegment,
   currentSegment,

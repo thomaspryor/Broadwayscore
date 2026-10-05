@@ -30,6 +30,39 @@ const DAY = 86400000;
 // that dies mid-way can leave one behind for a while.
 const TEST_EMAIL_SUFFIX = '@broadwayscorecard-test.invalid';
 
+// Addresses nobody receives mail at: reserved test domains (RFC 2606/6761)
+// and the throwaway sign-ups dev sessions make (claude-e2e-<ts>@example.com).
+const TEST_DOMAINS = new Set(['example.com', 'example.org', 'example.net', 'test.com', 'mailinator.com']);
+const TEST_TLDS = ['.test', '.invalid', '.example', '.local', '.localhost'];
+const TEST_LOCAL = /^(claude|e2e|qa|test)([-_.+]|\d|$)/;
+
+/** Same inbox? Gmail ignores dots and +tags; everyone else, +tags only. */
+function inboxKey(email) {
+  const e = String(email || '').trim().toLowerCase();
+  const at = e.lastIndexOf('@');
+  if (at < 1) return e;
+  let local = e.slice(0, at).split('+')[0];
+  let domain = e.slice(at + 1);
+  if (domain === 'googlemail.com') domain = 'gmail.com';
+  if (domain === 'gmail.com') local = local.replace(/\./g, '');
+  return `${local}@${domain}`;
+}
+
+/**
+ * 'ci-test' (dropped), 'test' (a fake address), 'owner' (the owner's own inbox,
+ * +aliases included) or 'person'. Only this label leaves the module.
+ */
+function classifyAccount(email, ownerEmail) {
+  if (typeof email !== 'string' || !email.includes('@')) return 'person'; // e.g. Apple with no email shared
+  const e = email.trim().toLowerCase();
+  if (e.endsWith(TEST_EMAIL_SUFFIX)) return 'ci-test';
+  if (ownerEmail && inboxKey(e) === inboxKey(ownerEmail)) return 'owner';
+  const [local, domain] = [e.slice(0, e.lastIndexOf('@')), e.slice(e.lastIndexOf('@') + 1)];
+  if (TEST_DOMAINS.has(domain) || TEST_TLDS.some((t) => domain.endsWith(t))) return 'test';
+  if (TEST_LOCAL.test(local)) return 'test';
+  return 'person';
+}
+
 // Things a signed-in person does, with the words the owner reads.
 const ACTION_LABELS = {
   rating_submitted: 'Rated a show',
@@ -203,13 +236,15 @@ function mondayOf(iso) {
  * Supabase auth users → only what the page needs. Emails are read here to
  * drop test accounts and go no further.
  */
-function slimUsers(rawUsers) {
+function slimUsers(rawUsers, { ownerEmail } = {}) {
   const out = [];
   for (const u of rawUsers || []) {
     if (!u || !u.id) continue;
-    if (typeof u.email === 'string' && u.email.toLowerCase().endsWith(TEST_EMAIL_SUFFIX)) continue;
+    const kind = classifyAccount(u.email, ownerEmail);
+    if (kind === 'ci-test') continue;
     out.push({
       id: u.id,
+      kind,
       createdAt: u.created_at || null,
       lastSignInAt: u.last_sign_in_at || null,
       provider: (u.app_metadata && u.app_metadata.provider) || 'unknown',
@@ -222,7 +257,13 @@ function slimUsers(rawUsers) {
  * Account counts. `activity` = { ratings: [{user_id}], watchlist: [...], lists: [...] }
  * (rows from the service-role REST API; only user_id is read).
  */
-function summarizeAccounts(users, activity, now = Date.now(), days = 60) {
+function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
+  // Every number below is real people only; the owner's and fake accounts are counted, not included.
+  const users = allUsers.filter((u) => !u.kind || u.kind === 'person');
+  const excluded = {
+    yours: allUsers.filter((u) => u.kind === 'owner').length,
+    test: allUsers.filter((u) => u.kind === 'test').length,
+  };
   const ids = new Set(users.map((u) => u.id));
   const per = (rows) => {
     const owners = new Set();
@@ -271,6 +312,16 @@ function summarizeAccounts(users, activity, now = Date.now(), days = 60) {
   }
   return {
     total: users.length,
+    excluded,
+    // One row per real account, newest first: dates and sign-in method only.
+    people: users
+      .map((u) => ({
+        joined: u.createdAt ? isoDay(Date.parse(u.createdAt)) : null,
+        lastSignIn: u.lastSignInAt ? isoDay(Date.parse(u.lastSignInAt)) : null,
+        provider: u.provider,
+        saved: any.has(u.id),
+      }))
+      .sort((x, y) => String(y.joined).localeCompare(String(x.joined))),
     newToday: byDay.get(today) || 0,
     newLast7: last7,
     newLast30: last30,
@@ -401,7 +452,9 @@ function weeklySummaryLines(d) {
   const lines = [];
   const a = d && d.accounts;
   if (!a) return lines;
-  lines.push(`${plural(a.total, 'account', 'accounts')} in total, ${a.newLast7} new this past week.`);
+  const ex = a.excluded || {};
+  const skipped = [ex.yours ? `${ex.yours} of yours` : '', ex.test ? `${ex.test} test` : ''].filter(Boolean).join(' and ');
+  lines.push(`${plural(a.total, 'real account', 'real accounts')} in total, ${a.newLast7} new this past week${skipped ? ` (not counting ${skipped})` : ''}.`);
   if (d.active) lines.push(`${plural(d.active.wau, 'signed-in person', 'signed-in people')} used the site this week (${d.active.dau} in the last day, ${d.active.mau} in the last 30 days).`);
   lines.push(`${plural(a.withAnything, 'account has', 'accounts have')} saved something: ${a.withRating} rated a show, ${a.withWatchlist} used the watchlist, ${a.withList} made a list.`);
   const f = d.funnel && d.funnel.totals;
@@ -431,6 +484,8 @@ module.exports = {
   buildQueries,
   rowsToObjects,
   slimUsers,
+  classifyAccount,
+  inboxKey,
   summarizeAccounts,
   summarizeFunnel,
   summarizeActions,

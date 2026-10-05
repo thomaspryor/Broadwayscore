@@ -78,7 +78,39 @@ function shouldEmailAlert(severity) {
 // body changed. This is the only cross-runner dedup that holds when parallel
 // CI jobs each read a stale cooldown ledger (7 identical "main test.yml STILL
 // red" emails in 20 min on 2026-09-23 through a 24h cooldown).
-async function sendEmailAlert({ title, description, severity = 'error', fields = [], url, idempotencyKey }) {
+// Alert text is plain text: escape it and keep its line breaks, or a
+// multi-line list collapses into one paragraph and a "<" eats the rest of the
+// line (BRO-4719). No caller passes HTML in title, description or fields.
+function textToHtml(text) {
+  return String(text == null ? '' : text)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\n/g, '<br>');
+}
+
+// `subjectLabel` overrides the severity tag in the subject and heading; ''
+// drops it (a "decisions are waiting on you" email is not a [CRITICAL] fault).
+function buildAlertEmail({ title, description, severity = 'error', fields = [], url, subjectLabel }) {
+  const severityLabel = { critical: 'CRITICAL', error: 'CRITICAL', warning: 'WARNING', info: 'INFO' };
+  const label = subjectLabel !== undefined && subjectLabel !== null ? subjectLabel : (severityLabel[severity] || 'ALERT');
+  const labelPrefix = label ? `[${label}] ` : '';
+  const color = !label ? '#222' : severity === 'error' ? '#e74c3c' : severity === 'warning' ? '#f39c12' : '#3498db';
+  const fieldsHtml = fields.map(f => `<li><strong>${textToHtml(f.name)}:</strong> ${textToHtml(f.value)}</li>`).join('\n');
+  const html = `
+    <div style="font-family: system-ui, sans-serif; max-width: 600px;">
+      <h2 style="color: ${color}">
+        ${labelPrefix}${textToHtml(title)}
+      </h2>
+      <p>${textToHtml(description)}</p>
+      ${fieldsHtml ? `<ul>${fieldsHtml}</ul>` : ''}
+      ${url ? `<p><a href="${url}">View details</a></p>` : ''}
+      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+      <p style="color: #999; font-size: 12px;">Broadway Scorecard automated alert</p>
+    </div>
+  `;
+  return { subject: `${labelPrefix}${title}`, html };
+}
+
+async function sendEmailAlert({ title, description, severity = 'error', fields = [], url, idempotencyKey, subjectLabel }) {
   if (!shouldEmailAlert(severity)) {
     console.log(`[Alert policy] email suppressed for severity=${severity} — "${title}" (actionable-only policy; see BSC Daily / run logs)`);
     if (process.env.GITHUB_STEP_SUMMARY) {
@@ -97,26 +129,11 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
     return false;
   }
 
-  const severityLabel = { critical: 'CRITICAL', error: 'CRITICAL', warning: 'WARNING', info: 'INFO' };
-  const fieldsHtml = fields.map(f => `<li><strong>${f.name}:</strong> ${f.value}</li>`).join('\n');
-  const html = `
-    <div style="font-family: system-ui, sans-serif; max-width: 600px;">
-      <h2 style="color: ${severity === 'error' ? '#e74c3c' : severity === 'warning' ? '#f39c12' : '#3498db'}">
-        [${severityLabel[severity] || 'ALERT'}] ${title}
-      </h2>
-      <p>${description}</p>
-      ${fieldsHtml ? `<ul>${fieldsHtml}</ul>` : ''}
-      ${url ? `<p><a href="${url}">View details</a></p>` : ''}
-      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-      <p style="color: #999; font-size: 12px;">Broadway Scorecard automated alert</p>
-    </div>
-  `;
-
   // Callers that don't pass a key (the direct sendAlert({email:true}) senders)
   // get one keyed on the whole message, so only an exact duplicate from a
   // parallel runner is dropped; two different incidents that share a static
   // title still both reach the owner.
-  const subject = `[${severityLabel[severity] || 'ALERT'}] ${title}`;
+  const { subject, html } = buildAlertEmail({ title, description, severity, fields, url, subjectLabel });
   idempotencyKey = idempotencyKey || defaultIdempotencyKey(subject + html, Date.now());
   const data = JSON.stringify({
     from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
@@ -196,15 +213,15 @@ function classifyResendResponse(statusCode, body) {
   return 'failed';
 }
 
-async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false, idempotencyKey }) {
+async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false, idempotencyKey, subjectLabel }) {
   console.log(`[Alert] ${title}: ${description}`);
   if (email) {
     // Policy suppression is not a delivery failure — sendEmailAlert logs it
     // and returns false; don't fire the ::error:: delivery-failed annotation.
     if (!shouldEmailAlert(severity)) {
-      return sendEmailAlert({ title, description, severity, fields, url, idempotencyKey });
+      return sendEmailAlert({ title, description, severity, fields, url, idempotencyKey, subjectLabel });
     }
-    const delivered = await sendEmailAlert({ title, description, severity, fields, url, idempotencyKey });
+    const delivered = await sendEmailAlert({ title, description, severity, fields, url, idempotencyKey, subjectLabel });
     if (!delivered) {
       // A requested-but-failed alert is itself a critical failure: this exact
       // silent path is why months of completeness alerts reached nobody
@@ -245,6 +262,7 @@ function readOwnerEmailLog({ days = 7 } = {}) {
 
 module.exports = {
   sendAlert,
+  buildAlertEmail, // pure subject/html builder — unit-tested in alert-email-policy.test.mjs
   sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
   shouldEmailAlert, // pure policy predicate — unit-tested in alert-email-policy.test.mjs
   classifyResendResponse,

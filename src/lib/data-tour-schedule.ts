@@ -27,9 +27,17 @@ export function getTourSchedule(showId: string): TourStop[] {
   return schedules.tours[showId]?.stops ?? [];
 }
 
-/** Where the tour is today and where it goes next, as of this build. */
-export function getTourNowNextForShow(showId: string, today = new Date().toISOString().slice(0, 10)): TourNowNext | null {
-  const stops = getTourSchedule(showId);
+/** The tour fields the live-tour helpers need. */
+export interface TourRef { id: string; status?: string }
+
+/**
+ * Where the tour is today and where it goes next, as of this build. Null for
+ * a closed tour: its schedule can still hold dates the source never pulled,
+ * and a closed page must not say "Now in" or sell tickets (BRO-4723).
+ */
+export function getTourNowNextForShow(show: TourRef, today = new Date().toISOString().slice(0, 10)): TourNowNext | null {
+  if (show.status === 'closed') return null;
+  const stops = getTourSchedule(show.id);
   return stops.length ? getTourNowNext(stops, today) : null;
 }
 
@@ -38,10 +46,11 @@ export function getTourScheduleSource(showId: string): string | null {
   return schedules.tours[showId]?.source ?? null;
 }
 
-/** TodayTix links for the stops on sale there, keyed by stopKey(). */
-export function getTourStopTickets(showId: string): Record<string, string> {
+/** TodayTix links for the stops on sale there, keyed by stopKey(). None for a closed tour. */
+export function getTourStopTickets(show: TourRef): Record<string, string> {
   const out: Record<string, string> = {};
-  for (const t of tickets.tours[showId] ?? []) {
+  if (show.status === 'closed') return out;
+  for (const t of tickets.tours[show.id] ?? []) {
     if (t.onSale) out[stopKey({ city: t.city, start: t.start, venue: '', end: '' })] = t.url;
   }
   return out;
@@ -53,9 +62,9 @@ export function getTourStopTickets(showId: string): Record<string, string> {
  * stop's link would send a buyer to a city the page isn't talking about, so
  * those stay on the schedule rows.
  */
-export function getTourTicketLinks(showId: string, today = new Date().toISOString().slice(0, 10)): TicketLink[] {
-  const nn = getTourNowNextForShow(showId, today);
-  const byStop = getTourStopTickets(showId);
+export function getTourTicketLinks(show: TourRef, today = new Date().toISOString().slice(0, 10)): TicketLink[] {
+  const nn = getTourNowNextForShow(show, today);
+  const byStop = getTourStopTickets(show);
   const stop = nn?.now ?? nn?.next;
   const url = stop ? byStop[stopKey(stop)] : undefined;
   return url ? [{ platform: TOUR_TICKET_PLATFORM, url }] : [];

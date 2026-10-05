@@ -14,6 +14,7 @@ import {
   isEstimatedRunningCost,
   isEstimatedCapitalization,
   getWeeklyCostSourceLabel,
+  getNonprofitProducerLine,
 } from '@/lib/commercial-display';
 import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
@@ -125,6 +126,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // Closed + TBD reads "Undisclosed" (display only; the record keeps TBD).
   const designation = getDesignationDisplay(commercial.designation, showStatus);
   const running = isRunningStatus(showStatus);
+  const producerLine = getNonprofitProducerLine(commercial);
+  const isNonprofit = commercial.designation === 'Nonprofit';
 
   // Display rules (src/lib/commercial-display.ts, unit-tested):
   //  - recouped:true → the recoupment record, never the model (Q1).
@@ -193,8 +196,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
       </p>
 
       {/* Status chips: recoupment, trend, break-even position */}
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        <RecoupmentBadge recouped={commercial.recouped} />
+      <div className="flex flex-wrap gap-1.5 mb-4 empty:hidden">
+        {/* Nonprofits raise no investor capital: "Not reported" / "Not Recouped" would read as a gap or a failure. */}
+        {!(isNonprofit && commercial.recouped !== true) && <RecoupmentBadge recouped={commercial.recouped} />}
         {showTrend && <TrendIndicator trend={trend} />}
         {breakevenComparison && (
           <span
@@ -219,9 +223,15 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               {designation.label}
             </span>
           </div>
+          {/* A Nonprofit show names its company instead of the generic "(LCT, Roundabout, etc.)". */}
           <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]">
-            {designation.description}
+            {isNonprofit && producerLine ? producerLine : designation.description}
           </p>
+          {producerLine && !isNonprofit && (
+            <p className="text-[13px] text-gray-300 mt-0.5 leading-[1.4]" data-testid="nonprofit-producer">
+              {producerLine}
+            </p>
+          )}
         </div>
 
         {/* Divider between hero and stat tiles */}

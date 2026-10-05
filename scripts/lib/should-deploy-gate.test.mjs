@@ -35,6 +35,17 @@ test('schedule: clean site diff + fresh deploy skips (content-gate)', () => {
   assert.deepEqual(r, { proceed: false, reason: 'content-gate' });
 });
 
+// BRO-554: the "skip if deployed within 30 min" intent, delivered by the
+// content-aware gate (stronger: it skips for the whole 6h window while nothing
+// site-relevant changed). A cron tick inside 30 min of a live deploy must never
+// rebuild when the site and core data are unchanged, and must still ship a real change.
+test('BRO-554: ticks within 30 min of a live deploy skip when nothing changed, ship when something did', () => {
+  for (const deployAgeSec of [60, 5 * 60, 15 * 60, 29 * 60]) {
+    assert.deepEqual(decide({ ...base, deployAgeSec }), { proceed: false, reason: 'content-gate' }, `age ${deployAgeSec}s`);
+    assert.equal(decide({ ...base, deployAgeSec, diffResult: 'dirty' }).proceed, true, `dirty at ${deployAgeSec}s must ship`);
+  }
+});
+
 test('schedule: dirty site diff deploys (content-changed)', () => {
   const r = decide({ ...base, diffResult: 'dirty' });
   assert.deepEqual(r, { proceed: true, reason: 'content-changed' });

@@ -75,6 +75,7 @@ scripts/check-review-count-drift.test.mjs
 scripts/check-score-integrity.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/check-signin-redirects.test.mjs
+scripts/check-workflow-run-status.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/clear-stale-wrong-show-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
@@ -225,6 +226,7 @@ scripts/send-opening-night-broadcast.test.mjs
 scripts/sweep-open-backlog-acceptance.test.mjs
 scripts/sweep-we-aggregators-outlet-edition.test.mjs
 scripts/telegraph-reviews-index.test.mjs
+scripts/test-new-show-venue-validation.test.mjs
 scripts/tests/ack-landed-already-landed.test.mjs
 scripts/tests/ack-landed-correlation-id.test.mjs
 scripts/tests/ack-landed-derive-sha.test.mjs
@@ -256,6 +258,7 @@ scripts/tests/dispatch-outcome.test.mjs
 scripts/tests/dispatch-watchdog-core.test.mjs
 scripts/tests/dispatch-watchdog-staleness.test.mjs
 scripts/tests/enrich-card-acceptance-fallback.test.mjs
+scripts/tests/enrich-card-recheck-markers.test.mjs
 scripts/tests/gc-dry-run-parity.test.mjs
 scripts/tests/gc-merged-worktrees-liveness.test.mjs
 scripts/tests/global-instructions.test.mjs
@@ -292,6 +295,7 @@ scripts/tests/record-push-ledger-redaction.test.mjs
 scripts/tests/recover-serp-exhausted-outlets.test.mjs
 scripts/tests/scripts-no-undef.test.mjs
 scripts/tests/session-start-staleness.test.mjs
+scripts/tests/show-ruthless-data.test.mjs
 scripts/tests/stale-wrongproduction-adjudication.test.mjs
 scripts/tests/stuck-work-linear-reconcile.test.mjs
 scripts/tests/sweep-open-backlog-acceptance-scheduled.test.mjs
@@ -306,13 +310,16 @@ scripts/tests/watchdog-skips-landed-acked.test.mjs
 scripts/trace-connect-phase.test.mjs
 scripts/triage-review-gap.test.mjs
 scripts/update-show-status.test.mjs
+scripts/vercel-deploy.test.mjs
 scripts/verify-addams-wsj-dedup-held.test.mjs
+scripts/verify-bro-4724-recheck.test.mjs
 scripts/verify-contamination-gate.test.mjs
 scripts/verify-feedback-requests-live.test.mjs
 scripts/verify-frankie-2002-cleanup.test.mjs
 scripts/verify-prior-run-former-cast-sweep.test.mjs
 scripts/verify-reroute-migration.test.mjs
 scripts/wrong-production-exclusion-analysis.test.mjs
+scripts/wrong-url-review-attribution.test.mjs
 tests/unit/1minutecritic-extractor.test.mjs
 tests/unit/absence-claim-control.test.mjs
 tests/unit/actions-cache-runid-key.test.mjs
@@ -341,12 +348,14 @@ tests/unit/audit-aggregator-gap-push-timeout.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
 tests/unit/audit-awards-freshness.test.mjs
 tests/unit/audit-corpus-contamination.test.mjs
+tests/unit/audit-cross-outlet-sibling-missing.test.mjs
 tests/unit/audit-cross-show-excerpt-contamination.test.mjs
 tests/unit/audit-delete-without-breadcrumb.test.mjs
 tests/unit/audit-dependencies.test.mjs
 tests/unit/audit-ensemble-rejections.test.mjs
 tests/unit/audit-imageless-scored-shows-push-timeout.test.mjs
 tests/unit/audit-imageless-scored-shows-push.test.mjs
+tests/unit/audit-log-gitignore.test.mjs
 tests/unit/audit-outlet-registry-gaps.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
 tests/unit/audit-push-retry-budgets.test.mjs
@@ -377,6 +386,7 @@ tests/unit/block-review-cli.test.mjs
 tests/unit/board-card-marker.test.mjs
 tests/unit/board-gate-failopen.test.mjs
 tests/unit/board-probe.test.mjs
+tests/unit/bodyless-score-provenance.test.mjs
 tests/unit/branch-protection.test.mjs
 tests/unit/brand-mention-excerpt-dedup.test.mjs
 tests/unit/brand-mention-serp-bd-first.test.mjs
@@ -390,6 +400,7 @@ tests/unit/broadway-venue-fallback.test.mjs
 tests/unit/broadwayOpenings-sort.test.mjs
 tests/unit/brothers-paranormal-show-exists.test.mjs
 tests/unit/browse-best-recent-shows-rage-clicks.test.mjs
+tests/unit/browse-pages-section-groups.test.mjs
 tests/unit/browserbase-caps.test.mjs
 tests/unit/browserbase-live-usage.test.mjs
 tests/unit/browserbase-opening-window-budget-reserve.test.mjs
@@ -402,6 +413,7 @@ tests/unit/bulk-import-summary.test.mjs
 tests/unit/bulk-ingest-status-reporting.test.mjs
 tests/unit/button-hierarchy.test.mjs
 tests/unit/buzz-classifier.test.mjs
+tests/unit/bww-jsonld-author.test.mjs
 tests/unit/bww-reviews-disambig.test.mjs
 tests/unit/bww-roundup-archive-homepage.test.mjs
 tests/unit/bww-roundup-bare-author-name.test.mjs
@@ -435,6 +447,7 @@ tests/unit/check-off-broadway-source-coverage.test.mjs
 tests/unit/checkout-rate-limit-retry.test.mjs
 tests/unit/ci-cancellation-logic.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
+tests/unit/ci-git-auto-maintenance-off.test.mjs
 tests/unit/ci-health-test-yml-cancellation.test.mjs
 tests/unit/ci-red-claims.test.mjs
 tests/unit/circular-duplicate-pair.test.mjs
@@ -666,6 +679,7 @@ tests/unit/in-window-slug-veto.test.mjs
 tests/unit/inclusion-policy.test.mjs
 tests/unit/infra-plan-review-gate-bypass.test.mjs
 tests/unit/ingest-bulk-drop-detection.test.mjs
+tests/unit/ingest-date-window.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
 tests/unit/ingest-manual-review-merge.test.mjs
@@ -837,6 +851,7 @@ tests/unit/outlet-recency-monitor.test.mjs
 tests/unit/outlet-registry-domain-collisions.test.mjs
 tests/unit/outlet-registry.test.mjs
 tests/unit/owner-approval-channel.test.mjs
+tests/unit/owner-decision-notify.test.mjs
 tests/unit/owner-fix-email.test.mjs
 tests/unit/page-validator.test.mjs
 tests/unit/page-worthy-workflows.test.mjs
@@ -892,6 +907,7 @@ tests/unit/pull-quote-guards.test.mjs
 tests/unit/push-content-survival-false-positive.test.mjs
 tests/unit/push-core-data-outlet-staging.test.mjs
 tests/unit/push-core-data-show-recovery.test.mjs
+tests/unit/push-failure-masking.test.mjs
 tests/unit/push-latency-probe.test.mjs
 tests/unit/push-ledger-store.test.mjs
 tests/unit/push-race-risk.test.mjs
@@ -944,6 +960,7 @@ tests/unit/review-completeness-monitor.test.mjs
 tests/unit/review-file-creation-same-url-check.test.mjs
 tests/unit/review-file-writer-preserves-flags-on-url-change.test.mjs
 tests/unit/review-file-writer-roundup-autoflag.test.mjs
+tests/unit/review-filename-collision.test.mjs
 tests/unit/review-gate-merge.test.mjs
 tests/unit/review-gate-scope.test.mjs
 tests/unit/review-gate-verdict-attribution.test.mjs
@@ -1120,7 +1137,11 @@ tests/unit/tour-backfill.test.mjs
 tests/unit/tour-discovery.test.mjs
 tests/unit/tour-forward-tense.test.mjs
 tests/unit/tour-legs-validation.test.mjs
+tests/unit/tour-lifecycle.test.mjs
+tests/unit/tour-page-audit.test.mjs
 tests/unit/tour-roundup-candidate.test.mjs
+tests/unit/tour-stop-discovery.test.mjs
+tests/unit/tours-to-you-coverage.test.mjs
 tests/unit/tr-discovery-cross-show.test.mjs
 tests/unit/trainspotting-review-fetch.test.mjs
 tests/unit/transfer-detection.test.mjs
@@ -1185,6 +1206,7 @@ tests/unit/workflow-concurrency.test.mjs
 tests/unit/workflow-line-length.test.mjs
 tests/unit/workflow-playwright-setup.test.mjs
 tests/unit/workflow-run-coverage.test.mjs
+tests/unit/workflow-run-hint-inputs.test.mjs
 tests/unit/worktree-gc-multi-repo.test.mjs
 tests/unit/worktree-gc-reclaim.test.mjs
 tests/unit/worktree-gc-schedule-freshness.test.mjs

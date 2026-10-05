@@ -239,6 +239,26 @@ test('checksEnv strips secrets, fakes HOME, and disables git prompting', () => {
   assert.equal(env.GIT_TERMINAL_PROMPT, '0');
 });
 
+test('checksEnv HOME turns off git auto-maintenance even for receive-pack in a local bare remote (BRO-4749)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-env-gc-'));
+  try {
+    fs.mkdirSync(path.join(tmp, 'home'));
+    const env = checksEnv({ env: { PATH: process.env.PATH }, home: path.join(tmp, 'home') });
+    const trace = path.join(tmp, 'trace.log');
+    const genv = { ...env, GIT_TRACE: trace, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+    const g = (cwd, ...a) => execFileSync('git', a, { cwd, env: genv, stdio: 'pipe' });
+    g(tmp, 'init', '-q', '--bare', 'origin.git');
+    g(tmp, 'init', '-q', 'w');
+    fs.writeFileSync(path.join(tmp, 'w', 'f'), 'x');
+    g(path.join(tmp, 'w'), 'add', 'f');
+    g(path.join(tmp, 'w'), 'commit', '-qm', 'c');
+    g(path.join(tmp, 'w'), 'push', '-q', path.join(tmp, 'origin.git'), 'HEAD:refs/heads/main');
+    assert.doesNotMatch(fs.readFileSync(trace, 'utf8'), /run_command: git maintenance run --auto/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 test('checksEnv build mode adds the NEXT_PUBLIC allow-list and nothing else', () => {
   const env = checksEnv({ env: { PATH: '/bin', NOTION_API_KEY: 'secret', NEXT_PUBLIC_SNEAKY: 'x' }, build: true });
   assert.equal(env.NEXT_PUBLIC_FEATURES, BUILD_ENV.NEXT_PUBLIC_FEATURES);

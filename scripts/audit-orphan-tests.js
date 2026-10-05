@@ -77,6 +77,8 @@ const EXEMPT_NEVER_CI = {
   'ccusage-baseline.test.mjs': 'BRO-4491',
   // BRO-3137 live-data acceptance check (data-state, would flap in CI).
   'opening-night-express.test.mjs': 'BRO-3137',
+  // BRO-328 live-data acceptance check (data-state, would flap in CI).
+  'matilda-theatre-row-closed.test.mjs': 'BRO-328',
   // Deferred-effect acceptance probe (task #695, card 3ae637c5-416f-81bb):
   // asserts a 7-day provider-spend streak, EXPECTED to fail until the ledger
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
@@ -146,6 +148,10 @@ const EXEMPT_NEVER_CI = {
   // happened, from live review files. Red until the enrich + scoring crons
   // act, so it is a RECHECK-AFTER probe, never run by CI.
   'verify-bro-4486-recheck.test.mjs': 'BRO-4486',
+  // BRO-4725: asserts the daily landing job read every Broadway-titled Tours To
+  // You page within the stale window, from live data/audit/tour-autocreate.json.
+  // Needs scheduled runs after the fix, so it is a RECHECK-AFTER probe.
+  'verify-tours-to-you-coverage.test.mjs': 'BRO-4725',
 };
 
 const EXEMPT_KNOWN_BROKEN = {

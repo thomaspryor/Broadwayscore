@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -64,25 +65,8 @@ function extractReviewsWithThumbs(html) {
       }
 
       for (const posting of postings) {
-        // Two formats:
-        // 1. Standalone BlogPosting: author.name = "Outlet - Critic"
-        // 2. LiveBlogPosting entries: headline = "Outlet - Review Title"
-        let outletRaw = null;
-        let criticName = null;
-
-        if (posting.author) {
-          const authorName = Array.isArray(posting.author) ? posting.author[0]?.name : posting.author?.name;
-          if (authorName && authorName.includes(' - ')) {
-            const parts = authorName.split(' - ');
-            outletRaw = parts[0].trim();
-            criticName = parts[1]?.trim() || null;
-          } else if (authorName) {
-            outletRaw = authorName;
-          }
-        } else if (posting.headline && posting.headline.includes(' - ')) {
-          // LiveBlogPosting entries: "Outlet - Review Title"
-          outletRaw = posting.headline.split(' - ')[0].trim();
-        }
+        // Shared with gather-reviews.js (BRO-3345): one parser, no phantom outlets.
+        const { outletRaw, criticName } = parseBwwPostingAuthor(posting);
 
         if (!outletRaw) continue;
 

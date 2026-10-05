@@ -93,7 +93,7 @@ const {
   classifyVacuousCheck, isTestFCommand, extractCheckFilePaths, fetchOriginMain,
   pathExistsOnOriginMain, VACUOUS_TEST_F_UNRESOLVED,
 } = require('./card-premises-auditor.js');
-const { classifyHeadlessDispatchability, BLOCKERS: HEADLESS_BLOCKERS, isAutomationParked, isDrainableSessionParked } = require('./headless-dispatchability.js');
+const { classifyHeadlessDispatchability, remainingHeadlessBlockers, BLOCKERS: HEADLESS_BLOCKERS, isAutomationParked, isDrainableSessionParked } = require('./headless-dispatchability.js');
 const { parseRecheckAfter, parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { findOverlappingCards } = require('./dispatch-overlap-check.js');
 // Pure leaf module (no requires of its own), so this cannot cycle back here.
@@ -1115,6 +1115,7 @@ module.exports = {
   evaluateVerifiability,
   classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS,
+  remainingHeadlessBlockers,
   isAutomationParked,
   isDrainableSessionParked,
   // BRO-2569 — deliberately not in GUARD_NAMES, see the guard's own header.

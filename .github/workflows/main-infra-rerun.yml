@@ -1,0 +1,50 @@
+name: Main infra re-run
+
+# BRO-4754: during a GitHub Actions incident (2026-10-05) main test.yml runs
+# went red because jobs were cancelled before any runner picked them up
+# ("The job was not acquired by Runner of type hosted even after multiple
+# attempts"). Those shas never got a code verdict. Every 15 minutes this
+# re-runs the failed jobs of the NEWEST main push run when every failed job
+# was starved that way, at most to attempt 3, and only 15+ min after the run
+# ended. Newest-only: a green re-run of an older sha would fire test-summary's
+# "Resolve alert" step while a newer run is red. Cron-only (no workflow_run)
+# so a rerun mid-incident does not chain into another immediate starve.
+# Decision logic + tests: scripts/lib/main-infra-rerun{,.test}.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  # check-runs/{job_id}/annotations carries the "not acquired by Runner" text.
+  checks: read
+  contents: read
+
+jobs:
+  rerun:
+    name: Re-run newest starved main test run
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: main-infra-rerun
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Re-run if starved
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/main-infra-rerun.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Main infra re-run failed'
+          description: 'could not check or re-run the newest main test.yml run'
+          severity: 'warning'

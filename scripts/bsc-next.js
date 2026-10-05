@@ -195,7 +195,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 const {
   findLiveWorkspaceForTask, safeLedgerEntries, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   closedCardGuard,
-  checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
+  checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability, remainingHeadlessBlockers,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
   workBranchCollisionGuard, exactTitleOverlapGuard, sessionTrackingCloneGuard,
   dispatchClaimGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
@@ -1599,11 +1599,10 @@ function main(argv = process.argv.slice(2), deps = {}) {
       // card and re-runs would be refused by a gate naming a THIRD flag
       // (--allow-human-gated) after predispatchGuard already told them to use
       // --allow-reopen-suspect. Caught in re-review of BRO-2753.
-      const blocking = hg.blockers.filter(b => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
-        && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && args.force));
+      const blocking = remainingHeadlessBlockers(hg.blockers, { force: !!args.force });
       if (!hg.dispatchable && blocking.length) {
         console.error(`[bsc-next] REFUSING headless dispatch of #${task.id}: an unattended session cannot finish this card.`);
-        for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
+        for (const b of blocking) console.error(`    ${b.code}: ${b.detail}`);
         console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
         console.error(`  or re-run with --allow-human-gated if you know the gate does not apply.`);
         process.exit(1);

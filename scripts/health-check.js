@@ -3896,8 +3896,9 @@ function obClosingBacklogResults(report, now = new Date()) {
  * - tours created automatically are reported so the owner sees them land.
  */
 // How long each tour job may go without leaving a report before the digest
-// says it has stopped: the sweep and date jobs run daily, auto-create weekly.
-const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 9 * 24 };
+// says it has stopped. All three run daily (auto-create rides the daily BWW
+// landing job since BRO-4325; it was weekly before).
+const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 48 };
 // Before this, a missing report just means the job hasn't had its first run.
 const TOUR_JOBS_EXPECTED_FROM = '2026-10-06';
 
@@ -3906,7 +3907,7 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
   const jobs = [
     ['sweep', sweep, 'daily tour review mover (rebuild-reviews.yml)'],
     ['dates', dates, 'daily tour dates check (update-show-status.yml)'],
-    ['autocreate', autocreate, 'weekly new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
+    ['autocreate', autocreate, 'daily new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
   ];
   const quiet = [];
   for (const [key, report, label] of jobs) {
@@ -3955,6 +3956,22 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       hint: 'Run node scripts/discover-running-tours.js locally; the Tours To You pages API or page layout may have changed (scripts/lib/tour-discovery.js).',
     });
   }
+  // Every Broadway-titled Tours To You page should be read every couple of
+  // days (BRO-4725); one that isn't is a tour that could appear late or never.
+  const coverage = discovery && discovery.coverage;
+  if (coverage && Object.keys(coverage).length) {
+    const { stalePages, STALE_DAYS } = require('./lib/tours-to-you-coverage');
+    const stale = stalePages(coverage, now);
+    if (stale.length) {
+      const total = Object.keys(coverage).length;
+      out.push({
+        name: 'Data: Tours To You pages not checked',
+        status: 'warn',
+        message: `${stale.length} of ${total} Tours To You show pages have not been read in over ${STALE_DAYS} days (${stale.slice(0, 8).map(r => r.slug).join(', ')}${stale.length > 8 ? ', ...' : ''}). A tour on one of them can't be added until it is.`,
+        hint: 'See discovery in data/audit/tour-autocreate.json (rateLimited, failed). The daily BWW landing job reads the oldest pages first; repeated 429s mean Tours To You wants a slower pace (GAP_MS in scripts/lib/tours-to-you.js).',
+      });
+    }
+  }
   const created = (autocreate && autocreate.created) || [];
   if (created.length) {
     out.push({
@@ -3962,6 +3979,26 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       status: 'warn',
       message: `Added ${created.join(', ')} from BroadwayWorld tour roundups or Tours To You schedules (dates from Tours To You + Wikipedia).`,
       hint: 'Nothing to do unless one is wrong; see data/audit/tour-autocreate.json.',
+    });
+  }
+  // A closed tour its page lists again (BRO-4724): reopened when the page's
+  // history says it is the same tour, left closed when it can't tell.
+  const reopened = (autocreate && autocreate.reopened) || [];
+  if (reopened.length) {
+    out.push({
+      name: 'Data: closed national tours reopened automatically',
+      status: 'warn',
+      message: `Reopened ${reopened.join(', ')}: Tours To You lists new dates and its history names them as the same tour.`,
+      hint: 'Nothing to do unless one is wrong; see lifecycle in data/audit/tour-autocreate.json.',
+    });
+  }
+  const undecided = (autocreate && autocreate.lifecycle && autocreate.lifecycle.undecided) || [];
+  if (undecided.length) {
+    out.push({
+      name: 'Data: closed national tour lists new dates',
+      status: 'warn',
+      message: `${undecided.map(u => `${u.id} (closed ${u.closingDate}, listed again from ${u.resumes}: ${u.reason})`).join('; ')}. Left closed: the page doesn't say whether it is the same tour.`,
+      hint: 'If it is the same tour, clear its closingDate; if a new one, it is created once the Tours To You history names it.',
     });
   }
   return out;
@@ -5283,11 +5320,8 @@ async function main() {
       allResults.push(...uncollectedStrandResults(strandReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
-    try {
-      const { lastTimestampFromLog } = require('./lib/worktree-gc-freshness');
-      const logText = fs.readFileSync(path.join(__dirname, '../data/audit/worktree-gc.log'), 'utf8');
-      allResults.push(...worktreeGcFreshnessResults(lastTimestampFromLog(logText), Date.now()));
-    } catch { /* log absent — nothing to surface */ }
+    // worktree-gc.log freshness moved to the Mac-local scripts/check-worktree-gc-freshness.js
+    // (BRO-2719): the log is gitignored now, so this CI runner can never see it.
 
     try {
       const couplingSnap = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/notion-schedule-coupling.json'), 'utf8'));

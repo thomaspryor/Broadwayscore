@@ -31,6 +31,20 @@ const { decideTourDates, scheduleSlugs, parseTourSchedule } = require('./lib/tou
 const { fetchText, fetchSchedule } = require('./lib/tours-to-you');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { toursOfTitle } = require('./lib/tour-family');
+
+/**
+ * Where an earlier tour of the title closed before this one launched: the
+ * page is split there, as create-tour-entries.js split it when it created this
+ * tour, so a tour that follows a closed one on the same page never takes the
+ * closed one's rows or launch (BRO-4724 ship-check).
+ */
+function earlierClosings(tour, shows) {
+  if (!tour.openingDate) return [];
+  return toursOfTitle(tour.title, shows)
+    .filter(t => t.id !== tour.id && t.closingDate && String(t.closingDate).slice(0, 10) < tour.openingDate)
+    .map(t => String(t.closingDate).slice(0, 10));
+}
 const { applyTourInheritance } = require('./lib/tour-family');
 
 const ROOT = path.join(__dirname, '..');
@@ -102,11 +116,11 @@ async function main() {
   for (const tour of targets) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - results.length} tour(s) left for the next run`); break; }
     console.log(`\n${tour.id}`);
-    const { url, html } = await fetchSchedule(tour, fetchPage);
+    const { url, html } = await fetchSchedule(tour, fetchPage, { budget });
     let wiki = '';
     try { wiki = await fetchWikiText(tour.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
     const decision = url
-      ? decideTourDates(tour, html, wiki)
+      ? decideTourDates(tour, html, wiki, new Date(), { cuts: earlierClosings(tour, shows) })
       : { write: {}, notes: [], problem: `no Tours To You page found (tried ${scheduleSlugs(tour).join(', ')}); set tourScheduleSlug on the entry` };
     for (const n of decision.notes) console.log(`  ${n}`);
     if (decision.problem) console.log(`  PROBLEM: ${decision.problem}`);
@@ -162,4 +176,4 @@ if (require.main === module) {
     .finally(() => require('./lib/scraper').cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0)));
 }
 
-module.exports = { fetchWikiText, fetchSchedule, fetchText };
+module.exports = { fetchWikiText, fetchSchedule, fetchText, earlierClosings };

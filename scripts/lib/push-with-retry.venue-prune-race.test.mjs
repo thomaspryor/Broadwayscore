@@ -38,11 +38,14 @@ const write = (dir, rel, data) => {
 // origin + a "seed" clone standing in for every other writer + the runner.
 function setup(t, baseRows) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4484-'));
-  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const origin = path.join(tmp, 'origin.git');
   const seed = path.join(tmp, 'seed');
   const runner = path.join(tmp, 'runner');
   git(tmp, 'init', '-q', '--bare', origin);
+  // Global config is nulled above, so auto-maintenance must be off in the bare
+  // repo itself: receive-pack spawns it detached there (BRO-4749).
+  for (const [k, v] of [['gc.auto', '0'], ['gc.autoDetach', 'false'], ['maintenance.auto', 'false'], ['receive.autogc', 'false']]) git(origin, 'config', k, v);
   git(tmp, 'init', '-q', seed);
   write(seed, FILE, baseRows);
   write(seed, 'other.txt', 'v0\n');

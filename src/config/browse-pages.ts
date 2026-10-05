@@ -13,6 +13,8 @@ import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '
 import { getMarketMinReviews, hasReachedStage } from '@/lib/market-utils';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
 import { formatShowDate } from '@/lib/date-utils';
+import { hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
 export interface BrowseFilterContext {
@@ -52,10 +54,20 @@ export interface BrowsePageConfig {
   requiresFeature?: 'commercial';
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
-   *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
+   *  Headings render only while each label is one contiguous run in the order on
+   *  screen (BrowseListClient + src/lib/browse-sections.js), so the page's default
+   *  order must keep every label together; a client re-sort that interleaves them
+   *  drops the headings. */
   // getById lets a section label depend on a linked show (e.g. a tryout's
   // Broadway transfer status) without importing data modules into this config.
-  sectionGroup?: (show: ComputedShow, getById?: (id: string) => ComputedShow | undefined) => string;
+  // ctx carries the data lookups a label can need that ComputedShow does not hold
+  // (today: weekly grosses, for the ticket-price bands). Optional so existing
+  // two-argument sectionGroups and callers keep working.
+  sectionGroup?: (
+    show: ComputedShow,
+    getById?: (id: string) => ComputedShow | undefined,
+    ctx?: Pick<BrowseFilterContext, 'getShowGrosses'>,
+  ) => string;
 }
 
 // Helper to parse runtime string to minutes
@@ -285,7 +297,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     // themselves stay live and linked from the aggregate's show page.
     filter: (show) => !show.tourParent,
     // customSort (not 'opening-date') so the sectionGroup headings render —
-    // BrowseListClient only shows sections for custom/score sorts. Order:
+    // BrowseListClient only shows headings while each label is one contiguous run
+    // in the displayed order, so the sort must keep them together. Order:
     // running tryouts first, then transferred-to-Broadway, then the rest,
     // newest first within each group (matches the sectionGroup below).
     customSort: (shows, ctx) => [...shows].sort((a, b) => {
@@ -804,7 +817,17 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     filter: (show) => (show.criticScore?.score ?? 0) > 0,
     sort: 'score',
     sectionGroup: (show) => {
-      const score = show.criticScore?.score ?? 0;
+      // Shows with too few reviews display a TBD score, and BrowseListClient's
+      // score sort puts them at the bottom whatever their raw score — so they get
+      // their own last section instead of repeating the score bands (Sweeney Todd
+      // 92 from 2 reviews sat under a second "Legendary" heading). Same rule as the
+      // client's getEffectiveScore.
+      const cs = show.criticScore;
+      const t1t2 = (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0);
+      if (!hasEnoughReviews(cs?.reviewCount ?? 0, show.category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id))) {
+        return 'Not Enough Reviews Yet';
+      }
+      const score = cs?.score ?? 0;
       if (score >= 90) return 'Legendary (90+)';
       if (score >= 80) return 'Must-See (80-89)';
       if (score >= 70) return 'Highly Rated (70-79)';
@@ -857,6 +880,14 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
         const bAtp = ctx.getShowGrosses(b.slug)?.thisWeek?.atp ?? 0;
         return bAtp - aAtp;
       });
+    },
+    // Bands follow the ATP-descending customSort above, so each label stays contiguous.
+    // dataFilter guarantees atp > 0, so every show lands in exactly one band.
+    sectionGroup: (show, _getById, ctx) => {
+      const atp = ctx?.getShowGrosses(show.slug)?.thisWeek?.atp ?? 0;
+      if (atp >= 150) return '$150 and Up';
+      if (atp >= 100) return '$100 to $150';
+      return 'Under $100';
     },
     relatedPages: ['broadway-lottery-shows', 'broadway-rush-tickets', 'best-broadway-show-right-now'],
   },

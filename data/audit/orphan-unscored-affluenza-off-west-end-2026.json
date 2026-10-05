@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "showId": "affluenza-off-west-end-2026",
+  "openingDate": "2026-10-05",
+  "detectedAt": "2026-10-05T22:19:47.021Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "timeout-london--unknown.json",
+      "outletId": "timeout-london",
+      "criticName": "Unknown",
+      "url": "https://www.timeout.com/london/theatre/affluenza",
+      "fullTextLen": 660,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
+      "file": "trustpilot--john-taggart.json",
+      "outletId": "trustpilot",
+      "criticName": "John Taggart",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
+      "fullTextLen": 489,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 2,
+  "blockBroadcast": true,
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
+}

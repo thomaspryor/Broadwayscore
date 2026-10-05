@@ -230,3 +230,26 @@ test('discoverWestEndTheatreUrl: DOES write a negative-cache entry when the SERP
   const map = loadSlugMap(mapPath);
   assert.ok(map.shows[show.id] && map.shows[show.id].notFoundAt, 'a genuinely-empty SERP result should still be negative-cached');
 });
+
+// ── BRO-3792: closed one-night show must not stay in the audit's candidate set ──
+// The audit only scans status==='open' west-end shows; a closed show needs
+// status=closed AND a closingDate or it is flagged POSSIBLY_CLOSED forever.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const showsFile = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'data', 'shows.json');
+const haveShows = fs.existsSync(showsFile);
+const allShows = haveShows ? JSON.parse(fs.readFileSync(showsFile, 'utf8')).shows : [];
+
+test('BRO-3792: one-night WE show is closed with closingDate (not audited)', { skip: !haveShows }, () => {
+  const s = allShows.find(x => x.id === 'why-i-stuck-a-flare-up-my-arse-for-england-west-end-2026');
+  assert.ok(s, 'show present');
+  assert.equal(s.status, 'closed');
+  assert.equal(s.closingDate, '2026-06-22');
+});
+
+test('BRO-3792: closed West End shows always carry a closingDate', { skip: !haveShows }, () => {
+  const bad = allShows.filter(s => s.category === 'west-end' && s.status === 'closed' && !s.closingDate).map(s => s.id);
+  assert.deepEqual(bad, []);
+});

@@ -182,7 +182,15 @@ test('restore decision: intentional clear is NOT reverted; data-loss IS', () => 
 // pointer sweep into a permanent no-op, which is precisely the
 // "Protected-N-from-data-loss, pushed nothing" failure the action.yml comment
 // block describes for the original stale-duplicateOf incident.
-const MERGE_PATH_ONLY_BREADCRUMBS = new Set(['duplicateTextOf']);
+//
+// The crossOutletDuplicate companion keys (BRO-3872) follow the same rule: the
+// audit --fix sweep and cascade-clear delete them and stamp crossOutletClearReason;
+// protecting them would make the git-level restore resurrect the dangling pointer
+// the sweep just removed (and re-exclude the review via crossOutletDuplicate).
+const MERGE_PATH_ONLY_BREADCRUMBS = new Set([
+  'duplicateTextOf',
+  'crossOutletPrimaryFile', 'crossOutletSimilarity', 'crossOutletMethod', 'crossOutletFlaggedAt',
+]);
 
 test('every CLEAR_BREADCRUMBS key is reachable by a loop that consults it', () => {
   for (const field of Object.keys(CLEAR_BREADCRUMBS)) {
@@ -743,6 +751,10 @@ const READ_UNPROTECTED_ALLOWLIST = new Map([
     'tombstone failure mode duplicateTextOf is allowlisted against below. The ' +
     'action.yml push-restore reads it from the SAME working tree that wrote ' +
     'it, so it is reliable on that path without being in PROTECTED_FIELDS.'],
+  ['crossOutletClearReason',
+    'BRO-3872 breadcrumb stamped by clearCrossOutletFields() alongside the ' +
+    'merge-path-only crossOutlet* pointer keys; same tombstone rationale as ' +
+    'duplicateClearReason — the push-restore reads it from the working tree that wrote it.'],
   ['rescoreCompletedAt',
     'must stay nullable — flag-combined-reviews.js null-assigns it as part of ' +
     'clearing the whole rejection family (rejectionReason/rejectedBy/rejectedAt/' +

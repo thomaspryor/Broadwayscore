@@ -7,7 +7,7 @@
  */
 
 const { TRYOUT_URL_MARKERS } = require('./content-filters');
-const { shortTitleCandidate } = require('./title-normalization');
+const { shortTitleCandidate, hasSubtitleTail } = require('./title-normalization');
 const { foldDiacritics } = require('./title-match');
 
 /**
@@ -239,7 +239,7 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
   // Short-title fallback for comma-subtitled shows ("Beaches, A New Musical" → "Beaches").
   // BWW slug often carries only the short title ("Review-Roundup-BEACHES-Opens-on-Broadway").
   // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
-  const shortTitle = shortTitleCandidate(showTitle);
+  const shortTitle = hasSubtitleTail(showTitle) ? shortTitleCandidate(showTitle) : null; // BRO-3711
   if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments, slugSegmentsArray)) return true;
 
   // Colon-subtitled shows ("Our Sinatra: A Musical Celebration" → "Our

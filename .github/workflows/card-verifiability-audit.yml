@@ -114,6 +114,8 @@ jobs:
         run: |
           node scripts/audit-card-verifiability.js --source notion
           node scripts/enrich-card-acceptance.js --source linear --limit 25
+          # BRO-2170: a narrowed stamping rule must not strand an already-stamped cohort.
+          node scripts/enrich-card-acceptance.js --source linear --recheck-markers --limit 10
           node scripts/audit-card-verifiability.js --source notion
 
       - name: Commit refreshed report
