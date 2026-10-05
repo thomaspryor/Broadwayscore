@@ -3,7 +3,18 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isPlaceholderUrl, todaytixArt, stopEventPages, pageImageUrls, rolesForSize, rolesNeeded } = require('./tour-art.js');
+const { isPlaceholderUrl, todaytixArt, stopEventPages, pageImageUrls, rolesForSize, rolesNeeded, archivedUnreferenced } = require('./tour-art.js');
+
+test('archivedUnreferenced: own file on disk but shows.json still inherits', () => {
+  const tour = { id: 'x-tour-2026', images: { poster: '/images/shows/x-2024/poster.webp', thumbnail: '/images/shows/x-2024/thumbnail.webp' } };
+  const onDisk = new Set(['/images/shows/x-2024/poster.webp', '/images/shows/x-2024/thumbnail.webp', '/images/shows/x-tour-2026/thumbnail.webp']);
+  assert.deepEqual(archivedUnreferenced(tour, p => onDisk.has(p)), ['thumbnail']);
+  // already referenced: nothing to adopt
+  const done = { id: 'x-tour-2026', images: { ...tour.images, thumbnail: '/images/shows/x-tour-2026/thumbnail.webp' } };
+  assert.deepEqual(archivedUnreferenced(done, p => onDisk.has(p)), []);
+  // no own file: nothing to adopt
+  assert.deepEqual(archivedUnreferenced(tour, () => false), []);
+});
 
 const NOW = new Date('2026-10-05T00:00:00Z');
 const CF = '//images.ctfassets.net/6pezt69ih962';

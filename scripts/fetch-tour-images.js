@@ -30,7 +30,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isTourShow, tourImageProblems } = require('./lib/tour-family');
 const { TOUR_LOCATIONS } = require('./lib/todaytix-tour-tickets');
-const { todaytixArt, stopEventPages, pageImageUrls, rolesForSize, rolesNeeded, attemptAction, landscapeCroppable, cropAllowed, descriptionNamesTitle, retryDue, RETRY_DAYS } = require('./lib/tour-art');
+const { todaytixArt, stopEventPages, pageImageUrls, rolesForSize, rolesNeeded, archivedUnreferenced, attemptAction, landscapeCroppable, cropAllowed, descriptionNamesTitle, retryDue, RETRY_DAYS } = require('./lib/tour-art');
 const { fetchSchedule } = require('./lib/tours-to-you');
 const { isPlaceholderFile } = require('./lib/show-images');
 
@@ -144,8 +144,28 @@ async function main() {
   const shows = snapshot.shows;
   const schedules = fs.existsSync(SCHEDULES_PATH) ? JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8')).tours || {} : {};
   const exists = p => fs.existsSync(path.join(PUBLIC_DIR, p));
-  const targets = shows.filter(s => isTourShow(s) && (only ? s.id === only : s.status !== 'closed'))
+  const open = shows.filter(s => isTourShow(s) && (only ? s.id === only : s.status !== 'closed'))
     .filter(t => rolesNeeded(t, exists).length);
+  // Point shows.json at own files an earlier run archived but failed to
+  // record, before any search (and before backoff can skip the tour).
+  let adopted = 0;
+  const adoptedImages = new Map(); // dry run: what targets would see after adoption
+  for (const tour of open) {
+    const roles = archivedUnreferenced(tour, exists);
+    if (!roles.length) continue;
+    const next = { hero: null, ...(tour.images || {}) };
+    for (const r of roles) next[r] = `/images/shows/${tour.id}/${r}.webp`;
+    const problems = tourImageProblems({ ...tour, images: next }, shows);
+    if (problems.length) { console.log(`  ${tour.id}: archived ${roles.join('+')} not adopted: ${problems.join('; ')}`); continue; }
+    console.log(`  ${tour.id}: adopting archived ${roles.join('+')}`);
+    adopted++;
+    adoptedImages.set(tour.id, next);
+    if (dryRun) continue;
+    tour.images = next;
+    saveShows(snapshot);
+  }
+  if (adopted) console.log(`${adopted} tour(s) ${dryRun ? 'would adopt' : 'adopted'} already-archived art`);
+  const targets = open.filter(t => rolesNeeded({ ...t, images: adoptedImages.get(t.id) || t.images }, exists).length);
   console.log(`${targets.length} tour(s) need their own art`);
   if (!targets.length) return;
 
