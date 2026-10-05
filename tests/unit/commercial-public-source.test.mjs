@@ -42,6 +42,32 @@ test('publicSourceText drops internal research-tooling language', () => {
   }
 });
 
+test('publicSourceText drops hand-edit process notes and field names written as code (BRO-4669)', () => {
+  // The live wording these records carried before the BRO-4669 plan.
+  const internal = [
+    'No producer announcement; Broadway Journal (Aug 25 2023) projected recoupment. Kept recouped:true per owner review 2026-07-13.',
+    'Closed 2023-11-19 after limited run. recouped:null because no public outcome citation either way.',
+    'Total gross ~$15.2M. Per policy applied 2026-05-24: recouped:null because no explicit citation.',
+    '548 performances. Per policy applied 2026-05-24: designation=Nonprofit because no hard recoupment citation.',
+    'humanReviewedDesignation: true',
+    'Owner decision on 2026-07-13',
+  ];
+  for (const text of internal) {
+    assert.equal(publicSourceText(text), null, `should drop: ${text}`);
+  }
+  // Citations and prose with colons, capitalized words and URL query strings stay.
+  const clean = [
+    'Based on a True story: Variety (Mar 2016)',
+    'Recouped: Deadline (Aug 2023)',
+    'SEC Form D: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=D&dateb=',
+    'Broadway Journal (Aug 25, 2023): the month of recoupment was not reported.',
+    'No recoupment outcome has been announced. The run was extended twice.',
+  ];
+  for (const text of clean) {
+    assert.equal(publicSourceText(text), text, `should keep: ${text}`);
+  }
+});
+
 test('publicSourceText drops the placeholder note the stub enroller writes', () => {
   // Imports the real enroller so a reworded placeholder cannot slip past the guard.
   const { makeStub } = createRequire(import.meta.url)('../../scripts/initialize-commercial-stub.js');
