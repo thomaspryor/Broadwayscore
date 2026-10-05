@@ -109,7 +109,9 @@ const RECENT_PAUSE_MS = 72 * HOUR_MS;
 const CLOUD_UNRUNNABLE_VERIFY_RE = /^node\s+scripts\/run-unit-tests\.js\s*$/;
 // iOS app cards live in the BroadwayScorecard-app repo, which the cloud worker
 // session does not check out (and add_repo prompts), so it would burn a firing.
-const IOS_APP_CARD_RE = /^\W*iOS\b/i;
+// Also gates resume (findResumeCandidates), so a land ref for one isn't retried.
+// "iOS Safari ..." is a web bug, not an app card.
+const IOS_APP_CARD_RE = /^\W*iOS\b(?!\s+Safari)/i;
 // A paused report that names the owner's call as the blocker.
 // Comments automation posts on its own: dispatch receipts (linear-dispatch.js
 // buildDispatchComment, with or without a correlation id), auto-corrections,
