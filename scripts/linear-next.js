@@ -450,7 +450,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // block its own card's relaunch (see makeProvablyDeadFn). Ledger re-read at
   // call time so a 'dead' row the self-heal above just journaled counts.
   const deadShellFn = (t) => makeProvablyDeadFn({
-    task: t, ledgerEntries: safeLedgerEntries(readLedgerEntriesFn), claudeAliveInFn, surfaceAliveInFn,
+    task: t, ledgerEntries: safeLedgerEntries(readLedgerEntriesFn), claudeAliveInFn, surfaceAliveInFn, isWrapperAlive: makeSeedProcessProbe(),
     onIgnored: w => console.error(`[linear-next] ignoring dead shell ${w.ref} "${w.title}" (ledger death + cmux both say no live session) — not counting it as in-flight`),
   });
 
