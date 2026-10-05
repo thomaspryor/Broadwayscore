@@ -29,15 +29,6 @@ const EDITION_PAIRS = [
 // being declared here. One of the four (chicago-sun-times/suntimes) was
 // MERGED on 2026-09-07 and removed, leaving 3:
 const DECLARED_ALIAS_OVERLAPS = [
-  // Nippertown is syndicated inside the Daily Gazette's site
-  // (dailygazette.com/nippertown/...); both outlets are real and distinct
-  // (BRO-973 — Bill Kellert's Nippertown reviews carry dailygazette.com URLs).
-  ['nippertown', 'the-daily-gazette'],
-  // David Fox's Reclining Standards moved from recliningstandards.com to
-  // recliningstandards.org, which the registry files under df-reviews. Same
-  // critic, same site, two registry ids (BRO-973); merging needs a corpus
-  // rename, out of scope here.
-  ['reclining-standards', 'df-reviews'],
   // AP wire copy syndicates on abcnews.go.com. 'ap' is in
   // review-normalization.js's WIRE_SERVICE_OUTLETS set, so the cross-outlet
   // merge guard never blocks it on this host regardless of which outlet the

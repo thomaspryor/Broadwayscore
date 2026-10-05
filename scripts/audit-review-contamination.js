@@ -670,20 +670,19 @@ for (const showId of showDirs) {
 const totalHits = Object.values(hits).reduce((a, b) => a + b.length, 0);
 
 if (JSON_OUT) {
-  // Synchronous write: this script ends in process.exit(), and an async piped
+  // Blocking stdout: this script ends in process.exit(), and an async piped
   // console.log was truncated at the 64KB pipe buffer once G-class hits grew the
   // payload past it (BRO-973: JSON.parse failure in the live-corpus test).
-  const jsonBuf = Buffer.from(JSON.stringify({
+  // setBlocking (not fs.writeSync) keeps the script write-free for
+  // safe-form-allowlist.test.mjs.
+  if (process.stdout._handle && process.stdout._handle.setBlocking) process.stdout._handle.setBlocking(true);
+  console.log(JSON.stringify({
     scannedShows: showsScanned,
     scannedFiles: filesScanned,
     totalHits,
     classCounts: Object.fromEntries(Object.entries(hits).map(([k, v]) => [k, v.length])),
     hits,
-  }, null, 2) + '\n');
-  for (let off = 0; off < jsonBuf.length;) {
-    try { off += fs.writeSync(1, jsonBuf, off); }
-    catch (e) { if (e.code !== 'EAGAIN') throw e; }
-  }
+  }, null, 2));
 } else {
   console.log(`\n=== REVIEW-TEXT CONTAMINATION AUDIT ===`);
   console.log(`Scanned: ${showsScanned} shows, ${filesScanned} files`);
