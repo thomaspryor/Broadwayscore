@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T23:26:11.013Z",
+  "timestamp": "2026-10-05T23:51:34.793Z",
   "stats": {
-    "totalReviews": 46508,
-    "alreadyFlagged": 18669,
-    "dateGuardCatches": 269,
-    "directorMismatch": 1322,
-    "tvFilmSignals": 1347,
-    "londonSignals": 1286,
+    "totalReviews": 46498,
+    "alreadyFlagged": 18672,
+    "dateGuardCatches": 268,
+    "directorMismatch": 1316,
+    "tvFilmSignals": 1348,
+    "londonSignals": 1285,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
-    "noPublishDate": 4318
+    "noPublishDate": 4314
   },
   "findings": [
     {
@@ -183,19 +183,6 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "hotchka--chuck-duncan.json",
-      "publishDate": "2026-06-24",
-      "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "file": "hotchka--unknown.json",
       "score": 91,
       "publishDate": "2026-06-24",
       "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
@@ -3792,19 +3779,6 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "buffalo-theatre-guide--cherie-messore.json",
-      "publishDate": "2026-06-20",
-      "url": "https://buffalotheatreguide.com/2026/06/20/the-book-of-mormon-returns-to-sheas/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
-        }
-      ]
-    },
-    {
-      "showId": "book-of-mormon-tour-2022",
-      "file": "buffalo-theatre-guide--unknown.json",
       "score": 78,
       "publishDate": "2026-06-20",
       "url": "https://buffalotheatreguide.com/2026/06/20/the-book-of-mormon-returns-to-sheas/",
@@ -8048,20 +8022,6 @@
     {
       "showId": "death-of-a-salesman-2012",
       "file": "theatrely--brandon-schwartz.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/watch-andre-de-shields-sharon-d-clarke-more-explain-death-of-a-salesman-in-10-seconds-or-less",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
-      "file": "theatrely--unknown.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.theatrely.com/post/watch-andre-de-shields-sharon-d-clarke-more-explain-death-of-a-salesman-in-10-seconds-or-less",
@@ -16389,25 +16349,6 @@
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 96,
-      "publishDate": "2025-12-12",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -26853,30 +26794,7 @@
     {
       "showId": "six-tour-2022",
       "file": "hotchka--chuck-duncan.json",
-      "publishDate": "2023-05-10",
-      "url": "https://hotchka.com/six-tour-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lucy moss\" from six-2021"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie armitage\" from six-2021"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "six-tour-2022",
-      "file": "hotchka--unknown.json",
-      "score": 91,
+      "score": 93,
       "publishDate": "2023-05-10",
       "url": "https://hotchka.com/six-tour-review",
       "findings": [
@@ -32668,6 +32586,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "file": "redbuslondinium--unknown.json",
+      "publishDate": "2026-10-05",
+      "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
