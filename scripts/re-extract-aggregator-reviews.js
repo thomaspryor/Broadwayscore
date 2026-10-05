@@ -22,6 +22,7 @@ const {
 } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const archiveDir = path.join(dataDir, 'aggregator-archive');
@@ -192,16 +193,9 @@ function reExtractBWW() {
         const json = JSON.parse(cleanedJson);
 
         if (json['@type'] === 'BlogPosting' && json.author) {
-          const authorName = Array.isArray(json.author) ? json.author[0]?.name : json.author?.name;
-          if (!authorName) continue;
-
-          let outletRaw = authorName;
-          let criticName = null;
-          if (authorName.includes(' - ')) {
-            const parts = authorName.split(' - ');
-            outletRaw = parts[0].trim();
-            criticName = parts[1]?.trim() || null;
-          }
+          // Shared with gather-reviews.js (BRO-3345): one parser, no phantom outlets.
+          const { outletRaw, criticName } = parseBwwPostingAuthor(json);
+          if (!outletRaw) continue;
 
           const outletId = normalizeOutlet(outletRaw);
           const outletName = getOutletDisplayName(outletId);

@@ -1,6 +1,6 @@
 {
   "_comment": "Config for scripts/audit-closing-dates.js. Edited by hand; not auto-generated. Established pattern (cf. data/dtli-slug-map.json).",
-  "_lastUpdated": "2026-05-24",
+  "_lastUpdated": "2026-10-05",
   "slugOverrides": {
     "_comment": "show.id → broadway.com slug, when stripping the year suffix from id doesn't produce the URL broadway.com actually uses. Probe via curl https://www.broadway.com/shows/{slug}/schedule/. Verified 2026-05-14.",
     "and-juliet-2022": "juliet",
@@ -39,9 +39,9 @@
         "source": "Broadway.com / IBDB / Broadway League confirm Jan 3 2027 close at Lyceum"
       },
       "schmigadoon-2026": {
-        "verifiedStored": "2027-01-03",
-        "verifiedAt": "2026-05-24",
-        "source": "Deadline 2026-05: 17-week extension post-12-Tony-noms to Jan 3 2027 (https://deadline.com/2026/05/schmigadoon-broadway-closing-date-1236885280/)"
+        "verifiedStored": "2027-04-04",
+        "verifiedAt": "2026-10-05",
+        "source": "BroadwayWorld 2026-09-08: second extension, 13 more weeks to Apr 4 2027 (https://www.broadwayworld.com/article/SCHMIGADOON-Extends-on-Broadway-Through-April-2027-20260908); Broadway News exclusive confirms"
       }
     }
   }
