@@ -33,8 +33,22 @@ const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
 // adds to a model's notes for reviewers; it must never reach the page.
 // Model names are matched with their family word ("Claude Sonnet", not
 // "Claude": Claude-Michel Schönberg wrote Les Misérables).
-const INTERNAL_TEXT_RE = /\bGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b/i;
+const INTERNAL_TEXT_RE = /\bGPT\b|\bChatGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b|\bGemini (?:\d|Pro|Flash|Ultra)/i;
+// Writers store article URLs as sources; a URL slug ("...-gpt-...") is not
+// wording a reader sees.
+const URL_RE = /\bhttps?:\/\/\S+/gi;
+// Source fields are citations. Research wording in one means the citation is
+// research output, so a writer clears the field rather than trimming it to
+// something that reads like a checked source.
+const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
+
+/** The research wording in `text` outside any URL, or null. */
+function internalWordingIn(text) {
+  if (typeof text !== 'string') return null;
+  const match = text.replace(URL_RE, ' ').match(INTERNAL_TEXT_RE);
+  return match ? match[0] : null;
+}
 
 /**
  * @param {string} showId - the commercial.json key (a shows.json slug)
@@ -128,9 +142,9 @@ function commercialRecordErrors(showId, show, ctx = {}) {
 
   // Public text must read as a citation, not as research-pipeline notes.
   for (const field of PUBLIC_TEXT_FIELDS) {
-    const text = show[field];
-    if (typeof text === 'string' && INTERNAL_TEXT_RE.test(text)) {
-      out.push(`commercial.json: "${showId}" ${field} contains internal research wording ("${text.match(INTERNAL_TEXT_RE)[0]}"); /biz shows this field verbatim, so rewrite it as a public citation or set it to null`);
+    const wording = internalWordingIn(show[field]);
+    if (wording) {
+      out.push(`commercial.json: "${showId}" ${field} contains internal research wording ("${wording}"); /biz shows this field verbatim, so rewrite it as a public citation or set it to null`);
     }
   }
 
@@ -298,17 +312,22 @@ function commercialFileWarnings(data, showsList) {
   return eachRecord(data, showsList, commercialRecordWarnings);
 }
 
+// A sentence ends at . ; ! or ? followed by space and a non-lowercase start,
+// except after an initial ("J. Smith") or a common abbreviation ("Jr.",
+// "St. James", "approx. $2M"), which would otherwise cut a citation in half.
+const SENTENCE_BREAK_RE = /(?<=[.;!?])(?<!\b[A-Z]\.)(?<!\b(?:Jr|Sr|Mr|Mrs|Ms|Dr|St|Mt|Inc|Co|Corp|Ltd|Bros|No|vs|ca|approx|Approx|est|Est|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.)\s+(?=[^a-z])/;
+
 /**
  * Drops the research wording from a public text field and keeps the rest:
- * a bracketed aside that contains it goes ("SEC filings (GPT Deep Research)"
- * keeps "SEC filings"), then any sentence that still contains it. Returns
- * null when nothing public is left.
+ * a bracketed aside that contains it goes ("Limited run (GPT summary)."
+ * keeps "Limited run."), then any sentence that still contains it. Returns
+ * null when nothing public is left. URLs are left alone (internalWordingIn).
  */
 function stripInternalWording(text) {
-  if (typeof text !== 'string' || !INTERNAL_TEXT_RE.test(text)) return text;
-  const noAsides = text.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (INTERNAL_TEXT_RE.test(aside) ? '' : aside));
-  const kept = noAsides.split(/(?<=[.;!?])\s+/).filter((sentence) => !INTERNAL_TEXT_RE.test(sentence));
-  const out = kept.join(' ').replace(/\s+/g, ' ').trim();
+  if (!internalWordingIn(text)) return text;
+  const noAsides = text.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (internalWordingIn(aside) ? '' : aside));
+  const kept = noAsides.split(SENTENCE_BREAK_RE).filter((sentence) => !internalWordingIn(sentence));
+  const out = kept.join(' ').replace(/\s+/g, ' ').replace(/[\s;,:]+$/, '').trim();
   return out && /[A-Za-z0-9]/.test(out) ? out : null;
 }
 
@@ -316,14 +335,15 @@ function stripInternalWording(text) {
  * For writers that copy model output into commercial.json unreviewed: returns
  * a copy that passes the public-text rule and the run-status warning, so one
  * bad model answer cannot make validate-data abort the whole run. Research
- * wording is stripped from public text (stripInternalWording); a loss label on
- * a show whose status is known and not "closed" becomes "TBD". `changed` lists
- * the fields altered, for the caller's log.
+ * wording is stripped from notes (stripInternalWording); a source field that
+ * contains it is cleared (CITATION_FIELDS); a loss label on a show whose
+ * status is known and not "closed" becomes "TBD". `changed` lists the fields
+ * altered, for the caller's log.
  *
  * `holdReason` is set when cleaning would hide something a person must see,
  * and the caller must not write the entry (leave it pending instead):
- * a recoupment claim whose only citation is research wording (the page would
- * show "recouped" with no source), or a model answer that failed
+ * a recoupment claim cited to research output (the page would show
+ * "recouped" with no checked source), or a model answer that failed
  * batch-commercial-research.js's plausibility check.
  *
  * @param {object} entry
@@ -336,15 +356,13 @@ function sanitizeForPublicRecord(entry, showStatus) {
   let holdReason = null;
   if (typeof out.notes === 'string' && /\bPLAUSIBILITY WARNING\b/i.test(out.notes)) {
     holdReason = 'model figures failed the plausibility check; a person must confirm them';
-  } else if (out.recouped === true && typeof out.recoupedSource === 'string' && !stripInternalWording(out.recoupedSource)) {
-    holdReason = 'recoupment claim cites only research output; it needs a public source';
+  } else if (out.recouped === true && internalWordingIn(out.recoupedSource)) {
+    holdReason = 'recoupment claim is cited to research output; it needs a public source';
   }
   for (const field of PUBLIC_TEXT_FIELDS) {
-    const cleaned = stripInternalWording(out[field]);
-    if (cleaned !== out[field]) {
-      out[field] = cleaned;
-      changed.push(field);
-    }
+    if (!internalWordingIn(out[field])) continue;
+    out[field] = CITATION_FIELDS.includes(field) ? null : stripInternalWording(out[field]);
+    changed.push(field);
   }
   if (LOSS_DESIGNATIONS.includes(out.designation) && showStatus && showStatus !== 'closed') {
     out.designation = 'TBD';
@@ -353,4 +371,4 @@ function sanitizeForPublicRecord(entry, showStatus) {
   return { entry: out, changed, holdReason };
 }
 
-module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, LOSS_DESIGNATIONS };
+module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, internalWordingIn, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, CITATION_FIELDS, LOSS_DESIGNATIONS };

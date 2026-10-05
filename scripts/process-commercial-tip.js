@@ -286,7 +286,7 @@ Rules:
     // cleaned and checked against the commercial rules before it is written.
     const built = wantsApply
       ? buildTipRecord(commercial, shows.shows || shows, slug, analysis.proposedChanges)
-      : { record: null, refusedReason: null };
+      : { record: null, changes: [], refusedReason: null };
 
     if (wantsApply && built.record) {
       commercial.shows[slug] = built.record;
@@ -304,7 +304,8 @@ Rules:
       changelog.entries.push({
         date: new Date().toISOString().split('T')[0],
         source: `User tip via GitHub issue #${ISSUE_NUMBER}`,
-        changesApplied: analysis.proposedChanges.map(c => ({
+        // What was written, after cleaning, not what the model proposed.
+        changesApplied: built.changes.map(c => ({
           slug,
           field: c.field,
           oldValue: c.oldValue,
@@ -316,7 +317,7 @@ Rules:
       fs.writeFileSync(CHANGELOG_PATH, JSON.stringify(changelog, null, 2) + '\n');
 
       // Post comment
-      const changesTable = analysis.proposedChanges
+      const changesTable = built.changes
         .map(c => `| ${c.field} | ${JSON.stringify(c.oldValue)} | ${JSON.stringify(c.newValue)} |`)
         .join('\n');
 
@@ -338,7 +339,7 @@ ${changesTable}
 *Automated by [process-commercial-tip.js](https://github.com/thomaspryor/Broadwayscore/blob/main/scripts/process-commercial-tip.js)*`);
       }
 
-      console.log(`Applied ${analysis.proposedChanges.length} changes for ${slug}`);
+      console.log(`Applied ${built.changes.length} changes for ${slug}`);
     } else {
       // Flag for manual review
       const reason = built.refusedReason
