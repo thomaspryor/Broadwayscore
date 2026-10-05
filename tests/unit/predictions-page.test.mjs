@@ -45,3 +45,18 @@ test('umbrella predictions page does not promise picks pre-nominations', () => {
   const src = read('src/app/tony-awards/predictions/page.tsx');
   assert.match(src, /nominationsAnnounced\s*\?\s*<>See our picks/);
 });
+
+test('newsletter dump imports the real hasNominationsBeenAnnounced and emits no picks pre-nominations', () => {
+  const src = read('scripts/newsletter/dump-tony-predictions.ts');
+  const cutoffs = read('src/lib/tony-cutoffs.ts');
+  assert.doesNotMatch(cutoffs, /export function hasNominationsBeenAnnounced/);
+  assert.doesNotMatch(src, /from '\.\.\/\.\.\/src\/lib\/tony-cutoffs'/);
+  assert.match(src, /hasNominationsBeenAnnounced,\s*\} from '\.\.\/\.\.\/src\/lib\/data-tony-predictions'/);
+  assert.doesNotMatch(src, /catch \{ return true; \}/);
+  assert.match(src, /if \(!nominationsAnnounced\) \{ out\[cat\.key\] = \[\]; continue; \}/);
+});
+
+test('hub page and sitemap gate on hasNominationsBeenAnnounced', () => {
+  assert.match(read('src/app/tony-awards/page.tsx'), /hasNominationsBeenAnnounced\(season\)/);
+  assert.match(read('src/app/sitemap.ts'), /hasNominationsBeenAnnounced\(getTonySeasonWindow\(\)\)/);
+});
