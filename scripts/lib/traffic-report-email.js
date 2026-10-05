@@ -156,8 +156,9 @@ function chartsHtml(images) {
  * @param md the summary (or report) markdown
  * @param opts.tiles / opts.images  the GA-style block, placed right under the title
  * @param opts.dashboardUrl         footer link to /admin/traffic
+ * @param opts.accounts             { lines, url }: the Accounts section (BRO-4615)
  */
-function buildHtml(md, { runUrl, tiles, images, dashboardUrl } = {}) {
+function buildHtml(md, { runUrl, tiles, images, dashboardUrl, accounts } = {}) {
   const { summary } = splitReport(md);
   // Title first, then the tiles and charts, then the rest of the summary.
   const firstBreak = summary.indexOf('\n');
@@ -166,9 +167,37 @@ function buildHtml(md, { runUrl, tiles, images, dashboardUrl } = {}) {
   const rest = hasTitle ? summary.slice(firstBreak + 1) : summary;
   const block = tilesHtml(tiles) + chartsHtml(images);
   const dash = dashboardUrl ? `<p style="margin:16px 0;font-size:14px;"><a href="${attr(dashboardUrl)}" style="color:#2563eb;font-weight:600;">See the dashboard</a> for the full charts, 52 weeks back.</p>` : '';
+  const acct = accountsHtml(accounts);
   const safeUrl = runUrl ? attr(runUrl) : '';
   const link = runUrl ? `<p style="margin:16px 0;color:#9ca3af;font-size:11px;">Run log (for debugging only): <a href="${safeUrl}">${safeUrl}</a></p>` : '';
-  return `<div style="font-family:${FONT};font-size:14px;line-height:1.5;color:#111827;max-width:720px;">${title ? markdownToHtml(title) : ''}${block}${markdownToHtml(rest)}${dash}${link}</div>`;
+  return `<div style="font-family:${FONT};font-size:14px;line-height:1.5;color:#111827;max-width:720px;">${title ? markdownToHtml(title) : ''}${block}${markdownToHtml(rest)}${acct}${dash}${link}</div>`;
+}
+
+/**
+ * Accounts section of the Monday email (BRO-4615): the plain-English lines
+ * from scripts/lib/account-metrics.js weeklySummaryLines, read from the
+ * account-dashboard.json the accounts job keeps in the private repo.
+ */
+function accountsHtml(accounts) {
+  if (!accounts || !Array.isArray(accounts.lines) || !accounts.lines.length) return '';
+  const items = accounts.lines.map((l) => `<li style="margin:4px 0;">${inline(l)}</li>`).join('');
+  const more = accounts.url ? `<p style="margin:8px 0 16px;font-size:14px;"><a href="${attr(accounts.url)}" style="color:#2563eb;font-weight:600;">Open the accounts page</a> for the daily numbers and the sign-up funnel.</p>` : '';
+  return `<h2 style="font-size:18px;margin:24px 0 8px;">Accounts</h2><ul style="margin:0;padding-left:20px;">${items}</ul>${more}`;
+}
+
+/** account-dashboard.json → { lines, url }, or null when absent/unreadable/stale. */
+function loadAccountsSection(accountsPath, url, now = Date.now()) {
+  if (!accountsPath || !fs.existsSync(accountsPath)) return null;
+  try {
+    const d = JSON.parse(fs.readFileSync(accountsPath, 'utf8'));
+    // Older than 3 days = the accounts job is broken; don't mail stale numbers as this week's.
+    if (!d.generatedAt || now - Date.parse(d.generatedAt) > 3 * 86400000) return null;
+    const lines = require('./account-metrics').weeklySummaryLines(d);
+    return lines.length ? { lines, url } : null;
+  } catch (e) {
+    console.error(`[email] accounts summary at ${accountsPath} unreadable (${e.message}); sending without it`);
+    return null;
+  }
 }
 
 const QUICKCHART_URL = 'https://quickchart.io/chart';
@@ -220,7 +249,7 @@ async function renderCharts(charts, opts = {}) {
  *   when given it is the email body and the full report is only attached.
  *   Without it the top of the full report is used (older artifacts).
  */
-async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, dashboardUrl, runUrl, dryRun = false, to } = {}) {
+async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, dashboardUrl, accountsPath, accountsUrl, runUrl, dryRun = false, to } = {}) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const OWNER_EMAIL = to || process.env.OWNER_EMAIL;
   if (!RESEND_API_KEY || !OWNER_EMAIL) return { sent: false, reason: 'RESEND_API_KEY or OWNER_EMAIL not set' };
@@ -250,7 +279,8 @@ async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, da
       charts = await renderCharts(m.charts);
     } catch (e) { console.error(`[email] metrics at ${metricsPath} unreadable (${e.message}); sending without tiles`); }
   }
-  const html = buildHtml(body, { runUrl, tiles, images: charts.images, dashboardUrl });
+  const accounts = loadAccountsSection(accountsPath, accountsUrl);
+  const html = buildHtml(body, { runUrl, tiles, images: charts.images, dashboardUrl, accounts });
   if (dryRun) {
     console.log(`[email] DRY RUN — would send "${subject}" to ${OWNER_EMAIL} (${html.length} bytes HTML, ${tiles ? tiles.length : 0} tiles, ${charts.images.length} charts, ${md.length} bytes attachment)`);
     return { sent: false, reason: 'dry-run', subject, html, attachments: charts.attachments };
@@ -269,4 +299,4 @@ async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, da
   }
 }
 
-module.exports = { sendTrafficReportEmail, markdownToHtml, splitReport, buildSubject, buildHumanSubject, buildHtml, tilesHtml, chartsHtml, renderChartPng, renderCharts };
+module.exports = { sendTrafficReportEmail, accountsHtml, loadAccountsSection, markdownToHtml, splitReport, buildSubject, buildHumanSubject, buildHtml, tilesHtml, chartsHtml, renderChartPng, renderCharts };

@@ -6,6 +6,7 @@
  *   node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md \
  *     [--summary=traffic-analysis/traffic-sources-summary.md] [--run-url=https://github.com/...] \
  *     [--metrics=traffic-analysis/traffic-metrics.json] [--dashboard-url=https://…/admin/traffic] \
+ *     [--accounts=/tmp/core-data-checkout/analytics/account-dashboard.json] \
  *     [--to=someone@example.com] [--dry-run] [--html-out=preview.html]
  *   The summary (human-language body) and the metrics (tiles + charts) default
  *   to the files next to the report and are used when they exist; the full
@@ -32,6 +33,9 @@ async function main() {
     summaryPath: fs.existsSync(summaryPath) ? summaryPath : undefined,
     metricsPath: fs.existsSync(metricsPath) ? metricsPath : undefined,
     dashboardUrl: typeof args['dashboard-url'] === 'string' ? args['dashboard-url'] : undefined,
+    // Accounts section (BRO-4615), from the accounts job's private-repo payload.
+    accountsPath: typeof args.accounts === 'string' ? args.accounts : undefined,
+    accountsUrl: 'https://broadwayscorecard.com/admin/accounts',
     runUrl: args['run-url'],
     to: typeof args.to === 'string' ? args.to : undefined,
     dryRun: Boolean(args['dry-run']),

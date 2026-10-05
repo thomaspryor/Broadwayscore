@@ -67,6 +67,7 @@ scripts/check-provider-spend.test.mjs
 scripts/check-rebuild-staleness.test.mjs
 scripts/check-review-count-drift.test.mjs
 scripts/check-seo-health.test.mjs
+scripts/check-signin-redirects.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
 scripts/cmux-auth-stall-watchdog.test.mjs
@@ -92,6 +93,7 @@ scripts/import-notion-to-linear.test.mjs
 scripts/ingest-dmarc-reports.test.mjs
 scripts/ingest-review-from-url.test.mjs
 scripts/ingest-urls.test.mjs
+scripts/lib/account-metrics.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/archive-cache-guard.test.mjs
@@ -831,6 +833,7 @@ tests/unit/poller-retry-supersede.test.mjs
 tests/unit/pr-supervisor-core.test.mjs
 tests/unit/pre-push-visual-gate-scope.test.mjs
 tests/unit/precursor-category-parser.test.mjs
+tests/unit/predictions-page.test.mjs
 tests/unit/preview-placeholder-merge.test.mjs
 tests/unit/prior-run-discovery-window.test.mjs
 tests/unit/prior-run-review-display.test.mjs
@@ -1040,6 +1043,7 @@ tests/unit/table-schema-assertion.test.mjs
 tests/unit/talkin-broadway-scraper.test.mjs
 tests/unit/test-exit-code-leak-guard.test.mjs
 tests/unit/test-manifest-integrity.test.mjs
+tests/unit/test-manifest-node-ts-import.test.mjs
 tests/unit/test-manifest-sort.test.mjs
 tests/unit/test-yml-code-only-jobs.test.mjs
 tests/unit/test-yml-timeout-headroom.test.mjs

@@ -153,3 +153,23 @@ test('renderChartPng returns null (never throws) on a down or non-PNG QuickChart
   assert.deepEqual(r.attachments.map((a) => a.content_id), ['traffic-weekly', 'traffic-top-pages']);
   assert.deepEqual((await renderCharts({ weekly: {}, topPages: null }, { fetchImpl: down })).images, []);
 });
+
+test('the Accounts section renders the plain-English lines and skips stale or missing data (BRO-4615)', () => {
+  const { accountsHtml, loadAccountsSection } = require('./traffic-report-email.js');
+  const html = accountsHtml({ lines: ['3 accounts in total, 3 new this past week.'], url: 'https://broadwayscorecard.com/admin/accounts' });
+  assert.match(html, /<h2[^>]*>Accounts<\/h2>/);
+  assert.match(html, /3 accounts in total/);
+  assert.match(html, /admin\/accounts/);
+  assert.equal(accountsHtml(null), '');
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'acct-'));
+  const file = path.join(dir, 'account-dashboard.json');
+  const now = Date.parse('2026-10-12T09:30:00Z');
+  const payload = { generatedAt: '2026-10-12T06:00:00Z', accounts: { total: 3, newLast7: 3, withAnything: 2, withRating: 2, withWatchlist: 0, withList: 0 }, active: { dau: 1, wau: 2, mau: 3 }, funnel: null, actions: [] };
+  fs.writeFileSync(file, JSON.stringify(payload));
+  const sec = loadAccountsSection(file, 'https://x/admin/accounts', now);
+  assert.equal(sec.lines[0], '3 accounts in total, 3 new this past week.');
+  fs.writeFileSync(file, JSON.stringify({ ...payload, generatedAt: '2026-10-01T00:00:00Z' }));
+  assert.equal(loadAccountsSection(file, 'u', now), null, 'stale numbers are not mailed as this week');
+  assert.equal(loadAccountsSection(path.join(dir, 'nope.json'), 'u', now), null);
+});
