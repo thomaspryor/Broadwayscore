@@ -11,7 +11,9 @@
  * question for any number of workflows in 2 calls.
  *
  * CLI: node scripts/lib/rebuild-in-flight.js rebuild-reviews.yml rebuild-fast.yml
- *   prints the count (an integer) on stdout and exits 0. On any API error it
+ *   prints the count (an integer) on stdout and exits 0. If a status page is
+ *   full (100+ active runs), it asks the per-workflow endpoint for an exact
+ *   count instead (1 call per workflow per status). On any API error it
  *   prints 0, matching the `|| echo "0"` fallback the workflows used before.
  *   Token from GH_TOKEN or GITHUB_TOKEN; repo from GITHUB_REPOSITORY.
  */
@@ -53,7 +55,35 @@ async function fetchActiveRuns({ repo, token, fetchImpl = globalThis.fetch }) {
   return payloads;
 }
 
-module.exports = { countActiveRuns, fetchActiveRuns, PER_PAGE };
+/** Pure: did any status page come back full (more runs may exist past it)? */
+function isSaturated(payloads, perPage = PER_PAGE) {
+  return payloads.some((p) => p && Array.isArray(p.workflow_runs) && p.workflow_runs.length >= perPage);
+}
+
+/**
+ * Exact count when the repo-wide pages are full: the per-workflow endpoint
+ * takes the file name directly (no lookup call) and reports total_count, so
+ * this is 1 call per workflow per status. Only used on saturation, which is
+ * rare; the 2-call path covers the normal case.
+ */
+async function fetchExactCount({ repo, token, files, fetchImpl = globalThis.fetch }) {
+  let total = 0;
+  for (const file of files) {
+    const base = file.replace(/^.*\//, '');
+    for (const status of STATUSES) {
+      const res = await fetchImpl(`https://api.github.com/repos/${repo}/actions/workflows/${encodeURIComponent(base)}/runs?status=${status}&per_page=1`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'User-Agent': 'broadwayscore-rebuild-in-flight' },
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status} counting ${status} runs of ${base}`);
+      const body = await res.json();
+      total += Number(body && body.total_count) || 0;
+    }
+  }
+  return total;
+}
+
+module.exports = { countActiveRuns, fetchActiveRuns, isSaturated, fetchExactCount, PER_PAGE };
 
 if (require.main === module) {
   (async () => {
@@ -66,7 +96,16 @@ if (require.main === module) {
     }
     try {
       if (!token) throw new Error('no GH_TOKEN/GITHUB_TOKEN');
-      console.log(countActiveRuns(await fetchActiveRuns({ repo, token }), files));
+      const payloads = await fetchActiveRuns({ repo, token });
+      let count = countActiveRuns(payloads, files);
+      if (isSaturated(payloads)) {
+        // countActiveRuns already reports >= 1 here (skip-safe); replace that
+        // guess with an exact answer if the per-workflow calls succeed.
+        try { count = await fetchExactCount({ repo, token, files }); } catch (e) {
+          console.error(`[rebuild-in-flight] exact count failed (${e.message}); keeping skip-safe ${count}`);
+        }
+      }
+      console.log(count);
     } catch (e) {
       console.error(`[rebuild-in-flight] ${e.message}; reporting 0`);
       console.log(0);

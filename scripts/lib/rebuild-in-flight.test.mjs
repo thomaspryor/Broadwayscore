@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { countActiveRuns, fetchActiveRuns, PER_PAGE } = require('./rebuild-in-flight.js');
+const { countActiveRuns, fetchActiveRuns, isSaturated, fetchExactCount, PER_PAGE } = require('./rebuild-in-flight.js');
 
 const run = (p) => ({ path: p });
 const FILES = ['rebuild-reviews.yml', 'rebuild-fast.yml'];
@@ -43,4 +43,26 @@ test('fetchActiveRuns makes exactly 2 calls (in_progress, queued) and throws on 
     'https://api.github.com/repos/o/r/actions/runs?status=queued&per_page=100',
   ]);
   await assert.rejects(fetchActiveRuns({ repo: 'o/r', token: 'T', fetchImpl: async () => ({ ok: false, status: 403 }) }), /HTTP 403/);
+});
+
+test('isSaturated flags only a full page', () => {
+  const full = { workflow_runs: Array.from({ length: PER_PAGE }, () => run('.github/workflows/test.yml')) };
+  assert.equal(isSaturated([full, { workflow_runs: [] }]), true);
+  assert.equal(isSaturated([{ workflow_runs: [run('a.yml')] }, null, {}]), false);
+});
+
+test('fetchExactCount sums total_count per workflow and status, 1 call each, by file name (no lookup)', async () => {
+  const urls = [];
+  const fetchImpl = async (url) => {
+    urls.push(url);
+    return { ok: true, json: async () => ({ total_count: url.includes('rebuild-fast.yml') && url.includes('queued') ? 2 : 0 }) };
+  };
+  assert.equal(await fetchExactCount({ repo: 'o/r', token: 'T', files: ['.github/workflows/rebuild-reviews.yml', 'rebuild-fast.yml'], fetchImpl }), 2);
+  assert.deepEqual(urls, [
+    'https://api.github.com/repos/o/r/actions/workflows/rebuild-reviews.yml/runs?status=in_progress&per_page=1',
+    'https://api.github.com/repos/o/r/actions/workflows/rebuild-reviews.yml/runs?status=queued&per_page=1',
+    'https://api.github.com/repos/o/r/actions/workflows/rebuild-fast.yml/runs?status=in_progress&per_page=1',
+    'https://api.github.com/repos/o/r/actions/workflows/rebuild-fast.yml/runs?status=queued&per_page=1',
+  ]);
+  await assert.rejects(fetchExactCount({ repo: 'o/r', token: 'T', files: ['x.yml'], fetchImpl: async () => ({ ok: false, status: 404 }) }), /HTTP 404/);
 });
