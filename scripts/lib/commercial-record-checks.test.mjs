@@ -93,6 +93,22 @@ test('public text fields reject research-pipeline wording', () => {
   assert.equal(e({ recoupedSource: 'GPT summary of https://example.com/a' }).length, 1);
 });
 
+test('public text fields reject hand-edit process notes and field names written as code (BRO-4669)', () => {
+  const e = (rec) => commercialRecordErrors('k', rec, {});
+  // The live wording these records carried before the BRO-4669 plan.
+  assert.equal(e({ recoupedSource: 'No producer announcement. Kept recouped:true per owner review 2026-07-13.' }).length, 1);
+  assert.equal(e({ recoupedSource: 'Closed after a limited run. recouped:null because no public citation.' }).length, 1);
+  assert.equal(e({ notes: 'Total gross ~$15.2M. Per policy applied 2026-05-24: demoted from Flop.' }).length, 1);
+  assert.equal(e({ notes: '548 performances. Per policy applied: designation=Nonprofit because no citation.' }).length, 1);
+  // Prose with colons and capitals, and URL query strings, pass.
+  assert.equal(e({ notes: 'Based on a True story: the 1990s case.' }).length, 0);
+  assert.equal(e({ recoupedSource: 'Recouped: Deadline (Aug 2023)' }).length, 0);
+  assert.equal(e({ capitalizationSource: 'SEC Form D: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=D' }).length, 0);
+  assert.equal(e({ recoupedSource: 'No recoupment outcome has been announced. The run was extended twice.' }).length, 0);
+  // Writers clear the process sentence and keep the rest.
+  assert.equal(stripInternalWording('Total gross ~$15.2M. Per policy applied 2026-05-24: recouped:null because no citation.'), 'Total gross ~$15.2M.');
+});
+
 test('stripInternalWording keeps the public part of a mixed citation', () => {
   assert.equal(stripInternalWording('SEC filings (GPT Deep Research)'), 'SEC filings');
   assert.equal(stripInternalWording('SEC Form D (Mar 2024): $29M. Previous $20M estimate from Deep Research was too low.'), 'SEC Form D (Mar 2024): $29M.');
