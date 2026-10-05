@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T17:25:25.623Z",
+  "timestamp": "2026-10-05T17:50:33.886Z",
   "stats": {
-    "totalReviews": 46359,
-    "alreadyFlagged": 18678,
+    "totalReviews": 46360,
+    "alreadyFlagged": 18681,
     "dateGuardCatches": 268,
-    "directorMismatch": 1259,
+    "directorMismatch": 1262,
     "tvFilmSignals": 1344,
     "londonSignals": 1275,
-    "offBroadwaySignals": 511,
+    "offBroadwaySignals": 510,
     "yearMismatch": 109,
-    "noPublishDate": 4318
+    "noPublishDate": 4308
   },
   "findings": [
     {
@@ -1526,7 +1526,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 88,
+      "score": 89,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/american-psycho-almeida-theatre",
       "findings": [
@@ -1539,8 +1539,36 @@
     },
     {
       "showId": "american-psycho-off-west-end-2026",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 82,
+      "publishDate": "2026-02-01",
+      "url": "https://www.broadwayworld.com/westend/article/Review-AMERICAN-PSYCHO-Almeida-Theatre-20260201",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 79,
+      "publishDate": "2026-02-02",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/american-psycho-musical-almeida-theatre-review-b2912010.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 76,
       "publishDate": "2026-02-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/american-psycho-almeida-review",
       "findings": [
@@ -1553,6 +1581,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 80,
+      "publishDate": "2026-02-01",
+      "url": "https://www.timeout.com/london/theatre/american-psycho-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
         }
       ]
     },
@@ -46823,20 +46865,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "heartbreak-hotel-off-broadway-2026",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": "2026-03-25",
-      "url": "https://playbill.com/article/how-are-the-reviews-for-heartbreak-hotel-off-broadway",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"st. ann's warehouse\""
         }
       ]
     },
