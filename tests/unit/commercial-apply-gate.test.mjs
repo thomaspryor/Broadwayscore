@@ -188,6 +188,43 @@ describe('commercial-apply-gate', () => {
       assert.equal(result.recoupedSource, scraperEntry.recoupedSource);
     });
 
+    it('keeps the date and source of a recoupment already on record (BRO-4657)', () => {
+      // The Outsiders, 2026-10-05: "2025-12" from Broadway News became the
+      // NYT story's "2026-01" on a Friday auto-apply.
+      const recorded = {
+        ...existing,
+        recouped: true,
+        recoupedDate: '2025-12',
+        recoupedSource: 'Broadway News (Jan 27, 2026): recouped as of the week ending Dec 28',
+      };
+      const result = gate.buildCommercialEntry(scraperEntry, recorded, { isClaimAutoApply: true });
+      assert.equal(result.recouped, true);
+      assert.equal(result.recoupedDate, '2025-12');
+      assert.equal(result.recoupedSource, recorded.recoupedSource);
+      assert.ok(result.sources.some(s => s.url === 'https://www.nytimes.com/2026/05/19/giant.html'),
+        'the claim still adds its article to sources');
+    });
+
+    it('keeps a human-locked recoupment even without a date', () => {
+      const locked = { ...existing, recouped: true, humanReviewedRecouped: true, recoupedSource: 'Producer statement' };
+      const result = gate.buildCommercialEntry(scraperEntry, locked, { isClaimAutoApply: true });
+      assert.equal(result.recoupedDate, undefined);
+      assert.equal(result.recoupedSource, 'Producer statement');
+    });
+
+    it('still dates an undated, unlocked recoupment from the claim', () => {
+      const undated = { ...existing, recouped: true };
+      const result = gate.buildCommercialEntry(scraperEntry, undated, { isClaimAutoApply: true });
+      assert.equal(result.recoupedDate, '2026-05');
+      assert.equal(result.recoupedSource, scraperEntry.recoupedSource);
+    });
+
+    it('a full rebuild (not auto-apply) still takes the entry\'s recoupment', () => {
+      const recorded = { ...existing, recouped: true, recoupedDate: '2025-12' };
+      const result = gate.buildCommercialEntry({ ...scraperEntry, recoupedDate: '2026-02' }, recorded, { isClaimAutoApply: false });
+      assert.equal(result.recoupedDate, '2026-02');
+    });
+
     it('merges sources by URL — keeps prior citations, appends new', () => {
       const result = gate.buildCommercialEntry(scraperEntry, existing, { isClaimAutoApply: true });
       assert.equal(result.sources.length, 2, 'should have both reddit + NYT');

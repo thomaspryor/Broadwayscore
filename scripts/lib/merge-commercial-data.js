@@ -29,6 +29,13 @@
 //     base was deleted by the other side, so it is dropped (both directions,
 //     stats.resolvedAsDeletion). One that changed since base is kept (a
 //     delete racing an edit keeps the edit). Without base: union, as before.
+//   * A slug on both sides that is also in base: merged FIELD BY FIELD
+//     (BRO-4657). A field only one side changed takes that side's value; a
+//     field both changed differently takes the pickNewer winner's. Live
+//     2026-10-05: an approved fix rewrote Lucky Guy's designation without
+//     touching lastUpdated, Commercial Friday's stale copy (which had only
+//     refreshed model bookkeeping) tied on lastUpdated, won whole-record,
+//     and silently reverted the fix. Without base: whole-record pickNewer.
 //   * `base` must be the real fork point, never a post-rebase merge-base
 //     (that equals remote and would read every remote addition as our
 //     delete), hence `requiresTrueBase` for reconcile-merged-json.js.
@@ -97,6 +104,29 @@ function unchangedSinceBase(baseShows, slug, entry) {
   return JSON.stringify(baseShows[slug]) === JSON.stringify(entry);
 }
 
+function sameValue(a, b) {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
+
+// Field-by-field three-way merge of one record both sides kept. A field only
+// one side changed since base takes that side's value; a field both changed
+// to different values takes `winner`'s (the pickNewer choice). Returns the
+// merged record and how many fields were true conflicts.
+function mergeRecordFields(o, r, b, winner) {
+  const out = {};
+  let conflicts = 0;
+  const keys = new Set([...Object.keys(o), ...Object.keys(r), ...Object.keys(b)]);
+  for (const k of keys) {
+    const ov = o[k], rv = r[k], bv = b[k];
+    let v;
+    if (sameValue(ov, bv)) v = rv;
+    else if (sameValue(rv, bv) || sameValue(ov, rv)) v = ov;
+    else { v = winner === o ? ov : rv; conflicts++; }
+    if (v !== undefined) out[k] = v;
+  }
+  return { record: out, conflicts };
+}
+
 // Three parameters with no default: callers dispatch on `.length >= 3`.
 function mergeCommercialJson(ours, remote, base) {
   ours = ours || { shows: {} };
@@ -107,7 +137,7 @@ function mergeCommercialJson(ours, remote, base) {
   const merged = { ...ours };
   merged.shows = { ...oursShows };
 
-  let added = 0, kept = 0, overlaid = 0, resolvedAsDeletion = 0;
+  let added = 0, kept = 0, overlaid = 0, resolvedAsDeletion = 0, fieldMerged = 0, fieldConflicts = 0;
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
   for (const slug of allSlugs) {
     const o = oursShows[slug];
@@ -123,9 +153,21 @@ function mergeCommercialJson(ours, remote, base) {
     if (!o && !r) continue;
     // Both sides have the slug. Pick newer by lastUpdated, then overlay any
     // humanReviewed* flags from the loser so manual corrections survive.
+    // With a base copy of the record, merge field by field instead, so a
+    // side that only touched bookkeeping fields cannot wipe the other side's
+    // correction (BRO-4657).
     const winner = pickNewer(o, r, ['lastUpdated', 'firstAdded']);
     const loser = winner === o ? r : o;
-    const chosen = { ...winner };
+    const b = baseShows && baseShows[slug];
+    let chosen;
+    if (b && typeof b === 'object' && !sameValue(o, r)) {
+      const res = mergeRecordFields(o, r, b, winner);
+      chosen = res.record;
+      fieldMerged++;
+      fieldConflicts += res.conflicts;
+    } else {
+      chosen = { ...winner };
+    }
     if (overlayHumanReviewed(chosen, loser)) overlaid++;
     merged.shows[slug] = chosen;
   }
@@ -136,7 +178,7 @@ function mergeCommercialJson(ours, remote, base) {
     merged._meta = { ...(ours._meta || {}), ...(remote._meta || {}), ...newer };
   }
 
-  return { merged, stats: { added, kept, overlaid, resolvedAsDeletion, totalSlugs: allSlugs.size } };
+  return { merged, stats: { added, kept, overlaid, resolvedAsDeletion, fieldMerged, fieldConflicts, totalSlugs: allSlugs.size } };
 }
 // reconcile-merged-json.js: without PUSH_RECONCILE_BASE, pass no base (union)
 // rather than the post-rebase merge-base, which equals remote.

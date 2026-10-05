@@ -305,17 +305,10 @@ function executeDataEdit(action) {
     return { ok: true, msg: `shows.json: ${field} updated for ${showId}${tagNote}` };
 
   } else if (file === 'commercial.json') {
-    const slug = action.showSlug || showId;
-    if (!data.shows?.[slug]) return { ok: false, reason: `No commercial entry for "${slug}"` };
-
-    const currentVal = data.shows[slug][field] ?? null;
-    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
-      return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
-    }
-
-    data.shows[slug][field] = newValue;
-    saveJsonFile(relPath, data);
-    return { ok: true, msg: `commercial.json: ${field} updated for ${slug}` };
+    const { applyCommercialFieldEdit } = require('./lib/commercial-field-edit.js');
+    const result = applyCommercialFieldEdit(data, action.showSlug || showId, field, oldValue, newValue);
+    if (result.ok) saveJsonFile(relPath, data);
+    return result;
 
   } else if (file === 'audience-buzz.json') {
     if (!data.shows?.[showId]) return { ok: false, reason: `No audience-buzz entry for "${showId}"` };
