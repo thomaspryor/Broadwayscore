@@ -103,10 +103,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Unused at --source notion (the default both scripts run at here) —
-          # linear-client.js's getApiKey() only throws inside an actual
-          # graphql() call, which the Notion-only leg never makes. Included
-          # anyway: its audit-secret-scan-always-trace marker (linear-client.js
+          # Used by enrich's Linear leg (--source both). Also carries
+          # linear-client.js's getApiKey() lazy-throw semantics: its audit-secret-scan-always-trace marker (linear-client.js
           # header) makes scripts/audit-workflow-secret-gaps.js flag its
           # absence unconditionally (CI-enforced, test.yml:3244) precisely
           # because a missing-but-only-sometimes-needed secret shipped silently
@@ -117,12 +115,25 @@ jobs:
           node scripts/enrich-card-acceptance.js --from-report --source both --limit 25
           node scripts/audit-card-verifiability.js --source notion
 
+      # BRO-2997: refresh data/audit/card-verifiability-linear.json daily. Its
+      # own step, AFTER enrich, so a Linear outage/throw (main() rethrows for a
+      # single --source) cannot skip the Notion re-audit above, and
+      # continue-on-error so the Notion report still commits. A failure here
+      # shows up as a stale report in health-check.js ("Data: undispatchable
+      # Linear issues"), which is the alarm for this step.
+      - name: Audit Linear backlog
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-card-verifiability.js --source linear
+
       - name: Commit refreshed report
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/card-verifiability.json
+          git add data/audit/card-verifiability-linear.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0

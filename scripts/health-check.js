@@ -4228,6 +4228,22 @@ function cardVerifiabilityBacklogResults(report, drainMetric) {
   return results;
 }
 
+// BRO-2997: Linear sibling of the row above. Alarms on the daily refresh in
+// card-verifiability-audit.yml going stale and on shape/basename regressions;
+// see scripts/lib/card-verifiability-linear-health.js for why it does not warn
+// on any refused count.
+function cardVerifiabilityLinearResults(report, nowMs) {
+  const { checkCardVerifiabilityLinear } = require('./lib/card-verifiability-linear-health');
+  const problem = checkCardVerifiabilityLinear(report, nowMs);
+  if (!problem) return [];
+  return [{
+    name: 'Data: undispatchable Linear issues',
+    status: problem.severity,
+    message: `data/audit/card-verifiability-linear.json: ${problem.reason}.`,
+    hint: 'Check card-verifiability-audit.yml run history (daily 05:30 UTC, "Audit Linear backlog" step). Refresh locally: node scripts/audit-card-verifiability.js --source linear; arm refused issues: node scripts/enrich-card-acceptance.js --source linear.',
+  }];
+}
+
 // Daily-digest surfacing for stalled pipeline surfaces (data/audit/
 // progress-watch-state.json, written by check-progress-stalls.js — task
 // #597). Existing audits (repeatFailureResults et al above) only ever assert
@@ -5319,6 +5335,12 @@ async function main() {
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
     try {
+      let cvLinear = null;
+      try { cvLinear = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability-linear.json'), 'utf8')); } catch { /* missing = a warn row, by design */ }
+      allResults.push(...cardVerifiabilityLinearResults(cvLinear, Date.now()));
+    } catch (e) { console.warn('[health-check] linear verifiability row failed:', e.message); }
+
+    try {
       const progressReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/progress-watch-state.json'), 'utf8'));
       allResults.push(...progressWatchResults(progressReport));
     } catch { /* report absent (monitor not yet run) — nothing to surface */ }
@@ -5437,4 +5459,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, cardVerifiabilityLinearResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
