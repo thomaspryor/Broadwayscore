@@ -57,6 +57,10 @@ test('workflow pins --source notion so CI never depends on the bare default', as
   const { readFileSync } = await import('node:fs');
   const wf = readFileSync(new URL('../../.github/workflows/card-verifiability-audit.yml', import.meta.url), 'utf8');
   const calls = wf.split('\n').filter(l => /node scripts\/audit-card-verifiability\.js/.test(l) && !l.trim().startsWith('#'));
-  assert.ok(calls.length >= 2);
-  for (const l of calls) assert.match(l, /--source notion/);
+  assert.ok(calls.length >= 3);
+  // Every call pins an explicit source (never the bare `all` default); the
+  // Notion job's two calls stay notion, and BRO-2997's daily sweep is linear.
+  for (const l of calls) assert.match(l, /--source (notion|linear)/);
+  assert.equal(calls.filter(l => /--source notion/.test(l)).length, 2);
+  assert.equal(calls.filter(l => /--source linear/.test(l)).length, 1, 'BRO-2997: daily Linear sweep must stay scheduled');
 });
