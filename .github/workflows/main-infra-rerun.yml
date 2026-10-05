@@ -26,12 +26,19 @@ jobs:
   rerun:
     name: Re-run newest starved main test run
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    # 10, not 5: the first live run (37382363147) spent all 5 minutes in a
+    # full checkout of the 2.5 GB repo. Sparse checkout below needs only
+    # scripts/ and the notify-failure action.
+    timeout-minutes: 10
     concurrency:
       group: main-infra-rerun
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
       - uses: actions/setup-node@v5
         with:
           node-version: '20'
