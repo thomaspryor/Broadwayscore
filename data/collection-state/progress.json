@@ -105,7 +105,13 @@
     "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "eurydice-off-broadway-2026/timeout--raven-snook.json",
     "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-    "grangeville-off-broadway-2026/timeout--adam-feldman.json"
+    "grangeville-off-broadway-2026/timeout--adam-feldman.json",
+    "affluenza-off-west-end-2026/timeout-london--unknown.json",
+    "kramerfauci-st-anns-off-broadway-2026/nytimes--helen-shaw.json",
+    "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+    "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -151,7 +157,17 @@
     "spread-off-broadway-2026/whatsonstage--michael-coveney.json",
     "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "silver-manhattan-off-broadway-2026/theatermania--unknown.json"
+    "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
+    "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+    "franz-and-marie-west-end-2026/whatnightout--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
+    "bull-off-west-end-2026/whatsonstage--unknown.json",
+    "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+    "hay-fever-west-end-2026/londontheatredirect--unknown.json",
+    "hay-fever-west-end-2026/thestage--the-stage.json",
+    "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -235,14 +251,19 @@
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
       "eurydice-off-broadway-2026/timeout--raven-snook.json",
       "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-      "grangeville-off-broadway-2026/timeout--adam-feldman.json"
+      "grangeville-off-broadway-2026/timeout--adam-feldman.json",
+      "affluenza-off-west-end-2026/timeout-london--unknown.json",
+      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+      "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/macbeth-off-broadway-2026/deadline--baz-bamigboye.json",
-      "macbeth-off-broadway-2026/deadline--baz-bamigboye.json"
+      "macbeth-off-broadway-2026/deadline--baz-bamigboye.json",
+      "data/review-texts/kramerfauci-st-anns-off-broadway-2026/nytimes--helen-shaw.json",
+      "kramerfauci-st-anns-off-broadway-2026/nytimes--helen-shaw.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -261,7 +282,9 @@
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+    ],
     "brightdata": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
       "truly-howard-hughes-off-broadway-2026/cititour--unknown.json",
@@ -283,11 +306,12 @@
       "mother-russia-off-broadway-2026/broadwayworld--stephi-wild.json",
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
-      "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json"
+      "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json"
     ]
   },
   "startTime": "2026-10-05T17:46:31.717Z",
-  "lastProcessed": "grangeville-off-broadway-2026/timeout--adam-feldman.json",
+  "lastProcessed": "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
   "log": [
     {
       "t": "2026-10-05T17:57:33.684Z",
@@ -306,6 +330,17 @@
       "event": "bb-session",
       "session": "57437879",
       "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-05T18:41:48.238Z",
+      "event": "bb-session",
+      "session": "e45d9bd8",
+      "url": "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html"
+    },
+    {
+      "t": "2026-10-05T18:41:49.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
