@@ -38,7 +38,7 @@ const ALLOW = {
   'scripts/linear-brain.js': 'text-only',                // USAGE text contrasting with notion-brain
   'scripts/bsc-next.js': 'text-only',                    // hint strings only
   'scripts/lib/dispatch-guards.js': 'text-only',         // refusal text naming the legacy command
-  'src/app/api/autonomous-action/route.ts': 'dead',      // only autonomous-merge.yml dispatch used it
+  'src/app/api/autonomous-action/route.ts': 'additive-deadend', // morning-digest 'Dispatch a fix' tap creates a Notion card the disabled poller never reads (BRO-4718)
   'src/lib/notion-api.ts': 'additive-deadend',
   'src/app/api/feedback/route.ts': 'additive-deadend',
   'src/app/api/submit-review/route.ts': 'additive-deadend',           // feedback + submit-review still create a Notion page (see doc, BRO-3018 follow-up)

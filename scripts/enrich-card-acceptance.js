@@ -1441,7 +1441,7 @@ async function runLinearLeg(args, { dryRun, limit }) {
       writeCard = makeLinearWriteCard(linear, team.id);
     } catch (e) {
       console.error(`[enrich-card-acceptance] linear: getTeam failed, aborting this leg (cannot tag auto-enriched): ${e.message}`);
-      return [];
+      return [{ id: 'linear-team', name: 'Linear team lookup', action: 'failed', detail: `Linear getTeam failed: ${e.message}`, source: 'linear' }];
     }
   }
 
