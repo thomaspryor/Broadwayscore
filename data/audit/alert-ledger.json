@@ -145,20 +145,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-05T01:03:37.240Z",
-      "lastSeen": "2026-10-05T01:43:53.508Z",
-      "lastNotifiedAt": "2026-10-05T01:03:37.240Z",
+      "incidentOpenedAt": "2026-10-05T15:52:35.162Z",
+      "lastSeen": "2026-10-05T15:52:35.162Z",
+      "lastNotifiedAt": "2026-10-05T15:52:35.162Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 121,
+      "notifyCount": 122,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 2,
-      "resolvedAt": "2026-10-05T02:44:59.652Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6993,25 +6991,23 @@
       "silentRefires": 1
     },
     "test-yml:red:Lint Workflows:8be00113": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "lastSeen": "2026-09-29T23:08:03.724Z",
-      "lastNotifiedAt": "2026-09-29T21:43:53.789Z",
+      "incidentOpenedAt": "2026-10-05T15:52:34.483Z",
+      "lastSeen": "2026-10-05T15:52:34.483Z",
+      "lastNotifiedAt": "2026-10-05T15:52:34.483Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-4392",
+      "linearIdentifier": "BRO-4736",
       "dispatch": {
-        "requestedAt": "2026-09-29T21:43:53.789Z",
+        "requestedAt": "2026-10-05T15:43:57.317Z",
         "mode": "dispatch-at-filing",
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
-      },
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-29T23:34:15.817Z",
-      "resolveReason": "job-green"
+      }
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
@@ -10422,6 +10418,19 @@
       "lastSeen": "2026-10-05T14:24:31.627Z",
       "lastNotifiedAt": "2026-10-05T14:24:31.627Z",
       "lastSurfacedAt": "2026-10-05T14:24:31.627Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4721-biz-ux": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-4721-biz-ux",
+      "firstSeen": "2026-10-05T15:49:13.001Z",
+      "incidentOpenedAt": "2026-10-05T15:49:13.001Z",
+      "lastSeen": "2026-10-05T15:49:13.001Z",
+      "lastNotifiedAt": "2026-10-05T15:49:13.001Z",
+      "lastSurfacedAt": "2026-10-05T15:49:13.001Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

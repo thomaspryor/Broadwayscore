@@ -28,6 +28,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { segmentTourRows, pickSegment, currentSegment, parseTourSchedule, duplicateScheduleOf } = require('./lib/tour-schedule');
 const { fetchSchedule } = require('./lib/tours-to-you');
+const { createRunBudget } = require('./lib/run-budget');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -80,9 +81,13 @@ async function main() {
 
   let failed = 0;
   let changed = 0;
+  // The job's timeout is 30 min; 429 backoffs (tours-to-you.js) stop waiting
+  // as this runs low, and tours not reached keep their saved stops.
+  const budget = createRunBudget(22);
   for (const [i, tour] of targets.entries()) {
+    if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - i} tour(s) keep their saved stops until tomorrow`); break; }
     if (i > 0) await sleep(PAUSE_MS);
-    const { url, html } = await fetchSchedule(tour);
+    const { url, html } = await fetchSchedule(tour, null, { budget });
     const stops = url ? tourStops(tour, html) : null;
     if (!stops) { failed++; console.log(`${tour.id}: no schedule (kept ${out.tours[tour.id] ? 'previous' : 'none'})`); continue; }
     // Another show's table on this page (BRO-4601: Come From Away's page showed

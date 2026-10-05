@@ -102,7 +102,7 @@ const { pickLinearModel } = require('./lib/bsc-next-model.js');
 // file's header for the DispatchGuardTask shape these expect.
 const {
   findLiveWorkspaceForTask, safeLedgerEntries, checkDeadDispatch, parkedGuard,
-  evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS, isAutomationParked, isDrainableSessionParked,
+  evaluateVerifiability, classifyHeadlessDispatchability, remainingHeadlessBlockers, HEADLESS_BLOCKERS, isAutomationParked, isDrainableSessionParked,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
   workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
   resolveVacuousCheck, vacuousCheckGuard,
@@ -1113,8 +1113,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // --allow-session-parked (BRO-4535): same re-verify-don't-trust shape, for
     // a card a session parked on a technical reason a worker can clear itself.
     const sessionParked = args['allow-session-parked'] && isDrainableSessionParked(issue.description);
-    const blocking = hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
-      && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && (args.force || automationParked || sessionParked)));
+    const blocking = remainingHeadlessBlockers(hg.blockers, { force: !!args.force, automationParked: !!automationParked, sessionParked: !!sessionParked });
     if (!hg.dispatchable && blocking.length) {
       // BRO-3652: headless is the default now, so this refusal is what a bare
       // `--id` dispatch of a human-gated card hits. It stays LOUD (exit 1 in
@@ -1122,7 +1121,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // one) and never silently downgrades to a tab — the owner has to say
       // `--tab` themselves, because a tab is only right when they are present.
       console.error(`[linear-next] REFUSING headless dispatch of ${identifier}: an unattended session cannot finish this issue.`);
-      for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
+      // BRO-3536: list only what still blocks. A sentinel that --force /
+      // --allow-*-parked already waived is not a reason for this refusal, and
+      // printing it made --force look broken.
+      for (const b of blocking) console.error(`    ${b.code}: ${b.detail}`);
+      if (blocking.length < hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD).length) {
+        console.error(`  (PARKED_SENTINEL was waived by your flag; the blocker(s) above are NOT covered by --force/--allow-*-parked — only --allow-human-gated waives them.)`);
+      }
       console.error(`  Dispatch it to a cmux tab instead (add --tab), where the owner is present to clear the gate:`);
       console.error(`    node scripts/linear-next.js --id ${identifier} --tab`);
       console.error(`  or re-run with --allow-human-gated if you know the gate does not apply,`);
