@@ -223,7 +223,7 @@ function extractCriticFromTitle(title) {
 // goes through the normal dedupe + guards under its real URL. Unresolvable
 // reprints stay rejected (null).
 const _isRegisteredOutletUrl = makeRegisteredOutletPredicate(_OUTLET_DOMAINS, _REGISTRY_DOMAIN_ALIASES);
-async function resolveSerpHitUrl(rawUrl) {
+async function resolveSerpHitUrl(rawUrl, showTitle) {
   if (!isSyndicationHost(rawUrl)) return rawUrl;
   const { fetchPage } = require('./lib/scraper');
   const resolved = await resolveSyndicatedHit(rawUrl, {
@@ -233,6 +233,12 @@ async function resolveSerpHitUrl(rawUrl) {
   });
   if (!resolved) {
     console.log(`    [SKIP] Syndicated reprint, no registered-outlet source found: ${rawUrl}`);
+    return null;
+  }
+  // A body-link is the weakest signal (reprint pages carry "related" links to
+  // other reviews): require the target's own slug to name the show.
+  if (resolved.via === 'body-link' && !serpResultMentionsShow('', resolved.url, showTitle)) {
+    console.log(`    [SKIP] Syndicated reprint body-link does not name "${showTitle}": ${resolved.url}`);
     return null;
   }
   console.log(`    [SYNDICATION] ${rawUrl} -> ${resolved.url} (${resolved.via})`);
@@ -515,7 +521,7 @@ async function main() {
     searched++;
 
     for (const result of results) {
-      const url = await resolveSerpHitUrl(result.url || result.link);
+      const url = await resolveSerpHitUrl(result.url || result.link, showTitle);
       if (!url) continue;
 
       // Skip aggregators
@@ -648,7 +654,7 @@ async function main() {
       searched++;
       let gated = 0;
       for (const result of results) {
-        const url = await resolveSerpHitUrl(result.url || result.link);
+        const url = await resolveSerpHitUrl(result.url || result.link, showTitle);
         if (!url) continue;
         if (isAggregatorUrl(url)) continue;
         if (existingUrls.has(url.toLowerCase())) { skippedDupe++; continue; }

@@ -52,6 +52,6 @@ test('isRejectedUrl vetoes a canonical (blocked/aggregator targets)', () => {
 // must resolve hits through resolveSerpHitUrl, or reprints are dropped again.
 test('discover-opening-night-reviews resolves syndicated hits in Strategy 2 and 2b', () => {
   const src = fs.readFileSync(new URL('../discover-opening-night-reviews.js', import.meta.url), 'utf8');
-  const uses = src.match(/await resolveSerpHitUrl\(result\.url \|\| result\.link\)/g) || [];
+  const uses = src.match(/await resolveSerpHitUrl\(result\.url \|\| result\.link, showTitle\)/g) || [];
   assert.equal(uses.length, 2);
 });
