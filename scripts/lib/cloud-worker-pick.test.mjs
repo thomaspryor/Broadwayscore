@@ -24,6 +24,23 @@ function issue(over = {}) {
   };
 }
 
+// BRO-4664: a session that would have called create_session files a START-NOW card.
+test('START-NOW card goes first and skips the idle wait', () => {
+  const startNow = issue({ identifier: 'BRO-4999', priority: 2, updatedAt: FRESH, description: `START-NOW: owner asked for it\n${BODY}` });
+  assert.equal(skipReason(startNow, NOW), null);
+  const { pick } = pickCloudCard([issue({ identifier: 'BRO-10', priority: 1 }), startNow], { nowMs: NOW });
+  assert.equal(pick.identifier, 'BRO-4999');
+});
+
+test('START-NOW does not override other skips', () => {
+  const body = `START-NOW: x\n${BODY}`;
+  assert.equal(skipReason(issue({ description: body, state: STARTED_STATE }), NOW), 'state-started');
+  assert.equal(skipReason(issue({ description: body, priority: 3 }), NOW), 'not-p0-p1');
+  assert.equal(skipReason(issue({ description: 'START-NOW: x\nno command here', updatedAt: FRESH }), NOW), 'no-safe-verify');
+  // Mentioned mid-line is not the marker.
+  assert.equal(skipReason(issue({ description: `see START-NOW: docs\n${BODY}`, updatedAt: FRESH }), NOW), 'recent-activity');
+});
+
 test('picks highest priority first, then oldest issue number', () => {
   const { pick, eligible } = pickCloudCard([
     issue({ identifier: 'BRO-50', priority: 2 }),

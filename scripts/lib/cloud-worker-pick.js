@@ -80,6 +80,14 @@
 
 const HOUR_MS = 60 * 60 * 1000;
 const IDLE_MS = 6 * HOUR_MS;
+// A session that would have started a worker session files the card with a
+// "START-NOW: <why>" line instead (create_session prompts the owner every time,
+// BRO-4664). Such a Todo card is a handoff, so it skips the idle wait and goes
+// to the front of the queue.
+const START_NOW_RE = /^\s*START-NOW\s*:/m;
+function isStartNow(issue) {
+  return !!(issue && issue.state && issue.state.type === 'unstarted' && START_NOW_RE.test(issue.description || ''));
+}
 const PRIORITIES = new Set([1, 2]);
 const STRANDED_MS = 90 * 60 * 1000;
 const RESUME_WINDOW_MS = 7 * 24 * HOUR_MS;
@@ -154,7 +162,7 @@ function skipReason(issue, nowMs) {
   if (unfit) return unfit;
   const updatedMs = Date.parse(issue.updatedAt);
   if (!Number.isFinite(updatedMs)) return 'no-updatedAt';
-  if (nowMs - updatedMs < IDLE_MS) return 'recent-activity';
+  if (nowMs - updatedMs < IDLE_MS && !isStartNow(issue)) return 'recent-activity';
   return null;
 }
 
@@ -176,7 +184,8 @@ function pickCloudCard(issues, { nowMs }) {
   // Within a priority, the old machine-filed backlog goes after cards a person
   // filed or a session parked, so ~280 stale autofix cards can't starve them.
   const machineTier = (iss) => (iss.state && iss.state.type === 'unstarted') || !isStaleAutomationParked(iss, nowMs) ? 0 : 1;
-  eligible.sort((a, b) => (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
+  const startTier = (iss) => (isStartNow(iss) ? 0 : 1);
+  eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
     || (issueNumber(a.identifier) - issueNumber(b.identifier)));
   return { pick: eligible[0] || null, ordered: eligible, eligible: eligible.length, skipped };
 }
@@ -295,6 +304,6 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
-  AUTOMATION_PARK_STALE_MS, isStaleAutomationParked, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, isStaleAutomationParked, isStartNow, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   findResumeCandidates, findResumeCard,
 };
