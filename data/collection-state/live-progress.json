@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-05T12:14:58.963Z",
-  "processed": 54,
-  "failed": 20,
-  "successRate": "73.0%",
+  "updatedAt": "2026-10-05T12:49:55.051Z",
+  "processed": 96,
+  "failed": 38,
+  "successRate": "71.6%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 59,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 9,
+    "scrapingdog": 17,
     "scrapingbee": 0,
-    "brightdata": 4,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 13
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-10-05T09:48:25.242Z",
@@ -61,6 +61,52 @@
       "t": "2026-10-05T12:10:22.179Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-05T12:27:48.917Z",
+      "event": "bb-session",
+      "session": "812b98fa",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-05T12:28:09.517Z",
+      "event": "bb-session",
+      "session": "ad23fbee",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-05T12:36:09.466Z",
+      "event": "bb-session",
+      "session": "572cdd40",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-05T12:36:19.784Z",
+      "event": "bb-session",
+      "session": "a8e08b28",
+      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-05T12:46:21.814Z",
+      "event": "bb-session",
+      "session": "f7cb19a4",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-05T12:46:22.689Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-05T12:46:40.931Z",
+      "event": "bb-session",
+      "session": "61a1c40b",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-05T12:46:41.630Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
