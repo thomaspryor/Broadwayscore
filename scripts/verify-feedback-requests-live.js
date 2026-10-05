@@ -111,6 +111,17 @@ function resolveEntryShowId(entry, shows) {
   let matches = resolveShowMatches(entry.title, shows);
   if (entry.market) matches = matches.filter((s) => s && s.category === entry.market);
   if (matches.length === 0) return null;
+  // Market scoping (above) rules out the #905 cross-market shape, but a
+  // same-titled revival in the SAME market (e.g. a Broadway revival sharing
+  // its predecessor's title) still ties here. Picking the newest opening is
+  // usually right, but silently — flag it so a wrong pick is visible in the
+  // run log instead of surfacing only as a "see the page" link to the wrong
+  // production's page in the owner's digest.
+  if (matches.length > 1) {
+    console.log(
+      `  ${entry.key}: ambiguous — "${entry.title}" matched ${matches.length} ${entry.market || ''} shows (${matches.map((s) => s.id).join(', ')}); picking newest opening`
+    );
+  }
   return [...matches].sort((a, b) =>
     String(b.openingDate || '').localeCompare(String(a.openingDate || ''))
   )[0].id;
