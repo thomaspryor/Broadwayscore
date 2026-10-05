@@ -262,7 +262,7 @@ const FLAG_FIELDS = new Set([
   // source labels, the provenance stamp and the corroboration override.
   'scoreProvenance', 'productionCorroborated', 'aggregatorStars', 'originalScore',
   'originalScoreNormalized', 'originalScoreSource', 'aggregatorStarsSource',
-  'scoreSource', 'humanReviewScore',
+  'scoreSource', 'humanReviewScore', 'firstSeenAt',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from

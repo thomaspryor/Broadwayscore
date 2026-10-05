@@ -28,7 +28,7 @@ const stagePaywalled = {
 const lboTylerStub = {
   showId: show.id, outletId: 'london-box-office', outlet: 'London Box Office', criticName: 'Stacey Tyler',
   url: 'https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review',
-  source: 'lbo-individual', fullText: '', contentTier: 'stub', publishDate: '2026-09-09',
+  source: 'lbo-individual', firstSeenAt: '2026-09-09T09:31:54.587Z', fullText: '', contentTier: 'stub', publishDate: '2026-09-09',
   lboRoundupExcerpt: 'Based on the original novel by Charlotte Brontë, Bristol Old Vic’s adaptation of Jane Eyre',
   aggregatorStars: '4/5', aggregatorStarsNormalized: 80, originalScoreNormalized: 80,
   scoreSource: 'lbo-css-stars',
@@ -66,4 +66,11 @@ test('files with a body, or humanReviewScore, are untouched', () => {
   const body = { ...lboTylerStub, fullText: 'x'.repeat(400) };
   assert.equal(bodylessScoreProvenance(body), null);
   assert.equal(isBodylessAggregatorScoreUncorroborated({ ...lboTylerStub, humanReviewScore: 70 }, show), false);
+});
+
+test('legacy unstamped stub (no firstSeenAt / pre-rollout) is grandfathered; a stamp still applies', () => {
+  const { firstSeenAt, ...legacy } = lboTylerStub;
+  assert.equal(isBodylessAggregatorScoreUncorroborated(legacy, show), false);
+  assert.equal(isBodylessAggregatorScoreUncorroborated({ ...lboTylerStub, firstSeenAt: '2026-05-01T00:00:00Z' }, show), false);
+  assert.equal(isBodylessAggregatorScoreUncorroborated({ ...legacy, scoreProvenance: 'aggregator-inherited' }, show), true);
 });

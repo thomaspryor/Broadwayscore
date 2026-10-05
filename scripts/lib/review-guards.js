@@ -3935,6 +3935,9 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
+// BRO-3135 rollout date for unstamped files (see isBodylessAggregatorScoreUncorroborated).
+const BODYLESS_GATE_EFFECTIVE_FROM = '2026-09-01';
+
 /**
  * BRO-3135: where did a body-less file's score come from?
  *
@@ -3990,9 +3993,19 @@ function bodylessCorroboratedByProduction(data, show) {
  * so it is exempt.
  */
 function isBodylessAggregatorScoreUncorroborated(data, show) {
-  return !!data && !(data.humanReviewScore >= 1)
-    && bodylessScoreProvenance(data) === 'aggregator-inherited'
-    && !bodylessCorroboratedByProduction(data, show);
+  if (!data || data.humanReviewScore >= 1) return false;
+  if (bodylessScoreProvenance(data) !== 'aggregator-inherited') return false;
+  // Rollout scope: an inferred (unstamped) verdict only applies to files first
+  // seen on/after BODYLESS_GATE_EFFECTIVE_FROM. Legacy stubs (scan 2026-10-05:
+  // ~200 files, 142 with no firstSeenAt, e.g. StageDoor-relayed Guardian stars
+  // on 2021 West End shows) were never audited for this, so excluding them
+  // retroactively would silently drop ~100 live reviews. An explicit
+  // scoreProvenance stamp always applies.
+  if (!data.scoreProvenance) {
+    const seen = typeof data.firstSeenAt === 'string' ? data.firstSeenAt.slice(0, 10) : '';
+    if (seen < BODYLESS_GATE_EFFECTIVE_FROM) return false; // '' (no firstSeenAt) sorts first
+  }
+  return !bodylessCorroboratedByProduction(data, show);
 }
 
 /**
