@@ -197,6 +197,18 @@ export function welcomeWriteFor(pick: WelcomePick): WelcomeWrite {
 }
 
 /**
+ * Saving one pick, given where the show already is. Already seen (a review or
+ * an earlier pick): nothing to write. On the watchlist only (e.g. a bookmark
+ * saved during sign-in): it is written all the same, stars kept, and the
+ * watchlist row goes, as rating a show anywhere else does (owner rule
+ * 2026-07-12), so it is not listed as both seen and still to see.
+ */
+export function welcomeSaveStep(pick: WelcomePick, where: { seen: boolean; watchlisted: boolean }): { write: WelcomeWrite | null; clearWatchlist: boolean } {
+  if (where.seen) return { write: null, clearWatchlist: false };
+  return { write: welcomeWriteFor(pick), clearWatchlist: where.watchlisted };
+}
+
+/**
  * Where "Done" takes them: My Shows when they now have something there to
  * look at, otherwise back to the page they were on.
  */
@@ -207,7 +219,7 @@ export function welcomeFinishDestination(input: { showsAdded: number; imported: 
 /**
  * The last step's summary. To Be Rated is mentioned only when some of the
  * picks went in without stars (seen_unrated); picks with stars are already
- * in the diary, and imports carry their own ratings.
+ * in the diary.
  */
 export function welcomeDoneMessage(input: { showsAdded: number; imported: number; unratedAdded: number }): string {
   const { showsAdded, imported } = input;
@@ -217,7 +229,8 @@ export function welcomeDoneMessage(input: { showsAdded: number; imported: number
     imported > 0 ? `${imported} imported` : null,
   ].filter(Boolean).join(', ');
   const unrated = Math.min(Math.max(input.unratedAdded, 0), Math.max(showsAdded, 0));
-  if (unrated === 0) return `${counts} to your diary.`;
+  // Imports can be watchlist rows as well as diary entries.
+  if (unrated === 0) return `${counts} to ${imported > 0 ? 'My Shows' : 'your diary'}.`;
   // "They" would take in the imports too, so name the unrated picks then.
   const who = unrated === showsAdded && imported === 0
     ? (showsAdded === 1 ? 'It waits' : 'They wait')

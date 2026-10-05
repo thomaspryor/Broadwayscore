@@ -15,6 +15,7 @@ import {
   welcomeDoneMessage,
   welcomeFinishDestination,
   welcomeMarketFor,
+  welcomeSaveStep,
   welcomeSeenKey,
   welcomeWriteFor,
   type WelcomeShowSource,
@@ -157,8 +158,9 @@ test('welcomeDoneMessage: To Be Rated only when picks went in without stars', ()
   assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 0, unratedAdded: 0 }), 'Rate a show from its page any time, and it lands in your diary.');
   assert.equal(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 0 }), '3 shows added to your diary.');
   assert.equal(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 0 }), '1 show added to your diary.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 12, unratedAdded: 0 }), '12 imported to your diary.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 2, imported: 12, unratedAdded: 0 }), '2 shows added, 12 imported to your diary.');
+  // Imports can be watchlist rows, so they are never said to be in the diary.
+  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 12, unratedAdded: 0 }), '12 imported to My Shows.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 2, imported: 12, unratedAdded: 0 }), '2 shows added, 12 imported to My Shows.');
   assert.match(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 1 }), /^1 show added\. It waits for you under To Be Rated/);
   assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 3 }), /^3 shows added\. They wait for you under To Be Rated/);
   assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 1 }), /^3 shows added\. The one without stars waits for you under To Be Rated/);
@@ -167,7 +169,22 @@ test('welcomeDoneMessage: To Be Rated only when picks went in without stars', ()
   assert.match(welcomeDoneMessage({ showsAdded: 2, imported: 5, unratedAdded: 2 }), /^2 shows added, 5 imported\. The 2 without stars wait/);
   // A bad count never claims more unrated shows than were added.
   assert.match(welcomeDoneMessage({ showsAdded: 2, imported: 0, unratedAdded: 5 }), /^2 shows added\. They wait/);
-  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 4, unratedAdded: 3 }), '4 imported to your diary.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 4, unratedAdded: 3 }), '4 imported to My Shows.');
+});
+
+test('welcomeSaveStep: a bookmark never drops the pick; seen shows are not written twice', () => {
+  const rated = { showId: 'wicked', rating: 4 };
+  const unrated = { showId: 'wicked', rating: null };
+  // Bookmarked during sign-in: written with its stars, and off the watchlist.
+  assert.deepEqual(welcomeSaveStep(rated, { seen: false, watchlisted: true }),
+    { write: { table: 'reviews', row: { show_id: 'wicked', rating: 4, date_seen: null } }, clearWatchlist: true });
+  assert.deepEqual(welcomeSaveStep(unrated, { seen: false, watchlisted: true }),
+    { write: { table: 'seen_unrated', row: { show_id: 'wicked' } }, clearWatchlist: true });
+  // Nowhere yet: written, nothing to clear.
+  assert.equal(welcomeSaveStep(rated, { seen: false, watchlisted: false }).clearWatchlist, false);
+  // Already seen (reviewed or picked before): no second write, watchlist left alone.
+  assert.deepEqual(welcomeSaveStep(rated, { seen: true, watchlisted: true }), { write: null, clearWatchlist: false });
+  assert.deepEqual(welcomeSaveStep(unrated, { seen: true, watchlisted: false }), { write: null, clearWatchlist: false });
 });
 
 test('importSourceNames: one list names every import source', () => {

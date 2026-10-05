@@ -41,7 +41,8 @@ class SheetBoundary extends Component<{ children: ReactNode }, { failed: boolean
 const FIRST_CHECK_MS = 1200;
 const BUSY_RETRY_MS = 1500;
 /**
- * How long a pending sign-in action holds the welcome back: about 30 s. It is
+ * How long a pending sign-in action holds the welcome back: about 30 s on each
+ * page (the count restarts when they move to another page). It is
  * replayed only on its show page and lives up to an hour, so one that is never
  * replayed (they signed in and went elsewhere) must not cost a new account its
  * welcome; after that the sheet opens anyway.
@@ -74,7 +75,11 @@ export default function WelcomeGate() {
     landingPath.current = pathname;
   }
   const canOpenHere = !!pathname && welcomeCanOpenOn({ pathname, landingPath: landingPath.current });
-  useEffect(() => () => { mounted.current = false; }, []);
+  // Set on every mount: React's dev double-mount runs the cleanup once first.
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
 
   // Signed out (e.g. in another tab) while it is open: close it rather than
   // let it fall back to preview mode, which writes nothing.
