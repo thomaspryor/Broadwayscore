@@ -10348,18 +10348,24 @@
       "linearIdentifier": null,
       "resolvedAt": "2026-10-05T12:33:16.342Z"
     },
-    "land:land/job/linear-BRO-2869-muv7tj4k": {
+    "test-yml:red:Unit Tests:9854aad6": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-2869-muv7tj4k",
-      "firstSeen": "2026-10-05T12:50:31.953Z",
-      "incidentOpenedAt": "2026-10-05T12:50:31.953Z",
-      "lastSeen": "2026-10-05T12:50:31.953Z",
-      "lastNotifiedAt": "2026-10-05T12:50:31.953Z",
-      "lastSurfacedAt": "2026-10-05T12:50:31.953Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)\"",
+      "firstSeen": "2026-10-05T12:59:48.607Z",
+      "incidentOpenedAt": "2026-10-05T12:59:48.607Z",
+      "lastSeen": "2026-10-05T12:59:48.607Z",
+      "lastNotifiedAt": "2026-10-05T12:59:48.607Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4716",
+      "dispatch": {
+        "requestedAt": "2026-10-05T12:59:48.607Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37311592322",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37311592322"
+      }
     }
   }
 }
