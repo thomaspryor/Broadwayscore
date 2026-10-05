@@ -14,7 +14,8 @@ const { generateReviewFilename, normalizeCritic, normalizeOutlet } = cjsRequire(
   normalizeCritic: (name: string) => string;
   normalizeOutlet: (outlet: string) => string;
 };
-const { resolveIngestFilename } = cjsRequire('../../../../../scripts/lib/ingest-collision') as {
+const { resolveIngestFilename, normalizeReviewUrl: normalizeUrl } = cjsRequire('../../../../../scripts/lib/ingest-collision') as {
+  normalizeReviewUrl: (url: string) => string;
   resolveIngestFilename: (o: { filename: string; existingData: Record<string, unknown> | null; url: string }) => {
     versioned: boolean;
     filename: string;
@@ -593,7 +594,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     warning:
       dispatchWarning ||
       (versionedCollision
-        ? `A review by this critic+outlet already exists for this show at a different URL (${versionedCollision.existingUrl}). Saved as a separate versioned file ${versionedCollision.filename}; the first review was not overwritten.`
+        ? `A review by this critic+outlet already exists for this show at a different URL (${versionedCollision.existingUrl}). Saved as a separate versioned file ${versionedCollision.filename}; the first review was not overwritten on disk. Note: rebuild keeps only one review per critic+outlet per show, so only one of the two will count toward the score.`
         : undefined) ||
       (bylineFallback
         ? `Saved with criticName='Unknown' (no byline detected). Edit the file at data/review-texts/${repoPath} to set criticName, then re-rebuild.`
@@ -757,16 +758,3 @@ function isTrustedExtractorSource(source: string | undefined | null): boolean {
   return false;
 }
 
-function normalizeUrl(url: string): string {
-  try {
-    const u = new URL(url);
-    u.hostname = u.hostname.toLowerCase();
-    const paramKeys = Array.from(u.searchParams.keys());
-    for (const k of paramKeys) {
-      if (/^utm_|^fbclid$|^triedRedirect$|^ref$|^mc_eid$/.test(k)) u.searchParams.delete(k);
-    }
-    return u.toString().replace(/\/$/, '');
-  } catch {
-    return String(url).toLowerCase().replace(/\/$/, '');
-  }
-}
