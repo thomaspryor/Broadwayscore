@@ -121,6 +121,7 @@ async function runHealth({ liveWorkspaces, ledgerRows }) {
   fs.writeFileSync(ledgerPath, ledgerRows.map(r => JSON.stringify(r)).join('\n') + '\n');
 
   const prevHome = process.env.HOME;
+  const prevDisabled = process.env.DISPATCH_WATCHDOG_DISABLED;
   process.env.HOME = home;
   delete process.env.DISPATCH_WATCHDOG_DISABLED;
   const wd = require('./dispatch-watchdog.js');
@@ -148,6 +149,8 @@ async function runHealth({ liveWorkspaces, ledgerRows }) {
     ledger.LEDGER_PATH = saved.lp; cmuxws.listWorkspaces = saved.lw;
     source.fetchLinearWatchdogTasks = saved.fl; router.routeAlert = saved.ra;
     process.env.HOME = prevHome;
+    if (prevDisabled === undefined) delete process.env.DISPATCH_WATCHDOG_DISABLED;
+    else process.env.DISPATCH_WATCHDOG_DISABLED = prevDisabled;
   }
 }
 
