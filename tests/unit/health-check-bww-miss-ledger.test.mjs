@@ -131,10 +131,19 @@ test('bwwRoundupMissBacklogResults: empty or absent summary yields nothing', () 
 test('bwwRoundupMissBacklogResults: a flagged show warns with count and first show', () => {
   const results = bwwRoundupMissBacklogResults([
     { showId: 'giant-2026', missCount: 3, firstMissTs: '2026-08-01T00:00:00.000Z', lastMissTs: '2026-08-01T06:00:00.000Z' },
-  ]);
+  ], new Date('2026-08-02T00:00:00.000Z')); // pinned clock: the miss is under a day old
   assert.equal(results.length, 1);
   assert.equal(results[0].status, 'warn');
   assert.match(results[0].message, /1 show\(s\)/);
   assert.match(results[0].message, /giant-2026 \(3 misses/);
   assert.match(results[0].hint, /bww-roundup-miss-ledger\.jsonl/);
+});
+
+// BRO-4288: a miss left unresolved for 21+ days escalates the digest row to error.
+test('bwwRoundupMissBacklogResults: a miss 21+ days old escalates to error', () => {
+  const summary = [
+    { showId: 'giant-2026', missCount: 3, firstMissTs: '2026-08-01T00:00:00.000Z', lastMissTs: '2026-08-01T06:00:00.000Z' },
+  ];
+  assert.equal(bwwRoundupMissBacklogResults(summary, new Date('2026-08-21T00:00:00.000Z'))[0].status, 'warn');
+  assert.equal(bwwRoundupMissBacklogResults(summary, new Date('2026-08-23T00:00:00.000Z'))[0].status, 'error');
 });
