@@ -1,15 +1,29 @@
 {
-  "generatedAt": "2026-10-04T21:07:23.922Z",
+  "generatedAt": "2026-10-05T11:04:21.673Z",
   "apply": true,
-  "auditGeneratedAt": "2026-10-04T20:57:46.094Z",
+  "auditGeneratedAt": "2026-10-05T10:55:09.510Z",
   "counts": {
-    "skip:command-not-a-single-test-file": 19,
-    "skip:command-shared-with-another-card": 8,
+    "skip:command-not-a-single-test-file": 8,
+    "skip:command-shared-with-another-card": 5,
     "bounce:no-auto-worker": 4,
-    "no-commit-naming-card-touched-test": 26,
-    "recent-activity": 4
+    "bounce:recent-activity": 3,
+    "recent-activity": 16,
+    "no-commit-naming-card-touched-test": 8,
+    "state-changed-since-audit": 1
   },
   "rows": [
+    {
+      "id": "BRO-296",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-4643",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
     {
       "id": "BRO-3887",
       "state": "In Review",
@@ -17,10 +31,10 @@
       "reason": "no-auto-worker"
     },
     {
-      "id": "BRO-3390",
+      "id": "BRO-3619",
       "state": "In Review",
       "action": "leave",
-      "reason": "no-auto-worker"
+      "reason": "recent-activity"
     },
     {
       "id": "BRO-3026",
@@ -29,148 +43,22 @@
       "reason": "no-auto-worker"
     },
     {
-      "id": "BRO-296",
+      "id": "BRO-2367",
       "state": "In Review",
-      "action": "leave",
-      "reason": "no-auto-worker"
-    },
-    {
-      "id": "BRO-4052",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-3868",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-3826",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-3540",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2763",
-      "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-2412",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2217",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2214",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2207",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2184",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2173",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2160",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2159",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2138",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2129",
-      "state": "In Progress",
+      "id": "BRO-2358",
+      "state": "In Review",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-2127",
-      "state": "In Progress",
+      "id": "BRO-236",
+      "state": "In Review",
       "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2061",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2042",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-2030",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-1841",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-1104",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-888",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
-    },
-    {
-      "id": "BRO-720",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
+      "reason": "recent-activity"
     },
     {
       "id": "BRO-234",
@@ -203,16 +91,118 @@
       "reason": "no-commit-naming-card-touched-test"
     },
     {
-      "id": "BRO-4152",
+      "id": "BRO-4209",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-4052",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-commit-naming-card-touched-test"
+    },
+    {
+      "id": "BRO-3868",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-commit-naming-card-touched-test"
+    },
+    {
+      "id": "BRO-3826",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-commit-naming-card-touched-test"
+    },
+    {
+      "id": "BRO-3540",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-commit-naming-card-touched-test"
+    },
+    {
+      "id": "BRO-2793",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2763",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2752",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "state-changed-since-audit"
+    },
+    {
+      "id": "BRO-2713",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2378",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2362",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2359",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2221",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2138",
       "state": "In Progress",
       "action": "leave",
       "reason": "no-commit-naming-card-touched-test"
     },
     {
-      "id": "BRO-4128",
+      "id": "BRO-2129",
       "state": "In Progress",
       "action": "leave",
-      "reason": "no-commit-naming-card-touched-test"
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-2067",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-1711",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-1648",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-989",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
     }
   ]
 }
