@@ -89,13 +89,20 @@ function resolveShowMatches(name, shows) {
   if (!norm) return [];
 
   const ranked = [[], [], []];
-  // Normalized titles of shows that matched rank 0 via slug/id rather than
-  // title text. A slug/id is a per-show identifier, so unlike a title match
-  // it can't naturally pull in same-titled siblings — handled separately
-  // below. Grouped on normalizeTitleCore (strips punctuation/parentheticals),
-  // not raw case-folded text, so siblings like "Hello, Dolly!" vs "Hello
-  // Dolly" still group as the same title.
-  const slugMatchedTitles = new Set();
+  // Normalized titles of shows that matched rank 0 via an exact match
+  // (title text OR slug/id) rather than fuzzy/normalized text. An exact
+  // match is specific to ONE show's exact representation, so unlike a fuzzy
+  // match it can't naturally pull in same-titled siblings whose title
+  // differs by punctuation alone — handled separately below. Both the
+  // title-exact and slug-exact branches feed this set: typing a sibling's
+  // exact punctuated title (e.g. "Hello, Dolly!") is just as capable of
+  // hiding a punctuation-variant sibling ("Hello Dolly") as typing its bare
+  // slug is — the earlier version of this fix only expanded from the slug
+  // branch, so the exact-title branch still reproduced the #905 shape for
+  // this one input form. Grouped on normalizeTitleCore (strips
+  // punctuation/parentheticals), not raw case-folded text, so siblings like
+  // "Hello, Dolly!" vs "Hello Dolly" still group as the same title.
+  const exactMatchedTitles = new Set();
 
   for (const show of shows) {
     if (!show || !show.title) continue;
@@ -104,12 +111,13 @@ function resolveShowMatches(name, shows) {
     // Rank 0: exact title
     if (titleLower === rawLower) {
       ranked[0].push(show);
+      exactMatchedTitles.add(normalizeTitleCore(show.title));
       continue;
     }
     // Rank 0: exact slug / id
     if (show.slug === rawLower || show.slug === rawLower.replace(/\s+/g, '-') || show.id === rawLower) {
       ranked[0].push(show);
-      slugMatchedTitles.add(normalizeTitleCore(show.title));
+      exactMatchedTitles.add(normalizeTitleCore(show.title));
       continue;
     }
 
@@ -123,16 +131,16 @@ function resolveShowMatches(name, shows) {
     }
   }
 
-  // A slug/id match must not hide same-titled siblings that would otherwise
-  // tie with it at rank 1/2 for this same input (#905: "book of mormon"
-  // exact-matched book-of-mormon-2011's bare slug and returned only that
-  // show, even though the West End and tour productions share its title and
-  // would tie at rank 2 — "The Book of Mormon" surfaced all three because
-  // that input matches all three on title text, not slug).
-  if (slugMatchedTitles.size > 0) {
+  // An exact title/slug/id match must not hide same-titled siblings that
+  // would otherwise tie with it at rank 1/2 for this same input (#905:
+  // "book of mormon" exact-matched book-of-mormon-2011's bare slug and
+  // returned only that show, even though the West End and tour productions
+  // share its title and would tie at rank 2 — "The Book of Mormon" surfaced
+  // all three because that input matches all three on title text, not slug).
+  if (exactMatchedTitles.size > 0) {
     for (const show of shows) {
       if (!show || !show.title || ranked[0].includes(show)) continue;
-      if (!slugMatchedTitles.has(normalizeTitleCore(show.title))) continue;
+      if (!exactMatchedTitles.has(normalizeTitleCore(show.title))) continue;
       const titleNorm = normalizeShowName(show.title);
       const titleCore = normalizeTitleCore(show.title);
       if (inputIsTitleOrShorter(norm, titleNorm, titleCore)) ranked[0].push(show);

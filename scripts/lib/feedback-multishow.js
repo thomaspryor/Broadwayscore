@@ -35,6 +35,38 @@ function normalizeDiagnosisShowIds(diagnosis) {
 }
 
 /**
+ * Resolves a diagnosis's show references against the shows catalog and
+ * checks the ambiguous-show gate. The caller MUST call this — and check
+ * `.ambiguous` — before any decision based on `diagnosis.fixType` (not-a-bug,
+ * non-data fixType, low confidence). An ambiguous form-field match can
+ * itself be the reason a diagnosis reached a wrong verdict: #905 was
+ * diagnosed "not a bug" because the resolver only ever surfaced the LLM one
+ * (Broadway) production, hiding that West End/tour siblings also matched —
+ * the diagnosis never saw the ambiguity it was itself a symptom of. A gate
+ * that only runs on the `fixType === 'data'` path leaves every other
+ * verdict free to silently close over that same unresolved ambiguity, which
+ * reproduces the original bug under a different fixType. This function is
+ * fixType-agnostic by construction, so there is no fixType value for which
+ * a caller can safely skip it.
+ *
+ * @param {object} diagnosis - parsed DIAGNOSIS_JSON payload
+ * @param {Array<object>} shows - full shows.json catalog (array)
+ * @returns {{showIds: string[], resolvedShows: Array<{id:string,index:number,show:object}>, unresolvedShowIds: string[], ambiguous: boolean}}
+ */
+function resolveShowsForDiagnosis(diagnosis, shows) {
+  const showIds = normalizeDiagnosisShowIds(diagnosis);
+  const resolvedShows = [];
+  const unresolvedShowIds = [];
+  for (const id of showIds) {
+    const idx = shows.findIndex((s) => s.id === id);
+    if (idx === -1) unresolvedShowIds.push(id);
+    else resolvedShows.push({ id, index: idx, show: shows[idx] });
+  }
+  const ambiguous = Boolean(diagnosis?.ambiguousShow) && resolvedShows.length > 1;
+  return { showIds, resolvedShows, unresolvedShowIds, ambiguous };
+}
+
+/**
  * Given per-show auto-fix outcomes, decides whether the bug report is fully
  * resolved, partially resolved, or not resolved at all — and builds the
  * comment body auto-fix-feedback-bug.js posts to the GitHub issue either way.
@@ -86,4 +118,4 @@ function summarizeShowFixOutcomes(perShowResults, unresolvedShowIds = []) {
   };
 }
 
-module.exports = { normalizeDiagnosisShowIds, summarizeShowFixOutcomes };
+module.exports = { normalizeDiagnosisShowIds, resolveShowsForDiagnosis, summarizeShowFixOutcomes };
