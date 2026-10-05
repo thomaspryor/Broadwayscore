@@ -102,7 +102,7 @@ async function main() {
   for (const tour of targets) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - results.length} tour(s) left for the next run`); break; }
     console.log(`\n${tour.id}`);
-    const { url, html } = await fetchSchedule(tour, fetchPage);
+    const { url, html } = await fetchSchedule(tour, fetchPage, { budget });
     let wiki = '';
     try { wiki = await fetchWikiText(tour.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
     const decision = url

@@ -15,7 +15,7 @@ test('nothing to report = no digest rows', () => {
   assert.deepEqual(tourAutomationResults({
     sweep: { generatedAt: fresh(5, now), held: [] },
     dates: { generatedAt: fresh(5, now), tours: [{ id: 'a', problem: null }] },
-    autocreate: { generatedAt: fresh(100, now), created: [] },
+    autocreate: { generatedAt: fresh(30, now), created: [] },
   }, now), []);
 });
 
