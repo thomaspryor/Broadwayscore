@@ -603,7 +603,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // relaxation above was just made to allow through, for every outlet that
     // HAS a registered domain — i.e. most of the target population.
     if (!aggregatorScoreStub) {
-      return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}` };
+      return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}`, guardRefused: true };
     }
     fields.domainUnvalidated = true;
     fields.domainUnvalidatedReason = `aggregator-url stub (expected mismatch): ${domainCheck.reason}`;
