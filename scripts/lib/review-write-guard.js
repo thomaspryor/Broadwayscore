@@ -869,6 +869,16 @@ const CLEAR_BREADCRUMBS = {
   // resurrected the stale pointer on every run, making --fix a permanent
   // no-op for duplicateTextOf mismatches specifically.
   duplicateTextOf: (d) => !_isEmptyValue(d.duplicateClearReason),
+  // crossOutletDuplicate companion fields (BRO-3872): clearCrossOutletFields()
+  // (cascade-clear-duplicate-refs.js, used by the audit --fix sweep) deletes the
+  // pointer/similarity/method/flaggedAt keys and stamps crossOutletClearReason.
+  // Without these entries safeWriteReview's merge-mode restore pass copies them
+  // straight back from disk, leaving crossOutletDuplicate:false beside a stale
+  // crossOutletPrimaryFile — the cleared pointer would resurface on every write.
+  crossOutletPrimaryFile: (d) => !_isEmptyValue(d.crossOutletClearReason),
+  crossOutletSimilarity: (d) => !_isEmptyValue(d.crossOutletClearReason),
+  crossOutletMethod: (d) => !_isEmptyValue(d.crossOutletClearReason),
+  crossOutletFlaggedAt: (d) => !_isEmptyValue(d.crossOutletClearReason),
   isNotReview: _isNotReviewCleared,
   isNotReviewReason: _isNotReviewCleared,
   isNotReviewSetAt: _isNotReviewCleared,
