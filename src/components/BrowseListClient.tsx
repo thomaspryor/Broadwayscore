@@ -70,7 +70,8 @@ interface BrowseListClientProps {
   /** Optional subtitle shown on same line as toggle (e.g. "Last updated: Feb 2026") */
   subtitle?: string;
   /** Optional per-show section labels computed server-side. Shows with the same
-   *  label are grouped under an H2 heading. Only displayed when using default sort. */
+   *  label are grouped under an H2 heading. Only displayed while every label is one
+   *  contiguous run in the order on screen (see src/lib/browse-sections.js). */
   sectionLabels?: string[];
   /** Upcoming-shows pages: relabel the opening-date sorts to "Soonest"/"Latest"
    *  since every show is in the future — "Oldest"/"Newest" reads as past tense. */
@@ -188,10 +189,11 @@ export default function BrowseListClient({
 
   // Headings only when every section label is one contiguous run in the order on
   // screen; otherwise a heading would repeat or sit over the wrong rows.
-  const headingsOk = useMemo(
-    () => !!sectionLabels && sectionLabelsContiguous(filteredAndSorted.map(s => sectionLabels[initialShows.indexOf(s)])),
-    [sectionLabels, filteredAndSorted, initialShows]
-  );
+  const headingsOk = useMemo(() => {
+    if (!sectionLabels) return false;
+    const indexOf = new Map(initialShows.map((s, i) => [s, i] as const));
+    return sectionLabelsContiguous(filteredAndSorted.map(s => sectionLabels[indexOf.get(s)!]));
+  }, [sectionLabels, filteredAndSorted, initialShows]);
 
   const showControls = availableSorts.length > 1 || showTypeFilter || (showScoreToggle && hasAnyAudienceData);
   // score_asc (reversed Critics) would otherwise label the lowest-scored show

@@ -54,7 +54,10 @@ export interface BrowsePageConfig {
   requiresFeature?: 'commercial';
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
-   *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
+   *  Headings render only while each label is one contiguous run in the order on
+   *  screen (BrowseListClient + src/lib/browse-sections.js), so the page's default
+   *  order must keep every label together; a client re-sort that interleaves them
+   *  drops the headings. */
   // getById lets a section label depend on a linked show (e.g. a tryout's
   // Broadway transfer status) without importing data modules into this config.
   // ctx carries the data lookups a label can need that ComputedShow does not hold
@@ -294,7 +297,8 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     // themselves stay live and linked from the aggregate's show page.
     filter: (show) => !show.tourParent,
     // customSort (not 'opening-date') so the sectionGroup headings render —
-    // BrowseListClient only shows sections for custom/score sorts. Order:
+    // BrowseListClient only shows headings while each label is one contiguous run
+    // in the displayed order, so the sort must keep them together. Order:
     // running tryouts first, then transferred-to-Broadway, then the rest,
     // newest first within each group (matches the sectionGroup below).
     customSort: (shows, ctx) => [...shows].sort((a, b) => {
