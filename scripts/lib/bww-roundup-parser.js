@@ -17,7 +17,10 @@
 
 const { normalizeBylineCapture } = require('./byline-normalization');
 
-const NAME_WORD = "[A-Z][a-zA-Z'’\\-]+";
+// Latin-1 accented letters are allowed so "José Solís" / "Zoë Wanamaker" parse;
+// an ASCII-only class dropped the whole entry and merged its quote into the
+// previous critic's excerpt (BRO-733).
+const NAME_WORD = "[A-ZÀ-ÖØ-Þ][a-zA-ZÀ-ÖØ-öø-ÿ'’\\-]+";
 // Single space between leading initial and first name. The lookbehind sits
 // INSIDE the optional group so it only constrains the leading-initial branch:
 // when no leading initial is present (the common case), the rest of the
@@ -111,7 +114,11 @@ const NAME_LOOKAHEAD = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}${WORD_SE
 // requires letters-only, so a stray number ending the prior quote can't be
 // misread — but see the digit-outlet regression tests for the boundary
 // case of "10 Downing Street:" appearing WITHIN a critic quote.
-const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z\\s&'.]+";
+// Digits are allowed only glued to the end of a letter ("NY1", BRO-733); before,
+// "Helen Shaw, NY1:" never matched. A space-separated number ("age 35") must
+// stay out, or "Star Daniel Radcliffe, age 35:" inside a quote becomes a fake
+// critic entry and truncates the quote.
+const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z\\s&'.]+(?:(?<=[A-Za-z])[0-9]{1,2})?";
 // BWW's CMS emits a stray space before the comma on some entries — the live
 // SPIES-2026 body carries "Ryan Gilbey , The Guardian:" and
 // "Holly O'Mahony , The Stage:" alongside comma-tight siblings. The old

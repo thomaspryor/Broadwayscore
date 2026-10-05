@@ -95,6 +95,7 @@ const {
   shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
+  isDateOnlyAutoReason,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
@@ -3292,6 +3293,16 @@ showDirs.forEach(showId => {
         delete data.wrongProduction;
         delete data.wrongProductionNote;
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
+        // BRO-720: date-only auto-reasons are now clearable here; strip the stale
+        // companion fields like the priorRuns auto-clear does.
+        if (isDateOnlyAutoReason(data.wrongProductionReason)) {
+          delete data.wrongProductionReason;
+          delete data.wrongProductionDetail;
+          delete data.wrongProductionDetectedAt;
+          delete data.wrongProductionDetectedBy;
+          delete data.anticipatoryGateOutletCategory;
+          delete data.anticipatoryGateDaysBeforeOpening;
+        }
         data.wrongProductionAutoCleared = `rebuild: ${reason} bypasses wrongProduction`;
         data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}

@@ -562,6 +562,8 @@ export interface CommercialShowRow {
   /** 'unknown' for closed shows. */
   trend: import('@/config/commercial').RecoupmentTrend;
   recouped: boolean | null;
+  /** isUnannouncedRecoupment(): recouped, but never announced (the table says so, like the show page). */
+  recoupmentNotAnnounced: boolean;
   recoupedWeeks: number | null;
 }
 

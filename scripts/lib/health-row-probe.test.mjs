@@ -1,4 +1,4 @@
-import { test } from 'node:test';
+import { test, mock } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -53,6 +53,29 @@ async function withStubbedCoreResults(results, fn) {
   } finally {
     if (original) require.cache[HEALTH_CHECK_PATH] = original;
     else delete require.cache[HEALTH_CHECK_PATH];
+  }
+}
+
+// BRO-4654: the two tests below run the REAL computeCoreHealthResults, whose
+// cron/secrets/push-verify/main-red-streak checks shell out to `gh api` ~30
+// times whenever GH_TOKEN is set. The land gauntlet runs unit tests twice per
+// land run with GH_TOKEN=GITHUB_TOKEN, so this file alone spent ~60 calls of
+// the shared 1,000/hour quota per land. Stub the gh transport (cachedShell)
+// and report low headroom so the optional fan-outs skip; the checks still run
+// their real parse and fs code paths against the empty payloads.
+const ghApiCache = require('./gh-api-cache.js');
+async function withOfflineGh(fn) {
+  const shellCalls = [];
+  const shell = mock.method(ghApiCache, 'cachedShell', (key) => { shellCalls.push(key); return '[]'; });
+  const headroom = mock.method(ghApiCache, 'hasLowHeadroom', () => true);
+  // health-check.js destructures these at load, so load it fresh under the mocks.
+  delete require.cache[HEALTH_CHECK_PATH];
+  try {
+    return { result: await fn(), shellCalls };
+  } finally {
+    shell.mock.restore();
+    headroom.mock.restore();
+    delete require.cache[HEALTH_CHECK_PATH];
   }
 }
 
@@ -185,7 +208,7 @@ test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)',
     // Real (unstubbed) computeCoreHealthResults — exercises the actual
     // checkDispatchOutcomes dryRun path and the fs monkey-patch backstop
     // together, against this machine's real local data.
-    await probeHealthRowLive('__health-row-probe-test-zero-writes__');
+    await withOfflineGh(() => probeHealthRowLive('__health-row-probe-test-zero-writes__'));
   } finally {
     realFs.writeFileSync = originalWrite;
     realFs.appendFileSync = originalAppend;
@@ -232,7 +255,7 @@ test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fe
 
 test('a probe run never touches the dispatch-outcome-digest-state.json trend cache (regression pin on the one known writer among the core checks)', async () => {
   const before = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;
-  await probeHealthRowLive('__health-row-probe-test-no-state-write__');
+  await withOfflineGh(() => probeHealthRowLive('__health-row-probe-test-no-state-write__'));
   const after = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;
   assert.equal(after, before, 'dispatch-outcome-digest-state.json mtime changed across a probe run');
 });

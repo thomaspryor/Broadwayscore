@@ -33,10 +33,14 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // humanReviewedDesignation locks a hand-checked designation against
   // apply-commercial-pending.js's LLM auto-apply. nonprofitOrg pairs with a
   // Nonprofit designation (validate-data.js checks it against the venue).
+  // isEstimate (whole object, compare-and-set; commercial-record-checks.js
+  // checks the shape) marks a figure or recoupment as ours, not reported:
+  // isEstimate.recouped prints "Not publicly announced" (BRO-4623).
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
     'recoupedSource', 'sources', 'humanReviewedDesignation', 'nonprofitOrg',
+    'isEstimate',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

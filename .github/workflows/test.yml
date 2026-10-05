@@ -3538,10 +3538,10 @@ jobs:
         # Exempt a workflow with # hygiene-notify-ok/playwright-ok/push-ok: <reason>.
         # Root cause for each rule: (a) baseline rot via SKIP-VISUAL-CHECK in red CI,
         # (b) browser cache miss wastes 15s/run, (c) bare || echo swallows push failures.
-        # GH_TOKEN also arms rule (f) (task #737, never-run workflow coverage,
-        # advisory-only) — the script itself skips that live GH API scan on
-        # 'push' events to keep this job fast; it only runs for real on the
-        # daily 'schedule' trigger or a manual dispatch.
+        # Rule (f) (task #737, never-run workflow coverage, advisory-only) is
+        # opt-in here since BRO-4654: its live scan costs ~256 GITHUB_TOKEN
+        # calls and only runs with HYGIENE_NEVER_RUN_SCAN=1. health-check.js
+        # (data-health-check.yml) runs the same scan daily and persists it.
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/audit-workflow-hygiene.js

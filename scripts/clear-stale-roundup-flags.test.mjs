@@ -24,6 +24,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { realNowMs } from '../tests/helpers/clock-shift.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SCRIPT = path.join(__dirname, 'clear-stale-roundup-flags.js');
@@ -100,7 +101,9 @@ test('--apply clears a stale flag (individual review on a whitelisted per-outlet
 
     const stale = readReview(dir, 'fixture-show-2026', 'clydefitchreport--critic.json');
     assert.equal(stale.isRoundupArticle, false, 'stale flag on the individual review must be cleared');
-    const today = new Date().toISOString().slice(0, 10);
+    // The script runs as a child process the clock-shift preload does not reach, so
+    // compare against the real clock, not the (possibly shifted) in-process one.
+    const today = new Date(realNowMs()).toISOString().slice(0, 10);
     assert.match(stale.roundupArticleClearedNote, new RegExp(`^\\[${today} cleared stale isRoundupArticle`),
       'note must stamp the CURRENT date, not a hardcoded one — a hardcoded date silently mis-dates every future run of the scheduled cron');
 

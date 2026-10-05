@@ -31,6 +31,7 @@
 //
 // Every function under test is require()d from the real module (CLAUDE.md
 // rule 15) — no logic is reimplemented here.
+import { realNowMs } from '../tests/helpers/clock-shift.mjs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync, spawn } from 'node:child_process';
@@ -381,7 +382,8 @@ test('live: a real push killed mid-stall produces a trace whose terminal gap is 
     // captures right after the timeout wrapper returns.
     await new Promise((resolve) => child.on('exit', () => resolve()));
     clearTimeout(killer);
-    const d = new Date();
+    // Real clock: git's trace stamps come from a child the clock-shift preload can't reach.
+    const d = new Date(realNowMs());
     const killedAt =
       `${String(d.getHours()).padStart(2, '0')}:` +
       `${String(d.getMinutes()).padStart(2, '0')}:` +
