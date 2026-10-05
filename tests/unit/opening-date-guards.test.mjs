@@ -39,7 +39,8 @@ for (const f of ['audit-duplicate-shows.js', 'audit-tony-attribution.js']) {
 
 test('cv-flag sweep falls back to previewsStartDate instead of a bare openingDate guard', () => {
   const src = fs.readFileSync(new URL('../../scripts/audit-cv-flag-contradiction.js', import.meta.url), 'utf8');
-  assert.match(src, /showRecencyKey\(s\)/);
+  assert.match(src, /sweepDateKey\(s\)/);
+  assert.match(src, /status === 'upcoming'/);
   assert.doesNotMatch(src, /if \(!s\.openingDate\) return false/);
 });
 
