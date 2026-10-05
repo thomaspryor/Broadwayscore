@@ -138,9 +138,18 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   if (capitalizationSource) result.capitalizationSource = capitalizationSource;
   if (entry.weeklyRunningCost != null) result.weeklyRunningCost = entry.weeklyRunningCost;
   if (costMethodology) result.costMethodology = costMethodology;
-  if (entry.recouped != null) result.recouped = entry.recouped;
-  if (recoupedDate) result.recoupedDate = recoupedDate;
-  if (recoupedSource) result.recoupedSource = recoupedSource;
+  // An auto-apply claim never rewrites a recoupment already on record, dated
+  // or human-locked: the claim's date is usually the article's month, later
+  // than the real one. Its source URL still joins `sources` below. BRO-4657:
+  // The Outsiders' sourced "2025-12" became the NYT story's "2026-01". A
+  // recorded date that is wrong is corrected by an approved fix plan.
+  const keepRecoupment = Boolean(isClaimAutoApply && existing && existing.recouped === true &&
+    (cleanNullish(existing.recoupedDate) || existing.humanReviewedRecouped === true));
+  if (!keepRecoupment) {
+    if (entry.recouped != null) result.recouped = entry.recouped;
+    if (recoupedDate) result.recoupedDate = recoupedDate;
+    if (recoupedSource) result.recoupedSource = recoupedSource;
+  }
   if (notes) result.notes = notes;
   if (isClaimAutoApply && entry.recouped === true && recoupClaimDesignationAction(existing) === 'reset') {
     // The inferred "closed, no recoupment found" Fizzle is contradicted by a

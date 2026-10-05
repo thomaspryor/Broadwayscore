@@ -44,4 +44,26 @@ function countStrictHits(hits) {
     .reduce((sum, [, arr]) => sum + arr.length, 0);
 }
 
-module.exports = { shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits };
+/**
+ * True when the canonical rebuild predicate already excludes this review file
+ * from scoring (rejectionReason, wrongShow, noTextOrScoreSignal, ...). The
+ * audit's shown-to-users classes (A/C/D/E) must not count such a file: it
+ * cannot reach a score or a page, so a hit is noise that re-reddens
+ * `--strict` every time a bot writes a flagless stub / ensemble-rejected /
+ * "Wrong show" tier file (BRO-973: 6 of the 13 live strict hits). Delegates to
+ * isIncludableForRebuild so it can never drift from what rebuild really
+ * excludes. Lazy require keeps this module cheap for the gate-only callers.
+ * Pass `show` and `filePath` exactly as rebuild-all-reviews.js does: without
+ * them the predicate is stricter than rebuild (tour-stop text rules, duplicateOf
+ * recovery and wrongShow/wrongProduction vetoes all depend on them).
+ * @param {object} data parsed review-text file
+ * @param {object} [show] shows.json entry
+ * @param {string} [filePath] path.join(showDir, file)
+ * @returns {boolean}
+ */
+function isAlreadyExcludedFromScoring(data, show, filePath) {
+  const { isIncludableForRebuild } = require('./review-guards');
+  return !isIncludableForRebuild(data, show, filePath);
+}
+
+module.exports = { shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits, isAlreadyExcludedFromScoring };

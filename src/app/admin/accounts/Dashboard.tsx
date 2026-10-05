@@ -103,7 +103,8 @@ function FunnelBars({ step, title }: { step: Step; title: string }) {
     ['Finished signing in', step.completed],
     ['Then saved something', step.acted],
   ];
-  const max = Math.max(1, step.shown, step.started);
+  // Every step can exceed the one before it (the iPhone app logs finishes without a sign-in box).
+  const max = Math.max(1, ...rows.map(([, n]) => n));
   return (
     <div className="min-w-0">
       <div className="text-sm font-semibold text-white mb-2">{title}</div>
@@ -112,7 +113,7 @@ function FunnelBars({ step, title }: { step: Step; title: string }) {
           <div className="flex justify-between text-xs text-gray-400">
             <span>{label}</span>
             <span className="tabular-nums text-gray-300">
-              {fmtN(n)}{i > 0 && rows[i - 1][1] > 0 ? ` (${pctOf(n, rows[i - 1][1])})` : ''}
+              {fmtN(n)}{i > 0 && rows[i - 1][1] > 0 && n <= rows[i - 1][1] ? ` (${pctOf(n, rows[i - 1][1])})` : ''}
             </span>
           </div>
           <div className="h-2 bg-surface-overlay rounded mt-1 overflow-hidden">
@@ -208,6 +209,9 @@ export default function Dashboard() {
           <div className="grid sm:grid-cols-2 gap-6">
             <FunnelBars step={data.funnel.totals.mobile} title="Phones" />
             <FunnelBars step={data.funnel.totals.desktop} title="Computers" />
+            {(data.funnel.totals.other.started > 0 || data.funnel.totals.other.completed > 0) && (
+              <FunnelBars step={data.funnel.totals.other} title="iPhone app / other" />
+            )}
           </div>
           {sources.length > 0 && (
             <div className="mt-5 overflow-x-auto">

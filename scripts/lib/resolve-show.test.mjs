@@ -8,6 +8,7 @@ const {
   resolveShowMatches,
   extractShowTitlesFromText,
   normalizeShowName,
+  isAmbiguousMatch,
 } = require('./resolve-show.js');
 
 const SHOWS = [
@@ -118,4 +119,80 @@ test('both open: Broadway original beats later-opening West End transfer', () =>
   // But a closed Broadway run loses to an open West End run.
   shows[0].status = 'closed';
   assert.equal(resolveShow('Hamilton', shows)?.id, 'hamilton-we-2021');
+});
+
+// Feedback #905: the reader typed "Book of mormon" (no "the"), which exactly
+// matches book-of-mormon-2011's bare slug ("book-of-mormon") at rank 0 and
+// short-circuited before the fuzzy ranks could catch the two same-titled
+// siblings — so the diagnosis only ever saw the Broadway production and
+// missed that the reader likely meant the West End or tour run. The three
+// shows below mirror the real shapes: only the original Broadway run kept
+// the un-suffixed slug, the transfer and tour got suffixed ones.
+const BOOK_OF_MORMON_SHOWS = [
+  { id: 'book-of-mormon-2011', slug: 'book-of-mormon', title: 'The Book of Mormon', status: 'open', openingDate: '2011-03-24', category: 'broadway' },
+  { id: 'book-of-mormon-we-2024', slug: 'the-book-of-mormon-west-end', title: 'The Book of Mormon', status: 'open', openingDate: '2013-03-21', category: 'west-end' },
+  { id: 'book-of-mormon-tour-2022', slug: 'book-of-mormon-tour-2022', title: 'The Book of Mormon', status: 'open', openingDate: '2022-09-23', category: 'tour' },
+];
+
+test('a bare-slug match does not hide same-titled siblings (#905)', () => {
+  for (const name of ['Book of mormon', 'book of mormon', 'The Book of Mormon']) {
+    const matches = resolveShowMatches(name, BOOK_OF_MORMON_SHOWS);
+    assert.deepEqual(
+      new Set(matches.map((s) => s.id)),
+      new Set(['book-of-mormon-2011', 'book-of-mormon-we-2024', 'book-of-mormon-tour-2022']),
+      `expected all 3 productions for ${JSON.stringify(name)}, got ${matches.map((s) => s.id)}`
+    );
+    assert.equal(isAmbiguousMatch(name, BOOK_OF_MORMON_SHOWS), true);
+  }
+});
+
+test('typing the full, specific slug stays a single unambiguous match', () => {
+  for (const [name, expectedId] of [
+    ['book-of-mormon-tour-2022', 'book-of-mormon-tour-2022'],
+    ['the-book-of-mormon-west-end', 'book-of-mormon-we-2024'],
+    ['book-of-mormon-2011', 'book-of-mormon-2011'],
+  ]) {
+    const matches = resolveShowMatches(name, BOOK_OF_MORMON_SHOWS);
+    assert.deepEqual(matches.map((s) => s.id), [expectedId], `expected only ${expectedId} for ${JSON.stringify(name)}`);
+    assert.equal(isAmbiguousMatch(name, BOOK_OF_MORMON_SHOWS), false);
+  }
+});
+
+test('isAmbiguousMatch is false for a genuinely unique title', () => {
+  assert.equal(isAmbiguousMatch('Different Times', SHOWS), false);
+  assert.equal(isAmbiguousMatch('rent', SHOWS), true);
+});
+
+// Sibling grouping must tolerate punctuation differences between productions
+// of "the same" title (e.g. a scraper that drops the exclamation point) —
+// grouping on raw case-folded text instead of normalizeTitleCore would miss
+// this sibling entirely.
+test('slug-sibling expansion groups titles that differ only in punctuation', () => {
+  const shows = [
+    { id: 'dolly-1964', slug: 'hello-dolly', title: 'Hello, Dolly!', status: 'closed', openingDate: '1964-01-16', category: 'broadway' },
+    { id: 'dolly-2017', slug: 'hello-dolly-2017', title: 'Hello Dolly', status: 'closed', openingDate: '2017-04-20', category: 'broadway' },
+  ];
+  const matches = resolveShowMatches('hello dolly', shows);
+  assert.deepEqual(new Set(matches.map((s) => s.id)), new Set(['dolly-1964', 'dolly-2017']));
+  assert.equal(isAmbiguousMatch('hello dolly', shows), true);
+});
+
+// Typing a sibling's EXACT punctuated title is the same shape of input as
+// typing its bare slug — both are "specific to one show's representation,"
+// not fuzzy text — so both must trigger the same sibling-expansion as the
+// unpunctuated "hello dolly" case above, not just the slug path.
+test('exact-title sibling expansion groups titles that differ only in punctuation', () => {
+  const shows = [
+    { id: 'dolly-1964', slug: 'hello-dolly', title: 'Hello, Dolly!', status: 'closed', openingDate: '1964-01-16', category: 'broadway' },
+    { id: 'dolly-2017', slug: 'hello-dolly-2017', title: 'Hello Dolly', status: 'closed', openingDate: '2017-04-20', category: 'broadway' },
+  ];
+  for (const name of ['Hello, Dolly!', 'Hello Dolly']) {
+    const matches = resolveShowMatches(name, shows);
+    assert.deepEqual(
+      new Set(matches.map((s) => s.id)),
+      new Set(['dolly-1964', 'dolly-2017']),
+      `expected both productions for ${JSON.stringify(name)}, got ${matches.map((s) => s.id)}`
+    );
+    assert.equal(isAmbiguousMatch(name, shows), true);
+  }
 });

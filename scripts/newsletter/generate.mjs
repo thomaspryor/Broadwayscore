@@ -797,7 +797,7 @@ function broadwayOpenings() {
     // production on prior-run reviews (adversarial review, 2026-09-20).
     .filter(e => hasFreshRunCoverage(e.show));
   if (!events.length) return { html: null, list: [], reopeningIds: new Set() };
-  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
+  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id)));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));
@@ -820,7 +820,7 @@ function offBroadwayOpenings() {
   // Grace window: include OB shows that opened in the last 14 days, not just the
   // strict in-week opening — this catches shows that were added to our DB late.
   // Opera is excluded (it has its own section); only shows with reviews qualify;
-  // the highest-scored show leads as the featured opening.
+  // the most-reviewed show leads as the featured opening.
   const cutoffDate = new Date(weekStartStr + 'T12:00:00'); cutoffDate.setDate(cutoffDate.getDate() - 14);
   const cutoff = cutoffDate.toISOString().slice(0, 10);
   const withScore = shows
@@ -839,11 +839,13 @@ function offBroadwayOpenings() {
       && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway') && hasFreshRunCoverage(x.s))
-    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+    // Most-reviewed first, then score — the same lead rule as Broadway and
+    // London (owner decision 2026-10-04, BRO-3921; see opening-story-order.js).
+    .sort((a, b) => compareOpeningStories(a.agg, b.agg));
   // Editorial lead override: NEWSLETTER_OB_LEAD=<showId> floats one opening to
   // the top of this section regardless of score (e.g. a marquee revival the
   // editor wants leading even if a higher-scored show also opened). Off by
-  // default — the scheduled cron sets nothing, so ordering stays score-desc.
+  // default — the scheduled cron sets nothing, so ordering stays most-reviewed-first.
   const obLead = (process.env.NEWSLETTER_OB_LEAD || '').trim();
   if (obLead) {
     const i = withScore.findIndex(x => x.s.id === obLead);
@@ -2894,6 +2896,28 @@ const newsworthyInputs = {
 };
 
 const newsworthyCandidates = scoreCandidates(newsworthyInputs);
+// Owner-approved week voice (BRO-3921, 2026-10-04): when a New York opening is
+// the week's top story, the subject says how many shows opened and the lede
+// characterises the week (packed / steady / slow) — "Schmigadoon! and 5 other
+// shows open on Broadway this week". Lead = most reviews, then score (the
+// same order bwO/obO render their cards in). Every other week (a closing or
+// mover leads, a quiet Broadway week, the West End edition) keeps the
+// newsworthiness subject/lede below. NEWSLETTER_VOICE=legacy turns it off.
+const { composeWeekVoice } = await import('./week-voice.mjs');
+const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening']);
+// The voice says "this week", so it only names and counts shows whose opening
+// night fell in the week: the OB section's 14-day grace catch-ups stay out,
+// and so does any section NEWSLETTER_DROP_SECTIONS removed from the body.
+// counts are calendar counts (incl. openings too thinly reviewed to name) so
+// "just two openings" is never said of a week that had three.
+const _calendarOpenings = (cat) => openingEventsForWeek(cat).filter(e => !excludedShowIds.has(e.show.id)).length;
+const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_OPENING_KINDS.has(newsworthyCandidates[0]?.kind))
+  ? composeWeekVoice({
+    bw: _dropSet.has('broadway-openings') ? [] : bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
+    ob: _dropSet.has('offbroadway-openings') ? [] : obEvents.filter(e => inWeek(e.show.openingDate)).map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
+    counts: { bw: _calendarOpenings('broadway'), ob: _calendarOpenings('off-broadway') },
+  })
+  : null;
 // SUBJECT_OVERRIDE / LEDE_OVERRIDE let an editor hand-set the subject and lede
 // for a special issue the auto-scorer can't rank well — e.g. a marquee opening
 // that has no critic score yet (Shakespeare in the Park), or a post-ceremony
@@ -2902,7 +2926,9 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // show references, same reasoning as LEDE_OVERRIDE below.
 const _subjectResult = process.env.SUBJECT_OVERRIDE
   ? { subject: process.env.SUBJECT_OVERRIDE, showRefs: [] }
-  : buildSubjectFromCandidates(newsworthyCandidates);
+  : _weekVoice
+    ? { subject: _weekVoice.subject, showRefs: [{ id: _weekVoice.lead.id, slug: _weekVoice.lead.slug, title: _weekVoice.lead.title }] }
+    : buildSubjectFromCandidates(newsworthyCandidates);
 const _subjectRaw = _subjectResult.subject;
 
 // ── Lede composition ─────────────────────────────────────────────────────────
@@ -3025,7 +3051,10 @@ const _opener = _weOpener || _bwOpener;
 const _withOpener = (sentences) => _opener ? [_opener, ...sentences] : sentences;
 const _ctx = [];
 if (LEDE_STYLE !== 'short' && !process.env.LEDE_OVERRIDE) {
-  for (const c of [_boxOfficeCtx(), _closingCtx(_ledeParts.kinds), _comingUpCtx()]) if (c) _ctx.push(c);
+  // Week voice replaces the news sentences (openings only), so a closing the
+  // news sentences would have carried must come back as context here.
+  const _usedKinds = _weekVoice ? [] : _ledeParts.kinds;
+  for (const c of [_boxOfficeCtx(), _closingCtx(_usedKinds), _comingUpCtx()]) if (c) _ctx.push(c);
 }
 // De-dupe {id, slug, title} refs by id (falls back to slug) — subject and
 // lede draw from the same candidate list, so the same show commonly appears
@@ -3082,6 +3111,15 @@ if (process.env.LEDE_OVERRIDE) {
   ledeText = _withOpener(_ledeParts.sentences.slice(0, _maxLedeSentences)).join(' ') || '';
   ledeShowRefs = _ledeParts.showRefs.slice(0, _maxLedeSentences);
 }
+// Week voice replaces the news sentences of the primary paragraph (see
+// _weekVoice above); style-specific context (expanded-para's box-office /
+// closing / coming-up sentences, expanded-two's second paragraph,
+// expanded-brief's strip) is kept as it was.
+if (_weekVoice && !process.env.LEDE_OVERRIDE) {
+  const _extra = LEDE_STYLE === 'expanded-para' ? _ctx : [];
+  ledeText = _weekVoice.sentences.concat(_extra.map(c => c.text)).join(' ');
+  ledeShowRefs = _weekVoice.showRefs.concat(_extra.map(c => c.showRef));
+}
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
 // (or a future marker-aware scorer) left in, so they never render literally.
 const subjectLine = stripEmphasisMarkers(_subjectRaw);
@@ -3106,7 +3144,12 @@ const ledeBulletsHtml = ledeBullets.length ? ledeBullets.map(b =>
   `<div style="font-size:13px;color:#9ca3af;line-height:1.5;margin-top:5px;"><span style="color:#d4a574;font-weight:700;">${b.tag}</span><span style="color:#4b5563;">&nbsp;·&nbsp;</span>${italicizeLede(b.brief, _ledeTitleSet)}</div>`).join('') : '';
 // Preheader = first two sentences only — inbox preview text must stay tight
 // no matter how expanded the visible lede gets.
-const ledePlain = stripEmphasisMarkers(_ledeParts.sentences.slice(0, 2).join(' ') || ledeText);
+// LEDE_OVERRIDE previews its own first two sentences, never the scorer's
+// unrelated news.
+const _preheaderSentences = process.env.LEDE_OVERRIDE
+  ? (ledeText || '').split(/(?<=[.!?])\s+/)
+  : (_weekVoice ? _weekVoice.sentences : _ledeParts.sentences);
+const ledePlain = stripEmphasisMarkers(_preheaderSentences.slice(0, 2).join(' ') || ledeText);
 
 const yearForFooter = weekEndDate.getFullYear();
 
@@ -3250,6 +3293,7 @@ sections.reclassify(classifyEntry);
 // silently-skipped sections in regression tests / CI.
 sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   subject: subjectLine,
+  lede: ledeText,
   // The A-<weekStart> slug is edition-agnostic, so the edition stamp is how
   // create-broadcast-draft.mjs detects a WE draft built on Broadway HTML
   // (or vice versa) when both editions share an out dir.

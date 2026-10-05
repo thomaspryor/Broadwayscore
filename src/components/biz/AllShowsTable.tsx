@@ -17,7 +17,7 @@ import {
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialShowRow } from '@/lib/data-types';
-import { formatCurrency, formatEstimatedCurrency } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
 import {
   getRecoupmentDisplayMode,
   getDesignationDisplay,
@@ -280,7 +280,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {show.capitalization == null ? (
                       <span className="text-gray-500">Undisclosed</span>
                     ) : (
-                      formatEstimatedCurrency(show.capitalization)
+                      formatCapitalization(show.capitalization, show.capitalizationIsEstimate)
                     )}
                   </td>
                   <td className="py-3 px-4 hidden md:table-cell">

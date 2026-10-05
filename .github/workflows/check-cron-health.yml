@@ -235,6 +235,22 @@ jobs:
             # recency band tolerates GitHub's heavy throttling of */10 schedules; the real
             # alert is the workflow no longer being 'active'.
             "process-feedback.yml|12|Process Feedback Submissions"
+            # Welcome email for new accounts (BRO-4620), every 15 min. Listed (not
+            # exempt) because GitHub throttles this repo's high-frequency schedules
+            # hard (process-feedback */10 really runs every ~3h) and has left at
+            # least one */10 schedule (land-retry-cancelled) never firing at all;
+            # a dead schedule here means new sign-ups silently get no email.
+            # 13h = 0.25h expression gap + 12h cushion. Self-heal redispatches with
+            # no inputs, and the workflow's dispatch default is mode=run, so the
+            # redispatch really sends (the script's once-per-account claim and
+            # caps make that one extra tick). Detection is NOT 13h: this checker
+            # runs once a day at 12:00 UTC and HOURS_AGO floors, so the effective
+            # band is 14h: noon only flags a last success at or before ~22:00 the
+            # day before, and a schedule whose last success is ~22:01 is noticed
+            # ~38h later. Accounts are eligible for 20h, so
+            # some sign-ups can still be missed before the redispatch; the page
+            # comes a day later if the redispatch does not revive the schedule.
+            "send-welcome-emails.yml|13|Send Welcome Emails"
             # Weekly Monday 14:00 UTC. Keys off last SUCCESSFUL run, so
             # timeout-CANCELLED runs (invisible to the failure digest — cancelled
             # != failure) trip this after ~8.5 days. It went 8 straight Mondays

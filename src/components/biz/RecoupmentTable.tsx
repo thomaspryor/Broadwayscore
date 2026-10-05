@@ -7,7 +7,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { formatEstimatedCurrency } from '@/lib/biz-format';
+import { formatCapitalization } from '@/lib/biz-format';
 
 interface RecoupmentShow {
   slug: string;
@@ -16,6 +16,8 @@ interface RecoupmentShow {
   /** null when only the recoupment year is known (see calculateWeeksToRecoup). */
   weeksToRecoup: number | null;
   capitalization: number | null;
+  /** Prints the "~" estimate mark only when true (isEstimatedCapitalization). */
+  capitalizationIsEstimate: boolean;
   recoupDate: string;
 }
 
@@ -165,7 +167,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                     <span className="text-emerald-400 font-semibold">~{show.weeksToRecoup}</span>
                   )}
                 </td>
-                <td className="py-3 px-4">{formatEstimatedCurrency(show.capitalization)}</td>
+                <td className="py-3 px-4">{formatCapitalization(show.capitalization, show.capitalizationIsEstimate)}</td>
                 <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">
                   {formatDate(show.recoupDate)}
                 </td>

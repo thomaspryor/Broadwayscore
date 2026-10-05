@@ -94,7 +94,7 @@ function isGoldTier(score, category) {
 // would write. "Rises 12 pts" is data-speak; "opens to decent reviews" reads
 // like a newsletter. Returns the tier key (not the phrase) so callers can
 // pick a variant for repetition-avoidance — see VERDICT_VARIANTS.
-function reviewVerdictTier(score, category) {
+export function reviewVerdictTier(score, category) {
   if (score == null) return null;
   const goldMin = (category === 'west-end' || category === 'off-west-end') ? SCORE_GOLD_MIN_WE : SCORE_GOLD_MIN_NYC;
   if (score >= goldMin) return 'rave';
@@ -109,7 +109,7 @@ function reviewVerdictTier(score, category) {
 // say "opens to decent reviews. … opens to decent reviews." First sentence
 // always uses the default; subsequent same-tier sentences cycle through
 // variants. Subject line always uses the default (it's only one shot).
-const VERDICT_VARIANTS = {
+export const VERDICT_VARIANTS = {
   rave:   ['rave reviews', 'near-universal praise', 'glowing notices'],
   strong: ['strong reviews', 'enthusiastic notices', 'warm critical reception'],
   decent: ['decent reviews', 'a mostly-positive reception', 'broadly favorable notices'],
@@ -151,6 +151,14 @@ export function scoreCandidates(input) {
   // on Broadway" feed) — below every real West End/Off West End opening, the
   // same relationship weGoldOpenings already has in reverse (see
   // WE_OPENING_SECONDARY_BASE above).
+  // Opening candidates keep their INPUT order (generate.mjs sorts them most-
+  // reviewed-first via scripts/lib/opening-story-order.js — owner decision
+  // 2026-10-04, BRO-3921). rankOpeningsInInputOrder (below, after both loops)
+  // gives each market's openings that market's BEST weight, stepping down by
+  // epsilon in input order: a gold bump anywhere in the list still lifts the
+  // week's openings above an unrelated story (a closing, a recoupment), but a
+  // thinly reviewed show never jumps the most-reviewed opening, and Broadway
+  // still leads Off-Broadway.
   for (const item of (input.bwOpenings || [])) {
     const s = item.show || item; // backward compat if a bare show is passed
     const isReopen = !!item.isReopening;
@@ -335,9 +343,23 @@ export function scoreCandidates(input) {
     });
   }
 
+  if ((input.edition || 'broadway') !== 'west-end') rankOpeningsInInputOrder(out);
   // Sort by weight DESC
   out.sort((a, b) => b.weight - a.weight);
   return out;
+}
+
+// See the note above the Broadway-openings loop in scoreCandidates.
+export function rankOpeningsInInputOrder(out) {
+  const eps = WEIGHTS.WE_OPENING_RANK_EPSILON;
+  let ceiling = Infinity;
+  for (const kinds of [['bw-opening', 'bw-reopening'], ['ob-opening', 'ob-reopening']]) {
+    const group = out.filter(c => kinds.includes(c.kind));
+    if (!group.length) continue;
+    const top = Math.min(Math.max(...group.map(c => c.weight)), ceiling);
+    group.forEach((c, i) => { c.weight = top - i * eps; });
+    ceiling = group[group.length - 1].weight - eps;
+  }
 }
 
 // Opening kinds name a SPECIFIC show — two different shows opening the same

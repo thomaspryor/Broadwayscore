@@ -8,13 +8,15 @@
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
-import { formatCurrency, formatEstimatedCurrency } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
 
 interface AtRiskCardProps {
   slug: string;
   title: string;
   season: string;
   capitalization: number | null;
+  /** Prints the "~" estimate mark only when true (isEstimatedCapitalization). */
+  capitalizationIsEstimate: boolean;
   /** Trailing 4-week average gross. */
   avgWeeklyGross: number;
   /** getBreakEven(): model break-even above the quality floor, else weekly running cost. */
@@ -36,6 +38,7 @@ export default function AtRiskCard({
   title,
   season,
   capitalization,
+  capitalizationIsEstimate,
   avgWeeklyGross,
   breakEven,
   modelRecoupmentPct,
@@ -59,7 +62,7 @@ export default function AtRiskCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Capitalization</span>
-        <span className="text-white">{formatEstimatedCurrency(capitalization)}</span>
+        <span className="text-white">{formatCapitalization(capitalization, capitalizationIsEstimate)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Avg gross (4 wks)</span>

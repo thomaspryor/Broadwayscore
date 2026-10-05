@@ -154,6 +154,88 @@ describe('mergeCommercialJson with a base (honours deletions)', () => {
   });
 });
 
+// BRO-4657, second half: an approved fix rewrote Lucky Guy without touching
+// lastUpdated; Commercial Friday's copy had only refreshed model bookkeeping,
+// tied on lastUpdated, won whole-record and reverted the fix.
+describe('mergeCommercialJson with a base (field by field when both sides kept a record)', () => {
+  const T = '2026-09-01T00:00:00.000Z';
+  const baseRec = { designation: 'Flop', recouped: false, recoupedDate: null, notes: 'old', modelLastRun: '2026-09-28', lastUpdated: T };
+
+  it('replay: remote fixed the label, ours touched only bookkeeping -> both kept', () => {
+    const base = { shows: { 'lucky-guy-2013': baseRec } };
+    const remote = { shows: { 'lucky-guy-2013': { ...baseRec, designation: 'Easy Winner', recouped: true, recoupedDate: '2013-05', notes: 'new' } } };
+    const ours = { shows: { 'lucky-guy-2013': { ...baseRec, modelLastRun: '2026-10-05', modelP: 0.4 } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    assert.deepEqual(merged.shows['lucky-guy-2013'], {
+      designation: 'Easy Winner', recouped: true, recoupedDate: '2013-05', notes: 'new',
+      modelLastRun: '2026-10-05', lastUpdated: T, modelP: 0.4,
+    });
+    assert.equal(stats.fieldMerged, 1);
+    assert.equal(stats.fieldConflicts, 0);
+    // The pre-fix behaviour, for contrast: no base, ours wins the tie.
+    assert.equal(mergeCommercialJson(ours, remote).merged.shows['lucky-guy-2013'].designation, 'Flop');
+  });
+
+  it('a field both sides changed differently takes the newer record\'s value', () => {
+    const base = { shows: { a: baseRec } };
+    const ours = { shows: { a: { ...baseRec, notes: 'ours', lastUpdated: '2026-10-02T00:00:00.000Z' } } };
+    const remote = { shows: { a: { ...baseRec, notes: 'remote', lastUpdated: '2026-10-03T00:00:00.000Z' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    assert.equal(merged.shows.a.notes, 'remote');
+    assert.equal(merged.shows.a.lastUpdated, '2026-10-03T00:00:00.000Z');
+    assert.equal(stats.fieldConflicts, 2);
+  });
+
+  it('a field one side deleted stays deleted; one side added is kept', () => {
+    const base = { shows: { a: baseRec } };
+    const { notes, ...withoutNotes } = baseRec;
+    const ours = { shows: { a: withoutNotes } };
+    const remote = { shows: { a: { ...baseRec, capitalization: 5000000 } } };
+    const { merged } = mergeCommercialJson(ours, remote, base);
+    assert.ok(!('notes' in merged.shows.a));
+    assert.equal(merged.shows.a.capitalization, 5000000);
+  });
+
+  it('a manual-review flag on the losing side still survives', () => {
+    const base = { shows: { a: baseRec } };
+    const ours = { shows: { a: { ...baseRec, humanReviewedDesignation: false, lastUpdated: '2026-10-03T00:00:00.000Z' } } };
+    const remote = { shows: { a: { ...baseRec, humanReviewedDesignation: true, lastUpdated: '2026-10-02T00:00:00.000Z' } } };
+    assert.equal(mergeCommercialJson(ours, remote, base).merged.shows.a.humanReviewedDesignation, true);
+  });
+
+  it('linked fields move together: never one side\'s label with the other\'s recoupment', () => {
+    const { commercialRecordErrors } = require('../../scripts/lib/commercial-record-checks.js');
+    const b0 = { designation: 'TBD', recouped: null, capitalization: 1000000, capitalizationSource: 'old', lastUpdated: T };
+    const base = { shows: { a: b0 } };
+    // ours (newer) labels it Fizzle; remote records a recoupment and a new cap figure.
+    const ours = { shows: { a: { ...b0, designation: 'Fizzle', recouped: false, lastUpdated: '2026-10-03T00:00:00.000Z' } } };
+    const remote = { shows: { a: { ...b0, recouped: true, recoupedDate: '2026-09', capitalizationSource: 'Playbill', lastUpdated: '2026-10-02T00:00:00.000Z' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    const m = merged.shows.a;
+    assert.deepEqual([m.designation, m.recouped, m.recoupedDate], ['Fizzle', false, undefined]);
+    assert.equal(m.capitalizationSource, 'Playbill', 'an unrelated group only remote changed still merges');
+    assert.deepEqual(commercialRecordErrors('a', m), []);
+    assert.equal(stats.fieldConflicts, 2); // the designation group and lastUpdated
+  });
+
+  it('a linked group only one side changed is taken whole from that side', () => {
+    const base = { shows: { a: baseRec } };
+    const remote = { shows: { a: { ...baseRec, designation: 'Easy Winner', recouped: true, recoupedDate: '2013-05' } } };
+    const ours = { shows: { a: { ...baseRec, notes: 'ours', lastUpdated: '2026-10-03T00:00:00.000Z' } } };
+    const m = mergeCommercialJson(ours, remote, base).merged.shows.a;
+    assert.deepEqual([m.designation, m.recouped, m.recoupedDate, m.notes], ['Easy Winner', true, '2013-05', 'ours']);
+  });
+
+  it('a record not in base falls back to whole-record pickNewer', () => {
+    const base = { shows: {} };
+    const ours = { shows: { a: { designation: 'TBD', lastUpdated: '2026-10-01T00:00:00.000Z' } } };
+    const remote = { shows: { a: { designation: 'Hit', notes: 'x', lastUpdated: '2026-10-02T00:00:00.000Z' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    assert.deepEqual(merged.shows.a, remote.shows.a);
+    assert.equal(stats.fieldMerged, 0);
+  });
+});
+
 describe('mergePendingReview', () => {
   it('unions pending entries from both sides', () => {
     const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-05-24T00:00:00.000Z' } } };

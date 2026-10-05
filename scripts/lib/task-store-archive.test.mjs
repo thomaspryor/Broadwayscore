@@ -348,3 +348,67 @@ test('archiveCompletedTasks: NO live task file is ever rewritten (only unlinked)
   const liveWrites = writes.filter((w) => !w.includes(`${path.sep}archive${path.sep}`) && /\d+\.json/.test(w));
   assert.deepEqual(liveWrites, [], `no write may target a live task file, got ${JSON.stringify(liveWrites)}`);
 });
+
+test('archiveCompletedTasks: completed move-time recheck skips a task rewritten since scan (BRO-2003)', () => {
+  const dir = mkTmp();
+  writeTask(dir, 1, { status: 'completed', subject: 'Old done' }, 72);
+  const livePath = path.join(dir, '1.json');
+  const origStat = fs.statSync;
+  let calls = 0;
+  fs.statSync = (p, ...rest) => {
+    if (p === livePath && ++calls === 2) { // 2nd stat = move-time recheck
+      const fresh = new Date(NOW);
+      fs.utimesSync(livePath, fresh, fresh);
+    }
+    return origStat(p, ...rest);
+  };
+  try {
+    const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+    assert.deepEqual(result.archived, []);
+    assert.deepEqual(result.skipped.map((s) => s.id), ['1']);
+    assert.equal(fs.existsSync(livePath), true);
+    assert.equal(fs.existsSync(path.join(dir, 'archive', '1.json')), false);
+  } finally {
+    fs.statSync = origStat;
+  }
+});
+
+test('archiveCompletedTasks: never overwrites an archive entry holding a different task at the same id (BRO-2003)', () => {
+  const dir = mkTmp();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  const archivePath = path.join(dir, 'archive', '1.json');
+  const older = JSON.stringify({ id: '1', subject: 'First life of id 1', status: 'completed' });
+  fs.writeFileSync(archivePath, older);
+  writeTask(dir, 1, { status: 'completed', subject: 'Reused id, new task' }, 72);
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.archived, []);
+  assert.match(result.skipped[0].reason, /id reuse/);
+  assert.equal(fs.readFileSync(archivePath, 'utf8'), older);
+  assert.equal(fs.existsSync(path.join(dir, '1.json')), true);
+});
+
+test('archiveCompletedTasks: same task already in archive/ (crash leftover) is still archived and live removed (BRO-2003)', () => {
+  const dir = mkTmp();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '1.json'), JSON.stringify({ id: '1', subject: 'task 1', status: 'completed' }));
+  writeTask(dir, 1, { status: 'completed' }, 72);
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.archived, ['1']);
+  assert.equal(fs.existsSync(path.join(dir, '1.json')), false);
+});
+
+test('archiveCompletedTasks: corrupt archive entry is repaired by overwrite; subject-less tasks are not treated as the same (BRO-2003)', () => {
+  const dir = mkTmp();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '1.json'), '');
+  fs.writeFileSync(path.join(dir, 'archive', '2.json'), JSON.stringify({ id: '2', status: 'completed' }));
+  for (const id of [1, 2]) {
+    const p = path.join(dir, `${id}.json`);
+    fs.writeFileSync(p, JSON.stringify({ id: String(id), status: 'completed' }));
+    const old = new Date(NOW - 72 * HOUR);
+    fs.utimesSync(p, old, old);
+  }
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.archived, ['1']);
+  assert.match(result.skipped.find((s) => s.id === '2').reason, /id reuse/);
+});

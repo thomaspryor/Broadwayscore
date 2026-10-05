@@ -78,6 +78,14 @@ export default function EmailCaptureModal({
   // Only show extra fields (name, company, role) for biz-specific triggers
   const showExtraFields = trigger === 'csv_download' || trigger === 'json_download' || trigger === 'page_view_limit';
 
+  // The extra fields made this variant taller than the panel's 85vh cap on a
+  // 390x844 phone, so "Maybe later" sat below the fold behind an inner scroll
+  // (BRO-4623). Below sm it drops the decorative icon and tightens spacing so
+  // both buttons fit; inputs stay above a 44px tap target. sm and up, and the
+  // shorter single-field variants, keep the original layout.
+  const compact = showExtraFields;
+  const fieldPad = compact ? 'py-2.5 sm:py-3' : 'py-3';
+
   // Don't autoFocus for passive triggers — keyboard pop mid-scroll is jarring on mobile
   const shouldAutoFocus = trigger !== 'scroll_depth' && trigger !== 'exit_intent' && trigger !== 'return_visitor';
 
@@ -188,13 +196,14 @@ export default function EmailCaptureModal({
       )}
 
         {/* Header */}
-        <div className="px-6 pt-8 pb-4 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-brand/20 flex items-center justify-center">
+        <div className={`px-6 text-center ${compact ? 'pt-6 pb-3 sm:pt-8 sm:pb-4' : 'pt-8 pb-4'}`}>
+          <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-brand/20 items-center justify-center ${compact ? 'hidden sm:flex' : 'flex'}`}>
             <svg className="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
-          <h2 id="modal-title" className="text-2xl font-bold text-white mb-2">
+          {/* Without the icon the heading starts level with the close X, so it is inset to clear it. */}
+          <h2 id="modal-title" className={`font-bold text-white mb-2 ${compact ? 'text-xl px-6 sm:text-2xl sm:px-0' : 'text-2xl'}`}>
             {copy.heading}
           </h2>
           <p className="text-gray-400">
@@ -209,7 +218,7 @@ export default function EmailCaptureModal({
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="px-6 pb-6">
-          <div className="space-y-4">
+          <div className={compact ? 'space-y-3 sm:space-y-4' : 'space-y-4'}>
             {/* Email - Required */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
@@ -222,7 +231,7 @@ export default function EmailCaptureModal({
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@gmail.com"
                 required
-                className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
                 autoFocus={shouldAutoFocus}
               />
             </div>
@@ -240,7 +249,7 @@ export default function EmailCaptureModal({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Jane Smith"
-                    className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
                   />
                 </div>
 
@@ -254,7 +263,7 @@ export default function EmailCaptureModal({
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder="Broadway Productions LLC"
-                    className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all"
+                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all`}
                   />
                 </div>
 
@@ -266,7 +275,7 @@ export default function EmailCaptureModal({
                     id="role"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="w-full px-4 py-3 bg-surface border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all appearance-none cursor-pointer"
+                    className={`w-full px-4 ${fieldPad} bg-surface border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-all appearance-none cursor-pointer`}
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center', backgroundSize: '20px' }}
                   >
                     {ROLE_OPTIONS.map((option) => (

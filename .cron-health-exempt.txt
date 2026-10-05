@@ -122,10 +122,6 @@ scrape-thestage-roundups.yml
 scrape-waltz-costs.yml
 scrape-wp-blogs.yml
 send-follow-notifications.yml
-# Welcome email for new accounts (BRO-4620): nice-to-have, a missed run is
-# retried by the next one for 20h, and the script reports its own failures
-# to the Daily Digest via routeAlert. Off until the owner approves the copy.
-send-welcome-emails.yml
 sentry-triage.yml
 # Self-heal for orphan slim show files (BRO-3507), same low-stakes shape as
 # fix-circular-duplicate-pairs.yml/dedupe-same-url-bylines.yml above: a stale

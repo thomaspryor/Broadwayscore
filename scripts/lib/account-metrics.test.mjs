@@ -124,6 +124,32 @@ test('weeklySummaryLines reads as plain English', () => {
   assert.match(lines[1], /^1 signed-in person used the site this week/);
 });
 
+test('weeklySummaryLines counts iPhone app sign-ins, which have no sign-in box step', () => {
+  const accounts = m.summarizeAccounts(m.slimUsers([{ id: 'a', created_at: iso(1) }]), { ratings: [], watchlist: [], lists: [] }, NOW);
+  const funnel = [
+    { src: 'rate', dev: 'Desktop', shown: 1, started: 1, completed: 1, acted: 0 },
+    { src: '', dev: '', shown: 0, started: 0, completed: 1, acted: 0 },
+    { src: 'app', dev: 'App', shown: 0, started: 1, completed: 1, acted: 0 },
+  ];
+  const lines = m.weeklySummaryLines(m.buildDashboardData({ now: NOW, accounts, ph: { funnel } }));
+  const line = lines.find((l) => l.startsWith('Sign-up funnel'));
+  assert.ok(line, lines.join('\n'));
+  assert.match(line, /Computers: 1 saw the sign-in box, 1 started, 1 finished/);
+  assert.match(line, /iPhone app \/ other: 1 started, 2 finished/);
+});
+
+test('summarizeFunnel names app rows with no source and keeps finish-only devices', () => {
+  const f = m.summarizeFunnel([{ src: '', dev: 'App', shown: 0, started: 2, completed: 3, acted: 0 }]);
+  assert.equal(f.sources[0].label, 'iPhone app');
+  assert.equal(f.totals.other.completed, 3);
+});
+
+test('funnel query keeps devices that only finished signing in', () => {
+  const q = m.buildQueries().funnel;
+  assert.match(q, /WHERE n_shown > 0 OR n_started > 0 OR n_completed > 0/);
+  assert.match(q, /'sign_in_started', 'sign_in_completed'\)\) AS dev/);
+});
+
 test('account-metrics.js --simulate=signin-stalled prints the alert and sends nothing', () => {
   const out = execFileSync(process.execPath, [path.join(here, '..', 'account-metrics.js'), '--simulate=signin-stalled', '--out=/tmp/account-metrics-test'], {
     encoding: 'utf8',

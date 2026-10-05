@@ -277,18 +277,20 @@ function archiveCompletedTasks(dir, opts = {}) {
       let parsed, liveStat;
       try { parsed = JSON.parse(raw); } catch { skipped.push({ id, reason: 'unparseable at move time' }); continue; }
       if (!['completed', 'in_progress', 'pending'].includes(parsed.status)) { skipped.push({ id, reason: `status changed to ${parsed.status}` }); continue; }
-      if (parsed.status === 'in_progress') {
-        try { liveStat = fs.statSync(livePath); } catch { skipped.push({ id, reason: 'live file vanished mid-run' }); continue; }
-        const staleMs = opts.staleInProgressMs ?? DEFAULT_STALE_IN_PROGRESS_MS;
-        if (now - liveStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'in_progress task touched again since scan — no longer stale' }); continue; }
-      }
-      if (parsed.status === 'pending') {
-        try { liveStat = fs.statSync(livePath); } catch { skipped.push({ id, reason: 'live file vanished mid-run' }); continue; }
+      // Fresh mtime for every population: a completed task rewritten after the
+      // scan (e.g. an outcome-appender) is no longer >maxAgeMs stale (BRO-2003).
+      try { liveStat = fs.statSync(livePath); } catch { skipped.push({ id, reason: 'live file vanished mid-run' }); continue; }
+      const freshAge = now - liveStat.mtimeMs;
+      if (parsed.status === 'completed') {
+        if (freshAge <= (opts.maxAgeMs ?? DEFAULT_MAX_AGE_MS)) { skipped.push({ id, reason: 'completed task touched again since scan — no longer stale' }); continue; }
+      } else if (parsed.status === 'in_progress') {
+        if (freshAge <= (opts.staleInProgressMs ?? DEFAULT_STALE_IN_PROGRESS_MS)) { skipped.push({ id, reason: 'in_progress task touched again since scan — no longer stale' }); continue; }
+      } else {
         const isBscDaily = typeof parsed.subject === 'string' && BSC_DAILY_TITLE_RE.test(parsed.subject);
         const staleMs = isBscDaily
           ? (opts.bscDailyMaxAgeMs ?? DEFAULT_BSC_DAILY_MAX_AGE_MS)
           : (opts.pendingMaxAgeMs ?? DEFAULT_PENDING_MAX_AGE_MS);
-        if (now - liveStat.mtimeMs <= staleMs) { skipped.push({ id, reason: 'pending task touched again since scan — no longer stale' }); continue; }
+        if (freshAge <= staleMs) { skipped.push({ id, reason: 'pending task touched again since scan — no longer stale' }); continue; }
       }
 
       // THE DEADLOCK FIX: for the in_progress population the archive copy is
@@ -300,6 +302,19 @@ function archiveCompletedTasks(dir, opts = {}) {
       const idleMs = liveStat ? now - liveStat.mtimeMs : null;
       const { task: archiveTask, relabelled: wasRelabelled } = archiveCopyFor(parsed, { now, idleMs });
       const body = wasRelabelled ? `${JSON.stringify(archiveTask, null, 2)}\n` : raw;
+      // No-clobber (BRO-2003): an existing archive/<id>.json is only replaced when
+      // it is the same task (crash-interrupted prior run: live + archive both
+      // present). A different subject means the id was reused, so overwriting
+      // would destroy the older archived record — keep the live file, report it.
+      if (fs.existsSync(archivePath)) {
+        let existing = null;
+        try { existing = JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { /* corrupt: holds no recoverable record, safe to repair by overwrite */ }
+        const sameTask = existing && existing.subject != null && existing.subject === parsed.subject;
+        if (existing && typeof existing === 'object' && !sameTask) {
+          skipped.push({ id, reason: 'archive/ already holds a different task at this id (id reuse) — live copy kept, archive not overwritten' });
+          continue;
+        }
+      }
       const tmp = `${archivePath}.tmp-${crypto.randomBytes(4).toString('hex')}`;
       fs.writeFileSync(tmp, body);
       fs.renameSync(tmp, archivePath);

@@ -12,8 +12,10 @@ import {
   getDesignationDisplay,
   publicSourceText,
   isEstimatedRunningCost,
+  isEstimatedCapitalization,
   getWeeklyCostSourceLabel,
 } from '@/lib/commercial-display';
+import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 
@@ -232,7 +234,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
               {commercial.capitalization == null
                 ? 'Undisclosed'
-                : formatWithEstimate(formatCurrency(commercial.capitalization), commercial.isEstimate?.capitalization ?? false)}
+                : formatCapitalization(commercial.capitalization, isEstimatedCapitalization(commercial))}
             </div>
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
               Capitalization

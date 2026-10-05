@@ -122,7 +122,7 @@ jobs:
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
 
-      - name: Update issue labels (no comment — avoids GitHub notification noise)
+      - name: Update issue labels (comments only when the fix script wrote one)
         if: always()
         uses: actions/github-script@v7
         env:
@@ -133,10 +133,22 @@ jobs:
           script: |
             const action = process.env.FIX_ACTION || 'error';
             const issueNumber = parseInt(process.env.FIX_ISSUE_NUMBER);
+            const fs = require('fs');
 
-            // Only comment for actionable outcomes (fix applied or error).
-            // Routine skips/manual-review get labels only — the approval email
-            // is the human-facing notification channel, not GitHub comments.
+            // scripts/auto-fix-feedback-bug.js writes a substantive comment via
+            // writeComment() before nearly every outcome it returns (not just
+            // 'fixed'/'partial') — confirmed by reading every writeComment()
+            // call site against every output() call site (BRO-4659). Post it
+            // whenever present; branches below differ only in label/state.
+            function readCommentFile() {
+              try {
+                const content = fs.readFileSync('.github-comment.md', 'utf8');
+                return content && content.trim() ? content : null;
+              } catch (_) {
+                return null;
+              }
+            }
+
             if (action === 'fixed') {
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
@@ -158,11 +170,8 @@ jobs:
               // issue OPEN. Never state_reason:'completed' here: closing
               // would silently drop the unresolved show(s) exactly like the
               // original bug.
-              const fs = require('fs');
-              let body = 'Some but not all shows referenced in this report were auto-fixed. Leaving this issue open for the remainder.';
-              try {
-                body = fs.readFileSync('.github-comment.md', 'utf8') || body;
-              } catch (_) { /* fall back to generic message above */ }
+              const body = readCommentFile() ||
+                'Some but not all shows referenced in this report were auto-fixed. Leaving this issue open for the remainder.';
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber,
@@ -173,12 +182,29 @@ jobs:
                 issue_number: issueNumber, labels: ['auto-fixed', 'needs-manual-review']
               });
             } else if (action === 'not-a-bug') {
+              // Same comment-drop bug as the catch-all branch below (BRO-4659
+              // cousin): the script writes a substantive "Likely Not a Bug" /
+              // "Already Fixed" comment via writeComment() before returning
+              // this action, but only addLabels ever ran here — the comment
+              // was silently discarded every time.
+              const body = readCommentFile();
+              if (body) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body,
+                });
+              }
               await github.rest.issues.addLabels({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber, labels: ['not-a-bug']
               });
             } else if (action === 'error') {
-              // Only comment on actual errors so we notice failures
+              // Deliberately generic, NOT the comment-drop bug class above:
+              // the specific err.message written via writeComment() may
+              // contain internal paths/stack detail we don't want to leak
+              // into this public repo, so a generic message is intentional
+              // here rather than read via readCommentFile().
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber,
@@ -189,7 +215,21 @@ jobs:
                 issue_number: issueNumber, labels: ['needs-manual-review']
               });
             } else {
-              // skipped, validation-failed — just label, no comment (no notification)
+              // skipped, validation-failed — label always, comment when the
+              // script wrote one. Nearly every skip/validation-failed call
+              // site in auto-fix-feedback-bug.js DOES write a substantive
+              // comment via writeComment() before returning here (confirmed
+              // by reading every writeComment() site against every output()
+              // site) — this was discarding almost all of them, not just the
+              // two originally found (BRO-4659).
+              const body = readCommentFile();
+              if (body) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issueNumber,
+                  body,
+                });
+              }
               await github.rest.issues.addLabels({
                 owner: context.repo.owner, repo: context.repo.repo,
                 issue_number: issueNumber, labels: ['needs-manual-review']
