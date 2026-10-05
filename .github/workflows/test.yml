@@ -3416,6 +3416,7 @@ on:
       # root-level scripts/ file with no test of its own — path-listed so a
       # solo edit triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-data-gate-heal-paths.js'
+      - 'scripts/audit-new-gate-arming.js'
       # BRO-3507: self-heal-orphan-show-files.yml's deletion CLI. Its decision
       # logic (scripts/lib/orphan-grace-period.js, colocated-tested) is
       # covered by the scripts/lib/** glob above, but this thin CLI wrapper is
@@ -3619,6 +3620,26 @@ jobs:
         # rest with heal-exempt annotations). Decision logic + tests:
         # scripts/lib/data-gate-heal-paths.{js,test.mjs}.
         run: node scripts/audit-data-gate-heal-paths.js
+
+      - name: Audit — new blocking gates land advisory or baselined (BRO-2123)
+        if: always() && steps.deps.outcome == 'success'
+        # A NEW --strict/--gate step added to test.yml must carry
+        # `continue-on-error: true`, its own baseline file in the same change, or a
+        # `# gate-arm-ok: <proof it passes on the live tree>` annotation. Otherwise
+        # its first-ever run happens on main against an unchecked corpus (3 reds in
+        # one morning, 2026-08-16). Promote advisory -> blocking in a later commit
+        # after one green main run. Diff-only: cannot fail on the live tree. Base =
+        # the pushed-from SHA (push) or PR base; an unfetchable base warns + skips.
+        # Logic + bad-fixture test: scripts/lib/new-gate-arming.js,
+        # tests/unit/lint-workflows.test.mjs.
+        env:
+          GATE_ARM_BASE: ${{ github.event.before || github.event.pull_request.base.sha }}
+        run: |
+          if [ -n "$GATE_ARM_BASE" ]; then
+            git fetch --no-tags --depth=1 origin "$GATE_ARM_BASE" || true
+          fi
+          node scripts/audit-new-gate-arming.js
+          node --test tests/unit/lint-workflows.test.mjs
 
       - name: Audit — workflow hygiene (notify-failure, playwright, push-with-retry)
         if: always() && steps.deps.outcome == 'success'
