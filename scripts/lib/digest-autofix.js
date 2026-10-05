@@ -107,7 +107,12 @@ const REPO = path.join(__dirname, '..', '..');
 const LOG_DIR = process.env.DIGEST_AUTOFIX_LOG_DIR || (process.env.NODE_TEST_CONTEXT
   ? (() => {
     const dir = path.join(require('os').tmpdir(), `digest-autofix-test-logs-${process.pid}`);
-    process.once('exit', () => { try { require('fs').rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ } });
+    // Tests re-require this module per case; register the cleanup once per process.
+    const flag = Symbol.for('digest-autofix-log-cleanup');
+    if (!process[flag]) {
+      process[flag] = true;
+      process.once('exit', () => { try { require('fs').rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ } });
+    }
     return dir;
   })()
   : path.join(REPO, 'data', 'audit', 'digest-autofix-logs'));
