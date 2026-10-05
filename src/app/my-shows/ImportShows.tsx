@@ -21,7 +21,7 @@ import {
   MEZZANINE_SEARCH_ERROR_COPY,
   type MezzanineCandidate,
 } from '@/lib/mezzanine-search';
-import { importSourceNames } from '@/lib/import-sources';
+import { IMPORT_SOURCES, importSourceNames } from '@/lib/import-sources';
 import { getMarketLabel } from '@/lib/market-utils';
 import { marketLabel as diaryMarketLabel } from '@/lib/diary-show-types';
 
@@ -114,7 +114,7 @@ type FindItCandidate =
 
 type LiveResolveState = { status: 'searching' } | { status: 'results'; candidates: FindItCandidate[] } | { status: 'empty' } | { status: 'error'; message: string };
 
-type ImportSourceId = 'mezzanine' | 'show-score' | 'theatr';
+export type ImportSourceId = 'mezzanine' | 'show-score' | 'theatr';
 type ImportStep = 'closed' | 'source' | 'matching' | 'preview' | 'importing' | 'done';
 
 interface ImportShowsProps {
@@ -130,6 +130,11 @@ interface ImportShowsProps {
   onClose?: (imported: number) => void;
   /** Where the import was started, sent on import_completed / import_failed. */
   context?: 'my_shows' | 'onboarding';
+  /**
+   * Open at one source only (the welcome sheet's per-app cards), with a link
+   * to the others. Unset: all sources, as on My Shows.
+   */
+  initialSource?: ImportSourceId;
 }
 
 /** A seen-but-unrated show the user already had on their watchlist (saved
@@ -153,10 +158,14 @@ export default function ImportShows({
   onImportComplete,
   initialOpen = false,
   onClose,
+  initialSource,
   context = 'my_shows',
 }: ImportShowsProps) {
   const [step, setStep] = useState<ImportStep>(initialOpen ? 'source' : 'closed');
-  const [source, setSource] = useState<ImportSourceId>('show-score');
+  const [source, setSource] = useState<ImportSourceId>(initialSource ?? 'show-score');
+  // One source only until they ask for the others (welcome sheet cards).
+  const [onlySource, setOnlySource] = useState<ImportSourceId | null>(initialSource ?? null);
+  const offers = (id: ImportSourceId) => onlySource === null || onlySource === id;
   const [entries, setEntries] = useState<MatchedEntry[]>([]);
   const [notices, setNotices] = useState<string[]>([]);
   const [profileInput, setProfileInput] = useState('');
@@ -703,7 +712,7 @@ export default function ImportShows({
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <h3 className="text-base font-bold text-white">
-            {step === 'source' && 'Import your shows'}
+            {step === 'source' && (onlySource ? `Import from ${IMPORT_SOURCES.find(x => x.id === onlySource)?.name ?? 'another app'}` : 'Import your shows')}
             {step === 'matching' && (source === 'show-score' ? 'Fetching your profile...' : source === 'theatr' ? 'Reading screenshots...' : 'Matching shows...')}
             {step === 'preview' && 'Review Import'}
             {step === 'importing' && 'Importing...'}
@@ -718,6 +727,7 @@ export default function ImportShows({
           {step === 'source' && (
             <div className="space-y-6 py-2">
               {/* Show Score */}
+              {offers('show-score') && (
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-lg">🎭</span>
@@ -745,14 +755,18 @@ export default function ImportShows({
                   </button>
                 </div>
               </div>
+              )}
 
+              {onlySource === null && (
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-white/10" />
                 <span className="text-xs text-gray-600">or</span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
+              )}
 
               {/* Mezzanine */}
+              {offers('mezzanine') && (
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-lg">📱</span>
@@ -773,14 +787,18 @@ export default function ImportShows({
                   />
                 </label>
               </div>
+              )}
 
+              {onlySource === null && (
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-white/10" />
                 <span className="text-xs text-gray-600">or</span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
+              )}
 
               {/* Theatr — no export exists, so we read screenshots */}
+              {offers('theatr') && (
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-lg">📸</span>
@@ -806,6 +824,13 @@ export default function ImportShows({
                   />
                 </label>
               </div>
+              )}
+
+              {onlySource !== null && (
+                <button type="button" onClick={() => setOnlySource(null)} className="btn-ghost text-sm px-0 min-h-[44px]">
+                  Import from somewhere else
+                </button>
+              )}
 
               {error && <p className="text-sm text-red-400">{error}</p>}
             </div>
