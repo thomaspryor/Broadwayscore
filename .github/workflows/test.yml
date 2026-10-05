@@ -3085,6 +3085,9 @@ on:
       # test that would catch a predicate/surge-guard regression never runs.
       - 'scripts/clear-stale-roundup-flags.js'
       - 'scripts/clear-stale-roundup-flags.test.mjs'
+      # BRO-2432: fail-loud-on-LLM-outage fix + colocated test (not globbed).
+      - 'scripts/clear-stale-wrong-show-flags.js'
+      - 'scripts/clear-stale-wrong-show-flags.test.mjs'
       - 'scripts/triage-unknown-critic-stubs.js'
       # Shared llm-ensemble-score.yml dispatch helper (T1 sweep self-heal +
       # verify-all-scored) and the rebuild-drop analyzer it de-noises
