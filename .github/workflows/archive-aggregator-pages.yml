@@ -43,13 +43,11 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_CUSTOMER_ID: ${{ secrets.BRIGHTDATA_CUSTOMER_ID }}
           BRIGHTDATA_ZONE: ${{ github.event.inputs.bright_data_zone }}
           SHOW_IDS: ${{ github.event.inputs.show_ids }}
         run: |
           node << 'EOF'
           const fs = require('fs');
-          const https = require('https');
           const axios = require('axios');
 
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -72,37 +70,10 @@ jobs:
             return response.data;
           }
 
-          // TIER 2: Bright Data (fallback)
-          async function fetchWithBrightData(url, apiKey, customerId, zoneName) {
-            // Use provided zone name or default to 'web_unlocker2'
-            const zone = zoneName && zoneName.trim() !== '' ? zoneName.trim() : 'web_unlocker2';
-
-            const proxy = {
-              host: 'brd.superproxy.io',
-              port: 33335,
-              auth: {
-                username: `brd-customer-${customerId.trim()}-zone-${zone}`,
-                password: apiKey.trim(),
-              },
-            };
-
-            const httpsAgent = new https.Agent({
-              rejectUnauthorized: false,
-            });
-
-            const response = await axios.get(url, {
-              proxy: proxy,
-              httpsAgent: httpsAgent,
-              headers: {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9',
-              },
-              timeout: 90000,
-            });
-
-            return response.data;
-          }
+          // TIER 2: Bright Data REST /request with Bearer token (BRO-3486: the old
+          // raw-proxy tier sent the API token as a proxy password -> 407)
+          const { fetchWithBrightData: bdFetch } = require('./scripts/lib/archive-aggregator.js');
+          const fetchWithBrightData = (url, apiKey, _customerId, zoneName) => bdFetch(url, apiKey, zoneName);
 
           async function archivePage(showId, aggregator, url, config) {
             try {
@@ -123,18 +94,18 @@ jobs:
                   console.log(`  ✗ ScrapingBee failed: ${sbError.message}`);
 
                   // Fall back to Bright Data
-                  if (config.brightDataKey && config.brightDataCustomerId) {
+                  if (config.brightDataKey) {
                     console.log(`  Trying Bright Data...`);
-                    html = await fetchWithBrightData(url, config.brightDataKey, config.brightDataCustomerId, config.brightDataZone);
+                    html = await fetchWithBrightData(url, config.brightDataKey, null, config.brightDataZone);
                     method = 'brightdata';
                     console.log(`  ✓ Bright Data succeeded`);
                   } else {
                     throw sbError;
                   }
                 }
-              } else if (config.brightDataKey && config.brightDataCustomerId) {
+              } else if (config.brightDataKey) {
                 // No ScrapingBee, use Bright Data directly
-                html = await fetchWithBrightData(url, config.brightDataKey, config.brightDataCustomerId, config.brightDataZone);
+                html = await fetchWithBrightData(url, config.brightDataKey, null, config.brightDataZone);
                 method = 'brightdata';
               } else {
                 throw new Error('No scraping service configured');
@@ -176,18 +147,17 @@ jobs:
             const config = {
               scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY,
               brightDataKey: process.env.BRIGHTDATA_TOKEN,
-              brightDataCustomerId: process.env.BRIGHTDATA_CUSTOMER_ID,
               brightDataZone: process.env.BRIGHTDATA_ZONE || 'web_unlocker2',
             };
 
             // Check that at least one scraping service is configured
             const hasScrapingBee = config.scrapingBeeKey && config.scrapingBeeKey.trim() !== '';
-            const hasBrightData = config.brightDataKey && config.brightDataCustomerId;
+            const hasBrightData = config.brightDataKey;
 
             if (!hasScrapingBee && !hasBrightData) {
               console.error('❌ No scraping service configured. Set either:');
               console.error('   - SCRAPINGBEE_API_KEY, or');
-              console.error('   - BRIGHTDATA_TOKEN + BRIGHTDATA_CUSTOMER_ID');
+              console.error('   - BRIGHTDATA_TOKEN');
               process.exit(1);
             }
 
