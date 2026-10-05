@@ -19,6 +19,7 @@ const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
@@ -87,7 +88,7 @@ function run() {
   const multiProductionTitleIds = buildMultiProductionTitleIds(showMap);
 
   let flaggedEarly = 0, flaggedLate = 0, skipped = 0, noDate = 0, noWindow = 0, ok = 0;
-  let priorRunSkipped = 0, datelessRevivalFlagged = 0;
+  let priorRunSkipped = 0, datelessRevivalFlagged = 0, priorRunRepublishFlagged = 0;
   let lockedSkipCount = 0, corroborationHeld = 0, corroborationWarned = 0;
   let awaitingRefetchSkipped = 0, overrideClearSkipped = 0, yearCorrected = 0;
   const yearCorrectedDetails = [];
@@ -165,6 +166,25 @@ function run() {
           });
         }
         continue;
+      }
+
+      // Prior-run republish (BRO-4641): body text names an earlier production. Date
+      // guards below cannot catch it (the page was republished with a new date).
+      if (data.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(data)) {
+        const republish = detectPriorRunRepublish({ text: data.fullText, show });
+        if (republish.flag) {
+          priorRunRepublishFlagged++;
+          flaggedDetails.push({ showId: showDir, title: show.title, file, date: data.publishDate || '(none)', issue: 'prior_run_republish', diffDays: 0, outlet: data.outlet || '?' });
+          if (!DRY_RUN) {
+            data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
+            data.wrongProductionReason = 'prior-run-republish';
+            data.wrongProductionNote = `Prior-run republish guard: ${republish.reason} — "${republish.evidence}"`;
+            const r = safeWriteReview(filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
+          }
+          continue;
+        }
       }
 
       // LLM-guessed dates never sole basis for a stamp (BRO-4473)
@@ -310,7 +330,7 @@ function run() {
     for (const [showId, { title, items }] of sorted.slice(0, 30)) {
       console.log(`\n  ${title} (${showId}): ${items.length} reviews`);
       items.slice(0, 5).forEach(d => {
-        const tag = d.issue === 'before_preview' ? 'EARLY' : d.issue === 'dateless_revival' ? 'DATELESS' : 'LATE';
+        const tag = d.issue === 'before_preview' ? 'EARLY' : d.issue === 'dateless_revival' ? 'DATELESS' : d.issue === 'prior_run_republish' ? 'PRIOR-RUN' : 'LATE';
         console.log(`    ${tag} ${d.diffDays}d  ${d.outlet.padEnd(25)} ${d.date}`);
       });
       if (items.length > 5) console.log(`    ... and ${items.length - 5} more`);
@@ -374,9 +394,10 @@ function run() {
   console.log(`No show date window:   ${noWindow}`);
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (early): ${flaggedEarly}`);
   console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (late):  ${flaggedLate}`);
-  console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} total:   ${flaggedEarly + flaggedLate}`);
+  console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} (prior-run republish): ${priorRunRepublishFlagged}`);
+  console.log(`${DRY_RUN ? 'Would flag' : 'Flagged'} total:   ${flaggedEarly + flaggedLate + priorRunRepublishFlagged}`);
   console.log(`[LOCKED-SKIP-COUNT] flag-wrong-production-by-date: ${lockedSkipCount}`);
-  if (DRY_RUN && (flaggedEarly + flaggedLate) > 0) {
+  if (DRY_RUN && (flaggedEarly + flaggedLate + priorRunRepublishFlagged) > 0) {
     console.log(`\nRun with --apply to write flags.`);
   }
 }
