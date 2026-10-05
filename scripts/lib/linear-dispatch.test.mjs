@@ -911,3 +911,43 @@ test('findOpenIssueForTerm matches a bracketed marker Linear stored escaped', as
   )?.identifier, 'BRO-3');
   assert.equal(findOpenIssueForTerm(stored, '[not-there]'), null);
 });
+
+// BRO-3536: the headless refusal listed a sentinel that --force had already
+// waived, because the card ALSO carried OWNER_DECISION_GATE (which only
+// --allow-human-gated waives). --force looked broken. remainingHeadlessBlockers
+// is the one place the waiver set lives; the refusal prints only what it returns.
+import { createRequire } from 'node:module';
+const hdRequire = createRequire(import.meta.url);
+const hd = hdRequire('./headless-dispatchability.js');
+
+const BRO_3532_NOTES = 'PARKED: Unrelated pre-existing failures surfaced while landing BRO-3527. Needs someone to find the duplicate.\n\nParked, needs owner judgment on which showId keeps the Show Score URL.';
+const classify = (notes) => hd.classifyHeadlessDispatchability({ subject: 'Main red on push: x', notes }, { verifyCmd: 'node x' }).blockers;
+const codes = (bs) => bs.map((b) => b.code).sort();
+
+test('remainingHeadlessBlockers: --force clears PARKED_SENTINEL but NOT a co-occurring owner-decision gate (BRO-3532)', () => {
+  const blockers = classify(BRO_3532_NOTES);
+  assert.deepEqual(codes(blockers), ['OWNER_DECISION_GATE', 'PARKED_SENTINEL']);
+  assert.deepEqual(codes(hd.remainingHeadlessBlockers(blockers, { force: true })), ['OWNER_DECISION_GATE']);
+  assert.deepEqual(codes(hd.remainingHeadlessBlockers(blockers, {})), ['OWNER_DECISION_GATE', 'PARKED_SENTINEL']);
+});
+
+test('remainingHeadlessBlockers: sentinel-only card is fully cleared by --force, --allow-automation-parked, --allow-session-parked', () => {
+  const blockers = classify('PARKED: waiting on the next monitor window.');
+  assert.deepEqual(codes(blockers), ['PARKED_SENTINEL']);
+  for (const flag of ['force', 'automationParked', 'sessionParked']) {
+    assert.deepEqual(hd.remainingHeadlessBlockers(blockers, { [flag]: true }), [], flag);
+  }
+});
+
+test('remainingHeadlessBlockers: NO_VERIFY_CMD is never a headless refusal reason', () => {
+  const bs = [{ code: hd.BLOCKERS.NO_VERIFY_CMD, detail: 'x' }];
+  assert.deepEqual(hd.remainingHeadlessBlockers(bs, {}), []);
+});
+
+test('linear-next.js refusal prints the remaining blockers, not the full list', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../linear-next.js', import.meta.url), 'utf8');
+  assert.match(src, /remainingHeadlessBlockers\(hg\.blockers/);
+  assert.match(src, /for \(const b of blocking\) console\.error/);
+  assert.doesNotMatch(src, /for \(const b of hg\.blockers\) console\.error/);
+});

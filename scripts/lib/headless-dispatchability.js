@@ -237,6 +237,18 @@ function isDrainableSessionParked(notes) {
   return reasons.length > 0 && reasons.every((r) => r && TECHNICAL_PARK_RE.test(r) && !OWNER_HOLD_PARK_RE.test(r));
 }
 
+// BRO-3536: which classifier blockers actually still refuse a headless
+// dispatch once the caller's flags are applied. --force / --allow-automation-
+// parked / --allow-session-parked waive PARKED_SENTINEL ONLY; every other
+// blocker (OWNER_DECISION_GATE, VISUAL_QA_GATE, ...) needs --allow-human-gated.
+// The refusal used to print the whole blocker list, so a card with a sentinel
+// AND another gate looked like --force had failed to clear the sentinel.
+function remainingHeadlessBlockers(blockers, { force = false, automationParked = false, sessionParked = false } = {}) {
+  const sentinelWaived = !!(force || automationParked || sessionParked);
+  return (blockers || []).filter((b) => b.code !== BLOCKERS.NO_VERIFY_CMD
+    && !(b.code === BLOCKERS.PARKED_SENTINEL && sentinelWaived));
+}
+
 function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const subject = String(card.subject || '');
   const notes = String(card.notes != null ? card.notes : (card.description || ''));
@@ -358,6 +370,7 @@ module.exports = {
   // classifier's use of a module-scope const already guarantees.
   PARKED_SENTINEL_RE,
   classifyHeadlessDispatchability,
+  remainingHeadlessBlockers,
   looksLikeUiPath,
   extractPathTokens,
   uiPathsIn,
