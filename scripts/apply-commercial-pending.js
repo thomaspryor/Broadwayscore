@@ -254,9 +254,8 @@ function main() {
     // that the scraper doesn't carry.
     // Then clear research wording and premature loss labels, which the
     // validate-data run below would otherwise reject, aborting every entry.
-    // Status comes from the show whose slug IS the key, the record
-    // validate-data checks it against.
-    const keyShow = showsBySlug[commercialKey];
+    // Status comes from keyShow (resolveCommercialSlug above): the show whose
+    // slug IS the key, the record validate-data checks it against.
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
       gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }),
       keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined,
