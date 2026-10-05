@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T17:50:33.886Z",
+  "timestamp": "2026-10-05T18:05:32.820Z",
   "stats": {
-    "totalReviews": 46360,
-    "alreadyFlagged": 18681,
+    "totalReviews": 46375,
+    "alreadyFlagged": 18695,
     "dateGuardCatches": 268,
-    "directorMismatch": 1262,
+    "directorMismatch": 1264,
     "tvFilmSignals": 1344,
-    "londonSignals": 1275,
+    "londonSignals": 1277,
     "offBroadwaySignals": 510,
     "yearMismatch": 109,
-    "noPublishDate": 4308
+    "noPublishDate": 4301
   },
   "findings": [
     {
@@ -1554,7 +1554,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 79,
+      "score": 81,
       "publishDate": "2026-02-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/american-psycho-musical-almeida-theatre-review-b2912010.html",
       "findings": [
@@ -1568,7 +1568,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-02-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/american-psycho-almeida-review",
       "findings": [
@@ -1595,6 +1595,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "score": 82,
+      "publishDate": "2026-02-01",
+      "url": "https://www.whatsonstage.com/news/american-psycho-review-the-musical-thriller-returns-to-the-almeida-theatre_1710677/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -3726,6 +3745,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "newsfromme--unknown.json",
+      "score": 79,
+      "publishDate": "2026-10-05",
+      "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
         }
       ]
     },
@@ -39382,6 +39415,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-09-21",
+      "url": "https://www.timeout.com/london/theatre/affluenza",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
