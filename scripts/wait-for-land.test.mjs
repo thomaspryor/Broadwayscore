@@ -8,42 +8,55 @@ const require = createRequire(import.meta.url);
 const { landVerdict, parseArgs } = require('./wait-for-land.js');
 
 const TIP = '057156419a666b690b937354092729af67ceb092';
-const run = (over) => ({ id: 1, head_sha: TIP, status: 'completed', conclusion: 'success', ...over });
+const NOW = Date.parse('2026-10-05T05:00:00Z');
+const minsAgo = (m) => new Date(NOW - m * 60_000).toISOString();
+const run = (over) => ({ id: 1, head_sha: TIP, status: 'completed', conclusion: 'success', updated_at: minsAgo(2), ...over });
+const verdict = (args) => landVerdict({ nowMs: NOW, ...args });
 
-test('ref gone after being seen means landed, whatever the last run says', () => {
-  assert.equal(landVerdict({ refSha: null, run: run({ status: 'in_progress', conclusion: null }) }).verdict, 'landed');
-  assert.equal(landVerdict({ refSha: null, run: null }).verdict, 'landed');
+test('ref gone after being seen means landed, unless its run went red', () => {
+  assert.equal(verdict({ refSha: null, lastSha: TIP, run: run({ status: 'in_progress', conclusion: null }) }).verdict, 'landed');
+  assert.equal(verdict({ refSha: null, lastSha: TIP, run: null }).verdict, 'landed');
+  const byHand = verdict({ refSha: null, lastSha: TIP, run: run({ conclusion: 'failure' }) });
+  assert.equal(byHand.verdict, 'unknown', 'deleted after a refusal is not a landing');
 });
 
-test('a ref missing from the start with no land run is a typo, never "landed"', () => {
-  assert.equal(landVerdict({ refSha: null, run: null, seenRef: false }).verdict, 'unknown');
-  assert.equal(landVerdict({ refSha: null, run: run(), seenRef: false }).verdict, 'landed', 'landed before the wait began');
+test('a ref missing from the first poll needs a RECENT green run to count as landed', () => {
+  assert.equal(verdict({ refSha: null, run: null }).verdict, 'unknown', 'typo');
+  const before = verdict({ refSha: null, run: run() });
+  assert.equal(before.verdict, 'landed');
+  assert.equal(before.before, true);
+  assert.equal(verdict({ refSha: null, run: run({ updated_at: minsAgo(60 * 24 * 7) }) }).verdict, 'unknown', 'reused name, weeks-old run');
+  assert.equal(verdict({ refSha: null, run: run({ conclusion: 'failure' }) }).verdict, 'unknown', 'never pushed, last run red');
 });
 
 test('a red run for the current tip is a refusal (the case the ref-only loop missed for ~1h)', () => {
   for (const conclusion of ['failure', 'timed_out', 'startup_failure', 'action_required']) {
-    const v = landVerdict({ refSha: TIP, run: run({ conclusion }) });
+    const v = verdict({ refSha: TIP, run: run({ conclusion }) });
     assert.equal(v.verdict, 'refused', conclusion);
     assert.match(v.why, new RegExp(conclusion));
   }
 });
 
-test('a cancelled run is an eviction: keep waiting and name the retry', () => {
-  const v = landVerdict({ refSha: TIP, run: run({ id: 37260205885, conclusion: 'cancelled' }) });
-  assert.equal(v.verdict, 'waiting');
-  assert.match(v.why, /land-retry-cancelled\.js --run=37260205885/);
+test('a cancelled run is an eviction: keep waiting, name the retry, flag it once stale', () => {
+  const fresh = verdict({ refSha: TIP, run: run({ id: 37260205885, conclusion: 'cancelled' }) });
+  assert.equal(fresh.verdict, 'waiting');
+  assert.match(fresh.why, /land-retry-cancelled\.js --run=37260205885/);
+  const stale = verdict({ refSha: TIP, run: run({ id: 37260205885, conclusion: 'cancelled', updated_at: minsAgo(45) }) });
+  assert.equal(stale.verdict, 'waiting');
+  assert.match(stale.why, /30\+ min ago and not re-run/);
 });
 
 test('a red run for an OLDER tip says nothing about a fresh push', () => {
-  const v = landVerdict({ refSha: TIP, run: run({ head_sha: 'f'.repeat(40), conclusion: 'failure' }) });
+  const v = verdict({ refSha: TIP, run: run({ head_sha: 'f'.repeat(40), conclusion: 'failure' }) });
   assert.equal(v.verdict, 'waiting');
 });
 
 test('queued, in-progress, missing and green-but-ref-still-there all keep waiting', () => {
-  assert.equal(landVerdict({ refSha: TIP, run: run({ status: 'queued', conclusion: null }) }).verdict, 'waiting');
-  assert.equal(landVerdict({ refSha: TIP, run: run({ status: 'in_progress', conclusion: null }) }).verdict, 'waiting');
-  assert.equal(landVerdict({ refSha: TIP, run: null }).verdict, 'waiting');
-  assert.equal(landVerdict({ refSha: TIP, run: run({ conclusion: 'success' }) }).verdict, 'waiting');
+  assert.equal(verdict({ refSha: TIP, run: run({ status: 'queued', conclusion: null }) }).verdict, 'waiting');
+  assert.equal(verdict({ refSha: TIP, run: run({ status: 'in_progress', conclusion: null }) }).verdict, 'waiting');
+  assert.equal(verdict({ refSha: TIP, run: null }).verdict, 'waiting');
+  assert.equal(verdict({ refSha: TIP, run: run({ conclusion: 'success' }) }).verdict, 'waiting');
+  assert.equal(verdict({ refSha: TIP, run: run({ conclusion: 'skipped' }) }).verdict, 'waiting', 'skipped/neutral wait out the timeout');
 });
 
 test('parseArgs takes a land/ ref and a positive whole-minute timeout', () => {
