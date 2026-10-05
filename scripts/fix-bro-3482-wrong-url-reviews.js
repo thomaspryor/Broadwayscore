@@ -8,6 +8,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/fix-bro-3482-wrong-url-reviews.js [--apply]  (dry run without --apply)');
@@ -40,6 +41,8 @@ for (const f of FIXES) {
   const p = path.join(TEXTS, f.file);
   const d = JSON.parse(fs.readFileSync(p, 'utf8'));
   Object.assign(d, f.patch, { manualFixNote: NOTE + (f.patch.wrongShowReason || f.patch.nonReviewReason || f.patch.urlClearedReason) });
+  // A re-flag must retract any stale wrongShowAutoCleared breadcrumb (BRO-3225 / lint-autoclear-invalidate).
+  if (f.patch.wrongShow === true) invalidateWrongShowAutoClear(d);
   if (apply) fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
   console.log(`${apply ? 'patched' : 'would patch'} ${f.file}`);
 }
