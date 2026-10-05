@@ -18,11 +18,21 @@ test('every Broadway production of the title links its tour; other shows and mar
   const { getToursOf, getShowById } = await import('../../src/lib/data-core');
   const tour = getShowById('beetlejuice-tour-2022');
   assert.ok(tour, 'beetlejuice-tour-2022 exists in shows.json');
+  // Live shows.json gains tours over time (beetlejuice-tour-2026 broke an
+  // exact-list assertion, BRO-4650), so pin the invariants, not the list:
+  // the original tour is linked, every production gets the same set, and
+  // nothing outside the title leaks in.
+  let first: string[] | undefined;
   for (const id of ['beetlejuice-2019', 'beetlejuice-2022', 'beetlejuice-2025']) {
     const show = getShowById(id);
     assert.ok(show, id);
-    assert.deepEqual(getToursOf(show).map(t => t.id), ['beetlejuice-tour-2022'], id);
+    const tours = getToursOf(show).map(t => t.id).sort();
+    assert.ok(tours.includes('beetlejuice-tour-2022'), id);
+    for (const t of tours) assert.equal(getShowById(t)?.title, 'Beetlejuice', `${id} -> ${t}`);
+    if (first) assert.deepEqual(tours, first, id);
+    else first = tours;
   }
   assert.deepEqual(getToursOf({ id: 'beetlejuice-west-end-2026', title: 'Beetlejuice', category: 'west-end' }), []);
-  assert.deepEqual(getToursOf({ id: 'hamilton-2015', title: 'Hamilton', category: 'broadway' }), []);
+  // A synthetic title: any real show (Hamilton was used here) can gain a tour.
+  assert.deepEqual(getToursOf({ id: 'no-such-show-2015', title: 'No Such Show Title', category: 'broadway' }), []);
 });
