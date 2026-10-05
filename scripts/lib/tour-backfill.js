@@ -277,6 +277,10 @@ const WRONG_PRODUCTION_FIELDS = [
 // The scorer's give-up state for a flagged file ("Skipped fullText (wrongProduction
 // flag)", abandoned after 5 tries). Left on a moved file it keeps the scorer away
 // for good, so 3 moved Spamalot tour reviews stayed unscored.
+// scoreStatus 'TO_BE_CALCULATED' is a discovery placeholder (no usable text
+// yet) that every scoring path skips; on a moved file with its text it is
+// stale (3 moved Lion King tour reviews).
+const hasScorableText = (d) => typeof d.fullText === 'string' && d.fullText.length >= 200;
 const FLAGGED_SCORING_FAILURE_FIELDS = [
   'manualClearFallbackFailedAt', 'manualClearFallbackFailureReason',
   'manualClearFallbackAttempts', 'manualClearFallbackAbandoned',
@@ -301,6 +305,7 @@ function prepareTourMove(data, { fromShowId, tourId, at = new Date().toISOString
   }
   if (out.wrongFullText && !out.fullText) out.fullText = out.wrongFullText;
   delete out.wrongFullText;
+  if (out.scoreStatus === 'TO_BE_CALCULATED' && hasScorableText(out)) { prior.scoreStatus = out.scoreStatus; delete out.scoreStatus; }
   if (out.contentTier === 'invalid') {
     out.contentTier = out.fullText ? (out.textQuality === 'truncated' ? 'truncated' : 'complete') : 'excerpt';
   }
@@ -320,6 +325,7 @@ function prepareTourMove(data, { fromShowId, tourId, at = new Date().toISOString
 function clearStaleScoringFailure(data) {
   if (!data || !data.routedFromShowId || data.wrongProduction) return null;
   const stale = FLAGGED_SCORING_FAILURE_FIELDS.filter(k => data[k] != null);
+  if (data.scoreStatus === 'TO_BE_CALCULATED' && hasScorableText(data)) stale.push('scoreStatus');
   if (!stale.length) return null;
   const out = { ...data, routedPriorVerdicts: { ...(data.routedPriorVerdicts || {}) } };
   // null, not delete: review-write-guard protects these fields from a write that

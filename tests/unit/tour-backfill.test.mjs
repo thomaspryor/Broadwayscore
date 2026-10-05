@@ -104,6 +104,18 @@ test('clearStaleScoringFailure unblocks a moved file and leaves others alone', (
   assert.equal(clearStaleScoringFailure({ showId: 'x', routedFromShowId: 'y' }), null, 'nothing to repair');
 });
 
+test('a stale TO_BE_CALCULATED placeholder is dropped once the moved file has its text', () => {
+  const text = 'x'.repeat(300);
+  const onTour = { showId: 'the-lion-king-tour-2021', routedFromShowId: 'the-lion-king-1997', scoreStatus: 'TO_BE_CALCULATED', fullText: text };
+  const out = clearStaleScoringFailure(onTour);
+  assert.equal(out.scoreStatus, null);
+  assert.equal(out.routedPriorVerdicts.scoreStatus, 'TO_BE_CALCULATED');
+  assert.equal(clearStaleScoringFailure({ ...onTour, fullText: 'short' }), null, 'no text yet: the placeholder is real');
+  const moved = prepareTourMove({ showId: 'the-lion-king-1997', ...tourFlag, scoreStatus: 'TO_BE_CALCULATED', fullText: text },
+    { fromShowId: 'the-lion-king-1997', tourId: 'the-lion-king-tour-2021' });
+  assert.ok(!('scoreStatus' in moved));
+});
+
 test('a wrong_production rejection is set aside on the move; other rejections stand', () => {
   const base = { showId: 'shucked-2023', ...tourFlag, wrongFullText: 't' };
   const moved = prepareTourMove({ ...base, rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', rejectionReasoning: 'touring, not Broadway' },
