@@ -114,21 +114,6 @@ export function getBreakEven(
   return commercial.weeklyRunningCost ?? null;
 }
 
-/**
- * Editorial keeps (Q3 owner review) are recouped:true entries that survived
- * owner review WITHOUT a clean producer announcement — flagged
- * humanReviewedDesignation:true (Sweeney Todd, Appropriate, Into the Woods).
- * The card labels these "Scorecard editorial assessment" instead of claiming
- * an announcement. Keyed off the flag alone; if a future announced show also
- * carries the flag, the label under-claims (safe direction).
- */
-export function isEditorialRecoupment(commercial: ShowCommercial): boolean {
-  return (
-    commercial.recouped === true &&
-    commercial.humanReviewedDesignation === true
-  );
-}
-
 type SourceList = ShowCommercial['sources'];
 
 /** First trade-press or SEC source URL on the record, else null. */
@@ -245,10 +230,24 @@ const NOT_ANNOUNCED_RE =
 
 const NOT_ANNOUNCED_LABEL = 'Not publicly announced';
 
+/**
+ * A recouped:true record whose recoupment was never announced: the record
+ * flags it (isEstimate.recouped, set by plan for Appropriate, Sweeney Todd and
+ * Into the Woods) or its recoupedSource says so. Only ever downgrades the
+ * label. humanReviewedDesignation is NOT a signal: it marks any hand-checked
+ * record, and announced ones (Purpose, Gutenberg) carry it too (BRO-4623).
+ */
+export function isUnannouncedRecoupment(
+  commercial: Pick<ShowCommercial, 'recouped' | 'isEstimate' | 'recoupedSource'>
+): boolean {
+  if (commercial.recouped !== true) return false;
+  return commercial.isEstimate?.recouped === true || NOT_ANNOUNCED_RE.test(commercial.recoupedSource ?? '');
+}
+
 export interface RecoupmentAttribution {
   /** "Recouped, December 2014" (or "Recouped" when the date is unknown). */
   headline: string;
-  /** "Scorecard editorial assessment" / "Not publicly announced" / null. */
+  /** "Not publicly announced" or null. */
   qualifier: string | null;
   /** First trade/SEC source URL on the record. */
   sourceUrl: string | null;
@@ -268,13 +267,8 @@ export function getRecoupmentAttribution(commercial: ShowCommercial): Recoupment
   const date = formatRecoupedDate(commercial.recoupedDate);
   const headline = date ? `Recouped, ${date}` : 'Recouped';
   const sourceUrl = getCitedSourceUrl(commercial.sources);
-  const editorial = isEditorialRecoupment(commercial);
-  const notAnnounced = editorial || NOT_ANNOUNCED_RE.test(commercial.recoupedSource ?? '');
-  const qualifier = editorial
-    ? 'Scorecard editorial assessment'
-    : notAnnounced
-      ? NOT_ANNOUNCED_LABEL
-      : null;
+  const notAnnounced = isUnannouncedRecoupment(commercial);
+  const qualifier = notAnnounced ? NOT_ANNOUNCED_LABEL : null;
 
   let confidence: RecoupmentAttribution['confidence'];
   if (sourceUrl && !notAnnounced) {
