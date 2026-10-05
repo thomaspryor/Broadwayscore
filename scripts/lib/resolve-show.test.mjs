@@ -176,3 +176,23 @@ test('slug-sibling expansion groups titles that differ only in punctuation', () 
   assert.deepEqual(new Set(matches.map((s) => s.id)), new Set(['dolly-1964', 'dolly-2017']));
   assert.equal(isAmbiguousMatch('hello dolly', shows), true);
 });
+
+// Typing a sibling's EXACT punctuated title is the same shape of input as
+// typing its bare slug — both are "specific to one show's representation,"
+// not fuzzy text — so both must trigger the same sibling-expansion as the
+// unpunctuated "hello dolly" case above, not just the slug path.
+test('exact-title sibling expansion groups titles that differ only in punctuation', () => {
+  const shows = [
+    { id: 'dolly-1964', slug: 'hello-dolly', title: 'Hello, Dolly!', status: 'closed', openingDate: '1964-01-16', category: 'broadway' },
+    { id: 'dolly-2017', slug: 'hello-dolly-2017', title: 'Hello Dolly', status: 'closed', openingDate: '2017-04-20', category: 'broadway' },
+  ];
+  for (const name of ['Hello, Dolly!', 'Hello Dolly']) {
+    const matches = resolveShowMatches(name, shows);
+    assert.deepEqual(
+      new Set(matches.map((s) => s.id)),
+      new Set(['dolly-1964', 'dolly-2017']),
+      `expected both productions for ${JSON.stringify(name)}, got ${matches.map((s) => s.id)}`
+    );
+    assert.equal(isAmbiguousMatch(name, shows), true);
+  }
+});

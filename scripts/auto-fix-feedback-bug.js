@@ -32,7 +32,7 @@ const { foldDiacritics } = _require('./lib/title-match.js');
 const { syncRevivalTags } = _require('./lib/revival-tags.js');
 const { loadIssueDiagnosis } = _require('./lib/feedback-submitter-store.js');
 const { pickEditableFields, AUTO_FIX_EDITABLE_FIELDS } = _require('./lib/feedback-pipeline-fields.js');
-const { normalizeDiagnosisShowIds, summarizeShowFixOutcomes } = _require('./lib/feedback-multishow.js');
+const { normalizeDiagnosisShowIds, resolveShowsForDiagnosis, summarizeShowFixOutcomes } = _require('./lib/feedback-multishow.js');
 const { readerFromDiagnosis, sendReaderFixOwnerEmail } = _require('./lib/owner-fix-email.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -146,14 +146,45 @@ async function main() {
   console.log(`  fixType=${diagnosis.fixType}, confidence=${diagnosis.confidence}`);
   console.log(`  showId=${diagnosis.showId}, showSlug=${diagnosis.showSlug}`);
 
-  // 2. Gate: not-a-bug
+  // 2. Resolve show IDs + ambiguity gate. This MUST run before any verdict-
+  // based early return (not-a-bug, non-data fixType, low confidence) — an
+  // ambiguous form-field match can itself be the reason the LLM reached a
+  // wrong verdict. #905 was exactly this: the diagnosis said "not a bug"
+  // because the resolver only ever showed it the Broadway production; it
+  // never saw the West End/tour siblings that made the report ambiguous in
+  // the first place. Gating ambiguity on fixType === 'data' (as originally
+  // shipped) protects the auto-fix path but leaves every other verdict —
+  // not-a-bug above all — free to silently close over an unresolved
+  // ambiguity, reproducing the original bug. So this check runs for every
+  // verdict, not just 'data'.
+  //
+  // A report can also legitimately name more than one show (#515, where the
+  // reader's own message named several productions) — showIds is the
+  // canonical multi-show list, normalized from whatever form the diagnosis
+  // carries (showIds / resolvedShowIds / legacy singular showId). That's a
+  // confirmed multi-show report, different from diagnoseBug's
+  // resolvedShowIds, which lists EVERY same-titled candidate it loaded for
+  // the LLM's benefit (BRO-4659) — "productions this report might be about,"
+  // not "productions this report confirmed are broken." ambiguousShow is
+  // what distinguishes the two; only check it when set.
+  const showsData = loadJsonFile('data/shows.json');
+  const shows = showsData.shows || showsData;
+  const { showIds, resolvedShows, unresolvedShowIds, ambiguous } = resolveShowsForDiagnosis(diagnosis, shows);
+  if (ambiguous) {
+    const list = resolvedShows.map(r => `- **${r.show.title}** (\`${r.id}\`, ${r.show.category || 'unknown market'})`).join('\n');
+    writeComment(`## Requires Manual Review — Ambiguous Show\n\nThe reader's "show" field matched ${resolvedShows.length} different productions of this title. The machine verdict below (\`${diagnosis.fixType}\`) is informational only — a maintainer needs to confirm which production is actually affected before trusting it or applying any fix:\n\n${list}\n\n---\n*Auto-processed by feedback pipeline*`);
+    output('skipped');
+    return;
+  }
+
+  // 3. Gate: not-a-bug
   if (diagnosis.fixType === 'not-a-bug') {
     writeComment(`## Likely Not a Bug\n\n${diagnosis.whatsHappening}\n\n**Proposed Fix:** ${diagnosis.proposedFix}\n\nLeaving open for 7 days in case you disagree.\n\n---\n*Auto-processed by feedback pipeline*`);
     output('not-a-bug');
     return;
   }
 
-  // 3. Gate: only auto-fix data + high confidence
+  // 4. Gate: only auto-fix data + high confidence
   if (diagnosis.fixType !== 'data') {
     writeComment(`## Requires Manual Review\n\nThis is a \`${diagnosis.fixType}\` fix which cannot be auto-applied. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
     output('skipped');
@@ -166,27 +197,12 @@ async function main() {
     return;
   }
 
-  // 4. Gate: need at least one show ID. A report can name more than one show
-  // (issue #515) — showIds is the canonical multi-show list, normalized from
-  // whatever form the diagnosis carries (showIds / resolvedShowIds / legacy
-  // singular showId).
-  const showIds = normalizeDiagnosisShowIds(diagnosis);
+  // 5. Gate: need at least one show ID (showIds/resolvedShows already
+  // computed in step 2).
   if (showIds.length === 0) {
     writeComment('## Requires Manual Review\n\nCould not resolve the show mentioned in this report. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*');
     output('skipped');
     return;
-  }
-
-  // 5. Verify shows exist — resolve every showId independently so one bad ID
-  // doesn't block fixing the others.
-  const showsData = loadJsonFile('data/shows.json');
-  const shows = showsData.shows || showsData;
-  const resolvedShows = [];
-  const unresolvedShowIds = [];
-  for (const id of showIds) {
-    const idx = shows.findIndex(s => s.id === id);
-    if (idx === -1) unresolvedShowIds.push(id);
-    else resolvedShows.push({ id, index: idx, show: shows[idx] });
   }
   if (resolvedShows.length === 0) {
     writeComment(`## Requires Manual Review\n\nNone of the shows referenced (\`${showIds.join('`, `')}\`) were found in shows.json. A maintainer will review.\n\n---\n*Auto-processed by feedback pipeline*`);
@@ -194,22 +210,6 @@ async function main() {
     return;
   }
   console.log(`Found ${resolvedShows.length}/${showIds.length} show(s): ${resolvedShows.map(r => `${r.show.title} (${r.id})`).join(', ')}`);
-
-  // 5a. Gate: an ambiguous form-field match is NOT the same thing as a
-  // confirmed multi-show report (#515, where the reader's own message named
-  // several shows). diagnoseBug sets resolvedShowIds from EVERY same-titled
-  // candidate it loaded for the LLM's benefit (BRO-4659) — that's "productions
-  // this report might be about," not "productions this report confirmed are
-  // broken." Auto-fixing every candidate would risk writing a fix for show A
-  // onto unrelated siblings B/C just because their titles collided in the
-  // form field. Route these to manual review instead, where a human can read
-  // the diagnosis and pick the right production.
-  if (diagnosis.ambiguousShow && resolvedShows.length > 1) {
-    const list = resolvedShows.map(r => `- **${r.show.title}** (\`${r.id}\`, ${r.show.category || 'unknown market'})`).join('\n');
-    writeComment(`## Requires Manual Review — Ambiguous Show\n\nThe reader's "show" field matched ${resolvedShows.length} different productions of this title. The diagnosis below is informational only — a maintainer needs to confirm which production is actually affected before any fix is applied:\n\n${list}\n\n---\n*Auto-processed by feedback pipeline*`);
-    output('skipped');
-    return;
-  }
 
   // The awards co-winner path (6a below) is inherently single-show — a co-
   // winner report names one ceremony/category for one production. Use the
