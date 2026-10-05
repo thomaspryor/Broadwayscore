@@ -4350,7 +4350,7 @@
       "silentRefires": 2
     },
     "time-bomb-tests:unit:scripts/clear-stale-roundup-flags.test.mjs::--apply clears a stale flag (individual review on a whitelisted per-outlet URL) and leaves a genuine roundup page flagged": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/clear-stale-roundup-flags.test.mjs — --apply clears a stale flag (individual review on a whitelisted per-outlet URL) and leaves a genuine roundup page flagged",
       "firstSeen": "2026-09-21T20:01:42.771Z",
@@ -4359,7 +4359,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-3992"
+      "linearIdentifier": "BRO-3992",
+      "resolvedAt": "2026-10-05T21:59:24.375Z"
     },
     "gap:my-sons-a-queer-but-what-can-you-do-west-end-2026/thestage--paul-vale.json": {
       "status": "resolved",
@@ -10615,6 +10616,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:scripts/verify-bro-4724-recheck.test.mjs::the weekly auto-create ran in write mode after landing": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/verify-bro-4724-recheck.test.mjs — the weekly auto-create ran in write mode after landing",
+      "firstSeen": "2026-10-05T21:59:24.382Z",
+      "incidentOpenedAt": "2026-10-05T21:59:24.382Z",
+      "lastSeen": "2026-10-05T21:59:24.382Z",
+      "lastNotifiedAt": "2026-10-05T21:59:24.382Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4756"
     }
   }
 }
