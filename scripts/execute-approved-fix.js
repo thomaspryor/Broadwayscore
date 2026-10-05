@@ -85,6 +85,10 @@ const ALLOWED_SCRIPTS = [
   'ingest-review-from-url.js',
   'split-multi-show-roundups.js',
   'scrape-theatre-reviews.js',
+  // BRO-4623: remove id-keyed duplicate commercial records (the fix command
+  // the weekly strict gate names). Pair it with a data-edit on
+  // commercial.json in the same plan so validate-data runs on the result.
+  'dedupe-commercial-id-keys.js',
 ];
 
 // --- Helpers ---
