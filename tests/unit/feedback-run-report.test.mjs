@@ -81,6 +81,7 @@ test('recordIssue and recordDispatch attach to the right entry', () => {
   assert.deepEqual(lincoln.dispatches, [{
     workflow: 'gather-reviews.yml',
     kind: 'missing-reviews',
+    showTitle: null,
     inputs: { shows: '3-summers-of-lincoln-regional-2025' },
     ok: true,
     error: null,
