@@ -274,6 +274,13 @@ const WRONG_PRODUCTION_FIELDS = [
   'wrongProductionFlaggedBy', 'wrongProductionProvenance', 'wrongProductionSetBy',
   'wrongProductionConfidence', 'contentTierReason', 'incompleteReason', 'incompleteDetail',
 ];
+// The scorer's give-up state for a flagged file ("Skipped fullText (wrongProduction
+// flag)", abandoned after 5 tries). Left on a moved file it keeps the scorer away
+// for good, so 3 moved Spamalot tour reviews stayed unscored.
+const FLAGGED_SCORING_FAILURE_FIELDS = [
+  'manualClearFallbackFailedAt', 'manualClearFallbackFailureReason',
+  'manualClearFallbackAttempts', 'manualClearFallbackAbandoned',
+];
 
 /**
  * Rewrite a file for its new home on the tour. Returns a new object; the input is untouched.
@@ -282,7 +289,7 @@ const WRONG_PRODUCTION_FIELDS = [
 function prepareTourMove(data, { fromShowId, tourId, at = new Date().toISOString() }) {
   const out = { ...data };
   const prior = {};
-  for (const k of [...WRONG_PRODUCTION_FIELDS, ...BROADWAY_RELATIVE_FIELDS]) {
+  for (const k of [...WRONG_PRODUCTION_FIELDS, ...BROADWAY_RELATIVE_FIELDS, ...FLAGGED_SCORING_FAILURE_FIELDS]) {
     if (k in out) { prior[k] = out[k]; delete out[k]; }
   }
   // The scoreability check's 'wrong_production' rejection judged the text against the
@@ -302,6 +309,22 @@ function prepareTourMove(data, { fromShowId, tourId, at = new Date().toISOString
   out.routedAt = at;
   out.routedReason = 'tour-backfill (BRO-4211): national tour review re-homed from the Broadway entry';
   if (Object.keys(prior).length) out.routedPriorVerdicts = prior;
+  return out;
+}
+
+/**
+ * A file already on its tour that still carries the scorer's give-up state from
+ * its flagged period (moved before prepareTourMove set it aside). Returns the
+ * repaired copy, or null when there is nothing to repair.
+ */
+function clearStaleScoringFailure(data) {
+  if (!data || !data.routedFromShowId || data.wrongProduction) return null;
+  const stale = FLAGGED_SCORING_FAILURE_FIELDS.filter(k => data[k] != null);
+  if (!stale.length) return null;
+  const out = { ...data, routedPriorVerdicts: { ...(data.routedPriorVerdicts || {}) } };
+  // null, not delete: review-write-guard protects these fields from a write that
+  // omits them, and accepts an explicit null (as clear-failure-flags.js does).
+  for (const k of stale) { out.routedPriorVerdicts[k] = out[k]; out[k] = null; }
   return out;
 }
 
@@ -490,4 +513,5 @@ function applyIntegrityFlag(data, row, at = new Date().toISOString()) {
   return next;
 }
 
-module.exports = { genericVenuesOf, decideTourIntegrity, applyIntegrityFlag, settingCitiesOf, sweepLimits, matchStop, loadSweepContext, sweepHoldReason, classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, BROADWAY_RELATIVE_FIELDS };
+module.exports = {
+  clearStaleScoringFailure, genericVenuesOf, decideTourIntegrity, applyIntegrityFlag, settingCitiesOf, sweepLimits, matchStop, loadSweepContext, sweepHoldReason, classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, BROADWAY_RELATIVE_FIELDS };
