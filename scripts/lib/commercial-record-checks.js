@@ -23,8 +23,9 @@ const VALID_COST_METHODOLOGIES = [
 const VALID_PRODUCTION_TYPES = ['original', 'tour-stop', 'return-engagement', 'international-transfer', 'International Transfer', 'enhancement'];
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-// Fields /biz renders verbatim. weeklyRunningCostSource is not here: its
-// figures are estimates and the UI filters that line at render time.
+// Fields /biz renders verbatim. weeklyRunningCostSource is not here: the UI
+// prints it only through publicSourceText(), and a cost whose source that
+// drops reads "Estimate" (src/lib/commercial-display.ts, BRO-4666).
 const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
 // Research-pipeline wording that reached the public page (BRO-4623): "SEC
 // filings (GPT Deep Research)", "Trade press / deep research synthesis",

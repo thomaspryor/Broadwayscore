@@ -67,10 +67,12 @@ describe('feedback-pipeline-fields', () => {
     // execute-approved-fix.js) may touch — never the unattended auto-fix.
     const humanOnly = {
       'shows.json': ['status', 'openingDate', 'closingDate', 'previewsStartDate', 'creativeTeam', 'images', 'cast'],
-      'commercial.json': ['recouped', 'recoupedDate', 'recoupedSource', 'sources', 'humanReviewedDesignation'],
+      'commercial.json': ['recouped', 'recoupedDate', 'recoupedSource', 'sources', 'humanReviewedDesignation', 'weeklyRunningCostSource'],
     };
     for (const [file, fields] of Object.entries(humanOnly)) {
       for (const field of fields) {
+        assert.ok(FEEDBACK_EDITABLE_FIELDS[file].includes(field),
+          `FEEDBACK_EDITABLE_FIELDS['${file}'] must include human-approved field "${field}"`);
         assert.ok(!AUTO_FIX_EDITABLE_FIELDS[file].includes(field),
           `AUTO_FIX_EDITABLE_FIELDS['${file}'] must not include human-approval-only field "${field}"`);
       }

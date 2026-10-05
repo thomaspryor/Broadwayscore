@@ -32,6 +32,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isRelevantPost } = require('./lib/reddit-grosses');
+const { isReportedWeeklyCost, WALTZ_METHODOLOGY } = require('./lib/waltz-cost-gap-fill');
 const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
@@ -1450,6 +1451,10 @@ Respond with ONLY valid JSON (no markdown code fences):
  * @param {Object} commercialData - commercial.json data (for Deep Research protection check)
  * @returns {{ applied: Object[], flagged: Object[], skipped: Object[], deepResearchConflicts: Object[] }}
  */
+function isRedditSourced(change) {
+  return Boolean(change.source?.toLowerCase().includes('reddit'));
+}
+
 function filterByConfidence(proposedChanges, commercialData) {
   const applied = [];
   const flagged = [];
@@ -1481,6 +1486,13 @@ function filterByConfidence(proposedChanges, commercialData) {
         console.log(`    [BLOCKED - Deep Research] ${slug}.${field}: ${discrepancy}`);
         continue;  // Skip this change
       }
+    }
+
+    // A Reddit estimate never replaces a reported weekly cost (BRO-4666). It
+    // used to, and kept the "trade-reported" label on the Reddit number.
+    if (field === 'weeklyRunningCost' && isRedditSourced(change) && isReportedWeeklyCost(commercialData?.shows?.[slug])) {
+      skipped.push({ ...change, skipReason: `Reddit estimate cannot replace a reported weekly cost (${commercialData.shows[slug].costMethodology})` });
+      continue;
     }
 
     // Sprint 4.10: Use validatedConfidence if available (from source validation)
@@ -1599,12 +1611,15 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     changeCount++;
     console.log(`  [APPLY] ${slug}.${field}: ${JSON.stringify(current)} -> ${JSON.stringify(newValue)}`);
 
-    // For weekly running cost, add isEstimate if from Reddit
-    if (field === 'weeklyRunningCost' && change.source?.toLowerCase().includes('reddit')) {
+    // For weekly running cost, add isEstimate if from Reddit. The methodology
+    // names this figure's basis, so a Reddit cost never keeps an earlier
+    // "trade-reported" label (BRO-4666).
+    if (field === 'weeklyRunningCost' && isRedditSourced(change)) {
       if (!commercial.shows[slug].isEstimate) {
         commercial.shows[slug].isEstimate = {};
       }
       commercial.shows[slug].isEstimate.weeklyRunningCost = true;
+      commercial.shows[slug].costMethodology = WALTZ_METHODOLOGY;
     }
 
     // For estimatedRecoupmentPct, add source + date
