@@ -14,6 +14,14 @@ const { generateReviewFilename, normalizeCritic, normalizeOutlet } = cjsRequire(
   normalizeCritic: (name: string) => string;
   normalizeOutlet: (outlet: string) => string;
 };
+const { resolveIngestFilename, normalizeReviewUrl: normalizeUrl } = cjsRequire('../../../../../scripts/lib/ingest-collision') as {
+  normalizeReviewUrl: (url: string) => string;
+  resolveIngestFilename: (o: { filename: string; existingData: Record<string, unknown> | null; url: string }) => {
+    versioned: boolean;
+    filename: string;
+    existingUrl: string | null;
+  };
+};
 const { hasClearBreadcrumbValue } = cjsRequire('../../../../../scripts/lib/flag-contradiction') as {
   hasClearBreadcrumbValue: (v: unknown) => boolean;
 };
@@ -266,7 +274,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   } else {
     filename = generateReviewFilename(outletId, criticName);
   }
-  const repoPath = `${showId}/${filename}`;
+  let repoPath = `${showId}/${filename}`;
 
   // GET existing file (to check for stale-flag collision + capture sha for update).
   let existingFile: { sha: string; content: string } | null = null;
@@ -288,6 +296,43 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
       existingData = JSON.parse(decoded) as Record<string, unknown>;
     } catch {
       existingData = null;
+    }
+  }
+
+  // BRO-2365: same critic+outlet but a DIFFERENT url on disk = a second review,
+  // not a replacement. Write it to a versioned filename instead of clobbering the
+  // first. Stale-flagged files keep the 409 / forceClearStale path below.
+  let versionedCollision: { existingUrl: string | null; filename: string } | null = null;
+  if (existingData) {
+    const flagged =
+      existingData.wrongProduction === true ||
+      existingData.wrongShow === true ||
+      hasClearBreadcrumbValue(existingData.wrongProductionAutoCleared);
+    const resolved = flagged ? null : resolveIngestFilename({ filename, existingData, url });
+    if (resolved?.versioned) {
+      filename = resolved.filename;
+      repoPath = `${showId}/${filename}`;
+      versionedCollision = { existingUrl: resolved.existingUrl, filename };
+      console.warn(`[ingest-review] filename collision on ${showId}: existing url ${resolved.existingUrl} != ${url}; writing ${repoPath}`);
+      existingData = null;
+      existingSha = undefined;
+      try {
+        existingFile = await githubGetFile(token, PRIVATE_REPO_OWNER, PRIVATE_REPO_NAME, repoPath);
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        return NextResponse.json(
+          { success: false, error: `GitHub GET failed: ${msg}`, failureReason: 'server-error' },
+          { status: 502 },
+        );
+      }
+      if (existingFile) {
+        existingSha = existingFile.sha;
+        try {
+          existingData = JSON.parse(Buffer.from(existingFile.content, 'base64').toString('utf-8')) as Record<string, unknown>;
+        } catch {
+          existingData = null;
+        }
+      }
     }
   }
 
@@ -548,6 +593,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     workflowRunUrl,
     warning:
       dispatchWarning ||
+      (versionedCollision
+        ? `A review by this critic+outlet already exists for this show at a different URL (${versionedCollision.existingUrl}). Saved as a separate versioned file ${versionedCollision.filename}; the first review was not overwritten on disk. Note: rebuild keeps only one review per critic+outlet per show, so only one of the two will count toward the score.`
+        : undefined) ||
       (bylineFallback
         ? `Saved with criticName='Unknown' (no byline detected). Edit the file at data/review-texts/${repoPath} to set criticName, then re-rebuild.`
         : undefined),
@@ -710,16 +758,3 @@ function isTrustedExtractorSource(source: string | undefined | null): boolean {
   return false;
 }
 
-function normalizeUrl(url: string): string {
-  try {
-    const u = new URL(url);
-    u.hostname = u.hostname.toLowerCase();
-    const paramKeys = Array.from(u.searchParams.keys());
-    for (const k of paramKeys) {
-      if (/^utm_|^fbclid$|^triedRedirect$|^ref$|^mc_eid$/.test(k)) u.searchParams.delete(k);
-    }
-    return u.toString().replace(/\/$/, '');
-  } catch {
-    return String(url).toLowerCase().replace(/\/$/, '');
-  }
-}
