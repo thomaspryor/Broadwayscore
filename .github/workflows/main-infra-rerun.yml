@@ -18,6 +18,8 @@ on:
 
 permissions:
   actions: write
+  # check-runs/{job_id}/annotations carries the "not acquired by Runner" text.
+  checks: read
   contents: read
 
 jobs:
