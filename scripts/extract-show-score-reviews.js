@@ -18,7 +18,8 @@ const cheerio = require('cheerio');
 const CHECK_MODE = process.argv.includes('--check');
 const { resolveOutletFromCritic, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
+const { buildSiblingIndex } = require('./lib/market-routing');
+const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
@@ -245,37 +246,20 @@ function extractShowData(html, showId, sourceUrl) {
   // even for reviews an individual per-review reroute can't confidently
   // disambiguate on its own (e.g. an undated tile on the same misfiled page).
   if (result.criticReviews.length > 0) {
-    const totalReviews = result.criticReviews.length;
-    const siblingCounts = new Map();
-    for (const r of result.criticReviews) {
-      const decision = classifyMarketRouting({
-        showId,
-        url: r.url,
-        outletId: null,
-        publishDate: r.date,
-        category: showsById[showId]?.category,
-        siblingIndex,
-      });
-      if (decision.action === 'reroute') {
-        siblingCounts.set(decision.targetShowId, (siblingCounts.get(decision.targetShowId) || 0) + 1);
-      }
-    }
-    for (const [targetId, count] of siblingCounts) {
-      if (count >= 3 && count / totalReviews >= 0.5) {
-        result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
-        result.criticReviews = [];
-        result._rejectionReason = `sibling-misfile: ${count}/${totalReviews} critic reviews date-match sibling ${targetId}'s opening, not ${showId}'s own — archive is likely ${targetId}'s page saved under the wrong filename`;
-        // Unlike the cross-show-contamination case above (a real page for
-        // THIS show whose critic-tile carousel briefly served the wrong
-        // content), a sibling-misfile means the ENTIRE archived page belongs
-        // to targetId — its audienceScore/audienceReviewCount/
-        // criticReviewCount are the sibling's numbers, not this show's own.
-        // Drop the whole entry from show-score.json rather than keep a
-        // "0 critic reviews but 91% audience score borrowed from Broadway"
-        // record (ship-check adversarial finding, BRO-363).
-        result._rejectAll = true;
-        break;
-      }
+    const verdict = detectSiblingMisfile(
+      showId,
+      result.criticReviews.map(r => ({ url: r.url, publishDate: r.date })),
+      { category: showsById[showId]?.category, siblingIndex },
+    );
+    if (verdict.misfiled) {
+      const { targetId, count, total: totalReviews } = verdict;
+      result.rejectedCriticUrls = result.criticReviews.map(r => r.url || r.author || 'unknown');
+      result.criticReviews = [];
+      result._rejectionReason = `sibling-misfile: ${count}/${totalReviews} critic reviews date-match sibling ${targetId}'s opening, not ${showId}'s own — archive is likely ${targetId}'s page saved under the wrong filename`;
+      // A sibling-misfile means the ENTIRE archived page belongs to targetId —
+      // its audienceScore/audienceReviewCount/criticReviewCount are the
+      // sibling's numbers. Drop the whole entry from show-score.json (BRO-363).
+      result._rejectAll = true;
     }
   }
 
@@ -440,9 +424,14 @@ function main() {
   }
 }
 
-try {
-  main();
-} catch (err) {
-  console.error('Fatal error:', err);
-  process.exit(1);
+// Exported for audit-sibling-misfile-archive.js / unit tests; runs only as a script.
+module.exports = { extractShowData };
+
+if (require.main === module) {
+  try {
+    main();
+  } catch (err) {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  }
 }

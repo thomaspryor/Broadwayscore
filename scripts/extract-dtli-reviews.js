@@ -15,6 +15,7 @@ const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/r
 const { hasHelpFlag } = require('./lib/cli-help');
 const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
 const { classifyMarketRouting, resolveWriteTarget, buildSiblingIndex } = require('./lib/market-routing');
+const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 const { recordMarketMisroute } = require('./lib/market-misroute-ledger');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
@@ -83,25 +84,10 @@ function _getShowCategory(showId) {
 // threshold as the Show Score guard, applied to this page's own extracted
 // reviews before the thumb-count write.
 function isSiblingMisfilePage(showId, reviews) {
-  if (reviews.length === 0) return false;
-  const siblingCounts = new Map();
-  for (const r of reviews) {
-    const decision = classifyMarketRouting({
-      showId,
-      url: r.url,
-      outletId: null,
-      publishDate: r.publishDate,
-      category: _getShowCategory(showId),
-      siblingIndex: _getSiblingIndex(),
-    });
-    if (decision.action === 'reroute') {
-      siblingCounts.set(decision.targetShowId, (siblingCounts.get(decision.targetShowId) || 0) + 1);
-    }
-  }
-  for (const count of siblingCounts.values()) {
-    if (count >= 3 && count / reviews.length >= 0.5) return true;
-  }
-  return false;
+  return detectSiblingMisfile(showId, reviews, {
+    category: _getShowCategory(showId),
+    siblingIndex: _getSiblingIndex(),
+  }).misfiled;
 }
 
 /**
@@ -595,7 +581,7 @@ function saveReviewUnrouted(review, overwrite = false, dir = outputDir) {
 
 // Export pure functions for unit testing. Top-level runner below only runs
 // when invoked as a script (not when required from a test).
-module.exports = { extractReviewsFromDTLI, saveReview };
+module.exports = { extractReviewsFromDTLI, saveReview, isSiblingMisfilePage };
 
 if (require.main !== module) return;
 
