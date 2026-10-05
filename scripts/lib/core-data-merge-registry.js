@@ -1204,6 +1204,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (discover-regional-serp-reviews.yml), group discover-regional-serp-reviews (cancel-in-progress: false).',
   },
   {
+    file: 'audit/tour-stop-discovery.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'discover-tour-stop-reviews',
+    verifiedBy: '2026-10-05 (BRO-4656): 1 writer (discover-tour-stop-reviews.yml), group discover-tour-stop-reviews (cancel-in-progress: false).',
+  },
+  {
     file: 'audit/remediation-log.jsonl',
     surface: 'public-repo',
     status: 'single-writer',
