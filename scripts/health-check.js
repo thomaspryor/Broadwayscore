@@ -5320,11 +5320,8 @@ async function main() {
       allResults.push(...uncollectedStrandResults(strandReport));
     } catch { /* report absent (audit not yet run) — nothing to surface */ }
 
-    try {
-      const { lastTimestampFromLog } = require('./lib/worktree-gc-freshness');
-      const logText = fs.readFileSync(path.join(__dirname, '../data/audit/worktree-gc.log'), 'utf8');
-      allResults.push(...worktreeGcFreshnessResults(lastTimestampFromLog(logText), Date.now()));
-    } catch { /* log absent — nothing to surface */ }
+    // worktree-gc.log freshness moved to the Mac-local scripts/check-worktree-gc-freshness.js
+    // (BRO-2719): the log is gitignored now, so this CI runner can never see it.
 
     try {
       const couplingSnap = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/notion-schedule-coupling.json'), 'utf8'));
