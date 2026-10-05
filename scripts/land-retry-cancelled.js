@@ -22,7 +22,7 @@
 
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { decideLandRetry, runGhWithFallback, isRefNotFound } = require('./lib/land-retry-on-cancel');
+const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
 const {
   slotQueries, scanSlot, supersededByNewerRun, decideSweep, MAX_AGE_HOURS, MAX_JOB_LOOKUPS,
 } = require('./lib/land-queue-backoff');
@@ -69,9 +69,17 @@ function slotState(selfRunId) {
 
 const describe = (blockers) => blockers.map((b) => `${b.id} ${b.branch} ${b.status} ${b.why}`).join(', ');
 
-function rerun(id) {
+function rerun(id, seenAttempt) {
   if (dry) { console.log(`dry-run: would re-run ${id}`); return; }
-  process.stdout.write(ghRaw(['-X', 'POST', `repos/${repo}/actions/runs/${id}/rerun-failed-jobs`]));
+  try {
+    process.stdout.write(ghRaw(['-X', 'POST', `repos/${repo}/actions/runs/${id}/rerun-failed-jobs`]));
+  } catch (err) {
+    let after = null;
+    try { after = gh([`repos/${repo}/actions/runs/${id}`]); } catch { /* read-back failed: surface the POST error, not this one */ }
+    if (!after || decideCancelledWait({ status: after.status, attempt: after.run_attempt, attemptBefore: seenAttempt }) !== 'resume') throw err;
+    console.log(`run ${id} already moved on (attempt ${after.run_attempt}, ${after.status}), likely re-run by the sweep; nothing to do`);
+    return;
+  }
   console.log(`re-run requested for ${id} (Land job only; Checks result kept)`);
   settle(id);
 }
@@ -114,7 +122,7 @@ function runTargeted() {
     console.log(`landing slot busy (${describe(slot.blockers)}): not re-running, no attempt spent; the next sweep picks it up`);
     return;
   }
-  rerun(runId);
+  rerun(runId, run.run_attempt);
 }
 
 function runSweep() {
@@ -149,7 +157,7 @@ function runSweep() {
     const fresh = latest || run;
     const r = decideLandRetry({ run: fresh, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
     console.log(`run ${run.id} ${run.head_branch} attempt ${fresh.run_attempt}: ${r.retry ? 'RETRY' : 'skip'} (${r.reason})`);
-    if (r.retry) { rerun(run.id); return; } // one per sweep: the next Land completion sweeps again
+    if (r.retry) { rerun(run.id, fresh.run_attempt); return; } // one per sweep: the next Land completion sweeps again
   }
 }
 

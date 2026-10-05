@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound } = require('./land-retry-on-cancel.js');
+const { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./land-retry-on-cancel.js');
 
 const run = (o = {}) => ({ head_sha: 'aaa', conclusion: 'cancelled', head_branch: 'land/bro-4234-owner-banner', run_attempt: 1, ...o });
 const jobs = (land = {}, checks = {}) => [
@@ -153,4 +153,17 @@ test('BRO-4677: sustained traffic (a Land job always running, none pending) stil
   assert.equal(verdict.retry, true);
   // the same traffic with a pending entrant keeps waiting (the re-run would evict it)
   assert.equal(decideSweep({ slot: { ...slot, pending: true }, cancelledRuns: stranded, refs, now }).action, 'wait');
+});
+
+test('decideCancelledWait: a failed rerun POST is benign only when the run already moved on', () => {
+  // 2026-10-05: the sweep started attempt 2 seconds before a --run= call's POST.
+  assert.equal(decideCancelledWait({ status: 'in_progress', attempt: 2, attemptBefore: 1 }), 'resume');
+  assert.equal(decideCancelledWait({ status: 'queued', attempt: 1, attemptBefore: 1 }), 'resume', 'same attempt but no longer completed');
+  assert.equal(decideCancelledWait({ status: 'completed', attempt: 1, attemptBefore: 1 }), 'wait', 'still cancelled: the POST really failed');
+  assert.equal(decideCancelledWait({ attempt: 1, attemptBefore: 1 }), 'wait', 'missing status is not "moved on"');
+  assert.equal(decideCancelledWait({ status: 'completed', attempt: '10', attemptBefore: '9' }), 'resume', 'numeric, not lexical');
+});
+
+test('land-branch.js re-exports the same decideCancelledWait (one copy, no drift)', () => {
+  assert.equal(require('./land-branch.js').decideCancelledWait, decideCancelledWait);
 });

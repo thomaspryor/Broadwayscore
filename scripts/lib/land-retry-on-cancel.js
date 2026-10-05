@@ -69,4 +69,22 @@ function isRefNotFound(err) {
   return /\bHTTP 404\b/.test(errorText(err));
 }
 
-module.exports = { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound };
+/**
+ * Pure: after a retry-eligible cancel, has the run been re-triggered?
+ * 'resume' once the run is live again or its attempt number moved past the
+ * one that was cancelled; 'wait' otherwise. Unknown status reads as 'wait'.
+ * Used by land-branch.js (waiting for the server re-run) and by
+ * land-retry-cancelled.js: the targeted retry and the sweep can both POST
+ * rerun-failed-jobs seconds apart, and the loser's POST fails while the run is
+ * already going again (2026-10-05: a --run= call crashed with exit 1 right
+ * after the sweep started attempt 2). 'resume' there means nothing to do.
+ */
+function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
+  const a = Number(attempt);
+  const before = Number(attemptBefore);
+  if (Number.isFinite(a) && Number.isFinite(before) && a > before) return 'resume';
+  if (status && status !== 'completed') return 'resume';
+  return 'wait';
+}
+
+module.exports = { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait };
