@@ -15,6 +15,9 @@
  * are routine churn the cast scraper introduces continuously, so blocking on a
  * handful reddens the trunk for non-code reasons in the window before --write runs.
  *
+ * (BRO-2752: the --gate floor excludes the calendar-driven counters, see
+ * TIME_DRIVEN_COUNTERS / countGateChurn below; --strict still counts them.)
+ *
  * Two things ARE catastrophe-grade:
  *   1. crossShowConflicts — an actor placed in two shows with overlapping runs and
  *      no exit from either. This is a user-facing impossibility (the cast page
@@ -34,4 +37,31 @@ function shouldBlockCastChangesGate({ crossShowConflicts, totalIssues, floor }) 
   return crossShowConflicts > 0 || totalIssues > floor;
 }
 
-module.exports = { shouldBlockCastChangesGate };
+/**
+ * Counters whose value is driven by the CALENDAR, not by scraper behavior: they
+ * flip in a step function when entries added together age past a fixed threshold
+ * at UTC midnight (BRO-2752: 25 [AUTO-FLAGGED] entries added the same day all went
+ * stale at once, reddening main until the daily --write heal ran). They are
+ * deterministic and cleared by `--write`, so they say nothing about a scraper
+ * regression and must not count toward the --gate spike floor. They still count
+ * toward --strict totalIssues (daily triage).
+ */
+const TIME_DRIVEN_COUNTERS = Object.freeze(['staleAutoFlaggedDropped', 'endedAbsencesDropped']);
+
+/**
+ * Issue count for the --gate spike floor: every counter in `counts` except the
+ * calendar-driven ones. `counts` maps counter name -> number (cross-show
+ * conflicts included, as a number).
+ *
+ * @param {Record<string, number>} counts
+ * @returns {number}
+ */
+function countGateChurn(counts) {
+  let total = 0;
+  for (const [name, n] of Object.entries(counts)) {
+    if (!TIME_DRIVEN_COUNTERS.includes(name)) total += n || 0;
+  }
+  return total;
+}
+
+module.exports = { shouldBlockCastChangesGate, countGateChurn, TIME_DRIVEN_COUNTERS };

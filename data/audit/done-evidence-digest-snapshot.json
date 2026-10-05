@@ -1,7 +1,17 @@
 {
-  "generatedAt": "2026-10-04T20:57:46.094Z",
-  "bannerText": "103/112 Done(14d) verified on main · 3 FAILED · 3 vacuous · 57 stuck-but-done — PARTIAL RUN: 1 check not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-05T10:55:09.510Z",
+  "bannerText": "197/218 Done(14d) verified on main · 7 FAILED · 0 vacuous · 38 stuck-but-done — PARTIAL RUN: 12 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
+    {
+      "title": "FAILED BRO-80 — Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/triage-unopened-shows.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-80/triage-unopened-shows-carrying-scored-prior-run-reviews-55-shows-250"
+    },
+    {
+      "title": "FAILED BRO-4668 — test.yml E2E races prod deploy: wait for undeployed site changes before Playwright",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-await-deploy.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4668/testyml-e2e-races-prod-deploy-wait-for-undeployed-site-changes-before"
+    },
     {
       "title": "FAILED BRO-3221 — UX audit: On mobile watchlist cards, the icons indicating the time of day (matinee, evening, etc.) are too small to be l",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/watchlist-time-icons-size.test.mjs",
@@ -13,35 +23,25 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2538/push-with-retrysh-git-data-api-fallback-disqualifier-evaluates-the"
     },
     {
-      "title": "FAILED BRO-80 — Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/triage-unopened-shows.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-80/triage-unopened-shows-carrying-scored-prior-run-reviews-55-shows-250"
+      "title": "FAILED BRO-2517 — Re-run backfill-cast-web.js --force on 34 shows tombstoned empty by the >=2 cast-size bug",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/backfill-cast-web.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2517/re-run-backfill-cast-webjs-force-on-34-shows-tombstoned-empty-by-the-2"
     },
     {
-      "title": "STUCK BRO-4052 — Submission bot said 'added' but Golden Boy Daily Mail review never reached site (issue #908 follow-up)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4052/submission-bot-said-added-but-golden-boy-daily-mail-review-never"
+      "title": "FAILED BRO-2404 — P1: sync-memory-to-repo.sh pull --rebase wedges shared main checkout (#1893)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sync-memory-to-repo-no-rebase.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2404/p1-sync-memory-to-reposh-pull-rebase-wedges-shared-main-checkout-1893"
     },
     {
-      "title": "STUCK BRO-3961 — main CI red: Test Suite failing pre-existing (audit-venue-write-guard baseline + BRO-2462 dispatch-stall test), unrelated to BRO-3920",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3961/main-ci-red-test-suite-failing-pre-existing-audit-venue-write-guard"
+      "title": "FAILED BRO-1794 — P1: launchd jobs silently run STALE code whenever data/audit/* has local edits — ff-only fallback defeats the whole scheduled-job chain",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/merge-bww-roundup-ledger.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-1794/p1-launchd-jobs-silently-run-stale-code-whenever-dataaudit-has-local"
     },
     {
-      "title": "STUCK BRO-3868 — P1: digest-autofix-ledger loses rows on every sync — attempt-memory, opus escalation and BOTH zero-dispatch alarms read a file with no merge driver",
+      "title": "STUCK BRO-343 — Crowned: P1 backlog triage + dispatch loop (v3)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3868/p1-digest-autofix-ledger-loses-rows-on-every-sync-attempt-memory-opus"
-    },
-    {
-      "title": "STUCK BRO-3828 — BSC Daily: Stuck pipeline items (card #794)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3828/bsc-daily-stuck-pipeline-items-card-794"
-    },
-    {
-      "title": "STUCK BRO-3826 — BSC Daily: Data freshness: shows missing poster/synopsis/tickets (#795)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3826/bsc-daily-data-freshness-shows-missing-postersynopsistickets-795"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-343/crowned-p1-backlog-triage-dispatch-loop-v3"
     }
   ],
-  "moreCount": 55
+  "moreCount": 37
 }

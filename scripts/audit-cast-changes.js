@@ -22,6 +22,7 @@
  *   node scripts/audit-cast-changes.js --strict # exit non-zero if ANY issue
  *   node scripts/audit-cast-changes.js --gate   # per-push trunk catastrophe FLOOR
  *
+ * (BRO-2752: --gate's floor excludes calendar-driven counters; see cast-changes-gate.js.)
  * --gate (vs --strict) as of 2026-06-29: --strict blocks on totalIssues > 0, but
  * almost all of those kinds (stale closure-date repairs, collapsed departures,
  * dropped contradictions/absences, stale [AUTO-FLAGGED], name dedupes, redundant
@@ -47,7 +48,7 @@ const {
   noteMatchesClosurePhrase,
   reconcileClosureDateWithClosingDate,
 } = require('./lib/cast-changes-filters');
-const { shouldBlockCastChangesGate } = require('./lib/cast-changes-gate');
+const { shouldBlockCastChangesGate, countGateChurn } = require('./lib/cast-changes-gate');
 
 const DATA_PATH = path.join(__dirname, '..', 'data', 'cast-changes.json');
 const TODAY = new Date();
@@ -378,16 +379,20 @@ function main() {
   // and permanently trip --strict in the scheduled workflow. They're
   // reported (duplicateCastEntriesByShow, printed above) for human review /
   // the daily digest, same treatment as contradictionsByShow.
-  const totalIssues =
-    report.staleClosureDatesRepaired +
-    report.departuresReclassifiedAsClosure +
-    report.contradictedClosuresDropped +
-    report.contradictedArrivalsDropped +
-    report.endedAbsencesDropped +
-    report.staleAutoFlaggedDropped +
-    report.nameVariantDedupes +
-    report.inCastArrivalsDropped +
-    report.crossShowConflicts.length;
+  const issueCounts = {
+    staleClosureDatesRepaired: report.staleClosureDatesRepaired,
+    departuresReclassifiedAsClosure: report.departuresReclassifiedAsClosure,
+    contradictedClosuresDropped: report.contradictedClosuresDropped,
+    contradictedArrivalsDropped: report.contradictedArrivalsDropped,
+    endedAbsencesDropped: report.endedAbsencesDropped,
+    staleAutoFlaggedDropped: report.staleAutoFlaggedDropped,
+    nameVariantDedupes: report.nameVariantDedupes,
+    inCastArrivalsDropped: report.inCastArrivalsDropped,
+    crossShowConflicts: report.crossShowConflicts.length,
+  };
+  const totalIssues = Object.values(issueCounts).reduce((a, b) => a + b, 0);
+  // --gate floor excludes calendar-driven counters (BRO-2752), see cast-changes-gate.js
+  const gateChurn = countGateChurn(issueCounts);
 
   if (WRITE) {
     fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2) + '\n');
@@ -403,11 +408,11 @@ function main() {
   // scripts/lib/cast-changes-gate.js (unit-tested, CLAUDE.md §15).
   if (GATE) {
     const crossShowConflicts = report.crossShowConflicts.length;
-    if (shouldBlockCastChangesGate({ crossShowConflicts, totalIssues, floor: GATE_FLOOR })) {
-      console.error(`\n❌ GATE: ${crossShowConflicts} cross-show conflict(s) (zero-tolerance) + ${totalIssues} total issue(s) vs floor ${GATE_FLOOR}. Failing the trunk.`);
+    if (shouldBlockCastChangesGate({ crossShowConflicts, totalIssues: gateChurn, floor: GATE_FLOOR })) {
+      console.error(`\n❌ GATE: ${crossShowConflicts} cross-show conflict(s) (zero-tolerance) + ${gateChurn} gate-counted issue(s) (of ${totalIssues} total) vs floor ${GATE_FLOOR}. Failing the trunk.`);
       process.exit(1);
     }
-    console.log(`\n✅ GATE: 0 cross-show conflicts, ${totalIssues} issue(s) ≤ floor ${GATE_FLOOR}. Auto-healable churn — surfaced above, not blocking the trunk. Full --strict triage runs daily in check-corpus-drift.yml (→ digest).`);
+    console.log(`\n✅ GATE: 0 cross-show conflicts, ${gateChurn} gate-counted issue(s) (${totalIssues} total, calendar-driven excluded) ≤ floor ${GATE_FLOOR}. Auto-healable churn — surfaced above, not blocking the trunk. Full --strict triage runs daily in check-corpus-drift.yml (→ digest).`);
     return;
   }
 

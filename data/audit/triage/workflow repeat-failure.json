@@ -1,20 +1,20 @@
 {
   "system": "workflow repeat-failure",
   "status": "warn",
-  "lastChecked": "2026-10-04T20:51:56.415Z",
+  "lastChecked": "2026-10-05T10:40:22.918Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Land",
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
       "status": "warn",
-      "message": "Land failed 4 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Rebuild Reviews Data failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Check Performance Budget",
+      "name": "Workflow repeat-failure: Land",
       "status": "warn",
-      "message": "Check Performance Budget failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Land failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
     }
   ]
 }

@@ -76,6 +76,8 @@ describe('BRO-3535: gates moved from test.yml', () => {
     // BRO-4419: not moved from test.yml; a NEW digest-routed audit that shares the
     // same healPathRequired/healExempt contract, so it rides this list.
     'outlet-identity-hygiene',
+    // BRO-2740: NEW digest-routed corpus audit (orphaned wrongProduction provenance).
+    'orphaned-wrongprod-provenance',
   ];
 
   test('every moved audit is present, marked healPathRequired, and either has healExempt or is baseline-diff/scheduled-fix', () => {
