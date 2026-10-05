@@ -14,8 +14,8 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
-const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
-const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { classifyMarketRouting, resolveWriteTarget, buildSiblingIndex } = require('./lib/market-routing');
+const { recordMarketMisroute } = require('./lib/market-misroute-ledger');
 
 const dtliDir = path.join(__dirname, '../data/aggregator-archive/dtli');
 const outputDir = path.join(__dirname, '../data/review-texts');
@@ -41,6 +41,18 @@ function _getSiblingIndex() {
     _siblingIndexCache = new Map();
   }
   return _siblingIndexCache;
+}
+
+let _skipCrossShowDupeCache = null;
+function _skipsCrossShowDupe(showId) {
+  if (!_skipCrossShowDupeCache) {
+    try {
+      _skipCrossShowDupeCache = new Set(require(SHOWS_PATH).shows.filter(s => s._skipCrossShowDupe).map(s => s.id));
+    } catch {
+      _skipCrossShowDupeCache = new Set();
+    }
+  }
+  return _skipCrossShowDupeCache.has(showId);
 }
 
 let _showCategoryCache = null;
@@ -439,23 +451,8 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
   // are; relocating those silently overrides a human.
   //
   // Repairing the 296 is a supervised migration, tracked separately.
-  const onDiskRecord = readReviewOnDisk(path.join(dir, review.showId), review);
-  if (onDiskRecord && (
-    onDiskRecord.wrongProduction === true ||
-    onDiskRecord.wrongShow === true ||
-    onDiskRecord.allowCrossMarket === true ||
-    onDiskRecord.wrongProduction === false ||
-    onDiskRecord.wrongProductionManualClear === true ||
-    onDiskRecord.wrongProductionOverride === true ||
-    onDiskRecord.humanReviewedWrongProduction === false ||
-    shouldSkipWrongProductionAudit(onDiskRecord)
-  )) {
-    return saveReviewUnrouted(review, overwrite, dir);
-  }
-
   const visited = _rerouteVisited || new Set();
-  visited.add(review.showId);
-  const routingDecision = classifyMarketRouting({
+  const routingDecision = resolveWriteTarget({
     showId: review.showId,
     url: review.url,
     outletId: review.outletId,
@@ -463,7 +460,16 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
     category: _getShowCategory(review.showId),
     visited,
     siblingIndex: _getSiblingIndex(),
+    existingRecord: readReviewOnDisk(path.join(dir, review.showId), review),
+    skipCrossShowDupe: _skipsCrossShowDupe(review.showId),
+    requireUrlOrDate: true,
+    // Tests pass a temp dir; only the real run feeds the shared ledger.
+    recordMisroute: dir === outputDir ? recordMarketMisroute : undefined,
+    file: generateReviewFilename(review.outletId, review.criticName),
   });
+  if (routingDecision.bypassed === 'adjudicated') {
+    return saveReviewUnrouted(review, overwrite, dir);
+  }
   if (routingDecision.action === 'reject') {
     console.warn(`  ⛔ Cross-market guard: rejecting ${review.outletId}/${review.criticName || 'Unknown'} for ${review.showId} — ${routingDecision.reason}`);
     return null;

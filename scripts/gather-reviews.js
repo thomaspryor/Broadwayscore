@@ -87,7 +87,8 @@ const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTour
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./lib/aggregator-domains');
-const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./lib/market-routing');
+const { resolveWriteTarget, buildSiblingIndex, tourDecision } = require('./lib/market-routing');
+const { recordMarketMisroute: _recordMarketMisroute } = require('./lib/market-misroute-ledger');
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
@@ -172,7 +173,6 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const GATHER_COLLISIONS_PATH = path.join(__dirname, '..', 'data', 'audit', 'gather-collisions.json');
-const MARKET_MISROUTES_PATH = path.join(__dirname, '..', 'data', 'audit', 'market-misroutes.json');
 const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
@@ -356,21 +356,6 @@ function _recordGatherCollision(entry) {
     // Cap at 500 entries so a stuck poller doesn't balloon the file.
     if (list.length > 500) list = list.slice(-500);
     fs.writeFileSync(GATHER_COLLISIONS_PATH, JSON.stringify(list, null, 2));
-  } catch { /* audit write must not abort batch */ }
-}
-
-function _recordMarketMisroute(entry) {
-  try {
-    const auditDir = path.dirname(MARKET_MISROUTES_PATH);
-    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
-    let list = [];
-    if (fs.existsSync(MARKET_MISROUTES_PATH)) {
-      try { list = JSON.parse(fs.readFileSync(MARKET_MISROUTES_PATH, 'utf8')); } catch {}
-      if (!Array.isArray(list)) list = [];
-    }
-    list.push({ recordedAt: new Date().toISOString(), ...entry });
-    if (list.length > 500) list = list.slice(-500);
-    fs.writeFileSync(MARKET_MISROUTES_PATH, JSON.stringify(list, null, 2));
   } catch { /* audit write must not abort batch */ }
 }
 
@@ -3322,31 +3307,30 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Broadway sibling directory). Replaces the older thin isBroadwayUrl-only guard —
   // that check is still applied inside classifyMarketRouting as a fallback.
   // See scripts/lib/market-routing.js and Notion 34c637c5-416f-81cf.
-  if (reviewData.url || reviewData.publishDate) {
-    const showCategory = (getShowData(showId) || {}).category || null;
-    const skipCross = getSkipCrossShowDupeIds().has(showId);
-    if (!skipCross) {
-      const visited = options._marketVisited instanceof Set ? options._marketVisited : new Set();
-      const decision = classifyMarketRouting({
-        showId,
-        url: reviewData.url,
-        outletId: reviewData.outletId || normalizedOutletId,
-        publishDate: reviewData.publishDate,
-        dateSource: reviewData.dateSource,
-        category: showCategory,
-        allowCrossMarket: options.allowCrossMarket === true,
-        visited,
-        siblingIndex: getSiblingIndex(),
-      });
-      if (decision.action === 'reject') {
-        console.log(`    ✗ Skipping ${filename}: ${decision.reason}`);
-        return 'crossMarketBroadway';
-      }
-      if (decision.action === 'reroute') {
-        console.log(`    ⤳ Rerouting ${filename}: ${showId} → ${decision.targetShowId} (${decision.reason})`);
-        _recordMarketMisroute({ fromShowId: showId, toShowId: decision.targetShowId, file: filename, url: reviewData.url, publishDate: reviewData.publishDate, reason: decision.reason });
-        return createReviewFile(decision.targetShowId, reviewData, { ...options, _marketVisited: visited });
-      }
+  {
+    const visited = options._marketVisited instanceof Set ? options._marketVisited : new Set();
+    const decision = resolveWriteTarget({
+      showId,
+      url: reviewData.url,
+      outletId: reviewData.outletId || normalizedOutletId,
+      publishDate: reviewData.publishDate,
+      dateSource: reviewData.dateSource,
+      category: (getShowData(showId) || {}).category || null,
+      allowCrossMarket: options.allowCrossMarket === true,
+      visited,
+      siblingIndex: getSiblingIndex(),
+      skipCrossShowDupe: getSkipCrossShowDupeIds().has(showId),
+      requireUrlOrDate: true,
+      recordMisroute: _recordMarketMisroute,
+      file: filename,
+    });
+    if (decision.action === 'reject') {
+      console.log(`    ✗ Skipping ${filename}: ${decision.reason}`);
+      return 'crossMarketBroadway';
+    }
+    if (decision.action === 'reroute') {
+      console.log(`    ⤳ Rerouting ${filename}: ${showId} → ${decision.targetShowId} (${decision.reason})`);
+      return createReviewFile(decision.targetShowId, reviewData, { ...options, _marketVisited: visited });
     }
   }
 
