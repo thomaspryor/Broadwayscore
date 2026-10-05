@@ -21,7 +21,9 @@ const { normalizeTitle } = require('./title-match');
 
 // Minimal HTML-entity decode for WP-API title.rendered values.
 function decodeEntities(s) {
-  return String(s || '')
+  // Two passes: BWW's gnews sitemap double-encodes (`&amp;amp;`), so one pass
+  // left a literal "&amp;" in titles ("Grant &amp; Baranski in HAY FEVER").
+  const once = (x) => String(x || '')
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
     .replace(/&amp;/g, '&')
@@ -29,6 +31,7 @@ function decodeEntities(s) {
     .replace(/&apos;/g, "'")
     .replace(/&hellip;/g, '…')
     .replace(/&nbsp;/g, ' ');
+  return once(once(s));
 }
 
 /**
@@ -146,7 +149,7 @@ function isBwwNonStageTieIn(rawTitle) {
 // 263 W 86th St, and dropping it would silently lose a genuine NYC miss.
 // "London" is only a signal after a preposition ("at/in/to London") — a bare
 // \blondon\b would swallow real titles such as LONDON ROAD.
-const BWW_NON_NYC_RE = /\b(?:west end(?!\s+theat(?:re|er))|(?:in|at|to|from)\s+london|national tour|north american tour|on tour|touring production|the muny|us tour)\b/i;
+const BWW_NON_NYC_RE = /\b(?:west end(?!\s+theat(?:re|er))|(?:in|at|to|from)\s+london|national tour|north american tour|on tour|touring production|the muny|us tour|launches\b.{0,60}\b(?:tour|leg))\b/i;
 function isBwwNonNycRoundup(rawTitle) {
   return BWW_NON_NYC_RE.test(rawTitle);
 }
@@ -191,10 +194,19 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
   // venue, and left on it turned two tracked, reviewed shows into false
   // missing-show candidates (2026-09-27). Hyphenated "Off-Broadway" only —
   // the headline form — so a title word like "off broadway" in prose stays.
-  const sep = rest.match(
-    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b|\s+(?:Off-Broadway|on\s+Broadway)(?=\s|$))/i
+  // "<Actor> & <Actor> in SHOW": names-first headline (Hay Fever, 2026-10).
+  // Only when BOTH sides of the &/and are capitalised full names (2-4 tokens each), so titles
+  // like "Dancing and Singing in the Rain" are left alone.
+  const actorLead = rest.match(
+    /^(?:[A-Z][\w.'’-]*\s+){2,4}(?:&|and)\s+(?:[A-Z][\w.'’-]*\s+){2,4}in\s+(.+)$/
   );
-  const title = (sep ? sep[1] : rest).trim();
+  if (actorLead) rest = actorLead[1].trim();
+  const sep = rest.match(
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Launches|World\s+Premiere(?!\s+of\b))\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b|\s+(?:Off-Broadway|on\s+Broadway)(?=\s|$))/i
+  );
+  let title = (sep ? sep[1] : rest).trim();
+  // A lead-in article alone is not a title ("The World Premiere of X"): keep the full text.
+  if (/^(?:the|a|an)$/i.test(title)) title = rest.trim();
   return title || null;
 }
 
@@ -386,6 +398,11 @@ function titleCandidates(title) {
   const out = [title];
   const stripped = String(title || '').replace(/[’'‘]s\b/g, '');
   if (stripped !== title) out.push(stripped);
+  // "Tartuffe (Remixed)": normalizeTitle drops the parenthetical (venue noise
+  // elsewhere), but the catalogue title is "Tartuffe Remixed". Try the
+  // parens-flattened form too.
+  const flat = String(title || '').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (flat !== title && !out.includes(flat)) out.push(flat);
   return out;
 }
 
@@ -597,6 +614,7 @@ function buildShowTitleIndex(shows, market = null) {
       const cat = s.category || null;
       if (cat && market === 'we' && !WE_CATEGORIES.has(cat)) continue;
       if (cat && market === 'nyc' && !NYC_CATEGORIES.has(cat)) continue;
+      if (cat && market === 'tour' && cat !== 'tour') continue;
     }
     const raws = [s.title, s.slug ? s.slug.replace(/-/g, ' ') : null];
     if (s.title && s.title.includes(' - ')) raws.push(s.title.split(' - ')[0]);
@@ -694,6 +712,32 @@ function findUnmatchedCandidates(items, index, opts = {}) {
   return items.filter((it) => it && it.title && !titleMatchesIndex(it.title, index, opts));
 }
 
+/**
+ * BWW roundups are all filed as market 'nyc', but BWW also reviews West End
+ * transfers and North American tour launches (Hay Fever at Wyndham's, Jersey
+ * Boys tour). Those are catalogued under west-end / off-west-end / tour, which
+ * the NYC-scoped index excludes, so the roundup read as a missing show while
+ * the show was already live. A bww-roundup that matches a non-closed show in
+ * the WE or tour index is catalogued.
+ */
+function bwwRoundupCataloguedElsewhere(title, shows, roundupDate) {
+  // A same-title WE/tour run must not hide a genuinely missing Broadway
+  // transfer (Paddington, Oh Mary!, Hadestown all run in both). A roundup only
+  // proves the non-NYC show when it was published right after that show's
+  // opening, so require the roundup date within [-3, +21] days of openingDate.
+  const ts = Date.parse(roundupDate);
+  if (!Number.isFinite(ts)) return false;
+  const DAY = 86400000;
+  const near = shows.filter((s) => {
+    if (s.status === 'closed' || !s.openingDate) return false;
+    if (s.category !== 'tour' && !WE_CATEGORIES.has(s.category)) return false;
+    const d = ts - Date.parse(s.openingDate);
+    return d >= -3 * DAY && d <= 21 * DAY;
+  });
+  if (near.length === 0) return false;
+  return titleMatchesIndex(title, buildShowTitleIndex(near), { allowClosedRevival: true });
+}
+
 function candidateKey(c) {
   return `${c.source}:${normalizeTitle(c.title)}`;
 }
@@ -720,5 +764,6 @@ module.exports = {
   buildShowTitleIndex,
   titleMatchesIndex,
   findUnmatchedCandidates,
+  bwwRoundupCataloguedElsewhere,
   candidateKey,
 };

@@ -4008,9 +4008,13 @@ function buildStillMissingPredicate() {
     ).shows;
     const nycIndex = buildShowTitleIndex(shows, 'nyc');
     const weIndex = buildShowTitleIndex(shows, 'west-end');
+    const { bwwRoundupCataloguedElsewhere } = require('./lib/reverse-discovery');
     return (c) => {
       const index = c && c.market === 'west-end' ? weIndex : nycIndex;
-      return !resolveMatchedShowId(c && c.title, index);
+      if (resolveMatchedShowId(c && c.title, index)) return false;
+      // BWW files West End / tour roundups as 'nyc' (see the helper).
+      if (c && c.source === 'bww-roundup' && bwwRoundupCataloguedElsewhere(c.title, shows, c.date)) return false;
+      return true;
     };
   } catch {
     // shows.json unreadable — do not silence the backlog, just stop gating.
@@ -4021,11 +4025,21 @@ function buildStillMissingPredicate() {
 function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
   const { rankReverseDiscoveryBacklog, describeCandidate, RD_AGED_DAYS_ERROR } =
     require('./lib/reverse-discovery-backlog');
+  // Only REVIEWED shows belong on a row named "reviewed shows missing": the
+  // nyt-theater openings calendar lists unreviewed fringe events (Eventbrite
+  // pages, festivals) that kept this row permanently warning (BRO-4689). They
+  // stay in the candidates JSON. Candidates already catalogued (stale report)
+  // are dropped too, so the count is real.
+  const { EVIDENCE_SOURCES } = require('./lib/reverse-discovery-backlog');
+  const isStillMissing = buildStillMissingPredicate();
+  const reviewed = ((report && report.candidates) || []).filter(
+    (c) => c && EVIDENCE_SOURCES.has(c.source) && (!isStillMissing || isStillMissing(c))
+  );
   const ranked = rankReverseDiscoveryBacklog({
-    candidates: report && report.candidates,
+    candidates: reviewed,
     state,
     nowMs: now.getTime(),
-    isStillMissing: buildStillMissingPredicate(),
+    isStillMissing,
   });
   if (!ranked) return [];
 
