@@ -1921,7 +1921,8 @@ jobs:
           echo "Checking for shows opening on $TOMORROW..."
           SHOWS=$(node -e "
             const shows = require('./data/shows.json').shows;
-            const opening = shows.filter(s => s.openingDate === '$TOMORROW' && s.status !== 'closed');
+            // A national tour's first stop is no press night (BRO-4724).
+            const opening = shows.filter(s => s.openingDate === '$TOMORROW' && s.status !== 'closed' && s.category !== 'tour');
             opening.forEach(s => console.log(s.id + '|' + (s.category || 'broadway')));
           " 2>/dev/null)
 

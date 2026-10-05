@@ -8,6 +8,8 @@
 // directly, so that coverage lives in the shell-script test family instead.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { redactCurlTrace, classifyStallPhase, classifyPushStderr, extractHookText } from './push-diagnostics.js';
 
 test('redactCurlTrace strips an embedded URL-userinfo token', () => {
@@ -199,4 +201,16 @@ test('extractHookText: keeps the hook words, drops progress + failure lines, red
   assert.match(out, /PRE-PUSH BLOCKED/);
   assert.ok(!out.includes('Enumerating') && !out.includes('failed to push'));
   assert.ok(!out.includes('SECRET1234'));
+});
+
+// BRO-3663: bash-level coverage of the early-fallback retry-budget fix. The
+// shell test drives the real push-with-retry.sh retry loop against a hanging
+// remote with a path-disqualified outgoing diff and asserts all budgeted local
+// attempts are spent (it fails on the pre-fix code, which broke out at attempt
+// PUSH_API_FALLBACK_AFTER_ATTEMPTS and hard-failed with "(early-fallback)").
+// Wrapped here so `node --test scripts/lib/push-with-retry.test.mjs` exercises it.
+test('BRO-3663: path-disqualified API fallback does not forfeit the local retry budget', { timeout: 600000, skip: process.env.CI ? 'CI runs this script as its own test.yml step (avoids a ~100s double run)' : false }, () => {
+  const sh = fileURLToPath(new URL('./push-with-retry.early-fallback-budget.test.sh', import.meta.url));
+  const r = spawnSync('bash', [sh], { encoding: 'utf8', timeout: 590000 });
+  assert.equal(r.status, 0, `early-fallback-budget.test.sh failed:\n${r.stdout}\n${r.stderr}`);
 });

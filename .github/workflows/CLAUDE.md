@@ -181,7 +181,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Metadata enrichment (after discovery):** Enriches newly discovered shows with TodayTix runtimes/intermissions/age (`enrich-todaytix-runtimes.js`), Wikipedia synopses (`enrich-wikipedia-synopsis.js --limit=20`), and Wikipedia runtimes (`enrich-wikipedia-runtimes.js --limit=20`). All `continue-on-error: true`. Added Feb 23, 2026.
 - **Timeout:** 10 minutes (to accommodate IBDB lookups with rate limiting)
 - **Triggers for newly opened shows (previews → open):** `gather-reviews.yml`, `update-reddit-sentiment.yml`, `update-show-score.yml`, `update-mezzanine.yml`, `fetch-all-image-formats.yml`, `opening-night-poller.yml`, `opening-night-broadcast.yml`
-- **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs
+- **Outputs:** `opened_count`, `opened_slugs` (shows transitioning previews→open), plus discovery outputs. National tours (`category: 'tour'`) are left out of both and out of the readiness check (BRO-4724): a tour's first stop is no press night. Their reviews come from `opening-night-reviews.yml`'s day-0..3 gathers.
 - **Note:** Discord notification for new shows removed Feb 20, 2026 (noise reduction)
 
 ## `opening-night-checklist.yml`

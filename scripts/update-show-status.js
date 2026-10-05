@@ -1006,12 +1006,12 @@ async function updateShowStatuses() {
     // arrived would open silently, skipping the opening-night poller/broadcast).
     // Exclude review-driven catch-up flips (Check 2d) — those shows opened
     // days/weeks ago, so triggering the opening-night pipeline would be wrong.
-    const openedShows = updates.filter(u =>
-      ['previews', 'upcoming', 'announced'].includes(u.changes.status?.from) &&
-      u.changes.status?.to === 'open' && !u.changes.reviewDriven
-    );
+    const { opened: openedShows, openedTours } = splitOpenedShows(updates, data.shows);
     fs.appendFileSync(outputFile, `opened_count=${openedShows.length}\n`);
     fs.appendFileSync(outputFile, `opened_slugs=${openedShows.map(u => u.id).join(',')}\n`);
+    // Tours that opened get reviews from opening-night-reviews.yml (its day-0..3
+    // gathers select every show that just opened), not this pipeline.
+    if (openedTours.length) console.log(`Tours opened (no opening-night pipeline): ${openedTours.map(u => u.id).join(", ")}`);
 
     // TodayTix date refresh results
     const dateUpdates = updates.filter(u => u.changes.closingDate);
@@ -1021,6 +1021,25 @@ async function updateShowStatuses() {
   return updates;
 }
 
+/**
+ * Shows that opened this run, split into the ones that get the opening-night
+ * pipeline (Express, owner broadcast preview, readiness, social) and national
+ * tours (BRO-4724). A tour launch is a first stop in some city: no press
+ * night, no Broadway roundups, and Express would pause the orchestrator for
+ * it. Tours get their reviews from opening-night-reviews.yml instead.
+ * Excludes review-driven catch-up flips (Check 2d): those opened long ago.
+ * @returns {{opened: object[], openedTours: object[]}}
+ */
+function splitOpenedShows(updates, shows) {
+  const byId = new Map((shows || []).map(s => [s.id, s]));
+  const all = (updates || []).filter(u =>
+    ['previews', 'upcoming', 'announced'].includes(u.changes.status?.from) &&
+    u.changes.status?.to === 'open' && !u.changes.reviewDriven
+  );
+  const isTour = u => (byId.get(u.id) || {}).category === 'tour';
+  return { opened: all.filter(u => !isTour(u)), openedTours: all.filter(isTour) };
+}
+
 if (require.main === module) {
   updateShowStatuses().catch(err => {
     console.error('Fatal error:', err);
@@ -1028,4 +1047,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { refreshTodayTixDates };
+module.exports = { refreshTodayTixDates, splitOpenedShows };
