@@ -59,7 +59,9 @@ function passesGenericTitleIdentity(text, title) {
   }
   // "review-story-hampstead-theatre": outlets often drop the article right after "review".
   const afterReview = new RegExp('(?:^| )reviews? (?:of )?' + word + '(?: |$)');
-  return candidates.some(c => (' ' + c + ' ').includes(' ' + phrase + ' ') || c.startsWith(word + ' ') || afterReview.test(c));
+  // "national-theatre-story-review": the word directly after a venue token.
+  const afterVenue = new RegExp('(?:^| )(?:theatre|theater|olivier|dorfman|lyttelton) ' + word + '(?: |$)');
+  return candidates.some(c => (' ' + c + ' ').includes(' ' + phrase + ' ') || c.startsWith(word + ' ') || afterReview.test(c) || afterVenue.test(c));
 }
 
 module.exports = { genericSingleWordTitle, passesGenericTitleIdentity, GENERIC_SINGLE_TITLE_WORDS };

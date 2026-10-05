@@ -51,4 +51,5 @@ test('article-less real slugs still pass (second-opinion regressions)', () => {
   assert.equal(urlLooksLikeReview('https://www.hollywoodreporter.com/x/chita-rivera-visit-theater-review-791063/', 'The Visit'), true);
   assert.equal(urlLooksLikeReview('https://stuonbroadway.blogspot.com/2015/05/review-of-visit.html', 'The Visit'), true);
   assert.equal(urlLooksLikeReview('https://www.whatsonstage.com/news/review-story-hampstead-theatre/', 'The Story'), true);
+  assert.equal(urlLooksLikeReview('https://example.com/theatre/national-theatre-story-review', 'The Story'), true);
 });
