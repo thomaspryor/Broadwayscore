@@ -2155,6 +2155,7 @@ on:
       # not scripts/lib/" gap: without these entries a push touching only them
       # runs ZERO CI. review-gate.mjs is already path-listed elsewhere.
       - 'scripts/tests/infra-review-gate.test.mjs'
+      - 'scripts/infra-review-scope.test.mjs'
       - 'scripts/dispatch-drift-watch.js'
       # Infra-review gate registration + liveness probe (task #1094) — the
       # vacuous-gate class (#1063/#1066-#1069) applied to the #1079 gate
