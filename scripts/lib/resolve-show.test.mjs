@@ -162,3 +162,17 @@ test('isAmbiguousMatch is false for a genuinely unique title', () => {
   assert.equal(isAmbiguousMatch('Different Times', SHOWS), false);
   assert.equal(isAmbiguousMatch('rent', SHOWS), true);
 });
+
+// Sibling grouping must tolerate punctuation differences between productions
+// of "the same" title (e.g. a scraper that drops the exclamation point) —
+// grouping on raw case-folded text instead of normalizeTitleCore would miss
+// this sibling entirely.
+test('slug-sibling expansion groups titles that differ only in punctuation', () => {
+  const shows = [
+    { id: 'dolly-1964', slug: 'hello-dolly', title: 'Hello, Dolly!', status: 'closed', openingDate: '1964-01-16', category: 'broadway' },
+    { id: 'dolly-2017', slug: 'hello-dolly-2017', title: 'Hello Dolly', status: 'closed', openingDate: '2017-04-20', category: 'broadway' },
+  ];
+  const matches = resolveShowMatches('hello dolly', shows);
+  assert.deepEqual(new Set(matches.map((s) => s.id)), new Set(['dolly-1964', 'dolly-2017']));
+  assert.equal(isAmbiguousMatch('hello dolly', shows), true);
+});

@@ -89,9 +89,12 @@ function resolveShowMatches(name, shows) {
   if (!norm) return [];
 
   const ranked = [[], [], []];
-  // Titles of shows that matched rank 0 via slug/id rather than title text.
-  // A slug/id is a per-show identifier, so unlike a title match it can't
-  // naturally pull in same-titled siblings — handled separately below.
+  // Normalized titles of shows that matched rank 0 via slug/id rather than
+  // title text. A slug/id is a per-show identifier, so unlike a title match
+  // it can't naturally pull in same-titled siblings — handled separately
+  // below. Grouped on normalizeTitleCore (strips punctuation/parentheticals),
+  // not raw case-folded text, so siblings like "Hello, Dolly!" vs "Hello
+  // Dolly" still group as the same title.
   const slugMatchedTitles = new Set();
 
   for (const show of shows) {
@@ -106,7 +109,7 @@ function resolveShowMatches(name, shows) {
     // Rank 0: exact slug / id
     if (show.slug === rawLower || show.slug === rawLower.replace(/\s+/g, '-') || show.id === rawLower) {
       ranked[0].push(show);
-      slugMatchedTitles.add(titleLower);
+      slugMatchedTitles.add(normalizeTitleCore(show.title));
       continue;
     }
 
@@ -129,7 +132,7 @@ function resolveShowMatches(name, shows) {
   if (slugMatchedTitles.size > 0) {
     for (const show of shows) {
       if (!show || !show.title || ranked[0].includes(show)) continue;
-      if (!slugMatchedTitles.has(foldCase(show.title))) continue;
+      if (!slugMatchedTitles.has(normalizeTitleCore(show.title))) continue;
       const titleNorm = normalizeShowName(show.title);
       const titleCore = normalizeTitleCore(show.title);
       if (inputIsTitleOrShorter(norm, titleNorm, titleCore)) ranked[0].push(show);

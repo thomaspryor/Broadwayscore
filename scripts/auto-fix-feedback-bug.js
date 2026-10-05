@@ -195,6 +195,22 @@ async function main() {
   }
   console.log(`Found ${resolvedShows.length}/${showIds.length} show(s): ${resolvedShows.map(r => `${r.show.title} (${r.id})`).join(', ')}`);
 
+  // 5a. Gate: an ambiguous form-field match is NOT the same thing as a
+  // confirmed multi-show report (#515, where the reader's own message named
+  // several shows). diagnoseBug sets resolvedShowIds from EVERY same-titled
+  // candidate it loaded for the LLM's benefit (BRO-4659) — that's "productions
+  // this report might be about," not "productions this report confirmed are
+  // broken." Auto-fixing every candidate would risk writing a fix for show A
+  // onto unrelated siblings B/C just because their titles collided in the
+  // form field. Route these to manual review instead, where a human can read
+  // the diagnosis and pick the right production.
+  if (diagnosis.ambiguousShow && resolvedShows.length > 1) {
+    const list = resolvedShows.map(r => `- **${r.show.title}** (\`${r.id}\`, ${r.show.category || 'unknown market'})`).join('\n');
+    writeComment(`## Requires Manual Review — Ambiguous Show\n\nThe reader's "show" field matched ${resolvedShows.length} different productions of this title. The diagnosis below is informational only — a maintainer needs to confirm which production is actually affected before any fix is applied:\n\n${list}\n\n---\n*Auto-processed by feedback pipeline*`);
+    output('skipped');
+    return;
+  }
+
   // The awards co-winner path (6a below) is inherently single-show — a co-
   // winner report names one ceremony/category for one production. Use the
   // first resolved show for it, matching prior behavior when showIds had
