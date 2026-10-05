@@ -25,8 +25,9 @@ const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDispl
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
-const { OUTLET_DOMAINS: _OUTLET_DOMAINS, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
@@ -214,6 +215,28 @@ function extractCriticFromTitle(title) {
   if (dashMatch) return dashMatch[1];
 
   return 'Unknown';
+}
+
+// BRO-3188: a SERP hit on a syndication host (msn, msnbctv.news, yahoo, aol...)
+// is a reprint, never the review's outlet. Resolve it to the registered-outlet
+// source URL (canonical / og:url / first in-body outlet link) so the review
+// goes through the normal dedupe + guards under its real URL. Unresolvable
+// reprints stay rejected (null).
+const _isRegisteredOutletUrl = makeRegisteredOutletPredicate(_OUTLET_DOMAINS, _REGISTRY_DOMAIN_ALIASES);
+async function resolveSerpHitUrl(rawUrl) {
+  if (!isSyndicationHost(rawUrl)) return rawUrl;
+  const { fetchPage } = require('./lib/scraper');
+  const resolved = await resolveSyndicatedHit(rawUrl, {
+    fetch: async (u) => (await fetchPage(u)).content,
+    isRegisteredOutletUrl: _isRegisteredOutletUrl,
+    isRejectedUrl: (u) => isBlockedReviewUrl(u),
+  });
+  if (!resolved) {
+    console.log(`    [SKIP] Syndicated reprint, no registered-outlet source found: ${rawUrl}`);
+    return null;
+  }
+  console.log(`    [SYNDICATION] ${rawUrl} -> ${resolved.url} (${resolved.via})`);
+  return resolved.url;
 }
 
 function isAggregatorUrl(url) {
@@ -492,7 +515,7 @@ async function main() {
     searched++;
 
     for (const result of results) {
-      const url = result.url || result.link;
+      const url = await resolveSerpHitUrl(result.url || result.link);
       if (!url) continue;
 
       // Skip aggregators
@@ -625,7 +648,7 @@ async function main() {
       searched++;
       let gated = 0;
       for (const result of results) {
-        const url = result.url || result.link;
+        const url = await resolveSerpHitUrl(result.url || result.link);
         if (!url) continue;
         if (isAggregatorUrl(url)) continue;
         if (existingUrls.has(url.toLowerCase())) { skippedDupe++; continue; }
