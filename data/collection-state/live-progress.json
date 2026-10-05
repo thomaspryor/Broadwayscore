@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-04T23:59:19.754Z",
-  "processed": 9,
-  "failed": 6,
-  "successRate": "60.0%",
+  "updatedAt": "2026-10-05T00:15:42.765Z",
+  "processed": 14,
+  "failed": 11,
+  "successRate": "56.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 2,
+    "scrapingdog": 3,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 3
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-04T23:53:31.949Z",
@@ -39,6 +39,17 @@
       "event": "bb-session",
       "session": "5d7f7275",
       "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T00:08:58.227Z",
+      "event": "bb-session",
+      "session": "539f0201",
+      "url": "https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel"
+    },
+    {
+      "t": "2026-10-05T00:08:58.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }

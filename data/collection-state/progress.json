@@ -8,7 +8,12 @@
     "hay-fever-west-end-2026/jonathan-baz--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json",
+    "tru-off-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -16,25 +21,35 @@
     "hay-fever-west-end-2026/londontheatredirect--unknown.json",
     "hay-fever-west-end-2026/thestage--the-stage.json",
     "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
-    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "the-standard-of-living-west-end-2026/thestage--james-graham.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
+    "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
+    "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
+    "the-urmetazoan-off-west-end-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
       "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "hay-fever-west-end-2026/jonathan-baz--unknown.json"
+      "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+      "tru-off-west-end-2026/guardian--mark-lawson.json",
+      "tru-off-west-end-2026/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
       "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
-      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [
-      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -44,7 +59,7 @@
     ]
   },
   "startTime": "2026-10-04T23:51:01.577Z",
-  "lastProcessed": "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+  "lastProcessed": "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-04T23:53:31.949Z",
@@ -69,6 +84,17 @@
       "event": "bb-session",
       "session": "5d7f7275",
       "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T00:08:58.227Z",
+      "event": "bb-session",
+      "session": "539f0201",
+      "url": "https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel"
+    },
+    {
+      "t": "2026-10-05T00:08:58.610Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
