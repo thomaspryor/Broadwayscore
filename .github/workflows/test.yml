@@ -49,6 +49,9 @@ on:
       # tests/unit/tour-schedule-now-next.test.ts requires tourStops from
       # scripts/fetch-tour-schedules.js (BRO-4601).
       - 'scripts/fetch-tour-schedules.js'
+      # scripts/add-verified-tours.test.mjs (manifest) tests this CLI's planVerifiedTours (BRO-4601).
+      - 'scripts/add-verified-tours.js'
+      - 'scripts/add-verified-tours.test.mjs'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
       # scripts/lib/cmux-auth-stall.js (covered by the glob above) — a solo
       # edit to the wrapper (e.g. the read-screen/rename loop) would otherwise
@@ -1016,6 +1019,8 @@ on:
       # BRO-2129: stale local origin ref must not make foreign lines count as ours
       # in the content-survival check (refine_entry_base).
       - 'tests/unit/push-content-survival-false-positive.test.mjs'
+      # BRO-208: sibling-pipeline supersede must not read as REVERTED (poller false failures).
+      - 'tests/unit/poller-retry-supersede.test.mjs'
       # #394: no-op-rebase root-cause fix (explicit-destination fetch + progress
       # assertion). Pure predicate in push-rebase-progress.js (colocated .test.mjs
       # runs in the scripts/lib/*.test.mjs glob); bash integration reproduces the
