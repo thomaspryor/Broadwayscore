@@ -483,6 +483,7 @@ on:
       # gap shape as scripts/audit-test-yml-lib-deps.js above, caught by that
       # very audit when this file was added.
       - 'scripts/audit-workflow-secret-gaps.js'
+      - 'scripts/audit-workflow-secret-gaps.test.mjs'
       # BRO-376 Notion->Linear idempotent import acceptance test. Registered in
       # tests/unit-test-manifest.txt. Depends only on scripts/lib/** (already
       # globbed above), so it needs its own entry, plus the top-level script it

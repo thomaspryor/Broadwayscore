@@ -24,7 +24,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 // Reuse existing infrastructure
-const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./opening-night-poller');
+const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./lib/opening-night-readiness'); // not the poller: avoids pulling in the LLM extractor chain (BRO-2378)
 const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');

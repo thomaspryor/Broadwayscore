@@ -392,6 +392,9 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-2378: same checklist script as opening-night-checklist.yml (BRO-67);
+          # without the key its LLM parity fallback silently no-ops in this gate.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           FORCE="${{ inputs.force_broadcast }}"
           BLOCKED=false
