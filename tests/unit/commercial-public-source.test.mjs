@@ -45,8 +45,8 @@ test('publicSourceText drops internal research-tooling language', () => {
 test('publicSourceText drops the placeholder note the stub enroller writes', () => {
   // Imports the real enroller so a reworded placeholder cannot slip past the guard.
   const { makeStub } = createRequire(import.meta.url)('../../scripts/initialize-commercial-stub.js');
+  // The enroller writes no note (null); a placeholder that comes back must still be dropped.
   const stubNotes = makeStub().notes;
-  assert.equal(typeof stubNotes, 'string');
   assert.equal(publicSourceText(stubNotes), null, `stub notes leaked: ${stubNotes}`);
 });
 
@@ -80,7 +80,8 @@ test('every bracketed annotation a script appends to commercial notes is cut', (
       for (const m of line.matchAll(/['`]\s*\[([A-Za-z][A-Za-z -]*?)(?::|\])/g)) prefixes.add(m[1].trim());
     }
   }
-  assert.ok(prefixes.has('Auto-designated Fizzle'), `scan found: ${[...prefixes].join(', ')}`);
+  // cleanup-commercial-data.js now writes a plain public note, so the research
+  // scripts' plausibility flag is the one bracketed annotation left to find.
   assert.ok(prefixes.has('PLAUSIBILITY WARNING'), `scan found: ${[...prefixes].join(', ')}`);
   for (const prefix of prefixes) {
     assert.equal(
