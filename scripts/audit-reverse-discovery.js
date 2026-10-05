@@ -86,7 +86,7 @@ async function main(argv = process.argv.slice(2)) {
     extractShowTitleFromWetRoundup, extractGuardianReview, parseGuardianReviewsRss, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
     extractShowTitleFromPlaybillRoundup, isPlaybillNonNycRoundup, resolveMatchedShowId,
     isBwwNonStageTieIn, isBwwNonNycRoundup, extractOpeningsFromNytheaterPost,
-    buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
+    buildShowTitleIndex, findUnmatchedCandidates, bwwRoundupCataloguedElsewhere, candidateKey,
   } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, mergeEvidence, saveReviewEvidence } = require('./lib/review-evidence');
 
@@ -389,7 +389,7 @@ async function main(argv = process.argv.slice(2)) {
     ...findUnmatchedCandidates(
       items.filter(i => i.market === 'nyc' && i.source === 'bww-roundup'), nycIndex,
       { allowClosedRevival: true }
-    ),
+    ).filter(c => !bwwRoundupCataloguedElsewhere(c.title, shows)),
   ];
   console.log(`\n${candidates.length} missing-show candidate(s) of ${items.length} recent items:`);
   for (const c of candidates) console.log(`  [${c.source}] "${c.title}" — ${c.url}`);

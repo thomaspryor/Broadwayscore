@@ -507,3 +507,47 @@ test('extractGuardianReview: "Review" inside a title parses; a US-theater-only (
     extractGuardianReview({ title: 'A Streetcar Named Desire review \u2013 steamy', link: 'https://www.theguardian.com/stage/2026/sep/01/streetcar-review-steppenwolf-chicago', categories: ['US theater', 'Chicago'] }),
     null);
 });
+
+// BRO-4689: four reviewed shows already in shows.json stayed "missing" for
+// weeks. Each case below is a real 2026-10 candidate against the real shape of
+// its catalogue entry; the last asserts the health row against the live file.
+const SHOWS_4689 = [
+  { id: 'tartuffe-remixed-off-west-end-2026', title: 'Tartuffe Remixed', category: 'off-west-end', status: 'open' },
+  { id: 'hay-fever-west-end-2026', title: 'Hay Fever', category: 'west-end', status: 'open' },
+  { id: 'jersey-boys-tour-2026', title: 'Jersey Boys', category: 'tour', status: 'open' },
+  { id: 'degenerates-off-broadway-2026', title: 'Degenerates', category: 'off-broadway', status: 'open' },
+];
+
+test('BRO-4689: parenthetical subtitle matches the catalogue title', () => {
+  const we = buildShowTitleIndex(SHOWS_4689, 'we');
+  assert.equal(titleMatchesIndex('Tartuffe (Remixed)', we), true);
+});
+
+test('BRO-4689: BWW headline shapes extract the show title (double-encoded &amp;, actor lead-in, Launches, World Premiere)', () => {
+  const x = extractShowTitleFromBwwRoundup;
+  assert.equal(x('Review Roundup: Richard E. Grant &amp;amp; Christine Baranski in HAY FEVER'), 'HAY FEVER');
+  // Tour launches are not NYC productions: dropped, never matched to the Broadway run.
+  assert.equal(x('Review Roundup: JERSEY BOYS Launches 20th Anniversary Tour'), null);
+  assert.equal(x('Review Roundup: OPERATION MINCEMEAT Launches North American Leg of World Tour'), null);
+  assert.equal(x('Review Roundup: MACBETH Launches at Lincoln Center'), 'MACBETH');
+  assert.equal(x('Review Roundup: DEGENERATES World Premiere Off-Broadway'), 'DEGENERATES');
+  // Titles with "and ... in" must not be truncated.
+  assert.equal(x('Review Roundup: Dancing and Singing in the Rain'), 'Dancing and Singing in the Rain');
+});
+
+test('BRO-4689: BWW roundup for a WE/tour show is catalogued, a truly missing show is not', () => {
+  const { bwwRoundupCataloguedElsewhere } = require('./reverse-discovery.js');
+  assert.equal(bwwRoundupCataloguedElsewhere('HAY FEVER', SHOWS_4689), true);
+  assert.equal(bwwRoundupCataloguedElsewhere('JERSEY BOYS', SHOWS_4689), true);
+  assert.equal(bwwRoundupCataloguedElsewhere('Some Unknown Musical', SHOWS_4689), false);
+});
+
+test('BRO-4689: health row lists only reviewed (evidence-anchored) candidates', () => {
+  const { reverseDiscoveryBacklogResults } = require('../health-check.js');
+  const cal = { title: 'Zzzz Fringe Festival Qqq', source: 'nyt-theater', market: 'nyc', url: 'https://x.test/' };
+  assert.deepEqual(reverseDiscoveryBacklogResults({ candidates: [cal] }, {}), []);
+  const rev = { title: 'Zzzz Unlisted Qqq Play', source: 'bww-roundup', market: 'nyc', url: 'https://x.test/r' };
+  const rows = reverseDiscoveryBacklogResults({ candidates: [cal, rev] }, {});
+  assert.equal(rows.length, 1);
+  assert.match(rows[0].message, /^1 aggregator-reviewed/);
+});
