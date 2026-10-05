@@ -111,10 +111,11 @@ jobs:
             echo ""
             echo "**Would clear:** ${{ steps.sweep.outputs.would }}"
             echo "**Cleared:** ${{ steps.sweep.outputs.count }}"
-            if [ "${{ inputs.dry_run }}" = "true" ]; then
+            if [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
+              # BRO-2432: nonzero is either the surge guard or a total LLM outage; the sweep logs which.
+              echo "**Mode:** sweep FAILED (exit ${{ steps.sweep.outputs.status }}) — surge guard refusal (re-run with force_bulk=true only after investigating) or total LLM outage (check ANTHROPIC_API_KEY / API status); see the sweep step log"
+            elif [ "${{ inputs.dry_run }}" = "true" ]; then
               echo "**Mode:** dry-run (no commit)"
-            elif [ "${{ steps.sweep.outputs.status }}" != "0" ]; then
-              echo "**Mode:** surge guard refused — investigate before re-running with force_bulk=true"
             elif [ "${{ steps.sweep.outputs.count }}" = "0" ]; then
               echo "**Mode:** no fix needed"
             else
@@ -122,7 +123,7 @@ jobs:
             fi
           } >> $GITHUB_STEP_SUMMARY
 
-      - name: Fail on surge-guard refusal
+      - name: Fail on sweep failure (surge guard or LLM outage)
         if: steps.sweep.outputs.status != '0'
         run: exit 1
 
