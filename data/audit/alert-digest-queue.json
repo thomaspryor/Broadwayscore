@@ -670,5 +670,77 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-05T21:36:23.188Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-kramerfauci-st-anns-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Kramer/Fauci",
+    "description": "nytimes/Helen Shaw (nytimes--helen-shaw.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] Although the review mentions St. Ann's Warehouse in a — https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T22:42:42.917Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:kramerfauci-st-anns-off-broadway-2026",
+    "title": "Auto-remediation gave up on kramerfauci-st-anns-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"kramerfauci-st-anns-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T22:42:42.935Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:slam-frank-off-broadway-2026",
+    "title": "Auto-remediation gave up on slam-frank-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"slam-frank-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T22:42:44.606Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-hairy-ape-irish-repertory-theatre-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T22:42:44.618Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:the-hairy-ape-irish-repertory-theatre-off-broadway-2026:timeout",
+    "title": "Auto-remediation gave up on the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"the-hairy-ape-irish-repertory-theatre-off-broadway-2026\",\"outlet\":\"timeout\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T22:42:44.621Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:into-the-woods-noel-coward-west-end-2026",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"into-the-woods-noel-coward-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T22:42:44.632Z"
   }
 ]
