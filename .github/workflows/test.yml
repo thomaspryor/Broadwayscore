@@ -6591,27 +6591,27 @@ jobs:
     if: always()
     steps:
       - name: Check results
-        # contains(needs.*.result, 'failure') checks every job listed in
-        # `needs:` above in one expression instead of one hardcoded
-        # `needs.<job>.result == 'failure'` clause per job — adding a job to
-        # `needs:` is now the only place a future job has to be wired in for
-        # this check to see it, instead of two parallel lists that can drift
-        # out of sync with each other (the exact shape of the #1690 bug).
-        # `skipped`/`success`/`cancelled` never match 'failure', so
-        # visual-regression being skipped on push is a no-op here, not a
-        # false trip.
+        # Allowlist over toJSON(needs): every job listed in `needs:` above must
+        # be success or skipped (visual-regression is skipped on push). Adding
+        # a job to `needs:` is the only place a future job has to be wired in
+        # for this check to see it (the #1690 bug was two drifting lists).
+        # This was a denylist of 'failure'/'cancelled' until BRO-4752: run
+        # 37364141042 had five needs jobs starved of a runner, their result
+        # matched neither, and this step printed "All tests passed". Same
+        # allowlist as failingJobsFromNeeds (scripts/lib/main-red-streak.js).
+        # Consequence, intended: runner-starved runs now count toward the
+        # consecutive-red alert below (fail-closed, as BRO-4443 did for
+        # cancelled jobs).
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
         run: |
-          # A timed-out job reports 'cancelled', not 'failure'; a job that never
-          # finished has not passed (BRO-3425 ship-check, data-safety-guards).
-          # Widened to every needs job (BRO-4443): run 36750754558 had Unit
-          # Tests cancelled by a checkout stall and this step still printed
-          # "All tests passed", hiding the red run from the streak alert below.
-          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ] || [ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]; then
-            echo "Some tests failed"
+          jq -r 'to_entries[] | "\(.key)=\(.value.result)"' <<<"$NEEDS_JSON"
+          bad=$(jq -r 'to_entries[] | select(.value.result != "success" and .value.result != "skipped") | "\(.key)=\(.value.result)"' <<<"$NEEDS_JSON")
+          if [ -n "$bad" ]; then
+            echo "Some tests failed: $(echo $bad)"
             exit 1
-          else
-            echo "All tests passed"
           fi
+          echo "All tests passed"
 
       # --- Real-time alert: main is red across consecutive pushes ---------------
       # Why this exists (2026-06-13→06-15 incident): main test.yml failed on 11 of
