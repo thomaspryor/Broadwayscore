@@ -12,6 +12,7 @@
 // for what the built site shows, so it must not import the code it checks.
 
 const cheerio = require('cheerio');
+const { jsonLdItems, hasJsonLdType } = require('./jsonld');
 
 const DAY = 86400000;
 const addDays = (d, n) => new Date(Date.parse(`${d}T00:00:00Z`) + n * DAY).toISOString().slice(0, 10);
@@ -304,7 +305,9 @@ function checkTourData({ show, parent, schedule, tickets = [], others = {}, toda
 
 // ---------------------------------------------------------- JSON-LD
 
-const EVENT_TYPES = new Set(['Event', 'TheaterEvent', 'MusicEvent', 'Festival', 'ComedyEvent', 'DanceEvent', 'ScreeningEvent']);
+const EVENT_TYPES = ['Event', 'TheaterEvent', 'MusicEvent', 'Festival', 'ComedyEvent', 'DanceEvent', 'ScreeningEvent'];
+// @type may be a string or an array (schema.org allows both).
+const isEvent = n => EVENT_TYPES.some(t => hasJsonLdType(n, t));
 const EVENT_STATUS = new Set(['EventScheduled', 'EventCancelled', 'EventPostponed', 'EventRescheduled', 'EventMovedOnline'].map(s => `https://schema.org/${s}`));
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?)?$/;
 const ABS_URL = /^https?:\/\/[^\s]+$/;
@@ -320,7 +323,7 @@ function validateEvent(e, where) {
   const out = [];
   const err = (code, msg) => out.push(finding('error', code, where, msg));
   if (!e || typeof e !== 'object') return [finding('error', 'ld-event-not-object', where, 'event is not an object')];
-  if (!EVENT_TYPES.has(e['@type'])) err('ld-event-type', `@type ${e['@type']} is not an Event type`);
+  if (!isEvent(e)) err('ld-event-type', `@type ${JSON.stringify(e['@type'])} is not an Event type`);
   if (!e.name || typeof e.name !== 'string') err('ld-event-name', 'missing name');
   if (!e.startDate || !ISO_DATE.test(e.startDate)) err('ld-event-startdate', `startDate "${e.startDate}" missing or not ISO 8601`);
   if (e.endDate !== undefined) {
@@ -362,12 +365,12 @@ function validateEvent(e, where) {
 /** Every Event node in a page's JSON-LD blocks (top level, @graph, ItemList items). */
 function eventsIn(blocks) {
   const out = [];
-  const walk = n => {
-    if (!n || typeof n !== 'object') return;
-    if (Array.isArray(n)) { n.forEach(walk); return; }
-    if (EVENT_TYPES.has(n['@type'])) { out.push(n); return; }
-    if (n['@graph']) walk(n['@graph']);
-    if (n['@type'] === 'ItemList') (n.itemListElement || []).forEach(li => walk(li.item || li));
+  // jsonLdItems flattens arrays and @graph wrappers (scripts/lib/jsonld.js).
+  const walk = v => {
+    for (const n of jsonLdItems(v)) {
+      if (isEvent(n)) out.push(n);
+      else if (hasJsonLdType(n, 'ItemList')) (n.itemListElement || []).forEach(li => walk(li && (li.item || li)));
+    }
   };
   blocks.forEach(b => b.value && walk(b.value));
   return out;

@@ -147,6 +147,19 @@ test('validateEvent accepts a complete Event and rejects a broken one', () => {
   assert.deepEqual(A.validateEvent(good, 'w').filter(f => f.severity === 'error'), []);
   const bad = { ...good, startDate: 'Oct 1', endDate: '2025-01-01', location: undefined, eventStatus: 'Scheduled' };
   assert.ok(A.validateEvent(bad, 'w').filter(f => f.severity === 'error').length >= 3);
+  // schema.org allows @type as an array.
+  assert.deepEqual(A.validateEvent({ ...good, '@type': ['Event', 'TheaterEvent'] }, 'w').filter(f => f.severity === 'error'), []);
+});
+
+test('eventsIn finds events in @graph, ItemList and array @type, never in other nodes', () => {
+  const ev = n => ({ '@type': 'TheaterEvent', name: n });
+  const blocks = [
+    { value: { '@context': 'https://schema.org', '@graph': [ev('a'), { '@type': 'WebPage' }] } },
+    { value: { '@type': 'ItemList', itemListElement: [{ '@type': 'ListItem', item: ev('b') }, ev('c')] } },
+    { value: [{ '@type': ['Event', 'TheaterEvent'], name: 'd' }, { '@type': 'Organization' }] },
+    { error: 'bad json' },
+  ];
+  assert.deepEqual(A.eventsIn(blocks).map(e => e.name), ['a', 'b', 'c', 'd']);
 });
 
 // ---- alert routing ----------------------------------------------------------
