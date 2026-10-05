@@ -129,6 +129,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # The gauntlet's temp-git-repo tests rm their repos in teardown;
+          # detached auto-maintenance writing into them makes that ENOTEMPTY.
+          # Global (not GIT_CONFIG_COUNT env, which git strips for local
+          # receive-pack). BRO-4749; guard tests/unit/ci-git-auto-maintenance-off.test.mjs.
+          git config --global gc.auto 0
+          git config --global gc.autoDetach false
+          git config --global maintenance.auto false
+          git config --global receive.autogc false
 
       - name: Rebase onto origin/main
         id: rebase
