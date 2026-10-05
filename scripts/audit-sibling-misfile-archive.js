@@ -8,14 +8,19 @@
  *
  * Usage: node scripts/audit-sibling-misfile-archive.js [--delete] [--archive=DIR] [--json]
  *   (default)  read-only report; exit 1 if any misfiled page found
- *   --delete   unlink the misfiled HTML files (archives are regenerable derived
- *              data; the extractor guards keep re-fetches from re-polluting)
+ *   --delete   unlink the misfiled HTML files AND tombstone each id in
+ *              <archive>/<aggregator>/_not-found.json. Without the tombstone the
+ *              weekly scrape-dtli-show-score.yml sees "no archive file" and
+ *              re-fetches the same sibling page (fetch-aggregator-pages.ts skips
+ *              known-not-found ids unless --force). Exits 1 if anything was found,
+ *              like the report mode.
  *   --archive  override the archive root (default data/aggregator-archive)
  */
 const fs = require('fs');
 const path = require('path');
 const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 const { buildSiblingIndex } = require('./lib/market-routing');
+const { loadNotFoundForAggregator, saveNotFoundForAggregator } = require('./lib/not-found-cache');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -40,11 +45,8 @@ function scanArchive(archiveRoot, { shows, extractShowData, extractReviewsFromDT
       if (aggregator === 'show-score') {
         const data = extractShowData(html, showId, null);
         if (!data) continue;
-        if (data._rejectAll) {
-          const m = /date-match sibling (\S+?)'s opening/.exec(data._rejectionReason || '');
-          const c = /sibling-misfile: (\d+)\/(\d+)/.exec(data._rejectionReason || '');
-          hits.push({ aggregator, showId, file: path.join(dir, f), targetId: m && m[1], count: c ? +c[1] : 0, total: c ? +c[2] : 0 });
-        }
+        const v = data._siblingMisfile; // the shared detector's verdict, set only by the sibling-misfile branch
+        if (v && v.misfiled) hits.push({ aggregator, showId, file: path.join(dir, f), targetId: v.targetId, count: v.count, total: v.total });
         continue;
       }
       reviews = extractReviewsFromDTLI(html, showId);
@@ -53,6 +55,17 @@ function scanArchive(archiveRoot, { shows, extractShowData, extractReviewsFromDT
     }
   }
   return hits;
+}
+
+/** Unlink each hit's HTML and record its id in that aggregator's not-found cache. */
+function deleteAndTombstone(archiveRoot, hits, today = new Date().toISOString().split('T')[0]) {
+  const caches = {};
+  for (const h of hits) {
+    fs.unlinkSync(h.file);
+    caches[h.aggregator] = caches[h.aggregator] || loadNotFoundForAggregator(archiveRoot, h.aggregator);
+    caches[h.aggregator][h.showId] = today;
+  }
+  for (const [agg, cache] of Object.entries(caches)) saveNotFoundForAggregator(archiveRoot, agg, cache);
 }
 
 function main() {
@@ -74,12 +87,11 @@ function main() {
   else for (const h of hits) console.log(`${h.aggregator}\t${h.showId}\t-> ${h.targetId} (${h.count}/${h.total})`);
   log(`\n${hits.length} sibling-misfiled archive page(s)`);
   if (args.includes('--delete')) {
-    for (const h of hits) fs.unlinkSync(h.file);
-    log(`deleted ${hits.length} file(s)`);
-    return;
+    deleteAndTombstone(archiveRoot, hits);
+    log(`deleted ${hits.length} file(s) and tombstoned their ids in _not-found.json`);
   }
   if (hits.length) process.exitCode = 1;
 }
 
-module.exports = { scanArchive };
+module.exports = { scanArchive, deleteAndTombstone };
 if (require.main === module) main();

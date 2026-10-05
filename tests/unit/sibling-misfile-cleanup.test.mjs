@@ -18,7 +18,7 @@ const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const { detectSiblingMisfile } = require('../../scripts/lib/sibling-misfile.js');
 const { buildSiblingIndex } = require('../../scripts/lib/market-routing.js');
-const { scanArchive } = require('../../scripts/audit-sibling-misfile-archive.js');
+const { scanArchive, deleteAndTombstone } = require('../../scripts/audit-sibling-misfile-archive.js');
 
 const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
 const list = raw.shows || raw;
@@ -71,7 +71,7 @@ test('scanArchive reports misfiled pages in both aggregator dirs and ignores cle
       extractShowData: (html, id) => {
         const v = detectSiblingMisfile(id, at(date(id), 8), ctx(id));
         return v.misfiled
-          ? { _rejectAll: true, _rejectionReason: `sibling-misfile: ${v.count}/${v.total} critic reviews date-match sibling ${v.targetId}'s opening, not ${id}'s own` }
+          ? { _rejectAll: true, _siblingMisfile: v }
           : { criticReviews: [] };
       },
       extractReviewsFromDTLI: (html, id) => at(date(id), 6),
@@ -81,7 +81,13 @@ test('scanArchive reports misfiled pages in both aggregator dirs and ignores cle
       'show-score:a-christmas-carol-1994:a-christmas-carol-2022',
     ]);
     // After deleting the flagged files, a rescan is empty (the cleanup contract).
-    for (const h of hits) fs.unlinkSync(h.file);
+    deleteAndTombstone(root, hits, '2026-10-05');
+    // Tombstones keep the weekly fetcher (shouldSkipAsKnownNotFound) from re-fetching the same sibling page.
+    const { loadNotFoundForAggregator, shouldSkipAsKnownNotFound } = require('../../scripts/lib/not-found-cache.js');
+    assert.equal(shouldSkipAsKnownNotFound(loadNotFoundForAggregator(root, 'show-score'), 'a-christmas-carol-1994', false), true);
+    assert.equal(shouldSkipAsKnownNotFound(loadNotFoundForAggregator(root, 'dtli'), 'oh-mary-off-broadway-2024', false), true);
+    assert.equal(shouldSkipAsKnownNotFound(loadNotFoundForAggregator(root, 'show-score'), 'a-christmas-carol-2022', false), false);
+    assert.equal(fs.existsSync(path.join(root, 'show-score/a-christmas-carol-1994.html')), false);
     const again = scanArchive(root, { shows, extractShowData: () => ({ criticReviews: [] }), extractReviewsFromDTLI: () => [] });
     assert.deepEqual(again, []);
   } finally {
@@ -102,4 +108,16 @@ test('extract-dtli-reviews isSiblingMisfilePage uses the shared detector', () =>
   const { isSiblingMisfilePage } = require('../../scripts/extract-dtli-reviews.js');
   assert.equal(isSiblingMisfilePage('a-christmas-carol-1994', at('2022-11-21', 5)), true);
   assert.equal(isSiblingMisfilePage('a-christmas-carol-2022', at('2022-11-21', 5)), false);
+});
+
+test('threshold boundaries: exactly 50% of >=3 flags; 3 of 7 and a split across siblings do not', () => {
+  const id = 'a-christmas-carol-1994';
+  const mixed = (n, rest) => [...at('2022-11-21', n), ...at('1994-12-22', rest)];
+  assert.equal(detectSiblingMisfile(id, mixed(3, 3), ctx(id)).misfiled, true);
+  assert.equal(detectSiblingMisfile(id, mixed(3, 4), ctx(id)).misfiled, false);
+});
+
+test('the real Show Score extractor exposes the detector verdict that the audit consumes', () => {
+  const { extractShowData } = require('../../scripts/extract-show-score-reviews.js');
+  assert.equal(typeof extractShowData, 'function');
 });

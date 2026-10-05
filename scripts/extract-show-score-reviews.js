@@ -260,6 +260,7 @@ function extractShowData(html, showId, sourceUrl) {
       // its audienceScore/audienceReviewCount/criticReviewCount are the
       // sibling's numbers. Drop the whole entry from show-score.json (BRO-363).
       result._rejectAll = true;
+      result._siblingMisfile = verdict;
     }
   }
 
