@@ -77,4 +77,8 @@ echo "RUN_ID=$RUN_ID"
   assert.doesNotMatch(active, /GH:workflow run/);
   const done = run('completed');
   assert.match(done, /GH:workflow run opening-night-poller\.yml/);
+  // gh failure (empty status) must not fall through to a blind dispatch
+  const unknown = run('""');
+  assert.match(unknown, /RUN_ID=42/);
+  assert.doesNotMatch(unknown, /GH:workflow run/);
 });
