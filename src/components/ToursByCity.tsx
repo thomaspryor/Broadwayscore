@@ -22,7 +22,7 @@ export default function ToursByCity({ cities }: { cities: TourCity[] }) {
   return (
     <section className="mt-10 sm:mt-12 pt-6 sm:pt-8 border-t border-white/10" aria-labelledby="tours-by-city-heading">
       <h2 id="tours-by-city-heading" className="text-base sm:text-lg font-bold text-white mb-1">Tours by city</h2>
-      <p className="text-sm text-gray-400 mb-3 sm:mb-4">What&apos;s playing near you, with dates and venues.</p>
+      <p className="text-sm text-gray-400 mb-3 sm:mb-4">What&apos;s playing near you, with dates and venues. Numbers count tours with a stop there in the past year or coming up.</p>
       <ul className="flex flex-wrap gap-2">
         {top.map(c => (
           <li key={c.slug}>
@@ -31,7 +31,7 @@ export default function ToursByCity({ cities }: { cities: TourCity[] }) {
               className="px-4 py-2.5 sm:py-2 rounded-full bg-surface-overlay hover:bg-surface-raised text-sm text-gray-300 hover:text-white transition-colors min-h-[44px] sm:min-h-0 flex items-center gap-2"
             >
               {shortCity(c.city)}
-              <span className="text-xs text-gray-500">{c.tourCount}</span>
+              <span className="text-xs text-gray-500" aria-label={count(c)} title={count(c)}>{c.tourCount}</span>
             </Link>
           </li>
         ))}

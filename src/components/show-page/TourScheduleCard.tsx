@@ -29,9 +29,9 @@ function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show, cityHref }: 
       <span className="w-24 shrink-0 text-xs text-gray-500 tabular-nums">{range(stop)}</span>
       <span className="flex-1 min-w-0">
         {cityHref ? (
-          <Link href={cityHref} className="block text-sm text-white underline decoration-white/20 underline-offset-4 hover:text-brand-hover hover:decoration-brand-hover truncate transition-colors">{stop.city}</Link>
+          <Link href={cityHref} className="block text-sm text-white underline decoration-white/20 underline-offset-4 hover:text-brand-hover hover:decoration-brand-hover break-words transition-colors">{stop.city}</Link>
         ) : (
-          <span className="block text-sm text-white truncate">{stop.city}</span>
+          <span className="block text-sm text-white break-words">{stop.city}</span>
         )}
         <span className="block text-xs text-gray-500 truncate">{stop.venue}</span>
       </span>
