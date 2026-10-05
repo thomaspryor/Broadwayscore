@@ -12,9 +12,10 @@
  * single-URL ingest).
  *
  * Candidate filters, in order: URL already on the tour, its Broadway parent or
- * a sibling tour; not review-shaped or a roundup; validateSerpCandidate's
- * wrong-production markers; tourCandidateIsTour (Broadway/New York with no tour
- * word); a screen version (Wicked: For Good played during the Buffalo stop);
+ * a sibling tour; a social, ticketing or UGC domain (isBlockedReviewUrl); not
+ * review-shaped or a roundup; a screen version or video page (Wicked: For Good
+ * played during the Buffalo stop); validateSerpCandidate's wrong-production
+ * markers; tourCandidateIsTour (Broadway/New York with no tour word);
  * a registered outlet, or an unregistered one whose result title names the
  * show and says "review" (ingested under a provisional outlet id).
  *
@@ -45,6 +46,7 @@ const { execFileSync } = require('child_process');
 const { serpQuery } = require('./lib/url-discovery');
 const { tourCandidateIsTour, normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet } = require('./lib/regional-serp-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
+const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 const { selectDueStops, buildStopQuery, buildStopDateRange, stopDateWindowArg, looksLikeScreenVersion, unregisteredLooksLikeStopReview } = require('./lib/tour-stop-discovery');
@@ -130,7 +132,9 @@ async function searchStop({ show, stop }, shows, budget, refused, deadline) {
   for (const r of results) {
     const norm = normalizeUrl(r.url);
     if (!r.url || known.has(norm) || refused[norm]) continue;
-    if (!urlLooksLikeReview(r.url, show.title) || looksLikeAggregationOrReaction(r.url, r.title) || looksLikeScreenVersion(r)) continue;
+    // Social, ticketing and UGC pages (a Facebook post, a Reddit thread) are
+    // refused by ingest anyway; dropping them here keeps them off the cap.
+    if (isBlockedReviewUrl(r.url) || !urlLooksLikeReview(r.url, show.title) || looksLikeAggregationOrReaction(r.url, r.title) || looksLikeScreenVersion(r)) continue;
     const candidate = { url: r.url, title: r.title, snippet: r.description };
     if (!validateSerpCandidate({ show, candidate }).ok || !tourCandidateIsTour(show, candidate)) continue;
     const outletId = resolveRegisteredOutlet(r.url);

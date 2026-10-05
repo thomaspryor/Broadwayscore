@@ -90,7 +90,7 @@ function stopDateWindowArg(stop) {
 const SCREEN_TITLE_RE = /\b(?:movie|film|cinema)\b/i;
 const STAGE_RE = /\b(?:stage|tour(?:ing)?|theat(?:er|re)|broadway)\b/i;
 const SCREEN_SNIPPET_RE = /\b(?:in theaters (?:now|nationwide|everywhere)|now streaming|box office|movie review|film review)\b/i;
-const SCREEN_PATH_RE = /\/(?:movies?|films?|streaming)\//i;
+const SCREEN_PATH_RE = /\/(?:movies?|films?|streaming|videos?)\//i;
 function looksLikeScreenVersion(result) {
   const title = String(result.title || '');
   let pathname = '';
