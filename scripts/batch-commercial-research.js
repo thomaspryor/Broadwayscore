@@ -127,6 +127,8 @@ try {
 } catch (e) {
   // Scraper module not available
 }
+const { runMain } = require('./lib/run-main');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 
 // ---------------------------------------------------------------------------
 // Utility
@@ -494,12 +496,14 @@ function applyPending() {
 
   // Scope lookup — Off-Broadway / West End entries must never be applied.
   let showsBySlug = {};
+  let showKeyIndex = buildShowKeyIndex([]);
   try {
     const allShows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
     for (const s of allShows) {
       if (s.slug) showsBySlug[s.slug] = s;
       if (s.id) showsBySlug[s.id] = s;
     }
+    showKeyIndex = buildShowKeyIndex(allShows);
   } catch {
     // shows.json unavailable — guard degrades to no-op.
   }
@@ -512,10 +516,11 @@ function applyPending() {
     // Writing (and existence-checking) by showId created ID-keyed duplicates
     // next to the slug-keyed entries — this script's new Date() firstAdded
     // stamps match the 13 hand-merged duplicates of 2026-07-19.
-    const resolvedShow = showsBySlug[showId];
-    const commercialKey = entry.slug || (resolvedShow && resolvedShow.slug) || showId;
-    if (commercialKey === showId && !(resolvedShow && resolvedShow.slug === showId)) {
-      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by show ID (validate-data will flag)`);
+    // BRO-4623: entry.slug is a candidate, not an answer (deep-research
+    // wrote show IDs into it); the shared resolver maps IDs to slugs.
+    const { slug: commercialKey, resolved } = resolveCommercialSlug(showId, entry, showKeyIndex);
+    if (!resolved) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by "${commercialKey}" (validate-data will flag)`);
     }
     if (commercial.shows[commercialKey]) {
       console.log(`  ⏭️  "${showId}" already in commercial.json as "${commercialKey}" — skipping`);
@@ -759,7 +764,9 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('💥 Fatal error:', err);
-  process.exit(1);
-});
+// BRO-4623: every commercial-weekly batch-research job since 2026-08-26 sat
+// idle after "Pending review file written" until the 60-min job timeout
+// (run 37151980535: done 21:03, cancelled 21:33, orphan chrome-headless-
+// shell): a successful Playwright fetch left Chromium holding the event loop
+// open. runMain awaits the scraper's cleanup() and then exits explicitly.
+runMain(main, { teardown: [() => (universalScraper ? universalScraper.cleanup() : undefined)] });

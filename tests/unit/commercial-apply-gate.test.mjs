@@ -65,47 +65,54 @@ describe('commercial-apply-gate', () => {
       recoupedDate: '2026-05',
       sourceUrl: 'https://www.nytimes.com/2026/05/19/theater/giant.html',
     };
+    // The show the claim is written to (required since the BRO-4623 ship-check).
+    const GIANT_SHOW = { id: 'giant-2026', slug: 'giant', category: 'broadway', openingDate: '2026-03-23' };
 
     it('passes the canonical Giant-style scraper finding', () => {
-      assert.equal(gate.isAutoApplyableClaim(goodEntry, [SCRAPER]), true);
+      assert.equal(gate.isAutoApplyableClaim(goodEntry, [SCRAPER], GIANT_SHOW), true);
+    });
+
+    it('refuses a claim whose show cannot be resolved: the production check cannot run (fail closed)', () => {
+      assert.equal(gate.isAutoApplyableClaim(goodEntry, [SCRAPER], null), false);
+      assert.equal(gate.isAutoApplyableClaim(goodEntry, [SCRAPER]), false);
     });
 
     it('rejects a claim with no recoupedDate (would write recouped=true w/o date)', () => {
       const { recoupedDate, ...noDate } = goodEntry;
-      assert.equal(gate.isAutoApplyableClaim(noDate, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim(noDate, [SCRAPER], GIANT_SHOW), false);
     });
 
     it('rejects the literal "null"/garbage recoupedDate string', () => {
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: 'null' }, [SCRAPER]), false);
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: '' }, [SCRAPER]), false);
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: 'May 2026' }, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: 'null' }, [SCRAPER], GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: '' }, [SCRAPER], GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: 'May 2026' }, [SCRAPER], GIANT_SHOW), false);
     });
 
     it('accepts a bare-year recoupedDate', () => {
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: '2026' }, [SCRAPER]), true);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, recoupedDate: '2026' }, [SCRAPER], GIANT_SHOW), true);
     });
 
     it('rejects when --auto-apply-claims-from is empty', () => {
-      assert.equal(gate.isAutoApplyableClaim(goodEntry, []), false);
-      assert.equal(gate.isAutoApplyableClaim(goodEntry, null), false);
-      assert.equal(gate.isAutoApplyableClaim(goodEntry, undefined), false);
+      assert.equal(gate.isAutoApplyableClaim(goodEntry, [], GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim(goodEntry, null, GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim(goodEntry, undefined, GIANT_SHOW), false);
     });
 
     it('rejects when detectedBy is unknown', () => {
       assert.equal(gate.isAutoApplyableClaim(
-        { ...goodEntry, detectedBy: 'some-other-script' }, [SCRAPER]
+        { ...goodEntry, detectedBy: 'some-other-script' }, [SCRAPER], GIANT_SHOW
       ), false);
     });
 
     it('rejects when confidence < high', () => {
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, confidence: 'medium' }, [SCRAPER]), false);
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, confidence: 'low' }, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, confidence: 'medium' }, [SCRAPER], GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, confidence: 'low' }, [SCRAPER], GIANT_SHOW), false);
     });
 
     it('rejects when sourceHost is not in trusted whitelist', () => {
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: 'random-blog.com' }, [SCRAPER]), false);
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: '' }, [SCRAPER]), false);
-      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: undefined }, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: 'random-blog.com' }, [SCRAPER], GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: '' }, [SCRAPER], GIANT_SHOW), false);
+      assert.equal(gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: undefined }, [SCRAPER], GIANT_SHOW), false);
     });
 
     it('rejects when sourceHost is missing entirely (cant trust prose-only recoupedSource)', () => {
@@ -120,13 +127,13 @@ describe('commercial-apply-gate', () => {
         recoupedSource: 'Reddit post-mortem: did not come close to recouping',
         // no sourceHost
       };
-      assert.equal(gate.isAutoApplyableClaim(proseEntry, [SCRAPER]), false);
+      assert.equal(gate.isAutoApplyableClaim(proseEntry, [SCRAPER], GIANT_SHOW), false);
     });
 
     it('accepts every host in TRUSTED_RECOUPMENT_HOSTS', () => {
       for (const host of TRUSTED_RECOUPMENT_HOSTS) {
         assert.equal(
-          gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: host }, [SCRAPER]),
+          gate.isAutoApplyableClaim({ ...goodEntry, sourceHost: host }, [SCRAPER], GIANT_SHOW),
           true,
           `trusted host ${host} should pass`
         );
@@ -288,6 +295,82 @@ describe('commercial-apply-gate', () => {
       const union = src.match(/export type CommercialDesignation =([^;]+);/)[1];
       const fromTs = [...union.matchAll(/'([^']+)'/g)].map(m => m[1]);
       assert.deepEqual([...gate.VALID_DESIGNATIONS].sort(), fromTs.sort());
+    });
+  });
+
+  // BRO-4623: claims already queued must pass the same production check the
+  // classifier now applies (show fixtures copy the real shows.json fields).
+  describe('isAutoApplyableClaim with the show — wrong-production claims never auto-apply', () => {
+    const BEETLEJUICE_2025 = { id: 'beetlejuice-2025', slug: 'beetlejuice-2025', category: 'broadway', previewsStartDate: null, openingDate: '2025-10-08' };
+    const DEATH_OF_A_SALESMAN = { id: 'death-of-a-salesman-2026', slug: 'death-of-a-salesman', category: 'broadway', previewsStartDate: '2026-03-06', openingDate: '2026-04-09' };
+    const GIANT = { id: 'giant-2026', slug: 'giant', category: 'broadway', openingDate: '2026-03-23' };
+    const claim = (extra) => ({ recouped: true, _recoupedClaim: true, detectedBy: SCRAPER, confidence: 'high', ...extra });
+
+    it('beetlejuice-2025: the queued national-tour claim (2023-10, playbill national-tour URL) is refused', () => {
+      const entry = claim({ sourceHost: 'playbill.com', recoupedDate: '2023-10', recoupedSource: 'https://playbill.com/article/beetlejuice-national-tour-recoups' });
+      assert.equal(gate.isAutoApplyableClaim(entry, [SCRAPER]), false, 'without the show it is refused, never applied unchecked');
+      assert.equal(gate.isAutoApplyableClaim(entry, [SCRAPER], BEETLEJUICE_2025), false);
+    });
+
+    it('death-of-a-salesman: a 2012 recoupment for the 2026 revival is refused', () => {
+      const entry = claim({ sourceHost: 'theatermania.com', recoupedDate: '2012-05', recoupedSource: 'https://www.theatermania.com/broadway/news/broadways-death-of-a-salesman-recoups-capitalizati_56835.html/' });
+      assert.equal(gate.isAutoApplyableClaim(entry, [SCRAPER], DEATH_OF_A_SALESMAN), false);
+    });
+
+    it('a real recoupment after opening still auto-applies (Giant, 2026-05)', () => {
+      const entry = claim({ sourceHost: 'nytimes.com', recoupedDate: '2026-05', recoupedSource: 'https://www.nytimes.com/2026/05/19/theater/giant.html' });
+      assert.equal(gate.isAutoApplyableClaim(entry, [SCRAPER], GIANT), true);
+    });
+  });
+
+  // BRO-4623 item 5: classify-stale-closures labels a closed show "Fizzle" 30
+  // days after closing; Purpose then recouped ~9 months after closing.
+  describe('recoupClaimDesignationAction / buildCommercialEntry — inferred Fizzle vs verified recoupment', () => {
+    // purpose-2025's real commercial.json fields (notes abridged).
+    const PURPOSE_EXISTING = {
+      designation: 'Fizzle',
+      capitalization: null,
+      recouped: false,
+      recoupedDate: null,
+      recoupedSource: 'Inferred: closed 267 days ago, no trade-press recoupment found',
+      notes: 'Commercial Broadway transfer (NOT a 2ST production despite Hayes venue)',
+      classifiedBy: 'classify-stale-closures',
+      classifiedAt: '2026-05-25T09:24:25.084Z',
+      classifiedReason: 'closed 267d ago, deep-researched, no trade-press recoupment found',
+      firstAdded: '2026-05-25T09:24:25.084Z',
+    };
+    const claim = {
+      recouped: true,
+      _recoupedClaim: true,
+      recoupedDate: '2026-06',
+      recoupedSource: 'https://deadline.com/2026/06/purpose-broadway-recoupment-1236941347/',
+      sources: [{ type: 'trade', url: 'https://deadline.com/2026/06/purpose-broadway-recoupment-1236941347/', date: '2026-06-04' }],
+    };
+
+    it('an inferred stale-closure Fizzle is reset, a human-locked one blocks, a non-loss one is kept', () => {
+      assert.equal(gate.recoupClaimDesignationAction(PURPOSE_EXISTING), 'reset');
+      assert.equal(gate.recoupClaimDesignationAction({ ...PURPOSE_EXISTING, humanReviewedDesignation: true }), 'block');
+      assert.equal(gate.recoupClaimDesignationAction({ designation: 'Fizzle', recouped: false }), 'block', 'a Fizzle nobody inferred is a human call');
+      assert.equal(gate.recoupClaimDesignationAction({ designation: 'TBD' }), 'keep');
+      assert.equal(gate.recoupClaimDesignationAction(undefined), 'keep');
+    });
+
+    it('applying the recoupment over the inferred Fizzle yields a valid TBD + recouped:true entry', () => {
+      const result = gate.buildCommercialEntry(claim, PURPOSE_EXISTING, { isClaimAutoApply: true });
+      assert.equal(result.designation, 'TBD');
+      assert.equal(result.recouped, true);
+      assert.equal(result.recoupedDate, '2026-06');
+      assert.equal(result.recoupedSource, claim.recoupedSource, 'the "Inferred: ..." prose is replaced by the article');
+      assert.equal(result.notes, PURPOSE_EXISTING.notes, 'other existing fields survive');
+      assert.equal(result.firstAdded, PURPOSE_EXISTING.firstAdded);
+      assert.equal(result.classifiedBy, undefined);
+      assert.equal(result.classifiedAt, undefined);
+      assert.equal(result.classifiedReason, undefined);
+    });
+
+    it('a recoupment over an existing win designation keeps it', () => {
+      const result = gate.buildCommercialEntry(claim, { designation: 'Windfall', recouped: false }, { isClaimAutoApply: true });
+      assert.equal(result.designation, 'Windfall');
     });
   });
 });

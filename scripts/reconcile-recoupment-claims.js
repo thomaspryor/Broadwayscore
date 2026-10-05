@@ -52,6 +52,7 @@ const path = require('path');
 const { serpQuery } = require('./lib/url-discovery');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
+const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
 const gate = require('./lib/commercial-apply-gate');
 const { normalizeSources } = require('./lib/commercial-sources');
@@ -65,6 +66,8 @@ const {
 } = require('./lib/recoupment-reconcile-gate');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
+const { runMain } = require('./lib/run-main');
 
 // Worktrees don't ship the gitignored core-data files (commercial.json,
 // shows.json live in the private repo). Fall back to the main repo's data
@@ -124,30 +127,26 @@ function hostnameOf(url) {
 
 // Resolve the commercial.json key for a pending entry. commercial.json is
 // keyed by slug (memory: feedback_commercial_slug_keys); pending entries are
-// keyed by year-suffixed show ID (e.g. giant-2026) but usually carry
-// entry.slug. When slug is absent, resolve it from shows.json — the bare
-// `entry.slug || key` fallback created ID-keyed duplicate entries next to
-// the slug-keyed ones (13 hand-merged 2026-07-19).
-let _showsByIdOrSlug = null;
-function _lookupShow(key) {
-  if (_showsByIdOrSlug === null) {
-    _showsByIdOrSlug = {};
-    try {
-      const allShows = (loadJSON(path.join(__dirname, '..', 'data', 'shows.json'), {}).shows) || [];
-      for (const s of allShows) {
-        if (s.slug) _showsByIdOrSlug[s.slug] = s;
-        if (s.id) _showsByIdOrSlug[s.id] = s;
-      }
-    } catch { /* shows.json unavailable — degrade to bare fallback */ }
+// keyed by year-suffixed show ID (e.g. giant-2026) and carry an entry.slug
+// that is NOT trustworthy: deep-research wrote show IDs into it, and the old
+// `if (entry.slug) return entry.slug;` turned the-outsiders-2024 and
+// hadestown-2019 into ID-keyed duplicates that blocked the weekly publish
+// (BRO-4623, run 37151980535). Always resolve through shows.json via the
+// shared resolver; `showsData` is injectable for tests.
+let _showKeyIndex = null;
+function _defaultShowKeyIndex() {
+  if (_showKeyIndex === null) {
+    _showKeyIndex = buildShowKeyIndex(loadJSON(SHOWS_PATH, { shows: [] }));
   }
-  return _showsByIdOrSlug[key];
+  return _showKeyIndex;
 }
-function resolveSlug(key, entry) {
-  if (entry.slug) return entry.slug;
-  const show = _lookupShow(key);
-  if (show && show.slug) return show.slug;
-  console.warn(`  ⚠️ "${key}" — no slug resolvable from shows.json; keying by pending key (validate-data will flag if it's an ID)`);
-  return key;
+function resolveSlug(key, entry, showsData) {
+  const index = showsData ? buildShowKeyIndex(showsData) : _defaultShowKeyIndex();
+  const r = resolveCommercialSlug(key, entry || {}, index);
+  if (!r.resolved) {
+    console.warn(`  ⚠️ "${key}" — no slug resolvable from shows.json; keying by ${r.slug} (validate-data will flag if it's an ID)`);
+  }
+  return r.slug;
 }
 
 // Mirrors scrape-recoupment-announcements.js's buildQueries: generic queries
@@ -165,7 +164,7 @@ function buildQueries(title) {
   ];
 }
 
-async function verifyClaim(title, disambiguatedTitle, existingUrls) {
+async function verifyClaim(title, disambiguatedTitle, existingUrls, show) {
   const seen = new Set();
   const candidates = [];
   for (const query of buildQueries(title)) {
@@ -202,8 +201,15 @@ async function verifyClaim(title, disambiguatedTitle, existingUrls) {
     // (2003 Broadway production)") to help the classifier reject same-title
     // revivals — classifyArticle's productionMatch check otherwise has no
     // year/venue context to work from (feedback_same_title_disambiguation.md).
-    const verdict = await classifyArticle(disambiguatedTitle, c.url, html);
+    // opts.show adds the production's dates/venue to the prompt and runs the
+    // BRO-4623 wrong-production guard: Deadline's "'The Outsiders' Recoups
+    // $11 Million North American Tour" verified the BROADWAY entry here.
+    const verdict = await classifyArticle(disambiguatedTitle, c.url, html, { show, headline: c.title });
     log(`        → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
+    if (verdict.guardReason) {
+      log(`        ⛔ production guard: ${verdict.guardReason}`);
+      console.log(guardRejectionWarning(show && show.slug, c.url, verdict));
+    }
     if (isConfirmingVerdict(verdict, host)) {
       return { verdict, url: c.url, host };
     }
@@ -302,6 +308,16 @@ async function main() {
         continue;
       }
 
+      // No shows.json record for this key: the classifier's production guard
+      // (pre-preview dates, tour / West End / Off-Broadway articles) cannot
+      // run, and this path writes commercial.json directly. Same fail-closed
+      // rule as commercial-apply-gate.isAutoApplyableClaim (BRO-4623).
+      if (!showsBySlug[slug]) {
+        log(`  🛑 no shows.json record for "${slug}" — the production check cannot run, leaving for human review.`);
+        stillUnverifiable++;
+        continue;
+      }
+
       if (verifyCallsUsed >= MAX_VERIFY_CALLS) {
         log(`  ⏭️  verify-call budget (${MAX_VERIFY_CALLS}) exhausted this run — deferring to next run.`);
         continue;
@@ -313,7 +329,31 @@ async function main() {
       );
       const openingYear = showsBySlug[slug]?.openingDate?.slice(0, 4);
       const disambiguatedTitle = openingYear ? `${title} (${openingYear} Broadway production)` : title;
-      const result = await verifyClaim(title, disambiguatedTitle, existingUrls);
+      const result = await verifyClaim(title, disambiguatedTitle, existingUrls, showsBySlug[slug] || null);
+
+      if (result && gate.recoupClaimDesignationAction(existing) === 'block') {
+        // A loss designation (Fizzle/Flop) that a human locked, or that came
+        // from research rather than the classify-stale-closures inference,
+        // and a trusted article now says it recouped. That contradiction is a
+        // human call, not something to overwrite automatically. Verifying
+        // first costs one SERP pass per entry (the attempt cap below stops
+        // repeats) and hands the reviewer the confirming URL.
+        const why = existing.humanReviewedDesignation === true
+          ? 'is human-reviewed'
+          : `was not inferred by classify-stale-closures (classifiedBy: ${existing.classifiedBy || 'none'})`;
+        log(`  🔒 verified via ${result.host}, but "${existing.designation}" ${why} — leaving for human review.`);
+        stillUnverifiable++;
+        if (!DRY_RUN) {
+          // At the attempt cap so later runs stop re-spending SERP calls on it.
+          pending.shows[key] = {
+            ...entry,
+            verifyAttempts: MAX_VERIFY_ATTEMPTS,
+            lastVerifyAttemptAt: new Date().toISOString(),
+            verifiedSourceNeedsHuman: result.url,
+          };
+        }
+        continue;
+      }
 
       if (result) {
         log(`  ✅ verified via ${result.host} — applying recouped:true.`);
@@ -407,11 +447,7 @@ async function main() {
 module.exports = { resolveSlug, buildQueries };
 
 if (require.main === module) {
-  main()
-    .catch(e => { console.error('FATAL', e); process.exitCode = 1; })
-    .finally(() => {
-      // A successful Playwright fetch leaves Chromium open — cleanup() closes
-      // it with a timeout guard (#438/#914 class).
-      cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0));
-    });
+  // A successful Playwright fetch leaves Chromium open — runMain awaits
+  // cleanup() (bounded, #438/#914 class) and then exits explicitly.
+  runMain(main, { teardown: [cleanup] });
 }

@@ -109,3 +109,51 @@ test('isModelStampedField covers model* and lastUpdated only', () => {
   assert.equal(isModelStampedField('designation'), false);
   assert.equal(isModelStampedField('sources'), false);
 });
+
+// BRO-4623 item 4: the two pairs that blocked the 2026-10-03 weekly publish
+// (field values abridged from the published commercial.json).
+const { isSelfHealablePair } = require('./commercial-key-duplicates.js');
+
+test('self-heal: the-balusters-2026 differs only in notes/sources/firstAdded -> resolvable keeping the slug entry', () => {
+  const idE = {
+    designation: 'Nonprofit',
+    notes: 'Produced by nonprofit MTC with no public budget or running cost data found; designated Nonprofit.',
+    sources: [{ type: 'manual', url: 'https://en.wikipedia.org/wiki/The_Balusters', date: null }],
+    lastUpdated: '2026-09-26T23:58:37.741Z',
+    firstAdded: '2026-09-26T23:58:37.741Z',
+  };
+  const slugE = {
+    designation: 'Nonprofit',
+    notes: 'World-premiere David Lindsay-Abaire play at MTC Friedman, directed by Kenny Leon.',
+    sources: [],
+    nonprofitOrg: 'Manhattan Theatre Club',
+    recouped: false,
+    lastUpdated: '2026-05-24T15:30:16.089Z',
+  };
+  const conflicts = conflictingFields(idE, slugE);
+  assert.deepEqual(conflicts, ['notes', 'sources', 'firstAdded']);
+  assert.equal(isSelfHealablePair(idE, slugE, conflicts), true);
+});
+
+test('self-heal: school-girls-or-the-african-mean-girls-play-2026 pair is resolvable too', () => {
+  const idE = { designation: 'Nonprofit', notes: 'Produced by Manhattan Theatre Club, a 501(c)(3) nonprofit.', sources: [{ type: 'manual', url: 'https://projects.propublica.org/nonprofits/organizations/237086643', date: '2026-09-28' }], firstAdded: '2026-09-28T20:53:28.126Z' };
+  const slugE = { designation: 'Nonprofit', notes: 'School Girls; Or, The African Mean Girls Play is a Manhattan Theatre Club production.', sources: [{ type: 'trade', url: 'https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/', date: '2026-09-14' }], firstAdded: '2026-09-20T19:08:12.779Z' };
+  assert.equal(isSelfHealablePair(idE, slugE), true);
+});
+
+test('self-heal never covers substantive conflicts: the-outsiders-2024 recoupedSource still refuses', () => {
+  // The reconciler wrote the Deadline TOUR article onto the ID key; the slug
+  // entry cites the Broadway recoupment. That disagreement is a human call.
+  const idE = { recouped: true, recoupedDate: '2026-05', recoupedSource: 'https://deadline.com/2026/05/the-outsiders-broadway-recoup-1236698348/', sources: [], firstAdded: '2026-10-03T22:30:39.000Z' };
+  const slugE = { recouped: true, recoupedDate: '2025-12', recoupedSource: 'Broadway News (Jan 27, 2026): recouped its $22M investment', designation: 'Windfall' };
+  const conflicts = conflictingFields(idE, slugE);
+  assert.ok(conflicts.includes('recoupedSource'));
+  assert.equal(isSelfHealablePair(idE, slugE, conflicts), false);
+});
+
+test('self-heal: a placeholder TBD designation on the ID key is not a conflict, a real one is', () => {
+  const stub = { designation: 'TBD', researchAttempts: 1, lastResearchedAt: '2026-09-26T21:50:20.196Z', researchTrigger: 'queued' };
+  assert.equal(isSelfHealablePair(stub, { designation: 'Fizzle', recouped: false }), true);
+  assert.equal(isSelfHealablePair({ designation: 'Flop' }, { designation: 'Fizzle' }), false);
+  assert.equal(isSelfHealablePair({ designation: 'TBD', capitalization: 25000000 }, { designation: 'TBD' }), false);
+});

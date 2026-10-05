@@ -12,8 +12,9 @@
  *   2. Reject items older than 60 days (Playbill-style SEO-republished evergreens)
  *   3. Pre-filter title+description against /recoup(ed|ment|s)?|earned back/i.
  *      NOT "paid off" (puff pieces) or "profit" (matches "non-profit").
- *   4. Match RSS title to a show in scope (opened 28-365d ago, not yet recouped)
- *      using titleMatchesShow from rss-discovery.js
+ *   4. Match RSS title to a show in scope (recoupment-scan-scope.js RSS_SCOPE:
+ *      running or closed within 2 years, not yet recouped) using
+ *      titleMatchesShow from rss-discovery.js
  *   5. fetchPage + classifyArticle (shared lib). Gate on
  *      productionMatch === 'exact' AND confidence === 'high'.
  *   6. articleDate must be ≤ 14 days old (older = re-surfacing, not breaking news)
@@ -37,10 +38,12 @@ const fs = require('fs');
 const path = require('path');
 
 const { TRACK_RECOUPMENT_FEEDS, parseFeedItems, titleMatchesShow, fetchUrl } = require('./lib/rss-discovery');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
-const { isCommercialScope } = require('./lib/commercial-scope');
+const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
+const { pickRecoupmentCandidates, RSS_SCOPE } = require('./lib/recoupment-scan-scope');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
+const { runMain } = require('./lib/run-main');
 
 // ---- args ----
 const args = process.argv.slice(2);
@@ -91,10 +94,6 @@ function loadJSON(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function hostnameOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; }
 }
-function daysBetween(dateStr) {
-  if (!dateStr) return Infinity;
-  return Math.floor((Date.now() - new Date(dateStr).getTime()) / 86_400_000);
-}
 
 function loadState() {
   if (!fs.existsSync(STATE_PATH)) return { version: 1, feeds: {} };
@@ -115,30 +114,15 @@ function writePending(pending) {
   fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
 }
 
-// ---- show candidate scope (mirrors Friday scraper) ----
-const ENHANCEMENT_FRIENDLY_ORGS = new Set([
-  'Lincoln Center Theater',
-  'Manhattan Theatre Club',
-  'Roundabout Theatre Company',
-  'Second Stage Theater',
-  'The Public Theater',
-]);
-
+// ---- show candidate scope (shared with the Friday scraper) ----
+// scripts/lib/recoupment-scan-scope.js. This poller only string-matches RSS
+// titles against candidates before any LLM call, so it uses the wide
+// RSS_SCOPE: every running unrecouped Broadway show regardless of age, plus
+// closed shows within two years (BRO-4623 item 5: the old 28-365-day window
+// missed Purpose's post-closing tax-credit recoupment and every long runner).
 function pickCandidates(allShows, commercial) {
   const shows = allShows.shows || allShows;
-  const cMap = commercial.shows || {};
-  return shows.filter(s => {
-    const c = cMap[s.slug];
-    if (c?.recouped === true) return false;
-    if (c?.designation === 'Nonprofit' && !ENHANCEMENT_FRIENDLY_ORGS.has(c?.nonprofitOrg)) return false;
-    const opened = s.openingDate || s.previewsStartDate;
-    if (!opened) return false;
-    const age = daysBetween(opened);
-    if (age < 28 || age > 365) return false;
-    if (!['open', 'closed', 'closing'].includes(s.status)) return false;
-    if (!isCommercialScope(s)) return false; // Broadway-only — gate on category, never market
-    return true;
-  });
+  return pickRecoupmentCandidates(shows, commercial.shows || {}, RSS_SCOPE);
 }
 
 // ---- state diff (pure; tested in tests/unit/rss-poller-state.test.mjs) ----
@@ -225,8 +209,14 @@ async function processFeed(feed, state, candidates, counters) {
     }
     counters.llmCalls++;
     counters.perFeed[feed.outletId] = (counters.perFeed[feed.outletId] || 0) + 1;
-    const verdict = await classifyArticle(show.title, item.link, html);
+    // opts.show turns on the BRO-4623 production guard (pre-preview dates,
+    // tour / West End / Off-Broadway articles are rejected).
+    const verdict = await classifyArticle(show.title, item.link, html, { show, headline: item.title });
     log(`      → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
+    if (verdict.guardReason) {
+      log(`         ⛔ production guard: ${verdict.guardReason}`);
+      console.log(guardRejectionWarning(show.slug, item.link, verdict));
+    }
     if (verdict.evidence) log(`         "${String(verdict.evidence).slice(0, 140)}"`);
 
     if (!verdict.recouped) continue;
@@ -359,8 +349,11 @@ async function main() {
 }
 
 // Export pure helpers for unit tests.
-module.exports = { diffNewItems, matchShow, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS, PER_FEED_LLM_WARN_THRESHOLD };
+module.exports = { diffNewItems, matchShow, pickCandidates, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS, PER_FEED_LLM_WARN_THRESHOLD };
 
 if (require.main === module) {
-  main().catch(e => { console.error('FATAL', e); process.exit(1); });
+  // BRO-4623: runMain awaits scraper cleanup() and exits explicitly; a bare
+  // main().catch() exits on failure only, and a successful Playwright fetch
+  // otherwise holds the event loop open until the job timeout.
+  runMain(main, { teardown: [cleanup] });
 }
