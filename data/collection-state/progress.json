@@ -1,11 +1,17 @@
 {
-  "processed": [],
+  "processed": [
+    "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json"
+  ],
   "failed": [
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "slam-frank-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [],
+    "playwright": [
+      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -13,21 +19,23 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json"
+    ]
   },
-  "startTime": "2026-10-05T08:01:19.128Z",
-  "lastProcessed": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+  "startTime": "2026-10-05T09:48:03.733Z",
+  "lastProcessed": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
-      "t": "2026-10-05T08:01:41.037Z",
+      "t": "2026-10-05T09:48:25.242Z",
       "event": "bb-session",
-      "session": "660848b4",
+      "session": "39791ced",
       "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     },
     {
-      "t": "2026-10-05T08:01:48.900Z",
+      "t": "2026-10-05T09:48:33.662Z",
       "event": "bb-session",
-      "session": "0d4b2f76",
+      "session": "fb33cc9d",
       "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
   ]
