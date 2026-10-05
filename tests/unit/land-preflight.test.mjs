@@ -38,7 +38,7 @@ function write(dir, file, text) {
 /** repo with main: f.txt (5 lines) and g.txt; returns dir. */
 function baseRepo() {
   const d = tmp();
-  sh(d, 'git init -q -b main . && git config gc.auto 0');
+  sh(d, 'git init -q -b main . && git config gc.auto 0 && git config gc.autoDetach false && git config maintenance.auto false');
   write(d, 'f.txt', 'a\nb\nc\nd\ne\n');
   write(d, 'g.txt', 'one\n');
   sh(d, 'git add -A && git commit -qm init');
