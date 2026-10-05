@@ -549,7 +549,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
       ran: true,
       passed: mergedPassed,
       output,
-      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}${retriedUnparseable ? ' (passed on re-run after an unparseable first run)' : ''}`,
+      reason: `ran ${testFiles.length} file(s); ${describeExit(result)}${retriedUnparseable ? (mergedPassed ? ' (passed on re-run after an unparseable first run)' : ' (unparseable on both runs; baseline NOT consulted)') : ''}`,
     };
   }
 

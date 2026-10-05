@@ -1047,6 +1047,8 @@ test('runTestGate: unparseable on BOTH runs blocks, and never claims NEW/collisi
       assert.match(result.reason, /baseline NOT consulted/);
     }
     assert.doesNotMatch(result.reason, /NEW|collision/);
+    assert.doesNotMatch(result.reason, /passed/);
+    assert.match(result.reason, /baseline NOT consulted/);
   }
 });
 
