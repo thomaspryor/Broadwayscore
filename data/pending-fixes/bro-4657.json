@@ -11,7 +11,7 @@
     "steps": [
       "the-balusters gets the two Wikipedia sources from its duplicate (both pages checked: they name MTC and the Friedman). The duplicate's SEC link is an unrelated company and is dropped.",
       "school-girls-or-the-african-mean-girls-play's note said the show was in previews and closed Nov 1; it opened Sep 28 and shows.json has Nov 15. The new note carries no dates so it can't go stale.",
-      "dedupe-commercial-id-keys.js --apply --prefer-slug deletes both id-keyed records; validate-data then runs on the result because this plan also edits commercial.json."
+      "dedupe-commercial-id-keys.js --apply deletes both id-keyed records (they differ from the slug records only in notes, sources and firstAdded, which the plain --apply self-heal covers; --prefer-slug is not needed). The executor's commercial validation then checks the touched records because this plan also edits commercial.json. Dropped with the duplicates: school-girls' investmentbroadway, Friedman Theatre and ProPublica links (the slug record keeps its MTC, Broadway Direct and Broadway.com sources) and the-balusters' Friedman Theatre and investmentbroadway links (generic venue and tax-credit pages)."
     ],
     "riskLevel": "low",
     "actions": [
@@ -49,7 +49,7 @@
       {
         "type": "run-script",
         "script": "dedupe-commercial-id-keys.js",
-        "args": "--apply --prefer-slug",
+        "args": "--apply",
         "description": "Delete the-balusters-2026 and school-girls-or-the-african-mean-girls-play-2026 (slug-keyed records kept)"
       }
     ],
