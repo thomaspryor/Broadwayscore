@@ -1068,12 +1068,23 @@ function buildOpenIssuesWithDescriptionsQuery() {
 // above. Client-side (not a Linear-side `contains` filter) so this never
 // depends on the exact shape of Linear's filter DSL doing the right thing
 // for a body-text search.
+//
+// Linear stores descriptions as markdown and backslash-escapes punctuation
+// on save, so a `[commercial-pending-review]` marker reads back as
+// `\[commercial-pending-review\]`. Matching the raw text missed every
+// bracketed marker, and sync-pending-review-to-linear.js filed a fresh
+// "Commercial data: pending review" issue every day (13 open copies by
+// 2026-10-04, BRO-4623). Match against the unescaped text as well.
+function unescapeMarkdown(text) {
+  return text.replace(/\\([\\`*_{}\[\]()#+\-.!|~<>])/g, '$1');
+}
+
 function findOpenIssueForTerm(issues, term) {
   if (!term || !Array.isArray(issues)) return null;
   for (const issue of issues) {
     if (!issue) continue;
     if (issue.title && issue.title.includes(term)) return issue;
-    if (issue.description && issue.description.includes(term)) return issue;
+    if (issue.description && (issue.description.includes(term) || unescapeMarkdown(issue.description).includes(term))) return issue;
   }
   return null;
 }
@@ -1084,6 +1095,7 @@ module.exports = {
   buildOpenIssuesQuery,
   buildOpenIssuesWithDescriptionsQuery,
   findOpenIssueForTerm,
+  unescapeMarkdown,
   buildCommentMutation,
   sortedCommentBodies,
   priorityRank,

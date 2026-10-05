@@ -67,7 +67,7 @@ describe('feedback-pipeline-fields', () => {
     // execute-approved-fix.js) may touch — never the unattended auto-fix.
     const humanOnly = {
       'shows.json': ['status', 'openingDate', 'closingDate', 'previewsStartDate', 'creativeTeam', 'images', 'cast'],
-      'commercial.json': ['recouped', 'recoupmentSource'],
+      'commercial.json': ['recouped', 'recoupedDate', 'recoupedSource', 'sources', 'humanReviewedDesignation'],
     };
     for (const [file, fields] of Object.entries(humanOnly)) {
       for (const field of fields) {

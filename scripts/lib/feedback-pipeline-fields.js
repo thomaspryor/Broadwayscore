@@ -26,9 +26,17 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // As You Like It). execute-approved-fix checks the {name, role} shape.
     'cast',
   ],
+  // recoupedDate/recoupedSource/sources: a recoupment correction needs all
+  // three (validate-data.js requires recoupedDate when recouped=true). The
+  // field was listed as "recoupmentSource", a name commercial.json has never
+  // used, so a sourced recoupment fix was impossible (BRO-4623).
+  // humanReviewedDesignation locks a hand-checked designation against
+  // apply-commercial-pending.js's LLM auto-apply. nonprofitOrg pairs with a
+  // Nonprofit designation (validate-data.js checks it against the venue).
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
-    'capitalizationSource', 'notes', 'recouped', 'recoupmentSource',
+    'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
+    'recoupedSource', 'sources', 'humanReviewedDesignation', 'nonprofitOrg',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —
@@ -42,7 +50,7 @@ const FEEDBACK_EDITABLE_FIELDS = {
 // consumer that writes without a human approval step (fixType=data +
 // confidence=high triggers it straight from a Claude Sonnet call). Excludes
 // show lifecycle fields (status/openingDate/closingDate/previewsStartDate/
-// creativeTeam) and unverifiable financial claims (recouped, recoupmentSource
+// creativeTeam) and unverifiable financial claims (recouped, recoupedSource
 // — CLAUDE.md: "Never mark recouped: true without citation"). Those stay
 // reachable only via the human-approved generate-remediation-plan.js ->
 // execute-approved-fix.js path, which uses FEEDBACK_EDITABLE_FIELDS above.

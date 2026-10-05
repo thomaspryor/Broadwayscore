@@ -45,6 +45,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
+const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
+const { commercialRecordErrors } = require('./lib/commercial-record-checks.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
@@ -109,7 +111,7 @@ function output(key, value) {
   }
 }
 
-function runValidation(changedFiles) {
+function runValidation(changedFiles, touchedCommercialKeys = []) {
   // Targeted validation: check that each modified data file is valid JSON
   // with expected structure. Full validate-data.js catches pre-existing
   // review-text quality issues (garbage outlets, etc.) that are unrelated
@@ -124,6 +126,16 @@ function runValidation(changedFiles) {
     },
     'data/commercial.json': (data) => {
       if (!data?.shows || !data?._meta) throw new Error('Missing shows or _meta');
+      // The same per-record rules validate-data.js enforces, so a plan cannot
+      // push what the site build then rejects (BRO-4623). Only the records
+      // this plan touched: like the rest of this targeted check, a problem
+      // some other writer left elsewhere must not block every approved fix.
+      const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+      const bySlug = new Map((showsData.shows || showsData).filter(s => s && s.slug).map(s => [s.slug, s]));
+      const problems = [...new Set(touchedCommercialKeys)]
+        .filter(k => data.shows[k])
+        .flatMap(k => commercialRecordErrors(k, data.shows[k], { showRecord: bySlug.get(k), allRecords: data.shows }));
+      if (problems.length) throw new Error(`commercial rules: ${problems.slice(0, 5).join('; ')}`);
     },
     'data/audience-buzz.json': (data) => {
       if (!data?.shows) throw new Error('Missing shows key');
@@ -240,7 +252,9 @@ function executeDataEdit(action) {
     const idx = shows.findIndex(s => s.id === showId);
     if (idx === -1) return { ok: false, reason: `Show "${showId}" not found in shows.json` };
 
-    const currentVal = shows[idx][field];
+    // JSON plans cannot say `undefined`: an absent field is written as
+    // oldValue null, so compare it as null (BRO-4623).
+    const currentVal = shows[idx][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
@@ -285,7 +299,7 @@ function executeDataEdit(action) {
     const slug = action.showSlug || showId;
     if (!data.shows?.[slug]) return { ok: false, reason: `No commercial entry for "${slug}"` };
 
-    const currentVal = data.shows[slug][field];
+    const currentVal = data.shows[slug][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
     }
@@ -297,7 +311,7 @@ function executeDataEdit(action) {
   } else if (file === 'audience-buzz.json') {
     if (!data.shows?.[showId]) return { ok: false, reason: `No audience-buzz entry for "${showId}"` };
 
-    const currentVal = data.shows[showId][field];
+    const currentVal = data.shows[showId][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
     }
@@ -308,6 +322,15 @@ function executeDataEdit(action) {
   }
 
   return { ok: false, reason: `Unhandled file: ${file}` };
+}
+
+function executeAddCommercialEntry(action) {
+  const commercial = loadJsonFile('data/commercial.json');
+  const showsData = loadJsonFile('data/shows.json');
+  const shows = showsData.shows || showsData;
+  const result = applyAddCommercialEntry(commercial, shows, action);
+  if (result.ok) saveJsonFile('data/commercial.json', commercial);
+  return result;
 }
 
 function executeAddShow(action) {
@@ -591,6 +614,9 @@ async function main() {
       case 'retire-show':
         result = executeRetireShow(action);
         break;
+      case 'add-commercial-entry':
+        result = executeAddCommercialEntry(action);
+        break;
       case 'review-field-edit':
         result = executeReviewFieldEdit(action, { fixId: planData.planId || String(issueNumber), at: new Date().toISOString() });
         break;
@@ -614,13 +640,18 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'add-commercial-entry');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
-    // add-show / retire-show carry no `file`: they always write shows.json.
-    const changedFiles = [...new Set(dataTouching.map(a => a.file || ((a.type === 'add-show' || a.type === 'retire-show') ? 'shows.json' : null)).filter(Boolean))];
+    // add-show / retire-show / add-commercial-entry carry no `file`.
+    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
+    const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
     console.log('\nRunning validation...');
-    if (!runValidation(changedFiles)) {
+    const touchedCommercialKeys = dataTouching
+      .filter(a => a.type === 'add-commercial-entry' || a.file === 'commercial.json')
+      .map(a => a.slug || a.showSlug || a.showId)
+      .filter(Boolean);
+    if (!runValidation(changedFiles, touchedCommercialKeys)) {
       console.error('Validation failed — rolling back');
       rollbackDataFiles(coreSnapshot);
 

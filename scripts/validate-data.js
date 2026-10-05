@@ -33,6 +33,7 @@ const { checkIdYearDrift } = require('./lib/id-year-drift');
 // sentinel functions, because the uncaughtException handler can reach them
 // before the rest of the module has evaluated — everything the summary needs
 // must already exist at that point (no TDZ on a crash path).
+const { commercialFileErrors } = require('./lib/commercial-record-checks');
 const DRY_RUN = process.argv.includes('--dry-run');
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
@@ -3363,15 +3364,6 @@ function validateReviewTextDuplicates(shows) {
 // COMMERCIAL DATA VALIDATION
 // ===========================================
 
-// Valid costMethodology values for commercial data
-const VALID_COST_METHODOLOGIES = [
-  'reddit-standard',
-  'trade-reported',
-  'sec-filing',
-  'producer-confirmed',
-  'deep-research',
-  'industry-estimate'
-];
 
 function validateCommercialJson() {
   info('Checking commercial.json...');
@@ -3416,247 +3408,14 @@ function validateCommercialJson() {
   // designation but have a commercial capital stack that DOES recoup. Ragtime
   // 2025 was the canonical case — caught 2026-05-24 misclassified as pure
   // Nonprofit even though Playbill explicitly reported recoupment.
-  const validProductionTypes = ['original', 'tour-stop', 'return-engagement', 'international-transfer', 'International Transfer', 'enhancement'];
-  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   const showKeys = Object.keys(data.shows);
   let issues = 0;
 
-  for (const showId of showKeys) {
-    const show = data.shows[showId];
-
-    // Validate productionType
-    if (show.productionType !== undefined) {
-      if (!validProductionTypes.includes(show.productionType)) {
-        error(`commercial.json: "${showId}" has invalid productionType: "${show.productionType}" (must be one of: ${validProductionTypes.join(', ')})`);
-        issues++;
-      }
-    }
-
-    // Validate estimatedRecoupmentPct
-    if (show.estimatedRecoupmentPct != null) {
-      if (!Array.isArray(show.estimatedRecoupmentPct) || show.estimatedRecoupmentPct.length !== 2) {
-        error(`commercial.json: "${showId}" estimatedRecoupmentPct must be a 2-element array [low, high]`);
-        issues++;
-      } else {
-        const [low, high] = show.estimatedRecoupmentPct;
-        if (typeof low !== 'number' || typeof high !== 'number') {
-          error(`commercial.json: "${showId}" estimatedRecoupmentPct values must be numbers`);
-          issues++;
-        } else if (low < 0 || high > 100 || low > high) {
-          error(`commercial.json: "${showId}" estimatedRecoupmentPct must satisfy 0 <= low <= high <= 100, got [${low}, ${high}]`);
-          issues++;
-        }
-      }
-    }
-
-    // Validate originalProductionId references an existing show
-    if (show.originalProductionId !== undefined) {
-      if (!data.shows[show.originalProductionId]) {
-        error(`commercial.json: "${showId}" originalProductionId "${show.originalProductionId}" does not reference an existing show in commercial.json`);
-        issues++;
-      }
-    }
-
-    // Validate isEstimate is an object with boolean values
-    if (show.isEstimate !== undefined) {
-      if (typeof show.isEstimate !== 'object' || Array.isArray(show.isEstimate) || show.isEstimate === null) {
-        error(`commercial.json: "${showId}" isEstimate must be an object`);
-        issues++;
-      } else {
-        for (const [key, val] of Object.entries(show.isEstimate)) {
-          if (typeof val !== 'boolean') {
-            error(`commercial.json: "${showId}" isEstimate.${key} must be a boolean, got ${typeof val}`);
-            issues++;
-          }
-        }
-      }
-    }
-
-    // Validate estimatedRecoupmentDate format
-    if (show.estimatedRecoupmentDate !== undefined) {
-      if (!dateRegex.test(show.estimatedRecoupmentDate)) {
-        error(`commercial.json: "${showId}" estimatedRecoupmentDate must be YYYY-MM-DD format, got "${show.estimatedRecoupmentDate}"`);
-        issues++;
-      }
-    }
-
-    // Cross-validation: Tour Stop designation must have tour-stop or return-engagement productionType
-    if (show.designation === 'Tour Stop') {
-      if (show.productionType !== 'tour-stop' && show.productionType !== 'return-engagement') {
-        error(`commercial.json: "${showId}" has designation "Tour Stop" but productionType is "${show.productionType || 'missing'}" (must be "tour-stop" or "return-engagement")`);
-        issues++;
-      }
-    }
-
-    // Cross-validation: tour-stop productionType must have Tour Stop designation
-    if (show.productionType === 'tour-stop') {
-      if (show.designation !== 'Tour Stop') {
-        error(`commercial.json: "${showId}" has productionType "tour-stop" but designation is "${show.designation || 'missing'}" (must be "Tour Stop")`);
-        issues++;
-      }
-    }
-
-    // CRITICAL: Recouped shows MUST have recoupedDate (used to calculate weeks)
-    if (show.recouped === true && !show.recoupedDate) {
-      error(`commercial.json: "${showId}" has recouped=true but missing recoupedDate (REQUIRED for weeks calculation)`);
-      issues++;
-    }
-
-    // Outcome-driven designation policy (memory/feedback_enhancement_deal_designation_policy.md):
-    // Easy Winner / Windfall / Miracle imply the production recouped — require recouped=true.
-    // Flop / Fizzle imply it did not — require recouped=false (null means we don't know).
-    // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
-    const WIN_DESIGNATIONS = ['Easy Winner', 'Windfall', 'Miracle'];
-    const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
-    if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true) {
-      error(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)`);
-      issues++;
-    }
-    if (LOSS_DESIGNATIONS.includes(show.designation) && show.recouped !== false) {
-      error(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
-      issues++;
-    }
-
-    // nonprofitOrg must match the show's venue. Catches the inverse of the
-    // purpose-2025/job-2024 trap: tagging Liberation as Roundabout when the
-    // venue was actually James Earl Jones (ATG commercial). Does NOT catch
-    // commercial-rentals-at-correct-venue — that needs season-membership
-    // verification, see memory/feedback_nonprofit_venue_vs_production.md.
-    if (show.nonprofitOrg) {
-      const showRecord = showsData?.shows?.find?.(s => s.slug === showId);
-      if (showRecord?.venue) {
-        const NP_VENUES = {
-          'Lincoln Center Theater': ['Vivian Beaumont Theater', 'Mitzi E. Newhouse Theater', 'Claire Tow Theater'],
-          'Manhattan Theatre Club': ['Samuel J. Friedman Theatre', 'New York City Center Stage I', 'New York City Center Stage II'],
-          'Roundabout Theatre Company': ['Todd Haimes Theatre', 'American Airlines Theatre', 'Stephen Sondheim Theatre', 'Studio 54', 'Laura Pels Theatre', 'Harold and Miriam Steinberg Center for Theatre'],
-          'Second Stage Theater': ['Helen Hayes Theater', 'Tony Kiser Theater'],
-          // 'The Public Theater' venue field is the building name; specific room names
-          // (Newman/Anspacher/Martinson/LuEsther/Shiva) appear in title metadata but
-          // not as venue strings in shows.json.
-          'The Public Theater': ['The Public Theater', 'Newman Theater', 'Anspacher Theater', 'Martinson Hall', 'LuEsther Hall', 'Shiva Theater'],
-          // Off-Broadway nonprofit venues added 2026-05-24 backfill.
-          'New York Theatre Workshop': ['New York Theatre Workshop'],
-          'Atlantic Theater Company': ['Atlantic Theater Company', 'Linda Gross Theater', 'Atlantic Stage 2'],
-          'MCC Theater': ['MCC Theater', 'Newman Mills Theater', 'The Lucille Lortel Theatre'],
-          'Vineyard Theatre': ['Vineyard Theatre'],
-          'Signature Theatre': ['Signature Theatre', 'Romulus Linney Courtyard Theatre', 'Irene Diamond Stage', 'Alice Griffin Jewel Box Theatre'],
-          'Playwrights Horizons': ['Playwrights Horizons', 'Mainstage Theater', 'Peter Jay Sharp Theater'],
-        };
-        const allowed = NP_VENUES[show.nonprofitOrg];
-        if (allowed && !allowed.includes(showRecord.venue)) {
-          error(`commercial.json: "${showId}" has nonprofitOrg="${show.nonprofitOrg}" but venue is "${showRecord.venue}" (expected one of: ${allowed.join(', ')}). Likely a stale tag — was this a commercial production at a non-nonprofit venue?`);
-          issues++;
-        }
-      }
-    }
-
-    // Validate recoupedDate format if present (YYYY-MM or YYYY)
-    if (show.recoupedDate) {
-      const validRecoupDateFormat = /^\d{4}(-\d{2})?$/;
-      if (!validRecoupDateFormat.test(show.recoupedDate)) {
-        error(`commercial.json: "${showId}" recoupedDate must be YYYY-MM or YYYY format, got "${show.recoupedDate}"`);
-        issues++;
-      }
-    }
-
-    // Validate profitMargin (if present, must be a number)
-    if (show.profitMargin !== undefined && show.profitMargin !== null && typeof show.profitMargin !== 'number') {
-      error(`commercial.json: "${showId}" profitMargin must be a number, got ${typeof show.profitMargin}`);
-      issues++;
-    }
-
-    // Validate investorMultiple (if present, must be a number >= 0)
-    if (show.investorMultiple !== undefined && show.investorMultiple !== null) {
-      if (typeof show.investorMultiple !== 'number') {
-        error(`commercial.json: "${showId}" investorMultiple must be a number, got ${typeof show.investorMultiple}`);
-        issues++;
-      } else if (show.investorMultiple < 0) {
-        error(`commercial.json: "${showId}" investorMultiple must be >= 0, got ${show.investorMultiple}`);
-        issues++;
-      }
-    }
-
-    // Validate insiderProfitSharePct (if present, must be a number 0-100)
-    if (show.insiderProfitSharePct !== undefined && show.insiderProfitSharePct !== null) {
-      if (typeof show.insiderProfitSharePct !== 'number') {
-        error(`commercial.json: "${showId}" insiderProfitSharePct must be a number, got ${typeof show.insiderProfitSharePct}`);
-        issues++;
-      } else if (show.insiderProfitSharePct < 0 || show.insiderProfitSharePct > 100) {
-        error(`commercial.json: "${showId}" insiderProfitSharePct must be 0-100, got ${show.insiderProfitSharePct}`);
-        issues++;
-      }
-    }
-
-    // Validate sources array (if present)
-    if (show.sources !== undefined && show.sources !== null) {
-      if (!Array.isArray(show.sources)) {
-        error(`commercial.json: "${showId}" sources must be an array`);
-        issues++;
-      } else {
-        const validSourceTypes = ['trade', 'reddit', 'sec', 'manual'];
-        const sourceDateRegex = /^\d{4}-\d{2}-\d{2}$/;
-        show.sources.forEach((src, idx) => {
-          if (!src.type || !validSourceTypes.includes(src.type)) {
-            error(`commercial.json: "${showId}" sources[${idx}].type must be one of: ${validSourceTypes.join(', ')}`);
-            issues++;
-          }
-          if (!src.url || typeof src.url !== 'string') {
-            error(`commercial.json: "${showId}" sources[${idx}].url must be a string`);
-            issues++;
-          }
-          // Date is optional (null/undefined allowed) — many venue/aggregator URLs lack a publish date.
-          // But if present, it must match YYYY-MM-DD.
-          if (src.date != null && (typeof src.date !== 'string' || !sourceDateRegex.test(src.date))) {
-            error(`commercial.json: "${showId}" sources[${idx}].date must be in YYYY-MM-DD format (or null)`);
-            issues++;
-          }
-        });
-      }
-    }
-
-    // Validate costMethodology
-    if (show.costMethodology && !VALID_COST_METHODOLOGIES.includes(show.costMethodology)) {
-      error(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);
-      issues++;
-    }
-
-    // Validate deepResearch object if present
-    if (show.deepResearch) {
-      const dr = show.deepResearch;
-
-      // verifiedFields must be an array of strings
-      if (!Array.isArray(dr.verifiedFields)) {
-        error(`commercial.json: "${showId}" deepResearch.verifiedFields must be an array`);
-        issues++;
-      } else if (dr.verifiedFields.length === 0) {
-        error(`commercial.json: "${showId}" deepResearch.verifiedFields cannot be empty`);
-        issues++;
-      } else if (!dr.verifiedFields.every(f => typeof f === 'string')) {
-        error(`commercial.json: "${showId}" deepResearch.verifiedFields must contain only strings`);
-        issues++;
-      }
-
-      // verifiedDate must be an ISO date string (YYYY-MM-DD)
-      if (!dr.verifiedDate) {
-        error(`commercial.json: "${showId}" deepResearch.verifiedDate is required`);
-        issues++;
-      } else if (!dateRegex.test(dr.verifiedDate)) {
-        error(`commercial.json: "${showId}" deepResearch.verifiedDate must be in YYYY-MM-DD format`);
-        issues++;
-      }
-
-      // verifiedBy is optional but must be string if present
-      if (dr.verifiedBy !== undefined && typeof dr.verifiedBy !== 'string') {
-        error(`commercial.json: "${showId}" deepResearch.verifiedBy must be a string`);
-        issues++;
-      }
-
-      // notes is optional but must be string if present
-      if (dr.notes !== undefined && typeof dr.notes !== 'string') {
-        error(`commercial.json: "${showId}" deepResearch.notes must be a string`);
-        issues++;
-      }
-    }
+  // Per-record rules live in scripts/lib/commercial-record-checks.js so the
+  // approved-fix runner applies the same ones (BRO-4623).
+  for (const msg of commercialFileErrors(data, showsData?.shows)) {
+    error(msg);
+    issues++;
   }
 
   if (issues === 0) {
