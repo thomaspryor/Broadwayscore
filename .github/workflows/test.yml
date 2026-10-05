@@ -331,6 +331,8 @@ on:
       # edit to either triggers CI.
       - 'scripts/scrape-mezzanine-audience.js'
       - 'scripts/scrape-mezzanine-audience.test.mjs'
+      # BRO-3679 colocated test, manifest-registered
+      - 'scripts/test-new-show-venue-validation.test.mjs'
       - 'scripts/triage-review-gap.js'
       - 'scripts/triage-review-gap.test.mjs'
       - 'scripts/opening-night-tools-data-dir.test.mjs'
@@ -838,6 +840,8 @@ on:
       - 'scripts/check-push-ledger.js'
       - 'tests/unit/push-ledger.test.mjs'
       - 'tests/unit/vercel-deploy-concurrency.test.mjs'
+      # BRO-554: wrapper that runs the should-deploy gate suite (the card's VERIFY file); registered in tests/unit-test-manifest.txt, outside every glob, so path-listed.
+      - 'scripts/vercel-deploy.test.mjs'
       - '.github/workflows/vercel-deploy.yml'
       - 'scripts/vercel-wait-deployment.js'
       - '.github/workflows/check-push-ledger.yml'

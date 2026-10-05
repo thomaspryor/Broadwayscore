@@ -226,6 +226,7 @@ scripts/send-opening-night-broadcast.test.mjs
 scripts/sweep-open-backlog-acceptance.test.mjs
 scripts/sweep-we-aggregators-outlet-edition.test.mjs
 scripts/telegraph-reviews-index.test.mjs
+scripts/test-new-show-venue-validation.test.mjs
 scripts/tests/ack-landed-already-landed.test.mjs
 scripts/tests/ack-landed-correlation-id.test.mjs
 scripts/tests/ack-landed-derive-sha.test.mjs
@@ -308,6 +309,7 @@ scripts/tests/watchdog-skips-landed-acked.test.mjs
 scripts/trace-connect-phase.test.mjs
 scripts/triage-review-gap.test.mjs
 scripts/update-show-status.test.mjs
+scripts/vercel-deploy.test.mjs
 scripts/verify-addams-wsj-dedup-held.test.mjs
 scripts/verify-contamination-gate.test.mjs
 scripts/verify-feedback-requests-live.test.mjs
@@ -1194,6 +1196,7 @@ tests/unit/workflow-concurrency.test.mjs
 tests/unit/workflow-line-length.test.mjs
 tests/unit/workflow-playwright-setup.test.mjs
 tests/unit/workflow-run-coverage.test.mjs
+tests/unit/workflow-run-hint-inputs.test.mjs
 tests/unit/worktree-gc-multi-repo.test.mjs
 tests/unit/worktree-gc-reclaim.test.mjs
 tests/unit/worktree-gc-schedule-freshness.test.mjs
