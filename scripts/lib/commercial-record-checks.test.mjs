@@ -7,7 +7,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { commercialRecordErrors, commercialFileErrors, sanitizeForPublicRecord } = require('./commercial-record-checks.js');
+const { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording } = require('./commercial-record-checks.js');
+const { buildTipRecord } = require('./commercial-tip-record.js');
+const { undoAutoFizzleOnRunningShow } = require('./classify-stale-closure.js');
 
 const shows = [
   { id: 'hamilton-2015', slug: 'hamilton', venue: 'Richard Rodgers Theatre' },
@@ -28,13 +30,36 @@ test('outcome policy: win needs recouped=true, loss needs recouped=false, recoup
   assert.equal(e({ designation: 'TBD', recouped: true, recoupedDate: '2024/01' }).length, 1);
 });
 
-test('loss designation needs a closed run when the status is known', () => {
+test('loss designation on a show that is not closed is a warning, never an error', () => {
   const rec = { designation: 'Flop', recouped: false };
-  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'open' } }).length, 1);
-  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'previews' } }).length, 1);
-  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'closed' } }).length, 0);
-  assert.equal(commercialRecordErrors('k', rec, {}).length, 0);
-  assert.equal(commercialRecordErrors('k', { designation: 'TBD', recouped: false }, { showRecord: { slug: 'k', status: 'open' } }).length, 0);
+  const w = (status) => commercialRecordWarnings('k', rec, { showRecord: { slug: 'k', status } }).length;
+  assert.equal(w('open'), 1);
+  assert.equal(w('previews'), 1);
+  assert.equal(w('closed'), 0);
+  assert.equal(commercialRecordWarnings('k', rec, {}).length, 0);
+  assert.equal(commercialRecordWarnings('k', { designation: 'TBD', recouped: false }, { showRecord: { slug: 'k', status: 'open' } }).length, 0);
+  // A status flip (update-show-status.js reopening a closed show) must not
+  // turn into a validate-data error that blocks the daily status commit.
+  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'open' } }).length, 0);
+  const file = { shows: { k: rec } };
+  assert.deepEqual(commercialFileErrors(file, [{ slug: 'k', status: 'open' }]), []);
+  assert.equal(commercialFileWarnings(file, [{ slug: 'k', status: 'open' }]).length, 1);
+});
+
+test('stale-closure Fizzle is undone when the show is running again, hand labels are not', () => {
+  const auto = { designation: 'Fizzle', recouped: false, recoupedSource: 'Inferred: closed 40 days ago, no trade-press recoupment found', classifiedBy: 'classify-stale-closures', classifiedAt: 'x', classifiedReason: 'y', capitalization: 5e6 };
+  const undone = undoAutoFizzleOnRunningShow(auto, { slug: 'k', status: 'open' });
+  assert.equal(undone.designation, 'TBD');
+  assert.equal(undone.recouped, null);
+  assert.equal(undone.recoupedSource, null);
+  assert.equal(undone.classifiedBy, undefined);
+  assert.equal(undone.capitalization, 5e6);
+  assert.deepEqual(commercialRecordWarnings('k', undone, { showRecord: { slug: 'k', status: 'open' } }), []);
+  assert.equal(auto.designation, 'Fizzle', 'input is not mutated');
+  assert.equal(undoAutoFizzleOnRunningShow(auto, { slug: 'k', status: 'closed' }), null);
+  assert.equal(undoAutoFizzleOnRunningShow(auto, undefined), null);
+  assert.equal(undoAutoFizzleOnRunningShow({ ...auto, humanReviewedDesignation: true }, { slug: 'k', status: 'open' }), null);
+  assert.equal(undoAutoFizzleOnRunningShow({ designation: 'Fizzle', recouped: false }, { slug: 'k', status: 'open' }), null);
 });
 
 test('public text fields reject research-pipeline wording', () => {
@@ -52,15 +77,33 @@ test('public text fields reject research-pipeline wording', () => {
   assert.equal(e({ weeklyRunningCostSource: 'GPT estimate' }).length, 0);
   // batch-commercial-research.js's reviewer prefix is internal too.
   assert.equal(e({ notes: '[PLAUSIBILITY WARNING: cap above $80M] Big musical.' }).length, 1);
+  // Model names, but not a person called Claude.
+  assert.equal(e({ capitalizationSource: 'o4-mini estimate' }).length, 1);
+  assert.equal(e({ notes: 'Claude Sonnet synthesis of trade reports.' }).length, 1);
+  assert.equal(e({ notes: 'AI-estimated running cost.' }).length, 1);
+  assert.equal(e({ notes: 'Music by Claude-Michel Schönberg; produced by Cameron Mackintosh.' }).length, 0);
 });
 
-test('sanitizeForPublicRecord yields a record the two rules accept, and says what it changed', () => {
+test('stripInternalWording keeps the public part of a mixed citation', () => {
+  assert.equal(stripInternalWording('SEC filings (GPT Deep Research)'), 'SEC filings');
+  assert.equal(stripInternalWording('SEC Form D (Mar 2024): $29M. Previous $20M estimate from Deep Research was too low.'), 'SEC Form D (Mar 2024): $29M.');
+  assert.equal(stripInternalWording('Trade press / deep research synthesis'), null);
+  assert.equal(stripInternalWording('[PLAUSIBILITY WARNING: cap above $80M] Big musical.'), 'Big musical.');
+  assert.equal(stripInternalWording('Deadline (Aug 2023): recouped'), 'Deadline (Aug 2023): recouped');
+  assert.equal(stripInternalWording(null), null);
+});
+
+test('sanitizeForPublicRecord yields a record the rules accept, and says what it changed', () => {
   const open = { slug: 'k', status: 'open' };
-  const raw = { designation: 'Flop', recouped: false, capitalizationSource: 'Trade press / deep research synthesis', notes: '[PLAUSIBILITY WARNING: x] y', recoupedSource: 'Variety (May 2026)' };
-  assert.ok(commercialRecordErrors('k', raw, { showRecord: open }).length >= 3);
-  const { entry, changed } = sanitizeForPublicRecord(raw, 'open');
+  const raw = { designation: 'Flop', recouped: false, capitalizationSource: 'Trade press / deep research synthesis', notes: 'Limited run (GPT summary).', recoupedSource: 'Variety (May 2026)' };
+  assert.ok(commercialRecordErrors('k', raw, { showRecord: open }).length >= 2);
+  const { entry, changed, holdReason } = sanitizeForPublicRecord(raw, 'open');
+  assert.equal(holdReason, null);
   assert.deepEqual(commercialRecordErrors('k', entry, { showRecord: open }), []);
+  assert.deepEqual(commercialRecordWarnings('k', entry, { showRecord: open }), []);
   assert.deepEqual(changed, ['notes', 'capitalizationSource', 'designation']);
+  assert.equal(entry.notes, 'Limited run.');
+  assert.equal(entry.capitalizationSource, null);
   assert.equal(entry.designation, 'TBD');
   assert.equal(entry.recoupedSource, 'Variety (May 2026)');
   assert.equal(raw.designation, 'Flop', 'input is not mutated');
@@ -68,6 +111,27 @@ test('sanitizeForPublicRecord yields a record the two rules accept, and says wha
   assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, 'closed').entry.designation, 'Fizzle');
   assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, undefined).entry.designation, 'Fizzle');
   assert.deepEqual(sanitizeForPublicRecord(ok, 'open').changed, []);
+});
+
+test('sanitizeForPublicRecord holds what cleaning would hide', () => {
+  // A recoupment claim must keep a public citation.
+  assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'GPT DR Batch 3 consensus' }, 'open').holdReason, /public source/);
+  assert.equal(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026) (GPT check)' }, 'open').holdReason, null);
+  // A plausibility-flagged model answer waits for a person instead of landing with the flag erased.
+  assert.match(sanitizeForPublicRecord({ notes: '[PLAUSIBILITY WARNING: cap above $80M] Big musical.' }, 'open').holdReason, /plausibility/);
+});
+
+test('buildTipRecord cleans a tip, refuses one the rules reject, never mutates', () => {
+  const commercial = { shows: { k: { designation: 'TBD', recouped: null, notes: 'Running.' } } };
+  const showList = [{ slug: 'k', status: 'open' }];
+  const cleaned = buildTipRecord(commercial, showList, 'k', [{ field: 'capitalizationSource', newValue: 'Deadline (Jan 2026) (GPT)' }, { field: 'capitalization', newValue: 9e6, isEstimate: true }]);
+  assert.equal(cleaned.refusedReason, null);
+  assert.equal(cleaned.record.capitalizationSource, 'Deadline (Jan 2026)');
+  assert.deepEqual(cleaned.record.isEstimate, { capitalization: true });
+  assert.equal(commercial.shows.k.capitalization, undefined, 'commercial.json is not mutated');
+  // Windfall without recouped=true breaks the outcome policy.
+  assert.match(buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Windfall' }]).refusedReason, /recouped/);
+  assert.match(buildTipRecord(commercial, showList, 'missing', [{ field: 'notes', newValue: 'x' }]).refusedReason, /no commercial record/);
 });
 
 test('nonprofitOrg is checked against the shows.json venue', () => {

@@ -33,7 +33,7 @@ const { checkIdYearDrift } = require('./lib/id-year-drift');
 // sentinel functions, because the uncaughtException handler can reach them
 // before the rest of the module has evaluated — everything the summary needs
 // must already exist at that point (no TDZ on a crash path).
-const { commercialFileErrors } = require('./lib/commercial-record-checks');
+const { commercialFileErrors, commercialFileWarnings } = require('./lib/commercial-record-checks');
 const DRY_RUN = process.argv.includes('--dry-run');
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
@@ -3416,6 +3416,9 @@ function validateCommercialJson() {
   for (const msg of commercialFileErrors(data, showsData?.shows)) {
     error(msg);
     issues++;
+  }
+  for (const msg of commercialFileWarnings(data, showsData?.shows)) {
+    warn(msg);
   }
 
   if (issues === 0) {

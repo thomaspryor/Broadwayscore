@@ -18,6 +18,7 @@ const path = require('path');
 const https = require('https');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { buildTipRecord } = require('./lib/commercial-tip-record');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
@@ -280,18 +281,15 @@ Rules:
 
     console.log('Analysis:', JSON.stringify(analysis, null, 2));
 
-    if (analysis.isCredible && analysis.confidence !== 'low' && analysis.proposedChanges?.length > 0 && slug) {
-      // Apply changes
-      for (const change of analysis.proposedChanges) {
-        if (commercial.shows[slug]) {
-          commercial.shows[slug][change.field] = change.newValue;
-          if (change.isEstimate && change.field !== 'designation') {
-            if (!commercial.shows[slug].isEstimate) commercial.shows[slug].isEstimate = {};
-            commercial.shows[slug].isEstimate[change.field] = true;
-          }
-        }
-      }
+    const wantsApply = analysis.isCredible && analysis.confidence !== 'low' && analysis.proposedChanges?.length > 0 && slug;
+    // This workflow commits without running validate-data, so the record is
+    // cleaned and checked against the commercial rules before it is written.
+    const built = wantsApply
+      ? buildTipRecord(commercial, shows.shows || shows, slug, analysis.proposedChanges)
+      : { record: null, refusedReason: null };
 
+    if (wantsApply && built.record) {
+      commercial.shows[slug] = built.record;
       commercial._meta.lastUpdated = new Date().toISOString();
       saveCommercial(commercial);
 
@@ -343,7 +341,9 @@ ${changesTable}
       console.log(`Applied ${analysis.proposedChanges.length} changes for ${slug}`);
     } else {
       // Flag for manual review
-      const reason = !analysis.isCredible
+      const reason = built.refusedReason
+        ? `Proposed change refused: ${built.refusedReason}`
+        : !analysis.isCredible
         ? `Not credible: ${analysis.reasoning}`
         : analysis.confidence === 'low'
         ? `Low confidence: ${analysis.reasoning}`

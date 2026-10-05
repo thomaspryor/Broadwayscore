@@ -27,7 +27,7 @@
 const { canonicalDesignation } = require('./commercial-designations');
 const { VALID_SOURCE_TYPES } = require('./commercial-sources');
 const { isCommercialScope } = require('./commercial-scope');
-const { commercialRecordErrors } = require('./commercial-record-checks');
+const { commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
 
 const ALLOWED = new Set([
   'designation', 'recouped', 'recoupedDate', 'recoupedSource',
@@ -107,7 +107,8 @@ function applyAddCommercialEntry(commercial, shows, action, now = new Date().toI
     firstAdded: now,
     lastUpdated: now,
   };
-  const problems = commercialRecordErrors(slug, record, { showRecord: show, allRecords: commercial.shows });
+  const ctx = { showRecord: show, allRecords: commercial.shows };
+  const problems = [...commercialRecordErrors(slug, record, ctx), ...commercialRecordWarnings(slug, record, ctx)];
   if (problems.length) return { ok: false, reason: `add-commercial-entry: ${problems[0]}` };
   commercial.shows[slug] = record;
   return { ok: true, msg: `commercial.json: added ${slug} (${designation})` };

@@ -7,7 +7,8 @@
  * hand-copy, so a plan could pass the runner, push the private data repo, and
  * only then fail test.yml. Add new commercial rules HERE, never inline.
  *
- * Pure: no I/O. Each function returns an array of message strings ([] = ok).
+ * Pure: no I/O. The *Errors / *Warnings functions return arrays of message
+ * strings ([] = ok).
  */
 
 const VALID_COST_METHODOLOGIES = [
@@ -30,7 +31,9 @@ const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
 // "Auto-enrolled stub; awaiting model + curation", "Auto-designated ...".
 // "[PLAUSIBILITY WARNING: ...]" is the prefix batch-commercial-research.js
 // adds to a model's notes for reviewers; it must never reach the page.
-const INTERNAL_TEXT_RE = /\bGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b/i;
+// Model names are matched with their family word ("Claude Sonnet", not
+// "Claude": Claude-Michel Schönberg wrote Les Misérables).
+const INTERNAL_TEXT_RE = /\bGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b/i;
 const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 
 /**
@@ -121,13 +124,6 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   }
   if (LOSS_DESIGNATIONS.includes(show.designation) && show.recouped !== false) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
-  }
-  // A loss designation is a final outcome ("closed without recouping"). On a
-  // show that is still running it is a guess shown as a result (two-strangers
-  // was a "Flop" while open, BRO-4623). Skipped without the shows.json record.
-  const runStatus = ctx.showRecord && ctx.showRecord.status;
-  if (LOSS_DESIGNATIONS.includes(show.designation) && runStatus && runStatus !== 'closed') {
-    out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
   }
 
   // Public text must read as a citation, not as research-pipeline notes.
@@ -262,30 +258,91 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   return out;
 }
 
-/** All record errors for a parsed commercial.json, given shows.json's list. */
-function commercialFileErrors(data, showsList) {
-  const bySlug = new Map();
-  for (const s of showsList || []) if (s && s.slug) bySlug.set(s.slug, s);
+/**
+ * Rules that depend on shows.json state as well as the record. validate-data.js
+ * reports these as warnings: a status flip (update-show-status.js reopening a
+ * closed show) can create one without any commercial.json write, and an error
+ * there would block the daily status commit with nothing to clear it. The
+ * writers that DO write the record (plan runner, add-commercial-entry) treat
+ * them as errors for that record.
+ */
+function commercialRecordWarnings(showId, show, ctx = {}) {
   const out = [];
-  for (const [showId, show] of Object.entries((data && data.shows) || {})) {
-    out.push(...commercialRecordErrors(showId, show, { showRecord: bySlug.get(showId), allRecords: data.shows }));
+  // A loss designation is a final outcome ("closed without recouping"). On a
+  // show that is still running it is a guess shown as a result (two-strangers
+  // was a "Flop" while open, BRO-4623). Skipped without the shows.json record.
+  const runStatus = ctx.showRecord && ctx.showRecord.status;
+  if (LOSS_DESIGNATIONS.includes(show.designation) && runStatus && runStatus !== 'closed') {
+    out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
   }
   return out;
 }
 
+function eachRecord(data, showsList, rule) {
+  const bySlug = new Map();
+  for (const s of showsList || []) if (s && s.slug) bySlug.set(s.slug, s);
+  const out = [];
+  for (const [showId, show] of Object.entries((data && data.shows) || {})) {
+    out.push(...rule(showId, show, { showRecord: bySlug.get(showId), allRecords: data.shows }));
+  }
+  return out;
+}
+
+/** All record errors for a parsed commercial.json, given shows.json's list. */
+function commercialFileErrors(data, showsList) {
+  return eachRecord(data, showsList, commercialRecordErrors);
+}
+
+/** All record warnings for a parsed commercial.json, given shows.json's list. */
+function commercialFileWarnings(data, showsList) {
+  return eachRecord(data, showsList, commercialRecordWarnings);
+}
+
+/**
+ * Drops the research wording from a public text field and keeps the rest:
+ * a bracketed aside that contains it goes ("SEC filings (GPT Deep Research)"
+ * keeps "SEC filings"), then any sentence that still contains it. Returns
+ * null when nothing public is left.
+ */
+function stripInternalWording(text) {
+  if (typeof text !== 'string' || !INTERNAL_TEXT_RE.test(text)) return text;
+  const noAsides = text.replace(/\s*[([][^()[\]]*[)\]]/g, (aside) => (INTERNAL_TEXT_RE.test(aside) ? '' : aside));
+  const kept = noAsides.split(/(?<=[.;!?])\s+/).filter((sentence) => !INTERNAL_TEXT_RE.test(sentence));
+  const out = kept.join(' ').replace(/\s+/g, ' ').trim();
+  return out && /[A-Za-z0-9]/.test(out) ? out : null;
+}
+
 /**
  * For writers that copy model output into commercial.json unreviewed: returns
- * a copy that passes the two rules above, so one bad model answer cannot make
- * validate-data abort the whole run. Public text with research wording becomes
- * null; a loss label on a show whose status is known and not "closed" becomes
- * "TBD". `changed` lists the fields altered, for the caller's log.
+ * a copy that passes the public-text rule and the run-status warning, so one
+ * bad model answer cannot make validate-data abort the whole run. Research
+ * wording is stripped from public text (stripInternalWording); a loss label on
+ * a show whose status is known and not "closed" becomes "TBD". `changed` lists
+ * the fields altered, for the caller's log.
+ *
+ * `holdReason` is set when cleaning would hide something a person must see,
+ * and the caller must not write the entry (leave it pending instead):
+ * a recoupment claim whose only citation is research wording (the page would
+ * show "recouped" with no source), or a model answer that failed
+ * batch-commercial-research.js's plausibility check.
+ *
+ * @param {object} entry
+ * @param {string} [showStatus] - status of the shows.json record whose slug is
+ *   the commercial.json key the entry will be written under.
  */
 function sanitizeForPublicRecord(entry, showStatus) {
   const out = { ...entry };
   const changed = [];
+  let holdReason = null;
+  if (typeof out.notes === 'string' && /\bPLAUSIBILITY WARNING\b/i.test(out.notes)) {
+    holdReason = 'model figures failed the plausibility check; a person must confirm them';
+  } else if (out.recouped === true && typeof out.recoupedSource === 'string' && !stripInternalWording(out.recoupedSource)) {
+    holdReason = 'recoupment claim cites only research output; it needs a public source';
+  }
   for (const field of PUBLIC_TEXT_FIELDS) {
-    if (typeof out[field] === 'string' && INTERNAL_TEXT_RE.test(out[field])) {
-      out[field] = null;
+    const cleaned = stripInternalWording(out[field]);
+    if (cleaned !== out[field]) {
+      out[field] = cleaned;
       changed.push(field);
     }
   }
@@ -293,7 +350,7 @@ function sanitizeForPublicRecord(entry, showStatus) {
     out.designation = 'TBD';
     changed.push('designation');
   }
-  return { entry: out, changed };
+  return { entry: out, changed, holdReason };
 }
 
-module.exports = { commercialRecordErrors, commercialFileErrors, sanitizeForPublicRecord, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, LOSS_DESIGNATIONS };
+module.exports = { commercialRecordErrors, commercialRecordWarnings, commercialFileErrors, commercialFileWarnings, sanitizeForPublicRecord, stripInternalWording, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, LOSS_DESIGNATIONS };

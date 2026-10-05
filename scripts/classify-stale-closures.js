@@ -23,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyStaleClosure } = require('./lib/classify-stale-closure');
+const { classifyStaleClosure, undoAutoFizzleOnRunningShow } = require('./lib/classify-stale-closure');
 const { isCommercialScope } = require('./lib/commercial-scope');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 
@@ -103,9 +103,19 @@ function main() {
   const toApply = buckets['classify-fizzle'].slice(0, MAX_SHOWS);
   const overflowApply = buckets['classify-fizzle'].length - toApply.length;
 
+  // Undo this classifier's own Fizzle on shows that are running again.
+  const showBySlug = new Map(shows.filter(s => s && s.slug).map(s => [s.slug, s]));
+  const reopened = [];
+  for (const [slug, entry] of Object.entries(commercial.shows)) {
+    if (TARGET && slug !== TARGET) continue;
+    const undone = undoAutoFizzleOnRunningShow(entry, showBySlug.get(slug));
+    if (undone) reopened.push({ slug, undone, status: showBySlug.get(slug).status });
+  }
+
   console.log('=== Stale-closure classification plan ===');
   console.log(`Closed Broadway shows scanned: ${targets.length}`);
   console.log(`  classify-fizzle:   ${toApply.length} (overflow: ${overflowApply})`);
+  console.log(`  undo-fizzle:       ${reopened.length} (running again)`);
   console.log(`  human-review:      ${buckets['human-review'].length}`);
   console.log(`  skip-carve-out:    ${buckets['skip-carve-out'].length}`);
   console.log(`  wait (grace):      ${buckets.wait.length}`);
@@ -118,6 +128,9 @@ function main() {
       for (const it of buckets[k].slice(0, 3)) {
         console.log(`  [${k}] ${it.show.slug} — ${it.result.reason}`);
       }
+    }
+    for (const it of reopened.slice(0, 3)) {
+      console.log(`  [undo-fizzle] ${it.slug} — status is "${it.status}"`);
     }
     return;
   }
@@ -150,11 +163,16 @@ function main() {
     console.log(`  ✓ ${slug}: ${result.reason}`);
   }
 
-  if (applied > 0) {
+  for (const { slug, undone, status } of reopened) {
+    commercial.shows[slug] = { ...undone, lastUpdated: now };
+    console.log(`  ↩ ${slug}: Fizzle -> TBD (status is "${status}")`);
+  }
+
+  if (applied > 0 || reopened.length > 0) {
     commercial._meta = commercial._meta || {};
     commercial._meta.lastUpdated = now.slice(0, 10);
     saveCommercial(commercial);
-    console.log(`\n✓ Wrote ${applied} Fizzle classifications to commercial.json`);
+    console.log(`\n✓ Wrote ${applied} Fizzle classifications and ${reopened.length} undos to commercial.json`);
   } else {
     console.log('\nNo Fizzle classifications to apply.');
   }

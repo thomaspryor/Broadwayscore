@@ -150,6 +150,27 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   };
 }
 
+/**
+ * The reverse case (BRO-4623): a Fizzle this classifier wrote on a show that
+ * is no longer closed (update-show-status.js reopened it, or a closing date
+ * was corrected). A loss label on a running show is wrong on /biz, and
+ * validate-data warns about it. Returns the entry with the classifier's own
+ * outcome undone (TBD, recoupment unknown, its inferred source removed), or
+ * null when there is nothing to undo. Never touches a hand-set label.
+ */
+function undoAutoFizzleOnRunningShow(entry, show) {
+  if (!entry || !show || !show.status || show.status === 'closed') return null;
+  if (entry.classifiedBy !== 'classify-stale-closures' || entry.designation !== 'Fizzle') return null;
+  if (entry.humanReviewedDesignation === true) return null;
+  const out = { ...entry, designation: 'TBD' };
+  if (out.recouped === false) out.recouped = null;
+  if (typeof out.recoupedSource === 'string' && out.recoupedSource.startsWith('Inferred: closed')) out.recoupedSource = null;
+  delete out.classifiedBy;
+  delete out.classifiedAt;
+  delete out.classifiedReason;
+  return out;
+}
+
 module.exports = {
   GRACE_DAYS_DEFAULT,
   MAX_AGE_DAYS_DEFAULT,
@@ -157,4 +178,5 @@ module.exports = {
   SKIP_PRODUCTION_TYPES,
   SKIP_DESIGNATIONS,
   classifyStaleClosure,
+  undoAutoFizzleOnRunningShow,
 };

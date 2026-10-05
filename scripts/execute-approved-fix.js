@@ -46,7 +46,7 @@ const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
-const { commercialRecordErrors } = require('./lib/commercial-record-checks.js');
+const { commercialRecordErrors, commercialRecordWarnings } = require('./lib/commercial-record-checks.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
@@ -130,11 +130,15 @@ function runValidation(changedFiles, touchedCommercialKeys = []) {
       // push what the site build then rejects (BRO-4623). Only the records
       // this plan touched: like the rest of this targeted check, a problem
       // some other writer left elsewhere must not block every approved fix.
+      // The run-status warnings count as errors for a record a plan writes.
       const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
       const bySlug = new Map((showsData.shows || showsData).filter(s => s && s.slug).map(s => [s.slug, s]));
       const problems = [...new Set(touchedCommercialKeys)]
         .filter(k => data.shows[k])
-        .flatMap(k => commercialRecordErrors(k, data.shows[k], { showRecord: bySlug.get(k), allRecords: data.shows }));
+        .flatMap(k => {
+          const ctx = { showRecord: bySlug.get(k), allRecords: data.shows };
+          return [...commercialRecordErrors(k, data.shows[k], ctx), ...commercialRecordWarnings(k, data.shows[k], ctx)];
+        });
       if (problems.length) throw new Error(`commercial rules: ${problems.slice(0, 5).join('; ')}`);
     },
     'data/audience-buzz.json': (data) => {

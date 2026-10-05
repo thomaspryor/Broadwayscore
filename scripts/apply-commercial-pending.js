@@ -254,10 +254,18 @@ function main() {
     // that the scraper doesn't carry.
     // Then clear research wording and premature loss labels, which the
     // validate-data run below would otherwise reject, aborting every entry.
-    const { entry: commercialEntry, changed } = sanitizeForPublicRecord(
+    // Status comes from the show whose slug IS the key, the record
+    // validate-data checks it against.
+    const keyShow = showsBySlug[commercialKey];
+    const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
       gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }),
-      (scopeShow || resolvedShow || {}).status,
+      keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined,
     );
+    if (holdReason) {
+      console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
+      skipped++;
+      continue;
+    }
     if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
 
     commercialEntry.lastUpdated = new Date().toISOString();
