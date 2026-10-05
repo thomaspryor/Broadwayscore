@@ -156,15 +156,20 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
  * was corrected). A loss label on a running show is wrong on /biz, and
  * validate-data warns about it. Returns the entry with the classifier's own
  * outcome undone (TBD, recoupment unknown, its inferred source removed), or
- * null when there is nothing to undo. Never touches a hand-set label.
+ * null when there is nothing to undo. Never touches a hand-set label, nor a
+ * Fizzle whose "did not recoup" now rests on a real citation (a person
+ * replaced the inferred source): validate-data's warning leaves that to them.
  */
+const INFERRED_SOURCE_PREFIX = 'Inferred: closed';
+
 function undoAutoFizzleOnRunningShow(entry, show) {
   if (!entry || !show || !show.status || show.status === 'closed') return null;
   if (entry.classifiedBy !== 'classify-stale-closures' || entry.designation !== 'Fizzle') return null;
   if (entry.humanReviewedDesignation === true) return null;
-  const out = { ...entry, designation: 'TBD' };
+  const inferred = entry.recoupedSource == null || (typeof entry.recoupedSource === 'string' && entry.recoupedSource.startsWith(INFERRED_SOURCE_PREFIX));
+  if (!inferred) return null;
+  const out = { ...entry, designation: 'TBD', recoupedSource: null };
   if (out.recouped === false) out.recouped = null;
-  if (typeof out.recoupedSource === 'string' && out.recoupedSource.startsWith('Inferred: closed')) out.recoupedSource = null;
   delete out.classifiedBy;
   delete out.classifiedAt;
   delete out.classifiedReason;

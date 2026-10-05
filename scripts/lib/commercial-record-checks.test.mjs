@@ -60,6 +60,10 @@ test('stale-closure Fizzle is undone when the show is running again, hand labels
   assert.equal(undoAutoFizzleOnRunningShow(auto, undefined), null);
   assert.equal(undoAutoFizzleOnRunningShow({ ...auto, humanReviewedDesignation: true }, { slug: 'k', status: 'open' }), null);
   assert.equal(undoAutoFizzleOnRunningShow({ designation: 'Fizzle', recouped: false }, { slug: 'k', status: 'open' }), null);
+  // No source at all is still the classifier's own inference.
+  assert.equal(undoAutoFizzleOnRunningShow({ ...auto, recoupedSource: null }, { slug: 'k', status: 'open' }).designation, 'TBD');
+  // A person replaced the inferred source with a citation: leave it to them.
+  assert.equal(undoAutoFizzleOnRunningShow({ ...auto, recoupedSource: 'Deadline (Jun 2026): will not recoup' }, { slug: 'k', status: 'open' }), null);
 });
 
 test('public text fields reject research-pipeline wording', () => {
@@ -82,6 +86,11 @@ test('public text fields reject research-pipeline wording', () => {
   assert.equal(e({ notes: 'Claude Sonnet synthesis of trade reports.' }).length, 1);
   assert.equal(e({ notes: 'AI-estimated running cost.' }).length, 1);
   assert.equal(e({ notes: 'Music by Claude-Michel Schönberg; produced by Cameron Mackintosh.' }).length, 0);
+  assert.equal(e({ notes: 'ChatGPT summary of grosses.' }).length, 1);
+  assert.equal(e({ capitalizationSource: 'Gemini 2.5 Pro estimate' }).length, 1);
+  // Writers store article URLs as sources; a slug is not wording a reader sees.
+  assert.equal(e({ recoupedSource: 'https://www.broadwayworld.com/article/gpt-musical-recoups-20260512' }).length, 0);
+  assert.equal(e({ recoupedSource: 'GPT summary of https://example.com/a' }).length, 1);
 });
 
 test('stripInternalWording keeps the public part of a mixed citation', () => {
@@ -91,6 +100,15 @@ test('stripInternalWording keeps the public part of a mixed citation', () => {
   assert.equal(stripInternalWording('[PLAUSIBILITY WARNING: cap above $80M] Big musical.'), 'Big musical.');
   assert.equal(stripInternalWording('Deadline (Aug 2023): recouped'), 'Deadline (Aug 2023): recouped');
   assert.equal(stripInternalWording(null), null);
+  // Abbreviations and initials do not end a sentence, so no half-citation is left.
+  assert.equal(stripInternalWording('Per Jr. St. James approx. $1.5M per GPT.'), null);
+  assert.equal(stripInternalWording('Mr. Smith said LLM-based est.'), null);
+  assert.equal(stripInternalWording('Opened at the St. James Theatre. Running cost per GPT estimate.'), 'Opened at the St. James Theatre.');
+  assert.equal(stripInternalWording('Produced by J. Smith. GPT figures.'), 'Produced by J. Smith.');
+  // No dangling separator.
+  assert.equal(stripInternalWording('Cap $12.5M [Broadway World, 2024]; GPT estimate of running cost'), 'Cap $12.5M [Broadway World, 2024]');
+  // A URL is left as is.
+  assert.equal(stripInternalWording('See https://example.com/gpt-review'), 'See https://example.com/gpt-review');
 });
 
 test('sanitizeForPublicRecord yields a record the rules accept, and says what it changed', () => {
@@ -111,12 +129,16 @@ test('sanitizeForPublicRecord yields a record the rules accept, and says what it
   assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, 'closed').entry.designation, 'Fizzle');
   assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, undefined).entry.designation, 'Fizzle');
   assert.deepEqual(sanitizeForPublicRecord(ok, 'open').changed, []);
+  // A citation carrying research wording is research output: cleared, never
+  // trimmed to something that reads like a checked source.
+  assert.equal(sanitizeForPublicRecord({ capitalizationSource: 'SEC filings (GPT Deep Research)' }, 'open').entry.capitalizationSource, null);
 });
 
 test('sanitizeForPublicRecord holds what cleaning would hide', () => {
   // A recoupment claim must keep a public citation.
   assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'GPT DR Batch 3 consensus' }, 'open').holdReason, /public source/);
-  assert.equal(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026) (GPT check)' }, 'open').holdReason, null);
+  assert.match(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026) (GPT check)' }, 'open').holdReason, /public source/);
+  assert.equal(sanitizeForPublicRecord({ recouped: true, recoupedDate: '2026-05', recoupedSource: 'Variety (May 2026)' }, 'open').holdReason, null);
   // A plausibility-flagged model answer waits for a person instead of landing with the flag erased.
   assert.match(sanitizeForPublicRecord({ notes: '[PLAUSIBILITY WARNING: cap above $80M] Big musical.' }, 'open').holdReason, /plausibility/);
 });
@@ -126,12 +148,21 @@ test('buildTipRecord cleans a tip, refuses one the rules reject, never mutates',
   const showList = [{ slug: 'k', status: 'open' }];
   const cleaned = buildTipRecord(commercial, showList, 'k', [{ field: 'capitalizationSource', newValue: 'Deadline (Jan 2026) (GPT)' }, { field: 'capitalization', newValue: 9e6, isEstimate: true }]);
   assert.equal(cleaned.refusedReason, null);
-  assert.equal(cleaned.record.capitalizationSource, 'Deadline (Jan 2026)');
+  assert.equal(cleaned.record.capitalizationSource, null);
   assert.deepEqual(cleaned.record.isEstimate, { capitalization: true });
   assert.equal(commercial.shows.k.capitalization, undefined, 'commercial.json is not mutated');
+  // The changelog gets what was written, not what the model proposed.
+  assert.deepEqual(cleaned.changes, [
+    { field: 'capitalization', oldValue: null, newValue: 9e6 },
+    { field: 'isEstimate', oldValue: null, newValue: { capitalization: true } },
+  ]);
+  const flop = buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Flop' }, { field: 'recouped', newValue: false }]);
+  assert.equal(flop.record.designation, 'TBD');
+  assert.deepEqual(flop.changes, [{ field: 'recouped', oldValue: null, newValue: false }]);
   // Windfall without recouped=true breaks the outcome policy.
   assert.match(buildTipRecord(commercial, showList, 'k', [{ field: 'designation', newValue: 'Windfall' }]).refusedReason, /recouped/);
   assert.match(buildTipRecord(commercial, showList, 'missing', [{ field: 'notes', newValue: 'x' }]).refusedReason, /no commercial record/);
+  assert.match(buildTipRecord(commercial, showList, 'k', [{ field: 'notes', newValue: 'Running.' }]).refusedReason, /nothing to change/);
 });
 
 test('nonprofitOrg is checked against the shows.json venue', () => {
