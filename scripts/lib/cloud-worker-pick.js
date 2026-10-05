@@ -107,6 +107,9 @@ const RECENT_PAUSE_MS = 72 * HOUR_MS;
 // The whole unit suite: 17 tests fail in a cloud container for reasons unrelated
 // to any card, and the Done gate's 90s budget can't run it (BRO-4265, 2026-10-04).
 const CLOUD_UNRUNNABLE_VERIFY_RE = /^node\s+scripts\/run-unit-tests\.js\s*$/;
+// iOS app cards live in the BroadwayScorecard-app repo, which the cloud worker
+// session does not check out (and add_repo prompts), so it would burn a firing.
+const IOS_APP_CARD_RE = /^\W*iOS\b/i;
 // A paused report that names the owner's call as the blocker.
 // Comments automation posts on its own: dispatch receipts (linear-dispatch.js
 // buildDispatchComment, with or without a correlation id), auto-corrections,
@@ -151,6 +154,7 @@ function isStaleAutomationParked(issue, nowMs) {
 function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   const hd = require('./headless-dispatchability.js');
   const drain = require('./linear-drain-parked.js');
+  if (IOS_APP_CARD_RE.test(String(issue.title || ''))) return 'ios-app-repo';
   const cmd = drain.verifyCommand(issue);
   if (!cmd) return 'no-safe-verify';
   if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(cmd).trim())) {
@@ -320,6 +324,6 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
-  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, isStaleAutomationParked, isStartNow, hasStartNowLine, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   findResumeCandidates, findResumeCard,
 };

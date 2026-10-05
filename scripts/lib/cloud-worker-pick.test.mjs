@@ -375,3 +375,11 @@ test("a possessive owner mention (the owner's Mac) is not an owner hold", () => 
     assert.equal(pausedHistorySkipReason([report('paused', text, 10_000)], NOW), 'awaiting-owner', text);
   }
 });
+
+test('iOS app cards are skipped: the cloud worker has no checkout of the app repo', () => {
+  assert.equal(skipReason(issue({ title: 'iOS P1: London market excludes OB shows' }), NOW), 'ios-app-repo');
+  assert.equal(skipReason(issue({ title: '[iOS] swipe gesture swallows scroll' }), NOW), 'ios-app-repo');
+  assert.equal(skipReason(issue({ title: 'Fix iOS Safari layout on web' }), NOW), null);
+  const { pick } = pickCloudCard([issue({ identifier: 'BRO-1', title: 'iOS: app bug' }), issue({ identifier: 'BRO-2' })], { nowMs: NOW });
+  assert.equal(pick.identifier, 'BRO-2');
+});
