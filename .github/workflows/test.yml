@@ -937,6 +937,10 @@ on:
       - 'tests/unit/feedback-request-ledger.test.mjs'
       - 'scripts/notify-feedback-outcomes.js'
       - 'scripts/verify-feedback-requests-live.js'
+      # Colocated test registered in tests/unit-test-manifest.txt (root-level
+      # scripts/*.test.mjs files are NOT globbed) — path-listed so a solo edit
+      # to the test alone still triggers CI.
+      - 'scripts/verify-feedback-requests-live.test.mjs'
       # What the owner actually reads. Added 2026-08-05 after a shipped report
       # linked /shows/{slug} — a route that does not exist — and nothing failed:
       # both report builders were exported but had no test at all. This file

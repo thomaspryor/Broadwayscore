@@ -111,20 +111,22 @@ function resolveEntryShowId(entry, shows) {
   let matches = resolveShowMatches(entry.title, shows);
   if (entry.market) matches = matches.filter((s) => s && s.category === entry.market);
   if (matches.length === 0) return null;
-  // Market scoping (above) rules out the #905 cross-market shape, but a
-  // same-titled revival in the SAME market (e.g. a Broadway revival sharing
-  // its predecessor's title) still ties here. Picking the newest opening is
-  // usually right, but silently — flag it so a wrong pick is visible in the
-  // run log instead of surfacing only as a "see the page" link to the wrong
-  // production's page in the owner's digest.
+  // Market scoping (above) only narrows the field when entry.market is set —
+  // routing allows market: null, so an unscoped entry can still tie across
+  // markets, not just within one (a same-titled revival in the same market
+  // is the more common shape, but not the only one). Guessing a winner here
+  // risks the #905 failure shape: auto-closing the request against the WRONG
+  // production if it happens to satisfy evaluateEntry too. Skip resolving
+  // instead — same "flag, don't guess" treatment resolveShowsForDiagnosis()
+  // gives the diagnose/auto-fix path. The entry stays open and surfaces via
+  // the existing stale-request alert if nobody sets entry.showId manually.
   if (matches.length > 1) {
     console.log(
-      `  ${entry.key}: ambiguous — "${entry.title}" matched ${matches.length} ${entry.market || ''} shows (${matches.map((s) => s.id).join(', ')}); picking newest opening`
+      `  ${entry.key}: ambiguous — "${entry.title}" matched ${matches.length} ${entry.market || ''} shows (${matches.map((s) => s.id).join(', ')}); skipping auto-resolve, needs manual review (set entry.showId in the ledger)`
     );
+    return null;
   }
-  return [...matches].sort((a, b) =>
-    String(b.openingDate || '').localeCompare(String(a.openingDate || ''))
-  )[0].id;
+  return matches[0].id;
 }
 
 /**
