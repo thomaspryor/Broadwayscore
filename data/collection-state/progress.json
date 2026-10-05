@@ -1,29 +1,58 @@
 {
   "processed": [
     "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
-    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json"
+    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json"
+      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
+    ],
     "archiveToday": [],
     "archive": [
-      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json"
+      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
     ]
   },
   "startTime": "2026-10-05T02:25:07.922Z",
-  "lastProcessed": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+  "lastProcessed": "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
   "log": [
     {
       "t": "2026-10-05T02:25:29.454Z",
@@ -36,6 +65,41 @@
       "event": "bb-session",
       "session": "85435ee2",
       "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T02:51:56.731Z",
+      "event": "bb-session",
+      "session": "713f0f74",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T02:52:04.342Z",
+      "event": "bb-session",
+      "session": "bd6cd490",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T02:55:01.285Z",
+      "event": "bb-session",
+      "session": "4ef0809a",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T02:55:20.686Z",
+      "event": "bb-session",
+      "session": "595f4ac2",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T02:59:34.508Z",
+      "event": "bb-session",
+      "session": "6fd5df32",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-05T02:59:35.270Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
