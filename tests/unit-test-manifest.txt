@@ -344,6 +344,7 @@ tests/unit/audit-imageless-scored-shows-push-timeout.test.mjs
 tests/unit/audit-imageless-scored-shows-push.test.mjs
 tests/unit/audit-outlet-registry-gaps.test.mjs
 tests/unit/audit-pre2005-reviews-locked.test.mjs
+tests/unit/audit-push-retry-budgets.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-show-review-gap.test.mjs
 tests/unit/audit-url-collisions.test.mjs
@@ -767,6 +768,7 @@ tests/unit/notion-brain-create-notes.test.mjs
 tests/unit/notion-brain-parse-args.test.mjs
 tests/unit/notion-corpus-io.test.mjs
 tests/unit/notion-corpus.test.mjs
+tests/unit/notion-enforcement-trap.test.mjs
 tests/unit/notion-feedback-integration.test.mjs
 tests/unit/notion-tasks-sync-dedup.test.mjs
 tests/unit/nydcc-legacy-table-parser.test.mjs
