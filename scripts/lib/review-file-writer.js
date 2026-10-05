@@ -301,6 +301,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // but this pairing is a deliberate, already-vetted exception, not a mistake —
   // the outlet's own domain will never match an aggregator's domain by definition.
   let aggregatorScoreStub = false;
+  let outletRegisteredForJunkCheck = true; // set by the registry guard below; true = unknown/skip
 
   // --- Guard: normalize outlet ---
   let outletId = input.outletId || normalizeOutlet(input.outlet);
@@ -584,18 +585,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       input.text || fields.text ||
       EXCERPT_FIELDS.some((f) => input[f] || fields[f])
     );
-    // BRO-2717: an UNREGISTERED outlet on a listing/ticketing/venue/PR-shaped
-    // URL is never a review outlet — refuse before it becomes a new outletId
-    // that turns audit-outlet-registry --strict red. Any source; escape hatch
-    // is the same allowNonReviewUrl flag the submission guard honors.
-    // submit-review-form keeps its own, more specific submitted-non-review-url guard below.
-    if (!outletKnown && input.source !== 'submit-review-form' && !input.allowNonReviewUrl && !(fields && fields.allowNonReviewUrl)) {
-      const junk = require('./review-normalization').classifyJunkOutletForUrl(outletId, input.url, { outletKnown });
-      if (junk.junk) {
-        console.warn(`  ⛔ Skipping unregistered outlet "${outletId}" on non-review URL ${input.url} (${junk.reason})`);
-        return { action: 'skipped', reason: `unregistered-outlet-non-review-url: ${junk.reason}`, guardRefused: true };
-      }
-    }
+    outletRegisteredForJunkCheck = outletKnown;
     if (!outletKnown && !hasText) {
       console.warn(`  ⚠️  Skipping empty stub for unregistered outlet "${outletId}" (showId=${showId}, url=${input.url || 'null'})`);
       return { action: 'skipped', reason: 'unregistered-outlet-empty-stub' };
@@ -1004,6 +994,23 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // Use the refined outletId (not input.outlet) so URL-based disambiguation is respected —
   // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
   const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
+
+  // --- Guard: unregistered outlet on a non-review URL (BRO-2717) ---
+  // An UNREGISTERED outlet on a blocked/listing/ticketing/venue/PR-shaped URL is
+  // never a review outlet; refuse before it becomes a new outletId that turns
+  // audit-outlet-registry --strict red. Create-only (re-merges into an existing
+  // file are left alone, like BRO-4596 below); aggregator-sourced writes keep the
+  // aggregator's own URL by design; submit-review-form has its own, more specific
+  // guard. Escape hatch: allowNonReviewUrl (input or fields).
+  if (input.url && !outletRegisteredForJunkCheck && !(existing && existing.data) && !fs.existsSync(filepath)
+    && input.source !== 'submit-review-form' && !isAggregatorReviewSource(input.source) && !aggregatorScoreStub
+    && !input.allowNonReviewUrl && fields.allowNonReviewUrl !== true) {
+    const junk = require('./review-normalization').classifyJunkOutletForUrl(outletId, input.url, { outletKnown: false });
+    if (junk.junk) {
+      console.warn(`  ⛔ Skipping unregistered outlet "${outletId}" on non-review URL ${input.url} (${junk.reason})`);
+      return { action: 'skipped', reason: `unregistered-outlet-non-review-url:${junk.reason}`, guardRefused: true };
+    }
+  }
 
   // --- Guard: listing / section-index page (BRO-4596) ---
   // A section page (express.co.uk/entertainment/theatre) is not a review. Four

@@ -2122,7 +2122,8 @@ function classifyJunkOutletForUrl(outletName, url, opts = {}) {
   const named = namedNonReviewReason(url);
   if (named) return { junk: true, reason: named };
   const listing = listingPageUrlReason(url);
-  if (listing) return { junk: true, reason: listing };
+  // bare-host (an outlet homepage) is left to the read side, same as the BRO-4596 writer guard.
+  if (listing && listing !== 'bare-host') return { junk: true, reason: listing };
   if (require('./cross-production-guards').isEvergreenListingUrl(url)) {
     return { junk: true, reason: 'evergreen-listing-url' };
   }

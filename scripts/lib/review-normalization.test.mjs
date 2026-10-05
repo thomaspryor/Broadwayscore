@@ -52,3 +52,16 @@ test('writer refuses unregistered outlet on a listing URL from any source, allow
     assert.doesNotMatch(String(r2.reason || ''), /unregistered-outlet-non-review-url/);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('writer leaves aggregator-sourced writes, existing-file merges and bare hosts alone', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2717b-'));
+  const show = 'dog-man-west-end-2026';
+  const w = (outletId, url, source) => createOrMergeReviewFile(show, {
+    outletId, outlet: outletId, criticName: 'Unknown', url, source,
+    fields: { fullText: 'A review. '.repeat(80) },
+  }, { reviewTextsDir: dir });
+  try {
+    assert.doesNotMatch(String(w('newblogx', 'https://www.show-score.com/london-theater/dog-man', 'show-score').reason || ''), /unregistered-outlet-non-review-url/);
+    assert.doesNotMatch(String(w('newblogy', 'https://newblogy.example/', 'gather-reviews').reason || ''), /unregistered-outlet-non-review-url/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});

@@ -186,6 +186,8 @@ const EXPECTED_REJECTION_REASONS = [
   // reseller (review-file-writer.js, 2026-09-25). Correct and permanent, same
   // footing as named-non-review-url.
   'submitted-non-review-url',
+  // BRO-2717: unregistered outlet on a listing/ticketing/venue/PR URL. Correct and permanent.
+  'unregistered-outlet-non-review-url',
   // The byline is a CREATIVE TEAM member of this same show
   // (review-file-writer.js Guard F2, BRO-2915) — a mis-parsed roundup row, not
   // a review. validate-data.js ERRORS on the same shape, so writing it would
@@ -328,6 +330,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'submitted-non-review-url') {
     return `${showId}: ${url} was submitted through the review form but is a ticket, venue, listing or press-release page${detail ? ` (${detail})` : ''} — expected rejection, no action needed. If it really is a review, re-run scripts/ingest-review-from-url.js with --allow-non-review-url.`;
+  }
+  if (reason === 'unregistered-outlet-non-review-url') {
+    return `${showId}: ${url} was refused because its outlet is not in outlet-registry.json and the URL is a listing, ticketing, venue or PR-firm page${detail ? ` (${detail})` : ''} — expected rejection (BRO-2717), no action needed. If the site really publishes reviews, register the outlet first, or re-run with --allow-non-review-url.`;
   }
   if (reason === 'flagged-filename-collision') {
     return `${showId}: ${url} could not be filed — the canonical outlet--critic filename for this write already belongs to a flagged/rejected file (wrongProduction/duplicateOf/rejectionReason) with no confirmed critic match (BRO-3182). `
