@@ -122,8 +122,8 @@ function WelcomeBars({ step, title }: { step: WelcomeStep; title: string }) {
       rows={[
         ['Saw the welcome screen', step.shown],
         ['Saved shows from it', step.picked],
-        ['Imported from another app', step.imported],
-        ['Reached the end', step.completed],
+        ['Finished an import from another app', step.imported],
+        ['Reached the last step', step.completed],
       ]}
     />
   );
@@ -229,7 +229,7 @@ export default function Dashboard() {
             value={fmtN(data?.active?.wau)}
             lines={data?.active ? ['used the site in the last 7 days', `${data.active.dau} in the last 24 hours · ${data.active.mau} in 30 days`] : ['not available this run']}
           />
-          <Tile label="Saved something" value={fmtN(a.withAnything)} lines={[`${pctOf(a.withAnything, a.total)} of accounts`, `${a.withRating} rated · ${a.withWatchlist} watchlist · ${a.withList} lists${a.withSeen ? ` · ${a.withSeen} seen` : ''}`]} />
+          <Tile label="Saved something" value={fmtN(a.withAnything)} lines={[`${pctOf(a.withAnything, a.total)} of accounts`, `${a.withRating} rated · ${a.withWatchlist} watchlist · ${a.withList} lists${a.withSeen ? ` · ${a.withSeen} seen, no stars` : ''}`]} />
         </div>
       )}
 
