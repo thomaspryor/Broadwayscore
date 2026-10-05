@@ -130,9 +130,9 @@ async function main() {
   const nowMs = Date.now();
   // A VERIFY posted as a comment arms a card, and a newer one corrects the
   // description's (BRO-4642). The list query has no comments, so read them for
-  // every card that got past the priority and state gates (~8 requests).
-  const PRE_VERIFY_SKIPS = /^(malformed|not-p0-p1|parked-or-backlog|state-)/;
-  const candidates = issues.filter((iss) => !PRE_VERIFY_SKIPS.test(skipReason(iss, nowMs) || ''));
+  // every P0/P1 card, parked and started (resume) ones included: one request
+  // per 50 cards.
+  const candidates = issues.filter((iss) => !/^(malformed|not-p0-p1)$/.test(skipReason(iss, nowMs) || ''));
   if (candidates.length) {
     try {
       const comments = await listIssueComments(candidates.map((iss) => iss.identifier));

@@ -229,6 +229,12 @@ test('a VERIFY posted as a comment arms the card, newest arming comment wins (BR
   assert.equal(skipReason(fixed, NOW), null);
   const broken = issue({ comments: { nodes: [{ body: 'VERIFY: `node scripts/run-unit-tests.js`', createdAt: at(60_000) }] } });
   assert.equal(skipReason(broken, NOW), 'verify-not-cloud-runnable');
+  const judged = issue({ comments: { nodes: [{ body: 'VERIFY: owner-judgment, needs a product call', createdAt: at(60_000) }] } });
+  assert.equal(skipReason(judged, NOW), 'no-safe-verify');
+  const parkedBare = issue({ state: { name: 'Backlog', type: 'backlog' },
+    description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${bare}`,
+    comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: at(60_000) }] } });
+  assert.equal(skipReason(parkedBare, NOW), null);
 });
 
 test('pickCloudCard returns every eligible card in pick order', () => {

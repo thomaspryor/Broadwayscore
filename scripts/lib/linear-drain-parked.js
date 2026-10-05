@@ -100,7 +100,8 @@ function isSessionParkedDrainable(issue) {
   if (!SESSION_PARKED_PRIORITIES.has(Number(issue.priority))) return false;
   const hd = require('./headless-dispatchability.js');
   if (!hd.isDrainableSessionParked(issue.description || '')) return false;
-  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' });
+  const { blockers } = hd.classifyHeadlessDispatchability(
+    { subject: issue.title, notes: issue.description || '' }, { verifyCmd: verifyCommand(issue) });
   return blockers.every((b) => b.code === hd.BLOCKERS.PARKED_SENTINEL);
 }
 
