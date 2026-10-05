@@ -42,8 +42,11 @@ function renderSkills(root = REPO_ROOT) {
   for (const name of fs.existsSync(skillsDir) ? fs.readdirSync(skillsDir).sort() : []) {
     const dir = path.join(skillsDir, name);
     if (!fs.statSync(dir).isDirectory()) continue;
-    const src = ['SKILL.md', 'skill.md'].map((f) => path.join(dir, f)).find((f) => fs.existsSync(f));
-    if (!src) continue;
+    // Match the real directory entry: on macOS's case-insensitive disk
+    // existsSync('SKILL.md') is true for a skill.md source.
+    const entry = fs.readdirSync(dir).find((f) => f.toLowerCase() === 'skill.md');
+    if (!entry) continue;
+    const src = path.join(dir, entry);
     const rel = path.relative(root, src);
     const { front, body } = splitFrontmatter(fs.readFileSync(src, 'utf8'));
     const fm = front || `name: ${name}\ndescription: ${yamlString(name)}`;
@@ -53,7 +56,7 @@ function renderSkills(root = REPO_ROOT) {
       for (const f of fs.readdirSync(d).sort()) {
         const p = path.join(d, f);
         if (fs.statSync(p).isDirectory()) walk(p);
-        else if (p !== src) out.set(`${name}/${path.relative(dir, p)}`, fs.readFileSync(p, 'utf8'));
+        else if (p.toLowerCase() !== src.toLowerCase()) out.set(`${name}/${path.relative(dir, p)}`, fs.readFileSync(p, 'utf8'));
       }
     };
     walk(dir);

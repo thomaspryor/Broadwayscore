@@ -24,10 +24,12 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const crypto = require('crypto');
 const { spawn } = require('child_process');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
-const SHADOW_DIR = path.join(os.tmpdir(), 'codex-shadow');
+const SHADOW_DIR = process.env.CODEX_HOOK_ADAPTER_SHADOW_DIR || path.join(os.tmpdir(), 'codex-shadow');
+const USER_SETTINGS = process.env.CODEX_HOOK_ADAPTER_USER_SETTINGS || path.join(os.homedir(), '.claude', 'settings.json');
 const SHADOW_MAX_AGE_MS = 2 * 24 * 3600 * 1000;
 // .codex/hooks.json gives the adapter 600s; stop short of it so a slow guard is
 // reported as a timeout (non-blocking, as in Claude) instead of Codex killing us.
@@ -56,7 +58,7 @@ function parseApplyPatch(text) {
 // apply_patch paths are relative to the session cwd; Claude's Edit/Write always
 // carry absolute paths, and guards such as worktree-enforce.sh rely on that.
 function toClaudeToolEvents(toolName, toolInput, cwd) {
-  const input = toolInput || {};
+  const input = typeof toolInput === 'string' ? { command: toolInput } : (toolInput || {});
   if (toolName === 'apply_patch') {
     const patch = input.command || input.patch || input.input || '';
     const abs = (f) => (cwd && !path.isAbsolute(f) ? path.resolve(cwd, f) : f);
@@ -64,8 +66,10 @@ function toClaudeToolEvents(toolName, toolInput, cwd) {
       ? { tool_name: 'Write', tool_input: { file_path: abs(f.file), content: f.added.join('\n') } }
       : { tool_name: 'Edit', tool_input: { file_path: abs(f.file), old_string: '', new_string: f.added.join('\n') } }));
   }
-  if (toolName === 'exec_command' || toolName === 'shell') {
-    const cmd = input.command || input.cmd;
+  // write_stdin types into a running shell, so a `git push` sent that way must
+  // meet the same Bash guards.
+  if (toolName === 'exec_command' || toolName === 'shell' || toolName === 'write_stdin') {
+    const cmd = input.command || input.cmd || input.chars;
     return [{ tool_name: 'Bash', tool_input: { command: Array.isArray(cmd) ? cmd.join(' ') : String(cmd || '') } }];
   }
   return [{ tool_name: toolName, tool_input: input }];
@@ -82,11 +86,15 @@ function matcherMatches(matcher, value) {
 // On the Mac several project hooks self-skip because a user-level copy exists,
 // so reading only the project file would drop those guards for Codex.
 // Identical commands run once, as Claude dedupes them.
-function loadSettings(files) {
+function loadSettings(files, warnings = []) {
   const merged = { hooks: {} };
   const seen = new Set();
   for (const file of files) {
-    let s; try { s = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { continue; }
+    let s;
+    try { s = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) {
+      if (e.code !== 'ENOENT') warnings.push(`cannot read ${file} (${e.message}); its guards did not run`);
+      continue;
+    }
     for (const [event, groups] of Object.entries(s.hooks || {})) {
       for (const g of groups || []) {
         const hooks = (g.hooks || []).filter((h) => {
@@ -154,7 +162,7 @@ function buildShadowLines(messages, toolEvents, lastAssistantMessage) {
     if (e.kind === 'tool_use') {
       items.push({ ts: e.ts, line: { type: 'assistant', timestamp: e.ts, message: { id: e.id, role: 'assistant', content: [{ type: 'tool_use', id: e.id, name: e.name, input: e.input }] } } });
     } else if (e.kind === 'tool_result') {
-      items.push({ ts: e.ts, line: { type: 'user', timestamp: e.ts, message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: e.id, content: e.content }] } } });
+      items.push({ ts: e.ts, line: { type: 'user', timestamp: e.ts, message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: e.id, content: e.content, ...(e.is_error ? { is_error: true } : {}) }] } } });
     }
   }
   items.sort((a, b) => (a.ts < b.ts ? -1 : a.ts > b.ts ? 1 : 0));
@@ -170,15 +178,47 @@ function buildShadowLines(messages, toolEvents, lastAssistantMessage) {
 // Sidecar rows for one tool call. PreToolUse only shows the pending call to its
 // hooks; the call is persisted at PostToolUse, so a call a guard denied never
 // appears in later transcripts as if it had run.
-function toolRows(payload, claudeEvents, withResult) {
+function callId(payload) {
+  if (payload.tool_use_id) return String(payload.tool_use_id);
+  const h = crypto.createHash('sha1').update(JSON.stringify([payload.turn_id, payload.tool_name, payload.tool_input])).digest('hex');
+  return `codex-${h.slice(0, 16)}`;
+}
+
+// Did the call fail? Claude marks failed results is_error, and guards such as
+// verify-edits.sh ignore errored calls as evidence. Codex's payload carries
+// only the output, so read the exit status from the rollout's completion
+// record for this call, or from apply_patch's "Exit code: N" preamble.
+function callFailed(payload) {
+  const resp = typeof payload.tool_response === 'string' ? payload.tool_response : '';
+  const m = /^Exit code: (-?\d+)/.exec(resp);
+  if (m) return Number(m[1]) !== 0;
+  let text; try { text = fs.readFileSync(payload.transcript_path, 'utf8'); } catch { return undefined; }
+  const id = payload.tool_use_id;
+  if (!id || !text.includes(id)) return undefined;
+  for (const line of text.split('\n')) {
+    if (!line.includes(id) || !line.includes('item_completed')) continue;
+    let r; try { r = JSON.parse(line); } catch { continue; }
+    const item = (r.payload && r.payload.item) || {};
+    if (item.id !== id) continue;
+    if (item.status === 'failed') return true;
+    if (typeof item.exit_code === 'number') return item.exit_code !== 0;
+  }
+  return undefined;
+}
+
+// Sidecar rows for one tool call. PreToolUse only shows the pending call to its
+// hooks; the call is persisted at PostToolUse, so a call a guard denied never
+// appears in later transcripts as if it had run.
+function toolRows(payload, claudeEvents, withResult, failed) {
   const ts = new Date().toISOString();
   const rows = [];
+  const base = callId(payload);
   claudeEvents.forEach((ev, i) => {
-    const id = `${payload.tool_use_id || 'codex'}#${i}`;
+    const id = `${base}#${i}`;
     rows.push({ key: `u:${id}`, kind: 'tool_use', ts, id, name: ev.tool_name, input: ev.tool_input });
     if (withResult) {
       const content = typeof payload.tool_response === 'string' ? payload.tool_response : JSON.stringify(payload.tool_response || '');
-      rows.push({ key: `r:${id}`, kind: 'tool_result', ts, id, content });
+      rows.push({ key: `r:${id}`, kind: 'tool_result', ts, id, content, ...(failed ? { is_error: true } : {}) });
     }
   });
   return rows;
@@ -192,15 +232,18 @@ function pruneShadowDir(now = Date.now()) {
   }
 }
 
-function writeShadowTranscript(payload) {
+// Tool events can fire in parallel, so each call gets its own snapshot (removed
+// once its hooks finish). Other events share one stable path per session:
+// verify-edits.sh keys its Stop-chain state on the transcript path.
+function writeShadowTranscript(payload, perCall) {
   const sid = String(payload.session_id || `unknown-${process.ppid}`).replace(/[^A-Za-z0-9_-]/g, '');
-  fs.mkdirSync(SHADOW_DIR, { recursive: true });
+  fs.mkdirSync(SHADOW_DIR, { recursive: true, mode: 0o700 });
   const sidecar = path.join(SHADOW_DIR, `${sid}.tools.jsonl`);
-  const shadow = path.join(SHADOW_DIR, `${sid}.jsonl`);
-  return { sidecar, shadow, build(pending = []) {
+  const shadow = path.join(SHADOW_DIR, perCall ? `${sid}.${payload.hook_event_name}.${callId(payload).replace(/[^A-Za-z0-9_-]/g, '')}.jsonl` : `${sid}.jsonl`);
+  return { sidecar, shadow, perCall, build(pending = []) {
     const lines = buildShadowLines(rolloutMessages(payload.transcript_path), [...readSidecar(sidecar), ...pending], payload.last_assistant_message);
     const tmp = `${shadow}.${process.pid}.tmp`;
-    fs.writeFileSync(tmp, lines.map((l) => JSON.stringify(l)).join('\n') + (lines.length ? '\n' : ''));
+    fs.writeFileSync(tmp, lines.map((l) => JSON.stringify(l)).join('\n') + (lines.length ? '\n' : ''), { mode: 0o600 });
     fs.renameSync(tmp, shadow);
     return shadow;
   } };
@@ -213,7 +256,8 @@ function blockingOutput(res) {
   if (!out.startsWith('{')) return null;
   let j; try { j = JSON.parse(out); } catch { return null; }
   const hso = j.hookSpecificOutput || {};
-  if (j.decision === 'block' || j.continue === false || hso.permissionDecision === 'deny') {
+  // "ask" would prompt a person in Claude; a Codex run has nobody to ask.
+  if (j.decision === 'block' || j.continue === false || hso.permissionDecision === 'deny' || hso.permissionDecision === 'ask') {
     return { reason: j.reason || hso.permissionDecisionReason || j.stopReason || 'blocked by hook', json: j };
   }
   return null;
@@ -231,25 +275,53 @@ function contextText(res) {
   return out;
 }
 
-// Resolves to { status, stdout, stderr } like spawnSync. A timeout kills the
-// hook and counts as a non-blocking error, as in Claude.
+// Resolves to { status, stdout, stderr, timedOut } like spawnSync. Resolves
+// when the hook process exits (plus a short drain), not when its pipes close:
+// a hook that leaves a background child holding stdout must not stall us.
+// A timeout kills the hook's process group and counts as a non-blocking error,
+// as in Claude.
 function runHook(hook, payload, env, cwd, timeoutMs) {
   return new Promise((resolve) => {
     let stdout = '';
     let stderr = '';
+    let done = false;
     let child;
+    const finish = (status, timedOut = false) => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      try { child.stdout.destroy(); child.stderr.destroy(); } catch { /* gone */ }
+      resolve({ status, stdout, stderr, timedOut });
+    };
     try { child = spawn('bash', ['-c', hook.command], { cwd, env, detached: true }); } catch (e) {
-      resolve({ status: 1, stdout: '', stderr: String(e.message) });
+      resolve({ status: 1, stdout: '', stderr: String(e.message), timedOut: false });
       return;
     }
-    const timer = setTimeout(() => { try { process.kill(-child.pid, 'SIGKILL'); } catch { child.kill('SIGKILL'); } }, Math.max(1000, timeoutMs));
+    const timer = setTimeout(() => {
+      try { process.kill(-child.pid, 'SIGKILL'); } catch { try { child.kill('SIGKILL'); } catch { /* gone */ } }
+      finish(null, true);
+    }, Math.max(1000, timeoutMs));
     child.stdout.on('data', (d) => { stdout += d; });
     child.stderr.on('data', (d) => { stderr += d; });
-    child.on('error', (e) => { clearTimeout(timer); resolve({ status: 1, stdout, stderr: stderr + e.message }); });
-    child.on('close', (code) => { clearTimeout(timer); resolve({ status: code, stdout, stderr }); });
+    child.on('error', (e) => { stderr += e.message; finish(1); });
+    child.on('close', (code) => finish(code));
+    child.on('exit', (code) => setTimeout(() => finish(code), 250));
     child.stdin.on('error', () => { /* hook exited without reading stdin */ });
     child.stdin.end(JSON.stringify(payload));
   });
+}
+
+function hookName(hook) {
+  const m = /([\w.-]+\.(?:sh|mjs|js|py))/.exec(hook.command);
+  return m ? m[1] : hook.command.slice(0, 60);
+}
+
+function emitBlock(hookEvent, reason) {
+  if (hookEvent === 'PreToolUse') {
+    process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: 'deny', permissionDecisionReason: reason } }) + '\n');
+  } else {
+    process.stdout.write(JSON.stringify({ decision: 'block', reason }) + '\n');
+  }
 }
 
 async function main() {
@@ -259,6 +331,7 @@ async function main() {
   try { payload = JSON.parse(fs.readFileSync(0, 'utf8') || '{}'); } catch { payload = {}; }
   const hookEvent = event || payload.hook_event_name;
   if (!hookEvent) process.exit(0);
+  // Debug aid: CODEX_HOOK_ADAPTER_LOG=<file> records every raw Codex payload.
   if (process.env.CODEX_HOOK_ADAPTER_LOG) {
     try { fs.appendFileSync(process.env.CODEX_HOOK_ADAPTER_LOG, JSON.stringify(payload) + '\n'); } catch { /* debug only */ }
   }
@@ -268,56 +341,77 @@ async function main() {
     process.stderr.write('codex hook-adapter: no .claude/settings.json; guards skipped\n');
     process.exit(0);
   }
-  const settings = loadSettings([path.join(os.homedir(), '.claude', 'settings.json'), projectSettings]);
+  const warnings = [];
+  const settings = loadSettings([USER_SETTINGS, projectSettings], warnings);
 
   const cwd = payload.cwd && fs.existsSync(payload.cwd) ? payload.cwd : REPO_ROOT;
   const env = { ...process.env, CLAUDE_PROJECT_DIR: REPO_ROOT, CLAUDE_CODE_SESSION_ID: payload.session_id || '', CODEX_HOOK_ADAPTER: '1' };
-  if (hookEvent === 'SessionStart') pruneShadowDir();
-  const shadow = writeShadowTranscript(payload);
-
   const isTool = hookEvent === 'PreToolUse' || hookEvent === 'PostToolUse';
   const claudeEvents = isTool ? toClaudeToolEvents(payload.tool_name, payload.tool_input, cwd) : [null];
-  let pending = [];
-  if (hookEvent === 'PreToolUse') pending = toolRows(payload, claudeEvents, false);
-  else if (hookEvent === 'PostToolUse') {
-    try { fs.appendFileSync(shadow.sidecar, toolRows(payload, claudeEvents, true).map((r) => JSON.stringify(r)).join('\n') + '\n'); } catch { /* best effort */ }
-  }
-  let transcriptPath = payload.transcript_path;
-  try { transcriptPath = shadow.build(pending); } catch { /* fall back to the rollout path */ }
-
-  const deadline = Date.now() + BUDGET_MS;
-  const context = [];
-  // Files of one apply_patch run in order (Claude would see separate calls);
-  // the hooks for one call run in parallel, as Claude runs them.
-  for (const ce of claudeEvents) {
-    const matchValue = isTool ? ce.tool_name : (hookEvent === 'SessionStart' ? (payload.source || 'startup') : undefined);
-    const claudePayload = { ...payload, hook_event_name: hookEvent, transcript_path: transcriptPath, ...(ce || {}) };
-    const hooks = claudeHooksFor(settings, hookEvent, matchValue);
-    const results = await Promise.all(hooks.map((hook) => runHook(hook, claudePayload, env, cwd,
-      Math.min((hook.timeout || 60) * 1000, deadline - Date.now()))));
-    for (const res of results) {
-      const block = blockingOutput(res);
-      if (block) {
-        if (hookEvent === 'PreToolUse') {
-          process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: 'deny', permissionDecisionReason: block.reason } }) + '\n');
-        } else {
-          process.stdout.write(JSON.stringify({ decision: 'block', reason: block.reason }) + '\n');
-        }
-        return; // let stdout drain; process.exit() can truncate a piped write
-      }
-      const text = contextText(res);
-      if (text) context.push(text);
+  // An edit we cannot read must not slip past every file guard.
+  if (isTool && !claudeEvents.length) {
+    if (hookEvent === 'PreToolUse') {
+      emitBlock(hookEvent, `codex hook-adapter could not read this ${payload.tool_name} call, so the repo guards cannot check it. Split it into one file per apply_patch, or use a shell command.`);
     }
+    return;
   }
-  if (context.length && (hookEvent === 'SessionStart' || hookEvent === 'UserPromptSubmit')) {
-    process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: hookEvent, additionalContext: context.join('\n\n') } }) + '\n');
-  } else if (context.length) {
-    process.stdout.write(JSON.stringify({ systemMessage: context.join('\n\n').slice(0, 4000) }) + '\n');
+
+  // The transcript is a convenience for the guards; failing to write it must
+  // never stop the guards themselves from running.
+  let transcriptPath = payload.transcript_path;
+  let shadow = null;
+  try {
+    if (hookEvent === 'SessionStart') pruneShadowDir();
+    shadow = writeShadowTranscript(payload, isTool);
+    let pending = [];
+    if (hookEvent === 'PreToolUse') pending = toolRows(payload, claudeEvents, false);
+    else if (hookEvent === 'PostToolUse') {
+      fs.appendFileSync(shadow.sidecar, toolRows(payload, claudeEvents, true, callFailed(payload)).map((r) => JSON.stringify(r)).join('\n') + '\n', { mode: 0o600 });
+    }
+    transcriptPath = shadow.build(pending);
+  } catch (e) {
+    warnings.push(`shadow transcript unavailable (${e.message})`);
+  }
+
+  try {
+    const deadline = Date.now() + BUDGET_MS;
+    const context = [];
+    // Files of one apply_patch run in order (Claude would see separate calls);
+    // the hooks for one call run in parallel, as Claude runs them.
+    for (const ce of claudeEvents) {
+      const matchValue = isTool ? ce.tool_name : (hookEvent === 'SessionStart' ? (payload.source || 'startup') : undefined);
+      const claudePayload = { ...payload, hook_event_name: hookEvent, transcript_path: transcriptPath, ...(ce || {}) };
+      const hooks = claudeHooksFor(settings, hookEvent, matchValue);
+      const results = await Promise.all(hooks.map((hook) => runHook(hook, claudePayload, env, cwd,
+        Math.min((hook.timeout || 60) * 1000, deadline - Date.now()))));
+      for (let i = 0; i < results.length; i++) {
+        const res = results[i];
+        const block = blockingOutput(res);
+        if (block) { emitBlock(hookEvent, block.reason); return; }
+        // Claude shows a crashed or timed-out guard to the user; so do we.
+        if (res.timedOut) warnings.push(`guard ${hookName(hooks[i])} timed out and did not decide`);
+        else if (res.status !== 0) warnings.push(`guard ${hookName(hooks[i])} failed (exit ${res.status}): ${(res.stderr || '').trim().slice(0, 300)}`);
+        const text = contextText(res);
+        if (text) context.push(text);
+      }
+    }
+    if (warnings.length) context.push(`codex hook-adapter: ${warnings.join('; ')}`);
+    if (context.length && (hookEvent === 'SessionStart' || hookEvent === 'UserPromptSubmit')) {
+      process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: hookEvent, additionalContext: context.join('\n\n') } }) + '\n');
+    } else if (context.length) {
+      process.stdout.write(JSON.stringify({ systemMessage: context.join('\n\n').slice(0, 4000) }) + '\n');
+    }
+  } finally {
+    if (shadow && shadow.perCall) { try { fs.unlinkSync(shadow.shadow); } catch { /* not written */ } }
   }
 }
 
 if (require.main === module) {
-  main().catch((e) => { process.stderr.write(`codex hook-adapter: ${e.stack || e}\n`); });
+  // A crash must not quietly switch the guards off: refuse the tool call.
+  main().catch((e) => {
+    process.stderr.write(`codex hook-adapter: ${e.stack || e}\n`);
+    if (process.argv.includes('PreToolUse')) emitBlock('PreToolUse', `codex hook-adapter crashed, so the repo guards could not check this call: ${e.message}`);
+  });
 }
 
-module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, blockingOutput, contextText };
+module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, callFailed, runHook, blockingOutput, contextText };
