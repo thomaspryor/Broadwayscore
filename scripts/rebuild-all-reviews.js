@@ -3418,6 +3418,7 @@ showDirs.forEach(showId => {
         // the wrongProductionAutoClearedAt discipline this file already follows
         // for the sibling field (see ~line 2937).
         data.wrongShowAutoClearedAt = new Date().toISOString().split('T')[0];
+        if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongShow false-positive cleared (UK/major outlet URL)');
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
@@ -3431,6 +3432,7 @@ showDirs.forEach(showId => {
         const reason = data.allowCrossMarket ? 'allowCrossMarket' : 'allowEarlyDate';
         data.wrongShowAutoCleared = `rebuild: ${reason} bypasses wrongShow`;
         data.wrongShowAutoClearedAt = new Date().toISOString().split('T')[0];
+        if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, `wrongShow false-positive cleared (${reason})`);
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
