@@ -6,6 +6,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { createSortToggle } from '@/lib/sort-toggle';
 import { compareScore } from '@/lib/browse-sort';
+import { sectionLabelsContiguous } from '@/lib/browse-sections';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -69,7 +70,8 @@ interface BrowseListClientProps {
   /** Optional subtitle shown on same line as toggle (e.g. "Last updated: Feb 2026") */
   subtitle?: string;
   /** Optional per-show section labels computed server-side. Shows with the same
-   *  label are grouped under an H2 heading. Only displayed when using default sort. */
+   *  label are grouped under an H2 heading. Only displayed while every label is one
+   *  contiguous run in the order on screen (see src/lib/browse-sections.js). */
   sectionLabels?: string[];
   /** Upcoming-shows pages: relabel the opening-date sorts to "Soonest"/"Latest"
    *  since every show is in the future — "Oldest"/"Newest" reads as past tense. */
@@ -185,6 +187,14 @@ export default function BrowseListClient({
     return result;
   }, [initialShows, typeFilter, sort, scoreMode]);
 
+  // Headings only when every section label is one contiguous run in the order on
+  // screen; otherwise a heading would repeat or sit over the wrong rows.
+  const headingsOk = useMemo(() => {
+    if (!sectionLabels) return false;
+    const indexOf = new Map(initialShows.map((s, i) => [s, i] as const));
+    return sectionLabelsContiguous(filteredAndSorted.map(s => sectionLabels[indexOf.get(s)!]));
+  }, [sectionLabels, filteredAndSorted, initialShows]);
+
   const showControls = availableSorts.length > 1 || showTypeFilter || (showScoreToggle && hasAnyAudienceData);
   // score_asc (reversed Critics) would otherwise label the lowest-scored show
   // "#1" — misleading on a page that advertises itself as ranked by critic score.
@@ -247,13 +257,13 @@ export default function BrowseListClient({
       {filteredAndSorted.length > 0 ? (
         <div className="space-y-3">
           {filteredAndSorted.map((show, index) => {
-            // Section headings: only show when using default sort and labels exist
-            const isDefaultSort = sort === 'custom' || sort === 'score';
+            // Section headings: only when labels exist and each one is a single
+            // contiguous run in the order on screen (see browse-sections.js)
             const originalIndex = initialShows.indexOf(show);
-            const label = sectionLabels && isDefaultSort ? sectionLabels[originalIndex] : undefined;
+            const label = headingsOk ? sectionLabels![originalIndex] : undefined;
             const prevShow = index > 0 ? filteredAndSorted[index - 1] : null;
             const prevOriginalIndex = prevShow ? initialShows.indexOf(prevShow) : -1;
-            const prevLabel = prevShow && sectionLabels && isDefaultSort ? sectionLabels[prevOriginalIndex] : undefined;
+            const prevLabel = prevShow && headingsOk ? sectionLabels![prevOriginalIndex] : undefined;
             const showSectionHeader = label && label !== prevLabel;
 
             return (
