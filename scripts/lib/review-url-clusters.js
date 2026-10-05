@@ -21,9 +21,26 @@ const fs = require('fs');
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
 
+// Query keys that carry the ARTICLE identity on query-ID hosts (abcnews.go.com/
+// wireStory?id=N, talkinbroadway d.php?id=N, londontheatrereviews post.cfm?p=N).
+// Stripping them merges different articles (two AP reviews by different critics
+// collapsed to one key — BRO-2274 review). Tracking params (utm_*, fbclid) are
+// still dropped.
+const ARTICLE_ID_QUERY_KEY = /^(id|p|pid|aid|sid|[a-z_]*_id|(story|article|post|review|page)id?)$/i;
+
 function canonicalReviewUrl(url) {
   if (!url || typeof url !== 'string') return '';
-  return url.split('#')[0].split('?')[0].replace(/\/+$/, '').toLowerCase();
+  const noHash = url.split('#')[0];
+  const qi = noHash.indexOf('?');
+  const base = (qi === -1 ? noHash : noHash.slice(0, qi)).replace(/\/+$/, '');
+  let out = base.toLowerCase();
+  if (qi !== -1) {
+    const kept = noHash.slice(qi + 1).split('&')
+      .filter((kv) => ARTICLE_ID_QUERY_KEY.test(kv.split('=')[0]))
+      .map((kv) => kv.toLowerCase()).sort();
+    if (kept.length) out += '?' + kept.join('&');
+  }
+  return out;
 }
 
 /** Outlet key for grouping — a URL is a review's identity WITHIN an outlet.

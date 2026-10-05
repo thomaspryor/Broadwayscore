@@ -1842,7 +1842,7 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   // scores. Byline-explosion detector: scripts/audit-review-url-clusters.js.
   //
   // No critic-authority guard here, deliberately (BRO-2274): the BRO-730 guard in
-  // gather-reviews.js protects a real second review from being lost, but one URL is
+  // gather-reviews.js protects a real second review from being lost, but one canonical URL (query-ID params kept) is
   // one article, so two differently named critics on one canonical URL means one
   // byline is wrong (corpus 2026-10-05: 154 such groups, e.g. nytimes
   // Brantley+Isherwood). A guard would resurrect byline explosion. Pinned by
