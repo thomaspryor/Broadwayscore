@@ -10,7 +10,7 @@
  * Decisions live in src/lib/welcome-onboarding.ts.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Modal, ModalCloseButton, ShowSearchDropdown, ToggleBar } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
@@ -76,8 +76,10 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     if (!preview) trackUgc(event, props);
   }, [preview]);
 
+  // Which list it opened on, so the welcome funnel can split Broadway from West End.
+  const openedOn = useRef(market);
   useEffect(() => {
-    track('onboarding_shown');
+    track('onboarding_shown', { market: openedOn.current });
   }, [track]);
 
   useEffect(() => {
@@ -171,6 +173,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     setStep(to);
     if (to === 'done') {
       track('onboarding_completed', {
+        market,
         shows_added: addedNow,
         imported: importedNow,
         destination: welcomeFinishDestination({ showsAdded: addedNow, imported: importedNow }),

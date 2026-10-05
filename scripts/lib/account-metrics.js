@@ -80,10 +80,21 @@ const ACTION_LABELS = {
   import_completed: 'Imported their shows',
   sign_out: 'Signed out',
   account_deleted: 'Deleted their account',
+  // The welcome screen after a first sign-in (BRO-4619, WelcomeSheet.tsx).
+  onboarding_shown: 'Saw the welcome screen',
+  onboarding_step_completed: 'Finished a welcome step',
+  onboarding_skipped: 'Skipped or closed the welcome screen',
+  onboarding_completed: 'Finished the welcome screen',
+  onboarding_search_pick: 'Searched for a show on the welcome screen',
+  onboarding_market_switch: 'Switched Broadway / West End on the welcome screen',
+  onboarding_import_source: 'Picked an app to import from on the welcome screen',
 };
 const ACTION_EVENTS = Object.keys(ACTION_LABELS);
 // A sign-up "took" when the person saved something.
 const ACTIVATION_EVENTS = ['rating_submitted', 'watchlist_add', 'list_created', 'list_item_added', 'import_completed'];
+// Welcome-screen picks are written straight to reviews / seen_unrated and fire
+// no rating_submitted, so a saved pick counts on its own.
+const WELCOME_PICKED = "event = 'onboarding_step_completed' AND toString(properties.step) = 'shows' AND toFloat(properties.shows_added) > 0";
 
 // Where the sign-in prompt was opened (`source` on sign_in_prompt_shown,
 // `context` on sign_in_started / sign_in_completed).
@@ -182,14 +193,46 @@ FROM (
     countIf(event = 'sign_in_prompt_shown') AS n_shown,
     countIf(event = 'sign_in_started') AS n_started,
     countIf(event = 'sign_in_completed') AS n_completed,
-    countIf(event IN (${sqlList(ACTIVATION_EVENTS)})) AS n_acted
+    countIf(event IN (${sqlList(ACTIVATION_EVENTS)}) OR (${WELCOME_PICKED})) AS n_acted
   FROM events
   WHERE timestamp >= now() - INTERVAL 30 DAY
-    AND event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed', ${sqlList(ACTIVATION_EVENTS)})
+    AND event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed', 'onboarding_step_completed', ${sqlList(ACTIVATION_EVENTS)})
   GROUP BY distinct_id
 )
 WHERE n_shown > 0 OR n_started > 0 OR n_completed > 0
 GROUP BY src, dev ORDER BY shown DESC LIMIT 500`,
+    // The welcome screen, one row per device that saw it, by device type.
+    // closed_early = closed with the X before the last step (picks are still
+    // saved on the way out, so a device can be both picked and closed_early).
+    welcome: `
+SELECT dev,
+  count() AS shown,
+  countIf(n_picked > 0) AS picked,
+  countIf(n_skipped_shows > 0) AS skipped_shows,
+  countIf(n_import_tapped > 0) AS import_tapped,
+  countIf(n_imported > 0) AS imported,
+  countIf(n_completed > 0) AS completed,
+  countIf(n_closed > 0) AS closed_early,
+  countIf(n_searched > 0) AS searched,
+  countIf(n_switched > 0) AS switched_market
+FROM (
+  SELECT distinct_id,
+    argMinIf(if(coalesce(properties.$host, '') = '', 'App', properties.$device_type), timestamp, event = 'onboarding_shown') AS dev,
+    countIf(event = 'onboarding_shown') AS n_shown,
+    countIf(${WELCOME_PICKED}) AS n_picked,
+    countIf(event = 'onboarding_skipped' AND toString(properties.step) = 'shows' AND toString(properties.via) = 'skip') AS n_skipped_shows,
+    countIf(event = 'onboarding_import_source') AS n_import_tapped,
+    countIf(event = 'onboarding_step_completed' AND toString(properties.step) = 'import') AS n_imported,
+    countIf(event = 'onboarding_completed') AS n_completed,
+    countIf(event = 'onboarding_skipped' AND toString(properties.via) = 'close' AND toString(properties.step) != 'done') AS n_closed,
+    countIf(event = 'onboarding_search_pick') AS n_searched,
+    countIf(event = 'onboarding_market_switch') AS n_switched
+  FROM events
+  WHERE timestamp >= now() - INTERVAL 30 DAY AND event LIKE 'onboarding_%'
+  GROUP BY distinct_id
+)
+WHERE n_shown > 0
+GROUP BY dev ORDER BY shown DESC LIMIT 50`,
     // Health over the last 24 h, for the alerts. No Real Users lens: the
     // owner's own failed sign-in counts.
     health: `
@@ -254,7 +297,7 @@ function slimUsers(rawUsers, { ownerEmail } = {}) {
 }
 
 /**
- * Account counts. `activity` = { ratings: [{user_id}], watchlist: [...], lists: [...] }
+ * Account counts. `activity` = { ratings: [{user_id}], watchlist, lists, seen (seen_unrated) }
  * (rows from the service-role REST API; only user_id is read).
  */
 function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
@@ -278,7 +321,9 @@ function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
   const ratings = per(activity.ratings);
   const watch = per(activity.watchlist);
   const lists = per(activity.lists);
-  const any = new Set([...ratings.owners, ...watch.owners, ...lists.owners]);
+  // "Seen it, no stars" (welcome-screen picks and My Shows' To Be Rated).
+  const seen = per(activity.seen);
+  const any = new Set([...ratings.owners, ...watch.owners, ...lists.owners, ...seen.owners]);
 
   const today = isoDay(now);
   const byDay = new Map();
@@ -331,6 +376,7 @@ function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
     withRating: ratings.owners.size,
     withWatchlist: watch.owners.size,
     withList: lists.owners.size,
+    withSeen: seen.owners.size,
     withAnything: any.size,
     ratings: ratings.n,
     watchlistItems: watch.n,
@@ -377,6 +423,20 @@ function summarizeActions(rows) {
   return rows
     .map((r) => ({ event: r.event, label: ACTION_LABELS[r.event] || r.event, last7: num(r.last7), last30: num(r.last30), users30: num(r.users30) }))
     .sort((a, b) => b.last30 - a.last30);
+}
+
+const WELCOME_STEPS = ['shown', 'picked', 'skipped_shows', 'import_tapped', 'imported', 'completed', 'closed_early', 'searched', 'switched_market'];
+
+/** Welcome rows (per device type) → phone / computer / other / all totals. */
+function summarizeWelcome(rows) {
+  const blank = () => Object.fromEntries(WELCOME_STEPS.map((k) => [k, 0]));
+  const totals = { mobile: blank(), desktop: blank(), other: blank(), all: blank() };
+  for (const r of rows) {
+    for (const t of [totals[deviceGroup(r.dev)], totals.all]) {
+      for (const k of WELCOME_STEPS) t[k] += num(r[k]);
+    }
+  }
+  return totals;
 }
 
 /** Merge Supabase new-accounts-per-day with PostHog signed-in-users-per-day. */
@@ -440,6 +500,7 @@ function buildDashboardData({ now = Date.now(), accounts, ph }) {
     active: active ? { dau: num(active.dau), wau: num(active.wau), mau: num(active.mau) } : null,
     actions: phOk('actions') ? summarizeActions(ph.actions) : null,
     funnel: phOk('funnel') ? summarizeFunnel(ph.funnel) : null,
+    welcome: phOk('welcome') ? summarizeWelcome(ph.welcome) : null,
     health: phOk('health') ? (ph.health[0] || {}) : null,
     failed: Object.entries(ph || {}).filter(([, v]) => v == null).map(([k]) => k),
   };
@@ -456,7 +517,8 @@ function weeklySummaryLines(d) {
   const skipped = [ex.yours ? `${ex.yours} of yours` : '', ex.test ? `${ex.test} test` : ''].filter(Boolean).join(' and ');
   lines.push(`${plural(a.total, 'real account', 'real accounts')} in total, ${a.newLast7} new this past week${skipped ? ` (not counting ${skipped})` : ''}.`);
   if (d.active) lines.push(`${plural(d.active.wau, 'signed-in person', 'signed-in people')} used the site this week (${d.active.dau} in the last day, ${d.active.mau} in the last 30 days).`);
-  lines.push(`${plural(a.withAnything, 'account has', 'accounts have')} saved something: ${a.withRating} rated a show, ${a.withWatchlist} used the watchlist, ${a.withList} made a list.`);
+  const seenPart = a.withSeen ? `, ${a.withSeen} marked shows as seen without stars` : '';
+  lines.push(`${plural(a.withAnything, 'account has', 'accounts have')} saved something: ${a.withRating} rated a show, ${a.withWatchlist} used the watchlist, ${a.withList} made a list${seenPart}.`);
   const f = d.funnel && d.funnel.totals;
   if (f && (f.all.shown || f.all.started || f.all.completed)) {
     const part = (s, name) => (s.shown || s.started || s.completed ? `${name}: ${s.shown} saw the sign-in box, ${s.started} started, ${s.completed} finished` : null);
@@ -465,6 +527,10 @@ function weeklySummaryLines(d) {
     const app = f.other && (f.other.started || f.other.completed) ? `iPhone app / other: ${f.other.started} started, ${f.other.completed} finished` : null;
     const parts = [part(f.mobile, 'Phones'), part(f.desktop, 'Computers'), app].filter(Boolean);
     if (parts.length) lines.push(`Sign-up funnel, last 30 days. ${parts.join('. ')}.`);
+  }
+  const w = d.welcome && d.welcome.all;
+  if (w && w.shown) {
+    lines.push(`Welcome screen, last 30 days: ${w.shown} saw it, ${w.picked} saved shows from it, ${w.imported} imported from another app, ${w.completed} reached the end, ${w.closed_early} closed it early.`);
   }
   if (d.actions && d.actions.length) {
     const top = d.actions.filter((x) => x.last7 > 0).slice(0, 3).map((x) => `${x.label.toLowerCase()} (${x.last7})`);
@@ -489,6 +555,8 @@ module.exports = {
   summarizeAccounts,
   summarizeFunnel,
   summarizeActions,
+  summarizeWelcome,
+  WELCOME_STEPS,
   mergeDaily,
   evaluateAlerts,
   buildDashboardData,

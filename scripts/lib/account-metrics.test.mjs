@@ -228,3 +228,56 @@ test('summarizeAccounts counts real people only and reports what it left out', (
   const line = m.weeklySummaryLines(m.buildDashboardData({ now: NOW, accounts: a, ph: {} }))[0];
   assert.match(line, /1 real account in total, 1 new this past week \(not counting 1 of yours and 1 test\)/);
 });
+
+// BRO-4619 welcome screen.
+test('summarizeAccounts counts a "seen it, no stars" pick as saving something', () => {
+  const users = m.slimUsers([{ id: 'a', created_at: iso(1) }, { id: 'b', created_at: iso(1) }]);
+  const s = m.summarizeAccounts(users, { ratings: [], watchlist: [], lists: [], seen: [{ user_id: 'b' }, { user_id: 'b' }] }, NOW);
+  assert.equal(s.withSeen, 1);
+  assert.equal(s.withAnything, 1);
+  assert.deepEqual(s.people.map((p) => p.saved).sort(), [false, true]);
+  // An older caller with no seen rows still works.
+  assert.equal(m.summarizeAccounts(users, { ratings: [], watchlist: [], lists: [] }, NOW).withSeen, 0);
+});
+
+test('the sign-up funnel counts welcome-screen picks as saving something', () => {
+  const q = m.buildQueries().funnel;
+  assert.match(q, /onboarding_step_completed' AND toString\(properties\.step\) = 'shows' AND toFloat\(properties\.shows_added\) > 0/);
+  assert.match(q, /event IN \('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed', 'onboarding_step_completed'/);
+});
+
+test('welcome query keeps only devices that saw the welcome screen', () => {
+  const q = m.buildQueries().welcome;
+  assert.match(q, /WHERE n_shown > 0/);
+  for (const k of m.WELCOME_STEPS) assert.match(q, new RegExp(`AS ${k}\\b`), `query returns ${k}`);
+});
+
+test('summarizeWelcome splits phones from computers and feeds the dashboard and Monday email', () => {
+  const rows = [
+    { dev: 'Mobile', shown: 5, picked: 3, skipped_shows: 1, import_tapped: 2, imported: 1, completed: 3, closed_early: 2, searched: 1, switched_market: 0 },
+    { dev: 'Desktop', shown: 2, picked: 1, imported: 0, completed: 1, closed_early: 1 },
+  ];
+  const w = m.summarizeWelcome(rows);
+  assert.equal(w.mobile.shown, 5);
+  assert.equal(w.desktop.picked, 1);
+  assert.equal(w.desktop.searched, 0, 'missing columns read as 0');
+  assert.equal(w.all.shown, 7);
+  assert.equal(w.all.closed_early, 3);
+  const accounts = m.summarizeAccounts([], { ratings: [], watchlist: [], lists: [] }, NOW);
+  const d = m.buildDashboardData({ now: NOW, accounts, ph: { welcome: rows } });
+  assert.equal(d.welcome.all.completed, 4);
+  assert.ok(m.weeklySummaryLines(d).includes(
+    'Welcome screen, last 30 days: 7 saw it, 4 saved shows from it, 1 imported from another app, 4 reached the end, 3 closed it early.'));
+  const failed = m.buildDashboardData({ now: NOW, accounts, ph: { welcome: null } });
+  assert.equal(failed.welcome, null);
+  assert.deepEqual(failed.failed, ['welcome']);
+  assert.ok(!m.weeklySummaryLines(failed).some((l) => l.startsWith('Welcome screen')));
+});
+
+test('every onboarding_* event the site sends has a plain-English label', () => {
+  const root = path.resolve(here, '../..');
+  const out = execFileSync('grep', ['-rhoE', "(track|trackUgc)\\('onboarding_[a-z_]+'", path.join(root, 'src')], { encoding: 'utf8' });
+  const sent = [...new Set(out.trim().split('\n').map((l) => l.match(/'(onboarding_[a-z_]+)'/)[1]))];
+  assert.ok(sent.length >= 7, `found ${sent.length} onboarding events`);
+  for (const e of sent) assert.ok(m.ACTION_LABELS[e], `${e} needs a label in ACTION_LABELS`);
+});
