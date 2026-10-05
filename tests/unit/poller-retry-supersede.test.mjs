@@ -20,7 +20,7 @@ const CLI = join(LIB, 'push-content-survival.js');
 const git = (dir, ...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8' });
 
 const tmpDirs = [];
-after(() => { for (const d of tmpDirs) rmSync(d, { recursive: true, force: true }); });
+after(() => { for (const d of tmpDirs) rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 
 function repro() {
   const dir = mkdtempSync(join(tmpdir(), 'poller-supersede-'));
