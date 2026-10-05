@@ -77,6 +77,83 @@ describe('mergeCommercialJson', () => {
   });
 });
 
+// BRO-4657: Commercial Friday Refresh run 37251705556 deleted two id-keyed
+// duplicates, its push was rejected, and the two-way union re-added both from
+// remote. A true common ancestor tells a delete from an add.
+describe('mergeCommercialJson with a base (honours deletions)', () => {
+  const slugEntry = { designation: 'TBD', notes: 'kept record', lastUpdated: '2026-10-01T00:00:00.000Z' };
+  const idEntry = { designation: 'TBD', notes: 'duplicate', lastUpdated: '2026-09-01T00:00:00.000Z' };
+
+  it('is three-argument and asks reconcile-merged-json for a true base only', () => {
+    assert.equal(mergeCommercialJson.length, 3);
+    assert.equal(mergeCommercialJson.requiresTrueBase, true);
+  });
+
+  it('replay: ours deleted the id-keyed duplicate, remote still has it unchanged -> stays deleted', () => {
+    const base = { shows: { 'the-balusters': slugEntry, 'the-balusters-2026': idEntry } };
+    const remote = { shows: { 'the-balusters': slugEntry, 'the-balusters-2026': idEntry, 'new-show': { designation: 'TBD' } } };
+    const ours = { shows: { 'the-balusters': slugEntry } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    assert.ok(!('the-balusters-2026' in merged.shows), 'deleted key must not be resurrected');
+    assert.deepEqual(merged.shows['the-balusters'], slugEntry);
+    assert.ok(merged.shows['new-show'], 'remote addition (absent from base) still lands');
+    assert.equal(stats.resolvedAsDeletion, 1);
+    assert.equal(stats.added, 1);
+  });
+
+  it('remote deleted a key ours left unchanged -> stays deleted', () => {
+    const base = { shows: { a: slugEntry, b: idEntry } };
+    const ours = { shows: { a: slugEntry, b: idEntry } };
+    const remote = { shows: { a: slugEntry } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    assert.ok(!('b' in merged.shows));
+    assert.equal(stats.resolvedAsDeletion, 1);
+    assert.equal(stats.kept, 0);
+  });
+
+  it('ours added a key (absent from base) -> kept', () => {
+    const base = { shows: { a: slugEntry } };
+    const ours = { shows: { a: slugEntry, fresh: idEntry } };
+    const remote = { shows: { a: slugEntry } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    assert.deepEqual(merged.shows.fresh, idEntry);
+    assert.equal(stats.kept, 1);
+    assert.equal(stats.resolvedAsDeletion, 0);
+  });
+
+  it('a delete racing an edit keeps the edit (either direction)', () => {
+    const base = { shows: { a: slugEntry, b: idEntry } };
+    const edited = { ...idEntry, designation: 'Flop', lastUpdated: '2026-10-04T00:00:00.000Z' };
+    // ours deleted b, remote edited it
+    let r = mergeCommercialJson({ shows: { a: slugEntry } }, { shows: { a: slugEntry, b: edited } }, base);
+    assert.deepEqual(r.merged.shows.b, edited);
+    assert.equal(r.stats.resolvedAsDeletion, 0);
+    // remote deleted b, ours edited it
+    r = mergeCommercialJson({ shows: { a: slugEntry, b: edited } }, { shows: { a: slugEntry } }, base);
+    assert.deepEqual(r.merged.shows.b, edited);
+    assert.equal(r.stats.resolvedAsDeletion, 0);
+  });
+
+  it('no base (undefined or null) -> two-way union, unchanged behaviour', () => {
+    const ours = { shows: { a: slugEntry } };
+    const remote = { shows: { a: slugEntry, b: idEntry } };
+    for (const base of [undefined, null, {}]) {
+      const { merged, stats } = mergeCommercialJson(ours, remote, base);
+      assert.deepEqual(merged.shows.b, idEntry, `base=${JSON.stringify(base)}`);
+      assert.equal(stats.resolvedAsDeletion, 0);
+    }
+  });
+
+  it('does not mutate its inputs', () => {
+    const base = { shows: { a: slugEntry, b: idEntry } };
+    const ours = { shows: { a: slugEntry, b: idEntry } };
+    const remote = { shows: { a: slugEntry } };
+    const snapshot = JSON.stringify(ours);
+    mergeCommercialJson(ours, remote, base);
+    assert.equal(JSON.stringify(ours), snapshot);
+  });
+});
+
 describe('mergePendingReview', () => {
   it('unions pending entries from both sides', () => {
     const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-05-24T00:00:00.000Z' } } };
