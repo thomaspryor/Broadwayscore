@@ -64,7 +64,7 @@ function runGhWithFallback(args, { exec, env = process.env, fallbackToken, log =
 // 5xx or network error must not be read as "landed": that skip exits 0 and
 // strands the landing silently.
 function isRefNotFound(err) {
-  return /HTTP 404|Not Found/i.test(errorText(err));
+  return /\bHTTP 404\b/.test(errorText(err));
 }
 
 module.exports = { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound };
