@@ -28,7 +28,10 @@ install_hook() {  # install_hook <message>
   cat > "$WORK/repo/.git/hooks/pre-push" <<HOOK
 #!/bin/sh
 echo x >> "$WORK/count"
-echo "$1" >&2
+# stdout, like scripts/hooks/pre-push: git does not send a pre-push hook's
+# stdout to stderr, and a stderr-only capture misread every lost race as a
+# deterministic rejection (exit 4, no retry; BRO-4656, three scoring runs).
+echo "$1"
 exit 1
 HOOK
   chmod +x "$WORK/repo/.git/hooks/pre-push"

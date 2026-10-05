@@ -204,8 +204,12 @@ git_push() {
   # progress before the kill where the old code emitted zero bytes, which is
   # precisely the rc=124 case this exists to diagnose.
   #
-  # BRO-2879: stderr is captured to a temp file, replayed (credential-redacted)
-  # once git returns, and classified, so the retry loop can tell a deterministic
+  # BRO-2879: stderr AND stdout are captured to a temp file, replayed
+  # (credential-redacted, to stderr) once git returns, and classified. stdout
+  # matters: git does not send a pre-push hook's stdout to stderr, and
+  # scripts/hooks/pre-push echoes its verdicts there, so a stderr-only capture
+  # never saw "non-fast-forward" and turned every lost race into exit 4
+  # (BRO-4656). Classified, so the retry loop can tell a deterministic
   # LOCAL pre-push hook rejection from a race. This is the ONE place all three
   # git_push_traced exits funnel through, so the classification cannot be missed
   # by the skip-diagnostics or mktemp-fail-open paths. Cost: --progress lines
@@ -223,7 +227,7 @@ git_push() {
   fi
   chmod 600 "$_perr" 2>/dev/null || true
   _timeout "$GIT_NET_TIMEOUT_SEC" \
-    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@" 2>"$_perr" || _prc=$?
+    git -c "http.lowSpeedLimit=1000" -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" push --progress "$@" >"$_perr" 2>&1 || _prc=$?
   _redact_creds <"$_perr" >&2 || true
   case "$_prc" in
     0|124|137|143) ;;  # success, or a timeout kill whose silence is not a hook verdict
