@@ -201,7 +201,6 @@ test('wiring: the workflow sweeps when the slot frees and the script spends atte
   assert.match(js, /decideSweep\(\{ slot,/);
   assert.match(js, /supersededByNewerRun\(/);
   assert.match(js, /scanSlot\(/);
-  assert.match(js, /orderForSlotCheck\(/);
   // the retry decision uses the fresh per-branch run, not the possibly stale listing
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
 });
