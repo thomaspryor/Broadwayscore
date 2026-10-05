@@ -1,28 +1,21 @@
 /**
  * BRO-2367: one Vulture article on queen-versailles-2025 was stored under two
  * bylines (Sara Holdren / David Fox), tripping validate-data.js's same-URL gate.
- * Requires the real helper (CLAUDE.md §15) and checks the real corpus.
+ * Requires the real helper (CLAUDE.md §15). The live-corpus check is
+ * validate-data.js (same key, baseline-gated); not duplicated here because
+ * bot-edited data in the unit batch turns main red with no code change.
  */
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const { sameUrlDuplicateKey } = require('./lib/review-url-collision.js');
 
 const SHOW = 'queen-versailles-2025';
-
-function loadReviews() {
-  const p = resolve(root, 'data/reviews.json');
-  if (!fs.existsSync(p)) return null;
-  const j = JSON.parse(fs.readFileSync(p, 'utf8'));
-  const list = Array.isArray(j) ? j : (j.reviews || Object.values(j).flat());
-  return list.filter(r => r && typeof r === 'object');
-}
 
 function dupes(reviews) {
   const seen = new Map();
@@ -52,9 +45,12 @@ test('distinct URLs are not flagged', () => {
   ]), []);
 });
 
-test('queen-versailles-2025 has no duplicate URLs and one Vulture record per article', (t) => {
-  const reviews = loadReviews();
-  if (!reviews) return t.skip('data/reviews.json not present');
-  const qv = reviews.filter(r => r.showId === SHOW);
-  assert.deepStrictEqual(dupes(qv), []);
+test('key ignores byline and outlet id, so drifted attributions still collide', () => {
+  const url = 'https://www.vulture.com/article/x.html';
+  assert.notStrictEqual(sameUrlDuplicateKey(SHOW, url), sameUrlDuplicateKey('other-show-2025', url));
+  assert.strictEqual(sameUrlDuplicateKey(SHOW, 12345), null);
+  assert.strictEqual(dupes([
+    { showId: SHOW, outletId: 'vulture', criticName: 'Sara Holdren', url },
+    { showId: SHOW, outletId: 'vulture-provisional', criticName: 'Sara Holdren and Jesse David Fox', url },
+  ]).length, 1);
 });
