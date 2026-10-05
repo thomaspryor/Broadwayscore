@@ -118,6 +118,7 @@ const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/
 const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
+const { discardNoRatingOutletScore } = require('./lib/no-rating-outlet-score');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./lib/excerpt-validation');
@@ -4782,7 +4783,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   const hasUnverifiedSSScore = isSSSource && data.originalScore && !OUTLET_VERIFIED_SOURCES.has(data.scoreSource);
   // Skip re-extraction if score was deliberately cleared by P0 audit
   const wasCleared = data.originalScoreCleared === true;
-  if (!wasCleared && (!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
+  // BRO-2809: no-critic-rating outlets (london-theatre) never yield a verified score,
+  // so an SS placeholder here would survive re-extraction as a P0 leak. Discard it.
+  if (!wasCleared && discardNoRatingOutletScore(data)) {
+    console.log(`    → Discarded originalScore on no-critic-rating outlet [${data.outletId}]`);
+  }
+  if (!data.originalScoreCleared && (!data.originalScore || hasUnverifiedSSScore) && (html || text)) {
     const outletId = data.outletId || review.outletId || '';
 
     // Old regex extraction (for comparison logging)

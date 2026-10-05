@@ -15,8 +15,9 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
-const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'audit', 'score-integrity.json');
+// Env overrides exist so the test can run against a fixture corpus (BRO-2809).
+const REVIEW_TEXTS_DIR = process.env.SCORE_INTEGRITY_REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
+const OUTPUT_PATH = process.env.SCORE_INTEGRITY_OUTPUT_PATH || path.join(__dirname, '..', 'data', 'audit', 'score-integrity.json');
 
 // From review-normalization.js
 const AGGREGATOR_SCORE_SOURCES = new Set([
