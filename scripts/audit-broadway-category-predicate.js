@@ -86,7 +86,7 @@ const INLINE_MARKER = 'Intentionally NOT isBroadwayCategory';
 
 // Matches `category === 'broadway'` / `category == "broadway"` and the
 // reversed operand order, dot-property or bare identifier on either side.
-const PATTERN_RE = /(?:\bcategory\s*===?\s*["']broadway["']|["']broadway["']\s*===?\s*\bcategory)/;
+const PATTERN_RE = /(?:\bcategory\s*===?\s*["']broadway["']|["']broadway["']\s*===?\s*(?:[\w$]+\??\.)*category\b)/;
 
 const args = process.argv.slice(2);
 const JSON_OUT = args.includes('--json');

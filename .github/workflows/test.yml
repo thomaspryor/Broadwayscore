@@ -1202,6 +1202,7 @@ on:
       # edit to it triggers CI.
       - 'scripts/discover-opera-shows.js'
       - 'scripts/audit-broadway-category-predicate.js'
+      - 'scripts/audit-broadway-category-predicate.test.mjs'
       # Baseline-diff (task #1665): a solo edit to any of these three needs CI —
       # without this entry a --update-baseline commit touching only the JSON
       # (or a lib-only fix) would get ZERO CI (memory/feedback_test_yml_push_path_allowlist.md).
