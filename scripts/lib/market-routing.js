@@ -29,7 +29,7 @@
  */
 
 const { parseDate } = require('./date-utils');
-const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview } = require('./review-guards');
+const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview, shouldSkipWrongProductionAudit } = require('./review-guards');
 const { pickTourForDate } = require('./tour-family');
 const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
 const { VENUE_STOPWORDS } = require('./production-match-gate');
@@ -474,8 +474,66 @@ function classifyMarketRouting(args) {
   return { action: 'accept' };
 }
 
+/**
+ * True when a record already on disk has been adjudicated (flagged by any guard
+ * or decided by a human), so a routing guard must not relocate or re-stamp it.
+ * Same scope audit-sibling-title-misroute.js applies (isAlreadyFlagged +
+ * isHumanCleared). BRO-363 / BRO-2110.
+ */
+function isAdjudicatedRecord(rec) {
+  if (!rec || typeof rec !== 'object') return false;
+  return rec.wrongProduction === true ||
+    rec.wrongShow === true ||
+    rec.allowCrossMarket === true ||
+    rec.wrongProduction === false ||
+    rec.wrongProductionManualClear === true ||
+    rec.wrongProductionOverride === true ||
+    rec.humanReviewedWrongProduction === false ||
+    shouldSkipWrongProductionAudit(rec) === true;
+}
+
+/**
+ * Shared CALLER side of classifyMarketRouting (BRO-2110): every write path
+ * (review-file-writer Guard A, gather-reviews createReviewFile, extract-dtli-reviews)
+ * resolves "where does this review get written" through here so a routing fix
+ * lands once.
+ *
+ * Extra args on top of classifyMarketRouting's:
+ * @param {object} [args.existingRecord] — record already on disk for this write; if
+ *   adjudicated (isAdjudicatedRecord) the write is accepted in place, never rerouted.
+ * @param {boolean} [args.skipCrossShowDupe] — show opted out via _skipCrossShowDupe
+ * @param {boolean} [args.requireUrlOrDate] — nothing to route on without a url or publishDate
+ * @param {Function} [args.recordMisroute] — called with a ledger entry on reroute
+ * @param {string} [args.file] — filename for the ledger entry
+ * @returns {{ action, showId, targetShowId?, reason?, flag?, signalsByCandidate?, visited: Set, bypassed?: string }}
+ *   showId = where the write should land (target on reroute, else the input showId).
+ */
+function resolveWriteTarget(args) {
+  const { existingRecord, skipCrossShowDupe, requireUrlOrDate, recordMisroute, file, ...classifyArgs } = args;
+  const visited = classifyArgs.visited || new Set();
+  const accept = (bypassed) => ({ action: 'accept', showId: args.showId, bypassed, visited });
+  if (existingRecord && isAdjudicatedRecord(existingRecord)) return accept('adjudicated');
+  if (skipCrossShowDupe) return accept('skipCrossShowDupe');
+  if (requireUrlOrDate && !args.url && !args.publishDate) return accept('no-url-or-date');
+
+  const decision = classifyMarketRouting({ ...classifyArgs, visited });
+  if (decision.action === 'reroute' && typeof recordMisroute === 'function') {
+    recordMisroute({
+      fromShowId: args.showId, toShowId: decision.targetShowId, file,
+      url: args.url, publishDate: args.publishDate, reason: decision.reason,
+    });
+  }
+  return {
+    ...decision,
+    showId: decision.action === 'reroute' ? decision.targetShowId : args.showId,
+    visited,
+  };
+}
+
 module.exports = {
   classifyMarketRouting,
+  resolveWriteTarget,
+  isAdjudicatedRecord,
   tourDecision,
   tourTargetDecision,
   buildSiblingIndex,

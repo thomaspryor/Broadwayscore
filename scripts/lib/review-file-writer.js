@@ -48,7 +48,7 @@ const { capturePublishedStar } = require('./published-star-capture');
 const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
 const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
-const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./market-routing');
+const { resolveWriteTarget, buildSiblingIndex, tourDecision } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
 const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
 
@@ -603,7 +603,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     // relaxation above was just made to allow through, for every outlet that
     // HAS a registered domain — i.e. most of the target population.
     if (!aggregatorScoreStub) {
-      return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}` };
+      return { action: 'skipped', reason: `domain-mismatch: ${domainCheck.reason}`, guardRefused: true };
     }
     fields.domainUnvalidated = true;
     fields.domainUnvalidatedReason = `aggregator-url stub (expected mismatch): ${domainCheck.reason}`;
@@ -628,7 +628,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     const pubDateStr = input.publishDate || input.fields?.publishDate;
     const showCategory = _getShowCategory(showId);
     const visited = _rerouteVisited || new Set();
-    const decision = classifyMarketRouting({
+    // BRO-2110: deliberately no existingRecord / recordMisroute here (this path
+    // never had either); adding them is a separate behavior change.
+    const decision = resolveWriteTarget({
       showId,
       url: input.url,
       outletId,
@@ -676,7 +678,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
           console.warn(`  ⚠️  Ambiguous production for ${showId}/${outletId}: stamping wrongProduction (${fields.wrongProductionReason})`);
         }
       } else {
-        console.warn(`  ⚠️  Unknown decision.flag from classifyMarketRouting: "${decision.flag}" (showId=${showId}, outletId=${outletId}) — proceeding without flag`);
+        console.warn(`  ⚠️  Unknown decision.flag from resolveWriteTarget: "${decision.flag}" (showId=${showId}, outletId=${outletId}) — proceeding without flag`);
       }
     }
   }

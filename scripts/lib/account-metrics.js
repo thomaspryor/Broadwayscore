@@ -143,7 +143,7 @@ SELECT src, dev,
 FROM (
   SELECT distinct_id,
     argMinIf(if(event = 'sign_in_prompt_shown', properties.source, properties.context), timestamp,
-      event IN ('sign_in_prompt_shown', 'sign_in_started')) AS src,
+      event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed')) AS src,
     argMinIf(if(coalesce(properties.$host, '') = '', 'App', properties.$device_type), timestamp,
       event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed')) AS dev,
     countIf(event = 'sign_in_prompt_shown') AS n_shown,
@@ -315,7 +315,10 @@ function summarizeFunnel(rows) {
     addStep(totals[dev], r);
     addStep(totals.all, r);
   }
-  const sources = [...bySource.values()].sort((a, b) => b.shown - a.shown || b.started - a.started);
+  // A device that only "saved something" without any sign-in step is not part of the funnel table.
+  const sources = [...bySource.values()]
+    .filter((x) => x.shown > 0 || x.started > 0 || x.completed > 0)
+    .sort((a, b) => b.shown - a.shown || b.started - a.started || b.completed - a.completed);
   return { sources, totals };
 }
 
@@ -403,7 +406,7 @@ function weeklySummaryLines(d) {
   lines.push(`${plural(a.withAnything, 'account has', 'accounts have')} saved something: ${a.withRating} rated a show, ${a.withWatchlist} used the watchlist, ${a.withList} made a list.`);
   const f = d.funnel && d.funnel.totals;
   if (f && (f.all.shown || f.all.started || f.all.completed)) {
-    const part = (s, name) => (s.shown ? `${name}: ${s.shown} saw the sign-in box, ${s.started} started, ${s.completed} finished` : null);
+    const part = (s, name) => (s.shown || s.started || s.completed ? `${name}: ${s.shown} saw the sign-in box, ${s.started} started, ${s.completed} finished` : null);
     // The iPhone app has no sign-in box event, so it reports starts and finishes only.
     // "other" also holds finishes from a device whose start was not seen.
     const app = f.other && (f.other.started || f.other.completed) ? `iPhone app / other: ${f.other.started} started, ${f.other.completed} finished` : null;
