@@ -213,6 +213,13 @@ function buildDigest(entries) {
   lines.push('2. Confirm demote — mark as unconfirmed, clears the pending hold');
   lines.push('3. Leave held — no action; stays pending and resurfaces on the next sync');
   lines.push('');
+  // Same owner-judgment marker as the Notion digest: without it the card has no
+  // acceptance criterion, so dispatch workers invent one (BRO-29 cited a test file
+  // that never existed). Only a human can pick citation/demote/hold per entry.
+  lines.push('## Acceptance criteria');
+  lines.push('');
+  lines.push('VERIFY: owner-judgment — each entry needs a human to supply a citation, confirm demote, or leave it held; no command can decide that.');
+  lines.push('');
 
   for (const e of entries) {
     lines.push('---');
