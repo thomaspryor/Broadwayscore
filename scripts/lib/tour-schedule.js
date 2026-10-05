@@ -262,12 +262,23 @@ function launchSentences(wikiText) {
 function wikiNamesOtherLaunch(wikiText, row) {
   const city = String((row && row.city) || '').split(',')[0].trim().toLowerCase();
   const year = row && row.start ? row.start.getUTCFullYear() : null;
-  const near = new RegExp(`\\b(${year}|${year - 1})\\b`);
-  const sentences = launchSentences(proseOnly(wikiText)).filter(s => !year || near.test(s));
-  // Agreeing on the month is no contradiction either: "a 2nd National tour
-  // would begin in January, 2027" (Shucked) names no city at all.
+  const anyYear = /\b(1[89]|20)\d{2}\b/g;
+  const sentences = launchSentences(proseOnly(wikiText))
+    // Infobox fields ("| premiere_location = Golden Gate Theatre, San Francisco") are not tour text.
+    .filter(s => !/^\s*\|/.test(s))
+    // A sentence clipped at the edge of its window can lose its year
+    // ("...launched in Jackson, Mississippi, on September"): judge whole ones.
+    .filter(s => /[.!?]['"”’)\]]*\s*$/.test(s))
+    // A launch dated some other year is another tour's (or the premiere's).
+    .filter(s => !year || (s.match(anyYear) || []).every(y => Math.abs(Number(y) - year) <= 1));
+  // A sentence agreeing on month and year that names no place at all is no
+  // contradiction: "a 2nd National tour would begin in January, 2027"
+  // (Shucked). One naming another city still is (Harry Potter: Denver, May
+  // 2026, while the page starts at a later stop).
   const month = year ? new RegExp(`\\b${MONTHS[row.start.getUTCMonth()]}\\b[^.]{0,12}\\b${year}\\b`, 'i') : null;
-  return sentences.length > 0 && !sentences.some(s => s.toLowerCase().includes(city) || (month && month.test(s)));
+  const monthNames = new RegExp(`\\b(${MONTHS.join('|')})\\b`, 'gi');
+  const namesPlace = s => /\b(in|at|from)\s+(the\s+)?\[{0,2}[A-Z][a-z]/.test(s.replace(monthNames, '').replace(/\b(fall|spring|summer|winter|autumn)\b/gi, ''));
+  return sentences.length > 0 && !sentences.some(s => s.toLowerCase().includes(city) || (month && month.test(s) && !namesPlace(s)));
 }
 
 const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed|s)? (in|at|on))/i;
@@ -441,10 +452,10 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   // keeps only recent rows, so a long-running tour's first row is not its
   // launch (Wicked's page starts in 2021, Hamilton's in Sept 2020).
   const freshLaunch = !wikiLaunch && !roundupLaunch && opts.freshLaunchDays > 0
-    && seg.rows.length >= 3 && Math.abs(seg.start.getTime() - now.getTime()) <= opts.freshLaunchDays * DAY
+    && seg.rows.length >= 3 && seg.start.getTime() <= now.getTime() && now.getTime() - seg.start.getTime() <= opts.freshLaunchDays * DAY
     && !wikiNamesOtherLaunch(wikiText, seg.rows[0])
     ? seg.start : null;
-  // Opt-in too: a tour booked ahead (tour-discovery.js upcomingSegments). Its
+  // Opt-in too: a tour not yet launched (tour-discovery.js upcomingSegments). Its
   // first listed engagement is its launch for the same reason, and more
   // surely: Tours To You drops past rows, never future ones.
   const upcomingLaunch = !wikiLaunch && !roundupLaunch && !freshLaunch && opts.upcomingDays > 0
