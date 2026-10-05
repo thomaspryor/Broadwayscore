@@ -69,6 +69,9 @@ const SUPABASE_SHOW_ID_TABLES = [
   { table: 'list_items', column: 'show_id', declaredIn: 'supabase-schema.sql',
     confirmedBy: ['src/hooks/useUserLists.ts (.from(\'list_items\'))'],
     note: 'UNIQUE(list_id, show_id)' },
+  { table: 'seen_unrated', column: 'show_id', declaredIn: 'supabase/migrations/20261005_profile_onboarding.sql',
+    confirmedBy: ['src/components/onboarding/WelcomeSheet.tsx', 'src/app/my-shows/MyShowsClient.tsx'],
+    note: 'PRIMARY KEY(user_id, show_id)' },
 ];
 
 /** JSONB columns that embed shows.json ids (need jsonb rewrites, not a plain UPDATE). */

@@ -102,3 +102,21 @@ test('welcome_emails SQL assertions pass on a local Postgres', (t) => {
   assert.match(out, /all assertions passed/);
   assert.match(out, /a second claim for the same account inserts nothing/, 'the once-only claim assertion must have run');
 });
+
+// Welcome step (BRO-4619): profiles.onboarding_seen_at + claim_onboarding().
+const onboardingMigration = join(migDir, '20261005_profile_onboarding.sql');
+const onboardingTests = join(root, 'tests/sql/profile-onboarding.test.sql');
+
+test('profile onboarding SQL assertions pass on a local Postgres', (t) => {
+  if (!hasPostgres()) {
+    if (process.env.CI) assert.fail('no PostgreSQL server binaries on this CI runner; the SQL tests did not run');
+    t.skip('no local PostgreSQL server binaries (set PG_BIN to run)');
+    return;
+  }
+  const r = spawnSync('bash', [harness, onboardingMigration, onboardingTests], { encoding: 'utf-8', timeout: 240_000 });
+  const out = `${r.stdout}\n${r.stderr}`;
+  assert.equal(r.status, 0, `harness failed:\n${out.slice(-3000)}`);
+  assert.match(out, /all assertions passed/);
+  assert.match(out, /re-apply does not hide the welcome from new accounts/, 'the re-run assertion must have run');
+  assert.match(out, /first apply backfills every existing account/, 'the backfill assertion must have run');
+});

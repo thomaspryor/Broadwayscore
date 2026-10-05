@@ -72,6 +72,11 @@ export const mockWatchlist: WatchlistEntry[] = [
 ];
 
 // Mock lists for the Lists tab
+/** Welcome-sheet "seen it" picks with no date (BRO-4619): To Be Rated, "Date not set". */
+export const mockSeenUnrated: { show_id: string; created_at: string }[] = [
+  { show_id: 'hadestown-2019', created_at: '2026-10-04T12:00:00Z' },
+];
+
 export const mockLists: UserList[] = [
   {
     id: 'list-1', user_id: USER_ID, name: 'Must-See Musicals',
@@ -131,6 +136,7 @@ export const mockShowMap: Record<string, ShowLookup> = {
   'oh-mary-2024': { id: 'oh-mary-2024', title: 'Oh, Mary!', slug: 'oh-mary-2024', venue: 'Lyceum Theatre', type: 'play', status: 'open', category: 'broadway', previewDate: null, openingDate: '2024-07-11', closingDate: null, compositeScore: 80, posterUrl: null },
   'operation-mincemeat-2025': { id: 'operation-mincemeat-2025', title: 'Operation Mincemeat', slug: 'operation-mincemeat-2025', venue: 'Golden Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-20', closingDate: null, compositeScore: 85, posterUrl: null },
   'chess-2025': { id: 'chess-2025', title: 'Chess', slug: 'chess', venue: 'Broadhurst Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-02-13', closingDate: null, compositeScore: 72, posterUrl: null },
+  'hadestown-2019': { id: 'hadestown-2019', title: 'Hadestown', slug: 'hadestown', venue: 'Walter Kerr Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2019-04-17', closingDate: null, compositeScore: 88, posterUrl: null },
   'ragtime-2025': { id: 'ragtime-2025', title: 'Ragtime', slug: 'ragtime', venue: 'Todd Haimes Theatre', type: 'musical', status: 'open', category: 'broadway', previewDate: null, openingDate: '2025-03-27', closingDate: null, compositeScore: 78, posterUrl: null },
   // Diary-only shows (no show page)
   'rent-off-broadway-1996': { id: 'rent-off-broadway-1996', title: 'Rent', slug: 'rent-off-broadway-1996', venue: 'New York Theatre Workshop', type: 'musical', status: 'closed', category: 'off-broadway', previewDate: null, openingDate: '1996-02-13', closingDate: '1996-04-29', compositeScore: null, posterUrl: null, diaryOnly: true },

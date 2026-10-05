@@ -21,6 +21,7 @@ import {
   MEZZANINE_SEARCH_ERROR_COPY,
   type MezzanineCandidate,
 } from '@/lib/mezzanine-search';
+import { importSourceNames } from '@/lib/import-sources';
 import { getMarketLabel } from '@/lib/market-utils';
 import { marketLabel as diaryMarketLabel } from '@/lib/diary-show-types';
 
@@ -121,6 +122,14 @@ interface ImportShowsProps {
   existingReviewShowIds: Set<string>;
   existingWatchlistShowIds: Set<string>;
   onImportComplete: () => void;
+  /**
+   * Embedded use (the welcome sheet, BRO-4619): open straight at the source
+   * picker, render nothing when closed, and report how many were imported.
+   */
+  initialOpen?: boolean;
+  onClose?: (imported: number) => void;
+  /** Where the import was started, sent on import_completed / import_failed. */
+  context?: 'my_shows' | 'onboarding';
 }
 
 /** A seen-but-unrated show the user already had on their watchlist (saved
@@ -142,8 +151,11 @@ export default function ImportShows({
   existingReviewShowIds,
   existingWatchlistShowIds,
   onImportComplete,
+  initialOpen = false,
+  onClose,
+  context = 'my_shows',
 }: ImportShowsProps) {
-  const [step, setStep] = useState<ImportStep>('closed');
+  const [step, setStep] = useState<ImportStep>(initialOpen ? 'source' : 'closed');
   const [source, setSource] = useState<ImportSourceId>('show-score');
   const [entries, setEntries] = useState<MatchedEntry[]>([]);
   const [notices, setNotices] = useState<string[]>([]);
@@ -373,6 +385,7 @@ export default function ImportShows({
     setNotices(acquired.notices);
     setStep('preview');
     trackUgc('import_previewed', {
+      context,
       source: sourceId,
       rows: matched.length,
       unmatched: unmatchedRows.length,
@@ -391,7 +404,7 @@ export default function ImportShows({
         mezz_show_id: raw.mezzShowId || null,
       }).catch(() => {}); // best-effort logging — an insert failure must never surface to the user
     }
-  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId]);
+  }, [ensureSearchData, matchShow, existingReviewShowIds, existingWatchlistShowIds, userId, context]);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -405,11 +418,11 @@ export default function ImportShows({
       await matchAndPreview(await acquireFromMezzanine(file), 'mezzanine');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to parse file';
-      trackUgc('import_failed', { source: 'mezzanine', error_message: message.slice(0, 200) });
+      trackUgc('import_failed', { context, source: 'mezzanine', error_message: message.slice(0, 200) });
       setError(message);
       setStep('source');
     }
-  }, [matchAndPreview]);
+  }, [matchAndPreview, context]);
 
   const handleTheatrSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -439,11 +452,11 @@ export default function ImportShows({
       await matchAndPreview(await acquireFromShowScore(profileInput), 'show-score');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Import failed. Try again.';
-      trackUgc('import_failed', { source: 'show-score', error_message: message.slice(0, 200) });
+      trackUgc('import_failed', { context, source: 'show-score', error_message: message.slice(0, 200) });
       setError(message);
       setStep('source');
     }
-  }, [matchAndPreview, profileInput]);
+  }, [matchAndPreview, profileInput, context]);
 
   // Indexed views: rows carry their index into `entries` so toggleEntry works
   // regardless of how the display lists are filtered/split (the old
@@ -640,6 +653,7 @@ export default function ImportShows({
     setImportStats({ imported, skipped, errors });
     setStep('done');
     trackUgc('import_completed', {
+      context,
       source,
       imported,
       skipped,
@@ -648,10 +662,15 @@ export default function ImportShows({
       watchlist_selected: allWatchlistEntries.length,
     });
     if (imported > 0) onImportComplete();
-  }, [selectedDiary, selectedWatchlist, userId, onImportComplete, source]);
+  }, [selectedDiary, selectedWatchlist, userId, onImportComplete, source, context]);
 
-  // Reset on close
+  // Reset on close. Not while a fetch or the insert loop is running: the
+  // async work would keep going behind a closed window (matching reopens it
+  // at 'preview'; importing reports a short count and the import could be
+  // started a second time, and reviews allow duplicate rows).
   const handleClose = () => {
+    if (step === 'matching' || step === 'importing') return;
+    onClose?.(importStats.imported);
     setStep('closed');
     setEntries([]);
     setNotices([]);
@@ -663,6 +682,7 @@ export default function ImportShows({
   };
 
   if (step === 'closed') {
+    if (onClose) return null;
     return (
       <button
         type="button"
@@ -672,7 +692,7 @@ export default function ImportShows({
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        Import from Show Score, Mezzanine or Theatr
+        Import from {importSourceNames()}
       </button>
     );
   }
@@ -689,7 +709,7 @@ export default function ImportShows({
             {step === 'importing' && 'Importing...'}
             {step === 'done' && 'Import Complete'}
           </h3>
-          <ModalCloseButton onClick={handleClose} />
+          {step !== 'matching' && step !== 'importing' && <ModalCloseButton onClick={handleClose} />}
         </div>
 
         {/* Content */}
