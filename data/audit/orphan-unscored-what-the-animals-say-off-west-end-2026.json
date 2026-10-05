@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "what-the-animals-say-off-west-end-2026",
   "openingDate": "2026-10-02",
-  "detectedAt": "2026-10-05T08:09:39.119Z",
+  "detectedAt": "2026-10-05T08:18:20.303Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "north-west-end--prateek-sonny.json",
-      "outletId": "north-west-end",
-      "criticName": "Prateek Sonny",
-      "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/",
-      "fullTextLen": 3606,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
