@@ -52,6 +52,7 @@ async function main() {
   const schedules = fs.existsSync(SCHEDULES_PATH) ? JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8')) : { tours: {} };
   const targets = data.shows.filter(s => s.category === 'tour' && !s.runtime && (!only || s.id === only));
   console.log(`${targets.length} tour(s) without a runtime${dryRun ? ' (dry run)' : ''}`);
+  if (only && !targets.length) console.log(`${only}: not a tour without a runtime (nothing to do; a stored runtime is never replaced)`);
 
   // ~11 tours x up to 3 pages x 2s apart is about a minute; 5 leaves room for 429 backoffs
   // without eating the job's timeout (the tour-art step after this needs up to 30).

@@ -74,6 +74,14 @@ test('pageIsTour: the page title names this tour', () => {
   assert.equal(pageIsTour(page('&#038; Juliet'), { title: '& Juliet' }), true, 'numeric ampersand entity, as on the live & Juliet page');
 });
 
+test('pageIsTour: a page that merely starts with the tour title is not the tour (the live six redirect, a longer show)', () => {
+  assert.equal(pageIsTour(page('Annie Get Your Gun'), { title: 'Annie' }), false);
+  assert.equal(pageIsTour(page('Peter Pan Goes Wrong'), { title: 'Peter Pan' }), false);
+  assert.equal(pageIsTour(page('&#8216;SIX&#8217; Casting Announced for the 2025-2026 Season'), { title: 'Six' }), false);
+  assert.equal(pageIsTour(page('Cats: The Jellicle Ball'), { title: 'Cats' }), true, 'a colon subtitle names the show');
+  assert.equal(pageIsTour(page('Hamilton (Angelica Tour)'), { title: 'Hamilton' }), true, 'a bracket subtitle names the show');
+});
+
 test('pageIsTour: a subtitle on the page still matches, a longer tour title does not', () => {
   assert.equal(pageIsTour(page('A Beautiful Noise, The Neil Diamond Musical'), { title: 'A Beautiful Noise' }), true);
   assert.equal(pageIsTour(page('A Beautiful Noise'), { title: 'A Beautiful Noise: The Neil Diamond Musical' }), false);
@@ -105,4 +113,22 @@ test('candidateUrls: the saved schedule source first, then the slug guesses, no 
     'https://tourstoyou.org/shows/life-of-pi/',
     'https://tourstoyou.org/shows/life-of-pi-the-musical/',
   ]);
+});
+
+test('extractTourRuntime: only plain runtime text; loose or misread shapes fail closed', () => {
+  const li = (t) => `<ul><li><strong>Runtime</strong>: ${t}</li></ul>`;
+  assert.equal(extractTourRuntime(li('2.5 hours')), null, '2.5 hours would read as 5h');
+  assert.equal(extractTourRuntime(li('Approximately 2 hrs. 35 mins.')), null, 'would read as 2h');
+  assert.equal(extractTourRuntime(li('Approx. 2 hours 35 minutes')), null);
+  assert.equal(extractTourRuntime(li('TBD')), null);
+  assert.equal(extractTourRuntime(li('N/A')), null);
+  assert.deepEqual(extractTourRuntime(li('2 hours')), { minutes: 120, runtime: '2h', intermissions: null });
+  assert.deepEqual(extractTourRuntime(li('1 hour 40 minutes')), { minutes: 100, runtime: '1h 40m', intermissions: null });
+  assert.deepEqual(extractTourRuntime(li('90 minutes')), { minutes: 90, runtime: '1h 30m', intermissions: null });
+  assert.deepEqual(extractTourRuntime(li('2 Hours and 20 Minutes')), { minutes: 140, runtime: '2h 20m', intermissions: null });
+});
+
+test('parseIntermissions: spelled-out counts', () => {
+  assert.equal(parseIntermissions('One'), 1);
+  assert.equal(parseIntermissions('two'), 2);
 });

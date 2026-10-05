@@ -29,14 +29,19 @@ const { scheduleSlugs } = require('./tour-schedule');
 
 // <strong>Runtime</strong>: text   |   <strong>Runtime:</strong> text
 const RUNTIME_RE = /<strong>\s*Runtime\s*:?\s*<\/strong>\s*:?\s*([^<]*)<\/li>/gi;
+// "2 hours 35 minutes", "1 hour 40 minutes", "2 hours", "90 minutes" (case and spacing free).
+const RUNTIME_TEXT = /^\s*(?:\d+\s*hours?(?:\s*(?:and\s+)?\d+\s*minutes?)?|\d+\s*minutes?)\s*$/i;
 // The Intermissions item that follows a Runtime item in the same list.
 const INTERMISSIONS_RE = /<strong>\s*Intermissions?\s*:?\s*<\/strong>\s*:?\s*([^<]*)<\/li>/i;
 
-/** "1" -> 1, "None"/"No intermission"/"0" -> 0, anything else -> null. */
+/** "1"/"One" -> 1, "None"/"No intermission"/"0" -> 0, anything else -> null. */
 function parseIntermissions(text) {
   const t = String(text || '').trim().toLowerCase();
   if (!t) return null;
   if (/^(none|no\b|0$)/.test(t)) return 0;
+  const words = { one: 1, two: 2, three: 3, four: 4 };
+  const w = t.match(/^(one|two|three|four)\b/);
+  if (w) return words[w[1]];
   const m = t.match(/^(\d+)\b/);
   return m ? parseInt(m[1], 10) : null;
 }
@@ -49,6 +54,10 @@ function extractTourRuntime(html) {
   if (typeof html !== 'string' || !html) return null;
   const found = [];
   for (const m of html.matchAll(RUNTIME_RE)) {
+    // Only the plain shapes the site uses. The shared parser also accepts looser
+    // text, and misreads some of it ("2.5 hours" as 5h, "2 hrs. 35 mins." as 2h),
+    // so anything else fails closed here.
+    if (!RUNTIME_TEXT.test(m[1])) continue;
     const parsed = parseRunTimeDisplay(m[1]);
     if (!parsed) continue;
     // Only the list item right after this Runtime item can be its Intermissions.
@@ -74,8 +83,9 @@ function titleKey(s) {
 /**
  * True when the page's <title> ("<Show> – Tours To You") names this tour, so a
  * redirect or a look-alike slug never lends another show's runtime. A page
- * title that adds a subtitle ("A Beautiful Noise, The Neil Diamond Musical")
- * counts when it starts with the tour's title; the reverse does not. Pure.
+ * title that adds a subtitle after a separator ("A Beautiful Noise, The Neil
+ * Diamond Musical") counts; one that just starts with the tour's title, or a
+ * title longer on the tour's side, does not. Pure.
  */
 function pageIsTour(html, tour) {
   const m = String(html || '').match(/<title>([^<]*)<\/title>/i);
@@ -84,12 +94,16 @@ function pageIsTour(html, tour) {
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
     .replace(/&ndash;|&mdash;/g, '-').replace(/&rsquo;/g, "'").replace(/&amp;/g, '&')
     .replace(/[\u2013\u2014]/g, '-').replace(/\u2019/g, "'");
-  const page = titleKey(decoded.replace(/\s*-\s*Tours To You.*$/i, ''));
+  const title = decoded.replace(/\s*-\s*Tours To You.*$/i, '');
   const want = titleKey(tour.title);
-  if (!page || !want) return false;
-  // The page may add a subtitle; the tour's own title may not be longer than the
-  // page's ("Wicked: Part Two" is not the "Wicked" page).
-  return page === want || page.startsWith(want + ' ');
+  if (!want || !titleKey(title)) return false;
+  if (titleKey(title) === want) return true;
+  // A subtitle after a comma, colon, dash or bracket still names the show ("A
+  // Beautiful Noise, The Neil Diamond Musical"). A page that merely STARTS with the
+  // title does not: "Annie Get Your Gun" is not "Annie", and a redirect to a news post
+  // ("'SIX' Casting Announced ...", the live six slug) is not the show's page.
+  const head = title.split(/\s*(?:[,:(]|\s-\s)/)[0];
+  return titleKey(head) === want;
 }
 
 /** Candidate pages for a tour: its saved schedule source first, then the slug guesses. Pure. */
