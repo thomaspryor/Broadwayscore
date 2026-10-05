@@ -18,6 +18,8 @@ test('normTitle drops Disney prefix, musical suffix and punctuation', () => {
   assert.equal(normTitle("Disney's Beauty and the Beast"), 'beauty and the beast');
   assert.equal(normTitle('BOOP! The Musical'), 'boop');
   assert.equal(normTitle('Oh, Mary!'), 'oh mary');
+  assert.equal(normTitle('Buena Vista Social Club™'), 'buena vista social club');
+  assert.equal(normTitle('Les Misérables'), 'les miserables');
   assert.equal(normTitle('Dead Girl’s Quinceañera'), normTitle("Dead Girl's Quinceañera"));
 });
 

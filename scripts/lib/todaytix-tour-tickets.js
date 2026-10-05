@@ -15,6 +15,7 @@
  */
 
 const { buildTodayTixUrl } = require('./url-utils');
+const { foldDiacritics } = require('./title-match');
 
 /** TodayTix location id → URL path segment. Only US metros where tours play. */
 const TOUR_LOCATIONS = {
@@ -31,7 +32,8 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 /** "Disney's Beauty and the Beast" / "Beauty and the Beast: The Musical" → "beauty and the beast". */
 function normTitle(title) {
-  return String(title || '')
+  // ™/® first: folding would turn "Club™" into "ClubTM".
+  return foldDiacritics(String(title || '').replace(/[™®©]/g, ''))
     .toLowerCase()
     .replace(/[’‘]/g, "'")
     .replace(/^(disney's|the)\s+/, '')
@@ -50,10 +52,10 @@ const LOCATION_STATES = { 3: ['IL'], 4: ['CA'], 5: ['CA'], 6: ['DC', 'VA', 'MD']
 // Words every theatre name shares; what's left must overlap for a match.
 const VENUE_STOPWORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'for', 'of', 'and', 'at', 'arts', 'performing', 'hall', 'music', 'opera', 'house', 'auditorium', 'pac', 'civic', 'concert', 'playhouse', 'washington', 'dc', 'san', 'los', 'angeles', 'chicago', 'boston', 'francisco', 'jose']);
 function venueName(v) {
-  return String(v || '').toLowerCase().replace(/theater\b/g, 'theatre').replace(/[^a-z0-9]+/g, ' ').trim();
+  return foldDiacritics(String(v || '')).toLowerCase().replace(/theater\b/g, 'theatre').replace(/[^a-z0-9]+/g, ' ').trim();
 }
 function venueWords(v) {
-  return new Set(String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(' ').filter(w => w && !VENUE_STOPWORDS.has(w)));
+  return new Set(foldDiacritics(String(v || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').split(' ').filter(w => w && !VENUE_STOPWORDS.has(w)));
 }
 
 /**
