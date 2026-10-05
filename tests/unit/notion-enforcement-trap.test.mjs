@@ -71,7 +71,7 @@ test('Notion READ-ONLY refusal clears the failure breadcrumb (no success-only st
   } finally { cleanup(s); rmSync(w, { recursive: true, force: true }); }
 });
 
-test('failed linear-brain create: retry is allowed, other commands blocked until it succeeds', opts, () => {
+test('failed linear-brain create: retry commands pass the block, other commands stay blocked', opts, () => {
   const w = world(), s = sid();
   try {
     writeFileSync(`/tmp/notion-create-failed-${s}`, 'FAILED\n');
@@ -81,16 +81,40 @@ test('failed linear-brain create: retry is allowed, other commands blocked until
   } finally { cleanup(s); rmSync(w, { recursive: true, force: true }); }
 });
 
-test('session-stop recognises Linear closure (no stale NO NOTION UPDATE warning)', opts, () => {
+function stop(w, s, lines) {
+  const t = path.join(w, 't.jsonl');
+  writeFileSync(t, lines.map((l) => JSON.stringify(l)).join('\n') + '\n');
+  const r = spawnSync('bash', [path.join(HOOKS, 'session-stop.sh')], {
+    input: JSON.stringify({ session_id: s, transcript_path: t }),
+    env: { PATH: process.env.PATH, HOME: w, CLAUDE_CODE_ENTRYPOINT: 'sdk-cli' }, cwd: w, encoding: 'utf8', timeout: 30000,
+  });
+  return r.stdout + r.stderr;
+}
+const bashUse = (command) => ({ type: 'assistant', message: { content: [{ type: 'tool_use', input: { command } }] } });
+const WARN = /NO BOARD UPDATE|LINEAR ISSUE STILL OPEN/;
+
+test('session-stop: real Linear closure command silences the warning', opts, () => {
   const w = world(), s = sid();
   try {
-    const t = path.join(w, 't.jsonl');
-    writeFileSync(t, 'node scripts/linear-brain.js update BRO-2470 --state Done\n');
-    const r = spawnSync('bash', [path.join(HOOKS, 'session-stop.sh')], {
-      input: JSON.stringify({ session_id: s, transcript_path: t }),
-      env: { PATH: process.env.PATH, HOME: w, CLAUDE_CODE_ENTRYPOINT: 'sdk-cli' }, cwd: w, encoding: 'utf8', timeout: 30000,
-    });
-    assert.doesNotMatch(r.stdout + r.stderr, /NO (NOTION|BOARD) UPDATE|STILL 'IN PROGRESS'|STILL OPEN/);
+    assert.doesNotMatch(stop(w, s, [bashUse('node scripts/linear-brain.js update BRO-2470 --state Done')]), WARN);
+  } finally { cleanup(s); rmSync(w, { recursive: true, force: true }); }
+});
+
+test('session-stop: negative controls still warn (no closure; closure text only quoted, e.g. CLAUDE.md)', opts, () => {
+  const w = world(), s = sid();
+  try {
+    assert.match(stop(w, s, [bashUse('ls')]), WARN);
+    const quoted = { type: 'user', message: { content: 'rule 6: linear-brain.js update BRO-N --state Done' } };
+    assert.match(stop(w, s, [quoted, bashUse('node scripts/linear-brain.js find BRO-1')]), WARN);
+  } finally { cleanup(s); rmSync(w, { recursive: true, force: true }); }
+});
+
+test('create-block allowlist is anchored to real node invocations', opts, () => {
+  const w = world(), s = sid();
+  try {
+    writeFileSync(`/tmp/notion-create-failed-${s}`, 'FAILED\n');
+    assert.equal(run(w, 'notion-create-block.sh', bash(s, 'cat scripts/linear-brain.js')).rc, 2);
+    assert.equal(run(w, 'notion-create-block.sh', bash(s, 'rm -rf x; echo linear-session')).rc, 2);
   } finally { cleanup(s); rmSync(w, { recursive: true, force: true }); }
 });
 
