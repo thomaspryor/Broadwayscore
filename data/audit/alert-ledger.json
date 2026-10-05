@@ -4826,13 +4826,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-05T01:13:39.023Z",
+      "lastSeen": "2026-10-05T01:20:36.953Z",
       "lastNotifiedAt": "2026-10-04T19:37:48.299Z",
       "lastSurfacedAt": "2026-10-04T19:37:48.299Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 18
+      "silentRefires": 19
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -10089,7 +10089,7 @@
       "resolvedAt": "2026-10-05T01:08:02.681Z"
     },
     "land:land/job/linear-BRO-30-muuhecdv": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-30-muuhecdv",
       "firstSeen": "2026-10-05T00:36:05.514Z",
@@ -10099,7 +10099,8 @@
       "lastSurfacedAt": "2026-10-05T00:36:05.514Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-05T01:16:59.015Z"
     },
     "land:land/job/linear-BRO-4647-muuhya6t": {
       "status": "open",
@@ -10110,6 +10111,19 @@
       "lastSeen": "2026-10-05T00:45:10.756Z",
       "lastNotifiedAt": "2026-10-05T00:45:10.756Z",
       "lastSurfacedAt": "2026-10-05T00:45:10.756Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-208-muuj3js8": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-208-muuj3js8",
+      "firstSeen": "2026-10-05T01:20:08.649Z",
+      "incidentOpenedAt": "2026-10-05T01:20:08.649Z",
+      "lastSeen": "2026-10-05T01:20:08.649Z",
+      "lastNotifiedAt": "2026-10-05T01:20:08.649Z",
+      "lastSurfacedAt": "2026-10-05T01:20:08.649Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
