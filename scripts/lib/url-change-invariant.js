@@ -213,6 +213,19 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
 }
 
 /**
+ * BRO-2869: true when moving a review from `previousUrl` to `newUrl` is a real
+ * "we recovered a DIFFERENT article" swap, the only case the wrong_content
+ * recovery cleanup (collect-review-texts.js) may act on. A cosmetic flip
+ * (urlCanonicallyChanged() === false) is the same article, so exclusion flags
+ * stay. A missing/broken previous url (no_url / fabricated recovery) has
+ * nothing to compare against and still counts as a recovery.
+ */
+function isDifferentArticleRecovery(previousUrl, newUrl) {
+  if (!previousUrl || typeof previousUrl !== 'string' || previousUrl.includes('undefined')) return true;
+  return urlCanonicallyChanged(previousUrl, newUrl);
+}
+
+/**
  * True when `newUrl` is a swap BACK to the url this file held before its most
  * recent URL-change clear (existing._urlChangedClear.from) — i.e. an
  * aggregator/poller is flip-flopping the file's url between two variants that
@@ -627,6 +640,7 @@ function _removeLlmScoreSidecar(reviewFilePath) {
 module.exports = {
   applyUrlChangeInvariant,
   urlCanonicallyChanged,
+  isDifferentArticleRecovery,
   isUrlFlipFlop,
   updateFileUrlWithInvariant,
   removeLlmScoreSidecar: _removeLlmScoreSidecar,

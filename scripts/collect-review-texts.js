@@ -158,7 +158,7 @@ const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browse
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
-const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
+const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
@@ -6911,6 +6911,7 @@ async function processReview(review) {
           fabricatedReason: undefined,
         }, { stampOnNoop: true });
       } catch (e) {}
+      review._urlCosmeticOnly = review._urlCosmeticOnly !== false && !isDifferentArticleRecovery(review.url, discoveredUrl);
       review.url = discoveredUrl;
       review._urlDiscovered = true;
       review.fabricatedEntry = false; // prevent re-triggering SERP on retry
@@ -6960,6 +6961,7 @@ async function processReview(review) {
     if (discoveredUrl && discoveredUrl !== review.url) {
       console.log(`  [showNotMentioned] Discovered: ${review.url} → ${discoveredUrl}`);
       review._previousUrl = review.url;
+      review._urlCosmeticOnly = review._urlCosmeticOnly !== false && !isDifferentArticleRecovery(review.url, discoveredUrl);
       review.url = discoveredUrl;
       review._urlDiscovered = true;
     } else {
@@ -7285,16 +7287,22 @@ async function processReview(review) {
         // earlier in this same pass from publishDate vs openingDate, wiped by
         // a cosmetic /comment-page-1/ suffix strip on the same article.
         const preserve = shouldPreserveExclusionFlagsOnUrlRecovery(postData);
-        if (!preserve.wrongProduction) {
-          delete postData.wrongProduction;
-          delete postData.wrongProductionReason;
+        // BRO-2869: a cosmetic url flip (same canonical article) is not a
+        // recovery of a DIFFERENT article, so the content/exclusion verdicts
+        // stay. Only the retry-state clears below still run (re-selecting the
+        // file every wrong_content drain can make no progress).
+        if (!review._urlCosmeticOnly) {
+          if (!preserve.wrongProduction) {
+            delete postData.wrongProduction;
+            delete postData.wrongProductionReason;
+          }
+          if (!preserve.wrongShow) {
+            delete postData.wrongShow;
+            delete postData.wrongShowReason;
+          }
+          delete postData.showNotMentioned;
+          delete postData.contentMismatchNote;
         }
-        if (!preserve.wrongShow) {
-          delete postData.wrongShow;
-          delete postData.wrongShowReason;
-        }
-        delete postData.showNotMentioned;
-        delete postData.contentMismatchNote;
         // incompleteReason/incompleteDetail/contentTier are cleared even when
         // the flag is preserved, and that is deliberate. Keeping
         // incompleteReason='wrong_content' would re-select this file on EVERY
