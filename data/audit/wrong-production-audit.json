@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T19:33:12.074Z",
+  "timestamp": "2026-10-05T20:33:01.818Z",
   "stats": {
-    "totalReviews": 46376,
-    "alreadyFlagged": 18668,
+    "totalReviews": 46394,
+    "alreadyFlagged": 18670,
     "dateGuardCatches": 269,
-    "directorMismatch": 1280,
+    "directorMismatch": 1282,
     "tvFilmSignals": 1344,
     "londonSignals": 1277,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
-    "noPublishDate": 4304
+    "noPublishDate": 4303
   },
   "findings": [
     {
@@ -31827,6 +31827,19 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "minneapolis-star-tribune--rohan-preston.json",
+      "publishDate": "2026-06-03",
+      "url": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "trib-live--alexis-papalia.json",
       "score": 63,
       "publishDate": "2026-05-27",
@@ -33489,6 +33502,20 @@
       "score": 74,
       "publishDate": "2026-04-30",
       "url": "https://www.news-herald.com/2026/04/30/the-outsiders-at-playhouse-square-review-musical-adaptation-hits-hard/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "theonlycritic--nate-adams.json",
+      "score": 79,
+      "publishDate": "2026-03-09",
+      "url": "https://www.theonlycritic.com/post/the-outsiders-review-a-vulnerable-high-voltage-musical-reimagining-that-honors-the-novel-s-heart",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
