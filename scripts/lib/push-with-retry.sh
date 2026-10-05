@@ -1551,7 +1551,7 @@ restore_protected_fields() {
   if [ "$count" -gt 0 ] 2>/dev/null; then
     echo "  Restored protected fields in $count file(s) after rebase"
     git add -A
-    git commit --amend --no-edit 2>/dev/null || true
+    bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$PULL_BRANCH" >/dev/null 2>&1 || true
   fi
 }
 
@@ -1625,7 +1625,7 @@ reconcile_merged_json() {
 
   echo "  Reconciled ${#changed_files[@]} union-merged JSON file(s) against origin/$PULL_BRANCH (task #420): ${changed_files[*]}"
   git add -- "${changed_files[@]}"
-  git commit --amend --no-edit 2>/dev/null || true
+  bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$PULL_BRANCH" >/dev/null 2>&1 || true
 }
 
 # Post-push CONTENT-survival check (task #619 P0). See scripts/lib/
