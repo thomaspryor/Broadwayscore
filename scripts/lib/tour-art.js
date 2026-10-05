@@ -237,10 +237,16 @@ function rolesNeeded(tour, fileExists = () => true) {
  * after Gemini passed it but its shows.json write was lost (BRO-4726: the
  * write-guard dropped all but the first tour's save). Those tours sit in
  * backoff, so without this they keep Broadway art for a week.
+ * Only a role with a source in data/image-sources.json counts: that record is
+ * written for verified art alone, so a stray file is never adopted.
  * @param {(p: string) => boolean} fileExists for an archived path
+ * @param {object} [sourceEntry] data/image-sources.json entry for the tour
  */
-function archivedUnreferenced(tour, fileExists) {
-  return rolesNeeded(tour, fileExists).filter(r => fileExists(`/images/shows/${tour.id}/${r}.webp`));
+function archivedUnreferenced(tour, fileExists, sourceEntry) {
+  const src = sourceEntry || {};
+  return rolesNeeded(tour, fileExists)
+    .filter(r => src[r] || src[`${r}CroppedFrom`])
+    .filter(r => fileExists(`/images/shows/${tour.id}/${r}.webp`));
 }
 
 module.exports = {

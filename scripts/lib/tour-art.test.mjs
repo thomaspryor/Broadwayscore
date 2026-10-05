@@ -8,12 +8,17 @@ const { isPlaceholderUrl, todaytixArt, stopEventPages, pageImageUrls, rolesForSi
 test('archivedUnreferenced: own file on disk but shows.json still inherits', () => {
   const tour = { id: 'x-tour-2026', images: { poster: '/images/shows/x-2024/poster.webp', thumbnail: '/images/shows/x-2024/thumbnail.webp' } };
   const onDisk = new Set(['/images/shows/x-2024/poster.webp', '/images/shows/x-2024/thumbnail.webp', '/images/shows/x-tour-2026/thumbnail.webp']);
-  assert.deepEqual(archivedUnreferenced(tour, p => onDisk.has(p)), ['thumbnail']);
+  const src = { thumbnail: 'https://example.com/t.jpg' };
+  assert.deepEqual(archivedUnreferenced(tour, p => onDisk.has(p), src), ['thumbnail']);
+  assert.deepEqual(archivedUnreferenced(tour, p => onDisk.has(p), { thumbnailCroppedFrom: 'https://example.com/b.jpg' }), ['thumbnail']);
+  // a file with no verified source on record is never adopted
+  assert.deepEqual(archivedUnreferenced(tour, p => onDisk.has(p)), []);
+  assert.deepEqual(archivedUnreferenced(tour, p => onDisk.has(p), { poster: 'https://example.com/p.jpg' }), []);
   // already referenced: nothing to adopt
   const done = { id: 'x-tour-2026', images: { ...tour.images, thumbnail: '/images/shows/x-tour-2026/thumbnail.webp' } };
-  assert.deepEqual(archivedUnreferenced(done, p => onDisk.has(p)), []);
+  assert.deepEqual(archivedUnreferenced(done, p => onDisk.has(p), src), []);
   // no own file: nothing to adopt
-  assert.deepEqual(archivedUnreferenced(tour, () => false), []);
+  assert.deepEqual(archivedUnreferenced(tour, () => false, src), []);
 });
 
 const NOW = new Date('2026-10-05T00:00:00Z');
