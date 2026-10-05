@@ -30,9 +30,21 @@ test('opera audit uses the shared helper, not a bare guard', () => {
 
 // Every remaining bare !openingDate guard must be documented as intentional,
 // so the next grep sweep does not re-flag it.
-for (const f of ['audit-cv-flag-contradiction.js', 'audit-duplicate-shows.js', 'audit-tony-attribution.js']) {
+for (const f of ['audit-duplicate-shows.js', 'audit-tony-attribution.js']) {
   test(`${f}: bare openingDate guard is documented intentional`, () => {
     const src = fs.readFileSync(new URL(`../../scripts/${f}`, import.meta.url), 'utf8');
     assert.match(src, /openingDate-guard: intentional \(BRO-2033\)/);
   });
 }
+
+test('cv-flag sweep falls back to previewsStartDate instead of a bare openingDate guard', () => {
+  const src = fs.readFileSync(new URL('../../scripts/audit-cv-flag-contradiction.js', import.meta.url), 'utf8');
+  assert.match(src, /showRecencyKey\(s\)/);
+  assert.doesNotMatch(src, /if \(!s\.openingDate\) return false/);
+});
+
+test('tony audit reports undated shows instead of silently skipping them', () => {
+  const src = fs.readFileSync(new URL('../../scripts/audit-tony-attribution.js', import.meta.url), 'utf8');
+  assert.match(src, /unverifiableUndated\.push\(showId\)/);
+  assert.match(src, /could not be checked/);
+});

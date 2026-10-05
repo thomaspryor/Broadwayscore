@@ -81,6 +81,13 @@ Usage:
 // Report-only runs may always redirect.
 const ROOT_OVERRIDE = process.env.BSC_AUDIT_ROOT || '';
 const ROOT = ROOT_OVERRIDE ? path.resolve(ROOT_OVERRIDE) : path.resolve(__dirname, '..');
+const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
+// BRO-2033: previewsStartDate fallback only for shows that are past 'upcoming'.
+// Upcoming shows carry future previews dates, have no reviews, and would only
+// inflate the window/coverage counters (measured: +~200 shows, all upcoming).
+function sweepDateKey(s) {
+  return showRecencyKey(s.status === 'upcoming' ? { openingDate: s.openingDate } : s);
+}
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const BASELINE_PATH = path.join(ROOT, 'data', 'audit', 'cv-flag-contradiction-baseline.json');
@@ -188,14 +195,12 @@ function main() {
   const shows = Array.isArray(showsFile) ? showsFile : showsFile.shows;
   const cutoff = Date.now() - args.window * 86400000;
   const recentShows = shows.filter((s) => {
-    // openingDate-guard: intentional (BRO-2033). This sweep asks "did a show
-    // that OPENED in the last N days get reviews contradicting its CV flags".
-    // A show with no openingDate has no opening to place inside the window and
-    // (previews-only) has no press reviews to contradict; a previewsStartDate
-    // fallback would pull in shows that have not opened, the opposite of the
-    // window's meaning. Undated shows are surfaced by audit-show-review-gap.js.
-    if (!s.openingDate) return false;
-    const t = Date.parse(s.openingDate);
+    // BRO-2033: validate-data.js's review-driven flip marks shows `open` while
+    // intentionally leaving openingDate null, i.e. exactly the reviewed shows
+    // this sweep exists for. Fall back to previewsStartDate (showRecencyKey).
+    const key = sweepDateKey(s);
+    if (key === NO_DATE_SENTINEL) return false;
+    const t = Date.parse(key);
     return !Number.isNaN(t) && t >= cutoff;
   });
 
@@ -205,9 +210,9 @@ function main() {
   // directory, an unreadable one, or one whose every file fails to parse.
   // Measured on the real corpus 2026-09-07: 132 selected, 72 examined.
   const eligibleShows = shows.filter(
-    (s) => s.openingDate && !Number.isNaN(Date.parse(s.openingDate))
+    (s) => sweepDateKey(s) !== NO_DATE_SENTINEL && !Number.isNaN(Date.parse(sweepDateKey(s)))
   ).length;
-  const openedShows = recentShows.filter((s) => Date.parse(s.openingDate) <= Date.now()).length;
+  const openedShows = recentShows.filter((s) => Date.parse(sweepDateKey(s)) <= Date.now()).length;
   let showsWithTexts = 0;
   let filesParsed = 0;
 
