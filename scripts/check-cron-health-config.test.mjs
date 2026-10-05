@@ -11,20 +11,21 @@ const yml = fs.readFileSync(path.join(root, '.github/workflows/check-cron-health
 const exempt = fs.readFileSync(path.join(root, '.cron-health-exempt.txt'), 'utf8');
 
 const block = yml.slice(yml.indexOf('CRITICAL_CRONS=('));
-const entries = new Map(
-  [...block.slice(0, block.indexOf('\n          )')).matchAll(/^\s*"([^"|]+\.yml)\|(\d+)\|[^"|]+(?:\|[^"]*)?"/gm)]
-    .map(m => [m[1], Number(m[2])])
-);
+const rows = [...block.slice(0, block.indexOf('\n          )')).matchAll(/^\s*"([^"|]+\.yml)\|(\d+)\|[^"|]+(?:\|[^"]*)?"/gm)]
+  .map(m => [m[1], Number(m[2])]);
+const entries = new Map(rows);
 
-// Max hours must exceed the worst real gap (GitHub-throttled hourly cron ~7h observed)
-// but stay bounded so a dead cron still pages within a day.
-const EXPECTED = { 'audit-aggregator-gap.yml': [8, 24], 'opening-night-reviews.yml': [7, 30] };
+// Exact max_hours as registered (BRO-1618): hourly census 3h, rolling ~3h-cadence carrier 5h.
+const EXPECTED = { 'audit-aggregator-gap.yml': [3, 3], 'opening-night-reviews.yml': [5, 5] };
 
 for (const [wf, [lo, hi]] of Object.entries(EXPECTED)) {
   test(`${wf} is in CRITICAL_CRONS with sane max_hours`, () => {
     assert.ok(entries.has(wf), `${wf} missing from CRITICAL_CRONS`);
     const h = entries.get(wf);
     assert.ok(h >= lo && h <= hi, `${wf} max_hours=${h} outside [${lo}, ${hi}]`);
+  });
+  test(`${wf} is listed exactly once`, () => {
+    assert.equal(rows.filter(([w]) => w === wf).length, 1);
   });
   test(`${wf} is not also in the exempt list`, () => {
     assert.ok(!exempt.split('\n').some(l => l.trim() === wf));
