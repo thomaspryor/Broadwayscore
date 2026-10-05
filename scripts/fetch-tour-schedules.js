@@ -48,7 +48,12 @@ function opensWith(tour, stops) {
 function tourStops(tour, html) {
   const segment = pickSegment(segmentTourRows(parseTourSchedule(html)), tour, '');
   if (!segment) return null;
-  return segment.rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) }));
+  // Only the current era: a long-running title's page can run several
+  // companies together back to 2020 (Hamilton); stops before this tour's
+  // launch belong to an earlier company (BRO-4601).
+  const from = tour.openingDate ? Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) - 7 * 86400000 : -Infinity;
+  const rows = segment.rows.filter(r => r.start.getTime() >= from);
+  return rows.length ? rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) })) : null;
 }
 
 async function main() {

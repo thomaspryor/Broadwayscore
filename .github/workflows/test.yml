@@ -49,6 +49,9 @@ on:
       # tests/unit/tour-schedule-now-next.test.ts requires tourStops from
       # scripts/fetch-tour-schedules.js (BRO-4601).
       - 'scripts/fetch-tour-schedules.js'
+      # scripts/add-verified-tours.test.mjs (manifest) tests this CLI's planVerifiedTours (BRO-4601).
+      - 'scripts/add-verified-tours.js'
+      - 'scripts/add-verified-tours.test.mjs'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
       # scripts/lib/cmux-auth-stall.js (covered by the glob above) — a solo
       # edit to the wrapper (e.g. the read-screen/rename loop) would otherwise

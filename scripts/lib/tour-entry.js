@@ -23,6 +23,9 @@ const LAUNCH_SOURCES = {
   wikipedia: { evidence: 'launch confirmed by Wikipedia', openingDateSource: 'tourstoyou+wikipedia', closingDateSource: 'tourstoyou+wikipedia' },
   'bww-roundup': { evidence: 'launch confirmed by BroadwayWorld roundup', openingDateSource: 'tourstoyou+bww-roundup', closingDateSource: 'tourstoyou' },
   'tourstoyou-fresh': { evidence: 'launch is the first listed engagement of a tour launching now', openingDateSource: 'tourstoyou-first-engagement', closingDateSource: 'tourstoyou' },
+  // A current-era launch checked by hand against two sources (BRO-4601):
+  // long-running tours whose Tours To You page keeps only recent rows.
+  'hand-verified': { evidence: 'current-era launch verified by hand', openingDateSource: 'hand-verified', closingDateSource: 'hand-verified' },
 };
 
 /** The Tours To You slug in a schedule URL, or null. */
@@ -57,6 +60,7 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   // validate-show-venue's two-source exemption).
   const source = LAUNCH_SOURCES[decision.launchSource];
   if (!source) return { skip: `unknown launch source ${decision.launchSource}` };
+  if (decision.launchSource === 'hand-verified' && !((decision.evidenceUrls || []).length >= 2)) return { skip: 'hand-verified launch needs two source URLs' };
   const today = now.toISOString().slice(0, 10);
   if (launch > today) return { skip: `launch ${launch} is in the future` };
 
@@ -88,7 +92,7 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
     ...(roundupUrl
       ? { discoverySource: 'aggregator-roundup:bww-tour-roundup', tourLaunchEvidence: `BroadwayWorld national-tour roundup ${roundupUrl}` }
       // Found running on Tours To You (tour-discovery.js, BRO-4325).
-      : { discoverySource: 'tour-schedule:tourstoyou', tourLaunchEvidence: `Tours To You schedule ${scheduleUrl}, ${source.evidence}` }),
+      : { discoverySource: 'tour-schedule:tourstoyou', tourLaunchEvidence: `Tours To You schedule ${scheduleUrl}, ${source.evidence}${decision.evidenceUrls && decision.evidenceUrls.length ? `: ${decision.evidenceUrls.join(' ; ')}` : ''}` }),
     statusSource: `auto-created ${today} (BRO-4262): ${scheduleUrl || 'Tours To You'}, ${source.evidence}; ${decision.notes.join('; ')}`,
     openingDateSource: source.openingDateSource,
     // The page the dates came from: numbered pages (the-book-of-mormon-1) are
