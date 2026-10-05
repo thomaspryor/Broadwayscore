@@ -435,7 +435,7 @@ runs:
               if [ "$RESTORED" -gt 0 ] 2>/dev/null; then
                 echo "  Restored protected fields in $RESTORED file(s) after conflict resolution"
                 git add -A
-                git commit --amend --no-edit 2>/dev/null || true
+                bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "origin/main" "${COMMIT_MSG:-data: reconcile after concurrent push}" >/dev/null 2>&1 || true
               fi
             fi
 

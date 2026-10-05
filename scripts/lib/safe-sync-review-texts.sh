@@ -93,7 +93,7 @@ for attempt in $(seq 1 "$MAX_RETRIES"); do
           echo "  Restored protected fields in $COUNT file(s)."
           git add -A
           if ! git diff --cached --quiet; then
-            git commit --amend --no-edit >/dev/null 2>&1 || true
+            bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$BRANCH" >/dev/null 2>&1 || true
           fi
         fi
       fi
