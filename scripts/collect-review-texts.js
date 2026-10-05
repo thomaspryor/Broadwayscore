@@ -7198,6 +7198,7 @@ async function processReview(review) {
           url: reviewData.url || null,
           // BRO-989: foreign-roundup bypass of the temporal override.
           bwwRoundupUrl: reviewData.bwwRoundupUrl || null,
+          otherShowTitles: (_showsJsonCache?.shows || []).filter(s => s.id !== showId && s.title && s.title.length >= 6).map(s => s.title),
           // Show metadata passed in so applyTemporalOverrides can run the named-entity
           // bypass (Hamlet 2026-05-08 FRC class): if CV reasoning names a "directed by X"
           // that doesn't match show.creativeTeam directors AND the actual director

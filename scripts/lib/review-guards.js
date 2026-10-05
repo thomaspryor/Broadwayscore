@@ -289,18 +289,29 @@ function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) 
 
 /**
  * Foreign-roundup-URL bypass (BRO-989, Schmigadoon 2026-04-20 EBT incident).
- * A review file's bwwRoundupUrl is a BroadwayWorld review-roundup page whose
- * slug is the roundup's SHOW title. When that slug names none of the expected
- * show's title (urlSlugMatchesShowTitle), the file was matched to the wrong
- * show's roundup: deterministic wrong-content evidence that must beat the
- * opening-week safety net even when the LLM reasoning has no marker phrase.
- * Only BWW review-roundup URLs are judged (their slugs are title-based).
+ * A file's bwwRoundupUrl slug names the roundup's SHOW. Wrong-content evidence
+ * only when the slug does NOT match the expected show AND positively names a
+ * DIFFERENT known show (otherShowTitles, caller-supplied from shows.json).
+ * A bare slug mismatch is not enough: BWW slugs drop accents, merge slashed
+ * titles and omit subtitles ("Les Misérables" vs LES-MISERABLES), so ~77% of
+ * mismatches in the corpus were legit (ship-check probe 2026-10-04).
  */
-function hasForeignRoundupUrlSignal(roundupUrl, show) {
-  if (!roundupUrl || !show || !show.title) return false;
+function hasForeignRoundupUrlSignal(roundupUrl, show, otherShowTitles) {
+  if (!roundupUrl || !show || !show.title || !Array.isArray(otherShowTitles)) return false;
   const u = String(roundupUrl);
-  if (!/broadwayworld\.com\/(?:[a-z-]+\/)?review-?roundups?\//i.test(u) && !/review-roundup/i.test(u)) return false;
-  return !urlSlugMatchesShowTitle(u, show.title);
+  if (!/review-roundup/i.test(u)) return false;
+  if (urlSlugMatchesShowTitle(u, show.title)) return false;
+  const fold = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const own = fold(show.title);
+  const slugWords = fold(u.split('/').pop());
+  const squashed = slugWords.replace(/ /g, '');
+  // ZERO overlap with the expected title: no distinctive title word (2+ letters,
+  // stopwords dropped) may appear anywhere in the slug (substring of the squashed
+  // slug covers slashed/merged titles like BERNHARDTHAMLET).
+  const stop = new Set(['the', 'and', 'new', 'musical', 'play', 'broadway', 'part', 'for']);
+  const ownWords = own.split(' ').filter(w => w.length >= 2 && !stop.has(w));
+  if (ownWords.some(w => squashed.includes(w))) return false;
+  return otherShowTitles.some(t => fold(t) && fold(t) !== own && urlSlugMatchesShowTitle(u, t));
 }
 
 function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, cvContext) {
@@ -315,7 +326,7 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
   const strongDifferent =
     !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText)) ||
-    !!(cvContext && hasForeignRoundupUrlSignal(cvContext.bwwRoundupUrl, cvContext.show));
+    !!(cvContext && hasForeignRoundupUrlSignal(cvContext.bwwRoundupUrl, cvContext.show, cvContext.otherShowTitles));
 
   // In-window + slug-match veto (audit S6-T4, BRO-4204). The 30-day rule
   // below is the opening-week safety net; this is the run-long one: a review

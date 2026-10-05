@@ -408,7 +408,7 @@ async function callPinnedProvider({ name, call }, prompt) {
  *   model instead of the default provider chain (BRO-4603).
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy, urlYearConflict }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, bwwRoundupUrl, show, provider }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, bwwRoundupUrl, otherShowTitles, show, provider }) {
   // Judge the article, not a consent layer captured ahead of it: the prompt
   // shows only the first 2,500 chars, which for WhatsOnStage captures was
   // entirely IAB consent text (BRO-4185 A).
@@ -467,6 +467,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         // family (wrongArticle AND wrongProduction).
         url,
         bwwRoundupUrl,
+        otherShowTitles,
         wrongShow: !!(parsed.wrongArticle && wpFlag),
       });
       if (temporalOverrides.inWindowSlugMatch && wpFlag) {

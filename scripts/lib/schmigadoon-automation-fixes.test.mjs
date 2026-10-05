@@ -7,22 +7,30 @@ const require = createRequire(import.meta.url);
 const { applyTemporalOverrides, hasForeignRoundupUrlSignal } = require('./review-guards.js');
 
 const show = { id: 'schmigadoon-2026', title: 'Schmigadoon!', openingDate: '2026-04-20' };
-const ebt = 'https://www.broadwayworld.com/review-roundups/Every-Brilliant-Thing-Review-Roundup-1';
+const ebt = 'https://www.broadwayworld.com/article/Review-Roundup-Tony-Winner-EVERY-BRILLIANT-THING-on-Broadway-20260312';
+const others = ['Every Brilliant Thing', 'Les Misérables', 'Hamilton'];
 
 test('Bug #3: EBT roundup URL beats the 1d-of-opening override with no LLM marker text', () => {
   const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-04-21', {
     issues: [], reasoning: 'content mismatch', show,
-    url: 'https://theatrely.com/every-brilliant-thing-review', bwwRoundupUrl: ebt,
+    url: 'https://theatrely.com/every-brilliant-thing-review', bwwRoundupUrl: ebt, otherShowTitles: others,
   });
   assert.equal(r.bypassedForStrongSignal, true);
   assert.equal(r.wpConfidence, 'high');
 });
 
 test('Bug #3: matching roundup slug still gets the opening-week override', () => {
-  const ok = 'https://www.broadwayworld.com/review-roundups/Schmigadoon-Review-Roundup-1';
-  assert.equal(hasForeignRoundupUrlSignal(ok, show), false);
-  const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-04-21', { issues: [], reasoning: '', show, bwwRoundupUrl: ok });
+  const ok = 'https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-Opens-on-Broadway-20260420';
+  assert.equal(hasForeignRoundupUrlSignal(ok, show, others), false);
+  const r = applyTemporalOverrides(true, false, 'high', '2026-04-20', '2026-04-21', { issues: [], reasoning: '', show, bwwRoundupUrl: ok, otherShowTitles: others });
   assert.equal(r.wpConfidence, 'low');
+});
+
+test('Bug #3: slug drift (accents/slashes/subtitles) is NOT foreign without a named other show', () => {
+  const lm = { title: 'Les Misérables' };
+  const u = 'https://www.broadwayworld.com/article/Review-Roundup-LES-MISERABLES-Opens-20260101';
+  assert.equal(hasForeignRoundupUrlSignal(u, lm, ['Hamilton', 'Every Brilliant Thing']), false);
+  assert.equal(hasForeignRoundupUrlSignal(u, lm), false);
 });
 
 test('Bug #3: non-roundup URLs are never judged by slug', () => {
