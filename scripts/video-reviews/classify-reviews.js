@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
-const { responseText } = require('../lib/anthropic-response-text');
+const { finalResponseText, describeResponse } = require('../lib/anthropic-response-text');
 
 const RAW_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/raw');
 const CLASSIFIED_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/classified');
@@ -120,8 +120,8 @@ ${items}`
 
   if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const data = await resp.json();
-  const text = responseText(data.content);
-  if (!text) throw new Error(`No text block in response. Block types: ${data.content.map(c => c.type).join(', ')}`);
+  const text = finalResponseText(data.content);
+  if (!text) throw new Error(`No text block in response (${describeResponse(data)})`);
   // Find the outermost JSON array. Walk to the first '[' that's followed
   // (after optional whitespace) by '{' — that's the object-array opener.
   // Tolerates markdown code fences (```json\n[\n  {...) and stray "[foo]"
@@ -133,7 +133,7 @@ ${items}`
     while (j < text.length && /\s/.test(text[j])) j++;
     if (text[j] === '{') { start = i; break; }
   }
-  if (start === -1) throw new Error('No JSON array in response: ' + text.substring(0, 200));
+  if (start === -1) throw new Error(`No JSON array in response (${describeResponse(data)}): ` + text.substring(0, 200));
   let depth = 0, inStr = false, esc = false, end = -1;
   for (let i = start; i < text.length; i++) {
     const c = text[i];
@@ -147,7 +147,7 @@ ${items}`
       if (depth === 0) { end = i + 1; break; }
     }
   }
-  if (end === -1) throw new Error('Unclosed JSON in response');
+  if (end === -1) throw new Error(`Unclosed JSON in response (${describeResponse(data)})`);
   return JSON.parse(text.substring(start, end));
 }
 
