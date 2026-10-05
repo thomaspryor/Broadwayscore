@@ -6236,6 +6236,7 @@ jobs:
             });
 
       - name: Commit data-audit digest line
+        continue-on-error: true
         if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
         run: |
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
@@ -6245,7 +6246,9 @@ jobs:
             git commit -m "data: alert-router ledger update [skip ci]"
             # Non-blocking, same as test-summary's ledger commit: a lost race
             # only delays the digest line to the next red run.
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Data-audit digest ledger push failed — next red run re-queues it"
+            # Step-level continue-on-error (BRO-3342): a terminal push failure shows as a FAILED step
+            # (annotation + red step) while the job stays green; never mask it with `|| echo`.
+            bash scripts/lib/push-with-retry.sh || { echo "::warning::Data-audit digest ledger push failed — next red run re-queues it"; exit 1; }
           fi
 
       - name: Create issue on failure
@@ -6494,6 +6497,7 @@ jobs:
           TEST_BASE_URL: https://broadwayscorecard.com
 
       - name: Commit updated snapshots
+        continue-on-error: true
         if: always() && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
@@ -6511,7 +6515,9 @@ jobs:
           # budget just burns CI minutes on an unwinnable race; the snapshot
           # commit isn't time-sensitive, so a lost race must not redden this
           # job — the next scheduled/dispatched run recomputes the same diff.
-          bash scripts/lib/push-with-retry.sh || echo "::warning::Snapshot push failed — next run will recommit"
+          # Step-level continue-on-error (BRO-3342): a terminal push failure shows as a FAILED step
+          # (annotation + red step) while the job stays green; never mask it with `|| echo`.
+          bash scripts/lib/push-with-retry.sh || { echo "::warning::Snapshot push failed — next run will recommit"; exit 1; }
 
       - name: Upload test results
         uses: actions/upload-artifact@v5
@@ -6830,6 +6836,7 @@ jobs:
       # disk until committed — without this, cooldown/resolve state resets every
       # run and the router's "notify once per open incident" guarantee is a no-op.
       - name: Commit alert-router ledger changes
+        continue-on-error: true
         if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
@@ -6845,7 +6852,9 @@ jobs:
             # this job — the next push re-derives the same streak/cooldown state,
             # and a failure here would ironically trip the very "main red" alert
             # this step exists to send (task #353 ship-check finding).
-            bash scripts/lib/push-with-retry.sh || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+            # Step-level continue-on-error (BRO-3342): a terminal push failure shows as a FAILED step
+            # (annotation + red step) while the job stays green; never mask it with `|| echo`.
+            bash scripts/lib/push-with-retry.sh || { echo "::warning::Alert-router ledger push failed — next run will recompute state"; exit 1; }
           else
             echo "No ledger changes to commit."
           fi
