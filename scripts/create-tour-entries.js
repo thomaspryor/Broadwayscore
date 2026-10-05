@@ -67,21 +67,34 @@ async function main() {
   // timestamp to tell a quiet week from a job that stopped running.
   // What running-tour discovery did this run, for the health check (BRO-4325).
   let discovery = null;
+  // Which Tours To You pages discovery read when (BRO-4725): kept across runs
+  // in this file, carried over unchanged by a run that skips or fails discovery.
+  let prevCoverage = {};
+  try { prevCoverage = (JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8')).discovery || {}).coverage || {}; } catch { /* first run */ }
   const writeAudit = (body) => {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
-    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), discovery, ...body }, null, 2) + '\n');
+    const d = { ...(discovery || {}) };
+    if (!d.coverage) d.coverage = prevCoverage;
+    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), discovery: d, ...body }, null, 2) + '\n');
   };
   if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); writeAudit({ mode: 'off', created: [], results: [] }); return; }
   const write = argv.includes('--write') && mode === 'write';
   // Stop cleanly before the workflow's timeout; unprocessed candidates stay open.
-  const budget = createRunBudget(parseTimeBudgetMin(argv));
+  const budgetMin = parseTimeBudgetMin(argv);
+  const budget = createRunBudget(budgetMin);
+  // Discovery gets three quarters, so open candidates still get their turn;
+  // pages it doesn't reach are read first next run (BRO-4725).
+  const discoveryBudget = createRunBudget(budgetMin * 0.75);
+  // The paid chain only when Tours To You rate-limits the plain GET (tours-to-you.js).
+  const fallback = url => require('./lib/scraper').fetchPage(url);
 
   if (!argv.includes('--no-discover')) {
     try {
       const { discoverRunningTours } = require('./discover-running-tours');
       const current = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
-      const { candidates, ambiguous, pages, checked } = await discoverRunningTours({ shows: current, budget });
-      discovery = { pages, checked, found: candidates.length, ambiguous: ambiguous.length, error: null };
+      const r = await discoverRunningTours({ shows: current, budget: discoveryBudget, coverage: prevCoverage, fallback });
+      const { candidates, ambiguous, pages, checked } = r;
+      discovery = { pages, eligible: r.eligible, checked, failed: r.failed, rateLimited: r.rateLimited, found: candidates.length, ambiguous: ambiguous.length, error: null, coverage: r.coverage };
       // Recorded in report mode too: route-tour-candidates.js reads the file.
       const n = recordTourCandidates(CANDIDATES, candidates);
       console.log(`${candidates.length} running tour(s) found; ${n} candidate row(s) tracked`);
@@ -94,7 +107,6 @@ async function main() {
   if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); writeAudit({ mode: write ? 'write' : 'report', created: [], results: [] }); return; }
 
   const { fetchSchedule, fetchWikiText } = require('./enrich-tour-dates');
-  const { fetchPage } = require('./lib/scraper');
   const rows = JSON.parse(fs.readFileSync(CANDIDATES, 'utf8'));
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const byId = new Map(shows.map(s => [s.id, s]));
@@ -123,9 +135,10 @@ async function main() {
       continue;
     }
     const probe = { id: null, title: parent.title, tourScheduleSlug: c.tourScheduleSlug, openingDate: null, closingDate: null };
-    // A tour found on Tours To You is fetched there plainly (no paid scraper).
     const found = c.source === 'tourstoyou';
-    const { url: scheduleUrl, html } = await fetchSchedule(probe, found ? async () => '' : fetchPage);
+    // Plain GET first; the paid chain only on a 429 (BRO-4725: 429s left
+    // Tours To You-found tours with "no evidence URL" on 2026-10-05).
+    const { url: scheduleUrl, html } = await fetchSchedule(probe, fallback, { budget });
     let wiki = '';
     try { wiki = await fetchWikiText(parent.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
     // A schedule row may carry the BWW roundup seen for the same show

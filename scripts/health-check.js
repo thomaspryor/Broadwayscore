@@ -3955,6 +3955,22 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       hint: 'Run node scripts/discover-running-tours.js locally; the Tours To You pages API or page layout may have changed (scripts/lib/tour-discovery.js).',
     });
   }
+  // Every Broadway-titled Tours To You page should be read every couple of
+  // days (BRO-4725); one that isn't is a tour that could appear late or never.
+  const coverage = discovery && discovery.coverage;
+  if (coverage && Object.keys(coverage).length) {
+    const { stalePages, STALE_DAYS } = require('./lib/tours-to-you-coverage');
+    const stale = stalePages(coverage, now);
+    if (stale.length) {
+      const total = Object.keys(coverage).length;
+      out.push({
+        name: 'Data: Tours To You pages not checked',
+        status: 'warn',
+        message: `${stale.length} of ${total} Tours To You show pages have not been read in over ${STALE_DAYS} days (${stale.slice(0, 8).map(r => r.slug).join(', ')}${stale.length > 8 ? ', ...' : ''}). A tour on one of them can't be added until it is.`,
+        hint: 'See discovery in data/audit/tour-autocreate.json (rateLimited, failed). The daily BWW landing job reads the oldest pages first; repeated 429s mean Tours To You wants a slower pace (GAP_MS in scripts/lib/tours-to-you.js).',
+      });
+    }
+  }
   const created = (autocreate && autocreate.created) || [];
   if (created.length) {
     out.push({
