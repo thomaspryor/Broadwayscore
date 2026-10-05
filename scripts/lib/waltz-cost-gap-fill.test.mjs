@@ -132,6 +132,13 @@ test('costSourceBasis reads plural and mixed section citations', () => {
   assert.deepEqual([...citedSections('Sections F and H')].sort(), ['F', 'H']);
   assert.equal(citedSections('Section Data from Variety').size, 0);
   assert.equal(citedSections('second section').size, 0);
+  // Lowercase prose after a section is not more sections (review finding).
+  for (const s of ['Section F - a Deadline article', 'Section F, e.g. Deadline', 'Section F, b/c Deadline', 'Section F and a Variety report']) {
+    assert.deepEqual([...citedSections(s)], ['F'], s);
+    assert.equal(costSourceBasis(s), 'trade', s);
+  }
+  assert.equal(costSourceBasis('Section H, a Form D filed'), 'sec');
+  assert.equal(costSourceBasis('Section F, h/t Variety'), 'trade');
 });
 
 test('only a trade or SEC source counts as reported', () => {

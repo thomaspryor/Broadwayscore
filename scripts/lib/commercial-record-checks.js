@@ -35,9 +35,11 @@ const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
 // Model names are matched with their family word ("Claude Sonnet", not
 // "Claude": Claude-Michel Schönberg wrote Les Misérables).
 // Hand-edit process notes ("Per policy applied 2026-05-24: ...", "Kept ...
-// per owner review") are internal too (BRO-4669), as is "Section C: ...", the
-// weekly update's name for a part of its model context (BRO-4666).
-const INTERNAL_TEXT_RE = /\bGPT\b|\bChatGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b|\bGemini (?:\d|Pro|Flash|Ultra)|\bper policy\b|\bowner (?:review|decision|sign-?off)\b|\bSections? [A-H](?:\s*(?:,|&|and|or|\/|-|–)\s*[A-H])*\s*:/i;
+// per owner review") are internal too (BRO-4669).
+const INTERNAL_TEXT_RE = /\bGPT\b|\bChatGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b|\bGemini (?:\d|Pro|Flash|Ultra)|\bper policy\b|\bowner (?:review|decision|sign-?off)\b/i;
+// "Section C: ...", the weekly update's name for a part of its model context
+// (BRO-4666). Capital letters only, so prose ("see section a: ...") passes.
+const CONTEXT_SECTION_RE = /\b[Ss]ections? [A-H](?:\s*(?:,|&|and|or|\/|-|–)\s*[A-H])*\s*:/;
 // A record field written as code: "recouped:null because no public citation",
 // "designation=Nonprofit" (BRO-4669). Case-sensitive (lowercase field name) so
 // "Based on a True story" never matches. Mirrors INTERNAL_TOKEN_RE in
@@ -56,7 +58,7 @@ const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 function internalWordingIn(text) {
   if (typeof text !== 'string') return null;
   const prose = text.replace(URL_RE, ' ');
-  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE);
+  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE) || prose.match(CONTEXT_SECTION_RE);
   return match ? match[0] : null;
 }
 

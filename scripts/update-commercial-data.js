@@ -1371,6 +1371,7 @@ Respond with ONLY valid JSON (no markdown code fences):
         "capitalization": null,
         "capitalizationSource": null,
         "weeklyRunningCost": null,
+        "weeklyRunningCostSource": null,
         "recouped": false,
         "recoupedDate": null,
         "recoupedWeeks": null,
@@ -1451,10 +1452,21 @@ const DERIVED_FIELD_FIGURES = {
   isEstimate: ['weeklyRunningCost', 'capitalization'],
 };
 
-/** True when the record's figure is reported: only trade or SEC evidence may replace it. */
+/**
+ * True when the record's figure is reported: only trade or SEC evidence may
+ * replace it. A capitalization counts when /biz prints it as one, without "~"
+ * (producer announcements and press releases are reported too).
+ */
 function holdsReportedFigure(rec, field) {
   if (field === 'weeklyRunningCost') return isReportedWeeklyCost(rec);
-  return rec?.capitalization != null && rec.isEstimate?.capitalization !== true && isReportedSource(rec.capitalizationSource);
+  return rec?.capitalization != null && rec.isEstimate?.capitalization !== true;
+}
+
+/** The Deep Research guardian's blocking conflict for a change, else null. */
+function deepResearchBlock(change, commercialData) {
+  if (!deepResearchGuardian || !commercialData) return null;
+  const conflict = deepResearchGuardian.detectConflict(change, commercialData.shows?.[change.slug]);
+  return conflict && deepResearchGuardian.shouldBlockChange(conflict) ? conflict : null;
 }
 
 /** A proposed figure as a number, or null when it is not one ("$650K", null). */
@@ -1464,12 +1476,19 @@ function figureValue(value) {
   return null;
 }
 
-/** The printable trade or SEC citation the batch proposes beside this figure change, else null. */
-function pairedCitation(change, proposedChanges) {
+/**
+ * The printable trade or SEC citation the batch proposes beside this figure
+ * change, else null. The citation must pass the same confidence and Deep
+ * Research checks it would face on its own.
+ */
+function pairedCitation(change, proposedChanges, commercialData) {
   const citeField = CITATION_FIELD[change.field];
   if (!citeField || !isReportedSource(change.source)) return null;
   const cite = proposedChanges.find((c) => c.slug === change.slug && c.field === citeField);
-  return cite && isPrintableReportedCitation(cite.newValue) ? cite.newValue.trim() : null;
+  if (!cite || !isPrintableReportedCitation(cite.newValue)) return null;
+  const confidence = cite.validatedConfidence || cite.confidence;
+  if (confidence !== 'high' && confidence !== 'medium') return null;
+  return deepResearchBlock(cite, commercialData) ? null : cite.newValue.trim();
 }
 
 /**
@@ -1516,25 +1535,21 @@ function filterByConfidence(proposedChanges, commercialData) {
     const { slug, field, oldValue, newValue, confidence } = change;
 
     // Sprint 3: Check for Deep Research conflicts FIRST
-    if (deepResearchGuardian && commercialData) {
-      const showData = commercialData.shows?.[slug];
-      const conflict = deepResearchGuardian.detectConflict(change, showData);
+    const conflict = deepResearchBlock(change, commercialData);
+    if (conflict) {
+      const discrepancy = deepResearchGuardian.calculateDiscrepancy
+        ? deepResearchGuardian.calculateDiscrepancy(conflict.field, conflict.verifiedValue, conflict.proposedValue)
+        : `verified ${JSON.stringify(conflict.verifiedValue)}, proposed ${JSON.stringify(conflict.proposedValue)}`;
 
-      if (conflict && deepResearchGuardian.shouldBlockChange(conflict)) {
-        const discrepancy = deepResearchGuardian.calculateDiscrepancy
-          ? deepResearchGuardian.calculateDiscrepancy(conflict.field, conflict.verifiedValue, conflict.proposedValue)
-          : `verified ${JSON.stringify(conflict.verifiedValue)}, proposed ${JSON.stringify(conflict.proposedValue)}`;
-
-        deepResearchConflicts.push({
-          ...change,
-          conflict: {
-            ...conflict,
-            discrepancy
-          }
-        });
-        console.log(`    [BLOCKED - Deep Research] ${slug}.${field}: ${discrepancy}`);
-        continue;  // Skip this change
-      }
+      deepResearchConflicts.push({
+        ...change,
+        conflict: {
+          ...conflict,
+          discrepancy
+        }
+      });
+      console.log(`    [BLOCKED - Deep Research] ${slug}.${field}: ${discrepancy}`);
+      continue;  // Skip this change
     }
 
     // Only a trade or SEC source replaces a reported figure (BRO-4666).
@@ -1619,7 +1634,12 @@ function filterByConfidence(proposedChanges, commercialData) {
         skipped.push({ ...change, skipReason: `Implausible weekly cost $${value.toLocaleString()}` });
         continue;
       }
-      const citation = pairedCitation(change, proposedChanges);
+      const citation = pairedCitation(change, proposedChanges, commercialData);
+      const current = commercialData?.shows?.[slug]?.[field];
+      if (!citation && current != null && Number(current) === value) {
+        skipped.push({ ...change, skipReason: `Restates the current ${field}` });
+        continue;
+      }
       if (!citation && holdsReportedFigure(commercialData?.shows?.[slug], field)) {
         flagged.push({ ...change, flagReason: `Replacing a reported ${field} needs a printable trade or SEC citation (${CITATION_FIELD[field]})` });
         continue;

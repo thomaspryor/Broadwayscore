@@ -55,6 +55,36 @@ test('a trade-press cost updates a reported figure only with a printable citatio
   assert.equal(internal.applied.length, 0);
 });
 
+test('a citation rides along only if it would pass the filter on its own', () => {
+  const data = commercialWith({ weeklyRunningCost: 500000, costMethodology: 'trade-reported' });
+  const change = { ...redditCost('some-show', 550000), source: 'Section F: Variety' };
+  for (const conf of [{ confidence: 'low' }, { validatedConfidence: 'flagged' }, { validatedConfidence: 'low' }]) {
+    const cite = { ...citation('some-show', 'weeklyRunningCostSource', 'Variety (Oct 2, 2026)'), ...conf };
+    const { applied, flagged } = filterByConfidence([change, cite], data);
+    assert.equal(applied.length, 0, JSON.stringify(conf));
+    assert.ok(flagged.some((f) => /printable trade or SEC citation/.test(f.flagReason)), JSON.stringify(conf));
+  }
+});
+
+test('a restated figure is skipped quietly, not flagged every week', () => {
+  const data = commercialWith({ weeklyRunningCost: 500000, costMethodology: 'trade-reported', weeklyRunningCostSource: 'Variety (2025)' });
+  const { applied, flagged, skipped } = filterByConfidence([{ ...redditCost('some-show', '500000'), source: 'Section F: Variety' }], data);
+  assert.equal(applied.length + flagged.length, 0);
+  assert.match(skipped[0].skipReason, /Restates/);
+});
+
+test('any capitalization /biz prints without "~" is protected from a Reddit figure', () => {
+  for (const capitalizationSource of ['Producer disclosure (fully raised by opening)', 'Press announcement', null]) {
+    const data = commercialWith({ capitalization: 12000000, capitalizationSource });
+    const { applied, skipped } = filterByConfidence([{ slug: 'some-show', field: 'capitalization', oldValue: 12000000, newValue: 15000000, confidence: 'high', source: 'Section D: comment' }], data);
+    assert.equal(applied.length, 0, String(capitalizationSource));
+    assert.match(skipped[0].skipReason, /reported capitalization/);
+  }
+  // An estimated one may be replaced.
+  const est = commercialWith({ capitalization: 12000000, isEstimate: { capitalization: true } });
+  assert.equal(filterByConfidence([{ slug: 'some-show', field: 'capitalization', oldValue: 12000000, newValue: 15000000, confidence: 'high', source: 'Section D: comment' }], est).applied.length, 1);
+});
+
 test('the model cannot set a citation or label on its own', () => {
   const data = commercialWith({ weeklyRunningCost: 600000, costMethodology: 'reddit-standard', isEstimate: { weeklyRunningCost: true } });
   const proposals = [
