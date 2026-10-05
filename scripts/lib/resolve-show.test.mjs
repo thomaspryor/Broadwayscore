@@ -9,6 +9,7 @@ const {
   extractShowTitlesFromText,
   normalizeShowName,
   isAmbiguousMatch,
+  labelShowCandidates,
 } = require('./resolve-show.js');
 
 const SHOWS = [
@@ -195,4 +196,33 @@ test('exact-title sibling expansion groups titles that differ only in punctuatio
     );
     assert.equal(isAmbiguousMatch(name, shows), true);
   }
+});
+
+// Codex /ship-check review of BRO-4659: a same-market revival collides even
+// after the category suffix (both labels become "Cabaret (broadway)"), and
+// a missing category used to render the literal string "(undefined)".
+test('labelShowCandidates breaks a same-category title collision with opening year', () => {
+  const shows = [
+    { id: 'cabaret-1998', title: 'Cabaret', category: 'broadway', openingDate: '1998-03-19' },
+    { id: 'cabaret-2024', title: 'Cabaret', category: 'broadway', openingDate: '2024-04-21' },
+  ];
+  const labels = labelShowCandidates(shows);
+  assert.deepEqual(labels, ['Cabaret, opened 1998', 'Cabaret, opened 2024']);
+});
+
+test('labelShowCandidates never renders a literal "(undefined)" for a missing category', () => {
+  const shows = [
+    { id: 'no-category-show', title: 'Some Show' },
+    { id: 'tour-show', title: 'Some Show', category: 'tour' },
+  ];
+  const labels = labelShowCandidates(shows);
+  assert.ok(labels.every((l) => !l.includes('undefined')), `labels leaked undefined: ${labels}`);
+});
+
+test('labelShowCandidates appends category only when candidates span more than one', () => {
+  const shows = [
+    { id: 'tour-a', title: 'A', category: 'tour' },
+    { id: 'tour-b', title: 'B', category: 'tour' },
+  ];
+  assert.deepEqual(labelShowCandidates(shows), ['A', 'B']);
 });

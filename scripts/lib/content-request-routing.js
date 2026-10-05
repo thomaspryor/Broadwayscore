@@ -40,7 +40,7 @@
  * Colocated test: tests/unit/content-request-routing.test.mjs
  */
 
-const { resolveShowMatches, extractShowTitlesFromText } = require('./resolve-show.js');
+const { resolveShowMatches, extractShowTitlesFromText, labelShowCandidates } = require('./resolve-show.js');
 
 /** Workflows this module is allowed to name. Keep in sync with .github/workflows/. */
 const WORKFLOW_IMAGE = 'fetch-all-image-formats.yml';
@@ -75,7 +75,12 @@ function describeDispatchesPlainly(dispatches) {
   for (const d of dispatches || []) {
     if (!d || !d.workflow) continue;
     const titles = byWorkflow.get(d.workflow) || [];
-    const title = d.inputs && (d.inputs.title || d.inputs.shows || d.inputs.show_id);
+    // d.showTitle is the resolved show's display title. inputs.shows/
+    // inputs.show_id are raw show IDs (gather-reviews.js/fetch-all-image-
+    // formats.yml dispatch inputs), not titles — only inputs.title (the
+    // add-show action) is ever actually a title. Prefer showTitle first so
+    // those two dispatch kinds don't print a raw ID to the owner.
+    const title = d.showTitle || (d.inputs && (d.inputs.title || d.inputs.shows || d.inputs.show_id));
     if (title) titles.push(String(title));
     byWorkflow.set(d.workflow, titles);
   }
@@ -259,13 +264,8 @@ function resolveShowInMarket(title, market, shows) {
       candidateIds: matches.map((s) => s.id),
       // Human-facing label for each candidate — notify-feedback-outcomes.js
       // quotes `reason` verbatim into the owner's plain-English digest email,
-      // so raw show IDs (book-of-mormon-we-2024) do not belong in it. Only
-      // append the category when matches span more than one — redundant
-      // otherwise, since a market-scoped call already filtered to one.
-      candidateTitles: matches.map((s) => {
-        const otherCategories = matches.some((m) => m.category !== s.category);
-        return otherCategories ? `${s.title} (${s.category})` : s.title;
-      }),
+      // so raw show IDs (book-of-mormon-we-2024) do not belong in it.
+      candidateTitles: labelShowCandidates(matches),
     };
   }
   if (matches.length === 0) {
@@ -553,9 +553,13 @@ function planContentRequestActions({
         // from a resolved show, not a string.
         actions.push({
           kind: 'unroutable',
+          // Codex /ship-check review of BRO-4659: this leaked existing.id into
+          // the owner's digest email the same way the ambiguous-title cases
+          // used to — existing.title is the human-facing name, existing.id
+          // stays on the structured showId field for machine/ledger use.
           reason:
             `show "${requestedTitle}"${market ? ` (${market})` : ''} already in catalog as ` +
-            `${existing.id}; ask is not a recognised image or review-gap request`,
+            `"${existing.title}"; ask is not a recognised image or review-gap request`,
           showId: existing.id,
         });
       }

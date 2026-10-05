@@ -321,7 +321,8 @@ test('a request that IS satisfied in its own market still parks, not adds', () =
     shows: SHOWS_BWAY_ONLY,
   });
   assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
-  assert.match(actions[0].reason, /already in catalog as the-outsiders-2024/);
+  assert.match(actions[0].reason, /already in catalog as "The Outsiders"/);
+  assert.equal(actions[0].showId, 'the-outsiders-2024');
 });
 
 test('venue hints do not cross-wire between two shows in one message', () => {
@@ -500,7 +501,8 @@ test('missing-show check: an ambiguous already-catalogued title parks instead of
   // resolves cleanly despite the title being globally ambiguous. ("Tour" is
   // not a market word MARKET_TOKEN_RE recognises, so this uses West End.)
   assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
-  assert.match(actions[0].reason, /already in catalog as book-of-mormon-we-2024/);
+  assert.match(actions[0].reason, /already in catalog as "The Book of Mormon"/);
+  assert.equal(actions[0].showId, 'book-of-mormon-we-2024');
 });
 
 test('missing-show check: an unscoped ambiguous title parks with all candidates named', () => {

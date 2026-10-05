@@ -72,6 +72,13 @@ function recordDispatch(report, submission, action, ok, error) {
   entry.dispatches.push({
     workflow: (action && action.workflow) || null,
     kind: (action && action.kind) || null,
+    // Codex /ship-check review of BRO-4659: describeDispatchesPlainly() in
+    // content-request-routing.js falls back to inputs.shows/inputs.show_id
+    // when there's no inputs.title — but those two fields hold the raw show
+    // ID (missing-image/missing-reviews actions), not a title, so the
+    // owner's "ALREADY BEING HANDLED" email printed IDs instead of names.
+    // showTitle was computed on the action already; just carry it through.
+    showTitle: (action && action.showTitle) || null,
     inputs: (action && action.inputs) || {},
     ok: Boolean(ok),
     error: error || null,

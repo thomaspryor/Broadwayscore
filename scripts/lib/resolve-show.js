@@ -214,6 +214,37 @@ function isAmbiguousMatch(name, shows) {
   return resolveShowMatches(name, shows).length > 1;
 }
 
+/**
+ * Human-readable labels for an ambiguous match set — shared by every place
+ * that tells the owner "this title matched N shows" (content-request-routing.js,
+ * verify-feedback-requests-live.js). Category is appended only when the
+ * candidates span more than one, so a same-market tie stays plain. Codex
+ * /ship-check review of BRO-4659's title-not-ID fix found two gaps in that
+ * per-file duplicated logic this closes:
+ *  - a null/undefined category rendered the literal string "(undefined)"
+ *  - two same-titled candidates in the SAME category (e.g. two Broadway
+ *    revivals of "Cabaret") still collided after the category suffix, since
+ *    the suffix only ever disambiguates ACROSS categories — opening year
+ *    breaks the remaining tie.
+ */
+function labelShowCandidates(matches) {
+  if (!Array.isArray(matches) || matches.length === 0) return [];
+  const spansCategories = matches.some((m) => m && m.category !== matches[0].category);
+  const base = matches.map((m) => {
+    if (!m) return 'an unknown show';
+    const cat = spansCategories && m.category ? ` (${m.category})` : '';
+    return `${m.title || 'an untitled show'}${cat}`;
+  });
+  const counts = new Map();
+  for (const label of base) counts.set(label, (counts.get(label) || 0) + 1);
+  if (![...counts.values()].some((c) => c > 1)) return base;
+  return matches.map((m, i) => {
+    if (!m) return base[i];
+    const year = m.openingDate ? String(m.openingDate).slice(0, 4) : null;
+    return year ? `${base[i]}, opened ${year}` : `${base[i]} (${m.id})`;
+  });
+}
+
 module.exports = {
   normalizeShowName,
   normalizeTitleCore,
@@ -222,5 +253,6 @@ module.exports = {
   resolveShow,
   isAmbiguousMatch,
   extractShowTitlesFromText,
+  labelShowCandidates,
   MIN_FUZZY_LEN,
 };

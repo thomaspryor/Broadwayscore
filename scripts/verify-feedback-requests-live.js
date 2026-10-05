@@ -139,7 +139,7 @@ function resolveEntryShowId(entry, shows) {
  */
 function describeAmbiguity(entry, shows) {
   if (entry.showId || !entry.title || !Array.isArray(shows)) return null;
-  const { resolveShowMatches } = require('./lib/resolve-show.js');
+  const { resolveShowMatches, labelShowCandidates } = require('./lib/resolve-show.js');
   let matches = resolveShowMatches(entry.title, shows);
   if (entry.market) matches = matches.filter((s) => s && s.category === entry.market);
   if (matches.length <= 1) return null;
@@ -147,11 +147,9 @@ function describeAmbiguity(entry, shows) {
   // owner's plain-English stuck-request alert (buildStuckAlert below), and
   // /second-opinion flagged the cousin of this exact issue in
   // content-request-routing.js: IDs belong to a technical reader, not the
-  // owner's inbox.
-  const names = matches.map((s) => {
-    const otherCategories = matches.some((m) => m.category !== s.category);
-    return otherCategories ? `${s.title} (${s.category})` : s.title;
-  });
+  // owner's inbox. labelShowCandidates is the same helper that module uses,
+  // so a same-market revival or a missing category label the same way here.
+  const names = labelShowCandidates(matches);
   return `ambiguous — "${entry.title}" matched ${matches.length} shows (${names.join(', ')}); needs a human to set entry.showId in the ledger`;
 }
 
