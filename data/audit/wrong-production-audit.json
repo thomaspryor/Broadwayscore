@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T00:44:07.368Z",
+  "timestamp": "2026-10-05T01:16:43.638Z",
   "stats": {
-    "totalReviews": 46274,
-    "alreadyFlagged": 18750,
+    "totalReviews": 46281,
+    "alreadyFlagged": 18756,
     "dateGuardCatches": 269,
-    "directorMismatch": 1233,
+    "directorMismatch": 1234,
     "tvFilmSignals": 1340,
     "londonSignals": 1272,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4288
+    "noPublishDate": 4287
   },
   "findings": [
     {
@@ -31931,6 +31931,20 @@
       "score": 76,
       "publishDate": null,
       "url": "https://www.austinchronicle.com/arts/review-the-lion-king-roars-strong-12141775/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "theatrely--kobi-kassal.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/watch-pride-rock-is-once-again-open-for-business-at-the-lion-king-on-broadway",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
