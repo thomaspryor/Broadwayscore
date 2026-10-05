@@ -1669,6 +1669,7 @@ const crossShowFingerprints = new Map();
             d.wrongProductionAutoCleared = `rebuild: dated pre-opening guard re-evaluated in-window (was: ${wasNote})`;
             d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
             delete d.wrongProductionNote;
+            if (isStaleScoreInput(d, showRecord, fp)) markRescoreNeeded(d, 'wrongProduction false-positive cleared (stale dated pre-opening guard)');
             safeWriteReview(fp, d, { force: true });
             staleDateGuardAutoCleared++;
             // Fall through — file may still need other guards (duplicateOf etc.)
@@ -2909,6 +2910,7 @@ showDirs.forEach(showId => {
           data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
           delete data.wrongProductionNote;
           stats.wrongProdWEOBAutoCleared = (stats.wrongProdWEOBAutoCleared || 0) + 1;
+          if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (WE/OB URL-year exempt)');
           try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
           // Fall through — don't skip
         }
@@ -3239,6 +3241,7 @@ showDirs.forEach(showId => {
               // At-stamp required: the push-time restore only honors FRESH
               // auto-clears (review-write-guard.js _freshWrongProductionAutoClear)
               data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+              if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (UK/London region outlet)');
               try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
               stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
             }
@@ -3279,6 +3282,7 @@ showDirs.forEach(showId => {
             delete data.wrongProductionNote;
             data.wrongProductionAutoCleared = `rebuild: dual-market outlet on its own US domain (${revHost})`;
             data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+            if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (dual-market outlet US domain)');
             try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
             stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
           }
@@ -3305,6 +3309,7 @@ showDirs.forEach(showId => {
         }
         data.wrongProductionAutoCleared = `rebuild: ${reason} bypasses wrongProduction`;
         data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+        if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, `wrongProduction false-positive cleared (${reason})`);
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongProductionAutoCleared = (stats.wrongProductionAutoCleared || 0) + 1;
       }
@@ -3613,6 +3618,7 @@ showDirs.forEach(showId => {
             if (data.wrongProduction && data.wrongProductionNote && data.wrongProductionNote.includes('US outlet "timeout"')) {
               delete data.wrongProduction;
               delete data.wrongProductionNote;
+              if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) markRescoreNeeded(data, 'wrongProduction false-positive cleared (timeout → timeout-london)');
             }
             try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
             canonicalOutlet = 'timeout-london';

@@ -226,3 +226,18 @@ test('fullText scored as complete → never stale, whatever was fetched later', 
   data.llmMetadata.textSource.status = 'complete';
   assert.equal(isStaleScoreInput(data), false);
 });
+
+// BRO-2407 prevention: every wrongProduction auto-clear site in
+// rebuild-all-reviews.js must route through markRescoreNeeded, otherwise a
+// cleared false positive on an already-scored file keeps a stale score.
+test('every wrongProduction=false site in rebuild-all-reviews.js calls markRescoreNeeded', async () => {
+  const { readFileSync } = await import('node:fs');
+  const lines = readFileSync(path.join(REPO, 'scripts/rebuild-all-reviews.js'), 'utf8').split('\n');
+  const missing = [];
+  lines.forEach((l, i) => {
+    if (!/(\b(d|data)\.wrongProduction = false;|delete (d|data)\.wrongProduction;)/.test(l)) return;
+    const window = lines.slice(i, i + 30).join('\n');
+    if (/safeWriteReview\(/.test(window) && !/markRescoreNeeded\(/.test(window)) missing.push(i + 1);
+  });
+  assert.deepEqual(missing, [], `wrongProduction cleared without markRescoreNeeded at lines ${missing.join(', ')}`);
+});
