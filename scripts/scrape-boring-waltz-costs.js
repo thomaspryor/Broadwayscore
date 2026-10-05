@@ -4,12 +4,20 @@
  * Scrape Weekly Operating Cost Data from u/Boring_Waltz_9545's Reddit Posts
  *
  * Fetches all Grosses Analysis and Post-Mortem posts, extracts
- * Weekly Operating Cost estimates per show, and updates commercial.json.
+ * Weekly Operating Cost estimates per show, and fills gaps in commercial.json.
  *
- * Only the MOST RECENT estimate per show is kept.
- * Only updates commercial.json if:
- *   - Show has no weeklyRunningCost yet, OR
- *   - Existing cost differs by >10%
+ * Only the MOST RECENT estimate per show is kept. What it may write is
+ * scripts/lib/waltz-cost-gap-fill.js (BRO-4666, owner decision 2026-10-05):
+ * a missing weekly cost, or one that is our own estimate (industry-estimate,
+ * deep-research); his own earlier figure when it moved >10%. Never a
+ * reported figure. Every write is flagged as an estimate and names the post.
+ *
+ * Reads his r/Broadway posts from the Arctic Shift archive of Reddit (free,
+ * no key; draft-reddit-opening-posts.js reads it too). Reddit refuses CI
+ * runners' unauthenticated requests, so the plain fetch this used before
+ * failed every week from 2026-04 on, and the proxies in scripts/lib/reddit-api.js
+ * are capped or refused. Reddit through reddit-api.js stays as the fallback
+ * for when the archive is down.
  *
  * Usage:
  *   node scripts/scrape-boring-waltz-costs.js [--dry-run]
@@ -17,12 +25,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isRelevantPost } = require('./lib/reddit-grosses');
+const { isRelevantPost, extractCostsFromPost } = require('./lib/reddit-grosses');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
+const { fetchWithFallback } = require('./lib/reddit-api');
+const { decideWaltzCostWrite, waltzCostPatch } = require('./lib/waltz-cost-gap-fill');
+const { commercialRecordErrors } = require('./lib/commercial-record-checks');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -53,6 +65,11 @@ const COMMERCIAL_ALIASES = {
 // ---------------------------------------------------------------------------
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
+const USAGE = `Usage: node scripts/scrape-boring-waltz-costs.js [--dry-run]
+
+Fills missing weekly operating costs in commercial.json from u/Boring_Waltz_9545's
+r/Broadway Grosses Analysis / Post-Mortem posts (never over a reported figure).
+  --dry-run   print the changes, write nothing`;
 
 // ---------------------------------------------------------------------------
 // Data Paths
@@ -73,40 +90,82 @@ function getCommercialPath() {
 }
 
 // ---------------------------------------------------------------------------
-// Reddit API Fetch
+// Fetch His Posts: Arctic Shift archive first, Reddit as the fallback
 // ---------------------------------------------------------------------------
+
+const REDDIT_USER = 'Boring_Waltz_9545';
+const ARCHIVE_SEARCH_URL = 'https://arctic-shift.photon-reddit.com/api/posts/search';
+const LOOKBACK_DAYS = 365;
+const ARCHIVE_MAX_PAGES = 5;
+
+async function fetchArchivePage(params) {
+  const url = `${ARCHIVE_SEARCH_URL}?${new URLSearchParams(params)}`;
+  // The archive answers 422 "Timeout" on a slow query, often fine a few
+  // seconds later: three attempts, 15s then 30s apart.
+  for (let attempt = 1; ; attempt++) {
+    let why;
+    try {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'broadwayscorecard-waltz-costs/1.0' },
+        signal: AbortSignal.timeout(60_000),
+      });
+      const body = await res.json().catch(() => null);
+      if (res.ok && Array.isArray(body?.data)) return body.data;
+      why = `HTTP ${res.status}${body?.error ? `: ${body.error}` : ''}`;
+    } catch (e) {
+      why = e.message;
+    }
+    if (attempt >= 3) throw new Error(`archive ${why}`);
+    const wait = 15_000 * attempt;
+    console.warn(`  archive ${why}; retrying in ${wait / 1000}s`);
+    await new Promise(r => setTimeout(r, wait));
+  }
+}
+
+async function fetchFromArchive() {
+  const posts = [];
+  const after = Math.floor(Date.now() / 1000) - LOOKBACK_DAYS * 86400;
+  let before = null;
+  for (let page = 1; page <= ARCHIVE_MAX_PAGES; page++) {
+    const params = { author: REDDIT_USER, subreddit: 'Broadway', after: String(after), limit: '100', sort: 'desc' };
+    if (before) params.before = String(before);
+    const batch = await fetchArchivePage(params);
+    console.log(`  Archive page ${page}: ${batch.length} posts`);
+    posts.push(...batch);
+    if (batch.length < 100) break;
+    before = Math.min(...batch.map(p => p.created_utc));
+  }
+  return posts;
+}
 
 async function fetchJSON(url) {
-  // Use fetch() instead of https.get() to avoid TLS fingerprinting blocks
-  const res = await fetch(url, {
-    headers: {
-      'User-Agent': 'BroadwayScorecard/1.0',
-      'Accept': 'application/json',
-    },
-    redirect: 'follow',
-    signal: AbortSignal.timeout(30000),
-  });
-
-  if (res.status === 429) {
-    throw new Error(`Rate limited (429) fetching ${url}`);
+  const json = await fetchWithFallback(url);
+  if (!json || typeof json !== 'object' || !json.data) {
+    throw new Error(`Unexpected Reddit response for ${url}`);
   }
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status} fetching ${url}`);
-  }
-
-  return res.json();
+  return json;
 }
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// ---------------------------------------------------------------------------
-// Fetch All Relevant Posts (2 pages)
-// ---------------------------------------------------------------------------
 
 async function fetchAllPosts() {
-  const baseUrl = 'https://www.reddit.com/user/Boring_Waltz_9545/submitted.json?limit=100';
+  console.log('Fetching his posts from the Arctic Shift archive...');
+  try {
+    const posts = await fetchFromArchive();
+    if (posts.length > 0) {
+      // Newest first: the extraction keeps the first estimate it sees per show.
+      posts.sort((a, b) => b.created_utc - a.created_utc);
+      const newest = new Date(posts[0].created_utc * 1000).toISOString().slice(0, 10);
+      console.log(`Total posts fetched: ${posts.length} (newest ${newest})`);
+      return posts;
+    }
+    console.warn('  Archive returned no posts; trying Reddit');
+  } catch (e) {
+    console.warn(`  Archive unavailable (${e.message}); trying Reddit`);
+  }
+  return fetchFromReddit();
+}
+
+async function fetchFromReddit() {
+  const baseUrl = `https://www.reddit.com/user/${REDDIT_USER}/submitted.json?limit=100`;
   const allPosts = [];
 
   // Page 1
@@ -120,7 +179,6 @@ async function fetchAllPosts() {
   // Page 2 (if there's an "after" token)
   const after = page1?.data?.after;
   if (after) {
-    await sleep(2000); // Rate limit courtesy
     console.log('Fetching Reddit posts (page 2)...');
     const page2 = await fetchJSON(`${baseUrl}&after=${after}`);
     if (page2?.data?.children) {
@@ -134,93 +192,10 @@ async function fetchAllPosts() {
 }
 
 // ---------------------------------------------------------------------------
-// Filter Relevant Posts
+// isRelevantPost and extractCostsFromPost (his ***Show*** headings and
+// "Estimated Weekly Operating Cost: $850k/week" lines) live in
+// scripts/lib/reddit-grosses.js, with tests.
 // ---------------------------------------------------------------------------
-
-// isRelevantPost moved to scripts/lib/reddit-grosses.js (shared with
-// update-commercial-data.js) — imported above.
-
-// ---------------------------------------------------------------------------
-// Extract Show Names + Costs from Post Selftext
-//
-// Show names appear as ***Show Name*** or ***️Show Name*** (with emoji prefix)
-// Costs appear as "Weekly Operating Cost: $XXXk/week" or
-// "Estimated Weekly Operating Cost: $XXXk/week"
-// ---------------------------------------------------------------------------
-
-function parseDollarK(str) {
-  if (!str) return null;
-  const cleaned = str.trim().replace(/[,$]/g, '');
-
-  // Handle K/k suffix
-  if (/k$/i.test(cleaned)) {
-    const val = parseFloat(cleaned.replace(/k$/i, ''));
-    return isNaN(val) ? null : Math.round(val * 1000);
-  }
-
-  // Handle M/m suffix
-  if (/m$/i.test(cleaned)) {
-    const val = parseFloat(cleaned.replace(/m$/i, ''));
-    return isNaN(val) ? null : Math.round(val * 1000000);
-  }
-
-  const val = parseFloat(cleaned);
-  return isNaN(val) ? null : Math.round(val);
-}
-
-function extractCostsFromPost(selftext) {
-  if (!selftext) return [];
-
-  const results = [];
-
-  // Split into lines for scanning
-  const lines = selftext.split('\n');
-
-  let currentShowName = null;
-
-  for (const line of lines) {
-    // Match show name: ***Show Name*** or ***️Show Name***
-    // The ️ is a variation selector that may follow emoji characters
-    const showMatch = line.match(/\*{3}\s*[^\w\s]*\s*([^*]+?)\s*\*{3}/);
-    if (showMatch) {
-      // Clean the show name: strip leading emoji/special chars
-      let name = showMatch[1].trim();
-      // Remove leading emoji characters (unicode ranges for common emoji)
-      name = name.replace(/^[\u{1F300}-\u{1FEFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]+\s*/u, '').trim();
-      if (name) {
-        currentShowName = name;
-      }
-    }
-
-    // Match cost: (Estimated )?(Weekly )?(Operating|Running) Cost: $XXXk(-$YYYk)?(/week)?
-    // Handle both single values ($650k) and ranges ($650-$700k, $650k-$700k)
-    const costMatch = line.match(
-      /(?:Estimated\s+)?(?:Weekly\s+)?(?:Operating|Running)\s+Cost:?\s*\$([\d.,]+[KkMm]?)(?:\s*[-–—]\s*\$?([\d.,]+[KkMm]?))?(?:\/week)?/i
-    );
-    if (costMatch && currentShowName) {
-      let cost;
-      if (costMatch[2]) {
-        // Range: use midpoint. Inherit suffix from the second value if first lacks one.
-        let lowStr = costMatch[1];
-        let highStr = costMatch[2];
-        // If lowStr has no K/M suffix but highStr does, inherit it
-        if (!/[KkMm]$/.test(lowStr) && /[KkMm]$/i.test(highStr)) {
-          lowStr += highStr.slice(-1);
-        }
-        const low = parseDollarK(lowStr);
-        const high = parseDollarK(highStr);
-        cost = (low && high) ? Math.round((low + high) / 2) : (low || high);
-      } else {
-        cost = parseDollarK(costMatch[1]);
-      }
-      if (cost && cost > 0) {
-        results.push({ showName: currentShowName, cost });
-      }
-    }
-  }
-
-  return results;
-}
 
 // ---------------------------------------------------------------------------
 // Show Matching
@@ -243,8 +218,9 @@ function matchShowName(showName, lookup) {
   }
 
   // 2. Use shared matchTitleToShow (handles normalization, slug matching, etc.)
+  // matchTitleToShow returns { show, confidence }; the show is what callers read.
   const matched = matchTitleToShow(showName, shows, { market: 'broadway' });
-  if (matched && matched.confidence === 'high') return matched;
+  if (matched && matched.confidence === 'high') return matched.show;
 
   return null;
 }
@@ -258,6 +234,7 @@ const isBroadwayShow = isBroadwayCategory;
 // ---------------------------------------------------------------------------
 
 async function main() {
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   console.log('=== Boring Waltz Weekly Cost Scraper ===');
   if (DRY_RUN) console.log('[DRY RUN MODE]\n');
 
@@ -284,7 +261,7 @@ async function main() {
 
   // Posts are returned newest-first by Reddit.
   // Extract costs, keeping only the MOST RECENT estimate per show.
-  const costByShow = new Map(); // showName → { cost, postTitle, postDate }
+  const costByShow = new Map(); // showName → { cost, postTitle, postDate, permalink }
 
   for (const post of relevantPosts) {
     const postDate = post.created_utc ? new Date(post.created_utc * 1000).toISOString().slice(0, 10) : 'unknown';
@@ -297,6 +274,7 @@ async function main() {
           cost: entry.cost,
           postTitle: post.title,
           postDate,
+          permalink: post.permalink,
         });
       }
     }
@@ -308,6 +286,9 @@ async function main() {
   const stats = { matched: 0, updated: 0, added: 0, skipped: 0, unmatched: 0 };
   const changes = [];
   const unmatched = [];
+  const kept = []; // reported figures his estimate did not replace
+  const skippedOther = []; // every other skip, with its reason
+  const seenSlugs = new Set();
 
   for (const [showName, data] of costByShow) {
     const show = matchShowName(showName, lookup);
@@ -318,78 +299,87 @@ async function main() {
       continue;
     }
 
+    const slug = show.slug || show.id;
+    // Two spellings of one show ("Buena Vista Social Club" / "...Club-"):
+    // costByShow is newest first, so the first one is his latest estimate.
+    if (seenSlugs.has(slug)) continue;
+    seenSlugs.add(slug);
+
     if (!isBroadwayShow(show)) {
       stats.skipped++;
+      skippedOther.push({ slug, reason: 'not a Broadway show' });
       continue;
     }
 
     stats.matched++;
-    const slug = show.slug || show.id;
     const existing = commercial.shows?.[slug];
 
-    if (!existing) {
-      // Show not in commercial.json at all - skip (we only update existing entries)
+    // We only update existing entries; decideWaltzCostWrite skips the rest.
+    const decision = decideWaltzCostWrite(existing, data.cost);
+    if (!decision.write) {
       stats.skipped++;
+      if (existing && existing.weeklyRunningCost != null && /reported/.test(decision.reason)) {
+        kept.push({ slug, cost: data.cost, existingCost: existing.weeklyRunningCost, reason: decision.reason });
+      } else {
+        skippedOther.push({ slug, reason: `${decision.reason}; his estimate $${data.cost.toLocaleString()}` });
+      }
       continue;
     }
 
-    const existingCost = existing.weeklyRunningCost;
-
-    if (existingCost) {
-      // Only update if differs by >10%
-      const pctDiff = Math.abs(existingCost - data.cost) / existingCost;
-      if (pctDiff <= 0.10) {
-        stats.skipped++;
-        continue;
-      }
-      // Update
-      changes.push({
-        slug,
-        showName,
-        action: 'update',
-        oldCost: existingCost,
-        newCost: data.cost,
-        pctDiff: (pctDiff * 100).toFixed(1),
-        postDate: data.postDate,
-      });
-      if (!DRY_RUN) {
-        existing.weeklyRunningCost = data.cost;
-        existing.costMethodology = 'reddit-standard';
-      }
-      stats.updated++;
-    } else {
-      // Add cost where none existed
-      changes.push({
-        slug,
-        showName,
-        action: 'add',
-        newCost: data.cost,
-        postDate: data.postDate,
-      });
-      if (!DRY_RUN) {
-        existing.weeklyRunningCost = data.cost;
-        existing.costMethodology = 'reddit-standard';
-      }
-      stats.added++;
+    const patch = waltzCostPatch(existing, data);
+    const errors = commercialRecordErrors(slug, { ...existing, ...patch }, { showRecord: show, allRecords: commercial.shows });
+    if (errors.length) {
+      stats.skipped++;
+      skippedOther.push({ slug, reason: `refused by the record checks: ${errors.join('; ')}` });
+      continue;
     }
+
+    const action = existing.weeklyRunningCost == null ? 'add' : 'update';
+    changes.push({
+      slug,
+      showName,
+      action,
+      oldCost: existing.weeklyRunningCost,
+      oldMethod: existing.costMethodology || null,
+      newCost: data.cost,
+      reason: decision.reason,
+      postDate: data.postDate,
+    });
+    if (action === 'add') stats.added++;
+    else stats.updated++;
+    if (!DRY_RUN) Object.assign(existing, patch);
   }
 
   // Print summary
   console.log('\n=== Summary ===');
   console.log(`Matched: ${stats.matched}`);
-  console.log(`Updated (>10% diff): ${stats.updated}`);
+  console.log(`Replaced an estimate: ${stats.updated}`);
   console.log(`Added (no prior cost): ${stats.added}`);
-  console.log(`Skipped (within 10% or not in commercial.json): ${stats.skipped}`);
+  console.log(`Skipped (reported figure, within 10%, or not in commercial.json): ${stats.skipped}`);
   console.log(`Unmatched: ${stats.unmatched}`);
 
   if (changes.length > 0) {
     console.log('\n--- Changes ---');
     for (const c of changes) {
       if (c.action === 'update') {
-        console.log(`  UPDATE ${c.slug}: $${c.oldCost.toLocaleString()} -> $${c.newCost.toLocaleString()} (${c.pctDiff}% diff, from ${c.postDate})`);
+        console.log(`  UPDATE ${c.slug}: $${c.oldCost.toLocaleString()} (${c.oldMethod}) -> $${c.newCost.toLocaleString()} (${c.reason}, from ${c.postDate})`);
       } else {
         console.log(`  ADD    ${c.slug}: $${c.newCost.toLocaleString()} (from ${c.postDate})`);
       }
+    }
+  }
+
+  if (kept.length > 0) {
+    console.log('\n--- Reported figures kept (his estimate not applied) ---');
+    for (const k of kept) {
+      console.log(`  KEEP   ${k.slug}: $${k.existingCost.toLocaleString()} (${k.reason}); his estimate $${k.cost.toLocaleString()}`);
+    }
+  }
+
+  if (skippedOther.length > 0) {
+    console.log('\n--- Skipped ---');
+    for (const s of skippedOther) {
+      console.log(`  SKIP   ${s.slug}: ${s.reason}`);
     }
   }
 

@@ -149,18 +149,25 @@ test('estimated cost methodologies mark the weekly cost as an estimate and label
     );
   }
   // Reported methodologies keep a clean source and no estimate marker...
-  assert.equal(isEstimatedRunningCost({ costMethodology: 'trade-reported' }), false);
-  assert.equal(
-    getWeeklyCostSourceLabel({ costMethodology: 'trade-reported', weeklyRunningCostSource: 'Deadline (Mar 2024)' }),
-    'Deadline (Mar 2024)'
-  );
-  // ...but still never print internal text.
-  assert.equal(
-    getWeeklyCostSourceLabel({ costMethodology: 'sec-filing', weeklyRunningCostSource: 'SEC filings (GPT Deep Research)' }),
-    null
-  );
+  const cited = { costMethodology: 'trade-reported', weeklyRunningCostSource: 'Deadline (Mar 2024)' };
+  assert.equal(isEstimatedRunningCost(cited), false);
+  assert.equal(getWeeklyCostSourceLabel(cited), 'Deadline (Mar 2024)');
+  // ...but still never print internal text: with nothing publishable left it reads as an estimate.
+  const internalOnly = { costMethodology: 'sec-filing', weeklyRunningCostSource: 'SEC filings (GPT Deep Research)' };
+  assert.equal(getWeeklyCostSourceLabel(internalOnly), 'Estimate');
+  assert.equal(isEstimatedRunningCost(internalOnly), true);
   // The explicit isEstimate flag still wins.
-  assert.equal(isEstimatedRunningCost({ costMethodology: 'trade-reported', isEstimate: { weeklyRunningCost: true } }), true);
+  assert.equal(isEstimatedRunningCost({ ...cited, isEstimate: { weeklyRunningCost: true } }), true);
+});
+
+test('a weekly cost labeled reported that cites no source reads as an estimate (BRO-4666)', () => {
+  for (const costMethodology of ['trade-reported', 'sec-filing', 'producer-confirmed', undefined]) {
+    for (const weeklyRunningCostSource of [undefined, null, '', '  ']) {
+      const rec = { costMethodology, weeklyRunningCostSource };
+      assert.equal(isEstimatedRunningCost(rec), true, `${costMethodology} / ${JSON.stringify(weeklyRunningCostSource)}`);
+      assert.equal(getWeeklyCostSourceLabel(rec), 'Estimate');
+    }
+  }
 });
 
 test('recoupment attribution never surfaces internal source text', () => {

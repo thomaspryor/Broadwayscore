@@ -211,24 +211,37 @@ export function isEstimatedCapitalization(commercial: Pick<ShowCommercial, 'isEs
 /** costMethodology values whose weekly running cost is our estimate, not a reported figure. */
 const ESTIMATED_COST_METHODS: ReadonlySet<string> = new Set(['industry-estimate', 'deep-research', 'reddit-standard']);
 
+/**
+ * True when the weekly cost reads as an estimate: an estimated method, or a
+ * figure with no publishable source. A cost labeled trade-reported that cites
+ * nothing cannot be shown as reported (BRO-4666: 27 of 28 "reported" costs
+ * had no source, several equal to Reddit estimates to the dollar).
+ */
+function isEstimatedCostBasis(
+  commercial: Pick<ShowCommercial, 'costMethodology' | 'weeklyRunningCostSource'>
+): boolean {
+  if (commercial.costMethodology && ESTIMATED_COST_METHODS.has(commercial.costMethodology)) return true;
+  return !publicSourceText(commercial.weeklyRunningCostSource);
+}
+
 /** True when the weekly running cost should carry the "~" estimate marker. */
 export function isEstimatedRunningCost(
-  commercial: Pick<ShowCommercial, 'costMethodology' | 'isEstimate'>
+  commercial: Pick<ShowCommercial, 'costMethodology' | 'isEstimate' | 'weeklyRunningCostSource'>
 ): boolean {
   if (commercial.isEstimate?.weeklyRunningCost === true) return true;
-  return !!commercial.costMethodology && ESTIMATED_COST_METHODS.has(commercial.costMethodology);
+  return isEstimatedCostBasis(commercial);
 }
 
 /**
- * Text for the "Weekly cost source:" line. An estimated method reads
- * "Estimate" (never the raw research note); otherwise the source text if it
- * is publishable; else null (no line).
+ * Text for the "Weekly cost source:" line: "Estimate" for an estimated method
+ * or an uncited figure (never the raw research note), otherwise the
+ * publishable source text.
  */
 export function getWeeklyCostSourceLabel(
   commercial: Pick<ShowCommercial, 'costMethodology' | 'weeklyRunningCostSource'>
-): string | null {
-  if (commercial.costMethodology && ESTIMATED_COST_METHODS.has(commercial.costMethodology)) return 'Estimate';
-  return publicSourceText(commercial.weeklyRunningCostSource);
+): string {
+  if (isEstimatedCostBasis(commercial)) return 'Estimate';
+  return publicSourceText(commercial.weeklyRunningCostSource) as string;
 }
 
 // recoupedSource prose that says outright there was no announcement. Used
