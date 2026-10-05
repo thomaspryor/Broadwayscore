@@ -267,6 +267,8 @@ on:
       # migration needs its own out-of-glob dependency audit first.
       - 'scripts/tests/batch-drain-decision.test.mjs'
       - 'scripts/tests/verify-edits-cloud-session-gates.test.mjs'
+      # BRO-3630: Ruthless! data-integrity test (scripts/tests/ is not globbed)
+      - 'scripts/tests/show-ruthless-data.test.mjs'
       - 'scripts/tests/watchdog-skips-landed-acked.test.mjs'
       # scripts/lib/fanout-verified-core.test.mjs covers the decision this
       # CLI wraps (BRO-3939); listed so a solo edit to the CLI still fires CI.
