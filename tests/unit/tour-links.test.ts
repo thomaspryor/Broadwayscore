@@ -28,7 +28,7 @@ test('every Broadway production of the title links its tour; other shows and mar
     assert.ok(show, id);
     const tours = getToursOf(show).map(t => t.id).sort();
     assert.ok(tours.includes('beetlejuice-tour-2022'), id);
-    for (const t of tours) assert.match(t, /^beetlejuice-tour-/, id);
+    for (const t of tours) assert.equal(getShowById(t)?.title, 'Beetlejuice', `${id} -> ${t}`);
     if (first) assert.deepEqual(tours, first, id);
     else first = tours;
   }
