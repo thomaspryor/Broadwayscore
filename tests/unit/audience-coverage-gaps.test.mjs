@@ -76,6 +76,27 @@ describe('openShowCoverageGaps', () => {
     assert.strictEqual(gaps.length, 1, 'only the confirmed (name,show) pair is suppressed, not the title globally');
   });
 
+  test('BRO-303: Mezzanine entries for a different staging of a tour/opera show are suppressed (real audit file shape)', () => {
+    // Exact flagged rows from data/audit/mezzanine-coverage.json on 2026-10-05.
+    // Source capitalised as health-check.js passes it; names as Mezzanine spells them.
+    const flagged = [
+      { ourShowId: 'the-great-gatsby-tour-2026', ourTitle: 'The Great Gatsby', mezzName: 'The Great Gatsby', ratingsCount: 3387 },
+      { ourShowId: 'mrs-doubtfire-tour-2025', ourTitle: 'Mrs. Doubtfire', mezzName: 'Mrs Doubtfire', ratingsCount: 1393 },
+      { ourShowId: 'hells-kitchen-tour-2025', ourTitle: 'Hell\'s Kitchen', mezzName: 'Hell’s Kitchen', ratingsCount: 172 },
+      { ourShowId: 'macbeth-off-broadway-2026', ourTitle: 'Macbeth', mezzName: 'Macbeth', ratingsCount: 329 },
+      { ourShowId: 'macbeth-off-broadway-2026', ourTitle: 'Macbeth', mezzName: 'Macbeth', ratingsCount: 108 },
+      { ourShowId: 'this-is-not-not-a-drill-off-broadway-2026', ourTitle: 'This Is Not Not a Drill', mezzName: 'This Is Not A Drill', ratingsCount: 30 },
+    ];
+    const open = new Set(flagged.map((f) => f.ourShowId));
+    assert.strictEqual(openShowCoverageGaps([{ source: 'Mezzanine', flagged }], open).length, 0);
+  });
+
+  test('BRO-303: the Mezzanine suppressions are show-specific, so an unlisted open show with the same name still gaps', () => {
+    const flagged = [{ ourShowId: 'the-great-gatsby-broadway-2099', ourTitle: 'The Great Gatsby', mezzName: 'The Great Gatsby', ratingsCount: 3387 }];
+    const gaps = openShowCoverageGaps([{ source: 'Mezzanine', flagged }], new Set(['the-great-gatsby-broadway-2099']));
+    assert.strictEqual(gaps.length, 1);
+  });
+
   test('nonMatchKey is case-insensitive on source', () => {
     assert.strictEqual(nonMatchKey('Theatr', 'Archduke', 'archduke-west-end-2026'), nonMatchKey('theatr', 'archduke', 'archduke-west-end-2026'));
   });
