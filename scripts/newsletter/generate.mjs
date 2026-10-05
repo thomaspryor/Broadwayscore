@@ -305,7 +305,9 @@ function minReviews(category) {
   // legitimately-scored small shows out (Misterman, 94.89 on 3 reviews, missed
   // both eligible 2026 issues — owner request 2026-07-12). Broadway stays at 5:
   // a Broadway opening with <5 reviews is a data gap, not a small show.
-  return (category === 'off-broadway' || category === 'off-west-end') ? 3 : 5;
+  // Regional and tour also score at 3 on the site (getMarketMinReviews), so
+  // a 3-review tryout or tour printed "Pending" here (BRO-4757).
+  return ['off-broadway', 'off-west-end', 'regional', 'tour'].includes(category) ? 3 : 5;
 }
 
 function getImage(show) {
@@ -707,8 +709,10 @@ function showRow(show, opts = {}) {
   // "Opened…". reopeningDate is used when present, falls back to openingDate.
   const eventDate = opts.isReopening && show.reopeningDate ? show.reopeningDate : show.openingDate;
   const eventVerb = opts.isReopening ? 'Reopened' : 'Opened';
-  const metaDate = `${eventVerb} ${dayOf(eventDate)} ${fmt(eventDate)}`;
-  const metaVenue = venue;
+  // opts.metaDate / opts.metaVenue replace the two meta lines (tours: launch
+  // date + the city playing now, BRO-4757). '' hides a line.
+  const metaDate = opts.metaDate ?? `${eventVerb} ${dayOf(eventDate)} ${fmt(eventDate)}`;
+  const metaVenue = opts.metaVenue ?? venue;
   const audChip = audienceChip(show.id);
   const scoreCol = score != null
     ? `<td valign="middle" width="92" style="padding:12px 16px 12px 4px;text-align:center;">
@@ -890,6 +894,39 @@ function outOfTownOpenings() {
   markOpening('out-of-town-openings', list);
   const body = list.map(s => showRow(s, {})).join('');
   return { html: sectionWrap(sectionHeading('Out of Town', 'pre-Broadway tryouts & regional premieres'), body), list };
+}
+
+// SECTION: New Tour Scores — national tours whose Critic Score went public
+// this week (owner 2026-10-05, BRO-4757). The stamp is the first build that
+// published the score (see scripts/lib/newsletter-tours.js), so a tour is
+// featured once, the week it earns its score. NYC edition only: the tours
+// are North American. Best score first, capped at 6 like Out of Town.
+function newTourScoresSection() {
+  if (IS_WE) return null;
+  let stamps = {};
+  let schedules = {};
+  try { stamps = JSON.parse(fs.readFileSync(path.join(repo, 'data/audit/score-public-since.json'), 'utf8')); } catch { return null; }
+  try { schedules = JSON.parse(fs.readFileSync(path.join(repo, 'data/tour-schedules.json'), 'utf8')).tours || {}; } catch {}
+  const withScore = pickNewlyScoredTours(shows, stamps, weekStartStr, weekEndStr)
+    .filter(s => notFeatured(s.id))
+    // The score must still be public today: the stamp never clears, so a tour
+    // whose score dropped back under the minimum (a review flagged later,
+    // e.g. death-becomes-her-tour-2026) would otherwise print its raw mean.
+    .map(s => ({ s, agg: loadCompositeScore(s.id) }))
+    .filter(x => x.agg)
+    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+  if (!withScore.length) return null;
+  const list = withScore.slice(0, 6).map(x => x.s);
+  markFeatured(...list.map(s => s.id));
+  // Year only when the launch is not this year (a Phantom tour from Nov 2025).
+  const launched = (d) => `Tour launched ${fmt(d)}${d.slice(0, 4) !== weekEndStr.slice(0, 4) ? `, ${d.slice(0, 4)}` : ''}`;
+  const body = list.map(s => showRow(s, {
+    metaDate: s.openingDate ? launched(s.openingDate) : '',
+    metaVenue: tourWhereLine(schedules[s.id]?.stops, weekEndStr) || '',
+  })).join('');
+  const seeAll = seeAllLink(`${SITE}/browse/broadway-national-tours`, 'See every national tour');
+  const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(212,165,116,0.18);">${seeAll}</table>`;
+  return sectionWrap(sectionHeading('New Tour Scores', 'national tours'), body + seeAllCard);
 }
 
 // Tracks whether the most recent Coming Up render included a Broadway show.
@@ -2530,6 +2567,7 @@ function mostReadSection(climberList) {
 // Two sections (Broadway / Off-Broadway openings) return `{html, list}` so
 // their `list` can be consumed by downstream sections (season standing).
 // Those are called directly and recorded by passing the html through the runner.
+const { pickNewlyScoredTours, tourWhereLine } = cjsRequire(path.join(scriptDir, '..', 'lib', 'newsletter-tours.js'));
 const { createSectionRunner } = cjsRequire(path.join(scriptDir, '..', 'lib', 'newsletter-sections.js'));
 const sections = createSectionRunner();
 
@@ -2578,6 +2616,7 @@ const otO = outOfTownOpenings(); // already IS_WE-gated inside its own body
 sections.run('broadway-openings', () => bwO.html);
 sections.run('offbroadway-openings', () => obO.html);
 sections.run('out-of-town-openings', () => otO.html);
+const tours = sections.run('new-tour-scores', () => newTourScoresSection());
 
 const upcoming = sections.run('upcoming-openings', () => upcomingOpeningsSection());
 // Broadway-only sections: SKIP them entirely in the West End edition. They
@@ -2732,6 +2771,7 @@ const sectionOrder = IS_WE ? [
   // split; London Openings now has one fixed home for every week.
   _slot('london-openings', lon),
   _slot('opera-openings', opera),
+  _slot('new-tour-scores', tours),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   // Social Buzz removed 2026-07-05 pending fix: mention-volume metric is

@@ -4,7 +4,9 @@ import crypto from 'crypto';
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { featureFlags } from '@/config/feature-flags';
-import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats, getTourShows } from '@/lib/data-core';
+import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
+import { shortCity } from '@/lib/tour-schedule';
 import { getAwardWinnerSets } from '@/lib/data-awards';
 import type { ComputedShow } from '@/lib/data-types';
 import { createShowSerializer } from '@/lib/serialize-show';
@@ -274,6 +276,20 @@ export default function HomePage() {
 
   const preBroadwayList = featureFlags.regional ? regionalShelfShows.map(serializeShow) : [];
 
+  // On Tour Now (BRO-4757): running national tours that have a score (listed
+  // tours only, BRO-4262), best first, with the city they play this week (or
+  // the next one, between engagements).
+  const today = now.toISOString().slice(0, 10);
+  const onTourList = featureFlags.tour ? getTourShows()
+    .filter(s => s.status === 'open' && s.criticScore?.score)
+    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .map(s => {
+      const nn = getTourNowNextForShow(s, today);
+      const subtitle = nn?.now ? `Now in ${shortCity(nn.now.city)}`
+        : nn?.next ? `Next: ${shortCity(nn.next.city)}` : undefined;
+      return { ...serializeShow(s), subtitle, subtitleColor: 'text-gray-400' };
+    }) : [];
+
   const featuredRows: FeaturedRowData[] = [
     { title: 'Best Off-Broadway', shows: bestOffBroadwayList, viewAllHref: '/off-broadway' },
     // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
@@ -301,6 +317,8 @@ export default function HomePage() {
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
     { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
+    // Near the bottom per owner (BRO-4757, 2026-10-05).
+    ...(featureFlags.tour ? [{ title: 'On Tour Now', shows: onTourList, viewAllHref: '/browse/broadway-national-tours' }] : []),
     { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
   ];
 
