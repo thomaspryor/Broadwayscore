@@ -46,8 +46,11 @@ const FANOUT_EVENT = 'fanout-verified';
 // Gate O v2's GO_ACK_EVENTS when the new event was added there, which would
 // have left a fan-out child acked via --already-landed permanently unlanded
 // from THIS module's point of view even though Gate O itself accepts it).
-const LANDED_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch']);
-const ACK_EVENTS = new Set(['landed-acked', 'landed-before-dispatch']);
+// landed-outside-dispatch (BRO-4662): --landed-elsewhere, same rule. Kept
+// as literals (this module is pure); ack-landed-landed-elsewhere.test.mjs
+// asserts both contain every dispatch-ledger.js LANDED_ACK_EVENTS member.
+const LANDED_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']);
+const ACK_EVENTS = new Set(['landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']);
 const BAD_EVENTS = new Set(['job-orphaned', 'job-failed', 'job-stopped-short', 'job-stranded',
   'job-abandoned', 'job-blocked']);
 const RELAUNCH_EVENTS = new Set(['launch', 'job-spawned', 'watchdog-redispatch', 'job-retried']);
@@ -129,4 +132,4 @@ function formatFanoutLine(row) {
   return `FANOUT-VERIFIED: ${row.refs.join(', ')} — \`${row.verifyCmd}\` exit 0 (${row.ts || 'ts pending'}); ${row.reason}`;
 }
 
-module.exports = { MIN_REFS, MIN_REASON_CHARS, FANOUT_EVENT, RUNS_TESTS_RE, normalizeRef, landingState, decideFanout, formatFanoutLine };
+module.exports = { MIN_REFS, MIN_REASON_CHARS, FANOUT_EVENT, LANDED_EVENTS, ACK_EVENTS, RUNS_TESTS_RE, normalizeRef, landingState, decideFanout, formatFanoutLine };

@@ -38,7 +38,7 @@
 'use strict';
 
 const {
-  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS,
+  TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS, foldJobs, JOB_EVENTS, LANDED_ACK_EVENTS,
   openTaskWorkspaceLaunches, dispatchCapDecision, parkedTasks,
   detectLauncherOutage, detectLauncherFailureRate, FAILURE_RATE_LOOKBACK_MS,
 } = require('./dispatch-ledger.js');
@@ -831,9 +831,8 @@ function isTaskOpen(task) {
 // steps 2-4). The live audit for this ticket found 0 of the 7 currently
 // affected cards were bare job-done — narrowing to these two costs nothing
 // against the real incident.
-const NO_FURTHER_DISPATCH_EVENTS = new Set([
-  JOB_EVENTS.LANDED_ACKED, JOB_EVENTS.LANDED_BEFORE_DISPATCH,
-]);
+// BRO-4662: the shared ack family (now also landed-outside-dispatch).
+const NO_FURTHER_DISPATCH_EVENTS = LANDED_ACK_EVENTS;
 
 // A launch/job-spawned row marks a FRESH dispatch attempt — the only thing
 // that may clear a landed verdict (same self-healing convention as
@@ -1387,6 +1386,7 @@ function renderNarrative(plan) {
 }
 
 module.exports = {
+  NO_FURTHER_DISPATCH_EVENTS,
   WATCHDOG_EVENTS, structuralGuardRefusal, CAPS, WATCHDOG_TAB_PREFIX, WATCHDOG_TAB_MARKER, LAUNCHER_LEAK_HOLD_PREFIX,
   KILL_SWITCH_STALE_MS, killSwitchStaleness,
   REDISPATCH_REARM_MS, CLAIM_LABEL_GRACE_MS, CLAIM_OUTAGE_MIN, CLAIM_OUTAGE_WINDOW_MS,

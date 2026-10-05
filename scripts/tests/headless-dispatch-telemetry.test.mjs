@@ -68,6 +68,9 @@ const NON_JOB_STATE_EVENTS = Object.freeze({
   // `job-` event on purpose" rationale, an audit row asserting the ref's work
   // predates every dispatch attempt, not a state transition of any one jobId.
   'landed-before-dispatch': 'ack-landed.js --already-landed audit row, not a job-state event',
+  // JOB_EVENTS.LANDED_OUTSIDE_DISPATCH (BRO-4662): the --landed-elsewhere
+  // sibling — an audit row certifying the CARD, never a jobId's transition.
+  'landed-outside-dispatch': 'ack-landed.js --landed-elsewhere audit row, not a job-state event',
   // dispatch-ledger.js JOB_EVENTS.FANOUT_VERIFIED definition (BRO-3939): "Not
   // a job event: not terminal, not dead-like, not an attempt; it names refs,
   // never a jobId" — a Gate O v2 proof row, taskId 'fanout'.

@@ -238,6 +238,9 @@ on:
       # ack-landed-core.test.mjs (globbed) covers the decision, but this file
       # itself needs its own entry to fire CI on a solo edit.
       - 'scripts/tests/ack-landed-correlation-id.test.mjs'
+      # BRO-4662: --landed-elsewhere fixture test + ack-event-family parity
+      # check, same scripts/tests/ situation as the entries above.
+      - 'scripts/tests/ack-landed-landed-elsewhere.test.mjs'
       # BRO-4066: the reclassify-headless-endings.js backfill CLI and its
       # scripts/tests/ test (registered in tests/unit-test-manifest.txt) —
       # neither is covered by the globs above, so both need their own entry.
