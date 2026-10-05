@@ -373,7 +373,11 @@ async function main() {
     changes: perShowResults.flatMap(r => r.applied.map(a => `${r.show.title}: ${a}`)),
     skipped: [
       ...perShowResults.flatMap(r => (r.error ? [`${r.show.title}: ${r.error}`] : r.skipped.map(s => `${r.show.title}: ${s}`))),
-      ...unresolvedShowIds.map(id => `${id}: show not found`),
+      // Codex /what-else cousin of BRO-4659: an unresolved ID has no catalog
+      // title to show (that's WHY it's unresolved) — so this can't reuse
+      // labelShowCandidates(), but it must still never put the raw internal
+      // ID in Tom's inbox the way the ambiguous-match cases used to.
+      ...unresolvedShowIds.map(() => `a show mentioned in your report — could not find it in the catalog`),
     ],
     how: 'automatic',
     partial: action === 'partial',
