@@ -15,6 +15,9 @@
  * are routine churn the cast scraper introduces continuously, so blocking on a
  * handful reddens the trunk for non-code reasons in the window before --write runs.
  *
+ * (BRO-2752: the --gate floor excludes the calendar-driven counters, see
+ * TIME_DRIVEN_COUNTERS / countGateChurn below; --strict still counts them.)
+ *
  * Two things ARE catastrophe-grade:
  *   1. crossShowConflicts — an actor placed in two shows with overlapping runs and
  *      no exit from either. This is a user-facing impossibility (the cast page
@@ -43,7 +46,7 @@ function shouldBlockCastChangesGate({ crossShowConflicts, totalIssues, floor }) 
  * regression and must not count toward the --gate spike floor. They still count
  * toward --strict totalIssues (daily triage).
  */
-const TIME_DRIVEN_COUNTERS = ['staleAutoFlaggedDropped', 'endedAbsencesDropped'];
+const TIME_DRIVEN_COUNTERS = Object.freeze(['staleAutoFlaggedDropped', 'endedAbsencesDropped']);
 
 /**
  * Issue count for the --gate spike floor: every counter in `counts` except the

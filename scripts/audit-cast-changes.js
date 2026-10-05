@@ -22,6 +22,7 @@
  *   node scripts/audit-cast-changes.js --strict # exit non-zero if ANY issue
  *   node scripts/audit-cast-changes.js --gate   # per-push trunk catastrophe FLOOR
  *
+ * (BRO-2752: --gate's floor excludes calendar-driven counters; see cast-changes-gate.js.)
  * --gate (vs --strict) as of 2026-06-29: --strict blocks on totalIssues > 0, but
  * almost all of those kinds (stale closure-date repairs, collapsed departures,
  * dropped contradictions/absences, stale [AUTO-FLAGGED], name dedupes, redundant

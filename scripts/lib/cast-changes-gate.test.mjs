@@ -34,7 +34,7 @@ test('BRO-2752: stale [AUTO-FLAGGED] entries aging out never count toward the sp
 });
 
 test('calendar-driven counters (ended absences too) are excluded; scraper-driven counters still count', () => {
-  assert.deepEqual(TIME_DRIVEN_COUNTERS.sort(), ['endedAbsencesDropped', 'staleAutoFlaggedDropped']);
+  assert.deepEqual([...TIME_DRIVEN_COUNTERS].sort(), ['endedAbsencesDropped', 'staleAutoFlaggedDropped']);
   assert.equal(countGateChurn({ endedAbsencesDropped: 40, nameVariantDedupes: 3, inCastArrivalsDropped: 2 }), 5);
   assert.equal(countGateChurn({ staleAutoFlaggedDropped: 25, nameVariantDedupes: FLOOR + 1 }), FLOOR + 1);
   assert.equal(shouldBlockCastChangesGate({ crossShowConflicts: 0, totalIssues: countGateChurn({ nameVariantDedupes: FLOOR + 1 }), floor: FLOOR }), true);
@@ -42,4 +42,12 @@ test('calendar-driven counters (ended absences too) are excluded; scraper-driven
 
 test('cross-show conflicts still block even alongside a large stale batch', () => {
   assert.equal(shouldBlockCastChangesGate({ crossShowConflicts: 1, totalIssues: countGateChurn({ staleAutoFlaggedDropped: 25, crossShowConflicts: 1 }), floor: FLOOR }), true);
+});
+
+test('every TIME_DRIVEN_COUNTERS name is a real issueCounts key in audit-cast-changes.js (rename guard)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../audit-cast-changes.js', import.meta.url), 'utf8');
+  for (const name of TIME_DRIVEN_COUNTERS) {
+    assert.match(src, new RegExp(`\\b${name}: report\\.${name}\\b`), `${name} missing from issueCounts`);
+  }
 });
