@@ -331,6 +331,8 @@ on:
       # edit to either triggers CI.
       - 'scripts/scrape-mezzanine-audience.js'
       - 'scripts/scrape-mezzanine-audience.test.mjs'
+      # BRO-3679 colocated test, manifest-registered
+      - 'scripts/test-new-show-venue-validation.test.mjs'
       - 'scripts/triage-review-gap.js'
       - 'scripts/triage-review-gap.test.mjs'
       - 'scripts/opening-night-tools-data-dir.test.mjs'
