@@ -178,7 +178,9 @@
     "cinderella-lyric-hammersmith-off-west-end-2026/ew--emlyn-travis.json",
     "jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json",
     "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-    "the-curious-case-of-benjamin-button-off-broadway-2026/thereviewshub--andrew-houghton.json"
+    "the-curious-case-of-benjamin-button-off-broadway-2026/thereviewshub--andrew-houghton.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
@@ -305,7 +307,15 @@
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
     "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
-    "the-bridge-off-west-end-2026/london-box-office--stuart-king.json"
+    "the-bridge-off-west-end-2026/london-box-office--stuart-king.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -410,7 +420,9 @@
       "cinderella-lyric-hammersmith-off-west-end-2026/ew--emlyn-travis.json",
       "jack-and-the-beanstalk-off-west-end-2026/thestage--paul-vale.json",
       "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "the-curious-case-of-benjamin-button-off-broadway-2026/thereviewshub--andrew-houghton.json"
+      "the-curious-case-of-benjamin-button-off-broadway-2026/thereviewshub--andrew-houghton.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -514,7 +526,7 @@
     ]
   },
   "startTime": "2026-10-05T09:48:03.733Z",
-  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/thereviewshub--andrew-houghton.json",
+  "lastProcessed": "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
   "log": [
     {
       "t": "2026-10-05T09:48:25.242Z",
@@ -785,6 +797,30 @@
       "t": "2026-10-05T13:39:11.729Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-05T14:06:07.403Z",
+      "event": "bb-session",
+      "session": "869f9734",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T14:06:25.955Z",
+      "event": "bb-session",
+      "session": "983d0f35",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T14:11:50.521Z",
+      "event": "bb-session",
+      "session": "e5f157cc",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-05T14:12:09.313Z",
+      "event": "bb-session",
+      "session": "209680d1",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
     }
   ]
 }
