@@ -230,6 +230,9 @@ interface RawReviewEntry {
   tier?: number;
   originalRating?: string;
   pullQuote?: string;
+  /** Set when the rebuild copied this review onto a returning production's entry from its
+   *  earlier run (BRO-4759). The original row stays on the earlier entry. */
+  inheritedFromShowId?: string;
 }
 
 // ============================================
@@ -329,7 +332,17 @@ const allProfileReviews: ProfileReview[] = [];
 
 const reviews = (reviewsData as { reviews: RawReviewEntry[] }).reviews;
 
+/**
+ * A review the rebuild copied onto a returning production's entry from its earlier run is the
+ * same article as the row on the earlier entry. Critic and outlet profiles count each article
+ * once, so they skip the copy (the show page and its score keep it).
+ */
+export function isInheritedReview(review: { inheritedFromShowId?: string | null }): boolean {
+  return !!review.inheritedFromShowId;
+}
+
 for (const review of reviews) {
+  if (isInheritedReview(review)) continue;
   const show = showMetaMap.get(review.showId);
   if (!show) continue;
   // Include Broadway, Off-Broadway, West End, and Off-West End reviews on critic/outlet pages.

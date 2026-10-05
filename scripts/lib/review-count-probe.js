@@ -2,7 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isIncludableForRebuild } = require('./review-guards');
+const { isIncludableForRebuild, canonicalizeUrlForDedup } = require('./review-guards');
+const { findPriorRunSiblings } = require('./prior-run-sibling');
+const { findMatchingPriorRun } = require('./wrong-production-autoclear');
 
 /**
  * Reads all JSON files in the show's review-texts directory, applies
@@ -14,9 +16,11 @@ const { isIncludableForRebuild } = require('./review-guards');
  *   the predicate's stale-wrongShow override can fire (Codex ship-check
  *   2026-04-29). Omitted callers fail safe (over-exclude wrongShow files
  *   that would have cleared with show context).
- * @returns {{ total: number, included: number, excluded: number }}
+ * @param {Array<object>} [allShows]  all shows.json entries — pass so reviews a
+ *   returning show inherits from its declared earlier-run entry are counted
+ * @returns {{ total: number, included: number, excluded: number, inherited?: number }}
  */
-function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show) {
+function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show, allShows) {
   const dir = path.join(reviewTextsRoot, showId);
   if (!fs.existsSync(dir)) {
     return { total: 0, included: 0, excluded: 0 };
@@ -24,6 +28,8 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show)
   const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
   let included = 0;
   let excluded = 0;
+  const haveUrl = new Set();
+  const havePerson = new Set();
   for (const f of files) {
     let data;
     try {
@@ -34,11 +40,44 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show)
     }
     if (isIncludableForRebuild(data, show)) {
       included++;
+      haveUrl.add(canonicalizeUrlForDedup(data.url));
+      havePerson.add(personKey(data));
     } else {
       excluded++;
     }
   }
-  return { total: files.length, included, excluded };
+
+  // BRO-4759: reviews the rebuild inherits from a declared earlier-run entry
+  // (priorRuns) publish on THIS show, so the local count must include them or
+  // every returning show reads as "live ahead of local" drift.
+  let inherited = 0;
+  if (show && Array.isArray(allShows)) {
+    for (const { sibling } of findPriorRunSiblings(show, allShows)) {
+      const sibDir = path.join(reviewTextsRoot, sibling.id);
+      if (!fs.existsSync(sibDir)) continue;
+      for (const f of fs.readdirSync(sibDir).filter(n => n.endsWith('.json'))) {
+        let data;
+        try {
+          data = JSON.parse(fs.readFileSync(path.join(sibDir, f), 'utf8'));
+        } catch {
+          continue;
+        }
+        if (!isIncludableForRebuild(data, sibling)) continue;
+        if (!findMatchingPriorRun(data.publishDate, show.priorRuns)) continue;
+        const cu = canonicalizeUrlForDedup(data.url);
+        if (cu && haveUrl.has(cu)) continue;
+        if (havePerson.has(personKey(data))) continue;
+        haveUrl.add(cu);
+        havePerson.add(personKey(data));
+        inherited++;
+      }
+    }
+  }
+  return { total: files.length, included: included + inherited, excluded, inherited };
+}
+
+function personKey(r) {
+  return `${String(r.outletId || '').toLowerCase()}|${String(r.criticName || 'unknown').toLowerCase().replace(/\s+/g, '')}`;
 }
 
 /**

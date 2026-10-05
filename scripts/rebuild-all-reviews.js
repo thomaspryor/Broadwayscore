@@ -61,6 +61,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
+const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings } = require('./lib/prior-run-sibling');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -1235,46 +1236,10 @@ const multiProdYearGuard = buildMultiProdYearGuard(showsData.shows);
 
 // Build director cross-check lookup for multi-production shows
 // Pattern: reviews in OLDER production dirs mentioning NEWER production's director = wrong production
-const multiProdDirectorGuard = {};
+// Builder lives in lib/prior-run-sibling.js (testable); it exempts a newer entry that declares
+// this one as a priorRuns run: same production, same director (BRO-4759, Kramer/Fauci).
+const multiProdDirectorGuard = buildMultiProdDirectorGuard(showsData.shows);
 {
-  const titleGroups = {};
-  for (const s of showsData.shows) {
-    const base = s.title.replace(/\s*\(.*?\)/g, '').replace(/:\s.*$/, '').trim().toLowerCase();
-    if (!titleGroups[base]) titleGroups[base] = [];
-    titleGroups[base].push(s);
-  }
-  for (const [, prods] of Object.entries(titleGroups)) {
-    if (prods.length < 2) continue;
-    prods.sort((a, b) => {
-      const da = a.openingDate ? new Date(a.openingDate).getTime() : Infinity;
-      const db = b.openingDate ? new Date(b.openingDate).getTime() : Infinity;
-      return da - db;
-    });
-    for (let i = 0; i < prods.length; i++) {
-      const thisShow = prods[i];
-      const thisDirectors = (thisShow.creativeTeam || [])
-        .filter(ct => /director/i.test(ct.role))
-        .map(ct => ct.name.toLowerCase());
-      // Collect directors from NEWER productions in the SAME market only
-      const newerDirs = new Map();
-      for (let j = i + 1; j < prods.length; j++) {
-        // Don't cross-compare different markets (Broadway vs West End vs Off-Broadway)
-        if (prods[j].category !== thisShow.category) continue;
-        for (const ct of (prods[j].creativeTeam || [])) {
-          if (/director/i.test(ct.role)) {
-            const name = ct.name.toLowerCase();
-            // Skip if this person also directed the current production
-            if (!thisDirectors.includes(name)) {
-              newerDirs.set(name, prods[j].id);
-            }
-          }
-        }
-      }
-      if (newerDirs.size > 0) {
-        multiProdDirectorGuard[thisShow.id] = newerDirs;
-      }
-    }
-  }
   const guardedShows = Object.keys(multiProdDirectorGuard).length;
   if (guardedShows > 0) {
     console.log(`Director cross-check guard active for ${guardedShows} multi-production shows\n`);
@@ -1309,8 +1274,17 @@ const validShowIds = new Set(showsData.shows.map(s => s.id));
 // stamped at the END of a run, so a file that landed mid-run would look
 // older than the rebuild that never saw it.
 const reviewTextsScannedAt = new Date().toISOString();
+// A scoped (--show=) run also loads the target's declared earlier-run entries, so the
+// reviews it would inherit (BRO-4759) show up in the diagnostic instead of silently missing.
+const SHOW_FILTER_IDS = (() => {
+  if (!SHOW_FILTER) return null;
+  const ids = new Set([SHOW_FILTER]);
+  const target = showsData.shows.find(s => s.id === SHOW_FILTER);
+  if (target) for (const { sibling } of findPriorRunSiblings(target, showsData.shows)) ids.add(sibling.id);
+  return ids;
+})();
 const showDirs = listShowDirs(reviewTextsDir)
-  .filter(f => !SHOW_FILTER || f === SHOW_FILTER)
+  .filter(f => !SHOW_FILTER_IDS || SHOW_FILTER_IDS.has(f))
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
     // Skip symlinks to avoid processing the same directory twice
@@ -5286,6 +5260,22 @@ for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
   }
 }
 
+// BRO-4759: a returning production declares its earlier run on priorRuns. When that
+// earlier run has its own show entry, carry its in-window reviews onto this entry —
+// the majors reviewed the first run and do not re-review a return, so without this the
+// returning entry scores on a handful of minor outlets. Runs before the dedup passes
+// and the --show= exit below so both see the inherited reviews.
+{
+  const { inherited, links } = inheritPriorRunReviews(allReviews, showsData.shows, {
+    canonicalizeUrl: canonicalizeUrlForDedup,
+  });
+  for (const r of inherited) allReviews.push(r);
+  stats.priorRunInherited = inherited.length;
+  for (const l of links) {
+    console.log(`  [PRIOR-RUN INHERIT] ${l.newerId} <- ${l.olderId}: ${l.count} review(s)`);
+  }
+}
+
 if (SHOW_FILTER) {
   // Diagnostic mode: print what would be included/excluded and exit BEFORE
   // any AGGREGATE write (reviews.json, deploy watermark, outlet registry,
@@ -6268,6 +6258,7 @@ console.log(`  Skipped (tour contamination): ${stats.skippedTourContamination ||
 console.log(`  Skipped (film/TV contamination): ${stats.skippedFilmTvContamination || 0}`);
 console.log(`  Skipped (date mismatch >30d): ${stats.skippedDateMismatch || 0}`);
 console.log(`  Skipped (director cross-check): ${stats.skippedDirectorMismatch || 0}`);
+console.log(`  Inherited from earlier-run entries (priorRuns): ${stats.priorRunInherited || 0}`);
 console.log(`  Skipped (URL-year cross-production): ${stats.skippedUrlYearMismatch || 0}`);
 console.log(`  Rerouted to sibling (URL-year): ${stats.reroutedToSibling || 0}`);
 if (stats.rerouteCollisionDropped > 0) {

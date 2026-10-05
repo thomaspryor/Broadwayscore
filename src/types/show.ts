@@ -20,6 +20,8 @@ export interface PriorRun {
   openingDate: string; // ISO date — start of the prior run
   closingDate?: string; // ISO date — end of the prior run (defaults to openingDate + 180 days)
   venue?: string; // Display label, e.g. "Bushwick Starr"
+  /** Set false to keep this link (guard exemption, dedup cross-link) but NOT carry the earlier entry's reviews onto this one. Default: carried (scripts/lib/prior-run-sibling.js). */
+  inheritReviews?: boolean;
 }
 
 /**

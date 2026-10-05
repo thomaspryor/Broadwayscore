@@ -143,6 +143,7 @@ function perShowJsonAgeMinutes(showId) {
 
 async function main() {
   const targetShows = getTargetShows();
+  const allShows = (() => { const d = loadJson(SHOWS_JSON); return d.shows || d; })();
 
   if (targetShows.length === 0) {
     if (!JSON_OUTPUT) console.log('No shows in opening window — nothing to check.');
@@ -164,7 +165,7 @@ async function main() {
 
   for (const show of targetShows) {
     const showId = show.id;
-    const local     = countLocalIncluded(showId, REVIEW_TEXTS, show);
+    const local     = countLocalIncluded(showId, REVIEW_TEXTS, show, allShows);
     const agg       = countAggregate(showId, reviewsDoc);
     const localJson = countLocalPerShowJson(showId, PER_SHOW_JSON); // may be null
     const live      = await fetchLiveRc(showId);

@@ -172,6 +172,7 @@ const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = requir
 // The one predicate for "citation from an earlier production of this title".
 // Every count a human reads goes through it — see that module's docstring for
 // why five scattered `!m.priorRun` filters were not enough.
+const { collectCarriedFiles } = require('./lib/prior-run-sibling');
 const {
   isPriorProductionCitation,
   currentRunOnly,
@@ -693,9 +694,12 @@ function classifyShowFile(d) {
 // reviews.json. Delegating to isIncludableForRebuild keeps the gap audit's notion of
 // "covered" identical to the rebuild's notion of "included" by definition.
 function isCoveredFile(d, show) {
+  // A file carried from the earlier-run entry (BRO-4759) is judged — and read from disk —
+  // in the context of the entry whose folder holds it.
+  const ctx = d._ctxShow || show;
   try {
-    const filePath = d._file ? path.join(REVIEW_TEXTS_DIR, show.id, d._file) : null;
-    return isIncludableForRebuild(d, show, filePath) === true;
+    const filePath = d._file ? path.join(REVIEW_TEXTS_DIR, ctx.id, d._file) : null;
+    return isIncludableForRebuild(d, ctx, filePath) === true;
   } catch (_) {
     return classifyShowFile(d) === 'clean';
   }
@@ -1008,7 +1012,13 @@ async function auditShow(show, opts = {}) {
     return result;
   }
 
-  const dirData = loadDirFiles(show.id);
+  // BRO-4759: the rebuild carries a declared earlier run's reviews onto this entry, so a URL
+  // held in that entry's folder is covered here. Without this, a returning show's audit lists
+  // the earlier run's reviews as missing, re-ingests them every hour (they land nowhere: the
+  // URL already lives in the sibling folder) and its Coverage Verdict never leaves "incomplete".
+  const dirData = loadDirFiles(show.id).concat(
+    collectCarriedFiles(show, opts.allShows, { loadFiles: loadDirFiles, isCovered: isCoveredFile }),
+  );
   result.dirFiles = dirData.length;
 
   // Map dir files by hostname (multiple files per host possible)
@@ -1027,7 +1037,8 @@ async function auditShow(show, opts = {}) {
   // URLs of files we already hold AND count as covered for this show. Used by
   // the alias-variant check below; deliberately covered-only, so a flagged or
   // excluded file can never vouch for a candidate.
-  const coveredUrls = dirData.filter(d => d.url && isCoveredFile(d, show)).map(d => d.url);
+  // Carried files (BRO-4759) vouch for their own URL only, never as a same-outlet variant.
+  const coveredUrls = dirData.filter(d => d.url && !d._exactMatchOnly && isCoveredFile(d, show)).map(d => d.url);
   // Registry host -> outletId, plus the set of hosts 2+ outlets claim. The
   // ambiguous set is why this uses outlet-canonicalize's map and not the
   // audit's own getKnownDomainMap(), which resolves a contested host to one
@@ -1060,7 +1071,9 @@ async function auditShow(show, opts = {}) {
     const dirFiles = exactMatches.length > 0
       ? exactMatches
       : hostFallbackVouchers(
-        dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok),
+        // A carried file (BRO-4759) must not vouch for a DIFFERENT URL on its host: the
+        // February NYT review would hide a new nytimes.com review of the return.
+        dirFilesAll.filter(d => !d._exactMatchOnly && (!d.url || classifyReviewUrl(d.url).ok)),
         d => isCoveredFile(d, show),
       );
     if (dirFiles.length === 0) {
@@ -1777,7 +1790,7 @@ async function main(argv = process.argv.slice(2)) {
       break;
     }
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
-    const r = await auditShow(s, { lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt });
+    const r = await auditShow(s, { lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows });
     if (useCheckpoint) {
       // serpCensusAt: only stamped when the census actually ran this pass
       // (cooldown gate consults it); otherwise carry forward whatever was
