@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-10-02",
+  "asOf": "2026-10-03",
   "shadow": false,
   "checks": [
     {
@@ -30,19 +30,19 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "12 conversions in trailing 7d"
+      "reason": "20 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "629/629 = 100% of peak, above the 20% floor"
+      "reason": "665/665 = 100% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "577/741 = 78% of peak, above the 20% floor"
+      "reason": "601/741 = 81% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
@@ -60,9 +60,9 @@
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "warn",
-      "reason": "2 conversions with a real sale amount but $0.00 payout in 7d (allowed 1)"
+      "reason": "6 conversions with a real sale amount but $0.00 payout in 7d (allowed 1)"
     }
   ],
   "failingCount": 1,
-  "updatedAt": "2026-10-04T20:50:58.154Z"
+  "updatedAt": "2026-10-05T10:38:11.506Z"
 }
