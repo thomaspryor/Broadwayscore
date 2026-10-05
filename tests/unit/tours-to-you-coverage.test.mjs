@@ -68,9 +68,10 @@ test('the paid fallback runs only after the plain GET stays rate-limited', async
   assert.equal(html, '<html>paid</html>');
 });
 
-test('a markdown fallback result is not taken as the page', async () => {
-  const fallback = async () => ({ content: '| city | dates |', format: 'markdown' });
-  await assert.rejects(ttY.politeFetchText('u', { get: async () => { throw err429(); }, fallback, wait: async () => {}, pace: noPace, log: quiet }), /429/);
+test('a markdown or non-page fallback result is not taken as the page', async () => {
+  for (const res of [{ content: '<html>| city | dates |', format: 'markdown' }, { content: 'Too Many Requests', format: 'raw' }]) {
+    await assert.rejects(ttY.politeFetchText('u', { get: async () => { throw err429(); }, fallback: async () => res, wait: async () => {}, pace: noPace, log: quiet }), /429/);
+  }
 });
 
 test('no retry wait that would overrun the run budget; without a fallback the 429 is thrown', async () => {

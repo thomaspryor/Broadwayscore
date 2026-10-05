@@ -49,8 +49,8 @@ async function listShowPages(fetchText) {
     for (const r of rows) {
       if (!r.slug) continue;
       out.push(r.slug);
-      // WordPress gives site-local time without a zone; close enough to order by.
-      if (r.modified) modified[r.slug] = `${r.modified}Z`;
+      // modified_gmt is UTC without a zone suffix (plain `modified` is site-local).
+      if (r.modified_gmt) modified[r.slug] = `${r.modified_gmt}Z`;
     }
     if (rows.length < 100) break;
   }

@@ -115,9 +115,10 @@ async function politeFetchText(url, { fallback = null, budget = null, log = cons
         try {
           const res = await fallback(url);
           const html = typeof res === 'string' ? res : (res && (res.html || res.content)) || '';
-          // The schedule parser reads HTML tables; a markdown tier's text would
-          // count as read yet parse to nothing, hiding the page for a cycle.
-          if (html && !(res && res.format === 'markdown')) { stats.fallbackOk++; log(`  429 from ${url}; read it through the scraper chain instead`); return html; }
+          // The schedule parser reads HTML tables; a markdown tier's text or a
+          // bare error body would count as read yet parse to nothing, hiding
+          // the page for a cycle.
+          if (/<body|<html/i.test(html) && !(res && res.format === 'markdown')) { stats.fallbackOk++; log(`  429 from ${url}; read it through the scraper chain instead`); return html; }
           log(`  scraper fallback for ${url} returned no HTML`);
         } catch (fe) {
           log(`  scraper fallback failed for ${url}: ${fe.message}`);
