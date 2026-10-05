@@ -10336,13 +10336,13 @@
     "land:land/job/linear-BRO-2805-muv57h2l": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-2805-muv57h2l",
+      "title": "Landing blocked: scripts-lib-tests red on land/job/linear-BRO-2805-muv57h2l",
       "firstSeen": "2026-10-05T11:43:10.234Z",
       "incidentOpenedAt": "2026-10-05T11:43:10.234Z",
-      "lastSeen": "2026-10-05T11:43:10.234Z",
-      "lastNotifiedAt": "2026-10-05T11:43:10.234Z",
-      "lastSurfacedAt": "2026-10-05T11:43:10.234Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-05T18:48:18.998Z",
+      "lastNotifiedAt": "2026-10-05T18:48:18.998Z",
+      "lastSurfacedAt": "2026-10-05T18:48:18.998Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -10533,7 +10533,7 @@
       "resolvedAt": "2026-10-05T17:22:56.025Z"
     },
     "land:land/job/linear-BRO-3679-muvg6dit": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: resolve red on land/job/linear-BRO-3679-muvg6dit",
       "firstSeen": "2026-10-05T17:25:08.724Z",
@@ -10543,7 +10543,8 @@
       "lastSurfacedAt": "2026-10-05T17:25:08.724Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-05T18:47:20.409Z"
     },
     "test-yml:red:Unit Tests:cd491ba1": {
       "status": "open",
@@ -10586,6 +10587,19 @@
       "lastSeen": "2026-10-05T17:50:55.232Z",
       "lastNotifiedAt": "2026-10-05T17:50:55.232Z",
       "lastSurfacedAt": "2026-10-05T17:50:55.232Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-934-muvirs1i": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-934-muvirs1i",
+      "firstSeen": "2026-10-05T18:51:37.157Z",
+      "incidentOpenedAt": "2026-10-05T18:51:37.157Z",
+      "lastSeen": "2026-10-05T18:51:37.157Z",
+      "lastNotifiedAt": "2026-10-05T18:51:37.157Z",
+      "lastSurfacedAt": "2026-10-05T18:51:37.157Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

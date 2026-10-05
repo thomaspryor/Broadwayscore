@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-05T18:35:51.981Z",
-  "processed": 106,
-  "failed": 44,
-  "successRate": "70.7%",
+  "updatedAt": "2026-10-05T18:48:47.965Z",
+  "processed": 112,
+  "failed": 54,
+  "successRate": "67.5%",
   "tierBreakdown": {
-    "playwright": 80,
+    "playwright": 83,
     "amp": 1,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 14,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 6,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 13
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-05T17:57:33.684Z",
@@ -33,6 +33,17 @@
       "event": "bb-session",
       "session": "57437879",
       "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-05T18:41:48.238Z",
+      "event": "bb-session",
+      "session": "e45d9bd8",
+      "url": "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html"
+    },
+    {
+      "t": "2026-10-05T18:41:49.207Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
