@@ -80,3 +80,17 @@ test('each chrome fixture is actually detected (exemption precondition is real)'
   assert.ok(cq.detectLegalPage(CHROME.legal).detected);
   assert.ok(cq.detectNewsletter(CHROME.newsletter).detected);
 });
+
+test('short closing prose line containing a paywall-ish phrase is kept', () => {
+  const closing = 'The finale, set in a speakeasy for members only, lands with real force and a standing ovation.';
+  const text = `${body}\n\n${closing}`;
+  assert.equal(cq.stripExemptedChrome(text), text);
+});
+
+test('strip that would flip the text to garbage is abandoned', () => {
+  const text = `${body}\n\nThe lounge is for members only, a nice touch for the theater crowd.\n\n${CLOSING}\n\n${CHROME.paywall}`;
+  const before = cq.isGarbageContent(text).isGarbage;
+  const out = cq.stripExemptedChrome(text);
+  assert.equal(cq.isGarbageContent(out).isGarbage, before === false ? false : cq.isGarbageContent(out).isGarbage);
+  if (!before) assert.equal(cq.isGarbageContent(out).isGarbage, false);
+});

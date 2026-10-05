@@ -1154,7 +1154,7 @@ function isGarbageContent(text) {
   const adBlocker = detectAdBlocker(text);
   if (adBlocker.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, adBlocker.match)) {
-      // Ad blocker message is trailing junk — stripExemptedChrome() removes it before storage
+      // Ad blocker message is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else {
       return { isGarbage: true, reason: `Ad blocker message: "${adBlocker.match}"` };
     }
@@ -1164,7 +1164,7 @@ function isGarbageContent(text) {
   const paywall = detectPaywall(text);
   if (paywall.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, paywall.match)) {
-      // Paywall prompt is trailing junk — stripExemptedChrome() removes it before storage
+      // Paywall prompt is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else {
       return { isGarbage: true, reason: `Paywall/subscription prompt: "${paywall.match}"` };
     }
@@ -1203,7 +1203,7 @@ function isGarbageContent(text) {
   const legalPage = detectLegalPage(text);
   if (legalPage.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, legalPage.match)) {
-      // Legal/copyright is trailing junk — stripExemptedChrome() removes it before storage
+      // Legal/copyright is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else if (trimmed.length > 1000) {
       // For long texts without review content, only check the first 500 chars
       const legalFrontCheck = detectLegalPage(trimmed.substring(0, 500));
@@ -1219,7 +1219,7 @@ function isGarbageContent(text) {
   const newsletter = detectNewsletter(text);
   if (newsletter.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, newsletter.match)) {
-      // Newsletter form is trailing junk — stripExemptedChrome() removes it before storage
+      // Newsletter form is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else if (hasSubstantialReviewContent && _isPatternInLeadingJunk(text, newsletter.match)) {
       // Newsletter form is leading junk (e.g., TimeOut "Thanks for subscribing!" header) — stripExemptedChrome() removes it
     } else {
@@ -1542,25 +1542,36 @@ const TRUNCATION_SIGNALS = {
  * isGarbageContent exactly, and drops only the single line holding the match
  * (never "everything after it" — footer cut-offs ate real closing paragraphs).
  * Lines over MAX_CHROME_LINE chars are left alone: that is prose, not a banner.
+ * Safety net: if removal would flip isGarbageContent() to garbage (a second, non-trailing
+ * match revealed by the strip), the original text is returned so the review is never
+ * turned into a re-collect loop.
+ * Only the collect-review-texts.js path calls this; other ingest scripts still use
+ * stripTrailingJunk only.
  *
  * @param {string} text - Cleaned review text
  * @returns {string} Text with exempted chrome lines removed (unchanged if none)
  */
-const MAX_CHROME_LINE = 400;
+const MAX_CHROME_LINE = 200;
 function stripExemptedChrome(text) {
   if (!text || text.length < 500 || !text.includes('\n')) return text;
+  const stripped = _stripExemptedChromeLines(text);
+  if (stripped !== text && isGarbageContent(stripped).isGarbage) return text;
+  return stripped;
+}
+
+function _stripExemptedChromeLines(text) {
   let out = text;
   for (let pass = 0; pass < 6; pass++) {
     const trimmed = out.trim();
     if (trimmed.length < 500 || _countTheaterKeywords(trimmed) < 3) break;
     const probes = [
-      [detectAdBlocker, true, false],
-      [detectPaywall, true, false],
-      [detectLegalPage, true, false],
-      [detectNewsletter, true, true],
+      [detectAdBlocker, true, false, AD_BLOCKER_PATTERNS],
+      [detectPaywall, true, false, PAYWALL_PATTERNS],
+      [detectLegalPage, true, false, LEGAL_PAGE_PATTERNS],
+      [detectNewsletter, true, true, NEWSLETTER_PATTERNS],
     ];
     let removed = false;
-    for (const [detect, trailing, leading] of probes) {
+    for (const [detect, trailing, leading, patterns] of probes) {
       const d = detect(out);
       if (!d.detected) continue;
       const inTrailing = trailing && _isPatternInTrailingJunk(out, d.match);
@@ -1573,7 +1584,10 @@ function stripExemptedChrome(text) {
       const start = out.lastIndexOf('\n', idx - 1) + 1;
       let end = out.indexOf('\n', idx);
       if (end < 0) end = out.length;
-      if (end - start > MAX_CHROME_LINE) continue;
+      // A banner line is mostly the matched phrase; a prose sentence that merely contains it is not
+      const line = out.slice(start, end);
+      const covered = patterns.reduce((n, re) => { const m = line.match(re); return n + (m ? m[0].length : 0); }, 0);
+      if (line.length > MAX_CHROME_LINE || line.length > covered * 3 + 40) continue;
       out = (out.slice(0, start) + out.slice(end)).replace(/\n{3,}/g, '\n\n').trim();
       removed = true;
       break;
