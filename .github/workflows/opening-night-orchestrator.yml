@@ -651,6 +651,11 @@ jobs:
               PREV_STATUS=$(gh run view "$PREV_POLLER_RUN_ID" --json status -q .status 2>/dev/null || echo "")
               case "$PREV_STATUS" in
                 queued|in_progress|waiting|pending|requested) PREV_STILL_ACTIVE=true ;;
+                completed) ;;
+                # gh failed (rate limit/outage): assume still active. Dispatching
+                # blind is exactly the stacking that cancels the pending slot, and
+                # the wall-clock DEADLINE bounds any stall.
+                *) PREV_STILL_ACTIVE=true; PREV_STATUS="unknown" ;;
               esac
             fi
             RUN_ID=""
