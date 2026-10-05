@@ -18,6 +18,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { isOrphanedWrongProdProvenance } = require('./lib/orphaned-wrongprod-provenance');
@@ -27,6 +28,10 @@ const BASELINE_PATH = path.join(__dirname, '..', 'data', 'audit', 'orphaned-wron
 // Corpus is ~46k files; a half-synced checkout must not pass vacuously.
 const MIN_FILES = 30000;
 const ARGV = process.argv.slice(2);
+if (hasHelpFlag(ARGV)) {
+  console.log('Usage: node scripts/audit-orphaned-wrongprod-provenance.js [--gate | --update-baseline]\n  (no flag) report; --gate exit 1 on orphans not in baseline; --update-baseline freeze current set.');
+  process.exit(0);
+}
 const GATE = ARGV.includes('--gate');
 const UPDATE_BASELINE = ARGV.includes('--update-baseline');
 
