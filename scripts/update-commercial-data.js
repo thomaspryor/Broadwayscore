@@ -37,6 +37,7 @@ const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 
 // Universal scraper with Bright Data → ScrapingBee → Playwright fallback
 let universalScraper;
@@ -1540,8 +1541,10 @@ function filterByConfidence(proposedChanges, commercialData) {
  * @param {Object[]} applied - Changes to apply
  * @param {Object[]} newEntries - New show entries to add
  * @param {Object} commercial - commercial.json data (mutated in place)
+ * @param {Object} [showKeyIndex] - buildShowKeyIndex(shows); new entries are
+ *   only added under a slug that resolves through it
  */
-function applyChanges(applied, newEntries, commercial) {
+function applyChanges(applied, newEntries, commercial, showKeyIndex) {
   let changeCount = 0;
 
   // Circuit breaker: count designation changes
@@ -1631,14 +1634,23 @@ function applyChanges(applied, newEntries, commercial) {
     }
   }
 
-  // Add new show entries
+  // Add new show entries. The model's slug can be a show id or made up: key
+  // by the slug it resolves to and skip what doesn't resolve. The write
+  // guard's re-key can't fix an id key whose slug record already exists, so
+  // checking the id key alone added a duplicate the strict gate rejects.
   for (const entry of (newEntries || [])) {
     if (entry.confidence === 'low') continue;
-    if (!entry.slug || commercial.shows[entry.slug]) continue;
+    if (!entry.slug) continue;
+    const { slug: key, resolved } = resolveCommercialSlug(entry.slug, null, showKeyIndex || buildShowKeyIndex([]));
+    if (!resolved) {
+      console.log(`  [SKIP] New entry "${entry.slug}" doesn't match a show in shows.json`);
+      continue;
+    }
+    if (commercial.shows[key]) continue;
 
-    commercial.shows[entry.slug] = entry.data;
+    commercial.shows[key] = entry.data;
     changeCount++;
-    console.log(`  [NEW] Added ${entry.slug} (${entry.data.designation})`);
+    console.log(`  [NEW] Added ${key} (${entry.data.designation})`);
   }
 
   // Update metadata
@@ -2520,7 +2532,7 @@ async function main() {
   // -----------------------------------------------------------------------
   // Step 9: Apply changes
   // -----------------------------------------------------------------------
-  const changeCount = applyChanges(applied, analysisResult.newShowEntries, commercial);
+  const changeCount = applyChanges(applied, analysisResult.newShowEntries, commercial, buildShowKeyIndex(allShows));
 
   // -----------------------------------------------------------------------
   // Step 10: Shadow classifier
@@ -2627,7 +2639,7 @@ async function main() {
 }
 
 // Exports for unit testing
-module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue };
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue, applyChanges };
 
 // Run only when executed directly (not when require()'d for testing)
 if (require.main === module) {
