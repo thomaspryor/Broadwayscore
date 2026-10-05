@@ -1304,6 +1304,11 @@ on:
       # needed. Registered explicitly in the unit-test node --test list below
       # (top-level scripts/*.test.mjs is not globbed).
       - 'scripts/send-opening-digest.test.mjs'
+      # BRO-2408: related-shows generator + its guard test (scores must come
+      # via loadReviewsWithBlog). Test is in tests/unit-test-manifest.txt;
+      # without these entries a solo edit triggers ZERO CI (allow-list gate).
+      - 'scripts/generate-related-shows.js'
+      - 'scripts/generate-related-shows.test.mjs'
       # BRO-3707: scans every .github/workflows/*.yml (already covered by the
       # '.github/workflows/**' glob below) for severity:'critical' Notify-on-
       # failure steps missing cancelled() coverage. Registered explicitly in

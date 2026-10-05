@@ -19,9 +19,12 @@ test('script sources reviews via loadReviewsWithBlog and feeds them to buildScor
 });
 
 test('script does not read data/reviews.json directly', () => {
-  const code = src.split('\n').filter(l => !/^\s*\/\//.test(l)).join('\n');
-  assert.doesNotMatch(code, /reviews\.json/);
-  assert.doesNotMatch(code, /JSON\.parse\([^)]*reviews/);
+  // Strip block + line comments before scanning (comments may name the file).
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*$/gm, '');
+  assert.doesNotMatch(code, /(?<!\w)reviews(\.json)?['"`]/, 'raw reviews path/require');
+  assert.doesNotMatch(code, /['"`]reviews['"`]\s*\+/, 'concatenated reviews path');
+  assert.doesNotMatch(code, /JSON\.parse\([^)]*reviews/i);
+  assert.equal((code.match(/loadReviewsWithBlog\(/g) || []).length, 1, 'single review source');
 });
 
 test('a show whose only scores come from blog rows still gets a score', () => {
