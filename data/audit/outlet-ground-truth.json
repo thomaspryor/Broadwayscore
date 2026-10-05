@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T08:02:36.047Z",
+  "generatedAt": "2026-10-05T17:47:38.794Z",
   "phase": "done",
   "days": 21,
   "shows": 71,
@@ -11,12 +11,12 @@
     },
     "whatsonstage": {
       "queries": 27,
-      "listed": 8,
+      "listed": 7,
       "errors": 0
     },
     "nysr": {
       "queries": 44,
-      "listed": 15,
+      "listed": 16,
       "errors": 0
     },
     "newyorktheater": {
@@ -26,7 +26,7 @@
     },
     "nytimes": {
       "queries": 4,
-      "listed": 1,
+      "listed": 2,
       "errors": 0
     },
     "theatre-reviews": {
@@ -36,7 +36,13 @@
     }
   },
   "listingTruncated": false,
-  "listed": 74,
-  "ingested": [],
+  "listed": 75,
+  "ingested": [
+    {
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "url": "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
+      "ok": true
+    }
+  ],
   "missing": []
 }
