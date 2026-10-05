@@ -7,9 +7,11 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
+const SCRIPTS_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'scripts');
 const { parseBwwPostingAuthor } = require('../../scripts/lib/bww-jsonld-author.js');
 
 const REGISTERED = new Set(['Blogcritics', 'New York Theater', 'NY Post']);
@@ -57,8 +59,7 @@ describe('parseBwwPostingAuthor', () => {
   });
   test('unregistered headline outlet is not promoted over author', () => {
     const r = parse({ author: { name: 'Jon Sobel' }, headline: 'Some Zine - Safe House' });
-    assert.notStrictEqual(r.outletRaw, 'Some Zine');
-    assert.strictEqual(r.criticName, null);
+    assert.deepStrictEqual(r, { outletRaw: 'Jon Sobel', criticName: null });
   });
   test('no author: headline outlet, rejected when 6+ words', () => {
     assert.deepStrictEqual(parse({ headline: 'Blogcritics - Safe House' }),
@@ -70,13 +71,20 @@ describe('parseBwwPostingAuthor', () => {
   });
 });
 
+describe('default predicate (what the cousin scripts use)', () => {
+  test('real registry: bare critic + registered headline outlet -> no phantom', () => {
+    const r = parseBwwPostingAuthor({ author: { name: 'Jon Sobel' }, headline: 'Blogcritics - Theater Review: Safe House' });
+    assert.deepStrictEqual(r, { outletRaw: 'Blogcritics', criticName: 'Jon Sobel' });
+  });
+});
+
 describe('all three scripts route through the shared lib (no re-fork)', () => {
   for (const f of ['gather-reviews.js', 'backfill-bww-thumbs.js', 're-extract-aggregator-reviews.js']) {
     test(f, () => {
-      const src = fs.readFileSync(path.join('scripts', f), 'utf8');
+      const src = fs.readFileSync(path.join(SCRIPTS_DIR, f), 'utf8');
       assert.match(src, /require\('\.\/lib\/bww-jsonld-author'\)/);
       assert.match(src, /parseBwwPostingAuthor\(/);
-      assert.doesNotMatch(src, /authorName\.includes\(' - '\)/,
+      assert.doesNotMatch(src, /authorName\.includes\(' - '\)|author\[0\]\?\.name/,
         'inline author-delimiter parsing must live only in the lib');
     });
   }
