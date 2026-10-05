@@ -53,7 +53,10 @@ ensure_notion_client() {
 # Loud, so a session that needs review texts (audits, recovery) finds out at start
 # rather than halfway through. Cloud only: local checkouts manage their own data.
 warn_if_no_review_texts() {
-  if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -s data/shows.json ] && [ ! -d data/review-texts ]; then
+  # setup-local-data.sh --all creates data/review-texts before cloning, so a failed
+  # clone leaves an EMPTY directory: test for missing or empty, not just missing.
+  if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -s data/shows.json ] \
+     && [ -z "$(ls -A data/review-texts 2>/dev/null)" ]; then
     log "WARN: data/review-texts is missing, so review texts are NOT available this session."
     if [ -n "${REVIEW_TEXTS_TOKEN:-}" ]; then
       log "WARN: REVIEW_TEXTS_TOKEN is set but the broadway-review-texts clone failed; check the token has repo scope."
