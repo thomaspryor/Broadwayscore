@@ -1034,6 +1034,19 @@ function reportedOutcomeGuard(issue, opts) {
 // P0 → P1 → rest via linear-watchdog-source.js's priorityOf(), so it arms
 // what the dispatch watchdog will actually drain first. Scalar, nullable
 // (0/null = No priority) — every other consumer ignores it.
+// Comments for a batch of one team's issues by number (BRO-4642): one round
+// trip instead of a getIssue per card. Same comments shape as buildIssueQuery.
+function buildIssueCommentsByNumberQuery() {
+  return `query($teamKey: String!, $numbers: [Float!]) {
+    issues(first: 50, filter: { team: { key: { eq: $teamKey } }, number: { in: $numbers } }) {
+      nodes {
+        identifier
+        comments(first: 50, orderBy: createdAt) { nodes { body createdAt } }
+      }
+    }
+  }`;
+}
+
 function buildOpenIssuesWithDescriptionsQuery() {
   return `query($teamKey: String!, $after: String) {
     issues(
@@ -1094,6 +1107,7 @@ module.exports = {
   buildIssueQuery,
   buildOpenIssuesQuery,
   buildOpenIssuesWithDescriptionsQuery,
+  buildIssueCommentsByNumberQuery,
   findOpenIssueForTerm,
   unescapeMarkdown,
   buildCommentMutation,

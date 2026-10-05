@@ -209,6 +209,22 @@ test('a VERIFY that runs the whole unit suite is not cloud-runnable', () => {
   assert.equal(skipped['verify-not-cloud-runnable'], 1);
 });
 
+test('a VERIFY posted as a comment arms the card, newest arming comment wins (BRO-4642)', () => {
+  const { verifyCommand } = require('./linear-drain-parked.js');
+  const bare = '## Acceptance criteria\nLooks right.';
+  const withComments = (...bodies) => issue({
+    description: bare,
+    comments: { nodes: bodies.map((body, i) => ({ body, createdAt: at((bodies.length - i) * 60_000) })).reverse() },
+  });
+  assert.equal(skipReason(withComments(`VERIFY: ${SAFE_CMD}`), NOW), null);
+  assert.equal(verifyCommand(withComments(`VERIFY: ${SAFE_CMD}`)), 'node --test scripts/lib/example.test.mjs');
+  assert.equal(verifyCommand(withComments(`VERIFY: ${SAFE_CMD}`, 'VERIFY: `node --test scripts/lib/newer.test.mjs`')),
+    'node --test scripts/lib/newer.test.mjs');
+  assert.equal(skipReason(withComments('VERIFY: `node scripts/run-unit-tests.js`'), NOW), 'verify-not-cloud-runnable');
+  assert.equal(skipReason(withComments('Looked at it, no command yet.'), NOW), 'no-safe-verify');
+  assert.equal(skipReason(issue({ description: bare, comments: { nodes: [] } }), NOW), 'no-safe-verify');
+});
+
 test('pickCloudCard returns every eligible card in pick order', () => {
   const { ordered } = pickCloudCard([
     issue({ identifier: 'BRO-50', priority: 2 }),

@@ -345,6 +345,20 @@ async function listOpenIssuesWithDescriptions(teamKey = TEAM_KEY) {
   return issues;
 }
 
+// identifier -> comment nodes for many issues of one team, 50 per request
+// (BRO-4642). Callers attach these as issue.comments for sortedCommentBodies.
+async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
+  const numbers = [...new Set((identifiers || [])
+    .map((id) => Number(String(id).split('-').pop()))
+    .filter(Number.isFinite))];
+  const byId = new Map();
+  for (let i = 0; i < numbers.length; i += 50) {
+    const data = await graphql(linearDispatch.buildIssueCommentsByNumberQuery(), { teamKey, numbers: numbers.slice(i, i + 50) });
+    for (const n of (data.issues && data.issues.nodes) || []) byId.set(n.identifier, (n.comments && n.comments.nodes) || []);
+  }
+  return byId;
+}
+
 // Every dispatched issue's completion report (linear-dispatch.js:195) hits
 // createComment + updateIssue on an id that may have been archived out from
 // under it — either a race with the cap-management archival (BRO-285) or a
@@ -685,6 +699,7 @@ module.exports = {
   getIssue,
   listOpenIssues,
   listOpenIssuesWithDescriptions,
+  listIssueComments,
   searchIssues,
   createComment,
   createIssueRelation,

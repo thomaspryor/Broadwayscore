@@ -123,11 +123,22 @@ async function firstUnpaused(queue, nowMs, historySkipped) {
 }
 
 async function main() {
-  const { listOpenIssuesWithDescriptions } = require('./lib/linear-client.js');
-  const { evaluateVerifiability } = require('./lib/verify-gate.js');
-  const { pickCloudCard } = require('./lib/cloud-worker-pick.js');
+  const { listOpenIssuesWithDescriptions, listIssueComments } = require('./lib/linear-client.js');
+  const { verifyCommand } = require('./lib/linear-drain-parked.js');
+  const { pickCloudCard, skipReason } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
+  // A VERIFY posted as a comment arms a card too (BRO-4642). The list query has
+  // no comments, so read them only for cards that failed on that alone.
+  const unarmed = issues.filter((iss) => skipReason(iss, nowMs) === 'no-safe-verify');
+  if (unarmed.length) {
+    try {
+      const comments = await listIssueComments(unarmed.map((iss) => iss.identifier));
+      for (const iss of unarmed) if (comments.has(iss.identifier)) iss.comments = { nodes: comments.get(iss.identifier) };
+    } catch (err) {
+      console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
+    }
+  }
   const { ordered, eligible, skipped } = pickCloudCard(issues, { nowMs });
   const queue = [
     ...findResume(issues, nowMs).map((r) => ({ issue: r.issue, resume: r })),
@@ -144,7 +155,7 @@ async function main() {
       priority: pick.priority,
       state: pick.state && pick.state.name,
       url: pick.url,
-      verify: evaluateVerifiability(pick.description || '').cmd,
+      verify: verifyCommand(pick),
       ...(resume && {
         resume: {
           landRef: resume.ref,
