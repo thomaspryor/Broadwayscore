@@ -142,8 +142,8 @@ test('BRO-4677: sustained traffic (a Land job always running, none pending) stil
     id, status: 'completed', conclusion: 'cancelled', run_attempt: 1, head_branch: `land/b${id}`, head_sha: `s${id}`,
     created_at: new Date(now - (minAgo + 5) * 60000).toISOString(), updated_at: new Date(now - minAgo * 60000).toISOString(),
   });
-  // evicted 4 and 12 minutes ago: far below the 30-min aging threshold
-  const stranded = [mk(2, 4), mk(1, 12)];
+  // evicted 6 and 12 minutes ago: far below the 30-min aging threshold
+  const stranded = [mk(2, 6), mk(1, 12)];
   const refs = new Map(stranded.map((r) => [r.head_branch, r.head_sha]));
   const slot = { busy: true, pending: false, blockers: [{ id: 99, branch: 'land/live', status: 'in_progress', why: 'running' }] };
   const sweep = decideSweep({ slot, cancelledRuns: stranded, refs, now });

@@ -24,7 +24,7 @@ const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry, runGhWithFallback, isRefNotFound } = require('./lib/land-retry-on-cancel');
 const {
-  slotQueries, inFlightBlocker, slotHolderKind, orderForSlotCheck, supersededByNewerRun, decideSweep, MAX_AGE_HOURS, MAX_JOB_LOOKUPS,
+  slotQueries, scanSlot, supersededByNewerRun, decideSweep, MAX_AGE_HOURS, MAX_JOB_LOOKUPS,
 } = require('./lib/land-queue-backoff');
 
 const USAGE = 'usage: node scripts/land-retry-cancelled.js --sweep | --run=<id> [--dry-run]';
@@ -44,7 +44,6 @@ const gh = (args) => JSON.parse(ghRaw(args));
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 
 const jobsOf = (id) => gh([`repos/${repo}/actions/runs/${id}/jobs?filter=latest&per_page=50`]).jobs;
-const blocker = (r, why) => ({ busy: true, blockers: [{ id: r.id, branch: r.head_branch, status: r.status, why }] });
 
 // Status-filtered listings (not a created-desc page: re-runs keep their
 // original created_at), all gathered first, then checked likeliest holder
@@ -62,28 +61,10 @@ function slotState(selfRunId) {
   // before another aged re-run is allowed to compete for the slot.
   const rerunInFlight = [...byId.values()].some((r) => /(^|\/)land\.yml$/.test(r.path || '') && (r.run_attempt || 1) > 1 && r.status !== 'completed');
   const withFlag = (s) => ({ ...s, rerunInFlight });
-  // BRO-4677: scan every in-flight run (stop early only at a PENDING entrant, or
-  // when anything is unreadable) so the verdict says whether the pending seat is
-  // empty. `pending: false` is set only after the full scan.
-  let lookups = 0;
-  let running = null;
-  for (const run of orderForSlotCheck([...byId.values()])) {
-    let jobs;
-    let v = inFlightBlocker(run, { selfRunId });
-    if (v === 'needs-jobs') {
-      if (lookups >= MAX_JOB_LOOKUPS) return withFlag({ ...blocker(run, 'lookup-cap'), pending: true });
-      lookups += 1;
-      jobs = jobsOf(run.id);
-      v = inFlightBlocker(run, { selfRunId, jobs });
-    }
-    if (v === 'busy') {
-      if (slotHolderKind(run, jobs) === 'pending') return withFlag({ ...blocker(run, 'holds-slot'), pending: true });
-      running = running || blocker(run, 'running');
-    }
-    if (v === 'stale') console.log(`ignoring stale in-flight run ${run.id} ${run.head_branch} (${run.status} since ${run.run_started_at || run.created_at})`);
-  }
-  if (running) return withFlag({ ...running, pending: false });
-  return { busy: false, blockers: [] };
+  return withFlag(scanSlot([...byId.values()], {
+    jobsOf, selfRunId, now: Date.now(),
+    onStale: (run) => console.log(`ignoring stale in-flight run ${run.id} ${run.head_branch} (${run.status} since ${run.run_started_at || run.created_at})`),
+  }));
 }
 
 const describe = (blockers) => blockers.map((b) => `${b.id} ${b.branch} ${b.status} ${b.why}`).join(', ');
@@ -100,10 +81,16 @@ function rerun(id) {
 // flight (rerunInFlight), re-running the next stranded run onto the same seat.
 function settle(id, tries = 12) {
   for (let i = 0; i < tries; i += 1) {
-    if (gh([`repos/${repo}/actions/runs/${id}`]).status !== 'completed') return;
+    try {
+      if (gh([`repos/${repo}/actions/runs/${id}`]).status !== 'completed') return;
+    } catch (err) {
+      console.log(`run ${id}: settle check failed (${String(err.message).split('\n')[0]}); the re-run itself went through`);
+      return;
+    }
     execFileSync('sleep', ['5']);
   }
   console.log(`run ${id} still reads completed after ${tries * 5}s; continuing`);
+  console.log(`::warning::land re-run ${id} not visible in flight after ${tries * 5}s; a following sweep may stack another re-run`);
 }
 
 function runTargeted() {
