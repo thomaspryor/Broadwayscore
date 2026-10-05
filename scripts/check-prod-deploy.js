@@ -213,4 +213,8 @@ async function main() {
   }
 }
 
-main();
+// Exported for scripts/lib/e2e-await-deploy.js (BRO-4668), which needs the
+// deployed SHA without the shallow-unsafe local ancestry check above.
+module.exports = { latestProdDeploy };
+
+if (require.main === module) main();
