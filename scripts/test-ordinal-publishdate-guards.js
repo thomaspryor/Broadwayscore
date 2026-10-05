@@ -52,9 +52,10 @@ t('no raw new Date(<publishDate>) left in scripts/lib', () => {
   const fs = require('fs'), path = require('path');
   const dir = path.join(__dirname, 'lib');
   const bad = [];
-  for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.js'))) {
-    fs.readFileSync(path.join(dir, f), 'utf8').split('\n').forEach((l, i) => {
-      if (/new Date\([\w.]*publishDate\b/.test(l) && !/^\s*(\/\/|\*)/.test(l) && !/BRO-2836-ok/.test(l)) bad.push(`${f}:${i + 1}`);
+  const files = fs.readdirSync(dir).filter(f => f.endsWith('.js')).map(f => [f, path.join(dir, f)]).concat([['validate-data.js', path.join(__dirname, 'validate-data.js')]]);
+  for (const [f, fp] of files) {
+    fs.readFileSync(fp, 'utf8').split('\n').forEach((l, i) => {
+      if (/(new Date|Date\.parse)\([\w.]*publishDate\b/.test(l) && !/^\s*(\/\/|\*)/.test(l) && !/BRO-2836-ok/.test(l)) bad.push(`${f}:${i + 1}`);
     });
   }
   assert.deepStrictEqual(bad, [], 'use toDateMs from date-utils: ' + bad.join(', '));

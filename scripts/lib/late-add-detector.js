@@ -44,7 +44,7 @@ function detectLateAdd(reviewsForShow, catalogClockIso) {
   for (const r of reviewsForShow || []) {
     if (!r || r.assignedScore == null) continue;
     if (isPublishDateSuspect(r)) continue; // no date, or a fetch-date stamp we can't trust
-    const ms = Date.parse(r.publishDate);
+    const ms = require('./date-utils').toDateMs(r.publishDate);
     if (!Number.isFinite(ms)) continue;
     if (earliest == null || ms < earliest.ms) {
       earliest = { ms, outletId: r.outletId, publishDate: r.publishDate };

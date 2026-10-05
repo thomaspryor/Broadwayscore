@@ -257,7 +257,7 @@ function detectIngestCollision(opts = {}) {
   // Post-opening 365d is safe — a wrong prior production is dated BEFORE this opening.
   const DAY = 86400000;
   const openingMs = openingDate ? Date.parse(openingDate) : NaN;
-  const incomingCurMs = publishDate ? Date.parse(publishDate) : NaN;
+  const incomingCurMs = publishDate ? require('./date-utils').toDateMs(publishDate) : NaN;
   const incomingIsCurrentProduction = Number.isFinite(openingMs)
     && Number.isFinite(incomingCurMs)
     && incomingCurMs >= openingMs - 30 * DAY
@@ -338,8 +338,8 @@ function detectIngestCollision(opts = {}) {
     // Skip when the incoming review is provably this production (in-window): a large gap
     // from a prior-production file is expected, not a collision.
     if (publishDate && data.publishDate && !forceClearStale && !incomingIsCurrentProduction) {
-      const existingMs = Date.parse(data.publishDate);
-      const incomingMs = Date.parse(publishDate);
+      const existingMs = require('./date-utils').toDateMs(data.publishDate);
+      const incomingMs = require('./date-utils').toDateMs(publishDate);
       if (Number.isFinite(existingMs) && Number.isFinite(incomingMs)) {
         const diffDays = Math.abs(existingMs - incomingMs) / 86400000;
         if (diffDays > 365 && !urlMatches) {

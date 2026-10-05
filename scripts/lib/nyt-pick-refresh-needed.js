@@ -58,7 +58,7 @@ function findUnpickedNytUrls({ shows, pickUrls, now, maxAgeDays = 3 }) {
     for (const r of reviews) {
       if (!r || !isNytReview(r) || isFlagged(r) || !r.url) continue;
       // Fresh opening-night stubs can lack publishDate; firstSeenAt is when we found it.
-      const published = Date.parse(r.publishDate || r.firstSeenAt || '');
+      const published = require('./date-utils').toDateMs(r.publishDate || r.firstSeenAt);
       if (!Number.isFinite(published) || published < cutoff) continue;
       const canon = canonicalPickUrl(r.url);
       if (!picks.has(canon)) out.add(canon);

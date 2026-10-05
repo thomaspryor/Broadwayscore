@@ -176,7 +176,7 @@ function stripSeparators(s) {
  * market as the file's own show.
  */
 function candidateShows(shows, ownShow, publishDate) {
-  const pub = Date.parse(publishDate || '') || Date.now();
+  const pub = require('./date-utils').toDateMs(publishDate) || Date.now();
   const market = ownShow ? marketOf(ownShow.category) : null;
   return shows.filter((s) => {
     if (!s || !s.id || !s.title) return false;
@@ -194,7 +194,7 @@ function candidateShows(shows, ownShow, publishDate) {
  * closest to the publish date.
  */
 function dedupeProductions(cands, ownShowId, publishDate) {
-  const pub = Date.parse(publishDate || '') || Date.now();
+  const pub = require('./date-utils').toDateMs(publishDate) || Date.now();
   const byTitle = new Map();
   for (const s of cands) {
     const key = normalizeTitle(s.title);
@@ -219,7 +219,7 @@ function introSections(text, shows, ownShowId, publishDate) {
   // Needs a real publish date, and the file's own production must be in the
   // window too: an old article misfiled under a revival (wrong production)
   // would otherwise "introduce" whatever else is running now.
-  const pub = Date.parse(publishDate || '');
+  const pub = require('./date-utils').toDateMs(publishDate);
   if (!pub) return [];
   const ownOpen = Date.parse(ownShow.openingDate || ownShow.previewsStartDate || '');
   if (!ownOpen || ownOpen < pub - WINDOW_BEFORE_DAYS * DAY_MS || ownOpen > pub + WINDOW_AFTER_DAYS * DAY_MS) return [];
