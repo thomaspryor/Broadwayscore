@@ -3981,6 +3981,26 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       hint: 'Nothing to do unless one is wrong; see data/audit/tour-autocreate.json.',
     });
   }
+  // A closed tour its page lists again (BRO-4724): reopened when the page's
+  // history says it is the same tour, left closed when it can't tell.
+  const reopened = (autocreate && autocreate.reopened) || [];
+  if (reopened.length) {
+    out.push({
+      name: 'Data: closed national tours reopened automatically',
+      status: 'warn',
+      message: `Reopened ${reopened.join(', ')}: Tours To You lists new dates and its history names them as the same tour.`,
+      hint: 'Nothing to do unless one is wrong; see lifecycle in data/audit/tour-autocreate.json.',
+    });
+  }
+  const undecided = (autocreate && autocreate.lifecycle && autocreate.lifecycle.undecided) || [];
+  if (undecided.length) {
+    out.push({
+      name: 'Data: closed national tour lists new dates',
+      status: 'warn',
+      message: `${undecided.map(u => `${u.id} (closed ${u.closingDate}, listed again from ${u.resumes}: ${u.reason})`).join('; ')}. Left closed: the page doesn't say whether it is the same tour.`,
+      hint: 'If it is the same tour, clear its closingDate; if a new one, it is created once the Tours To You history names it.',
+    });
+  }
   return out;
 }
 

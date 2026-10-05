@@ -24,6 +24,7 @@
  */
 
 const { foldDiacritics } = require('./title-match');
+const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
 
 const DAY = 86400000;
 // Tours lay off for a summer (Hadestown: June to October) without ending, so
@@ -433,13 +434,16 @@ function statedClosedRanges(source) {
  * @param {string} scheduleHtml Tours To You page
  * @param {string} wikiText Wikipedia raw wikitext of the show's article
  * @param {Date} [now]
- * @param {{seenAt?: string, segmentStart?: string, roundupDate?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running; roundupDate is the BWW roundup's slug date (BRO-4563)
+ * @param {{seenAt?: string, segmentStart?: string, roundupDate?: string, cuts?: string[]}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running; roundupDate is the BWW roundup's slug date (BRO-4563); cuts split segments where a tracked tour closed (BRO-4724)
  * @returns {{write: {openingDate?: string, closingDate?: string}, notes: string[], problem?: string}}
  */
 function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = {}) {
   const rows = parseTourSchedule(scheduleHtml);
   if (rows.length === 0) return { write: {}, notes: [], problem: 'schedule page parsed to zero engagements (layout change or wrong page)' };
-  const segments = segmentTourRows(rows);
+  // opts.cuts: dates a tracked tour of the title closed mid-segment, the rows
+  // after which the page's history calls a new tour (tour-discovery.js
+  // lifecyclePlan, BRO-4724).
+  const segments = splitSegmentsAt(segmentTourRows(rows), opts.cuts);
   const seg = pickSegment(segments, tour, wikiText, opts);
   if (!seg) return { write: {}, notes: [`${segments.length} segment(s), none matches this tour`], problem: 'no schedule segment matches this tour' };
 
@@ -480,7 +484,12 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   // York run sits between them (a new production, not a summer layoff).
   const idx = segments.indexOf(seg);
   const next = segments.slice(idx + 1).find(s => s.rows.length > 1);
-  const separateTourStarted = next && next.afterNewYork && next.start <= now;
+  // Or when the page's history names the later block as another tour
+  // (BRO-4724: "2nd North American Tour (2027–"), so a tour followed by a
+  // separately booked one closes once that one starts. The tracked launch
+  // first, as lifecyclePlan uses: the page may have dropped the early rows.
+  const separateTourStarted = next && next.start <= now
+    && (next.afterNewYork || isSeparateTour({ html: scheduleHtml, earlierLaunch: tour.openingDate || launch || seg.start, laterStart: next.start }).separate === true);
   const launchYear = (launch || seg.start).getUTCFullYear();
   // Stated on the schedule page's history note or in a Wikipedia section
   // heading ("=== North American tour (2024–2026) ===").

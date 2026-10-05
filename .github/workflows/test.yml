@@ -62,6 +62,10 @@ on:
       - 'scripts/add-verified-tours.js'
       - 'scripts/add-verified-tours.test.mjs'
       - 'scripts/wrong-url-review-attribution.test.mjs'
+      # tests/unit/tour-lifecycle.test.mjs requires reopenTour and
+      # earlierClosings from these two CLIs (BRO-4724).
+      - 'scripts/create-tour-entries.js'
+      - 'scripts/enrich-tour-dates.js'
       # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
       - 'scripts/generate-blog-reviews-for-scoring.js'
       - 'scripts/generate-blog-reviews-for-scoring.test.mjs'

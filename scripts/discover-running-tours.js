@@ -65,7 +65,7 @@ async function listShowPages(fetchText) {
  * with them. `coverage` is the previous run's map (tours-to-you-coverage.js);
  * the returned one stamps every page read now.
  * @param {{shows: object[], budget?: object, coverage?: object, fallback?: Function, log?: Function}} args
- * @returns {Promise<{candidates: object[], ambiguous: string[], checked: number, pages: number, eligible: number, coverage: object, rateLimited: number, failed: number}>}
+ * @returns {Promise<{candidates: object[], ambiguous: string[], reopen: object[], undecided: object[], checked: number, pages: number, eligible: number, coverage: object, rateLimited: number, failed: number}>}
  */
 async function discoverRunningTours({ shows, budget = null, coverage = {}, fallback = null, log = console.log }) {
   const { politeFetchText, stats, looksLikeShowPage } = require('./lib/tours-to-you');
@@ -80,6 +80,8 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
 
   const order = orderForCheck(worth, coverage, slugs.modified || {});
   const found = [];
+  const reopen = [];
+  const undecided = [];
   const read = [];
   let failed = 0;
   const limitedBefore = stats.rateLimited;
@@ -92,6 +94,10 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
     if (!looksLikeShowPage(html)) { failed++; log(`  ${slug}: answer is not a Tours To You page`); continue; }
     read.push(slug);
     const r = runningTourCandidate({ slug, scheduleUrl, html, shows });
+    // A closed tour the page lists again (BRO-4724): back from a layoff, or
+    // the page doesn't say. Deduped by tour id (two pages, one tour).
+    for (const x of (r.lifecycle && r.lifecycle.reopen) || []) if (!reopen.some(y => y.id === x.id)) reopen.push({ ...x, scheduleUrl });
+    for (const x of (r.lifecycle && r.lifecycle.undecided) || []) if (!undecided.some(y => y.id === x.id)) undecided.push({ ...x, scheduleUrl });
     if (r.candidate) {
       log(`  running: ${slug} -> ${r.candidate.broadwayShowId} since ${r.candidate.segmentStart}`);
       found.push(r.candidate);
@@ -102,7 +108,7 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
   log(`Read ${read.length} of ${worth.length} page(s) this run (${failed} failed, ${stats.rateLimited - limitedBefore} rate-limited answer(s)); ${stale.length} not read in over ${STALE_DAYS} days`);
   const { candidates, ambiguous } = dedupeCandidates(found);
   for (const a of ambiguous) log(`  ambiguous (two tours running at once), left for the owner: ${a}`);
-  return { candidates, ambiguous, checked: read.length, failed, pages: slugs.length, eligible: worth.length, coverage: next, rateLimited: stats.rateLimited - limitedBefore };
+  return { candidates, ambiguous, reopen, undecided, checked: read.length, failed, pages: slugs.length, eligible: worth.length, coverage: next, rateLimited: stats.rateLimited - limitedBefore };
 }
 
 async function main() {

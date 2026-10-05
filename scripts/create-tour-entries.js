@@ -40,7 +40,9 @@ const { tourAutomationMode } = require('./lib/tour-automation-mode');
 // would have created it with that date (BRO-4601 report run).
 const FRESH_LAUNCH_DAYS = 30;
 // A tour booked ahead is created as 'upcoming' (tour-discovery.js).
-const { UPCOMING_DAYS } = require('./lib/tour-discovery');
+const { UPCOMING_DAYS, reopenBlocker } = require('./lib/tour-discovery');
+const { toursOfTitle } = require('./lib/tour-family');
+const { writeClosingDate } = require('./lib/closing-date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { openTourCandidates, recordTourCandidates, roundupDateFromSlug } = require('./lib/tour-roundup-candidate');
 const { decideTourDates, duplicateScheduleOf } = require('./lib/tour-schedule');
@@ -67,6 +69,8 @@ async function main() {
   // timestamp to tell a quiet week from a job that stopped running.
   // What running-tour discovery did this run, for the health check (BRO-4325).
   let discovery = null;
+  // Closed tours the schedule pages list again (BRO-4724).
+  let lifecycle = { reopen: [], undecided: [] };
   // Which Tours To You pages discovery read when (BRO-4725): kept across runs
   // in this file, carried over unchanged by a run that skips or fails discovery.
   let prevCoverage = {};
@@ -75,7 +79,7 @@ async function main() {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
     const d = { ...(discovery || {}) };
     if (!d.coverage) d.coverage = prevCoverage;
-    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), discovery: d, ...body }, null, 2) + '\n');
+    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), discovery: d, lifecycle, ...body }, null, 2) + '\n');
   };
   if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); writeAudit({ mode: 'off', created: [], results: [] }); return; }
   const write = argv.includes('--write') && mode === 'write';
@@ -94,6 +98,8 @@ async function main() {
       const current = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
       const r = await discoverRunningTours({ shows: current, budget: discoveryBudget, coverage: prevCoverage, fallback });
       const { candidates, ambiguous, pages, checked } = r;
+      lifecycle = { reopen: r.reopen || [], undecided: r.undecided || [] };
+      for (const u of lifecycle.undecided) console.log(`  ${u.id} closed ${u.closingDate} but its page lists it from ${u.resumes}; left as is: ${u.reason}`);
       discovery = { pages, eligible: r.eligible, checked, failed: r.failed, rateLimited: r.rateLimited, found: candidates.length, ambiguous: ambiguous.length, error: null, coverage: r.coverage };
       // Recorded in report mode too: route-tour-candidates.js reads the file.
       const n = recordTourCandidates(CANDIDATES, candidates);
@@ -152,34 +158,48 @@ async function main() {
     // says nothing about when the tour launched (a backfilled old roundup).
     const roundupDate = roundupUrl ? roundupDateFromSlug(roundupUrl) : null;
     const decision = scheduleUrl
-      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS, upcomingDays: UPCOMING_DAYS } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
+      // splitAt: where discovery cut the page because a closed tour's rows
+      // are followed by a new tour's (BRO-4724).
+      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS, upcomingDays: UPCOMING_DAYS, cuts: c.splitAt } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
     // A page can carry another show's table (the Come From Away page showed
     // Operation Mincemeat's 2026 tour, BRO-4601): never create a tour whose
     // engagements are another tour's.
     const copyOf = !decision.problem && duplicateScheduleOf(decision.segmentRows, tourSchedules);
     if (copyOf) decision.problem = `schedule duplicates ${copyOf}'s engagements (wrong table on the Tours To You page?)`;
-    const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds });
+    const knownEnds = found ? (c.predecessorEnds || null) : null;
+    const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds, knownEnds });
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})`);
-    results.push({ candidate: c.broadwayShowId, roundupUrl, scheduleUrl, notes: decision.notes, launchSource: decision.launchSource || null, skip: built.skip || null, entry: built.entry || null });
+    results.push({ candidate: c.broadwayShowId, roundupUrl, scheduleUrl, notes: decision.notes, launchSource: decision.launchSource || null, knownEnds, skip: built.skip || null, entry: built.entry || null });
   }
 
   const created = [];
-  if (write && results.some(r => r.entry)) {
+  const reopened = [];
+  for (const x of lifecycle.reopen) console.log(`${x.id}: ${write ? 'reopening' : 'would reopen'} (closed ${x.closingDate}, its page lists it again from ${x.resumes}: ${x.reason})`);
+  if (write && (results.some(r => r.entry) || lifecycle.reopen.length)) {
     const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
     const snapshot = loadShows();
+    const today = new Date().toISOString().slice(0, 10);
+    for (const x of lifecycle.reopen) {
+      const show = snapshot.shows.find(s => s.id === x.id);
+      // Re-check under the lock: only the closing the evidence was read against.
+      if (!show || show.category !== 'tour' || show.closingDate !== x.closingDate) continue;
+      const blocked = reopenBlocker(show, toursOfTitle(show.title, snapshot.shows), x.resumes);
+      if (blocked) { console.log(`${x.id}: not reopened: ${blocked}`); continue; }
+      if (reopenTour(show, x, today)) reopened.push(x.id);
+    }
     for (const r of results.filter(x => x.entry)) {
       // Re-check under the write lock: another run may have added it, or a
       // tour of the title may have been added or reopened meanwhile.
       if (snapshot.shows.some(s => s.id === r.entry.id)) continue;
-      const recheck = buildTourEntry({ parent: snapshot.shows.find(s => s.id === r.candidate), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds });
+      const recheck = buildTourEntry({ parent: snapshot.shows.find(s => s.id === r.candidate), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds, knownEnds: r.knownEnds });
       if (recheck.skip) { console.log(`  ${r.entry.id} skipped under lock: ${recheck.skip}`); continue; }
       snapshot.shows.push(r.entry);
       created.push(r.entry.id);
     }
+    if (created.length || reopened.length) saveShows(snapshot);
     if (created.length) {
-      saveShows(snapshot);
       const now = new Date().toISOString();
       const next = rows.map(row => {
         const hit = results.find(x => x.candidate === row.broadwayShowId && x.entry && created.includes(x.entry.id));
@@ -189,10 +209,31 @@ async function main() {
     }
   }
 
-  writeAudit({ mode: write ? 'write' : 'report', created, results });
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `created=${created.join(',')}\n`);
+  writeAudit({ mode: write ? 'write' : 'report', created, reopened, results });
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `created=${created.join(',')}\nreopened=${reopened.join(',')}\n`);
   console.log(`\n${write ? `Created ${created.length}` : `${results.filter(r => r.entry).length} would be created`}; ${results.filter(r => r.skip).length} stay suggestions.`);
+  if (reopened.length) console.log(`Reopened ${reopened.length}: ${reopened.join(', ')}`);
 }
+
+/**
+ * A closed tour its schedule page lists again, with history saying it is the
+ * same tour (tour-discovery.js lifecyclePlan): back from a layoff. Clears the
+ * closing so the daily jobs fetch its new dates and close it again from the
+ * schedule when it really ends (enrich-tour-dates.js). Mutates show.
+ * @returns {boolean} changed
+ */
+function reopenTour(show, facts, today) {
+  if (!show.closingDate) return false;
+  const note = `reopened ${today} (BRO-4724): closed ${facts.closingDate}, Tours To You lists it again from ${facts.resumes}; ${facts.reason}`;
+  // The one chokepoint for closingDate writes; it honors humanCorrectedClosingDate.
+  if (!writeClosingDate(show, null, note, { todayStr: today })) return false;
+  show.status = show.openingDate && show.openingDate > today ? 'upcoming' : 'open';
+  // Keep what was written before (hand notes on why it closed).
+  show.statusSource = show.statusSource ? `${show.statusSource} | ${note}` : note;
+  return true;
+}
+
+module.exports = { reopenTour };
 
 if (require.main === module) {
   main()
