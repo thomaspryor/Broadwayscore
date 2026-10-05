@@ -146,12 +146,23 @@ async function main() {
   const exists = p => fs.existsSync(path.join(PUBLIC_DIR, p));
   const open = shows.filter(s => isTourShow(s) && (only ? s.id === only : s.status !== 'closed'))
     .filter(t => rolesNeeded(t, exists).length);
+  const sources = fs.existsSync(SOURCES_PATH) ? JSON.parse(fs.readFileSync(SOURCES_PATH, 'utf8')) : {};
   // Point shows.json at own files an earlier run archived but failed to
   // record, before any search (and before backoff can skip the tour).
   let adopted = 0;
-  const adoptedImages = new Map(); // dry run: what targets would see after adoption
   for (const tour of open) {
-    const roles = archivedUnreferenced(tour, exists);
+    const roles = [];
+    // The same file checks archive() and vet() apply, so a file damaged or
+    // replaced since it was archived is not adopted.
+    for (const r of archivedUnreferenced(tour, exists, sources[tour.id])) {
+      const abs = path.join(PUBLIC_DIR, `/images/shows/${tour.id}/${r}.webp`);
+      const meta = await ctx.sharp(abs).metadata().catch(() => ({}));
+      if (isPlaceholderFile(abs) || !rolesForSize(meta.width, meta.height).includes(r)) {
+        console.log(`  ${tour.id}: archived ${r} not adopted: placeholder or wrong shape (${meta.width}x${meta.height})`);
+        continue;
+      }
+      roles.push(r);
+    }
     if (!roles.length) continue;
     const next = { hero: null, ...(tour.images || {}) };
     for (const r of roles) next[r] = `/images/shows/${tour.id}/${r}.webp`;
@@ -159,13 +170,13 @@ async function main() {
     if (problems.length) { console.log(`  ${tour.id}: archived ${roles.join('+')} not adopted: ${problems.join('; ')}`); continue; }
     console.log(`  ${tour.id}: adopting archived ${roles.join('+')}`);
     adopted++;
-    adoptedImages.set(tour.id, next);
-    if (dryRun) continue;
+    // Set in a dry run too (it never saves), so the search below sees the
+    // adopted roles exactly as a real run would.
     tour.images = next;
-    saveShows(snapshot);
+    if (!dryRun) saveShows(snapshot);
   }
   if (adopted) console.log(`${adopted} tour(s) ${dryRun ? 'would adopt' : 'adopted'} already-archived art`);
-  const targets = open.filter(t => rolesNeeded({ ...t, images: adoptedImages.get(t.id) || t.images }, exists).length);
+  const targets = open.filter(t => rolesNeeded(t, exists).length);
   console.log(`${targets.length} tour(s) need their own art`);
   if (!targets.length) return;
 
@@ -173,7 +184,6 @@ async function main() {
   console.log(`TodayTix: ${rows.length} listings${failed.length ? `, locations failed: ${failed.join(',')}` : ''}`);
   const ttArt = todaytixArt(rows, targets, schedules);
 
-  const sources = fs.existsSync(SOURCES_PATH) ? JSON.parse(fs.readFileSync(SOURCES_PATH, 'utf8')) : {};
   const attempts = fs.existsSync(ATTEMPTS_PATH) ? JSON.parse(fs.readFileSync(ATTEMPTS_PATH, 'utf8')) : {};
   // Written after every tour, so a killed run keeps the backoff records it made.
   const saveAttempts = () => { if (!dryRun) fs.writeFileSync(ATTEMPTS_PATH, JSON.stringify(attempts, null, 2) + '\n'); };
