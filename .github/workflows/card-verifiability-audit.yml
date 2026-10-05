@@ -91,19 +91,18 @@ jobs:
       - name: Install dependencies
         run: npm ci --prefer-offline --no-audit --no-fund
 
-      # Three steps in one job, same checkout: audit writes
-      # data/audit/card-verifiability.json, enrich reads it back
-      # (--from-report) and drafts/writes acceptance criteria for every
-      # refused card, then audit runs again so the committed report reflects
-      # POST-enrichment state (the number health-check.js's warn row is
-      # keyed on) rather than the pre-enrichment count.
+      # Three steps in one job, same checkout: the Notion audit refreshes
+      # data/audit/card-verifiability.json (health-check.js's warn row reads
+      # it), enrich drafts acceptance criteria for open LINEAR issues only
+      # (BRO-3018: the Notion leg was spending LLM calls on a frozen board;
+      # that report is no longer shrunk by this job), then audit runs again.
       - name: Audit, enrich, re-audit
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Unused at --source notion (the default both scripts run at here) —
+          # Required by the enrich step (--source linear); the Notion audit steps don't use it —
           # linear-client.js's getApiKey() only throws inside an actual
           # graphql() call, which the Notion-only leg never makes. Included
           # anyway: its audit-secret-scan-always-trace marker (linear-client.js
@@ -114,7 +113,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           node scripts/audit-card-verifiability.js --source notion
-          node scripts/enrich-card-acceptance.js --from-report --source both --limit 25
+          node scripts/enrich-card-acceptance.js --source linear --limit 25
           node scripts/audit-card-verifiability.js --source notion
 
       - name: Commit refreshed report

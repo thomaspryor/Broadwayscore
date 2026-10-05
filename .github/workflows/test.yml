@@ -2808,6 +2808,8 @@ on:
       - 'scripts/posthog-friction-analyzer.js'
       - 'scripts/audit-opening-dates.js'
       - 'scripts/tests/notion-write-paths-retired.test.mjs'
+      - 'scripts/tests/notion-live-write-paths.test.mjs'
+      - 'scripts/lib/notion-residue-scan.js'
       # Notion corpus export (Sprint 2, notion→linear cutover). notion-corpus.js
       # holds the overflow-reassembly that notion-brain.js ALSO reads through —
       # 2,183 cards keep most of their text in the page body, so a break here

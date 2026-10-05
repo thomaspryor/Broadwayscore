@@ -4205,7 +4205,7 @@ function cardVerifiabilityBacklogResults(report, drainMetric) {
       name: 'Data: undispatchable backlog cards',
       status: 'warn',
       message: `${refused.length} of ${report.total} pending/in-progress card(s) have no runnable acceptance-criteria command (bsc-next would refuse them). First: [${first.priority || '?'}] ${first.name}${kindSummary}`,
-      hint: 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
+      hint: 'node scripts/enrich-card-acceptance.js --source linear drafts missing criteria for LINEAR issues only; this row counts the frozen Notion report (BRO-4717 retires it) criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
     });
   }
   // Task #1004's sibling bucket: cards the drain scanned and skipped because an
