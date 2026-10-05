@@ -36,7 +36,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { prepareTourMove, planTourSweep, decideTourSweep, sweepHoldReason, loadSweepContext, sweepLimits, decideTourIntegrity, applyIntegrityFlag } = require('./lib/tour-backfill');
+const { prepareTourMove, planTourSweep, decideTourSweep, sweepHoldReason, loadSweepContext, sweepLimits, decideTourIntegrity, applyIntegrityFlag, clearStaleScoringFailure } = require('./lib/tour-backfill');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `sweep-tour-reviews.js — move national-tour reviews from Broadway show folders to their tour entry.
@@ -152,11 +152,29 @@ function main() {
     report.push({ tourId: plan.tourId, fromIds: plan.fromIds, held: Boolean(overCap), counts });
   }
   console.log(`${execute ? 'moved' : 'would move'}: ${totalMoved}`);
+
+  // Files moved before prepareTourMove dropped the scorer's give-up state
+  // still carry it, and the scorer skips them for good. Set it aside.
+  let repaired = 0;
+  for (const tourId of new Set(plans.map(p => p.tourId))) {
+    for (const { file, data } of listFiles(tourId)) {
+      const fixed = clearStaleScoringFailure(data);
+      if (!fixed) continue;
+      if (execute) {
+        // force: these fields are write-protected (a rebase must not drop them);
+        // clearing them here is the point, and the guard logs the override.
+        const res = safeWriteReview(path.join(reviewTextsDir, tourId, file), fixed, { merge: false, force: true });
+        if (!res || res.wrote === false) { console.log(`  repair-refused         ${tourId}/${file}`); continue; }
+        repaired++;
+      }
+      console.log(`  ${execute ? 'scoring-unblocked' : 'would-unblock'}      ${tourId}/${file}`);
+    }
+  }
   if (auto) {
     const out = path.join(ROOT, 'data', 'audit', 'tour-sweep.json');
     fs.mkdirSync(path.dirname(out), { recursive: true });
     fs.writeFileSync(out, JSON.stringify({ generatedAt: new Date().toISOString(), moved: totalMoved, held: report.filter(r => r.held).map(r => r.tourId),
-      integrity: { flagged, held: flagHeld, rows: flags.map(r => ({ file: `${r.showId}/${r.file}`, kind: r.kind })) }, tours: report }, null, 2) + '\n');
+      repaired, integrity: { flagged, held: flagHeld, rows: flags.map(r => ({ file: `${r.showId}/${r.file}`, kind: r.kind })) }, tours: report }, null, 2) + '\n');
   }
 }
 

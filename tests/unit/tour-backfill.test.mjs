@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { genericVenuesOf, classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, matchStop, loadSweepContext, sweepLimits, sweepHoldReason, settingCitiesOf, decideTourIntegrity, applyIntegrityFlag } = require('../../scripts/lib/tour-backfill.js');
+const { genericVenuesOf, classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, matchStop, loadSweepContext, sweepLimits, sweepHoldReason, settingCitiesOf, decideTourIntegrity, applyIntegrityFlag, clearStaleScoringFailure } = require('../../scripts/lib/tour-backfill.js');
 
 const tourFlag = { wrongProduction: true, wrongProductionReason: 'BWW regional/tour review (denver)', url: 'https://www.denverpost.com/x' };
 // An undated review moves only to a dated tour it was found after (BRO-4325).
@@ -76,6 +76,32 @@ test('prepareTourMove restores the text, sets aside Broadway-relative verdicts, 
   assert.deepEqual(out.routedPriorVerdicts.contentVerification, { isValid: false });
   assert.equal(out.routedFromShowId, 'beetlejuice-2022');
   assert.equal(src.wrongProduction, true, 'input must not be mutated');
+});
+
+test('the scorer give-up state from the flagged period does not follow the move', () => {
+  const src = {
+    showId: 'spamalot-2023', ...tourFlag, fullText: 'Review text', contentTier: 'complete',
+    manualClearFallbackFailedAt: '2026-08-05T21:23:57.015Z', manualClearFallbackAttempts: 5, manualClearFallbackAbandoned: true,
+    manualClearFallbackFailureReason: 'Skipped fullText (wrongProduction flag). No usable text found',
+  };
+  const out = prepareTourMove(src, { fromShowId: 'spamalot-2023', tourId: 'spamalot-tour-2025' });
+  for (const k of ['manualClearFallbackFailedAt', 'manualClearFallbackAttempts', 'manualClearFallbackAbandoned', 'manualClearFallbackFailureReason']) {
+    assert.ok(!(k in out), `${k} should be removed`);
+  }
+  assert.equal(out.routedPriorVerdicts.manualClearFallbackAbandoned, true);
+});
+
+test('clearStaleScoringFailure unblocks a moved file and leaves others alone', () => {
+  const moved = { showId: 'spamalot-tour-2025', routedFromShowId: 'spamalot-2023', manualClearFallbackAbandoned: true, manualClearFallbackAttempts: 5, routedPriorVerdicts: { wrongProduction: true } };
+  const out = clearStaleScoringFailure(moved);
+  assert.equal(out.manualClearFallbackAbandoned, null);
+  assert.equal(out.routedPriorVerdicts.manualClearFallbackAttempts, 5);
+  assert.equal(clearStaleScoringFailure(out), null, 'already repaired');
+  assert.equal(out.routedPriorVerdicts.wrongProduction, true);
+  assert.equal(moved.manualClearFallbackAbandoned, true, 'input must not be mutated');
+  assert.equal(clearStaleScoringFailure({ ...moved, routedFromShowId: undefined }), null, 'never routed: the give-up state is real');
+  assert.equal(clearStaleScoringFailure({ ...moved, wrongProduction: true }), null, 'flagged again: leave it');
+  assert.equal(clearStaleScoringFailure({ showId: 'x', routedFromShowId: 'y' }), null, 'nothing to repair');
 });
 
 test('a wrong_production rejection is set aside on the move; other rejections stand', () => {
