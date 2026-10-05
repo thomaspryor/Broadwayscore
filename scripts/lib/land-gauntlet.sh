@@ -282,6 +282,7 @@ lint_workflows() {
     audit-reconcile-coverage \
     lint-resend-calls \
     lint-wrongproduction-provenance \
+    lint-autoclear-invalidate \
     audit-digest-clip-safety \
     lint-committed-pii \
     audit-tests-vs-derived-data \
