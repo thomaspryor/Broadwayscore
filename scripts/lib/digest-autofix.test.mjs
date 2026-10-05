@@ -873,6 +873,19 @@ test('dispatchDetached: linear ids spawn linear-next.js, numeric ids spawn bsc-n
   assert.throws(() => clean.dispatchDetached('linear:$(rm -rf x)', () => {}, 0, null), /invalid taskId/);
 });
 
+// BRO-220: tests stub spawn but dispatchDetached opens its log file first, so
+// every run used to leave zero-byte files in the real data/audit log dir.
+test('dispatchDetached: under node:test the log lands in the OS temp dir, never the real log dir (BRO-220)', () => {
+  const fakeChild = { unref: () => {} };
+  withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
+    const msgs = [];
+    mod.dispatchDetached('linear:BRO-9', (m) => msgs.push(m), 0, null);
+    const logPath = /log: (\S+)\)/.exec(msgs.join('\n'))[1];
+    assert.ok(logPath.startsWith(os.tmpdir()), `log must be under ${os.tmpdir()}, got ${logPath}`);
+    assert.ok(!logPath.includes(`${path.sep}data${path.sep}audit${path.sep}`), 'must not touch the real audit log dir');
+  });
+});
+
 // BRO-2499: linear-dispatch.js's autofixFiledIssueGuard refuses "BSC Daily:"
 // / "CANARY: touch" issues at `linear-next.js --id`. Every issue THIS module
 // files is in that population and it dispatches them itself, so runAutofix

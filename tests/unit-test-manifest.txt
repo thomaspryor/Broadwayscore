@@ -833,6 +833,7 @@ tests/unit/poller-retry-supersede.test.mjs
 tests/unit/pr-supervisor-core.test.mjs
 tests/unit/pre-push-visual-gate-scope.test.mjs
 tests/unit/precursor-category-parser.test.mjs
+tests/unit/predictions-page.test.mjs
 tests/unit/preview-placeholder-merge.test.mjs
 tests/unit/prior-run-discovery-window.test.mjs
 tests/unit/prior-run-review-display.test.mjs
@@ -957,6 +958,7 @@ tests/unit/scrape-alltime-column-count.test.mjs
 tests/unit/scrape-alltime-column-order.test.mjs
 tests/unit/scrape-new-aggregators-push-timeout.test.mjs
 tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
+tests/unit/scrape-show-score-audience.test.mjs
 tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-thestage-roundups-preserves-exclusion-flags.test.mjs
 tests/unit/scrape-westendtheatre-push-timeout.test.mjs
@@ -1042,6 +1044,7 @@ tests/unit/table-schema-assertion.test.mjs
 tests/unit/talkin-broadway-scraper.test.mjs
 tests/unit/test-exit-code-leak-guard.test.mjs
 tests/unit/test-manifest-integrity.test.mjs
+tests/unit/test-manifest-node-ts-import.test.mjs
 tests/unit/test-manifest-sort.test.mjs
 tests/unit/test-yml-code-only-jobs.test.mjs
 tests/unit/test-yml-timeout-headroom.test.mjs

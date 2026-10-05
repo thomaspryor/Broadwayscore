@@ -115,6 +115,16 @@ function validateManifest(manifestPath, repoRoot) {
     const fullPath = path.join(repoRoot, entry);
     if (!fs.existsSync(fullPath)) {
       errors.push(`listed test file does not exist: ${entry}`);
+    } else if (path.basename(manifestPath) === 'unit-test-manifest.txt') {
+      // BRO-4647: only the plain-node batch (the tsx and e2e manifests run under
+      // other runners). It runs on CI's Node 20, which cannot load
+      // .ts modules (ERR_UNKNOWN_FILE_EXTENSION). A test that imports `.ts`
+      // passes on a newer local node but goes red on CI — it belongs in the
+      // tsx manifest.
+      const src = fs.readFileSync(fullPath, 'utf8');
+      if (/(?:from\s+|import\s*\(\s*|require\(\s*)['"][^'"]+\.ts['"]/.test(src)) {
+        errors.push(`imports a .ts module, so it cannot run under plain node (move it to the tsx manifest): ${entry}`);
+      }
     }
   }
 

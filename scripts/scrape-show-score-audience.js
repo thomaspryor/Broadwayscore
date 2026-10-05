@@ -25,6 +25,7 @@ const { JSDOM } = require('jsdom');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
 const { isSourceFresh } = require('./lib/audience-freshness');
 const { validatePageMatchesShow } = require('./lib/page-validator');
+const { checkShowScorePage } = require('./lib/show-score-page-check');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
@@ -956,18 +957,13 @@ async function processShow(show, { rediscovered = false } = {}) {
     // revival wouldn't otherwise be caught). skipLlm avoids the flaky LLM
     // heading tiebreaker (see page-validator.js), which was rejecting
     // genuinely correct pages.
-    const pageValidation = await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
-    if (!pageValidation.valid) {
-      // No JSON-LD to fall back on — give the LLM tiebreaker a shot rather
-      // than rejecting on word-match alone.
-      const llmValidation = jsonLdName ? null : await validatePageMatchesShow(html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator' });
-      if (!llmValidation || !llmValidation.valid) {
-        console.log(`  SKIP: Page validator rejected — ${(llmValidation || pageValidation).reason}`);
-        console.log(`  Removing bad cached URL for ${show.id}`);
-        if (urlData.shows) delete urlData.shows[show.id];
-        if (!dryRun) saveUrlCache();
-        return null;
-      }
+    const pageCheck = await checkShowScorePage(html, show, { jsonLdName });
+    if (!pageCheck.valid) {
+      console.log(`  SKIP: Page validator rejected — ${pageCheck.reason}`);
+      console.log(`  Removing bad cached URL for ${show.id}`);
+      if (urlData.shows) delete urlData.shows[show.id];
+      if (!dryRun) saveUrlCache();
+      return null;
     }
 
     const data = extractAudienceData(html, show.id);

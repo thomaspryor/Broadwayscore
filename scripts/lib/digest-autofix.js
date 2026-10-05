@@ -103,7 +103,19 @@ const { isWatchdogParkedMirrorTracker } = require('./digest-autofix-mirror-park-
 const LINEAR_IDENTIFIER_IN_JSON_RE = new RegExp(`"identifier":\\s*"(${LINEAR_IDENTIFIER_RE.source})"`);
 
 const REPO = path.join(__dirname, '..', '..');
-const LOG_DIR = path.join(REPO, 'data', 'audit', 'digest-autofix-logs');
+// Under node:test the logs go to a per-process temp dir, removed on exit.
+const LOG_DIR = process.env.DIGEST_AUTOFIX_LOG_DIR || (process.env.NODE_TEST_CONTEXT
+  ? (() => {
+    const dir = path.join(require('os').tmpdir(), `digest-autofix-test-logs-${process.pid}`);
+    // Tests re-require this module per case; register the cleanup once per process.
+    const flag = Symbol.for('digest-autofix-log-cleanup');
+    if (!process[flag]) {
+      process[flag] = true;
+      process.once('exit', () => { try { require('fs').rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ } });
+    }
+    return dir;
+  })()
+  : path.join(REPO, 'data', 'audit', 'digest-autofix-logs'));
 const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
 const DISPATCH_CAP = 3;
 // A dispatched row's bsc-runner job-spawned event never arrives (refused
