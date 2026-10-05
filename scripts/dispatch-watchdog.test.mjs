@@ -97,3 +97,73 @@ test('BRO-3437: dispatch-watchdog.js has exactly the four known PARK write sites
   assert.equal(writes.length, 4,
     'a new PARK writer must take its ids from a planSweep list that is gated on isLiveBoardTaskId (toPark, jobBlocked, noLaunchPark, toDispatch)');
 });
+
+// BRO-2412: health() must report unhealthy when the heartbeat is fresh but
+// dispatch is not flowing. Drives the REAL health() in-process: HOME points at
+// a tmp dir (STATE_DIR/heartbeat), and the ledger, cmux, Linear source and the
+// pager are stubbed on their module objects (health() reads them dynamically).
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+// One tmp HOME for the whole file: dispatch-watchdog.js computes STATE_DIR once,
+// at first require, so every runHealth() must reuse the same HOME.
+const HEALTH_HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'wd-health-'));
+test.after(() => fs.rmSync(HEALTH_HOME, { recursive: true, force: true }));
+
+async function runHealth({ liveWorkspaces, ledgerRows }) {
+  const home = HEALTH_HOME;
+  const stateDir = path.join(home, '.claude', 'state');
+  fs.mkdirSync(stateDir, { recursive: true });
+  fs.writeFileSync(path.join(stateDir, 'dispatch-watchdog.json'),
+    JSON.stringify({ ts: new Date().toISOString(), mode: 'sweep', pid: process.pid }));
+  const ledgerPath = path.join(home, 'ledger.jsonl');
+  fs.writeFileSync(ledgerPath, ledgerRows.map(r => JSON.stringify(r)).join('\n') + '\n');
+
+  const prevHome = process.env.HOME;
+  process.env.HOME = home;
+  delete process.env.DISPATCH_WATCHDOG_DISABLED;
+  const wd = require('./dispatch-watchdog.js');
+  assert.equal(path.dirname(wd.HEARTBEAT_PATH), stateDir, 'watchdog must be reading the tmp heartbeat');
+  const ledger = require('./lib/dispatch-ledger.js');
+  const cmuxws = require('./lib/cmux-workspaces.js');
+  const source = require('./lib/linear-watchdog-source.js');
+  const router = require('./lib/owner-alert-router.js');
+  const saved = {
+    lp: ledger.LEDGER_PATH, lw: cmuxws.listWorkspaces,
+    fl: source.fetchLinearWatchdogTasks, ra: router.routeAlert,
+    log: console.log, err: console.error,
+  };
+  const pages = [];
+  ledger.LEDGER_PATH = ledgerPath;
+  cmuxws.listWorkspaces = () => liveWorkspaces.map(title => ({ title }));
+  source.fetchLinearWatchdogTasks = async () => ({ ok: true, tasks: new Map(), started: new Map(), scanned: 0 });
+  router.routeAlert = async (a) => { pages.push(a); };
+  console.log = () => {}; console.error = () => {};
+  try {
+    const code = await wd.health();
+    return { code, pages };
+  } finally {
+    Object.assign(console, { log: saved.log, error: saved.err });
+    ledger.LEDGER_PATH = saved.lp; cmuxws.listWorkspaces = saved.lw;
+    source.fetchLinearWatchdogTasks = saved.fl; router.routeAlert = saved.ra;
+    process.env.HOME = prevHome;
+  }
+}
+
+test('BRO-2412: fresh heartbeat + zero dispatch flow => health() unhealthy and pages', async () => {
+  const { code, pages } = await runHealth({ liveWorkspaces: [], ledgerRows: [] });
+  assert.equal(code, 1);
+  assert.equal(pages.length, 1);
+  assert.equal(pages[0].conditionKey, 'dispatch-flow-dead');
+});
+
+test('BRO-2412: fresh heartbeat + dispatch flowing (live auto tabs + recent launch) => healthy, no page', async () => {
+  const recent = new Date(Date.now() - 5 * 60000).toISOString();
+  const { code, pages } = await runHealth({
+    liveWorkspaces: ['🤖⚡ Data·a', '🤖⚡ Data·b', '🤖⚡ Data·c'],
+    ledgerRows: [{ ts: recent, event: 'launch', taskId: 'linear:BRO-1', subject: 's', workspaceRef: 'workspace:1' }],
+  });
+  assert.equal(code, 0);
+  assert.equal(pages.length, 0);
+});

@@ -1185,6 +1185,9 @@ if (require.main === module) {
 module.exports = {
   main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
   pageIfKillSwitchStale,
+  // BRO-2412: exported so the heartbeat-fresh-but-no-dispatch path is tested
+  // through the REAL health(), not a copy of its wiring.
+  health,
   // BRO-3390: exported so the lane fork is tested against the REAL function
   // rather than a copy of its regex (CLAUDE.md rule 15). LINEAR_CACHE_TTL_MS
   // and linearTasksForPlan go with it so the cache's staleness contract is
