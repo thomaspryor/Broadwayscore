@@ -127,18 +127,26 @@ function parseBwwGrossesRow(cells, splitShowTheater, headerCells) {
     capacityPctPrevWeek: parsePercentage(cells[idx.capPrevIdx]),
   };
 
-  // Structural sanity guard — if BWW shifts columns again, these ranges break
-  // and we drop the row LOUDLY instead of silently shipping garbage (the
-  // 2026-06 incident: ATP read as "8", capacity as 0.25%, perf as 100).
-  if (row.gross != null) {
-    const sane =
-      (row.atp == null || (row.atp >= 15 && row.atp <= 1000)) &&
-      (row.performances == null || (row.performances >= 1 && row.performances <= 16)) &&
-      (row.capacityPct == null || (row.capacityPct >= 5 && row.capacityPct <= 120));
-    if (!sane) return null;
-  }
+  if (!isSaneGrossesRow(row)) return null;
 
   return row;
 }
 
-module.exports = { parseBwwGrossesRow, parseCurrency, parsePercentage, parseNumber, resolveBwwColumnIndices };
+/**
+ * Structural sanity guard for one parsed grosses row, whatever the source
+ * (BWW here, Playbill in parse-playbill-grosses.js). If a source shifts
+ * columns, these ranges break and the caller drops the row LOUDLY instead of
+ * silently shipping garbage (the 2026-06 incident: ATP read as "8", capacity
+ * as 0.25%, perf as 100). Rows with no gross (dark week) always pass.
+ *
+ * @param {{ gross?: number|null, atp?: number|null, performances?: number|null, capacityPct?: number|null }} row
+ * @returns {boolean}
+ */
+function isSaneGrossesRow(row) {
+  if (!row || row.gross == null) return true;
+  return (row.atp == null || (row.atp >= 15 && row.atp <= 1000)) &&
+    (row.performances == null || (row.performances >= 1 && row.performances <= 16)) &&
+    (row.capacityPct == null || (row.capacityPct >= 5 && row.capacityPct <= 120));
+}
+
+module.exports = { parseBwwGrossesRow, parseCurrency, parsePercentage, parseNumber, resolveBwwColumnIndices, isSaneGrossesRow };

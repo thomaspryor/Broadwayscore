@@ -1,15 +1,28 @@
 /**
  * Broadway Grosses Scraper
  *
- * Scrapes weekly box office data from BroadwayWorld.
- * Tiered fallback: Bright Data → Scrapingdog → Playwright.
- * Uses shared show-matching.js library (260+ aliases) for title matching.
+ * Scrapes weekly box office data (Broadway League figures).
+ * Tiered fallback: Playbill (fetchPage) → BroadwayWorld via Bright Data →
+ * Scrapingdog → Playwright.
  *
- * Safety guards: minimum show count, gross sanity, WoW delta check, pre-write backup.
+ * Playbill is tier 1 since BRO-4623 (2026-10-04): BroadwayWorld's grosses.php
+ * began serving a Cloudflare challenge on 2026-09-23 and every BWW tier failed
+ * for two weeks. Playbill serves the same League figures as static HTML and
+ * any past week at ?week=YYYY-MM-DD, so a Playbill run also backfills weeks
+ * missing from grosses-history.json (up to --max-backfill, default 8) before
+ * writing the current week. BWW tiers stay as fallback (current week only).
+ *
+ * Uses shared show-matching.js library (260+ aliases) for title matching.
+ * Safety guards: minimum show count, gross sanity, WoW delta check, pre-write
+ * backup, and grosses.json never moves back to an older week.
  *
  * Usage:
- *   npx tsx scripts/scrape-grosses.ts              # Full scrape
- *   npx tsx scripts/scrape-grosses.ts --dry-run    # Preview without writing
+ *   npx tsx scripts/scrape-grosses.ts                    # Full scrape
+ *   npx tsx scripts/scrape-grosses.ts --dry-run          # Preview without writing
+ *   npx tsx scripts/scrape-grosses.ts --week=2026-09-20  # One Playbill week. Older than
+ *                                                        # grosses.json's week → history only
+ *   npx tsx scripts/scrape-grosses.ts --out-dir=/tmp/x   # Write outputs there, not data/
+ *   npx tsx scripts/scrape-grosses.ts --max-backfill=0   # Skip the history gap fill
  */
 
 import { chromium } from 'playwright';
@@ -30,16 +43,49 @@ const { parseBwwGrossesRow, resolveBwwColumnIndices } = require('./lib/parse-bww
 // page is static server-rendered HTML that loads fine from a non-CI IP).
 // BD/SD route through proxy IPs that aren't in that blocklist, so they
 // belong ahead of Playwright, not just as review-text tiers.
-const { fetchWithBrightData, fetchWithScrapingdog } = require('./lib/scraper');
+const { fetchPage, fetchWithBrightData, fetchWithScrapingdog, cleanup: cleanupScraper } = require('./lib/scraper');
 const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
+// Pure Playbill parser + gap finder (see tests/unit/parse-playbill-grosses.test.mjs)
+const {
+  playbillGrossesUrl,
+  parsePlaybillGrossesHtml,
+  validatePlaybillGrosses,
+  isPlausibleRow,
+  toHistoryEntry,
+  findMissingHistoryWeeks,
+  findHistoryKey,
+  latestPublishableWeek,
+  isoWeekToMDY,
+} = require('./lib/parse-playbill-grosses');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
-const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 
+function argValue(name: string): string | null {
+  const prefix = `--${name}=`;
+  const hit = process.argv.find(a => a.startsWith(prefix));
+  return hit ? hit.slice(prefix.length) : null;
+}
+
 const DRY_RUN = process.argv.includes('--dry-run');
+const WEEK_ARG = argValue('week');
+const OUT_DIR = argValue('out-dir');
+const MAX_BACKFILL = argValue('max-backfill') != null ? parseInt(argValue('max-backfill')!, 10) : 8;
+// Reads always come from data/; --out-dir only redirects the writes (lets a
+// real run be inspected without touching the data files).
+const GROSSES_OUT_PATH = OUT_DIR ? path.join(OUT_DIR, 'grosses.json') : GROSSES_PATH;
+const HISTORY_OUT_PATH = OUT_DIR ? path.join(OUT_DIR, 'grosses-history.json') : HISTORY_PATH;
 const MIN_SHOWS = 20;
+
+if (WEEK_ARG && !/^\d{4}-\d{2}-\d{2}$/.test(WEEK_ARG)) {
+  console.error(`--week must be YYYY-MM-DD, got "${WEEK_ARG}"`);
+  process.exit(1);
+}
+if (!Number.isFinite(MAX_BACKFILL) || MAX_BACKFILL < 0) {
+  console.error('--max-backfill must be a non-negative integer');
+  process.exit(1);
+}
 
 // Verified live 2026-08-12: .table-header .cell = Show/Theater, Gross, Gross/Prev week,
 // Gross Diff., Avg. Tix/Top Tix, Attend./Capacity, Perf./Prev., Cap %/This Wk, Cap %/Last Wk, Diff. %
@@ -51,7 +97,7 @@ const TABLE_SCHEMA = {
 // Long-running shows expected in every weekly scrape. Soft-warn (not hard-fail)
 // so the pipeline doesn't break when a show closes — but surfaces the gap loudly.
 const EXPECTED_SHOWS = [
-  'hamilton', 'wicked', 'the-lion-king', 'moulin-rouge', 'hadestown', 'mj',
+  'hamilton', 'wicked', 'the-lion-king', 'hadestown', 'mj',
 ];
 
 // ============================================================
@@ -127,6 +173,9 @@ interface ScrapeResult {
   rows: BWWRowData[];
   weekEnding: string;
   source: string;
+  // Playbill only: every week its ?week= selector offers (YYYY-MM-DD, newest
+  // first). Drives the history gap fill; BWW has no per-week URL.
+  availableWeeks?: string[];
 }
 
 // ============================================================
@@ -249,14 +298,21 @@ function splitShowTheater(text: string): { show: string; theater: string } | nul
 
 let allShows: any[] | null = null;
 
-function findMatchingSlug(bwwTitle: string, market: string = 'broadway'): string | null {
+function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWeekISO?: string): string | null {
   if (!allShows) {
     allShows = loadShowsFromMatching();
   }
   // Always pass market + prefer hints — BroadwayWorld only lists Broadway shows,
   // and weekly grosses belong to the currently-running production (e.g., Chicago
-  // 1996 revival, not Chicago 1975 original).
-  const match = matchTitleToShow(bwwTitle, allShows, { market, prefer: 'open' });
+  // 1996 revival, not Chicago 1975 original). For a past week (gap fill or
+  // --week), also pass that week's date so a production that has since closed
+  // is still picked by its run window. No `year` (unlike the multi-decade
+  // backfill-grosses-history.ts): when the window check is inconclusive the
+  // matcher then falls back to prefer:'open', the same rule the current week
+  // uses, so a gap week and the current week land on the same slug.
+  const opts: Record<string, unknown> = { market, prefer: 'open' };
+  if (pastWeekISO) opts.date = pastWeekISO;
+  const match = matchTitleToShow(bwwTitle, allShows, opts);
   if (match && match.confidence === 'high') {
     const slug = match.show.slug;
     // BWW only covers Broadway — never write to West End / Off-Broadway slugs
@@ -359,7 +415,7 @@ function extractWeekEndingFromTitle(title: string): string | null {
 }
 
 // ============================================================
-// Tier 1 & 2: Bright Data / Scrapingdog (raw HTML + cheerio parse)
+// Tiers 2 & 3: BWW via Bright Data / Scrapingdog (raw HTML + cheerio parse)
 // ============================================================
 
 // Shared parser for any provider that returns raw HTML (BD, Scrapingdog).
@@ -416,6 +472,59 @@ async function fetchWithHtmlProvider(
     return null;
   }
   return { rows, weekEnding, source: label };
+}
+
+// ============================================================
+// Tier 1: Playbill (League figures, static HTML, any week via ?week=)
+// ============================================================
+
+// Goes through fetchPage() like all scraping (playbill.com is a Playwright-
+// first public domain there, so this is normally free; paid tiers only on a
+// Playwright miss). Returns null on any integrity problem so the caller's
+// retry/fallback chain moves on instead of writing a doubtful page.
+async function fetchPlaybillWeek(week?: string): Promise<ScrapeResult | null> {
+  const url = playbillGrossesUrl(week);
+  const page = await fetchPage(url);
+  const parsed = parsePlaybillGrossesHtml(page?.content || '');
+  const problems: string[] = validatePlaybillGrosses(parsed, { expectedWeek: week });
+  if (parsed.schemaError) {
+    console.error(`::error::scrape-grosses (playbill): ${parsed.schemaError}`);
+  }
+  if (problems.length > 0) {
+    console.warn(`  ⚠ [playbill] ${url}: ${problems.join('; ')}`);
+    return null;
+  }
+  if (parsed.weekTotalGross == null) {
+    console.warn(`::warning::scrape-grosses: ${url} has no "Week's Total"; the row-sum checksum was skipped.`);
+  }
+
+  const rows: BWWRowData[] = [];
+  for (const r of parsed.rows) {
+    if (!isPlausibleRow(r)) {
+      console.warn(`  ⚠ Dropping "${r.show}" — implausible parsed values ` +
+        `(atp=${r.atp}, perf=${r.performances}, cap=${r.capacityPct}). Playbill columns may have shifted.`);
+      continue;
+    }
+    rows.push({
+      show: r.show,
+      theater: r.theater,
+      gross: r.gross,
+      grossPrevWeek: r.grossPrevWeek,
+      grossYoY: null, // enriched from history downstream
+      atp: r.atp,
+      attendance: r.attendance,
+      seatsOffered: r.seatsOffered,
+      performances: r.performances,
+      capacityPct: r.capacityPct,
+      capacityPctPrevWeek: r.capacityPctPrevWeek,
+    });
+  }
+  return {
+    rows,
+    weekEnding: isoWeekToMDY(parsed.weekEnding),
+    source: 'playbill',
+    availableWeeks: parsed.availableWeeks,
+  };
 }
 
 // ============================================================
@@ -571,11 +680,21 @@ function validateWeekEnding(weekEnding: string): boolean {
 
 function warnMissingExpectedShows(matchedSlugs: string[]): void {
   const slugSet = new Set(matchedSlugs);
-  const missing = EXPECTED_SHOWS.filter(s => !slugSet.has(s));
+  // A long-runner that has since closed (Moulin Rouge, 2026-08-30) is no
+  // longer expected; shows.json status is the truth, so this list can't go
+  // stale into a weekly false alarm.
+  if (!allShows) allShows = loadShowsFromMatching();
+  const closed = new Set(
+    (allShows || []).filter((s: { status?: string }) => s.status === 'closed').map((s: { slug?: string; id: string }) => s.slug || s.id)
+  );
+  const closedExpected = EXPECTED_SHOWS.filter(s => closed.has(s) && !slugSet.has(s));
+  if (closedExpected.length > 0) {
+    console.log(`  EXPECTED_SHOWS entries closed in shows.json (skipped): ${closedExpected.join(', ')}`);
+  }
+  const missing = EXPECTED_SHOWS.filter(s => !slugSet.has(s) && !closed.has(s));
   if (missing.length > 0) {
     console.error(`⚠ EXPECTED SHOWS MISSING from scraped data: ${missing.join(', ')}`);
-    console.error(`  This may indicate a show-matching alias bug or a show closure.`);
-    console.error(`  If a show has closed, remove it from EXPECTED_SHOWS in scrape-grosses.ts.`);
+    console.error(`  This may indicate a show-matching alias bug, or a closure not yet marked closed in shows.json.`);
   }
 }
 
@@ -608,11 +727,15 @@ function validateDropCount(
 // in previews that hasn't had any performances yet, a dark week).
 function validateCaptureRate(matchedSlugs: string[]): void {
   try {
-    const shows = loadShowsFromMatching();
-    const expectedBroadway = shows.filter((s: { id: string; status?: string }) => {
+    if (!allShows) allShows = loadShowsFromMatching();
+    const shows = allShows || [];
+    const expectedBroadway = shows.filter((s: { id: string; status?: string; category?: string }) => {
       const status = s.status;
       if (status !== 'open' && status !== 'previews') return false;
-      // BWW only lists Broadway, so exclude WE / OB / OWE shows.
+      // Grosses only cover Broadway, so exclude WE / OB / OWE shows, and
+      // tours/regional runs (status=open too, but never in a Broadway grosses
+      // table; counting them put the rate at 45% on a complete scrape).
+      if (s.category && s.category !== 'broadway') return false;
       const id = s.id || '';
       if (id.includes('west-end') || id.includes('off-broadway') || id.includes('off-west-end')) return false;
       return true;
@@ -707,7 +830,11 @@ function findClosestWeek(history: GrossesHistory, targetDate: Date, maxDaysDiff:
 function getPrevWeekData(history: GrossesHistory, currentWeekISO: string, showSlug: string): HistoryEntry | null {
   const currentDate = new Date(currentWeekISO + 'T00:00:00Z');
   const prevTarget = new Date(currentDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const prevWeekKey = findClosestWeek(history, prevTarget);
+  // 3 days, not findClosestWeek's default 7: with 7, a missing previous week
+  // silently resolved to the week two back (or, on a re-run, to this week's
+  // own snapshot) and was published as week-over-week. 3 still covers the
+  // BWW-era Monday keys.
+  const prevWeekKey = findClosestWeek(history, prevTarget, 3);
 
   if (prevWeekKey && history.weeks[prevWeekKey]?.[showSlug]) {
     return history.weeks[prevWeekKey][showSlug];
@@ -718,7 +845,9 @@ function getPrevWeekData(history: GrossesHistory, currentWeekISO: string, showSl
 function getYoYData(history: GrossesHistory, currentWeekISO: string, showSlug: string): HistoryEntry | null {
   const currentDate = new Date(currentWeekISO + 'T00:00:00Z');
   const yoyTarget = new Date(currentDate.getTime() - 364 * 24 * 60 * 60 * 1000); // 52 weeks
-  const yoyWeekKey = findClosestWeek(history, yoyTarget);
+  // 3 days for the same reason as getPrevWeekData: with 7, a missing
+  // year-ago week resolved to the week next to it and was published as YoY.
+  const yoyWeekKey = findClosestWeek(history, yoyTarget, 3);
 
   if (yoyWeekKey && history.weeks[yoyWeekKey]?.[showSlug]) {
     return history.weeks[yoyWeekKey][showSlug];
@@ -730,66 +859,194 @@ function getYoYData(history: GrossesHistory, currentWeekISO: string, showSlug: s
 // Main Scraper
 // ============================================================
 
-async function scrapeGrosses(): Promise<void> {
-  console.log(`Starting Broadway grosses scrape...${DRY_RUN ? ' (DRY RUN)' : ''}`);
+type MatchedRow = BWWRowData & { slug: string };
 
-  // Try scraping tiers in order
-  let result: ScrapeResult | null = null;
+function matchRows(rows: BWWRowData[], pastWeekISO?: string, quiet: boolean = false): { matched: MatchedRow[]; unmatched: string[] } {
+  const matched: MatchedRow[] = [];
+  const unmatched: string[] = [];
+  for (const row of rows) {
+    const slug = findMatchingSlug(row.show, 'broadway', pastWeekISO);
+    if (slug) {
+      matched.push({ ...row, slug });
+      if (!quiet) console.log(`  ✓ ${row.show} → ${slug}`);
+    } else {
+      unmatched.push(row.show);
+    }
+  }
+  return { matched, unmatched };
+}
 
-  // Tier 1: Bright Data (proxied — survives a BWW-side block of the CI IP).
-  // Previously tried ScrapingBee's CSS-extraction feature first with
+// Store a week's snapshot under the key history already uses for that week
+// (a BWW-era Monday key), never as a second key beside it.
+function putHistoryWeek(history: GrossesHistory, weekISO: string, snapshot: Record<string, HistoryEntry>): string {
+  const key: string = findHistoryKey(Object.keys(history.weeks), weekISO) || weekISO;
+  if (key !== weekISO) console.log(`  History already holds week ${weekISO} as ${key}; replacing that entry.`);
+  history.weeks[key] = snapshot;
+  return key;
+}
+
+function snapshotOf(rows: MatchedRow[]): Record<string, HistoryEntry> {
+  const snapshot: Record<string, HistoryEntry> = {};
+  for (const row of rows) snapshot[row.slug] = toHistoryEntry(row);
+  return snapshot;
+}
+
+// Ends the run with exit code 1 after the reason has been logged. Thrown
+// rather than process.exit(1) so the runner still calls cleanupScraper(),
+// which prints the "[Scraper Summary]" spend line the cost report reads.
+class ScrapeAbort extends Error {}
+
+// Fill grosses-history.json weeks that earlier failed runs left empty
+// (BRO-4623), so prev-week and YoY lookups have no holes. Playbill only.
+async function backfillMissingWeeks(history: GrossesHistory, result: ScrapeResult, currentWeekISO: string): Promise<string[]> {
+  if (MAX_BACKFILL === 0) return [];
+  if (!result.availableWeeks || result.availableWeeks.length === 0) {
+    console.log(`\n[Backfill] Source ${result.source} has no per-week pages; history gaps (if any) are left for the next Playbill run.`);
+    return [];
+  }
+  const gaps: string[] = findMissingHistoryWeeks(Object.keys(history.weeks), result.availableWeeks, currentWeekISO, MAX_BACKFILL);
+  if (gaps.length === 0) {
+    console.log(`\n[Backfill] No history gaps in the ${MAX_BACKFILL} weeks before ${currentWeekISO}.`);
+    return [];
+  }
+  console.log(`\n[Backfill] History is missing ${gaps.length} week(s): ${gaps.join(', ')}`);
+  const filled: string[] = [];
+  for (const week of gaps) {
+    const weekResult = await fetchWithRetry(`Playbill ${week}`, () => fetchPlaybillWeek(week));
+    if (!weekResult) {
+      console.warn(`::warning::scrape-grosses: could not backfill week ${week} from Playbill; the next run retries it.`);
+      continue;
+    }
+    if (!validateGrossSanity(weekResult.rows)) {
+      console.warn(`::warning::scrape-grosses: week ${week} failed the gross sanity guard; not backfilled.`);
+      continue;
+    }
+    const { matched, unmatched } = matchRows(weekResult.rows, week, true);
+    if (matched.length < MIN_SHOWS) {
+      console.warn(`::warning::scrape-grosses: week ${week} matched only ${matched.length} shows (minimum ${MIN_SHOWS}); not backfilled.`);
+      continue;
+    }
+    putHistoryWeek(history, week, snapshotOf(matched));
+    filled.push(week);
+    console.log(`  ✓ Backfilled ${week}: ${matched.length}/${weekResult.rows.length} shows matched` +
+      (unmatched.length ? ` (unmatched: ${unmatched.join(', ')})` : ''));
+  }
+  return filled;
+}
+
+// Tiers 2-4: BroadwayWorld (current week only; no per-week URL).
+async function fetchFromBww(): Promise<ScrapeResult | null> {
+  // Tier 2: BWW via Bright Data (proxied — survives a BWW-side block of the
+  // CI IP). Previously tried ScrapingBee's CSS-extraction feature first with
   // premium_proxy=true (10cr, $2.48/1k) — more expensive than Bright Data
   // ($1.50/1k), and parseHtmlRows() below already parses the same table
   // from raw HTML, so the SB-specific extraction added cost without adding
   // capability (task #5).
-  console.log('\n[Tier 1] Bright Data...');
-  result = await fetchWithRetry('BrightData', () => fetchWithHtmlProvider('brightdata', fetchWithBrightData));
+  console.log('\n[Tier 2] BWW via Bright Data...');
+  let result = await fetchWithRetry('BrightData', () => fetchWithHtmlProvider('brightdata', fetchWithBrightData));
 
-  // Tier 2: Scrapingdog (proxied, cheaper than BD for a static page)
+  // Tier 3: BWW via Scrapingdog (proxied, cheaper than BD for a static page)
   if (!result) {
-    console.log('\n[Tier 2] Scrapingdog...');
+    console.log('\n[Tier 3] BWW via Scrapingdog...');
     result = await fetchWithRetry('Scrapingdog', () =>
       fetchWithHtmlProvider('scrapingdog', (url: string) => fetchWithScrapingdog(url, { renderJs: false }))
     );
   }
 
-  // Tier 3: Playwright (last resort, no proxy)
+  // Tier 4: BWW via Playwright (last resort, no proxy)
   if (!result) {
-    console.log('\n[Tier 3] Playwright (fallback)...');
+    console.log('\n[Tier 4] BWW via Playwright (fallback)...');
     result = await fetchWithRetry('Playwright', fetchWithPlaywright);
+  }
+  return result;
+}
+
+function writeJson(filePath: string, data: unknown): void {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
+}
+
+async function scrapeGrosses(): Promise<void> {
+  console.log(`Starting Broadway grosses scrape...${DRY_RUN ? ' (DRY RUN)' : ''}${WEEK_ARG ? ` (week ${WEEK_ARG})` : ''}${OUT_DIR ? ` (writing to ${OUT_DIR})` : ''}`);
+
+  // Try scraping tiers in order
+  let result: ScrapeResult | null = null;
+
+  if (WEEK_ARG) {
+    // A specific past week only exists on Playbill (BWW has no per-week URL).
+    console.log(`\n[Playbill] Week ${WEEK_ARG}...`);
+    result = await fetchWithRetry('Playbill', () => fetchPlaybillWeek(WEEK_ARG));
+  } else {
+    // Tier 1: Playbill (BRO-4623). Static HTML through fetchPage(); also the
+    // only source that can backfill missing history weeks.
+    console.log('\n[Tier 1] Playbill...');
+    const playbill = await fetchWithRetry('Playbill', () => fetchPlaybillWeek());
+    result = playbill;
+
+    // A Playbill page still on an older week than can be out by now (Tuesday
+    // run, page not updated yet) must not stop the BWW tiers from offering
+    // the newer week. BWW's result is used only if it IS newer; Playbill's
+    // week list is kept on it so the history gap fill still works.
+    const newestPossible = latestPublishableWeek(new Date());
+    if (playbill && parseWeekEndingToISO(playbill.weekEnding) < newestPossible) {
+      console.log(`\nPlaybill shows week ${parseWeekEndingToISO(playbill.weekEnding)}; week ${newestPossible} may be out. Checking BroadwayWorld for a newer week...`);
+      const bww = await fetchFromBww();
+      if (bww && parseWeekEndingToISO(bww.weekEnding) > parseWeekEndingToISO(playbill.weekEnding)) {
+        result = { ...bww, availableWeeks: playbill.availableWeeks };
+      } else {
+        console.log('  BroadwayWorld has nothing newer; using Playbill.');
+      }
+    } else if (!playbill) {
+      result = await fetchFromBww();
+    }
   }
 
   if (!result || result.rows.length === 0) {
     console.error('All scraping tiers failed. No data written.');
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   console.log(`\nScraped ${result.rows.length} rows via ${result.source}`);
   console.log(`Week ending: ${result.weekEnding}`);
+  const weekISO = parseWeekEndingToISO(result.weekEnding);
 
-  // Validate week ending date
-  validateWeekEnding(result.weekEnding);
+  // Load existing grosses data
+  let existingGrosses: GrossesData | null = null;
+  if (fs.existsSync(GROSSES_PATH)) {
+    try {
+      existingGrosses = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf-8'));
+      console.log(`Loaded existing grosses data (${Object.keys(existingGrosses!.shows).length} shows, week ending ${existingGrosses!.weekEnding})`);
+    } catch {
+      console.log('Could not load existing grosses.json, starting fresh');
+    }
+  }
+
+  // grosses.json only ever moves forward. A week older than the one it holds
+  // (a --week backfill, or a source serving a stale page) goes into
+  // grosses-history.json alone.
+  const existingWeekISO = existingGrosses?.weekEnding ? parseWeekEndingToISO(existingGrosses.weekEnding) : null;
+  const historyOnly = existingWeekISO != null && weekISO < existingWeekISO;
+  if (!WEEK_ARG && !validateWeekEnding(result.weekEnding)) {
+    // A source frozen on an old week used to "succeed" every run, rewriting
+    // the same week, so cron-health never saw it go stale. Fail instead,
+    // also when that old week is behind grosses.json (history-only path).
+    console.error(`::error::scrape-grosses: newest week from ${result.source} is ${weekISO}, more than 14 days old. Source looks frozen; nothing written.`);
+    throw new ScrapeAbort();
+  }
+  if (historyOnly) {
+    const msg = `Week ${weekISO} is older than grosses.json's ${existingWeekISO}: updating grosses-history.json only.`;
+    // Expected with --week; without it every source is behind what we hold.
+    console.log(WEEK_ARG ? msg : `::warning::scrape-grosses: ${msg} Every source is behind the stored week.`);
+  }
 
   // Validate gross sanity
   if (!validateGrossSanity(result.rows)) {
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   // Match shows to our database
-  let matchedCount = 0;
-  const unmatchedShows: string[] = [];
-  const matchedRows: Array<BWWRowData & { slug: string }> = [];
-
-  for (const row of result.rows) {
-    const slug = findMatchingSlug(row.show);
-    if (slug) {
-      matchedCount++;
-      matchedRows.push({ ...row, slug });
-      console.log(`  ✓ ${row.show} → ${slug}`);
-    } else {
-      unmatchedShows.push(row.show);
-    }
-  }
+  const { matched: matchedRows, unmatched: unmatchedShows } = matchRows(result.rows, historyOnly || WEEK_ARG ? weekISO : undefined);
+  const matchedCount = matchedRows.length;
 
   console.log(`\nMatched ${matchedCount}/${result.rows.length} shows`);
   if (unmatchedShows.length > 0) {
@@ -799,7 +1056,23 @@ async function scrapeGrosses(): Promise<void> {
 
   // Validate minimum match count
   if (!validateScrapedData(matchedCount)) {
-    process.exit(1);
+    throw new ScrapeAbort();
+  }
+
+  const history = loadHistory();
+
+  if (historyOnly) {
+    if (history.weeks[weekISO]) console.log(`Replacing existing history week ${weekISO} (${Object.keys(history.weeks[weekISO]).length} shows)`);
+    const key = putHistoryWeek(history, weekISO, snapshotOf(matchedRows));
+    history._meta.lastUpdated = new Date().toISOString();
+    if (DRY_RUN) {
+      console.log(`\n[DRY RUN] Would write grosses-history.json week ${key}: ${matchedCount} shows (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
+    } else {
+      writeJson(HISTORY_OUT_PATH, history);
+      console.log(`\nWrote grosses history week ${key} to ${HISTORY_OUT_PATH} (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
+    }
+    console.log(`\nScrape source: ${result.source}`);
+    return;
   }
 
   // Warn if expected long-running shows are missing (soft — pipeline continues)
@@ -810,20 +1083,9 @@ async function scrapeGrosses(): Promise<void> {
   // legitimate previews can be missing if they haven't had any performances.
   validateCaptureRate(matchedRows.map(r => r.slug));
 
-  // Load existing grosses data
-  let existingGrosses: GrossesData | null = null;
-  if (fs.existsSync(GROSSES_PATH)) {
-    try {
-      existingGrosses = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf-8'));
-      console.log(`Loaded existing grosses data (${Object.keys(existingGrosses!.shows).length} shows)`);
-    } catch {
-      console.log('Could not load existing grosses.json, starting fresh');
-    }
-  }
-
   // Hard-fail if too many shows dropped vs previous week
   if (!validateDropCount(matchedCount, existingGrosses)) {
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   // Build grosses data structure
@@ -878,9 +1140,11 @@ async function scrapeGrosses(): Promise<void> {
   // Check WoW deltas for anomalies
   checkWoWDeltas(grossesData.shows, existingGrosses);
 
+  // Fill history gaps BEFORE enrichment, so this week's prev-week lookup
+  // finds last week even when last week's own run failed.
+  const backfilledWeeks = await backfillMissingWeeks(history, result, weekISO);
+
   // History enrichment (ATP WoW, Capacity YoY, ATP YoY)
-  const history = loadHistory();
-  const weekISO = parseWeekEndingToISO(result.weekEnding);
   console.log(`\nLooking up history for week ${weekISO}...`);
 
   let atpWoWCount = 0;
@@ -921,49 +1185,45 @@ async function scrapeGrosses(): Promise<void> {
 
   console.log(`  History enrichment: Gross YoY=${grossYoYCount}, ATP WoW=${atpWoWCount}, Capacity YoY=${capYoYCount}, ATP YoY=${atpYoYCount}`);
 
-  // Save current week snapshot to history
-  const currentSnapshot: Record<string, HistoryEntry> = {};
-  for (const [slug, data] of Object.entries(grossesData.shows)) {
-    if (data.thisWeek) {
-      currentSnapshot[slug] = {
-        gross: data.thisWeek.gross,
-        capacity: data.thisWeek.capacity,
-        atp: data.thisWeek.atp,
-        attendance: data.thisWeek.attendance,
-        seatsOffered: data.thisWeek.seatsOffered,
-        performances: data.thisWeek.performances
-      };
-    }
-  }
-  history.weeks[weekISO] = currentSnapshot;
+  // Save current week snapshot to history (the matched rows are exactly the
+  // shows given thisWeek above; enrichment does not touch the stored fields)
+  putHistoryWeek(history, weekISO, snapshotOf(matchedRows));
   history._meta.lastUpdated = new Date().toISOString();
 
   // Write files (unless dry-run)
   if (DRY_RUN) {
     console.log('\n[DRY RUN] Would write:');
-    console.log(`  grosses.json: ${Object.keys(grossesData.shows).length} shows (${matchedCount} with thisWeek data)`);
-    console.log(`  grosses-history.json: ${Object.keys(history.weeks).length} weeks stored`);
+    console.log(`  grosses.json: week ending ${grossesData.weekEnding}, ${Object.keys(grossesData.shows).length} shows (${matchedCount} with thisWeek data)`);
+    console.log(`  grosses-history.json: ${Object.keys(history.weeks).length} weeks stored` +
+      (backfilledWeeks.length ? ` (backfilled ${backfilledWeeks.join(', ')})` : ''));
     console.log('\nSample data (first 3 matched shows):');
     for (const row of matchedRows.slice(0, 3)) {
       const data = grossesData.shows[row.slug];
       console.log(`  ${row.slug}: gross=$${data.thisWeek?.gross?.toLocaleString() || 'null'}, capacity=${data.thisWeek?.capacity || 'null'}%, atp=$${data.thisWeek?.atp || 'null'}`);
     }
   } else {
-    // Pre-write backup
-    backupGrosses();
+    // Pre-write backup (only when overwriting the real data file)
+    if (!OUT_DIR) backupGrosses();
 
-    fs.writeFileSync(GROSSES_PATH, JSON.stringify(grossesData, null, 2) + '\n');
-    console.log(`\nWrote grosses data to ${GROSSES_PATH}`);
+    writeJson(GROSSES_OUT_PATH, grossesData);
+    console.log(`\nWrote grosses data to ${GROSSES_OUT_PATH}`);
 
-    fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
-    console.log(`Wrote grosses history to ${HISTORY_PATH} (${Object.keys(history.weeks).length} weeks stored)`);
+    writeJson(HISTORY_OUT_PATH, history);
+    console.log(`Wrote grosses history to ${HISTORY_OUT_PATH} (${Object.keys(history.weeks).length} weeks stored)` +
+      (backfilledWeeks.length ? `; backfilled ${backfilledWeeks.join(', ')}` : ''));
   }
 
   console.log(`\nScrape source: ${result.source}`);
 }
 
-// Run the scraper
-scrapeGrosses().catch((error) => {
-  console.error('Fatal error:', error);
-  process.exit(1);
-});
+// Run the scraper. cleanupScraper() closes the browser fetchPage()'s
+// Playwright tier may have opened (it would otherwise keep node alive) and
+// prints the provider-spend summary.
+scrapeGrosses()
+  .then(() => cleanupScraper())
+  .catch(async (error) => {
+    // A ScrapeAbort's reason is already logged; anything else is unexpected.
+    if (!(error instanceof ScrapeAbort)) console.error('Fatal error:', error);
+    try { await cleanupScraper(); } catch { /* exiting anyway */ }
+    process.exit(1);
+  });
