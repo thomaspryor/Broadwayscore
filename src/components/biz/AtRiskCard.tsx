@@ -1,6 +1,8 @@
 /**
- * AtRiskCard - Card for shows at risk (below break-even or declining)
- * Sprint 2, Task 2.4
+ * AtRiskCard - Card for shows at risk
+ * Sprint 2, Task 2.4. BRO-4623: compares the trailing 4-week average gross
+ * with the same break-even the show page uses (getBreakEven), and shows the
+ * model's optimistic case that put the show on the list.
  */
 
 import Link from 'next/link';
@@ -13,16 +15,20 @@ interface AtRiskCardProps {
   title: string;
   season: string;
   capitalization: number | null;
-  weeklyGross: number;
+  /** Trailing 4-week average gross. */
+  avgWeeklyGross: number;
+  /** getBreakEven(): model break-even above the quality floor, else weekly running cost. */
   breakEven: number;
+  /** Model [pessimistic, central, optimistic]. */
+  modelRecoupmentPct: [number, number, number];
   trend: RecoupmentTrend;
 }
 
 const TREND_LABELS: Record<RecoupmentTrend, string> = {
-  improving: 'Improving',
-  steady: 'Steady',
-  declining: 'Declining',
-  unknown: 'Unknown',
+  improving: 'Grosses up',
+  steady: 'Grosses steady',
+  declining: 'Grosses down',
+  unknown: 'Not enough weeks',
 };
 
 export default function AtRiskCard({
@@ -30,13 +36,14 @@ export default function AtRiskCard({
   title,
   season,
   capitalization,
-  weeklyGross,
+  avgWeeklyGross,
   breakEven,
+  modelRecoupmentPct,
   trend,
 }: AtRiskCardProps) {
   const trendLabel = TREND_LABELS[trend];
-  const deficit = breakEven - weeklyGross;
-  const isBelowBreakEven = weeklyGross < breakEven;
+  const deficit = Math.max(0, breakEven - avgWeeklyGross);
+  const optimistic = Math.max(0, Math.round(modelRecoupmentPct[2]));
 
   return (
     <Link
@@ -51,24 +58,29 @@ export default function AtRiskCard({
       </div>
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
-        <span className="text-gray-500">Investment</span>
+        <span className="text-gray-500">Capitalization</span>
         <span className="text-white">{formatEstimatedCurrency(capitalization)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Weekly Gross</span>
-        <span className="text-white">{formatCurrency(weeklyGross)}</span>
+        <span className="text-gray-500">Avg gross (4 wks)</span>
+        <span className="text-white">{formatCurrency(avgWeeklyGross)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Break-even</span>
+        <span className="text-gray-500">Est. break-even</span>
         <span className="text-white">~{formatCurrency(breakEven)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Trend</span>
+        <span className="text-gray-500">Gap</span>
+        <span className="text-red-400">-{formatCurrency(deficit)} a week</span>
+      </div>
+      <div className="flex justify-between text-sm mt-1">
+        <span className="text-gray-500">Est. recouped (best case)</span>
+        <span className="text-white">~{optimistic}%</span>
+      </div>
+      <div className="flex justify-between text-sm mt-1">
+        <span className="text-gray-500">Trend (4 wks)</span>
         <span className={getTrendColor(trend, false)} aria-label={trendLabel}>
-          {getTrendIcon(trend, false)}{' '}
-          {isBelowBreakEven
-            ? `Below break-even (-${formatCurrency(deficit)})`
-            : trendLabel}
+          {getTrendIcon(trend, false)} {trendLabel}
         </span>
       </div>
     </Link>

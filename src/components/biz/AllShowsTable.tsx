@@ -1,77 +1,54 @@
 'use client';
 
 /**
- * AllShowsTable - Full sortable table of all open shows with commercial data
+ * AllShowsTable - Full sortable table of shows with commercial data
+ * (/biz running shows, /biz/season/[season] all shows).
  * Sprint 2, Task 2.6. % Recouped / Return columns added Sprint A (task #158).
+ * BRO-4623: Return shows only a reported investor multiple (never the model);
+ * closed shows with a final designation show no model figures; closed TBD
+ * reads "Undisclosed".
  */
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
-  getDesignationColor,
   getDesignationSortOrder,
   getTrendColor,
   getTrendIcon,
 } from '@/config/commercial';
-import type { CommercialDesignation, RecoupmentTrend } from '@/lib/data-types';
+import type { CommercialShowRow } from '@/lib/data-types';
 import { formatCurrency, formatEstimatedCurrency } from '@/lib/biz-format';
-import { getRecoupmentDisplayMode, meetsModelQualityFloor } from '@/lib/commercial-display';
+import {
+  getRecoupmentDisplayMode,
+  getDesignationDisplay,
+  publicSourceText,
+  isClosedWithoutRecouping,
+} from '@/lib/commercial-display';
+import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from '@/components/RecoupmentProgressBar';
 
-interface ShowData {
-  slug: string;
-  title: string;
-  designation: CommercialDesignation;
-  capitalization: number | null;
-  weeklyGross: number | null;
-  totalGross?: number | null;
-  estimatedRecoupmentPct: [number, number] | null;
-  modelRecoupmentPct?: [number, number, number] | null;
-  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
-  modelDataQuality?: 'high' | 'medium' | 'low';
-  investorMultiple?: number | null;
-  recoupedSource?: string | null;
-  trend: RecoupmentTrend;
-  recouped: boolean | null;
-  recoupedWeeks: number | null;
-}
-
 interface AllShowsTableProps {
-  shows: ShowData[];
+  shows: CommercialShowRow[];
   initialLimit?: number;
 }
 
 type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'totalGross' | 'recoupment' | 'return';
 type SortDirection = 'asc' | 'desc';
 
-/** Profit multiple for the Return column — investorMultiple when reported,
- *  else the model's central estimate (only above the quality floor). Blank
- *  for anything not confirmed recouped.
- *
- *  This is the same ratio the shared RecoupmentProgressBar already uses to
- *  render "~Nx returned to investors" once modelRecoupmentPct crosses 200%
- *  (see src/components/RecoupmentProgressBar.tsx) — percent-of-capitalization
- *  recouped and multiple-of-capital-returned are the same number at
- *  different scales, not two different metrics. */
-function getProfitMultiple(show: ShowData): number | null {
-  if (!show.recouped) return null;
-  if (show.investorMultiple != null) return show.investorMultiple;
-  if (show.modelRecoupmentPct && meetsModelQualityFloor(show)) {
-    return show.modelRecoupmentPct[1] / 100;
-  }
-  return null;
-}
+const RECOUPED_SORT_VALUE = 1_000_000;
 
-/** Sort key for the % Recouped column — mirrors what RecoupedCell actually
- *  renders (via getRecoupmentDisplayMode/meetsModelQualityFloor) so a row
- *  showing "—" never sorts as if it had a real number. No fallback to the
- *  legacy AI-estimated `estimatedRecoupmentPct` — that value is exactly
- *  what the quality floor excludes from display. */
-function getRecoupedSortValue(show: ShowData): number {
+/** Sort key for the % Recouped column. Mirrors what RecoupedCell renders, so
+ *  a row showing "—" never sorts as if it had a number. Recouped shows sort
+ *  above every estimate without consulting the (hidden) model. */
+function getRecoupedSortValue(show: CommercialShowRow): number {
   const mode = getRecoupmentDisplayMode(show);
-  if (mode === 'announced') return show.modelRecoupmentPct?.[1] ?? 100;
+  if (mode === 'announced') return RECOUPED_SORT_VALUE;
   if (mode === 'model') return show.modelRecoupmentPct![1];
   return -Infinity;
+}
+
+function formatMultiple(m: number): string {
+  return `${m < 10 ? m.toFixed(2) : m.toFixed(1)}x`;
 }
 
 function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
@@ -97,13 +74,15 @@ function CitationIcon() {
   );
 }
 
-/** % Recouped cell: announced/cited recoupment renders solid + a citation
- *  marker; a modeled estimate renders the shared progress bar with a "~"
- *  provenance tooltip; anything below the quality floor renders "—". */
-function RecoupedCell({ show }: { show: ShowData }) {
+/** % Recouped cell: a recoupment record renders solid + a citation marker; a
+ *  modeled estimate renders the shared progress bar (labelled "Est."); a
+ *  closed Fizzle or Flop says "Did not recoup" (isClosedWithoutRecouping);
+ *  anything else renders "—". */
+function RecoupedCell({ show }: { show: CommercialShowRow }) {
   const displayMode = getRecoupmentDisplayMode(show);
 
   if (displayMode === 'announced') {
+    const source = publicSourceText(show.recoupedSource);
     return (
       <div className="flex items-center gap-1.5">
         <span className="inline-flex items-center gap-1 text-emerald-400 font-semibold text-sm">
@@ -112,11 +91,11 @@ function RecoupedCell({ show }: { show: ShowData }) {
           </svg>
           Recouped
         </span>
-        {show.recoupedSource && (
+        {source && (
           <span
             className="text-gray-500 cursor-help"
-            title={`Source: ${show.recoupedSource}`}
-            aria-label={`Cited source: ${show.recoupedSource}`}
+            title={`Source: ${source}`}
+            aria-label={`Source: ${source}`}
           >
             <CitationIcon />
           </span>
@@ -127,10 +106,14 @@ function RecoupedCell({ show }: { show: ShowData }) {
 
   if (displayMode === 'model' && show.modelRecoupmentPct) {
     return (
-      <div className="w-36 sm:w-40" title="Modeled estimate — see methodology">
+      <div className="w-36 sm:w-40" title="Model estimate, not a reported figure. See methodology.">
         <RecoupmentProgressBar estimatedPct={show.modelRecoupmentPct} modelMethod={show.modelMethod} />
       </div>
     );
+  }
+
+  if (isClosedWithoutRecouping(show)) {
+    return <span className="text-gray-400 text-sm">Did not recoup</span>;
   }
 
   return <span className="text-gray-500">—</span>;
@@ -140,6 +123,9 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
   const [sortColumn, setSortColumn] = useState<SortColumn>('designation');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expanded, setExpanded] = useState(false);
+
+  // Return column only when at least one row has a reported multiple.
+  const showReturnColumn = shows.some((s) => s.reportedMultiple != null);
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
@@ -169,17 +155,14 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
         case 'totalGross':
           comparison = (a.totalGross ?? -Infinity) - (b.totalGross ?? -Infinity);
           break;
-        case 'recoupment': {
+        case 'recoupment':
           comparison = getRecoupedSortValue(a) - getRecoupedSortValue(b);
           break;
-        }
-        case 'return': {
-          const aVal = getProfitMultiple(a) ?? -Infinity;
-          const bVal = getProfitMultiple(b) ?? -Infinity;
-          comparison = aVal - bVal;
+        case 'return':
+          comparison = (a.reportedMultiple ?? -Infinity) - (b.reportedMultiple ?? -Infinity);
           break;
-        }
       }
+      if (Number.isNaN(comparison)) comparison = 0; // -Infinity - -Infinity
       return sortDirection === 'asc' ? comparison : -comparison;
     });
   }, [shows, sortColumn, sortDirection]);
@@ -212,6 +195,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group"
                 onClick={() => handleSort('recoupment')}
                 aria-sort={sortColumn === 'recoupment' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                title="Recouped when trade press or an SEC filing reports it. Otherwise our model's estimate, with its range."
               >
                 % Recouped
                 <SortIcon active={sortColumn === 'recoupment'} direction={sortDirection} />
@@ -248,22 +232,29 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 Total Gross
                 <SortIcon active={sortColumn === 'totalGross'} direction={sortDirection} />
               </th>
+              {showReturnColumn && (
+                <th
+                  className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden sm:table-cell"
+                  onClick={() => handleSort('return')}
+                  aria-sort={sortColumn === 'return' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                  title="Investor return multiple as reported by trade press or SEC filings. Blank when none has been reported."
+                >
+                  Reported Return
+                  <SortIcon active={sortColumn === 'return'} direction={sortDirection} />
+                </th>
+              )}
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden sm:table-cell"
-                onClick={() => handleSort('return')}
-                aria-sort={sortColumn === 'return' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
-                title="Profit multiple for recouped shows"
+                className="py-3 px-4 font-medium hidden sm:table-cell"
+                title="Recouped shows: weeks from opening night to the reported recoupment date (mid-month when only the month was reported; blank when only the year was). Running shows: average gross of the last 4 weeks vs the 4 weeks before."
               >
-                Return
-                <SortIcon active={sortColumn === 'return'} direction={sortDirection} />
+                Time to Recoup
               </th>
-              <th className="py-3 px-4 font-medium hidden sm:table-cell" title="Weeks to recoup (for recouped shows) or trend (for in-progress shows)">Time to Recoup</th>
             </tr>
           </thead>
           <tbody className="text-gray-300">
             {displayShows.map((show) => {
-              const designationColorClass = getDesignationColor(show.designation);
-              const multiple = getProfitMultiple(show);
+              const designation = getDesignationDisplay(show.designation, show.status);
+              const running = isRunningStatus(show.status);
               return (
                 <tr
                   key={show.slug}
@@ -281,34 +272,44 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     <RecoupedCell show={show} />
                   </td>
                   <td className="py-3 px-4">
-                    <span className={designationColorClass}>{show.designation}</span>
+                    <span className={designation.textClass} title={designation.description}>
+                      {designation.label}
+                    </span>
                   </td>
                   <td className="py-3 px-4">
-                    {formatEstimatedCurrency(show.capitalization)}
+                    {show.capitalization == null ? (
+                      <span className="text-gray-500">Undisclosed</span>
+                    ) : (
+                      formatEstimatedCurrency(show.capitalization)
+                    )}
                   </td>
                   <td className="py-3 px-4 hidden md:table-cell">
-                    {formatCurrency(show.weeklyGross)}
+                    {running ? formatCurrency(show.weeklyGross) : <span className="text-gray-500">Closed</span>}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">
                     {formatCurrency(show.totalGross ?? null)}
                   </td>
-                  <td className="py-3 px-4 hidden sm:table-cell">
-                    {multiple !== null ? (
-                      <span className="text-emerald-400 font-medium">~{multiple.toFixed(1)}x</span>
-                    ) : (
-                      <span className="text-gray-500">—</span>
-                    )}
-                  </td>
+                  {showReturnColumn && (
+                    <td className="py-3 px-4 hidden sm:table-cell">
+                      {show.reportedMultiple != null ? (
+                        <span className="text-emerald-400 font-medium">{formatMultiple(show.reportedMultiple)}</span>
+                      ) : (
+                        <span className="text-gray-500">—</span>
+                      )}
+                    </td>
+                  )}
                   <td className="py-3 px-4 hidden sm:table-cell">
                     <span
                       className={getTrendColor(show.trend, show.recouped)}
-                      aria-label={show.recouped ? 'Recouped' : show.trend}
+                      aria-label={show.recouped ? 'Recouped' : running ? show.trend : 'Not running'}
                     >
                       {show.recouped
                         ? show.recoupedWeeks
                           ? `~${show.recoupedWeeks} wks`
                           : '—'
-                        : getTrendIcon(show.trend, show.recouped)}
+                        : running
+                          ? getTrendIcon(show.trend, show.recouped)
+                          : '—'}
                     </span>
                   </td>
                 </tr>
@@ -320,7 +321,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
       {shows.length > initialLimit && (
         <div className="p-4 border-t border-white/5 text-center">
           <span className="text-gray-500 text-sm">
-            Showing {displayShows.length} of {shows.length} open shows ·{' '}
+            Showing {displayShows.length} of {shows.length} shows ·{' '}
           </span>
           <button
             onClick={() => setExpanded(!expanded)}

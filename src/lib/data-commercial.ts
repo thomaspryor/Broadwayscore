@@ -2,6 +2,10 @@
 // Imports: commercial.json (~88 KB), grosses-history.json (~234 KB), shows.json (~1.3 MB)
 // Also imports getShowGrosses from data-grosses (~112 KB)
 // Does NOT import reviews.json — uses raw show metadata instead of computed scores
+//
+// Pure rules (weeks to recoup, trends, capital totals, at-risk/approaching
+// gates) live in ./commercial-metrics and ./commercial-display so they are
+// unit-tested with fixtures; this module only feeds them data.
 
 import type { RawShow } from './engine';
 import type {
@@ -12,13 +16,34 @@ import type {
   RecentRecoupmentShow,
   RecentClosing,
   UpcomingClosing,
+  CommercialShowRow,
 } from './data-types';
 import type { CommercialDesignation, RecoupmentTrend } from '@/config/commercial';
 import { getDesignationSortOrder } from '@/config/commercial';
 import { getShowGrosses } from './data-grosses';
+import {
+  calculateWeeksToRecoup,
+  computeGrossTrend,
+  trailingAverageGross,
+  summarizeCapital,
+  isExcludedFromSeasonStats,
+  isRunningStatus,
+  isAtRisk,
+  isApproachingRecoupment,
+  DISPLAY_TREND_THRESHOLD_PCT,
+} from './commercial-metrics';
+import {
+  getDisplayableModelRange,
+  getBreakEven,
+  getReportedInvestorMultiple,
+  publicSourceText,
+} from './commercial-display';
 import commercialData from '../../data/commercial.json';
 import grossesHistoryData from '../../data/grosses-history.json';
 import showsData from '../../data/shows.json';
+
+// Re-exported so existing imports from data-commercial / data.ts keep working.
+export { calculateWeeksToRecoup };
 
 // Internal types
 interface CommercialFile {
@@ -28,6 +53,8 @@ interface CommercialFile {
     sources: string;
     designations: Record<string, string>;
   };
+  /** Date the recoupment model last ran (merge-model-recoupment.js). */
+  modelLastRun?: string;
   shows: Record<string, ShowCommercial>;
 }
 
@@ -51,41 +78,12 @@ const commercial = commercialData as unknown as CommercialFile;
 const grossesHistory = grossesHistoryData as unknown as GrossesHistoryFile;
 const rawShows = showsData.shows as RawShow[];
 
+/** Every reported week across Broadway, newest first. */
+const WEEK_KEYS_NEWEST_FIRST = Object.keys(grossesHistory.weeks).sort().reverse();
+
 // ============================================
 // Pure utility functions
 // ============================================
-
-/**
- * Calculate weeks to recoup from opening date and recoup date
- * This is the source of truth - never use manually stored recoupedWeeks
- */
-export function calculateWeeksToRecoup(openingDate: string | null, recoupedDate: string | null): number | null {
-  if (!openingDate || !recoupedDate) return null;
-
-  try {
-    const openDate = new Date(openingDate);
-    if (isNaN(openDate.getTime())) return null;
-
-    let recoupDate: Date;
-    if (/^\d{4}-\d{2}$/.test(recoupedDate)) {
-      const [year, month] = recoupedDate.split('-');
-      recoupDate = new Date(parseInt(year), parseInt(month), 0);
-    } else if (/^\d{4}$/.test(recoupedDate)) {
-      recoupDate = new Date(parseInt(recoupedDate), 11, 31);
-    } else {
-      return null;
-    }
-
-    if (isNaN(recoupDate.getTime())) return null;
-
-    const diffMs = recoupDate.getTime() - openDate.getTime();
-    if (diffMs < 0) return null;
-
-    return Math.round(diffMs / (7 * 24 * 60 * 60 * 1000));
-  } catch {
-    return null;
-  }
-}
 
 /**
  * Get Broadway season for a given date
@@ -189,6 +187,13 @@ export function getCommercialLastUpdated(): string {
 }
 
 /**
+ * Date the recoupment model last ran, or null when the file does not say.
+ */
+export function getCommercialModelLastRun(): string | null {
+  return commercial.modelLastRun ?? null;
+}
+
+/**
  * Get commercial designation description
  */
 export function getDesignationDescription(designation: CommercialDesignation): string {
@@ -198,6 +203,17 @@ export function getDesignationDescription(designation: CommercialDesignation): s
 // ============================================
 // Biz Dashboard / Investment Tracker
 // ============================================
+
+/**
+ * Weekly grosses for a show over the most recent `weeks` Broadway weeks,
+ * newest first. A week the show did not report is null, so a closed show's
+ * recent window is all null.
+ */
+export function getRecentGrosses(slug: string, weeks: number = 8): Array<number | null> {
+  return WEEK_KEYS_NEWEST_FIRST.slice(0, weeks).map(
+    (key) => grossesHistory.weeks[key]?.[slug]?.gross ?? null
+  );
+}
 
 /**
  * Get all seasons that have commercial data, sorted by most recent first
@@ -221,10 +237,16 @@ export function getSeasonsWithCommercialData(): string[] {
 
 /**
  * Get season statistics: capital at risk, recoupment count, etc.
+ *
+ * Capital at risk (BRO-4623 P0-6) = every running (open/previews) commercial
+ * show that has not recouped, whatever its designation, with unknown
+ * capitalizations counted as undisclosed rather than $0. It used to sum only
+ * TBD + open + known-cap shows, so a season of running shows read "~$0".
  */
 export function getSeasonStats(season: string): SeasonStats {
   const recoupedShowsList: string[] = [];
-  let capitalAtRisk = 0;
+  const atRiskCaps: Array<number | null> = [];
+  const allCaps: Array<number | null> = [];
   let recoupedCount = 0;
   let totalShows = 0;
 
@@ -235,30 +257,25 @@ export function getSeasonStats(season: string): SeasonStats {
     const showSeason = getSeason(show.openingDate);
     if (showSeason !== season) continue;
 
-    // Pure nonprofits and tour stops have no commercial capital-at-risk so they're
-    // excluded from recoupment math. Enhancement deals (e.g. Ragtime LCT 2025) keep
-    // designation='Nonprofit' for taxonomy but carry commercial co-producer capital —
-    // include them so capital-at-risk isn't silently underreported.
-    const isPureNonprofit = data.designation === 'Nonprofit' && data.productionType !== 'enhancement';
-    if (isPureNonprofit || data.designation === 'Tour Stop') continue;
+    // Pure nonprofits and tour stops are left out; enhancement deals stay in
+    // (isExcludedFromSeasonStats, tested in tests/unit/season-stats-enhancement-filter.test.mjs).
+    if (isExcludedFromSeasonStats(data)) continue;
 
     totalShows++;
+    allCaps.push(data.capitalization);
 
     if (data.recouped === true) {
       recoupedCount++;
       recoupedShowsList.push(show.title);
-    } else if (
-      data.designation === 'TBD' &&
-      show.status === 'open' &&
-      data.capitalization
-    ) {
-      capitalAtRisk += data.capitalization;
+    } else if (isRunningStatus(show.status)) {
+      atRiskCaps.push(data.capitalization);
     }
   }
 
   return {
     season,
-    capitalAtRisk,
+    capitalAtRisk: summarizeCapital(atRiskCaps),
+    totalCapital: summarizeCapital(allCaps),
     recoupedCount,
     totalShows,
     recoupedShows: recoupedShowsList,
@@ -266,47 +283,18 @@ export function getSeasonStats(season: string): SeasonStats {
 }
 
 /**
- * Get recoupment trend for a show based on recent grosses history
- * Uses last 4 weeks of data, calculates average WoW change.
+ * Box office trend for a show: trailing 4-week mean gross vs the prior
+ * 4-week mean (computeGrossTrend). It used to average the last three
+ * week-over-week changes, which a single holiday week could swing.
  *
- * `threshold` controls how big an average WoW swing must be to call it a
- * trend rather than 'steady' — default 2 (%) is tuned for the display badge.
- * Callers that need to distinguish a genuine flop trajectory from ordinary
- * seasonal softness (e.g. the approaching-recoupment gate) should pass a
- * larger threshold instead of duplicating this calculation.
+ * `threshold` is the % change in the 4-week mean that counts as a trend
+ * rather than 'steady'. The default is tuned for the display badge; callers
+ * that need to tell a genuine slide from ordinary seasonal softness (the
+ * approaching-recoupment gate) pass a larger one instead of duplicating this.
+ * Closed shows get 'unknown' (no recent weeks).
  */
-export function getRecoupmentTrend(slug: string, threshold: number = 2): RecoupmentTrend {
-  const weekKeys = Object.keys(grossesHistory.weeks).sort().reverse();
-
-  if (weekKeys.length < 3) return 'unknown';
-
-  const grosses: number[] = [];
-  for (let i = 0; i < Math.min(4, weekKeys.length); i++) {
-    const weekData = grossesHistory.weeks[weekKeys[i]]?.[slug];
-    if (weekData?.gross) {
-      grosses.push(weekData.gross);
-    }
-  }
-
-  if (grosses.length < 3) return 'unknown';
-
-  const wowChanges: number[] = [];
-  for (let i = 0; i < grosses.length - 1; i++) {
-    const current = grosses[i];
-    const previous = grosses[i + 1];
-    if (previous > 0) {
-      const change = ((current - previous) / previous) * 100;
-      wowChanges.push(change);
-    }
-  }
-
-  if (wowChanges.length === 0) return 'unknown';
-
-  const avgChange = wowChanges.reduce((a, b) => a + b, 0) / wowChanges.length;
-
-  if (avgChange > threshold) return 'improving';
-  if (avgChange < -threshold) return 'declining';
-  return 'steady';
+export function getRecoupmentTrend(slug: string, threshold: number = DISPLAY_TREND_THRESHOLD_PCT): RecoupmentTrend {
+  return computeGrossTrend(getRecentGrosses(slug, 8), threshold);
 }
 
 // ============================================
@@ -411,36 +399,36 @@ export function getSeasonGrossTrend(): SeasonGrossTrend {
 }
 
 // Gate threshold (%) for excluding a show from "Approaching Recoupment" on
-// trend alone. Deliberately coarser than the display badge's default (2%):
-// at 2%, ordinary seasonal softness (summer, post-Tony) flags 'declining'
-// on nearly every open show at once, which silently zeroed out this whole
-// section regardless of how strong the underlying recoupment estimate was.
-// 8% requires an actual flop trajectory, not a slow week.
-const APPROACHING_RECOUPMENT_SHARP_DECLINE_THRESHOLD_PCT = 8;
+// trend alone: the 4-week mean gross down more than this vs the prior 4
+// weeks. Deliberately coarser than the display badge's threshold: at the
+// badge's setting, ordinary seasonal softness (summer, post-Tony) flags
+// 'declining' on nearly every open show at once, which silently zeroed out
+// this whole section. 15% on 4-week means is roughly the old 8%-average-WoW
+// setting over the same span: an actual slide, not a slow week.
+export const APPROACHING_RECOUPMENT_SHARP_DECLINE_THRESHOLD_PCT = 15;
 
 /**
- * Get shows approaching recoupment (TBD with 40%+ recoupment estimate, not declining)
+ * Shows approaching recoupment (BRO-4623 P1-2): open, TBD, not recouped,
+ * with a model range that clears the display quality floor AND whose
+ * pessimistic case is at least 50% (isApproachingRecoupment), and no sharp
+ * gross decline. Legacy AI estimates (estimatedRecoupmentPct) are never used:
+ * the card would contradict the table, which hides them.
  */
 export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
   const results: ApproachingRecoupmentShow[] = [];
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
-    if (data.designation !== 'TBD') continue;
-
-    // Use model data if available, fall back to AI estimates
-    const recoupPct = data.modelRecoupmentPct || data.estimatedRecoupmentPct;
-    if (!recoupPct) continue;
-
-    const lower = recoupPct[0];
-    if (lower < 40) continue;
+    if (data.designation !== 'TBD' || data.recouped === true) continue;
 
     const show = rawShows.find(s => s.slug === slug);
     if (!show || show.status !== 'open') continue;
 
-    const isSharpDecline = getRecoupmentTrend(slug, APPROACHING_RECOUPMENT_SHARP_DECLINE_THRESHOLD_PCT) === 'declining';
-    if (isSharpDecline) continue;
+    const range = getDisplayableModelRange({ ...data, status: show.status });
+    if (!range || !isApproachingRecoupment(range)) continue;
 
-    const trend = getRecoupmentTrend(slug);
+    const isSharpDecline =
+      getRecoupmentTrend(slug, APPROACHING_RECOUPMENT_SHARP_DECLINE_THRESHOLD_PCT) === 'declining';
+    if (isSharpDecline) continue;
 
     const grossData = getShowGrosses(slug);
 
@@ -449,24 +437,22 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization ?? null,
-      estimatedRecoupmentPct: data.estimatedRecoupmentPct || [0, 0],
-      modelRecoupmentPct: data.modelRecoupmentPct || null,
+      modelRecoupmentPct: range,
       modelMethod: data.modelMethod || null,
-      trend,
+      trend: getRecoupmentTrend(slug),
       weeklyGross: grossData?.thisWeek?.gross || null,
     });
   }
 
-  // Sort by best available recoupment estimate (model central or AI high)
-  return results.sort((a, b) => {
-    const aVal = a.modelRecoupmentPct?.[1] ?? a.estimatedRecoupmentPct[1];
-    const bVal = b.modelRecoupmentPct?.[1] ?? b.estimatedRecoupmentPct[1];
-    return bVal - aVal;
-  });
+  // Highest central estimate first
+  return results.sort((a, b) => b.modelRecoupmentPct[1] - a.modelRecoupmentPct[1]);
 }
 
 /**
- * Get shows truly at risk (below break-even AND below 30% recouped)
+ * Shows truly at risk (BRO-4623 P0-7, P1-3): running, unrecouped, trailing
+ * 4-week average gross below break-even (getBreakEven, the same figure the
+ * show page uses), AND under 30% recouped even in the model's optimistic
+ * case. A show with no displayable estimate is skipped, never defaulted to 0%.
  */
 export function getShowsAtRisk(): AtRiskShow[] {
   const results: AtRiskShow[] = [];
@@ -475,42 +461,39 @@ export function getShowsAtRisk(): AtRiskShow[] {
     if (data.designation !== 'TBD') continue;
 
     const show = rawShows.find(s => s.slug === slug);
-    if (!show || show.status !== 'open') continue;
+    if (!show) continue;
 
-    const trend = getRecoupmentTrend(slug);
-    const grossData = getShowGrosses(slug);
-    const weeklyGross = grossData?.thisWeek?.gross;
-    const weeklyRunningCost = data.weeklyRunningCost;
+    const range = getDisplayableModelRange({ ...data, status: show.status });
+    const avgGross = trailingAverageGross(getRecentGrosses(slug, 4));
+    const breakEven = getBreakEven(data);
 
-    if (!weeklyGross || !weeklyRunningCost) continue;
-
-    const isBelowBreakEven = weeklyGross < weeklyRunningCost;
-    // Use model optimistic (index 2) or AI high (index 1)
-    const estRecoupmentHigh = data.modelRecoupmentPct?.[2] ?? data.estimatedRecoupmentPct?.[1] ?? 0;
-    const isBelowRecoupmentThreshold = estRecoupmentHigh < 30;
-
-    if (!isBelowBreakEven || !isBelowRecoupmentThreshold) continue;
+    if (!isAtRisk({ status: show.status, recouped: data.recouped, recoupmentRange: range, avgGross, breakEven })) {
+      continue;
+    }
 
     results.push({
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization ?? null,
-      weeklyGross,
-      weeklyRunningCost,
-      trend,
+      avgWeeklyGross: avgGross as number,
+      breakEven: breakEven as number,
+      modelRecoupmentPct: range as [number, number, number],
+      trend: getRecoupmentTrend(slug),
     });
   }
 
   return results.sort((a, b) => {
-    const deficitA = a.weeklyRunningCost - a.weeklyGross;
-    const deficitB = b.weeklyRunningCost - b.weeklyGross;
+    const deficitA = a.breakEven - a.avgWeeklyGross;
+    const deficitB = b.breakEven - b.avgWeeklyGross;
     return deficitB - deficitA;
   });
 }
 
 /**
- * Get shows that recouped within the specified number of months
+ * Get shows that recouped within the specified number of months.
+ * weeksToRecoup is null when only the recoupment year is known (or the date
+ * is inconsistent with the run); those rows stay listed with a blank week count.
  */
 export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[] {
   const results: RecentRecoupmentShow[] = [];
@@ -526,14 +509,11 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
     const show = rawShows.find(s => s.slug === slug);
     if (!show) continue;
 
-    const weeksToRecoup = calculateWeeksToRecoup(show.openingDate, data.recoupedDate);
-    if (weeksToRecoup === null) continue;
-
     results.push({
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
-      weeksToRecoup,
+      weeksToRecoup: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
       capitalization: data.capitalization ?? null,
       recoupDate: data.recoupedDate,
     });
@@ -613,66 +593,43 @@ export function getUpcomingClosings(): UpcomingClosing[] {
 }
 
 /**
+ * One /biz table row. Closed shows get no weekly gross and no trend (their
+ * recent weeks are empty); only a reported, cited investor multiple is passed
+ * (getReportedInvestorMultiple), never a modeled one.
+ */
+function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial): CommercialShowRow {
+  const grossData = getShowGrosses(slug);
+  const running = isRunningStatus(show.status);
+  return {
+    slug,
+    title: show.title,
+    status: show.status,
+    designation: data.designation,
+    capitalization: data.capitalization,
+    weeklyGross: running ? grossData?.thisWeek?.gross || null : null,
+    totalGross: grossData?.allTime?.gross || null,
+    modelRecoupmentPct: data.modelRecoupmentPct || null,
+    modelMethod: data.modelMethod || null,
+    modelDataQuality: data.modelDataQuality,
+    reportedMultiple: getReportedInvestorMultiple(data),
+    // AllShowsTable is a client component: the row lands in the page payload, so only publishable text.
+    recoupedSource: publicSourceText(data.recoupedSource),
+    trend: running ? getRecoupmentTrend(slug) : 'unknown',
+    recouped: data.recouped,
+    recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
+  };
+}
+
+/**
  * Get all open shows with commercial data for the full table
  */
-export function getAllOpenShowsWithCommercial(): Array<{
-  slug: string;
-  title: string;
-  designation: CommercialDesignation;
-  capitalization: number | null;
-  weeklyGross: number | null;
-  totalGross: number | null;
-  estimatedRecoupmentPct: [number, number] | null;
-  modelRecoupmentPct?: [number, number, number] | null;
-  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
-  modelDataQuality?: 'high' | 'medium' | 'low';
-  investorMultiple?: number | null;
-  recoupedSource?: string | null;
-  trend: RecoupmentTrend;
-  recouped: boolean | null;
-  recoupedWeeks: number | null;
-}> {
-  const results: Array<{
-    slug: string;
-    title: string;
-    designation: CommercialDesignation;
-    capitalization: number | null;
-    weeklyGross: number | null;
-    totalGross: number | null;
-    estimatedRecoupmentPct: [number, number] | null;
-    modelRecoupmentPct?: [number, number, number] | null;
-    modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
-    modelDataQuality?: 'high' | 'medium' | 'low';
-    investorMultiple?: number | null;
-    recoupedSource?: string | null;
-    trend: RecoupmentTrend;
-    recouped: boolean | null;
-    recoupedWeeks: number | null;
-  }> = [];
+export function getAllOpenShowsWithCommercial(): CommercialShowRow[] {
+  const results: CommercialShowRow[] = [];
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find(s => s.slug === slug);
     if (!show || show.status !== 'open') continue;
-
-    const grossData = getShowGrosses(slug);
-
-    results.push({
-      slug,
-      title: show.title,
-      designation: data.designation,
-      capitalization: data.capitalization,
-      weeklyGross: grossData?.thisWeek?.gross || null,
-      totalGross: grossData?.allTime?.gross || null,
-      estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
-      modelRecoupmentPct: data.modelRecoupmentPct || null,
-      modelMethod: data.modelMethod || null,
-      modelDataQuality: data.modelDataQuality,
-      investorMultiple: data.investorMultiple,
-      recoupedSource: data.recoupedSource,
-      trend: getRecoupmentTrend(slug),
-      recouped: data.recouped,
-      recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
-    });
+    results.push(toCommercialShowRow(slug, show, data));
   }
 
   return results;
@@ -682,42 +639,8 @@ export function getAllOpenShowsWithCommercial(): Array<{
  * Get all shows from a specific season with commercial data
  * Includes both open and closed shows
  */
-export function getShowsBySeasonWithCommercial(season: string): Array<{
-  slug: string;
-  title: string;
-  status: 'open' | 'closed' | 'previews';
-  designation: CommercialDesignation;
-  capitalization: number | null;
-  weeklyGross: number | null;
-  totalGross: number | null;
-  estimatedRecoupmentPct: [number, number] | null;
-  modelRecoupmentPct?: [number, number, number] | null;
-  modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
-  modelDataQuality?: 'high' | 'medium' | 'low';
-  investorMultiple?: number | null;
-  recoupedSource?: string | null;
-  trend: RecoupmentTrend;
-  recouped: boolean | null;
-  recoupedWeeks: number | null;
-}> {
-  const results: Array<{
-    slug: string;
-    title: string;
-    status: 'open' | 'closed' | 'previews';
-    designation: CommercialDesignation;
-    capitalization: number | null;
-    weeklyGross: number | null;
-    totalGross: number | null;
-    estimatedRecoupmentPct: [number, number] | null;
-    modelRecoupmentPct?: [number, number, number] | null;
-    modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
-    modelDataQuality?: 'high' | 'medium' | 'low';
-    investorMultiple?: number | null;
-    recoupedSource?: string | null;
-    trend: RecoupmentTrend;
-    recouped: boolean | null;
-    recoupedWeeks: number | null;
-  }> = [];
+export function getShowsBySeasonWithCommercial(season: string): CommercialShowRow[] {
+  const results: CommercialShowRow[] = [];
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find(s => s.slug === slug);
@@ -726,26 +649,7 @@ export function getShowsBySeasonWithCommercial(season: string): Array<{
     const showSeason = getSeason(show.openingDate);
     if (showSeason !== season) continue;
 
-    const grossData = getShowGrosses(slug);
-
-    results.push({
-      slug,
-      title: show.title,
-      status: show.status as 'open' | 'closed' | 'previews',
-      designation: data.designation,
-      capitalization: data.capitalization,
-      weeklyGross: grossData?.thisWeek?.gross || null,
-      totalGross: grossData?.allTime?.gross || null,
-      estimatedRecoupmentPct: data.estimatedRecoupmentPct || null,
-      modelRecoupmentPct: data.modelRecoupmentPct || null,
-      modelMethod: data.modelMethod || null,
-      modelDataQuality: data.modelDataQuality,
-      investorMultiple: data.investorMultiple,
-      recoupedSource: data.recoupedSource,
-      trend: getRecoupmentTrend(slug),
-      recouped: data.recouped,
-      recoupedWeeks: calculateWeeksToRecoup(show.openingDate, data.recoupedDate),
-    });
+    results.push(toCommercialShowRow(slug, show, data));
   }
 
   return results.sort((a, b) => {

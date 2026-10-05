@@ -14,7 +14,7 @@ import {
 } from '@/lib/data-commercial';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
-import { formatEstimatedCurrency } from '@/lib/biz-format';
+import { formatCapitalSummary } from '@/lib/biz-format';
 
 // Dynamically generate params from actual data - auto-updates when shows are added
 export function generateStaticParams() {
@@ -76,9 +76,11 @@ export default function SeasonPage({ params }: { params: { season: string } }) {
     );
   }
 
-  // Calculate season totals
-  const totalCapitalization = shows.reduce((sum, s) => sum + (s.capitalization || 0), 0);
-  const openShows = shows.filter(s => s.status === 'open').length;
+  // Season totals. Unknown capitalizations are counted as undisclosed, never
+  // as $0 (BRO-4623 P0-6); nonprofit productions and tour stops are excluded.
+  const totalCapital = formatCapitalSummary(stats.totalCapital);
+  const capitalAtRisk = formatCapitalSummary(stats.capitalAtRisk);
+  const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews').length;
   const closedShows = shows.filter(s => s.status === 'closed').length;
 
   return (
@@ -103,6 +105,12 @@ export default function SeasonPage({ params }: { params: { season: string } }) {
           <p className="text-gray-400 mt-2">
             Commercial data for all Broadway productions from this season
           </p>
+          <p className="text-xs text-amber-500/70 mt-1">
+            ~ marks an estimate.{' '}
+            <Link href="/methodology#commercial" className="underline hover:text-amber-400">
+              How we measure
+            </Link>
+          </p>
         </div>
 
         {/* Season Stats Summary */}
@@ -113,21 +121,34 @@ export default function SeasonPage({ params }: { params: { season: string } }) {
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-2xl font-bold text-emerald-400">
-              {stats.recoupedCount}
+              {stats.recoupedCount}{' '}
+              <span className="text-sm text-gray-400">of {stats.totalShows}</span>
             </div>
-            <div className="text-xs text-gray-500">Recouped</div>
+            <div className="text-xs text-gray-500">Commercial shows recouped</div>
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-2xl font-bold text-white">
-              {formatEstimatedCurrency(totalCapitalization)}
+              {totalCapital.value}
             </div>
-            <div className="text-xs text-gray-500">Total Capital</div>
+            <div
+              className="text-xs text-gray-500"
+              title="Sum of known capitalizations for commercial productions. Nonprofit productions and tour stops are excluded."
+            >
+              Total Capital
+            </div>
+            {totalCapital.note && <div className="text-xs text-gray-500">{totalCapital.note}</div>}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-2xl font-bold text-amber-400">
-              {formatEstimatedCurrency(stats.capitalAtRisk)}
+              {capitalAtRisk.value}
             </div>
-            <div className="text-xs text-gray-500">Capital at Risk</div>
+            <div
+              className="text-xs text-gray-500"
+              title="Capitalization of shows still running that have not recouped. Nonprofit productions and tour stops are excluded."
+            >
+              Capital at Risk
+            </div>
+            {capitalAtRisk.note && <div className="text-xs text-gray-500">{capitalAtRisk.note}</div>}
           </div>
         </div>
 
@@ -148,8 +169,18 @@ export default function SeasonPage({ params }: { params: { season: string } }) {
         {/* Footer */}
         <footer className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-8">
           <p>
-            Data compiled from SEC filings, trade press, and industry sources.
+            Capitalization and recoupment from SEC filings and trade press. Weekly box
+            office from The Broadway League, as published by Playbill and BroadwayWorld.
+            Recoupment estimates are our model.
           </p>
+          <div className="flex gap-4 mt-3">
+            <Link href="/methodology#commercial" className="text-brand hover:text-brand-hover">
+              Methodology →
+            </Link>
+            <Link href="/feedback" className="text-brand hover:text-brand-hover">
+              Report an error →
+            </Link>
+          </div>
         </footer>
       </div>
     </div>

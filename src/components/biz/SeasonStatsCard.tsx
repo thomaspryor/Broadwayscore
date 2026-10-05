@@ -4,18 +4,20 @@
  */
 
 import Link from 'next/link';
-import { formatEstimatedCurrency } from '@/lib/biz-format';
+import { formatCapitalSummary } from '@/lib/biz-format';
+import type { CapitalSummary } from '@/lib/commercial-metrics';
 
 interface SeasonStatsCardProps {
   season: string;
-  capitalAtRisk: number;
+  /** Running, unrecouped commercial shows (see getSeasonStats). */
+  capitalAtRisk: CapitalSummary;
   recoupedCount: number;
   totalShows: number;
   recoupedShows: string[];
 }
 
 // Below this many tracked shows, a "N of M recouped" / "$X at risk" stat is
-// a single- or near-single-datapoint average — statistically misleading
+// a single- or near-single-datapoint average, statistically misleading
 // rather than informative (P0-2: a season with 1 show read "~$0 at risk,
 // 0 of 1 recouped", which looks like a data bug, not "too early to tell").
 const MIN_TRACKED_SHOWS = 5;
@@ -38,11 +40,13 @@ export default function SeasonStatsCard({
           <span className="ml-2 text-brand opacity-0 group-hover:opacity-100 transition-opacity">→</span>
         </div>
         <div className="text-sm text-gray-400">
-          Season just started — {totalShows} show{totalShows === 1 ? '' : 's'} tracked so far
+          Season just started: {totalShows} show{totalShows === 1 ? '' : 's'} tracked so far
         </div>
       </Link>
     );
   }
+
+  const atRisk = formatCapitalSummary(capitalAtRisk);
 
   return (
     <Link
@@ -56,9 +60,15 @@ export default function SeasonStatsCard({
       <div className="flex justify-between items-end">
         <div>
           <div className="text-xl font-bold text-white">
-            {formatEstimatedCurrency(capitalAtRisk)}
+            {atRisk.value}
           </div>
-          <div className="text-xs text-gray-500">Capital at Risk</div>
+          <div
+            className="text-xs text-gray-500"
+            title="Capitalization of shows still running that have not recouped. Nonprofit productions and tour stops are excluded."
+          >
+            Capital at Risk
+          </div>
+          {atRisk.note && <div className="text-xs text-gray-500">{atRisk.note}</div>}
         </div>
         <div className="text-right">
           <div className="text-xl font-bold text-white">

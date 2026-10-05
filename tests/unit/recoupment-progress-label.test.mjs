@@ -1,111 +1,81 @@
-// Guards against regression of the "15926% recouped" bug (task #41).
+// Guards the recoupment-estimate labels (task #41 "15926% recouped" bug;
+// BRO-4623 P0-1 removed the "~Nx returned to investors" regime).
 //
-// RecoupmentProgressBar renders three regimes based on the central estimate:
-//   (1) < 100%    "N% recouped"        + progress bar
-//   (2) < 200%    "N% recouped"        + progress bar (clamped at 100%)
-//   (3) >= 200%   "~Nx returned"       (multiple; no bar)
+// The model's modelRecoupmentPct is a percent of capitalization NET of SVOG
+// grants plus a reserve. It is not an investor return: Hamilton's 15926%
+// rendered as "~159.3x returned to investors" and Chicago's as ~958x, neither
+// of which any source reports. Past 100% the label now only says "100%+",
+// always as an estimate, with the range.
 //
-// The buggy state we're guarding against: Hamilton has
-// modelRecoupmentPct = [14418, 15926, 17248]. Old code rendered
-// "15926% recouped" verbatim. New code must render "~159.3x returned to
-// investors" (using regime 3).
-//
-// This test replicates the pure logic from the component so it can run without
-// React. If the component logic drifts from these expectations, either update
-// this test with the reason, or fix the component.
+// BRO-4623 moved this file from tests/unit-test-manifest.txt (node batch) to
+// tests/unit-test-manifest-tsx.txt and replaced the copied-in logic with an
+// import of the real getModelRecoupmentLabels (CLAUDE.md §15), which
+// RecoupmentProgressBar and ApproachingRecoupmentCard both render.
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-const MULTIPLE_THRESHOLD_PCT = 200;
+const { getModelRecoupmentLabels } = await import('../../src/lib/commercial-display.ts');
 
-function formatMultiple(pct) {
-  return `${(pct / 100).toFixed(1)}x`;
-}
-
-// Mirror of the component's label + range computation. Keep in sync.
-function computeLabels(estimatedPct) {
-  const isModel = estimatedPct.length === 3;
-  const low = Math.round(Math.min(...estimatedPct));
-  const high = Math.round(Math.max(...estimatedPct));
-  const central = isModel ? Math.round(estimatedPct[1]) : Math.round((low + high) / 2);
-  const asMultiple = central >= MULTIPLE_THRESHOLD_PCT;
-
-  let label, rangeLabel = null;
-  if (asMultiple) {
-    label = `~${formatMultiple(central)} returned to investors`;
-    if (isModel && low !== high) rangeLabel = `Range: ${formatMultiple(low)}–${formatMultiple(high)}`;
-  } else if (isModel) {
-    label = `${central}% recouped`;
-    if (low !== high) rangeLabel = `Range: ${low}–${high}%`;
-  } else {
-    label = low === high ? `~${low}% recouped` : `~${low}-${high}% recouped`;
+test('Hamilton (central 15926%): "100%+", never a raw percent or an investor multiple', () => {
+  // From commercial.json modelRecoupmentPct as of 2026-07-10.
+  const l = getModelRecoupmentLabels([14418.4, 15925.6, 17248.4]);
+  assert.equal(l.valueText, '100%+');
+  assert.equal(l.label, 'Est. 100%+ recouped');
+  assert.equal(l.rangeLabel, 'Range: 100%+ in every case');
+  assert.equal(l.barWidth, 100);
+  for (const text of [l.label, l.rangeLabel, l.ariaLabel]) {
+    assert.doesNotMatch(text, /15926|\d+(?:\.\d+)?x\b|returned to investors/,
+      'Regression: no raw percent past 100 and no modeled investor multiple');
   }
-  return { label, rangeLabel, asMultiple, central };
-}
-
-test('Hamilton (long-run recouped, ~159x): shows multiple, not raw %', () => {
-  // From actual commercial.json modelRecoupmentPct as of 2026-07-10.
-  const { label, rangeLabel, asMultiple } = computeLabels([14418.4, 15925.6, 17248.4]);
-  assert.equal(asMultiple, true);
-  assert.equal(label, '~159.3x returned to investors',
-    'Regression: Hamilton must not render as "15926% recouped"');
-  assert.equal(rangeLabel, 'Range: 144.2x–172.5x');
 });
 
-test('Proof (still running, ~2% recouped): shows % + bar regime', () => {
-  const { label, rangeLabel, asMultiple } = computeLabels([-17.7, 1.5, 19.4]);
-  assert.equal(asMultiple, false);
-  assert.equal(label, '2% recouped');
-  assert.equal(rangeLabel, 'Range: -18–19%');
+test('Proof (still running, ~2% recouped): estimate label + range, negative low clamps to 0', () => {
+  const l = getModelRecoupmentLabels([-17.7, 1.5, 19.4]);
+  assert.equal(l.label, 'Est. 2% recouped');
+  assert.equal(l.rangeLabel, 'Range: 0–19%');
+  assert.equal(l.barWidth, 2);
 });
 
-test('Just-recouped (central 105%): still uses % regime, not multiple', () => {
-  // Below the 200% threshold — a clamped-full bar tells the story better than "1.1x"
-  const { label, asMultiple } = computeLabels([90, 105, 120]);
-  assert.equal(asMultiple, false);
-  assert.equal(label, '105% recouped');
+test('just past capitalization (central 105%): "100%+" with a range that crosses 100', () => {
+  const l = getModelRecoupmentLabels([90, 105, 120]);
+  assert.equal(l.label, 'Est. 100%+ recouped');
+  assert.equal(l.rangeLabel, 'Range: 90%–100%+');
+  assert.equal(l.barWidth, 100);
 });
 
-test('At threshold (central exactly 200%): switches to multiple regime', () => {
-  const { label, asMultiple } = computeLabels([180, 200, 220]);
-  assert.equal(asMultiple, true);
-  assert.equal(label, '~2.0x returned to investors');
+test('central exactly 200%: no multiple regime any more', () => {
+  const l = getModelRecoupmentLabels([180, 200, 220]);
+  assert.equal(l.label, 'Est. 100%+ recouped');
+  assert.equal(l.rangeLabel, 'Range: 100%+ in every case');
 });
 
-test('AI estimate (2-tuple, low<high): still % regime unless past threshold', () => {
-  // AI estimate uses [low, high]; central = (low+high)/2. 40% recouped case.
-  const { label, asMultiple } = computeLabels([30, 50]);
-  assert.equal(asMultiple, false);
-  assert.equal(label, '~30-50% recouped');
+test('every model label says "Est." (it is an estimate, never a reported figure)', () => {
+  for (const pct of [[10, 20, 30], [40, 55, 70], [90, 105, 120], [500, 600, 700]]) {
+    assert.match(getModelRecoupmentLabels(pct).label, /^Est\. /);
+  }
 });
 
-test('AI estimate low==high renders as single-value "~N% recouped"', () => {
-  const { label } = computeLabels([65, 65]);
-  assert.equal(label, '~65% recouped');
-});
-
-test('AI estimate past threshold uses multiple regime', () => {
-  // AI-estimated shows above 2x should also use the multiple treatment.
-  const { label, asMultiple } = computeLabels([250, 350]);
-  assert.equal(asMultiple, true);
-  assert.equal(label, '~3.0x returned to investors');
-});
-
-test('Range is hidden when low==high in model regime', () => {
-  const { label, rangeLabel } = computeLabels([50, 50, 50]);
-  assert.equal(label, '50% recouped');
-  assert.equal(rangeLabel, null);
+test('range is hidden when low == high', () => {
+  const l = getModelRecoupmentLabels([50, 50, 50]);
+  assert.equal(l.label, 'Est. 50% recouped');
+  assert.equal(l.rangeLabel, null);
 });
 
 test('negative model output clamps to 0 (deep-flop shape, cabaret-2024)', () => {
-  // Mirror of the component's clamped computation (Sprint 3, task #142).
-  const estimatedPct = [-168.2, -119.8, -74];
-  const low = Math.max(0, Math.round(Math.min(...estimatedPct)));
-  const high = Math.max(0, Math.round(Math.max(...estimatedPct)));
-  const central = Math.max(0, Math.round(estimatedPct[1]));
-  assert.equal(low, 0);
-  assert.equal(high, 0);
-  assert.equal(central, 0);
-  // low === high → no range label; label reads "0% recouped", never negative.
+  const l = getModelRecoupmentLabels([-168.2, -119.8, -74]);
+  assert.equal(l.low, 0);
+  assert.equal(l.high, 0);
+  assert.equal(l.central, 0);
+  assert.equal(l.label, 'Est. 0% recouped');
+  assert.equal(l.rangeLabel, null);
+  assert.equal(l.barWidth, 0);
+});
+
+test('legacy 2-value estimate: "~low–high%", capped at "100%+"', () => {
+  assert.equal(getModelRecoupmentLabels([30, 50]).label, 'Est. ~30–50% recouped');
+  assert.equal(getModelRecoupmentLabels([65, 65]).label, 'Est. ~65% recouped');
+  assert.equal(getModelRecoupmentLabels([80, 150]).label, 'Est. ~80%–100%+ recouped');
+  assert.equal(getModelRecoupmentLabels([250, 350]).label, 'Est. ~100%+ recouped');
+  assert.equal(getModelRecoupmentLabels([30, 50]).rangeLabel, null);
 });

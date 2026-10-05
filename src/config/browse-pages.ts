@@ -893,9 +893,12 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     h1: 'Biggest Broadway Flops',
     metaTitle: 'Biggest Broadway Flops — Commercial Failures Ranked',
     metaDescription: 'Broadway\'s biggest commercial failures. Shows designated as Flops and Fizzles based on capitalization, run length, and recoupment data.',
-    intro: 'Not every Broadway show is a hit. These productions were designated as commercial failures — either "Flops" (significant financial losses) or "Fizzles" (underperformers that failed to recoup their investment). Our designations are based on capitalization costs, run length, box office performance, and whether the show recouped its investment. Some of these shows were critical darlings that couldn\'t find an audience; others were panned by critics and audiences alike. Together, they tell the story of Broadway\'s high-risk economics, where even the most ambitious productions can fall short.',
+    intro: 'Not every Broadway show is a hit. Every production on this list has closed without recouping its investment. A Fizzle got back an estimated 30% or more of what investors put in; a Flop got back less. Unless a trade report or SEC filing gives the actual return, that split is our estimate, based on capitalization, weekly grosses and run length. Some of these shows were critical darlings that could not find an audience; others were panned by critics and audiences alike. Together they show how much risk Broadway producers take on, and how often ambitious productions fall short.',
     requiresFeature: 'commercial',
     dataFilter: (show, ctx) => {
+      // BRO-4623 P0-2: only closed productions. A running show is never a flop
+      // on this page, even if its record carries a premature designation.
+      if (show.status !== 'closed') return false;
       const commercial = ctx.getShowCommercial(show.slug);
       if (!commercial) return false;
       return commercial.designation === 'Flop' || commercial.designation === 'Fizzle';

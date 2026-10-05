@@ -165,7 +165,14 @@ const COVID_DARK_START = new Date('2020-03-12');
 const COVID_DARK_END = new Date('2021-09-14');
 const COVID_DARK_WEEKS = 78;
 
-/** Known SVOG grants (max $10M per show) */
+/**
+ * Known SVOG grants (max $10M per show).
+ *
+ * BRO-4623: wicked, the-lion-king and aladdin were removed. Disney is a
+ * publicly traded company and was ineligible (commercial.json notes, per
+ * Variety Mar 2021), and Wicked's research notes record no SVOG. Only add a
+ * show here with a cited grant (news report or SBA award list).
+ */
 const KNOWN_SVOG = {
   'hamilton': 10000000,
   'book-of-mormon': 10000000,
@@ -174,10 +181,7 @@ const KNOWN_SVOG = {
   'six': 10000000,
   'moulin-rouge': 9900000,
   'aint-too-proud-2019': 10000000,
-  'wicked': 10000000,
-  'the-lion-king': 10000000,
   'chicago': 10000000,
-  'aladdin': 10000000,
   'dear-evan-hansen-2016': 10000000,
   'come-from-away-2017': 10000000,
   'mean-girls': 10000000,
@@ -508,13 +512,17 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
     if (darkWeeks > 0) warnings.push(`Excluded ${darkWeeks} COVID dark weeks`);
   }
 
-  // Tax credit amount (needs run length): 25% of cap + first-year running costs
-  const taxCreditAmount = notesCredit
+  // Tax credit amount (needs run length): 25% of cap + first-year running costs.
+  // notesCredit is null when the notes say nothing usable, 0 when they say the
+  // credit was NOT received (BRO-4623: All Out), or a parsed dollar amount.
+  const taxCreditAmount = notesCredit !== null
     ? notesCredit
     : (eligibleForTaxCredit
         ? Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * Math.min(Math.max(totalRunWeeks, 0), 52)), TAX_CREDIT_MAX)
         : 0);
-  if (!taxCreditAmount) {
+  if (notesCredit === 0) {
+    warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
+  } else if (!taxCreditAmount) {
     warnings.push('No NY tax credit (run outside 2021-2027 program window)');
   }
 
@@ -802,14 +810,47 @@ function parseSvogFromNotes(notes, deepResearch) {
   return 0;
 }
 
+/**
+ * Notes that say the show did NOT get the NY theater tax credit. Checked
+ * before any amount is parsed, so "did NOT receive NY tax credit" (All Out)
+ * yields 0 instead of falling through to the default $3M credit.
+ */
+const NO_TAX_CREDIT_RE = new RegExp([
+  // "did NOT receive NY tax credit", "never qualified for the tax credit", "not eligible for the state tax credit"
+  // The gap may not cross a sentence end or a "but" ("did not get SVOG but got a tax credit").
+  String.raw`\b(?:did\s+not|didn['’]t|never|not|no\s+longer)\s+(?:receive|receiv\w*|get|got|qualif\w*\s+for|eligible\s+for|apply\s+for|applied\s+for)\b(?:(?!\bbut\b)[^.;]){0,40}?\btax\s*credit`,
+  // "No NY tax credit", "no New York State theatre tax credit"
+  String.raw`\bno\s+(?:NY\s+|NYS\s+|New\s+York\s+)?(?:state\s+)?(?:theat(?:er|re)\s+)?(?:production\s+)?tax\s*credit`,
+  // "ineligible for the NY tax credit"
+  String.raw`\bineligible\s+for\b(?:(?!\bbut\b)[^.;]){0,40}?\btax\s*credit`,
+  // "tax credit was not received", "tax credit was never granted"
+  String.raw`\btax\s*credit\b[^.]{0,30}?\b(?:was|were|is)\s+(?:not|never)\s+(?:received|granted|awarded|approved)`,
+].join('|'), 'i');
+
+const NO_TAX_CREDIT_FROM_NOTES_WARNING = 'No NY tax credit (notes say it was not received)';
+
+/**
+ * Tax credit stated in the show's notes.
+ * Returns 0 when the notes say the credit was not received, a positive
+ * dollar amount when one is stated, and null otherwise (the caller then uses
+ * the default program-window calculation). Never returns NaN.
+ */
 function parseTaxCreditFromNotes(notes) {
   const text = notes || '';
+  if (NO_TAX_CREDIT_RE.test(text)) return 0;
+
+  const usable = (n) => (Number.isFinite(n) && n > 0 ? n : null);
+
   const match = text.match(/tax\s*credit[:\s]*\$?([\d.]+)\s*(?:million|M)/i);
-  if (match) return parseFloat(match[1]) * 1e6;
+  if (match) {
+    const parsed = usable(parseFloat(match[1]) * 1e6);
+    if (parsed !== null) return parsed;
+  }
 
   const match2 = text.match(/(?:tax credit|credit)[:\s]*\$?([\d,.]+)/i);
   if (match2) {
     const val = parseFloat(match2[1].replace(/,/g, ''));
+    if (!Number.isFinite(val) || val <= 0) return null; // e.g. "tax credit." captured just "."
     if (val > 100000) return val; // Already in dollars
     if (val > 100) return val * 1000; // In thousands
     return val * 1e6; // In millions
@@ -863,7 +904,12 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
   // Same formula as the weekly model: 25% of cap + first-year running costs.
   const closedBeforeCreditProgram = show.closingDate &&
     new Date(show.closingDate) < TAX_CREDIT_PROGRAM_START;
-  const taxCredit = closedBeforeCreditProgram
+  // BRO-4623: an explicit "did not receive the tax credit" in the notes wins.
+  // Only the explicit 0 is honored here; parsed amounts keep the existing
+  // formula so long-runner estimates do not churn.
+  const notesCredit = parseTaxCreditFromNotes(commercial.notes);
+  if (notesCredit === 0) warnings.push(NO_TAX_CREDIT_FROM_NOTES_WARNING);
+  const taxCredit = (closedBeforeCreditProgram || notesCredit === 0)
     ? 0
     : Math.min(TAX_CREDIT_RATE * (capitalization + weeklyNut * 52), TAX_CREDIT_MAX);
 
@@ -980,4 +1026,9 @@ module.exports = {
   TAX_CREDIT_PROGRAM_START,
   TAX_CREDIT_PROGRAM_END,
   TAX_CREDIT_MAX,
+  // Exported for tests (BRO-4623)
+  KNOWN_SVOG,
+  parseSvogFromNotes,
+  parseTaxCreditFromNotes,
+  NO_TAX_CREDIT_FROM_NOTES_WARNING,
 };

@@ -1,30 +1,32 @@
 /**
  * ApproachingRecoupmentCard - Card for shows approaching recoupment
- * Sprint 2, Task 2.3
+ * Sprint 2, Task 2.3. BRO-4623: model estimate shown with its range, and only
+ * for shows whose pessimistic case is already 50%+ (getShowsApproachingRecoupment).
  */
 
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
 import { formatEstimatedCurrency } from '@/lib/biz-format';
+import { getModelRecoupmentLabels } from '@/lib/commercial-display';
 
 interface ApproachingRecoupmentCardProps {
   slug: string;
   title: string;
   season: string;
   capitalization: number | null;
-  estimatedRecoupmentPct: [number, number];
-  modelRecoupmentPct?: [number, number, number] | null;
+  /** Model [pessimistic, central, optimistic], already past the display quality floor. */
+  modelRecoupmentPct: [number, number, number];
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: RecoupmentTrend;
   weeklyGross?: number | null;
 }
 
 const TREND_LABELS: Record<RecoupmentTrend, string> = {
-  improving: 'Improving',
-  steady: 'Steady',
-  declining: 'Declining',
-  unknown: 'Unknown',
+  improving: 'Grosses up',
+  steady: 'Grosses steady',
+  declining: 'Grosses down',
+  unknown: 'Not enough weeks',
 };
 
 export default function ApproachingRecoupmentCard({
@@ -32,11 +34,11 @@ export default function ApproachingRecoupmentCard({
   title,
   season,
   capitalization,
-  estimatedRecoupmentPct,
   modelRecoupmentPct,
   trend,
 }: ApproachingRecoupmentCardProps) {
   const trendLabel = TREND_LABELS[trend];
+  const labels = getModelRecoupmentLabels(modelRecoupmentPct);
 
   return (
     <Link
@@ -51,19 +53,23 @@ export default function ApproachingRecoupmentCard({
       </div>
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
-        <span className="text-gray-500">Investment</span>
+        <span className="text-gray-500">Capitalization</span>
         <span className="text-white">{formatEstimatedCurrency(capitalization)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Est. Recouped</span>
-        <span className="text-amber-400 font-semibold">
-          {modelRecoupmentPct
-            ? `${Math.round(modelRecoupmentPct[1])}% recouped`
-            : `~${estimatedRecoupmentPct[0]}-${estimatedRecoupmentPct[1]}% recouped`}
+        <span className="text-gray-500">Est. recouped</span>
+        <span className="text-amber-400 font-semibold" aria-label={labels.ariaLabel}>
+          ~{labels.valueText}
         </span>
       </div>
+      {labels.rangeLabel && (
+        <div className="flex justify-between text-xs mt-0.5">
+          <span className="text-gray-500">Model range</span>
+          <span className="text-gray-400">{labels.rangeLabel.replace(/^Range: /, '')}</span>
+        </div>
+      )}
       <div className="flex justify-between text-sm mt-1">
-        <span className="text-gray-500">Trend</span>
+        <span className="text-gray-500">Trend (4 wks)</span>
         <span className={getTrendColor(trend, false)} aria-label={trendLabel}>
           {getTrendIcon(trend, false)} {trendLabel}
         </span>

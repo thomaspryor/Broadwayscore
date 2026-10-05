@@ -2,6 +2,9 @@
  * Gate-logic contract tests (email-capture cooldown + mobile-timing A/B).
  * Runs in the tsx unit batch (test.yml) — imports src TS directly per the
  * outlet-id-mapper precedent.
+ *
+ * BRO-4623 P1-15: trigger kinds (blocking vs user-initiated vs passive) and
+ * the CSV/JSON "coming soon" waitlist copy.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -14,6 +17,8 @@ const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '../../src');
 const {
   shouldSuppressPassiveGate, hasSeenEnoughPages,
   getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG,
+  BLOCKING_TRIGGERS, isBlockingTrigger, isUserInitiatedTrigger, isPassiveTrigger,
+  dismissStartsCooldown, getTriggerCopy, getSubmitLabel,
 } = await import('../../src/lib/gate-logic.ts');
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
 
@@ -138,4 +143,72 @@ test('no PostHog identity calls in src/ (protects sticky bucketing for live expe
   walk(SRC_DIR);
   assert.deepEqual(offenders, [],
     `posthog.identify/alias/reset calls change distinct_id and can flip a visitor's live-experiment arm mid-session. Found in: ${offenders.join(', ')}`);
+});
+
+// ─── BRO-4623 P1-15: trigger kinds and the CSV/JSON waitlist ───
+
+const DOWNLOADS = ['csv_download', 'json_download'];
+const PASSIVE = ['exit_intent', 'scroll_depth', 'return_visitor'];
+
+test('csv/json downloads are user-initiated and closable, never blocking', () => {
+  for (const t of DOWNLOADS) {
+    assert.equal(isBlockingTrigger(t), false, `${t}: the download modal must be closable`);
+    assert.equal(isUserInitiatedTrigger(t), true, t);
+    assert.equal(isPassiveTrigger(t), false, `${t}: the user clicked; passive checks do not apply`);
+    assert.equal(dismissStartsCooldown(t), false,
+      `${t}: closing the /biz waitlist modal must not silence passive asks on other pages`);
+  }
+});
+
+test('page_view_limit is the only blocking trigger', () => {
+  assert.deepEqual([...BLOCKING_TRIGGERS], ['page_view_limit']);
+  assert.equal(isBlockingTrigger('page_view_limit'), true);
+  assert.equal(isPassiveTrigger('page_view_limit'), false);
+  assert.equal(dismissStartsCooldown('page_view_limit'), false);
+});
+
+test('passive triggers keep the passive checks and the dismissal cooldown (unchanged behavior)', () => {
+  for (const t of PASSIVE) {
+    assert.equal(isBlockingTrigger(t), false, t);
+    assert.equal(isUserInitiatedTrigger(t), false, t);
+    assert.equal(isPassiveTrigger(t), true, t);
+    assert.equal(dismissStartsCooldown(t), true, t);
+  }
+  // recapture is already one-shot (RECAPTURED_KEY) so it skips the passive
+  // checks, but dismissing it still starts the cooldown, as before.
+  assert.equal(isPassiveTrigger('recapture'), false);
+  assert.equal(dismissStartsCooldown('recapture'), true);
+});
+
+test('csv/json copy says the feature is not available yet (no Pro, no API, no early access)', () => {
+  for (const t of DOWNLOADS) {
+    for (const isWE of [false, true]) {
+      const copy = getTriggerCopy(t, isWE);
+      const text = `${copy.heading} ${copy.subheading}`;
+      assert.match(text, /coming soon/i, `${t}: must say coming soon`);
+      assert.match(text, /waitlist/i, `${t}: must offer the waitlist`);
+      assert.doesNotMatch(text, /\bPro\b|\bAPI\b|early access/i, `${t}: must not promise a product that does not exist`);
+      assert.doesNotMatch(text, /—/, `${t}: no em dashes in copy`);
+      assert.equal(copy.example, undefined, `${t}: no example line`);
+    }
+  }
+});
+
+test('submit button label matches the trigger', () => {
+  assert.equal(getSubmitLabel('csv_download'), 'Join the waitlist');
+  assert.equal(getSubmitLabel('json_download'), 'Join the waitlist');
+  assert.equal(getSubmitLabel('page_view_limit'), 'Get Early Access');
+  for (const t of [...PASSIVE, 'recapture']) {
+    assert.equal(getSubmitLabel(t), 'Send me opening night scores', t);
+  }
+});
+
+test('wiring: ProGateContext uses the gate-logic trigger kinds, not a local blocking list', () => {
+  const ctx = readFileSync(join(SRC_DIR, 'contexts/ProGateContext.tsx'), 'utf8');
+  assert.ok(ctx.includes('isBlockingTrigger(trigger)'), 'triggerGate must decide blocking via isBlockingTrigger');
+  assert.ok(ctx.includes('isPassiveTrigger(trigger)'), 'triggerGate must decide passive checks via isPassiveTrigger');
+  assert.ok(ctx.includes('dismissStartsCooldown(modalTrigger)'), 'handleModalClose must gate the cooldown stamp');
+  assert.doesNotMatch(ctx, /const BLOCKING_TRIGGERS\b/, 'the local BLOCKING_TRIGGERS list must not come back');
+  const modal = readFileSync(join(SRC_DIR, 'components/EmailCaptureModal.tsx'), 'utf8');
+  assert.ok(modal.includes('getSubmitLabel(trigger)'), 'EmailCaptureModal must take its submit label from getSubmitLabel');
 });

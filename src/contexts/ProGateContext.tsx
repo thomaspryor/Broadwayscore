@@ -22,6 +22,9 @@ import {
   hasSeenEnoughPages,
   getMobileGateParams,
   buildGateAbVariant,
+  isBlockingTrigger,
+  isPassiveTrigger,
+  dismissStartsCooldown,
   MOBILE_GATE_FLAG,
   COPY_VERSION,
 } from '@/lib/gate-logic';
@@ -35,10 +38,11 @@ const STORAGE_KEY = 'bsc_user_data';
 const PAGE_VIEW_KEY = 'bsc_page_views';
 const LAST_VISIT_KEY = 'bsc_last_visit';
 const RECAPTURED_KEY = 'bsc_email_recaptured'; // Pre-fix modal submissions (Jan 29 – Mar 12, 2026) stored email locally only
-// Passive-gate dismissal cooldown stamp (ms epoch). Written on dismiss of any
-// NON-blocking modal; read before firing any non-blocking trigger. Without it,
-// dismissal was React-state only and the same visitor was re-gated every visit
-// (2,992 exit-intent impressions / 2,150 people, 87% mobile dismissal — 2026-07 audit).
+// Passive-gate dismissal cooldown stamp (ms epoch). Written on dismiss of a
+// passive modal (dismissStartsCooldown); read before firing any passive
+// trigger. Without it, dismissal was React-state only and the same visitor was
+// re-gated every visit (2,992 exit-intent impressions / 2,150 people, 87%
+// mobile dismissal — 2026-07 audit).
 const GATE_DISMISSED_KEY = 'bsc_gate_dismissed_at';
 // Session-scoped page-view counter (sessionStorage — resets per tab), read by
 // triggerGate to hold off any passive gate until the visitor has shown real
@@ -48,17 +52,27 @@ const SESSION_PAGEVIEWS_KEY = 'bsc_session_pageviews';
 /** Extra analytics props stamped at fire time (A/B variant + demixed source). */
 type GateFireMeta = { trigger_source?: string; ab_variant?: string };
 
+/** Options for recordPageView. */
+type RecordPageViewOptions = {
+  /**
+   * When false, the view is counted and tracked but never schedules the
+   * page_view_limit modal. /biz passes false (BRO-4623 P1-15: no blocking
+   * second-visit wall on the commercial dashboard). Defaults to true.
+   */
+  gate?: boolean;
+};
+
 interface ProGateContextValue {
   /** Whether the user has submitted their email */
   hasEmail: boolean;
   /** The captured user data (if any) */
   userData: CapturedUserData | null;
-  /** Trigger the email capture modal */
-  triggerGate: (trigger: GateTrigger) => void;
+  /** Trigger the email capture modal. Returns whether the modal opened. */
+  triggerGate: (trigger: GateTrigger, meta?: GateFireMeta) => boolean;
   /** Check if the gate should be shown (based on page views, etc.) */
   shouldShowGate: () => boolean;
   /** Record a page view and potentially trigger gate */
-  recordPageView: (page: string) => void;
+  recordPageView: (page: string, options?: RecordPageViewOptions) => void;
   /** Track a blocked action (e.g., CSV download attempt) */
   trackBlockedAction: (action: string) => void;
 }
@@ -71,8 +85,9 @@ interface ProGateProviderProps {
   pageViewThreshold?: number;
 }
 
-// Triggers that block the user from dismissing the modal
-const BLOCKING_TRIGGERS: GateTrigger[] = ['csv_download', 'json_download', 'page_view_limit'];
+// Which triggers block dismissal, and which skip the passive checks, now live
+// in gate-logic.ts (isBlockingTrigger / isPassiveTrigger) so they are unit
+// tested. BRO-4623 P1-15: csv/json downloads are no longer blocking.
 
 export function ProGateProvider({ children, pageViewThreshold = emailCaptureConfig.pageViewGate.threshold }: ProGateProviderProps) {
   // Email capture is per-market. A visitor subscribed to Broadway must still be
@@ -213,12 +228,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     if (modalOpen) return false; // Don't stack modals
     // Don't trigger on excluded pages (feedback, submit-review, etc.)
     if (emailCaptureConfig.excludedPaths.some(p => window.location.pathname.startsWith(p))) return false;
-    const blocking = BLOCKING_TRIGGERS.includes(trigger);
-    // Dismissal cooldown: every non-blocking ask (exit_intent, scroll_depth,
-    // return_visitor, page_view_limit) stays quiet for passiveGateCooldownDays
-    // after a dismissal. Blocking feature gates are exempt (user clicked the
-    // gated action); recapture is already one-shot via RECAPTURED_KEY.
-    if (!blocking && trigger !== 'recapture') {
+    const blocking = isBlockingTrigger(trigger);
+    // Passive asks (exit_intent, scroll_depth, return_visitor) wait for the
+    // page minimum and stay quiet for passiveGateCooldownDays after a
+    // dismissal. Blocking gates and user-initiated gates (csv/json download,
+    // the user clicked the action) are exempt; recapture is already one-shot
+    // via RECAPTURED_KEY. See isPassiveTrigger in gate-logic.ts.
+    if (isPassiveTrigger(trigger)) {
       // Don't ask before the visitor has shown real engagement this session
       // (2026-07-20 audit; ran as the 'gate-cold-start' A/B 2026-07-21 to
       // 2026-09-15, concluded as the permanent default for all traffic — see
@@ -246,9 +262,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     // Close FIRST — nothing below may keep the modal stuck open (Safari
     // Lockdown/private mode can throw on localStorage.setItem).
     setModalOpen(false);
-    try {
-      localStorage.setItem(GATE_DISMISSED_KEY, String(Date.now()));
-    } catch { /* localStorage unavailable — cooldown just won't persist */ }
+    // Only a passive ask starts the cooldown. Closing the csv/json waitlist
+    // modal on /biz must not silence exit-intent / scroll asks elsewhere.
+    if (dismissStartsCooldown(modalTrigger)) {
+      try {
+        localStorage.setItem(GATE_DISMISSED_KEY, String(Date.now()));
+      } catch { /* localStorage unavailable — cooldown just won't persist */ }
+    }
     track('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
     captureEvent('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
   }, [modalBlocking, modalTrigger, gateFireMeta]);
@@ -435,8 +455,10 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     }
   }, [hasEmail, isClient, pageViewThreshold]);
 
-  const recordPageView = useCallback((page: string) => {
+  const recordPageView = useCallback((page: string, options: RecordPageViewOptions = {}) => {
     if (!isClient) return;
+    // BRO-4623 P1-15: callers can opt out of the page_view_limit wall (/biz).
+    const gateEnabled = options.gate !== false;
 
     try {
       const views = JSON.parse(localStorage.getItem(PAGE_VIEW_KEY) || '{}');
@@ -451,7 +473,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
       // passiveModalFired, so a suppressed attempt doesn't wrongly disarm the
       // OTHER passive triggers' shared "already fired" latch).
       const totalViews = Object.values(views).reduce((sum: number, v) => sum + (v as number), 0);
-      if (totalViews >= pageViewThreshold && !hasEmail && !passiveModalFired && !pageViewLimitScheduledRef.current) {
+      if (gateEnabled && totalViews >= pageViewThreshold && !hasEmail && !passiveModalFired && !pageViewLimitScheduledRef.current) {
         pageViewLimitScheduledRef.current = true;
         // Show gate after short delay to let page render
         setTimeout(() => {

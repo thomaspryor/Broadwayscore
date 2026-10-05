@@ -13,6 +13,8 @@ tests/unit/calendar-export.test.ts
 tests/unit/calendar-ics-route.test.ts
 tests/unit/cast-changes-filters-parity.test.ts
 tests/unit/commercial-display.test.mjs
+tests/unit/commercial-metrics.test.ts
+tests/unit/commercial-public-source.test.mjs
 tests/unit/commercial-unreleased.test.mjs
 tests/unit/creative-role-mapping.test.ts
 tests/unit/data-cast-history.test.ts
@@ -50,10 +52,12 @@ tests/unit/parse-runtime-parity.test.ts
 tests/unit/prior-runs-scoreability.test.ts
 tests/unit/private-share-routes.test.ts
 tests/unit/promo-sunset-fallback.test.ts
+tests/unit/recoupment-progress-label.test.mjs
 tests/unit/robots-api-disallow.test.ts
 tests/unit/run-age-label.test.mjs
 tests/unit/score-breakdown-tier.test.ts
 tests/unit/scoring-parity.test.ts
+tests/unit/season-stats-enhancement-filter.test.mjs
 tests/unit/seo-regional-country.test.mjs
 tests/unit/seo-show-schema-uk-address.test.mjs
 tests/unit/share-link.test.ts

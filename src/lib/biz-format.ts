@@ -7,6 +7,7 @@
 // ad-hoc copy; this file was almost a third fork of the same K/M/B logic.
 
 import { formatCurrency } from './formatting';
+import type { CapitalSummary } from './commercial-metrics';
 export { formatCurrency };
 
 /**
@@ -17,4 +18,79 @@ export { formatCurrency };
 export function formatEstimatedCurrency(amount: number | null | undefined): string {
   if (amount === null || amount === undefined) return '—';
   return `~${formatCurrency(amount)}`;
+}
+
+export interface CapitalSummaryDisplay {
+  /** "~$42.0M", "~$42.0M+", "Undisclosed" or "None". */
+  value: string;
+  /** "3 of 9 undisclosed" when some figures are missing, else null. */
+  note: string | null;
+}
+
+/**
+ * A capital total that never prints an unknown as $0 (BRO-4623 P0-6: a season
+ * with running shows read "~$0 Capital at Risk" because only shows with a
+ * known capitalization and a TBD designation were summed).
+ *  - no shows counted → "None"
+ *  - shows counted but no figure known → "Undisclosed"
+ *  - some figures missing → "~$X+" with "N of M undisclosed"
+ */
+export function formatCapitalSummary(summary: CapitalSummary): CapitalSummaryDisplay {
+  const { knownTotal, showCount, undisclosedCount } = summary;
+  if (showCount === 0) return { value: 'None', note: null };
+  if (knownTotal <= 0) {
+    return {
+      value: 'Undisclosed',
+      note: `${showCount} show${showCount === 1 ? '' : 's'}, capitalization not public`,
+    };
+  }
+  const partial = undisclosedCount > 0;
+  return {
+    value: `~${formatCurrency(knownTotal)}${partial ? '+' : ''}`,
+    note: partial ? `${undisclosedCount} of ${showCount} undisclosed` : null,
+  };
+}
+
+const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/**
+ * "9/13/2026" (grosses week ending), "2026-09-26" or an ISO timestamp
+ * ("2026-10-03T12:00:00Z") → "Sep 13, 2026". Parsed by hand so the server's
+ * time zone can never shift the day. Unparseable → null.
+ */
+export function formatDataDate(date: string | null | undefined): string | null {
+  if (!date) return null;
+  const s = date.trim();
+  let year: number;
+  let month: number;
+  let day: number;
+  const us = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s);
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  if (us) {
+    month = parseInt(us[1], 10);
+    day = parseInt(us[2], 10);
+    year = parseInt(us[3], 10);
+  } else if (iso) {
+    year = parseInt(iso[1], 10);
+    month = parseInt(iso[2], 10);
+    day = parseInt(iso[3], 10);
+  } else {
+    return null;
+  }
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  return `${MONTH_ABBR[month - 1]} ${day}, ${year}`;
+}
+
+/**
+ * Date column of the /biz Recent Developments list: YYYY-MM (recoupments) and
+ * YYYY-MM-DD (closings) both read "Sep 2026", so every row carries its year
+ * ("Sep 20" next to "May 2026" read as September 2020). A bare year or
+ * anything unparseable passes through unchanged.
+ */
+export function formatDevelopmentDate(date: string): string {
+  const m = /^(\d{4})-(\d{2})(?:-\d{2})?$/.exec(date.trim());
+  if (!m) return date;
+  const month = parseInt(m[2], 10);
+  if (month < 1 || month > 12) return date;
+  return `${MONTH_ABBR[month - 1]} ${m[1]}`;
 }
