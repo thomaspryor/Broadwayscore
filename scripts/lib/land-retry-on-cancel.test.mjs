@@ -42,8 +42,9 @@ test('Land job that succeeded/failed is not retried', () => {
 });
 test('workflow wiring: triggers on Land completion and calls the real script', () => {
   const y = readFileSync(new URL('../../.github/workflows/land-retry-cancelled.yml', import.meta.url), 'utf8');
-  assert.match(y, /workflows: \['Land'\]/);
-  assert.match(y, /conclusion == 'cancelled'/);
+  // BRO-4653: every Land completion triggers a slot-aware sweep (not only cancels)
+  assert.match(y, /workflows: \['Land', 'Autonomous Merge'\]/);
+  assert.match(y, /land-retry-cancelled\.js --sweep/);
   assert.match(y, /scripts\/land-retry-cancelled\.js/);
   assert.match(y, /actions: write/);
   const lib = readFileSync(new URL('../land-retry-cancelled.js', import.meta.url), 'utf8');
@@ -108,4 +109,10 @@ test('isRefNotFound: only a 404 means the land ref is gone', () => {
   assert.equal(isRefNotFound(rateLimited()), false, 'a rate limit is not "landed"');
   assert.equal(isRefNotFound({ stderr: 'gh: Server Error (HTTP 502)' }), false);
   assert.equal(isRefNotFound(new Error('spawn gh ENOENT')), false);
+});
+
+test('runGhWithFallback: buffer fits a 100-run listing (>1 MB; the 1 MB default failed with ENOBUFS, BRO-4653)', () => {
+  let seen;
+  runGhWithFallback(['x'], { exec: (cmd, args, opts) => { seen = opts; return '{}'; } });
+  assert.ok(seen.maxBuffer >= 16 * 1024 * 1024);
 });

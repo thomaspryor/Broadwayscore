@@ -191,8 +191,10 @@ function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip,
 // "This workflow is already running", and the script printed REFUSED
 // ("nothing reached main") for a run that was live.
 // The server re-trigger starts from a workflow_run event and needs a runner
-// first; under queue pressure that takes minutes.
-const CANCEL_GRACE_SEC = 300;
+// first; under queue pressure that takes minutes. Since BRO-4653 it also waits
+// until the landing slot is free (one stranded run per sweep, oldest first),
+// so in a burst the re-run can come several landings later.
+const CANCEL_GRACE_SEC = 900;
 const CANCEL_GRACE_POLL_SEC = 15;
 
 /**
