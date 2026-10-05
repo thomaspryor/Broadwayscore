@@ -16,12 +16,24 @@
 
 CREATE ROLE anon NOLOGIN;
 CREATE ROLE authenticated NOLOGIN;
+-- The cron/CI key's role; BYPASSRLS like the real one (welcome_emails test).
+CREATE ROLE service_role NOLOGIN BYPASSRLS;
 
 CREATE SCHEMA auth;
 GRANT USAGE ON SCHEMA auth TO anon, authenticated;
-GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
 
-CREATE TABLE auth.users (id UUID PRIMARY KEY);
+-- email / email_confirmed_at / created_at / raw_user_meta_data / deleted_at are the real GoTrue
+-- columns 20261004b_welcome_emails.sql reads; defaults keep older tests'
+-- id-only inserts working.
+CREATE TABLE auth.users (
+  id UUID PRIMARY KEY,
+  email TEXT,
+  email_confirmed_at TIMESTAMPTZ DEFAULT now(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  raw_user_meta_data JSONB NOT NULL DEFAULT '{}'::jsonb,
+  deleted_at TIMESTAMPTZ
+);
 
 -- Supabase reads request.jwt.claim.sub (legacy) / request.jwt.claims (json).
 CREATE FUNCTION auth.uid() RETURNS UUID LANGUAGE sql STABLE AS $$
@@ -74,7 +86,7 @@ CREATE POLICY "own watchlist" ON public.watchlist FOR ALL USING (auth.uid() = us
 -- into, which is the point.
 -- ---------------------------------------------------------------------------
 CREATE SCHEMA t;
-GRANT USAGE ON SCHEMA t TO anon, authenticated;
+GRANT USAGE ON SCHEMA t TO anon, authenticated, service_role;
 
 CREATE FUNCTION t.ok(cond BOOLEAN, msg TEXT) RETURNS VOID LANGUAGE plpgsql AS $$
 BEGIN
@@ -103,4 +115,4 @@ BEGIN
   PERFORM set_config('request.jwt.claim.sub', coalesce(uid::text, ''), false);
 END $$;
 
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA t TO anon, authenticated;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA t TO anon, authenticated, service_role;

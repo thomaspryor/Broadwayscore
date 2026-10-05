@@ -999,6 +999,15 @@ function sessionIssue(overrides = {}) {
 }
 
 describe('session-parked eligibility (BRO-4535)', () => {
+  test('BRO-4642: a parked card whose only safe check is a comment is drainable', () => {
+    const bare = 'PARKED: needs a rule-18 second-opinion before the edit\n\n## Problem\nX.\n\n## Acceptance criteria\nLooks right.';
+    assert.strictEqual(isDrainEligible(sessionIssue({ description: bare })), false);
+    const armed = sessionIssue({ description: bare,
+      comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: '2026-10-01T00:00:00Z' }] } });
+    assert.strictEqual(isSessionParkedDrainable(armed), true);
+    assert.strictEqual(isDrainEligible(armed), true);
+  });
+
   test('a P0/P1 card parked for a technical reason with a safe check is eligible', () => {
     assert.strictEqual(isSessionParkedDrainable(sessionIssue({ priority: 1 })), true);
     assert.strictEqual(isDrainEligible(sessionIssue({ priority: 2 })), true);

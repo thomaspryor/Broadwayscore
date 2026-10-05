@@ -157,18 +157,6 @@
     "queuedAt": "2026-10-04T22:27:39.724Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:slam-frank-off-broadway-2026",
-    "title": "Review gap — \"Slam Frank\" missing 6 cited review(s)",
-    "description": "Slam Frank (slam-frank-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=slam-frank-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-04T22:50:25.332Z"
-  },
-  {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it (still open — BRO-3030)",
     "description": "Still firing after 120 notifications since it was filed. Tracked at BRO-3030.\n\nmain test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
@@ -482,5 +470,135 @@
       }
     ],
     "queuedAt": "2026-10-05T00:45:10.757Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:affluenza-off-west-end-2026",
+    "title": "Review gap — \"Affluenza\" missing 12 cited review(s)",
+    "description": "Affluenza (affluenza-off-west-end-2026): 12 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=affluenza-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T01:35:25.989Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:boop-tour-2026",
+    "title": "Review gap — \"Boop! The Musical\" missing 8 cited review(s)",
+    "description": "Boop! The Musical (boop-tour-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=boop-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T01:35:26.009Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:franz-and-marie-west-end-2026",
+    "title": "Review gap — \"Franz & Marie\" missing 4 cited review(s)",
+    "description": "Franz & Marie (franz-and-marie-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=franz-and-marie-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T01:35:26.036Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:kramerfauci-st-anns-off-broadway-2026",
+    "title": "Review gap — \"Kramer/Fauci\" missing 7 cited review(s)",
+    "description": "Kramer/Fauci (kramerfauci-st-anns-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kramerfauci-st-anns-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T01:35:26.067Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:torera-off-broadway-2026",
+    "title": "Review gap — \"Torera\" missing 1 cited review(s)",
+    "description": "Torera (torera-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=torera-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T01:35:26.170Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Review gap — \"Who’s Afraid of Virginia Woolf?\" missing 1 cited review(s)",
+    "description": "Who’s Afraid of Virginia Woolf? (whos-afraid-of-virginia-woolf-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=whos-afraid-of-virginia-woolf-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T01:35:26.187Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-208-muuj3js8",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-208-muuj3js8",
+    "description": "land.yml did not land land/job/linear-BRO-208-muuj3js8: the unit-tests-node gate went red at 54cd198183. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37248991103",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-208-muuj3js8"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "54cd198183f467234eb3c61bec52d551d1937d92"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37248991103"
+      }
+    ],
+    "queuedAt": "2026-10-05T01:20:08.650Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4641-muuiobuc",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4641-muuiobuc",
+    "description": "land.yml did not land land/job/linear-BRO-4641-muuiobuc: the unit-tests-node gate went red at 5db5f6c5db. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37249157330",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4641-muuiobuc"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5db5f6c5dba77a9180eeef5d941c37a9a3d40983"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37249157330"
+      }
+    ],
+    "queuedAt": "2026-10-05T01:23:30.423Z"
   }
 ]

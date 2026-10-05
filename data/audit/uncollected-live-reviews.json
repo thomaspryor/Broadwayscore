@@ -1,10 +1,119 @@
 {
-  "generatedAt": "2026-10-04T22:58:55.138Z",
+  "generatedAt": "2026-10-05T01:41:45.271Z",
   "maxAgeHours": 12,
-  "showsAffected": 18,
-  "strandedFiles": 31,
-  "blackoutShows": [],
+  "showsAffected": 24,
+  "strandedFiles": 49,
+  "blackoutShows": [
+    "hamilton-tour-2024"
+  ],
   "findings": [
+    {
+      "showId": "hamilton-tour-2024",
+      "title": "Hamilton",
+      "status": "open",
+      "stranded": [],
+      "usable": 0,
+      "discovered": 6,
+      "totalBlackout": true
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "title": "Water for Elephants",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "broadwayworld--catherine-burford.json",
+          "url": "https://www.broadwayworld.com/nashville/article/Review-WATER-FOR-ELEPHANTS-at-TPACS-Jackson-Hall-20260514",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--christina-mancuso.json",
+          "url": "https://www.broadwayworld.com/columbus/article/Review-WATER-FOR-ELEPHANTS-at-Ohio-Theatre-A-Spectacle-in-Search-of-a-Soul-20260610",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--jared-fessler.json",
+          "url": "https://www.broadwayworld.com/minneapolis/article/Review-WATER-FOR-ELEPHANTS-at-Orpheum-Theatre-Minneapolis-20260304",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--jeffrey-kare.json",
+          "url": "https://www.broadwayworld.com/raleigh/article/Review-WATER-FOR-ELEPHANTS-National-Tour-at-Durham-Performing-Arts-Center-20251217",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--jon-bee.json",
+          "url": "https://www.broadwayworld.com/denver/article/Review-High-Flying-Feats-in-WATER-FOR-ELEPHANTS-at-the-Denver-Center-20260212",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--jonathan-netek.json",
+          "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--lucia-serrano.json",
+          "url": "https://www.broadwayworld.com/san-diego/article/Review-WATER-FOR-ELEPHANTS-Brings-Romance-Puppetry-and-Circus-Magic-to-Broadway-San-Diego-20260821",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--michael-rabice.json",
+          "url": "https://www.broadwayworld.com/buffalo/article/Review-WATER-FOR-ELEPHANTS-at-Sheas-Buffalo-Theatre-20260415",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        }
+      ],
+      "usable": 19,
+      "discovered": 33,
+      "totalBlackout": false
+    },
+    {
+      "showId": "purpose-regional-2026",
+      "title": "Purpose",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "broadwaynews--unknown.json",
+          "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
+          "outlet": "Broadway News",
+          "ageHours": 54.10499
+        },
+        {
+          "file": "nytg--unknown.json",
+          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+          "outlet": "New York Theatre Guide",
+          "ageHours": 54.104978611111115
+        },
+        {
+          "file": "theatrely--unknown.json",
+          "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+          "outlet": "Theatrely",
+          "ageHours": 54.1049875
+        },
+        {
+          "file": "thewrap--unknown.json",
+          "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+          "outlet": "TheWrap",
+          "ageHours": 54.10498388888889
+        },
+        {
+          "file": "variety--unknown.json",
+          "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+          "outlet": "Variety",
+          "ageHours": 54.10498583333333
+        }
+      ],
+      "usable": 11,
+      "discovered": 19,
+      "totalBlackout": false
+    },
     {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "title": "Moulin Rouge! The Musical",
@@ -48,25 +157,25 @@
           "file": "british-theatre--unknown.json",
           "url": "https://www.britishtheatreguide.info/reviews/burlesque-the-m-the-alhambra-th-26046",
           "outlet": "British Theatre Guide",
-          "ageHours": 169.1151725
+          "ageHours": 171.82909833333332
         },
         {
           "file": "jackstage--unknown.json",
           "url": "https://www.jackstage.co.uk/post/burlesque-the-musical-review-pretty-girls-and-skinny-boys-tour-the-uk",
           "outlet": "Jackstage",
-          "ageHours": 223.2012713888889
+          "ageHours": 225.91519722222222
         },
         {
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/burlesque-the-musical-regent-theatre/",
           "outlet": "North West End",
-          "ageHours": 776.1364152777778
+          "ageHours": 778.8503411111111
         },
         {
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/burlesque-the-musical-kings-theatre-glasgow/",
           "outlet": "The Reviews Hub",
-          "ageHours": 463.6177866666667
+          "ageHours": 466.3317125
         }
       ],
       "usable": 22,
@@ -99,6 +208,34 @@
       ],
       "usable": 42,
       "discovered": 52,
+      "totalBlackout": false
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "title": "The Phantom of the Opera",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "broadwayworld--krista-garver.json",
+          "url": "https://www.broadwayworld.com/portland/article/Review-THE-PHANTOM-OF-THE-OPERA-at-Keller-Auditorium-20260504",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--lucia-serrano.json",
+          "url": "https://www.broadwayworld.com/san-diego/article/Review-PHANTOM-OF-THE-OPERA-Keeps-Enchanting-with-Revitalized-North-American-Tour-20260908",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        },
+        {
+          "file": "broadwayworld--tyler-hinton.json",
+          "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-PHANTOM-OF-THE-OPERA-at-the-Eccles-Theater-is-Refreshed-with-Reverence-20260411",
+          "outlet": "BroadwayWorld",
+          "ageHours": null
+        }
+      ],
+      "usable": 10,
+      "discovered": 20,
       "totalBlackout": false
     },
     {
@@ -142,7 +279,7 @@
         }
       ],
       "usable": 43,
-      "discovered": 54,
+      "discovered": 55,
       "totalBlackout": false
     },
     {
@@ -154,13 +291,13 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/the-mousetrap-the-alexandra-birmingham-3/",
           "outlet": "The Reviews Hub",
-          "ageHours": 584.2477655555556
+          "ageHours": 586.9616913888889
         },
         {
           "file": "west-end-best-friend--unknown.json",
           "url": "https://www.westendbestfriend.co.uk/news/review-the-mousetrap-the-alexandra-tour",
           "outlet": "West End Best Friend",
-          "ageHours": 463.6106852777778
+          "ageHours": 466.3246111111111
         }
       ],
       "usable": 27,
@@ -182,7 +319,7 @@
           "file": "thereviewshub--unknown.json",
           "url": "https://www.thereviewshub.com/operation-mincemeat-wycombe-swan-high-wycombe/",
           "outlet": "The Reviews Hub",
-          "ageHours": 102.40669222222222
+          "ageHours": 105.12061805555555
         }
       ],
       "usable": 40,
@@ -204,7 +341,7 @@
           "file": "londonlivinglarge--unknown.json",
           "url": "https://www.londonlivinglarge.com/2026/09/kimberly-akimbo-hampstead-theatre-aug.html",
           "outlet": "Londonlivinglarge",
-          "ageHours": 368.8123419444444
+          "ageHours": 371.5262677777778
         }
       ],
       "usable": 46,
@@ -220,7 +357,7 @@
           "file": "bloomberg--unknown.json",
           "url": "https://www.bloomberg.com/news/articles/2026-04-15/-the-lost-boys-creators-give-new-bite-to-tired-movie-to-musical-formula",
           "outlet": "Bloomberg",
-          "ageHours": 1495.8821330555556
+          "ageHours": 1498.5960588888888
         }
       ],
       "usable": 48,
@@ -236,7 +373,7 @@
           "file": "musical-theatre-review--unknown.json",
           "url": "https://musicaltheatrereview.com/hadestown-new-cast-announced/",
           "outlet": "Musical Theatre Review",
-          "ageHours": 368.8690825
+          "ageHours": 371.58300833333334
         }
       ],
       "usable": 75,
@@ -252,7 +389,7 @@
           "file": "stageandcinema--unknown.json",
           "url": "https://stageandcinema.com/2026/09/26/little-shop-of-horrors-nctc-review/",
           "outlet": "Stage and Cinema",
-          "ageHours": 77.69756833333334
+          "ageHours": 80.41149416666667
         }
       ],
       "usable": 38,
@@ -268,7 +405,7 @@
           "file": "variety--unknown.json",
           "url": "https://variety.com/2024/music/global/elton-john-not-able-to-see-devil-wears-prada-infection-1236232089/",
           "outlet": "Variety",
-          "ageHours": 369.9926911111111
+          "ageHours": 372.7066169444444
         }
       ],
       "usable": 46,
@@ -284,7 +421,7 @@
           "file": "north-west-end--unknown.json",
           "url": "https://northwestend.com/mamma-mia-sheffield-lyceum-theatre/",
           "outlet": "North West End",
-          "ageHours": 344.5311727777778
+          "ageHours": 347.24509861111113
         }
       ],
       "usable": 29,
@@ -304,7 +441,7 @@
         }
       ],
       "usable": 42,
-      "discovered": 51,
+      "discovered": 52,
       "totalBlackout": false
     },
     {
@@ -348,11 +485,27 @@
           "file": "londontheatre1--unknown.json",
           "url": "https://www.londontheatre1.com/reviews/man-to-man-royal-court/",
           "outlet": "LondonTheatre1",
-          "ageHours": 247.35524416666667
+          "ageHours": 250.06917
         }
       ],
       "usable": 62,
       "discovered": 76,
+      "totalBlackout": false
+    },
+    {
+      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+      "title": "Cabaret at the Kit Kat Club",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "musical-theatre-review--unknown.json",
+          "url": "https://musicaltheatrereview.com/cabaret-kit-kat-club-playhouse-theatre/",
+          "outlet": "Musical Theatre Review",
+          "ageHours": null
+        }
+      ],
+      "usable": 42,
+      "discovered": 55,
       "totalBlackout": false
     },
     {
@@ -364,11 +517,27 @@
           "file": "times-square-chronicles--unknown.json",
           "url": "https://t2conline.com/theatre-and-film-review-from-a-cramped-bombay-apartment-to-a-1977-disability-rights-occupation-in-san-francisco-two-stories-make-history-feel-remarkably-close/",
           "outlet": "Times Square Chronicles",
-          "ageHours": 344.5275561111111
+          "ageHours": 347.24148194444444
         }
       ],
       "usable": 69,
       "discovered": 106,
+      "totalBlackout": false
+    },
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "status": "open",
+      "stranded": [
+        {
+          "file": "guardian--unknown.json",
+          "url": "https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review",
+          "outlet": "The Guardian",
+          "ageHours": 87.5087725
+        }
+      ],
+      "usable": 39,
+      "discovered": 43,
       "totalBlackout": false
     }
   ]

@@ -132,12 +132,12 @@ function isStaleAutomationParked(issue, nowMs) {
 function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   const hd = require('./headless-dispatchability.js');
   const drain = require('./linear-drain-parked.js');
-  if (!drain.hasSafeVerifyCommand(issue)) return 'no-safe-verify';
-  const { evaluateVerifiability } = require('./verify-gate.js');
-  if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(evaluateVerifiability(issue.description || '').cmd || '').trim())) {
+  const cmd = drain.verifyCommand(issue);
+  if (!cmd) return 'no-safe-verify';
+  if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(cmd).trim())) {
     return 'verify-not-cloud-runnable';
   }
-  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' });
+  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' }, { verifyCmd: cmd });
   const blocking = blockers.filter((b) => !(allowParkedSentinel && b.code === hd.BLOCKERS.PARKED_SENTINEL));
   return blocking.length ? `blocker-${blocking[0].code}` : null;
 }

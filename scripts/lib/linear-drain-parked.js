@@ -70,9 +70,17 @@ function isAutoFiledParked(issue) {
 // OWNER_JUDGMENT_RE marker evaluateVerifiability also treats as "armed": a
 // parked issue drained unattended needs a machine-checkable proof of done,
 // the same bar linear-next.js itself enforces without --allow-unverifiable.
+// Comments count when the caller fetched them (BRO-4642): linear-next.js's gate
+// accepts a VERIFY posted as a comment, so a description-only read wrongly
+// skips those cards. Without issue.comments this is the description alone.
+function verifyCommand(issue) {
+  if (!issue) return null;
+  const { sortedCommentBodies } = require('./linear-dispatch.js');
+  return evaluateVerifiability(issue.description || '', sortedCommentBodies(issue)).cmd || null;
+}
+
 function hasSafeVerifyCommand(issue) {
-  if (!issue) return false;
-  return !!evaluateVerifiability(issue.description || '').cmd;
+  return !!verifyCommand(issue);
 }
 
 // Session-parked P0/P1 cards (BRO-4535, owner-approved): a session wrote
@@ -92,7 +100,8 @@ function isSessionParkedDrainable(issue) {
   if (!SESSION_PARKED_PRIORITIES.has(Number(issue.priority))) return false;
   const hd = require('./headless-dispatchability.js');
   if (!hd.isDrainableSessionParked(issue.description || '')) return false;
-  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' });
+  const { blockers } = hd.classifyHeadlessDispatchability(
+    { subject: issue.title, notes: issue.description || '' }, { verifyCmd: verifyCommand(issue) });
   return blockers.every((b) => b.code === hd.BLOCKERS.PARKED_SENTINEL);
 }
 
@@ -126,6 +135,7 @@ module.exports = {
   PARKED_STATE_TYPES,
   issueNumber,
   isAutoFiledParked,
+  verifyCommand,
   hasSafeVerifyCommand,
   isSessionParkedDrainable,
   isDrainEligible,

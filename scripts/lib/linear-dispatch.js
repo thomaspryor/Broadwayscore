@@ -1011,6 +1011,19 @@ function reportedOutcomeGuard(issue, opts) {
     + `\n  --force alone does NOT bypass this one, deliberately: it is what turned BRO-2506 into a wasted dispatch.`;
 }
 
+// Comments for a batch of one team's issues by number (BRO-4642): one round
+// trip instead of a getIssue per card. Same comments shape as buildIssueQuery.
+function buildIssueCommentsByNumberQuery() {
+  return `query($teamKey: String!, $numbers: [Float!]) {
+    issues(first: 50, filter: { team: { key: { eq: $teamKey } }, number: { in: $numbers } }) {
+      nodes {
+        identifier
+        comments(first: 50, orderBy: createdAt) { nodes { body createdAt } }
+      }
+    }
+  }`;
+}
+
 // Rail 2 (Phase 0 parallel-run safety, plan 2026-08-12, task #1341): the
 // alert router's cross-system dedupe needs `description` on top of what
 // buildOpenIssuesQuery() above fetches — kept as its own query (not an added
@@ -1094,6 +1107,7 @@ module.exports = {
   buildIssueQuery,
   buildOpenIssuesQuery,
   buildOpenIssuesWithDescriptionsQuery,
+  buildIssueCommentsByNumberQuery,
   findOpenIssueForTerm,
   unescapeMarkdown,
   buildCommentMutation,

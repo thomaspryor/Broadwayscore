@@ -209,6 +209,34 @@ test('a VERIFY that runs the whole unit suite is not cloud-runnable', () => {
   assert.equal(skipped['verify-not-cloud-runnable'], 1);
 });
 
+test('a VERIFY posted as a comment arms the card, newest arming comment wins (BRO-4642)', () => {
+  const { verifyCommand } = require('./linear-drain-parked.js');
+  const bare = '## Acceptance criteria\nLooks right.';
+  const withComments = (...bodies) => issue({
+    description: bare,
+    comments: { nodes: bodies.map((body, i) => ({ body, createdAt: at((bodies.length - i) * 60_000) })).reverse() },
+  });
+  assert.equal(skipReason(withComments(`VERIFY: ${SAFE_CMD}`), NOW), null);
+  assert.equal(verifyCommand(withComments(`VERIFY: ${SAFE_CMD}`)), 'node --test scripts/lib/example.test.mjs');
+  assert.equal(verifyCommand(withComments(`VERIFY: ${SAFE_CMD}`, 'VERIFY: `node --test scripts/lib/newer.test.mjs`')),
+    'node --test scripts/lib/newer.test.mjs');
+  assert.equal(skipReason(withComments('VERIFY: `node scripts/run-unit-tests.js`'), NOW), 'verify-not-cloud-runnable');
+  assert.equal(skipReason(withComments('Looked at it, no command yet.'), NOW), 'no-safe-verify');
+  assert.equal(skipReason(issue({ description: bare, comments: { nodes: [] } }), NOW), 'no-safe-verify');
+  // A newer comment corrects the description's command, either way.
+  const unrunnable = '## Acceptance criteria\n`node scripts/run-unit-tests.js` passes.';
+  const fixed = issue({ description: unrunnable, comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: at(60_000) }] } });
+  assert.equal(skipReason(fixed, NOW), null);
+  const broken = issue({ comments: { nodes: [{ body: 'VERIFY: `node scripts/run-unit-tests.js`', createdAt: at(60_000) }] } });
+  assert.equal(skipReason(broken, NOW), 'verify-not-cloud-runnable');
+  const judged = issue({ comments: { nodes: [{ body: 'VERIFY: owner-judgment, needs a product call', createdAt: at(60_000) }] } });
+  assert.equal(skipReason(judged, NOW), 'no-safe-verify');
+  const parkedBare = issue({ state: { name: 'Backlog', type: 'backlog' },
+    description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${bare}`,
+    comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: at(60_000) }] } });
+  assert.equal(skipReason(parkedBare, NOW), null);
+});
+
 test('pickCloudCard returns every eligible card in pick order', () => {
   const { ordered } = pickCloudCard([
     issue({ identifier: 'BRO-50', priority: 2 }),
