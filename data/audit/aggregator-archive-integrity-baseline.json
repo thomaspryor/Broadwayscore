@@ -1,7 +1,9 @@
 {
   "description": "Frozen list of known-bad cached archives. CI fails (--strict) on ANY addition vs this list. Updated manually after deliberate cleanup. See scripts/audit-aggregator-archive-integrity.js. Notion 34e637c5-416f-812c.",
-  "updatedAt": "2026-08-18T05:16:08.977Z",
+  "updatedAt": "2026-10-05T00:00:20.462Z",
   "knownBad": [
-    "dtli/the-roast-1980"
+    "bww-roundups/richard-ii-off-west-end-2026",
+    "dtli/the-roast-1980",
+    "theatre-reviews/here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026"
   ]
 }
