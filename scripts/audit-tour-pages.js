@@ -20,10 +20,17 @@
 //   node scripts/audit-tour-pages.js --alert         # one Linear card per error code (CI)
 // Exit: 0 clean (warnings allowed; with --alert, also when every error has a
 // card), 1 errors found, 2 could not run, 3 --alert could not file a card.
-// Pure checks: scripts/lib/tour-page-audit.js (tests/unit/tour-page-audit.test.js).
+// Pure checks: scripts/lib/tour-page-audit.js (tests/unit/tour-page-audit.test.mjs).
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('audit-tour-pages.js [--base=URL] [--mobile] [--warnings] [--json=FILE] [--summary] [--data-only] [--alert] [--today=YYYY-MM-DD]');
+  process.exit(0);
+}
+
 const A = require('./lib/tour-page-audit');
 
 // Error codes from the last --alert run (deploy-lag confirmation, see runAlerts).

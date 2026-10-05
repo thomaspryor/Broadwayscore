@@ -1,8 +1,11 @@
 'use strict';
 // National-tour page audit (BRO-4723): pure parsers and checks used by
 // scripts/audit-tour-pages.js. Everything here takes HTML strings or plain
-// data and returns findings, so tests/unit/tour-page-audit.test.js can feed
+// data and returns findings, so tests/unit/tour-page-audit.test.mjs can feed
 // it fixtures without a network.
+//
+// venue-write-guard-ok: venue strings here are parsed off built pages and
+// compared against the data; this module never writes shows.json.
 //
 // The rules restate src/lib/tour-schedule.ts, src/lib/tour-cities.ts and
 // src/lib/data-tour-cities.ts on purpose: the audit is an independent oracle
