@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-05T00:11:09.369Z",
-    "completedAt": "2026-10-05T00:11:09.370Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37246243248",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-05T00:28:53.510Z",
-    "completedAt": "2026-10-05T00:28:53.518Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37247501175",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-05T00:39:21.842Z",
     "completedAt": "2026-10-05T00:39:43.720Z",
     "totalReviews": 46712,
@@ -350513,6 +350481,44 @@
     },
     "costUsd": 0,
     "runId": "37303605617",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-05T12:12:25.822Z",
+    "completedAt": "2026-10-05T12:12:32.407Z",
+    "totalReviews": 6,
+    "processed": 0,
+    "skipped": 3,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 12053,
+      "output": 311,
+      "total": 34809
+    },
+    "costUsd": 0.05441725,
+    "runId": "37307581236",
+    "errorDetails": [
+      {
+        "showId": "jena-friedman-motherfucker-off-broadway-2026",
+        "outletId": "thecomedybureau",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-05T12:12:33.893Z",
+    "completedAt": "2026-10-05T12:12:33.895Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37307581236",
     "errorDetails": []
   }
 ]

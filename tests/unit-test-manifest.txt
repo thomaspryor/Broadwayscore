@@ -72,6 +72,7 @@ scripts/check-linear-drain-throughput.test.mjs
 scripts/check-provider-spend.test.mjs
 scripts/check-rebuild-staleness.test.mjs
 scripts/check-review-count-drift.test.mjs
+scripts/check-score-integrity.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/check-signin-redirects.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
@@ -320,6 +321,7 @@ tests/unit/aggregator-thumb-check.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
 tests/unit/alert-dispatch-streak.test.mjs
 tests/unit/alert-email-policy.test.mjs
+tests/unit/amaze-review-flags.test.mjs
 tests/unit/anchored-precedence.test.mjs
 tests/unit/announced-promotion.test.mjs
 tests/unit/archive-row-outlet-id.test.mjs
