@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   filterToplevelTestEntries, siblingSourcePath, findGaps,
   filterTestsDirEntries, toplevelScriptDeps,
+  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations,
 } = require('./audit-toplevel-script-test-yml-coverage.js');
 const { relativeSpecifiers, stripComments } = require('./audit-test-yml-lib-deps.js');
 
@@ -105,7 +106,7 @@ test('relativeSpecifiers: is not left stateful by a previous call (/g lastIndex)
   assert.deepEqual(first, ['./one.js', './two.js']);
 });
 
-test('findGaps: the real repo reports both shapes and currently has none of either', () => {
+test('findGaps: the real repo reports all three shapes and currently has none of any', () => {
   const gaps = findGaps();
   assert.deepEqual(gaps, [], `push-path entries missing for: ${gaps.map((g) => g.source).join(', ')}`);
 });
@@ -153,4 +154,133 @@ test('toplevelScriptDeps resolves an extensionless TypeScript import', () => {
 test('toplevelScriptDeps still ignores scripts/lib (already globbed)', () => {
   const src = "const x = require('../../scripts/lib/test-yml-push-paths.js');";
   assert.deepEqual(toplevelScriptDeps(src, UNIT_DIR), []);
+});
+
+// --- BRO-3207: the third shape — scripts test.yml itself executes from a
+// push-running job. Fixtures are inline YAML; `exists` is stubbed so no disk.
+
+const { readPushPaths } = require('./audit-test-yml-lib-deps.js');
+const fixture = (jobs, paths = ["'tests/**'"]) => [
+  'on:', '  push:', '    paths:', ...paths.map((p) => `      - ${p}`),
+  '  schedule:', "    - cron: '0 0 * * *'", 'jobs:', jobs,
+].join('\n');
+const gapsFor = (yml) => findWorkflowRunGaps(yml, readPushPaths(yml), () => true);
+
+test('jobRunsOnPush: no if, actor-only if, and un-parseable ifs all assume push', () => {
+  assert.equal(jobRunsOnPush(''), true);
+  assert.equal(jobRunsOnPush("github.actor != 'dependabot[bot]'"), true);
+  assert.equal(jobRunsOnPush('always()'), true);
+  assert.equal(jobRunsOnPush("!(github.event_name == 'schedule')"), true);
+  assert.equal(jobRunsOnPush("(github.event_name == 'schedule' || github.event_name == 'push') && x"), true);
+  assert.equal(jobRunsOnPush("github.event_name != 'schedule'"), true);
+});
+
+test('jobRunsOnPush: schedule/dispatch-only ifs do not run on push', () => {
+  assert.equal(jobRunsOnPush("github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'"), false);
+  assert.equal(jobRunsOnPush("github.event_name == 'schedule'"), false);
+  assert.equal(jobRunsOnPush("github.event_name != 'push'"), false);
+  assert.equal(jobRunsOnPush(
+    "github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.t != 'x')"
+  ), false);
+  assert.equal(jobRunsOnPush("github.event_name == 'push' || github.event_name == 'schedule'"), true);
+});
+
+test('findWorkflowRunGaps: a push-running job executing an unlisted script is a workflow-run gap', () => {
+  const gaps = gapsFor(fixture([
+    '  unit:',
+    '    runs-on: ubuntu-latest',
+    '    steps:',
+    '      - run: node scripts/some-gate.js --flag',
+    '      - run: |',
+    '          set -e',
+    '          npx tsx scripts/typed-gate.ts',
+  ].join('\n')));
+  assert.deepEqual(gaps.map((g) => [g.source, g.via, g.test]), [
+    ['scripts/some-gate.js', 'workflow-run', 'test.yml:unit'],
+    ['scripts/typed-gate.ts', 'workflow-run', 'test.yml:unit'],
+  ]);
+});
+
+test('findWorkflowRunGaps: a schedule-only job does NOT generate a false positive', () => {
+  const gaps = gapsFor(fixture([
+    '  nightly:',
+    "    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'",
+    '    steps:',
+    '      - run: node scripts/nightly-only.js',
+    '  folded:',
+    '    if: >',
+    "      github.event_name == 'schedule' ||",
+    "      (github.event_name == 'workflow_dispatch' &&",
+    "       github.event.inputs.test_type != 'x')",
+    '    steps:',
+    '      - run: node scripts/folded-nightly.js',
+  ].join('\n')));
+  assert.deepEqual(gaps, []);
+});
+
+test('findWorkflowRunGaps: listed scripts, comments, echo hints, name: text and missing files are ignored', () => {
+  const yml = fixture([
+    '  unit:',
+    '    steps:',
+    '      - name: node scripts/in-a-name.js',
+    '      # node scripts/in-a-comment.js',
+    '      - run: node scripts/listed.js',
+    '      - run: |',
+    '          # node scripts/shell-comment.js',
+    '          echo "Run locally: npx tsx scripts/echo-hint.ts"',
+    '          node scripts/not-on-disk.js',
+  ].join('\n'), ["'tests/**'", "'scripts/listed.js'"]);
+  const gaps = findWorkflowRunGaps(yml, readPushPaths(yml), (rel) => rel !== 'scripts/not-on-disk.js');
+  assert.deepEqual(gaps, []);
+});
+
+test('findWorkflowRunGaps: scripts/lib is covered by its glob and a script is reported once', () => {
+  const yml = fixture([
+    '  a:', '    steps:', '      - run: node scripts/lib/x.js', '      - run: node scripts/dup.js',
+    '  b:', '    steps:', '      - run: node scripts/dup.js',
+  ].join('\n'), ["'tests/**'", "'scripts/lib/**'"]);
+  assert.deepEqual(gapsFor(yml).map((g) => g.source), ['scripts/dup.js']);
+});
+
+test('parseJobs: job if: and run bodies attach to the right job', () => {
+  const jobs = parseJobs(fixture([
+    '  a:', "    if: github.actor != 'bot'", '    steps:', '      - run: node scripts/a.js',
+    '  b:', '    steps:', '      - run: |', '          node scripts/b.js',
+  ].join('\n')));
+  assert.deepEqual(jobs.map((j) => [j.name, j.ifExpr, j.runLines]), [
+    ['a', "github.actor != 'bot'", ['node scripts/a.js']],
+    ['b', '', ['node scripts/b.js']],
+  ]);
+});
+
+// Acceptance: removing ANY of the 14 BRO-3202 entries must fail the floor.
+const BRO_3202_ENTRIES = [
+  'audit-nft-excluded-runtime-reads', 'audit-playwright-evaluate-click', 'audit-tests-vs-derived-data',
+  'audit-text-quality', 'audit-verifier-wiring', 'auto-close-expired-shows', 'build-actor-slugs-manifest',
+  'build-cast-manifest', 'check-brand-tokens-sync', 'check-image-aspect', 'lint-design-tokens',
+  'test-email-broadcast', 'test-temporal-override-regression', 'validate-archive-productions',
+];
+test('findWorkflowRunGaps: dropping any BRO-3202 push-path entry on the real test.yml is detected', async () => {
+  const { readFileSync } = await import('node:fs');
+  const yml = readFileSync(new URL('../.github/workflows/test.yml', import.meta.url), 'utf8');
+  const entries = readPushPaths(yml);
+  for (const name of BRO_3202_ENTRIES) {
+    const rel = entries.find((e) => new RegExp(`^scripts/${name}\\.(js|mjs|cjs)$`).test(e));
+    assert.ok(rel, `${name} should be hand-listed in test.yml`);
+    const gaps = findWorkflowRunGaps(yml, entries.filter((e) => e !== rel));
+    assert.ok(gaps.some((g) => g.source === rel && g.via === 'workflow-run'), `removing ${rel} must produce a gap`);
+  }
+});
+
+test('scriptsExecutedBy: flag values, multiple files, ./ prefix, bash .sh, continuations', () => {
+  assert.deepEqual(scriptsExecutedBy('node --test --test-timeout 60000 scripts/A.test.mjs'), ['scripts/A.test.mjs']);
+  assert.deepEqual(scriptsExecutedBy('node -r dotenv/config scripts/F.js'), ['scripts/F.js']);
+  assert.deepEqual(scriptsExecutedBy('node --test scripts/B.test.mjs scripts/C.test.mjs'), ['scripts/B.test.mjs', 'scripts/C.test.mjs']);
+  assert.deepEqual(scriptsExecutedBy('node ./scripts/D.js'), ['scripts/D.js']);
+  assert.deepEqual(scriptsExecutedBy('cd x && npx tsx scripts/T.ts | tee out'), ['scripts/T.ts']);
+  assert.deepEqual(scriptsExecutedBy('bash scripts/run.test.sh'), ['scripts/run.test.sh']);
+  assert.deepEqual(scriptsExecutedBy('node scripts/x.sh'), [], 'node does not run .sh');
+  assert.deepEqual(scriptsExecutedBy('echo "Run: node scripts/x.js"'), []);
+  assert.deepEqual(scriptsExecutedBy('FOO=1 node scripts/E.js'), ['scripts/E.js']);
+  assert.deepEqual(joinContinuations(['node \\', 'scripts/E.js', 'echo hi']), ['node scripts/E.js', 'echo hi']);
 });

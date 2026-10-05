@@ -133,6 +133,168 @@ function siblingSourcePath(testRelPath) {
   return fs.existsSync(path.join(ROOT, candidate)) ? candidate : null;
 }
 
+// --- BRO-3207: the third shape — a script test.yml itself EXECUTES from a
+// `run:` step in a job that runs on push, with no push-path entry of its own.
+// Editing such a script alone triggers zero CI, so the step that would have
+// run it never fires (scripts/test-temporal-override-regression.js, the
+// CLAUDE.md §12 scoring gate, was one of 14 hand-listed in BRO-3202).
+//
+// Job-aware on purpose: a job whose `if:` limits it to schedule /
+// workflow_dispatch never runs on push, and a push-path entry for a script
+// only that job runs buys nothing. Flagging those would train people to add
+// dead entries. When an `if:` can't be understood the job is assumed to run on
+// push, so the audit over-reports rather than under-reports.
+
+/** Split an expression on top-level `||` (ignoring ones inside parens). */
+function splitTopLevelOr(expr) {
+  const parts = [];
+  let depth = 0, cur = '';
+  for (let i = 0; i < expr.length; i++) {
+    const c = expr[i];
+    if (c === '(') depth++;
+    else if (c === ')') depth--;
+    if (depth === 0 && c === '|' && expr[i + 1] === '|') { parts.push(cur); cur = ''; i++; continue; }
+    cur += c;
+  }
+  parts.push(cur);
+  return parts.map((p) => p.trim());
+}
+
+function stripOuterParens(expr) {
+  let e = expr.trim();
+  while (e.startsWith('(') && e.endsWith(')')) {
+    let depth = 0, wraps = true;
+    for (let i = 0; i < e.length - 1; i++) {
+      if (e[i] === '(') depth++;
+      else if (e[i] === ')') depth--;
+      if (depth === 0) { wraps = false; break; }
+    }
+    if (!wraps) break;
+    e = e.slice(1, -1).trim();
+  }
+  return e;
+}
+
+/** Pure: can a job with this `if:` expression run on a `push` event?
+ * False only when EVERY top-level `||` branch is a plain `&&` chain containing
+ * `github.event_name == '<not push>'` (or `!= 'push'`). Anything else —
+ * no event_name test, negation, nested `||`, unparseable — returns true. */
+function jobRunsOnPush(ifExpr) {
+  if (!ifExpr || !ifExpr.trim()) return true;
+  const expr = ifExpr.replace(/^\$\{\{|\}\}$/g, '').trim();
+  if (!/github\.event_name/.test(expr)) return true;
+  return splitTopLevelOr(expr).some((branch) => {
+    const b = stripOuterParens(branch);
+    if (/\|\||!\s*\(|!\s*github/.test(b)) return true; // can't reason about it: assume push
+    const excludesPush = [...b.matchAll(/github\.event_name\s*(==|!=)\s*'([^']+)'/g)]
+      .some(([, op, ev]) => (op === '==' && ev !== 'push') || (op === '!=' && ev === 'push'));
+    return !excludesPush;
+  });
+}
+
+/** Pure: parse test.yml into [{ name, ifExpr, runLines }] — indentation-aware
+ * line scan in the style of readPushPaths (no YAML dependency). `runLines` are
+ * the lines of `run:` step bodies only (inline or block scalar), never
+ * comments or `name:` text. */
+function parseJobs(yml) {
+  const lines = yml.split('\n');
+  const start = lines.findIndex((l) => /^jobs:\s*$/.test(l));
+  if (start === -1) throw new Error("could not find 'jobs:' in test.yml");
+  const jobs = [];
+  let job = null, ifIndent = -1, runIndent = -1;
+  for (let i = start + 1; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+    if (trimmed === '') continue;
+    const indent = line.length - line.trimStart().length;
+    if (indent === 0 && !trimmed.startsWith('#')) break; // next top-level key
+    if (trimmed.startsWith('#')) continue;
+    // Block scalar continuation (`if: >` / `run: |`): deeper than its key.
+    if (ifIndent >= 0) {
+      if (indent > ifIndent) { job.ifExpr += ' ' + trimmed; continue; }
+      ifIndent = -1;
+    }
+    if (runIndent >= 0) {
+      if (indent > runIndent) { job.runLines.push(trimmed); continue; }
+      runIndent = -1;
+    }
+    let m;
+    if (indent === 2 && (m = trimmed.match(/^([A-Za-z0-9_-]+):\s*$/))) {
+      job = { name: m[1], ifExpr: '', runLines: [] };
+      jobs.push(job);
+    } else if (job && indent === 4 && (m = trimmed.match(/^if:\s*(.*)$/))) {
+      const v = m[1].trim();
+      if (/^[>|][+-]?$/.test(v)) { ifIndent = indent; job.ifExpr = ''; } else job.ifExpr = v;
+    } else if (job && (m = trimmed.match(/^(?:-\s+)?run:\s*(.*)$/))) {
+      const v = m[1].trim();
+      if (/^[>|][+-]?$/.test(v)) runIndent = indent + (trimmed.startsWith('-') ? 2 : 0);
+      else if (v) job.runLines.push(v);
+    }
+  }
+  return jobs;
+}
+
+// Every `scripts/<file>` operand of a node/tsx/bash/sh command segment, so
+// flag values (`--test-timeout 60000`, `-r dotenv/config`), several files after
+// `node --test`, and `./scripts/x.js` are all caught. Segments are split on
+// shell separators and a segment only counts when it starts with the command
+// (optionally `npx`), so `echo "Run: node scripts/x.js"` text is not a step.
+const SEGMENT_SPLIT_RE = /&&|\|\||;|\|/;
+const COMMAND_RE = /^(?:(?:[A-Za-z_][A-Za-z0-9_]*=\S*|timeout\s+\d+\S*|time|npx|sudo)\s+)*(node|tsx|bash|sh)\s+(.*)$/;
+const SCRIPT_OPERAND_RE = /(?:^|\s|=)(?:\.\/)?(scripts\/[\w./-]+\.(?:js|mjs|cjs|ts|sh))(?=\s|$|['"])/g;
+
+/** Pure: repo-relative scripts a run-step body line executes. */
+function scriptsExecutedBy(line) {
+  const out = [];
+  for (const segment of line.split(SEGMENT_SPLIT_RE)) {
+    const m = segment.trim().match(COMMAND_RE);
+    if (!m) continue;
+    const [, cmd, rest] = m;
+    for (const [, rel] of rest.matchAll(SCRIPT_OPERAND_RE)) {
+      if (rel.endsWith('.sh') ? (cmd === 'bash' || cmd === 'sh') : (cmd === 'node' || cmd === 'tsx')) out.push(rel);
+    }
+  }
+  return out;
+}
+
+/** Pure: join backslash-continued shell lines so a command split across lines
+ * is matched as one. */
+function joinContinuations(lines) {
+  const out = [];
+  let cur = null;
+  for (const l of lines) {
+    const piece = cur === null ? l : `${cur} ${l}`;
+    if (piece.endsWith('\\')) cur = piece.slice(0, -1).trimEnd();
+    else { out.push(piece); cur = null; }
+  }
+  if (cur !== null) out.push(cur);
+  return out;
+}
+
+/** Pure: gaps for scripts a push-running job executes but push.paths misses.
+ * `exists(rel)` is injected so tests don't need real files. */
+function findWorkflowRunGaps(yml, pathEntries, exists = (rel) => fs.existsSync(path.join(ROOT, rel))) {
+  const gaps = [];
+  const seen = new Set();
+  for (const job of parseJobs(yml)) {
+    if (!jobRunsOnPush(job.ifExpr)) continue;
+    for (const line of joinContinuations(job.runLines)) {
+      for (const rel of scriptsExecutedBy(line)) {
+        if (seen.has(rel) || !exists(rel) || isCovered(rel, pathEntries)) continue;
+        seen.add(rel);
+        gaps.push({
+          test: `test.yml:${job.name}`,
+          testCovered: true,
+          source: rel,
+          sourceCovered: false,
+          via: 'workflow-run',
+        });
+      }
+    }
+  }
+  return gaps;
+}
+
 function findGaps() {
   const yml = fs.readFileSync(WORKFLOW, 'utf8');
   const pathEntries = readPushPaths(yml);
@@ -179,6 +341,14 @@ function findGaps() {
     }
   }
 
+  // Third shape (BRO-3207): scripts test.yml itself runs on push. Dedupe against
+  // sources already reported above.
+  for (const g of findWorkflowRunGaps(yml, pathEntries)) {
+    if (seen.has(g.source)) continue;
+    seen.add(g.source);
+    gaps.push(g);
+  }
+
   return gaps;
 }
 
@@ -202,7 +372,7 @@ function main() {
       const parts = [];
       if (!g.testCovered) parts.push(`test file ${g.test} missing`);
       if (g.source && !g.sourceCovered) parts.push(`source file ${g.source} missing`);
-      console.log(`  ${g.test} -> ${parts.join('; ')}`);
+      console.log(`  ${g.test} -> ${parts.join('; ')}${g.via === 'workflow-run' ? ' (executed by a push-running job)' : ''}`);
     }
     console.log("Add the missing path(s) to on.push.paths in .github/workflows/test.yml.");
   }
@@ -212,6 +382,7 @@ function main() {
 module.exports = {
   readManifestEntries, filterToplevelTestEntries, siblingSourcePath, findGaps,
   readTestsDirEntries, filterTestsDirEntries, toplevelScriptDeps,
+  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations,
 };
 
 if (require.main === module) main();
