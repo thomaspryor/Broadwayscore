@@ -18,9 +18,10 @@ const matter = require('gray-matter');
 const { normalizeTitle } = require('./lib/title-match');
 const { resolveShowId } = require('./lib/resolve-blog-show-id');
 
-const REVIEWS_DIR = path.join(__dirname, '../content/reviews');
-const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
-const OUTPUT_PATH = path.join(__dirname, '../data/blog-reviews-for-scoring.json');
+// Env overrides exist so tests can run the generator against fixtures (BRO-2410).
+const REVIEWS_DIR = process.env.BLOG_REVIEWS_DIR || path.join(__dirname, '../content/reviews');
+const SHOWS_PATH = process.env.BLOG_SHOWS_PATH || path.join(__dirname, '../data/shows.json');
+const OUTPUT_PATH = process.env.BLOG_OUTPUT_PATH || path.join(__dirname, '../data/blog-reviews-for-scoring.json');
 
 function main() {
   // Load shows for slug→id and title→shows mapping

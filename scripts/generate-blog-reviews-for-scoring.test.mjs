@@ -5,11 +5,13 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import { fileURLToPath } from 'node:url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { resolveShowId } = require('./lib/resolve-blog-show-id.js');
 const { normalizeTitle } = require('./lib/title-match.js');
-const matter = require('gray-matter');
 
 const shows = [
   { id: 'edward-2026', slug: 'edward', title: 'Edward' },
@@ -43,19 +45,21 @@ test('ambiguous -> null', () => {
   assert.equal(r({ show: 'Cats' }), null);
 });
 
-test('real content/reviews posts with show: yield non-empty output', () => {
-  const dir = path.join(process.cwd(), 'content/reviews');
-  const posts = fs.readdirSync(dir).filter(f => f.endsWith('.md') && !f.startsWith('_'));
-  assert.ok(posts.length > 0);
-  assert.ok(posts.some(f => !matter(fs.readFileSync(path.join(dir, f), 'utf8')).data.showSlug),
-    'expected real posts using show: rather than showSlug:');
-  const out = path.join(process.cwd(), 'data/blog-reviews-for-scoring.json');
-  const before = fs.readFileSync(out, 'utf8');
-  try {
-    execFileSync('node', ['scripts/generate-blog-reviews-for-scoring.js'], { stdio: 'pipe' });
-    const { reviews } = JSON.parse(fs.readFileSync(out, 'utf8'));
-    assert.ok(reviews.length > 0, 'generator produced 0 entries');
-  } finally {
-    fs.writeFileSync(out, before);
-  }
+test('generator emits entries for show:-only posts (no showSlug) and skips unresolvable ones', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-scoring-'));
+  const dir = path.join(tmp, 'reviews');
+  fs.mkdirSync(dir);
+  fs.writeFileSync(path.join(dir, 'edward.md'), '---\ntitle: "x"\nshow: "Edward"\nscore: 84\npublishDate: "2026-03-01"\n---\nbody\n');
+  fs.writeFileSync(path.join(dir, 'ghost.md'), '---\ntitle: "y"\nshow: "No Such Show"\nscore: 70\n---\nbody\n');
+  fs.writeFileSync(path.join(tmp, 'shows.json'), JSON.stringify({ shows }));
+  const out = path.join(tmp, 'out.json');
+  execFileSync('node', [path.join(__dirname, 'generate-blog-reviews-for-scoring.js')], {
+    stdio: 'pipe',
+    env: { ...process.env, BLOG_REVIEWS_DIR: dir, BLOG_SHOWS_PATH: path.join(tmp, 'shows.json'), BLOG_OUTPUT_PATH: out },
+  });
+  const { reviews } = JSON.parse(fs.readFileSync(out, 'utf8'));
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].showId, 'edward-2026');
+  assert.equal(reviews[0].assignedScore, 84);
+  fs.rmSync(tmp, { recursive: true, force: true });
 });
