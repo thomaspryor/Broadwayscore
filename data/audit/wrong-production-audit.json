@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T21:49:43.433Z",
+  "timestamp": "2026-10-05T22:19:57.870Z",
   "stats": {
-    "totalReviews": 46398,
-    "alreadyFlagged": 18659,
-    "dateGuardCatches": 269,
-    "directorMismatch": 1285,
-    "tvFilmSignals": 1344,
-    "londonSignals": 1277,
+    "totalReviews": 46489,
+    "alreadyFlagged": 18664,
+    "dateGuardCatches": 268,
+    "directorMismatch": 1316,
+    "tvFilmSignals": 1348,
+    "londonSignals": 1285,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
-    "noPublishDate": 4307
+    "noPublishDate": 4315
   },
   "findings": [
     {
@@ -172,6 +172,45 @@
       "score": 82,
       "publishDate": "2025-06-25",
       "url": "https://www.broadwayworld.com/phoenix/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Broadway-In-Tucson-20250625",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2026-06-24",
+      "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-06-24",
+      "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "next-magazine--michael-hollett.json",
+      "publishDate": "2026-05-03",
+      "url": "https://nextmag.ca/review-a-beautiful-noise-is-so-good-so-good-so-good-at-being-a-concert/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -3735,6 +3774,19 @@
       ]
     },
     {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "buffalo-theatre-guide--unknown.json",
+      "publishDate": "2026-06-20",
+      "url": "https://buffalotheatreguide.com/2026/06/20/the-book-of-mormon-returns-to-sheas/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
       "showId": "boop-2025",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 45,
@@ -3987,6 +4039,19 @@
       "score": 89,
       "publishDate": "2023-12-14",
       "url": "https://www.theaterpizzazz.com/buena-vista-social-club/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-tour-2026",
+      "file": "broadwayworld--jeffrey-kare.json",
+      "publishDate": "2026-09-24",
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-BUENA-VISTA-SOCIAL-CLUB-National-Tour-at-Durham-Performing-Arts-Center-20260924",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -11139,6 +11204,24 @@
     },
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "publishDate": null,
+      "url": "http://partially-obstructed-view.blogspot.com/2026/08/theatre-review-game-of-thrones-mad-king.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "polygon--aimee-hart.json",
       "score": 90,
       "publishDate": "2026-08-09",
@@ -13457,6 +13540,19 @@
       ]
     },
     {
+      "showId": "hamilton-tour-2024",
+      "file": "broadwayworld--theresa-bertram.json",
+      "publishDate": "2026-08-29",
+      "url": "https://www.broadwayworld.com/little-rock/article/Review-HAMILTON-at-Robinson-Center-in-Little-Rock-20260829",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
+        }
+      ]
+    },
+    {
       "showId": "hamilton-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 93,
@@ -13687,6 +13783,32 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "broadwayworld--tyler-hinton.json",
+      "publishDate": "2026-09-24",
+      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from harry-potter-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "seattles-child--candice-mcmillan.json",
+      "publishDate": "2026-08-27",
+      "url": "https://www.seattleschild.com/harry-potter-cursed-child-seattle-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from harry-potter-2021"
         }
       ]
     },
@@ -16226,25 +16348,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 96,
-      "publishDate": "2025-12-12",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 94,
@@ -18165,6 +18268,32 @@
       ]
     },
     {
+      "showId": "kinky-boots-tour-2025",
+      "file": "broadwayworld--chloe-rabinowitz.json",
+      "publishDate": "2026-06-09",
+      "url": "https://www.broadwayworld.com/chicago/article/KINKY-BOOTS-is-Now-Playing-at-Chicagos-James-M-Nederlander-Theatre-20260609",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-tour-2025",
+      "file": "broadwayworld--patrick-honore.json",
+      "publishDate": "2026-08-22",
+      "url": "https://www.broadwayworld.com/belgium/article/Review-KINKY-BOOTS-at-Chteau-Du-Karreveld-20260822",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
       "showId": "kiss-me-kate-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 44,
@@ -19806,6 +19935,32 @@
       ]
     },
     {
+      "showId": "mamma-mia-tour-2026",
+      "file": "nerds-of-color--edward-hong.json",
+      "publishDate": "2026-06-25",
+      "url": "https://thenerdsofcolor.org/2026/06/25/a-los-angeles-theatre-review-mamma-mia/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-tour-2026",
+      "file": "pioneer-press--rob-hubbard.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.twincities.com/2026/09/16/theater-review-mamma-mia-orpheum/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
+        }
+      ]
+    },
+    {
       "showId": "mamma-mia-west-end-2021",
       "file": "mrcarlwoodward--carl-woodward.json",
       "score": 91,
@@ -19985,6 +20140,24 @@
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
+      "file": "dc-theater-arts--julia-tucker.json",
+      "publishDate": "2026-10-03",
+      "url": "https://dctheaterarts.org/2026/10/03/mia-nicole-nelson-on-being-a-standby-in-maybe-happy-ending/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
       "file": "maryland-theatre-guide--herb-merrick.json",
       "score": 86,
       "publishDate": "2026-09-17",
@@ -19994,6 +20167,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-10-01",
+      "url": "https://mdtheatreguide.com/2026/10/a-quick-5-with-claire-kwon-actor-in-maybe-happy-ending-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -25075,6 +25266,19 @@
       ]
     },
     {
+      "showId": "purpose-regional-2026",
+      "file": "wbur--jacquinn-sinclair.json",
+      "publishDate": "2026-09-18",
+      "url": "https://www.wbur.org/news/2026/09/18/the-huntington-purpose-theater-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phylicia rashad\" from purpose-2025"
+        }
+      ]
+    },
+    {
       "showId": "queen-versailles-2025",
       "file": "ap--mark-kennedy.json",
       "score": 56,
@@ -26575,6 +26779,52 @@
       ]
     },
     {
+      "showId": "six-tour-2022",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2023-05-10",
+      "url": "https://hotchka.com/six-tour-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lucy moss\" from six-2021"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie armitage\" from six-2021"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "six-tour-2022",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2026-08-10",
+      "url": "https://www.theatermania.com/news/review-six-film-captures-the-substance-if-not-the-spirit-of-the-show_1848570/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lucy moss\" from six-2021"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie armitage\" from six-2021"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
       "showId": "skylight-2015",
       "file": "nytimes--ben-brantley.json",
       "score": 92,
@@ -27431,6 +27681,42 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "metrmag--kevin-t.json",
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/monty-python-s-spamalot-by-eric-idle-and-john-du-prez-hanover-theatre-worcester-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "pioneer-press--rob-hubbard.json",
+      "publishDate": "2026-06-11",
+      "url": "https://www.twincities.com/2026/06/11/theater-review-spamalot-at-the-ordway-might-be-the-funny-fluff-you-need/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "roc-city-mag--david-andreatta.json",
       "publishDate": "2026-01-14",
       "url": "https://www.roccitymag.com/arts-entertainment/theater/review-monty-pythons-spamalot-is-not-dead-yet/",
@@ -28128,6 +28414,24 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "broadwayworld--aidan-oconnor.json",
+      "publishDate": "2026-06-17",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-SUFFS-at-The-National-Theatre-20260617",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "cleveland-plain-dealer--joey-morona.json",
       "score": 61,
       "publishDate": "2026-02-05",
@@ -28137,6 +28441,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "feature-presentation--patrick-j-regal.json",
+      "publishDate": "2026-06-18",
+      "url": "https://featurepresentationvideo.substack.com/p/tour-review-suffs",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -28184,10 +28506,41 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-06-18",
+      "url": "https://mdtheatreguide.com/2026/06/theater-review-suffs-at-the-national-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "minneapolis-star-tribune--rohan-preston.json",
       "score": 86,
       "publishDate": "2026-04-09",
       "url": "https://www.startribune.com/should-women-vote-suffs-shows-a-past-and-current-fight/601664006",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "publishDate": "2026-07-10",
+      "url": "https://rachelweinbergreviews.com/2026/07/10/review-suffs-musical-tour-presented-by-broadway-in-chicago/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31845,6 +32198,19 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "revue--josh.json",
+      "publishDate": "2026-07-22",
+      "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "trib-live--alexis-papalia.json",
       "score": 63,
       "publishDate": "2026-05-27",
@@ -32443,6 +32809,19 @@
     },
     {
       "showId": "the-lion-king-tour-2021",
+      "file": "playbill--andrew.json",
+      "publishDate": "2026-09-11",
+      "url": "https://playbill.com/article/the-lion-king-tour-will-close-in-2027-newly-configured-production-planned",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
       "file": "south-florida-sun-sentinel--stafford-hagwood.json",
       "score": 73,
       "publishDate": "2025-03-08",
@@ -32676,6 +33055,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: the-music-man-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-music-man-tour-2026",
+      "file": "broadwayworld--kevin-shaw.json",
+      "publishDate": "2026-08-18",
+      "url": "https://www.broadwayworld.com/memphis/article/Review-THE-MUSIC-MAN-at-Theatre-Memphis-20260818",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 7\""
         }
       ]
     },
@@ -33001,6 +33393,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2026-08-06",
+      "url": "https://www.chicagotribune.com/2026/08/06/review-notebook-musical-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
         }
       ]
     },
@@ -33381,6 +33791,19 @@
       "score": 92,
       "publishDate": "2025-10-23",
       "url": "https://www.broadwayworld.com/austin/article/Review-THE-OUTSIDERS-at-Bass-Concert-Hall-20251023",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": "2026-08-08",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-THE-OUTSIDERS-National-Tour-Presented-by-Broadway-In-Chicago-20260808",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37336,6 +37759,20 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "score": 81,
+      "publishDate": "2026-06-25",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-In-Chicago-20260625",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--taylor-clemons.json",
       "score": 78,
       "publishDate": "2025-10-17",
@@ -38680,7 +39117,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "dc-theater-arts--constance-beulah.json",
-      "score": 88,
+      "score": 90,
       "publishDate": "2025-12-22",
       "url": "https://dctheaterarts.org/2025/12/22/spectacular-wicked-soars-on-honesty-at-the-hippodrome/",
       "findings": [
@@ -38694,7 +39131,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "hartford-courant--christopher-arnott.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2024-04-27",
       "url": "https://www.courant.com/2024/04/27/theater-review-wicked-is-as-great-and-powerful-as-ever-in-three-week-return-to-the-bushnell/",
       "findings": [
@@ -41172,6 +41609,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2026",
+      "file": "dc-theater-arts--geoffrey-melada.json",
+      "publishDate": "2026-07-08",
+      "url": "https://dctheaterarts.org/2026/07/08/beetlejuice-on-tour-at-the-national-theatre-is-stuck-in-limbo/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
