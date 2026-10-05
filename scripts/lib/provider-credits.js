@@ -48,6 +48,9 @@ const CREDITS = {
     premium: 10,
     stealth: 10,
     serp: 5,
+    // BRO-4665: dedicated YouTube APIs (scraper.js fetchScrapingdogYouTube).
+    'youtube-transcripts': 1,
+    'youtube-video': 5,
   },
   sb: {
     page: 1,
