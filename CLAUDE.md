@@ -97,10 +97,6 @@ Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (Theater
 `data/` — `shows.json` (source of truth), `reviews.json` (derived via rebuild), `review-texts/{show-id}/` (private repo §11).
 Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full` for fullText.
 
-### Key Files
-**App:** `engine.ts`, `data-core.ts`, `scoring.ts`, `ShowImage.tsx`
-**Scripts:** `gather-reviews.js`, `collect-review-texts.js`, `rebuild-all-reviews.js`, `validate-data.js`, `discover-new-shows.js`
-
 ### Automation
 Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
 
