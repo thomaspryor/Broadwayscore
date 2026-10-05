@@ -17,6 +17,8 @@ const require = createRequire(import.meta.url);
 const { findGaps } = require('./audit-workflow-secret-gaps.js');
 
 const BRO67 = ['opening-night-checklist.yml', 'opening-night-poller.yml', 'opening-night-orchestrator.yml'];
+// BRO-2378 cousin: the broadcast checklist gate runs the same checklist script.
+const WORKFLOWS = [...BRO67, 'opening-night-broadcast.yml'];
 
 function stripKey(raw, key) {
   return raw.split('\n').filter((l) => !new RegExp(`^\\s*${key}:\\s`).test(l)).join('\n');
@@ -33,7 +35,7 @@ function stageBro67(strip, extra = (s) => s) {
     path.join(dir, 'zz-known-secret.yml'),
     'name: k\non: push\njobs:\n  j:\n    runs-on: ubuntu-latest\n    steps:\n      - run: echo hi\n        env:\n          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}\n',
   );
-  for (const f of BRO67) {
+  for (const f of WORKFLOWS) {
     let raw = fs.readFileSync(path.join(WF_DIR, f), 'utf8');
     if (strip) {
       // also drop file-wide exemptions so the real consuming step is judged
@@ -48,12 +50,23 @@ test('real workflows: BRO-67 trio has no ANTHROPIC_API_KEY gaps', () => {
   const dir = stageBro67(false);
   const gaps = findGaps(dir).filter((g) => g.secret === 'ANTHROPIC_API_KEY');
   assert.deepEqual(gaps, []);
+  // Bindings must be real env wiring, not a file-wide exemption comment.
+  for (const f of WORKFLOWS) {
+    const raw = fs.readFileSync(path.join(WF_DIR, f), 'utf8');
+    assert.match(raw, /ANTHROPIC_API_KEY: \$\{\{ secrets\.ANTHROPIC_API_KEY \}\}/, `${f} binds the key`);
+    assert.doesNotMatch(raw, /audit-secret-gap-ok:\s*ANTHROPIC_API_KEY/, `${f} must not exempt the key`);
+  }
 });
 
 test('flags all three BRO-67 workflows when ANTHROPIC_API_KEY is removed', () => {
   const dir = stageBro67(true);
-  const flagged = new Set(findGaps(dir).filter((g) => g.secret === 'ANTHROPIC_API_KEY').map((g) => g.workflow));
-  for (const f of BRO67) assert.ok(flagged.has(f), `${f} should be flagged`);
+  const gaps = findGaps(dir).filter((g) => g.secret === 'ANTHROPIC_API_KEY');
+  const flagged = new Set(gaps.map((g) => g.workflow));
+  for (const f of WORKFLOWS) assert.ok(flagged.has(f), `${f} should be flagged`);
+  // Per-step: orchestrator + broadcast each consume the key via the checklist script.
+  const steps = new Set(gaps.map((g) => `${g.workflow}::${g.script}`));
+  assert.ok(steps.has('opening-night-orchestrator.yml::scripts/opening-night-checklist.js'));
+  assert.ok(steps.has('opening-night-broadcast.yml::scripts/opening-night-checklist.js'));
 });
 
 test('exemption comment suppresses the flag', () => {

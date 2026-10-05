@@ -720,9 +720,6 @@ jobs:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          # Poller module is imported (LLM extractor in its require chain); wiring
-          # the key avoids a file-wide audit-secret-gap-ok exemption (BRO-2378).
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/opening-night-status.js --notify --lookback=2
         continue-on-error: true
 
