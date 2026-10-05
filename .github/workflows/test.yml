@@ -3099,6 +3099,8 @@ on:
       # run in tests/unit (node --test batch, not globbed) + the lib-test glob;
       # path-listed so a solo edit to either file triggers CI.
       - 'tests/unit/ingest-manual-review-merge.test.mjs'
+      # BRO-2365: ingest-review versioned-filename collision policy
+      - 'tests/unit/review-filename-collision.test.mjs'
       # T1-retrieval Sprint 1 (card #291): remaining consumers migrated off the
       # deleted review-text-scoreable mirror onto review-guards canonical
       # predicates. Path-listed so a solo edit triggers CI (allow-list gate).
