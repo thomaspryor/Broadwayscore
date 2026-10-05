@@ -83,10 +83,20 @@ const IDLE_MS = 6 * HOUR_MS;
 // A session that would have started a worker session files the card with a
 // "START-NOW: <why>" line instead (create_session prompts the owner every time,
 // BRO-4664). Such a Todo card is a handoff, so it skips the idle wait and goes
-// to the front of the queue.
-const START_NOW_RE = /^\s*START-NOW\s*:/m;
-function isStartNow(issue) {
-  return !!(issue && issue.state && issue.state.type === 'unstarted' && START_NOW_RE.test(issue.description || ''));
+// to the front of the queue. Only for START_NOW_MAX_AGE_MS after filing, so a
+// card bounced back to Todo later, or an over-eager filer, can't hold the front
+// for good; and not in its first START_NOW_MIN_AGE_MS, so the filer can finish
+// writing it.
+const START_NOW_RE = /^\s*START-NOW\s*:/im;
+const START_NOW_MIN_AGE_MS = 10 * 60 * 1000;
+const START_NOW_MAX_AGE_MS = 48 * HOUR_MS;
+function hasStartNowLine(issue) {
+  return !!(issue && START_NOW_RE.test(issue.description || ''));
+}
+function isStartNow(issue, nowMs) {
+  if (!hasStartNowLine(issue) || !issue.state || issue.state.type !== 'unstarted') return false;
+  const age = nowMs - Date.parse(issue.createdAt);
+  return Number.isFinite(age) && age >= START_NOW_MIN_AGE_MS && age < START_NOW_MAX_AGE_MS;
 }
 const PRIORITIES = new Set([1, 2]);
 const STRANDED_MS = 90 * 60 * 1000;
@@ -162,7 +172,7 @@ function skipReason(issue, nowMs) {
   if (unfit) return unfit;
   const updatedMs = Date.parse(issue.updatedAt);
   if (!Number.isFinite(updatedMs)) return 'no-updatedAt';
-  if (nowMs - updatedMs < IDLE_MS && !isStartNow(issue)) return 'recent-activity';
+  if (nowMs - updatedMs < IDLE_MS && !isStartNow(issue, nowMs)) return 'recent-activity';
   return null;
 }
 
@@ -176,18 +186,24 @@ function pickCloudCard(issues, { nowMs }) {
   const { issueNumber } = require('./linear-drain-parked.js');
   const skipped = {};
   const eligible = [];
+  // START-NOW Todo cards that won't run (no safe VERIFY, a blocker, too new or
+  // too old), by id: a filer told the owner they were queued, so say why not.
+  const startNowSkipped = {};
   for (const iss of Array.isArray(issues) ? issues : []) {
     const reason = skipReason(iss, nowMs);
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
+    if (hasStartNowLine(iss) && iss.state && iss.state.type === 'unstarted' && (reason || !isStartNow(iss, nowMs))) {
+      startNowSkipped[iss.identifier] = reason || 'start-now-outside-age-window';
+    }
   }
   // Within a priority, the old machine-filed backlog goes after cards a person
   // filed or a session parked, so ~280 stale autofix cards can't starve them.
   const machineTier = (iss) => (iss.state && iss.state.type === 'unstarted') || !isStaleAutomationParked(iss, nowMs) ? 0 : 1;
-  const startTier = (iss) => (isStartNow(iss) ? 0 : 1);
+  const startTier = (iss) => (isStartNow(iss, nowMs) ? 0 : 1);
   eligible.sort((a, b) => (startTier(a) - startTier(b)) || (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
     || (issueNumber(a.identifier) - issueNumber(b.identifier)));
-  return { pick: eligible[0] || null, ordered: eligible, eligible: eligible.length, skipped };
+  return { pick: eligible[0] || null, ordered: eligible, eligible: eligible.length, skipped, startNowSkipped };
 }
 
 /**
@@ -304,6 +320,6 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
-  AUTOMATION_PARK_STALE_MS, isStaleAutomationParked, isStartNow, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, isStaleAutomationParked, isStartNow, hasStartNowLine, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   findResumeCandidates, findResumeCard,
 };
