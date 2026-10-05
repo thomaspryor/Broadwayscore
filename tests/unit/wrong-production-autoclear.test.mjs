@@ -1666,3 +1666,38 @@ describe('shouldPreserveExclusionFlagsOnUrlRecovery wrongShow registry (BRO-2868
     assert.strictEqual(isUrlIndependentWrongShowReason(undefined), false);
   });
 });
+
+// BRO-2868: the predicate alone is not enough — updateFileUrlWithInvariant runs
+// applyUrlChangeInvariant BEFORE the recovery cleanup reads the file back, and
+// it used to clear wrongShow/wrongShowReason on any URL change. End-to-end.
+describe('applyUrlChangeInvariant preserves URL-independent wrongShow (BRO-2868)', () => {
+  const { applyUrlChangeInvariant } = require('../../scripts/lib/url-change-invariant.js');
+  const run = (reason, patch = {}) => {
+    const existing = { url: 'https://x.com/a/review', wrongShow: true, wrongShowReason: reason, incompleteReason: 'wrong_content' };
+    const merged = { ...existing, ...patch, url: 'https://y.com/b/real-review' };
+    const r = applyUrlChangeInvariant(existing, merged, { force: true });
+    return { merged, r };
+  };
+  it('keeps manual-resolution and orphan-directory flags across a URL change', () => {
+    for (const reason of [
+      'Cross-show URL collision (manual resolution): review belongs to hamilton-2015',
+      'Orphaned generic directory "wicked" is not in shows.json — year-suffixed siblings exist',
+    ]) {
+      const { merged } = run(reason);
+      assert.strictEqual(merged.wrongShow, true, reason);
+      assert.strictEqual(merged.wrongShowReason, reason);
+    }
+  });
+  it('restores the flag when a replacement-style writer omitted it', () => {
+    const reason = 'Cross-show URL collision (manual resolution): review belongs to hamilton-2015';
+    const existing = { url: 'https://x.com/a', wrongShow: true, wrongShowReason: reason };
+    const merged = { url: 'https://y.com/b' };
+    applyUrlChangeInvariant(existing, merged, { force: true });
+    assert.strictEqual(merged.wrongShow, true);
+  });
+  it('still clears content reasons (Collector LLM) on URL change', () => {
+    const { merged } = run('Collector LLM: film/TV content (high) — reviews the movie');
+    assert.strictEqual(merged.wrongShow, undefined);
+    assert.strictEqual(merged.wrongShowReason, undefined);
+  });
+});

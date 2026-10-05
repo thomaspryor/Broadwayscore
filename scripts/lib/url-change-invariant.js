@@ -20,6 +20,9 @@
  * humanReview*, allow*) are never touched — a manual clear stays valid across
  * URL changes. A manual wrongShowReason, by contrast, means the OLD url was
  * wrong; a different-URL write is exactly the recovery case, so it clears.
+ * Exception (BRO-2868): reasons in WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES
+ * (one-shot operator/audit decisions about which show directory the file
+ * belongs in) are about neither the URL nor the body, so they survive.
  *
  * Manual 'Tour transfer' wrongProduction flags are preserved. The automatic
  * date guards ('Pre-opening guard' etc.) are NOT: they were computed from the
@@ -53,7 +56,7 @@ const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-proven
 // genuinely new publishDate arrived to re-evaluate it against. Same registry
 // the preserve-on-URL-recovery predicate uses, so the two agree by construction.
 // (No require cycle: wrong-production-autoclear.js imports only date-utils.)
-const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
+const { DATE_ONLY_AUTO_REASONS, isUrlIndependentWrongShowReason } = require('./wrong-production-autoclear');
 
 // Everything derived from (or fetched via) the file's URL. REPLACE_CLEAR_FIELDS
 // carries the wrong-flag / content-state / fetch-state families; the rest are
@@ -304,6 +307,14 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   const preserveDateBasedWp = _noteStartsWith(existing, MANUAL_WP_PREFIXES)
     || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear)
     || (_reasonIsDateOnly(existing) && !publishDateWillClear && mergedHasPublishDate);
+  const preserveUrlIndependentWrongShow = existing.wrongShow === true
+    && isUrlIndependentWrongShowReason(existing.wrongShowReason);
+  if (preserveUrlIndependentWrongShow) {
+    // Replacement-style writers hand us a fresh record that omits the verdict.
+    for (const f of ['wrongShow', 'wrongShowReason']) {
+      if (merged[f] === undefined) merged[f] = existing[f];
+    }
+  }
   const preserveIdentityAttribution = _preservesIdentityAttribution(existing, merged);
   if (preserveIdentityAttribution) {
     // Replacement-style writers hand us a fresh record that omits the verdict.
@@ -315,6 +326,7 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   for (const field of URL_DERIVED_FIELDS) {
     if (preserveFields && preserveFields.has(field)) continue;
     if (preserveIdentityAttribution && field === 'wrongAttribution') continue;
+    if (preserveUrlIndependentWrongShow && (field === 'wrongShow' || field === 'wrongShowReason')) continue;
     if (preserveDateBasedWp && WP_FIELDS.has(field)) continue;
     if (field === 'publishDate') {
       if (!publishDateWillClear) continue;

@@ -72,6 +72,8 @@ const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
   // above: it describes a wrongProduction verdict, so it must die with the
   // flag rather than outlive it as an orphan.
   'wrongProductionPreservedOnUrlRecoveryAt',
+  // wrongShow twin of the breadcrumb above (BRO-2868).
+  'wrongShowPreservedOnUrlRecoveryAt',
   // The timestamp ON `wrongProductionReason` (review-write-guard.js:195), which
   // the flag triple already clears. Unlike everything else here it IS in
   // PROTECTED_FIELDS, so leaving it out stranded a protected date for a reason
