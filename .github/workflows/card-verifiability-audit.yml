@@ -115,25 +115,12 @@ jobs:
           node scripts/enrich-card-acceptance.js --from-report --source both --limit 25
           node scripts/audit-card-verifiability.js --source notion
 
-      # BRO-2997: refresh data/audit/card-verifiability-linear.json daily. Its
-      # own step, AFTER enrich, so a Linear outage/throw (main() rethrows for a
-      # single --source) cannot skip the Notion re-audit above, and
-      # continue-on-error so the Notion report still commits. A failure here
-      # shows up as a stale report in health-check.js ("Data: undispatchable
-      # Linear issues"), which is the alarm for this step.
-      - name: Audit Linear backlog
-        continue-on-error: true
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-        run: node scripts/audit-card-verifiability.js --source linear
-
       - name: Commit refreshed report
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/card-verifiability.json
-          git add data/audit/card-verifiability-linear.json 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
@@ -156,6 +143,63 @@ jobs:
           email: 'false'
           # BRO-4141: one-off failures of this job are not owner-actionable; email
           # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '2'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+  # BRO-2997: refresh data/audit/card-verifiability-linear.json daily. Its OWN
+  # job, not a step above: the full Linear sweep measured 22 min live on
+  # 2026-10-05 (1646 open issues, 429 back-offs), which would eat most of the
+  # 35-min ceiling the Notion audit + enrich job needs, and a Linear outage here
+  # cannot touch the Notion report. Stale/missing output is the alarm:
+  # health-check.js "Data: undispatchable Linear issues" (48h warn, 96h error).
+  audit-linear:
+    # Serialised after the enrich job (which also hits Linear) so the two never
+    # compete for the same rate limit; always() so a Notion/enrich failure
+    # still gets the Linear refresh. Lands well before the 06:45 UTC health read.
+    needs: audit
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Audit Linear backlog
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-card-verifiability.js --source linear
+
+      - name: Commit refreshed Linear report
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/card-verifiability-linear.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit"
+            exit 0
+          fi
+          git commit -m "audit: refresh card-verifiability-linear report [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Card Verifiability Linear Audit Failed'
+          description: 'The daily Linear backlog sweep crashed — data/audit/card-verifiability-linear.json will go stale (BRO-2997); health-check.js flags it after 48h.'
+          severity: 'warning'
+          email: 'false'
           min_consecutive_failures: '2'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}

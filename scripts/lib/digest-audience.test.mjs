@@ -62,6 +62,7 @@ test('classifyHealthCheck: workflow rows classify by the workflow, not the "Cron
 
 test('classifyHealthCheck: exact internal names in a visitor category', () => {
   assert.equal(classifyHealthCheck('Data: undispatchable backlog cards'), 'internal');
+  assert.equal(classifyHealthCheck('Data: undispatchable Linear issues'), 'internal');
   assert.equal(classifyHealthCheck('Data: cards the drain cannot finish unattended'), 'internal');
   assert.equal(classifyHealthCheck('Data: live show with zero critic reviews on site'), 'visitors');
 });
