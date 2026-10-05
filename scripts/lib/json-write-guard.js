@@ -227,12 +227,16 @@ function keepCallerRecords(shape, idKey, callerRecords, finalRecords) {
     return Object.assign(own, written);
   };
   // The container is refilled in place too, for callers holding the list
-  // itself (`const shows = data.shows`).
+  // itself (`const shows = data.shows`). A caller iterating data.shows while
+  // saving inside the loop follows the merged order: a concurrent add or
+  // delete between saves can shift what it visits next.
   if (shape === 'array') {
     if (!Array.isArray(callerRecords)) return finalRecords;
     const ownById = new Map(callerRecords.map((r) => [r && r[idKey], r]));
     const next = finalRecords.map((r) => refill(ownById.get(r[idKey]), r));
-    callerRecords.splice(0, callerRecords.length, ...next);
+    // Index assignment, not splice(...next): spreading 100k+ records overflows the stack.
+    callerRecords.length = next.length;
+    for (let i = 0; i < next.length; i++) callerRecords[i] = next[i];
     return callerRecords;
   }
   if (!isPlainObject(callerRecords)) return finalRecords;

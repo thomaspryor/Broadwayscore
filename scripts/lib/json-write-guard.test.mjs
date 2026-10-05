@@ -112,7 +112,9 @@ for (const shape of ['array', 'map']) {
     const guard = createJsonWriteGuard(filePath, { shape, idKey: 'id', metaKey: '_meta' });
     const data = guard.load();
     const held = ['a', 'b', 'c'].map(id => (shape === 'array' ? data.shows.find(s => s.id === id) : data.shows[id]));
+    const container = data.shows;
     for (const rec of held) { rec.v = 1; guard.save(data); }
+    assert.equal(data.shows, container, 'the records container keeps its identity');
     const written = JSON.parse(fs.readFileSync(filePath, 'utf8')).shows;
     const values = shape === 'array' ? written.map(s => s.v) : ['a', 'b', 'c'].map(id => written[id].v);
     assert.deepEqual(values, [1, 1, 1]);
