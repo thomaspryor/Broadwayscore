@@ -502,7 +502,7 @@ export interface ApproachingRecoupmentShow {
   title: string;
   season: string;
   capitalization: number | null;
-  /** isEstimatedCapitalization(): true only when the record flags its capitalization as an estimate (prints "~"). */
+  /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
   /** Model [pessimistic, central, optimistic] that cleared the display quality floor; pessimistic >= 50. */
   modelRecoupmentPct: [number, number, number];
@@ -516,7 +516,7 @@ export interface AtRiskShow {
   title: string;
   season: string;
   capitalization: number | null;
-  /** isEstimatedCapitalization(): true only when the record flags its capitalization as an estimate (prints "~"). */
+  /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
   /** Trailing 4-week average gross. */
   avgWeeklyGross: number;
@@ -534,7 +534,7 @@ export interface RecentRecoupmentShow {
   /** null when only the recoupment year is known (calculateWeeksToRecoup). */
   weeksToRecoup: number | null;
   capitalization: number | null;
-  /** isEstimatedCapitalization(): true only when the record flags its capitalization as an estimate (prints "~"). */
+  /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
   recoupDate: string;
 }
@@ -547,7 +547,7 @@ export interface CommercialShowRow {
   status: string;
   designation: import('@/config/commercial').CommercialDesignation;
   capitalization: number | null;
-  /** isEstimatedCapitalization(): true only when the record flags its capitalization as an estimate (prints "~"). */
+  /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
   capitalizationIsEstimate: boolean;
   /** Latest week's gross; null for closed shows. */
   weeklyGross: number | null;
