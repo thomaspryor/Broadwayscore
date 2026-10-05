@@ -65,6 +65,7 @@ const SOURCE_LABELS = {
   show_rating_save: 'Saving a rating',
   diary: 'Diary',
   delete_account_reauth: 'Re-sign-in to delete account',
+  app: 'iPhone app',
   unknown: 'Unknown',
 };
 
@@ -130,6 +131,9 @@ GROUP BY event ORDER BY last30 DESC LIMIT 100`,
     // same browser), attributed to the first place it met the sign-in prompt.
     // The iOS app sends no $host but does send $device_type 'Mobile', so it
     // gets its own 'App' bucket instead of inflating the phone funnel.
+    // A finish with no start on the same device still counts (the iOS app
+    // logs sign_in_completed under a different distinct_id than its start;
+    // 2026-10-05: 3 app sign-ins finished, all on finish-only ids).
     funnel: `
 SELECT src, dev,
   countIf(n_shown > 0) AS shown,
@@ -141,7 +145,7 @@ FROM (
     argMinIf(if(event = 'sign_in_prompt_shown', properties.source, properties.context), timestamp,
       event IN ('sign_in_prompt_shown', 'sign_in_started')) AS src,
     argMinIf(if(coalesce(properties.$host, '') = '', 'App', properties.$device_type), timestamp,
-      event IN ('sign_in_prompt_shown', 'sign_in_started')) AS dev,
+      event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed')) AS dev,
     countIf(event = 'sign_in_prompt_shown') AS n_shown,
     countIf(event = 'sign_in_started') AS n_started,
     countIf(event = 'sign_in_completed') AS n_completed,
@@ -151,7 +155,7 @@ FROM (
     AND event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed', ${sqlList(ACTIVATION_EVENTS)})
   GROUP BY distinct_id
 )
-WHERE n_shown > 0 OR n_started > 0
+WHERE n_shown > 0 OR n_started > 0 OR n_completed > 0
 GROUP BY src, dev ORDER BY shown DESC LIMIT 500`,
     // Health over the last 24 h, for the alerts. No Real Users lens: the
     // owner's own failed sign-in counts.
@@ -303,7 +307,7 @@ function summarizeFunnel(rows) {
   const bySource = new Map();
   const totals = { mobile: emptyStep(), desktop: emptyStep(), other: emptyStep(), all: emptyStep() };
   for (const r of rows) {
-    const src = r.src && SOURCE_LABELS[r.src] ? r.src : (r.src || 'unknown');
+    const src = r.src && SOURCE_LABELS[r.src] ? r.src : (r.src || (r.dev === 'App' ? 'app' : 'unknown'));
     const dev = deviceGroup(r.dev);
     const key = `${src}|${dev}`;
     if (!bySource.has(key)) bySource.set(key, { source: src, label: SOURCE_LABELS[src] || src, device: dev, ...emptyStep() });
@@ -398,9 +402,12 @@ function weeklySummaryLines(d) {
   if (d.active) lines.push(`${plural(d.active.wau, 'signed-in person', 'signed-in people')} used the site this week (${d.active.dau} in the last day, ${d.active.mau} in the last 30 days).`);
   lines.push(`${plural(a.withAnything, 'account has', 'accounts have')} saved something: ${a.withRating} rated a show, ${a.withWatchlist} used the watchlist, ${a.withList} made a list.`);
   const f = d.funnel && d.funnel.totals;
-  if (f && f.all.shown) {
+  if (f && (f.all.shown || f.all.started || f.all.completed)) {
     const part = (s, name) => (s.shown ? `${name}: ${s.shown} saw the sign-in box, ${s.started} started, ${s.completed} finished` : null);
-    const parts = [part(f.mobile, 'Phones'), part(f.desktop, 'Computers')].filter(Boolean);
+    // The iPhone app has no sign-in box event, so it reports starts and finishes only.
+    // "other" also holds finishes from a device whose start was not seen.
+    const app = f.other && (f.other.started || f.other.completed) ? `iPhone app / other: ${f.other.started} started, ${f.other.completed} finished` : null;
+    const parts = [part(f.mobile, 'Phones'), part(f.desktop, 'Computers'), app].filter(Boolean);
     if (parts.length) lines.push(`Sign-up funnel, last 30 days. ${parts.join('. ')}.`);
   }
   if (d.actions && d.actions.length) {
