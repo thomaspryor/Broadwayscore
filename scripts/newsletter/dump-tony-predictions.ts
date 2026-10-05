@@ -14,26 +14,26 @@ import {
   getEligibleShows,
   groupIntoCategories,
   resolveRecipeTier,
+  hasNominationsBeenAnnounced,
 } from '../../src/lib/data-tony-predictions';
-import { hasNominationsBeenAnnounced } from '../../src/lib/tony-cutoffs';
 
 const season = getTonySeasonWindow();
 const allShows = getBroadwayShows();
 const eligible = getEligibleShows(allShows, season);
 const tier = resolveRecipeTier(season);
-// hasNominationsBeenAnnounced takes a TonySeasonRecord; pass season-like object
-const nominationsAnnounced = (() => {
-  try { return hasNominationsBeenAnnounced(season as never); } catch { return true; }
-})();
-const useNomineesOnly = nominationsAnnounced;
+// Before real nominations exist the "eligible" field is whichever shows opened
+// first (often one), and softmax over it yields a fake 100% pick (BRO-236).
+// Emit no picks at all in that state. No try/catch: a failure must be loud.
+const nominationsAnnounced = hasNominationsBeenAnnounced(season);
 const cats = groupIntoCategories(
   eligible,
-  useNomineesOnly ? { nomineesOnly: true, season, tier } : { tier },
+  nominationsAnnounced ? { nomineesOnly: true, season, tier } : { tier },
 );
 
 const T = 7;
 const out: Record<string, Array<{ slug: string; title: string; blendedScore: number | null; prob: number }>> = {};
 for (const cat of cats) {
+  if (!nominationsAnnounced) { out[cat.key] = []; continue; }
   const scored = cat.shows.filter(s => s.blendedScore != null);
   if (scored.length === 0) { out[cat.key] = []; continue; }
   const exps = scored.map(s => Math.exp((s.blendedScore as number) / T));
@@ -45,4 +45,4 @@ for (const cat of cats) {
     prob: exps[i] / sum,
   })).sort((a, b) => b.prob - a.prob);
 }
-process.stdout.write(JSON.stringify({ season: season.label, tier, categories: out }, null, 2));
+process.stdout.write(JSON.stringify({ season: season.label, tier, nominationsAnnounced, categories: out }, null, 2));
