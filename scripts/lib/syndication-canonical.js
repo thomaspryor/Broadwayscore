@@ -41,15 +41,19 @@ function decodeEntities(s) {
 }
 
 function attr(tag, name) {
-  const m = tag.match(new RegExp(`\\b${name}\\s*=\\s*("([^"]*)"|'([^']*)')`, 'i'));
-  return m ? decodeEntities(m[2] !== undefined ? m[2] : m[3]) : null;
+  const m = tag.match(new RegExp(`(?<![\\w-])${name}\\s*=\\s*("([^"]*)"|'([^']*)'|([^\\s>"']+))`, 'i'));
+  if (!m) return null;
+  return decodeEntities(m[2] !== undefined ? m[2] : m[3] !== undefined ? m[3] : m[4]);
 }
 
 function absolutize(href, base) {
   if (!href) return null;
   try {
     const u = new URL(href, base);
-    return /^https?:$/.test(u.protocol) ? u.href : null;
+    if (!/^https?:$/.test(u.protocol)) return null;
+    u.search = ''; // tracking params; keeps dedupe against stored URLs exact
+    u.hash = '';
+    return u.href;
   } catch { return null; }
 }
 
@@ -60,9 +64,11 @@ function absolutize(href, base) {
  * @returns {{url: string, via: 'canonical'|'og:url'|'body-link'} | null}
  */
 function extractCanonicalSourceUrl(html, pageUrl, opts) {
-  const ok = (u) => !!u && !isSyndicationHost(u)
+  // A bare host or one-segment path is a homepage/section, not an article.
+  const isArticlePath = (u) => new URL(u).pathname.split('/').filter(Boolean).length >= 2;
+  const ok = (u) => !!u && !isSyndicationHost(u) && isArticlePath(u)
     && opts.isRegisteredOutletUrl(u) && !(opts.isRejectedUrl && opts.isRejectedUrl(u));
-  const src = String(html || '');
+  const src = String(html || '').replace(/<!--[\s\S]*?-->/g, '');
 
   for (const tag of src.match(/<link\b[^>]*>/gi) || []) {
     if (!/\brel\s*=\s*["']?canonical\b/i.test(tag)) continue;

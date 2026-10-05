@@ -33,7 +33,7 @@ test('(1) rel=canonical to a registered outlet yields that URL', async () => {
 test('(2) self-canonical reprint falls back to first in-body registered-outlet link', async () => {
   const r = await lib.resolveSyndicatedHit(REPRINT, { fetch: async () => fx('msnbctv-self-canonical-reprint.html'), isRegisteredOutletUrl });
   assert.equal(r.via, 'body-link');
-  assert.equal(r.url, INDEP + '?utm=x');
+  assert.equal(r.url, INDEP); // query stripped
 });
 
 test('(3) non-outlet page yields no URL; fetch failure and non-syndicated URLs yield null', async () => {
@@ -54,4 +54,18 @@ test('discover-opening-night-reviews resolves syndicated hits in Strategy 2 and 
   const src = fs.readFileSync(new URL('../discover-opening-night-reviews.js', import.meta.url), 'utf8');
   const uses = src.match(/await resolveSerpHitUrl\(result\.url \|\| result\.link, showTitle\)/g) || [];
   assert.equal(uses.length, 2);
+});
+
+test('homepages, data-href decoys, unquoted attrs and commented links', () => {
+  const o = { isRegisteredOutletUrl };
+  assert.equal(lib.extractCanonicalSourceUrl('<link rel="canonical" href="https://www.independent.co.uk/">', REPRINT, o), null);
+  const decoy = '<a data-href="https://www.nytimes.com/a/b/c" href=' + INDEP + '>x</a>';
+  assert.equal(lib.extractCanonicalSourceUrl(decoy, REPRINT, o).url, INDEP);
+  const commented = '<!-- <a href="https://www.nytimes.com/a/b/c">x</a> --><a href="' + INDEP + '">x</a>';
+  assert.equal(lib.extractCanonicalSourceUrl(commented, REPRINT, o).url, INDEP);
+});
+
+test('the fetch of a reprint must skip the canonical/url_mismatch guard', () => {
+  const src = fs.readFileSync(new URL('../discover-opening-night-reviews.js', import.meta.url), 'utf8');
+  assert.match(src, /fetchPage\(u, \{ skipVerify: true \}\)/);
 });

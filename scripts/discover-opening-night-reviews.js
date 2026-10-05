@@ -223,11 +223,16 @@ function extractCriticFromTitle(title) {
 // goes through the normal dedupe + guards under its real URL. Unresolvable
 // reprints stay rejected (null).
 const _isRegisteredOutletUrl = makeRegisteredOutletPredicate(_OUTLET_DOMAINS, _REGISTRY_DOMAIN_ALIASES);
+const _syndicationCache = new Map(); // reprint url -> resolved url|null (Strategy 2 and 2b see the same hits)
 async function resolveSerpHitUrl(rawUrl, showTitle) {
   if (!isSyndicationHost(rawUrl)) return rawUrl;
+  if (!_syndicationCache.has(rawUrl)) _syndicationCache.set(rawUrl, await _resolveSyndicated(rawUrl, showTitle));
+  return _syndicationCache.get(rawUrl);
+}
+async function _resolveSyndicated(rawUrl, showTitle) {
   const { fetchPage } = require('./lib/scraper');
   const resolved = await resolveSyndicatedHit(rawUrl, {
-    fetch: async (u) => (await fetchPage(u)).content,
+    fetch: async (u) => (await fetchPage(u, { skipVerify: true })).content,
     isRegisteredOutletUrl: _isRegisteredOutletUrl,
     isRejectedUrl: (u) => isBlockedReviewUrl(u),
   });
