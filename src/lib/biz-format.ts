@@ -99,3 +99,19 @@ export function formatDevelopmentDate(date: string): string {
   if (month < 1 || month > 12) return date;
   return `${MONTH_ABBR[month - 1]} ${m[1]}`;
 }
+
+/**
+ * Newest first, for the dated rows of the /biz Recent Developments list.
+ * Recoupment dates are YYYY-MM or a bare year, closing dates YYYY-MM-DD; ISO
+ * prefixes compare correctly as strings, so "2026-09-14" sorts above
+ * "2026-06". The sort is stable, so equal dates keep their input order.
+ * BRO-4623: the list used to print recoupments above closings, so a
+ * September closing sat under May recoupments.
+ */
+export function sortNewestFirst<T>(items: readonly T[], isoDateOf: (item: T) => string): T[] {
+  return [...items].sort((a, b) => {
+    const da = isoDateOf(a);
+    const db = isoDateOf(b);
+    return da < db ? 1 : da > db ? -1 : 0;
+  });
+}
