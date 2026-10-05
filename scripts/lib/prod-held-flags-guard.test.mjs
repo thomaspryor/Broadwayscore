@@ -121,7 +121,8 @@ test('the guard never passes a file either real env loader would enable commerci
     const fs = require('fs'), path = require('path');
     const has = v => String(v || '').split(',').map(s => s.trim()).includes('commercial');
     (async () => {
-      const buildDir = path.join(process.cwd(), 'node_modules/vercel/dist/commands/build');
+      // Resolve like require() does (walks up), so worktrees without their own node_modules work.
+      const buildDir = path.join(path.dirname(require.resolve('vercel/package.json', { paths: [process.cwd()] })), 'dist/commands/build');
       const src = fs.readFileSync(path.join(buildDir, 'index.js'), 'utf8');
       const name = (src.match(/var import_dotenv = __toESM\\((\\w+)\\(\\)/) || [])[1];
       if (!/\`\\.env\\.\\$\\{target\\}\\.local\`[\\s\\S]{0,200}?import_dotenv\\.default\\.config\\(/.test(src)) throw new Error('vercel build no longer loads .vercel/.env.<target>.local with import_dotenv');
