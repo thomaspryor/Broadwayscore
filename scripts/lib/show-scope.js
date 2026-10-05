@@ -8,9 +8,15 @@ function parseShowFilter(raw) {
   return new Set(String(raw || '').split(',').map(s => s.trim()).filter(Boolean));
 }
 
-// Empty filter set = no restriction.
-function isInShowScope(showId, filterSet) {
-  return !filterSet || filterSet.size === 0 || filterSet.has(showId);
+// Restricted when the RAW filter string is non-empty, even if it parses to an
+// empty set (SHOW_FILTER="," must match nothing, not everything: fail closed).
+function isShowFilterActive(filterSet, rawFilter) {
+  return String(rawFilter || '').trim() !== '' || !!(filterSet && filterSet.size > 0);
+}
+
+function isInShowScope(showId, filterSet, rawFilter) {
+  if (!isShowFilterActive(filterSet, rawFilter)) return true;
+  return !!filterSet && filterSet.has(showId);
 }
 
 // reviewIds are "<showId>/<file>.json"
@@ -19,10 +25,10 @@ function showIdOfReviewId(reviewId) {
   return i < 0 ? String(reviewId) : String(reviewId).slice(0, i);
 }
 
-function summarizeRunScope({ runProcessed = [], runFailed = [], filterSet, resumedProcessed = 0, resumedFailed = 0 }) {
+function summarizeRunScope({ runProcessed = [], runFailed = [], filterSet, rawFilter, resumedProcessed = 0, resumedFailed = 0 }) {
   const all = [...runProcessed, ...runFailed];
   const shows = [...new Set(all.map(showIdOfReviewId))].sort();
-  const outOfScope = shows.filter(s => !isInShowScope(s, filterSet));
+  const outOfScope = shows.filter(s => !isInShowScope(s, filterSet, rawFilter));
   return {
     processed: runProcessed.length,
     failed: runFailed.length,
@@ -32,4 +38,4 @@ function summarizeRunScope({ runProcessed = [], runFailed = [], filterSet, resum
   };
 }
 
-module.exports = { parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope };
+module.exports = { isShowFilterActive, parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope };

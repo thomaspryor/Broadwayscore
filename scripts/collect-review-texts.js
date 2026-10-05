@@ -367,7 +367,7 @@ async function loadDependencies() {
 
 // Configuration
 // BRO-2691: SHOW_FILTER scope helpers (pure, unit-tested)
-const { parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
+const { isShowFilterActive, parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
 const CONFIG = {
   batchSize: parseInt(process.env.BATCH_SIZE || '10'),
   pushEveryNBatches: parseInt(process.env.PUSH_EVERY_N_BATCHES || '5'), // Push every N batches (default: every 50 reviews)
@@ -6121,7 +6121,7 @@ function findReviewsToProcess() {
   }
 
   for (const showId of shows) {
-    if (!isInShowScope(showId, CONFIG.showFilterSet)) continue;
+    if (!isInShowScope(showId, CONFIG.showFilterSet, CONFIG.showFilter)) continue;
     if (CONFIG.marketFilter && !showId.includes(CONFIG.marketFilter)) continue;
 
     const showDir = path.join(CONFIG.reviewTextsDir, showId);
@@ -6154,7 +6154,7 @@ function findReviewsToProcess() {
         // 2026-08-01). Explicit --review or --show targeting bypasses (same
         // pattern as the fetchGate skip below), so manual recovery of
         // a wrongly tombstoned file still works.
-        if (data.duplicateOf && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
+        if (data.duplicateOf && CONFIG.reviewFilter.size === 0 && !isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter)) {
           logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedDuplicateOf', details: { url: data.url, duplicateOf: data.duplicateOf } });
           continue;
         }
@@ -6318,7 +6318,7 @@ function findReviewsToProcess() {
         const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
         if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
-          if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
+          if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter)) {
             logExclusion({
               script: 'collect-review-texts',
               showId,
@@ -7610,11 +7610,12 @@ function generateReport() {
       stealthPluginLoaded: stealthLoaded,
     },
     summary: {
-      processed: state.processed.length,
-      failed: state.failed.length,
+      // BRO-2691: this process's attempts only; resumed progress.json state is under cumulativeResumedState.
+      processed: runProcessed.length,
+      failed: runFailed.length,
       skipped: state.skipped.length,
-      successRate: state.processed.length > 0
-        ? ((state.processed.length / (state.processed.length + state.failed.length)) * 100).toFixed(1) + '%'
+      successRate: runProcessed.length > 0
+        ? ((runProcessed.length / (runProcessed.length + runFailed.length)) * 100).toFixed(1) + '%'
         : '0%',
     },
     tierBreakdown: {
@@ -7656,9 +7657,10 @@ function generateReport() {
     },
     // BRO-2691: processed/failed below are the RESUMED cumulative state
     // (progress.json <24h). thisRun is what THIS process attempted.
-    thisRun: summarizeRunScope({ runProcessed, runFailed, filterSet: CONFIG.showFilterSet, resumedProcessed: resumedCounts.processed, resumedFailed: resumedCounts.failed }),
-    processed: state.processed,
-    failed: state.failed,
+    thisRun: summarizeRunScope({ runProcessed, runFailed, filterSet: CONFIG.showFilterSet, rawFilter: CONFIG.showFilter, resumedProcessed: resumedCounts.processed, resumedFailed: resumedCounts.failed }),
+    processed: runProcessed,
+    failed: runFailed,
+    cumulativeResumedState: { processed: state.processed, failed: state.failed },
     tierDetails: state.tierBreakdown,
     failuresByOutlet: stats.failuresByOutlet,
     urlDiscoveries: stats.urlDiscoveryDetails,
@@ -7855,7 +7857,7 @@ async function main() {
       const review = reviews[i];
 
       // BRO-2691: defense in depth — never spend on a review outside SHOW_FILTER.
-      if (!isInShowScope(showIdOfReviewId(review.reviewId), CONFIG.showFilterSet)) {
+      if (!isInShowScope(showIdOfReviewId(review.reviewId), CONFIG.showFilterSet, CONFIG.showFilter)) {
         console.log(`  ⏭ Skipping ${review.reviewId} — outside SHOW_FILTER`);
         continue;
       }

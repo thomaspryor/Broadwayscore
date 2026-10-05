@@ -125,7 +125,7 @@ test('pushReviewTextsCheckpoint: passes the gate (does not early-return on the t
 
 // BRO-2691: SHOW_FILTER must restrict candidates, and the report must not
 // present resumed (progress.json) cross-show state as this run's work.
-const { parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
+const { isShowFilterActive, parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
 
 test('BRO-2691: parseShowFilter trims, drops empties; empty filter = no restriction', () => {
   assert.deepEqual([...parseShowFilter(' a-1 , b-2,, ')], ['a-1', 'b-2']);
@@ -156,7 +156,17 @@ test('BRO-2691: summarizeRunScope separates this run from resumed state and flag
 test('BRO-2691: collect-review-texts.js builds its filter from the shared helper and gates the queue + main loop', () => {
   const src = fs.readFileSync(path.join(process.cwd(), 'scripts', 'collect-review-texts.js'), 'utf8');
   assert.match(src, /showFilterSet: parseShowFilter\(process\.env\.SHOW_FILTER\)/);
-  assert.match(src, /if \(!isInShowScope\(showId, CONFIG\.showFilterSet\)\) continue;/);
-  assert.match(src, /isInShowScope\(showIdOfReviewId\(review\.reviewId\), CONFIG\.showFilterSet\)/);
+  assert.doesNotMatch(src, /!CONFIG\.showFilter\)/); // one predicate: isShowFilterActive
+  assert.match(src, /if \(!isInShowScope\(showId, CONFIG\.showFilterSet, CONFIG\.showFilter\)\) continue;/);
+  assert.match(src, /isInShowScope\(showIdOfReviewId\(review\.reviewId\), CONFIG\.showFilterSet, CONFIG\.showFilter\)/);
   assert.match(src, /thisRun: summarizeRunScope\(/);
+});
+
+test('BRO-2691: degenerate SHOW_FILTER (",") fails closed: matches nothing, not everything', () => {
+  const raw = ',';
+  const set = parseShowFilter(raw);
+  assert.equal(set.size, 0);
+  assert.equal(isShowFilterActive(set, raw), true);
+  assert.equal(isInShowScope('any-show', set, raw), false);
+  assert.equal(isShowFilterActive(parseShowFilter(''), ''), false);
 });
