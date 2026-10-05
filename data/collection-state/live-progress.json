@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-05T03:00:40.335Z",
-  "processed": 13,
-  "failed": 3,
-  "successRate": "81.3%",
+  "updatedAt": "2026-10-05T04:21:16.642Z",
+  "processed": 16,
+  "failed": 9,
+  "successRate": "64.0%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 3,
+    "scrapingdog": 4,
     "scrapingbee": 0,
     "brightdata": 1,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-05T02:25:29.454Z",
@@ -62,6 +62,18 @@
       "t": "2026-10-05T02:59:35.270Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-05T04:12:19.664Z",
+      "event": "bb-session",
+      "session": "fbbf0de0",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T04:12:28.084Z",
+      "event": "bb-session",
+      "session": "234a1ded",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
   ]
 }

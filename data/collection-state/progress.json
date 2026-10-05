@@ -12,12 +12,21 @@
     "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
     "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
     "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
-    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json"
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
   ],
   "failed": [
     "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -28,7 +37,8 @@
       "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
       "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
       "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
-      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json"
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -39,7 +49,8 @@
     "scrapingdog": [
       "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -52,7 +63,7 @@
     ]
   },
   "startTime": "2026-10-05T02:25:07.922Z",
-  "lastProcessed": "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+  "lastProcessed": "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
   "log": [
     {
       "t": "2026-10-05T02:25:29.454Z",
@@ -100,6 +111,21 @@
       "t": "2026-10-05T02:59:35.270Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-05T04:12:19.664Z",
+      "event": "bb-session",
+      "session": "fbbf0de0",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T04:12:28.084Z",
+      "event": "bb-session",
+      "session": "234a1ded",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
+  ],
+  "recoveredAfterFailure": [
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
   ]
 }
