@@ -61,6 +61,7 @@ The owner lives in Berlin: US opening-night reviews drop 01:00-03:00 UTC while t
 ## Closing a Linear issue from cloud
 
 - **Cite the landed commit, not a site URL.** `PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/<sha>)` with the sha as it sits on origin/main (land rebases, so take it from `git log origin/main`). The gate checks it through GitHub's API, so the shallow clone doesn't matter. A prod URL alone is refused ("names no commit or PR URL"), which is what used to force `--force` on every cloud close.
+- **Checking it is live** works without VERCEL_TOKEN: `node scripts/check-prod-deploy.js <sha>` falls back to the newest deploy run whose log shows the production alias, through `gh api` (exit 0 live, 1 not yet; `--wait` polls). Only `--json` still needs the token.
 - **Close out last.** The Stop hook wants the close after your last commit/push. A `--force` in a cloud session no longer writes `data/audit/linear-gate-bypass.jsonl` (that tracked-file churn caused a commit-land-close loop); the bypass is recorded as a `DONE-GATE-BYPASS:` line on the issue instead (BRO-4241).
 
 ## Worktrees and branches in cloud
