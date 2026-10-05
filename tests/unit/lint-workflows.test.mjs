@@ -110,6 +110,6 @@ test('CLI: bad fixture commit fails (exit 1), advisory fixture commit passes', (
     const good = spawnSync('node', ['scripts/audit-new-gate-arming.js', '--base=HEAD~2'], { cwd: dir, encoding: 'utf8' });
     assert.equal(good.status, 0, good.stdout + good.stderr);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
