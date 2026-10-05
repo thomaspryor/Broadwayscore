@@ -28,13 +28,13 @@ const { detectTranscriptOutages, isVideoSpecificError } = require('../lib/video-
 const { fetchYouTubeTranscript } = require('../lib/youtube-captions');
 
 // YouTube bot-walls yt-dlp on GitHub runner IPs (BRO-4343). When a paid
-// fetchPage() provider is configured, fall back to fetching the watch page and
-// caption track through it (Bright Data residential IPs first).
-const YOUTUBE_FETCHPAGE_FALLBACK = !!(process.env.BRIGHTDATA_TOKEN || process.env.SCRAPINGBEE_API_KEY);
+// provider is configured, fall back to Scrapingdog's YouTube transcripts API
+// (BRO-4665), then the watch page + caption track through fetchPage().
+const YOUTUBE_FETCHPAGE_FALLBACK = !!(process.env.SCRAPINGDOG_API_KEY || process.env.BRIGHTDATA_TOKEN || process.env.SCRAPINGBEE_API_KEY);
 
-async function youtubeFallback(videoId) {
+async function youtubeFallback(videoId, needDate) {
   try {
-    const r = await fetchYouTubeTranscript(videoId);
+    const r = await fetchYouTubeTranscript(videoId, {}, { needDate });
     return { transcript: r.transcript || null, publishedAt: r.publishedAt, error: null }; // '' = no captions
   } catch (err) {
     const msg = String(err.message || err);
@@ -141,7 +141,7 @@ async function main() {
       let transcript = extractTranscript(video.id, data.platform, data.handle);
       let publishedAt = null;
       if (!transcript && data.platform === 'youtube' && YOUTUBE_FETCHPAGE_FALLBACK) {
-        const fb = await youtubeFallback(video.id);
+        const fb = await youtubeFallback(video.id, !video.date || video.date === 'NA');
         transcript = fb.transcript;
         publishedAt = fb.publishedAt;
         // Report the fallback's outcome: a caption-less video is "no subs",

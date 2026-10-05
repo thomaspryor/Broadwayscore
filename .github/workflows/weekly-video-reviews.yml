@@ -61,6 +61,11 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # fetchPage()'s Playwright tier is in the YouTube watch-page fallback
+      # chain; without browsers it died "Executable doesn't exist" (BRO-4665).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       # YouTube extraction needs a JS runtime since yt-dlp 2026.08 (the
       # [default] extra pulls in yt-dlp-ejs, which runs on deno).
       - name: Setup Deno
@@ -126,8 +131,10 @@ jobs:
       # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
       - name: Collect transcripts
         id: collect
-        # BRO-4343: YouTube bot-walls yt-dlp on runner IPs; collect-transcripts.js
-        # falls back to fetchPage() (Bright Data first) for YouTube captions.
+        # BRO-4343: YouTube bot-walls yt-dlp on runner IPs. BRO-4665:
+        # collect-transcripts.js falls back to Scrapingdog's /youtube/transcripts
+        # API (1 credit; +5 for /youtube/video when the upload date is unknown),
+        # then the watch page through fetchPage() (Bright Data, Playwright).
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}

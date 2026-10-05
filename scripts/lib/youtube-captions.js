@@ -8,6 +8,12 @@
  * Data residential IPs first) can make: the watch page, whose player
  * response lists caption tracks, and the chosen track as json3.
  *
+ * BRO-4665: that route died too (Bright Data's unlocker answers youtube.com
+ * with HTTP 200 and an empty body; Scrapingdog's /scrape page has no player
+ * response). Scrapingdog's dedicated /youtube/transcripts API (1 credit) is
+ * now tried first, with /youtube/video (5 credits) only when the caller needs
+ * the upload date. The watch-page route stays as the fallback.
+ *
  * The parsing is pure (unit tested in tests/unit/youtube-captions.test.mjs).
  * fetchYouTubeTranscript calls scraper.js directly (so the scraper-spend
  * ledger guard in scripts/lib/ledger-coverage-check.js can see the fetchPage
@@ -76,13 +82,79 @@ function toYmd(publishDate) {
   return m ? `${m[1]}${m[2]}${m[3]}` : null;
 }
 
+const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+
+/** Scrapingdog published_time ("May 20, 2026", "Streamed live on May 20, 2026", "Premiered 3 Sept 2026") -> "20260520", else null. */
+function publishedTimeToYmd(text) {
+  const t = String(text || '');
+  const iso = toYmd(t.trim());
+  if (iso) return iso;
+  const pad = n => String(n).padStart(2, '0');
+  let m = t.match(/\b([A-Za-z]{3,9})\.? (\d{1,2}),? (\d{4})\b/);
+  if (m && MONTHS[m[1].slice(0, 3).toLowerCase()]) return `${m[3]}${pad(MONTHS[m[1].slice(0, 3).toLowerCase()])}${pad(m[2])}`;
+  m = t.match(/\b(\d{1,2}) ([A-Za-z]{3,9})\.?,? (\d{4})\b/);
+  if (m && MONTHS[m[2].slice(0, 3).toLowerCase()]) return `${m[3]}${pad(MONTHS[m[2].slice(0, 3).toLowerCase()])}${pad(m[1])}`;
+  return null;
+}
+
+function decodeEntities(s) {
+  return String(s)
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+}
+
+/** Scrapingdog /youtube/transcripts payload -> plain text, or null when the shape is unrecognised. */
+function sdTranscriptToText(payload) {
+  const segs = payload && (Array.isArray(payload.transcripts) ? payload.transcripts
+    : Array.isArray(payload.transcript) ? payload.transcript : null);
+  if (!segs) return null;
+  const parts = segs
+    .map(seg => decodeEntities(typeof seg === 'string' ? seg : (seg && seg.text) || '').replace(/\[[^\]]*\]/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  return parts.filter((l, i) => i === 0 || l !== parts[i - 1]).join(' ').trim();
+}
+
+/**
+ * Scrapingdog's YouTube APIs. Returns {transcript, publishedAt, source} or
+ * null (unavailable, failed, or unrecognised payload) so the caller falls
+ * back to the watch-page route.
+ */
+async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
+  const t = await sdYouTube('transcripts', videoId, { language: 'en' });
+  if (!t) return null;
+  if (t.error) {
+    console.log(`  ⚠️  Scrapingdog transcripts failed for ${videoId}: ${String(t.error).slice(0, 120)}`);
+    return null;
+  }
+  const transcript = sdTranscriptToText(t.data);
+  if (transcript === null) {
+    console.log(`  ⚠️  Scrapingdog transcripts payload unrecognised for ${videoId}: ${JSON.stringify(t.data).slice(0, 160)}`);
+    return null;
+  }
+  let publishedAt = null;
+  if (needDate && transcript) {
+    const v = await sdYouTube('video', videoId, {});
+    if (v && v.data) publishedAt = publishedTimeToYmd(v.data.published_time || v.data.publish_date || v.data.upload_date);
+  }
+  return { transcript, publishedAt, source: 'scrapingdog-youtube' };
+}
+
 /**
  * @param {string} videoId
- * @param {{fetchPage?: Function, fetchJSON?: Function}} [fetchers] test overrides; defaults to scraper.js
+ * @param {{fetchPage?: Function, fetchJSON?: Function, sdYouTube?: Function}} [fetchers] test overrides; defaults to scraper.js
+ * @param {{needDate?: boolean}} [opts] needDate=false skips the 5-credit /youtube/video call
  * @returns {Promise<{transcript: string, publishedAt: string|null, source: string}>}
  * @throws Error whose message starts "ERROR:" (collect-transcripts.js counts it as a yt error)
  */
-async function fetchYouTubeTranscript(videoId, fetchers = {}) {
+async function fetchYouTubeTranscript(videoId, fetchers = {}, opts = {}) {
+  // Tests that inject only fetchPage/fetchJSON exercise the watch-page route.
+  const sdYouTube = fetchers.sdYouTube !== undefined ? fetchers.sdYouTube
+    : (fetchers.fetchPage ? null : scraper.fetchScrapingdogYouTube);
+  if (sdYouTube) {
+    const sd = await viaScrapingdog(videoId, sdYouTube, { needDate: opts.needDate !== false });
+    if (sd) return sd;
+  }
   const watchUrl = `https://www.youtube.com/watch?v=${videoId}&hl=en`;
   const page = fetchers.fetchPage
     ? await fetchers.fetchPage(watchUrl, { skipVerify: true })
@@ -108,4 +180,4 @@ async function fetchYouTubeTranscript(videoId, fetchers = {}) {
   return { transcript: json3ToText(payload), publishedAt, source: page.source };
 }
 
-module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, fetchYouTubeTranscript, sliceJsonObject };
+module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, fetchYouTubeTranscript, sliceJsonObject };

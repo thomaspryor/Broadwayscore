@@ -515,7 +515,10 @@ async function fetchWithBrightData(url, opts = {}) {
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
           if (res.statusCode === 200) {
-            resolve({ data, status: 200 });
+            // BRO-4665: BD answered youtube.com with 200 + an empty body; keep
+            // its error headers so the "empty content" log says why.
+            const brdError = res.headers['x-brd-error'] || res.headers['x-luminati-error'] || null;
+            resolve({ data, status: 200, brdError });
           } else {
             const err = new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
             err.bdStatus = res.statusCode;
@@ -534,7 +537,8 @@ async function fetchWithBrightData(url, opts = {}) {
     return {
       content: response.data,
       format: 'html',
-      source: 'brightdata'
+      source: 'brightdata',
+      brdError: response.brdError,
     };
   } catch (error) {
     console.error(`⚠️  Bright Data failed: ${error.message}`);
@@ -731,6 +735,80 @@ async function fetchWithScrapingdog(url, options = {}) {
     }
   }
   return null;
+}
+
+/**
+ * Scrapingdog's dedicated YouTube APIs (BRO-4665). YouTube bot-walls runner
+ * IPs, Scrapingdog's /scrape returns a watch page without the player response,
+ * and Bright Data's web unlocker answers youtube.com with HTTP 200 + empty
+ * body. These endpoints return parsed JSON instead:
+ *   kind 'transcripts' -> /youtube/transcripts (1 credit): {transcripts:[{text,start,duration}]}
+ *   kind 'video'       -> /youtube/video (5 credits): {published_time, thumbnail, ...}
+ * Same quota latch, daily breaker, per-run budget and ledger rows as
+ * fetchWithScrapingdog. Returns {data} (parsed JSON) on success, {error}
+ * when the request failed, or null when SD is unavailable/capped.
+ */
+const SD_YOUTUBE_KINDS = { transcripts: 'youtube-transcripts', video: 'youtube-video' };
+async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
+  const sdMode = SD_YOUTUBE_KINDS[kind];
+  if (!sdMode) throw new Error(`fetchScrapingdogYouTube: unknown kind "${kind}"`);
+  if (!SCRAPINGDOG_API_KEY || !USE_SCRAPINGDOG) return null;
+  _checkScrapingdogQuotaOnce();
+  if (_sdQuotaExceeded) return null;
+  const breaker = consultScrapingdog();
+  if (!breaker.allowed) {
+    if (breaker.firstBlock) {
+      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 });
+    }
+    return null;
+  }
+  const creditCost = creditsFor('sd', sdMode);
+  const params = new URLSearchParams({ api_key: SCRAPINGDOG_API_KEY, v: videoId });
+  if (options.language) params.set('language', options.language);
+  const apiUrl = `https://api.scrapingdog.com/youtube/${kind}?${params}`;
+
+  const MAX_ATTEMPTS = 2;
+  let lastError = null;
+  let attemptsMade = 0;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
+      _scraperStats.sdBudgetExceeded = true;
+      break;
+    }
+    _scraperStats.sdRequests++;
+    _scraperStats.sdCredits += creditCost;
+    attemptsMade++;
+    try {
+      const body = await new Promise((resolve, reject) => {
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) resolve(data);
+            else reject(new Error(`Scrapingdog HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
+      });
+      const json = JSON.parse(body);
+      recordSdCall({ host: 'youtube.com', fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade });
+      return { data: json };
+    } catch (error) {
+      lastError = error;
+      const isTransient = !/Scrapingdog HTTP 4\d\d/.test(error.message || '') && !(error instanceof SyntaxError);
+      if (isTransient && attempt < MAX_ATTEMPTS) continue;
+      break;
+    }
+  }
+  if (!lastError) return null;
+  recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade) });
+  const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
+  if (failStatus && isSdQuotaHttpStatus(failStatus) && !_sdQuotaExceeded) {
+    _sdQuotaExceeded = true;
+    console.warn(`  ⚠️  Scrapingdog disabled for the rest of this process (HTTP ${failStatus} — credits exhausted or auth failure)`);
+  }
+  return { error: lastError.message };
 }
 
 /**
@@ -1380,7 +1458,7 @@ async function fetchPage(url, options = {}) {
           if (checked) return checked;
         }
       } else if (raw) {
-        console.log('  ⚠️  Bright Data returned empty content, trying next provider...');
+        console.log(`  ⚠️  Bright Data returned empty content (${raw.content ? raw.content.length : 0} bytes${raw.brdError ? `, x-brd-error: ${String(raw.brdError).slice(0, 160)}` : ''}), trying next provider...`);
       }
       return null;
     },
@@ -1925,6 +2003,7 @@ module.exports = {
   fetchWithBrightData,
   fetchWithScrapingBee,
   fetchWithScrapingdog,
+  fetchScrapingdogYouTube,
   fetchWithPlaywright,
   raceTierAgainstDeadline,
   PLAYWRIGHT_TIER_DEADLINE_MS,
