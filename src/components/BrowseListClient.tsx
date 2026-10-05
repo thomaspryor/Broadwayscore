@@ -6,6 +6,7 @@ import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { createSortToggle } from '@/lib/sort-toggle';
 import { compareScore } from '@/lib/browse-sort';
+import { sectionLabelsContiguous } from '@/lib/browse-sections';
 
 // Serialized show data passed from server component
 export interface BrowseShow {
@@ -185,6 +186,13 @@ export default function BrowseListClient({
     return result;
   }, [initialShows, typeFilter, sort, scoreMode]);
 
+  // Headings only when every section label is one contiguous run in the order on
+  // screen; otherwise a heading would repeat or sit over the wrong rows.
+  const headingsOk = useMemo(
+    () => !!sectionLabels && sectionLabelsContiguous(filteredAndSorted.map(s => sectionLabels[initialShows.indexOf(s)])),
+    [sectionLabels, filteredAndSorted, initialShows]
+  );
+
   const showControls = availableSorts.length > 1 || showTypeFilter || (showScoreToggle && hasAnyAudienceData);
   // score_asc (reversed Critics) would otherwise label the lowest-scored show
   // "#1" — misleading on a page that advertises itself as ranked by critic score.
@@ -247,13 +255,13 @@ export default function BrowseListClient({
       {filteredAndSorted.length > 0 ? (
         <div className="space-y-3">
           {filteredAndSorted.map((show, index) => {
-            // Section headings: only show when using default sort and labels exist
-            const isDefaultSort = sort === 'custom' || sort === 'score';
+            // Section headings: only when labels exist and each one is a single
+            // contiguous run in the order on screen (see browse-sections.js)
             const originalIndex = initialShows.indexOf(show);
-            const label = sectionLabels && isDefaultSort ? sectionLabels[originalIndex] : undefined;
+            const label = headingsOk ? sectionLabels![originalIndex] : undefined;
             const prevShow = index > 0 ? filteredAndSorted[index - 1] : null;
             const prevOriginalIndex = prevShow ? initialShows.indexOf(prevShow) : -1;
-            const prevLabel = prevShow && sectionLabels && isDefaultSort ? sectionLabels[prevOriginalIndex] : undefined;
+            const prevLabel = prevShow && headingsOk ? sectionLabels![prevOriginalIndex] : undefined;
             const showSectionHeader = label && label !== prevLabel;
 
             return (
