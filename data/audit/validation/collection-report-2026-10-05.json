@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-05T02:27:16.543Z",
+  "runDate": "2026-10-05T08:02:44.505Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "kramerfauci-st-anns-off-broadway-2026,what-the-animals-say-off-west-end-2026,slam-frank-off-broadway-2026,the-hairy-ape-irish-repertory-theatre-off-broadway-2026,a-thousand-natural-shocks-off-broadway-2026,boop-tour-2026",
+    "showFilter": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 0,
     "failed": 1,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,11 +25,11 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
@@ -42,8 +42,8 @@
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
@@ -53,17 +53,12 @@
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
-    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json"
-  ],
+  "processed": [],
   "failed": [
     "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -71,9 +66,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "Theatre Reviews Limited": {
