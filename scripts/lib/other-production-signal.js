@@ -200,7 +200,7 @@ function otherProductionSignal(review, show, opts = {}) {
 
     // 4. stored publishDate well before the production started.
     if (want('date-before-production') && !opts.skipDate && review.publishDate) {
-      const pd = Date.parse(review.publishDate);
+      const pd = require('./date-utils').toDateMs(review.publishDate);
       const grace = (start.fromPreviews ? PRE_PREVIEW_GRACE_DAYS : PRE_OPENING_GRACE_DAYS) * DAY_MS;
       if (Number.isFinite(pd) && pd < start.ms - grace && !priorRunCoversDate(show, review.publishDate)) {
         const days = Math.round((start.ms - pd) / DAY_MS);

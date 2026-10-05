@@ -288,6 +288,23 @@ function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) 
   return true;
 }
 
+// BRO-2836: an unreadable date must never look identical to "the guard
+// considered this and the flag stands". Capped + deduped so a 35k-review
+// rebuild cannot flood logs; sentinel strings with no digits
+// ("For a previous production") are legitimate nulls and stay quiet.
+const _unparseableDates = new Set();
+const UNPARSEABLE_WARN_CAP = 20;
+function warnUnparseableDate(field, value) {
+  if (typeof value !== 'string' || !/\d/.test(value)) return;
+  const key = field + '|' + value;
+  if (_unparseableDates.has(key)) return;
+  _unparseableDates.add(key);
+  if (_unparseableDates.size <= UNPARSEABLE_WARN_CAP) {
+    console.warn(`[review-guards] applyTemporalOverrides: unparseable ${field} ${JSON.stringify(value)} — temporal override skipped`);
+  }
+}
+function getUnparseableDateCount() { return _unparseableDates.size; }
+
 /**
  * Foreign-roundup-URL bypass (BRO-989, Schmigadoon 2026-04-20 EBT incident).
  * A file's bwwRoundupUrl slug names the roundup's SHOW. Wrong-content evidence
@@ -363,6 +380,9 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
     const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
     const opening = pd(openingDate) || phd(openingDate);
     const publish = pd(publishDate) || phd(publishDate);
+    if (!publish || !opening) {
+      warnUnparseableDate(!publish ? 'publishDate' : 'openingDate', !publish ? publishDate : openingDate);
+    }
     if (opening && publish && !isNaN(opening.getTime()) && !isNaN(publish.getTime())) {
       const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
       if (daysDiff <= 30) {
@@ -417,13 +437,14 @@ function isReviewWithinOwnProductionWindow(show, publishDate, opts = {}) {
   const start = show.previewsStartDate || show.openingDate;
   const openOrStart = show.openingDate || show.previewsStartDate;
   if (!start || !openOrStart) return false;
-  const startMs = new Date(start).getTime();
-  let upperMs = new Date(openOrStart).getTime();
-  const publishMs = new Date(publishDate).getTime();
+  const { toDateMs } = require('./date-utils');
+  const startMs = toDateMs(start);
+  let upperMs = toDateMs(openOrStart);
+  const publishMs = toDateMs(publishDate);
   if (isNaN(startMs) || isNaN(upperMs) || isNaN(publishMs)) return false;
   // Upper bound = the later of opening / closing, plus the lag grace.
   if (show.closingDate) {
-    const closeMs = new Date(show.closingDate).getTime();
+    const closeMs = toDateMs(show.closingDate);
     if (!isNaN(closeMs) && closeMs > upperMs) upperMs = closeMs;
   }
   const lowerBound = startMs - leadDays * 86400000;
@@ -749,14 +770,14 @@ function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
     data.allowEarlyDate === true ||
     data.allowCrossMarket === true
   ) return false;
-  const publishMs = new Date(data.publishDate || '').getTime();
+  const publishMs = require('./date-utils').toDateMs(data.publishDate);
   if (isNaN(publishMs)) return false;
   // MIN of previewDate/previewsStartDate/openingDate — same anchor as the
   // date-guard window logic, so an inverted/stale date pair can never push the
   // window start later than the true first performance.
   const start = require('./date-guard').earliestShowDate(show);
   if (start) {
-    const startMs = new Date(start).getTime();
+    const startMs = require('./date-utils').toDateMs(start);
     if (isNaN(startMs)) return false;
     return publishMs < startMs - PRE_OPENING_LEAD_DAYS * 86400000;
   }
@@ -2027,12 +2048,13 @@ function isLikelyStaleWrongProduction(data, show) {
   // for previews, +14d after closing for late reviews). MANDATORY for
   // wrongProduction — distinguishes "this run" from "different run of same play".
   if (!show.openingDate || !data.publishDate) return false;
-  const openDate = new Date(show.openingDate);
-  const pd = new Date(data.publishDate);
+  const { toDateMs: _ms } = require('./date-utils');
+  const openDate = new Date(_ms(show.openingDate));
+  const pd = new Date(_ms(data.publishDate));
   if (isNaN(openDate) || isNaN(pd)) return false;
   let endDate;
   if (show.closingDate) {
-    endDate = new Date(show.closingDate);
+    endDate = new Date(_ms(show.closingDate));
   } else if (show.status === 'open') {
     endDate = new Date();
   } else {
@@ -5204,6 +5226,7 @@ module.exports = {
   extractDtliReviewYears,
   dtliShowYear,
   applyTemporalOverrides,
+  getUnparseableDateCount,
   isReviewWithinOwnProductionWindow,
   // In-window + slug-match veto (audit S6-T4)
   IN_WINDOW_VETO_LEAD_DAYS,

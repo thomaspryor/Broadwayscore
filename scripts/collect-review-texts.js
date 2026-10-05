@@ -115,7 +115,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
-const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, stripExemptedChrome, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { discardNoRatingOutletScore } = require('./lib/no-rating-outlet-score');
@@ -4608,7 +4608,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   }
 
   // Clean text (decode entities, strip control chars, collapse whitespace, strip junk) before classification
-  let preCleanedText = cleanText(text) || text;
+  // Remove the banner lines isGarbageContent() exempts as trailing/leading junk (BRO-2860)
+  let preCleanedText = stripExemptedChrome(cleanText(text) || text);
 
   // Multi-show blog posts (interestedbystander): keep only THIS show's
   // section, or store nothing (BRO-4387 follow-up: until 2026-09-29 only

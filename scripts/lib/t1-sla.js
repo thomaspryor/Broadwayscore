@@ -108,7 +108,7 @@ function hasPrecisePublishTime(v) {
  * @returns {Set<string>}
  */
 function sharedStampKey(showId, publishDate) {
-  const ms = new Date(publishDate).getTime();
+  const ms = require('./date-utils').toDateMs(publishDate);
   return Number.isFinite(ms) ? `${showId}|${ms}` : null;
 }
 
@@ -139,7 +139,7 @@ function classifyMeasurability(r, showCreatedAt, sharedStamps) {
   if (!r || !r.publishDate) {
     return { measurable: false, reason: 'no-publish-date', clockStart: null };
   }
-  const pubMsRaw = new Date(r.publishDate).getTime();
+  const pubMsRaw = require('./date-utils').toDateMs(r.publishDate);
   // An unparseable publishDate ("undefined", "not a date") used to fall through as NaN:
   // clockStart became "Invalid Date", ageMs NaN, and `NaN <= 24h` is false — so it was
   // silently counted as a BREACH instead of surfacing in the unmeasurable bucket. A

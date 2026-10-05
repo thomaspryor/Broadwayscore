@@ -115,7 +115,7 @@ function urlDateContradictionReason(review, show) {
   if (!review || !show) return null;
   const own = urlOwnDate(review.url);
   if (!own) return null;
-  const pub = review.publishDate ? new Date(review.publishDate) : null;
+  const pub = review.publishDate ? new Date(require('./date-utils').toDateMs(review.publishDate)) : null;
   const pubValid = pub && !isNaN(pub.getTime());
   if (pubValid) {
     const gapDays = Math.abs(pub - new Date(own.date)) / 86400000;

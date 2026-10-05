@@ -205,7 +205,7 @@ function nextRecoveryCount(file) {
 // mismatch (My Son's a Queer's i-paper review of its 2023 Ambassadors run).
 function filledDateOutsideWindow(publishDate, openingDate, show = null) {
   if (!publishDate || !openingDate) return false;
-  const pd = new Date(publishDate).getTime();
+  const pd = require('./date-utils').toDateMs(publishDate);
   const op = new Date(openingDate).getTime();
   if (Number.isNaN(pd) || Number.isNaN(op)) return false;
   if (!(pd < op - 30 * 86400000 || pd > op + 365 * 86400000)) return false;

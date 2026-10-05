@@ -144,4 +144,28 @@ function parseHistoricalDate(dateStr) {
   return isNaN(d.getTime()) ? null : d;
 }
 
-module.exports = { normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate };
+/**
+ * Epoch ms for any publishDate-ish value; NaN when unreadable. THE one place
+ * guards should turn a review/show date into a number (BRO-2836: raw
+ * `new Date("April 11th, 2024")` is Invalid, so every window check built on it
+ * silently declined to fire for the ~13% of reviews with ordinal dates).
+ *
+ * Whatever native Date already parsed keeps its exact old value (zero drift for
+ * ISO / "April 11, 2024"); only previously-NaN strings reach the ordinal-safe
+ * fallbacks. null/undefined/'' are NaN (never epoch 0).
+ *
+ * @param {string|number|Date|null|undefined} value
+ * @returns {number}
+ */
+function toDateMs(value) {
+  if (value == null || value === '') return NaN;
+  if (value instanceof Date) return value.getTime();
+  if (typeof value === 'number') return Number.isFinite(value) ? value : NaN;
+  if (typeof value !== 'string') return NaN;
+  const native = new Date(value).getTime();
+  if (!isNaN(native)) return native;
+  const d = parseDate(value) || parseHistoricalDate(value);
+  return d ? d.getTime() : NaN;
+}
+
+module.exports = { normalizeDate, parseDate, parseHistoricalDate, stripOrdinals, validateCalendarDate, toDateMs };

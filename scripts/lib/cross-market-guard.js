@@ -686,7 +686,7 @@ function buildCrossMarketCriticIndex(entries, parseDateFn) {
     const titleKey = normalizeTitleKey(e.show.title);
     const criticKey = normalizeCriticKey(e.criticName);
     if (!titleKey || !criticKey) continue;
-    const parsed = parseDateFn ? parseDateFn(e.publishDate) : (e.publishDate ? new Date(e.publishDate) : null);
+    const parsed = parseDateFn ? parseDateFn(e.publishDate) : (e.publishDate ? new Date(require('./date-utils').toDateMs(e.publishDate)) : null);
     const publishMs = parsed ? new Date(parsed).getTime() : NaN;
     if (isNaN(publishMs)) continue;
     const key = `${titleKey}|${market}|${criticKey}`;
@@ -716,7 +716,7 @@ function findSiblingInOtherMarket(index, { show, criticName, publishDate } = {},
   const titleKey = normalizeTitleKey(show.title);
   const criticKey = normalizeCriticKey(criticName);
   if (!titleKey || !criticKey) return null;
-  const parsed = opts.parseDate ? opts.parseDate(publishDate) : (publishDate ? new Date(publishDate) : null);
+  const parsed = opts.parseDate ? opts.parseDate(publishDate) : (publishDate ? new Date(require('./date-utils').toDateMs(publishDate)) : null);
   const publishMs = parsed ? new Date(parsed).getTime() : NaN;
   if (isNaN(publishMs)) return null;
   const nowMs = Number.isFinite(opts.nowMs) ? opts.nowMs : Date.now();

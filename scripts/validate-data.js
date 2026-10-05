@@ -4875,7 +4875,7 @@ function validateCrossMarketContamination() {
     const earliest = show ? earliestShowDate(show) : null;
     if (earliest && r.publishDate) {
       const pw = evaluatePreWindowInclusion({
-        pubDate: new Date(r.publishDate),
+        pubDate: new Date(require('./lib/date-utils').toDateMs(r.publishDate)),
         showEarliest: new Date(earliest),
         isFlexCategory: true,
         priorRuns: show.priorRuns,

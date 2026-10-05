@@ -196,7 +196,7 @@ const RUN_GRACE_AFTER_MS = 30 * 24 * 60 * 60 * 1000;
  */
 function isCardWithinRun(card, showInfo) {
   if (!card || !card.publishDate || !showInfo) return true;
-  const published = Date.parse(card.publishDate);
+  const published = require('./date-utils').toDateMs(card.publishDate);
   if (Number.isNaN(published)) return true;
 
   const startRaw = showInfo.previewsStartDate || showInfo.openingDate;

@@ -1124,8 +1124,9 @@ function isGarbageContent(text) {
 
   // Position-aware check: for ad blocker, paywall, newsletter, and legal patterns,
   // only flag as garbage if the pattern appears in the FRONT of the text.
-  // If the pattern is trailing junk on an otherwise valid review, cleanText() will
-  // handle it — don't reject the entire review.
+  // If the pattern is trailing junk on an otherwise valid review, don't reject the
+  // entire review: collect-review-texts.js calls stripExemptedChrome() (below) right after
+  // cleanText(), which removes the exempted line. cleanText() itself does NOT cover these.
   const hasSubstantialReviewContent = trimmed.length >= 500 && _countTheaterKeywords(trimmed) >= 3;
 
   // Check for cookie consent / GDPR banner — always garbage, even with theater keywords
@@ -1153,7 +1154,7 @@ function isGarbageContent(text) {
   const adBlocker = detectAdBlocker(text);
   if (adBlocker.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, adBlocker.match)) {
-      // Ad blocker message is trailing junk — let cleanText() strip it
+      // Ad blocker message is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else {
       return { isGarbage: true, reason: `Ad blocker message: "${adBlocker.match}"` };
     }
@@ -1163,7 +1164,7 @@ function isGarbageContent(text) {
   const paywall = detectPaywall(text);
   if (paywall.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, paywall.match)) {
-      // Paywall prompt is trailing junk — let cleanText() strip it
+      // Paywall prompt is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else {
       return { isGarbage: true, reason: `Paywall/subscription prompt: "${paywall.match}"` };
     }
@@ -1202,7 +1203,7 @@ function isGarbageContent(text) {
   const legalPage = detectLegalPage(text);
   if (legalPage.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, legalPage.match)) {
-      // Legal/copyright is trailing junk — let cleanText() strip it
+      // Legal/copyright is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else if (trimmed.length > 1000) {
       // For long texts without review content, only check the first 500 chars
       const legalFrontCheck = detectLegalPage(trimmed.substring(0, 500));
@@ -1218,9 +1219,9 @@ function isGarbageContent(text) {
   const newsletter = detectNewsletter(text);
   if (newsletter.detected) {
     if (hasSubstantialReviewContent && _isPatternInTrailingJunk(text, newsletter.match)) {
-      // Newsletter form is trailing junk — let cleanText() strip it
+      // Newsletter form is trailing junk — stripExemptedChrome() removes it on the collect-review-texts.js path
     } else if (hasSubstantialReviewContent && _isPatternInLeadingJunk(text, newsletter.match)) {
-      // Newsletter form is leading junk (e.g., TimeOut "Thanks for subscribing!" header)
+      // Newsletter form is leading junk (e.g., TimeOut "Thanks for subscribing!" header) — stripExemptedChrome() removes it
     } else {
       return { isGarbage: true, reason: `Newsletter form: "${newsletter.match}"` };
     }
@@ -1521,9 +1522,8 @@ const TRUNCATION_SIGNALS = {
     /\bfollow\s+us\s+on\b/i,
     /\bleave\s+a\s+(?:comment|reply)\b/i,
     /\bcomments?\s*(?:\(\d+\))?\s*$/im,
-    // These overlap with severe signals but must also be here so
-    // stripFooterContent removes them before severe detection runs.
-    // Only match at end of line to avoid mid-sentence false positives.
+    // These overlap with severe signals. Only match at end of line to avoid
+    // mid-sentence false positives.
     /\bread\s+more\s*\.{0,3}\s*$/im,
     /\bcontinue\s+reading\s*$/im,
     /\bclick\s+here\s+to\s+read\b/i,
@@ -1536,42 +1536,65 @@ const TRUNCATION_SIGNALS = {
 };
 
 /**
- * Strip trailing footer content from scraped review text.
- * Websites often append navigation, legal notices, and promotional content
- * after the review. This function finds the earliest footer marker in the
- * back portion of the text and returns everything before it.
+ * Remove the page chrome that isGarbageContent() exempts (ad blocker, paywall,
+ * legal/copyright, newsletter — trailing, or leading for newsletter) so it does
+ * not end up in stored fullText (BRO-2860). Mirrors the exemption conditions in
+ * isGarbageContent exactly, and drops only the single line holding the match
+ * (never "everything after it" — footer cut-offs ate real closing paragraphs).
+ * Lines over MAX_CHROME_LINE chars are left alone: that is prose, not a banner.
+ * Safety net: if removal would flip isGarbageContent() to garbage (a second, non-trailing
+ * match revealed by the strip), the original text is returned so the review is never
+ * turned into a re-collect loop.
+ * Only the collect-review-texts.js path calls this; other ingest scripts still use
+ * stripTrailingJunk only.
  *
- * Only used for classification — does NOT modify stored fullText.
- *
- * @param {string} text - Raw scraped text
- * @returns {string} Text with trailing footer removed
+ * @param {string} text - Cleaned review text
+ * @returns {string} Text with exempted chrome lines removed (unchanged if none)
  */
-function stripFooterContent(text) {
-  if (!text || text.length < 400) return text;
+const MAX_CHROME_LINE = 200;
+function stripExemptedChrome(text) {
+  if (!text || text.length < 500 || !text.includes('\n')) return text;
+  const stripped = _stripExemptedChromeLines(text);
+  if (stripped !== text && isGarbageContent(stripped).isGarbage) return text;
+  return stripped;
+}
 
-  // Minimum chars of review content before we allow a cut.
-  // Prevents stripping a short review that happens to mention "privacy policy".
-  const MIN_REVIEW_CHARS = 600;
-
-  let cutPoint = text.length;
-  for (const pattern of TRUNCATION_SIGNALS.footer) {
-    // Search the back 40% of the text for footer markers
-    const searchStart = Math.max(0, Math.floor(text.length * 0.6));
-    const searchRegion = text.substring(searchStart);
-    const match = searchRegion.match(pattern);
-    if (match) {
-      const absoluteIndex = searchStart + match.index;
-      // Only cut if enough review content precedes the marker
-      if (absoluteIndex >= MIN_REVIEW_CHARS) {
-        cutPoint = Math.min(cutPoint, absoluteIndex);
-      }
+function _stripExemptedChromeLines(text) {
+  let out = text;
+  for (let pass = 0; pass < 6; pass++) {
+    const trimmed = out.trim();
+    if (trimmed.length < 500 || _countTheaterKeywords(trimmed) < 3) break;
+    const probes = [
+      [detectAdBlocker, true, false, AD_BLOCKER_PATTERNS],
+      [detectPaywall, true, false, PAYWALL_PATTERNS],
+      [detectLegalPage, true, false, LEGAL_PAGE_PATTERNS],
+      [detectNewsletter, true, true, NEWSLETTER_PATTERNS],
+    ];
+    let removed = false;
+    for (const [detect, trailing, leading, patterns] of probes) {
+      const d = detect(out);
+      if (!d.detected) continue;
+      const inTrailing = trailing && _isPatternInTrailingJunk(out, d.match);
+      const inLeading = leading && _isPatternInLeadingJunk(out, d.match);
+      if (!inTrailing && !inLeading) continue;
+      const idx = inTrailing
+        ? (out.lastIndexOf(d.match) >= 0 ? out.lastIndexOf(d.match) : out.toLowerCase().lastIndexOf(d.match.toLowerCase()))
+        : (out.indexOf(d.match) >= 0 ? out.indexOf(d.match) : out.toLowerCase().indexOf(d.match.toLowerCase()));
+      if (idx < 0) continue;
+      const start = out.lastIndexOf('\n', idx - 1) + 1;
+      let end = out.indexOf('\n', idx);
+      if (end < 0) end = out.length;
+      // A banner line is mostly (>=40%) the matched phrases; a prose sentence that merely contains it is not
+      const line = out.slice(start, end);
+      const covered = patterns.reduce((n, re) => { const m = line.match(re); return n + (m ? m[0].length : 0); }, 0);
+      if (line.length > MAX_CHROME_LINE || covered < line.length * 0.4) continue;
+      out = (out.slice(0, start) + out.slice(end)).replace(/\n{3,}/g, '\n\n').trim();
+      removed = true;
+      break;
     }
+    if (!removed) break;
   }
-
-  if (cutPoint < text.length) {
-    return text.substring(0, cutPoint).trim();
-  }
-  return text;
+  return out;
 }
 
 /**
@@ -3542,7 +3565,7 @@ module.exports = {
   WRONG_PRODUCTION_OR_SHOW_FIELDS,
   detectTruncationSignals,
   hasBotStubTruncationSignal,
-  stripFooterContent,
+  stripExemptedChrome,
   getScrapingPriority,
   countWords,
   // Phase 1: Post-scrape validation functions
