@@ -1593,6 +1593,8 @@ on:
       # the scripts/lib/** glob above.
       - 'scripts/audit-stale-announced-shows.js'
       - 'scripts/audit-stale-announced-shows.test.mjs'
+      - 'scripts/audit-stale-review-texts.js'
+      - 'scripts/audit-stale-review-texts.test.mjs'
       # Open-card premise re-check — the mirror of autonomous-acceptance-recheck.js
       # (which re-verifies cards marked Done). Re-runs a still-OPEN card's own
       # acceptance command and reports the ones that now pass, i.e. whose stated
