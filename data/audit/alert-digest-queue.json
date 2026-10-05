@@ -123,6 +123,35 @@
     "queuedAt": "2026-10-05T12:50:31.953Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-2982-muv8szhw",
+    "title": "Landing blocked: resolve red on land/job/linear-BRO-2982-muv8szhw",
+    "description": "land.yml did not land land/job/linear-BRO-2982-muv8szhw: the resolve gate went red at 2a09c64938. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/job/linear-BRO-2982-muv8szhw\" is neither a local branch nor on origin (attempts 0, 1.3s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37316585581",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-2982-muv8szhw"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "2a09c6493877937d6b337be2132a27cd48311ab6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37316585581"
+      }
+    ],
+    "queuedAt": "2026-10-05T13:53:35.501Z"
+  },
+  {
     "conditionKey": "land:land/bro-4615-real-accounts",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-4615-real-accounts",
     "description": "land.yml did not land land/bro-4615-real-accounts: the scripts-lib-tests gate went red at b49adeaac3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37316045862",
