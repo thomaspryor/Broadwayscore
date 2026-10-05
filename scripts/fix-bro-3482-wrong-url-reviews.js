@@ -7,6 +7,12 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/fix-bro-3482-wrong-url-reviews.js [--apply]  (dry run without --apply)');
+  process.exit(0);
+}
 
 const TEXTS = process.env.REVIEW_TEXTS_DIR || path.join(os.homedir(), 'broadway-review-texts');
 const REVIEWS = process.env.REVIEWS_JSON || path.join(os.homedir(), 'broadway-scorecard-data', 'reviews.json');
