@@ -97,6 +97,7 @@ const {
   shouldAutoClearStaleLondonOutletCrossMarket,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
+const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1546,6 +1547,7 @@ const crossShowFingerprints = new Map();
   let priorRunSkipped = 0;
   let priorRunAutoCleared = 0;
   let datelessRevivalFlagged = 0;
+  let priorRunRepublishFlagged = 0;
   let datelessRevivalAutoCleared = 0;
   let staleDateGuardAutoCleared = 0;
   let anticipatoryGraceAutoCleared = 0;
@@ -1731,6 +1733,21 @@ const crossShowFingerprints = new Map();
           }
         }
 
+        // Prior-run republish self-release (BRO-4641): our flag is body-text-derived, so it
+        // lifts when the detector no longer matches (refetched body, or the show gained
+        // a declared priorRuns window). Manual/human decisions are never touched.
+        if (shouldReleasePriorRunRepublish(d, showRecord)) {
+          const wasNote = d.wrongProductionNote;
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: prior-run republish no longer detected (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          delete d.wrongProductionReason;
+          if (isStaleScoreInput(d, showRecord, fp)) markRescoreNeeded(d, 'wrongProduction cleared (prior-run republish no longer detected)');
+          safeWriteReview(fp, d, { force: true });
+          console.log(`  [PRIOR-RUN-REPUBLISH-RELEASED] ${sid}/${f}`);
+        }
+
         if (d.wrongProduction || d.wrongShow) continue;
 
         // Records mid-URL-correction are NOT evidence: the body has not been
@@ -1764,6 +1781,23 @@ const crossShowFingerprints = new Map();
           let mcReviewDate = parseDate(d.publishDate);
           if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
           // Extreme date mismatch (>1 year with reliable publishDate) — override manual clear
+        }
+        // Prior-run republish guard (BRO-4641): body text says the review is of an
+        // EARLIER production (e.g. "based on the 2025 performance at the Asylum
+        // Theater") even though the page was republished with an in-window date.
+        // Runs regardless of reviewDate: the date guards cannot see this.
+        if (!d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
+          const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
+          if (republish.flag) {
+            console.log(`  [PRIOR-RUN-REPUBLISH] ${sid}/${f}: ${republish.reason} — "${republish.evidence}"`);
+            d.wrongProduction = true;
+            invalidateWrongProductionAutoClear(d);
+            d.wrongProductionReason = 'prior-run-republish';
+            d.wrongProductionNote = `Prior-run republish guard: ${republish.reason} — "${republish.evidence}"`;
+            safeWriteReview(fp, d);
+            priorRunRepublishFlagged++;
+            continue;
+          }
         }
         // (reviewDate resolved above, shared with the dateless-revival auto-clear.
         // YYYY-only URL fallback intentionally omitted: a year alone defaults to
@@ -1841,6 +1875,9 @@ const crossShowFingerprints = new Map();
   }
   if (preOpenHeld > 0) {
     console.log(`Pre-opening guard: HELD ${preOpenHeld} reviews (current-run corroboration contradicts date — human review needed)\n`);
+  }
+  if (priorRunRepublishFlagged > 0) {
+    console.log(`Prior-run republish guard: flagged ${priorRunRepublishFlagged} reviews of an earlier production\n`);
   }
   if (datelessRevivalFlagged > 0) {
     console.log(`Dateless-revival guard: held ${datelessRevivalFlagged} dateless reviews on recent revival titles\n`);

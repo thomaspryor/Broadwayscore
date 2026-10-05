@@ -324,9 +324,19 @@ runs:
           # tying its capture to commercial.json's manifest flag would be an
           # arbitrary coupling between two unrelated files (ship-check
           # finding, 2026-07-21).
+          #
+          # BRO-4657: also keep the checkout snapshot as the base, so the merge
+          # can tell a record this job DELETED (dedupe self-heal) from one
+          # remote added. Snapshot only, never merge-base: after the rebase
+          # that resolves to remote and would delete every remote addition.
           if grep -qxF "commercial.json" /tmp/.core-data-changed-files 2>/dev/null; then
             git show origin/main:commercial.json > /tmp/remote-commercial.json 2>/dev/null || true
             [ -f "commercial.json" ] && cp commercial.json /tmp/our-commercial.json
+            if [ -f /tmp/core-data-snapshot/commercial.json ]; then
+              cp -f /tmp/core-data-snapshot/commercial.json /tmp/base-commercial.json
+            else
+              rm -f /tmp/base-commercial.json
+            fi
           fi
           git show origin/main:commercial-pending-review.json > /tmp/remote-commercial-pending.json 2>/dev/null || true
           [ -f "commercial-pending-review.json" ] && cp commercial-pending-review.json /tmp/our-commercial-pending.json
@@ -643,7 +653,10 @@ runs:
                 const { mergeCommercialJson } = require(path.join(ws, "scripts/lib/merge-commercial-data"));
                 const ours = JSON.parse(fs.readFileSync("/tmp/our-commercial.json", "utf8"));
                 const remote = JSON.parse(fs.readFileSync("/tmp/remote-commercial.json", "utf8"));
-                const { merged, stats } = mergeCommercialJson(ours, remote);
+                // BRO-4657: no readable base -> two-way union, as before.
+                let base;
+                try { base = JSON.parse(fs.readFileSync("/tmp/base-commercial.json", "utf8")); } catch { base = undefined; }
+                const { merged, stats } = mergeCommercialJson(ours, remote, base);
                 fs.writeFileSync("commercial.json", JSON.stringify(merged, null, 2) + "\n");
                 console.log("Reconciled commercial.json: " + JSON.stringify(stats));
               } catch (e) {
