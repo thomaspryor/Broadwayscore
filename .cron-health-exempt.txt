@@ -18,7 +18,6 @@ aggregator-url-watcher.yml
 # the owner directly when self-heal isn't landing an image after 3 attempts.
 audit-imageless-scored-shows.yml
 audit-aggregator-coverage.yml
-audit-aggregator-gap.yml
 # Provisional venue/date cross-validation against Playbill (BRO-2984 — moved out
 # of test.yml's data-validation job, where it spent real ScrapingBee/Bright Data
 # credits on every push to main). Deliberately EXEMPT rather than CRITICAL_CRONS:
@@ -84,7 +83,6 @@ newsletter-draft-refresh.yml
 newsletter-state-reconcile.yml
 opening-digest.yml
 opening-night-completeness-check.yml
-opening-night-reviews.yml
 opening-night-stage-alert.yml
 poll-loureviews.yml
 posthog-monday.yml

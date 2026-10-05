@@ -2813,6 +2813,7 @@ on:
       # edit to either triggers CI (feedback_test_yml_push_path_allowlist).
       - 'scripts/cron-health-chronic-orchestrator.js'
       - 'scripts/cron-health-chronic.test.mjs'
+      - 'scripts/check-cron-health-config.test.mjs'
       # E2E canary for the alert→card→dispatch chain (card #374) — path-listed
       # for the same reason (feedback_test_yml_push_path_allowlist); it has no
       # colocated unit test (it deliberately exercises the REAL Notion API,

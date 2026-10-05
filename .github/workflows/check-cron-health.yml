@@ -271,6 +271,14 @@ jobs:
             # invisibility this list exists to catch. 36h = daily cadence +
             # 12h cron-lag cushion, matching check-arm-yield.yml above.
             "card-verifiability-audit.yml|36|Card Verifiability Audit (undispatchable-backlog drain)"
+            # BRO-1648: the completeness-invariant system's own heartbeat. If these die,
+            # "no gaps reported" is indistinguishable from "detector dead".
+            # audit-aggregator-gap: hourly cron ('37 * * * *') but GitHub throttles it; real
+            # gaps measured 2026-09-26 -> 10-05 reach ~7.2h, so 3h would false-positive.
+            # 13h = worst expression gap 1h + the 12h audit-cron-health-coverage cushion.
+            "audit-aggregator-gap.yml|13|Aggregator Gap Census (hourly completeness audit)"
+            # 0 5 / 17 heavy + 3-hourly light ticks (worst expression gap 6h); 18h = 6h + 12h cushion.
+            "opening-night-reviews.yml|18|Opening Night Reviews (review census carrier)"
           )
 
           FAILURES=""
