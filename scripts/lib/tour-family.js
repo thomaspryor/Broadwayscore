@@ -98,17 +98,40 @@ function runningTourFor(show, shows, now = new Date()) {
   return pick.tourId;
 }
 
+// A parent closed longer ago than this before the tour launched is probably
+// not the production on the road (Mark Twain Tonight!: Hal Holbrook on
+// Broadway in 2005, Richard Thomas touring in 2027).
+const SAME_PRODUCTION_YEARS = 3;
+
+/**
+ * The parent is plausibly the production on the road: still running, closed
+ * within SAME_PRODUCTION_YEARS of the tour's launch, or already sent out an
+ * earlier tour we track (Shucked's second tour). Without a launch, assumed so.
+ */
+function sameProductionLikely(tour, parent, shows = null) {
+  if (!parent.closingDate || parent.status !== 'closed') return true;
+  const launch = toDate(tour.openingDate);
+  const closed = toDate(parent.closingDate);
+  if (!launch || !closed) return true;
+  if (launch.getTime() - closed.getTime() <= SAME_PRODUCTION_YEARS * 365 * DAY) return true;
+  return Boolean(shows) && toursOfTitle(tour.title, shows).some(t => t.id !== tour.id && t.openingDate && t.openingDate < tour.openingDate);
+}
+
 /**
  * What a tour borrows from its Broadway parent when it has nothing of its own
- * (BRO-4262): the parent's archived thumbnail and poster (key art is shared
- * across a show's productions), its synopsis (same story) and its runtime. Never the hero:
- * that is usually a Broadway cast photo. Only local archived image paths are
- * copied, so a parent's unverified remote URL never spreads.
+ * (BRO-4262): its synopsis (same story), and, when the parent is plausibly the
+ * same production (sameProductionLikely), the parent's archived thumbnail and
+ * poster (key art) and its runtime. Never the hero: that is usually a Broadway
+ * cast photo. Only local archived image paths are copied, so a parent's
+ * unverified remote URL never spreads.
+ * @param {Array} [shows] all shows, so an earlier tour of the title counts
  * @returns {object|null} fields to set on the tour, or null when nothing is missing
  */
-function tourInheritance(tour, parent) {
+function tourInheritance(tour, parent, shows = null) {
   if (!isTourShow(tour) || !parent) return null;
   const patch = {};
+  if (!tour.synopsis && parent.synopsis) patch.synopsis = parent.synopsis;
+  if (!sameProductionLikely(tour, parent, shows)) return Object.keys(patch).length ? patch : null;
   const own = tour.images || {};
   const theirs = parent.images || {};
   const isArchived = v => typeof v === 'string' && v.startsWith('/images/shows/');
@@ -117,7 +140,6 @@ function tourInheritance(tour, parent) {
     if (!own[k] && isArchived(theirs[k])) images[k] = theirs[k];
   }
   if (Object.keys(images).length) patch.images = { hero: own.hero || null, ...own, ...images };
-  if (!tour.synopsis && parent.synopsis) patch.synopsis = parent.synopsis;
   // Same production on the road, same length: a tour page showed an empty
   // Runtime for 20 of 21 tours (BRO-4601).
   if (!tour.runtime && parent.runtime) patch.runtime = parent.runtime;
@@ -129,7 +151,7 @@ function applyTourInheritance(shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
   const changed = [];
   for (const tour of (shows || []).filter(isTourShow)) {
-    const patch = tourInheritance(tour, byId.get(tour.tourOf));
+    const patch = tourInheritance(tour, byId.get(tour.tourOf), shows);
     if (!patch) continue;
     Object.assign(tour, patch);
     changed.push(tour.id);

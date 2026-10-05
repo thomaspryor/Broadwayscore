@@ -19,6 +19,7 @@ import {
   formatCapitalSummary,
   formatDataDate,
   formatDevelopmentDate,
+  sortNewestFirst,
 } from '../../src/lib/biz-format';
 import { isEstimatedCapitalization, toPublicShowCommercial } from '../../src/lib/commercial-display';
 import type { ShowCommercial } from '../../src/lib/data-types';
@@ -157,4 +158,31 @@ test('formatDevelopmentDate: every Recent Developments row carries its year', ()
   assert.equal(formatDevelopmentDate('2026'), '2026');
   assert.equal(formatDevelopmentDate('2026-13'), '2026-13');
   assert.equal(formatDevelopmentDate('Now'), 'Now');
+});
+
+test('sortNewestFirst: recoupments and closings interleave by date, newest first', () => {
+  // The live /biz list printed Jun, May, May, May recoupments and then a
+  // Sep closing, because rows were grouped by type.
+  const rows = [
+    { id: 'purpose', date: '2026-06' },
+    { id: 'just-in-time', date: '2026-05' },
+    { id: 'giant', date: '2026-05' },
+    { id: 'titanique', date: '2026-09-14' },
+    { id: 'old-year-only', date: '2025' },
+  ];
+  const sorted = sortNewestFirst(rows, (r) => r.date).map((r) => r.id);
+  assert.deepEqual(sorted, ['titanique', 'purpose', 'just-in-time', 'giant', 'old-year-only']);
+  // Equal dates keep input order, and the input is not mutated.
+  assert.equal(rows[0].id, 'purpose');
+  // A day-precision date in the same month sorts above the month-only one.
+  assert.deepEqual(
+    sortNewestFirst([{ d: '2026-06' }, { d: '2026-06-15' }], (r) => r.d).map((r) => r.d),
+    ['2026-06-15', '2026-06'],
+  );
+  // A year-only recoupment sorts below every month of that year and above
+  // the year before (the old date-based sort read "2026" as Jan 1).
+  assert.deepEqual(
+    sortNewestFirst([{ d: '2025-12' }, { d: '2026' }, { d: '2026-01' }], (r) => r.d).map((r) => r.d),
+    ['2026-01', '2026', '2025-12'],
+  );
 });

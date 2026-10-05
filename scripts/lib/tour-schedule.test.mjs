@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parseDateRange, parseTourSchedule, segmentTourRows, decideTourDates, statedClosedRanges, scheduleSlugs, duplicateScheduleOf } = require('./tour-schedule.js');
+const { parseDateRange, parseTourSchedule, segmentTourRows, decideTourDates, statedClosedRanges, scheduleSlugs, duplicateScheduleOf, wikiNamesOtherLaunch } = require('./tour-schedule.js');
 
 const iso = d => d.toISOString().slice(0, 10);
 const row = (city, venue, dates) => `<tr><td>${city}</td><td>${venue}</td><td>${dates}</td><td>2024-2025</td></tr>`;
@@ -237,4 +237,36 @@ test('duplicateScheduleOf finds another tour sharing three engagements', () => {
   assert.equal(duplicateScheduleOf(rows, { 'operation-mincemeat-tour-2026': mincemeat }, { exceptId: 'operation-mincemeat-tour-2026' }), null, 'a tour never duplicates itself');
   assert.equal(duplicateScheduleOf(rows.slice(0, 2), { m: mincemeat }), null, 'two shared stops can be chance');
   assert.equal(duplicateScheduleOf(mincemeat.stops, { m: { stops: mincemeat.stops.map(s => ({ ...s, city: 'Elsewhere' })) } }), null, 'same venue name in another city is not shared');
+});
+
+test('a tour booked ahead: its first listed engagement is the launch, only when asked', () => {
+  const html = page([
+    row('Cerritos, CA', 'Cerritos Center', 'January 19-24, 2027'),
+    row('Phoenix, AZ', 'Orpheum', 'January 26-31, 2027'),
+    row('Denver, CO', 'Buell', 'February 2-14, 2027'),
+  ]);
+  const tour = { id: null, title: 'Legally Blonde', openingDate: null, closingDate: null };
+  const asked = decideTourDates(tour, html, '', NOW, { segmentStart: '2027-01-19', freshLaunchDays: 30, upcomingDays: 270 });
+  assert.equal(asked.write.openingDate, '2027-01-19');
+  assert.equal(asked.launchSource, 'tourstoyou-upcoming');
+  assert.equal(decideTourDates(tour, html, '', NOW, { segmentStart: '2027-01-19', freshLaunchDays: 30 }).write.openingDate, undefined, 'not without upcomingDays');
+  assert.equal(decideTourDates(tour, html, '', NOW, { segmentStart: '2027-01-19', upcomingDays: 30 }).write.openingDate, undefined, 'not beyond upcomingDays');
+  // Wikipedia naming another launch city means the page lacks the opener.
+  const other = decideTourDates(tour, html, 'The national tour will launch in Chicago in December 2026.', NOW, { segmentStart: '2027-01-19', upcomingDays: 270 });
+  assert.equal(other.write.openingDate, undefined);
+});
+
+test('wikiNamesOtherLaunch: another city this season contradicts; old tours, a clipped sentence or a matching month with no place do not', () => {
+  const R = (city, d) => ({ city, start: new Date(`${d}T00:00:00Z`) });
+  // Harry Potter: the page starts at Seattle, the tour began in Denver.
+  assert.equal(wikiNamesOtherLaunch('The North American tour began in Denver in May 2026.', R('Seattle, WA', '2026-08-22')), true);
+  assert.equal(wikiNamesOtherLaunch('The North American tour began in Denver in May 2026.', R('Seattle, WA', '2026-05-20')), true, 'same month, other city');
+  assert.equal(wikiNamesOtherLaunch('The North American tour began at the Buell Theatre in Denver.', R('Seattle, WA', '2026-08-22')), true, 'no year still counts');
+  assert.equal(wikiNamesOtherLaunch('The national tour will launch in Chicago in January 2027.', R('Cerritos, CA', '2027-01-19')), true);
+  // Legally Blonde's 2008 tour, an infobox field, a clipped window edge, Shucked's placeless month.
+  assert.equal(wikiNamesOtherLaunch('The first national tour started in San Francisco on September 23, 2008.', R('Cerritos, CA', '2027-01-19')), false);
+  assert.equal(wikiNamesOtherLaunch('| premiere_location = [[Golden Gate Theatre]], [[San Francisco]] tour launched', R('Cerritos, CA', '2027-01-19')), false);
+  assert.equal(wikiNamesOtherLaunch('The first non-Equity tour launched in Jackson, Mississippi, on September', R('Cerritos, CA', '2027-01-19')), false);
+  assert.equal(wikiNamesOtherLaunch('In August 2026, it was announced a non-equity 2nd National tour would begin in January, 2027.', R('Fort Wayne, IN', '2027-01-12')), false);
+  assert.equal(wikiNamesOtherLaunch('The tour launched in Cerritos in January 2027.', R('Cerritos, CA', '2027-01-19')), false, 'names this city');
 });

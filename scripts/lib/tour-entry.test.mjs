@@ -50,7 +50,6 @@ test('stays a suggestion without a confirmed launch, with a problem, or while an
   const running = { id: 'kimberly-akimbo-tour-2023', title: 'Kimberly Akimbo', category: 'tour', tourOf: parent.id, openingDate: '2023-01-01', closingDate: null };
   assert.match(buildTourEntry({ parent, shows: [parent, running], decision: ok, roundupUrl: 'u', now: NOW }).skip, /still open/);
   assert.match(buildTourEntry({ parent, shows: [parent, { id: 'kimberly-akimbo-tour-2024' }], decision: ok, roundupUrl: 'u', now: NOW }).skip, /already exists/);
-  assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2027-01-01' }, notes: [], launchSource: 'wikipedia' }, roundupUrl: 'u', now: NOW }).skip, /future/);
   assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2024-09-14' }, notes: [] }, roundupUrl: 'u', now: NOW }).skip, /unknown launch source/);
 });
 
@@ -94,4 +93,14 @@ test('a fresh Tours To You launch is labelled as the first listed engagement', (
   assert.equal(entry.discoverySource, 'tour-schedule:tourstoyou');
   assert.match(entry.tourLaunchEvidence, /first listed engagement of a tour launching now/);
   assert.doesNotMatch(entry.tourLaunchEvidence + entry.statusSource, /Wikipedia/);
+});
+
+test('a launch still ahead creates an upcoming tour that opens on its date', () => {
+  const booked = buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2027-01-19' }, notes: [], launchSource: 'tourstoyou-upcoming' }, scheduleUrl: 'https://tourstoyou.org/shows/kimberly-akimbo/', now: NOW }).entry;
+  assert.equal(booked.status, 'upcoming');
+  assert.equal(booked.id, 'kimberly-akimbo-tour-2027');
+  assert.equal(booked.openingDateSource, 'tourstoyou-first-engagement');
+  assert.match(booked.tourLaunchEvidence, /booked ahead/);
+  // Wikipedia naming a future launch is as good.
+  assert.equal(buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2027-01-01' }, notes: [], launchSource: 'wikipedia' }, roundupUrl: 'u', now: NOW }).entry.status, 'upcoming');
 });
