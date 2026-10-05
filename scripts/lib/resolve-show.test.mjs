@@ -8,6 +8,7 @@ const {
   resolveShowMatches,
   extractShowTitlesFromText,
   normalizeShowName,
+  isAmbiguousMatch,
 } = require('./resolve-show.js');
 
 const SHOWS = [
@@ -118,4 +119,46 @@ test('both open: Broadway original beats later-opening West End transfer', () =>
   // But a closed Broadway run loses to an open West End run.
   shows[0].status = 'closed';
   assert.equal(resolveShow('Hamilton', shows)?.id, 'hamilton-we-2021');
+});
+
+// Feedback #905: the reader typed "Book of mormon" (no "the"), which exactly
+// matches book-of-mormon-2011's bare slug ("book-of-mormon") at rank 0 and
+// short-circuited before the fuzzy ranks could catch the two same-titled
+// siblings — so the diagnosis only ever saw the Broadway production and
+// missed that the reader likely meant the West End or tour run. The three
+// shows below mirror the real shapes: only the original Broadway run kept
+// the un-suffixed slug, the transfer and tour got suffixed ones.
+const BOOK_OF_MORMON_SHOWS = [
+  { id: 'book-of-mormon-2011', slug: 'book-of-mormon', title: 'The Book of Mormon', status: 'open', openingDate: '2011-03-24', category: 'broadway' },
+  { id: 'book-of-mormon-we-2024', slug: 'the-book-of-mormon-west-end', title: 'The Book of Mormon', status: 'open', openingDate: '2013-03-21', category: 'west-end' },
+  { id: 'book-of-mormon-tour-2022', slug: 'book-of-mormon-tour-2022', title: 'The Book of Mormon', status: 'open', openingDate: '2022-09-23', category: 'tour' },
+];
+
+test('a bare-slug match does not hide same-titled siblings (#905)', () => {
+  for (const name of ['Book of mormon', 'book of mormon', 'The Book of Mormon']) {
+    const matches = resolveShowMatches(name, BOOK_OF_MORMON_SHOWS);
+    assert.deepEqual(
+      new Set(matches.map((s) => s.id)),
+      new Set(['book-of-mormon-2011', 'book-of-mormon-we-2024', 'book-of-mormon-tour-2022']),
+      `expected all 3 productions for ${JSON.stringify(name)}, got ${matches.map((s) => s.id)}`
+    );
+    assert.equal(isAmbiguousMatch(name, BOOK_OF_MORMON_SHOWS), true);
+  }
+});
+
+test('typing the full, specific slug stays a single unambiguous match', () => {
+  for (const [name, expectedId] of [
+    ['book-of-mormon-tour-2022', 'book-of-mormon-tour-2022'],
+    ['the-book-of-mormon-west-end', 'book-of-mormon-we-2024'],
+    ['book-of-mormon-2011', 'book-of-mormon-2011'],
+  ]) {
+    const matches = resolveShowMatches(name, BOOK_OF_MORMON_SHOWS);
+    assert.deepEqual(matches.map((s) => s.id), [expectedId], `expected only ${expectedId} for ${JSON.stringify(name)}`);
+    assert.equal(isAmbiguousMatch(name, BOOK_OF_MORMON_SHOWS), false);
+  }
+});
+
+test('isAmbiguousMatch is false for a genuinely unique title', () => {
+  assert.equal(isAmbiguousMatch('Different Times', SHOWS), false);
+  assert.equal(isAmbiguousMatch('rent', SHOWS), true);
 });

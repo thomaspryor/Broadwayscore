@@ -56,6 +56,32 @@ function tokenSequenceIncludes(haystack, needle) {
  * Returns ALL shows at the best matching rank (multiple productions of the
  * same title all match), or [] when nothing matches.
  */
+/** Rank-1/rank-2 condition as one predicate: normalized-exact OR token-sequence
+ * containment in either direction. Used by the main ranking loop. */
+function fuzzyTitleMatch(norm, titleNorm, titleCore) {
+  if (norm === titleNorm || norm === titleCore) return true;
+  return (
+    (norm.length >= MIN_FUZZY_LEN &&
+      (tokenSequenceIncludes(titleNorm, norm) || tokenSequenceIncludes(titleCore, norm))) ||
+    (titleCore.length >= MIN_FUZZY_LEN && tokenSequenceIncludes(norm, titleCore))
+  );
+}
+
+/** Narrower than fuzzyTitleMatch: true only when the input is the title or
+ * LESS (a short/partial form contained in the title) — never when the input
+ * is the title PLUS extra tokens. Used for the slug-sibling expansion below:
+ * a short form like "book of mormon" is genuinely ambiguous between
+ * same-titled siblings, but a full slug like "the-book-of-mormon-west-end"
+ * already IS the user's disambiguation (the title plus "west end"), so it
+ * must not be treated as ambiguous just because it contains the title. */
+function inputIsTitleOrShorter(norm, titleNorm, titleCore) {
+  if (norm === titleNorm || norm === titleCore) return true;
+  return (
+    norm.length >= MIN_FUZZY_LEN &&
+    (tokenSequenceIncludes(titleNorm, norm) || tokenSequenceIncludes(titleCore, norm))
+  );
+}
+
 function resolveShowMatches(name, shows) {
   if (!name || name === 'N/A' || !Array.isArray(shows)) return [];
   const rawLower = foldCase(name).trim();
@@ -63,38 +89,50 @@ function resolveShowMatches(name, shows) {
   if (!norm) return [];
 
   const ranked = [[], [], []];
+  // Titles of shows that matched rank 0 via slug/id rather than title text.
+  // A slug/id is a per-show identifier, so unlike a title match it can't
+  // naturally pull in same-titled siblings — handled separately below.
+  const slugMatchedTitles = new Set();
 
   for (const show of shows) {
     if (!show || !show.title) continue;
     const titleLower = foldCase(show.title);
 
-    // Rank 0: exact title / slug / id
-    if (
-      titleLower === rawLower ||
-      show.slug === rawLower ||
-      show.slug === rawLower.replace(/\s+/g, '-') ||
-      show.id === rawLower
-    ) {
+    // Rank 0: exact title
+    if (titleLower === rawLower) {
       ranked[0].push(show);
       continue;
     }
+    // Rank 0: exact slug / id
+    if (show.slug === rawLower || show.slug === rawLower.replace(/\s+/g, '-') || show.id === rawLower) {
+      ranked[0].push(show);
+      slugMatchedTitles.add(titleLower);
+      continue;
+    }
 
-    // Rank 1: normalized-exact, with and without parenthetical qualifiers
+    // Rank 1/2: normalized-exact or token-sequence containment
     const titleNorm = normalizeShowName(show.title);
     const titleCore = normalizeTitleCore(show.title);
     if (norm === titleNorm || norm === titleCore) {
       ranked[1].push(show);
-      continue;
-    }
-
-    // Rank 2: token-sequence containment either direction; the contained
-    // side must be >= MIN_FUZZY_LEN chars.
-    if (
-      (norm.length >= MIN_FUZZY_LEN &&
-        (tokenSequenceIncludes(titleNorm, norm) || tokenSequenceIncludes(titleCore, norm))) ||
-      (titleCore.length >= MIN_FUZZY_LEN && tokenSequenceIncludes(norm, titleCore))
-    ) {
+    } else if (fuzzyTitleMatch(norm, titleNorm, titleCore)) {
       ranked[2].push(show);
+    }
+  }
+
+  // A slug/id match must not hide same-titled siblings that would otherwise
+  // tie with it at rank 1/2 for this same input (#905: "book of mormon"
+  // exact-matched book-of-mormon-2011's bare slug and returned only that
+  // show, even though the West End and tour productions share its title and
+  // would tie at rank 2 — "The Book of Mormon" surfaced all three because
+  // that input matches all three on title text, not slug).
+  if (slugMatchedTitles.size > 0) {
+    for (const show of shows) {
+      if (!show || !show.title || ranked[0].includes(show)) continue;
+      if (!slugMatchedTitles.has(foldCase(show.title))) continue;
+      const titleNorm = normalizeShowName(show.title);
+      const titleCore = normalizeTitleCore(show.title);
+      if (inputIsTitleOrShorter(norm, titleNorm, titleCore)) ranked[0].push(show);
     }
   }
 
@@ -151,12 +189,27 @@ function extractShowTitlesFromText(message, shows) {
   return Array.from(matched);
 }
 
+/**
+ * True when `name` matches more than one distinct show at the best rank —
+ * i.e. resolveShow() had to pick a winner instead of there being one obvious
+ * answer. Callers that silently take resolveShow()'s pick (a single-match
+ * assumption) can use this to flag the case instead: feedback #905 reported
+ * "Book of mormon" scored wrong, resolveShow() defaulted to the Broadway 2011
+ * production (categoryRank tie-break), and the diagnosis never saw that the
+ * West End 2024 and tour productions also matched — one of which was the one
+ * the reader actually meant.
+ */
+function isAmbiguousMatch(name, shows) {
+  return resolveShowMatches(name, shows).length > 1;
+}
+
 module.exports = {
   normalizeShowName,
   normalizeTitleCore,
   tokenSequenceIncludes,
   resolveShowMatches,
   resolveShow,
+  isAmbiguousMatch,
   extractShowTitlesFromText,
   MIN_FUZZY_LEN,
 };

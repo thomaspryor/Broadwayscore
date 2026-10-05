@@ -164,24 +164,13 @@ function loadFile(relPath, budgetRemaining) {
 }
 
 /**
- * Load show-specific data for content error investigation
+ * Full per-show enrichment (reviews with scores, audience buzz, commercial
+ * data) for one resolved show. Shared by the single-match and multi-match
+ * loaders below so a form-field report that matches several productions
+ * gets the same depth of data for each one, not just the one resolveShow()
+ * happens to pick.
  */
-function loadShowData(showName) {
-  // Load shows
-  let shows;
-  try {
-    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
-    shows = raw.shows || raw;
-  } catch {
-    return null;
-  }
-
-  // Ranked show matching (exact > normalized > token-sequence) — the old flat
-  // OR-chain let "Ma" hijack "MISTERMAN" via reverse-substring (GH issue #393).
-  const show = resolveShow(showName, shows);
-
-  if (!show) return null;
-
+function buildFullShowData(show) {
   const result = {
     // buildShowSnapshot() exposes every field FEEDBACK_EDITABLE_FIELDS allows
     // the pipeline to edit — a field missing here starves the diagnosis LLM,
@@ -223,6 +212,51 @@ function loadShowData(showName) {
   } catch { /* skip */ }
 
   return result;
+}
+
+/**
+ * Load show-specific data for content error investigation (single best
+ * match — kept for the CLI entry point below, which has no concept of
+ * "ambiguous" to report back).
+ */
+function loadShowData(showName) {
+  let shows;
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+    shows = raw.shows || raw;
+  } catch {
+    return null;
+  }
+
+  // Ranked show matching (exact > normalized > token-sequence) — the old flat
+  // OR-chain let "Ma" hijack "MISTERMAN" via reverse-substring (GH issue #393).
+  const show = resolveShow(showName, shows);
+  if (!show) return null;
+  return buildFullShowData(show);
+}
+
+/**
+ * Load full data for EVERY production matching the form's bare "show" field,
+ * not just resolveShow()'s single best guess. The form field is short,
+ * reader-typed text ("Book of mormon") that can match more than one
+ * production at the same rank; loading only the resolver's tie-broken pick
+ * silently hides the other productions' review scores from the diagnosis
+ * LLM. Capped at 5 — real ambiguity is 2-3 productions of the same title,
+ * never dozens.
+ */
+function loadAllShowDataForFormField(showName) {
+  let shows;
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+    shows = raw.shows || raw;
+  } catch {
+    return { productions: [], ambiguous: false };
+  }
+  const matches = resolveShowMatches(showName, shows);
+  return {
+    productions: matches.slice(0, 5).map(buildFullShowData),
+    ambiguous: matches.length > 1,
+  };
 }
 
 /**
@@ -314,15 +348,22 @@ export async function diagnoseBug(message, showName, userCategory) {
   const codeContext = buildCodeContext(categories);
 
   // 3. Load show data if mentioned (from form field AND from message text)
-  let showData = null;
   let showDataStr = '';
   const allShowData = [];
+  let formFieldAmbiguous = false;
 
-  // Try loading from the form's show field
+  // Try loading from the form's show field — ALL matching productions, not
+  // just resolveShow()'s single best guess (feedback #905: "Book of mormon"
+  // matched 3 productions; loading only the tie-broken Broadway 2011 pick
+  // hid the West End 2024 production's review, which is the one the reader
+  // actually meant).
   if (showName && showName !== 'N/A') {
-    showData = loadShowData(showName);
-    if (showData) {
-      allShowData.push(showData);
+    const { productions, ambiguous } = loadAllShowDataForFormField(showName);
+    formFieldAmbiguous = ambiguous;
+    for (const data of productions) {
+      if (!allShowData.some(d => (d.show?.id || d.id) === data.show.id)) {
+        allShowData.push(data);
+      }
     }
   }
 
@@ -352,6 +393,9 @@ export async function diagnoseBug(message, showName, userCategory) {
       const show = d.show || d;
       return `## Show Data for "${show.title}" (id: ${show.id})\n\`\`\`json\n${JSON.stringify(d, null, 2)}\n\`\`\``;
     }).join('\n\n');
+    if (formFieldAmbiguous) {
+      showDataStr = `## Note: ambiguous show\nThe reader's "show" field matched ${allShowData.length} different productions of this title (shown below). Check EACH one's reviews for the thing the reader is reporting before concluding it's not a bug — the reader may mean a different production than the first one listed.\n\n${showDataStr}`;
+    }
   }
 
   // Deterministic show-ID resolution — computed from the catalog matches
@@ -422,6 +466,11 @@ Respond with ONLY a JSON object in this exact format:
   // — process-feedback.yml and auto-fix-feedback-bug.js key off this, not
   // off diagnosis.relevantFiles.
   diagnosis.resolvedShowIds = resolvedShowIds;
+  // The form's "show" field matched more than one production (e.g. a title
+  // revived/transferred across productions) — a not-a-bug or low-confidence
+  // verdict here deserves human eyes before it's trusted, since the LLM may
+  // still have picked the wrong one even with every production's data in view.
+  diagnosis.ambiguousShow = formFieldAmbiguous;
   return diagnosis;
 }
 
