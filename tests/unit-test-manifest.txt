@@ -95,6 +95,7 @@ scripts/flag-wrong-production-by-date.test.mjs
 scripts/flag-wrong-production-by-url-date.test.mjs
 scripts/gather-reviews-named-non-review.test.mjs
 scripts/gather-reviews.test.mjs
+scripts/generate-related-shows.test.mjs
 scripts/import-notion-to-linear.test.mjs
 scripts/infra-review-scope.test.mjs
 scripts/ingest-dmarc-reports.test.mjs
@@ -154,6 +155,7 @@ scripts/lib/prune-closeable.test.mjs
 scripts/lib/push-content-survival.test.mjs
 scripts/lib/rebuild-helpers.published-rating-gate.test.mjs
 scripts/lib/rebuild-helpers.thumb-adjudication.test.mjs
+scripts/lib/related-shows-scores.test.mjs
 scripts/lib/resolve-show.test.mjs
 scripts/lib/score-to-bucket-boundaries.test.mjs
 scripts/lib/scraper-playwright-missing-browser.test.mjs
