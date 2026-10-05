@@ -460,11 +460,12 @@ function Inner({
           </div>
           <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
             {show.title}
+            {/* A tour shares its Broadway parent's title and poster; say which one
+                this is, inside the H1 so the heading reads "<show> National Tour". */}
+            {show.category === 'tour' && (
+              <span className="block mt-1 text-sm lg:text-base font-semibold tracking-normal text-sky-300" data-testid="tour-subtitle">National Tour</span>
+            )}
           </h1>
-          {/* A tour shares its Broadway parent's title and poster; say which one this is. */}
-          {show.category === 'tour' && (
-            <p className="text-sm lg:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
-          )}
           <div className="text-sm text-gray-400 space-y-0.5 pt-0.5" data-testid="show-meta-line">
             <p>
               {venueLink ? (

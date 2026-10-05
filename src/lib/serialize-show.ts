@@ -1,6 +1,6 @@
 import { getAudienceBuzz, hasEnoughAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
 import type { ShowCardShow } from '@/components/show-cards/types';
-import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
+import { getTourNowNextForShow, getTourTicketLinks } from '@/lib/data-tour-schedule';
 
 /**
  * Serialize a show for client components (ShowListCard, MiniShowCard).
@@ -83,7 +83,7 @@ export function serializeShowForClient(
     ageRecommendation: show.ageRecommendation ?? undefined,
     creativeTeam: show.creativeTeam,
     runtime: show.runtime ?? undefined,
-    ticketLinks: show.ticketLinks,
+    ticketLinks: show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show.id),
     subtitle: show.subtitle,
     subtitleColor: show.subtitleColor,
     // Market-specific overrides

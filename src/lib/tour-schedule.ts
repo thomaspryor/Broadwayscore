@@ -58,3 +58,26 @@ export function shortCity(city: string): string {
 export function stopKey(s: TourStop): string {
   return `${s.city}|${s.start}`;
 }
+
+const CANADA = new Set(['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT']);
+
+export interface StopPlace {
+  locality: string;
+  /** State or province code; absent for a country-only suffix (", MX"). */
+  region?: string;
+  /** ISO 3166-1 alpha-2. */
+  country: string;
+}
+
+/**
+ * "Toronto, ON" → { locality: Toronto, region: ON, country: CA };
+ * "Mexico City, MX" → { locality: Mexico City, country: MX }; anything
+ * without a two-letter suffix → US locality only. For Event structured data.
+ */
+export function stopPlace(city: string): StopPlace {
+  const m = city.match(/^(.*?),\s*([A-Z]{2})$/);
+  if (!m) return { locality: city.trim(), country: 'US' };
+  const [, locality, code] = m;
+  if (code === 'MX') return { locality, country: 'MX' };
+  return { locality, region: code, country: CANADA.has(code) ? 'CA' : 'US' };
+}

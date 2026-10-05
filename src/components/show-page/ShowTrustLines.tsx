@@ -66,7 +66,8 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
               {tours.map((tour, i) => (
                 <span key={tour.id}>
                   <Link href={`/show/${tour.slug}`} className="text-sky-300 underline decoration-sky-300/40 underline-offset-2 hover:text-sky-200" data-testid="on-tour-link">
-                    {tours.length > 1 ? `See the ${(tour.openingDate || tour.id.match(/(\d{4})$/)?.[1] || '').slice(0, 4)} tour →` : 'See the tour →'}
+                    {/* Descriptive anchor text for the tour page (BRO-4601 SEO). */}
+                    {tours.length > 1 ? `${(tour.openingDate || tour.id.match(/(\d{4})$/)?.[1] || '').slice(0, 4)} national tour reviews →` : `${show.title} national tour reviews →`}
                   </Link>
                   {i < tours.length - 1 ? ' ' : ''}
                 </span>

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-05T03:11:57.818Z",
+    "generatedAt": "2026-10-05T04:21:15.384Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,14 +9,18 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 6,
-    "exemptCount": 28,
+    "exemptCount": 26,
     "coveredCount": 38,
-    "highChurnTracked": 72
+    "highChurnTracked": 70
   },
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 206
+      "churn": 204
+    },
+    {
+      "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 122
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
@@ -25,10 +29,6 @@
     {
       "path": "data/audit/tour-sweep.json",
       "churn": 112
-    },
-    {
-      "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 111
     },
     {
       "path": "data/audit/validation-baseline.json",
@@ -42,11 +42,11 @@
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 427
+      "churn": 429
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 327
+      "churn": 339
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -69,11 +69,11 @@
       "churn": 112
     },
     {
-      "path": "public/data/shows/hay-fever-west-end-2026.json",
+      "path": "data/audit/alert-digest-queue.json",
       "churn": 109
     },
     {
-      "path": "data/audit/alert-digest-queue.json",
+      "path": "public/data/shows/hay-fever-west-end-2026.json",
       "churn": 108
     },
     {
@@ -82,15 +82,15 @@
     },
     {
       "path": "public/data/shows/the-standard-of-living-west-end-2026.json",
-      "churn": 78
+      "churn": 77
     },
     {
       "path": "public/data/shows/whos-afraid-of-virginia-woolf-west-end-2026.json",
-      "churn": 70
+      "churn": 69
     },
     {
       "path": "public/data/shows/flamenc-oh-off-west-end-2026.json",
-      "churn": 68
+      "churn": 67
     },
     {
       "path": "public/data/shows/what-the-animals-say-off-west-end-2026.json",
@@ -98,7 +98,7 @@
     },
     {
       "path": "public/data/shows/creation-stories-and-all-the-important-importants-off-broadway-2026.json",
-      "churn": 63
+      "churn": 61
     },
     {
       "path": "public/data/shows/bull-off-west-end-2026.json",
@@ -106,7 +106,7 @@
     },
     {
       "path": "public/data/shows/degenerates-off-broadway-2026.json",
-      "churn": 53
+      "churn": 51
     },
     {
       "path": "public/data/shows/a-small-and-quiet-light-off-west-end-2026.json",
@@ -114,7 +114,7 @@
     },
     {
       "path": "public/data/shows/kramerfauci-st-anns-off-broadway-2026.json",
-      "churn": 46
+      "churn": 48
     },
     {
       "path": "public/data/shows/topdog-underdog-regional-2026.json",
@@ -133,35 +133,27 @@
       "churn": 41
     },
     {
-      "path": "public/data/shows/the-last-ship-west-end-2026.json",
-      "churn": 35
+      "path": "public/data/shows/the-hairy-ape-irish-repertory-theatre-off-broadway-2026.json",
+      "churn": 34
     },
     {
-      "path": "public/data/shows/the-hairy-ape-irish-repertory-theatre-off-broadway-2026.json",
-      "churn": 33
+      "path": "public/data/shows/the-last-ship-west-end-2026.json",
+      "churn": 34
     },
     {
       "path": "public/data/shows/midnight-off-broadway-2026.json",
-      "churn": 32
-    },
-    {
-      "path": "public/data/shows/pre-existing-condition-off-broadway-2026.json",
-      "churn": 30
-    },
-    {
-      "path": "public/data/shows/thelma-and-louise-a-new-musical-off-west-end-2026.json",
-      "churn": 30
+      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 535,
+      "churn": 531,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 460,
+      "churn": 462,
       "mergeAttr": "union"
     },
     {
@@ -171,27 +163,27 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 433,
+      "churn": 435,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 428,
+      "churn": 426,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 428,
+      "churn": 426,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 428,
+      "churn": 426,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 346,
+      "churn": 345,
       "mergeAttr": "ours"
     },
     {
@@ -206,17 +198,17 @@
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 197,
+      "churn": 194,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 180,
+      "churn": 177,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 141,
+      "churn": 153,
       "mergeAttr": "union"
     },
     {
@@ -236,17 +228,17 @@
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 103,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-what-the-animals-say-off-west-end-2026.json",
-      "churn": 100,
+      "churn": 101,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 95,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
@@ -261,7 +253,7 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 54,
+      "churn": 58,
       "mergeAttr": "union"
     },
     {
@@ -310,11 +302,6 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/midnight-off-broadway-2026.json",
-      "churn": 34,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/poller-backoff/pre-existing-condition-off-broadway-2026.json",
       "churn": 34,
       "mergeAttr": "ours"
@@ -330,8 +317,13 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/creation-stories-and-all-the-important-importants-off-broadway-2026.json",
+      "path": "data/audit/poller-backoff/midnight-off-broadway-2026.json",
       "churn": 33,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/creation-stories-and-all-the-important-importants-off-broadway-2026.json",
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {

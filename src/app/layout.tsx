@@ -5,6 +5,7 @@ import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
 import FooterMarketContent from '@/components/FooterMarketContent';
+import { isCategoryEnabled } from '@/lib/markets';
 import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
@@ -195,6 +196,7 @@ export default function RootLayout({
                 creativePages: featureFlags.creativePages,
                 castPages: featureFlags.castPages,
                 fantasyLeague: featureFlags.fantasyLeague,
+                tours: isCategoryEnabled('tour'),
               }}
             />
 

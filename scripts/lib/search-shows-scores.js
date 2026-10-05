@@ -46,4 +46,17 @@ function buildShowsWithScores(reviews, shows, publicShowsDir) {
   return showsWithScores;
 }
 
-module.exports = { buildShowsWithScores };
+/**
+ * Mirror of src/lib/data-core.ts isTourListed for the search index: a tour
+ * needs the market minimum of reviews (+2 when none is T1/T2) before it is on
+ * the tours page, in the sitemap and indexed; search follows the same rule
+ * (BRO-4601). `slim` is the public/data/shows/{id}.json object (rc, rv[].t).
+ */
+function isTourListedSlim(slim) {
+  const { getMarketMinReviews } = require('./min-reviews');
+  const rc = (slim && slim.rc) || 0;
+  const top = ((slim && slim.rv) || []).filter(r => r && (r.t === 1 || r.t === 2)).length;
+  return rc >= getMarketMinReviews('tour') + (top === 0 ? 2 : 0);
+}
+
+module.exports = { buildShowsWithScores, isTourListedSlim };

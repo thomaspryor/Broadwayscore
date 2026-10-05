@@ -1,4 +1,5 @@
 import { StatusBadge } from '@/components/show-cards';
+import TicketLink from '@/components/TicketLink';
 import { formatShowDate } from '@/lib/date-utils';
 import { stopKey, type TourStop } from '@/lib/tour-schedule';
 
@@ -16,7 +17,11 @@ function range(s: TourStop) {
   return s.start === s.end ? start : `${start}–${end}`;
 }
 
-function StopRow({ stop, isNow, past, reviewCount }: { stop: TourStop; isNow: boolean; past: boolean; reviewCount: number }) {
+interface TicketShow { id: string; title: string; slug: string; status: string }
+
+function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show }: {
+  stop: TourStop; isNow: boolean; past: boolean; reviewCount: number; ticketUrl?: string; show?: TicketShow;
+}) {
   return (
     <li className={`flex items-baseline gap-3 py-2 border-b border-white/5 last:border-b-0 ${past ? 'opacity-60' : ''}`}>
       <span className="w-24 shrink-0 text-xs text-gray-500 tabular-nums">{range(stop)}</span>
@@ -27,16 +32,29 @@ function StopRow({ stop, isNow, past, reviewCount }: { stop: TourStop; isNow: bo
       {isNow ? <StatusBadge status="open" /> : reviewCount > 0 ? (
         <span className="text-[11px] text-gray-400 whitespace-nowrap">{reviewCount} review{reviewCount > 1 ? 's' : ''}</span>
       ) : null}
+      {ticketUrl && show && !past && (
+        <TicketLink
+          showName={show.title} showId={show.id} showSlug={show.slug} showStatus={show.status} showCategory="tour"
+          platform="TodayTix" url={ticketUrl} pageType="show"
+          className="text-[11px] font-medium text-amber-400/80 hover:text-amber-300 whitespace-nowrap"
+        >
+          Tickets ↗
+        </TicketLink>
+      )}
     </li>
   );
 }
 
-export default function TourScheduleCard({ stops, today, reviewCounts, source }: {
+export default function TourScheduleCard({ stops, today, reviewCounts, source, tickets = {}, show }: {
   stops: TourStop[];
   today: string;
   /** Reviews per stop, keyed by stopKey(). */
   reviewCounts: Record<string, number>;
   source?: string | null;
+  /** TodayTix links for stops on sale there, keyed by stopKey(). */
+  tickets?: Record<string, string>;
+  /** For ticket-click tracking. */
+  show?: TicketShow;
 }) {
   if (stops.length === 0) return null;
   const nowIdx = stops.findIndex(s => s.start <= today && today <= s.end);
@@ -44,7 +62,7 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source }:
   const ahead = firstAhead === -1 ? [] : stops.slice(firstAhead, firstAhead + UPCOMING_SHOWN);
   const shown = [...(nowIdx >= 0 ? [stops[nowIdx]] : []), ...ahead];
   const row = (s: TourStop) => (
-    <StopRow key={`${s.city}|${s.start}`} stop={s} isNow={s === stops[nowIdx]} past={s.end < today} reviewCount={reviewCounts[stopKey(s)] ?? 0} />
+    <StopRow key={`${s.city}|${s.start}`} stop={s} isNow={s === stops[nowIdx]} past={s.end < today} reviewCount={reviewCounts[stopKey(s)] ?? 0} ticketUrl={tickets[stopKey(s)]} show={show} />
   );
 
   return (
@@ -63,7 +81,7 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source }:
       </details>
       {source && (
         <p className="mt-3 pt-3 border-t border-white/5 text-xs text-gray-500">
-          Dates from <a href={source} target="_blank" rel="noopener noreferrer" className="hover:text-brand-hover transition-colors">Tours To You</a>. Check the venue for showtimes and tickets.
+          Dates from <a href={source} target="_blank" rel="noopener noreferrer" className="hover:text-brand-hover transition-colors">Tours To You</a>. {Object.keys(tickets).length ? 'Tickets for some stops through TodayTix; check the venue for the rest.' : 'Check the venue for showtimes and tickets.'}
         </p>
       )}
     </section>
