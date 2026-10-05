@@ -348,13 +348,19 @@ async function listOpenIssuesWithDescriptions(teamKey = TEAM_KEY) {
 // identifier -> comment nodes for many issues of one team, 50 per request
 // (BRO-4642). Callers attach these as issue.comments for sortedCommentBodies.
 async function listIssueComments(identifiers, teamKey = TEAM_KEY) {
+  const prefix = `${teamKey}-`;
   const numbers = [...new Set((identifiers || [])
-    .map((id) => Number(String(id).split('-').pop()))
+    .filter((id) => String(id).startsWith(prefix))
+    .map((id) => Number(String(id).slice(prefix.length)))
     .filter(Number.isFinite))];
   const byId = new Map();
   for (let i = 0; i < numbers.length; i += 50) {
     const data = await graphql(linearDispatch.buildIssueCommentsByNumberQuery(), { teamKey, numbers: numbers.slice(i, i + 50) });
-    for (const n of (data.issues && data.issues.nodes) || []) byId.set(n.identifier, (n.comments && n.comments.nodes) || []);
+    for (const n of (data.issues && data.issues.nodes) || []) {
+      const nodes = (n.comments && n.comments.nodes) || [];
+      if (nodes.length >= 50) console.error(`[linear-client] ${n.identifier}: 50+ comments, only the first 50 read`);
+      byId.set(n.identifier, nodes);
+    }
   }
   return byId;
 }

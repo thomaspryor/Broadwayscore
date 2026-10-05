@@ -128,13 +128,15 @@ async function main() {
   const { pickCloudCard, skipReason } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
-  // A VERIFY posted as a comment arms a card too (BRO-4642). The list query has
-  // no comments, so read them only for cards that failed on that alone.
-  const unarmed = issues.filter((iss) => skipReason(iss, nowMs) === 'no-safe-verify');
-  if (unarmed.length) {
+  // A VERIFY posted as a comment arms a card, and a newer one corrects the
+  // description's (BRO-4642). The list query has no comments, so read them for
+  // every card that got past the priority and state gates (~8 requests).
+  const PRE_VERIFY_SKIPS = /^(malformed|not-p0-p1|parked-or-backlog|state-)/;
+  const candidates = issues.filter((iss) => !PRE_VERIFY_SKIPS.test(skipReason(iss, nowMs) || ''));
+  if (candidates.length) {
     try {
-      const comments = await listIssueComments(unarmed.map((iss) => iss.identifier));
-      for (const iss of unarmed) if (comments.has(iss.identifier)) iss.comments = { nodes: comments.get(iss.identifier) };
+      const comments = await listIssueComments(candidates.map((iss) => iss.identifier));
+      for (const iss of candidates) if (comments.has(iss.identifier)) iss.comments = { nodes: comments.get(iss.identifier) };
     } catch (err) {
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }

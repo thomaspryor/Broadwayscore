@@ -223,6 +223,12 @@ test('a VERIFY posted as a comment arms the card, newest arming comment wins (BR
   assert.equal(skipReason(withComments('VERIFY: `node scripts/run-unit-tests.js`'), NOW), 'verify-not-cloud-runnable');
   assert.equal(skipReason(withComments('Looked at it, no command yet.'), NOW), 'no-safe-verify');
   assert.equal(skipReason(issue({ description: bare, comments: { nodes: [] } }), NOW), 'no-safe-verify');
+  // A newer comment corrects the description's command, either way.
+  const unrunnable = '## Acceptance criteria\n`node scripts/run-unit-tests.js` passes.';
+  const fixed = issue({ description: unrunnable, comments: { nodes: [{ body: `VERIFY: ${SAFE_CMD}`, createdAt: at(60_000) }] } });
+  assert.equal(skipReason(fixed, NOW), null);
+  const broken = issue({ comments: { nodes: [{ body: 'VERIFY: `node scripts/run-unit-tests.js`', createdAt: at(60_000) }] } });
+  assert.equal(skipReason(broken, NOW), 'verify-not-cloud-runnable');
 });
 
 test('pickCloudCard returns every eligible card in pick order', () => {
