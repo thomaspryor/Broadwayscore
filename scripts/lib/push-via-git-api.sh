@@ -93,6 +93,26 @@ BASE_SHA="${2:?usage: push-via-git-api.sh <branch> <base_sha> [max_retries]}"
 MAX_RETRIES="${3:-6}"
 REMOTE="${PUSH_API_REMOTE:-origin}"
 
+# BRO-2824: wall-clock budget for this script's own retry loop, in seconds
+# from script start (bash's $SECONDS starts at 0 here). push-with-retry.sh
+# exports it from its own remaining PUSH_DEADLINE_SEC. Without it, treating
+# rc=124/137 as retryable (BRO-2823) let a chronically slow push run the full
+# MAX_RETRIES at ~400s/attempt, past a caller's job timeout, which skips the
+# caller's failure telemetry. Unset/empty/non-numeric = no deadline (direct
+# callers keep the MAX_RETRIES-only bound). Checked at the top of each retry
+# AFTER the first attempt, so at least one attempt always runs. It is only
+# checked BETWEEN attempts, so one in-flight attempt (~3 * GIT_NET_TIMEOUT_SEC)
+# plus a backoff can still overrun it: a bound on attempts, not a hard cap.
+# A caller-set value is measured from THIS script's start, not the caller's.
+# SECONDS=0 because bash imports SECONDS from the environment: an exported
+# value would start this clock mid-count and fire the deadline early.
+SECONDS=0
+PUSH_API_DEADLINE_SEC="${PUSH_API_DEADLINE_SEC:-}"
+if ! [[ "$PUSH_API_DEADLINE_SEC" =~ ^[0-9]+$ ]]; then
+  PUSH_API_DEADLINE_SEC=""
+fi
+DEADLINE_HIT=0
+
 # Hard per-op network timeout + git-native low-speed abort (ship-check/Codex
 # adversarial-review finding) — this file has no working-tree cost, but its
 # network calls (ls-remote/fetch/push) are otherwise UNBOUNDED, reintroducing
@@ -694,6 +714,11 @@ if [ "$USE_REST_REF_UPDATE" = "true" ]; then
 fi
 
 for i in $(seq 1 "$MAX_RETRIES"); do
+  if [ "$i" -gt 1 ] && [ -n "$PUSH_API_DEADLINE_SEC" ] && [ "$SECONDS" -ge "$PUSH_API_DEADLINE_SEC" ]; then
+    echo "  push-via-git-api: wall-clock deadline ${PUSH_API_DEADLINE_SEC}s reached after $((i - 1))/$MAX_RETRIES attempt(s) (${SECONDS}s elapsed) — stopping retries (BRO-2824)" >&2
+    DEADLINE_HIT=1
+    break
+  fi
   CURRENT_TIP="$(_git_net ls-remote "$REMOTE" "refs/heads/$BRANCH" 2>/dev/null | awk '{print $1}')"
   if [ -z "$CURRENT_TIP" ]; then
     echo "  push-via-git-api: could not resolve $REMOTE/$BRANCH tip (attempt $i/$MAX_RETRIES)" >&2
@@ -1168,6 +1193,9 @@ if [ "$FAIL_THROTTLED" -gt 0 ]; then
   # REST-only bucket (BRO-2233/BRO-2951 Phase 2) — see FAIL_THROTTLED's own
   # declaration for why this must never merge into FAIL_TIMEOUT or FAIL_RACE.
   EXHAUSTION_BREAKDOWN="$EXHAUSTION_BREAKDOWN, $FAIL_THROTTLED hit a REST rate limit"
+fi
+if [ "$DEADLINE_HIT" -eq 1 ]; then
+  EXHAUSTION_BREAKDOWN="$EXHAUSTION_BREAKDOWN, stopped early at the ${PUSH_API_DEADLINE_SEC}s wall-clock deadline"
 fi
 echo "::error::push-via-git-api: exhausted $MAX_RETRIES attempts: $EXHAUSTION_BREAKDOWN" >&2
 
