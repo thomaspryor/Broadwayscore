@@ -49,6 +49,7 @@ const { shouldSkipNonReviewStamp, nonReviewStampBlockReason } = require('./lib/f
 const { hasBotStubTruncationSignal } = require('./lib/content-quality');
 const { buildClassifySample } = require('./lib/classify-sample');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
+const { responseText } = require('./lib/anthropic-response-text');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -163,7 +164,7 @@ function callClaude(systemPrompt, userPrompt) {
         if (res.statusCode === 200) {
           try {
             const json = JSON.parse(data);
-            resolve(json.content?.find(c => c.type === 'text')?.text || '');
+            resolve(responseText(json.content));
           } catch (e) { reject(new Error(`Claude parse error: ${e.message}`)); }
         } else if (res.statusCode === 429) {
           reject(new Error('RATE_LIMIT'));

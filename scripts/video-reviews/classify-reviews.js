@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_SONNET, CLAUDE_OPUS } = require('../lib/models');
+const { responseText } = require('../lib/anthropic-response-text');
 
 const RAW_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/raw');
 const CLASSIFIED_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/classified');
@@ -119,7 +120,7 @@ ${items}`
 
   if (!resp.ok) throw new Error(`API error ${resp.status}: ${(await resp.text()).substring(0, 200)}`);
   const data = await resp.json();
-  const text = data.content.find(c => c.type === 'text')?.text;
+  const text = responseText(data.content);
   if (!text) throw new Error(`No text block in response. Block types: ${data.content.map(c => c.type).join(', ')}`);
   // Find the outermost JSON array. Walk to the first '[' that's followed
   // (after optional whitespace) by '{' — that's the object-array opener.
