@@ -84,7 +84,12 @@ async function fetchUserIds(table) {
 
 async function collectAccounts() {
   const [users, ratings, watchlist, lists, seen] = await Promise.all([
-    fetchAllUsers(), fetchUserIds('reviews'), fetchUserIds('watchlist'), fetchUserIds('lists'), fetchUserIds('seen_unrated'),
+    fetchAllUsers(), fetchUserIds('reviews'), fetchUserIds('watchlist'), fetchUserIds('lists'),
+    // Newer table (BRO-4619): if it can't be read, lose only the "seen" count, not every account number.
+    fetchUserIds('seen_unrated').catch((e) => {
+      console.error(`[account-metrics] seen_unrated failed, counting it as empty: ${e.message}`);
+      return [];
+    }),
   ]);
   return m.summarizeAccounts(users, { ratings, watchlist, lists, seen });
 }
