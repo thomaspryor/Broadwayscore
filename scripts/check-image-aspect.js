@@ -269,7 +269,9 @@ async function main() {
         process.exitCode = 1;
       }
     }
-    process.exit(0);
+    // A failed quarantine or cleanup must fail the step: CI has no pre-commit
+    // hook, so exiting 0 here would commit the violator (BRO-4726 review).
+    process.exit(process.exitCode || 0);
   }
 
   process.exit(reportViolations(violations, mode));
