@@ -535,11 +535,20 @@ test('BRO-4689: BWW headline shapes extract the show title (double-encoded &amp;
   assert.equal(x('Review Roundup: Dancing and Singing in the Rain'), 'Dancing and Singing in the Rain');
 });
 
-test('BRO-4689: BWW roundup for a WE/tour show is catalogued, a truly missing show is not', () => {
+test('BRO-4689: BWW roundup for a WE show is catalogued only near its opening; a same-title Broadway transfer is not hidden', () => {
   const { bwwRoundupCataloguedElsewhere } = require('./reverse-discovery.js');
-  assert.equal(bwwRoundupCataloguedElsewhere('HAY FEVER', SHOWS_4689), true);
-  assert.equal(bwwRoundupCataloguedElsewhere('JERSEY BOYS', SHOWS_4689), true);
-  assert.equal(bwwRoundupCataloguedElsewhere('Some Unknown Musical', SHOWS_4689), false);
+  const shows = [
+    { id: 'hay-fever-west-end-2026', title: 'Hay Fever', category: 'west-end', status: 'open', openingDate: '2026-10-01' },
+    { id: 'paddington-west-end-2025', title: 'Paddington', category: 'west-end', status: 'open', openingDate: '2025-11-29' },
+  ];
+  assert.equal(bwwRoundupCataloguedElsewhere('HAY FEVER', shows, '2026-10-02'), true);
+  assert.equal(bwwRoundupCataloguedElsewhere('PADDINGTON', shows, '2027-04-20'), false);
+  assert.equal(bwwRoundupCataloguedElsewhere('HAY FEVER', shows, undefined), false);
+  assert.equal(bwwRoundupCataloguedElsewhere('Some Unknown Musical', shows, '2026-10-02'), false);
+});
+
+test('BRO-4689: separators never reduce a title to a bare article', () => {
+  assert.equal(extractShowTitleFromBwwRoundup('Review Roundup: The World Premiere of FOO BAR at MTC'), 'The World Premiere of FOO BAR at MTC');
 });
 
 test('BRO-4689: health row lists only reviewed (evidence-anchored) candidates', () => {

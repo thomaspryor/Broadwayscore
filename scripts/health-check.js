@@ -4013,7 +4013,7 @@ function buildStillMissingPredicate() {
       const index = c && c.market === 'west-end' ? weIndex : nycIndex;
       if (resolveMatchedShowId(c && c.title, index)) return false;
       // BWW files West End / tour roundups as 'nyc' (see the helper).
-      if (c && c.source === 'bww-roundup' && bwwRoundupCataloguedElsewhere(c.title, shows)) return false;
+      if (c && c.source === 'bww-roundup' && bwwRoundupCataloguedElsewhere(c.title, shows, c.date)) return false;
       return true;
     };
   } catch {

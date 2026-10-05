@@ -202,9 +202,11 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
   );
   if (actorLead) rest = actorLead[1].trim();
   const sep = rest.match(
-    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Launches|World\s+Premiere)\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b|\s+(?:Off-Broadway|on\s+Broadway)(?=\s|$))/i
+    /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Launches|World\s+Premiere(?!\s+of\b))\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b|\s+(?:Off-Broadway|on\s+Broadway)(?=\s|$))/i
   );
-  const title = (sep ? sep[1] : rest).trim();
+  let title = (sep ? sep[1] : rest).trim();
+  // A lead-in article alone is not a title ("The World Premiere of X"): keep the full text.
+  if (/^(?:the|a|an)$/i.test(title)) title = rest.trim();
   return title || null;
 }
 
@@ -718,12 +720,22 @@ function findUnmatchedCandidates(items, index, opts = {}) {
  * the show was already live. A bww-roundup that matches a non-closed show in
  * the WE or tour index is catalogued.
  */
-function bwwRoundupCataloguedElsewhere(title, shows) {
-  for (const market of ['we', 'tour']) {
-    const idx = buildShowTitleIndex(shows, market);
-    if (titleMatchesIndex(title, idx, { allowClosedRevival: true })) return true;
-  }
-  return false;
+function bwwRoundupCataloguedElsewhere(title, shows, roundupDate) {
+  // A same-title WE/tour run must not hide a genuinely missing Broadway
+  // transfer (Paddington, Oh Mary!, Hadestown all run in both). A roundup only
+  // proves the non-NYC show when it was published right after that show's
+  // opening, so require the roundup date within [-3, +21] days of openingDate.
+  const ts = Date.parse(roundupDate);
+  if (!Number.isFinite(ts)) return false;
+  const DAY = 86400000;
+  const near = shows.filter((s) => {
+    if (s.status === 'closed' || !s.openingDate) return false;
+    if (s.category !== 'tour' && !WE_CATEGORIES.has(s.category)) return false;
+    const d = ts - Date.parse(s.openingDate);
+    return d >= -3 * DAY && d <= 21 * DAY;
+  });
+  if (near.length === 0) return false;
+  return titleMatchesIndex(title, buildShowTitleIndex(near), { allowClosedRevival: true });
 }
 
 function candidateKey(c) {
