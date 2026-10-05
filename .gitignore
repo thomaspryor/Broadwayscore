@@ -548,3 +548,16 @@ data/audit/autonomous-ui/
 
 # analyze-traffic-sources.js local output (CI uploads it as an artifact)
 traffic-analysis/
+
+# BRO-2719: Mac-local daemon logs/state that were TRACKED and dirtied the shared
+# main checkout hourly, blocking `git pull --ff-only` for ~20 sessions (5 stalls
+# in one crown session) and forcing merge-worktree-to-main.sh to stash. Every
+# reader is local-fs and tolerates absence (health-check.js try/catch,
+# bsc-reconcile.js state default). CI-shared ledgers (stage-latency.jsonl,
+# scraper-spend-ledger.jsonl, outlet-registry-gaps.json: written/read by
+# workflows, merge=union) intentionally stay tracked. Guarded by
+# tests/unit/audit-log-gitignore.test.mjs.
+/data/audit/worktree-gc.log
+/data/audit/worktree-gc.launchd.log
+/data/audit/verify-merge-landed.log
+/data/audit/untracked-sweep-state.json
