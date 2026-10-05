@@ -1013,6 +1013,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  isDateOnlyAutoReason,
   UK_CLEAR_PRE_RUN_DAYS,
   isPreRunForUkClear,
   namesNonLondonCity,

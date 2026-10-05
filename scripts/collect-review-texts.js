@@ -4738,7 +4738,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
             category: showCategory,
           }
         );
-    if (anticip.rejected && !shouldSkipWrongProductionAudit(data)) {
+    // allowEarlyDate: operator approved the early date (BRO-720) — flagging again would re-loop with the rebuild auto-clear
+    if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;
       data.wrongProduction = true;

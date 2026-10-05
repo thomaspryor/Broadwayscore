@@ -193,3 +193,22 @@ test('BRO-720 wiring: every date-based wrongProduction writer is behind an allow
   assert.ok(src.includes('data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId'));
   assert.ok(src.includes('shouldAutoClearWrongProduction(data)'));
 });
+
+test('BRO-720: ingest anticipatory gate and rebuild clear agree on allowEarlyDate (no re-flag loop)', () => {
+  const ingest = fs.readFileSync(new URL('./collect-review-texts.js', import.meta.url), 'utf8');
+  assert.ok(/anticip\.rejected && !shouldSkipWrongProductionAudit\(data\) && !data\.allowEarlyDate/.test(ingest));
+  const rebuild = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
+  assert.ok(/isDateOnlyAutoReason\(data\.wrongProductionReason\)/.test(rebuild));
+});
+
+test('BRO-720: adjudicated note keeps a date-only-reason flag even with allowEarlyDate', () => {
+  const { isDateOnlyAutoReason } = require('./lib/wrong-production-autoclear.js');
+  assert.equal(isDateOnlyAutoReason('anticipatory_pre_opening_post'), true);
+  assert.equal(isDateOnlyAutoReason('cross-market contamination (audit)'), false);
+  assert.equal(isDateOnlyAutoReason(undefined), false);
+});
+
+test('BRO-720 wiring: rebuild imports isDateOnlyAutoReason from the autoclear lib', () => {
+  const rebuild = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
+  assert.ok(/isDateOnlyAutoReason,\n\} = require\('\.\/lib\/wrong-production-autoclear'\)/.test(rebuild));
+});
