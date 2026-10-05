@@ -24,6 +24,8 @@ const { isOrphanedWrongProdProvenance } = require('./lib/orphaned-wrongprod-prov
 
 const REVIEW_TEXTS_DIR = resolveReviewTextsDir();
 const BASELINE_PATH = path.join(__dirname, '..', 'data', 'audit', 'orphaned-wrongprod-provenance-baseline.json');
+// Corpus is ~46k files; a half-synced checkout must not pass vacuously.
+const MIN_FILES = 30000;
 const ARGV = process.argv.slice(2);
 const GATE = ARGV.includes('--gate');
 const UPDATE_BASELINE = ARGV.includes('--update-baseline');
@@ -40,17 +42,18 @@ function loadBaseline() {
 function scan(dir) {
   const orphans = [];
   let scanned = 0;
+  let unparseable = 0;
   for (const showId of listShowDirs(dir, { silent: true })) {
     let files;
     try { files = fs.readdirSync(path.join(dir, showId)).filter(f => f.endsWith('.json')); } catch { continue; }
     for (const f of files) {
       let d;
-      try { d = JSON.parse(fs.readFileSync(path.join(dir, showId, f), 'utf8')); } catch { continue; }
+      try { d = JSON.parse(fs.readFileSync(path.join(dir, showId, f), 'utf8')); } catch { unparseable++; continue; }
       scanned++;
       if (isOrphanedWrongProdProvenance(d)) orphans.push(`${showId}/${f}`);
     }
   }
-  return { orphans: orphans.sort(), scanned };
+  return { orphans: orphans.sort(), scanned, unparseable };
 }
 
 function main() {
@@ -58,10 +61,10 @@ function main() {
     console.error(`✗ review-texts not found at ${REVIEW_TEXTS_DIR} (set REVIEW_TEXTS_DIR or run setup-local-data.sh)`);
     process.exit(2);
   }
-  const { orphans, scanned } = scan(REVIEW_TEXTS_DIR);
+  const { orphans, scanned, unparseable } = scan(REVIEW_TEXTS_DIR);
   // A near-empty checkout would pass vacuously; fail loud instead.
-  if (scanned < 1000) {
-    console.error(`✗ only ${scanned} review files scanned from ${REVIEW_TEXTS_DIR}; refusing to pass on a partial checkout`);
+  if (scanned < MIN_FILES || unparseable > scanned * 0.01) {
+    console.error(`✗ ${scanned} review files scanned (${unparseable} unparseable) from ${REVIEW_TEXTS_DIR}; refusing to pass on a partial/corrupt checkout`);
     process.exit(2);
   }
 

@@ -16,15 +16,30 @@ const PROVENANCE_FIELDS = [
   'wrongProductionDetectedBy',
   'wrongProductionProvenance',
   'wrongProductionDetail',
+  '_wrongProductionDetectedBy',
 ];
 
 function hasProvenance(d) {
   return PROVENANCE_FIELDS.some(k => d[k] !== undefined && d[k] !== null && d[k] !== '');
 }
 
-function hasManualClear(d) {
+// Every recorded-clear breadcrumb the pipeline writes (review-guards.js
+// shouldSkipWrongProductionAudit, rebuild-all-reviews.js auto-clears).
+function hasRecordedClear(d) {
   const v = d.wrongProductionManualClear;
-  return v === true || (typeof v === 'string' && v.length > 0);
+  return (
+    v === true || (typeof v === 'string' && v.length > 0) ||
+    d.wrongProductionOverride === true ||
+    d.humanReviewedWrongProduction === false ||
+    !!d.wrongProductionAutoCleared ||
+    !!d.wrongProductionAuditCleared
+  );
+}
+
+// Already excluded from scoring by other flags, so a dropped wrongProduction
+// flag exposes nothing (not "silent scoring exposure").
+function isAlreadyExcluded(d) {
+  return !!d.duplicateOf || d.isRoundupArticle === true || d.wrongShow === true;
 }
 
 /** @param {object} d parsed review-text file */
@@ -32,7 +47,8 @@ function isOrphanedWrongProdProvenance(d) {
   if (!d || typeof d !== 'object') return false;
   if (!hasProvenance(d)) return false;
   if (d.wrongProduction === true || d.wrongProduction === false) return false;
-  if (hasManualClear(d)) return false;
+  if (hasRecordedClear(d)) return false;
+  if (isAlreadyExcluded(d)) return false;
   return true;
 }
 

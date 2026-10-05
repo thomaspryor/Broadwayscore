@@ -17,6 +17,20 @@ test('recorded clears are not orphans', () => {
   assert.equal(orphan({ wrongProductionDetectedBy: 'a', wrongProductionManualClear: true }), false);
   assert.equal(orphan({ wrongProductionDetectedBy: 'a', wrongProductionManualClear: 'false positive 2026-04-01' }), false);
 });
+test('other recorded clears are not orphans', () => {
+  for (const c of [{ wrongProductionOverride: true }, { humanReviewedWrongProduction: false },
+    { wrongProductionAutoCleared: 'rebuild: x' }, { wrongProductionAuditCleared: 'x' }]) {
+    assert.equal(orphan({ wrongProductionDetectedBy: 'a', ...c }), false);
+  }
+});
+test('files already excluded from scoring are not orphans', () => {
+  for (const c of [{ duplicateOf: 'x/y.json' }, { isRoundupArticle: true }, { wrongShow: true }]) {
+    assert.equal(orphan({ wrongProductionDetectedBy: 'a', ...c }), false);
+  }
+});
+test('_wrongProductionDetectedBy counts as provenance', () => {
+  assert.equal(orphan({ _wrongProductionDetectedBy: 'x' }), true);
+});
 test('no provenance / junk input is not an orphan', () => {
   assert.equal(orphan({ url: 'u' }), false);
   assert.equal(orphan({ wrongProductionDetectedBy: '' }), false);
