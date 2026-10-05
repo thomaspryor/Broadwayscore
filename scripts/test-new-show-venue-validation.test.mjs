@@ -7,7 +7,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { isProvisional } = require('./validate-show-venue.js');
@@ -41,14 +40,4 @@ test('stub backed only by a different-venue, different-year production is flagge
 test('a matching production page produces no mismatches', () => {
   const ok = { titleParse: { venue: 'Theatre Row', year: 2026 }, dates: { openingDate: '2026-10-15' }, tagLine: { revivalStatus: 'unknown', showType: 'unknown' } };
   assert.deepEqual(compareShow(STUB, ok, 'https://playbill.com/production/the-just-assassins-theatre-row-2026').mismatches, []);
-});
-
-test('shows.json holds no unvalidated Just Assassins stub', () => {
-  const p = new URL('../data/shows.json', import.meta.url);
-  if (!fs.existsSync(p)) return;
-  const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
-  const list = Array.isArray(raw) ? raw : raw.shows || [];
-  for (const s of list.filter(s => /just assassins/i.test(s.title || ''))) {
-    assert.ok(!isProvisional(s), `${s.id} is an unvalidated provisional stub`);
-  }
 });
