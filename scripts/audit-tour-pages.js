@@ -26,6 +26,9 @@ const fs = require('fs');
 const path = require('path');
 const A = require('./lib/tour-page-audit');
 
+// Error codes from the last --alert run (deploy-lag confirmation, see runAlerts).
+const LAST_CODES_FILE = path.join(__dirname, '..', 'data', 'audit', 'tour-audit-last-codes.json');
+
 const args = Object.fromEntries(process.argv.slice(2).map(a => {
   const m = a.match(/^--([^=]+)(?:=(.*))?$/);
   return m ? [m[1], m[2] ?? true] : [a, true];
@@ -43,6 +46,11 @@ async function fetchText(url, tries = 3) {
   for (let i = 0; i < tries; i++) {
     try {
       const res = await fetch(url, { redirect: 'manual', headers: { 'user-agent': 'BroadwayScorecard-tour-audit/1.0' } });
+      // A 5xx or 429 is usually a blip: retry before it becomes a finding.
+      if ((res.status >= 500 || res.status === 429) && i < tries - 1) {
+        await new Promise(r => setTimeout(r, 2000 * (i + 1)));
+        continue;
+      }
       const text = res.status === 200 ? await res.text() : '';
       return { status: res.status, text, location: res.headers.get('location') };
     } catch (e) {
@@ -206,7 +214,11 @@ async function main() {
       for (const k of ['poster', 'thumbnail']) {
         const src = t.images && t.images[k];
         if (src && src.startsWith('/')) {
-          const ir = await fetch(`${BASE}${src}`, { method: 'HEAD' }).catch(() => ({ status: 0 }));
+          let ir = { status: 0 };
+          for (let n = 0; n < 3 && (ir.status === 0 || ir.status >= 500 || ir.status === 429); n++) {
+            if (n) await new Promise(r => setTimeout(r, 2000 * n));
+            ir = await fetch(`${BASE}${src}`, { method: 'HEAD' }).catch(() => ({ status: 0 }));
+          }
           if (ir.status !== 200) findings.push({ severity: 'error', code: 'image-broken', where: url, message: `${k} ${src} returns ${ir.status}` });
         }
       }
@@ -252,8 +264,13 @@ async function main() {
       runId: process.env.GITHUB_RUN_ID,
       runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null,
     } : {};
-    const { alerts, alertDispatchFailed } = await A.runAlerts({ findings, router: require('./lib/owner-alert-router'), runContext });
+    let previousCodes = null;
+    try { previousCodes = new Set(JSON.parse(fs.readFileSync(LAST_CODES_FILE, 'utf8')).codes); } catch { /* first run: file at once */ }
+    const { alerts, pending, codes, alertDispatchFailed } = await A.runAlerts({ findings, router: require('./lib/owner-alert-router'), runContext, previousCodes });
     for (const a of alerts) console.log(`  [alert] ${a.conditionKey} -> ${a.action}${a.linearIdentifier ? ` (${a.linearIdentifier})` : ''}${a.dispatchOk ? '' : ' DISPATCH FAILED'}`);
+    for (const c of pending) console.log(`  [alert] ${A.CONDITION_PREFIX}${c} -> waiting for a second run`);
+    fs.mkdirSync(path.dirname(LAST_CODES_FILE), { recursive: true });
+    fs.writeFileSync(LAST_CODES_FILE, JSON.stringify({ updatedAt: new Date().toISOString(), base: BASE, codes }, null, 2) + '\n');
     process.exit(alertDispatchFailed ? 3 : 0);
   }
   process.exit(errors.length ? 1 : 0);

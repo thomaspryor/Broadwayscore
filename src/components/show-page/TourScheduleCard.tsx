@@ -29,7 +29,7 @@ function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show, cityHref }: 
       <span className="w-24 shrink-0 text-xs text-gray-500 tabular-nums">{range(stop)}</span>
       <span className="flex-1 min-w-0">
         {cityHref ? (
-          <Link href={cityHref} className="block text-sm text-white underline decoration-white/20 underline-offset-4 hover:text-brand-hover hover:decoration-brand-hover break-words transition-colors">{stop.city}</Link>
+          <Link href={cityHref} className="block py-0.5 text-sm text-white underline decoration-white/40 underline-offset-4 hover:text-brand-hover hover:decoration-brand-hover break-words transition-colors">{stop.city}</Link>
         ) : (
           <span className="block text-sm text-white break-words">{stop.city}</span>
         )}
@@ -65,8 +65,10 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
   cityPages?: ReadonlySet<string>;
 }) {
   if (stops.length === 0) return null;
-  const nowIdx = stops.findIndex(s => s.start <= today && today <= s.end);
-  const firstAhead = stops.findIndex(s => s.start > today);
+  // A closed tour has no current or next stop, whatever the schedule says.
+  const closed = show?.status === 'closed';
+  const nowIdx = closed ? -1 : stops.findIndex(s => s.start <= today && today <= s.end);
+  const firstAhead = closed ? -1 : stops.findIndex(s => s.start > today);
   const ahead = firstAhead === -1 ? [] : stops.slice(firstAhead, firstAhead + UPCOMING_SHOWN);
   const shown = [...(nowIdx >= 0 ? [stops[nowIdx]] : []), ...ahead];
   const row = (s: TourStop) => (

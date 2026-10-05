@@ -46,6 +46,8 @@ function opensWith(tour, stops) {
 }
 
 /** The stops of the segment that is this tour, or null. Pure. */
+const MAX_LAYOFF_DAYS = 365;
+
 function tourStops(tour, html, now = new Date()) {
   const segments = segmentTourRows(parseTourSchedule(html));
   // The segment holding the launch; else the one running now, when it began
@@ -68,7 +70,8 @@ function tourStops(tour, html, now = new Date()) {
   const until = tour.closingDate ? Date.parse(`${String(tour.closingDate).slice(0, 10)}T00:00:00Z`) : Infinity;
   // A still-open tour whose leg has ended carries on into the page's next leg
   // (Kinky Boots: Jul 2026, then Mar 2027). A closed tour's later leg is a new
-  // company, which the closingDate cut below already keeps out.
+  // company, which the closingDate cut below already keeps out. A layoff
+  // longer than a year reads as a new company, never this tour's next leg.
   let pool = segment.rows;
   const legOver = segment.rows[segment.rows.length - 1].end < now;
   if (!tour.closingDate && legOver) pool = segments.slice(segments.indexOf(segment)).flatMap(s => s.rows);
@@ -77,7 +80,7 @@ function tourStops(tour, html, now = new Date()) {
   // companies in one "Past Seasons" table (Hamilton, Lion King, Six) or list
   // a stop twice in error (Outsiders: DC and Chicago both Aug 2026) leave
   // overlapping rows; keep the single path from the launch stop (BRO-4723).
-  const { kept: rows, dropped } = singleCompanyPath(inRange, pool === segment.rows ? undefined : Infinity);
+  const { kept: rows, dropped } = singleCompanyPath(inRange, pool === segment.rows ? undefined : MAX_LAYOFF_DAYS);
   for (const r of dropped) console.log(`::warning::${tour.id}: dropped overlapping stop ${r.city} ${iso(r.start)}..${iso(r.end)}`);
   return rows.length ? rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) })) : null;
 }

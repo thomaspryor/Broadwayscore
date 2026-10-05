@@ -71,8 +71,8 @@ test('tourStops: an open tour whose leg ended carries on into the next leg', () 
     row('Elmira, NY', 'Clemens Center', 'November 19-20, 2025'),
     row('Binghamton, NY', 'Forum Theatre', 'November 22-23, 2025'),
     row('Victoria, BC', 'Royal Theatre', 'December 10-12, 2025'),
-    row('Modesto, CA', 'Gallo Center', 'March 26-27, 2027'),
-    row('Houston, TX', 'Hobby Center', 'March 30–April 11, 2027'),
+    row('Modesto, CA', 'Gallo Center', 'September 26-27, 2026'),
+    row('Houston, TX', 'Hobby Center', 'September 30–October 11, 2026'),
   ].join('')}</table>`;
   const open = tourStops({ id: 'x-tour-2025', openingDate: '2025-11-19' }, html, new Date('2026-10-05T00:00:00Z'));
   assert.equal(open[open.length - 1].city, 'Houston, TX');
@@ -80,6 +80,9 @@ test('tourStops: an open tour whose leg ended carries on into the next leg', () 
   assert.equal(midLeg[midLeg.length - 1].city, 'Victoria, BC', 'a leg still running keeps its own segment');
   const closed = tourStops({ id: 'x-tour-2025', openingDate: '2025-11-19', closingDate: '2025-12-12' }, html, new Date('2026-10-05T00:00:00Z'));
   assert.ok(!(closed || []).some(s => s.city === 'Modesto, CA'), 'a tour with a closing date never takes the next leg');
+  const farHtml = html.replace('September 26-27, 2026', 'March 26-27, 2027').replace('September 30–October 11, 2026', 'March 30–April 11, 2027');
+  const far = tourStops({ id: 'x-tour-2025', openingDate: '2025-11-19' }, farHtml, new Date('2026-10-05T00:00:00Z'));
+  assert.ok(!(far || []).some(s => s.city === 'Modesto, CA'), 'a layoff over a year is a new company, not the next leg');
 });
 
 // ---- data checks ------------------------------------------------------------
@@ -167,6 +170,21 @@ test('runAlerts files one card per error code and closes codes that cleared', as
   assert.deepEqual(resolved, ['tour-page-audit:old-code'], "only this audit's cleared codes close");
   assert.equal(alertDispatchFailed, false);
   assert.equal(alerts[0].linearIdentifier, 'BRO-1');
+});
+
+test('runAlerts waits for a second run before filing a new code, unless its card is open', async () => {
+  const filed = [];
+  const router = {
+    loadLedger: () => ({ conditions: { 'tour-page-audit:known': { status: 'open' } } }),
+    resolveCondition: () => {},
+    routeAlert: async opts => { filed.push(opts.conditionKey); return { action: 'auto', linearIdentifier: 'BRO-2', dispatchOk: true }; },
+  };
+  const findings = ['fresh', 'repeat', 'known'].map(code => ({ severity: 'error', code, where: 'w', message: 'm' }));
+  const out = await A.runAlerts({ findings, router, previousCodes: new Set(['repeat']), log: () => {} });
+  assert.deepEqual(filed.sort(), ['tour-page-audit:known', 'tour-page-audit:repeat']);
+  assert.deepEqual(out.pending, ['fresh']);
+  assert.deepEqual(out.codes, ['fresh', 'known', 'repeat']);
+  assert.equal(out.alertDispatchFailed, false);
 });
 
 test('runAlerts reports a card that was not filed as a failure', async () => {

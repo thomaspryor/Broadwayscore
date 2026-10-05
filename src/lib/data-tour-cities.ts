@@ -28,8 +28,6 @@ export interface TourCity {
   stops: Array<CityStop & { show: ComputedShow }>;
   /** Listed tours with a stop still to come. */
   upcomingListed: number;
-  /** Tours on the page (any non-closed tour with a stop in the window). */
-  tourCount: number;
   indexed: boolean;
 }
 
@@ -61,7 +59,6 @@ export function getTourCities(on = today()): Map<string, TourCity> {
       slug, city,
       stops: shown,
       upcomingListed,
-      tourCount: new Set(shown.map(s => s.showId)).size,
       indexed: upcomingListed >= INDEX_MIN_TOURS,
     });
   });

@@ -8,7 +8,9 @@ name: Audit Tour Pages
 # Findings never fail this job: each error code files (or refreshes) one
 # Linear card through owner-alert-router.js and the card closes itself on the
 # first run that no longer reports the code (the audit-dependencies.yml
-# pattern). The job goes red only when the audit could not run (exit 2) or a
+# pattern). A new code files on its second consecutive run, so a deploy that
+# trails core data by a few hours never opens a card
+# (data/audit/tour-audit-last-codes.json). The job goes red only when the audit could not run (exit 2) or a
 # card could not be filed (exit 3); check-cron-health.yml then pages after 36h.
 #
 # 11:23 UTC: after fetch-tour-schedules.yml (07:47), which dispatches its own
@@ -104,7 +106,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json data/audit/tour-audit-last-codes.json; do
             if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
           done
           if git diff --cached --quiet; then

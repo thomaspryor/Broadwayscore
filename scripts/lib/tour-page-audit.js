@@ -511,7 +511,7 @@ function expectedCities({ tours, schedules, listedIds, today, minTours = 3, inde
     const recent = new Set(listed.filter(s => s.end >= since).map(s => s.showId));
     if (recent.size < minTours) return;
     const upcoming = new Set(listed.filter(s => s.end >= today).map(s => s.showId)).size;
-    out.set(slug, { slug, city, stops: stops.filter(s => s.end >= since), indexed: upcoming >= indexMinTours, tourCount: new Set(stops.filter(s => s.end >= since).map(s => s.showId)).size });
+    out.set(slug, { slug, city, stops: stops.filter(s => s.end >= since), indexed: upcoming >= indexMinTours });
   });
   return out;
 }
@@ -574,7 +574,11 @@ const CONDITION_PREFIX = 'tour-page-audit:';
  * throws on a dispatch failure; a missing tracker counts as a failure.
  * @returns {{ alerts: Array<object>, alertDispatchFailed: boolean }}
  */
-async function runAlerts({ findings, router, runContext = {}, log = console.error }) {
+// previousCodes: the error codes the last run reported (null = file at once).
+// The live site can trail data/ by up to 6h (core data rides the deploy
+// backstop), so a code seen on one run only may be deploy lag: it files on the
+// second consecutive run, or at once when its card is already open.
+async function runAlerts({ findings, router, runContext = {}, previousCodes = null, log = console.error }) {
   const { routeAlert, resolveCondition, loadLedger } = router;
   const byCode = new Map();
   for (const f of findings) {
@@ -591,9 +595,16 @@ async function runAlerts({ findings, router, runContext = {}, log = console.erro
   }
   const dispatchAtFiling = runContext.runId ? { runId: runContext.runId, runUrl: runContext.runUrl || null } : undefined;
   const alerts = [];
+  const pending = [];
   let alertDispatchFailed = false;
   for (const [code, list] of byCode) {
     const key = CONDITION_PREFIX + code;
+    const open = ledger && ledger.conditions && ledger.conditions[key] && ledger.conditions[key].status === 'open';
+    if (previousCodes && !previousCodes.has(code) && !open) {
+      pending.push(code);
+      log(`[alert] ${key}: first sighting (${list.length}), files if the next run still reports it`);
+      continue;
+    }
     const sample = list.slice(0, 15).map(f => `- ${f.where}: ${f.message}`).join('\n');
     try {
       const result = await routeAlert({
@@ -616,7 +627,7 @@ async function runAlerts({ findings, router, runContext = {}, log = console.erro
       alerts.push({ conditionKey: key, action: 'error', linearIdentifier: null, dispatchOk: false });
     }
   }
-  return { alerts, alertDispatchFailed };
+  return { alerts, pending, alertDispatchFailed, codes: [...byCode.keys()].sort() };
 }
 
 module.exports = {
