@@ -3896,8 +3896,9 @@ function obClosingBacklogResults(report, now = new Date()) {
  * - tours created automatically are reported so the owner sees them land.
  */
 // How long each tour job may go without leaving a report before the digest
-// says it has stopped: the sweep and date jobs run daily, auto-create weekly.
-const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 9 * 24 };
+// says it has stopped. All three run daily (auto-create rides the daily BWW
+// landing job since BRO-4325; it was weekly before).
+const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 48 };
 // Before this, a missing report just means the job hasn't had its first run.
 const TOUR_JOBS_EXPECTED_FROM = '2026-10-06';
 
@@ -3906,7 +3907,7 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
   const jobs = [
     ['sweep', sweep, 'daily tour review mover (rebuild-reviews.yml)'],
     ['dates', dates, 'daily tour dates check (update-show-status.yml)'],
-    ['autocreate', autocreate, 'weekly new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
+    ['autocreate', autocreate, 'daily new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
   ];
   const quiet = [];
   for (const [key, report, label] of jobs) {
