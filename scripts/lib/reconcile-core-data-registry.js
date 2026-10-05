@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { activeEntriesFor } = require('./core-data-merge-registry');
+const { TOMBSTONE_DIR, buildTombstoneRows, writeTombstones } = require('./merge-tombstones');
 
 function main() {
   const [snapshotDir] = process.argv.slice(2);
@@ -52,6 +53,14 @@ function main() {
 
       const result = entry.merge(ours, remote);
       const after = JSON.stringify(result.merged, null, 2) + (entry.newline === false ? '' : '\n');
+      // Audit BEFORE the unchanged-bytes early exit: the common production shape
+      // is a clean local file plus a remote-only fossil the merge declines to
+      // carry, which leaves local bytes identical but is still a deletion
+      // decision worth a durable record (BRO-2918). Fail open.
+      try {
+        const tomb = writeTombstones(TOMBSTONE_DIR, buildTombstoneRows(localFile, result.stats));
+        if (tomb) changedFiles.push(tomb);
+      } catch (te) { console.error(`  ::warning::tombstone write failed, deletion evidence is log-only (${String(te.message).slice(0, 120)})`); }
       if (after === before) continue;
 
       fs.writeFileSync(localFile, after);
