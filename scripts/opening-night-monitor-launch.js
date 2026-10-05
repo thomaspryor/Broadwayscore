@@ -61,7 +61,7 @@ const {
   MAX_ATTEMPTS_PER_NIGHT, shouldPageForFailedPass,
   claimLockGeneration, isLockGenerationOwner,
 } = require('./lib/opening-night-windows.js');
-const { runMonitorPass } = require('./lib/opening-night-monitor.js');
+const { runMonitorPass, buildMonitorPassEnv } = require('./lib/opening-night-monitor.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { isShowCoverageComplete } = require('./lib/opening-night-readiness.js');
 
@@ -679,11 +679,10 @@ async function main(argv = process.argv.slice(2)) {
     // env shape. 'oauth' keeps the key cleared (subscription billing);
     // 'api-key' forwards it because the stored login is unreachable from
     // this (launchd) context — spend stays bounded by the attempt cap above.
-    env: {
-      ANTHROPIC_API_KEY: auth.mode === 'api-key' ? (process.env.ANTHROPIC_API_KEY || '') : '',
-      RESEND_API_KEY: process.env.RESEND_API_KEY || '',
-      OWNER_EMAIL: process.env.OWNER_EMAIL || '',
-    },
+    // BRO-2759: scraper keys (SCRAPINGBEE/BRIGHTDATA/BROWSERBASE) are forwarded
+    // by name via buildMonitorPassEnv, so fetchPage() census/ingest inside the
+    // pass no longer silently degrades to a bare fetch. Still an allow-list.
+    env: buildMonitorPassEnv(process.env, { authMode: auth.mode }),
     logFile: path.join(MON_DIR, `session-log-${key}-a${attemptNum}.log`),
   });
 

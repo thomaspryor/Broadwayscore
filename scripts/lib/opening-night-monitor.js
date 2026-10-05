@@ -79,4 +79,32 @@ async function runMonitorPass({ prompt, cwd, model, settingsPath = null, maxWall
   };
 }
 
-module.exports = { runMonitorPass, isModelAllowed };
+// BRO-2759: scraper credentials the pass needs for fetchPage() census and
+// direct-URL ingest. claude-cli.js's strippedEnv deliberately drops everything
+// but PATH/HOME/auth keys (headless implementers are untrusted), so these are
+// forwarded by explicit name only — never a full process.env pass-through.
+// Matches the keys scripts/lib/scraper.js reads for its Bright Data ->
+// ScrapingBee -> Browserbase chain (plus the ScrapingDog alt provider).
+const SCRAPER_ENV_KEYS = Object.freeze([
+  'SCRAPINGBEE_API_KEY',
+  'BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'BRIGHTDATA_SERP_ZONE', 'BRIGHTDATA_CUSTOMER',
+  'BROWSERBASE_API_KEY', 'BROWSERBASE_PROJECT_ID',
+  'SCRAPINGDOG_API_KEY',
+]);
+
+/**
+ * Pure: the explicit env allow-list forwarded to a monitor pass.
+ * @param {NodeJS.ProcessEnv} src
+ * @param {{authMode?: string}} [opts] 'api-key' forwards ANTHROPIC_API_KEY; anything else clears it (subscription OAuth billing).
+ */
+function buildMonitorPassEnv(src, { authMode } = {}) {
+  const env = {
+    ANTHROPIC_API_KEY: authMode === 'api-key' ? (src.ANTHROPIC_API_KEY || '') : '',
+    RESEND_API_KEY: src.RESEND_API_KEY || '',
+    OWNER_EMAIL: src.OWNER_EMAIL || '',
+  };
+  for (const k of SCRAPER_ENV_KEYS) if (src[k]) env[k] = src[k];
+  return env;
+}
+
+module.exports = { runMonitorPass, isModelAllowed, buildMonitorPassEnv, SCRAPER_ENV_KEYS };

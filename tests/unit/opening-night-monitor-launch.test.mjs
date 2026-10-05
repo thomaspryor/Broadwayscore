@@ -103,13 +103,12 @@ test('usdTonight accumulates across passes on both the success and failure write
 // the whole file).
 test('the headless pass clears ANTHROPIC_API_KEY on the oauth path so it bills the subscription login, not the API key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
-  const callStart = src.indexOf('const result = await runMonitorPass({');
-  const callBlock = src.slice(callStart, src.indexOf('logFile:', callStart) + 100);
-  // #457 update: the clear is now conditional on auth.mode — 'oauth' still
-  // clears the leaked .env key (subscription billing), 'api-key' forwards it
-  // because the stored login is Keychain-only and unreachable under launchd.
-  assert.match(callBlock, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'\s*\?\s*\(process\.env\.ANTHROPIC_API_KEY \|\| ''\)\s*:\s*''/,
-    'runMonitorPass env must clear the key on the oauth path and forward it only under auth.mode api-key');
+  // BRO-2759: allow-list construction moved into buildMonitorPassEnv.
+  assert.match(src, /env:\s*buildMonitorPassEnv\(process\.env/, 'runMonitorPass must take its env from buildMonitorPassEnv(process.env)');
+  const { buildMonitorPassEnv } = createRequire(import.meta.url)('../../scripts/lib/opening-night-monitor.js');
+  const env = buildMonitorPassEnv({ RESEND_API_KEY: 'r', OWNER_EMAIL: 'o@x.com' }, {});
+  assert.equal(env.RESEND_API_KEY, 'r', 'must forward RESEND_API_KEY into the spawned child');
+  assert.equal(env.OWNER_EMAIL, 'o@x.com', 'must forward OWNER_EMAIL into the spawned child');
 });
 
 // monitor-v2.md instructs the IN-PASS session to send its own parity/
@@ -121,10 +120,12 @@ test('the headless pass clears ANTHROPIC_API_KEY on the oauth path so it bills t
 // alerts (commit 288e31efd69), but not yet for the pass it launches.
 test('the headless pass forwards RESEND_API_KEY and OWNER_EMAIL so the in-pass report email can send', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
-  const callStart = src.indexOf('const result = await runMonitorPass({');
-  const callBlock = src.slice(callStart, src.indexOf('logFile:', callStart) + 100);
-  assert.match(callBlock, /RESEND_API_KEY:\s*process\.env\.RESEND_API_KEY/, 'runMonitorPass must forward RESEND_API_KEY from the launcher process into the spawned child');
-  assert.match(callBlock, /OWNER_EMAIL:\s*process\.env\.OWNER_EMAIL/, 'runMonitorPass must forward OWNER_EMAIL from the launcher process into the spawned child');
+  // BRO-2759: allow-list construction moved into buildMonitorPassEnv.
+  assert.match(src, /env:\s*buildMonitorPassEnv\(process\.env/, 'runMonitorPass must take its env from buildMonitorPassEnv(process.env)');
+  const { buildMonitorPassEnv } = createRequire(import.meta.url)('../../scripts/lib/opening-night-monitor.js');
+  const env = buildMonitorPassEnv({ RESEND_API_KEY: 'r', OWNER_EMAIL: 'o@x.com' }, {});
+  assert.equal(env.RESEND_API_KEY, 'r', 'must forward RESEND_API_KEY into the spawned child');
+  assert.equal(env.OWNER_EMAIL, 'o@x.com', 'must forward OWNER_EMAIL into the spawned child');
 });
 
 // Card #568: LOCK_DIR is the atomic test-and-set (mkdir, before the launch
@@ -223,7 +224,9 @@ test('resolvePassAuth: falls back to api-key only when the key ping actually suc
 // always-fails-under-launchd pass this fix removed.
 test('pass env forwards the API key only under auth.mode api-key', () => {
   const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
-  assert.match(src, /ANTHROPIC_API_KEY:\s*auth\.mode === 'api-key'/, 'pass env must branch on auth.mode');
+  // BRO-2759: the branch moved into buildMonitorPassEnv (behaviour covered by
+  // opening-night-monitor-env.test.mjs); the launcher must still hand it auth.mode.
+  assert.match(src, /buildMonitorPassEnv\(process\.env,\s*\{\s*authMode:\s*auth\.mode\s*\}\)/, 'pass env must branch on auth.mode');
   // BRO-4141: the stored-login probe lives in scripts/lib/claude-cli.js
   // (authPing({ ANTHROPIC_API_KEY: '' }) with hooks disabled). A local fork
   // here is exactly how the hooks-off fix never reached this launcher.
