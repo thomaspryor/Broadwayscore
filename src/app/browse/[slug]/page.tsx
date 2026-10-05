@@ -38,7 +38,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   // Get top show poster for OG image, or use default
   const browseList = getBrowseList(params.slug);
   const topPoster = browseList?.shows[0]?.images?.hero || browseList?.shows[0]?.images?.poster;
-  const ogImageUrl = topPoster ? toAbsoluteUrl(topPoster) : `${BASE_URL}/og/home.png`;
+  // Tours borrow their Broadway parent's art, so the top tour's poster would
+  // show one Broadway show as the face of all tours: use the site image.
+  const ogImageUrl = topPoster && config.source !== 'tour' ? toAbsoluteUrl(topPoster) : `${BASE_URL}/og/home.png`;
 
   return {
     title: config.metaTitle,

@@ -77,6 +77,12 @@ function parseRuntime(runtime?: string): number {
 // Current year for meta titles — evaluated at build time (static export).
 // Deploys happen multiple times per week, so this stays current.
 const CURRENT_YEAR = new Date().getFullYear();
+// Theater season label ("2026–27"): seasons turn over in late summer.
+const CURRENT_SEASON = (() => {
+  const d = new Date();
+  const start = d.getMonth() >= 7 ? d.getFullYear() : d.getFullYear() - 1;
+  return `${start}\u2013${String((start + 1) % 100).padStart(2, '0')}`;
+})();
 
 // Helper to check if show is closing within days
 function isClosingWithinDays(show: ComputedShow, days: number): boolean {
@@ -311,7 +317,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
       }
       return 'Recent Tryouts';
     },
-    relatedPages: ['upcoming-broadway-shows', 'new-broadway-shows-2025', 'best-broadway-show-right-now'],
+    relatedPages: ['upcoming-broadway-shows', 'new-broadway-shows-2025', 'best-broadway-show-right-now', 'broadway-national-tours'],
   },
 
   // BRO-4211. Built only when the tour flag is on (getAllBrowseSlugs gates on
@@ -320,14 +326,14 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'broadway-national-tours',
     title: 'Broadway National Tours',
     h1: 'Broadway National Tours: Critic Scores',
-    metaTitle: `Broadway National Tour Reviews \u2014 Critic Scores (${CURRENT_YEAR})`,
+    metaTitle: `Broadway National Tours ${CURRENT_SEASON}: Reviews & Critic Scores`,
     metaDescription: 'Critic scores for Broadway national tours, built from local reviews in every city the tour plays. See how the touring production compares with the original Broadway run.',
     intro: 'When a Broadway hit goes on the road, local critics in each city review the touring company: new cast, a production rebuilt to travel. We score those reviews the same way we score Broadway, so each tour gets its own critic score, kept separate from the Broadway run it came from.',
     sort: 'score',
     source: 'tour',
     hideRanks: true, // a catalog of tours, not a ranking
     howItWorks: 'Each tour\'s CriticScore is a weighted average of reviews by local critics in the cities it plays, from major papers like the Chicago Tribune to BroadwayWorld\'s city editions. Larger outlets carry more weight. Broadway reviews never count toward a tour\'s score. Toggle to Audience mode for letter grades, shown only where audiences have rated the touring production itself.',
-    relatedPages: ['best-broadway-show-right-now', 'best-broadway-musicals', 'pre-broadway-out-of-town-shows'],
+    relatedPages: ['best-broadway-show-right-now', 'best-recent-musicals', 'pre-broadway-out-of-town-shows'],
   },
 
   'broadway-shows-closing-soon': {
@@ -534,7 +540,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     },
     sort: 'score',
     limit: 1,
-    relatedPages: ['broadway-shows-for-tourists', 'tony-winners-on-broadway', 'first-time-broadway'],
+    relatedPages: ['broadway-shows-for-tourists', 'tony-winners-on-broadway', 'first-time-broadway', 'broadway-national-tours'],
   },
 
   'best-broadway-musicals': {

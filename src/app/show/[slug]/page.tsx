@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { isCategoryEnabled } from '@/lib/markets';
-import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, isTourListed, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
@@ -59,7 +59,7 @@ import { getBrowseSlug } from '@/lib/browse-slugs';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import { AwardsNavLink } from '@/components/AwardsNavLink';
 import { showFormatTitle, showFormatTextClass, showFormatPlural } from '@/lib/show-format';
-import { getTourSchedule, getTourScheduleSource } from '@/lib/data-tour-schedule';
+import { getTourSchedule, getTourScheduleSource, getTourNowNextForShow, getTourTicketLinks, getTourStopTickets } from '@/lib/data-tour-schedule';
 import { getTourNowNext, stopForReview, stopKey } from '@/lib/tour-schedule';
 import TourScheduleCard from '@/components/show-page/TourScheduleCard';
 
@@ -165,7 +165,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 
   // Sentiment-aware description: lead with verdict, not database dump
   // "Now Playing at North American Tour." reads wrong; a tour has no single house.
-  const venuePhrase = (label: string) => (isTourMeta ? ` ${label} on tour.` : ` ${label} at ${show.venue}.`);
+  // A tour's description names where it plays now (BRO-4601 SEO: "<show> <city>").
+  const tourNow = isTourMeta && show.status !== 'closed' ? getTourNowNextForShow(show.id)?.now : null;
+  const venuePhrase = (label: string) => (tourNow
+    ? ` Now in ${tourNow.city} (${tourNow.venue}) through ${formatShowDate(tourNow.end, { month: 'short', day: 'numeric' })}.`
+    : isTourMeta ? ` ${label} on tour.` : ` ${label} at ${show.venue}.`);
   const statusPart = statusLabel ? venuePhrase(statusLabel) : '';
   const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
   const SENTIMENT_PHRASES: Record<string, string> = {
@@ -194,8 +198,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title: {
       absolute: roundedScore && titleSentimentWord
         ? `${seoTitle} Reviews — ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
-        : `${seoTitle} Reviews ${marketLabel} — ${siteName}`,
+        // A tour's seoTitle already says "National Tour"; the market label would repeat it.
+        : `${seoTitle} Reviews${isTourMeta ? '' : ` ${marketLabel}`} — ${siteName}`,
     },
+    // A tour below the listing threshold is left out of the tours page and the
+    // sitemap (isTourListed); keep it out of search too until it has reviews.
+    ...(isTourMeta && !isTourListed(show) ? { robots: { index: false, follow: true } } : {}),
     description: truncatedDescription,
     alternates: {
       canonical: canonicalUrl,
@@ -270,7 +278,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // (freeform data entry, unlike the curated Broadway/West End venue lists), in
   // which case the venue name renders as plain text rather than a dead link.
   const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(show.venue)) : undefined;
-  const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined);
+  const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined,
+    show.category === 'tour' ? { stops: getTourSchedule(show.id), today: new Date().toISOString().slice(0, 10), tickets: getTourStopTickets(show.id) } : undefined);
 
   // null when no browse page exists for this show's format (opera/special) —
   // drop that breadcrumb level rather than link to a mismatched page.
@@ -290,7 +299,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         breadcrumbHome,
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
-  const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null);
+  const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null, isTour ? getTourNowNextForShow(show.id) : null);
   // Top-level Review objects with itemReviewed → TheaterEvent. Eligible for
   // Google's review snippet rich result; safer than nesting reviews inside Event
   // (which GSC rejected — see seo.ts comment + commit de1f2cba09).
@@ -328,7 +337,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // otherwise sit in the page source though the card never prints them.
   const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
   const commercial = rawCommercial ? toPublicShowCommercial(rawCommercial) : undefined;
-  const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
+  // A tour with no ticket links of its own gets TodayTix's for the stop it
+  // plays now or next (BRO-4601).
+  const ticketLinks = show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show.id);
+  const sortedTicketLinks = ticketLinks ? sortTicketLinks(ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
   // Pre-compute actor slug map for clickable cast names
@@ -555,11 +567,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   tag above (what Google/browser tabs show), not the on-page H1. */}
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
                 {show.title}
+                {/* A tour shares its Broadway parent's title and poster; say which one this is (inside the H1). */}
+                {isTour && (
+                  <span className="block mt-1 text-sm sm:text-base font-semibold tracking-normal text-sky-300" data-testid="tour-subtitle">National Tour</span>
+                )}
               </h1>
-              {/* A tour shares its Broadway parent's title and poster; say which one this is. */}
-              {isTour && (
-                <p className="-mt-1 mb-2 text-sm sm:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
-              )}
 
               {/* No separate verdict sentence here — SXO fix 2026-07-19 tried one and it
                   duplicated the score box below (same 91/100, same review count, same
@@ -951,7 +963,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* National tour: where it plays now, next, and every stop (BRO-4601). */}
         {tourStops.length > 0 && (
-          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} />
+          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} tickets={getTourStopTickets(show.id)} show={{ id: show.id, title: show.title, slug: show.slug, status: show.status }} />
         )}
 
         {/* === SECTION ORDERING ===
@@ -1022,7 +1034,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}
-          faqs={getShowFAQs(show, consensus?.text ?? null)}
+          faqs={getShowFAQs(show, consensus?.text ?? null, isTour ? getTourNowNextForShow(show.id) : null)}
         />
 
       </div>

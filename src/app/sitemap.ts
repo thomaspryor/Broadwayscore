@@ -28,6 +28,8 @@ import { getAllBlogReviews } from '@/lib/data-reviews-blog';
 import { computeSiteAwardScore } from '@/lib/awards-scoring';
 import { seasonSlug } from '@/lib/tony-seasons';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
+import { isCategoryEnabled } from '@/lib/markets';
+import { getTourCities } from '@/lib/data-tour-cities';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -233,6 +235,16 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       priority: 0.85,
     }));
 
+  // National-tour city pages (BRO-4601): only the indexed ones; the rest are
+  // noindex. No lastModified: the schedules behind them change daily.
+  const tourCityPages = isCategoryEnabled('tour')
+    ? Array.from(getTourCities().values()).filter(c => c.indexed).map(c => ({
+        url: `${BASE_URL}/tours/${c.slug}`,
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+      }))
+    : [];
+
   const bestOfPages = bestOfCategories.map((category) => ({
     url: `${BASE_URL}/best/${category}`,
     lastModified: ctx.latestDate,
@@ -277,6 +289,7 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       priority: 0.85,
     },
     ...browsePages,
+    ...tourCityPages,
     ...bestOfPages,
     {
       url: `${BASE_URL}/tony-awards`,

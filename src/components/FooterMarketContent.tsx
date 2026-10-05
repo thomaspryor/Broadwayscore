@@ -17,6 +17,8 @@ interface FooterMarketContentProps {
     creativePages: boolean;
     castPages: boolean;
     fantasyLeague: boolean;
+    /** National tours market launched (markets.json, isCategoryEnabled('tour')). */
+    tours: boolean;
   };
 }
 
@@ -92,6 +94,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/jukebox-musicals-on-broadway" className="hover:text-white transition-colors">Jukebox Musicals</Link></li>
               <li><Link href="/browse/best-recent-musicals" className="hover:text-white transition-colors">New Musicals</Link></li>
               <li><Link href="/browse/longest-running-broadway-shows" className="hover:text-white transition-colors">Longest-Running</Link></li>
+              {featureFlags.tours && <li><Link href="/browse/broadway-national-tours" className="hover:text-white transition-colors">National Tours</Link></li>}
             </ul>
           </div>
           <div>

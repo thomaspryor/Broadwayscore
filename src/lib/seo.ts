@@ -8,6 +8,7 @@ import { getVisibleTicketLinks } from './ticket-utils';
 import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
 import { AUTHOR } from '@/config/author';
 import { formatShowDate } from './date-utils';
+import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -164,7 +165,55 @@ export function generateBreadcrumbSchema(items: { name: string; url: string }[])
 }
 
 // TheaterEvent Schema with full details (enhanced)
-export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string }[], organizerUrl?: string) {
+/** Upcoming engagements emitted as subEvents of a tour's TheaterEvent. */
+const TOUR_SUB_EVENTS_MAX = 10;
+
+/**
+ * A national tour's upcoming stops as TheaterEvents, each at its real theater
+ * (BRO-4601). The tour-level event keeps the aggregateRating; each stop gets
+ * a TodayTix offer only when that stop is on sale there.
+ */
+export function tourSubEvents(
+  show: Pick<ComputedShow, 'title' | 'slug' | 'images'>,
+  stops: TourStop[],
+  today: string,
+  tickets: Record<string, string> = {},
+) {
+  return stops.filter(s => s.end >= today).slice(0, TOUR_SUB_EVENTS_MAX).map(s => {
+    const place = stopPlace(s.city);
+    const ticket = tickets[stopKey(s)];
+    return {
+      '@type': 'TheaterEvent',
+      name: `${show.title} in ${shortCity(s.city)}`,
+      url: `${BASE_URL}/show/${show.slug}#tour-schedule`,
+      startDate: s.start,
+      endDate: s.end,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: {
+        '@type': 'PerformingArtsTheater',
+        name: s.venue,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: place.locality,
+          ...(place.region && { addressRegion: place.region }),
+          addressCountry: place.country,
+        },
+      },
+      ...(show.images?.hero && { image: toAbsoluteUrl(show.images.hero) }),
+      ...(ticket && {
+        offers: {
+          '@type': 'Offer',
+          url: ticket,
+          availability: 'https://schema.org/InStock',
+          seller: { '@type': 'Organization', name: 'TodayTix' },
+        },
+      }),
+    };
+  });
+}
+
+export function generateShowSchema(show: ComputedShow, lastUpdated?: string, performers?: { name: string }[], organizerUrl?: string, tour?: { stops: TourStop[]; today: string; tickets?: Record<string, string> }) {
   const isLondon = isLondonMarket(show.category);
   const country = getMarketCountry(show.category, show.venue);
   const currency = getMarketCurrency(show.category, show.venue);
@@ -209,6 +258,10 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
     // in the same @graph document (see show page injection in page.tsx).
     '@id': `${BASE_URL}/show/${show.slug}#event`,
   };
+  if (isTour && tour && show.status !== 'closed') {
+    const subEvent = tourSubEvents(show, tour.stops, tour.today, tour.tickets);
+    if (subEvent.length) schema.subEvent = subEvent;
+  }
 
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
@@ -447,6 +500,12 @@ export function generateItemListSchema(items: {
     name: listName,
     numberOfItems: items.length,
     itemListElement: items.map((item, index) => {
+      // A national tour has no single house or dates to state here ("North
+      // American Tour" is not an address): list its page by URL only; the tour
+      // page itself carries the event data (BRO-4601 SEO).
+      if (item.category === 'tour') {
+        return { '@type': 'ListItem', position: index + 1, name: item.name, url: item.url };
+      }
       const event: Record<string, unknown> = {
         '@type': 'TheaterEvent',
         name: item.name,
@@ -559,7 +618,12 @@ function formatFAQDate(dateStr?: string | null): string | null {
   return formatShowDate(dateStr, { month: 'long', day: 'numeric', year: 'numeric' });
 }
 
-export function getShowFAQs(show: ComputedShow, consensusText?: string | null): { question: string; answer: string }[] {
+/**
+ * `tour` is the national tour's current and next engagement (data passed in,
+ * this module imports no data files). ShowFAQSection and the FAQ schema must
+ * get the same value so the two stay 1:1.
+ */
+export function getShowFAQs(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null): { question: string; answer: string }[] {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
   const isLondon = isLondonMarket(show.category);
@@ -592,7 +656,9 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null): 
     const goldMin = getGoldThreshold(show.category);
     const worthSeeingAnswer =
       score >= goldMin
-        ? `Absolutely — ${show.title} is one of the season's most acclaimed shows, earning a rare ${score}/100 from ${reviewCount} critics. Don't miss it.`
+        ? isTour
+          ? `Absolutely — the ${show.title} national tour is one of the best-reviewed tours on the road, earning ${score}/100 from ${reviewCount} critics in the cities it has played.`
+          : `Absolutely — ${show.title} is one of the season's most acclaimed shows, earning a rare ${score}/100 from ${reviewCount} critics. Don't miss it.`
         : score >= 75
         ? `Yes. ${show.title} earns strong reviews from critics (${score}/100 from ${reviewCount} reviews). Most theatergoers will have a great time.`
         : score >= 65
@@ -629,8 +695,17 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null): 
   const openingDateStr = formatFAQDate(show.openingDate);
   const closingDateStr = formatFAQDate(show.closingDate);
   const previewsStartStr = formatFAQDate(show.previewsStartDate);
-  // A tour's venue is "North American Tour" and its itinerary isn't tracked, so the
-  // running/where answers would be wrong ("playing at North American Tour"). Skip them.
+  // A tour has no house: its running/where answers come from the schedule
+  // (data/tour-schedules.json) when there is one, never "North American Tour".
+  const fmt = (d: string) => formatShowDate(d, { month: 'long', day: 'numeric' });
+  if (isTour && show.status !== 'closed' && tour && (tour.now || tour.next)) {
+    const nowPart = tour.now ? `The ${show.title} national tour is playing ${tour.now.venue} in ${tour.now.city} through ${fmt(tour.now.end)}.` : '';
+    const nextPart = tour.next ? ` ${tour.now ? 'Next it' : `The ${show.title} national tour next`} plays ${tour.next.venue} in ${tour.next.city} from ${fmt(tour.next.start)}.` : '';
+    faqs.push({
+      question: `Where is the ${show.title} national tour playing now?`,
+      answer: `${nowPart}${nextPart}`.trim(),
+    });
+  }
   if (!isTour) faqs.push({
     question: `Is ${show.title} still running ${marketLabel}?`,
     answer: show.status === 'open'
@@ -688,8 +763,8 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null): 
   return faqs;
 }
 
-export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null) {
-  const faqs = getShowFAQs(show, consensusText);
+export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null) {
+  const faqs = getShowFAQs(show, consensusText, tour);
   if (faqs.length === 0) return null;
 
   return {
@@ -737,7 +812,7 @@ export function generateBrowseFAQSchema(
       .map((s, i) => `${i + 1}. ${s.title} (${Math.round(s.criticScore!.score)}/100)`)
       .join(', ');
     faqs.push({
-      question: `What are the ${pageTitle.toLowerCase()}?`,
+      question: isTour ? 'What are the best-reviewed Broadway national tours?' : `What are the ${pageTitle.toLowerCase()}?`,
       answer: `Based on aggregated critic reviews, the top-rated are: ${listStr}. Scores are based on reviews from major outlets including ${outletNames}.`,
     });
   }
@@ -745,7 +820,10 @@ export function generateBrowseFAQSchema(
   // Q: How many shows are in this category?
   const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
   if (openShows.length > 0) {
-    faqs.push({
+    faqs.push(isTour ? {
+      question: 'How many Broadway national tours are on the road now?',
+      answer: `${openShows.length} Broadway national tours with critic scores are on the road now.`,
+    } : {
       question: `How many ${pageTitle.toLowerCase().replace('best ', '')} are currently ${marketLabel}?`,
       answer: `There are currently ${openShows.length} ${pageTitle.toLowerCase().replace('best ', '')} playing ${marketLabel}.`,
     });
@@ -755,7 +833,7 @@ export function generateBrowseFAQSchema(
   const topShow = topShows[0];
   if (topShow?.criticScore) {
     faqs.push({
-      question: `What is the highest-rated among the ${pageTitle.toLowerCase()}?`,
+      question: isTour ? 'What is the highest-rated Broadway national tour?' : `What is the highest-rated among the ${pageTitle.toLowerCase()}?`,
       answer: `${topShow.title} is the highest-rated with a CriticScore of ${Math.round(topShow.criticScore.score)}/100 based on ${topShow.criticScore.reviewCount} professional reviews.`,
     });
   }
