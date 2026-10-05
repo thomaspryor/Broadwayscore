@@ -610,5 +610,65 @@
       }
     ],
     "queuedAt": "2026-10-05T19:59:59.923Z"
+  },
+  {
+    "conditionKey": "we-aggregator-go-live:krapps-last-tape-west-end-2026",
+    "title": "Krapps Last Tape @ royal court — West End show live and scoring",
+    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/review-krapps-last-tape-royal-court-theatre). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/krapps-last-tape-west-end-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T21:36:18.648Z"
+  },
+  {
+    "conditionKey": "we-aggregator-go-live:john-proctor-west-end-2026",
+    "title": "John Proctor @ royal court — West End show live and scoring",
+    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/royal-court-john-proctor-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/john-proctor-west-end-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T21:36:18.654Z"
+  },
+  {
+    "conditionKey": "we-aggregator-go-live:to-maury-with-love-concert-west-end-2026",
+    "title": "To Maury With Love Concert @ theatre royal drury lane — West End show live and scoring",
+    "description": "Auto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/to-maury-with-love-concert-theatre-royal-drury-lane-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/to-maury-with-love-concert-west-end-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T21:36:18.659Z"
+  },
+  {
+    "conditionKey": "we-aggregator-go-live:ballet-shoes-west-end-2025",
+    "title": "Ballet Shoes @ national — West End show live and scoring (still open — BRO-4255)",
+    "description": "Still firing after 2 notifications since it was filed. Tracked at BRO-4255.\n\nAuto-promoted from a lbo-sitemap aggregator listing (https://www.londonboxoffice.co.uk/news/post/ballet-shoes-national-theatre-review). Reviews ingest automatically via the existing WET/LBO discover libs. Cosmetic enrichment still manual: images, cast + creative team, exact previews/opening/closing dates.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/ballet-shoes-west-end-2025",
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T21:36:18.684Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37376211465",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T21:36:23.188Z"
   }
 ]
