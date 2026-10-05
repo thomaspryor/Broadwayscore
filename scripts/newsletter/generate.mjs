@@ -896,7 +896,7 @@ function outOfTownOpenings() {
   return { html: sectionWrap(sectionHeading('Out of Town', 'pre-Broadway tryouts & regional premieres'), body), list };
 }
 
-// SECTION: New Tour Scores — national tours whose Critic Score went public
+// SECTION: Newly Scored Tours — national tours whose Critic Score went public
 // this week (owner 2026-10-05, BRO-4757). The stamp is the first build that
 // published the score (see scripts/lib/newsletter-tours.js), so a tour is
 // featured once, the week it earns its score. NYC edition only: the tours
@@ -926,7 +926,7 @@ function newTourScoresSection() {
   })).join('');
   const seeAll = seeAllLink(`${SITE}/browse/broadway-national-tours`, 'See every national tour');
   const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(212,165,116,0.18);">${seeAll}</table>`;
-  return sectionWrap(sectionHeading('New Tour Scores', 'national tours'), body + seeAllCard);
+  return sectionWrap(sectionHeading('Newly Scored Tours', 'national tours'), body + seeAllCard);
 }
 
 // Tracks whether the most recent Coming Up render included a Broadway show.

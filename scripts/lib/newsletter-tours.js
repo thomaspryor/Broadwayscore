@@ -2,7 +2,7 @@
 
 /**
  * newsletter-tours.js — picks the national tours for the weekly NYC email's
- * "New Tour Scores" section (BRO-4757, owner 2026-10-05: "add to email when a
+ * "Newly Scored Tours" section (BRO-4757, owner 2026-10-05: "add to email when a
  * tour gets enough reviews").
  *
  * "Got enough reviews" = the tour's Critic Score went public on the site.
