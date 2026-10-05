@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T16:46:24.230Z",
+  "timestamp": "2026-10-05T17:25:25.623Z",
   "stats": {
     "totalReviews": 46359,
-    "alreadyFlagged": 18676,
-    "dateGuardCatches": 269,
+    "alreadyFlagged": 18678,
+    "dateGuardCatches": 268,
     "directorMismatch": 1259,
     "tvFilmSignals": 1344,
     "londonSignals": 1275,
-    "offBroadwaySignals": 510,
+    "offBroadwaySignals": 511,
     "yearMismatch": 109,
-    "noPublishDate": 4323
+    "noPublishDate": 4318
   },
   "findings": [
     {
@@ -33287,20 +33287,6 @@
       ]
     },
     {
-      "showId": "the-p-word-off-west-end-2026",
-      "file": "thestage--anya-ryan.json",
-      "score": 81,
-      "publishDate": "September 16th, 2022",
-      "url": "https://www.thestage.co.uk/reviews/the-p-word-review-bush-theatre-london-waleed-akhtar",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1350d before show (September 16th, 2022 vs 2026-05-28)"
-        }
-      ]
-    },
-    {
       "showId": "the-pajama-game-2006",
       "file": "about-entertainment--ben-brantley.json",
       "score": 89,
@@ -46837,6 +46823,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "heartbreak-hotel-off-broadway-2026",
+      "file": "playbill--unknown.json",
+      "score": null,
+      "publishDate": "2026-03-25",
+      "url": "https://playbill.com/article/how-are-the-reviews-for-heartbreak-hotel-off-broadway",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"st. ann's warehouse\""
         }
       ]
     },
