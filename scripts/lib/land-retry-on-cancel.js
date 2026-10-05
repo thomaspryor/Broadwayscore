@@ -38,4 +38,33 @@ function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX
   return { retry: true, reason: 'land-cancelled-while-queued', attempt };
 }
 
-module.exports = { decideLandRetry, MAX_ATTEMPTS };
+// BRO-4651: GITHUB_TOKEN's per-repo quota is shared by every workflow and ran
+// out during a landing burst (2026-10-05 00:00-01:00 UTC: all 13 retries
+// failed on the first GET, stranding every evicted landing). On a rate-limit
+// error, retry once with the fallback token (REVIEW_TEXTS_TOKEN, a classic PAT
+// with its own quota; land.yml already pushes with it). Output is piped, never
+// inherited, so the rate-limit text is readable from the thrown error.
+function errorText(err) {
+  return [err && err.stderr, err && err.stdout, err && err.message].map((x) => String(x || '')).join('\n');
+}
+
+function runGhWithFallback(args, { exec, env = process.env, fallbackToken, log = console.error } = {}) {
+  const { isRateLimitError } = require('./github-rate-limit-retry.js');
+  const opts = (e) => ({ encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: e });
+  try {
+    return exec('gh', ['api', ...args], opts(env));
+  } catch (err) {
+    if (!fallbackToken || !isRateLimitError(errorText(err))) throw err;
+    log(`gh api ${args.join(' ')}: GITHUB_TOKEN rate-limited, retrying with the fallback token`);
+    return exec('gh', ['api', ...args], opts({ ...env, GH_TOKEN: fallbackToken }));
+  }
+}
+
+// Only a 404 means the land/** ref is gone (landed or deleted). A rate limit,
+// 5xx or network error must not be read as "landed": that skip exits 0 and
+// strands the landing silently.
+function isRefNotFound(err) {
+  return /HTTP 404|Not Found/i.test(errorText(err));
+}
+
+module.exports = { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound };
