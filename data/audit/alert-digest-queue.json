@@ -225,5 +225,30 @@
       }
     ],
     "queuedAt": "2026-10-04T23:52:45.135Z"
+  },
+  {
+    "conditionKey": "direct-push:e74c1d1169b401da0cf46e8d0f6448bc319dd691",
+    "title": "Direct push to main: e74c1d1169 by thomaspryor",
+    "description": "e74c1d1169 reached main WITHOUT going through land.yml (no row in data/audit/landings.jsonl). Pushed by thomaspryor (committer GitHub). Head commit: West End cards: opening-date label instead of '1 month in London' (#983) Direct pushes skip the delta-vs-base gates; sessions must land via scripts/merge-worktree-to-main.sh (BRO-3425). Compare: https://github.com/thomaspryor/Broadwayscore/compare/7a67c81e5e73fbf23cac654931ac1a9f260796a8...e74c1d1169b401da0cf46e8d0f6448bc319dd691 Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37245555258",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "sha",
+        "value": "e74c1d1169b401da0cf46e8d0f6448bc319dd691"
+      },
+      {
+        "name": "actor",
+        "value": "thomaspryor"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37245555258"
+      }
+    ],
+    "queuedAt": "2026-10-05T00:04:21.339Z"
   }
 ]
