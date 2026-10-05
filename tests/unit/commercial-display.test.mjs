@@ -24,7 +24,7 @@ const {
   meetsModelQualityFloor,
   isFinalClosedOutcome,
   isClosedWithoutRecouping,
-  isEditorialRecoupment,
+  isUnannouncedRecoupment,
   formatRecoupedDate,
   getRecoupmentAttribution,
   getReportedInvestorMultiple,
@@ -105,43 +105,43 @@ test('legacy AI research estimate is NOT a fallback when the model is floored', 
   assert.equal(getRecoupmentDisplayMode(floored), 'none');
 });
 
-test('editorial keeps (Q3) are labeled, announced shows are not', () => {
-  // The flag alone decides — recoupedSource is prose and is never parsed.
-  // All three Q3 owner keeps (Sweeney Todd, Appropriate, Into the Woods)
-  // carry humanReviewedDesignation:true and none has a producer
-  // announcement, so all three must read "editorial assessment". The
-  // ship-check reviewers caught the earlier regex version rendering
-  // "Producers announced recoupment in 2022" for Into the Woods — false.
-  const editorial = {
+test('unannounced recoupments: the isEstimate.recouped flag or the source wording, never the hand-review flag', () => {
+  // sweeney-todd-2023 shape: the source says so outright.
+  const sweeney = {
     ...base,
     recouped: true,
     humanReviewedDesignation: true,
     recoupedSource:
       'No producer announcement; Broadway Journal (Aug 25 2023) projected recoupment ~fall 2023. Kept recouped:true per owner review 2026-07-13.',
   };
-  assert.equal(isEditorialRecoupment(editorial), true);
-  assert.equal(getRecoupmentDisplayMode(editorial), 'announced');
+  assert.equal(isUnannouncedRecoupment(sweeney), true);
+  assert.equal(getRecoupmentDisplayMode(sweeney), 'announced');
 
-  // into-the-woods-2022 shape: trade listing, no announcement phrase —
-  // still editorial because the owner flagged it.
-  assert.equal(
-    isEditorialRecoupment({
-      ...editorial,
-      recoupedSource: 'Broadway Journal (Aug 25 2023) lists Into the Woods among 2022-23 commercial winners.',
-    }),
-    true
-  );
+  // into-the-woods-2022 shape: a trade listing with no announcement phrase.
+  // The plan flags it isEstimate.recouped, and the flag alone decides.
+  const intoTheWoods = {
+    ...base,
+    recouped: true,
+    humanReviewedDesignation: true,
+    recoupedSource: 'Broadway Journal (Aug 25 2023) lists Into the Woods among 2022-23 commercial winners.',
+  };
+  assert.equal(isUnannouncedRecoupment({ ...intoTheWoods, isEstimate: { recouped: true } }), true);
 
-  // Plain announced show (no flag) — announced copy.
+  // purpose-2025 / gutenberg shape: announced AND hand-reviewed. The
+  // hand-review flag marks any checked record, so it must not downgrade one
+  // (BRO-4623: the old rule printed "Scorecard editorial assessment" here).
+  assert.equal(isUnannouncedRecoupment(intoTheWoods), false);
   assert.equal(
-    isEditorialRecoupment({ ...base, recouped: true, recoupedSource: 'Variety (Mar 2016)' }),
+    isUnannouncedRecoupment({ ...base, recouped: true, humanReviewedDesignation: true, recoupedSource: 'Deadline (Jun 2026)' }),
     false
   );
 
-  // Flag without recouped:true never labels (e.g. leopoldstadt-2022
-  // designation lock with recouped:false).
+  // Plain announced show.
+  assert.equal(isUnannouncedRecoupment({ ...base, recouped: true, recoupedSource: 'Variety (Mar 2016)' }), false);
+
+  // Never without recouped:true (leopoldstadt-2022 designation lock shape).
   assert.equal(
-    isEditorialRecoupment({ ...base, recouped: false, humanReviewedDesignation: true }),
+    isUnannouncedRecoupment({ ...base, recouped: false, humanReviewedDesignation: true, isEstimate: { recouped: true } }),
     false
   );
 });
@@ -286,15 +286,44 @@ test('P0-8: "no public announcement" and editorial records read "Not publicly an
   assert.equal(noAnnouncement.qualifier, 'Not publicly announced');
   assert.equal(noAnnouncement.confidence.level, 'medium');
 
-  const editorial = getRecoupmentAttribution({
+  const flagged = getRecoupmentAttribution({
     ...base,
     recouped: true,
     humanReviewedDesignation: true,
+    isEstimate: { recouped: true },
     recoupedSource: 'Broadway Journal lists it among 2022-23 commercial winners.',
     sources: [tradeSource],
   });
-  assert.equal(editorial.qualifier, 'Scorecard editorial assessment');
-  assert.equal(editorial.confidence.level, 'medium');
+  assert.equal(flagged.qualifier, 'Not publicly announced');
+  assert.equal(flagged.confidence.level, 'medium');
+  assert.equal(flagged.confidence.basis, 'Not publicly announced');
+
+  // appropriate shape: "editorial judgment" in the source reads as not announced.
+  const appropriate = getRecoupmentAttribution({
+    ...base,
+    recouped: true,
+    recoupedDate: '2024-03',
+    humanReviewedDesignation: true,
+    recoupedSource: 'No recoupment was announced. Counted as recouped as an editorial judgment: two extensions and a transfer.',
+    sources: [tradeSource],
+  });
+  assert.equal(appropriate.headline, 'Recouped, March 2024');
+  assert.equal(appropriate.qualifier, 'Not publicly announced');
+  assert.equal(appropriate.confidence.level, 'medium');
+});
+
+test('an announced, hand-reviewed recoupment with a trade source reads high confidence, no qualifier', () => {
+  const purpose = getRecoupmentAttribution({
+    ...base,
+    recouped: true,
+    recoupedDate: '2026-06',
+    humanReviewedDesignation: true,
+    recoupedSource: 'Deadline, Broadway News and Playbill (June 2026)',
+    sources: [tradeSource],
+  });
+  assert.equal(purpose.qualifier, null);
+  assert.equal(purpose.confidence.level, 'high');
+  assert.equal(purpose.confidence.basis, 'Trade press report');
 });
 
 test('P0-8: no attribution ever claims a producer announcement', () => {
