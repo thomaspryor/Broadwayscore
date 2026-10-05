@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-05T10:55:09.510Z",
-  "bannerText": "197/218 Done(14d) verified on main · 7 FAILED · 0 vacuous · 38 stuck-but-done — PARTIAL RUN: 12 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-05T11:21:48.426Z",
+  "bannerText": "181/196 Done(14d) verified on main · 6 FAILED · 1 vacuous · 40 stuck-but-done — PARTIAL RUN: 3 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-80 — Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
@@ -11,11 +11,6 @@
       "title": "FAILED BRO-4668 — test.yml E2E races prod deploy: wait for undeployed site changes before Playwright",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-await-deploy.test.mjs",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4668/testyml-e2e-races-prod-deploy-wait-for-undeployed-site-changes-before"
-    },
-    {
-      "title": "FAILED BRO-3221 — UX audit: On mobile watchlist cards, the icons indicating the time of day (matinee, evening, etc.) are too small to be l",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/watchlist-time-icons-size.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3221/ux-audit-on-mobile-watchlist-cards-the-icons-indicating-the-time-of"
     },
     {
       "title": "FAILED BRO-2538 — push-with-retry.sh Git Data API fallback disqualifier evaluates the merge-accumulated diff, not the job's own diff — fires almost always under real contention",
@@ -38,10 +33,15 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-1794/p1-launchd-jobs-silently-run-stale-code-whenever-dataaudit-has-local"
     },
     {
-      "title": "STUCK BRO-343 — Crowned: P1 backlog triage + dispatch loop (v3)",
+      "title": "STUCK BRO-733 — BWW roundup extraction fails to parse critic names for some entries",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-343/crowned-p1-backlog-triage-dispatch-loop-v3"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-733/bww-roundup-extraction-fails-to-parse-critic-names-for-some-entries"
+    },
+    {
+      "title": "STUCK BRO-720 — Fix rebuild overwriting allowEarlyDate for transferred productions",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-720/fix-rebuild-overwriting-allowearlydate-for-transferred-productions"
     }
   ],
-  "moreCount": 37
+  "moreCount": 39
 }

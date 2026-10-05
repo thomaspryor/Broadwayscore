@@ -10,6 +10,7 @@
 
 const crypto = require('crypto');
 const { isNonEvidenceFailure, isStrictFailureReason } = require('./failed-fetch-policy');
+const { passesGenericTitleIdentity } = require('./generic-title-guard');
 
 /**
  * Fix #12 — assignedScore skip guard (collect-review-texts.js)
@@ -1197,6 +1198,9 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
 
   // Zero meaningful words: fail-open (original behavior — better to include than miss).
   if (titleWords.length === 0) return true;
+
+  // BRO-2760: "The Story"-style titles: a lone generic word is not identity.
+  if (!passesGenericTitleIdentity(lowerUrl, showTitle)) return false;
 
   const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lowerUrl);
   if (isTBWorldPath) {

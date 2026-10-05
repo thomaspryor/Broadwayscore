@@ -15,8 +15,9 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
-const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'audit', 'score-integrity.json');
+// Env overrides exist so the test can run against a fixture corpus (BRO-2809).
+const REVIEW_TEXTS_DIR = process.env.SCORE_INTEGRITY_REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
+const OUTPUT_PATH = process.env.SCORE_INTEGRITY_OUTPUT_PATH || path.join(__dirname, '..', 'data', 'audit', 'score-integrity.json');
 
 // From review-normalization.js
 const AGGREGATOR_SCORE_SOURCES = new Set([
@@ -43,7 +44,7 @@ const AGGREGATOR_DATA_SOURCES = new Set([
 // marker means "no dedicated HTML extractor" and covers 43 aliases, 117 of whose
 // corpus files hold originalScore values (nydailynews 80, nytimes 2.5/5, nytg D)
 // that each need a per-outlet judgment before being called corruption.
-const { NO_CRITIC_RATING_OUTLETS: NO_STAR_OUTLETS } = require('./lib/score-extractors');
+const { publishesNoCriticRating } = require('./lib/score-extractors');
 
 const issues = {
   aggregatorScoreInP0: [],     // scoreSource is aggregator but in originalScore
@@ -76,7 +77,7 @@ for (const show of shows) {
       }
 
       // Check 3: outlet that doesn't publish stars
-      if (d.outletId && NO_STAR_OUTLETS.has(d.outletId)) {
+      if (d.outletId && publishesNoCriticRating(d.outletId)) {
         issues.noStarOutletWithScore.push(`${show}/${file} (${d.outletId}, orig=${d.originalScore})`);
       }
     } catch (e) { /* skip unreadable */ }

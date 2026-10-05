@@ -72,6 +72,7 @@ scripts/check-linear-drain-throughput.test.mjs
 scripts/check-provider-spend.test.mjs
 scripts/check-rebuild-staleness.test.mjs
 scripts/check-review-count-drift.test.mjs
+scripts/check-score-integrity.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/check-signin-redirects.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
@@ -320,6 +321,7 @@ tests/unit/aggregator-thumb-check.test.mjs
 tests/unit/aggregator-url-latent.test.mjs
 tests/unit/alert-dispatch-streak.test.mjs
 tests/unit/alert-email-policy.test.mjs
+tests/unit/amaze-review-flags.test.mjs
 tests/unit/anchored-precedence.test.mjs
 tests/unit/announced-promotion.test.mjs
 tests/unit/archive-row-outlet-id.test.mjs
@@ -349,6 +351,7 @@ tests/unit/audit-push-retry-budgets.test.mjs
 tests/unit/audit-same-job-breadcrumb-coverage.test.mjs
 tests/unit/audit-show-review-gap.test.mjs
 tests/unit/audit-url-collisions.test.mjs
+tests/unit/audit-verifiability-linear.test.mjs
 tests/unit/audit-we-closing-dates.test.mjs
 tests/unit/audit-workflow-hygiene-batch-poll-timeout.test.mjs
 tests/unit/audit-workflow-hygiene-core-data-push.test.mjs
@@ -513,6 +516,7 @@ tests/unit/cross-outlet-triage.test.mjs
 tests/unit/cross-production-guards.test.mjs
 tests/unit/cross-show-url-cv-authority.test.mjs
 tests/unit/cross-show-url-reroute.test.mjs
+tests/unit/culturesauce-inline-author.test.mjs
 tests/unit/curated-historical-min-reviews.test.mjs
 tests/unit/cv-ordinal-date-hints.test.mjs
 tests/unit/cv-promoted-nonreview-backlog.test.mjs
@@ -1081,6 +1085,7 @@ tests/unit/test-yml-code-only-jobs.test.mjs
 tests/unit/test-yml-timeout-headroom.test.mjs
 tests/unit/text-quality-nyt-bot-stub.test.mjs
 tests/unit/the-lonely-few-image.test.mjs
+tests/unit/the-story-discovery.test.mjs
 tests/unit/theater-scorecard-regression.test.mjs
 tests/unit/theater-scorecard-validators.test.mjs
 tests/unit/theater-tips-merge-preserves-sections.test.mjs

@@ -2800,7 +2800,11 @@ if [ "$_api_fallback_ok" = "true" ]; then
   # Its progress/diagnostic lines go to stderr, which flows through here
   # uncaptured (this job's normal log output), matching how every other
   # `node "$SCRIPT_DIR/..."` call in this file surfaces its own logging.
-  if API_NEW_SHA=$(bash "$SCRIPT_DIR/push-via-git-api.sh" "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE" "${PUSH_API_MAX_RETRIES:-$_api_max_retries_default}"); then
+  # BRO-2824: hand the fallback our remaining wall-clock budget so its retry
+  # loop stops at the caller's deadline instead of running MAX_RETRIES *
+  # ~400s/attempt. A caller-set PUSH_API_DEADLINE_SEC wins. push-via-git-api.sh
+  # always runs at least one attempt, so a spent budget (0) is not a no-op.
+  if API_NEW_SHA=$(PUSH_API_DEADLINE_SEC="${PUSH_API_DEADLINE_SEC:-$_api_remaining_sec}" bash "$SCRIPT_DIR/push-via-git-api.sh" "$PULL_BRANCH" "$SCRIPT_ENTRY_BASE" "${PUSH_API_MAX_RETRIES:-$_api_max_retries_default}"); then
     echo "  Git Data API fallback succeeded: $API_NEW_SHA"
     git_fetch origin "+refs/heads/$PULL_BRANCH:refs/remotes/origin/$PULL_BRANCH" >/dev/null 2>&1 || true
     # HEAD was reset to SCRIPT_ENTRY_HEAD above and the API commit never moved

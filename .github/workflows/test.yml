@@ -32,6 +32,9 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # BRO-2809: P0 score-integrity gate + its manifest-registered test.
+      - 'scripts/check-score-integrity.js'
+      - 'scripts/check-score-integrity.test.mjs'
       # scripts/posthog-flag-admin.js is a thin CLI wrapper around
       # scripts/lib/posthog-flag-admin-core.js (covered by the glob above) —
       # no independent test of its own, but a solo edit here would otherwise

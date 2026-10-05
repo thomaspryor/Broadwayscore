@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-05T10:55:02.214Z",
+  "generatedAt": "2026-10-05T11:21:34.697Z",
   "shadow": true,
-  "checkoutSha": "cdf5cde71c5e5b97c9f540e3fecb5505b1cf2fe1",
-  "totalCandidates": 600,
-  "eligibleCandidates": 45,
-  "checked": 21,
+  "checkoutSha": "aad311b145f44859d50ee4a00aa53e8673596e23",
+  "totalCandidates": 1627,
+  "eligibleCandidates": 119,
+  "checked": 15,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 12,
+    "pass": 8,
     "fail": 0,
-    "unverifiable": 9
+    "unverifiable": 7
   },
   "alreadyDone": [
     {
@@ -60,30 +60,6 @@
       "name": "Missing show: The Turn of the Screw",
       "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
-    },
-    {
-      "id": "BRO-4188",
-      "name": "Same-URL byline double-count gate spiked to 205 groups (floor 15), Data Validation red",
-      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-4155",
-      "name": "P2: extraction returns ~100 chars for stagebuddy, interestedbystander, theatreweekly reviews",
-      "verifyCmd": "node --test scripts/lib/short-extraction-hosts.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4154",
-      "name": "P2: re-collect review text for ~299 files whose fullText was nulled by the old show-title punctuation bug",
-      "verifyCmd": "node --test scripts/lib/punctuation-nulled-recollect.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4153",
-      "name": "P2: timeout.com domain collision — London Time Out reviews resolve to NYC \"timeout\" outlet",
-      "verifyCmd": "node --test scripts/lib/timeout-london-attribution.test.mjs",
-      "detail": null
     }
   ],
   "failing": [],
@@ -104,7 +80,7 @@
       "id": "BRO-4549",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 146134ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 136919ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4447",
@@ -116,31 +92,19 @@
       "id": "BRO-4410",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 113419ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 103995ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4265",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"verified TodayTix-gap shows carry a real Ticketmaster link\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 76613ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 65064ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4239",
       "name": "Cloud parity: drift check between Mac setup and cloud copies (phase 3)",
       "verifyCmd": "node --test scripts/check-cloud-parity.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/check-cloud-parity.test.mjs"
-    },
-    {
-      "id": "BRO-4190",
-      "name": "Gap-audit census counts other productions and junk pages as 'cited' — per-show recall unusable",
-      "verifyCmd": "node --test tests/unit/gap-audit-census-fix.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/gap-audit-census-fix.test.mjs"
-    },
-    {
-      "id": "BRO-4165",
-      "name": "land.yml: blobless rebase fails 'upload-pack: not our ref' / 'could not fetch from promisor remote' — misreported as a conflict",
-      "verifyCmd": "node --test scripts/lib/land-rebase-classify.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-rebase-classify.test.mjs"
     }
   ]
 }

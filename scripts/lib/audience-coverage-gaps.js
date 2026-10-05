@@ -52,6 +52,26 @@ const CONFIRMED_NON_MATCHES = new Set([
   // 'Broadway' or 'Off & Off-Off Broadway', never a West End category), so this
   // entry can never be our London show. 2026-08-13 (BRO-303).
   'theatr|the jonathan larson project|the-jonathan-larson-project-off-west-end-2026',
+  // BRO-303 (2026-10-05): Mezzanine's catalog is keyed to specific London/NYC
+  // stagings. Each entry below is a DIFFERENT production from our open show, so
+  // the ratings must not be linked (audience ratings are production-specific):
+  //  - "The Great Gatsby" 3387 ratings: London Coliseum 2025; ours is the 2026
+  //    North American tour.
+  //  - "Mrs Doubtfire" 1393: Shaftesbury Theatre (West End) 2023; ours is the
+  //    2025 North American tour.
+  //  - "Hell's Kitchen" 172: The Public Theater (NYC) 2023; ours is the 2025
+  //    North American tour.
+  //  - "Macbeth" 329 (Harold Pinter Theatre) and 108 (Dock X), both 2024 London
+  //    stagings; ours is the 2026 Metropolitan Opera production.
+  //  - "This Is Not A Drill" 30: The Theater at St. Jean 2025; ours is the 2026
+  //    Playwrights Realm walking tour "This Is Not Not a Drill".
+  // Keyed to the exact show id, so a genuine Mezzanine entry for our own run
+  // still surfaces.
+  'mezzanine|the great gatsby|the-great-gatsby-tour-2026',
+  'mezzanine|mrs doubtfire|mrs-doubtfire-tour-2025',
+  'mezzanine|hell s kitchen|hells-kitchen-tour-2025',
+  'mezzanine|macbeth|macbeth-off-broadway-2026',
+  'mezzanine|this is not a drill|this-is-not-not-a-drill-off-broadway-2026',
 ]);
 
 function nonMatchKey(source, sourceName, ourShowId) {

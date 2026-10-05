@@ -326,6 +326,38 @@ function effectiveFlagDate(data) {
   return null;
 }
 
+/**
+ * True when the adjudicator's own verdict was a tour/regional production
+ * (note 'Auto-adjudicated: national-tour. ...' + reason
+ * 'contamination-adjudicated: national-tour'). BRO-2841: that verdict says the
+ * review is of a tour leg, so when the operator DECLARED the leg as a
+ * priorRuns/tourLegs window containing the review's date, the declared window
+ * outranks it. Any other adjudicated verdict (film-tv, other, a different
+ * production) stays a manual-grade reason the windows cannot override.
+ */
+function isAdjudicatedTourVerdict(data) {
+  return hasAdjudicatedNote(data)
+    && /^contamination-adjudicated: (?:national-tour|regional)$/.test(data.wrongProductionReason || '');
+}
+
+/**
+ * Strip the adjudicator's markers once a declared priorRuns/tourLegs window has
+ * superseded its tour verdict, and set allowTourSignal: the rebuild's fullText
+ * tour guard (excerpt-validation tourContextForShow) never reads priorRuns/
+ * tourLegs, so without it the review is re-queued 'possible-tour-fulltext', the
+ * adjudicator re-flags it, and the clear fires again forever. Call only when
+ * isAdjudicatedTourVerdict(d) was true BEFORE wrongProductionNote was deleted.
+ */
+function supersedeAdjudicatedTourVerdict(d) {
+  delete d.wrongProductionReason;
+  if (d.incompleteReason === 'wrong_content' && /^contamination-adjudicated:/.test(d.incompleteDetail || '')) {
+    delete d.incompleteReason;
+    delete d.incompleteDetail;
+  }
+  require('./contamination-allow-signal').applyContaminationAllow(d, 'tour',
+    `rebuild ${new Date().toISOString().slice(0, 10)}: declared priorRuns/tourLegs window covers publishDate`);
+}
+
 function shouldAutoClearWrongProductionPriorRun(data, show) {
   if (!data || data.wrongProduction !== true) return false;
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
@@ -340,10 +372,15 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
   // ONLY wrongProductionReason. Recognize their auto-set values as override-eligible.
   const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
     || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
-    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason))
+    || isAdjudicatedTourVerdict(data);
   if (!isDateOnlyAutoFlag && !isAutoReason) return false;
   const effDate = effectiveFlagDate(data);
   if (!effDate || !isWithinPriorRun(effDate, show.priorRuns)) return false;
+  // A tour verdict only yields to a window that is itself a tour run: a
+  // sit-down prior run (earlier West End engagement) is not evidence for it.
+  if (isAdjudicatedTourVerdict(data)
+      && !/\btour\b/i.test((findMatchingPriorRun(effDate, show.priorRuns) || {}).venue || '')) return false;
   // Treat reason as "manual" only when it's not a recognized auto signal AND
   // not a date-guard-prefixed reason. Protects audit/operator reasons.
   const reasonIsAuto = isAutoReason || startsWithAny(reason, DATE_GUARD_PREFIXES);
@@ -379,7 +416,8 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
     || startsWithAny(reason, DATE_GUARD_PREFIXES);
   const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
     || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
-    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason))
+    || isAdjudicatedTourVerdict(data);
   if (!isDateOnlyAutoFlag && !isAutoReason) return false;
   const effDate = effectiveFlagDate(data);
   if (!effDate || !isWithinTourLeg(effDate, show.tourLegs)) return false;
@@ -1021,6 +1059,8 @@ module.exports = {
   REVIEW_LAG_GRACE_DAYS,
   ADJUDICATED_NOTE_PREFIX,
   hasAdjudicatedNote,
+  isAdjudicatedTourVerdict,
+  supersedeAdjudicatedTourVerdict,
   hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
