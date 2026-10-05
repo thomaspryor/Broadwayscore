@@ -571,6 +571,40 @@ test('a locally ROTATED ring-buffer ledger still recovers, losing no live row', 
   });
 });
 
+test('BRO-3917: unionLedgerLines reports the distinct saved-row count, and a saved ledger with duplicate rows is not "shrunk"', () => {
+  const { merged, stats } = unionLedgerLines(['a', 'b'], ['a', 'x', 'x', 'x', 'y']);
+  assert.equal(stats.extraUnique, 3, 'a, x, y');
+  assert.equal(merged.length, 4);
+  // Raw saved count (5) > merged (4) used to trip the guard on pure dedup.
+  assert.equal(unionIsSafe({ mergedCount: merged.length, baseCount: 2, extraCount: 5 }), false);
+  assert.equal(unionIsSafe({ mergedCount: merged.length, baseCount: 2, extraCount: stats.extraUnique }), true);
+});
+
+test('ACCEPTANCE (BRO-3917): a dirty ledger holding duplicate rows still recovers instead of refusing "would shrink"', () => {
+  withTmp((root) => {
+    const { origin, clone } = setupPair(root, 'dup');
+    // Origin rotated its ledger SHORT (front-trimmed) while the local copy
+    // carries more rows, including internal duplicates, as the real
+    // scraper-spend-ledger does (243 dup rows on 2026-10-04).
+    advanceOrigin(root, origin, 'via-dup', (via) => {
+      fs.writeFileSync(path.join(via, LEDGER), 'c\norigin-only\n');
+    });
+    fs.writeFileSync(path.join(clone, LEDGER), 'a\nb\nc\ndup\ndup\ndup\nlocal-only\n');
+
+    const { code, out } = trySync(clone, 'dup');
+    assert.equal(code, 0, `expected recovery, got ${code}:\n${out}`);
+    assert.doesNotMatch(out, /would shrink/);
+    assert.equal(
+      git(clone, 'rev-parse', 'HEAD').trim(),
+      git(clone, 'rev-parse', 'origin/main').trim(),
+    );
+    const after = lines(path.join(clone, LEDGER));
+    for (const row of ['a', 'b', 'c', 'dup', 'local-only', 'origin-only']) {
+      assert.equal(count(after, row), 1, `${row} kept exactly once`);
+    }
+  });
+});
+
 test('an identical row appended on BOTH sides is kept exactly once', () => {
   withTmp((root) => {
     const { origin, clone } = setupPair(root, 'dup');

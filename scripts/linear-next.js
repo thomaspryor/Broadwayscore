@@ -101,7 +101,7 @@ const { pickLinearModel } = require('./lib/bsc-next-model.js');
 // The shared guard/gate lib (task #1303 plan review item 2) — see that
 // file's header for the DispatchGuardTask shape these expect.
 const {
-  findLiveWorkspaceForTask, checkDeadDispatch, parkedGuard,
+  findLiveWorkspaceForTask, safeLedgerEntries, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS, isAutomationParked, isDrainableSessionParked,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
   workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
@@ -1056,7 +1056,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 
       if (!args.force) {
         try {
-          const dup = findLiveWorkspaceForTask(pseudoTask, workspaces, isDoneTitleFn);
+          const dup = findLiveWorkspaceForTask(pseudoTask, workspaces, isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn));
           if (dup) {
             console.error(`[linear-next] a live workspace already matches ${identifier}: ${dup.ref} "${dup.title}".`);
             console.error(`  Another session may be on this issue. Check it (cmux read-screen --workspace ${dup.ref}),`);

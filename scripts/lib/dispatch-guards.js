@@ -109,7 +109,20 @@ const LINEAR_MAPPING_PATH = path.join(__dirname, '..', '..', 'data', 'linear-imp
 // splits the work (near-miss 2026-07-13: task #46 dispatched while
 // workspace:37 was still open on it). Titles get activity-glyph prefixes in
 // list output and may be truncated, so compare glyph-stripped prefixes.
-function findLiveWorkspaceForTask(task, workspaces, isDone) {
+//
+// BRO-2949: a title-prefix match alone misses a renamed Crown succession tab
+// (each hand-off writes a differently-worded title), so a fresh re-dispatch
+// slipped past this guard — 55 live BRO-343 tabs. When the caller passes the
+// ledger rows, a workspace whose still-unreconciled launch record carries this
+// task's id also counts, whatever its title says. unreconciledLaunchForRef is
+// ref-recycling safe (a terminal row, or a later launch of another task on the
+// same ref, stops the match). "Unreconciled" means no terminal row yet, not
+// proven alive — same strictness as the title match; --force bypasses both.
+// Known tradeoff: a ref recycled onto a non-dispatched tab with no terminal row
+// written yet reads as still owned; that false positive is fail-safe (the refusal
+// names the tab, --force bypasses) vs. the false negative that stacked 55 tabs.
+// ledgerEntries omitted/null => title-only, the pre-BRO-2949 behavior.
+function findLiveWorkspaceForTask(task, workspaces, isDone, ledgerEntries = null) {
   // titleMatchesSubject (dispatch-ledger.js) strips cmux's own activity-glyph
   // prefix (spinner/✳/etc — also eats the 🤖 auto-dispatch emoji, since it
   // isn't a letter/digit), THEN strips the "<Project>·" naming prefix (scope
@@ -117,7 +130,23 @@ function findLiveWorkspaceForTask(task, workspaces, isDone) {
   // raw task subject. Shared with the park-guard's renumber rematch (task
   // #883) so both guards agree on the same >=20-char bar — a drift between
   // them would make one see a match the other doesn't.
-  return workspaces.find(w => !isDone(w.title) && dispatchLedger.titleMatchesSubject(w.title, task.subject)) || null;
+  const lastTerminal = Array.isArray(ledgerEntries)
+    ? dispatchLedger.lastByRef(ledgerEntries, e => dispatchLedger.TERMINAL_LAUNCH_EVENTS.has(e.event))
+    : null;
+  const ownedByLedger = (w) => {
+    if (!lastTerminal || task.id == null) return false;
+    const launch = dispatchLedger.unreconciledLaunchForRef(w.ref, ledgerEntries, lastTerminal);
+    return !!launch && launch.taskId != null && String(launch.taskId) === String(task.id);
+  };
+  return workspaces.find(w => !isDone(w.title) &&
+    (dispatchLedger.titleMatchesSubject(w.title, task.subject) || ownedByLedger(w))) || null;
+}
+
+// Ledger rows for findLiveWorkspaceForTask's taskId match, or null when the
+// read throws — a ledger outage must degrade the dup-check to title-only, not
+// abort it (the callers' catch would otherwise skip the whole guard).
+function safeLedgerEntries(readEntries) {
+  try { return readEntries(); } catch { return null; }
 }
 
 // Refuse a blind re-dispatch once a task has died DEAD_ATTEMPT_LIMIT times
@@ -1057,6 +1086,7 @@ const GUARD_NAMES = [
 module.exports = {
   GUARD_NAMES,
   findLiveWorkspaceForTask,
+  safeLedgerEntries,
   deadDispatchGuard,
   parkedGuard,
   staleOutcomeGuard,

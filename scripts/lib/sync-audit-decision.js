@@ -219,13 +219,17 @@ function unionLedgerLines(baseLines, extraLines) {
   const merged = base.slice();
   const seen = new Set(base);
   let added = 0;
+  // Distinct non-empty saved rows: what the union can be held to. A saved
+  // ledger with internal duplicate rows (scraper-spend-ledger had 243) dedups
+  // below its raw line count, which unionIsSafe must not read as data loss.
+  const extraUnique = new Set(extra.filter((l) => l !== '')).size;
   for (const line of extra) {
     if (line === '' || seen.has(line)) continue;
     seen.add(line);
     merged.push(line);
     added += 1;
   }
-  return { merged, stats: { base: base.length, added, total: merged.length } };
+  return { merged, stats: { base: base.length, added, total: merged.length, extraUnique } };
 }
 
 /**
