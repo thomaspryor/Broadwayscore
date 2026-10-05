@@ -58,6 +58,7 @@ const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { productionIdYear } = require('./lib/todaytix-dates');
 const { venuesMatch } = require('./lib/deduplication');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -318,7 +319,15 @@ function buildShowEntry(candidate) {
   // Id year follows the run (a January 2027 run staged in 2026 is a -2027
   // id; validate-data's id-year drift check reads it that way).
   const firstDated = validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
-  const year = firstDated ? Number(firstDated.slice(0, 4)) : new Date().getFullYear();
+  // BRO-2026: productionIdYear (opening → previews, the discover-new-shows
+  // precedence) instead of a bare current-year fallback; a dateless stub that
+  // must still get SOME id is stamped idYearProvisional so the id-year-drift
+  // WARN / rename tool can find it once dates arrive.
+  const datedYear = productionIdYear({
+    openingDate: validDateOrNull(candidate.openingDate),
+    previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+  });
+  const year = datedYear || String(new Date().getFullYear());
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const category = resolveCandidateCategory(candidate);
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
@@ -326,6 +335,7 @@ function buildShowEntry(candidate) {
   const id = `${withMarketSuffix(slugBase, 'off-broadway')}-${year}`;
   return {
     id,
+    ...(datedYear ? {} : { idYearProvisional: true }),
     title: candidate.title,
     slug: slugBase,
     // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
@@ -550,14 +560,16 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
   // buildRegionalShowEntry for why: UTC conversion can roll an ET
   // late-evening publish into the next calendar day).
   const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
-  const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
+  const datedYear = productionIdYear({ openingDate });
+  const year = datedYear || String(new Date().getFullYear());
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
   // class as BRO-3237 if slugBase already carries "-off-broadway".
   const id = `${withMarketSuffix(slugBase, 'off-broadway')}-${year}`;
   return {
     id,
+    ...(datedYear ? {} : { idYearProvisional: true }),
     title: candidate.title,
     slug: slugBase,
     // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
@@ -597,8 +609,9 @@ function buildRegionalShowEntry(candidate) {
   // publisher's local zone. UTC conversion would roll an ET Dec-31 evening
   // publish into Jan 1 and mint a wrong-year id (QA 2026-07-08).
   const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
-  const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
+  const datedYear = productionIdYear({ openingDate });
+  const year = datedYear || String(new Date().getFullYear());
   const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const id = `${slugBase}-regional-${year}`;
   // City lookup stays on the raw candidate venue — feederVenueCity keys off
@@ -676,6 +689,7 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
+  const existingSlugs = new Set(showsData.shows.map(s => s.slug).filter(Boolean));
   // Existing OB/regional shows, as findExistingMatch() expects. Include
   // 'regional' alongside 'off-broadway': regional candidates are added to
   // shows.json manually (runbook), and without them here a staged regional
@@ -913,6 +927,12 @@ async function main() {
       logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
       continue;
     }
+    // BRO-2026: a bare title slug fits one production per title; a later
+    // production of the same title keeps its candidate instead of being a
+    // duplicate-slug row — the NEW row takes its year-scoped id as slug
+    // (mirrors discover-new-shows.js), the existing row keeps its live URL.
+    if (existingSlugs.has(entry.slug) && entry.slug !== entry.id) entry.slug = entry.id;
+    existingSlugs.add(entry.slug);
     promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
     existingIds.add(entry.id);
     // Feed the promotion back into the dedup pool under BOTH venue spellings
