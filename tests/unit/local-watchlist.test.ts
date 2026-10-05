@@ -2,7 +2,8 @@
  * Signed-out watchlist decision helpers (BRO-4616, "save first, ask later").
  * Locks: the sheet shows right after the first save and then respects the
  * cooldown, malformed storage reads as empty, and the
- * sign-in migration skips shows the account already has.
+ * sign-in migration skips shows the account already has, and blocked
+ * storage falls back to memory instead of re-adding on every tap.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -15,6 +16,11 @@ import {
   removeEntry,
   shouldPromptAfterSave,
   showsToMigrate,
+  getLocalWatchlist,
+  addLocalShow,
+  removeLocalShow,
+  getLastPromptedAt,
+  markPrompted,
 } from '../../src/lib/local-watchlist';
 
 // Owner call 2026-10-04: ask right after the first save; the save still happens first.
@@ -61,4 +67,24 @@ test('migration: oldest first, skips shows already on the account', () => {
   assert.deepEqual(showsToMigrate(local, []), ['a', 'b', 'c']);
   assert.deepEqual(showsToMigrate(local, new Set(['b'])), ['a', 'c']);
   assert.deepEqual(showsToMigrate([], ['x']), []);
+});
+
+test('blocked storage: saves and the prompt cooldown live in memory for the page', () => {
+  const blocked = () => { throw new Error('SecurityError'); };
+  const prev = Object.getOwnPropertyDescriptor(globalThis, 'localStorage');
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    value: { getItem: blocked, setItem: blocked, removeItem: blocked },
+  });
+  try {
+    addLocalShow('hamilton-2015');
+    assert.deepEqual(getLocalWatchlist().map(e => e.showId), ['hamilton-2015']);
+    markPrompted(1000);
+    assert.equal(getLastPromptedAt(), 1000);
+    removeLocalShow('hamilton-2015');
+    assert.deepEqual(getLocalWatchlist(), []);
+  } finally {
+    if (prev) Object.defineProperty(globalThis, 'localStorage', prev);
+    else delete (globalThis as { localStorage?: unknown }).localStorage;
+  }
 });

@@ -78,11 +78,17 @@ export function showsToMigrate(local: LocalWatchlistEntry[], accountShowIds: Ite
 
 // ─── storage wrappers ────────────────────────────────────────────────────
 
+// Used only when localStorage throws (blocked storage): keeps saves and the
+// prompt cooldown alive for the life of the page, so a second tap removes
+// the show instead of re-adding it and re-opening the sign-in sheet.
+let memoryList: LocalWatchlistEntry[] | null = null;
+let memoryPromptedAt: number | null = null;
+
 export function getLocalWatchlist(): LocalWatchlistEntry[] {
   try {
     return parseLocalWatchlist(localStorage.getItem(LIST_KEY));
   } catch {
-    return [];
+    return memoryList ?? [];
   }
 }
 
@@ -92,6 +98,7 @@ function writeLocalWatchlist(list: LocalWatchlistEntry[]): void {
     else localStorage.setItem(LIST_KEY, JSON.stringify(list));
   } catch {
     // storage unavailable: the save lives only as long as this page
+    memoryList = list;
   }
   if (typeof document !== 'undefined') {
     document.dispatchEvent(new CustomEvent(LOCAL_WATCHLIST_SYNC, { detail: list }));
@@ -119,7 +126,7 @@ export function getLastPromptedAt(): number | null {
     const v = Number(localStorage.getItem(PROMPTED_KEY));
     return Number.isFinite(v) && v > 0 ? v : null;
   } catch {
-    return null;
+    return memoryPromptedAt;
   }
 }
 
@@ -127,6 +134,6 @@ export function markPrompted(now: number = Date.now()): void {
   try {
     localStorage.setItem(PROMPTED_KEY, String(now));
   } catch {
-    // storage unavailable
+    memoryPromptedAt = now;
   }
 }

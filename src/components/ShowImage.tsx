@@ -54,6 +54,9 @@ export default function ShowImage({
 
   return (
     <img
+      // A fresh element per source, so the early-error ref never reads the
+      // previous source's failed state and skips a fallback untried.
+      key={currentSrc}
       src={currentSrc}
       srcSet={srcSet}
       sizes={srcSet ? sizes : undefined}
