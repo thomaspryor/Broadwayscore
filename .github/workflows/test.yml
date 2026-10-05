@@ -442,6 +442,8 @@ on:
       # scripts/lib/audit-push-retry-budgets.js (globbed above), but this
       # file itself needs its own entry.
       - 'scripts/audit-push-retry-budgets.js'
+      # BRO-2805: thin CLI wrapper (logic in scripts/lib/, globbed above) — same gap shape.
+      - 'scripts/audit-blanket-sweep-audit-writes.js'
       # BRO-3954: scripts/audit-review-type-wrong-show.js had NO entry here at
       # all before this fix (same "unlisted scripts/ = ZERO CI" gap this
       # comment block documents elsewhere) — a solo edit to it, including this
@@ -3801,6 +3803,13 @@ jobs:
         # already-triaged debt. Script wraps main() in try/catch so a crash
         # can't turn "advisory" into an accidental hard gate (see its header).
         run: node scripts/audit-push-retry-budgets.js --fail-on-job-timeout
+
+      - name: Audit — blanket stage-data-changes.sh sweeps vs unregistered data/audit writes (BRO-2805)
+        if: always() && steps.deps.outcome == 'success'
+        # BRO-2795 class: an earlier step's unregistered data/audit/*.json rides a
+        # no-arg stage-data-changes.sh sweep and vetoes the push fallback. Hard-fails
+        # on any finding outside the shrink-only BASELINE in the lib.
+        run: node scripts/audit-blanket-sweep-audit-writes.js
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         if: always() && steps.deps.outcome == 'success'
