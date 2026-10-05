@@ -499,5 +499,29 @@
       }
     ],
     "queuedAt": "2026-10-05T17:35:07.657Z"
+  },
+  {
+    "conditionKey": "geo-bots:Iran",
+    "title": "New bot country detected: Iran",
+    "description": "Weekly geo audit found Iran matching the bot signature (33 sessions • 0.0% engagement • 0.2s • 1.00 pages/session; thresholds: ≥25 sessions, <15% engagement, <15s avg session, <1.1 pages/session). Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T17:50:55.228Z"
+  },
+  {
+    "conditionKey": "geo-bots:(not set)",
+    "title": "New bot country detected: (not set)",
+    "description": "Weekly geo audit found (not set) matching the bot signature (25 sessions • 0.0% engagement • 0.3s • 1.00 pages/session; thresholds: ≥25 sessions, <15% engagement, <15s avg session, <1.1 pages/session). Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T17:50:55.232Z"
   }
 ]
