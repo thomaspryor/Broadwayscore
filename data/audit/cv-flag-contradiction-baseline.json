@@ -1,19 +1,9 @@
 {
-  "generatedAt": "2026-09-15",
+  "generatedAt": "2026-10-05",
   "hits": [
     {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "flag": "wrongProduction"
-    },
-    {
-      "showId": "as-you-like-it-globe-west-end-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "flag": "wrongProduction"
-    },
-    {
-      "showId": "how-the-other-half-loves-west-end-2026",
-      "file": "london-box-office--andrew-bewley.json",
+      "showId": "hay-fever-west-end-2026",
+      "file": "theatreboard--unknown.json",
       "flag": "wrongProduction"
     },
     {
@@ -22,9 +12,24 @@
       "flag": "wrongProduction"
     },
     {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "flag": "wrongProduction"
+    },
+    {
+      "showId": "the-last-ship-west-end-2026",
+      "file": "timeout--andrzej-lukowski.json",
+      "flag": "wrongProduction"
+    },
+    {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "london-box-office--stacey-tyler.json",
       "flag": "wrongProduction"
+    },
+    {
+      "showId": "the-standard-of-living-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "flag": "isRoundupArticle"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -35,7 +40,11 @@
       "showId": "tosca-off-broadway-2026",
       "file": "operawire--chris-ruel.json",
       "flag": "wrongProduction"
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "flag": "isRoundupArticle"
     }
-  ],
-  "note": "isRoundupArticle rows removed 2026-09-15 (BRO-3416): detectCvFlagContradiction no longer escalates isRoundupArticle when the URL is itself a roundup (isRoundupUrl), so these 5 rows are structurally unreachable and the baseline had been absorbing one row per ingested roundup. wrongProduction rows are left as-is \u2014 a row not firing today may simply have aged out of the 30d window."
+  ]
 }
