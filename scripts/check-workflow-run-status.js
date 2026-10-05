@@ -67,12 +67,14 @@ function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
     const ok = run.conclusion === expect;
     return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — most recent run concluded '${run.conclusion || run.status}'${ok ? '' : `, expected '${expect}'`} (${run.url})` };
   }
-  const window = runs.slice(0, limit);
+  // Only finished runs count: an in-progress/queued run has no conclusion yet
+  // and must not be credited as "not failed". Fewer finished runs than --limit
+  // always fails — a young workflow cannot satisfy a "last N" claim.
+  const window = runs.filter((r) => r.conclusion).slice(0, limit);
   const matches = window.filter((r) => r.conclusion === expect).length;
-  // Fewer runs than requested can never satisfy a "N consecutive" claim.
-  const lo = minMatch === undefined ? 0 : minMatch;
-  const enough = window.length >= limit || (minMatch === undefined && maxMatch !== undefined);
-  const ok = enough && matches >= lo && (maxMatch === undefined || matches <= maxMatch);
+  const ok = window.length >= limit
+    && (minMatch === undefined || matches >= minMatch)
+    && (maxMatch === undefined || matches <= maxMatch);
   return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — ${matches}/${window.length} of last ${limit} runs concluded '${expect}' (min ${minMatch ?? '-'}, max ${maxMatch ?? '-'})` };
 }
 
@@ -94,6 +96,11 @@ function main(argv) {
     maxMatch = parseCount(maxRaw, 'max-match', 0);
     if (limit === undefined && (minMatch !== undefined || maxMatch !== undefined)) throw new Error('--min-match/--max-match require --limit');
     if (limit !== undefined && minMatch === undefined && maxMatch === undefined) throw new Error('--limit requires --min-match and/or --max-match');
+    // Reject bounds that can never fail (vacuous) or never pass.
+    if (minMatch === 0 && maxMatch === undefined) throw new Error('--min-match=0 alone is vacuous');
+    if (minMatch > limit) throw new Error('--min-match cannot exceed --limit');
+    if (maxMatch >= limit) throw new Error('--max-match must be below --limit (otherwise vacuous)');
+    if (minMatch > maxMatch) throw new Error('--min-match cannot exceed --max-match');
   } catch (e) {
     console.error(e.message);
     console.error(USAGE);
@@ -101,6 +108,7 @@ function main(argv) {
   }
 
   const args = ['run', 'list', '--workflow', workflow, '--limit', String(limit || 1), '--json', 'conclusion,status,headBranch,url'];
+  if (limit !== undefined) args.push('--status', 'completed');
   if (branch) args.push('--branch', branch);
 
   let stdout;

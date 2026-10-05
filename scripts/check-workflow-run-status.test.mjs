@@ -38,7 +38,9 @@ test('BRO-3152/3388: failure/cancelled count caps', () => {
   const runs = [r('failure'), r('success'), r('success'), r('success'), r('success')];
   assert.equal(evaluate(runs, { expect: 'failure', limit: 5, maxMatch: 1 }).ok, true);
   assert.equal(evaluate(runs, { expect: 'failure', limit: 5, maxMatch: 0 }).ok, false);
-  assert.equal(evaluate([r('success')], { expect: 'cancelled', limit: 20, maxMatch: 0 }).ok, true);
+  assert.equal(evaluate([r('success')], { expect: 'cancelled', limit: 20, maxMatch: 0 }).ok, false, 'short history is not a pass');
+  const twenty = Array.from({ length: 20 }, () => r('success'));
+  assert.equal(evaluate(twenty, { expect: 'cancelled', limit: 20, maxMatch: 0 }).ok, true);
 });
 
 test('parseCount validates bounds', () => {
@@ -56,4 +58,24 @@ test('SAFE_CHECK_FORMS admits the single and multi-run shapes, refuses raw gh ru
   assert.equal(isSafeCheckCommand('node scripts/check-workflow-run-status.js --workflow=x.yml --expect=failure --limit=5 --max-match=1'), true);
   assert.equal(isSafeCheckCommand(`${base} --limit=abc`), false);
   assert.equal(isSafeCheckCommand('gh run list --workflow=data-health-check.yml --limit 1'), false);
+});
+
+test('in-progress runs are not credited as clean', () => {
+  const ip = { conclusion: '', status: 'in_progress', url: 'u' };
+  assert.equal(evaluate([ip, ip, ip], { expect: 'failure', limit: 3, maxMatch: 0 }).ok, false);
+  assert.equal(evaluate([ip, r('success'), r('success'), r('success')], { expect: 'failure', limit: 3, maxMatch: 0 }).ok, true);
+});
+
+test('CLI rejects vacuous/impossible bounds with exit 2', async () => {
+  const { spawnSync } = await import('node:child_process');
+  for (const extra of ['--limit=5 --min-match=0', '--limit=5 --max-match=5', '--limit=3 --min-match=4', '--limit=5 --min-match=3 --max-match=2']) {
+    const res = spawnSync('node', ['scripts/check-workflow-run-status.js', '--workflow=x.yml', '--expect=success', ...extra.split(' ')], { encoding: 'utf8' });
+    assert.equal(res.status, 2, extra);
+  }
+});
+
+test('safe-form regex limit bounded to 1-50', () => {
+  const base = 'node scripts/check-workflow-run-status.js --workflow=x.yml --expect=success';
+  assert.equal(isSafeCheckCommand(`${base} --limit=50 --min-match=1`), true);
+  assert.equal(isSafeCheckCommand(`${base} --limit=99 --min-match=1`), false);
 });
