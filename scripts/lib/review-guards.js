@@ -1275,12 +1275,15 @@ function urlLooksLikeReview(url, showTitle) {
   // Beaches 2026-04-22: rejected all outlet URLs (NYT/Guardian/People/EW/TimeOut/TheWrap/NYDN/NYT/…)
   // via outlet-domain-supplement urlTitleCheck before this fallback.
   //
+  // Guard (BRO-3711): the comma tail must be an article-led subtitle. "America, Who
+  // Hurt You?" is not "America" + subtitle; "Captain America: Brave New World" matched it.
+  //
   // Guard: short title must contain ≥1 meaningful word (length > 2, non-stopword).
   // Without this, "Oh, Mary!" → short "Oh" → zero meaningful words → urlTitleWordsPass
   // fail-opens (titleWords.length === 0 branch) and accepts ANY URL as valid. Affected
   // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
-  const { shortTitleCandidate } = require('./title-normalization');
-  const shortTitle = shortTitleCandidate(showTitle);
+  const { shortTitleCandidate, hasSubtitleTail } = require('./title-normalization');
+  const shortTitle = hasSubtitleTail(showTitle) ? shortTitleCandidate(showTitle) : null;
   if (shortTitle) {
     const shortMeaningfulWords = shortTitle
       .toLowerCase()

@@ -165,4 +165,19 @@ function shortTitleCandidate(title) {
   return (short && short !== title) ? short : null;
 }
 
-module.exports = { normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix, shortTitleCandidate };
+/**
+ * Is the text after the first comma a SUBTITLE ("A New Musical", "The Neil
+ * Diamond Musical") rather than the rest of the title ("Who Hurt You?",
+ * "Interrupted", "Dolly!")? Subtitles are article-led; only then is the pre-comma
+ * head safe to use alone as the show's identity. Without this, "America, Who
+ * Hurt You?" collapsed to "America" and the film "Captain America: Brave New
+ * World" matched it from a single common token (BRO-3711).
+ */
+function hasSubtitleTail(title) {
+  const short = shortTitleCandidate(title);
+  if (!short) return false;
+  const tail = title.slice(title.indexOf(',') + 1).trim();
+  return /^(?:a|an|the)\s+\S/i.test(tail);
+}
+
+module.exports = { hasSubtitleTail, normalizeTitle, titlesMatch, cleanSearchTitle, stripSuffix, stripPrefix, shortTitleCandidate };
