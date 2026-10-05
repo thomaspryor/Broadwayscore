@@ -16,7 +16,7 @@ import {
   markSignInCompleted,
 } from '@/lib/ugc-analytics';
 
-type ModalContext = 'rating' | 'watchlist' | 'generic';
+type ModalContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
 
 export type DeleteAccountResult = 'deleted' | 'session_expired' | 'failed';
 

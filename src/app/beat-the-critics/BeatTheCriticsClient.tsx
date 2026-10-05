@@ -5,6 +5,7 @@ import type { BeatTheCriticsData, BeatTheCriticsCategoryData, ActorNominee } fro
 import type { SerializedTonyShow } from '@/lib/data-tony-predictions';
 import { ScoreBadge } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 // ─── Types ───
 
@@ -184,7 +185,7 @@ function ShowPoster({ show, size = 'sm' }: { show: SerializedTonyShow; size?: 'x
   if (imgError || !imgPath) {
     return (<div className={`${dims} ${radius} bg-surface-overlay flex items-center justify-center text-sm font-extrabold text-white/30 flex-shrink-0`}>{show.title.charAt(0)}</div>);
   }
-  return (<img src={imgPath} alt={show.title} className={`${dims} ${radius} object-cover flex-shrink-0 bg-surface-overlay`} onError={() => setImgError(true)} />);
+  return (<img src={imgPath} alt={show.title} className={`${dims} ${radius} object-cover flex-shrink-0 bg-surface-overlay`} ref={catchEarlyImgError(() => setImgError(true))} onError={() => setImgError(true)} />);
 }
 
 function ActorPoster({ nominee }: { nominee: ActorNominee }) {

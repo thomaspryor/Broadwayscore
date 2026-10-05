@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4657",
   "planId": "fe15c94b-086d-4bb8-8b44-ef9ae2ca6f2c",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -54,5 +54,23 @@
       }
     ],
     "changes": []
-  }
+  },
+  "executedAt": "2026-10-05T02:43:06.875Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-balusters"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for school-girls-or-the-african-mean-girls-play"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran dedupe-commercial-id-keys.js successfully"
+    }
+  ]
 }

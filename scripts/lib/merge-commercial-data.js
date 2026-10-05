@@ -21,7 +21,17 @@
 //     OR `humanReviewedWrongProduction === true`, overlay those fields onto
 //     the chosen entry — those are manual corrections that must survive any
 //     CI rewrite.
-//   * Union of slugs is kept (local additions + remote additions both land).
+//   * A slug on only one side: kept (local or remote addition), unless a
+//     true common ancestor `base` shows it was DELETED (BRO-4657). Live
+//     2026-10-05: Commercial Friday Refresh deleted two id-keyed duplicates,
+//     its push was rejected, and the post-rebase union re-added both from
+//     remote. With base: a one-sided slug that is in base and unchanged from
+//     base was deleted by the other side, so it is dropped (both directions,
+//     stats.resolvedAsDeletion). One that changed since base is kept (a
+//     delete racing an edit keeps the edit). Without base: union, as before.
+//   * `base` must be the real fork point, never a post-rebase merge-base
+//     (that equals remote and would read every remote addition as our
+//     delete), hence `requiresTrueBase` for reconcile-merged-json.js.
 //
 // Merge rules — commercial-pending-review.json:
 //   * shape: { shows: { [slug]: pendingEntry, ... }, lastUpdated, ... }
@@ -80,21 +90,36 @@ function overlayHumanReviewed(target, candidate) {
   return touched;
 }
 
-function mergeCommercialJson(ours, remote) {
+// True when `entry` is the base copy untouched, i.e. the side holding it did
+// not edit it and the side lacking it deleted it.
+function unchangedSinceBase(baseShows, slug, entry) {
+  if (!baseShows || !Object.prototype.hasOwnProperty.call(baseShows, slug)) return false;
+  return JSON.stringify(baseShows[slug]) === JSON.stringify(entry);
+}
+
+// Three parameters with no default: callers dispatch on `.length >= 3`.
+function mergeCommercialJson(ours, remote, base) {
   ours = ours || { shows: {} };
   remote = remote || { shows: {} };
   const oursShows = ours.shows || {};
   const remoteShows = remote.shows || {};
+  const baseShows = base && typeof base.shows === 'object' && base.shows ? base.shows : null;
   const merged = { ...ours };
   merged.shows = { ...oursShows };
 
-  let added = 0, kept = 0, overlaid = 0;
+  let added = 0, kept = 0, overlaid = 0, resolvedAsDeletion = 0;
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
   for (const slug of allSlugs) {
     const o = oursShows[slug];
     const r = remoteShows[slug];
-    if (!o && r) { merged.shows[slug] = r; added++; continue; }
-    if (o && !r) { /* keep ours */ kept++; continue; }
+    if (!o && r) {
+      if (unchangedSinceBase(baseShows, slug, r)) { resolvedAsDeletion++; continue; }
+      merged.shows[slug] = r; added++; continue;
+    }
+    if (o && !r) {
+      if (unchangedSinceBase(baseShows, slug, o)) { delete merged.shows[slug]; resolvedAsDeletion++; continue; }
+      kept++; continue;
+    }
     if (!o && !r) continue;
     // Both sides have the slug. Pick newer by lastUpdated, then overlay any
     // humanReviewed* flags from the loser so manual corrections survive.
@@ -111,8 +136,11 @@ function mergeCommercialJson(ours, remote) {
     merged._meta = { ...(ours._meta || {}), ...(remote._meta || {}), ...newer };
   }
 
-  return { merged, stats: { added, kept, overlaid, totalSlugs: allSlugs.size } };
+  return { merged, stats: { added, kept, overlaid, resolvedAsDeletion, totalSlugs: allSlugs.size } };
 }
+// reconcile-merged-json.js: without PUSH_RECONCILE_BASE, pass no base (union)
+// rather than the post-rebase merge-base, which equals remote.
+mergeCommercialJson.requiresTrueBase = true;
 
 const PENDING_ENTRY_DATE_FIELDS = ['researchedAt', 'detectedAt', 'lastUpdated'];
 

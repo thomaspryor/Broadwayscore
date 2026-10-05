@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { getScoreClass } from '@/lib/critic-page-utils';
 import { ColumnHeader } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 type SortColumn = 'name' | 'obc' | 'shows' | 'avg';
 type SortDir = 'asc' | 'desc';
@@ -43,7 +44,7 @@ function ProfileCard({ profile, routePath, showObc }: { profile: CreativeProfile
           height={40}
           loading="lazy"
           className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-          onError={() => setImgFailed(true)}
+          ref={catchEarlyImgError(() => setImgFailed(true))} onError={() => setImgFailed(true)}
         />
       ) : (
         <div className="w-10 h-10 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
