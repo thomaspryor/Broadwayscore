@@ -67,7 +67,7 @@ Add any conflicts found to the context block as **"Known conflicts"** so reviewe
 Launch ALL SIX simultaneously in a single message with parallel tool calls — the pre-mortem and the design reviewer run in parallel too, not after. Do not serialize them; latency matters and they're independent.
 
 1. **Codex (GPT-5.x with codebase access) — Production & Architecture focus** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING` first.
+   **Codex check:** Run `command -v codex >/dev/null && { node scripts/codex/install.js >/dev/null 2>&1; echo READY; } || echo MISSING` (the install is idempotent and gives Codex the repo guards, BRO-4745) first.
    - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file:**
      ```bash
      set -o pipefail
