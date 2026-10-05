@@ -33,6 +33,8 @@ jobs:
       - name: Re-run cancelled Land job
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-4651: used only when GITHUB_TOKEN's shared quota is spent.
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/land-retry-cancelled.js --run=${{ github.event.workflow_run.id }}
 
       - name: Notify on failure
