@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { activeEntriesFor } = require('./core-data-merge-registry');
+const { TOMBSTONE_DIR, buildTombstoneRows, writeTombstones } = require('./merge-tombstones');
 
 function main() {
   const [snapshotDir] = process.argv.slice(2);
@@ -56,6 +57,11 @@ function main() {
 
       fs.writeFileSync(localFile, after);
       changedFiles.push(localFile);
+      // Durable provenance for rows the merge deleted (BRO-2918); fail open.
+      try {
+        const tomb = writeTombstones(TOMBSTONE_DIR, buildTombstoneRows(localFile, result.stats));
+        if (tomb) changedFiles.push(tomb);
+      } catch (te) { console.error(`  ::warning::tombstone write failed (${String(te.message).slice(0, 120)})`); }
       console.error(`  reconciled ${localFile} — ${JSON.stringify(result.stats)}`);
     } catch (e) {
       // Fail OPEN, loudly enough to debug but never blocking.
