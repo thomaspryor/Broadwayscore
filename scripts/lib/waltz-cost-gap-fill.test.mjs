@@ -10,9 +10,11 @@ const {
   waltzCostPatch,
   isReportedWeeklyCost,
   isPlausibleWeeklyCost,
+  citedSections,
   costSourceBasis,
   methodologyForCostSource,
-  mayReplaceReportedCost,
+  isReportedSource,
+  isPrintableReportedCitation,
   isCitedReportedWeeklyCost,
   REPORTED_COST_METHODOLOGIES,
   OUR_ESTIMATE_METHODOLOGIES,
@@ -105,15 +107,52 @@ test('costSourceBasis reads the update prompt\'s "Section X:" sources', () => {
   }
 });
 
-test('only a trade or SEC source may replace a reported weekly cost', () => {
+test('costSourceBasis reads plural and mixed section citations', () => {
+  const cases = [
+    // Any Reddit section makes the figure his (an estimate).
+    ['Sections C and F: Deadline echoes the grosses post', 'reddit'],
+    ['Sections F, D: trade and comments', 'reddit'],
+    ['Sections C-E: Reddit consensus', 'reddit'],
+    ['Sections B-F', 'reddit'],
+    // Only trade press and SEC sections: reported.
+    ['Sections F and H: Deadline and Form D agree', 'sec'],
+    ['Sections F & F: two Deadline pieces', 'trade'],
+    ['Section F; Section F: Variety', 'trade'],
+    // Our own data or math beside trade press is inference.
+    ['Sections A and F: current data plus Variety', null],
+    ['Section B: box office math, consistent with Variety', null],
+    ['Section B: Deadline-style estimate', null],
+    ['Sections F, G', null],
+  ];
+  for (const [source, basis] of cases) assert.equal(costSourceBasis(source), basis, source);
+  assert.deepEqual([...citedSections('Sections C, D and F: x')].sort(), ['C', 'D', 'F']);
+  assert.deepEqual([...citedSections('Sections C-E')].sort(), ['C', 'D', 'E']);
+  assert.deepEqual([...citedSections('Sections C-D-E')].sort(), ['C', 'D', 'E']);
+  // "and" is a separator, never section A; "Section Data" cites nothing.
+  assert.deepEqual([...citedSections('Sections F and H')].sort(), ['F', 'H']);
+  assert.equal(citedSections('Section Data from Variety').size, 0);
+  assert.equal(citedSections('second section').size, 0);
+});
+
+test('only a trade or SEC source counts as reported', () => {
   assert.equal(methodologyForCostSource('Section C: Grosses Analysis'), WALTZ_METHODOLOGY);
   assert.equal(methodologyForCostSource('Section B: box office math'), 'industry-estimate');
   assert.equal(methodologyForCostSource('Section H: SEC Form D'), 'sec-filing');
   assert.equal(methodologyForCostSource('Section F: Deadline'), 'trade-reported');
-  assert.equal(mayReplaceReportedCost('Section C: Grosses Analysis'), false);
-  assert.equal(mayReplaceReportedCost('Section B: box office math'), false);
-  assert.equal(mayReplaceReportedCost('Section F: Deadline'), true);
-  assert.equal(mayReplaceReportedCost('Section H: SEC Form D'), true);
+  assert.equal(isReportedSource('Section C: Grosses Analysis'), false);
+  assert.equal(isReportedSource('Section B: box office math'), false);
+  assert.equal(isReportedSource('Sections B and F: Variety'), false);
+  assert.equal(isReportedSource('Section F: Deadline'), true);
+  assert.equal(isReportedSource('Section H: SEC Form D'), true);
+});
+
+test('a printable citation names the outlet, with no section letter or research wording', () => {
+  for (const ok of ['Deadline (Oct 3, 2026)', 'SEC Form D filing (2025)', 'The New York Times, Sept 2026']) {
+    assert.equal(isPrintableReportedCitation(ok), true, ok);
+  }
+  for (const bad of ['Section F: Deadline', 'Sections F and H', 'Variety (GPT Deep Research)', 'Reddit, citing Variety', 'industry estimate', 'Producer said so', '', '  ', null, 650000]) {
+    assert.equal(isPrintableReportedCitation(bad), false, String(bad));
+  }
 });
 
 test('isCitedReportedWeeklyCost needs a reported method, no estimate flag, and a printable source', () => {

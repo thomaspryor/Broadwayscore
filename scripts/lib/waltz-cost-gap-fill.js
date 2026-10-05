@@ -15,6 +15,8 @@
  * Pure: no I/O.
  */
 
+const { internalWordingIn } = require('./commercial-record-checks');
+
 // costMethodology values that mean the weekly cost was reported, not estimated.
 const REPORTED_COST_METHODOLOGIES = new Set(['trade-reported', 'sec-filing', 'producer-confirmed']);
 // Our own estimates, which his per-show figures replace.
@@ -37,23 +39,52 @@ function isReportedWeeklyCost(record) {
   return record?.weeklyRunningCost != null && REPORTED_COST_METHODOLOGIES.has(record.costMethodology);
 }
 
-// update-commercial-data.js sends the model his grosses post as "Section C"
-// and "D" and other Reddit threads as "Section E"; trade press is "Section F"
-// and SEC Form D filings "Section H". The model writes sources as
-// "Section X: ...", so "reddit" alone missed most of his figures, and a
-// substring test for "sec" matched every "Section".
-const REDDIT_SOURCE_RE = /\breddit\b|\br\/broadway\b|\bu\/|\bsection\s*[cde]\b|grosses\s+analysis|boring[\s_]*waltz/i;
-const SEC_SOURCE_RE = /\bsection\s*h\b|\bsec\b|\bform\s*d\b|\bedgar\b/i;
-const TRADE_SOURCE_RE = /\bsection\s*f\b|\bdeadline\b|\bvariety\b|broadway\s+news|broadway\s+journal|new\s+york\s+times|\bnyt\b|hollywood\s+reporter|\bforbes\b|\bplaybill\b|theatermania|broadwayworld|wall\s+street\s+journal/i;
+// update-commercial-data.js sends the model its context in lettered sections:
+// A current data, B box-office math, C his grosses post, D its comments,
+// E other Reddit threads, F trade press, G shows without data, H SEC Form D
+// filings. The model writes sources as "Section X: ..." or "Sections C and F:
+// ...", so "reddit" alone missed most of his figures, and a substring test
+// for "sec" matched every "Section".
+const REDDIT_SECTIONS = new Set(['C', 'D', 'E']);
+const REPORTED_SECTIONS = new Set(['F', 'H']);
+// "Section C", "Sections C, D and F", "Sections F/H", "Sections C-E".
+const SECTION_LIST_RE = /\bsections?\s*\(?\s*([a-h](?:\s*(?:,|&|\band\b|\bor\b|\/|-|–)\s*[a-h])*)\b/gi;
+const SECTION_RANGE_RE = /\b([a-h])\s*[-–]\s*([a-h])\b/gi;
+const SECTION_SEPARATOR_RE = /\s*(?:,|&|\band\b|\bor\b|\/|-|–)\s*/i;
+const REDDIT_SOURCE_RE = /\breddit\b|\br\/broadway\b|\bu\/|grosses\s+analysis|boring[\s_]*waltz/i;
+const SEC_SOURCE_RE = /\bsec\b|\bform\s*d\b|\bedgar\b/i;
+const TRADE_SOURCE_RE = /\bdeadline\b|\bvariety\b|broadway\s+news|broadway\s+journal|new\s+york\s+times|\bnyt\b|hollywood\s+reporter|\bforbes\b|\bplaybill\b|theatermania|broadwayworld|wall\s+street\s+journal/i;
+
+/** The context-section letters a source cites, upper case ("Sections C-E" gives C, D, E). */
+function citedSections(source) {
+  const letters = new Set();
+  if (typeof source !== 'string') return letters;
+  for (const m of source.matchAll(SECTION_LIST_RE)) {
+    const list = m[1].replace(SECTION_RANGE_RE, (_, a, b) => {
+      const [lo, hi] = [a.toUpperCase().charCodeAt(0), b.toUpperCase().charCodeAt(0)].sort((x, y) => x - y);
+      return Array.from({ length: hi - lo + 1 }, (_, i) => String.fromCharCode(lo + i)).join(',');
+    });
+    for (const letter of list.split(SECTION_SEPARATOR_RE)) letters.add(letter.trim().toUpperCase());
+  }
+  return letters;
+}
 
 /**
- * What a model-proposed cost's source text says it rests on: 'reddit', 'sec',
- * 'trade', or null when it names nothing (the model's own inference). Reddit
- * wins when a source mentions it at all, so a mixed source counts as an estimate.
+ * What a model-proposed figure's source text says it rests on: 'reddit',
+ * 'sec', 'trade', or null when it names nothing (the model's own inference).
+ * Reddit wins when a source mentions it at all, so a mixed source counts as
+ * an estimate. A source citing sections counts as reported only when every
+ * section it cites is trade press (F) or an SEC filing (H): our own data (A),
+ * box-office math (B) or the no-data list (G) beside them is inference.
  */
 function costSourceBasis(source) {
   if (typeof source !== 'string' || !source.trim()) return null;
-  if (REDDIT_SOURCE_RE.test(source)) return 'reddit';
+  const sections = citedSections(source);
+  if (REDDIT_SOURCE_RE.test(source) || [...sections].some((s) => REDDIT_SECTIONS.has(s))) return 'reddit';
+  if (sections.size > 0) {
+    if (![...sections].every((s) => REPORTED_SECTIONS.has(s))) return null;
+    return sections.has('H') ? 'sec' : 'trade';
+  }
   if (SEC_SOURCE_RE.test(source)) return 'sec';
   if (TRADE_SOURCE_RE.test(source)) return 'trade';
   return null;
@@ -67,14 +98,29 @@ function methodologyForCostSource(source) {
   return basis ? METHODOLOGY_BY_BASIS[basis] : 'industry-estimate';
 }
 
-/** True when a model-proposed weekly cost may replace a reported one: only a trade or SEC source may. */
-function mayReplaceReportedCost(source) {
+/**
+ * True when a model-proposed figure rests on trade press or an SEC filing.
+ * Only such a figure may replace a reported one, or keep a citation and print
+ * as reported; anything else is an estimate.
+ */
+function isReportedSource(source) {
   return REPORTED_COST_METHODOLOGIES.has(methodologyForCostSource(source));
 }
 
 // Research-tooling wording src/lib/commercial-display.ts publicSourceText()
 // also refuses to print as a source.
 const INTERNAL_COST_SOURCE_RE = /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\bconsensus\b|\binferred\b|industry[\s-]*estimate/i;
+
+/**
+ * A citation the weekly update may store beside a figure it labels reported:
+ * it names trade press or an SEC filing, and reads as a citation (no context
+ * section letters, no research-tooling wording).
+ */
+function isPrintableReportedCitation(text) {
+  if (typeof text !== 'string' || !text.trim()) return false;
+  return citedSections(text).size === 0 && isReportedSource(text)
+    && !INTERNAL_COST_SOURCE_RE.test(text) && !internalWordingIn(text);
+}
 
 /**
  * A reported weekly cost that names a printable source. /biz shows any other
@@ -134,9 +180,11 @@ module.exports = {
   waltzCostPatch,
   isPlausibleWeeklyCost,
   isReportedWeeklyCost,
+  citedSections,
   costSourceBasis,
   methodologyForCostSource,
-  mayReplaceReportedCost,
+  isReportedSource,
+  isPrintableReportedCitation,
   isCitedReportedWeeklyCost,
   REPORTED_COST_METHODOLOGIES,
   OUR_ESTIMATE_METHODOLOGIES,
