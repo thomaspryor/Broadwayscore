@@ -50,12 +50,17 @@ function slotQueries(repo) {
   return out;
 }
 
-/** A Land run's Land job is running or waiting in `landing` (Checks done, Land not). */
+/**
+ * A Land run's Land job is running or waiting in `landing` (Checks done, Land
+ * not). Checks done with no Land job listed yet reads as held: it is about to
+ * enter the slot.
+ */
 function landJobInSlot(jobs) {
   const byName = (n) => (jobs || []).find((j) => j.name === n);
   const checks = byName('Checks');
   const land = byName('Land');
-  return Boolean(checks && checks.status === 'completed' && land && land.status !== 'completed');
+  if (!checks || checks.status !== 'completed') return false;
+  return !land || land.status !== 'completed';
 }
 
 /**

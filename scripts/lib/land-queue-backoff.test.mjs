@@ -39,7 +39,8 @@ test('landJobInSlot: only a Land job past Checks and not finished holds the slot
   assert.equal(landJobInSlot(landRunning), true);
   assert.equal(landJobInSlot(inChecks), false);
   assert.equal(landJobInSlot([{ name: 'Checks', status: 'completed' }, { name: 'Land', status: 'completed' }]), false);
-  assert.equal(landJobInSlot([{ name: 'Checks', status: 'completed' }]), false);
+  // Checks done, Land job not created yet: about to enter the slot
+  assert.equal(landJobInSlot([{ name: 'Checks', status: 'completed' }]), true);
   assert.equal(landJobInSlot(undefined), false);
 });
 
