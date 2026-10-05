@@ -20,6 +20,8 @@ const {
   summarizeTrace2Children,
   extractTrace2Timeline,
   formatTrace2Timeline,
+  classifyPushStderr,
+  extractHookText,
 } = require('./lib/push-diagnostics.js');
 
 const [, , cmd, file, maxBytesArg] = process.argv;
@@ -32,7 +34,12 @@ function readTraceFile(f) {
   }
 }
 
-if (cmd === 'classify') {
+if (cmd === 'classify-push-stderr') {
+  // BRO-2879: hook-rejected | race-or-other, for push-with-retry.sh.
+  process.stdout.write(classifyPushStderr(readTraceFile(file)));
+} else if (cmd === 'hook-text') {
+  process.stdout.write(extractHookText(readTraceFile(file)));
+} else if (cmd === 'classify') {
   process.stdout.write(classifyStallPhase(readTraceFile(file)));
 } else if (cmd === 'service') {
   // BRO-2839: reported SEPARATELY from classify so the phase string's value

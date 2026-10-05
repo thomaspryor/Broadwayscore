@@ -116,3 +116,45 @@ test('reconcile-core-data-registry: reconciles multiple registered files indepen
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+test('reconcile-core-data-registry: a dropped Unknown-byline fossil leaves a durable tombstone file (BRO-2918)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'reconcile-core-data-'));
+  try {
+    const checkout = path.join(tmp, 'checkout');
+    const snapshot = path.join(tmp, 'snapshot');
+    fs.mkdirSync(checkout, { recursive: true });
+    fs.mkdirSync(snapshot, { recursive: true });
+    const base = { showId: 's', outlet: 'Radio Times', outletId: 'radio-times', url: 'https://www.radiotimes.com/a/review/', assignedScore: 80 };
+    fs.writeFileSync(path.join(checkout, 'reviews.json'), JSON.stringify({
+      _meta: { lastUpdated: '2026-10-02T00:00:00Z' },
+      reviews: [{ ...base, criticName: 'Olivia Garrett', fullText: 'x'.repeat(500) }],
+    }, null, 2) + '\n');
+    fs.writeFileSync(path.join(snapshot, 'reviews.json'), JSON.stringify({
+      _meta: { lastUpdated: '2026-10-01T00:00:00Z' },
+      reviews: [{ ...base, criticName: 'Unknown' }],
+    }, null, 2) + '\n');
+
+    // Fossil only in the remote snapshot: local bytes are unchanged, but the
+    // merge still declined to carry it, so the decision is recorded and
+    // reviews.json is NOT listed as changed.
+    const quiet = run(checkout, snapshot).trim().split('\n');
+    assert.equal(quiet.length, 1);
+    assert.match(quiet[0], /^review-merge-tombstones\/.+\.jsonl$/);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(checkout, quiet[0]), 'utf8').trim()).supersededBy, 'Olivia Garrett');
+
+    // Fossil present in ours (local carried the stale identity): merge drops it.
+    fs.writeFileSync(path.join(checkout, 'reviews.json'), JSON.stringify({
+      _meta: { lastUpdated: '2026-10-02T00:00:00Z' },
+      reviews: [{ ...base, criticName: 'Olivia Garrett', fullText: 'x'.repeat(500) }, { ...base, criticName: 'Unknown' }],
+    }, null, 2) + '\n');
+    const out = run(checkout, snapshot).trim().split('\n');
+    assert.equal(out.length, 2);
+    assert.equal(out[1], 'reviews.json');
+    assert.match(out[0], /^review-merge-tombstones\/.+\.jsonl$/);
+    const row = JSON.parse(fs.readFileSync(path.join(checkout, out[0]), 'utf8').trim());
+    assert.equal(row.supersededBy, 'Olivia Garrett');
+    assert.equal(row.url, base.url);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

@@ -1493,7 +1493,7 @@ describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must
     const { applyUrlChangeInvariant } = require('../../scripts/lib/url-change-invariant.js');
     const NEW_URL = 'https://monstagigz.test/2026/08/29/the-story/';
     const existingFor = (reason) => ({
-      url: 'https://monstagigz.test/2026/08/29/the-story/comment-page-1/',
+      url: 'https://monstagigz.test/2026/08/29/the-story-old-article/',
       wrongProduction: true,
       wrongProductionReason: reason,
       publishDate: '2026-08-29',
@@ -1520,7 +1520,7 @@ describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must
     // here and strand a flag the rebuild's auto-clear cannot even reach (it
     // requires reviewDate to enter). Two BRO-2740 tests caught exactly this.
     const dateless = {
-      url: 'https://monstagigz.test/2026/08/29/the-story/comment-page-1/',
+      url: 'https://monstagigz.test/2026/08/29/the-story-old-article/',
       wrongProduction: true,
       wrongProductionReason: 'anticipatory_pre_opening_post',
     };
