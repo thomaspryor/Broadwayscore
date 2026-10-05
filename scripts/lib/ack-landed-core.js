@@ -490,7 +490,7 @@ function decideAlreadyLanded(input) {
 // Paths whose change alone is never "the card's work": ledgers, audit logs,
 // memory, scratch and handoff notes.
 function isBookkeepingPath(p) {
-  return /^(?:data\/audit\/|memory\/|scratchpad\/|\.claude\/handoff)/.test(String(p || '')) || /\.jsonl$/.test(String(p || ''));
+  return /^(?:data\/audit\/|memory\/|scratchpad\/|\.claude\/handoff)/.test(String(p || ''));
 }
 
 // Terminal rows a dispatch attempt can end on: the job vocabulary (matched by
@@ -543,7 +543,14 @@ function attemptWindows(rows) {
           break;
         }
       }
-      push(r, lastEnd((t) => t.workspaceRef === r.workspaceRef && tsOf(t) > launchTs && tsOf(t) < nextSameRef));
+      const end = lastEnd((t) => t.workspaceRef === r.workspaceRef && tsOf(t) > launchTs && tsOf(t) < nextSameRef);
+      // No terminal row, but the SAME workspace was relaunched: that tab's
+      // earlier attempt is over (ship-check P2, BRO-2575's real shape).
+      if (!end && Number.isFinite(nextSameRef)) {
+        windows.push({ launchTs: r.ts, endTs: new Date(nextSameRef).toISOString(), endEvent: 'relaunched on same workspace' });
+        continue;
+      }
+      push(r, end);
       continue;
     }
     if (e === 'launch') {
@@ -627,7 +634,10 @@ function decideLandedElsewhere(input) {
     }
     for (const w of attemptWindows(rows)) {
       const lo = Date.parse(w.launchTs || '');
-      const hi = w.endTs == null ? Infinity : Date.parse(w.endTs) + COMMIT_AFTER_TERMINAL_GRACE_MS;
+      // An unreadable end ts must fail CLOSED (unbounded), never make the
+      // window match nothing (Codex ship-check P1).
+      const endParsed = w.endTs == null ? NaN : Date.parse(w.endTs);
+      const hi = Number.isFinite(endParsed) ? endParsed + COMMIT_AFTER_TERMINAL_GRACE_MS : Infinity;
       if (Number.isFinite(lo) && workTs >= lo && workTs <= hi) {
         refusals.push(`the sha was authored at ${workTsRaw}, INSIDE the dispatch attempt launched ${w.launchTs}${w.endTs ? ` (ended ${w.endEvent} ${w.endTs})` : ' (no terminal row)'} — it may be that attempt's own work; ack it with the default mode (optionally --job-id), not --landed-elsewhere`);
         break;
@@ -656,11 +666,12 @@ function decideLandedElsewhere(input) {
   } else if (!paths.some((p) => !isBookkeepingPath(p))) {
     refusals.push(`the sha changes ${paths.length ? `only bookkeeping paths (${paths.slice(0, 3).join(', ')}${paths.length > 3 ? ', …' : ''})` : 'no files at all'} — not a landing of the card's work`);
   }
-  const recordedVerify = [...new Set((rows || [])
-    .filter((r) => r && String(r.event) === 'launch' && r.verifyCmd)
-    .map((r) => String(r.verifyCmd).trim()))];
-  if (recordedVerify.length && verify.cmd && !recordedVerify.includes(String(verify.cmd).trim())) {
-    refusals.push(`--verify must be the acceptance command recorded at dispatch (${recordedVerify.join(' | ')}) — got ${verify.cmd}`);
+  // The NEWEST recorded acceptance, not any historical one: a card's
+  // acceptance can be tightened between dispatches (Codex ship-check P1).
+  const recorded = (rows || []).filter((r) => r && String(r.event) === 'launch' && r.verifyCmd);
+  const newestVerify = recorded.length ? String(recorded[recorded.length - 1].verifyCmd).trim() : null;
+  if (newestVerify && verify.cmd && String(verify.cmd).trim() !== newestVerify) {
+    refusals.push(`--verify must be the acceptance command recorded at the latest dispatch (${newestVerify}) — got ${verify.cmd}`);
   }
 
   refusals.push(...checkoutRefusals(checkout));
@@ -687,6 +698,24 @@ function decideLandedElsewhere(input) {
   return { ok, refusals, row, newest, launch: first };
 }
 
+/**
+ * PURE. Did the ref's ledger rows change between the snapshot every
+ * precondition was judged on and the moment of writing? The verify run can
+ * take minutes; a relaunch, a new terminal row or another session's ack in
+ * that gap means the row about to be written certifies a stale picture
+ * (Codex ship-check P1, BRO-4662 — applies to every mode). Compared by
+ * count + the newest row's identity: the ledger is append-only.
+ * @returns {string|null} refusal text, or null when unchanged
+ */
+function ledgerChangedSince(before, after) {
+  const a = before || [];
+  const b = after || [];
+  const key = (r) => (r ? `${r.ts}|${r.event}|${r.jobId || ''}|${r.workspaceRef || ''}` : '');
+  if (a.length === b.length && key(a[a.length - 1]) === key(b[b.length - 1])) return null;
+  const fresh = b.slice(a.length).map((r) => `${r.event} ${r.ts}`).join(', ') || 'rows rewritten';
+  return `the ledger changed for this ref while the verify ran (${fresh}) — re-run so the ack is judged on the current rows`;
+}
+
 function formatAckLine(ref, row) {
   return `ACKED: ${ref} — ${row.sha} on origin/main, ${row.verifyCmd} exit 0`;
 }
@@ -694,5 +723,5 @@ function formatAckLine(ref, row) {
 module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
   rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, earliestLaunch,
-  decideAck, decideAlreadyLanded, decideLandedElsewhere, attemptWindows, isBookkeepingPath, formatAckLine, messageNamesRef,
+  decideAck, decideAlreadyLanded, decideLandedElsewhere, attemptWindows, isBookkeepingPath, ledgerChangedSince, formatAckLine, messageNamesRef,
 };

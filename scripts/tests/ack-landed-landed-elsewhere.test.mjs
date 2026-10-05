@@ -183,7 +183,7 @@ test('review fixture: an empty or bookkeeping-only commit naming the card after 
 
 test('review fixture: --verify that is not the acceptance command recorded at dispatch is REFUSED', () => {
   const d = core.decideLandedElsewhere(base({ verify: { cmd: 'node --test scripts/lib/some-other.test.mjs', safe: true, unsafeReason: null, exitCode: 0 } }));
-  assert.match(d.refusals.join('\n'), /must be the acceptance command recorded at dispatch/);
+  assert.match(d.refusals.join('\n'), /must be the acceptance command recorded at the latest dispatch/);
 });
 
 test('a sha tied to the stranded job\'s own sha (ancestry or patch twin) is refused here — that job did the work', () => {
@@ -247,4 +247,43 @@ test('exit-status-gate.sh GO_ACK_EVENTS and GP_TERMINAL_EVENTS carry every ack e
     assert.ok(m, `${name} literal not found in the hook — positive control failed`);
     for (const ev of ledger.LANDED_ACK_EVENTS) assert.ok(m[1].includes(`'${ev}'`), `${name} lacks ${ev}`);
   }
+});
+
+// ── ship-check round (Codex + Claude reviewers) ──
+test('an unreadable terminal ts fails CLOSED: the attempt is unbounded, so later shas refuse', () => {
+  const bad = rows.map((r) => (r.event === 'job-stranded' ? { ...r, ts: 'invalid' } : r));
+  const d = core.decideLandedElsewhere(base({ rows: bad }));
+  assert.equal(d.ok, false);
+  assert.match(d.refusals.join('\n'), /INSIDE the dispatch attempt launched 2026-09-25T03:53:54.176Z/);
+});
+
+test('--verify must match the NEWEST recorded acceptance command, not an older one', () => {
+  const tightened = [...rows];
+  const i = tightened.findIndex((r) => r.ts === '2026-09-25T03:53:54.176Z');
+  tightened[i] = { ...tightened[i], verifyCmd: 'node --test tests/unit/absence-claim-control-v2.test.mjs' };
+  const d = core.decideLandedElsewhere(base({ rows: tightened })); // base verify = the OLDER command
+  assert.match(d.refusals.join('\n'), /recorded at the latest dispatch \(node --test tests\/unit\/absence-claim-control-v2/);
+});
+
+test('cmux: a relaunch onto the SAME workspace with no terminal row ends the earlier attempt', () => {
+  const r = [
+    { ts: '2026-09-01T04:52:00Z', event: 'launch', taskId: TASK, workspaceRef: 'workspace:51' },
+    { ts: '2026-09-01T13:17:00Z', event: 'launch', taskId: TASK, workspaceRef: 'workspace:51' },
+    { ts: '2026-09-01T14:00:00Z', event: 'vanished', taskId: TASK, workspaceRef: 'workspace:51' },
+  ];
+  const w = core.attemptWindows(r);
+  assert.equal(w[0].endEvent, 'relaunched on same workspace');
+  assert.deepEqual(core.decideLandedElsewhere(base({ rows: r, landing: { ...WORK, authorTs: '2026-09-03T00:00:00Z' } })).refusals, []);
+});
+
+test('fixture/golden .jsonl files count as real work; data/audit ledgers do not', () => {
+  assert.equal(core.isBookkeepingPath('hooks/tests/fixtures/ledgers/x.jsonl'), false);
+  assert.equal(core.isBookkeepingPath('data/audit/dispatch-ledger.jsonl'), true);
+  assert.deepEqual(core.decideLandedElsewhere(base({ landing: { ...WORK, changedPaths: ['tests/fixtures/golden.jsonl'] } })).refusals, []);
+});
+
+test('ledgerChangedSince: unchanged → null; a relaunch appended during verify → refusal naming it', () => {
+  assert.equal(core.ledgerChangedSince(rows, [...rows]), null);
+  const later = [...rows, { ts: '2026-10-04T10:00:00Z', event: 'launch', taskId: TASK }];
+  assert.match(core.ledgerChangedSince(rows, later), /ledger changed for this ref while the verify ran \(launch 2026-10-04T10:00:00Z\)/);
 });
