@@ -1733,6 +1733,22 @@ const crossShowFingerprints = new Map();
           }
         }
 
+        // Prior-run republish self-release (BRO-4641): our flag is body-text-derived, so it
+        // lifts when the detector no longer matches (refetched body, or the show gained
+        // a declared priorRuns window). Manual/human decisions are never touched.
+        if (d.wrongProduction === true && d.wrongProductionReason === 'prior-run-republish' &&
+            !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false && !d.allowEarlyDate &&
+            !detectPriorRunRepublish({ text: d.fullText, show: showRecord }).flag) {
+          const wasNote = d.wrongProductionNote;
+          d.wrongProduction = false;
+          d.wrongProductionAutoCleared = `rebuild: prior-run republish no longer detected (was: ${wasNote})`;
+          d.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
+          delete d.wrongProductionNote;
+          delete d.wrongProductionReason;
+          if (isStaleScoreInput(d, showRecord, fp)) markRescoreNeeded(d, 'wrongProduction cleared (prior-run republish no longer detected)');
+          safeWriteReview(fp, d, { force: true });
+        }
+
         if (d.wrongProduction || d.wrongShow) continue;
 
         // Records mid-URL-correction are NOT evidence: the body has not been

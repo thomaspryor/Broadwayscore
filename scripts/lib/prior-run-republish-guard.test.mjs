@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const { detectPriorRunRepublish } = require('./prior-run-republish-guard');
 const { guardPublishDate } = require('./date-guard');
 
-const show = { id: 'slam-frank-off-broadway-2026', previewsStartDate: '2026-09-17', openingDate: '2026-10-04', closingDate: '2026-11-30', category: 'off-broadway' };
+const show = { id: 'slam-frank-off-broadway-2026', title: 'Slam Frank', previewsStartDate: '2026-09-17', openingDate: '2026-10-04', closingDate: '2026-11-30', category: 'off-broadway' };
 
 // Verbatim shape of the live Jewish Voice page (BRO-4641).
 const JV = 'Brash, Brilliant, Irreverent – Slam Frank Jun 12, 2026 by Two Sues On the Aisle [Updated June 2026] Slam Frank returns Off-Broadway at the Orpheum Theatre October 4 – November 30, 2026. Note: Our review is based on the 2025 performance at the Asylum Theater Slam Frank, a musical comedic satire, playing at the Asylum Theater through December 28, reimagines Anne Frank.';
@@ -49,4 +49,9 @@ test('date guard is blind here: llm-scoring 2026-06-12 is swapped for the fetch 
   const r = guardPublishDate({ publishDate: '2026-06-12', dateSource: 'llm-scoring', textFetchedAt: '2026-10-04T22:33:59Z' }, show);
   assert.equal(r.substituted, true);
   assert.equal(r.publishDate, '2026-10-04');
+});
+
+test('"was at:" about a different show (sidebar) is not flagged', () => {
+  const t = 'Great new show. Related: Other Musical was at: Asylum NYC through December 28, 2025.';
+  assert.equal(detectPriorRunRepublish({ text: t, show: { ...show, title: 'Slam Frank' } }).flag, false);
 });

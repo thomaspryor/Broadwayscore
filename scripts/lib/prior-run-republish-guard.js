@@ -63,7 +63,11 @@ function detectPriorRunRepublish({ text, show }) {
   }
 
   const wasAt = head.match(WAS_AT_THROUGH_RE);
-  if (wasAt) {
+  // The header must be about THIS show: a sidebar "<other show> was at: ..." on a
+  // blog template must not trigger it.
+  const lead = wasAt ? head.slice(Math.max(0, wasAt.index - 80), wasAt.index).toLowerCase() : '';
+  const baseTitle = String(show.title || '').replace(/\s*\(.*?\)/g, '').trim().toLowerCase();
+  if (wasAt && baseTitle && lead.includes(baseTitle)) {
     const mon = MONTH_NUM[wasAt[1].toLowerCase().slice(0, wasAt[1].toLowerCase() === 'sept' ? 4 : 3)];
     const iso = ymd(+wasAt[3], mon, +wasAt[2]);
     if (mon && iso < earliest) {
