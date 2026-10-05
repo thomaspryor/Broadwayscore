@@ -95,11 +95,13 @@
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
     "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
     "as-you-like-it-globe-west-end-2026/onin--caitlin-neal.json",
-    "matilda-the-musical-theatre-row-off-broadway-2026/timeout--melissa-woodley.json"
+    "matilda-the-musical-theatre-row-off-broadway-2026/timeout--melissa-woodley.json",
+    "slam-frank-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
-    "slam-frank-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -135,7 +137,15 @@
     "jane-eyre-off-west-end-2026/broadwayworld--stephi-wild.json",
     "the-story-west-end-2026/jonathan-baz--unknown.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
-    "paranormal-activity-2026/nytimes--helen-shaw.json"
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -198,7 +208,10 @@
       "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026/one-minute-critic--jerry-portwood.json",
       "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
       "as-you-like-it-globe-west-end-2026/onin--caitlin-neal.json",
-      "matilda-the-musical-theatre-row-off-broadway-2026/timeout--melissa-woodley.json"
+      "matilda-the-musical-theatre-row-off-broadway-2026/timeout--melissa-woodley.json",
+      "slam-frank-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -237,7 +250,8 @@
       "million-dollar-quartet-off-west-end-2026/broadwayworld--michael-major.json",
       "maybe-happy-ending-tour-2026/broadwayworld--richard-sasanow.json",
       "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "electra-persona-west-end-2026/vocaleyes--unknown.json"
+      "electra-persona-west-end-2026/vocaleyes--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -257,7 +271,7 @@
     ]
   },
   "startTime": "2026-10-05T09:48:03.733Z",
-  "lastProcessed": "matilda-the-musical-theatre-row-off-broadway-2026/timeout--melissa-woodley.json",
+  "lastProcessed": "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
   "log": [
     {
       "t": "2026-10-05T09:48:25.242Z",
@@ -350,6 +364,33 @@
       "t": "2026-10-05T12:46:41.630Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-05T12:53:07.569Z",
+      "event": "bb-session",
+      "session": "8fb97138",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T12:53:16.122Z",
+      "event": "bb-session",
+      "session": "dcefc01d",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T12:56:24.146Z",
+      "event": "bb-session",
+      "session": "dea8d78d",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T12:56:48.223Z",
+      "event": "bb-session",
+      "session": "e84cf93d",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
     }
+  ],
+  "recoveredAfterFailure": [
+    "slam-frank-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
   ]
 }

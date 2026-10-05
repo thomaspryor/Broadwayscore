@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-05T12:49:55.051Z",
-  "processed": 96,
-  "failed": 38,
-  "successRate": "71.6%",
+  "updatedAt": "2026-10-05T13:02:41.564Z",
+  "processed": 99,
+  "failed": 45,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 59,
+    "playwright": 62,
     "amp": 0,
     "browserbase": 5,
     "directCookies": 0,
     "scrapingdog": 17,
     "scrapingbee": 0,
-    "brightdata": 8,
+    "brightdata": 9,
     "archiveToday": 0,
     "archive": 13
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-05T09:48:25.242Z",
@@ -107,6 +107,30 @@
       "t": "2026-10-05T12:46:41.630Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-05T12:53:07.569Z",
+      "event": "bb-session",
+      "session": "8fb97138",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T12:53:16.122Z",
+      "event": "bb-session",
+      "session": "dcefc01d",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T12:56:24.146Z",
+      "event": "bb-session",
+      "session": "dea8d78d",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-05T12:56:48.223Z",
+      "event": "bb-session",
+      "session": "e84cf93d",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
     }
   ]
 }
