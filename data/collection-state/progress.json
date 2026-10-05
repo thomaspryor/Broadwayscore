@@ -8,37 +8,63 @@
     "the-lion-king-tour-2021/nytg--unknown.json",
     "the-lion-king-tour-2021/nytimes--unknown.json",
     "the-lion-king-tour-2021/thewrap--robert-hofler.json",
-    "the-lion-king-tour-2021/theatrely--unknown.json"
+    "the-lion-king-tour-2021/theatrely--unknown.json",
+    "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+    "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json",
+    "tru-off-west-end-2026/west-end-best-friend--unknown.json"
   ],
   "failed": [
-    "hamilton-tour-2024/guardian--alexis-soloski.json"
+    "hamilton-tour-2024/guardian--alexis-soloski.json",
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
+    "bull-off-west-end-2026/whatsonstage--unknown.json",
+    "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+    "hay-fever-west-end-2026/londontheatredirect--unknown.json",
+    "hay-fever-west-end-2026/thestage--the-stage.json",
+    "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "the-standard-of-living-west-end-2026/thestage--james-graham.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "hamilton-tour-2024/timeout--unknown.json",
       "the-lion-king-tour-2021/nytg--unknown.json",
-      "the-lion-king-tour-2021/theatrely--unknown.json"
+      "the-lion-king-tour-2021/theatrely--unknown.json",
+      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+      "tru-off-west-end-2026/guardian--mark-lawson.json",
+      "tru-off-west-end-2026/west-end-best-friend--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "hamilton-tour-2024/observer--david-cote.json",
       "hamilton-tour-2024/broadwayworld--richard-sasanow.json",
-      "the-lion-king-tour-2021/thewrap--robert-hofler.json"
+      "the-lion-king-tour-2021/thewrap--robert-hofler.json",
+      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "archiveToday": [],
     "archive": [
       "hamilton-tour-2024/nytimes--unknown.json",
       "hamilton-tour-2024/latimes--unknown.json",
-      "the-lion-king-tour-2021/nytimes--unknown.json"
+      "the-lion-king-tour-2021/nytimes--unknown.json",
+      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+      "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json"
     ]
   },
   "startTime": "2026-10-05T01:05:38.404Z",
-  "lastProcessed": "the-lion-king-tour-2021/theatrely--unknown.json",
+  "lastProcessed": "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-05T01:05:47.776Z",
@@ -61,6 +87,18 @@
       "t": "2026-10-05T01:06:08.148Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-05T01:35:44.394Z",
+      "event": "bb-session",
+      "session": "fa7eaccb",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-05T01:36:02.400Z",
+      "event": "bb-session",
+      "session": "8c7d8945",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
     }
   ]
 }

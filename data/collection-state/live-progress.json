@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-05T01:08:29.612Z",
-  "processed": 9,
-  "failed": 1,
-  "successRate": "90.0%",
+  "updatedAt": "2026-10-05T01:42:14.864Z",
+  "processed": 17,
+  "failed": 10,
+  "successRate": "63.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 6
   },
   "browserbaseSessions": 2,
   "recentActivity": [
@@ -37,6 +37,18 @@
       "t": "2026-10-05T01:06:08.148Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-05T01:35:44.394Z",
+      "event": "bb-session",
+      "session": "fa7eaccb",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-05T01:36:02.400Z",
+      "event": "bb-session",
+      "session": "8c7d8945",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
     }
   ]
 }
