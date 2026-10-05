@@ -35,6 +35,11 @@ function makeRepo() {
   git(repo, 'config', 'user.email', 'test@example.com');
   git(repo, 'config', 'user.name', 'Test');
   git(repo, 'config', 'commit.gpgsign', 'false');
+  // No background housekeeping in the scratch repo, so nothing writes .git
+  // after the last test and the rmSync cleanup can't hit ENOTEMPTY (BRO-4720).
+  git(repo, 'config', 'gc.auto', '0');
+  git(repo, 'config', 'gc.autoDetach', 'false');
+  git(repo, 'config', 'maintenance.auto', 'false');
   mkdirSync(join(repo, 'src'), { recursive: true });
   writeFileSync(join(repo, 'src', 'base.ts'), 'export const x = 1;\n');
   git(repo, 'add', '-A');
