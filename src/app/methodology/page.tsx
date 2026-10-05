@@ -556,6 +556,12 @@ export default function MethodologyPage() {
             <li className="flex items-start gap-2">
               <span className="text-brand">•</span>
               <span>
+                <strong className="text-white">Weekly cost</strong> without a ~ comes from the source named under it. A weekly cost with a ~ is an industry-typical figure or an independent analyst&apos;s published estimate, and any figure we cannot cite is shown with a ~.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
                 <strong className="text-white">Approaching recoupment</strong> lists running shows whose low-case estimate is at least 50% recouped. <strong className="text-white">At risk</strong> lists running shows whose average gross over the last 4 weeks is below estimated break-even and whose high-case estimate is under 30% recouped.
               </span>
             </li>
