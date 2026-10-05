@@ -190,7 +190,8 @@ test('tests: registering both fixes it; a branch with no test changes is clean',
 // ── hook, end to end, pushing from a git worktree like a real session ──────
 function landFixture() {
   const origin = tmp();
-  sh(origin, 'git init -q --bare -b main .');
+  // receive-pack runs auto-maintenance in the bare origin; global config is nulled here (BRO-4749).
+  sh(origin, 'git init -q --bare -b main . && git config gc.auto 0 && git config gc.autoDetach false && git config maintenance.auto false && git config receive.autogc false');
   const d = baseRepo();
   sh(d, `git remote add origin "${origin}" && git push -q origin main`);
   const wt = path.join(d, '.claude', 'worktrees', 'w');

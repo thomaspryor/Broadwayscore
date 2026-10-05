@@ -65,6 +65,11 @@ setup() {
   rm -rf "$d"; mkdir -p "$d"
 
   git init --bare -q -b main "$d/origin.git"
+  # Global config is /dev/null, so turn off the detached auto-maintenance
+  # receive-pack would run in the bare origin during rm -rf (BRO-4749).
+  for kv in gc.auto=0 gc.autoDetach=false maintenance.auto=false receive.autogc=false; do
+    git -C "$d/origin.git" config "${kv%%=*}" "${kv#*=}"
+  done
 
   git clone -q "$d/origin.git" "$d/main"
   git -C "$d/main" config user.email t@t.t

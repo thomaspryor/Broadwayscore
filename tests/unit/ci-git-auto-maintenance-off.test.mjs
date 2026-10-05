@@ -68,6 +68,35 @@ test('no workflow sets gc/maintenance keys through GIT_CONFIG_KEY_* env (local t
   assert.deepEqual(offenders, [], 'use a `git config --global` step instead (see this file header)');
 });
 
+// A fixture that nulls global config (GIT_CONFIG_GLOBAL=/dev/null) never sees
+// the CI step above, so if it makes a bare remote it must set the keys in that
+// repo itself (receive-pack reads the bare repo's own config).
+const NULLS_GLOBAL = /GIT_CONFIG_GLOBAL['"]?\s*[:=]\s*['"]?\/dev\/null/;
+function unguardedBareFixture(text) {
+  return NULLS_GLOBAL.test(text) && /--bare\b/.test(text) && !(/maintenance\.auto/.test(text) && /receive\.autogc/.test(text));
+}
+
+function walkTests(dir, out = []) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { if (e.name !== 'node_modules') walkTests(p, out); } else if (/\.test\.(m?js|sh|ts)$/.test(e.name)) out.push(p);
+  }
+  return out;
+}
+
+test('fixtures that null global git config and push to a bare remote turn maintenance off in that repo', () => {
+  const self = fileURLToPath(import.meta.url);
+  const files = ['tests', 'scripts'].flatMap((d) => walkTests(path.join(ROOT, d))).filter((f) => f !== self);
+  const bad = files.filter((f) => unguardedBareFixture(fs.readFileSync(f, 'utf8'))).map((f) => path.relative(ROOT, f));
+  assert.deepEqual(bad, [], 'after `init --bare`, set gc.auto 0, gc.autoDetach false, maintenance.auto false, receive.autogc false in the bare repo');
+});
+
+test('the fixture checker flags a nulled-global bare repo without the keys', () => {
+  assert.equal(unguardedBareFixture("GIT_CONFIG_GLOBAL: '/dev/null'\ngit init --bare o.git\n"), true);
+  assert.equal(unguardedBareFixture('export GIT_CONFIG_GLOBAL=/dev/null\ngit init --bare o.git\ngit -C o.git config maintenance.auto false\ngit -C o.git config receive.autogc false\n'), false);
+  assert.equal(unguardedBareFixture('git init --bare o.git\n'), false);
+});
+
 test('the checker catches a job missing a key', () => {
   assert.deepEqual(missingGlobalKeys('git config --global gc.auto 0\ngit config --global gc.autoDetach false\ngit config --global maintenance.auto false\n'), ['receive.autogc']);
 });
