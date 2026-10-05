@@ -1,0 +1,123 @@
+{
+  "runDate": "2026-10-05T00:00:01.250Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "hay-fever-west-end-2026,what-the-animals-say-off-west-end-2026,creation-stories-and-all-the-important-importants-off-broadway-2026,bull-off-west-end-2026,jena-friedman-motherfucker-off-broadway-2026,flamenc-oh-off-west-end-2026,a-thousand-natural-shocks-off-broadway-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 9,
+    "failed": 6,
+    "skipped": 0,
+    "successRate": "60.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 0,
+    "brightdata": 1,
+    "archiveToday": 0,
+    "archive": 3
+  },
+  "statistics": {
+    "tier1Attempts": 10,
+    "tier1Success": 5,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 4,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 2,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 0,
+    "tier4Attempts": 10,
+    "tier4Success": 3,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 2.5,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+    "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+  ],
+  "failed": [
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
+    "bull-off-west-end-2026/whatsonstage--unknown.json",
+    "hay-fever-west-end-2026/londontheatredirect--unknown.json",
+    "hay-fever-west-end-2026/thestage--the-stage.json",
+    "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "hay-fever-west-end-2026/jonathan-baz--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+    ],
+    "scrapingbee": [],
+    "brightdata": [
+      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+    ],
+    "archiveToday": [],
+    "archive": [
+      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+      "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json"
+    ]
+  },
+  "failuresByOutlet": {
+    "Londontheatredirect": {
+      "count": 1,
+      "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "oklahomatickets": {
+      "count": 1,
+      "domain": "oklahomatickets.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}
