@@ -917,6 +917,7 @@ test('findOpenIssueForTerm matches a bracketed marker Linear stored escaped', as
 // --allow-human-gated waives). --force looked broken. remainingHeadlessBlockers
 // is the one place the waiver set lives; the refusal prints only what it returns.
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 const hdRequire = createRequire(import.meta.url);
 const hd = hdRequire('./headless-dispatchability.js');
 
@@ -944,10 +945,18 @@ test('remainingHeadlessBlockers: NO_VERIFY_CMD is never a headless refusal reaso
   assert.deepEqual(hd.remainingHeadlessBlockers(bs, {}), []);
 });
 
-test('linear-next.js refusal prints the remaining blockers, not the full list', async () => {
-  const { readFileSync } = await import('node:fs');
-  const src = readFileSync(new URL('../linear-next.js', import.meta.url), 'utf8');
-  assert.match(src, /remainingHeadlessBlockers\(hg\.blockers/);
-  assert.match(src, /for \(const b of blocking\) console\.error/);
-  assert.doesNotMatch(src, /for \(const b of hg\.blockers\) console\.error/);
+test('dispatch-guards re-exports remainingHeadlessBlockers (BRO-3536 review: linear-next/bsc-next import it from there)', () => {
+  const dg = hdRequire('./dispatch-guards.js');
+  assert.equal(typeof dg.remainingHeadlessBlockers, 'function');
+  assert.equal(dg.remainingHeadlessBlockers, hd.remainingHeadlessBlockers);
+});
+
+test('both dispatchers load and resolve the shared helper at require time', () => {
+  // A missing export only throws when the refusal path runs; spawn the real
+  // modules and check the name each destructures from dispatch-guards.
+  for (const f of ['../linear-next.js', '../bsc-next.js']) {
+    const src = readFileSync(new URL(f, import.meta.url), 'utf8');
+    assert.match(src, /remainingHeadlessBlockers\(hg\.blockers/, f);
+    assert.doesNotMatch(src, /for \(const b of hg\.blockers\) console\.error\(`    \$\{b\.code\}/, f);
+  }
 });
