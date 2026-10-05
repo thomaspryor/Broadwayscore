@@ -380,14 +380,23 @@ function defaultExec(cwd, testFiles) {
 // files whose single failing test spans many inputs.
 const AGGREGATE_GUARD_FILES = [...REQUIRED_WORKFLOW_GUARDS];
 
-// Pure: the individual violations in a failure payload. Flat `{...}` objects
-// (what JSON.stringify(violations) emits) when present, else the non-empty
-// lines. Order-insensitive, so callers compare as sets.
+// Pure: the individual violations in a failure payload, as a multiset
+// (Map item -> count). Only the assertion message is read — node's trailing
+// `+ actual - expected` diff re-renders every violation in its own formatter,
+// so it is cut off. Flat `{...}` objects (what JSON.stringify(violations)
+// emits) when present, else the non-empty lines. A `line` field is dropped
+// from each object: an unrelated edit above an existing violation moves it,
+// and that must not read as a new violation. Identity is then file+length,
+// with multiplicity, so a second long line in an already-red file still counts.
 function payloadItems(payload) {
-  const text = String(payload || '');
+  const text = String(payload || '').split(/^\+ actual - expected/m)[0];
   const objs = text.match(/\{[^{}]*\}/g);
-  if (objs && objs.length > 0) return objs.map((o) => o.trim());
-  return text.split('\n').map((l) => l.trim()).filter(Boolean);
+  const items = objs && objs.length > 0
+    ? objs.map((o) => o.replace(/"line"\s*:\s*\d+,?/g, '').trim())
+    : text.split('\n').map((l) => l.trim()).filter(Boolean);
+  const counts = new Map();
+  for (const i of items) counts.set(i, (counts.get(i) || 0) + 1);
+  return counts;
 }
 
 function diffFailingSets(baselineFailures, mergedFailures, aggregateFiles = AGGREGATE_GUARD_FILES) {
@@ -409,8 +418,9 @@ function diffFailingSets(baselineFailures, mergedFailures, aggregateFiles = AGGR
       // Same key is not proof of the same violation (BRO-2793): compare the
       // violations themselves. Unreadable payload on either side => NEW.
       const mergedItems = payloadItems(value.payload);
-      const baseItems = new Set(payloadItems(baseline.get(key).payload));
-      isNew = mergedItems.length === 0 || baseItems.size === 0 || mergedItems.some((i) => !baseItems.has(i));
+      const baseItems = payloadItems(baseline.get(key).payload);
+      isNew = mergedItems.size === 0 || baseItems.size === 0 ||
+        [...mergedItems].some(([item, n]) => n > (baseItems.get(item) || 0));
     }
     (isNew ? newFailures : preExisting).push(value);
   }

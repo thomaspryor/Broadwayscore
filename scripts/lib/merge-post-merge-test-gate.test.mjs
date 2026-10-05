@@ -988,3 +988,21 @@ test('BRO-2793: parseTapOutput captures payload from REAL node --test output, co
   assert.equal(d.newFailures.length, 1, 'new violation must block despite identical key');
   assert.equal(d.preExisting.length, 0);
 });
+
+test('BRO-2793: a pre-existing violation whose line number moved is NOT new; a second long line in the same file IS', () => {
+  const moved = { ...V_OLD, line: V_OLD.line + 2 };
+  assert.equal(diffFailingSets(aggMap([V_OLD]), aggMap([moved])).newFailures.length, 0);
+  const second = { ...V_OLD, line: 40 };
+  assert.equal(diffFailingSets(aggMap([V_OLD]), aggMap([V_OLD, second])).newFailures.length, 1);
+});
+
+test('BRO-2793: the Land gate (land-gate-delta) also blocks a new aggregate violation on an already-red base', () => {
+  const { decideGateDelta } = require('./land-gate-delta.js');
+  const mk = (violations) => ({
+    exit: 1,
+    root: '/r',
+    text: `not ok 1 - ${aggEntry([]).name}\n  ---\n  location: '/r/${AGG_FILE}:1:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Long lines found: ${JSON.stringify(violations)}\n    + actual - expected\n  code: 'ERR_ASSERTION'\n  ...\n`,
+  });
+  assert.equal(decideGateDelta({ gate: 'unit-tests-node', base: mk([V_OLD]), branch: mk([V_OLD]) }).verdict, 'pass');
+  assert.equal(decideGateDelta({ gate: 'unit-tests-node', base: mk([V_OLD]), branch: mk([V_OLD, V_NEW]) }).verdict, 'fail');
+});
