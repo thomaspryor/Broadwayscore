@@ -20,7 +20,8 @@ import {
   formatDataDate,
   formatDevelopmentDate,
 } from '../../src/lib/biz-format';
-import { isEstimatedCapitalization } from '../../src/lib/commercial-display';
+import { isEstimatedCapitalization, toPublicShowCommercial } from '../../src/lib/commercial-display';
+import type { ShowCommercial } from '../../src/lib/data-types';
 
 test('formatCurrency: null/undefined render em-dash, never $0', () => {
   assert.equal(formatCurrency(null), '—');
@@ -72,6 +73,18 @@ test('isEstimatedCapitalization: an uncited figure reads as an estimate (BRO-466
   assert.equal(isEstimatedCapitalization({ capitalizationSource: null, isEstimate: { capitalization: false } }), true);
   // Source text that is only internal research wording is not a citation.
   assert.equal(isEstimatedCapitalization({ capitalizationSource: 'Deep research synthesis' }), true);
+});
+
+test('show page (public record) and /biz (raw record) agree on the "~" mark', () => {
+  const records = [
+    { capitalization: 24_000_000, capitalizationSource: CITED },
+    { capitalization: 24_000_000, capitalizationSource: null },
+    { capitalization: 24_000_000, capitalizationSource: 'Deep research synthesis' },
+    { capitalization: 24_000_000, capitalizationSource: CITED, isEstimate: { capitalization: true } },
+  ] as ShowCommercial[];
+  for (const raw of records) {
+    assert.equal(isEstimatedCapitalization(toPublicShowCommercial(raw)), isEstimatedCapitalization(raw));
+  }
 });
 
 test('cited vs flagged vs uncited records end to end', () => {
