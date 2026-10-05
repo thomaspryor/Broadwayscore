@@ -4,8 +4,13 @@
  * Usage: VERCEL_TOKEN=... node scripts/vercel-wait-deployment.js <url|dpl_id> [--timeout=480]
  * Exit: 0 READY, 1 ERROR/API failure, 3 CANCELED, 4 timeout, 5 CANCELED but a newer production deployment exists (superseded). Logic: scripts/lib/vercel-deploy-wait.js
  */
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { waitForDeployment, hasNewerLiveDeployment, exitCodeFor, EXIT } = require('./lib/vercel-deploy-wait.js');
 
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('usage: VERCEL_TOKEN=... vercel-wait-deployment.js <url|id> [--timeout=SECS]');
+  process.exit(0);
+}
 const arg = process.argv.slice(2).find(a => !a.startsWith('--'));
 const tArg = process.argv.find(a => a.startsWith('--timeout='));
 const timeoutMs = (tArg ? parseInt(tArg.slice(10), 10) : 480) * 1000;
