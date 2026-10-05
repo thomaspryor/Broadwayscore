@@ -366,6 +366,10 @@ on:
       - 'scripts/check-cross-outlet-attribution-drift.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.test.mjs'
+      # BRO-4623: colocated test (manifest-registered) for the fetchPage
+      # cleanup leak audit, which now recognizes runMain(main, {teardown}).
+      - 'scripts/audit-fetchpage-cleanup.js'
+      - 'scripts/audit-fetchpage-cleanup.test.mjs'
       # S4-T2/S4-T3 (BRO-4204): the update-show-status coverage guard and the
       # blind-source verdict step. Their tests live in tests/unit/ (globbed),
       # but the sources are top-level scripts/ files with no broad glob — same

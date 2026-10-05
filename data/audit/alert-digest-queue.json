@@ -482,5 +482,63 @@
       }
     ],
     "queuedAt": "2026-10-05T00:45:10.757Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-208-muuj3js8",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-208-muuj3js8",
+    "description": "land.yml did not land land/job/linear-BRO-208-muuj3js8: the unit-tests-node gate went red at 54cd198183. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37248991103",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-208-muuj3js8"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "54cd198183f467234eb3c61bec52d551d1937d92"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37248991103"
+      }
+    ],
+    "queuedAt": "2026-10-05T01:20:08.650Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4641-muuiobuc",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4641-muuiobuc",
+    "description": "land.yml did not land land/job/linear-BRO-4641-muuiobuc: the unit-tests-node gate went red at 5db5f6c5db. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37249157330",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4641-muuiobuc"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5db5f6c5dba77a9180eeef5d941c37a9a3d40983"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37249157330"
+      }
+    ],
+    "queuedAt": "2026-10-05T01:23:30.423Z"
   }
 ]

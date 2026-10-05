@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
+const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
 const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
@@ -200,7 +201,9 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null, isOpera = false } = {}) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null, isOpera = false, show = null } = {}) {
+  // BRO-30: scope to this production's run window when the title has siblings.
+  const prodWindow = show ? computeProductionWindow(show, showsData.shows) : null;
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
   const isWestEnd = isLondonMarket(category);
   const isOffBroadway = category === 'off-broadway';
@@ -226,6 +229,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
   const seenIds = new Set();
   let totalSearched = 0;
   let filteredByDate = 0;
+  let filteredBySibling = 0;
   // Volume tracking: count ALL posts/comments before dedup/slicing (for display)
   let rawTotalPosts = 0;
   let rawTotalComments = 0;
@@ -260,6 +264,11 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
           continue;
         }
 
+        if (show && !isPostInProductionWindow(post, show, prodWindow)) {
+          filteredBySibling++;
+          continue;
+        }
+
         const classification = classifyPost(post, showTitle);
         if (classification === true) {
           audiencePosts.push(post);
@@ -277,6 +286,9 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
     }
   }
 
+  if (filteredBySibling > 0) {
+    console.log(`  Filtered out ${filteredBySibling} posts outside this production's run window (title-sibling collision)`);
+  }
   if (filteredByDate > 0) {
     console.log(`  Filtered out ${filteredByDate} posts older than 2 years`);
   }
@@ -359,6 +371,7 @@ async function collectShowComments(show) {
         category: show.category,
         previewsStartDate: show.previewsStartDate || show.previewDate || null,
         isOpera: (show.type || '') === 'opera',
+        show,
       });
     } catch (e) {
       console.error(`  Search failed in r/${subreddit}: ${e.message}`);

@@ -63,7 +63,6 @@
 
 'use strict';
 
-const { evaluateVerifiability } = require('./verify-gate.js');
 const { isAutofixFiledIssue } = require('./autofix-filed-marker.js');
 const { isTerminalStateType, TERMINAL_STATE_TYPES } = require('./linear-state-types.js');
 const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
@@ -158,9 +157,9 @@ function priorityOf(issue) {
 }
 
 /** PURE. Does this issue carry a machine-checkable proof of done? */
+// Reads comments too when the issue carries them (BRO-4642), same as the drain.
 function hasSafeVerifyCommand(issue) {
-  if (!issue) return false;
-  return !!evaluateVerifiability(String(issue.description || '')).cmd;
+  return require('./linear-drain-parked.js').hasSafeVerifyCommand(issue);
 }
 
 /**
@@ -205,8 +204,8 @@ function ineligibleReason(issue, opts = {}) {
   // 'already-passes' until the NEXT sweep refreshes the report — the same
   // staleness window recheckFailures already tolerates.
   if (opts.alreadyPassesIds && opts.alreadyPassesIds.has(issue.identifier)) return 'already-passes';
-  const gate = evaluateVerifiability(String(issue.description || ''));
-  if (!gate.cmd) return 'unarmed';
+  const verifyCmd = require('./linear-drain-parked.js').verifyCommand(issue);
+  if (!verifyCmd) return 'unarmed';
   // Ship-check (Codex): being ARMED is necessary but not sufficient. linear-next
   // refuses a headless dispatch for several further reasons (the PARKED
   // sentinel, visual-QA and other human gates). The day budget counts CLAIMS,
@@ -215,7 +214,7 @@ function ineligibleReason(issue, opts = {}) {
   // the SAME predicate the dispatcher enforces (backlog-drain.js:547 already
   // calls it at its own queue-build), rather than a second copy of the rules.
   const headless = classifyHeadlessDispatchability(
-    { subject: issue.title, notes: issue.description }, { verifyCmd: gate.cmd });
+    { subject: issue.title, notes: issue.description }, { verifyCmd });
   if (!headless.dispatchable) return `headless-blocked: ${headless.blockers.map(b => b.code).join(',')}`;
   return null;
 }

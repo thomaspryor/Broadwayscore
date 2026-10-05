@@ -247,3 +247,19 @@ test('isActiveRun rejects runs without displayTitle', () => {
   assert.equal(isActiveRun(null), false);
   assert.equal(isActiveRun(undefined), false);
 });
+
+import { findInFlightCoverage } from '../../scripts/lib/poller-idempotency.js';
+
+test('BRO-4209: override-URL dispatch is NOT skipped by an active auto run', () => {
+  const runs = [{ databaseId: 9, status: 'in_progress', displayTitle: 'Opening Night Poller — auto' }];
+  assert.equal(findInFlightCoverage(runs, 'x-2026', { hasOverrideUrl: true }), null);
+  assert.equal(findInFlightCoverage(runs, 'x-2026', {})?.databaseId, 9);
+});
+
+test('BRO-4209: override-URL dispatch still skips for a same-show targeted run', () => {
+  const runs = [
+    { databaseId: 9, status: 'in_progress', displayTitle: 'Opening Night Poller — auto' },
+    { databaseId: 10, status: 'queued', displayTitle: 'Opening Night Poller — x-2026' },
+  ];
+  assert.equal(findInFlightCoverage(runs, 'x-2026', { hasOverrideUrl: true })?.databaseId, 10);
+});

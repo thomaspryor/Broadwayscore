@@ -150,13 +150,14 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-05T01:03:37.240Z",
-      "lastSeen": "2026-10-05T01:03:37.240Z",
-      "lastNotifiedAt": "2026-10-05T01:03:37.240Z",
+      "incidentOpenedAt": "2026-10-05T01:14:58.046Z",
+      "lastSeen": "2026-10-05T01:32:01.774Z",
+      "lastNotifiedAt": "2026-10-05T01:14:58.046Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 121,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4826,13 +4827,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-05T01:04:09.086Z",
+      "lastSeen": "2026-10-05T01:30:43.970Z",
       "lastNotifiedAt": "2026-10-04T19:37:48.299Z",
       "lastSurfacedAt": "2026-10-04T19:37:48.299Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 17
+      "silentRefires": 20
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -9962,7 +9963,7 @@
       "resolvedAt": "2026-10-04T23:01:31.282Z"
     },
     "land:land/bro-4620-welcome-email": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4620-welcome-email",
       "firstSeen": "2026-10-04T22:27:39.723Z",
@@ -9973,7 +9974,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-05T01:25:51.910Z"
     },
     "review-gap:opening-window:slam-frank-off-broadway-2026": {
       "status": "open",
@@ -10007,7 +10009,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every Broadway production of the title links its tour; other shows and markets do not\"",
       "firstSeen": "2026-10-05T00:05:43.346Z",
       "incidentOpenedAt": "2026-10-05T00:05:43.346Z",
-      "lastSeen": "2026-10-05T01:03:37.235Z",
+      "lastSeen": "2026-10-05T01:32:01.745Z",
       "lastNotifiedAt": "2026-10-05T00:05:43.346Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -10019,7 +10021,7 @@
         "runId": "37244984447",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37244984447"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4623-commercial-corrections": {
       "status": "resolved",
@@ -10075,7 +10077,7 @@
       "linearIdentifier": null
     },
     "land:land/job/linear-BRO-4209-muufqbte": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: push red on land/job/linear-BRO-4209-muufqbte",
       "firstSeen": "2026-10-05T00:33:30.431Z",
@@ -10085,10 +10087,11 @@
       "lastSurfacedAt": "2026-10-05T00:33:30.431Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-05T01:08:02.681Z"
     },
     "land:land/job/linear-BRO-30-muuhecdv": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-30-muuhecdv",
       "firstSeen": "2026-10-05T00:36:05.514Z",
@@ -10098,7 +10101,8 @@
       "lastSurfacedAt": "2026-10-05T00:36:05.514Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-05T01:16:59.015Z"
     },
     "land:land/job/linear-BRO-4647-muuhya6t": {
       "status": "open",
@@ -10109,6 +10113,32 @@
       "lastSeen": "2026-10-05T00:45:10.756Z",
       "lastNotifiedAt": "2026-10-05T00:45:10.756Z",
       "lastSurfacedAt": "2026-10-05T00:45:10.756Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-208-muuj3js8": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-208-muuj3js8",
+      "firstSeen": "2026-10-05T01:20:08.649Z",
+      "incidentOpenedAt": "2026-10-05T01:20:08.649Z",
+      "lastSeen": "2026-10-05T01:20:08.649Z",
+      "lastNotifiedAt": "2026-10-05T01:20:08.649Z",
+      "lastSurfacedAt": "2026-10-05T01:20:08.649Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-4641-muuiobuc": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4641-muuiobuc",
+      "firstSeen": "2026-10-05T01:23:30.423Z",
+      "incidentOpenedAt": "2026-10-05T01:23:30.423Z",
+      "lastSeen": "2026-10-05T01:23:30.423Z",
+      "lastNotifiedAt": "2026-10-05T01:23:30.423Z",
+      "lastSurfacedAt": "2026-10-05T01:23:30.423Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

@@ -36,6 +36,7 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { runMain } = require('./lib/run-main');
 
 const USAGE = `audit-outlet-ground-truth.js — compare outlets' own review listings with our review files.
 
@@ -311,7 +312,15 @@ async function main() {
   writeReport('done');
 }
 
-main().catch((e) => {
-  console.error('audit-outlet-ground-truth failed:', e.stack || e.message);
-  process.exit(1);
-});
+// BRO-4623: fetchText() falls back to fetchPage(), whose Playwright tier
+// leaves Chromium open; `main().catch(... process.exit(1))` only exited on
+// failure, so a successful run could sit until the workflow's `timeout 720`
+// killed it (audit-fetchpage-cleanup.js: UNSAFE_CATCH_ONLY). runMain awaits
+// the scraper's cleanup() and then exits explicitly. The scraper is
+// lazy-required, so clean it up only when this run actually loaded it.
+function cleanupScraperIfLoaded() {
+  const scraperPath = require.resolve('./lib/scraper');
+  return require.cache[scraperPath] ? require(scraperPath).cleanup() : undefined;
+}
+
+runMain(main, { teardown: [cleanupScraperIfLoaded] });

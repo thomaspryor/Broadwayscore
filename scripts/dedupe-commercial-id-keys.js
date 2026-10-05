@@ -16,7 +16,11 @@
  *   node scripts/dedupe-commercial-id-keys.js                # dry-run report
  *   node scripts/dedupe-commercial-id-keys.js --apply        # delete pairs whose
  *                                                            # ID entry holds no
- *                                                            # unique non-model data
+ *                                                            # unique non-model data,
+ *                                                            # or only notes/sources/
+ *                                                            # firstAdded/research
+ *                                                            # bookkeeping (self-heal,
+ *                                                            # BRO-4623; values printed)
  *   node scripts/dedupe-commercial-id-keys.js --apply --prefer-slug
  *     # ALSO delete conflicting pairs, discarding the ID entry's differing
  *     # fields. Correct for clobber-resurrection: the slug entry carries the
@@ -43,7 +47,7 @@ if (unknown.length > 0) {
 }
 
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
-const { findDuplicateKeyPairs, conflictingFields } = require('./lib/commercial-key-duplicates');
+const { findDuplicateKeyPairs, conflictingFields, isSelfHealablePair } = require('./lib/commercial-key-duplicates');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 
@@ -74,10 +78,16 @@ let refused = 0;
 for (const { idKey, slugKey } of pairs) {
   const conflicts = conflictingFields(commercial.shows[idKey], commercial.shows[slugKey]);
   const clean = conflicts.length === 0;
-  const willDelete = apply && (clean || preferSlug);
+  const selfHeal = !clean && isSelfHealablePair(commercial.shows[idKey], commercial.shows[slugKey], conflicts);
+  const willDelete = apply && (clean || selfHeal || preferSlug);
 
   if (clean) {
     console.log(`  ${idKey} -> ${slugKey}: ID entry fully contained in slug entry ${willDelete ? '[DELETING]' : '[would delete]'}`);
+  } else if (selfHeal) {
+    console.log(`  ${idKey} -> ${slugKey}: ID entry differs only in commentary/bookkeeping (${conflicts.join(', ')}); slug entry kept as-is ${willDelete ? '[DELETING]' : '[would delete]'}`);
+    for (const f of conflicts) {
+      console.log(`      ${f}: id=${JSON.stringify(commercial.shows[idKey][f])} | slug=${JSON.stringify(commercial.shows[slugKey][f])}`);
+    }
   } else if (preferSlug) {
     console.log(`  ${idKey} -> ${slugKey}: DISCARDING ID-entry fields that differ (slug entry wins): ${conflicts.join(', ')} ${willDelete ? '[DELETING]' : '[would delete]'}`);
     for (const f of conflicts) {

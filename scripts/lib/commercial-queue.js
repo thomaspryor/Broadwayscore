@@ -49,13 +49,20 @@ function filterNewBroadwayShows(slugs, shows) {
     if (s.slug) bySlug.set(s.slug, s);
     if (s.id) byId.set(s.id, s);
   }
-  return slugs.filter((slug) => {
+  const out = [];
+  for (const slug of slugs) {
     const show = bySlug.get(slug) || byId.get(slug);
     // Intentionally NOT isBroadwayCategory(): see the module doc comment above
     // (category-race fix) — this filter must never fall back to isCommercialScope()'s
     // permissive null-category default.
-    return !!show && show.category === 'broadway';
-  });
+    if (!show || show.category !== 'broadway') continue;
+    // Queue the show's SLUG even when the caller passed its id: deep-research
+    // keys pending entries and commercial.json writes by the queued string
+    // (BRO-4623).
+    const key = show.slug || slug;
+    if (!out.includes(key)) out.push(key);
+  }
+  return out;
 }
 
 /**

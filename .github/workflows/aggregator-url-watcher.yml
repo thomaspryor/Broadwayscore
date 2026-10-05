@@ -1,6 +1,7 @@
 name: Aggregator URL Watcher
 
-# Runs every 5 min during opening-night windows. For each show with
+# Scheduled */5 but GitHub throttles it to ~1 run per 3-4h (BRO-4209): best-effort,
+# not a 5-minute path. During opening-night windows, for each show with
 # openingDate === today (America/New_York), tries to discover BWW Review
 # Roundup + DTLI show-page URLs. When found, dispatches opening-night-poller
 # with the override URL so the existing aggregator extractors fire

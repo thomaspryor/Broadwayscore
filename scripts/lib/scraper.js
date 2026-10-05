@@ -414,6 +414,7 @@ const _scraperStats = {
   // reviewers). See getScraperStats().
   pwBrowserMissingCount: 0,
   pwDeadlineHits: 0, // BRO-4401: Playwright tiers abandoned at PLAYWRIGHT_TIER_DEADLINE_MS
+  pwIdleCloses: 0, // BRO-4623: shared browser closed after PLAYWRIGHT_IDLE_CLOSE_MS with no fetch in flight
 };
 
 // Matches ONLY the two known "no usable Playwright browser in this
@@ -862,16 +863,92 @@ const PLAYWRIGHT_TIER_DEADLINE_MS = 90 * 1000;
 // with the current one and must never touch a browser it did not launch.
 let playwrightGeneration = 0;
 
+/**
+ * Close a browser with a bound, and SIGKILL its process if close() does not
+ * settle in time. Promise.race alone only abandons the JS await: a genuinely
+ * hung Chromium keeps its own stdio pipes open, and THOSE are what keep
+ * node's event loop alive (task #438: 44 minutes of dead air after the real
+ * work finished). Shared by cleanup(), the BRO-4401 deadline reset and the
+ * BRO-4623 idle close so no close path can leave an orphan holding the
+ * process open. The timer is cleared once the race settles, so a fast close
+ * never holds the loop open for the full bound either.
+ */
+async function _closeBrowserBounded(target, timeoutMs) {
+  if (!target) return true;
+  let closed = false;
+  let timer;
+  await Promise.race([
+    Promise.resolve().then(() => target.close()).then(() => { closed = true; }, () => { closed = true; }),
+    new Promise((resolve) => { timer = setTimeout(resolve, timeoutMs); }),
+  ]);
+  clearTimeout(timer);
+  if (!closed) {
+    try {
+      const proc = target.process && target.process();
+      if (proc && !proc.killed) proc.kill('SIGKILL');
+    } catch (_) { /* best-effort */ }
+  }
+  return closed;
+}
+
 async function _resetPlaywrightBrowser() {
   const b = playwright;
   playwright = null;
   playwrightGeneration++;
+  _cancelIdleClose();
   if (!b) return;
   // browser.close() can itself hang on a wedged renderer — bound it too.
-  await Promise.race([
-    b.close().catch(() => {}),
-    new Promise((resolve) => setTimeout(resolve, 5000).unref()),
-  ]);
+  await _closeBrowserBounded(b, 5000);
+}
+
+// BRO-4623: idle auto-close of the shared browser. Every caller is supposed
+// to call cleanup() (or process.exit()) once its work is done, but 2 of the
+// commercial entry points did not, and the audit that should have caught
+// them (audit-fetchpage-cleanup.js) counted an early-exit guard as coverage.
+// A successful Playwright fetch leaves the module-level browser open, its
+// pipes keep the event loop alive, and the script hangs until the CI job
+// timeout cancels it and discards its output: commercial-friday has been
+// `cancelled` every week since 2026-08-26, batch-commercial-research too.
+// So the library no longer depends on every caller remembering: once no
+// Playwright fetch has been in flight for PLAYWRIGHT_IDLE_CLOSE_MS, the
+// browser is closed, and a script that forgot cleanup() exits on its own
+// that long after its last page. The next fetch simply relaunches (~1s).
+// The timer is unref()'d: it must never keep a process alive by itself, and
+// it still fires while the browser's own handles keep the loop running,
+// which is exactly the hang case. SCRAPER_PLAYWRIGHT_IDLE_CLOSE_MS=0 turns
+// it off.
+const PLAYWRIGHT_IDLE_CLOSE_MS = (() => {
+  const raw = process.env.SCRAPER_PLAYWRIGHT_IDLE_CLOSE_MS;
+  if (raw === undefined || raw === '') return 60 * 1000;
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n >= 0 ? n : 60 * 1000;
+})();
+let _pwInFlight = 0;
+let _pwIdleTimer = null;
+// The launch in progress ({generation, promise}), shared by concurrent first
+// fetches of the same generation; see _fetchWithPlaywrightInner.
+let _pwLaunch = null;
+
+function _cancelIdleClose() {
+  if (_pwIdleTimer) {
+    clearTimeout(_pwIdleTimer);
+    _pwIdleTimer = null;
+  }
+}
+
+function _armIdleClose() {
+  _cancelIdleClose();
+  if (!PLAYWRIGHT_IDLE_CLOSE_MS || !playwright || _pwInFlight > 0) return;
+  _pwIdleTimer = setTimeout(() => {
+    _pwIdleTimer = null;
+    if (_pwInFlight > 0 || !playwright) return;
+    const target = playwright;
+    playwright = null;
+    playwrightGeneration++;
+    _scraperStats.pwIdleCloses++;
+    _closeBrowserBounded(target, 10000).catch(() => {});
+  }, PLAYWRIGHT_IDLE_CLOSE_MS);
+  if (typeof _pwIdleTimer.unref === 'function') _pwIdleTimer.unref();
 }
 
 /**
@@ -890,18 +967,28 @@ function raceTierAgainstDeadline(tierPromise, ms) {
 }
 
 async function fetchWithPlaywright(url, options = {}) {
-  const inner = _fetchWithPlaywrightInner(url, options);
-  // A tier that times out is abandoned, not awaited: if it later rejects
-  // (browser closed under it), that rejection must not surface as unhandled.
-  inner.catch(() => {});
-  const result = await raceTierAgainstDeadline(inner, PLAYWRIGHT_TIER_DEADLINE_MS);
-  if (result && result.timedOut) {
-    _scraperStats.pwDeadlineHits = (_scraperStats.pwDeadlineHits || 0) + 1;
-    console.error(`⚠️  Playwright tier exceeded ${PLAYWRIGHT_TIER_DEADLINE_MS / 1000}s at ${url} — abandoning the page and resetting the browser (BRO-4401)`);
-    await _resetPlaywrightBrowser();
-    return null;
+  // BRO-4623: counted from here (not inside the inner tier) so an abandoned,
+  // deadline-expired inner can never pin the count above zero and block the
+  // idle close forever.
+  _pwInFlight++;
+  _cancelIdleClose();
+  try {
+    const inner = _fetchWithPlaywrightInner(url, options);
+    // A tier that times out is abandoned, not awaited: if it later rejects
+    // (browser closed under it), that rejection must not surface as unhandled.
+    inner.catch(() => {});
+    const result = await raceTierAgainstDeadline(inner, PLAYWRIGHT_TIER_DEADLINE_MS);
+    if (result && result.timedOut) {
+      _scraperStats.pwDeadlineHits = (_scraperStats.pwDeadlineHits || 0) + 1;
+      console.error(`⚠️  Playwright tier exceeded ${PLAYWRIGHT_TIER_DEADLINE_MS / 1000}s at ${url} — abandoning the page and resetting the browser (BRO-4401)`);
+      await _resetPlaywrightBrowser();
+      return null;
+    }
+    return result;
+  } finally {
+    _pwInFlight--;
+    _armIdleClose();
   }
-  return result;
 }
 
 async function _fetchWithPlaywrightInner(url, options = {}) {
@@ -925,17 +1012,34 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
       }
     }
     if (!playwright) {
-      const launched = await chromium.launch({
-        headless: true
-      });
+      // BRO-4623: concurrent first fetches share ONE launch per generation.
+      // Each used to launch its own browser and the last assignment below
+      // won, leaving the others with no reference for cleanup() or the idle
+      // close to reach, so their pipes held the process open forever.
+      let launch = _pwLaunch;
+      if (!launch || launch.generation !== myGeneration) {
+        const pending = { generation: myGeneration, promise: chromium.launch({ headless: true }) };
+        const clear = () => { if (_pwLaunch === pending) _pwLaunch = null; };
+        pending.promise.then(clear, clear);
+        _pwLaunch = pending;
+        launch = pending;
+      }
+      const launched = await launch.promise;
       if (playwrightGeneration !== myGeneration) {
         // A deadline reset happened while this launch was pending: this tier
         // has been abandoned, so its browser must not become the shared one
         // (that would orphan whatever the newer generation launched).
-        try { await launched.close(); } catch (_) {}
+        // Bounded: nothing else references this browser, so a hung close
+        // would hold the process open forever.
+        await _closeBrowserBounded(launched, 5000);
         throw new Error('Playwright tier abandoned by deadline during launch');
       }
-      playwright = launched;
+      if (!playwright) {
+        playwright = launched;
+      } else if (playwright !== launched) {
+        // Defensive: never leave a second live browser without an owner.
+        await _closeBrowserBounded(launched, 5000);
+      }
     }
     myBrowser = playwright;
 
@@ -1028,10 +1132,10 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
     // browser THIS tier used. An abandoned tier failing late ("Target
     // closed" after a deadline reset) must not close a browser a newer call
     // has since launched (review finding, BRO-4401).
+    // _resetPlaywrightBrowser bounds the close (SIGKILL on a hang), like every
+    // other close path.
     if (playwright && playwright === myBrowser) {
-      try { await playwright.close(); } catch (_) {}
-      playwright = null;
-      playwrightGeneration++;
+      await _resetPlaywrightBrowser();
     }
     return null;
   }
@@ -1349,6 +1453,7 @@ async function cleanup() {
     console.log(`[Scraper Summary] ${parts.join(', ')}`);
   }
 
+  _cancelIdleClose();
   if (playwright) {
     // browser.close() can hang indefinitely if the Chromium process is in a
     // bad state (unresponsive CDP connection) — this is what actually caused
@@ -1359,26 +1464,19 @@ async function cleanup() {
     // content line at 17:04:22, kill at 17:49:04, nothing in between).
     // Shared by 27 scripts; a hang here silently blows any caller's wall-clock
     // budget checks, since those only guard the WORK, not process exit.
-    const CLOSE_TIMEOUT_MS = 10000;
+    // _closeBrowserBounded() SIGKILLs the process if close() hangs.
     const target = playwright;
     playwright = null; // clear immediately so a hung close() can't block a fresh launch
-    let closed = false;
-    await Promise.race([
-      target.close().then(() => { closed = true; }).catch(() => { closed = true; }),
-      new Promise((resolve) => setTimeout(resolve, CLOSE_TIMEOUT_MS)),
-    ]);
-    // Promise.race only abandons the JS await — a genuinely hung Chromium
-    // subprocess keeps its own stdio pipes open, and THOSE (not the abandoned
-    // promise) are what actually keep node's event loop alive. If close()
-    // didn't settle in time, kill the underlying process directly so the
-    // caller's `node` invocation can actually exit.
-    if (!closed) {
-      try {
-        const proc = target.process && target.process();
-        if (proc && !proc.killed) proc.kill('SIGKILL');
-      } catch (_) { /* best-effort */ }
-    }
+    playwrightGeneration++;
+    await _closeBrowserBounded(target, 10000);
   }
+}
+
+// Test seam (BRO-4623): swap in a fake `chromium` so the idle-close and
+// cleanup paths can be exercised without a real browser. Never used by
+// production code.
+function __setChromiumForTest(fake) {
+  chromium = fake;
 }
 
 /**
@@ -1830,6 +1928,8 @@ module.exports = {
   fetchWithPlaywright,
   raceTierAgainstDeadline,
   PLAYWRIGHT_TIER_DEADLINE_MS,
+  PLAYWRIGHT_IDLE_CLOSE_MS,
+  __setChromiumForTest,
   isChallengeOrGarbage: _isChallengeOrGarbage,
   cleanup,
   domainMatchesExpected,

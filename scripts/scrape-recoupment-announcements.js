@@ -15,8 +15,12 @@
  *   4. Write high-confidence finds into commercial-pending-review.json
  *      with promoteRecommended:true so apply-commercial-pending picks them up.
  *
- * Default scope: shows with status open/closed AND opened 30-365 days ago AND
- * currently recouped=false/null. (Recoupment window is typically 6-52 weeks.)
+ * Default scope (scripts/lib/recoupment-scan-scope.js SERP_SCOPE, BRO-4623):
+ * Broadway shows not yet recouped and not pure-Nonprofit that are running
+ * (opened 28+ days ago, NO upper age bound: a show can recoup in year two or
+ * three) or closed within the last year (late recoupment via the revived NY
+ * State tax credit is real: Purpose recouped ~9 months after closing). The
+ * old 30-365-day opening window silently dropped every long runner.
  *
  * Usage:
  *   node scripts/scrape-recoupment-announcements.js                  # default scope
@@ -40,10 +44,12 @@ const fs = require('fs');
 const path = require('path');
 
 const { serpQuery } = require('./lib/url-discovery');
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, cleanup } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
-const { isCommercialScope } = require('./lib/commercial-scope');
+const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
+const { pickRecoupmentCandidates, rotateScanOrder, SERP_SCOPE } = require('./lib/recoupment-scan-scope');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { runMain } = require('./lib/run-main');
 
 // Worktrees don't ship the gitignored data files (shows.json, commercial.json
 // live in the private repo and are only symlinked in the main checkout). Fall
@@ -96,12 +102,6 @@ function isoToday() {
   return new Date().toISOString().slice(0, 10);
 }
 
-function daysBetween(dateStr) {
-  if (!dateStr) return Infinity;
-  const ms = Date.now() - new Date(dateStr).getTime();
-  return Math.floor(ms / 86_400_000);
-}
-
 function hostnameOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; }
 }
@@ -116,7 +116,7 @@ function pickCandidates(allShows, commercial) {
 
   if (TARGETED) {
     return TARGETED.map(slug => {
-      const show = shows.find(s => s.slug === slug);
+      const show = shows.find(s => s.slug === slug) || shows.find(s => s.id === slug);
       if (!show) {
         log(`  ⚠ --shows=${slug}: not found in shows.json`);
         return null;
@@ -125,36 +125,14 @@ function pickCandidates(allShows, commercial) {
     }).filter(Boolean);
   }
 
-  // Nonprofit-org enhancement deals: LCT/MTC/Roundabout/Second Stage shows
-  // are technically "nonprofit" by designation but routinely carry commercial
-  // co-producers (Ragtime 2025 had Tom Kirdahy / Greenblatt / Furman on top of
-  // LCT). Those enhancement investors DO recoup, and the announcement IS
-  // trade-press news. So we include Nonprofit shows that name a recognized
-  // enhancement-friendly org. Pure non-enhancement nonprofits (NYTW, Public,
-  // Signature, etc.) still skipped — they don't transfer or recoup.
-  const ENHANCEMENT_FRIENDLY_ORGS = new Set([
-    'Lincoln Center Theater',
-    'Manhattan Theatre Club',
-    'Roundabout Theatre Company',
-    'Second Stage Theater',
-    'The Public Theater',  // can transfer to Broadway with commercial enhancement
-  ]);
-
-  return shows.filter(s => {
-    const c = cMap[s.slug];
-    if (c?.recouped === true) return false;            // already known
-    // Nonprofit-org filter: only skip pure-nonprofits (no enhancement-friendly
-    // org). Enhancement deals (Ragtime, Oh Mary, etc.) must be scanned.
-    if (c?.designation === 'Nonprofit' && !ENHANCEMENT_FRIENDLY_ORGS.has(c?.nonprofitOrg)) return false;
-    const opened = s.openingDate || s.previewsStartDate;
-    if (!opened) return false;
-    const age = daysBetween(opened);
-    if (age < 28) return false;       // too early
-    if (age > 365) return false;      // beyond typical announcement window
-    if (!['open', 'closed', 'closing'].includes(s.status)) return false;
-    if (!isCommercialScope(s)) return false; // Broadway-only — gate on category, never market (market='broadway' means NYC and includes OB)
-    return true;
-  });
+  // Scope is shared with the hourly RSS poller (scripts/lib/recoupment-scan-
+  // scope.js). This SERP scan pays ~5 SERP calls per show per week, so it
+  // uses the narrower SERP_SCOPE: every running unrecouped Broadway show
+  // (no upper age bound, BRO-4623 item 5) plus closed ones within a year.
+  // rotateScanOrder starts each week at a different point in the list, so a
+  // run that hits --time-budget-min defers different shows each week instead
+  // of the same shows.json tail forever.
+  return rotateScanOrder(pickRecoupmentCandidates(shows, cMap, SERP_SCOPE));
 }
 
 // Generic queries rank by whatever Google surfaces highest — usually NYT/
@@ -281,9 +259,17 @@ async function processShow(show) {
       log(`      ✗ fetch failed: ${e.message}`);
       continue;
     }
-    const verdict = await classifyArticle(show.title, c.url, html);
+    // opts.show turns on the production guard (BRO-4623): a recoupment dated
+    // before this production's first preview (death-of-a-salesman got the
+    // 2012 revival's article) or a tour / West End / Off-Broadway article
+    // (beetlejuice-2025 got the national tour's) is rejected here.
+    const verdict = await classifyArticle(show.title, c.url, html, { show, headline: c.title });
     log(`      → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
-    if (verdict.evidence) log(`         "${verdict.evidence.slice(0, 140)}"`);
+    if (verdict.guardReason) {
+      log(`         ⛔ production guard: ${verdict.guardReason}`);
+      console.log(guardRejectionWarning(show.slug, c.url, verdict));
+    }
+    if (verdict.evidence) log(`         "${String(verdict.evidence).slice(0, 140)}"`);
     findings.push({ url: c.url, host: hostnameOf(c.url), serpTitle: c.title, verdict });
     if (verdict.recouped && verdict.productionMatch === 'exact' && verdict.confidence === 'high') break;
   }
@@ -393,4 +379,11 @@ async function main() {
       (skippedRejected ? ` (skipped ${skippedRejected} previously-rejected URLs)` : ''));
 }
 
-main().catch(e => { console.error('FATAL', e); process.exit(1); });
+module.exports = { pickCandidates };
+
+// BRO-4623: runMain awaits scraper cleanup() and then exits explicitly. The
+// old `main().catch(... process.exit(1))` only exited on failure, so a
+// successful Playwright fetch left Chromium holding the event loop open and
+// every Friday run since 2026-08-26 was cancelled at the 60-min job timeout
+// with its findings discarded.
+if (require.main === module) runMain(main, { teardown: [cleanup] });

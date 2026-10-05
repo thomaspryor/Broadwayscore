@@ -71,6 +71,16 @@ test('ineligibleReason: each refusal is distinguishable', () => {
   );
 });
 
+test('BRO-4642: a VERIFY posted as a comment arms the issue; a newer owner-judgment comment disarms it', () => {
+  const bare = 'Do the thing.\n\n## Acceptance criteria\nLooks right.';
+  const c = (body, createdAt) => ({ body, createdAt });
+  assert.equal(src.ineligibleReason(issue({ description: bare })), 'unarmed');
+  assert.equal(src.ineligibleReason(issue({ description: bare,
+    comments: { nodes: [c('VERIFY: `node --test scripts/lib/thing.test.mjs`', '2026-10-01T00:00:00Z')] } })), null);
+  assert.equal(src.ineligibleReason(issue({
+    comments: { nodes: [c('VERIFY: owner-judgment, needs a product call', '2026-10-01T00:00:00Z')] } })), 'unarmed');
+});
+
 test('BRO-3924 (R3): ineligibleReason returns already-passes for an injected sweep-report id, and is unaffected otherwise', () => {
   const alreadyPassesIds = new Set(['BRO-3000']);
   assert.equal(src.ineligibleReason(issue(), { alreadyPassesIds }), 'already-passes');
