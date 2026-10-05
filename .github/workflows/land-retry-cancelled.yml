@@ -5,9 +5,9 @@ name: Land retry on cancel
 # behind it cancels it even though Checks passed.
 # BRO-4653: re-running every cancelled Land job at once made the re-runs evict
 # each other and spent the whole attempt budget in one landing burst. Now each
-# firing is a SWEEP: if any Land / Autonomous Merge run is in flight it does
-# nothing (no attempt spent); if the slot is free it re-runs at most ONE
-# stranded cancelled Land job, oldest first. It fires when a Land or Autonomous
+# firing is a SWEEP: while a Land job or Autonomous Merge run holds or waits
+# for the slot it does nothing (no attempt spent); once the slot is free it
+# re-runs at most ONE stranded cancelled Land job, oldest first. It fires when a Land or Autonomous
 # Merge run completes (the moment the slot frees) and on a cron backstop.
 # Decision logic + tests: scripts/lib/land-retry-on-cancel{,.test} and
 # scripts/lib/land-queue-backoff{,.test}.
