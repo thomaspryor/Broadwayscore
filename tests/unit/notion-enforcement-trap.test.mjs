@@ -9,6 +9,7 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir, homedir } from 'node:os';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 
 const HOOKS = path.join(homedir(), '.claude/hooks');
 const have = existsSync(path.join(HOOKS, 'notion-create-block.sh'));
@@ -123,4 +124,16 @@ test('every hook that writes the create-failed breadcrumb can also clear it on R
     .filter((f) => /echo[^\n]*>\s*"?\$?\{?FAIL_BREADCRUMB|>\s*"?\/tmp\/notion-create-failed/.test(readFileSync(path.join(HOOKS, f), 'utf8')));
   assert.deepEqual(writers, ['notion-create-verify.sh']);
   assert.match(readFileSync(path.join(HOOKS, writers[0]), 'utf8'), /Notion is READ-ONLY[\s\S]{0,80}rm -f "\$FAIL_BREADCRUMB"/);
+});
+
+// Runs everywhere (incl. CI): the repo-side half of the contract the hooks key
+// on. notion-create-verify.sh clears the failure breadcrumb on this exact
+// phrase; if the guard's refusal wording drifts, the wedge (breadcrumb only a
+// successful create can clear) silently returns.
+test('notion-write-guard refusal carries the READ-ONLY phrase the hooks match', () => {
+  const { notionCreateVerdict } = createRequire(import.meta.url)('../../scripts/lib/notion-write-guard.js');
+  const v = notionCreateVerdict({});
+  assert.equal(v.allowed, false);
+  assert.match(v.reason, /Notion is READ-ONLY/);
+  if (have) assert.match(readFileSync(path.join(HOOKS, 'notion-create-verify.sh'), 'utf8'), /Notion is READ-ONLY/);
 });
