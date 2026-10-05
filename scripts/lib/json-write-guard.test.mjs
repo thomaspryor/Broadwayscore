@@ -96,3 +96,47 @@ test('integration: createJsonWriteGuard.save() breaks a stale lock via acquiredA
   const written = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   assert.equal(written.shows.length, 1);
 });
+
+// BRO-4726: fetch-tour-images.js held references to show objects across
+// several save() calls. save() used to swap every record it had not changed
+// for a freshly parsed copy, so edits made through the old references after
+// the first save were silently dropped (15 tours updated, 1 persisted).
+for (const shape of ['array', 'map']) {
+  test(`${shape}: a record reference held across save() calls keeps writing through`, () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'json-write-guard-ref-'));
+    const filePath = path.join(tmpDir, 'data.json');
+    const records = shape === 'array'
+      ? [{ id: 'a', v: 0 }, { id: 'b', v: 0 }, { id: 'c', v: 0 }]
+      : { a: { v: 0 }, b: { v: 0 }, c: { v: 0 } };
+    fs.writeFileSync(filePath, JSON.stringify({ shows: records, _meta: {} }));
+    const guard = createJsonWriteGuard(filePath, { shape, idKey: 'id', metaKey: '_meta' });
+    const data = guard.load();
+    const held = ['a', 'b', 'c'].map(id => (shape === 'array' ? data.shows.find(s => s.id === id) : data.shows[id]));
+    for (const rec of held) { rec.v = 1; guard.save(data); }
+    const written = JSON.parse(fs.readFileSync(filePath, 'utf8')).shows;
+    const values = shape === 'array' ? written.map(s => s.v) : ['a', 'b', 'c'].map(id => written[id].v);
+    assert.deepEqual(values, [1, 1, 1]);
+  });
+}
+
+test('a concurrent writer\'s change to a held record is copied into the caller\'s object', () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'json-write-guard-ref-'));
+  const filePath = path.join(tmpDir, 'data.json');
+  fs.writeFileSync(filePath, JSON.stringify({ shows: [{ id: 'a', v: 0 }, { id: 'b', v: 0 }], _meta: {} }));
+  const opts = { shape: 'array', idKey: 'id', metaKey: '_meta' };
+  const guard = createJsonWriteGuard(filePath, opts);
+  const data = guard.load();
+  const [a, b] = data.shows;
+  // Another process changes b between our load and our first save.
+  const other = createJsonWriteGuard(filePath, opts);
+  const theirs = other.load();
+  theirs.shows[1].w = 'theirs';
+  other.save(theirs);
+  a.v = 1;
+  guard.save(data);
+  assert.equal(b.w, 'theirs', 'held object picks up the concurrent change');
+  b.v = 2;
+  guard.save(data);
+  const written = JSON.parse(fs.readFileSync(filePath, 'utf8')).shows;
+  assert.deepEqual(written, [{ id: 'a', v: 1 }, { id: 'b', v: 2, w: 'theirs' }]);
+});
