@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-05T23:06:08.391Z",
-  "processed": 159,
-  "failed": 70,
-  "successRate": "69.4%",
+  "updatedAt": "2026-10-05T23:40:07.972Z",
+  "processed": 214,
+  "failed": 84,
+  "successRate": "71.8%",
   "tierBreakdown": {
-    "playwright": 103,
+    "playwright": 129,
     "amp": 1,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 13,
-    "brightdata": 2,
+    "scrapingdog": 25,
+    "scrapingbee": 31,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 24
+    "archive": 31
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
       "t": "2026-10-05T18:41:55.053Z",
@@ -98,6 +98,17 @@
       "event": "bb-session",
       "session": "6c4422ad",
       "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-05T23:20:18.144Z",
+      "event": "bb-session",
+      "session": "019bb49d",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-05T23:20:18.879Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
