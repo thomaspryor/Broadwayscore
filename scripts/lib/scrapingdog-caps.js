@@ -225,6 +225,17 @@ function shouldTripBreaker({ dayCredits, ceiling }) {
  * @returns {{dayCredits: number|null, status: 'ok'|'baseline'|'unknown',
  *            newState: {day: string, dayBaseline: number, lastCycleUsed: number}|null}}
  */
+/** Max age of the prior day's last reading (before 00:00 UTC) to still carry as today's baseline. */
+const ROLLOVER_CARRY_MAX_AGE_MS = 3 * 60 * 60 * 1000;
+
+/** ms from prevState.updatedAt to 00:00 UTC of `day`; null if updatedAt missing/unparseable. */
+function rolloverReadingAgeMs(prevState, day) {
+  const at = typeof prevState.updatedAt === 'string' ? Date.parse(prevState.updatedAt) : NaN;
+  const midnight = Date.parse(`${day}T00:00:00Z`);
+  if (!Number.isFinite(at) || !Number.isFinite(midnight)) return null;
+  return midnight - at;
+}
+
 function computeTodayCredits({ cycleUsed, day, prevState }) {
   if (typeof cycleUsed !== 'number' || !Number.isFinite(cycleUsed)) {
     // Unknown reading (billing API unreachable) — leave any prior state
@@ -234,6 +245,7 @@ function computeTodayCredits({ cycleUsed, day, prevState }) {
 
   let dayBaseline;
   let status = 'ok';
+  let reason = null;
 
   if (!prevState) {
     // Cold start — nothing to diff against yet. 'baseline', not a false
@@ -243,8 +255,21 @@ function computeTodayCredits({ cycleUsed, day, prevState }) {
   } else if (prevState.day === day) {
     dayBaseline = prevState.dayBaseline;
   } else if (isNextUtcDay(prevState.day, day)) {
-    // Rolled over exactly one day — carry forward YESTERDAY's last reading.
-    dayBaseline = prevState.lastCycleUsed;
+    // Rolled over exactly one day. Carry yesterday's last reading ONLY if it
+    // was taken close enough to 00:00 to stand in for "usage at midnight" —
+    // the day LABEL says nothing about freshness, and a lost hourly state
+    // write (BRO-2951/2960) would otherwise relabel a whole prior day of
+    // credits as today's (BRO-3020).
+    const ageMs = rolloverReadingAgeMs(prevState, day);
+    if (ageMs != null && ageMs >= 0 && ageMs <= ROLLOVER_CARRY_MAX_AGE_MS) {
+      dayBaseline = prevState.lastCycleUsed;
+    } else {
+      dayBaseline = cycleUsed;
+      status = 'baseline';
+      reason = ageMs == null
+        ? 'prev state has no usable updatedAt; carried baseline unknowable'
+        : `prev reading is ${Math.round(ageMs / 60000)}min before midnight (window ${ROLLOVER_CARRY_MAX_AGE_MS / 60000}min); carried baseline would mis-attribute a day`;
+    }
   } else {
     // Gap of more than one day (missed cron runs): a delta across the gap
     // would false-attribute several days' usage to one. Degrade to
@@ -264,6 +289,7 @@ function computeTodayCredits({ cycleUsed, day, prevState }) {
   return {
     dayCredits: status === 'ok' ? dayCredits : null,
     status,
+    reason,
     newState: { day, dayBaseline, lastCycleUsed: cycleUsed },
   };
 }
@@ -374,6 +400,7 @@ function _resetForTests() {
 }
 
 module.exports = {
+  ROLLOVER_CARRY_MAX_AGE_MS,
   DEFAULT_DAILY_CREDIT_CEILING,
   DEFAULT_OPENING_WINDOW_RESERVE_PER_SHOW_CREDITS,
   DEFAULT_FAIR_SHARE_BURST_FACTOR,

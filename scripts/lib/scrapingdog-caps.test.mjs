@@ -98,11 +98,42 @@ test('computeTodayCredits: day rollover carries forward YESTERDAY\'S LAST readin
   // This is the exact bug the cycleDelta-parity fix guards against: resetting
   // to "whatever today's first reading happens to be" would silently absorb
   // a post-midnight burst into the new baseline.
-  const prevState = { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000 };
+  const prevState = { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000, updatedAt: '2026-08-10T23:30:00.000Z' };
   const r = computeTodayCredits({ cycleUsed: 44300, day: '2026-08-11', prevState });
   assert.equal(r.status, 'ok');
   assert.equal(r.dayCredits, 300, 'diff must be against 44000 (yesterday\'s last reading), not 44300 (today\'s first)');
   assert.equal(r.newState.dayBaseline, 44000);
+});
+
+test('computeTodayCredits: BRO-3020 stale prev reading on rollover degrades to baseline (no phantom day)', () => {
+  const prevState = { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000, updatedAt: '2026-08-10T00:26:11.000Z' };
+  const r = computeTodayCredits({ cycleUsed: 94000, day: '2026-08-11', prevState });
+  assert.equal(r.status, 'baseline');
+  assert.equal(r.dayCredits, null);
+  assert.equal(r.newState.dayBaseline, 94000);
+  assert.match(r.reason, /mis-attribute/);
+});
+
+test('computeTodayCredits: rollover window boundary is inclusive at 3h', () => {
+  const mk = (updatedAt) => computeTodayCredits({ cycleUsed: 44300, day: '2026-08-11',
+    prevState: { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000, updatedAt } });
+  assert.equal(mk('2026-08-10T21:00:00.000Z').status, 'ok');
+  assert.equal(mk('2026-08-10T20:59:59.000Z').status, 'baseline');
+});
+
+test('computeTodayCredits: missing/invalid updatedAt on rollover degrades to baseline', () => {
+  for (const updatedAt of [undefined, null, 'garbage', 12345]) {
+    const r = computeTodayCredits({ cycleUsed: 44300, day: '2026-08-11',
+      prevState: { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000, updatedAt } });
+    assert.equal(r.status, 'baseline', String(updatedAt));
+    assert.equal(r.dayCredits, null);
+  }
+});
+
+test('computeTodayCredits: future updatedAt (clock skew) on rollover degrades to baseline', () => {
+  const r = computeTodayCredits({ cycleUsed: 44300, day: '2026-08-11',
+    prevState: { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000, updatedAt: '2026-08-11T05:00:00.000Z' } });
+  assert.equal(r.status, 'baseline');
 });
 
 test('computeTodayCredits: a gap of more than one day degrades to baseline, never a false trip', () => {
