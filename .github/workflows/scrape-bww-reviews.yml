@@ -52,6 +52,9 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 360-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
 
 
 

@@ -48,6 +48,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
+        with:
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
       - uses: actions/setup-node@v5
         with:
