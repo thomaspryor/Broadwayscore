@@ -150,14 +150,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-05T15:52:35.162Z",
-      "lastSeen": "2026-10-05T16:41:38.202Z",
-      "lastNotifiedAt": "2026-10-05T15:52:35.162Z",
+      "incidentOpenedAt": "2026-10-05T17:48:22.355Z",
+      "lastSeen": "2026-10-05T17:48:22.355Z",
+      "lastNotifiedAt": "2026-10-05T17:48:22.355Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 122,
+      "notifyCount": 123,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -7017,7 +7016,7 @@
       "silentRefires": 1
     },
     "test-yml:red:Lint Workflows:8be00113": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
@@ -7034,7 +7033,9 @@
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
       },
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-05T17:48:18.688Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
@@ -10543,31 +10544,24 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/bro-4724-recheck": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-4724-recheck",
-      "firstSeen": "2026-10-05T17:35:07.656Z",
-      "incidentOpenedAt": "2026-10-05T17:35:07.656Z",
-      "lastSeen": "2026-10-05T17:35:07.656Z",
-      "lastNotifiedAt": "2026-10-05T17:35:07.656Z",
-      "lastSurfacedAt": "2026-10-05T17:35:07.656Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
-    "roundup-gap:soon-off-broadway-2026": {
+    "test-yml:red:Unit Tests:cd491ba1": {
       "status": "open",
       "disposition": "auto",
-      "title": "Soon: 1 roundup-listed review(s) still not captured",
-      "firstSeen": "2026-10-05T17:43:36.077Z",
-      "incidentOpenedAt": "2026-10-05T17:43:36.077Z",
-      "lastSeen": "2026-10-05T17:43:36.077Z",
-      "lastNotifiedAt": "2026-10-05T17:43:36.077Z",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, branch stays single-commit\"",
+      "firstSeen": "2026-10-05T17:48:18.697Z",
+      "incidentOpenedAt": "2026-10-05T17:48:18.697Z",
+      "lastSeen": "2026-10-05T17:48:18.697Z",
+      "lastNotifiedAt": "2026-10-05T17:48:18.697Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4746"
+      "linearIdentifier": "BRO-4748",
+      "dispatch": {
+        "requestedAt": "2026-10-05T17:48:18.697Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37348719012",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37348719012"
+      }
     }
   }
 }
