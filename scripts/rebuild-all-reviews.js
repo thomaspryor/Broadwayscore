@@ -89,6 +89,7 @@ const {
   isWithinTourLeg,
   shouldAutoClearWrongProductionPriorRun,
   shouldAutoClearWrongProductionTourLeg,
+  isAdjudicatedTourVerdict,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
   isDatedGuardNote,
@@ -1638,6 +1639,15 @@ const crossShowFingerprints = new Map();
             delete d.anticipatoryGateDaysBeforeOpening;
           } else if (reason.startsWith('CV-promoted:') || reason.startsWith('CV-low-but-strong-signal:')) {
             delete d.wrongProductionReason;
+          } else if (isAdjudicatedTourVerdict(d)) {
+            // BRO-2841: adjudicator's national-tour verdict superseded by the
+            // declared window. Drop its reason + wrong_content markers so the
+            // file is not left looking manually flagged / incomplete.
+            delete d.wrongProductionReason;
+            if (d.incompleteReason === 'wrong_content' && /^contamination-adjudicated:/.test(d.incompleteDetail || '')) {
+              delete d.incompleteReason;
+              delete d.incompleteDetail;
+            }
           }
           // Card #1902: see the dateless-revival auto-clear above — same gate.
           if (isStaleScoreInput(d, showRecord, fp)) {

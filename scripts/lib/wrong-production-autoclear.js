@@ -326,6 +326,20 @@ function effectiveFlagDate(data) {
   return null;
 }
 
+/**
+ * True when the adjudicator's own verdict was a tour/regional production
+ * (note 'Auto-adjudicated: national-tour. ...' + reason
+ * 'contamination-adjudicated: national-tour'). BRO-2841: that verdict says the
+ * review is of a tour leg, so when the operator DECLARED the leg as a
+ * priorRuns/tourLegs window containing the review's date, the declared window
+ * outranks it. Any other adjudicated verdict (film-tv, other, a different
+ * production) stays a manual-grade reason the windows cannot override.
+ */
+function isAdjudicatedTourVerdict(data) {
+  return hasAdjudicatedNote(data)
+    && /^contamination-adjudicated: (?:national-tour|regional)$/.test(data.wrongProductionReason || '');
+}
+
 function shouldAutoClearWrongProductionPriorRun(data, show) {
   if (!data || data.wrongProduction !== true) return false;
   if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) return false;
@@ -340,7 +354,8 @@ function shouldAutoClearWrongProductionPriorRun(data, show) {
   // ONLY wrongProductionReason. Recognize their auto-set values as override-eligible.
   const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
     || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
-    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason))
+    || isAdjudicatedTourVerdict(data);
   if (!isDateOnlyAutoFlag && !isAutoReason) return false;
   const effDate = effectiveFlagDate(data);
   if (!effDate || !isWithinPriorRun(effDate, show.priorRuns)) return false;
@@ -379,7 +394,8 @@ function shouldAutoClearWrongProductionTourLeg(data, show) {
     || startsWithAny(reason, DATE_GUARD_PREFIXES);
   const isAutoReason = DATE_ONLY_AUTO_REASONS.has(reason)
     || AUTO_REASON_PREFIXES.some((p) => reason.startsWith(p))
-    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason))
+    || isAdjudicatedTourVerdict(data);
   if (!isDateOnlyAutoFlag && !isAutoReason) return false;
   const effDate = effectiveFlagDate(data);
   if (!effDate || !isWithinTourLeg(effDate, show.tourLegs)) return false;
@@ -1021,6 +1037,7 @@ module.exports = {
   REVIEW_LAG_GRACE_DAYS,
   ADJUDICATED_NOTE_PREFIX,
   hasAdjudicatedNote,
+  isAdjudicatedTourVerdict,
   hasEnsembleConsensus,
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
