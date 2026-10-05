@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-05T11:04:21.673Z",
+  "generatedAt": "2026-10-05T11:31:58.640Z",
   "apply": true,
-  "auditGeneratedAt": "2026-10-05T10:55:09.510Z",
+  "auditGeneratedAt": "2026-10-05T11:21:48.426Z",
   "counts": {
-    "skip:command-not-a-single-test-file": 8,
-    "skip:command-shared-with-another-card": 5,
+    "skip:command-shared-with-another-card": 6,
+    "skip:command-not-a-single-test-file": 9,
     "bounce:no-auto-worker": 4,
     "bounce:recent-activity": 3,
-    "recent-activity": 16,
-    "no-commit-naming-card-touched-test": 8,
+    "recent-activity": 15,
+    "no-commit-naming-card-touched-test": 9,
     "state-changed-since-audit": 1
   },
   "rows": [
@@ -55,6 +55,12 @@
       "reason": "recent-activity"
     },
     {
+      "id": "BRO-733",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
       "id": "BRO-236",
       "state": "In Review",
       "action": "leave",
@@ -82,7 +88,7 @@
       "id": "BRO-4466",
       "state": "In Progress",
       "action": "leave",
-      "reason": "recent-activity"
+      "reason": "no-commit-naming-card-touched-test"
     },
     {
       "id": "BRO-4450",
@@ -124,19 +130,13 @@
       "id": "BRO-2793",
       "state": "In Progress",
       "action": "leave",
-      "reason": "recent-activity"
+      "reason": "state-changed-since-audit"
     },
     {
       "id": "BRO-2763",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-2752",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "state-changed-since-audit"
     },
     {
       "id": "BRO-2713",
