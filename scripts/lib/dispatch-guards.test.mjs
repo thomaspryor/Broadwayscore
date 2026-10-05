@@ -13,7 +13,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { closedCardGuard, dispatchClaimGuard, findLiveWorkspaceForTask, safeLedgerEntries } = require('./dispatch-guards.js');
+const { closedCardGuard, dispatchClaimGuard, findLiveWorkspaceForTask, makeProvablyDeadFn, safeLedgerEntries } = require('./dispatch-guards.js');
 // BRO-2488: marketingProjectGuard lives in linear-dispatch.js, not this
 // file's GUARD_NAMES family — it's issue-shaped (needs issue.project), and
 // predispatch-queue-audit.js's runGuard() only ever simulates GUARD_NAMES
@@ -445,6 +445,49 @@ test('fresh-dispatch callers pass the ledger to findLiveWorkspaceForTask', () =>
     const src = fs.readFileSync(path.join(root, file), 'utf8');
     const calls = src.match(/findLiveWorkspaceForTask\((?:task|pseudoTask),[^;\n]*;/g) || [];
     assert.equal(calls.length, n, `${file}: expected ${n} call sites`);
-    for (const c of calls) assert.match(c, /safeLedgerEntries\(readLedgerEntriesFn\)/, `${file}: ${c}`);
+    for (const c of calls) {
+      assert.match(c, /safeLedgerEntries\(readLedgerEntriesFn\)/, `${file}: ${c}`);
+      // BRO-1703: and the dead-shell predicate, or a dead shell blocks its card forever again.
+      assert.match(c, /deadShellFn\(/, `${file}: ${c}`);
+    }
   }
+});
+
+// BRO-1703: a dead 🤖 shell must not block its own card's relaunch, but a
+// booting/unmapped/other-task tab must keep blocking (positive proof only).
+test('findLiveWorkspaceForTask + makeProvablyDeadFn: only provably dead shells stop blocking', () => {
+  const isDone = t => t.startsWith('✅');
+  const task = { id: '501', subject: 'Lint guard cousin --help flag handling gap' };
+  const ws = { ref: 'workspace:78', title: '🤖⚡ Infra·Lint guard cousin --help flag handling gap' };
+  const launch = { event: 'launch', taskId: '501', workspaceRef: 'workspace:78', ts: '2026-10-05T10:00:00.000Z' };
+  const dead = { event: 'dead', taskId: '501', workspaceRef: 'workspace:78', ts: '2026-10-05T10:05:00.000Z' };
+  const cmuxDead = () => false;   // claudeAliveIn / terminalSurfaceAliveIn: no
+  const cmuxAlive = () => true;
+  const mk = (ledger, c = cmuxDead, s = cmuxDead) => makeProvablyDeadFn({ task, ledgerEntries: ledger, claudeAliveInFn: c, surfaceAliveInFn: s });
+  const find = (ledger, fn) => findLiveWorkspaceForTask(task, [ws], isDone, ledger, fn);
+  // no predicate: legacy behavior, matches
+  assert.equal(find([launch, dead]), ws);
+  // ledger death + cmux dead => skipped
+  assert.equal(find([launch, dead], mk([launch, dead])), null);
+  // failedLaunchEntries writes 'dead' a few ms BEFORE 'launch' — still dead
+  const deadFirst = { ...dead, ts: '2026-10-05T09:59:59.990Z' };
+  assert.equal(find([deadFirst, launch], mk([deadFirst, launch])), null);
+  // booting tab: launch row only, no death row => blocks
+  assert.equal(find([launch], mk([launch])), ws);
+  // unmapped tab (no ledger launch) => blocks
+  assert.equal(find([], mk([])), ws);
+  // ledger says dead but cmux now shows claude alive => blocks
+  assert.equal(find([launch, dead], mk([launch, dead], cmuxAlive, cmuxDead)), ws);
+  assert.equal(find([launch, dead], mk([launch, dead], cmuxDead, cmuxAlive)), ws);
+  // an old death from a recycled ref's previous occupant does not exempt a newer launch
+  const oldDead = { ...dead, ts: '2026-10-01T00:00:00.000Z' };
+  assert.equal(find([oldDead, launch], mk([oldDead, launch])), ws);
+  // launch belongs to a different task => blocks
+  const other = { ...launch, taskId: '999' };
+  assert.equal(find([other, { ...dead, taskId: '999' }], mk([other, { ...dead, taskId: '999' }])), ws);
+  // ledger outage (null) and a throwing probe => blocks
+  assert.equal(find(null, mk(null)), ws);
+  const boom = () => { throw new Error('cmux down'); };
+  assert.equal(find([launch, dead], mk([launch, dead], boom, boom)), ws);
+  assert.equal(find([launch, dead], () => { throw new Error('x'); }), ws);
 });

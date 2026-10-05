@@ -193,7 +193,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 // unchanged — every name still resolves to the same behavior, now sourced
 // from the shared lib. See dispatch-guards.js's header for the full rationale.
 const {
-  findLiveWorkspaceForTask, safeLedgerEntries, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
+  findLiveWorkspaceForTask, makeProvablyDeadFn, safeLedgerEntries, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   closedCardGuard,
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability, remainingHeadlessBlockers,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
@@ -1087,6 +1087,14 @@ function main(argv = process.argv.slice(2), deps = {}) {
     releaseDispatchClaim: releaseDispatchClaimFn = (taskId) => releaseClaim(DISPATCH_CLAIM_DIR, taskId),
   } = deps;
 
+  // BRO-1703: a matching workspace the ledger + cmux both PROVE dead must not
+  // block its own card's relaunch (see makeProvablyDeadFn). Ledger re-read at
+  // call time so a 'dead' row the self-heal above just journaled counts.
+  const deadShellFn = (t) => makeProvablyDeadFn({
+    task: t, ledgerEntries: safeLedgerEntries(readLedgerEntriesFn), claudeAliveInFn, surfaceAliveInFn,
+    onIgnored: w => console.error(`[bsc-next] ignoring dead shell ${w.ref} "${w.title}" (ledger death + cmux both say no live session) — not counting it as in-flight`),
+  });
+
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
 
   const args = parseArgs(argv);
@@ -1613,7 +1621,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // guard here (ship-check Codex blocker): refuse if an un-✅ tab matches.
     if (!args.force && cmuxAvailableFn()) {
       try {
-        const dupTab = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn));
+        const dupTab = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn), deadShellFn(task));
         if (dupTab) {
           console.error(`[bsc-next] a live cmux workspace already matches task #${task.id}: ${dupTab.ref} "${dupTab.title}". Refusing headless duplicate (--force to override).`);
           process.exit(1);
@@ -1708,7 +1716,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
-        const dup = findLiveWorkspaceForTask(task, workspaces || listWorkspacesFn(), isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn));
+        const dup = findLiveWorkspaceForTask(task, workspaces || listWorkspacesFn(), isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn), deadShellFn(task));
         if (dup) {
           console.error(`[bsc-next] a live workspace already matches task #${task.id}: ${dup.ref}  "${dup.title}".`);
           console.error(`  Another session may be on this task. Check it (cmux read-screen --workspace ${dup.ref}),`);

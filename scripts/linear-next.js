@@ -101,7 +101,7 @@ const { pickLinearModel } = require('./lib/bsc-next-model.js');
 // The shared guard/gate lib (task #1303 plan review item 2) — see that
 // file's header for the DispatchGuardTask shape these expect.
 const {
-  findLiveWorkspaceForTask, safeLedgerEntries, checkDeadDispatch, parkedGuard,
+  findLiveWorkspaceForTask, makeProvablyDeadFn, safeLedgerEntries, checkDeadDispatch, parkedGuard,
   evaluateVerifiability, classifyHeadlessDispatchability, remainingHeadlessBlockers, HEADLESS_BLOCKERS, isAutomationParked, isDrainableSessionParked,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
   workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
@@ -445,6 +445,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     spawnDetachedDispatch: spawnDetachedFn = null,
     waitForSettle: waitForSettleFn = null,
   } = deps;
+
+  // BRO-1703: a matching workspace the ledger + cmux both PROVE dead must not
+  // block its own card's relaunch (see makeProvablyDeadFn). Ledger re-read at
+  // call time so a 'dead' row the self-heal above just journaled counts.
+  const deadShellFn = (t) => makeProvablyDeadFn({
+    task: t, ledgerEntries: safeLedgerEntries(readLedgerEntriesFn), claudeAliveInFn, surfaceAliveInFn,
+    onIgnored: w => console.error(`[linear-next] ignoring dead shell ${w.ref} "${w.title}" (ledger death + cmux both say no live session) — not counting it as in-flight`),
+  });
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const args = parseArgs(argv);
@@ -1056,7 +1064,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 
       if (!args.force) {
         try {
-          const dup = findLiveWorkspaceForTask(pseudoTask, workspaces, isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn));
+          const dup = findLiveWorkspaceForTask(pseudoTask, workspaces, isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn), deadShellFn(pseudoTask));
           if (dup) {
             console.error(`[linear-next] a live workspace already matches ${identifier}: ${dup.ref} "${dup.title}".`);
             console.error(`  Another session may be on this issue. Check it (cmux read-screen --workspace ${dup.ref}),`);
