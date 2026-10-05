@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T08:08:40.029Z",
+  "timestamp": "2026-10-05T09:57:16.693Z",
   "stats": {
-    "totalReviews": 46304,
+    "totalReviews": 46308,
     "alreadyFlagged": 18733,
     "dateGuardCatches": 269,
     "directorMismatch": 1256,
-    "tvFilmSignals": 1342,
+    "tvFilmSignals": 1343,
     "londonSignals": 1274,
     "offBroadwaySignals": 509,
     "yearMismatch": 109,
-    "noPublishDate": 4296
+    "noPublishDate": 4295
   },
   "findings": [
     {
@@ -13616,7 +13616,7 @@
       "showId": "head-over-heels-2018",
       "file": "newnownextcom--michael-musto.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "July 30, 2018",
       "url": "https://www.newnownext.com/head-over-heels-review/07/2018/",
       "findings": [
         {
@@ -16630,6 +16630,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "is-this-a-room-2021",
+      "file": "observer--david-cote.json",
+      "score": 88,
+      "publishDate": "2021-10-11T20:59:57-04:00",
+      "url": "https://observer.com/2021/10/is-this-a-room-brings-downtown-weird-to-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
