@@ -1,7 +1,17 @@
 {
-  "generatedAt": "2026-10-05T11:21:48.426Z",
-  "bannerText": "181/196 Done(14d) verified on main · 6 FAILED · 1 vacuous · 40 stuck-but-done — PARTIAL RUN: 3 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-05T15:40:22.283Z",
+  "bannerText": "145/225 Done(14d) verified on main · 6 FAILED · 2 vacuous · 29 stuck-but-done — PARTIAL RUN: 90 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
+    {
+      "title": "FAILED BRO-328 — Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opening-night-express.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-328/live-show-has-zero-critic-reviews-on-site-matilda-the-musical-theatre"
+    },
+    {
+      "title": "FAILED BRO-127 — Arm PUSH_VIA_API_FALLBACK on a real caller + verify in production",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-127/arm-push-via-api-fallback-on-a-real-caller-verify-in-production"
+    },
     {
       "title": "FAILED BRO-80 — Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/triage-unopened-shows.test.mjs",
@@ -13,35 +23,25 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4668/testyml-e2e-races-prod-deploy-wait-for-undeployed-site-changes-before"
     },
     {
-      "title": "FAILED BRO-2538 — push-with-retry.sh Git Data API fallback disqualifier evaluates the merge-accumulated diff, not the job's own diff — fires almost always under real contention",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/push-with-retry.fallback-eligibility-diff.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2538/push-with-retrysh-git-data-api-fallback-disqualifier-evaluates-the"
+      "title": "FAILED BRO-2853 — P1: push-via-git-api concurrency test flakes main red — it asserts a race OCCURRED, which an uncontended runner never guarantees",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2853/p1-push-via-git-api-concurrency-test-flakes-main-red-it-asserts-a-race"
     },
     {
-      "title": "FAILED BRO-2517 — Re-run backfill-cast-web.js --force on 34 shows tombstoned empty by the >=2 cast-size bug",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/backfill-cast-web.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2517/re-run-backfill-cast-webjs-force-on-34-shows-tombstoned-empty-by-the-2"
+      "title": "FAILED BRO-2824 — P2: push-via-git-api.sh has no wall-clock deadline — the new rc=124 retry can burn ~13 min where a chronic timeout previously capped at ~1 attempt",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2824/p2-push-via-git-apish-has-no-wall-clock-deadline-the-new-rc124-retry"
     },
     {
-      "title": "FAILED BRO-2404 — P1: sync-memory-to-repo.sh pull --rebase wedges shared main checkout (#1893)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/sync-memory-to-repo-no-rebase.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2404/p1-sync-memory-to-reposh-pull-rebase-wedges-shared-main-checkout-1893"
-    },
-    {
-      "title": "FAILED BRO-1794 — P1: launchd jobs silently run STALE code whenever data/audit/* has local edits — ff-only fallback defeats the whole scheduled-job chain",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/merge-bww-roundup-ledger.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-1794/p1-launchd-jobs-silently-run-stale-code-whenever-dataaudit-has-local"
+      "title": "STUCK BRO-989 — Schmigadoon opening-night automation fixes (postmortem queue)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-989/schmigadoon-opening-night-automation-fixes-postmortem-queue"
     },
     {
       "title": "STUCK BRO-733 — BWW roundup extraction fails to parse critic names for some entries",
       "detail": "its own evidence holds on main — looks finished",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-733/bww-roundup-extraction-fails-to-parse-critic-names-for-some-entries"
-    },
-    {
-      "title": "STUCK BRO-720 — Fix rebuild overwriting allowEarlyDate for transferred productions",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-720/fix-rebuild-overwriting-allowearlydate-for-transferred-productions"
     }
   ],
-  "moreCount": 39
+  "moreCount": 29
 }

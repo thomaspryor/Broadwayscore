@@ -1,1 +1,118 @@
-[]
+[
+  {
+    "conditionKey": "land:land/bro-4721-biz-ux",
+    "title": "Landing blocked: rebase red on land/bro-4721-biz-ux",
+    "description": "land.yml did not land land/bro-4721-biz-ux: the rebase gate went red at 3091057a7f. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4721-biz-ux @ 3091057a7f (origin/land/bro-4721-biz-ux) → origin/main @ 8f21935b27 [land] attempt 1/3: rebased onto 8f21935b27, 253 file(s) changed — running checks [land] verified-base: main moved a13c892de5 → 8f21935b27 across 92 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated- Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37330081782",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4721-biz-ux"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3091057a7f56145e7c3107b53d29e9e3fe41a23d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37330081782"
+      }
+    ],
+    "queuedAt": "2026-10-05T15:49:13.001Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4724-tour-lifecycle",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4724-tour-lifecycle",
+    "description": "land.yml did not land land/bro-4724-tour-lifecycle: the unit-tests-node gate went red at 75b0796f3d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37332627405",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4724-tour-lifecycle"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "75b0796f3d086de96277c5f73906e00e81c03504"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37332627405"
+      }
+    ],
+    "queuedAt": "2026-10-05T15:58:18.637Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4656-tour-reviews",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4656-tour-reviews",
+    "description": "land.yml did not land land/bro-4656-tour-reviews: the scripts-lib-tests gate went red at 2bc63f95ce. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37333615046",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4656-tour-reviews"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "2bc63f95ce401b37b2575291f0b1468ed0b7557e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37333615046"
+      }
+    ],
+    "queuedAt": "2026-10-05T16:04:48.315Z"
+  },
+  {
+    "conditionKey": "land:land/bro-554-deploy-dedup",
+    "title": "Landing blocked: lint-workflows red on land/bro-554-deploy-dedup",
+    "description": "land.yml did not land land/bro-554-deploy-dedup: the lint-workflows gate went red at 8762fbc3f0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37333669356",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-554-deploy-dedup"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "8762fbc3f0392ea0297918051191f25c6b537ede"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37333669356"
+      }
+    ],
+    "queuedAt": "2026-10-05T16:04:26.083Z"
+  }
+]

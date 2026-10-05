@@ -75,6 +75,7 @@ scripts/check-review-count-drift.test.mjs
 scripts/check-score-integrity.test.mjs
 scripts/check-seo-health.test.mjs
 scripts/check-signin-redirects.test.mjs
+scripts/check-workflow-run-status.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/clear-stale-wrong-show-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
@@ -1125,6 +1126,7 @@ tests/unit/tour-discovery.test.mjs
 tests/unit/tour-forward-tense.test.mjs
 tests/unit/tour-legs-validation.test.mjs
 tests/unit/tour-roundup-candidate.test.mjs
+tests/unit/tours-to-you-coverage.test.mjs
 tests/unit/tr-discovery-cross-show.test.mjs
 tests/unit/trainspotting-review-fetch.test.mjs
 tests/unit/transfer-detection.test.mjs

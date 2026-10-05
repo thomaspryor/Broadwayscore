@@ -20,7 +20,7 @@ const { parseTourSchedule, segmentTourRows, currentSegment } = require('./tour-s
 const { toursOfTitle } = require('./tour-family');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
-const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link`;
+const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt`;
 
 /** Title or slug to a comparable key: "Moulin Rouge! The Musical" -> moulin-rouge. */
 function titleKey(s) {
