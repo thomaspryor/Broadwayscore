@@ -746,3 +746,49 @@ test('hasSeedProcess: matches the real wrapper line shape, and only the exact no
     'a different attempt of the SAME task must not vouch for this one');
   assert.equal(hasSeedProcess('', 'bsc-cmd-linear_BRO-80-f09deda2.sh'), false);
 });
+
+// BRO-2982: crown succession launches must reach the dispatch ledger with
+// succession data so successionDepthForTask's cap engages.
+const { recordSuccessionLaunchRow, ledgerTaskIdForLaunch } = require('./cmux-launch.js');
+const dispatchLedger = require('./dispatch-ledger.js');
+
+test('BRO-2982: succession launch appends a launch row carrying succession + successionOf', () => {
+  const rows = [];
+  const res = { ok: true, ref: 'workspace:900', marker: 'bsc-cmd-x.sh' };
+  recordSuccessionLaunchRow(
+    { title: 'OWNER-crown v49 — BRO-343 backlog triage', successorOf: 'workspace:120', model: 'opus' }, res, r => { rows.push(r); return r; });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].event, 'launch');
+  assert.equal(rows[0].taskId, 'linear:BRO-343');
+  assert.equal(rows[0].workspaceRef, 'workspace:900');
+  assert.equal(rows[0].succession, true);
+  assert.equal(rows[0].successionOf, 'workspace:120');
+  assert.equal(rows[0].linearId, 'BRO-343');
+  // depth cap engages: prior fresh launch + this succession = depth 2, not reset to 1
+  const entries = [{ event: 'launch', taskId: 'linear:BRO-343', ts: '2026-01-01T00:00:00Z' }, { ...rows[0], ts: '2026-01-02T00:00:00Z' }];
+  assert.equal(dispatchLedger.successionDepthForTask('linear:BRO-343', entries), 2);
+});
+
+test('BRO-2982: no row for plain launches (bsc-next/linear-next write their own), failed launches, or unidentifiable tasks', () => {
+  const rows = []; const sink = r => { rows.push(r); return r; };
+  recordSuccessionLaunchRow({ title: 'BRO-5 x' }, { ok: true, ref: 'workspace:1' }, sink);
+  recordSuccessionLaunchRow({ title: 'BRO-5 x', successorOf: 'workspace:2' }, { ok: false, ref: 'workspace:1' }, sink);
+  recordSuccessionLaunchRow({ title: 'crown no id', successorOf: 'workspace:2' }, { ok: true, ref: 'workspace:1' }, sink);
+  assert.equal(rows.length, 0);
+  recordSuccessionLaunchRow({ title: 't', ledgerTaskId: 'linear:BRO-9' }, { ok: true, ref: 'workspace:3' }, sink);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].succession, undefined);
+  assert.equal(ledgerTaskIdForLaunch({ title: 't' }), null);
+});
+
+test('BRO-2982: a throwing ledger never fails the launch', () => {
+  assert.equal(recordSuccessionLaunchRow({ title: 'BRO-1', successorOf: 'w' }, { ok: true, ref: 'workspace:4' }, () => { throw new Error('disk'); }), null);
+});
+
+test('BRO-2982: the FIRST crown of a chain (crown title, no successorOf) also gets a non-succession row', () => {
+  const rows = [];
+  recordSuccessionLaunchRow({ title: '👑 OWNER-crown v1 — BRO-4001 and BRO-343 mandate' }, { ok: true, ref: 'workspace:5' }, r => { rows.push(r); return r; });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].taskId, 'linear:BRO-343');
+  assert.equal(rows[0].succession, undefined);
+});

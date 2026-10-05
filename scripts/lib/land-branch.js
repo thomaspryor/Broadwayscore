@@ -197,18 +197,9 @@ function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip,
 const CANCEL_GRACE_SEC = 900;
 const CANCEL_GRACE_POLL_SEC = 15;
 
-/**
- * Pure: after a retry-eligible cancel, has the run been re-triggered?
- * 'resume' once the run is live again or its attempt number moved past the
- * one that was cancelled; 'wait' otherwise. Unknown status reads as 'wait'.
- */
-function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
-  const a = Number(attempt);
-  const before = Number(attemptBefore);
-  if (Number.isFinite(a) && Number.isFinite(before) && a > before) return 'resume';
-  if (status && status !== 'completed') return 'resume';
-  return 'wait';
-}
+// decideCancelledWait lives in land-retry-on-cancel.js (shared with the
+// server-side retry script); re-exported below for merge-worktree-to-main.sh.
+const { decideCancelledWait } = require('./land-retry-on-cancel');
 
 /**
  * A branch name is passed to git as a positional ref; refuse anything that

@@ -195,7 +195,7 @@ test('wiring: the workflow sweeps when the slot frees and the script spends atte
   const js = fs.readFileSync(path.join(root, 'scripts/land-retry-cancelled.js'), 'utf8');
   // every rerun POST goes through rerun(), reached only after slotState() said free
   assert.equal((js.match(/rerun-failed-jobs/g) || []).length, 1);
-  assert.match(js, /const slot = slotState\(runId\);\s*if \(slot\.busy\)[\s\S]*?return;[\s\S]*?rerun\(runId\)/);
+  assert.match(js, /const slot = slotState\(runId\);\s*if \(slot\.busy\)[\s\S]*?return;[\s\S]*?rerun\(runId\b/);
   assert.match(js, /const slot = slotState\(\);[\s\S]*?decideSweep\(/);
   assert.match(js, /d\.action === 'wait'/);
   assert.match(js, /decideSweep\(\{ slot,/);
