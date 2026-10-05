@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { finalResponseText, describeResponse } = require('./anthropic-response-text.js');
+const { finalResponseText, describeResponse, firstJsonObject } = require('./anthropic-response-text.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 const tool = [
@@ -46,11 +46,21 @@ test('describeResponse names stop_reason and block types', () => {
   assert.equal(describeResponse(null), 'stop_reason=unknown blocks=[none]');
 });
 
+test('firstJsonObject pulls the object out of prose and fences', () => {
+  const tail = 'Revised:\n```json\n{"isReview":true,"contentType":"review","confidence":"high","reasoning":"a {b} \\"c\\""}\n```';
+  assert.deepEqual(JSON.parse(firstJsonObject(tail)), { isReview: true, contentType: 'review', confidence: 'high', reasoning: 'a {b} "c"' });
+  // A non-JSON brace earlier in the prose is skipped.
+  assert.equal(firstJsonObject('use {x} then {"a":1}'), '{"a":1}');
+  assert.equal(firstJsonObject('{"a":1'), null);
+  assert.equal(firstJsonObject(undefined), null);
+});
+
 // Guard: a script that enables the advisor tool must not read only the first text block.
-const FIRST_TEXT = /\.find\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===\s*['"]text['"]\s*\)/;
+const FIRST_TEXT = /\.(?:find\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===?\s*['"]text['"]\s*\)|filter\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===?\s*['"]text['"]\s*\)\s*\[0\])/;
 
 test('guard regex matches the common spellings', () => {
-  for (const s of ["data.content.find(c => c.type === 'text')", 'json.content?.find((c) => c.type === "text")', "(m.content || []).find(b => b?.type === 'text')"]) {
+  for (const s of ["data.content.find(c => c.type === 'text')", 'json.content?.find((c) => c.type === "text")', "(m.content || []).find(b => b?.type === 'text')",
+    "content.find(c => c.type == 'text')", 'content.filter(c => c.type === "text")[0].text']) {
     assert.match(s, FIRST_TEXT, s);
   }
 });

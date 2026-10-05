@@ -27,4 +27,28 @@ function describeResponse(data) {
   return `stop_reason=${(data && data.stop_reason) || 'unknown'} blocks=[${types}]`;
 }
 
-module.exports = { finalResponseText, describeResponse };
+// The first balanced {...} in a model reply, as a string, or null. Skips prose
+// or a "Revised:" line around the object; braces inside JSON strings are
+// ignored. Lets callers JSON.parse an object answer that is not the whole text.
+function firstJsonObject(text) {
+  if (typeof text !== 'string') return null;
+  for (let start = text.indexOf('{'); start !== -1; start = text.indexOf('{', start + 1)) {
+    let depth = 0, inStr = false, esc = false;
+    for (let i = start; i < text.length; i++) {
+      const ch = text[i];
+      if (inStr) {
+        if (esc) esc = false;
+        else if (ch === '\\') esc = true;
+        else if (ch === '"') inStr = false;
+      } else if (ch === '"') inStr = true;
+      else if (ch === '{') depth++;
+      else if (ch === '}' && --depth === 0) {
+        const candidate = text.slice(start, i + 1);
+        try { JSON.parse(candidate); return candidate; } catch { break; }
+      }
+    }
+  }
+  return null;
+}
+
+module.exports = { finalResponseText, describeResponse, firstJsonObject };

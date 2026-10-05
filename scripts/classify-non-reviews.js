@@ -49,7 +49,7 @@ const { shouldSkipNonReviewStamp, nonReviewStampBlockReason } = require('./lib/f
 const { hasBotStubTruncationSignal } = require('./lib/content-quality');
 const { buildClassifySample } = require('./lib/classify-sample');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
-const { finalResponseText } = require('./lib/anthropic-response-text');
+const { finalResponseText, describeResponse, firstJsonObject } = require('./lib/anthropic-response-text');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -137,7 +137,8 @@ function callClaude(systemPrompt, userPrompt) {
   if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
   const body = JSON.stringify({
     model: CLAUDE_SONNET,
-    max_tokens: 200,
+    // BRO-4665: room for the advisor preamble + tool call before the JSON.
+    max_tokens: 512,
     temperature: 0.1,
     // Do NOT add cache_control here: the advisor tool makes the cache prefix
     // non-byte-stable (2026-07-26 live probe: writes fluctuated 1480 vs 1429
@@ -164,6 +165,7 @@ function callClaude(systemPrompt, userPrompt) {
         if (res.statusCode === 200) {
           try {
             const json = JSON.parse(data);
+            if (json.stop_reason === 'max_tokens') console.warn(`  Claude reply truncated (${describeResponse(json)})`);
             resolve(finalResponseText(json.content));
           } catch (e) { reject(new Error(`Claude parse error: ${e.message}`)); }
         } else if (res.statusCode === 429) {
@@ -321,7 +323,8 @@ function buildClassifyPrompt(showTitle, fullText) {
 function parseClassifyResponse(raw) {
   let text = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
   try {
-    const obj = JSON.parse(text);
+    // BRO-4665: an advisor-tool reply can wrap the object in prose ("Revised:").
+    const obj = JSON.parse(firstJsonObject(text) || text);
     if (typeof obj.isReview === 'boolean' && obj.contentType && obj.confidence) {
       return {
         isReview: obj.isReview,
