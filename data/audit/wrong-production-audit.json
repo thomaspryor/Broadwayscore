@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T00:26:06.525Z",
+  "timestamp": "2026-10-05T00:35:06.944Z",
   "stats": {
     "totalReviews": 46271,
-    "alreadyFlagged": 18752,
+    "alreadyFlagged": 18750,
     "dateGuardCatches": 269,
-    "directorMismatch": 1232,
+    "directorMismatch": 1233,
     "tvFilmSignals": 1340,
     "londonSignals": 1272,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4284
+    "noPublishDate": 4285
   },
   "findings": [
     {
@@ -31922,6 +31922,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "the-austin-chronicle--richard-whittaker.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://www.austinchronicle.com/arts/review-the-lion-king-roars-strong-12141775/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
         }
       ]
     },
