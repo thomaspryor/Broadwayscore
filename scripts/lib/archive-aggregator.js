@@ -4,45 +4,22 @@
  *
  * The old tier sent BRIGHTDATA_TOKEN (an account-level Bearer API key) as the
  * raw-proxy-protocol password to brd.superproxy.io:33335, which expects the
- * zone's own password, so every call got 407. The REST /request endpoint takes
- * the Bearer token directly (same call as scripts/lib/scraper.js), needs no
- * customer id and no extra secret.
+ * zone's own password, so every call got 407. This now delegates to
+ * scraper.js fetchWithBrightData (REST /request + Bearer), the single choke
+ * point that applies the daily circuit breaker, per-run budget and spend
+ * telemetry. Zone comes from BRIGHTDATA_ZONE (set by the workflow).
  */
 
-const BD_REQUEST_URL = 'https://api.brightdata.com/request';
-const DEFAULT_ZONE = 'web_unlocker2';
-
-function resolveZone(zoneName) {
-  return zoneName && String(zoneName).trim() !== '' ? String(zoneName).trim() : DEFAULT_ZONE;
-}
-
-/** Pure: the axios request config for one Bright Data REST fetch. */
-function buildBrightDataRequest(url, token, zoneName) {
-  if (!token || String(token).trim() === '') throw new Error('BRIGHTDATA_TOKEN missing');
-  return {
-    url: BD_REQUEST_URL,
-    body: { zone: resolveZone(zoneName), url, format: 'raw' },
-    config: {
-      headers: {
-        Authorization: `Bearer ${String(token).trim()}`,
-        'Content-Type': 'application/json',
-      },
-      timeout: 90000,
-      responseType: 'text',
-      transformResponse: [(d) => d],
-    },
-  };
-}
-
-/** post(url, body, config) defaults to axios.post; injectable for tests. */
-async function fetchWithBrightData(url, token, zoneName, post) {
-  const req = buildBrightDataRequest(url, token, zoneName);
-  const doPost = post || require('axios').post;
-  const res = await doPost(req.url, req.body, req.config);
-  if (typeof res.data !== 'string' || res.data.trim() === '') {
+/** fetchBd(url, opts) defaults to scraper.js fetchWithBrightData; injectable for tests. */
+async function fetchWithBrightData(url, fetchBd) {
+  const doFetch = fetchBd || require('./scraper').fetchWithBrightData;
+  const res = await doFetch(url, { fallbackFrom: 'scrapingbee' });
+  if (!res) throw new Error('Bright Data returned no content (failed, capped, or token missing)');
+  if (res.brdError) throw new Error(`Bright Data error header: ${res.brdError}`);
+  if (typeof res.content !== 'string' || res.content.trim() === '') {
     throw new Error('Bright Data returned empty body');
   }
-  return res.data;
+  return res.content;
 }
 
-module.exports = { BD_REQUEST_URL, DEFAULT_ZONE, resolveZone, buildBrightDataRequest, fetchWithBrightData };
+module.exports = { fetchWithBrightData };

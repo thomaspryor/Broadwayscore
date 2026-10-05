@@ -70,10 +70,10 @@ jobs:
             return response.data;
           }
 
-          // TIER 2: Bright Data REST /request with Bearer token (BRO-3486: the old
+          // TIER 2: Bright Data via scraper.js (REST /request + Bearer, capped) (BRO-3486: the old
           // raw-proxy tier sent the API token as a proxy password -> 407)
           const { fetchWithBrightData: bdFetch } = require('./scripts/lib/archive-aggregator.js');
-          const fetchWithBrightData = (url, apiKey, _customerId, zoneName) => bdFetch(url, apiKey, zoneName);
+          const fetchWithBrightData = (url) => bdFetch(url);
 
           async function archivePage(showId, aggregator, url, config) {
             try {
