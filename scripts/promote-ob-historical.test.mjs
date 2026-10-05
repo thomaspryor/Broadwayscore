@@ -22,3 +22,8 @@ test('nothing dated: run year, flagged provisional', () => {
   assert.ok(e.id.endsWith(`-${new Date().getFullYear()}`));
   assert.equal(e.idYearProvisional, true);
 });
+test('closing date alone: closing year, still flagged provisional', () => {
+  const e = buildShowEntry(row({ dates: { closingDate: '1998-06-01' }, titleParse: {} }), new Set());
+  assert.match(e.id, /-1998$/);
+  assert.equal(e.idYearProvisional, true);
+});

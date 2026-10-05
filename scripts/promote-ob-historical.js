@@ -96,7 +96,10 @@ function buildShowEntry(r, venueVocabulary) {
     openingDate: r.parsed?.dates?.openingDate,
     previewsStartDate: r.parsed?.dates?.firstPreview,
   }) || (/^\d{4}$/.test(String(r.parsed?.titleParse?.year)) ? String(r.parsed.titleParse.year) : null);
-  const year = datedYear || String(new Date().getFullYear());
+  // A row admitted on a closing date alone (see main()) is closed: its closing
+  // year is a far better guess than the run year, but still provisional.
+  const closingYear = /^(\d{4})-/.exec(String(r.parsed?.dates?.closingDate || ''))?.[1] || null;
+  const year = datedYear || closingYear || String(new Date().getFullYear());
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
   // class as BRO-3237 if titleSlug already carries "-off-broadway".
   const id = `${withMarketSuffix(titleSlug, 'off-broadway')}-${year}`;
