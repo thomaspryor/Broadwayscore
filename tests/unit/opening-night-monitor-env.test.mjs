@@ -5,7 +5,6 @@ import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { buildMonitorPassEnv, SCRAPER_ENV_KEYS } = require('../../scripts/lib/opening-night-monitor.js');
-const { runClaudeCli } = require('../../scripts/lib/claude-cli.js');
 
 const SRC = {
   SCRAPINGBEE_API_KEY: 'sb', BRIGHTDATA_TOKEN: 'bd', BRIGHTDATA_ZONE: 'z',
@@ -42,10 +41,19 @@ test('launcher wires the pass env through buildMonitorPassEnv (no inline 3-key l
   assert.match(src, /env:\s*buildMonitorPassEnv\(process\.env/);
 });
 
-test('a spawned child under the stripped base env sees the scraper key', () => {
-  // Same shape as the real pass: node child, env = strippedEnv base + our extra.
-  const env = { PATH: process.env.PATH, ...buildMonitorPassEnv({ SCRAPINGBEE_API_KEY: 'sentinel' }, {}) };
+test('kill switch and budget tunables are forwarded when set, never defaulted', () => {
+  const env = buildMonitorPassEnv({ BROWSERBASE_KILL_SWITCH: 'true', SB_CREDIT_BUDGET: '100', BRIGHTDATA_SERP_ZONE: 'sz', BRIGHTDATA_CUSTOMER: 'c', SCRAPINGDOG_API_KEY: 'sd' }, {});
+  assert.equal(env.BROWSERBASE_KILL_SWITCH, 'true');
+  assert.equal(env.SB_CREDIT_BUDGET, '100');
+  assert.equal(env.BRIGHTDATA_SERP_ZONE, 'sz');
+  assert.equal(env.BRIGHTDATA_CUSTOMER, 'c');
+  assert.equal(env.SCRAPINGDOG_API_KEY, 'sd');
+  assert.equal('BD_OPENING_NIGHT' in buildMonitorPassEnv({}, {}), false);
+});
+
+test('a child spawned with the real strippedEnv(buildMonitorPassEnv(...)) sees the scraper key', () => {
+  const { strippedEnv } = require('../../scripts/lib/claude-cli.js');
+  const env = strippedEnv(buildMonitorPassEnv({ SCRAPINGBEE_API_KEY: 'sentinel' }, {}));
   const r = spawnSync(process.execPath, ['-e', 'console.log(Boolean(process.env.SCRAPINGBEE_API_KEY))'], { env, encoding: 'utf8' });
   assert.equal(r.stdout.trim(), 'true');
-  assert.equal(typeof runClaudeCli, 'function');
 });

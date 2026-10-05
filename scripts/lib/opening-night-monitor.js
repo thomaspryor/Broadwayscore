@@ -79,7 +79,8 @@ async function runMonitorPass({ prompt, cwd, model, settingsPath = null, maxWall
   };
 }
 
-// BRO-2759: scraper credentials the pass needs for fetchPage() census and
+// BRO-2759: scraper credentials the pass needs for Browserbase and url-discovery
+// (scraper.js falls back to the repo .env for BD/SB only) for census and
 // direct-URL ingest. claude-cli.js's strippedEnv deliberately drops everything
 // but PATH/HOME/auth keys (headless implementers are untrusted), so these are
 // forwarded by explicit name only — never a full process.env pass-through.
@@ -90,6 +91,12 @@ const SCRAPER_ENV_KEYS = Object.freeze([
   'BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'BRIGHTDATA_SERP_ZONE', 'BRIGHTDATA_CUSTOMER',
   'BROWSERBASE_API_KEY', 'BROWSERBASE_PROJECT_ID',
   'SCRAPINGDOG_API_KEY',
+  // Spend/safety tunables scraper.js, browserbase-session.js and
+  // brightdata-caps.js read. Forwarded only when the launcher has them set, so
+  // a kill switch or budget cap in the launcher's env still binds inside the
+  // pass now that the pass holds the paid keys (never defaulted on here).
+  'BROWSERBASE_KILL_SWITCH', 'BD_OPENING_NIGHT',
+  'SB_CREDIT_BUDGET', 'SB_PAGE_CREDIT_BUDGET', 'SD_CREDIT_BUDGET', 'SCRAPER_USE_SCRAPINGDOG',
 ]);
 
 /**
