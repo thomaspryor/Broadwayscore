@@ -9,6 +9,7 @@ import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
 import { getScoreTier, ScoreBadge, FormatPill, ProductionPill, StatGrid, ColumnHeader } from '@/components/show-cards';
 import { TrophyIcon } from '@/components/icons';
 import Breadcrumb from '@/components/Breadcrumb';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 type SortCol = 'date' | 'score';
 type SortDir = 'asc' | 'desc';
@@ -222,7 +223,7 @@ export default function ActorDetailClient({
               width={80}
               height={80}
               className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover flex-shrink-0"
-              onError={() => setImgFailed(true)}
+              ref={catchEarlyImgError(() => setImgFailed(true))} onError={() => setImgFailed(true)}
             />
           ) : (
             <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">

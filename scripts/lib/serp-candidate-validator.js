@@ -45,6 +45,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket, getMarketPool } = require('./venue-classification');
+const { checkGenericTitleCandidate } = require('./generic-title-matching');
 
 let _showsJsonCache = null;
 let _siblingTitleIndex = null;
@@ -275,6 +276,16 @@ function validateSerpCandidate({ show, candidate }) {
   const named = namedNonReviewReason(url);
   if (named) {
     const result = { ok: false, reason: 'named-non-review-url', detail: named, confidence: 'high' };
+    _recordResult(false, result.reason);
+    return result;
+  }
+
+  // ---------- Generic-title corroboration (BRO-2764) ----------
+  // Common-word titles ("The Story") need venue/cast/creative evidence in the
+  // candidate before it is worth a fetch; otherwise unrelated "...Story" coverage floods in.
+  const generic = checkGenericTitleCandidate({ show, candidate });
+  if (!generic.ok) {
+    const result = { ok: false, reason: generic.reason, detail: generic.detail, confidence: 'high' };
     _recordResult(false, result.reason);
     return result;
   }
