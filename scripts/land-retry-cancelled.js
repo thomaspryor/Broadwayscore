@@ -127,8 +127,11 @@ function runSweep() {
       console.log(`run ${run.id} ${run.head_branch}: skip (newer run ${latest.id} ${latest.conclusion || latest.status})`);
       continue;
     }
-    const r = decideLandRetry({ run, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
-    console.log(`run ${run.id} ${run.head_branch} attempt ${run.run_attempt}: ${r.retry ? 'RETRY' : 'skip'} (${r.reason})`);
+    // Decide on the fresh run, not the listing: a listed run may already have
+    // been re-run since (status back to queued/pending, conclusion null → skip).
+    const fresh = latest || run;
+    const r = decideLandRetry({ run: fresh, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
+    console.log(`run ${run.id} ${run.head_branch} attempt ${fresh.run_attempt}: ${r.retry ? 'RETRY' : 'skip'} (${r.reason})`);
     if (r.retry) { rerun(run.id); return; } // one per sweep: the next Land completion sweeps again
   }
 }
