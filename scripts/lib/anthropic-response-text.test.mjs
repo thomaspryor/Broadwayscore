@@ -56,11 +56,12 @@ test('firstJsonObject pulls the object out of prose and fences', () => {
 });
 
 // Guard: a script that enables the advisor tool must not read only the first text block.
-const FIRST_TEXT = /\.(?:find\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===?\s*['"]text['"]\s*\)|filter\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===?\s*['"]text['"]\s*\)\s*\[0\])/;
+const FIRST_TEXT = /\.(?:find\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===?\s*['"]text['"]\s*\)|filter\(\s*\(?\s*\w+\s*\)?\s*=>\s*\w+\??\.type\s*===?\s*['"]text['"]\s*\)\s*\[0\])|\bcontent\??\.?\[0\]\??\.text\b/;
 
 test('guard regex matches the common spellings', () => {
   for (const s of ["data.content.find(c => c.type === 'text')", 'json.content?.find((c) => c.type === "text")', "(m.content || []).find(b => b?.type === 'text')",
-    "content.find(c => c.type == 'text')", 'content.filter(c => c.type === "text")[0].text']) {
+    "content.find(c => c.type == 'text')", 'content.filter(c => c.type === "text")[0].text',
+    'json.content[0].text', 'data.content?.[0]?.text']) {
     assert.match(s, FIRST_TEXT, s);
   }
 });
