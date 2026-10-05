@@ -33,9 +33,16 @@ const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
 // adds to a model's notes for reviewers; it must never reach the page.
 // Model names are matched with their family word ("Claude Sonnet", not
 // "Claude": Claude-Michel Schönberg wrote Les Misérables).
-const INTERNAL_TEXT_RE = /\bGPT\b|\bChatGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b|\bGemini (?:\d|Pro|Flash|Ultra)/i;
-// Writers store article URLs as sources; a URL slug ("...-gpt-...") is not
-// wording a reader sees.
+// Hand-edit process notes ("Per policy applied 2026-05-24: ...", "Kept ...
+// per owner review") are internal too (BRO-4669).
+const INTERNAL_TEXT_RE = /\bGPT\b|\bChatGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b|\bo[134]-mini\b|\bAI[- ]estimated?\b|\bClaude (?:Sonnet|Opus|Haiku)\b|\bGemini (?:\d|Pro|Flash|Ultra)|\bper policy\b|\bowner (?:review|decision|sign-?off)\b/i;
+// A record field written as code: "recouped:null because no public citation",
+// "designation=Nonprofit" (BRO-4669). Case-sensitive (lowercase field name) so
+// "Based on a True story" never matches. Mirrors INTERNAL_TOKEN_RE in
+// src/lib/commercial-display.ts.
+const INTERNAL_TOKEN_RE = /\b[a-z][A-Za-z]*\s?[:=]\s?(?:true|false|null)\b|\b[a-z][A-Za-z]*=[A-Z]/;
+// Writers store article URLs as sources; a URL slug ("...-gpt-...") or query
+// string ("?type=D") is not wording a reader sees.
 const URL_RE = /\bhttps?:\/\/\S+/gi;
 // Source fields are citations. Research wording in one means the citation is
 // research output, so a writer clears the field rather than trimming it to
@@ -46,7 +53,8 @@ const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 /** The research wording in `text` outside any URL, or null. */
 function internalWordingIn(text) {
   if (typeof text !== 'string') return null;
-  const match = text.replace(URL_RE, ' ').match(INTERNAL_TEXT_RE);
+  const prose = text.replace(URL_RE, ' ');
+  const match = prose.match(INTERNAL_TEXT_RE) || prose.match(INTERNAL_TOKEN_RE);
   return match ? match[0] : null;
 }
 
