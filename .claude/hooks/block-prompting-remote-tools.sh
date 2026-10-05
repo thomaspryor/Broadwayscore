@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# PreToolUse hook on the cloud-session tools send_later, create_trigger and
-# add_repo (BRO-4236). They carry requiresUserInteraction, so they prompt the
-# owner on their phone in every mode, even with an allow rule. Deny the calls
-# that have a prompt-free equivalent before the prompt appears.
+# PreToolUse hook on the cloud-session tools send_later, create_trigger,
+# add_repo (BRO-4236) and list_sessions (BRO-4635). They prompt the owner on
+# their phone in every mode, even with an allow rule (list_sessions: seen in
+# Auto mode, owner screenshot 2026-10-04). Deny the calls that have a
+# prompt-free equivalent before the prompt appears.
 #
 # Scope, on purpose:
 #   send_later / create_trigger: denied unless initiation is human_request (the
@@ -11,6 +12,7 @@
 #     and the unanswered prompt silently ends the watch (BRO-4258).
 #   add_repo: denied only for thomaspryor/Broadwayscore when the session's
 #     project checkout already is that repo. Every other repo passes through.
+#   list_sessions: always denied; get_session by id is pre-approved.
 # Fails open (exit 0, no decision) on missing jq or unparseable input.
 # Kill switch: REMOTE_TOOL_BLOCKER_DISABLE=1.
 
@@ -46,6 +48,9 @@ case "$tool" in
       *) exit 0 ;;
     esac
     deny "Blocked: Broadwayscore is this session's own repository, attached when the session started, so add_repo would only put an approval prompt on the owner's phone (BRO-4236). Use the existing checkout. If a push or GitHub write is refused for lack of access, stop and tell the owner instead of retrying add_repo."
+    ;;
+  mcp__Claude_Code_Remote__list_sessions|mcp__claude-code-remote__list_sessions)
+    deny "Blocked: list_sessions puts an approval prompt on the owner's phone in every mode, Auto included (BRO-4635). To check a session you started, call get_session with its session id (pre-approved, no prompt). For card workers, read the Linear card state or check for the land/<name> ref instead. If the owner asks which sessions are running, tell them to open the sessions list in the Claude app."
     ;;
 esac
 exit 0
