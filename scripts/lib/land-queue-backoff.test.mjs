@@ -103,6 +103,14 @@ test('BRO-4676: slot busy + stranded run past the aging threshold → re-run it 
   assert.deepEqual(d.candidates.map((r) => r.id), [1], 'only the aged run; the young one keeps waiting');
 });
 
+test('BRO-4676: a re-run already in flight blocks another aged re-run (no eviction at sweep speed)', () => {
+  const busy = { busy: true, rerunInFlight: true, blockers: [] };
+  const a = run({ id: 1, created_at: at(200), updated_at: at(100) });
+  const b = run({ id: 2, created_at: at(190), updated_at: at(90) });
+  const d = decideSweep({ slot: busy, cancelledRuns: [a, b], refs: refsFor([a, b]), now: NOW });
+  assert.deepEqual([d.action, d.reason], ['wait', 'rerun-in-flight']);
+});
+
 test('BRO-4676: slot busy + only young stranded runs → wait', () => {
   const busy = { busy: true, blockers: [] };
   const runs = [run({ id: 1, created_at: at(90), updated_at: at(AGED_RETRY_MINUTES - 1) }), run({ id: 2, created_at: at(5) })];

@@ -153,6 +153,10 @@ function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT 
     const blockers = (slot && slot.blockers) || [];
     // Aging (BRO-4676): a busy slot never blocks a run stranded past the threshold.
     // The caller re-runs at most the FIRST accepted candidate, so one per sweep.
+    // And never while an earlier re-run is still in flight: sweeps fire on every
+    // Land completion, and a second re-run would evict the first from the pending
+    // slot (spending its attempt) at sweep speed, not every AGED_RETRY_MINUTES.
+    if (slot && slot.rerunInFlight) return { action: 'wait', reason: 'rerun-in-flight', blockers };
     const aged = pickAgedCandidates(pickStrandedCandidates(cancelledRuns, { refs, now }), { now }).slice(0, maxInspect);
     if (slot && aged.length) return { action: 'inspect', reason: 'aged-slot-busy', aged: true, candidates: aged, blockers };
     return { action: 'wait', reason: 'slot-busy', blockers };
