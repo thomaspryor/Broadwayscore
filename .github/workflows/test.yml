@@ -231,6 +231,8 @@ on:
       # scripts/tests/ - same scripts/tests/ situation, so it needs its own
       # entry too.
       - 'scripts/tests/ack-landed-stranded-rebased.test.mjs'
+      # BRO-1711: destructive-script --help ratchet test (scripts/tests/ is not globbed).
+      - 'scripts/tests/help-flag-safety-guard.test.mjs'
       # BRO-4133: --job-id correlationId fallback fixture test, same
       # scripts/tests/ situation as the five entries above — scripts/lib/
       # ack-landed-core.test.mjs (globbed) covers the decision, but this file

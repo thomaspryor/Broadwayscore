@@ -174,6 +174,13 @@ function generateApproveUrl(workflowFile, alertTitle) {
 // pull in provider-telemetry/browserbase-caps, but neither does I/O, reads
 // env, or cycles at require time (verified, ship-check/Codex).
 const { ledgerFreshnessHours, lastLedgerDay, STALE_HOURS_THRESHOLD: PROVIDER_SPEND_STALE_HOURS } = require('./lib/provider-spend-core');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/health-check.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
+  process.exit(0);
+}
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');

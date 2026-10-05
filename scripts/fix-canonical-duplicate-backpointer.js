@@ -42,6 +42,13 @@ const {
   applyCanonicalPointerClear,
 } = require('./lib/canonical-duplicate-pointers');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/fix-canonical-duplicate-backpointer.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
+  process.exit(0);
+}
 
 // WHICH CLONE. Two review-texts checkouts exist on a dev machine: the nested
 // data/review-texts the repo actually reads (validate-review-texts.js,

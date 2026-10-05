@@ -94,6 +94,10 @@ const HELP_CHECK_RE = /hasHelpFlag\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*
 // matching it produced false positives on every already-fixed autonomous-*/
 // bsc-* script (adversarial review follow-up, task #498).
 const RISKY_CALL_RE = /\b(?:execSync|spawnSync|spawn|execFile(?:Sync)?)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(|\bfs\.(?:rmSync|unlinkSync|rmdirSync|writeFileSync|renameSync)\s*\(|\baxios\.\w+\s*\(|\bhttps?\.(?:request|get)\s*\(|\bfetchPage\s*\(|\bfetch\s*\(/g;
+// Destructive subset (fs deletes + corpus writes). BRO-1711: the baseline may
+// not hold ANY of these — scripts/tests/help-flag-safety-guard.test.mjs fails
+// if one is (re)baselined, so remaining debt is network/spawn-only.
+const DESTRUCTIVE_CALL_RE = /\bfs\.(?:rmSync|unlinkSync|rmdirSync)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(/;
 const MAIN_FN_RE = /(?:async\s+)?function\s+main\s*\(/;
 
 function loadBaseline() {
@@ -659,6 +663,8 @@ module.exports = {
   blankStringContents,
   blankStringContentsViaAcorn,
   RISKY_CALL_RE,
+  DESTRUCTIVE_CALL_RE,
+  loadBaseline,
   findMatching,
   stripNonInvokedFunctionBodies,
 };

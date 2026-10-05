@@ -34,6 +34,13 @@ const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { validateUrlDomain, serpQuery } = require('./lib/url-discovery');
 const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
 const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/discover-outlet-reviews-serp.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
+  process.exit(0);
+}
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');

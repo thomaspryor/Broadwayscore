@@ -4226,6 +4226,13 @@ function parseRating(rating, outletId) {
  * Main review gathering for a single show
  */
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/gather-reviews.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
+  process.exit(0);
+}
 
 async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {}) {
   console.log(`\n${'='.repeat(60)}`);

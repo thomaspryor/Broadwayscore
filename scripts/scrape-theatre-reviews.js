@@ -35,6 +35,13 @@ const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { aggregatorStarsPatch } = require('./lib/paywall-stub-score');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/scrape-theatre-reviews.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
+  process.exit(0);
+}
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'theatre-reviews');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');

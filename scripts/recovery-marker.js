@@ -23,6 +23,13 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/recovery-marker.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
+  process.exit(0);
+}
 
 const MARKER_PATH = path.resolve(__dirname, '..', 'data', 'audit', 'recovery-active.marker');
 
