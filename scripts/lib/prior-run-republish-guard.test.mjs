@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { detectPriorRunRepublish } = require('./prior-run-republish-guard');
+const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./prior-run-republish-guard');
 const { guardPublishDate } = require('./date-guard');
 
 const show = { id: 'slam-frank-off-broadway-2026', title: 'Slam Frank', previewsStartDate: '2026-09-17', openingDate: '2026-10-04', closingDate: '2026-11-30', category: 'off-broadway' };
@@ -54,4 +54,26 @@ test('date guard is blind here: llm-scoring 2026-06-12 is swapped for the fetch 
 test('"was at:" about a different show (sidebar) is not flagged', () => {
   const t = 'Great new show. Related: Other Musical was at: Asylum NYC through December 28, 2025.';
   assert.equal(detectPriorRunRepublish({ text: t, show: { ...show, title: 'Slam Frank' } }).flag, false);
+});
+
+const flagged = (extra = {}) => ({ wrongProduction: true, wrongProductionReason: 'prior-run-republish', fullText: JV, ...extra });
+
+test('release: still matching body stays flagged', () => {
+  assert.equal(shouldReleasePriorRunRepublish(flagged(), show), false);
+});
+
+test('release: show gaining priorRuns releases the flag', () => {
+  const s = { ...show, priorRuns: [{ start: '2025-10-01', end: '2025-12-28' }] };
+  assert.equal(shouldReleasePriorRunRepublish(flagged(), s), true);
+});
+
+test('release: refetched clean body releases the flag', () => {
+  assert.equal(shouldReleasePriorRunRepublish(flagged({ fullText: 'Slam Frank opened at the Orpheum.' }), show), true);
+});
+
+test('release: operator decisions and other reasons are never released', () => {
+  const clean = { fullText: 'Slam Frank opened at the Orpheum.' };
+  for (const extra of [{ wrongProductionManualClear: true }, { wrongProductionOverride: true }, { humanReviewedWrongProduction: true }, { allowEarlyDate: true }, { wrongProductionReason: 'dateless-revival' }]) {
+    assert.equal(shouldReleasePriorRunRepublish(flagged({ ...clean, ...extra }), show), false, JSON.stringify(extra));
+  }
 });

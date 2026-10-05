@@ -77,4 +77,15 @@ function detectPriorRunRepublish({ text, show }) {
   return none;
 }
 
-module.exports = { detectPriorRunRepublish };
+/**
+ * True when a file flagged by this guard should be released: the detector no
+ * longer matches (refetched body, or show gained priorRuns) and no operator
+ * decision (manual clear / override / human review / allowEarlyDate) is on it.
+ */
+function shouldReleasePriorRunRepublish(d, show) {
+  if (!d || d.wrongProduction !== true || d.wrongProductionReason !== 'prior-run-republish') return false;
+  if (d.wrongProductionManualClear || d.wrongProductionOverride || d.humanReviewedWrongProduction !== undefined || d.allowEarlyDate) return false;
+  return !detectPriorRunRepublish({ text: d.fullText, show }).flag;
+}
+
+module.exports = { detectPriorRunRepublish, shouldReleasePriorRunRepublish };

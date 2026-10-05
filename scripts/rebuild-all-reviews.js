@@ -97,7 +97,7 @@ const {
   shouldAutoClearStaleLondonOutletCrossMarket,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
-const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
+const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
@@ -1736,9 +1736,7 @@ const crossShowFingerprints = new Map();
         // Prior-run republish self-release (BRO-4641): our flag is body-text-derived, so it
         // lifts when the detector no longer matches (refetched body, or the show gained
         // a declared priorRuns window). Manual/human decisions are never touched.
-        if (d.wrongProduction === true && d.wrongProductionReason === 'prior-run-republish' &&
-            !d.wrongProductionManualClear && d.humanReviewedWrongProduction !== false && !d.allowEarlyDate &&
-            !detectPriorRunRepublish({ text: d.fullText, show: showRecord }).flag) {
+        if (shouldReleasePriorRunRepublish(d, showRecord)) {
           const wasNote = d.wrongProductionNote;
           d.wrongProduction = false;
           d.wrongProductionAutoCleared = `rebuild: prior-run republish no longer detected (was: ${wasNote})`;
@@ -1747,6 +1745,7 @@ const crossShowFingerprints = new Map();
           delete d.wrongProductionReason;
           if (isStaleScoreInput(d, showRecord, fp)) markRescoreNeeded(d, 'wrongProduction cleared (prior-run republish no longer detected)');
           safeWriteReview(fp, d, { force: true });
+          console.log(`  [PRIOR-RUN-REPUBLISH-RELEASED] ${sid}/${f}`);
         }
 
         if (d.wrongProduction || d.wrongShow) continue;
