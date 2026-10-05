@@ -190,6 +190,13 @@ function choosePrimary(critic, outlet1, outlet2) {
     if (known.secondary.includes(outlet1)) return outlet2;
     if (known.secondary.includes(outlet2)) return outlet1;
   }
+  // Publishing group order (BRO-2406): must agree with the rebuild's group rule,
+  // or the detector flags one copy while rebuild skips the other (both lost).
+  const { PUBLISHING_GROUPS } = require('./lib/syndication-pairs');
+  for (const g of PUBLISHING_GROUPS) {
+    const i1 = g.indexOf(outlet1), i2 = g.indexOf(outlet2);
+    if (i1 >= 0 && i2 >= 0) return i1 < i2 ? outlet1 : outlet2;
+  }
   // Fallback: higher tier wins, then alphabetical
   const t1 = getTier(outlet1);
   const t2 = getTier(outlet2);

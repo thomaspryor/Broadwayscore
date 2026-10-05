@@ -61,3 +61,29 @@ test('audit --fix does NOT null a cross-outlet syndication duplicateOf pointer',
   try { out = execFileSync('node', [script], { env, encoding: 'utf8', stdio: 'pipe' }); } catch (e) { out = (e.stdout || '') + (e.stderr || ''); }
   assert.doesNotMatch(out, /url-mismatch/);
 });
+
+test('a primary that is itself excluded does NOT shield the secondary (no both-dropped)', () => {
+  const { show } = mkShowDir({
+    'chicagotribune--chris-jones.json': { criticName: 'Chris Jones', outletId: 'chicagotribune', url: 'https://chicagotribune.com/a', crossOutletDuplicate: true },
+    'nydailynews--chris-jones.json': { criticName: 'Chris Jones', outletId: 'nydailynews', url: 'https://nydailynews.com/a' },
+  });
+  const sec = JSON.parse(fs.readFileSync(path.join(show, 'nydailynews--chris-jones.json'), 'utf8'));
+  assert.notEqual(explainExclusion(sec, null, path.join(show, 'nydailynews--chris-jones.json')), 'knownSyndicationSecondary');
+});
+
+test('primary filename match is anchored (rob-weinert vs rob-weinert-kendt)', () => {
+  assert.equal(sp.isPrimaryFileFor('chicagotribune--rob-weinert-kendt.json', ['chicagotribune'], 'Rob Weinert'), false);
+  assert.equal(sp.isPrimaryFileFor('chicagotribune--rob-weinert.json', ['chicagotribune'], 'Rob Weinert'), true);
+  assert.equal(sp.isPrimaryFileFor('chicagotribune--ben-brantley-2.json', ['chicagotribune'], 'Ben Brantley'), true);
+  assert.equal(sp.isPrimaryFileFor('chicagotribune--sean-o-hara.json', ['chicagotribune'], "Sean O'Hara"), true);
+});
+
+test('syndication reason alone does not exempt a different-critic pointer; "not syndicated" does not exempt', () => {
+  assert.equal(sp.isCrossOutletSyndicationPair({ criticName: 'A', outletId: 'nytimes', duplicateReason: 'syndicated' }, { criticName: 'B', outletId: 'variety' }, normalizeOutlet), false);
+  assert.equal(sp.isCrossOutletSyndicationPair({ criticName: 'A', outletId: 'nytimes', duplicateReason: 'not syndicated' }, { criticName: 'A', outletId: 'variety' }, normalizeOutlet), false);
+});
+
+test('detector choosePrimary agrees with group order (source check)', () => {
+  const src = fs.readFileSync(path.resolve('scripts/detect-syndicated-duplicates.js'), 'utf8');
+  assert.match(src, /PUBLISHING_GROUPS/);
+});

@@ -4304,19 +4304,19 @@ function explainExclusion(data, show, filePath) {
   if (filePath && data.criticName) {
     {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
-      const syndPrimaries = require('./syndication-pairs').getSyndicationPrimaries(data.criticName, outletSynd);
+      const synd = require('./syndication-pairs');
+      const syndPrimaries = synd.getSyndicationPrimaries(data.criticName, outletSynd);
       if (syndPrimaries.length) {
         const pathMod = require('path');
         const fsMod = require('fs');
         const showDir = pathMod.dirname(filePath);
-        const criticSlug = data.criticName.toLowerCase().trim().replace(/\s+/g, '-');
         let hasPrimary = false;
         try {
           hasPrimary = fsMod.readdirSync(showDir).some(f => {
-            if (!syndPrimaries.some(p => f.startsWith(`${p}--`)) || !f.includes(criticSlug)) return false;
+            if (!synd.isPrimaryFileFor(f, syndPrimaries, data.criticName)) return false;
             try {
               const pData = JSON.parse(fsMod.readFileSync(pathMod.join(showDir, f), 'utf8'));
-              return !pData.wrongProduction && !pData.wrongShow;
+              return synd.isLiveSyndicationPrimary(pData);
             } catch { return false; }
           });
         } catch { /* show dir unreadable — fall through, don't exclude */ }

@@ -94,14 +94,44 @@ function isCrossOutletSyndicationPair(a, b, normalize = (o) => o) {
   const oa = normalize(a.outletId || a.outlet || '');
   const ob = normalize(b.outletId || b.outlet || '');
   if (!oa || !ob || oa === ob) return false;
-  if (/syndicat|reprint|repost/i.test(String(a.duplicateReason || ''))) return true;
   const ca = String(a.criticName || '').toLowerCase().trim();
   const cb = String(b.criticName || '').toLowerCase().trim();
   if (!_isRealByline(ca) || ca !== cb) return false;
+  if (/(^|[^a-z])(syndicated|reprint(ed)?|repost(ed)?)([^a-z]|$)/i.test(String(a.duplicateReason || ''))
+      && !/\bnot\s+(syndicated|reprint|repost)/i.test(String(a.duplicateReason || ''))) return true;
   return getSyndicationPrimaries(ca, oa).includes(ob) || getSyndicationPrimaries(ca, ob).includes(oa);
 }
 
+/** Filename slug for a critic, matching review-texts naming (punctuation -> '-'). */
+function criticFileSlug(criticName) {
+  return String(criticName || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+/**
+ * True when `fileName` is a primary-outlet file for this critic:
+ * `<primary>--<criticSlug>.json` (optionally `-<n>` collision suffix). Anchored,
+ * so `rob-weinert` never matches `rob-weinert-kendt`.
+ */
+function isPrimaryFileFor(fileName, primaries, criticName) {
+  const slug = criticFileSlug(criticName);
+  if (!slug) return false;
+  return primaries.some(p => fileName === `${p}--${slug}.json` || new RegExp(`^${p}--${slug}-\\d+\\.json$`).test(fileName));
+}
+
+/**
+ * A primary only shields its secondary if the primary will itself be scored.
+ * Otherwise (crossOutletDuplicate, isNonReview, invalid tier, ...) BOTH copies
+ * would be dropped and the critic's review vanishes from reviews.json.
+ */
+function isLiveSyndicationPrimary(d) {
+  if (!d) return false;
+  return !(d.wrongProduction || d.wrongShow || d.crossOutletDuplicate || d.isSyndicatedDuplicate
+    || d.isNonReview || d.nonReviewFlag || d.nonReviewContent || d.duplicateOf
+    || d.contentTier === 'invalid');
+}
+
 module.exports = {
+  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair,
 };
