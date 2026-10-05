@@ -43,3 +43,15 @@ test('url-less reviews are kept on known shows and never treated as duplicates',
   assert.deepEqual(kept, { a: [{ score: 1 }], b: [{ score: 2 }] });
   assert.deepEqual(dropped.map(d => d.showId), ['gone']);
 });
+
+test('isPaidPromotion matches creator ad labels, not press tickets (BRO-4760)', () => {
+  const { isPaidPromotion } = require('../../scripts/lib/video-review-guards.js');
+  assert.equal(isPaidPromotion({ title: '#ad Had a shining, shimmering spectacular date night at Alad...' }), true);
+  assert.equal(isPaidPromotion({ title: 'Wicked review #sponsored' }), true);
+  assert.equal(isPaidPromotion({ transcript: 'This video is sponsored by Audible.' }), true);
+  assert.equal(isPaidPromotion({ transcript: 'in a paid partnership with the show' }), true);
+  assert.equal(isPaidPromotion({ transcript: 'I was fortunate to get press tickets for this. Thank you so much, Irish Rep.' }), false);
+  assert.equal(isPaidPromotion({ transcript: 'Red Bull has partnered with the Public Theater to present the run' }), false);
+  assert.equal(isPaidPromotion({ title: 'the #adaptation was great', transcript: 'a broad ad campaign' }), false);
+  assert.equal(isPaidPromotion({}), false);
+});

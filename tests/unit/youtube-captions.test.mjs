@@ -59,7 +59,7 @@ test('end to end with injected fetchers; bot wall throws an ERROR: message', asy
 });
 
 // BRO-4665: Scrapingdog's /youtube/transcripts API is tried before the watch page.
-const { publishedTimeToYmd, sdTranscriptToText } = require('../../scripts/lib/youtube-captions.js');
+const { publishedTimeToYmd, sdTranscriptToText, sdVideoPublishedText } = require('../../scripts/lib/youtube-captions.js');
 
 test('Scrapingdog published_time variants parse to YYYYMMDD', () => {
   assert.equal(publishedTimeToYmd('May 20, 2026'), '20260520');
@@ -74,6 +74,13 @@ test('Scrapingdog published_time variants parse to YYYYMMDD', () => {
   assert.equal(publishedTimeToYmd(undefined), null);
 });
 
+test('sdVideoPublishedText reads the nested video.published_time (BRO-4760)', () => {
+  assert.equal(sdVideoPublishedText({ video: { published_time: 'May 20, 2026' }, channel: {} }), 'May 20, 2026');
+  assert.equal(sdVideoPublishedText({ published_time: 'May 20, 2026' }), 'May 20, 2026');
+  assert.equal(sdVideoPublishedText({ video: {} }), null);
+  assert.equal(sdVideoPublishedText(null), null);
+});
+
 test('Scrapingdog transcript payload to text decodes entities, drops [Music] and repeats', () => {
   assert.equal(sdTranscriptToText({ transcripts: [{ text: 'it&#39;s [Music] great' }, { text: 'it&#39;s great' }, { text: 'show &amp; tell' }] }), "it's great show & tell");
   assert.equal(sdTranscriptToText({ transcripts: [] }), '');
@@ -86,7 +93,8 @@ test('Scrapingdog route wins, fetching the date only when asked', async () => {
     calls.push(kind);
     return kind === 'transcripts'
       ? { data: { transcripts: [{ text: 'A great show', start: 0, duration: 1 }] } }
-      : { data: { published_time: 'Sep 10, 2026' } };
+      // Documented shape: metadata nests under `video` (BRO-4760).
+      : { data: { video: { title: 'x', published_time: 'Streamed live on Sep 10, 2026' }, channel: {} } };
   };
   const fetchPage = async () => { throw new Error('watch page must not be fetched'); };
   const r = await fetchYouTubeTranscript('abc', { sdYouTube, fetchPage });
@@ -109,4 +117,43 @@ test('Scrapingdog failure or unknown payload falls back to the watch page', asyn
     assert.equal(watched, true);
     assert.equal(r.transcript, 'from captions');
   }
+});
+
+test('backfillPublishedDates re-dates NA YouTube reviews only (BRO-4760)', async () => {
+  const fs = require('fs'), os = require('os'), path = require('path');
+  const { backfillPublishedDates } = require('../../scripts/lib/youtube-captions.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ytdates-'));
+  const w = (rel, obj) => { fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true }); fs.writeFileSync(path.join(root, rel), JSON.stringify(obj)); };
+  w('show-a/mh.json', { platform: 'youtube', videoId: 'v1', creatorId: 'MH', publishedAt: 'NA' });
+  w('show-a/tt.json', { platform: 'tiktok', videoId: 'v2', creatorId: 'TT', publishedAt: null });
+  w('show-b/mh.json', { platform: 'youtube', videoId: 'v3', creatorId: 'MH', publishedAt: '20260101' });
+  w('show-b/mj.json', { platform: 'youtube', videoId: 'v4', creatorId: 'MJ', publishedAt: null });
+  w('raw/v1.json', { videoId: 'v1', date: 'NA' });
+  w('classified/v1.json', { id: 'v1', date: 'NA' });
+  w('show-a/wp.json', { platform: 'youtube', videoId: 'v5', publishedAt: 'NA', wrongProduction: true });
+  w('show-a/bad.json', {});
+  fs.writeFileSync(path.join(root, 'show-a/bad.json'), '{not json');
+  fs.writeFileSync(path.join(root, 'show-a/mh.json'), JSON.stringify({ platform: 'youtube', videoId: 'v1', creatorId: 'MH', publishedAt: 'NA', productionCheck: { verdict: 'same' } }));
+  w('classified/v9.json', { platform: 'youtube', videoId: 'v9', publishedAt: 'NA' });
+  const asked = [];
+  const r = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async id => { asked.push(id); return id === 'v1' ? '20260520' : null; } });
+  assert.deepEqual(asked.sort(), ['v1', 'v4']);
+  assert.deepEqual(r, { candidates: 2, attempted: 2, dated: 1 });
+  const read = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
+  assert.equal(read('show-a/mh.json').publishedAt, '20260520');
+  assert.equal(read('show-a/mh.json').productionCheck, undefined);
+  assert.equal(read('raw/v1.json').date, '20260520');
+  assert.equal(read('classified/v1.json').date, '20260520');
+  assert.equal(read('show-b/mj.json').publishedAt, null);
+  assert.ok(read('show-b/mj.json').dateLookupFailedAt);
+  // a failed lookup waits RETRY_DAYS before it is paid for again
+  const again = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async () => { throw new Error('cooldown'); } });
+  assert.equal(again.candidates, 0);
+  const later = await backfillPublishedDates({ transcriptsDir: root, now: new Date(Date.now() + 31 * 864e5), fetchDate: async () => '20260601' });
+  assert.deepEqual(later, { candidates: 1, attempted: 1, dated: 1 });
+  const r2 = await backfillPublishedDates({ transcriptsDir: root, creatorFilter: 'mh', fetchDate: async () => { throw new Error('should not fetch'); } });
+  assert.deepEqual(r2, { candidates: 0, attempted: 0, dated: 0 });
+  const r3 = await backfillPublishedDates({ transcriptsDir: root, max: 0, fetchDate: async () => { throw new Error('capped'); } });
+  assert.equal(r3.attempted, 0);
+  fs.rmSync(root, { recursive: true });
 });

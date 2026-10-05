@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
-const { filterPublishableReviews } = require('../lib/video-review-guards');
+const { filterPublishableReviews, isPaidPromotion } = require('../lib/video-review-guards');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -51,6 +51,7 @@ function main() {
       // Skip transcripts flagged as wrong production (e.g. movie reviews ending up
       // on the stage show, casting-announcement videos, reply-to-comments videos).
       if (data.wrongProduction === true) continue;
+      if (isPaidPromotion(data)) { console.log(`  skipped ${showId}/${file}: paid promotion`); continue; }
       const creator = creatorMap[data.creatorId] || creatorMap[(data.creatorId || '').toLowerCase()];
       if (!creator) continue;
 
