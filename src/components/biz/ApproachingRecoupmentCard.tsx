@@ -7,7 +7,7 @@
 import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
-import { formatEstimatedCurrency } from '@/lib/biz-format';
+import { formatCapitalization } from '@/lib/biz-format';
 import { getModelRecoupmentLabels } from '@/lib/commercial-display';
 
 interface ApproachingRecoupmentCardProps {
@@ -15,6 +15,8 @@ interface ApproachingRecoupmentCardProps {
   title: string;
   season: string;
   capitalization: number | null;
+  /** Prints the "~" estimate mark only when true (isEstimatedCapitalization). */
+  capitalizationIsEstimate: boolean;
   /** Model [pessimistic, central, optimistic], already past the display quality floor. */
   modelRecoupmentPct: [number, number, number];
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
@@ -34,6 +36,7 @@ export default function ApproachingRecoupmentCard({
   title,
   season,
   capitalization,
+  capitalizationIsEstimate,
   modelRecoupmentPct,
   trend,
 }: ApproachingRecoupmentCardProps) {
@@ -54,7 +57,7 @@ export default function ApproachingRecoupmentCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       <div className="flex justify-between text-sm">
         <span className="text-gray-500">Capitalization</span>
-        <span className="text-white">{formatEstimatedCurrency(capitalization)}</span>
+        <span className="text-white">{formatCapitalization(capitalization, capitalizationIsEstimate)}</span>
       </div>
       <div className="flex justify-between text-sm mt-1">
         <span className="text-gray-500">Est. recouped</span>

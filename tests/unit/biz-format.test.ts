@@ -7,17 +7,20 @@
  * the null contract this file promises.
  *
  * BRO-4623: formatCapitalSummary (P0-6, capital totals never read "~$0") and
- * formatDataDate (P1-1, the /biz freshness line).
+ * formatDataDate (P1-1, the /biz freshness line). formatCapitalization: every
+ * capitalization used to print "~" (formatEstimatedCurrency), so a cited
+ * figure read as our guess; now only an isEstimate-flagged one does.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   formatCurrency,
-  formatEstimatedCurrency,
+  formatCapitalization,
   formatCapitalSummary,
   formatDataDate,
   formatDevelopmentDate,
 } from '../../src/lib/biz-format';
+import { isEstimatedCapitalization } from '../../src/lib/commercial-display';
 
 test('formatCurrency: null/undefined render em-dash, never $0', () => {
   assert.equal(formatCurrency(null), '—');
@@ -34,13 +37,37 @@ test('formatCurrency: scales K/M/B', () => {
   assert.equal(formatCurrency(1_400_000_000), '$1.4B');
 });
 
-test('formatEstimatedCurrency: null renders bare em-dash, never "~—"', () => {
-  assert.equal(formatEstimatedCurrency(null), '—');
-  assert.equal(formatEstimatedCurrency(undefined), '—');
+test('formatCapitalization: null renders bare em-dash, never "~—", flagged or not', () => {
+  assert.equal(formatCapitalization(null, false), '—');
+  assert.equal(formatCapitalization(undefined, false), '—');
+  assert.equal(formatCapitalization(null, true), '—');
+  assert.equal(formatCapitalization(undefined, true), '—');
 });
 
-test('formatEstimatedCurrency: real values get a "~" provenance prefix', () => {
-  assert.equal(formatEstimatedCurrency(12_500_000), '~$12.5M');
+test('formatCapitalization: a reported figure prints plain, no "~"', () => {
+  assert.equal(formatCapitalization(12_500_000, false), '$12.5M');
+  assert.equal(formatCapitalization(850_000, false), '$850K');
+});
+
+test('formatCapitalization: only an estimate-flagged figure gets the "~" mark', () => {
+  assert.equal(formatCapitalization(24_000_000, true), '~$24.0M');
+});
+
+test('isEstimatedCapitalization: true only when the record flags capitalization', () => {
+  assert.equal(isEstimatedCapitalization({}), false);
+  assert.equal(isEstimatedCapitalization({ isEstimate: undefined }), false);
+  assert.equal(isEstimatedCapitalization({ isEstimate: {} }), false);
+  assert.equal(isEstimatedCapitalization({ isEstimate: { capitalization: false } }), false);
+  // Another field's estimate flag does not mark the capitalization.
+  assert.equal(isEstimatedCapitalization({ isEstimate: { weeklyRunningCost: true } }), false);
+  assert.equal(isEstimatedCapitalization({ isEstimate: { capitalization: true } }), true);
+});
+
+test('cited vs flagged records end to end: "$24.0M" vs "~$24.0M"', () => {
+  const cited = { isEstimate: { weeklyRunningCost: true } };
+  const flagged = { isEstimate: { capitalization: true } };
+  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(cited)), '$24.0M');
+  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(flagged)), '~$24.0M');
 });
 
 // ── BRO-4623 P0-6 ──────────────────────────────────────────────────────────

@@ -37,6 +37,7 @@ import {
   getBreakEven,
   getReportedInvestorMultiple,
   publicSourceText,
+  isEstimatedCapitalization,
 } from './commercial-display';
 import commercialData from '../../data/commercial.json';
 import grossesHistoryData from '../../data/grosses-history.json';
@@ -437,6 +438,7 @@ export function getShowsApproachingRecoupment(): ApproachingRecoupmentShow[] {
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization ?? null,
+      capitalizationIsEstimate: isEstimatedCapitalization(data),
       modelRecoupmentPct: range,
       modelMethod: data.modelMethod || null,
       trend: getRecoupmentTrend(slug),
@@ -476,6 +478,7 @@ export function getShowsAtRisk(): AtRiskShow[] {
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       capitalization: data.capitalization ?? null,
+      capitalizationIsEstimate: isEstimatedCapitalization(data),
       avgWeeklyGross: avgGross as number,
       breakEven: breakEven as number,
       modelRecoupmentPct: range as [number, number, number],
@@ -515,6 +518,7 @@ export function getRecentRecoupments(months: number = 24): RecentRecoupmentShow[
       season: getSeason(show.openingDate) || 'Unknown',
       weeksToRecoup: calculateWeeksToRecoup(show.openingDate, data.recoupedDate, show.closingDate),
       capitalization: data.capitalization ?? null,
+      capitalizationIsEstimate: isEstimatedCapitalization(data),
       recoupDate: data.recoupedDate,
     });
   }
@@ -606,6 +610,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     status: show.status,
     designation: data.designation,
     capitalization: data.capitalization,
+    capitalizationIsEstimate: isEstimatedCapitalization(data),
     weeklyGross: running ? grossData?.thisWeek?.gross || null : null,
     totalGross: grossData?.allTime?.gross || null,
     modelRecoupmentPct: data.modelRecoupmentPct || null,

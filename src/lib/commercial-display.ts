@@ -204,6 +204,15 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
   };
 }
 
+/**
+ * True when the capitalization should carry the "~" estimate marker: only when
+ * the record flags it. A capitalization is otherwise a reported figure with a
+ * named source (BRO-4623), so it prints plain.
+ */
+export function isEstimatedCapitalization(commercial: Pick<ShowCommercial, 'isEstimate'>): boolean {
+  return commercial.isEstimate?.capitalization === true;
+}
+
 /** costMethodology values whose weekly running cost is our estimate, not a reported figure. */
 const ESTIMATED_COST_METHODS: ReadonlySet<string> = new Set(['industry-estimate', 'deep-research', 'reddit-standard']);
 

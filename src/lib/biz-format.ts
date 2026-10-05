@@ -11,13 +11,18 @@ import type { CapitalSummary } from './commercial-metrics';
 export { formatCurrency };
 
 /**
- * For figures that are always estimates when present (capitalization, break-even).
- * Prefixes with "~" — but only when there's a real number to estimate. A missing
- * value renders bare "—", never "~—".
+ * One show's capitalization. Every published figure names the outlet or filing
+ * that reported it, so it prints plain ("$24.0M"); only a record flagged
+ * isEstimate.capitalization gets the "~" estimate mark (isEstimatedCapitalization
+ * in commercial-display.ts). BRO-4623: an unconditional "~" made reported
+ * figures read as our guesses. The flag is a required argument so a caller
+ * cannot fall back to marking everything. A missing value renders bare "—",
+ * never "~—". Modeled figures (break-even, % recouped) and capital totals
+ * (formatCapitalSummary) keep their "~".
  */
-export function formatEstimatedCurrency(amount: number | null | undefined): string {
+export function formatCapitalization(amount: number | null | undefined, isEstimate: boolean): string {
   if (amount === null || amount === undefined) return '—';
-  return `~${formatCurrency(amount)}`;
+  return isEstimate ? `~${formatCurrency(amount)}` : formatCurrency(amount);
 }
 
 export interface CapitalSummaryDisplay {
