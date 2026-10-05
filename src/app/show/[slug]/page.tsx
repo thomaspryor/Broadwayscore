@@ -60,7 +60,7 @@ import HeroRankLine from '@/components/show-page/HeroRankLine';
 import { AwardsNavLink } from '@/components/AwardsNavLink';
 import { showFormatTitle, showFormatTextClass, showFormatPlural } from '@/lib/show-format';
 import { getTourSchedule, getTourScheduleSource, getTourNowNextForShow, getTourTicketLinks, getTourStopTickets } from '@/lib/data-tour-schedule';
-import { getTourNowNext, stopForReview, stopKey } from '@/lib/tour-schedule';
+import { stopForReview, stopKey } from '@/lib/tour-schedule';
 import TourScheduleCard from '@/components/show-page/TourScheduleCard';
 
 // Group A: personalized, auth-dependent — ssr:false so they don't block
@@ -166,7 +166,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   // Sentiment-aware description: lead with verdict, not database dump
   // "Now Playing at North American Tour." reads wrong; a tour has no single house.
   // A tour's description names where it plays now (BRO-4601 SEO: "<show> <city>").
-  const tourNow = isTourMeta && show.status !== 'closed' ? getTourNowNextForShow(show.id)?.now : null;
+  const tourNow = isTourMeta && show.status !== 'closed' ? getTourNowNextForShow(show)?.now : null;
   const venuePhrase = (label: string) => (tourNow
     ? ` Now in ${tourNow.city} (${tourNow.venue}) through ${formatShowDate(tourNow.end, { month: 'short', day: 'numeric' })}.`
     : isTourMeta ? ` ${label} on tour.` : ` ${label} at ${show.venue}.`);
@@ -279,7 +279,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // which case the venue name renders as plain text rather than a dead link.
   const offBroadwayTheater = isOffBroadway && show.venue ? getOffBroadwayTheaterBySlug(slugify(show.venue)) : undefined;
   const showSchema = generateShowSchema(show, lastUpdated || undefined, performers, theater ? `${BASE_URL}/theater/${theater.slug}` : undefined,
-    show.category === 'tour' ? { stops: getTourSchedule(show.id), today: new Date().toISOString().slice(0, 10), tickets: getTourStopTickets(show.id) } : undefined);
+    show.category === 'tour' ? { stops: getTourSchedule(show.id), today: new Date().toISOString().slice(0, 10), tickets: getTourStopTickets(show) } : undefined);
 
   // null when no browse page exists for this show's format (opera/special) —
   // drop that breadcrumb level rather than link to a mismatched page.
@@ -299,7 +299,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
         breadcrumbHome,
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
-  const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null, isTour ? getTourNowNextForShow(show.id) : null);
+  const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null, isTour ? getTourNowNextForShow(show) : null);
   // Top-level Review objects with itemReviewed → TheaterEvent. Eligible for
   // Google's review snippet rich result; safer than nesting reviews inside Event
   // (which GSC rejected — see seo.ts comment + commit de1f2cba09).
@@ -339,7 +339,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const commercial = rawCommercial ? toPublicShowCommercial(rawCommercial) : undefined;
   // A tour with no ticket links of its own gets TodayTix's for the stop it
   // plays now or next (BRO-4601).
-  const ticketLinks = show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show.id);
+  const ticketLinks = show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show);
   const sortedTicketLinks = ticketLinks ? sortTicketLinks(ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
@@ -383,7 +383,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // venue "North American Tour" in the hero and Quick Facts.
   const tourStops = isTour ? getTourSchedule(show.id) : [];
   const tourToday = new Date().toISOString().slice(0, 10);
-  const tourNowNext = tourStops.length ? getTourNowNext(tourStops, tourToday) : null;
+  const tourNowNext = isTour ? getTourNowNextForShow(show, tourToday) : null;
   const tourVenue = tourNowNext?.now
     ? `Now in ${tourNowNext.now.city} · ${tourNowNext.now.venue}`
     : tourNowNext?.next ? `Next: ${tourNowNext.next.city}, ${formatShowDate(tourNowNext.next.start, { month: 'short', day: 'numeric' })}` : null;
@@ -963,7 +963,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
 
         {/* National tour: where it plays now, next, and every stop (BRO-4601). */}
         {tourStops.length > 0 && (
-          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} tickets={getTourStopTickets(show.id)} show={{ id: show.id, title: show.title, slug: show.slug, status: show.status }} />
+          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} tickets={getTourStopTickets(show)} show={{ id: show.id, title: show.title, slug: show.slug, status: show.status }} />
         )}
 
         {/* === SECTION ORDERING ===
@@ -1034,7 +1034,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}
-          faqs={getShowFAQs(show, consensus?.text ?? null, isTour ? getTourNowNextForShow(show.id) : null)}
+          faqs={getShowFAQs(show, consensus?.text ?? null, isTour ? getTourNowNextForShow(show) : null)}
         />
 
       </div>

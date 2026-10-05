@@ -102,7 +102,7 @@ export default function TourCityPage({ params }: { params: { city: string } }) {
   const season = seasonLabel([...now, ...ahead]);
 
   const card = (s: Stop, i: number, when: 'now' | 'ahead' | 'past') => {
-    const ticket = when === 'past' ? undefined : getTourStopTickets(s.showId)[stopKey(s)];
+    const ticket = when === 'past' ? undefined : getTourStopTickets(s.show)[stopKey(s)];
     const show = {
       ...serializeShowForClient(s.show),
       // The line above the card gives this city's dates; the card's own
@@ -141,7 +141,7 @@ export default function TourCityPage({ params }: { params: { city: string } }) {
     </section>
   );
 
-  const events = [...now, ...ahead].flatMap(s => tourSubEvents(s.show, [s], today, getTourStopTickets(s.showId)));
+  const events = [...now, ...ahead].flatMap(s => tourSubEvents(s.show, [s], today, getTourStopTickets(s.show)));
   const schemas = [
     generateBreadcrumbSchema([
       { name: 'Home', url: BASE_URL },
