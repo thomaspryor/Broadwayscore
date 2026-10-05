@@ -1740,6 +1740,9 @@ on:
       # stale-checkout race 29 minutes after the delete; this asserts it stays
       # deleted. Same corpus-presence gating as the frankie guard below.
       - 'scripts/verify-addams-wsj-dedup-held.test.mjs'
+      # BRO-4724: live-data recheck of the first tour auto-create write run.
+      # Skips until 2026-10-07 09:00 UTC.
+      - 'scripts/verify-bro-4724-recheck.test.mjs'
       # BRO-853: regression guard for the frankie-and-johnny-in-the-clair-de-lune-2002
       # wrong-production cleanup. Corpus-presence-gated like review-guards.explain.test.mjs
       # (skips in unit-tests, which never checks out data/review-texts; enforced for
