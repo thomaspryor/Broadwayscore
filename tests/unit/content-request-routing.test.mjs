@@ -442,9 +442,16 @@ test('missing-image ask: an ambiguous title parks instead of guessing a show', (
   });
   assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
   assert.match(actions[0].reason, /matched 3 shows/);
-  assert.match(actions[0].reason, /book-of-mormon-2011/);
-  assert.match(actions[0].reason, /book-of-mormon-we-2024/);
-  assert.match(actions[0].reason, /book-of-mormon-tour-2022/);
+  // Human-facing reason names titles, not raw IDs — notify-feedback-outcomes.js
+  // quotes it verbatim into the owner's plain-English digest email. Raw show
+  // IDs still travel on the structured candidateIds field for machine/ledger use.
+  assert.match(actions[0].reason, /The Book of Mormon/);
+  assert.doesNotMatch(actions[0].reason, /book-of-mormon-2011/);
+  assert.deepEqual(actions[0].candidateIds.slice().sort(), [
+    'book-of-mormon-2011',
+    'book-of-mormon-tour-2022',
+    'book-of-mormon-we-2024',
+  ]);
 });
 
 test('missing-reviews ask: a same-market revival parks instead of picking the newer one', () => {
@@ -455,14 +462,29 @@ test('missing-reviews ask: a same-market revival parks instead of picking the ne
   });
   assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
   assert.match(actions[0].reason, /matched 2 shows/);
-  assert.match(actions[0].reason, /dolly-1964/);
-  assert.match(actions[0].reason, /dolly-2017/);
+  assert.match(actions[0].reason, /Hello, Dolly!/);
+  assert.match(actions[0].reason, /Hello Dolly/);
+  assert.deepEqual(actions[0].candidateIds.slice().sort(), ['dolly-1964', 'dolly-2017']);
 });
 
 test('ambiguous image + review asks for the same title in one message flag once, not twice', () => {
   const actions = planContentRequestActions({
     message: "There's no picture for The Book of Mormon. Please also finish the reviews for The Book of Mormon.",
     show: null,
+    shows: BOOK_OF_MORMON_SHOWS,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
+});
+
+test('ambiguous review ask and ambiguous show field for the same title flag once, not twice', () => {
+  // Codex /second-opinion review of ac007966312: seenAmbiguousTitles was only
+  // shared between Ask 1 (image) and Ask 1b (reviews) — Ask 2 (the `show`
+  // field) ran its own independent ambiguity check with no shared-set lookup,
+  // so the same candidate set could be flagged twice: once by a sentence-scoped
+  // pass above, once by the show field repeating the title.
+  const actions = planContentRequestActions({
+    message: 'Please finish the reviews for The Book of Mormon.',
+    show: 'Book of mormon',
     shows: BOOK_OF_MORMON_SHOWS,
   });
   assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
@@ -481,7 +503,7 @@ test('missing-show check: an ambiguous already-catalogued title parks instead of
   assert.match(actions[0].reason, /already in catalog as book-of-mormon-we-2024/);
 });
 
-test('missing-show check: an unscoped ambiguous title parks with all candidate IDs named', () => {
+test('missing-show check: an unscoped ambiguous title parks with all candidates named', () => {
   const actions = planContentRequestActions({
     message: 'Please add Book of mormon.',
     show: 'Book of mormon',
@@ -491,6 +513,11 @@ test('missing-show check: an unscoped ambiguous title parks with all candidate I
   assert.match(actions[0].reason, /matched 3 shows/);
   assert.doesNotMatch(actions[0].reason, /already in catalog/,
     'must not claim a specific existing show when the match is ambiguous');
+  assert.deepEqual(actions[0].candidateIds.slice().sort(), [
+    'book-of-mormon-2011',
+    'book-of-mormon-tour-2022',
+    'book-of-mormon-we-2024',
+  ]);
 });
 
 test('an unambiguous title still routes normally through resolveShowInMarket', () => {

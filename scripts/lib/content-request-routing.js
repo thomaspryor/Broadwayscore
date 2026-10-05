@@ -253,10 +253,25 @@ function resolveShowInMarket(title, market, shows) {
     ? resolveShowMatches(title, shows).filter((s) => s && s.category === market)
     : resolveShowMatches(title, shows);
   if (matches.length > 1) {
-    return { resolved: null, ambiguous: true, candidateIds: matches.map((s) => s.id) };
+    return {
+      resolved: null,
+      ambiguous: true,
+      candidateIds: matches.map((s) => s.id),
+      // Human-facing label for each candidate — notify-feedback-outcomes.js
+      // quotes `reason` verbatim into the owner's plain-English digest email,
+      // so raw show IDs (book-of-mormon-we-2024) do not belong in it. Only
+      // append the category when matches span more than one — redundant
+      // otherwise, since a market-scoped call already filtered to one.
+      candidateTitles: matches.map((s) => {
+        const otherCategories = matches.some((m) => m.category !== s.category);
+        return otherCategories ? `${s.title} (${s.category})` : s.title;
+      }),
+    };
   }
-  if (matches.length === 0) return { resolved: null, ambiguous: false, candidateIds: [] };
-  return { resolved: matches[0], ambiguous: false, candidateIds: [] };
+  if (matches.length === 0) {
+    return { resolved: null, ambiguous: false, candidateIds: [], candidateTitles: [] };
+  }
+  return { resolved: matches[0], ambiguous: false, candidateIds: [], candidateTitles: [] };
 }
 
 /**
@@ -411,7 +426,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!IMAGE_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -419,8 +434,9 @@ function planContentRequestActions({
         actions.push({
           kind: 'unroutable',
           reason:
-            `title "${title}" matched ${candidateIds.length} shows (${candidateIds.join(', ')}); ` +
+            `title "${title}" matched ${candidateIds.length} shows (${candidateTitles.join(', ')}); ` +
             `ambiguous — needs manual review before dispatching a missing-image fetch`,
+          candidateIds,
         });
         continue;
       }
@@ -452,7 +468,7 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!REVIEW_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const { resolved, ambiguous, candidateIds } = resolveShowInMarket(title, null, allShows);
+      const { resolved, ambiguous, candidateIds, candidateTitles } = resolveShowInMarket(title, null, allShows);
       if (ambiguous) {
         const ambiguityKey = candidateIds.slice().sort().join('|');
         if (seenAmbiguousTitles.has(ambiguityKey)) continue;
@@ -460,8 +476,9 @@ function planContentRequestActions({
         actions.push({
           kind: 'unroutable',
           reason:
-            `title "${title}" matched ${candidateIds.length} shows (${candidateIds.join(', ')}); ` +
+            `title "${title}" matched ${candidateIds.length} shows (${candidateTitles.join(', ')}); ` +
             `ambiguous — needs manual review before dispatching a review gather`,
+          candidateIds,
         });
         continue;
       }
@@ -484,14 +501,23 @@ function planContentRequestActions({
 
     // Market-scoped: a Broadway entry does not satisfy a request for the
     // regional tryout of the same title. See resolveShowInMarket().
-    const { resolved: existing, ambiguous, candidateIds } = resolveShowInMarket(requestedTitle, market, allShows);
+    const { resolved: existing, ambiguous, candidateIds, candidateTitles } =
+      resolveShowInMarket(requestedTitle, market, allShows);
     if (ambiguous) {
+      // Shared with Ask 1/1b's seenAmbiguousTitles: the same candidate set can
+      // surface here too (e.g. the show field repeats a title already flagged
+      // by a sentence-scoped pass above) — same ambiguity, still no need to
+      // flag it twice.
+      const ambiguityKey = candidateIds.slice().sort().join('|');
+      if (seenAmbiguousTitles.has(ambiguityKey)) continue;
+      seenAmbiguousTitles.add(ambiguityKey);
       actions.push({
         kind: 'unroutable',
         reason:
           `title "${requestedTitle}"${market ? ` (${market})` : ''} matched ${candidateIds.length} shows ` +
-          `(${candidateIds.join(', ')}); ambiguous — needs manual review to tell whether this title is ` +
+          `(${candidateTitles.join(', ')}); ambiguous — needs manual review to tell whether this title is ` +
           `already in the catalog`,
+        candidateIds,
       });
       continue;
     }

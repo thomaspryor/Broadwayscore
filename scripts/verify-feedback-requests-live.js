@@ -130,6 +130,23 @@ function resolveEntryShowId(entry, shows) {
 }
 
 /**
+ * Why resolveEntryShowId() came back null, when the reason is ambiguity
+ * rather than absence — so the stuck alert can say WHY instead of reading
+ * like a silent disappearance (Codex review of ac007966312: the alert
+ * otherwise says only "still not live" for an entry that is actually
+ * waiting on a human to pick a production, which is a different kind of
+ * stuck and needs a different response).
+ */
+function describeAmbiguity(entry, shows) {
+  if (entry.showId || !entry.title || !Array.isArray(shows)) return null;
+  const { resolveShowMatches } = require('./lib/resolve-show.js');
+  let matches = resolveShowMatches(entry.title, shows);
+  if (entry.market) matches = matches.filter((s) => s && s.category === entry.market);
+  if (matches.length <= 1) return null;
+  return `ambiguous — "${entry.title}" matched ${matches.length} ${entry.market || ''} shows (${matches.map((s) => s.id).join(', ')}); needs a human to set entry.showId in the ledger`;
+}
+
+/**
  * The show's page on the live site.
  *
  * The route is /show/{slug} — SINGULAR. This said /shows/ until 2026-08-05 and
@@ -363,7 +380,7 @@ function buildLiveAlert(nowLive) {
  * and a long mailto: or context dump would be sliced into unreadable noise,
  * which is the exact failure being fixed here.
  */
-function buildStuckAlert(stale, runsByWorkflow) {
+function buildStuckAlert(stale, runsByWorkflow, ambiguityNotes = new Map()) {
   const picks = new Map(
     stale.map((e) => [e.key, pickRunForRequest(runsByWorkflow.get(e.workflow), e.requestedAt)])
   );
@@ -371,13 +388,17 @@ function buildStuckAlert(stale, runsByWorkflow) {
     const days = Math.round(daysSince(e.requestedAt));
     const issueUrl = e.issueNumber ? `https://github.com/${REPO}/issues/${e.issueNumber}` : null;
     const picked = picks.get(e.key);
+    const ambiguity = ambiguityNotes.get(e.key);
     // content-fix entries carry no `workflow` — there is no GitHub Actions
     // dispatch behind a plan-refusal fix, so describeRun()/pickRunForRequest()
     // ("what did the workflow do") has nothing to report and would always
     // print the same unhelpful "could not establish" line regardless of what
     // was actually asked for. describeContentFixClaim() says WHAT is being
-    // asked for instead.
-    const whatHappened = e.kind === 'content-fix' ? describeContentFixClaim(e) : describeRun(picked);
+    // asked for instead. An ambiguous title is a third, more specific reason —
+    // say that instead of either, since neither answers "why is this stuck".
+    const whatHappened = ambiguity
+      ? ambiguity
+      : e.kind === 'content-fix' ? describeContentFixClaim(e) : describeRun(picked);
     const lines = [
       `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${whatHappened}`,
       // Older entries only: new ones keep the reader's words private (BRO-4453).
@@ -435,9 +456,12 @@ async function main() {
   }
 
   const nowLive = [];
+  const ambiguityNotes = new Map();
   for (const entry of open) {
     const showId = resolveEntryShowId(entry, shows);
     if (!showId) {
+      const ambiguity = describeAmbiguity(entry, shows);
+      if (ambiguity) ambiguityNotes.set(entry.key, ambiguity);
       console.log(`  ${entry.key}: not in the catalog yet`);
       continue;
     }
@@ -475,7 +499,7 @@ async function main() {
     for (const wf of new Set(stale.map((e) => e.workflow).filter(Boolean))) {
       runsByWorkflow.set(wf, await fetchWorkflowRuns(wf));
     }
-    alerts.push(buildStuckAlert(stale, runsByWorkflow));
+    alerts.push(buildStuckAlert(stale, runsByWorkflow, ambiguityNotes));
   }
 
   if (DRY_RUN) {
