@@ -408,8 +408,8 @@ for (const showId of showDirs) {
       // ground truth (loadLiveScoredUrls) rather than this field at all.
       // Anything the canonical rebuild predicate already excludes (ensemble
       // rejection, "Wrong show" tier, no-text stub) can't reach a score or a
-      // page either — BRO-973. Only A/A2/C/D read this; B/E/F have own gates.
-      || isAlreadyExcludedFromScoring(d);
+      // page either — BRO-973. A/A2/C/D read this; E applies it directly; B/F have own gates.
+      || isAlreadyExcludedFromScoring(d, show, path.join(showId, f));
 
     // ─── A: Cross-market / cross-production contamination ────
     // `_auditAllowCrossMarket` is a manual allowlist for cases the detector can't
@@ -498,7 +498,7 @@ for (const showId of showDirs) {
 
     // ─── E: Unflagged roundup pages ────
     // Must match the same pattern as Guard E in review-file-writer.js
-    if (shouldRunClass('E') && !d.isRoundupArticle && d.url && !isAlreadyExcludedFromScoring(d)) {
+    if (shouldRunClass('E') && !d.isRoundupArticle && d.url && !isAlreadyExcludedFromScoring(d, show, path.join(showId, f))) {
       if (/\/article\/Review-Roundup-/i.test(d.url)) {
         hits.E_unflagged_roundup.push({ showId, file: f, url: d.url });
       }
@@ -673,13 +673,17 @@ if (JSON_OUT) {
   // Synchronous write: this script ends in process.exit(), and an async piped
   // console.log was truncated at the 64KB pipe buffer once G-class hits grew the
   // payload past it (BRO-973: JSON.parse failure in the live-corpus test).
-  fs.writeSync(1, JSON.stringify({
+  const jsonBuf = Buffer.from(JSON.stringify({
     scannedShows: showsScanned,
     scannedFiles: filesScanned,
     totalHits,
     classCounts: Object.fromEntries(Object.entries(hits).map(([k, v]) => [k, v.length])),
     hits,
   }, null, 2) + '\n');
+  for (let off = 0; off < jsonBuf.length;) {
+    try { off += fs.writeSync(1, jsonBuf, off); }
+    catch (e) { if (e.code !== 'EAGAIN') throw e; }
+  }
 } else {
   console.log(`\n=== REVIEW-TEXT CONTAMINATION AUDIT ===`);
   console.log(`Scanned: ${showsScanned} shows, ${filesScanned} files`);
