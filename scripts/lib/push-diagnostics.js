@@ -697,6 +697,16 @@ const NOT_HOOK_MARKERS = [
   /fetch first/i,
   /non-fast-forward/i,
   /Updates were rejected/i,
+  // Transport / server failures also end in "failed to push some refs" but are
+  // retryable (ship-check P1). git runs pre-push BEFORE building the pack, so
+  // any pack-progress line proves the hook already passed.
+  /RPC failed/,
+  /hung up unexpectedly/,
+  /send-pack:/,
+  /\[remote failure\]/,
+  /died of signal/,
+  /^fatal: /m,
+  /(Enumerating|Counting|Compressing|Writing) objects/,
 ];
 function classifyPushStderr(text) {
   const t = String(text || '');

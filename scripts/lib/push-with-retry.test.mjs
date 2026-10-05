@@ -173,6 +173,10 @@ test('classifyPushStderr: every remote-side rejection stays race-or-other', () =
     ' ! [rejected]        main -> main (non-fast-forward)',
     ' ! [remote rejected] main -> main (pre-receive hook declined)',
     'hint: Updates were rejected because the remote contains work',
+    'error: RPC failed; HTTP 500 curl 22 The requested URL returned error: 500\nsend-pack: unexpected disconnect while reading sideband packet\nfatal: the remote end hung up unexpectedly',
+    ' ! [remote failure] main -> main (remote failed to report status)',
+    'Enumerating objects: 5, done.\nWriting objects: 100% (3/3)\nfatal: unable to access x',
+    'error: pack-objects died of signal 9',
   ]) {
     assert.equal(classifyPushStderr(`${marker}\nerror: failed to push some refs to x`), 'race-or-other', marker);
   }

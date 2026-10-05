@@ -214,7 +214,7 @@ git_push() {
   # means the push runs as before and the attempt stays "race-or-other".
   _PUSH_LAST_CLASS="race-or-other"
   _PUSH_LAST_HOOK_TEXT=""
-  local _perr _prc=0
+  local _perr _prc=0 _hook_path
   _perr=$(mktemp 2>/dev/null) || _perr=""
   if [ -z "$_perr" ]; then
     _timeout "$GIT_NET_TIMEOUT_SEC" \
@@ -228,7 +228,11 @@ git_push() {
   case "$_prc" in
     0|124|137|143) ;;  # success, or a timeout kill whose silence is not a hook verdict
     *)
-      if command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
+      # Only when a pre-push hook is actually installed (honours core.hooksPath):
+      # with none (CI), a "failed to push" can never be a local hook's verdict.
+      _hook_path=$(git rev-parse --git-path hooks/pre-push 2>/dev/null || true)
+      if [ -n "$_hook_path" ] && [ -x "$_hook_path" ] \
+         && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/../push-diagnostics-cli.js" ]; then
         _PUSH_LAST_CLASS=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" classify-push-stderr "$_perr" 2>/dev/null || echo "race-or-other")
         if [ "$_PUSH_LAST_CLASS" = "hook-rejected" ]; then
           _PUSH_LAST_HOOK_TEXT=$(node "$SCRIPT_DIR/../push-diagnostics-cli.js" hook-text "$_perr" 2>/dev/null || true)
