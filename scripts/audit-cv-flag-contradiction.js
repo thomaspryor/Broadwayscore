@@ -188,6 +188,12 @@ function main() {
   const shows = Array.isArray(showsFile) ? showsFile : showsFile.shows;
   const cutoff = Date.now() - args.window * 86400000;
   const recentShows = shows.filter((s) => {
+    // openingDate-guard: intentional (BRO-2033). This sweep asks "did a show
+    // that OPENED in the last N days get reviews contradicting its CV flags".
+    // A show with no openingDate has no opening to place inside the window and
+    // (previews-only) has no press reviews to contradict; a previewsStartDate
+    // fallback would pull in shows that have not opened, the opposite of the
+    // window's meaning. Undated shows are surfaced by audit-show-review-gap.js.
     if (!s.openingDate) return false;
     const t = Date.parse(s.openingDate);
     return !Number.isNaN(t) && t >= cutoff;

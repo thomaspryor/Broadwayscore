@@ -92,7 +92,11 @@ for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
   const show = showsById.get(showId);
 
   if (!show) continue; // orphan — separate check
-  if (!show.openingDate) continue; // unknown opening — separate check
+  // openingDate-guard: intentional (BRO-2033). Tony eligibility is decided by
+  // the OPENING date, so there is nothing to compare for an undated show (a
+  // previewsStartDate fallback would mis-flag shows whose previews straddle a
+  // season cutoff). Undated shows are covered by validate-data.js date checks.
+  if (!show.openingDate) continue;
   if (overrides[showId] && overrides[showId].season === tonySeason) continue;
 
   const expectedSeasons = expectedTonySeasonsForOpening(show.openingDate);
