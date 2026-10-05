@@ -73,9 +73,6 @@ const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
-  // BRO-2470: drives the live ~/.claude/hooks board gates; self-skips where
-  // hooks are not installed (CI), so it only has meaning on the owner's Mac.
-  'notion-enforcement-trap.test.mjs': 'BRO-2470',
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
   'ccusage-baseline.test.mjs': 'BRO-4491',
   // BRO-3137 live-data acceptance check (data-state, would flap in CI).
