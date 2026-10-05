@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural sibling-pair checks; dates are read from shows.json itself, so no factual claim is pinned
 /**
  * BRO-2121: corpus-wide sibling-misfile archive cleanup.
  *
@@ -25,31 +26,32 @@ const list = raw.shows || raw;
 const shows = Array.isArray(list) ? list : Object.values(list);
 const siblingIndex = buildSiblingIndex(shows);
 const byId = new Map(shows.map(s => [s.id, s]));
+const open = id => byId.get(id).openingDate;
 const ctx = id => ({ category: byId.get(id)?.category, siblingIndex });
 
 // Reviews all dated at the CURRENT production's opening, filed under a historical revival's id.
 const at = (date, n) => Array.from({ length: n }, (_, i) => ({ url: `https://example.com/r${i}`, publishDate: date }));
 
 test('historical revival holding the current production page is flagged', () => {
-  const v = detectSiblingMisfile('a-christmas-carol-1994', at('2022-11-21', 8), ctx('a-christmas-carol-1994'));
+  const v = detectSiblingMisfile('a-christmas-carol-1994', at(open('a-christmas-carol-2022'), 8), ctx('a-christmas-carol-1994'));
   assert.equal(v.misfiled, true);
   assert.equal(v.targetId, 'a-christmas-carol-2022');
   assert.equal(v.count, 8);
 });
 
 test('regional/off-broadway id holding its Broadway sibling page is flagged', () => {
-  const v = detectSiblingMisfile('oh-mary-off-broadway-2024', at('2024-07-11', 6), ctx('oh-mary-off-broadway-2024'));
+  const v = detectSiblingMisfile('oh-mary-off-broadway-2024', at(open('oh-mary-2024'), 6), ctx('oh-mary-off-broadway-2024'));
   assert.equal(v.misfiled, true);
   assert.equal(v.targetId, 'oh-mary-2024');
 });
 
 test('a page whose reviews match its OWN opening is not flagged', () => {
-  const v = detectSiblingMisfile('a-christmas-carol-2022', at('2022-11-21', 8), ctx('a-christmas-carol-2022'));
+  const v = detectSiblingMisfile('a-christmas-carol-2022', at(open('a-christmas-carol-2022'), 8), ctx('a-christmas-carol-2022'));
   assert.equal(v.misfiled, false);
 });
 
 test('below the min-3 threshold is not flagged', () => {
-  const v = detectSiblingMisfile('a-christmas-carol-1994', at('2022-11-21', 2), ctx('a-christmas-carol-1994'));
+  const v = detectSiblingMisfile('a-christmas-carol-1994', at(open('a-christmas-carol-2022'), 2), ctx('a-christmas-carol-1994'));
   assert.equal(v.misfiled, false);
 });
 
@@ -64,7 +66,7 @@ test('scanArchive reports misfiled pages in both aggregator dirs and ignores cle
     fs.writeFileSync(path.join(root, 'show-score/a-christmas-carol-1994.html'), 'x');
     fs.writeFileSync(path.join(root, 'show-score/a-christmas-carol-2022.html'), 'x');
     fs.writeFileSync(path.join(root, 'dtli/oh-mary-off-broadway-2024.html'), 'x');
-    const date = id => (id.startsWith('oh-mary') ? '2024-07-11' : '2022-11-21');
+    const date = id => (id.startsWith('oh-mary') ? open('oh-mary-2024') : open('a-christmas-carol-2022'));
     const hits = scanArchive(root, {
       shows,
       // Show Score extractor stand-in: applies the same shared detector the real one does.
@@ -106,13 +108,13 @@ test('live archive checkout (if present) has 0 sibling-misfiled pages', { skip: 
 
 test('extract-dtli-reviews isSiblingMisfilePage uses the shared detector', () => {
   const { isSiblingMisfilePage } = require('../../scripts/extract-dtli-reviews.js');
-  assert.equal(isSiblingMisfilePage('a-christmas-carol-1994', at('2022-11-21', 5)), true);
-  assert.equal(isSiblingMisfilePage('a-christmas-carol-2022', at('2022-11-21', 5)), false);
+  assert.equal(isSiblingMisfilePage('a-christmas-carol-1994', at(open('a-christmas-carol-2022'), 5)), true);
+  assert.equal(isSiblingMisfilePage('a-christmas-carol-2022', at(open('a-christmas-carol-2022'), 5)), false);
 });
 
 test('threshold boundaries: exactly 50% of >=3 flags; 3 of 7 and a split across siblings do not', () => {
   const id = 'a-christmas-carol-1994';
-  const mixed = (n, rest) => [...at('2022-11-21', n), ...at('1994-12-22', rest)];
+  const mixed = (n, rest) => [...at(open('a-christmas-carol-2022'), n), ...at(open('a-christmas-carol-1994'), rest)];
   assert.equal(detectSiblingMisfile(id, mixed(3, 3), ctx(id)).misfiled, true);
   assert.equal(detectSiblingMisfile(id, mixed(3, 4), ctx(id)).misfiled, false);
 });
