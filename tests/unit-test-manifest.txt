@@ -32,6 +32,7 @@ scripts/audit-self-contradictory-clears.test.mjs
 scripts/audit-show-review-gap.test.mjs
 scripts/audit-stale-announced-shows.test.mjs
 scripts/audit-stale-open-premises.test.mjs
+scripts/audit-stale-review-texts.test.mjs
 scripts/audit-standing-coverage.test.mjs
 scripts/audit-star-score-mismatch.test.mjs
 scripts/audit-t1-silent-gaps.test.mjs
@@ -40,6 +41,7 @@ scripts/audit-time-bomb-tests.test.mjs
 scripts/audit-toplevel-script-test-yml-coverage.test.mjs
 scripts/audit-venue-complex-slugs.test.mjs
 scripts/audit-venue-write-guard.test.mjs
+scripts/audit-workflow-secret-gaps.test.mjs
 scripts/auto-fix-show-data.test.mjs
 scripts/autonomous-acceptance-recheck.test.mjs
 scripts/autonomous-merge-core-data-guard.test.mjs
@@ -493,6 +495,7 @@ tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
 tests/unit/critic-slug-aliases.test.mjs
 tests/unit/critics-circle-parser.test.mjs
+tests/unit/critics-dedupe.test.mjs
 tests/unit/critics-label-interactivity.test.mjs
 tests/unit/critics-take-generation.test.mjs
 tests/unit/cron-health-chronic-refresh-show-score.test.mjs
@@ -793,6 +796,7 @@ tests/unit/opening-night-checks-unparsed-ratings.test.mjs
 tests/unit/opening-night-checks-wrong-production-bww.test.mjs
 tests/unit/opening-night-completeness.test.mjs
 tests/unit/opening-night-express-push-timeout.test.mjs
+tests/unit/opening-night-express.test.mjs
 tests/unit/opening-night-latency-report.test.mjs
 tests/unit/opening-night-monitor-launch.test.mjs
 tests/unit/opening-night-poll-cadence.test.mjs
@@ -874,6 +878,7 @@ tests/unit/push-core-data-outlet-staging.test.mjs
 tests/unit/push-core-data-show-recovery.test.mjs
 tests/unit/push-latency-probe.test.mjs
 tests/unit/push-ledger-store.test.mjs
+tests/unit/push-race-risk.test.mjs
 tests/unit/push-retry-failure-ledger.test.mjs
 tests/unit/push-via-git-api-rest-integration.test.mjs
 tests/unit/push-via-git-api.test.mjs

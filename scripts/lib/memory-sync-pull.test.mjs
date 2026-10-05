@@ -1,6 +1,16 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { syncMainSafely } from './memory-sync-pull.js';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+// BRO-2404: sync-memory-to-repo.sh must never rebase/autostash the shared main
+// checkout (comments excluded; only executable lines are checked).
+test('sync-memory-to-repo.sh has no executable pull --rebase / --autostash', () => {
+  const src = readFileSync(fileURLToPath(new URL('../sync-memory-to-repo.sh', import.meta.url)), 'utf8');
+  const code = src.split('\n').filter((l) => !/^\s*#/.test(l)).join('\n');
+  assert.doesNotMatch(code, /pull\s+(-\S+\s+)*--rebase|--autostash|git\s+(-C\s+\S+\s+)?rebase\b/);
+});
 
 // Fake git: keyed by joined-args command string. Anything not explicitly
 // scripted is treated as "not found / no-op success" (code 1 for rev-parse

@@ -226,3 +226,27 @@ test('fullText scored as complete → never stale, whatever was fetched later', 
   data.llmMetadata.textSource.status = 'complete';
   assert.equal(isStaleScoreInput(data), false);
 });
+
+// BRO-2407 prevention: every persisted wrongProduction / wrongShow auto-clear
+// in rebuild-all-reviews.js must call markRescoreNeeded between the clear and
+// the NEXT safeWriteReview, otherwise a cleared false positive on an
+// already-scored file keeps a stale score until the daily audit sweep.
+test('every persisted wrongProduction/wrongShow clear in rebuild-all-reviews.js calls markRescoreNeeded before its write', async () => {
+  const { readFileSync } = await import('node:fs');
+  const lines = readFileSync(path.join(REPO, 'scripts/rebuild-all-reviews.js'), 'utf8').split('\n');
+  const clearRe = /(\b\w+\.(wrongProduction|wrongShow) = false;|delete \w+\.(wrongProduction|wrongShow);)/;
+  const missing = [];
+  let checked = 0;
+  lines.forEach((l, i) => {
+    if (!clearRe.test(l)) return;
+    let w = -1;
+    for (let j = i + 1; j < Math.min(i + 40, lines.length); j++) {
+      if (/safeWriteReview\(/.test(lines[j])) { w = j; break; }
+    }
+    if (w < 0) return; // in-memory only (nuclear guard etc.), nothing persisted
+    checked++;
+    if (!lines.slice(i, w).some(x => /markRescoreNeeded\(/.test(x))) missing.push(i + 1);
+  });
+  assert.ok(checked >= 10, `expected >=10 persisted clear sites, saw ${checked} (regex drift?)`);
+  assert.deepEqual(missing, [], `clear without markRescoreNeeded before write at lines ${missing.join(', ')}`);
+});
