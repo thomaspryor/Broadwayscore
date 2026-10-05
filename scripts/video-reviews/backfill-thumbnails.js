@@ -16,9 +16,9 @@ const { execFileSync } = require('child_process');
 const os = require('os');
 const https = require('https');
 
-/** YouTube video id from a watch/shorts/youtu.be URL, else null. */
+/** YouTube video id from a watch/shorts/live/youtu.be URL, else null. */
 function youtubeVideoId(videoUrl) {
-  const m = String(videoUrl || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/);
+  const m = String(videoUrl || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([\w-]{11})/);
   return m ? m[1] : null;
 }
 
@@ -36,10 +36,10 @@ function download(url) {
   });
 }
 
-/** maxresdefault is missing for some uploads (404); hqdefault always exists. */
+/** maxresdefault is missing for some uploads (404); mqdefault (320x180) is the next 16:9 size without the letterbox bars hq/sd bake in (they show in the portrait card crop); hqdefault is the last resort. */
 async function downloadYouTubeThumbnail(videoId) {
   let lastErr;
-  for (const name of ['maxresdefault', 'hqdefault']) {
+  for (const name of ['maxresdefault', 'mqdefault', 'hqdefault']) {
     try {
       const buf = await download(`https://i.ytimg.com/vi/${videoId}/${name}.jpg`);
       if (buf.length > 1000) return buf;

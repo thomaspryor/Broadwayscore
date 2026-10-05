@@ -84,12 +84,25 @@ function toYmd(publishDate) {
 
 const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
 
-/** Scrapingdog published_time ("May 20, 2026", "Streamed live on May 20, 2026", "Premiered 3 Sept 2026") -> "20260520", else null. */
-function publishedTimeToYmd(text) {
+const AGO_MS = { second: 1e3, minute: 6e4, hour: 36e5, day: 864e5, week: 6048e5 };
+
+/**
+ * Scrapingdog published_time ("May 20, 2026", "Streamed live on May 20, 2026",
+ * "Premiered 3 Sept 2026", or YouTube's relative "3 days ago" for fresh
+ * uploads) -> "20260520", else null. Relative text resolves against `now`;
+ * months/years ago are too coarse to date a review, so they stay null.
+ */
+function publishedTimeToYmd(text, now = new Date()) {
   const t = String(text || '');
   const iso = toYmd(t.trim());
   if (iso) return iso;
   const pad = n => String(n).padStart(2, '0');
+  const ago = t.match(/\b(\d+|an?) (second|minute|hour|day|week)s? ago\b/i);
+  if (ago) {
+    const n = /^\d/.test(ago[1]) ? Number(ago[1]) : 1;
+    const d = new Date(now.getTime() - n * AGO_MS[ago[2].toLowerCase()]);
+    return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}`;
+  }
   let m = t.match(/\b([A-Za-z]{3,9})\.? (\d{1,2}),? (\d{4})\b/);
   if (m && MONTHS[m[1].slice(0, 3).toLowerCase()]) return `${m[3]}${pad(MONTHS[m[1].slice(0, 3).toLowerCase()])}${pad(m[2])}`;
   m = t.match(/\b(\d{1,2}) ([A-Za-z]{3,9})\.?,? (\d{4})\b/);

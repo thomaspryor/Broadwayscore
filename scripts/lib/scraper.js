@@ -749,6 +749,7 @@ async function fetchWithScrapingdog(url, options = {}) {
  * when the request failed, or null when SD is unavailable/capped.
  */
 const SD_YOUTUBE_KINDS = { transcripts: 'youtube-transcripts', video: 'youtube-video' };
+let _sdYouTubeBudgetLogged = false;
 async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
   const sdMode = SD_YOUTUBE_KINDS[kind];
   if (!sdMode) throw new Error(`fetchScrapingdogYouTube: unknown kind "${kind}"`);
@@ -802,7 +803,10 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
     }
   }
   if (!lastError) {
-    if (_scraperStats.sdBudgetExceeded) console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD YouTube ${kind}`);
+    if (_scraperStats.sdBudgetExceeded && !_sdYouTubeBudgetLogged) {
+      _sdYouTubeBudgetLogged = true;
+      console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD YouTube calls`);
+    }
     return null;
   }
   // A 200 with an unparseable body was still billed; other failures are not.

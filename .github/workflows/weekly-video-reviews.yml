@@ -143,7 +143,8 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           # 2 Bright Data requests per YouTube video; bounds a --refresh run.
           BD_REQ_BUDGET: '400'
-          # Up to 6 Scrapingdog credits per YouTube video (BRO-4665).
+          # Up to 6 Scrapingdog credits per YouTube video via the YouTube API
+          # (BRO-4665); shared with fetchPage's Scrapingdog tier in this step.
           SD_CREDIT_BUDGET: '3000'
         run: |
           set -euo pipefail

@@ -66,7 +66,11 @@ test('Scrapingdog published_time variants parse to YYYYMMDD', () => {
   assert.equal(publishedTimeToYmd('Streamed live on Sep 3, 2026'), '20260903');
   assert.equal(publishedTimeToYmd('Premiered 3 Sept 2026'), '20260903');
   assert.equal(publishedTimeToYmd('2026-09-10T07:00:00Z'), '20260910');
-  assert.equal(publishedTimeToYmd('2 days ago'), null);
+  const now = new Date('2026-10-05T12:00:00Z');
+  assert.equal(publishedTimeToYmd('2 days ago', now), '20261003');
+  assert.equal(publishedTimeToYmd('Premiered 5 hours ago', now), '20261005');
+  assert.equal(publishedTimeToYmd('Streamed live a week ago', now), '20260928');
+  assert.equal(publishedTimeToYmd('3 months ago', now), null);
   assert.equal(publishedTimeToYmd(undefined), null);
 });
 
