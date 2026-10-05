@@ -453,5 +453,34 @@
       }
     ],
     "queuedAt": "2026-10-05T00:36:05.515Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4647-muuhya6t",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4647-muuhya6t",
+    "description": "land.yml did not land land/job/linear-BRO-4647-muuhya6t: the unit-tests-node gate went red at 6891941b0f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37247183841",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4647-muuhya6t"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6891941b0f8a22f1c9ba630a14bbc03da7ea0a2b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37247183841"
+      }
+    ],
+    "queuedAt": "2026-10-05T00:45:10.757Z"
   }
 ]
