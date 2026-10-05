@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-05T00:23:16.259Z",
-  "moved": 0,
+  "generatedAt": "2026-10-05T00:30:41.131Z",
+  "moved": 2,
   "held": [],
   "tours": [
     {
@@ -215,6 +215,26 @@
       ],
       "held": false,
       "counts": {}
+    },
+    {
+      "tourId": "hamilton-tour-2024",
+      "fromIds": [
+        "hamilton-2015"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-lion-king-tour-2021",
+      "fromIds": [
+        "the-lion-king-1997"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "wrong-show": 1,
+        "tour-review": 2
+      }
     }
   ]
 }
