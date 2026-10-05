@@ -2817,6 +2817,16 @@ function extractTheaterLifeByline(text) {
 }
 
 /**
+ * culturesauce.com inline byline: "... Date: October 4, 2026 Author: Thom Geier ..."
+ * @param {string} text
+ * @returns {string | null}
+ */
+function extractCultureSauceInlineAuthor(text) {
+  const m = String(text || '').slice(0, 1500).match(/\bDate:\s*[A-Z][a-z]+ \d{1,2}, \d{4}\s+Author:\s+([A-Z][\p{L}'’.-]+(?: [A-Z][\p{L}'’.-]+))(?=\s|$)/u);
+  return m ? m[1] : null;
+}
+
+/**
  * Extract author name from HTML using multiple strategies.
  * Priority: meta tags → JSON-LD → byline CSS → text-based extractByline()
  */
@@ -2957,6 +2967,11 @@ function extractAuthorFromHtml(html, text, options = {}) {
   // require end-of-string or a path/port/query/fragment separator right
   // after ".com" (adversarial review, 2026-09-15).
   if (options && options.url && /(^|\/\/|\.)culturesauce\.com(?:[/:?#]|$)/i.test(String(options.url))) {
+    // Read the page's own "Date: <date> Author: <name>" line first: the
+    // registry is gitignored, so a cloud ingest (no registry) left
+    // Slam Frank's review as 'Unknown' on 2026-10-05.
+    const inline = extractCultureSauceInlineAuthor(text);
+    if (inline) return inline;
     const single = resolveSingleCriticOutletByline('culturesauce');
     if (single) return single;
   }
@@ -3556,6 +3571,7 @@ module.exports = {
   extractAuthorFromHtml,
   extractTheaterLifeByline,
   resolveSingleCriticOutletByline,
+  extractCultureSauceInlineAuthor,
   resolveTheaterManiaByline,
   matchTheaterManiaSlug,
   extractHighConfidenceAuthor,

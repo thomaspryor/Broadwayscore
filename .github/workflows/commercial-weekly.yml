@@ -76,6 +76,12 @@ jobs:
         uses: ./.github/actions/setup-playwright
 
       - name: Run batch commercial research
+        # BRO-2779: step-level cap just above the 30-min --time-budget-min (+5min tail show).
+        # A hung process (BRO-4623: Chromium holding the event loop) now fails THIS step
+        # (continue-on-error below) instead of running to the 60-min JOB timeout, which
+        # reports the whole run `cancelled` and skips auto-apply for weeks.
+        # Worst case with a hang: 2 setup + 40 + 10 push + 4 ledger = 56 < 60 job timeout.
+        timeout-minutes: 40
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}

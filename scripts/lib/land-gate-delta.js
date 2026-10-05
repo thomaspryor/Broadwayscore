@@ -182,7 +182,8 @@ function parseTapGateFailures(text, treeRoot) {
   for (const [key, v] of parseTapOutput(text, treeRoot).failures) {
     const ft = v.failureType && v.failureType !== 'subtestsFailed' ? ` [${v.failureType}]` : '';
     const name = `${v.name}${ft}`;
-    out.set(`${key}${ft}`, { file: v.file, name });
+    // payload: aggregate guards (BRO-2793) are diffed on it by diffFailingSets.
+    out.set(`${key}${ft}`, { file: v.file, name, payload: v.payload });
   }
   return out;
 }

@@ -38,6 +38,15 @@
 
 const path = require('node:path');
 
+// Payload capture (BRO-2793). A guard making ONE assertion over MANY inputs
+// emits the same `<file>::<name>` key whichever input violated it, so the key
+// alone cannot tell a NEW violation from a pre-existing one. The failure's
+// `error: |-` body (the assertion message + actual/expected diff) is what
+// differs, so it is kept on the value as `payload` — the KEY is unchanged.
+// The checkout root is rewritten to `<root>` so a baseline tmpdir and the
+// merged tree produce comparable text. The `stack:` block is a separate YAML
+// key and is never included (its frames carry line numbers of the test file).
+
 /**
  * @param {string} tapOutput - stdout of `node --test --test-reporter=tap ...`
  * @param {string} treeRoot - absolute path failures' `location:` should be made
@@ -54,8 +63,28 @@ function parseTapOutput(tapOutput, treeRoot) {
   let last = null;
   let sawTap = false;
   let unlocated = 0;
+  // Open `error:` block: indent of the key line + the entry that owns it.
+  let errBlock = null;
+  const rootText = treeRoot ? String(treeRoot) : '';
+  const closeErr = () => {
+    if (errBlock) errBlock.entry.payload = errBlock.lines.join('\n');
+    errBlock = null;
+  };
 
   for (const line of String(tapOutput || '').split('\n')) {
+    if (errBlock) {
+      const indent = /^(\s*)/.exec(line)[1].length;
+      if (line.trim() !== '' && indent <= errBlock.indent) closeErr();
+      else {
+        errBlock.lines.push(rootText ? line.trim().split(rootText).join('<root>') : line.trim());
+        continue;
+      }
+    }
+    const errStart = /^(\s*)error:\s*[|>][-+]?\s*$/.exec(line);
+    if (errStart && last) {
+      errBlock = { indent: errStart[1].length, entry: last, lines: [] };
+      continue;
+    }
     const notOk = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
     if (notOk) {
       sawTap = true;
@@ -96,6 +125,7 @@ function parseTapOutput(tapOutput, treeRoot) {
     const f = /^# fail (\d+)$/.exec(line);
     if (f) totals.fail = Number(f[1]);
   }
+  closeErr();
   if (pending) {
     failures.set(`?::${pending}`, { file: '?', name: pending });
     unlocated++;
