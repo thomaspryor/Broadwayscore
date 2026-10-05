@@ -23,6 +23,9 @@ const LAUNCH_SOURCES = {
   wikipedia: { evidence: 'launch confirmed by Wikipedia', openingDateSource: 'tourstoyou+wikipedia', closingDateSource: 'tourstoyou+wikipedia' },
   'bww-roundup': { evidence: 'launch confirmed by BroadwayWorld roundup', openingDateSource: 'tourstoyou+bww-roundup', closingDateSource: 'tourstoyou' },
   'tourstoyou-fresh': { evidence: 'launch is the first listed engagement of a tour launching now', openingDateSource: 'tourstoyou-first-engagement', closingDateSource: 'tourstoyou' },
+  // Found before it opens (tour-discovery.js upcomingSegments): created
+  // 'upcoming', opened on its date by update-show-status.js.
+  'tourstoyou-upcoming': { evidence: 'launch is the first listed engagement of a tour booked ahead', openingDateSource: 'tourstoyou-first-engagement', closingDateSource: 'tourstoyou' },
   // A current-era launch checked by hand against two sources (BRO-4601):
   // long-running tours whose Tours To You page keeps only recent rows.
   'hand-verified': { evidence: 'current-era launch verified by hand', openingDateSource: 'hand-verified', closingDateSource: 'hand-verified' },
@@ -62,7 +65,10 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   if (!source) return { skip: `unknown launch source ${decision.launchSource}` };
   if (decision.launchSource === 'hand-verified' && !((decision.evidenceUrls || []).length >= 2)) return { skip: 'hand-verified launch needs two source URLs' };
   const today = now.toISOString().slice(0, 10);
-  if (launch > today) return { skip: `launch ${launch} is in the future` };
+  // A launch still ahead makes an 'upcoming' tour, opened on its date by
+  // update-show-status.js like any other show (it used to be refused, so a
+  // tour arrived only after it opened).
+  const upcoming = launch > today;
 
   // A second tour must start after every earlier tour of the title has closed.
   const earlier = toursOfTitle(parent.title, shows);
@@ -81,7 +87,7 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
     venue: 'North American Tour',
     openingDate: launch,
     closingDate: close,
-    status: close && close < today ? 'closed' : 'open',
+    status: upcoming ? 'upcoming' : close && close < today ? 'closed' : 'open',
     type: parent.type || 'musical',
     isRevival: false,
     category: 'tour',
@@ -101,7 +107,7 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
     ...(close ? { closingDateSource: source.closingDateSource, closingDateUpdatedAt: today } : {}),
     images: { hero: null, thumbnail: null, poster: null },
   };
-  Object.assign(entry, tourInheritance(entry, parent) || {});
+  Object.assign(entry, tourInheritance(entry, parent, shows) || {});
   const imageProblems = tourImageProblems(entry, shows);
   if (imageProblems.length) return { skip: `images: ${imageProblems.join('; ')}` };
   return { entry };

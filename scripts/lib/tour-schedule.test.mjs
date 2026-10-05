@@ -238,3 +238,20 @@ test('duplicateScheduleOf finds another tour sharing three engagements', () => {
   assert.equal(duplicateScheduleOf(rows.slice(0, 2), { m: mincemeat }), null, 'two shared stops can be chance');
   assert.equal(duplicateScheduleOf(mincemeat.stops, { m: { stops: mincemeat.stops.map(s => ({ ...s, city: 'Elsewhere' })) } }), null, 'same venue name in another city is not shared');
 });
+
+test('a tour booked ahead: its first listed engagement is the launch, only when asked', () => {
+  const html = page([
+    row('Cerritos, CA', 'Cerritos Center', 'January 19-24, 2027'),
+    row('Phoenix, AZ', 'Orpheum', 'January 26-31, 2027'),
+    row('Denver, CO', 'Buell', 'February 2-14, 2027'),
+  ]);
+  const tour = { id: null, title: 'Legally Blonde', openingDate: null, closingDate: null };
+  const asked = decideTourDates(tour, html, '', NOW, { segmentStart: '2027-01-19', freshLaunchDays: 30, upcomingDays: 270 });
+  assert.equal(asked.write.openingDate, '2027-01-19');
+  assert.equal(asked.launchSource, 'tourstoyou-upcoming');
+  assert.equal(decideTourDates(tour, html, '', NOW, { segmentStart: '2027-01-19', freshLaunchDays: 30 }).write.openingDate, undefined, 'not without upcomingDays');
+  assert.equal(decideTourDates(tour, html, '', NOW, { segmentStart: '2027-01-19', upcomingDays: 30 }).write.openingDate, undefined, 'not beyond upcomingDays');
+  // Wikipedia naming another launch city means the page lacks the opener.
+  const other = decideTourDates(tour, html, 'The national tour will launch in Chicago in December 2026.', NOW, { segmentStart: '2027-01-19', upcomingDays: 270 });
+  assert.equal(other.write.openingDate, undefined);
+});

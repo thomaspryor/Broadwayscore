@@ -106,3 +106,14 @@ test('tourImageProblems: own or same-title Broadway art only', () => {
   const bad = { ...ok, images: { hero: '/images/shows/six-2021/hero.webp', poster: 'https://x.test/p.jpg' } };
   assert.equal(tourImageProblems(bad, shows).length, 2);
 });
+
+test('poster and runtime come only from a parent that is plausibly the production on the road', () => {
+  const { tourInheritance } = require('./tour-family.js');
+  const parent = { id: 'mark-twain-tonight-2005', title: 'Mark Twain Tonight!', category: 'broadway', status: 'closed', closingDate: '2005-06-26', synopsis: 'Twain.', runtime: '2h', images: { thumbnail: '/images/shows/mt/thumbnail.webp' } };
+  const tour = { id: 'mark-twain-tonight-tour-2027', title: 'Mark Twain Tonight!', category: 'tour', openingDate: '2027-01-28' };
+  assert.deepEqual(tourInheritance(tour, parent), { synopsis: 'Twain.' }, '22 years on: story only');
+  assert.ok(tourInheritance({ ...tour, openingDate: '2007-01-28' }, parent).runtime, 'within 3 years: same production');
+  assert.ok(tourInheritance(tour, { ...parent, status: 'open', closingDate: null }).images, 'parent still running');
+  const earlier = { id: 'mark-twain-tonight-tour-2024', title: 'Mark Twain Tonight!', category: 'tour', openingDate: '2024-10-01' };
+  assert.ok(tourInheritance(tour, parent, [parent, earlier, tour]).images, 'an earlier tour of the title: a touring production exists');
+});
