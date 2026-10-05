@@ -230,6 +230,9 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     setSaving(false);
     setSavedIds(prev => new Set([...Array.from(prev), ...Array.from(saved)]));
     if (failed > 0 && (added === 0 || thenClose)) {
+      // Some picks were written even though others failed: count them now,
+      // because they may leave with the second close and send nothing more.
+      if (added > 0) track('onboarding_step_completed', { step: 'shows', shows_added: added, rated, failed });
       // Only the saved ones are kept off the next try.
       setPicks(prev => new Map(Array.from(prev).filter(([id]) => !saved.has(id))));
       failSave(thenClose);
