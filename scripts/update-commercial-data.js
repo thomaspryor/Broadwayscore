@@ -33,8 +33,10 @@ const path = require('path');
 const https = require('https');
 const { isRelevantPost } = require('./lib/reddit-grosses');
 const {
-  isReportedWeeklyCost, costSourceBasis, methodologyForCostSource, mayReplaceReportedCost, REPORTED_COST_METHODOLOGIES,
+  isReportedWeeklyCost, citedSections, costSourceBasis, methodologyForCostSource, isReportedSource,
+  isPrintableReportedCitation, isPlausibleWeeklyCost,
 } = require('./lib/waltz-cost-gap-fill');
+const { sanitizeForPublicRecord, internalWordingIn, PUBLIC_TEXT_FIELDS } = require('./lib/commercial-record-checks');
 const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
@@ -1328,7 +1330,7 @@ RULES:
 6. Designation changes between non-TBD categories (e.g., Fizzle -> Windfall) should be flagged, not auto-applied.
 7. productionType changes should be flagged, not auto-applied.
 8. For estimatedRecoupmentPct: use [low, high] ranges. Cite source.
-9. For weeklyRunningCost: mark as estimate if from Reddit (isEstimate: { weeklyRunningCost: true }).
+9. For weeklyRunningCost and capitalization: cite the section and the outlet in "source". When the figure comes from trade press (Section F) or an SEC filing (Section H), also propose weeklyRunningCostSource or capitalizationSource for the same show: the outlet and date as a reader would see them (e.g. "Deadline (Oct 3, 2026)"), with no section letter. Never propose isEstimate or costMethodology; they are set from the figure's source.
 10. For capitalization: prefer SEC filings > trade press > Reddit estimates.
 
 SPRINT 4 SEC PRIORITY RULES:
@@ -1437,6 +1439,55 @@ Respond with ONLY valid JSON (no markdown code fences):
   }
 }
 
+// A figure's citation and labels follow the figure and its source (BRO-4666).
+// The model used to propose them directly: a "reported" label on a Reddit
+// number, or a citation left beside a figure it never described.
+const CITATION_FIELD = { weeklyRunningCost: 'weeklyRunningCostSource', capitalization: 'capitalizationSource' };
+// Each derived field, and the figures it describes.
+const DERIVED_FIELD_FIGURES = {
+  weeklyRunningCostSource: ['weeklyRunningCost'],
+  capitalizationSource: ['capitalization'],
+  costMethodology: ['weeklyRunningCost'],
+  isEstimate: ['weeklyRunningCost', 'capitalization'],
+};
+
+/** True when the record's figure is reported: only trade or SEC evidence may replace it. */
+function holdsReportedFigure(rec, field) {
+  if (field === 'weeklyRunningCost') return isReportedWeeklyCost(rec);
+  return rec?.capitalization != null && rec.isEstimate?.capitalization !== true && isReportedSource(rec.capitalizationSource);
+}
+
+/** A proposed figure as a number, or null when it is not one ("$650K", null). */
+function figureValue(value) {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  if (typeof value === 'string' && /^\s*\d+(?:\.\d+)?\s*$/.test(value)) return Number(value);
+  return null;
+}
+
+/** The printable trade or SEC citation the batch proposes beside this figure change, else null. */
+function pairedCitation(change, proposedChanges) {
+  const citeField = CITATION_FIELD[change.field];
+  if (!citeField || !isReportedSource(change.source)) return null;
+  const cite = proposedChanges.find((c) => c.slug === change.slug && c.field === citeField);
+  return cite && isPrintableReportedCitation(cite.newValue) ? cite.newValue.trim() : null;
+}
+
+/**
+ * Label a figure the weekly update writes. It is reported, with its citation,
+ * only when a trade or SEC source comes with a printable citation, and its
+ * methodology then names what that citation is; otherwise it is an estimate
+ * with no citation, which /biz prints with "~".
+ */
+function labelFigure(rec, field, source, citation) {
+  const reported = Boolean(citation) && isReportedSource(source);
+  rec[CITATION_FIELD[field]] = reported ? citation : null;
+  rec.isEstimate = { ...(rec.isEstimate || {}), [field]: !reported };
+  if (field === 'weeklyRunningCost') {
+    if (reported) rec.costMethodology = methodologyForCostSource(citation);
+    else rec.costMethodology = costSourceBasis(source) === 'reddit' ? methodologyForCostSource(source) : 'industry-estimate';
+  }
+}
+
 /**
  * Filter proposed changes by confidence and safety rules.
  *
@@ -1486,10 +1537,11 @@ function filterByConfidence(proposedChanges, commercialData) {
       }
     }
 
-    // Only a trade or SEC source replaces a reported weekly cost (BRO-4666).
+    // Only a trade or SEC source replaces a reported figure (BRO-4666).
     // Reddit estimates used to, and kept the "trade-reported" label.
-    if (field === 'weeklyRunningCost' && !mayReplaceReportedCost(change.source) && isReportedWeeklyCost(commercialData?.shows?.[slug])) {
-      skipped.push({ ...change, skipReason: `Only a trade or SEC source may replace a reported weekly cost (${commercialData.shows[slug].costMethodology})` });
+    if (CITATION_FIELD[field] && !isReportedSource(change.source) && holdsReportedFigure(commercialData?.shows?.[slug], field)) {
+      const what = field === 'weeklyRunningCost' ? `weekly cost (${commercialData.shows[slug].costMethodology})` : 'capitalization';
+      skipped.push({ ...change, skipReason: `Only a trade or SEC source may replace a reported ${what}` });
       continue;
     }
 
@@ -1509,6 +1561,25 @@ function filterByConfidence(proposedChanges, commercialData) {
         flagReason: 'Sources disagree',
         validationDetails: change.validationNotes || 'Contradicting sources found'
       });
+      continue;
+    }
+
+    // A citation or label rides with its figure: proposed beside one, it is
+    // applied from the figure's source; alone, a person sets it (BRO-4666).
+    if (DERIVED_FIELD_FIGURES[field]) {
+      const figures = DERIVED_FIELD_FIGURES[field];
+      if (proposedChanges.some((c) => c.slug === slug && figures.includes(c.field))) {
+        skipped.push({ ...change, skipReason: `${field} is set from the source of the figure proposed with it` });
+      } else {
+        flagged.push({ ...change, flagReason: `${field} follows the cited source of its figure; set it by hand with that source` });
+      }
+      continue;
+    }
+
+    // /biz prints these verbatim, so research wording or a "Section C:"
+    // context reference goes to a person instead of the page.
+    if (PUBLIC_TEXT_FIELDS.includes(field) && internalWordingIn(newValue)) {
+      flagged.push({ ...change, flagReason: `${field} reads as research notes ("${internalWordingIn(newValue)}"); /biz prints it verbatim` });
       continue;
     }
 
@@ -1534,6 +1605,26 @@ function filterByConfidence(proposedChanges, commercialData) {
 
       // Non-TBD to non-TBD -> flag for manual review
       flagged.push({ ...change, flagReason: 'Designation upgrade between non-TBD categories requires manual review' });
+      continue;
+    }
+
+    // A dollar figure carries the citation proposed beside it (BRO-4666).
+    if (CITATION_FIELD[field]) {
+      const value = figureValue(newValue);
+      if (value == null) {
+        flagged.push({ ...change, flagReason: `${field} must be a dollar amount, got ${JSON.stringify(newValue)}` });
+        continue;
+      }
+      if (field === 'weeklyRunningCost' && !isPlausibleWeeklyCost(value)) {
+        skipped.push({ ...change, skipReason: `Implausible weekly cost $${value.toLocaleString()}` });
+        continue;
+      }
+      const citation = pairedCitation(change, proposedChanges);
+      if (!citation && holdsReportedFigure(commercialData?.shows?.[slug], field)) {
+        flagged.push({ ...change, flagReason: `Replacing a reported ${field} needs a printable trade or SEC citation (${CITATION_FIELD[field]})` });
+        continue;
+      }
+      applied.push({ ...change, newValue: value, citation });
       continue;
     }
 
@@ -1605,19 +1696,19 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     }
 
     const current = commercial.shows[slug][field];
+    // A figure restated without a new citation changes nothing; relabeling it
+    // would drop the citation it already has.
+    if (CITATION_FIELD[field] && current != null && Number(newValue) === Number(current) && !change.citation) {
+      console.log(`  [SAME] ${slug}.${field}: ${JSON.stringify(current)} restated, label kept`);
+      continue;
+    }
     commercial.shows[slug][field] = newValue;
     changeCount++;
     console.log(`  [APPLY] ${slug}.${field}: ${JSON.stringify(current)} -> ${JSON.stringify(newValue)}`);
 
-    // A new weekly cost carries its own basis (BRO-4666): the methodology its
-    // source names, the estimate flag unless trade or SEC, and no citation,
-    // since the record's old one described the old figure.
-    if (field === 'weeklyRunningCost' && newValue !== current) {
-      const rec = commercial.shows[slug];
-      rec.costMethodology = methodologyForCostSource(change.source);
-      rec.isEstimate = { ...(rec.isEstimate || {}), weeklyRunningCost: !REPORTED_COST_METHODOLOGIES.has(rec.costMethodology) };
-      rec.weeklyRunningCostSource = null;
-    }
+    // A new figure carries its own label and citation (BRO-4666); the
+    // record's old citation described the old figure.
+    if (CITATION_FIELD[field]) labelFigure(commercial.shows[slug], field, change.source, change.citation || null);
 
     // For estimatedRecoupmentPct, add source + date
     if (field === 'estimatedRecoupmentPct') {
@@ -1644,16 +1735,37 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
   for (const entry of (newEntries || [])) {
     if (entry.confidence === 'low') continue;
     if (!entry.slug) continue;
-    const { slug: key, resolved } = resolveCommercialSlug(entry.slug, null, showKeyIndex || buildShowKeyIndex([]));
+    const { slug: key, resolved, show } = resolveCommercialSlug(entry.slug, null, showKeyIndex || buildShowKeyIndex([]));
     if (!resolved) {
       console.log(`  [SKIP] New entry "${entry.slug}" doesn't match a show in shows.json`);
       continue;
     }
     if (commercial.shows[key]) continue;
 
-    commercial.shows[key] = entry.data;
+    // The entry's figures are labeled from its source like any other change
+    // (BRO-4666), and its text cleaned like the other model-fed writers'.
+    const data = { ...(entry.data || {}) };
+    for (const field of Object.keys(CITATION_FIELD)) {
+      const value = figureValue(data[field]);
+      const keep = value != null && (field !== 'weeklyRunningCost' || isPlausibleWeeklyCost(value));
+      data[field] = keep ? value : null;
+      if (!keep) {
+        data[CITATION_FIELD[field]] = null;
+        continue;
+      }
+      const cite = isPrintableReportedCitation(data[CITATION_FIELD[field]]) ? data[CITATION_FIELD[field]].trim() : null;
+      labelFigure(data, field, entry.source, cite);
+    }
+    const { entry: record, changed, holdReason } = sanitizeForPublicRecord(data, show && show.status);
+    if (holdReason) {
+      console.log(`  [HOLD] New entry ${key}: ${holdReason}`);
+      continue;
+    }
+    if (changed.length) console.log(`  [CLEAN] New entry ${key}: cleared research wording in ${changed.join(', ')}`);
+
+    commercial.shows[key] = record;
     changeCount++;
-    console.log(`  [NEW] Added ${key} (${entry.data.designation})`);
+    console.log(`  [NEW] Added ${key} (${record.designation})`);
   }
 
   // Update metadata
@@ -2292,7 +2404,7 @@ function extractSourceType(source) {
   // Sources read "Section X: ...", so Reddit (Sections C-E) and SEC (Section H)
   // come from costSourceBasis; a bare "sec" substring rated every one an SEC filing.
   const basis = costSourceBasis(source);
-  if (basis === 'reddit') return /grosses\s+analysis|\bsection\s*c\b/i.test(source) ? 'Reddit Grosses Analysis' : 'Reddit comment';
+  if (basis === 'reddit') return /grosses\s+analysis/i.test(source) || citedSections(source).has('C') ? 'Reddit Grosses Analysis' : 'Reddit comment';
   if (basis === 'sec') return 'SEC Form D';
   if (sourceLower.includes('deadline')) return 'Deadline';
   if (sourceLower.includes('variety')) return 'Variety';

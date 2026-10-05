@@ -85,6 +85,10 @@ test('public text fields reject research-pipeline wording', () => {
   assert.equal(e({ capitalizationSource: 'o4-mini estimate' }).length, 1);
   assert.equal(e({ notes: 'Claude Sonnet synthesis of trade reports.' }).length, 1);
   assert.equal(e({ notes: 'AI-estimated running cost.' }).length, 1);
+  // The weekly update's context sections (BRO-4666), but not a newspaper section.
+  assert.equal(e({ recoupedSource: 'Section F: Deadline reports recoupment' }).length, 1);
+  assert.equal(e({ notes: 'Sections C and D: strong word of mouth.' }).length, 1);
+  assert.equal(e({ recoupedSource: 'The New York Times, Section C, p. 1' }).length, 0);
   assert.equal(e({ notes: 'Music by Claude-Michel Schönberg; produced by Cameron Mackintosh.' }).length, 0);
   assert.equal(e({ notes: 'ChatGPT summary of grosses.' }).length, 1);
   assert.equal(e({ capitalizationSource: 'Gemini 2.5 Pro estimate' }).length, 1);
