@@ -801,10 +801,17 @@ async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
       break;
     }
   }
-  if (!lastError) return null;
-  recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade) });
+  if (!lastError) {
+    if (_scraperStats.sdBudgetExceeded) console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD YouTube ${kind}`);
+    return null;
+  }
+  // A 200 with an unparseable body was still billed; other failures are not.
+  const billed = lastError instanceof SyntaxError ? creditCost : sdBilledCredits(false, creditCost * attemptsMade);
+  recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: billed });
   const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
-  if (failStatus && isSdQuotaHttpStatus(failStatus) && !_sdQuotaExceeded) {
+  // 403 is not latched here: the YouTube endpoints may answer 403 for one
+  // private/region-locked video, which must not disable SD for the whole run.
+  if (failStatus && failStatus !== '403' && isSdQuotaHttpStatus(failStatus) && !_sdQuotaExceeded) {
     _sdQuotaExceeded = true;
     console.warn(`  ⚠️  Scrapingdog disabled for the rest of this process (HTTP ${failStatus} — credits exhausted or auth failure)`);
   }

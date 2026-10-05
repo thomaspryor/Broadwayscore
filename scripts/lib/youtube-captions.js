@@ -136,6 +136,7 @@ async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
   if (needDate && transcript) {
     const v = await sdYouTube('video', videoId, {});
     if (v && v.data) publishedAt = publishedTimeToYmd(v.data.published_time || v.data.publish_date || v.data.upload_date);
+    if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || JSON.stringify(v.data && v.data.published_time)) : 'unavailable'})`.slice(0, 220));
   }
   return { transcript, publishedAt, source: 'scrapingdog-youtube' };
 }

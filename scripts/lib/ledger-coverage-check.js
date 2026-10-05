@@ -77,7 +77,7 @@ const COMMIT_LEDGER_ACTION_RE = /uses:\s*\.\/\.github\/actions\/commit-scraper-s
 const TELEMETRY_WRITERS = new Set(['recordProviderCall', 'recordBdCall', 'recordSbCall', 'recordSdCall', 'recordBbCall']);
 const TRACKED_TARGETS = new Map([
   ['url-discovery.js', new Set(['serpQuery', 'discoverCorrectUrl'])],
-  ['scraper.js', new Set(['fetchPage'])],
+  ['scraper.js', new Set(['fetchPage', 'fetchScrapingdogYouTube'])],
   ['provider-telemetry.js', TELEMETRY_WRITERS],
   ['bd-telemetry.js', TELEMETRY_WRITERS],
 ]);
