@@ -24,10 +24,34 @@ test('picks open tours whose score went public in the week', () => {
   assert.deepEqual(ids, ['jersey-boys-tour-2026']);
 });
 
-test('week bounds are inclusive on the stamp date', () => {
+test('window runs from the day before weekStart through weekEnd, inclusive', () => {
   assert.equal(pickNewlyScoredTours(shows, stamps, '2026-10-04', '2026-10-04').length, 1);
   assert.equal(pickNewlyScoredTours(shows, stamps, '2026-09-29', '2026-09-29')[0].id, 'wicked-tour-2021');
-  assert.equal(pickNewlyScoredTours(shows, stamps, '2026-10-05', '2026-10-09').length, 0);
+  // Sunday 2026-10-04 stamp, after the Sunday refresh: next Monday's issue gets it.
+  assert.deepEqual(pickNewlyScoredTours(shows, stamps, '2026-10-05', '2026-10-11').map(s => s.id), ['jersey-boys-tour-2026']);
+  assert.equal(pickNewlyScoredTours(shows, stamps, '2026-10-06', '2026-10-11').length, 0);
+});
+
+test('excludeIds drops a tour the previous issue already featured', () => {
+  const ids = pickNewlyScoredTours(shows, stamps, '2026-10-05', '2026-10-11', { excludeIds: new Set(['jersey-boys-tour-2026']) });
+  assert.deepEqual(ids, []);
+});
+
+test('reviews: an old tour stamped by a data catch-up is not news', () => {
+  const reviews = [
+    { showId: 'jersey-boys-tour-2026', assignedScore: 80, publishDate: '2026-09-20' },
+    { showId: 'jersey-boys-tour-2026', assignedScore: null, publishDate: '2026-10-01' },
+    { showId: 'wicked-tour-2021', assignedScore: 85, publishDate: '2021-08-08' },
+  ];
+  const all = pickNewlyScoredTours(shows, stamps, '2026-09-28', '2026-10-04', { reviews }).map(s => s.id);
+  assert.deepEqual(all, ['jersey-boys-tour-2026']);
+  // Newest scored review 61 days before weekEnd: too old. 60 days: still in.
+  const edge = (d) => pickNewlyScoredTours(shows, stamps, '2026-10-03', '2026-10-09',
+    { reviews: [{ showId: 'jersey-boys-tour-2026', assignedScore: 70, publishDate: d }] }).length;
+  assert.equal(edge('2026-08-10'), 1);
+  assert.equal(edge('2026-08-09'), 0);
+  // No dated scored review at all (the-lion-king-tour-2021 has none).
+  assert.equal(pickNewlyScoredTours(shows, stamps, '2026-10-03', '2026-10-09', { reviews: [] }).length, 0);
 });
 
 test('missing or malformed stamps file picks nothing', () => {

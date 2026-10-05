@@ -279,10 +279,12 @@ export default function HomePage() {
   // On Tour Now (BRO-4757): running national tours that have a score (listed
   // tours only, BRO-4262), best first, with the city they play this week (or
   // the next one, between engagements).
-  const today = now.toISOString().slice(0, 10);
+  // New York date: a UTC date flips to tomorrow at 8pm ET.
+  const today = now.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
   const onTourList = featureFlags.tour ? getTourShows()
     .filter(s => s.status === 'open' && s.criticScore?.score)
-    .sort((a, b) => (b.criticScore?.score || 0) - (a.criticScore?.score || 0))
+    .sort((a, b) => ((b.criticScore?.score || 0) - (a.criticScore?.score || 0)) || a.title.localeCompare(b.title))
+    .slice(0, 10)
     .map(s => {
       const nn = getTourNowNextForShow(s, today);
       const subtitle = nn?.now ? `Now in ${shortCity(nn.now.city)}`

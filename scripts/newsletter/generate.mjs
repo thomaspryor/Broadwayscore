@@ -907,17 +907,22 @@ function newTourScoresSection() {
   let schedules = {};
   try { stamps = JSON.parse(fs.readFileSync(path.join(repo, 'data/audit/score-public-since.json'), 'utf8')); } catch { return null; }
   try { schedules = JSON.parse(fs.readFileSync(path.join(repo, 'data/tour-schedules.json'), 'utf8')).tours || {}; } catch {}
-  const withScore = pickNewlyScoredTours(shows, stamps, weekStartStr, weekEndStr)
+  const withScore = pickNewlyScoredTours(shows, stamps, weekStartStr, weekEndStr, { reviews, excludeIds: lastFeaturedIds })
     .filter(s => notFeatured(s.id))
+    // markOpening below makes a missing image a hard pre-send failure. An
+    // opening is worth holding the send for; a tour row is not, so skip it.
+    .filter(s => getImage(s))
     // The score must still be public today: the stamp never clears, so a tour
     // whose score dropped back under the minimum (a review flagged later,
     // e.g. death-becomes-her-tour-2026) would otherwise print its raw mean.
     .map(s => ({ s, agg: loadCompositeScore(s.id) }))
     .filter(x => x.agg)
-    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)) || a.s.title.localeCompare(b.s.title));
   if (!withScore.length) return null;
   const list = withScore.slice(0, 6).map(x => x.s);
   markFeatured(...list.map(s => s.id));
+  // Feeds pre-send-check's image and coverage gates, like the openings sections.
+  markOpening('new-tour-scores', list);
   // Year only when the launch is not this year (a Phantom tour from Nov 2025).
   const launched = (d) => `Tour launched ${fmt(d)}${d.slice(0, 4) !== weekEndStr.slice(0, 4) ? `, ${d.slice(0, 4)}` : ''}`;
   const body = list.map(s => showRow(s, {
@@ -3363,7 +3368,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).
-      : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings']
+      : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings', 'new-tour-scores']
     ).includes(r.section))
     .filter(r => !_dropSet.has(r.section)))
     .map(({ section, ...rest }) => rest),
