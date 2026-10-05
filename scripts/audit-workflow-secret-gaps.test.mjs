@@ -1,7 +1,7 @@
 // BRO-2378: end-to-end test of scripts/audit-workflow-secret-gaps.js against
 // the real opening-night workflows. Strips every ANTHROPIC_API_KEY env line
 // (the BRO-67 bug) into a temp dir and asserts the audit flags all three.
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
@@ -23,8 +23,10 @@ function stripKey(raw, key) {
 }
 
 // Copy workflows into a temp dir; if `strip`, remove ANTHROPIC_API_KEY env lines.
+const dirs = [];
 function stageBro67(strip, extra = (s) => s) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'secret-gaps-'));
+  dirs.push(dir);
   // knownSecrets is derived from the scanned dir, so keep one workflow that
   // still references secrets.ANTHROPIC_API_KEY (a stripped copy would lose it).
   fs.writeFileSync(
@@ -66,3 +68,5 @@ test('CLI is advisory: exits 0 and emits JSON gaps for a --dir', () => {
   const out = JSON.parse(r.stdout);
   assert.ok(out.gaps.some((g) => g.secret === 'ANTHROPIC_API_KEY'));
 });
+
+after(() => { for (const d of dirs) fs.rmSync(d, { recursive: true, force: true }); });

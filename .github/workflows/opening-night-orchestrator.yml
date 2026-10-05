@@ -714,15 +714,15 @@ jobs:
         with:
           node-version: 20
 
-      # audit-secret-gap-ok: ANTHROPIC_API_KEY
-      # (status script only imports readiness helpers from opening-night-poller;
-      # it never reaches the llm-extractor fallback, BRO-2378)
       - name: Send opening night status to Discord
         if: always() && steps.find.outputs.has_shows == 'true'
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Poller module is imported (LLM extractor in its require chain); wiring
+          # the key avoids a file-wide audit-secret-gap-ok exemption (BRO-2378).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/opening-night-status.js --notify --lookback=2
         continue-on-error: true
 
