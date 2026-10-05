@@ -39,6 +39,8 @@ const { tourAutomationMode } = require('./lib/tour-automation-mode');
 // this was written) though the tour opened in Denver in May; a wider window
 // would have created it with that date (BRO-4601 report run).
 const FRESH_LAUNCH_DAYS = 30;
+// A tour booked ahead is created as 'upcoming' (tour-discovery.js).
+const { UPCOMING_DAYS } = require('./lib/tour-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { openTourCandidates, recordTourCandidates, roundupDateFromSlug } = require('./lib/tour-roundup-candidate');
 const { decideTourDates, duplicateScheduleOf } = require('./lib/tour-schedule');
@@ -134,7 +136,7 @@ async function main() {
     // says nothing about when the tour launched (a backfilled old roundup).
     const roundupDate = roundupUrl ? roundupDateFromSlug(roundupUrl) : null;
     const decision = scheduleUrl
-      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
+      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS, upcomingDays: UPCOMING_DAYS } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
     // A page can carry another show's table (the Come From Away page showed
     // Operation Mincemeat's 2026 tour, BRO-4601): never create a tour whose

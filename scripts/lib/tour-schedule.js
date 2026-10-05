@@ -255,11 +255,19 @@ function launchSentences(wikiText) {
  * Wikipedia's tour text names a launch, but not in this row's city: the page
  * lost the real opener (Harry Potter: Tours To You starts at Seattle, the
  * article says the tour began in Denver). Silence is not a contradiction.
+ * Only launches dated the row's year or the year before count: an article
+ * also tells how earlier tours and the premiere began (Legally Blonde's 2008
+ * tour, Shucked's 2022 premiere), which says nothing about this one.
  */
 function wikiNamesOtherLaunch(wikiText, row) {
   const city = String((row && row.city) || '').split(',')[0].trim().toLowerCase();
-  const sentences = launchSentences(proseOnly(wikiText));
-  return sentences.length > 0 && !sentences.some(s => s.toLowerCase().includes(city));
+  const year = row && row.start ? row.start.getUTCFullYear() : null;
+  const near = new RegExp(`\\b(${year}|${year - 1})\\b`);
+  const sentences = launchSentences(proseOnly(wikiText)).filter(s => !year || near.test(s));
+  // Agreeing on the month is no contradiction either: "a 2nd National tour
+  // would begin in January, 2027" (Shucked) names no city at all.
+  const month = year ? new RegExp(`\\b${MONTHS[row.start.getUTCMonth()]}\\b[^.]{0,12}\\b${year}\\b`, 'i') : null;
+  return sentences.length > 0 && !sentences.some(s => s.toLowerCase().includes(city) || (month && month.test(s)));
 }
 
 const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed|s)? (in|at|on))/i;
@@ -436,14 +444,23 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
     && seg.rows.length >= 3 && Math.abs(seg.start.getTime() - now.getTime()) <= opts.freshLaunchDays * DAY
     && !wikiNamesOtherLaunch(wikiText, seg.rows[0])
     ? seg.start : null;
-  const launch = wikiLaunch || roundupLaunch || freshLaunch;
-  const launchSource = wikiLaunch ? 'wikipedia' : roundupLaunch ? 'bww-roundup' : freshLaunch ? 'tourstoyou-fresh' : null;
+  // Opt-in too: a tour booked ahead (tour-discovery.js upcomingSegments). Its
+  // first listed engagement is its launch for the same reason, and more
+  // surely: Tours To You drops past rows, never future ones.
+  const upcomingLaunch = !wikiLaunch && !roundupLaunch && !freshLaunch && opts.upcomingDays > 0
+    && seg.rows.length >= 3 && seg.start.getTime() > now.getTime()
+    && seg.start.getTime() - now.getTime() <= opts.upcomingDays * DAY
+    && !wikiNamesOtherLaunch(wikiText, seg.rows[0])
+    ? seg.start : null;
+  const launch = wikiLaunch || roundupLaunch || freshLaunch || upcomingLaunch;
+  const launchSource = wikiLaunch ? 'wikipedia' : roundupLaunch ? 'bww-roundup' : freshLaunch ? 'tourstoyou-fresh' : upcomingLaunch ? 'tourstoyou-upcoming' : null;
   const notes = [`segment ${iso(seg.start)}..${iso(seg.end)} (${seg.rows.length} engagements)`];
   if (!tour.openingDate) {
     if (launch) write.openingDate = iso(launch);
     else notes.push('no engagement date in this segment is named by Wikipedia; launch left unset');
     if (roundupLaunch) notes.push(`launch ${iso(roundupLaunch)} confirmed by the BroadwayWorld roundup dated ${String(opts.roundupDate).slice(0, 10)} (Wikipedia silent)`);
     if (freshLaunch) notes.push(`launch ${iso(freshLaunch)} is the first listed engagement of a tour launching now (within ${opts.freshLaunchDays} days; Wikipedia and roundups silent)`);
+    if (upcomingLaunch) notes.push(`launch ${iso(upcomingLaunch)} is the first listed engagement of a tour booked ahead (within ${opts.upcomingDays} days; Wikipedia and roundups silent)`);
   } else if (launch && Math.abs(new Date(`${tour.openingDate}T00:00:00Z`) - launch) / DAY > 14) {
     notes.push(`stored launch ${tour.openingDate} differs from ${iso(launch)} by >14 days`);
   }
@@ -499,6 +516,9 @@ function duplicateScheduleOf(rows, schedules, { exceptId = null, min = 3 } = {})
 }
 
 module.exports = {
+  wikiNamesOtherLaunch,
+  launchSentences,
+  proseOnly,
   duplicateScheduleOf,
   parseDateRange,
   parseTourSchedule,
