@@ -287,6 +287,22 @@ function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) 
   return true;
 }
 
+/**
+ * Foreign-roundup-URL bypass (BRO-989, Schmigadoon 2026-04-20 EBT incident).
+ * A review file's bwwRoundupUrl is a BroadwayWorld review-roundup page whose
+ * slug is the roundup's SHOW title. When that slug names none of the expected
+ * show's title (urlSlugMatchesShowTitle), the file was matched to the wrong
+ * show's roundup: deterministic wrong-content evidence that must beat the
+ * opening-week safety net even when the LLM reasoning has no marker phrase.
+ * Only BWW review-roundup URLs are judged (their slugs are title-based).
+ */
+function hasForeignRoundupUrlSignal(roundupUrl, show) {
+  if (!roundupUrl || !show || !show.title) return false;
+  const u = String(roundupUrl);
+  if (!/broadwayworld\.com\/(?:[a-z-]+\/)?review-?roundups?\//i.test(u) && !/review-roundup/i.test(u)) return false;
+  return !urlSlugMatchesShowTitle(u, show.title);
+}
+
 function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, cvContext) {
   let resultWpConfidence = wpConfidence;
   let resultFilmTvFlag = filmTvFlag;
@@ -298,7 +314,8 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
 
   const strongDifferent =
     !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
-    !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText));
+    !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText)) ||
+    !!(cvContext && hasForeignRoundupUrlSignal(cvContext.bwwRoundupUrl, cvContext.show));
 
   // In-window + slug-match veto (audit S6-T4, BRO-4204). The 30-day rule
   // below is the opening-week safety net; this is the run-long one: a review
@@ -5192,6 +5209,7 @@ module.exports = {
   showHasFestivalVenue,
   reasoningAssertsDifferentProduction,
   hasStrongDifferentShowSignal,
+  hasForeignRoundupUrlSignal,
   hasNamedDifferentDirectorSignal,
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
