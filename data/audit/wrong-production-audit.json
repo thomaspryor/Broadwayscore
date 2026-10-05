@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T22:19:57.870Z",
+  "timestamp": "2026-10-05T23:09:00.762Z",
   "stats": {
     "totalReviews": 46489,
-    "alreadyFlagged": 18664,
+    "alreadyFlagged": 18666,
     "dateGuardCatches": 268,
-    "directorMismatch": 1316,
+    "directorMismatch": 1317,
     "tvFilmSignals": 1348,
     "londonSignals": 1285,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
-    "noPublishDate": 4315
+    "noPublishDate": 4313
   },
   "findings": [
     {
@@ -23266,6 +23266,19 @@
       "score": 94,
       "publishDate": null,
       "url": "https://rachelweinbergreviews.com/2026/10/01/review-operation-mincemeat-tour-presented-by-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "stageandcinema--cj-fernandes.json",
+      "publishDate": "2026-10-05",
+      "url": "https://stageandcinema.com/2026/10/04/operation-mincemeat-national-tour-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",

@@ -52,13 +52,13 @@ Run all of these simultaneously via Bash:
 1. **TypeScript check:** `npx tsc --noEmit 2>&1 | tail -20`
 2. **Lint check:** `npx next lint 2>&1 | tail -20`
 3. **Data validation:** `node scripts/validate-data.js 2>&1 | tail -30`
-4. **Build test (auth-aware):** Build with feature flags enabled, but only include `userAccounts` if Supabase env vars are present:
+4. **Build test (auth-aware):** Build with feature flags enabled (the public Sanity ids are set because cloud containers lack them and `/blog/[slug]` fails without them; the values are the same non-secret ones the workflows hardcode), but only include `userAccounts` if Supabase env vars are present:
    ```bash
    if [ -n "$NEXT_PUBLIC_SUPABASE_URL" ]; then
-     NEXT_PUBLIC_FEATURES=userAccounts,criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
+     NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8} NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET:-production} NEXT_PUBLIC_FEATURES=userAccounts,criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
    else
      echo "Skipping userAccounts flag (no NEXT_PUBLIC_SUPABASE_URL). Building with other flags."
-     NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
+     NEXT_PUBLIC_SANITY_PROJECT_ID=${NEXT_PUBLIC_SANITY_PROJECT_ID:-fp1ft8k8} NEXT_PUBLIC_SANITY_DATASET=${NEXT_PUBLIC_SANITY_DATASET:-production} NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions npm run build 2>&1 | tail -30
    fi
 
 **Expo:**
@@ -327,7 +327,7 @@ State exactly which of the three reviewers ran and on which model: (1) Claude co
 
 ### Phase 7: Clean up
 
-Kill the dev server if you started one: `kill $(lsof -ti:3456) 2>/dev/null`
+Kill the dev server if you started one: `fuser -k 3456/tcp 2>/dev/null; kill $(lsof -ti:3456) 2>/dev/null`, then confirm with `ps -eo pid,args | grep -E 'next (dev|-server)' | grep -v grep` (empty). In cloud containers `lsof -ti` can print nothing for a live server, and a dev server left running corrupts the next `npm run build` ("Cannot find module for page: /_document").
 
 ### Phase 8: Fix every P0 and P1
 
