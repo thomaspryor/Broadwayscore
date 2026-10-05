@@ -54,6 +54,8 @@ import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
 import { savePendingAction } from '@/lib/deferred-auth';
+import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
+import { removeLocalShow } from '@/lib/local-watchlist';
 import { getWatchlistCtaLabel } from '@/lib/watchlist-cta-label';
 import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
@@ -181,7 +183,9 @@ function Inner({
   const ratingCount = showReviews.length;
   const hasRating = ratingCount > 0;
   const isMulti = ratingCount > 1;
-  const onWatchlist = isWatchlisted(show.id);
+  const { isSavedLocally, toggleLocal } = useLocalWatchlist();
+  // Signed out, "Want to See" saves on this device (BRO-4616).
+  const onWatchlist = isAuthenticated ? isWatchlisted(show.id) : isSavedLocally(show.id);
   const watchlistEntry = watchlist.find(w => w.show_id === show.id);
   const watchlistDate = watchlistEntry?.planned_date || null;
   const plannedShowEvent = watchlistEntry ? buildPlannedShowEvent(show, watchlistEntry) : null;
@@ -274,14 +278,10 @@ function Inner({
   // ─── Handlers ──────────────────────────────────────────────────────────
 
   const handleWantToSee = useCallback(async () => {
-    if (!isAuthenticated && !authLoading) {
-      savePendingAction({
-        type: 'watchlist',
-        showId: show.id,
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
-      showSignIn('watchlist', 'show_want_to_see');
+    if (authLoading) return;
+    // Signed out: save on this device now, offer sign-in after (BRO-4616).
+    if (!isAuthenticated) {
+      toggleLocal(show.id, 'show_want_to_see');
       return;
     }
     try {
@@ -295,7 +295,7 @@ function Inner({
     } catch {
       showToast?.('Failed to update watchlist.', 'error');
     }
-  }, [isAuthenticated, authLoading, onWatchlist, show.id, addToWatchlist, removeFromWatchlist, showSignIn, showToast]);
+  }, [isAuthenticated, authLoading, onWatchlist, show.id, addToWatchlist, removeFromWatchlist, toggleLocal, showToast]);
 
   const handleRateIt = useCallback(() => {
     // Open the editor for everyone. Unauthenticated users invest first; we gate
@@ -367,6 +367,7 @@ function Inner({
       // Unconditional: isWatchlisted reads this instance's async-loaded state and
       // can be stale on fast deep-link saves; deleting a non-existent row is a
       // harmless no-op ('rated' keeps it out of the watchlist_remove count).
+      removeLocalShow(show.id);
       try { await removeFromWatchlist(show.id, 'rated'); } catch { /* rating saved; watchlist cleanup is best-effort */ }
     }
     await getReviewsForShow(show.id);
@@ -659,7 +660,8 @@ function Inner({
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" />
           </svg>
           <span className="truncate">
-            {onWatchlist && (
+            {onWatchlist && !isAuthenticated && 'Saved on this device'}
+            {onWatchlist && isAuthenticated && (
               <>
                 On your{' '}
                 <Link

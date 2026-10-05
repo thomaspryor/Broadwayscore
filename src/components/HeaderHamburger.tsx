@@ -13,7 +13,7 @@ import DeleteAccountDialog from '@/components/auth/DeleteAccountDialog';
  * Only renders when userAccounts feature flag is enabled.
  */
 export default function HeaderHamburger() {
-  const { isAuthenticated, user, profile, showSignIn, signOut, deleteAccount } = useAuth();
+  const { isAuthenticated, loading, user, profile, showSignIn, signOut, deleteAccount } = useAuth();
   const { showToast } = useToastSafe();
   const router = useRouter();
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -41,9 +41,10 @@ export default function HeaderHamburger() {
     <>
       <HamburgerMenu
         isAuthenticated={isAuthenticated}
+        authLoading={loading}
         profile={profile}
         email={user?.email}
-        onSignIn={() => showSignIn('generic', 'menu')}
+        onSignIn={(context) => showSignIn(context, 'menu')}
         onSignOut={signOut}
         onDeleteAccount={() => setConfirmDelete(true)}
       />

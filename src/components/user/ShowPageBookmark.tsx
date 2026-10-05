@@ -5,7 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useMyRating } from '@/hooks/useMyRating';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction, getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { getPendingAction, clearPendingAction } from '@/lib/deferred-auth';
+import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageBookmarkProps {
@@ -39,7 +40,8 @@ const SIZES = {
  * Place inside a `relative` container over the image.
  */
 export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookmarkProps) {
-  const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const [loading, setLoading] = useState(false);
@@ -71,14 +73,11 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
   const handleToggle = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!isAuthenticated && !authLoading) {
-      savePendingAction({
-        type: 'watchlist',
-        showId,
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
-      showSignIn('watchlist', 'show_bookmark');
+    // Until auth resolves we can't tell which list a tap belongs to.
+    if (authLoading) return;
+    // Signed out: save on this device now, offer sign-in after (BRO-4616).
+    if (!isAuthenticated) {
+      toggleLocal(showId, 'show_bookmark');
       return;
     }
     setLoading(true);
@@ -95,7 +94,7 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
     } finally {
       setLoading(false);
     }
-  }, [showId, isAuthenticated, authLoading, showSignIn, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
+  }, [showId, isAuthenticated, authLoading, toggleLocal, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
 
   if (!featureFlags.userAccounts) return null;
 
@@ -115,7 +114,7 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
     );
   }
 
-  const watched = isWatchlisted(showId);
+  const watched = isAuthenticated ? isWatchlisted(showId) : isSavedLocally(showId);
   const s = SIZES[size];
 
   return (

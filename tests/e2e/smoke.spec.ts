@@ -78,7 +78,10 @@ test.describe('Post-deploy smoke tests', () => {
       await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
 
       const phone = width < 640;
-      const signIn = page.getByRole('button', { name: phone ? 'Sign In' : 'Sign in', exact: true });
+      // Phones: the menu's My Shows card button (BRO-4616).
+      const signIn = phone
+        ? page.getByRole('button', { name: /^Sign in (· free|to keep them)$/ })
+        : page.getByRole('button', { name: 'Sign in', exact: true });
       const google = page.getByRole('button', { name: 'Continue with Google' });
       // The header is server-rendered, so a click that lands before hydration
       // does nothing. Retry the open until the modal shows. Open menu only ever

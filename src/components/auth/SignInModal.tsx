@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 
-type SignInContext = 'rating' | 'watchlist' | 'generic';
+type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -16,12 +16,14 @@ interface SignInModalProps {
 const CONTEXT_HEADLINES: Record<SignInContext, string> = {
   rating: 'Sign in to save your rating',
   watchlist: 'Sign in to save your watchlist',
+  watchlist_local: 'Saved. Keep your list with a free account',
   generic: 'Sign in to Broadway Scorecard',
 };
 
 const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   rating: 'Your rating will be saved automatically after sign-in.',
   watchlist: 'Your watchlist will be saved automatically after sign-in.',
+  watchlist_local: "Your list is on this device for now. Sign in to see it on your phone and computer, and we'll move it over for you.",
   generic: 'Track shows, rate performances, and build your theater diary.',
 };
 

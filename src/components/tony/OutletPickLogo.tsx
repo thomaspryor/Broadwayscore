@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { getOutletLogoUrl, getOutletConfig } from '@/config/outlet-logos';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 const CRITIC_PICK_OUTLETS: Record<string, { outletName: string; critic: string }> = {
   nyt:          { outletName: 'The New York Times',    critic: 'Helen Shaw' },
@@ -43,7 +44,7 @@ export function OutletPickLogo({ outletId }: { outletId: string }) {
           src={logoUrl}
           alt={meta.outletName}
           className="w-3.5 h-3.5 object-contain"
-          onError={() => setImgError(true)}
+          ref={catchEarlyImgError(() => setImgError(true))} onError={() => setImgError(true)}
         />
       </div>
     );

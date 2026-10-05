@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { getSupabaseClient } from '@/lib/supabase';
 import { supabaseRestInsert, supabaseRestDelete, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { getLocalWatchlist, removeLocalShow, showsToMigrate } from '@/lib/local-watchlist';
 import type { WatchlistEntry } from '@/types/user';
 
 // Cross-instance sync: all useWatchlist hooks with the same userId share state
@@ -54,6 +55,68 @@ function invalidateWatchlistCache(): void {
   watchlistCache = null;
 }
 
+// Signed-out saves (src/lib/local-watchlist.ts) move into the account on the
+// first mount after sign-in. Module-level so the ~30 bookmark instances on a
+// browse page share one in-flight run. Shows the account already has, or has rated
+// (rated = seen, so they don't belong on the watchlist), are skipped. A failed
+// insert stays saved locally and is retried on the next page load.
+let localMigration: { userId: string; promise: Promise<WatchlistEntry[] | null> } | null = null;
+
+async function migrateLocalWatchlist(userId: string): Promise<WatchlistEntry[] | null> {
+  const local = getLocalWatchlist();
+  if (local.length === 0) return null;
+  const client = getSupabaseClient();
+  if (!client) return null;
+  const [account, rated] = await Promise.all([
+    fetchWatchlist(userId),
+    client.from('reviews').select('show_id').eq('user_id', userId).then(({ data, error }) => {
+      if (error) throw error;
+      return (data || []) as { show_id: string }[];
+    }),
+  ]);
+  const ratedIds = new Set(rated.map(r => r.show_id));
+  const toAdd = showsToMigrate(local, account.map(w => w.show_id)).filter(id => !ratedIds.has(id));
+  let added = 0;
+  for (const showId of toAdd) {
+    // Removed meanwhile (e.g. rated while this ran): rated shows stay off the list.
+    if (!getLocalWatchlist().some(e => e.showId === showId)) continue;
+    const { error } = await supabaseRestInsert('watchlist', { user_id: userId, show_id: showId });
+    // 23505 = UNIQUE(user_id, show_id): another tab migrated it first.
+    if (!error || error.code === '23505') {
+      if (!error) added++;
+      removeLocalShow(showId);
+    }
+  }
+  // Skipped shows (already on the account, or rated) are done too.
+  for (const e of local) {
+    if (!toAdd.includes(e.showId)) removeLocalShow(e.showId);
+  }
+  trackUgc('watchlist_local_migrated', { local_count: local.length, added, failed: toAdd.length - added });
+  invalidateWatchlistCache();
+  return getWatchlistCached(userId);
+}
+
+// A show that keeps failing (not a duplicate) must not re-run the migration on
+// every later mount; a few tries per page load, then the next load retries.
+const MAX_MIGRATION_RUNS = 3;
+let migrationRuns = 0;
+
+function migrateLocalWatchlistOnce(userId: string): Promise<WatchlistEntry[] | null> {
+  if (!localMigration || localMigration.userId !== userId) {
+    if (migrationRuns >= MAX_MIGRATION_RUNS) return Promise.resolve(null);
+    migrationRuns++;
+    // Cleared once settled, so a later mount retries anything still saved
+    // locally (failed inserts, or saves made after signing out and back in).
+    const promise: Promise<WatchlistEntry[] | null> = migrateLocalWatchlist(userId)
+      .catch(() => null)
+      .finally(() => {
+        if (localMigration?.promise === promise) localMigration = null;
+      });
+    localMigration = { userId, promise };
+  }
+  return localMigration.promise;
+}
+
 export function useWatchlist(userId: string | null) {
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
   const watchlistRef = useRef(watchlist);
@@ -70,6 +133,17 @@ export function useWatchlist(userId: string | null) {
     };
     document.addEventListener(WATCHLIST_SYNC, handler);
     return () => document.removeEventListener(WATCHLIST_SYNC, handler);
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId || getLocalWatchlist().length === 0) return;
+    let cancelled = false;
+    migrateLocalWatchlistOnce(userId).then(merged => {
+      if (cancelled || !merged) return;
+      setWatchlist(merged);
+      broadcastWatchlist(userId, merged);
+    });
+    return () => { cancelled = true; };
   }, [userId]);
 
   // Pass force=true to bypass the shared cache when fresh data is required

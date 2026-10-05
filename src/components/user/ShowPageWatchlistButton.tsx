@@ -8,7 +8,7 @@ import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageWatchlistButtonProps {
@@ -33,7 +33,8 @@ interface ShowPageWatchlistButtonProps {
 export default function ShowPageWatchlistButton({
   showId, title, slug, diaryOnly, category, venue, theaterAddress, runtime, runtimeMin,
 }: ShowPageWatchlistButtonProps) {
-  const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
+  const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, updatePerformance, watchlist } = useWatchlist(user?.id || null);
   const { showToast } = useToastSafe();
   const [loading, setLoading] = useState(false);
@@ -45,14 +46,10 @@ export default function ShowPageWatchlistButton({
   }, [isAuthenticated, user, getWatchlist]);
 
   const handleToggle = useCallback(async () => {
-    if (!isAuthenticated && !authLoading) {
-      savePendingAction({
-        type: 'watchlist',
-        showId,
-        returnUrl: window.location.pathname,
-        timestamp: Date.now(),
-      });
-      showSignIn('watchlist', 'show_watchlist');
+    if (authLoading) return;
+    // Signed out: save on this device now, offer sign-in after (BRO-4616).
+    if (!isAuthenticated) {
+      toggleLocal(showId, 'show_watchlist');
       return;
     }
     setLoading(true);
@@ -69,11 +66,11 @@ export default function ShowPageWatchlistButton({
     } finally {
       setLoading(false);
     }
-  }, [showId, isAuthenticated, authLoading, showSignIn, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
+  }, [showId, isAuthenticated, authLoading, toggleLocal, isWatchlisted, addToWatchlist, removeFromWatchlist, showToast]);
 
   if (!featureFlags.userAccounts) return null;
 
-  const watched = isWatchlisted(showId);
+  const watched = isAuthenticated ? isWatchlisted(showId) : isSavedLocally(showId);
   const watchlistEntry = watchlist.find(w => w.show_id === showId);
 
   const event = watchlistEntry
