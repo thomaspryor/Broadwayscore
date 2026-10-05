@@ -20,6 +20,7 @@
  */
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -33,7 +34,7 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
 const TIERS_ARG = process.argv.find(a => a.startsWith('--tiers='));
 
-if (!SHOW_ARG) {
+if (!SHOW_ARG || hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/discover-opening-night-reviews.js --show=SLUG [--dry-run] [--tiers=1,2]');
   process.exit(0);
 }
