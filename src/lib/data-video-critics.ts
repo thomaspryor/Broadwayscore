@@ -58,7 +58,7 @@ function buildCreatorProfile(creator: typeof creators[0]): VideoCreatorProfile |
   for (const [showId, showRevs] of Object.entries(showReviews)) {
     if (!Array.isArray(showRevs)) continue;
     for (const r of showRevs as any[]) {
-      if (r.handle === creator.id) {
+      if (r.creatorId === creator.id || (!r.creatorId && String(r.handle).toLowerCase() === creator.id.toLowerCase())) {
         const show = showMap.get(showId);
         reviews.push({
           showId,

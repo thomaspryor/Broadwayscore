@@ -111,8 +111,9 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
               {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
             </Link>
             <p className="text-gray-400 text-sm flex items-center flex-wrap gap-x-1.5 gap-y-1">
-              {review.publishedAt && <span className="whitespace-nowrap">{formatDate(review.publishedAt)}</span>}
-              {review.publishedAt && <span className="text-gray-600">·</span>}
+              {/* publishedAt can be "NA" (undated YouTube), which formats to '' */}
+              {formatDate(review.publishedAt) && <span className="whitespace-nowrap">{formatDate(review.publishedAt)}</span>}
+              {formatDate(review.publishedAt) && <span className="text-gray-600">·</span>}
               <a
                 href={review.videoUrl}
                 target="_blank"

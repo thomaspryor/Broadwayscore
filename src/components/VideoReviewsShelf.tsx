@@ -126,7 +126,7 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
 
                 {/* Creator name — links to their profile page */}
                 <Link
-                  href={`/video-critics/${review.handle}`}
+                  href={`/video-critics/${review.creatorId || review.handle}`}
                   className="block font-semibold text-white text-sm hover:text-brand transition-colors line-clamp-1 leading-tight"
                 >
                   {review.creatorName}

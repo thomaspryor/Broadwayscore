@@ -17,7 +17,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!creator) return { title: 'Video Critic Not Found' };
 
   const platformLabel = creator.platform === 'youtube' ? 'YouTube' : 'TikTok';
-  const description = `${creator.name} has reviewed ${creator.reviewCount} Broadway shows on ${platformLabel} with an average VideoScore of ${creator.avgScore}/100.`;
+  const description = creator.reviewCount === 1
+    ? `${creator.name} has reviewed 1 show on ${platformLabel}, with a VideoScore of ${creator.avgScore}/100.`
+    : `${creator.name} has reviewed ${creator.reviewCount} shows on ${platformLabel} with an average VideoScore of ${creator.avgScore}/100.`;
 
   return {
     title: `${creator.name} — Video Critic on ${platformLabel}`,

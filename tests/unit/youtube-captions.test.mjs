@@ -151,6 +151,15 @@ test('backfillPublishedDates re-dates NA YouTube reviews only (BRO-4760)', async
   assert.equal(again.candidates, 0);
   const later = await backfillPublishedDates({ transcriptsDir: root, now: new Date(Date.now() + 31 * 864e5), fetchDate: async () => '20260601' });
   assert.deepEqual(later, { candidates: 1, attempted: 1, dated: 1 });
+  // budget exhausted (fetch returns undefined): stop, stamp nothing
+  w('show-c/x.json', { platform: 'youtube', videoId: 'v6', creatorId: 'X', publishedAt: 'NA' });
+  const broke = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async () => undefined });
+  assert.deepEqual(broke, { candidates: 1, attempted: 0, dated: 0 });
+  assert.equal(read('show-c/x.json').dateLookupFailedAt, undefined);
+  const { fetchYouTubePublishedAt } = require('../../scripts/lib/youtube-captions.js');
+  assert.equal(await fetchYouTubePublishedAt('v', async () => null), undefined);
+  assert.equal(await fetchYouTubePublishedAt('v', async () => ({ error: 'HTTP 500' })), null);
+  assert.equal(await fetchYouTubePublishedAt('v', async () => ({ data: { video: { published_time: 'Mar 3, 2026' } } })), '20260303');
   const r2 = await backfillPublishedDates({ transcriptsDir: root, creatorFilter: 'mh', fetchDate: async () => { throw new Error('should not fetch'); } });
   assert.deepEqual(r2, { candidates: 0, attempted: 0, dated: 0 });
   const r3 = await backfillPublishedDates({ transcriptsDir: root, max: 0, fetchDate: async () => { throw new Error('capped'); } });

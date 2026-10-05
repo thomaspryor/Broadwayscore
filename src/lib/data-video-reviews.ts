@@ -2,6 +2,7 @@ import videoReviewsData from '@/../data/video-reviews.json';
 
 export interface VideoReview {
   creatorName: string;
+  creatorId?: string;      // video-creators.json id = /video-critics/{creatorId}
   handle: string;
   platform: 'tiktok' | 'youtube' | 'instagram';
   videoUrl: string;

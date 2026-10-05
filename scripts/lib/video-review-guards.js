@@ -58,4 +58,23 @@ function isPaidPromotion(t) {
   return PAID_PROMOTION_RE.test(`${(t && t.title) || ''}\n${(t && t.transcript) || ''}`);
 }
 
-module.exports = { filterPublishableReviews, isPaidPromotion };
+/**
+ * BRO-4760: transcript files carry the platform handle ("MatthewHardyMusical",
+ * "TheatreReviewsWithPaulSeven"), but profile pages are keyed by creator id
+ * ("matthewhardymusical", "paulsevenlewis"). Matching on the raw handle left
+ * 148 reviews with no profile and a 404 creator link. Case-insensitive lookup
+ * by id, YouTube channel handle or TikTok handle.
+ * @param {{id: string, platforms?: object}[]} creators data/video-creators.json .creators
+ * @returns {(handle: string) => object | undefined}
+ */
+function creatorLookup(creators) {
+  const map = new Map();
+  for (const c of creators) {
+    for (const k of [c.id, c.platforms?.youtube?.channelHandle, c.platforms?.tiktok?.handle]) {
+      if (k && !map.has(k.toLowerCase())) map.set(k.toLowerCase(), c);
+    }
+  }
+  return handle => map.get(String(handle || '').toLowerCase());
+}
+
+module.exports = { filterPublishableReviews, isPaidPromotion, creatorLookup };

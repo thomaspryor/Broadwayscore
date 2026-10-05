@@ -7,7 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
-const { filterPublishableReviews, isPaidPromotion } = require('../lib/video-review-guards');
+const { filterPublishableReviews, isPaidPromotion, creatorLookup } = require('../lib/video-review-guards');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -16,11 +16,7 @@ const SHOWS_PATH = path.join(__dirname, '../../data/shows.json');
 
 function main() {
   const creators = JSON.parse(fs.readFileSync(CREATORS_PATH, 'utf8')).creators;
-  const creatorMap = Object.fromEntries(creators.flatMap(c => [
-    [c.id, c],
-    [(c.platforms?.youtube?.channelHandle || '').toLowerCase(), c],
-    [(c.platforms?.tiktok?.handle || '').toLowerCase(), c],
-  ].filter(([k]) => k)));
+  const findCreator = creatorLookup(creators);
 
 
   const output = {
@@ -52,11 +48,12 @@ function main() {
       // on the stage show, casting-announcement videos, reply-to-comments videos).
       if (data.wrongProduction === true) continue;
       if (isPaidPromotion(data)) { console.log(`  skipped ${showId}/${file}: paid promotion`); continue; }
-      const creator = creatorMap[data.creatorId] || creatorMap[(data.creatorId || '').toLowerCase()];
+      const creator = findCreator(data.creatorId);
       if (!creator) continue;
 
       reviews.push({
         creatorName: creator.name,
+        creatorId: creator.id, // profile slug; handle keeps the platform's casing (thumbnail paths use it)
         handle: data.creatorId,
         platform: data.platform,
         videoUrl: data.videoUrl,
@@ -67,7 +64,8 @@ function main() {
         reasoning: data.reasoning,
         keyQuote: data.keyQuote,
         thumbnail: data.thumbnail || null,
-        publishedAt: data.publishedAt || null
+        // yt-dlp's flat-playlist "NA" means unknown; consumers (site, iOS export pd) expect null
+        publishedAt: (data.publishedAt && data.publishedAt !== 'NA') ? data.publishedAt : null
       });
     }
 

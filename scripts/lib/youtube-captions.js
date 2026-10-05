@@ -156,13 +156,18 @@ async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
     console.log(`  ⚠️  Scrapingdog transcripts payload unrecognised for ${videoId}: ${JSON.stringify(t.data).slice(0, 160)}`);
     return null;
   }
-  const publishedAt = needDate && transcript ? await fetchYouTubePublishedAt(videoId, sdYouTube) : null;
+  const publishedAt = (needDate && transcript && await fetchYouTubePublishedAt(videoId, sdYouTube)) || null;
   return { transcript, publishedAt, source: 'scrapingdog-youtube' };
 }
 
-/** Upload date via Scrapingdog /youtube/video (5 credits) -> "YYYYMMDD", or null. */
+/**
+ * Upload date via Scrapingdog /youtube/video (5 credits) -> "YYYYMMDD", null
+ * when the lookup ran and found no date, or undefined when no call was made
+ * (no key, quota or credit budget exhausted: sdYouTube returned null).
+ */
 async function fetchYouTubePublishedAt(videoId, sdYouTube = scraper.fetchScrapingdogYouTube) {
   const v = await sdYouTube('video', videoId, {});
+  if (v === null || v === undefined) return undefined;
   const publishedAt = v && v.data ? publishedTimeToYmd(sdVideoPublishedText(v.data)) : null;
   if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || `keys=${Object.keys(v.data || {}).join(',')} video=${JSON.stringify(v.data && v.data.video && v.data.video.published_time)}`) : 'unavailable'})`.slice(0, 220));
   return publishedAt;
@@ -203,6 +208,8 @@ async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, ma
   for (const { file, t } of todo.slice(0, max)) {
     attempted++;
     const ymd = await fetchDate(t.videoId);
+    // Out of credits: stop without stamping, so the next run retries these.
+    if (ymd === undefined) { attempted--; break; }
     if (!ymd) { t.dateLookupFailedAt = now.toISOString(); writeJson(file, t); continue; }
     t.publishedAt = ymd;
     delete t.dateLookupFailedAt;
