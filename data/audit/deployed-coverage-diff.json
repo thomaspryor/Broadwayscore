@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-10-05T08:02:47.390Z",
+  "generatedAt": "2026-10-05T17:47:50.583Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 235,
-  "clean": 233,
-  "defective": 2,
+  "checked": 231,
+  "clean": 228,
+  "defective": 3,
   "byType": {
+    "score-drift": 1,
     "unreachable": 2
   },
   "shows": [
@@ -39,6 +40,21 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "openingDate": "2026-09-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.56 vs local 80.91 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12
     }
   ]
 }

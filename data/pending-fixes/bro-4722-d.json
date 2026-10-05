@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4722-d",
   "planId": "4c3f8838-025d-4cdb-9ac7-fecfd0cecb8d",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -45,5 +45,23 @@
         "description": "source says about ten weeks into the run, no month; show the year only"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-05T17:49:12.633Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for betrayal-2013"
+    }
+  ]
 }
