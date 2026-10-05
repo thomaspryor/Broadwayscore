@@ -48,6 +48,7 @@ const { normalizeSources } = require('./lib/commercial-sources');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -535,8 +536,10 @@ function applyPending() {
       continue;
     }
 
-    // Build the commercial entry (strip research metadata)
-    const commercialEntry = {
+    // Build the commercial entry (strip research metadata). The sanitizer drops
+    // research wording from the page-visible text and holds a loss label until
+    // the show has closed, so validate-data's matching rules cannot reject it.
+    const { entry: commercialEntry, changed } = sanitizeForPublicRecord({
       designation: entry.designation || 'TBD',
       capitalization: entry.capitalization || null,
       capitalizationSource: entry.capitalizationSource || null,
@@ -549,7 +552,8 @@ function applyPending() {
       sources: normalizeSources(entry.sources || []),
       lastUpdated: new Date().toISOString(),
       firstAdded: new Date().toISOString(),
-    };
+    }, (scopeShow || resolvedShow || {}).status);
+    if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
 
     commercial.shows[commercialKey] = commercialEntry;
     console.log(`  ✅ Applied "${showId}" → commercial.shows["${commercialKey}"] (${commercialEntry.designation})`);

@@ -28,7 +28,10 @@ const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
 // Research-pipeline wording that reached the public page (BRO-4623): "SEC
 // filings (GPT Deep Research)", "Trade press / deep research synthesis",
 // "Auto-enrolled stub; awaiting model + curation", "Auto-designated ...".
-const INTERNAL_TEXT_RE = /\bGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b/i;
+// "[PLAUSIBILITY WARNING: ...]" is the prefix batch-commercial-research.js
+// adds to a model's notes for reviewers; it must never reach the page.
+const INTERNAL_TEXT_RE = /\bGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b|\bPLAUSIBILITY WARNING\b/i;
+const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
 
 /**
  * @param {string} showId - the commercial.json key (a shows.json slug)
@@ -113,7 +116,6 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   // Flop / Fizzle imply it did not — require recouped=false (null means we don't know).
   // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
   const WIN_DESIGNATIONS = ['Easy Winner', 'Windfall', 'Miracle'];
-  const LOSS_DESIGNATIONS = ['Flop', 'Fizzle'];
   if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)`);
   }
@@ -271,4 +273,27 @@ function commercialFileErrors(data, showsList) {
   return out;
 }
 
-module.exports = { commercialRecordErrors, commercialFileErrors, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS };
+/**
+ * For writers that copy model output into commercial.json unreviewed: returns
+ * a copy that passes the two rules above, so one bad model answer cannot make
+ * validate-data abort the whole run. Public text with research wording becomes
+ * null; a loss label on a show whose status is known and not "closed" becomes
+ * "TBD". `changed` lists the fields altered, for the caller's log.
+ */
+function sanitizeForPublicRecord(entry, showStatus) {
+  const out = { ...entry };
+  const changed = [];
+  for (const field of PUBLIC_TEXT_FIELDS) {
+    if (typeof out[field] === 'string' && INTERNAL_TEXT_RE.test(out[field])) {
+      out[field] = null;
+      changed.push(field);
+    }
+  }
+  if (LOSS_DESIGNATIONS.includes(out.designation) && showStatus && showStatus !== 'closed') {
+    out.designation = 'TBD';
+    changed.push('designation');
+  }
+  return { entry: out, changed };
+}
+
+module.exports = { commercialRecordErrors, commercialFileErrors, sanitizeForPublicRecord, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS, LOSS_DESIGNATIONS };

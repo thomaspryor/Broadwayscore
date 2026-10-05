@@ -7,7 +7,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { commercialRecordErrors, commercialFileErrors } = require('./commercial-record-checks.js');
+const { commercialRecordErrors, commercialFileErrors, sanitizeForPublicRecord } = require('./commercial-record-checks.js');
 
 const shows = [
   { id: 'hamilton-2015', slug: 'hamilton', venue: 'Richard Rodgers Theatre' },
@@ -50,6 +50,24 @@ test('public text fields reject research-pipeline wording', () => {
   assert.equal(e({ recoupedSource: 'Deadline (Aug 2023): recouped its $16.5M capitalization' }).length, 0);
   // weeklyRunningCostSource is filtered by the UI, not here.
   assert.equal(e({ weeklyRunningCostSource: 'GPT estimate' }).length, 0);
+  // batch-commercial-research.js's reviewer prefix is internal too.
+  assert.equal(e({ notes: '[PLAUSIBILITY WARNING: cap above $80M] Big musical.' }).length, 1);
+});
+
+test('sanitizeForPublicRecord yields a record the two rules accept, and says what it changed', () => {
+  const open = { slug: 'k', status: 'open' };
+  const raw = { designation: 'Flop', recouped: false, capitalizationSource: 'Trade press / deep research synthesis', notes: '[PLAUSIBILITY WARNING: x] y', recoupedSource: 'Variety (May 2026)' };
+  assert.ok(commercialRecordErrors('k', raw, { showRecord: open }).length >= 3);
+  const { entry, changed } = sanitizeForPublicRecord(raw, 'open');
+  assert.deepEqual(commercialRecordErrors('k', entry, { showRecord: open }), []);
+  assert.deepEqual(changed, ['notes', 'capitalizationSource', 'designation']);
+  assert.equal(entry.designation, 'TBD');
+  assert.equal(entry.recoupedSource, 'Variety (May 2026)');
+  assert.equal(raw.designation, 'Flop', 'input is not mutated');
+  // A closed show keeps its loss label; unknown status is left alone too.
+  assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, 'closed').entry.designation, 'Fizzle');
+  assert.equal(sanitizeForPublicRecord({ designation: 'Fizzle', recouped: false }, undefined).entry.designation, 'Fizzle');
+  assert.deepEqual(sanitizeForPublicRecord(ok, 'open').changed, []);
 });
 
 test('nonprofitOrg is checked against the shows.json venue', () => {

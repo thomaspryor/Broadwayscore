@@ -111,9 +111,10 @@ for (const [key, val] of Object.entries(shows)) {
     if (show && show.status === 'closed') {
       val.designation = 'Fizzle';
       if (!val.notes) val.notes = '';
+      // /biz shows notes verbatim, so this reads as a public statement.
       val.notes = val.notes
-        ? val.notes + ' [Auto-designated Fizzle: closed without known recoupment data]'
-        : '[Auto-designated Fizzle: closed without known recoupment data]';
+        ? val.notes + ' Closed with no reported recoupment.'
+        : 'Closed with no reported recoupment.';
       changes.designationFixed.push(`${key}: TBD -> Fizzle (${show.title})`);
     }
   }

@@ -52,6 +52,7 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
   : [];
 
 const gate = require('./lib/commercial-apply-gate');
+const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `apply-commercial-pending.js — Apply Commercial Pending Data.
@@ -251,10 +252,13 @@ function main() {
     // For auto-apply claims, the lib starts from `existing` and overlays the
     // scraper's recoupment fields — preserving designation/cap/cost/notes
     // that the scraper doesn't carry.
-    const commercialEntry = gate.buildCommercialEntry(entry, existing, {
-      isClaimAutoApply,
-      normalizeSources,
-    });
+    // Then clear research wording and premature loss labels, which the
+    // validate-data run below would otherwise reject, aborting every entry.
+    const { entry: commercialEntry, changed } = sanitizeForPublicRecord(
+      gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }),
+      (scopeShow || resolvedShow || {}).status,
+    );
+    if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
 
     commercialEntry.lastUpdated = new Date().toISOString();
     commercialEntry.firstAdded = existing?.firstAdded || new Date().toISOString();
