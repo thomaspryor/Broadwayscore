@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T10:37:03.700Z",
+  "generatedAt": "2026-10-05T12:33:19.242Z",
   "total": 300,
   "armedCount": 300,
   "refusedCount": 0,
@@ -124,15 +124,6 @@
       ]
     },
     {
-      "id": "3c8637c5-416f-8112-a2ea-de94ba53ad3e",
-      "name": "P1: critic personal-repost sites ingested as independent outlets (double-counts one critic)",
-      "url": "https://app.notion.com/p/P1-critic-personal-repost-sites-ingested-as-independent-outlets-double-counts-one-critic-3c8637c5416f8112a2eade94ba53ad3e",
-      "cmd": "node --test tests/unit/critics-dedupe.test.mjs",
-      "missingPaths": [
-        "tests/unit/critics-dedupe.test.mjs"
-      ]
-    },
-    {
       "id": "3c8637c5-416f-81fb-8efb-cfb60059d3e3",
       "name": "P1: allowTourSignal / allowFilmSignal missing from PROTECTED_FIELDS — a CI restore can silently strip a manual clear",
       "url": "https://app.notion.com/p/P1-allowTourSignal-allowFilmSignal-missing-from-PROTECTED_FIELDS-a-CI-restore-can-silently-stri-3c8637c5416f81fb8efbcfb60059d3e3",
@@ -193,15 +184,6 @@
       "cmd": "test -f scripts/lib/check-fetch-depth.test.mjs",
       "missingPaths": [
         "scripts/lib/check-fetch-depth.test.mjs"
-      ]
-    },
-    {
-      "id": "3c5637c5-416f-813c-96fb-ec562227d6d4",
-      "name": "push-via-git-api.sh fallback failing with 'non-race reason' even when disqualifier eligibility is correct",
-      "url": "https://app.notion.com/p/push-via-git-api-sh-fallback-failing-with-non-race-reason-even-when-disqualifier-eligibility-is-co-3c5637c5416f813c96fbec562227d6d4",
-      "cmd": "node --test scripts/lib/push-via-git-api.test.mjs",
-      "missingPaths": [
-        "scripts/lib/push-via-git-api.test.mjs"
       ]
     },
     {
@@ -367,15 +349,6 @@
       ]
     },
     {
-      "id": "3be637c5-416f-81af-a492-f2740dd47d71",
-      "name": "Session: CI lint guard for Broadway-category re-derivations (#1496)",
-      "url": "https://app.notion.com/p/Session-CI-lint-guard-for-Broadway-category-re-derivations-1496-3be637c5416f81afa492f2740dd47d71",
-      "cmd": "node --test scripts/audit-broadway-category-predicate.test.mjs",
-      "missingPaths": [
-        "scripts/audit-broadway-category-predicate.test.mjs"
-      ]
-    },
-    {
       "id": "3be637c5-416f-81a2-b3aa-c47e6cfdb568",
       "name": "P1: RECHECK-AFTER verdicts are silently discarded when data-health-check's commit step loses a push race",
       "url": "https://app.notion.com/p/P1-RECHECK-AFTER-verdicts-are-silently-discarded-when-data-health-check-s-commit-step-loses-a-push--3be637c5416f81a2b3aac47e6cfdb568",
@@ -475,15 +448,6 @@
       ]
     },
     {
-      "id": "3a9637c5-416f-818c-b597-d3a3139529dc",
-      "name": "Retrofit hasHelpFlag into remaining 60 destructive-risk help-flag-safety baseline scripts",
-      "url": "https://app.notion.com/p/Retrofit-hasHelpFlag-into-remaining-60-destructive-risk-help-flag-safety-baseline-scripts-3a9637c5416f818cb597d3a3139529dc",
-      "cmd": "node --test scripts/tests/help-flag-safety-guard.test.mjs",
-      "missingPaths": [
-        "scripts/tests/help-flag-safety-guard.test.mjs"
-      ]
-    },
-    {
       "id": "3a8637c5-416f-815f-989d-f513f29369a5",
       "name": "BSC Daily: Workflow repeat-failure: Process Feedback Submissions",
       "url": "https://app.notion.com/p/BSC-Daily-Workflow-repeat-failure-Process-Feedback-Submissions-3a8637c5416f815f989df513f29369a5",
@@ -517,15 +481,6 @@
       "cmd": "node --test scripts/discover-by-critic.test.mjs",
       "missingPaths": [
         "scripts/discover-by-critic.test.mjs"
-      ]
-    },
-    {
-      "id": "349637c5-416f-81d8-a4df-f5e3c886500f",
-      "name": "Schmigadoon opening-night automation fixes (postmortem queue)",
-      "url": "https://app.notion.com/p/Schmigadoon-opening-night-automation-fixes-postmortem-queue-349637c5416f81d8a4dff5e3c886500f",
-      "cmd": "node --test scripts/lib/schmigadoon-automation-fixes.test.mjs",
-      "missingPaths": [
-        "scripts/lib/schmigadoon-automation-fixes.test.mjs"
       ]
     },
     {
@@ -625,15 +580,6 @@
       "cmd": "node --test tests/unit/unfollow-slug-links.test.mjs",
       "missingPaths": [
         "tests/unit/unfollow-slug-links.test.mjs"
-      ]
-    },
-    {
-      "id": "33c637c5-416f-81b6-977c-eef0fb23c530",
-      "name": "BWW roundup extraction fails to parse critic names for some entries",
-      "url": "https://app.notion.com/p/BWW-roundup-extraction-fails-to-parse-critic-names-for-some-entries-33c637c5416f81b6977ceef0fb23c530",
-      "cmd": "node --test scripts/lib/bww-roundup-critic-names.test.mjs",
-      "missingPaths": [
-        "scripts/lib/bww-roundup-critic-names.test.mjs"
       ]
     },
     {
