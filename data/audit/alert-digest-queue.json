@@ -121,5 +121,34 @@
       }
     ],
     "queuedAt": "2026-10-05T12:50:31.953Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4615-real-accounts",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4615-real-accounts",
+    "description": "land.yml did not land land/bro-4615-real-accounts: the scripts-lib-tests gate went red at b49adeaac3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37316045862",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4615-real-accounts"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b49adeaac3cb22748ee16356a5e7bcd43799d2de"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37316045862"
+      }
+    ],
+    "queuedAt": "2026-10-05T13:52:41.382Z"
   }
 ]
