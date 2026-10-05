@@ -871,6 +871,7 @@ function describeLaunchArgError({ seed, seedKey, cwd }) {
  *                                 a stale or wrong ref here degrades to "no
  *                                 exemption", never to "grant an exemption
  *                                 that was never earned."
+ * @param {string}  [opts.ledgerTaskId] BRO-2982: ledger taskId (e.g. "linear:BRO-343"); when set, a verified launch appends an `event:'launch'` row to the dispatch ledger. Implied (from a BRO-N in title) when successorOf is set or the title is a crown-mandate title.
  * @returns {{ok: boolean, ref?: string, adoptedLate?: boolean, reclaimedAcrossInvocation?: boolean, state?: string, reason?: string, refusedForCrownFanout?: boolean, wrapperAlive?: boolean, deadConfirmed?: boolean, workspaceRef?: string|null, seedFile: string|null, command: string|null}}
  *   seedFile/command are null only for the argument-validation refusals
  *   (BRO-2251) — those return before either is computed, since no seed/cmd
@@ -882,10 +883,62 @@ function launchCmuxSession(opts) {
   // app's real focus state. Cleared only when a wake actually fired — an
   // unconditional clear would stomp a concurrent launcher's active window.
   const wakeState = { woke: false };
+  let res;
   try {
-    return launchCmuxSessionInner(opts, wakeState);
+    res = launchCmuxSessionInner(opts, wakeState);
   } finally {
     if (wakeState.woke) setAppFocus('clear');
+  }
+  recordSuccessionLaunchRow(opts, res);
+  return res;
+}
+
+// BRO-2982: crown succession scripts (launch-crown-vNN.js, one per generation,
+// ephemeral) call launchCmuxSession() directly, bypassing bsc-next.js's
+// --succession path, the only other writer of `event:'launch'` rows. Result:
+// 1 BRO-343 launch row in 6 weeks, so no ledger-based guard could see a crown
+// successor. This is the chokepoint every caller passes through.
+//
+// Writes ONLY for callers that opt in: `successorOf` (a sanctioned succession
+// hand-off), an explicit `ledgerTaskId`, or a crown-mandate title (so the FIRST
+// crown of a chain is visible too; crown-duplicate-detector keys rows by task). bsc-next.js and linear-next.js pass
+// neither and keep writing their own richer rows, so there is no double row.
+// The row carries succession:true when successorOf is set, which is what
+// dispatch-ledger.successionDepthForTask counts; a successor row WITHOUT it
+// would reset that chain's depth cap to 1. Best-effort: a ledger failure never
+// turns a verified launch into a failed one.
+// (The "deliberately NOT appended to dispatch-ledger.js" note above is about
+// the reclaim JOURNAL, not these launch rows.)
+function ledgerTaskIdForLaunch(opts) {
+  if (isUsableString(opts.ledgerTaskId)) return String(opts.ledgerTaskId);
+  if (!isUsableString(opts.successorOf) && !isCrownLaunchTitle(opts.title)) return null;
+  const title = String(opts.title || '');
+  // The crown mandate card wins over any other BRO-N the title happens to cite.
+  const m = /\bBRO-343\b/.exec(title) || /\bBRO-\d+\b/i.exec(title);
+  return m ? `linear:${m[0].toUpperCase()}` : null;
+}
+
+function recordSuccessionLaunchRow(opts, res, appendEntry = null) {
+  try {
+    if (!opts || !res || res.ok !== true || !res.ref) return null;
+    if (!isUsableString(opts.ledgerTaskId) && !isUsableString(opts.successorOf) && !isCrownLaunchTitle(opts.title)) return null;
+    const taskId = ledgerTaskIdForLaunch(opts);
+    if (!taskId) {
+      console.error('[cmux-launch] WARN succession launch has no ledgerTaskId and no BRO-N in its title — no ledger launch row written (BRO-2982)');
+      return null;
+    }
+    const row = {
+      event: 'launch', taskId, subject: String(opts.title || ''), workspaceRef: res.ref,
+      // linearId: vanishedBreadcrumbs/bsc-prune only park the Linear card when the launch row has it.
+      linearId: taskId.startsWith('linear:') ? taskId.slice(7) : null,
+      model: opts.model || 'sonnet', marker: res.marker || null, adoptedLate: res.adoptedLate || null,
+      source: 'cmux-launch',
+    };
+    if (isUsableString(opts.successorOf)) { row.succession = true; row.successionOf = String(opts.successorOf); }
+    return (appendEntry || require('./dispatch-ledger.js').appendEntry)(row);
+  } catch (e) {
+    console.error(`[cmux-launch] WARN could not write ledger launch row (non-fatal): ${e.message}`);
+    return null;
   }
 }
 
@@ -1460,7 +1513,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
 }
 
 module.exports = {
-  launchCmuxSession, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
+  launchCmuxSession, recordSuccessionLaunchRow, ledgerTaskIdForLaunch, CMUX, CMUX_APP, pollUntil, sleepSec, setAutoColor, setAppFocus,
   osActivateCmuxApp, strictlyAliveWorkspace, computeStrictAliveness, shouldAdoptLateStart,
   waitForLaunchOutcome,
   hasSeedProcess, osProcessAliveForSeed, makeSeedProcessProbe, verifiedAlive, shouldRefuseForAuth,
