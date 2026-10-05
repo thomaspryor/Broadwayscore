@@ -4302,19 +4302,18 @@ function explainExclusion(data, show, filePath) {
   // Needs filePath (like duplicateOf above) to scan sibling files — opt-in,
   // skipped when filePath is undefined.
   if (filePath && data.criticName) {
-    const syndConfig = require('./syndication-pairs').KNOWN_SYNDICATION_PAIRS[data.criticName.toLowerCase().trim()];
-    if (syndConfig) {
+    {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
-      if (syndConfig.secondary.includes(outletSynd)) {
+      const syndPrimaries = require('./syndication-pairs').getSyndicationPrimaries(data.criticName, outletSynd);
+      if (syndPrimaries.length) {
         const pathMod = require('path');
         const fsMod = require('fs');
         const showDir = pathMod.dirname(filePath);
-        const primaryPrefix = `${syndConfig.primary}--`;
         const criticSlug = data.criticName.toLowerCase().trim().replace(/\s+/g, '-');
         let hasPrimary = false;
         try {
           hasPrimary = fsMod.readdirSync(showDir).some(f => {
-            if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
+            if (!syndPrimaries.some(p => f.startsWith(`${p}--`)) || !f.includes(criticSlug)) return false;
             try {
               const pData = JSON.parse(fsMod.readFileSync(pathMod.join(showDir, f), 'utf8'));
               return !pData.wrongProduction && !pData.wrongShow;

@@ -103,7 +103,7 @@ const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evalua
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
-const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
+const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
@@ -3937,15 +3937,14 @@ showDirs.forEach(showId => {
       {
         const criticSynd = (data.criticName || '').toLowerCase().trim();
         const outletSynd = normalizeOutletCanonical(data.outletId || data.outlet || '');
-        const syndConfig = KNOWN_SYNDICATION_PAIRS[criticSynd];
-        if (syndConfig && syndConfig.secondary.includes(outletSynd)) {
-          const primaryPrefix = `${syndConfig.primary}--`;
+        const syndPrimaries = getSyndicationPrimaries(criticSynd, outletSynd);
+        if (syndPrimaries.length) {
           const criticSlug = criticSynd.replace(/\s+/g, '-');
           // Only skip secondary if the primary file is unflagged (not wrongProduction/wrongShow).
           // A flagged primary shouldn't block a valid secondary — e.g., OB theatermania flagged
           // but Broadway whatsonstage is the real review for this production.
           const hasPrimary = allJsonFiles.some(f => {
-            if (!f.startsWith(primaryPrefix) || !f.includes(criticSlug)) return false;
+            if (!syndPrimaries.some(p => f.startsWith(`${p}--`)) || !f.includes(criticSlug)) return false;
             try {
               const pData = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
               return !pData.wrongProduction && !pData.wrongShow;
@@ -5450,8 +5449,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                 if (!wouldBeExcluded) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
-                  const syndConfig = KNOWN_SYNDICATION_PAIRS[criticLc];
-                  if (syndConfig && syndConfig.secondary.includes(outletLc)) wouldBeExcluded = true;
+                  if (getSyndicationPrimaries(criticLc, outletLc).length) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {
                   inlineGuardWouldExclude++;

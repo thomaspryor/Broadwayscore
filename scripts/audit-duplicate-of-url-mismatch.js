@@ -31,11 +31,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizeUrl, stripTrivial } = require('./lib/review-normalization');
+const { normalizeUrl, stripTrivial, normalizeOutlet } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { isCrossOutletSyndicationPair } = require('./lib/syndication-pairs');
 const registry = require(path.join(__dirname, '..', 'data', 'outlet-registry.json'));
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -260,7 +261,10 @@ function audit() {
       const canon = (u) => canonicalizeHost(stripTrivial(normalizeUrl(u)));
       const a = canon(data.url);
       const b = canon(sibling.url);
-      if (a && b && a !== b) {
+      // BRO-2406: a cross-outlet syndication pointer (same critic, Tribune-group
+      // reprint, wire pair, or a human-declared syndication reason) differs by
+      // URL BY DEFINITION — nulling it re-admits the double-counted review.
+      if (a && b && a !== b && !isCrossOutletSyndicationPair(data, sibling, normalizeOutlet)) {
         mismatches.push({
           showId: path.basename(showDir),
           file,

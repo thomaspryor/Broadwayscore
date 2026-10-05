@@ -1885,7 +1885,7 @@ function safeWriteReview(filePath, newData, options = {}) {
           // stripTrivial never touches.
           const normHere = _trivialCanonUrl(newData.url);
           const normSibling = _trivialCanonUrl(siblingData.url);
-          if (normHere !== normSibling) {
+          if (normHere !== normSibling && !require('./syndication-pairs').isCrossOutletSyndicationPair(newData, siblingData, require('./review-normalization').normalizeOutlet)) {
             console.warn(`[review-write-guard] clearing stale duplicateOf in ${path.basename(filePath)}: URL no longer matches ${newData.duplicateOf} (${newData.url} vs ${siblingData.url})`);
             newData.duplicateClearReason = `auto-cleared at write: URL ${newData.url} no longer matches sibling ${newData.duplicateOf} URL ${siblingData.url}`;
             newData.duplicateOf = null;
