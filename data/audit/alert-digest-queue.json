@@ -670,5 +670,34 @@
       }
     ],
     "queuedAt": "2026-10-05T03:40:55.745Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-feedback-linear-migration-phase-a",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-feedback-linear-migration-phase-a",
+    "description": "land.yml did not land land/worktree-feedback-linear-migration-phase-a: the unit-tests-node gate went red at efe8497cb5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37267961037",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-feedback-linear-migration-phase-a"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "efe8497cb52a84eb730b89b204eec39a36a3586d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37267961037"
+      }
+    ],
+    "queuedAt": "2026-10-05T05:59:40.327Z"
   }
 ]
