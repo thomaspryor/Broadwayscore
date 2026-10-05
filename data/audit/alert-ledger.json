@@ -151,12 +151,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-05T15:52:35.162Z",
-      "lastSeen": "2026-10-05T15:52:35.162Z",
+      "lastSeen": "2026-10-05T16:10:43.809Z",
       "lastNotifiedAt": "2026-10-05T15:52:35.162Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 122,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6995,9 +6996,9 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "incidentOpenedAt": "2026-10-05T15:57:44.394Z",
-      "lastSeen": "2026-10-05T15:57:44.394Z",
-      "lastNotifiedAt": "2026-10-05T15:57:44.394Z",
+      "incidentOpenedAt": "2026-10-05T15:52:34.483Z",
+      "lastSeen": "2026-10-05T16:10:43.804Z",
+      "lastNotifiedAt": "2026-10-05T15:52:34.483Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
@@ -7007,7 +7008,8 @@
         "mode": "dispatch-at-filing",
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
-      }
+      },
+      "silentRefires": 1
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
