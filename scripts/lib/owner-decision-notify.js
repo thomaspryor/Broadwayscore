@@ -21,10 +21,15 @@
  */
 
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
+const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
 
 const MAX_LISTED = 35; // the first run carries the 31-card backlog; one email, not three days of them
 const MAX_QUESTION_CHARS = 220;
-const MARKER_RE = /^\s*(?:[-*>]\s+)?\**DECISION NEEDED\**\s*:\s*\**\s*(\S.*)$/i;
+// Plain, bold, bulleted, quoted, numbered or heading lines; "DECISION NEEDED
+// (owner):" too.
+const MARKER_RE = /^\s*(?:#{1,6}\s+|[-*>]\s+|\d+[.)]\s+)?\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*:\s*\**\s*(\S.*)$/i;
+// Stub or leftover lines a session wrote instead of deleting the block.
+const SETTLED_RE = /^\s*(?:answered|resolved|decided|done|closed)\b/i;
 
 function stripCode(text) {
   const out = [];
@@ -47,7 +52,7 @@ function extractDecisionQuestion(description) {
     const m = MARKER_RE.exec(line);
     if (!m) continue;
     const q = m[1].replace(/\*+$/, '').trim();
-    if (!q || isPlaceholder(q)) continue;
+    if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
     return q.length > MAX_QUESTION_CHARS ? `${q.slice(0, MAX_QUESTION_CHARS - 1)}…` : q;
   }
   return null;

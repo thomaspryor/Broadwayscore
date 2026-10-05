@@ -24,6 +24,16 @@ test('ignores template placeholders, code, and mid-sentence mentions', () => {
   assert.equal(extractDecisionQuestion(null), null);
 });
 
+test('skips stub and already-answered lines, accepts heading/numbered/(owner) forms', () => {
+  assert.equal(extractDecisionQuestion('DECISION NEEDED: none — no pending decision'), null);
+  assert.equal(extractDecisionQuestion('DECISION NEEDED: No decision needed.'), null);
+  assert.equal(extractDecisionQuestion('DECISION NEEDED: answered 10/03, chose A'), null);
+  assert.equal(extractDecisionQuestion('## DECISION NEEDED: Keep the paywall?'), 'Keep the paywall?');
+  assert.equal(extractDecisionQuestion('1. DECISION NEEDED: Pick a vendor?'), 'Pick a vendor?');
+  assert.equal(extractDecisionQuestion('DECISION NEEDED (owner): Raise the cap?'), 'Raise the cap?');
+  assert.equal(extractDecisionQuestion('DECISION NEEDED: Nothingness tour, book it?'), 'Nothingness tour, book it?');
+});
+
 test('findOwnerDecisions sorts most urgent first, then oldest; no priority last', () => {
   const issues = [
     { identifier: 'BRO-10', description: 'DECISION NEEDED: none?', priority: 0, createdAt: '2026-01-01' },

@@ -807,6 +807,7 @@ async function routeAlert(opts) {
     verify,
     dispatchAtFiling,
     deferFilingHours,
+    subjectLabel,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -1030,7 +1031,7 @@ async function routeAlert(opts) {
     // Same two values as discord-notify.js EMAILABLE_SEVERITIES.
     const deliverySeverity = severity === 'critical' || severity === 'error' ? severity : 'error';
     const delivered = await sendAlert({
-      title, description, severity: deliverySeverity, fields, url, email: true,
+      title, description, severity: deliverySeverity, fields, url, email: true, subjectLabel,
       idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now(),
         existing && existing.status === 'resolved' ? existing.resolvedAt || '' : ''),
     });
