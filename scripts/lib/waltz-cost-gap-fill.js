@@ -9,8 +9,8 @@
  * name. Every value he supplies is flagged as an estimate, so /biz prints it
  * with "~" and the "Estimate" source line.
  *
- * update-commercial-data.js uses isReportedWeeklyCost() for the same rule
- * on its model-proposed Reddit costs.
+ * update-commercial-data.js applies the same rule to its model-proposed
+ * costs: isReportedWeeklyCost() plus the source-basis helpers below.
  *
  * Pure: no I/O.
  */
@@ -27,9 +27,64 @@ const REFRESH_THRESHOLD = 0.10;
 const MIN_WEEKLY_COST = 100_000;
 const MAX_WEEKLY_COST = 5_000_000;
 
+/** True for a dollar figure inside the plausible Broadway weekly-cost range. */
+function isPlausibleWeeklyCost(cost) {
+  return Number.isFinite(cost) && cost >= MIN_WEEKLY_COST && cost <= MAX_WEEKLY_COST;
+}
+
 /** True when the record's weekly cost is a reported figure an estimate must never overwrite. */
 function isReportedWeeklyCost(record) {
   return record?.weeklyRunningCost != null && REPORTED_COST_METHODOLOGIES.has(record.costMethodology);
+}
+
+// update-commercial-data.js sends the model his grosses post as "Section C"
+// and "D" and other Reddit threads as "Section E"; trade press is "Section F"
+// and SEC Form D filings "Section H". The model writes sources as
+// "Section X: ...", so "reddit" alone missed most of his figures, and a
+// substring test for "sec" matched every "Section".
+const REDDIT_SOURCE_RE = /\breddit\b|\br\/broadway\b|\bu\/|\bsection\s*[cde]\b|grosses\s+analysis|boring[\s_]*waltz/i;
+const SEC_SOURCE_RE = /\bsection\s*h\b|\bsec\b|\bform\s*d\b|\bedgar\b/i;
+const TRADE_SOURCE_RE = /\bsection\s*f\b|\bdeadline\b|\bvariety\b|broadway\s+news|broadway\s+journal|new\s+york\s+times|\bnyt\b|hollywood\s+reporter|\bforbes\b|\bplaybill\b|theatermania|broadwayworld|wall\s+street\s+journal/i;
+
+/**
+ * What a model-proposed cost's source text says it rests on: 'reddit', 'sec',
+ * 'trade', or null when it names nothing (the model's own inference). Reddit
+ * wins when a source mentions it at all, so a mixed source counts as an estimate.
+ */
+function costSourceBasis(source) {
+  if (typeof source !== 'string' || !source.trim()) return null;
+  if (REDDIT_SOURCE_RE.test(source)) return 'reddit';
+  if (SEC_SOURCE_RE.test(source)) return 'sec';
+  if (TRADE_SOURCE_RE.test(source)) return 'trade';
+  return null;
+}
+
+const METHODOLOGY_BY_BASIS = { reddit: WALTZ_METHODOLOGY, sec: 'sec-filing', trade: 'trade-reported' };
+
+/** costMethodology for a cost whose source text reads this way; our own estimate when it names nothing. */
+function methodologyForCostSource(source) {
+  const basis = costSourceBasis(source);
+  return basis ? METHODOLOGY_BY_BASIS[basis] : 'industry-estimate';
+}
+
+/** True when a model-proposed weekly cost may replace a reported one: only a trade or SEC source may. */
+function mayReplaceReportedCost(source) {
+  return REPORTED_COST_METHODOLOGIES.has(methodologyForCostSource(source));
+}
+
+// Research-tooling wording src/lib/commercial-display.ts publicSourceText()
+// also refuses to print as a source.
+const INTERNAL_COST_SOURCE_RE = /(?:chat)?gpt|deep[\s-]*research|\bDR\s*batch\b|\bconsensus\b|\binferred\b|industry[\s-]*estimate/i;
+
+/**
+ * A reported weekly cost that names a printable source. /biz shows any other
+ * cost as an estimate (isEstimatedRunningCost), so the recoupment model
+ * grades only this as high-quality input.
+ */
+function isCitedReportedWeeklyCost(record) {
+  if (!isReportedWeeklyCost(record) || record.isEstimate?.weeklyRunningCost === true) return false;
+  const source = typeof record.weeklyRunningCostSource === 'string' ? record.weeklyRunningCostSource.trim() : '';
+  return source !== '' && costSourceBasis(source) !== 'reddit' && !INTERNAL_COST_SOURCE_RE.test(source);
 }
 
 /**
@@ -40,7 +95,7 @@ function isReportedWeeklyCost(record) {
 function decideWaltzCostWrite(record, cost) {
   if (!record) return { write: false, reason: 'no commercial record' };
   if (!(Number.isFinite(cost) && cost > 0)) return { write: false, reason: 'no usable cost' };
-  if (cost < MIN_WEEKLY_COST || cost > MAX_WEEKLY_COST) {
+  if (!isPlausibleWeeklyCost(cost)) {
     return { write: false, reason: `implausible weekly cost $${cost.toLocaleString()}` };
   }
   const current = record.weeklyRunningCost;
@@ -77,7 +132,12 @@ function waltzCostPatch(record, { cost, postTitle, postDate, permalink }, now = 
 module.exports = {
   decideWaltzCostWrite,
   waltzCostPatch,
+  isPlausibleWeeklyCost,
   isReportedWeeklyCost,
+  costSourceBasis,
+  methodologyForCostSource,
+  mayReplaceReportedCost,
+  isCitedReportedWeeklyCost,
   REPORTED_COST_METHODOLOGIES,
   OUR_ESTIMATE_METHODOLOGIES,
   WALTZ_METHODOLOGY,

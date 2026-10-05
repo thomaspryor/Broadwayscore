@@ -16,7 +16,7 @@ function isRelevantPost(post) {
   return title.includes('grosses') || title.includes('post-mortem') || title.includes('postmortem');
 }
 
-const SUFFIX_MULTIPLIER = { k: 1e3, m: 1e6, mil: 1e6, million: 1e6 };
+const SUFFIX_MULTIPLIER = { k: 1e3, thousand: 1e3, m: 1e6, mil: 1e6, million: 1e6 };
 
 /**
  * A dollar amount in u/Boring_Waltz_9545's notation: "650k", "1.1M",
@@ -33,12 +33,30 @@ function parseDollarAmount(number, suffix) {
 
 // "Estimated Weekly Operating Cost: $850k/week", "$1 million/week", "$1.1M",
 // "$650-$700k" (a range: the midpoint). The suffix may follow a space
-// ("$1 million"), which an earlier version read as $1 (BRO-4666).
+// ("$1 million"), which an earlier version read as $1 (BRO-4666). Also
+// "Operating Costs", "**...Cost:** $850k" and "Cost: ~$850k".
+const SUFFIX = String.raw`(million|mil|thousand|m|k)?\b`;
 const COST_RE = new RegExp(
-  String.raw`(?:Estimated\s+)?(?:Weekly\s+)?(?:Operating|Running)\s+Cost:?\s*\$\s*([\d.,]+)\s*(million|mil|m|k)?\b` +
-    String.raw`(?:\s*[-–—]\s*\$?\s*([\d.,]+)\s*(million|mil|m|k)?\b)?`,
+  // At most a closing "**" after the colon, so a "***Show Running Cost***
+  // *$400k gross*" heading is not read as a cost line.
+  String.raw`(?:Estimated\s+)?(?:Weekly\s+)?(?:Operating|Running)\s+Costs?:?\*{0,2}\s*~?\s*\$\s*([\d.,]+)\s*` + SUFFIX +
+    String.raw`(?:\s*[-–—]\s*~?\$?\s*([\d.,]+)\s*` + SUFFIX + ')?',
   'i'
 );
+
+/**
+ * The low end of "$650-$700k" or "$950-$1.1M": its own suffix, else the high
+ * end's when that keeps it below the high end ($650k), else thousands
+ * ($950k); null when neither does.
+ */
+function rangeLow(lowNum, lowSuffix, high, highSuffix) {
+  if (lowSuffix) return parseDollarAmount(lowNum, lowSuffix);
+  for (const suffix of [highSuffix, 'k']) {
+    const low = parseDollarAmount(lowNum, suffix);
+    if (low && high && low <= high) return low;
+  }
+  return null;
+}
 // ***Show Name*** (optionally an emoji inside the asterisks).
 const SHOW_RE = /\*{3}\s*[^\w\s]*\s*([^*]+?)\s*\*{3}/;
 const LEADING_EMOJI_RE = /^[\u{1F300}-\u{1FEFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]+\s*/u;
@@ -62,11 +80,9 @@ function extractCostsFromPost(selftext) {
     }
     const m = line.match(COST_RE);
     if (!m || !currentShowName) continue;
-    const [, lowNum, lowSuffixRaw, highNum, highSuffix] = m;
-    // "$650-$700k": the low end takes the high end's suffix.
-    const lowSuffix = lowSuffixRaw || (highNum ? highSuffix : undefined);
-    const low = parseDollarAmount(lowNum, lowSuffix);
+    const [, lowNum, lowSuffix, highNum, highSuffix] = m;
     const high = highNum ? parseDollarAmount(highNum, highSuffix) : null;
+    const low = high ? rangeLow(lowNum, lowSuffix, high, highSuffix) : parseDollarAmount(lowNum, lowSuffix);
     const cost = low && high ? Math.round((low + high) / 2) : (low || high);
     if (cost && cost > 0) results.push({ showName: currentShowName, cost });
   }

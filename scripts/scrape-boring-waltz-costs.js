@@ -32,7 +32,7 @@ const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { fetchWithFallback } = require('./lib/reddit-api');
-const { decideWaltzCostWrite, waltzCostPatch } = require('./lib/waltz-cost-gap-fill');
+const { decideWaltzCostWrite, waltzCostPatch, isPlausibleWeeklyCost } = require('./lib/waltz-cost-gap-fill');
 const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
 
@@ -268,6 +268,11 @@ async function main() {
     const entries = extractCostsFromPost(post.selftext);
 
     for (const entry of entries) {
+      // A misread figure must not hide his older, valid one for the show.
+      if (!isPlausibleWeeklyCost(entry.cost)) {
+        console.log(`  Ignored implausible $${entry.cost.toLocaleString()} for "${entry.showName}" in "${post.title}"`);
+        continue;
+      }
       // Only keep the first (most recent) occurrence of each show
       if (!costByShow.has(entry.showName)) {
         costByShow.set(entry.showName, {

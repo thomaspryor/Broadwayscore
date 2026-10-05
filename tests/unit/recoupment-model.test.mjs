@@ -155,6 +155,33 @@ describe('calculateRecoupment tax credit window', () => {
   });
 });
 
+// BRO-4666: /biz shows an uncited weekly cost as an estimate, so the model
+// must not grade it "High confidence".
+describe('calculateRecoupment data quality', () => {
+  const show = {
+    slug: 'test-show', title: 'Test Show', type: 'play', venue: 'Ethel Barrymore Theatre',
+    openingDate: '2022-10-01', closingDate: '2023-07-01',
+  };
+  const base = { capitalization: 8000000, weeklyRunningCost: 500000, costMethodology: 'trade-reported' };
+  const quality = (commercial, allTime = null) =>
+    calculateRecoupment(show, commercial, allTime, weeklyGrosses(40, 900000)).dataQuality;
+
+  it('is high only for a reported cost that names its source', () => {
+    assert.strictEqual(quality({ ...base, weeklyRunningCostSource: 'Forbes (Nov 17, 2025)' }), 'high');
+  });
+
+  it('is medium for a reported method with no citation, or a flagged estimate', () => {
+    assert.strictEqual(quality(base), 'medium');
+    assert.strictEqual(quality({ ...base, weeklyRunningCostSource: 'SEC filings (GPT Deep Research)' }), 'medium');
+    assert.strictEqual(quality({ ...base, weeklyRunningCostSource: 'Forbes', isEstimate: { weeklyRunningCost: true } }), 'medium');
+  });
+
+  it('keeps the old medium and low grades for estimates', () => {
+    assert.strictEqual(quality({ ...base, costMethodology: 'reddit-standard' }, { gross: 1 }), 'medium');
+    assert.strictEqual(quality({ ...base, costMethodology: 'reddit-standard' }), 'low');
+  });
+});
+
 describe('closed-show recoupment percentage denominator', () => {
   it('measures closed shows against cap net of SVOG, without reserve', () => {
     const show = {

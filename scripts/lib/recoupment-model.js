@@ -17,6 +17,8 @@
  * - Three-scenario output (optimistic/central/pessimistic)
  */
 
+const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./waltz-cost-gap-fill');
+
 // ---------------------------------------------------------------------------
 // Constants & Defaults
 // ---------------------------------------------------------------------------
@@ -617,10 +619,12 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly) {
 
   // --- Data quality ---
   const grossDataSource = weeklySchedule[0]?._source || 'unknown';
+  // 'high' needs a reported weekly cost that names its source: /biz shows an
+  // uncited one as an estimate, so its model is not "High confidence" (BRO-4666).
   let dataQuality = 'low';
-  if (commercial.costMethodology === 'sec-filing' || commercial.costMethodology === 'trade-reported') {
+  if (isCitedReportedWeeklyCost(commercial)) {
     dataQuality = 'high';
-  } else if (commercial.weeklyRunningCost && grossesAllTime) {
+  } else if (REPORTED_COST_METHODOLOGIES.has(commercial.costMethodology) || (commercial.weeklyRunningCost && grossesAllTime)) {
     dataQuality = 'medium';
   }
 
