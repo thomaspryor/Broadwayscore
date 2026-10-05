@@ -22,7 +22,15 @@ const { detectSiblingMisfile } = require('./lib/sibling-misfile');
 const { buildSiblingIndex } = require('./lib/market-routing');
 const { loadNotFoundForAggregator, saveNotFoundForAggregator } = require('./lib/not-found-cache');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
 const ROOT = path.join(__dirname, '..');
+const USAGE = `audit-sibling-misfile-archive.js — find (and with --delete, remove + tombstone) sibling-misfiled Show Score/DTLI archive pages.
+
+Usage:
+  node scripts/audit-sibling-misfile-archive.js [--archive=DIR] [--json]
+  node scripts/audit-sibling-misfile-archive.js --delete [--archive=DIR]
+  node scripts/audit-sibling-misfile-archive.js --help, -h`;
 
 function loadShows() {
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
@@ -70,6 +78,7 @@ function deleteAndTombstone(archiveRoot, hits, today = new Date().toISOString().
 
 function main() {
   const args = process.argv.slice(2);
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const archiveArg = args.find(a => a.startsWith('--archive='));
   const archiveRoot = archiveArg ? path.resolve(archiveArg.slice(10)) : path.join(ROOT, 'data/aggregator-archive');
   if (!fs.existsSync(archiveRoot)) {
