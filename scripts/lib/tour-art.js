@@ -232,7 +232,19 @@ function rolesNeeded(tour, fileExists = () => true) {
   return ['poster', 'thumbnail'].filter(k => !(ownPath(tour, imgs[k]) && fileExists(imgs[k])));
 }
 
+/**
+ * Open roles whose own archived file is already on disk: a run archived it
+ * after Gemini passed it but its shows.json write was lost (BRO-4726: the
+ * write-guard dropped all but the first tour's save). Those tours sit in
+ * backoff, so without this they keep Broadway art for a week.
+ * @param {(p: string) => boolean} fileExists for an archived path
+ */
+function archivedUnreferenced(tour, fileExists) {
+  return rolesNeeded(tour, fileExists).filter(r => fileExists(`/images/shows/${tour.id}/${r}.webp`));
+}
+
 module.exports = {
+  archivedUnreferenced,
   isPlaceholderUrl,
   todaytixArt,
   stopEventPages,
