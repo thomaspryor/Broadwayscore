@@ -4215,6 +4215,8 @@ function explainExclusion(data, show, filePath) {
     }
   }
   if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return 'isRoundupArticle';
+  // BRO-2403: critic's personal site reposting their staff review double-counts them.
+  if (require('./personal-repost-sites').personalRepostParent(data)) return 'personalRepost';
   // Unflagged roundup pages (flag setter is enrichment-gated; parity with rebuild's
   // inclusion gate so scoring never scores what rebuild excludes — ship-check 2026-07-10)
   if (isRoundupPageAsReview(data)) return 'roundupPageAsReview';
@@ -5258,6 +5260,8 @@ module.exports = {
   isProductionAwareCvVerdict,
   shouldSkipRoundupAudit,
   isRoundupPageAsReview,
+  personalRepostParent: require('./personal-repost-sites').personalRepostParent,
+  PERSONAL_REPOST_SITES: require('./personal-repost-sites').PERSONAL_REPOST_SITES,
   isQuotingRoundupHostUrl,
   cvBlocksUkWrongProductionAutoClear,
   isRevivalByCanonicalTitle,

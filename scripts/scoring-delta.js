@@ -1312,6 +1312,11 @@ function decideInclusion(review, show, guards) {
     return { included: false, reason: 'tour-review URL' };
   }
 
+  // BRO-2403: personal-site repost of a staff-outlet review (parity with rebuild gate)
+  if (typeof guards.personalRepostParent === 'function' && guards.personalRepostParent(review)) {
+    return { included: false, reason: 'personal-site repost' };
+  }
+
   if (guards.isRoundupPageAsReview ? guards.isRoundupPageAsReview(review) : (review.url && guards.isRoundupUrl(review.url).isRoundup)) {
     // page-as-review only — a review SOURCED from a roundup (different outletId)
     // is included by rebuild, so the sim must include it too (parity, 2026-07-10)
@@ -1445,6 +1450,8 @@ function main() {
         // from this identity list — same blind-spot class as the canonical
         // predicate omission fixed 2026-07-21.
         && (baseline.isRoundupPageAsReview?.toString() || '') === (working.isRoundupPageAsReview?.toString() || '')
+        && (baseline.personalRepostParent?.toString() || '') === (working.personalRepostParent?.toString() || '')
+        && JSON.stringify(baseline.PERSONAL_REPOST_SITES || null) === JSON.stringify(working.PERSONAL_REPOST_SITES || null)
         // Named non-review URL rule (wired into the rebuild loop 2026-09-25).
         // Edits inside non-review-url-patterns.js / unvetted-serp-sources.js are
         // NOT visible here — use a direct corpus scan for those.

@@ -3359,6 +3359,13 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // BRO-2403: critic's personal site reposting their staff-outlet review
+      if (require('./lib/personal-repost-sites').personalRepostParent(data)) {
+        logExclusion("skippedPersonalRepost", showId, file, data);
+        stats.skippedPersonalRepost = (stats.skippedPersonalRepost || 0) + 1;
+        return;
+      }
+
       // Named non-review URL shape on an unvetted SERP record (ticket/listing
       // page, news item). Same predicate as explainExclusion, which until
       // 2026-09-25 was the ONLY place it ran, so it never reached reviews.json.
