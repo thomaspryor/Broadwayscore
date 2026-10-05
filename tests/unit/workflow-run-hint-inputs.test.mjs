@@ -1,10 +1,16 @@
 // Every `gh workflow run <file>.yml -f <key>=` hint printed by scripts/ must
-// name a real workflow_dispatch input. A stale hint (`-f show=` vs `show_id`)
-// made an opening-night image fetch fail with HTTP 422 (2026-10-05).
+// name an existing workflow and a real workflow_dispatch input. A stale hint
+// (`-f show=` vs `show_id`) made an opening-night image fetch fail with
+// HTTP 422 (2026-10-05). Scope: scripts/ only, filename form only; hints that
+// name a workflow by display name ("LLM Ensemble Score Reviews") are not checked.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const yaml = require('js-yaml');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 
@@ -18,27 +24,12 @@ function walk(dir, out = []) {
   return out;
 }
 
-// Keys directly under `workflow_dispatch: inputs:` (one indent level deeper).
 function dispatchInputs(wfFile) {
-  const lines = fs.readFileSync(wfFile, 'utf8').split('\n');
-  const keys = new Set();
-  const wd = lines.findIndex(l => /^\s*workflow_dispatch:\s*$/.test(l));
-  if (wd < 0) return keys;
-  const inp = lines.findIndex((l, i) => i > wd && /^\s*inputs:\s*$/.test(l));
-  if (inp < 0) return keys;
-  const inpIndent = lines[inp].match(/^ */)[0].length;
-  if (inpIndent <= lines[wd].match(/^ */)[0].length) return keys;
-  let keyIndent = null;
-  for (let i = inp + 1; i < lines.length; i++) {
-    const l = lines[i];
-    if (!l.trim() || l.trim().startsWith('#')) continue;
-    const ind = l.match(/^ */)[0].length;
-    if (ind <= inpIndent) break;
-    if (keyIndent === null) keyIndent = ind;
-    const k = l.match(/^ *['"]?([A-Za-z0-9_-]+)['"]?:/);
-    if (k && ind === keyIndent) keys.add(k[1]);
-  }
-  return keys;
+  const doc = yaml.load(fs.readFileSync(wfFile, 'utf8')) || {};
+  // js-yaml (YAML 1.1) parses a bare `on:` key as boolean true.
+  const on = doc.on ?? doc[true];
+  const inputs = on && typeof on === 'object' && !Array.isArray(on) ? on.workflow_dispatch?.inputs : null;
+  return new Set(Object.keys(inputs || {}));
 }
 
 test('gh workflow run -f hints in scripts/ match real workflow inputs', () => {
