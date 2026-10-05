@@ -757,5 +757,34 @@
       }
     ],
     "queuedAt": "2026-10-05T07:32:29.356Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-2367-muuuyrde",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-2367-muuuyrde",
+    "description": "land.yml did not land land/job/linear-BRO-2367-muuuyrde: the rebase gate went red at e7408db7cd. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-2367-muuuyrde @ e7408db7cd (origin/land/job/linear-BRO-2367-muuuyrde) → origin/main @ 32864f85e4 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 32864f85e4: Rebasing (1/2) error: could not apply 944e67c833a... test(BRO-2367): guard same-URL multi-byline duplicates on queen-versailles-2025 hint: Resolve all conflicts manually, mark them as resolved wit Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37272065338",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-2367-muuuyrde"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e7408db7cd17ba010ad2d3fbb6f708afa0d41dce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37272065338"
+      }
+    ],
+    "queuedAt": "2026-10-05T07:42:20.098Z"
   }
 ]
