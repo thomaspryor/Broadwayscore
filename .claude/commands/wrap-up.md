@@ -42,7 +42,7 @@ If applicable, check whether the new feature needs a corresponding update in the
 
 Check for:
 1. **Unstaged changes**: `git status` — are there modified files that should be committed or discarded?
-2. **Running processes**: Any dev servers, background tasks, or watchers still running? Kill them (`kill $(lsof -ti:3456)` etc.)
+2. **Running processes**: Any dev servers, background tasks, or watchers still running? Kill them (`fuser -k 3456/tcp; kill $(lsof -ti:3456)` etc., then confirm none left with `ps -eo pid,args | grep -E 'next (dev|-server)' | grep -v grep`)
 3. **Failed tests** (skip if no `.ts`/`.tsx` files changed this session):
    ```bash
    if git log --name-only --since="3 hours ago" --pretty=format: | grep -q '\.tsx\?$'; then
