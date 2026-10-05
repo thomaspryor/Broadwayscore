@@ -121,3 +121,27 @@ test('a second reasoned marker survives the strip and keeps the card', () => {
   c.notes = 'Body\n\nVERIFY: owner-judgment\n\nVERIFY: owner-judgment (needs a human call)';
   assert.equal(decideMarkerRecheck(c).decision, 'keep');
 });
+
+test('BRO-2962 regression: PARKED spend-decision card keeps its marker', () => {
+  const c = staleTechnical();
+  c.name = 'Browserbase costs ~$190/mo: Tier 1.5 opens sessions daily';
+  c.tags = ['auto-enriched'];
+  c.notes = 'PARKED: owner call on spend vs coverage.\n\n## Problem\nx\n\nVERIFY: owner-judgment';
+  const d = decideMarkerRecheck(c);
+  assert.equal(d.decision, 'keep');
+  assert.match(d.reason, /PARKED|owner call/);
+});
+
+test('audit log keeps the ORIGINAL notes (marker included) for rollback', async () => {
+  const fs = await import('node:fs');
+  const card = staleTechnical();
+  const log = path.join(os.tmpdir(), `recheck-rollback-${process.pid}.jsonl`);
+  await applyMarkerRemoval(card, decideMarkerRecheck(card), {
+    logPath: log,
+    callLLM: async () => JSON.stringify({ acceptanceCriteria: 'ok', command: 'node --test scripts/enrich-card-acceptance.test.mjs' }),
+    writeCard: async () => {},
+  });
+  const row = JSON.parse(fs.readFileSync(log, 'utf8').trim().split('\n').pop());
+  assert.match(row.previousNotes, /VERIFY: owner-judgment/);
+  assert.doesNotMatch(row.newNotes, /VERIFY: owner-judgment/);
+});

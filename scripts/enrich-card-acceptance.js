@@ -90,7 +90,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, O
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
-const { OWNER_DECISION_RES } = require('./lib/headless-dispatchability.js');
+const { OWNER_DECISION_RES, PARKED_SENTINEL_RE } = require('./lib/headless-dispatchability.js');
 const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/autonomous-triage-core.js');
 // BRO-3378: the "can this command ever FAIL?" predicate, and the origin/main
@@ -699,7 +699,7 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // redactEmails) — this JSONL is committed to the PUBLIC repo, and card
       // notes routinely quote forwarded emails whose headers carry the
       // owner's/a submitter's real address verbatim.
-      previousNotes: redactEmails(card.notes || ''), newNotes: redactEmails(newNotes),
+      previousNotes: redactEmails(extra.previousNotes != null ? extra.previousNotes : (card.notes || '')), newNotes: redactEmails(newNotes),
       // Guardrail-3 demotions, in full. The console line slices detail to 100
       // chars, so it truncates these to uselessness ("demoted 3 ... : pub");
       // this JSONL entry is the durable, greppable record of what the
@@ -1339,7 +1339,7 @@ async function enrichOneCard(card, opts = {}) {
   const allDemotedSpans = [...accepted.allDemotedSpans, ...preexistingDemoted];
 
   if (!opts.dryRun) {
-    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans: allDemotedSpans });
+    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans: allDemotedSpans, previousNotes: opts.previousNotes });
     // See the owner-judgment write above for why this is caught rather than
     // left to propagate.
     try {
@@ -1630,6 +1630,7 @@ async function runLinearRearmLeg(args, { dryRun, limit }) {
 // markers whose authors really did mean "a human decides"; stripping those on
 // the strength of isCardEligible (which only sees name/category/tags) would
 // hand owner decisions to unattended sessions.
+const OWNER_CALL_RE = /\bowner\s+(?:call|decision|judg(?:e)?ment)\b/i;
 const BARE_MARKER_LINE_RE = /^[ \t]*VERIFY:[ \t]*owner-judgment[ \t]*$/gim;
 
 function hasEnricherStamp(notes, tags) {
@@ -1652,6 +1653,12 @@ function decideMarkerRecheck(card) {
   const eligibility = isCardEligible({ name: card.name, category: card.category, tags: card.tags });
   if (!eligibility.eligible && eligibility.kind === 'human-territory') {
     return { decision: 'keep', reason: `still human-territory: ${eligibility.reason}` };
+  }
+  // A parked card (or one asking for an owner "call") is waiting on a human
+  // decision regardless of how the marker got there — BRO-2962 (a $190/mo
+  // spend call) was caught by this on the first live run.
+  if (PARKED_SENTINEL_RE.test(strippedNotes) || OWNER_CALL_RE.test(strippedNotes)) {
+    return { decision: 'keep', reason: 'card is PARKED / asks for an owner call — waiting on a human decision' };
   }
   // A second, reasoned marker survives the strip: that is a human's, keep it.
   const defers = OWNER_DECISION_RES.find(re => re.test(`${card.name}\n${strippedNotes}`));
@@ -1679,7 +1686,9 @@ function decideMarkerRecheck(card) {
 async function applyMarkerRemoval(card, decision, opts = {}) {
   const stripped = { ...card, notes: decision.strippedNotes };
   // force: the card carries 'auto-enriched' from the original stamping.
-  return enrichOneCard(stripped, { ...opts, force: true });
+  // previousNotes: the audit log must hold the ORIGINAL (marker included) so a
+  // wrong removal can be rolled back from the log.
+  return enrichOneCard(stripped, { ...opts, force: true, previousNotes: card.notes });
 }
 
 async function runLinearMarkerRecheckLeg(args, { dryRun, limit }) {
