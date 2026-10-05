@@ -90,6 +90,7 @@ const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, O
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
+const { OWNER_DECISION_RES, PARKED_SENTINEL_RE } = require('./lib/headless-dispatchability.js');
 const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/autonomous-triage-core.js');
 // BRO-3378: the "can this command ever FAIL?" predicate, and the origin/main
@@ -151,6 +152,7 @@ Usage:
   node scripts/enrich-card-acceptance.js --from-report
   node scripts/enrich-card-acceptance.js --source linear [--identifiers BRO-1,BRO-2]
   node scripts/enrich-card-acceptance.js --source linear --rearm [--identifiers BRO-1,BRO-2] [--allow-human-written]
+  node scripts/enrich-card-acceptance.js --source linear --recheck-markers [--dry-run] [--identifiers BRO-1,BRO-2]
 
   --limit N       max cards to enrich PER SOURCE this run (default ${DEFAULT_LIMIT})
   --dry-run       evaluate + draft, make zero Notion/Linear writes
@@ -179,6 +181,15 @@ Usage:
                   Both "--identifiers A,B" and "--identifiers=A,B" work.
   --allow-human-written  with --rearm, also rewrite cards whose acceptance
                   section has no 'auto-enriched' marker (looks human-written)
+  --recheck-markers  BRO-2170: re-evaluate every open Linear issue carrying an
+                  ENRICHER-STAMPED \`VERIFY: owner-judgment\` marker (bare marker
+                  line + the 'auto-enriched' label) against the CURRENT
+                  isCardEligible rules. KEEP where the card is still
+                  human-territory or its text still defers to the owner;
+                  REMOVE otherwise, then draft real acceptance criteria so the
+                  card is armed, not merely unblocked. Hand-written markers
+                  (a reason in parentheses, no label) are never touched.
+                  --dry-run prints the per-card decision and drafts nothing.
   --help/-h       show this message, do nothing else
 `;
 
@@ -688,7 +699,7 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // redactEmails) — this JSONL is committed to the PUBLIC repo, and card
       // notes routinely quote forwarded emails whose headers carry the
       // owner's/a submitter's real address verbatim.
-      previousNotes: redactEmails(card.notes || ''), newNotes: redactEmails(newNotes),
+      previousNotes: redactEmails(extra.previousNotes != null ? extra.previousNotes : (card.notes || '')), newNotes: redactEmails(newNotes),
       // Guardrail-3 demotions, in full. The console line slices detail to 100
       // chars, so it truncates these to uselessness ("demoted 3 ... : pub");
       // this JSONL entry is the durable, greppable record of what the
@@ -1328,7 +1339,7 @@ async function enrichOneCard(card, opts = {}) {
   const allDemotedSpans = [...accepted.allDemotedSpans, ...preexistingDemoted];
 
   if (!opts.dryRun) {
-    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans: allDemotedSpans });
+    logEnrichmentWrite(card, 'llm-enriched', newNotes, opts.logPath, { demotedSpans: allDemotedSpans, previousNotes: opts.previousNotes });
     // See the owner-judgment write above for why this is caught rather than
     // left to propagate.
     try {
@@ -1604,6 +1615,145 @@ async function runLinearRearmLeg(args, { dryRun, limit }) {
   return results;
 }
 
+// ── Marker recheck (BRO-2170) ───────────────────────────────────────────────
+//
+// enrichOneCard stamps "VERIFY: owner-judgment" on human-territory cards, and
+// since #1154 that marker is a universal dispatch exclusion. The stamping rule
+// was later narrowed (#1186: technical deny-tag cards no longer get it) but
+// nothing ever revisited cards already stamped, so they were starved forever.
+// This pass re-asks the CURRENT classifier about each stamped card.
+//
+// Only a marker the ENRICHER wrote is eligible for removal: a bare marker line
+// (the enricher appends exactly `VERIFY: owner-judgment`; a hand-written one
+// carries a reason, e.g. "VERIFY: owner-judgment (needs a live dry-run)") on a
+// card with the 'auto-enriched' label. 100+ open issues carry hand-written
+// markers whose authors really did mean "a human decides"; stripping those on
+// the strength of isCardEligible (which only sees name/category/tags) would
+// hand owner decisions to unattended sessions.
+const OWNER_CALL_RE = /\bowner\s+(?:call|decision|judg(?:e)?ment)\b/i;
+const BARE_MARKER_LINE_RE = /^[ \t]*VERIFY:[ \t]*owner-judgment[ \t]*$/gim;
+
+function hasEnricherStamp(notes, tags) {
+  const labelled = (tags || []).map(t => String(t).toLowerCase()).includes('auto-enriched');
+  return labelled && new RegExp(BARE_MARKER_LINE_RE.source, 'im').test(String(notes || ''));
+}
+
+function stripEnricherMarker(notes) {
+  return String(notes || '').replace(BARE_MARKER_LINE_RE, '').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+// Pure. card = normalizeLinearIssue() shape. Returns {decision: 'keep'|'remove'|'none', reason, strippedNotes?}.
+function decideMarkerRecheck(card) {
+  if (!OWNER_JUDGMENT_RE.test(card.notes || '')) return { decision: 'none', reason: 'no owner-judgment marker' };
+  if (!hasEnricherStamp(card.notes, card.tags)) {
+    return { decision: 'keep', reason: 'marker not stamped by the enricher (hand-written or unlabelled) — never auto-removed' };
+  }
+  const strippedNotes = stripEnricherMarker(card.notes);
+  // name/category/tags only: passing notes would just re-trip the marker.
+  const eligibility = isCardEligible({ name: card.name, category: card.category, tags: card.tags });
+  if (!eligibility.eligible && eligibility.kind === 'human-territory') {
+    return { decision: 'keep', reason: `still human-territory: ${eligibility.reason}` };
+  }
+  // A parked card (or one asking for an owner "call") is waiting on a human
+  // decision regardless of how the marker got there — BRO-2962 (a $190/mo
+  // spend call) was caught by this on the first live run.
+  if (PARKED_SENTINEL_RE.test(strippedNotes) || OWNER_CALL_RE.test(strippedNotes)) {
+    return { decision: 'keep', reason: 'card is PARKED / asks for an owner call — waiting on a human decision' };
+  }
+  // A second, reasoned marker survives the strip: that is a human's, keep it.
+  const defers = OWNER_DECISION_RES.find(re => re.test(`${card.name}\n${strippedNotes}`));
+  if (defers) {
+    return { decision: 'keep', reason: `card text still defers to the owner (${defers.source.slice(0, 40)})` };
+  }
+  // Already carries a runnable command: the label came from an earlier
+  // enrichment and the bare marker was added later (by a human, or by
+  // card-arming-warning's advice) — that is a deliberate declaration.
+  const armed = evaluateVerifiability(strippedNotes);
+  if (armed.armed && armed.cmd) {
+    return { decision: 'keep', reason: 'card already has a runnable VERIFY command, so the marker was added after enrichment — treated as deliberate' };
+  }
+  return {
+    decision: 'remove',
+    reason: eligibility.eligible ? 'now classified eligible' : `technical ${eligibility.kind} (${eligibility.reason}), not owner-judgment (#1186)`,
+    strippedNotes,
+  };
+}
+
+// Applies a 'remove' decision. Never leaves a card merely unblocked: without
+// a runnable VERIFY command it would trade OWNER_DECISION_GATE for
+// NO_VERIFY_CMD, so the stripped card goes through the normal drafting path.
+// A failed draft writes NOTHING (the marker stays), so a retry is safe.
+async function applyMarkerRemoval(card, decision, opts = {}) {
+  const stripped = { ...card, notes: decision.strippedNotes };
+  // force: the card carries 'auto-enriched' from the original stamping.
+  // previousNotes: the audit log must hold the ORIGINAL (marker included) so a
+  // wrong removal can be rolled back from the log.
+  return enrichOneCard(stripped, { ...opts, force: true, previousNotes: card.notes });
+}
+
+async function runLinearMarkerRecheckLeg(args, { dryRun, limit }) {
+  let openIssues;
+  try {
+    openIssues = await linear.listOpenIssuesWithDescriptions();
+  } catch (e) {
+    return [{ id: 'linear-fetch', name: 'Linear open-issue fetch', action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' }];
+  }
+  const identifiers = parseIdentifiersArg(args);
+  const wanted = identifiers && identifiers.length ? new Set(identifiers) : null;
+  const marked = openIssues
+    .filter(i => OWNER_JUDGMENT_RE.test(i.description || '') && (!wanted || wanted.has(i.identifier)))
+    .sort((a, b) => linearIssueNumber(a.identifier) - linearIssueNumber(b.identifier));
+  console.error(`[enrich-card-acceptance] marker recheck: ${marked.length} open issue(s) carry the marker (mode=${dryRun ? 'dry-run' : 'LIVE'})`);
+
+  let writeCard = null;
+  if (!dryRun) {
+    try { writeCard = makeLinearWriteCard(linear, (await linear.getTeam()).id); }
+    catch (e) { return [{ id: 'linear-team', name: 'Linear team lookup', action: 'failed', detail: `Linear getTeam failed: ${e.message}`, source: 'linear' }]; }
+  }
+
+  const results = [];
+  let attempts = 0;
+  let failures = 0;
+  const MAX_RECHECK_FAILURES = 5;
+  for (const summary of marked) {
+    // The label (needed for the stamp test) is not in the list query, so a
+    // per-issue fetch is the expensive part. A marker with no bare line can
+    // never be an enricher stamp: decide it from the list row alone.
+    if (!new RegExp(BARE_MARKER_LINE_RE.source, 'im').test(summary.description || '')) {
+      const kept = { id: summary.identifier, name: summary.title, action: 'kept', source: 'linear',
+        detail: 'marker not stamped by the enricher (hand-written: carries a reason or sits in prose) — never auto-removed' };
+      results.push(kept);
+      console.log(`KEEP   ${summary.identifier} ${summary.title.slice(0, 60)} — ${truncateDetail(kept.detail)}`);
+      continue;
+    }
+    let full;
+    try { full = await linear.getIssue(summary.identifier); }
+    catch (e) { results.push({ id: summary.identifier, name: summary.title, action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' }); continue; }
+    if (!full || isLinearIssueTerminal(full)) continue;
+    const card = normalizeLinearIssue(full);
+    const decision = decideMarkerRecheck(card);
+    let result;
+    if (decision.decision === 'keep') {
+      result = { id: card.id, name: card.name, action: 'kept', detail: decision.reason };
+    } else if (decision.decision === 'remove' && dryRun) {
+      result = { id: card.id, name: card.name, action: 'would-remove', detail: decision.reason };
+    } else if (decision.decision === 'remove') {
+      // Failed drafts write nothing and would retry forever from the same
+      // low-numbered cards, so they must not eat the success budget; a
+      // separate small cap bounds the LLM spend on a dead provider.
+      if (attempts >= limit || failures >= MAX_RECHECK_FAILURES) { console.error(`[enrich-card-acceptance] marker recheck: budget reached (${attempts} done, ${failures} failed)`); break; }
+      result = await applyMarkerRemoval(card, decision, { callLLM, writeCard, dryRun });
+      if (result.action === 'failed') failures++; else attempts++;
+      result.detail = `${decision.reason}${result.detail ? ` → ${result.detail}` : ''}`;
+      await new Promise(r => setTimeout(r, 1000));
+    } else continue;
+    result.source = 'linear';
+    results.push(result);
+    console.log(`${result.action === 'kept' ? 'KEEP  ' : result.action === 'would-remove' ? 'REMOVE' : result.action.toUpperCase().padEnd(6)} ${card.identifier} ${card.name.slice(0, 60)} — ${truncateDetail(result.detail)}`);
+  }
+  return results;
+}
+
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
@@ -1641,6 +1791,20 @@ async function main() {
   if (rearm && source === 'notion') {
     console.error('--rearm requires --source linear (or both) — the Notion leg has no vacuous-check sweep yet');
     process.exit(1);
+  }
+
+  if (args['recheck-markers']) {
+    if (source !== 'linear') {
+      console.error('--recheck-markers requires --source linear');
+      process.exit(1);
+    }
+    const r = await runLinearMarkerRecheckLeg(args, { dryRun, limit });
+    const t = r.reduce((a, x) => { a[x.action] = (a[x.action] || 0) + 1; return a; }, {});
+    console.log(`\n=== MARKER RECHECK === ${JSON.stringify(t)}${dryRun ? ' (DRY RUN — no writes, no LLM drafting)' : ''}`);
+    // Same contract as the main sweep: only a run where every LLM attempt
+    // failed is fatal, so one flaky draft cannot red the daily audit step.
+    if (allFailed(r)) process.exitCode = 1;
+    return r;
   }
 
   const results = [];
@@ -1705,4 +1869,6 @@ module.exports = {
   // BRO-3395: rearm path — makeLinearRearmWriteCard/runLinearRearmLeg take an
   // injectable client/args the same way the task #1830 exports above do.
   makeLinearRearmWriteCard, runLinearRearmLeg,
+  // BRO-2170: stale owner-judgment marker recheck.
+  decideMarkerRecheck, applyMarkerRemoval, runLinearMarkerRecheckLeg, hasEnricherStamp, stripEnricherMarker,
 };

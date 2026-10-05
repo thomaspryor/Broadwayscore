@@ -2904,6 +2904,8 @@ on:
       - 'scripts/enrich-card-acceptance.js'
       - 'scripts/enrich-card-acceptance.test.mjs'
       - 'scripts/tests/enrich-card-acceptance-fallback.test.mjs'
+      # BRO-2170: stale owner-judgment marker recheck.
+      - 'scripts/tests/enrich-card-recheck-markers.test.mjs'
       - 'scripts/audit-card-verifiability.js'
       - 'scripts/audit-card-verifiability.test.mjs'
       - 'scripts/lib/triage-schema.json'
