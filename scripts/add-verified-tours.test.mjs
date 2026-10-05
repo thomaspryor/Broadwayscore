@@ -34,3 +34,12 @@ test('an unknown parent or an existing id is skipped, never created', () => {
   const existing = { id: 'hamilton-tour-2024', title: 'Hamilton', category: 'tour', tourOf: 'hamilton-2015', openingDate: '2024-08-16', closingDate: null };
   assert.ok(planVerifiedTours([{ parent: 'hamilton-2015', launch: '2024-08-16', sources: two }], [parent, existing], NOW)[0].skip);
 });
+
+test('two companies of one title in one list do not both become the same id', () => {
+  const plan = planVerifiedTours([
+    { parent: 'hamilton-2015', launch: '2024-08-16', scheduleSlug: 'hamilton', sources: two },
+    { parent: 'hamilton-2015', launch: '2024-09-21', scheduleSlug: 'hamilton', sources: two },
+  ], [parent], NOW);
+  assert.ok(plan[0].entry);
+  assert.ok(plan[1].skip, 'the second is refused against the first');
+});

@@ -28,6 +28,9 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 /** Build entries for the list against `shows`. Pure. */
 function planVerifiedTours(list, shows, now = new Date()) {
   const byId = new Map(shows.map(s => [s.id, s]));
+  // Entries built earlier in the list count too: two companies of one title
+  // in one file must not both become <title>-tour-<year> (code review).
+  const seen = [...shows];
   return list.map(t => {
     const parent = byId.get(t.parent);
     const decision = {
@@ -37,7 +40,9 @@ function planVerifiedTours(list, shows, now = new Date()) {
       evidenceUrls: t.sources || [],
     };
     const scheduleUrl = t.scheduleSlug ? `https://tourstoyou.org/shows/${t.scheduleSlug}/` : null;
-    return { parent: t.parent, ...buildTourEntry({ parent, shows, decision, scheduleUrl, now }) };
+    const built = buildTourEntry({ parent, shows: seen, decision, scheduleUrl, now });
+    if (built.entry) seen.push(built.entry);
+    return { parent: t.parent, ...built };
   });
 }
 

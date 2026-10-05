@@ -88,4 +88,5 @@ test('tourStops keeps the current era only: after the launch, up to the closing'
   // Launch before the page's first row: the running segment that began after it.
   const late = tourStops({ id: 'x-tour-2024', openingDate: '2024-06-01' }, html, new Date('2024-10-05T00:00:00Z'));
   assert.equal(late[0].city, 'Fayetteville, AR');
+  assert.equal(tourStops({ id: 'x-tour-2019', openingDate: '2019-06-01' }, html, new Date('2024-10-05T00:00:00Z')), null, 'an old tour never takes a new company\'s schedule');
 });

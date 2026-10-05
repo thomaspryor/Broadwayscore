@@ -50,9 +50,13 @@ function tourStops(tour, html, now = new Date()) {
   // The segment holding the launch; else the one running now, when it began
   // after the launch (Wicked's page starts in Oct 2021, after its Aug 2021
   // restart, BRO-4601).
+  // Within 120 days of the launch only (Wicked: 85), so an old tour still
+  // marked open never takes a new company's schedule (code review).
   const running = currentSegment(segments, now);
+  const launchMs = tour.openingDate ? Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) : NaN;
+  const lag = running ? running.start.getTime() - launchMs : NaN;
   const segment = pickSegment(segments, tour, '')
-    || (running && tour.openingDate && iso(running.start) >= String(tour.openingDate).slice(0, 10) ? running : null);
+    || (running && lag >= 0 && lag <= 120 * 86400000 ? running : null);
   if (!segment) return null;
   // Only the current era: a long-running title's page can run several
   // companies together back to 2020 (Hamilton); stops before this tour's
