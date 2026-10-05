@@ -16,7 +16,19 @@
  *                                      when `vercel deploy --prod` exited 0
  * The workflow source is also echoed into the log (`echo "Deployed to
  * production: $URL"`), so a match must be a real https URL, not `$URL`.
+ *
+ * Weaker than the Vercel API: it only sees deploys this workflow made, so a
+ * rollback or promote from the Vercel dashboard is invisible to it. The test
+ * pins DEPLOY_JOB and DEPLOY_ECHO to vercel-deploy.yml so a rename fails CI
+ * instead of silently breaking the fallback.
  */
+
+const DEPLOY_JOB = 'deploy';
+const DEPLOY_ECHO = 'echo "Deployed to production: $URL"';
+// The deploy cron fires every 5 min; a listing whose newest run is older than
+// this is a stale page (seen 2026-10-05: the same request returned September
+// runs, then current ones seconds later).
+const STALE_LISTING_MS = 60 * 60_000;
 
 // eslint-disable-next-line no-control-regex
 const ANSI = /\x1b\[[0-9;]*[A-Za-z]/g;
@@ -37,4 +49,9 @@ function prodAliasFromLog(log) {
   return { url: url.replace(/^https:\/\//, ''), aliasedAtMs: aliasedAt };
 }
 
-module.exports = { prodAliasFromLog };
+function listingLooksStale(runs, nowMs, maxAgeMs = STALE_LISTING_MS) {
+  const newest = Math.max(...(runs || []).map((r) => Date.parse(r.created_at)).filter(Number.isFinite));
+  return !Number.isFinite(newest) || nowMs - newest > maxAgeMs;
+}
+
+module.exports = { prodAliasFromLog, listingLooksStale, DEPLOY_JOB, DEPLOY_ECHO, STALE_LISTING_MS };

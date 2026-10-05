@@ -29,10 +29,12 @@
  *                     elapses (default 900s). Requires a <commit-ish> arg.
  *
  * Requires: VERCEL_TOKEN in the environment (already used by check-secrets-health).
- * Without it (cloud sessions), the human-readable mode falls back to the
- * newest vercel-deploy.yml run whose deploy job log proves the production
- * alias (scripts/lib/deploy-log-proof.js), via `gh api`. --json never falls
- * back: it exits 2 as before, so the deploy gate keeps failing closed.
+ * Without it (cloud sessions), a one-shot human-readable check falls back to
+ * the newest vercel-deploy.yml run whose deploy job log proves the production
+ * alias (scripts/lib/deploy-log-proof.js), via `gh api`. That is a weaker
+ * signal (blind to Vercel-dashboard rollbacks) and is labelled as such.
+ * --json and --wait never fall back: they exit 2 as before, so the deploy
+ * gate keeps failing closed and nothing polls GitHub's quota in a loop.
  *
  * MACHINE CONTRACT (2026-07-19, extended 2026-09-16 BRO-3149): `--json` output
  * is parsed by scripts/lib/should-deploy-gate.js (deploy-gate baseline:
@@ -45,7 +47,7 @@
 
 const { execSync, execFileSync } = require('child_process');
 const { checkLanded } = require('./lib/landing-verify.js');
-const { prodAliasFromLog } = require('./lib/deploy-log-proof.js');
+const { prodAliasFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const ghText = (path) => execFileSync('gh', ['api', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
@@ -69,18 +71,24 @@ function parseArgs(argv) {
 }
 
 function githubProdDeploy() {
-  // Unfiltered listing, filtered here: the status= filter is served from an
-  // index that lagged by weeks on its first live call (2026-10-05). A stale
-  // pick only errs toward "not live yet", never toward a false "live".
-  const runs = (ghJson(`repos/${REPO}/actions/workflows/vercel-deploy.yml/runs?branch=main&per_page=20`).workflow_runs || [])
-    .filter((r) => r.status === 'completed' && r.conclusion === 'success');
+  const listing = `repos/${REPO}/actions/workflows/vercel-deploy.yml/runs?branch=main&per_page=20`;
+  let page = ghJson(listing).workflow_runs || [];
+  if (listingLooksStale(page, Date.now())) page = ghJson(listing).workflow_runs || []; // one retry
+  if (listingLooksStale(page, Date.now())) throw new Error('the deploy run listing looks stale (newest run over an hour old); try again shortly');
+  const runs = page.filter((r) => r.status === 'completed' && r.conclusion === 'success');
   let best = null;
   let proofs = 0;
   for (const run of runs) {
-    const job = (ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=50`).jobs || [])
-      .find((j) => j.name === 'deploy' && j.conclusion === 'success');
-    if (!job) continue; // gate said skip: no deploy happened in this run
-    const proof = prodAliasFromLog(ghText(`repos/${REPO}/actions/jobs/${job.id}/logs`));
+    let proof = null;
+    try {
+      const job = (ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=50`).jobs || [])
+        .find((j) => j.name === DEPLOY_JOB && j.conclusion === 'success');
+      if (!job) continue; // gate said skip: no deploy happened in this run
+      proof = prodAliasFromLog(ghText(`repos/${REPO}/actions/jobs/${job.id}/logs`));
+    } catch (e) {
+      console.error(`(skipping deploy run ${run.id}: ${String(e.stderr || e.message).trim().split('\n')[0]})`);
+      continue; // an expired (410) or not-yet-ready log must not sink the whole check
+    }
     if (!proof) continue;
     if (!best || proof.aliasedAtMs > best.createdMs) {
       best = { sha: run.head_sha, reviewsBlobSha: null, showsBlobSha: null, url: proof.url, createdMs: proof.aliasedAtMs, via: `deploy run ${run.id}` };
@@ -91,10 +99,10 @@ function githubProdDeploy() {
   return best;
 }
 
-async function latestProdDeploy({ json } = {}) {
+async function latestProdDeploy({ json, wait } = {}) {
   const token = process.env.VERCEL_TOKEN;
   if (!token) {
-    if (!json) {
+    if (!json && wait == null) {
       let dep = null;
       try { dep = githubProdDeploy(); } catch (e) { console.error(`❌ GitHub fallback failed: ${String(e.stderr || e.message).trim()}`); }
       if (dep) return dep;
@@ -174,7 +182,7 @@ async function main() {
   const deadline = wait != null ? Date.now() + wait * 1000 : 0;
 
   for (;;) {
-    const dep = await latestProdDeploy({ json });
+    const dep = await latestProdDeploy({ json, wait });
     const live = commit ? (dep.via ? isLiveViaGithub(commit, dep.sha) : isLive(commit, dep.sha)) : null;
 
     const done = wait == null || live || Date.now() >= deadline;
@@ -183,8 +191,10 @@ async function main() {
         console.log(JSON.stringify({ deployedSha: dep.sha, reviewsBlobSha: dep.reviewsBlobSha, showsBlobSha: dep.showsBlobSha, url: dep.url, ageSec: dep.ageSec, target: commit, live }, null, 2));
       } else {
         const shortDeployed = dep.sha ? dep.sha.slice(0, 10) : '(unknown)';
-        const source = dep.via ? `, from ${dep.via}'s log: no VERCEL_TOKEN` : '';
-        console.log(`Production READY deployment: ${shortDeployed}  (age ${fmtAge(dep.ageSec)}${source})  https://${dep.url}`);
+        const label = dep.via
+          ? `Production alias per ${dep.via}'s log (no VERCEL_TOKEN; blind to Vercel-dashboard rollbacks)`
+          : 'Production READY deployment';
+        console.log(`${label}: ${shortDeployed}  (age ${fmtAge(dep.ageSec)})  https://${dep.url}`);
         if (commit) {
           let shortTarget = commit;
           // stderr silenced: a bogus commit-ish makes git print "fatal: Needed a
@@ -199,7 +209,7 @@ async function main() {
 
     const remaining = Math.round((deadline - Date.now()) / 1000);
     process.stderr.write(`⏳ not live yet (prod at ${dep.sha ? dep.sha.slice(0, 10) : '?'}); ${remaining}s left…\n`);
-    await new Promise((r) => setTimeout(r, dep.via ? 60000 : 20000)); // GitHub fallback downloads logs: poll gently
+    await new Promise((r) => setTimeout(r, 20000));
   }
 }
 
