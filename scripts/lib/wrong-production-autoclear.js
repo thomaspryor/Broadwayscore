@@ -288,6 +288,21 @@ const DATE_GUARD_PREFIXES = [
 const startsWithAny = (s, prefixes) => prefixes.some((p) => s.startsWith(p));
 
 /**
+ * True when a wrongProductionReason was written by a DATE-ONLY pipeline guard
+ * (anticipatory pre-opening ingest gate, Haiku year-gap reverify). Those flags
+ * say nothing about content, so an operator's allowEarlyDate must be able to
+ * clear them. CV-promoted reasons are deliberately NOT included: they carry a
+ * content verdict that the cvConfirmedWrong check already adjudicates.
+ * BRO-720: previously ANY reason counted as manual, so a transferred
+ * production's reviews (allowEarlyDate:true) stayed excluded on every rebuild.
+ */
+function isDateOnlyAutoReason(reason) {
+  if (!reason) return false;
+  return DATE_ONLY_AUTO_REASONS.has(reason)
+    || AUTO_REASON_REGEXES.some((re) => re.test(reason));
+}
+
+/**
  * Best effort to recover the date a date-guard flagger acted on. Premiere-era
  * review files frequently carry a null or year-less `publishDate` (e.g.
  * "October 20"), but the guard that flagged them embeds the real ISO date in
@@ -536,7 +551,8 @@ function hasAdjudicatedNote(data) {
 function shouldAutoClearWrongProduction(data) {
   if (data.wrongProduction !== true) return false;
   if (!data.allowEarlyDate && !data.allowCrossMarket) return false;
-  const hasManualReason = !!data.wrongProductionReason;
+  const hasManualReason = !!data.wrongProductionReason
+    && !(data.allowEarlyDate && isDateOnlyAutoReason(data.wrongProductionReason));
   const cvConfirmedWrong = data.contentVerification?.wrongProduction === true
     && data.contentVerification?.confidence === 'high';
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;

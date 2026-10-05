@@ -155,3 +155,41 @@ test('BRO-938 wiring: the CV pre-pass still skips confidence other than high/med
     'pre-pass must skip low-confidence CV rows (the temporal-override output) unless cvLowButStrong'
   );
 });
+
+// BRO-720 — allowEarlyDate must clear date-only auto-flags that carry a
+// wrongProductionReason (Alice in Wonderland WE 2026: ROH-run reviews with
+// allowEarlyDate:true stayed excluded because any reason counted as manual).
+const { shouldAutoClearWrongProduction } = require('./lib/wrong-production-autoclear.js');
+
+test('BRO-720: allowEarlyDate clears a date-only auto-reason flag', () => {
+  for (const reason of [
+    'anticipatory_pre_opening_post',
+    'Haiku reverify: publishDate 2025 vs showId year 2026',
+  ]) {
+    assert.equal(shouldAutoClearWrongProduction({
+      wrongProduction: true, allowEarlyDate: true, wrongProductionReason: reason,
+    }), true, reason);
+  }
+});
+
+test('BRO-720: manual/audit reasons, CV-confirmed and allowCrossMarket-only still keep the flag', () => {
+  assert.equal(shouldAutoClearWrongProduction({
+    wrongProduction: true, allowEarlyDate: true, wrongProductionReason: 'cross-market contamination (audit)',
+  }), false);
+  assert.equal(shouldAutoClearWrongProduction({
+    wrongProduction: true, allowEarlyDate: true, wrongProductionReason: 'anticipatory_pre_opening_post',
+    contentVerification: { wrongProduction: true, confidence: 'high' },
+  }), false);
+  assert.equal(shouldAutoClearWrongProduction({
+    wrongProduction: true, allowCrossMarket: true, wrongProductionReason: 'anticipatory_pre_opening_post',
+  }), false);
+});
+
+test('BRO-720 wiring: every date-based wrongProduction writer is behind an allowEarlyDate bypass', () => {
+  const src = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
+  // pre-pass date guards (pre-window + dateless-revival) sit after this early continue
+  assert.ok(/if \(d\.allowEarlyDate\) continue;[\s\S]{0,6000}\[PRE-OPENING\][\s\S]{0,6000}\[DATELESS-REVIVAL\]/.test(src));
+  // inclusion-pass pre-opening guard
+  assert.ok(src.includes('data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId'));
+  assert.ok(src.includes('shouldAutoClearWrongProduction(data)'));
+});
