@@ -12,6 +12,7 @@
  * Mutates `data`. Returns true if a score was discarded.
  */
 const { publishesNoCriticRating } = require('./score-extractors');
+const { invalidateStarSidedAdjudication } = require('./star-reliability');
 
 function discardNoRatingOutletScore(data) {
   if (!data || data.originalScore == null || data.originalScore === '') return false;
@@ -22,6 +23,7 @@ function discardNoRatingOutletScore(data) {
   data.originalScoreSource = null;
   data.originalScoreCleared = true;
   data.originalScoreClearedReason = 'outlet-publishes-no-critic-rating (tier 1d)';
+  invalidateStarSidedAdjudication(data, data.originalScoreClearedReason);
   return true;
 }
 

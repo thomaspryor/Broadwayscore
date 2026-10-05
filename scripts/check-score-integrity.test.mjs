@@ -50,6 +50,12 @@ test('cleared / wrongProduction / star-publishing outlets are not flagged', () =
   assert.equal(report.issues.noStarOutletWithScore, 0);
 });
 
+test('display-name outletId is flagged by the gate too', () => {
+  const { r, report } = run({ 'show-a/lt--x.json': { ...leaked, outletId: 'London Theatre' } });
+  assert.equal(r.status, 1);
+  assert.equal(report.issues.noStarOutletWithScore, 1);
+});
+
 test('discardNoRatingOutletScore clears the leak so the check passes', () => {
   const d = { ...leaked };
   assert.equal(discardNoRatingOutletScore(d), true);
