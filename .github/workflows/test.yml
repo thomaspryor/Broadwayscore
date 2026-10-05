@@ -4589,20 +4589,22 @@ jobs:
     # a hung TEST must be found, not absorbed — the per-step `timeout 180` and
     # --test-timeout ceilings are what bound those.
     timeout-minutes: 30
-    # BRO-4720: tests build scratch git repos and rm them in t.after; git's
-    # detached auto-maintenance kept writing into .git and the rm hit
-    # ENOTEMPTY (run 37311592322). Off for every git process in this job.
-    env:
-      GIT_CONFIG_COUNT: '3'
-      GIT_CONFIG_KEY_0: gc.auto
-      GIT_CONFIG_VALUE_0: '0'
-      GIT_CONFIG_KEY_1: gc.autoDetach
-      GIT_CONFIG_VALUE_1: 'false'
-      GIT_CONFIG_KEY_2: maintenance.auto
-      GIT_CONFIG_VALUE_2: 'false'
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+      - name: Disable git auto-maintenance (global config)
+        # Tests build scratch git repos and rm them in teardown; git's detached
+        # auto-maintenance kept writing into .git/objects and the rm hit
+        # ENOTEMPTY (runs 37311592322, 37348719012). Global config, NOT
+        # GIT_CONFIG_COUNT env (BRO-4720's first fix): git strips that env
+        # (`git rev-parse --local-env-vars`) before running receive-pack in a
+        # local bare remote, which is where the maintenance spawns (BRO-4749).
+        # Guard: tests/unit/ci-git-auto-maintenance-off.test.mjs.
+        run: |
+          git config --global gc.auto 0
+          git config --global gc.autoDetach false
+          git config --global maintenance.auto false
+          git config --global receive.autogc false
       - name: Setup Node.js
         uses: actions/setup-node@v5
         with:
