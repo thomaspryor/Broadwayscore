@@ -12,6 +12,8 @@
  * Extracted per CLAUDE.md §15 so tests can require() the real data without
  * copying it. Added via Pattern Card #6.
  */
+const { foldDiacritics } = require('./title-match');
+
 const KNOWN_SYNDICATION_PAIRS = {
   'chris jones': { primary: 'chicagotribune', secondary: ['nydailynews'] },
   'kathleen campion': { primary: 'nytg', secondary: ['front-row-center'] },
@@ -104,7 +106,7 @@ function isCrossOutletSyndicationPair(a, b, normalize = (o) => o) {
 
 /** Filename slug for a critic, matching review-texts naming (punctuation -> '-'). */
 function criticFileSlug(criticName) {
-  return String(criticName || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return foldDiacritics(String(criticName || '')).toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 /**

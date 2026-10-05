@@ -87,3 +87,8 @@ test('detector choosePrimary agrees with group order (source check)', () => {
   const src = fs.readFileSync(path.resolve('scripts/detect-syndicated-duplicates.js'), 'utf8');
   assert.match(src, /PUBLISHING_GROUPS/);
 });
+
+test('accented bylines fold to the ASCII filename slug', () => {
+  assert.equal(sp.criticFileSlug('Zoë Müller'), 'zoe-muller');
+  assert.equal(sp.isPrimaryFileFor('chicagotribune--zoe-muller.json', ['chicagotribune'], 'Zoë Müller'), true);
+});
