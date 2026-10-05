@@ -260,3 +260,9 @@ analyze-traffic-sources.yml
 # delayed re-run of an evicted landing, which the next completion catches;
 # failures surface via notify-failure + the daily digest.
 land-retry-cancelled.yml
+
+# main-infra-rerun.yml (BRO-4754): re-runs the newest main test.yml run when
+# GitHub never gave its failed jobs a runner. A missed tick leaves that run red
+# until the next push or tick; no user-facing page goes stale. Failures surface
+# via notify-failure + the daily digest.
+main-infra-rerun.yml
