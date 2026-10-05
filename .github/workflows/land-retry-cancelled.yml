@@ -43,7 +43,14 @@ jobs:
       group: land-retry-sweep
       cancel-in-progress: false
     steps:
+      # Sparse: run 37360514150 was cancelled at the 5-min timeout inside a
+      # full checkout of the 2.5 GB repo (BRO-4754). The sweep needs only
+      # scripts/ and the notify-failure action.
       - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
       - uses: actions/setup-node@v5
         with:
           node-version: '20'
