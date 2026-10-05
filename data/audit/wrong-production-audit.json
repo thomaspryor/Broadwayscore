@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T23:36:07.411Z",
+  "timestamp": "2026-10-05T00:07:40.823Z",
   "stats": {
-    "totalReviews": 46269,
-    "alreadyFlagged": 18751,
-    "dateGuardCatches": 270,
+    "totalReviews": 46268,
+    "alreadyFlagged": 18752,
+    "dateGuardCatches": 269,
     "directorMismatch": 1232,
     "tvFilmSignals": 1340,
     "londonSignals": 1272,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4284
+    "noPublishDate": 4283
   },
   "findings": [
     {
@@ -53717,20 +53717,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "slam-frank-off-broadway-2026",
-      "file": "the-jewish-voice-and-opinion--two-sues-on-the.json",
-      "score": 79,
-      "publishDate": "2026-06-12",
-      "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 97d before show (2026-06-12 vs 2026-09-17)"
         }
       ]
     },

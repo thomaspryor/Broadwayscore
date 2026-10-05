@@ -150,10 +150,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-05T00:05:43.723Z",
-      "lastSeen": "2026-10-05T00:05:43.723Z",
-      "lastNotifiedAt": "2026-10-05T00:05:43.723Z",
-      "lastSurfacedAt": "2026-10-05T00:05:43.723Z",
+      "incidentOpenedAt": "2026-10-05T00:11:57.199Z",
+      "lastSeen": "2026-10-05T00:11:57.199Z",
+      "lastNotifiedAt": "2026-10-05T00:11:57.199Z",
+      "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 120,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
@@ -3867,7 +3867,7 @@
       "absentRunIds": [
         "37184564354"
       ],
-      "resolvedAt": "2026-10-05T00:05:43.304Z",
+      "resolvedAt": "2026-10-05T00:09:45.611Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9b5157f4": {
@@ -5996,7 +5996,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36656601667"
       },
       "absentRunIds": [],
-      "resolvedAt": "2026-10-05T00:05:43.335Z",
+      "resolvedAt": "2026-10-05T00:09:45.650Z",
       "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
@@ -10011,7 +10011,64 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4644"
+      "linearIdentifier": "BRO-4644",
+      "dispatch": {
+        "requestedAt": "2026-10-05T00:02:20.424Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37244984447",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37244984447"
+      }
+    },
+    "land:land/bro-4623-commercial-corrections": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: push red on land/bro-4623-commercial-corrections",
+      "firstSeen": "2026-10-05T00:07:33.778Z",
+      "incidentOpenedAt": "2026-10-05T00:07:33.778Z",
+      "lastSeen": "2026-10-05T00:07:33.778Z",
+      "lastNotifiedAt": "2026-10-05T00:07:33.778Z",
+      "lastSurfacedAt": "2026-10-05T00:07:33.778Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:3b6b2267": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every tests/unit/*.test.mjs file is either registered in CI (per audit-orphan-tests.js) or a tracked exemption\"",
+      "firstSeen": "2026-10-05T00:09:45.658Z",
+      "incidentOpenedAt": "2026-10-05T00:09:45.658Z",
+      "lastSeen": "2026-10-05T00:09:45.658Z",
+      "lastNotifiedAt": "2026-10-05T00:09:45.658Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4647",
+      "dispatch": {
+        "requestedAt": "2026-10-05T00:09:45.658Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37245555321",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37245555321"
+      }
+    },
+    "test-yml:red:Lint Workflows:45ece660": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Lint Workflows / Audit — no orphan unit tests",
+      "firstSeen": "2026-10-05T00:10:52.375Z",
+      "incidentOpenedAt": "2026-10-05T00:10:52.375Z",
+      "lastSeen": "2026-10-05T00:10:52.375Z",
+      "lastNotifiedAt": "2026-10-05T00:10:52.375Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4648",
+      "dispatch": {
+        "requestedAt": "2026-10-05T00:10:52.375Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37245555321",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37245555321"
+      }
     }
   }
 }
