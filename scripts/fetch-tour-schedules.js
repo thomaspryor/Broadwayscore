@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { segmentTourRows, pickSegment, parseTourSchedule, duplicateScheduleOf } = require('./lib/tour-schedule');
+const { segmentTourRows, pickSegment, currentSegment, parseTourSchedule, duplicateScheduleOf } = require('./lib/tour-schedule');
 const { fetchSchedule } = require('./lib/tours-to-you');
 
 const ROOT = path.join(__dirname, '..');
@@ -45,14 +45,23 @@ function opensWith(tour, stops) {
 }
 
 /** The stops of the segment that is this tour, or null. Pure. */
-function tourStops(tour, html) {
-  const segment = pickSegment(segmentTourRows(parseTourSchedule(html)), tour, '');
+function tourStops(tour, html, now = new Date()) {
+  const segments = segmentTourRows(parseTourSchedule(html));
+  // The segment holding the launch; else the one running now, when it began
+  // after the launch (Wicked's page starts in Oct 2021, after its Aug 2021
+  // restart, BRO-4601).
+  const running = currentSegment(segments, now);
+  const segment = pickSegment(segments, tour, '')
+    || (running && tour.openingDate && iso(running.start) >= String(tour.openingDate).slice(0, 10) ? running : null);
   if (!segment) return null;
   // Only the current era: a long-running title's page can run several
   // companies together back to 2020 (Hamilton); stops before this tour's
   // launch belong to an earlier company (BRO-4601).
   const from = tour.openingDate ? Date.parse(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) - 7 * 86400000 : -Infinity;
-  const rows = segment.rows.filter(r => r.start.getTime() >= from);
+  // ...and none after it closed: A Beautiful Noise's page runs a second
+  // company on from Oct 2026 after the first closed in July.
+  const until = tour.closingDate ? Date.parse(`${String(tour.closingDate).slice(0, 10)}T00:00:00Z`) : Infinity;
+  const rows = segment.rows.filter(r => r.start.getTime() >= from && r.start.getTime() <= until);
   return rows.length ? rows.map(r => ({ city: r.city, venue: r.venue, start: iso(r.start), end: iso(r.end) })) : null;
 }
 
