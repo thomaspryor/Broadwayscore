@@ -62,7 +62,7 @@ async function fetchAllUsers() {
     const r = await supabaseGet(`/auth/v1/admin/users?page=${page}&per_page=200`);
     const users = Array.isArray(r) ? r : (r.users || []);
     if (users.length === 0) return all;
-    all.push(...m.slimUsers(users));
+    all.push(...m.slimUsers(users, { ownerEmail: process.env.OWNER_EMAIL }));
   }
   throw new Error('more than 100k users: raise the page cap');
 }
