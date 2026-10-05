@@ -6303,17 +6303,18 @@ jobs:
 
       # BRO-4668: E2E hits production, so a push that lands site code with its
       # own E2E test raced the Vercel deploy and went red for ~10 min with
-      # nothing wrong (run 37255760139). Wait only when THIS push touched site
-      # code, only on main pushes (PR merge SHAs are never deployed), and
-      # fail open: a timeout or error still runs E2E.
-      - name: Wait for this push's site code to go live
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      # nothing wrong (run 37255760139). Wait only while the checkout has site
+      # code production lacks (judged against the deployed SHA, so a data push
+      # on top of an undeployed feature waits too), only on main pushes (PR
+      # merge SHAs are never deployed), and fail open: a timeout or error still
+      # runs E2E. Kill switch: repo variable E2E_AWAIT_DEPLOY_DISABLED=true.
+      - name: Wait for undeployed site code to go live
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.E2E_AWAIT_DEPLOY_DISABLED != 'true'
         continue-on-error: true
         timeout-minutes: 27
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUSH_BEFORE: ${{ github.event.before }}
         run: node scripts/lib/e2e-await-deploy.js --max-wait=1500 --interval=60
 
       - name: Run E2E tests

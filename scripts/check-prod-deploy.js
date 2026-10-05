@@ -99,34 +99,22 @@ function githubProdDeploy() {
   return best;
 }
 
-async function latestProdDeploy({ json, wait } = {}) {
+// Throwing variant for library callers (scripts/lib/e2e-await-deploy.js,
+// BRO-4668) that must survive a transient Vercel error. The CLI keeps its
+// exit-2 contract through latestProdDeploy() below.
+async function fetchLatestProdDeploy({ timeoutMs = 20000 } = {}) {
   const token = process.env.VERCEL_TOKEN;
-  if (!token) {
-    if (!json && wait == null) {
-      let dep = null;
-      try { dep = githubProdDeploy(); } catch (e) { console.error(`❌ GitHub fallback failed: ${String(e.stderr || e.message).trim()}`); }
-      if (dep) return dep;
-    }
-    console.error('❌ VERCEL_TOKEN not set — cannot query the Vercel API. (echo ${VERCEL_TOKEN:+SET})');
-    process.exit(2);
-  }
+  if (!token) throw new Error('VERCEL_TOKEN not set — cannot query the Vercel API. (echo ${VERCEL_TOKEN:+SET})');
   let res;
   try {
-    res = await fetch(API, { headers: { Authorization: `Bearer ${token}` } });
+    res = await fetch(API, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(timeoutMs) });
   } catch (e) {
-    console.error(`❌ Vercel API request failed: ${e.message}`);
-    process.exit(2);
+    throw new Error(`Vercel API request failed: ${e.message}`);
   }
-  if (!res.ok) {
-    console.error(`❌ Vercel API returned ${res.status} ${res.statusText}`);
-    process.exit(2);
-  }
+  if (!res.ok) throw new Error(`Vercel API returned ${res.status} ${res.statusText}`);
   const body = await res.json();
   const dep = body.deployments && body.deployments[0];
-  if (!dep) {
-    console.error('❌ No READY production deployment found.');
-    process.exit(2);
-  }
+  if (!dep) throw new Error('No READY production deployment found.');
   return {
     sha: (dep.meta && dep.meta.githubCommitSha) || null,
     // BRO-3149: git blob SHAs of data/reviews.json + data/shows.json as of
@@ -140,6 +128,20 @@ async function latestProdDeploy({ json, wait } = {}) {
     createdMs: dep.created,
     ageSec: Math.round((Date.now() - dep.created) / 1000),
   };
+}
+
+async function latestProdDeploy({ json, wait } = {}) {
+  if (!process.env.VERCEL_TOKEN && !json && wait == null) {
+    let dep = null;
+    try { dep = githubProdDeploy(); } catch (e) { console.error(`❌ GitHub fallback failed: ${String(e.stderr || e.message).trim()}`); }
+    if (dep) return dep;
+  }
+  try {
+    return await fetchLatestProdDeploy();
+  } catch (e) {
+    console.error(`❌ ${e.message}`);
+    process.exit(2);
+  }
 }
 
 // Is `commit` live — i.e. equal to or an ancestor of the deployed `sha`?
@@ -214,7 +216,8 @@ async function main() {
 }
 
 // Exported for scripts/lib/e2e-await-deploy.js (BRO-4668), which needs the
-// deployed SHA without the shallow-unsafe local ancestry check above.
-module.exports = { latestProdDeploy };
+// deployed SHA without the shallow-unsafe local ancestry check above, and
+// must not be killed by the CLI's process.exit on a transient Vercel error.
+module.exports = { fetchLatestProdDeploy };
 
 if (require.main === module) main();
