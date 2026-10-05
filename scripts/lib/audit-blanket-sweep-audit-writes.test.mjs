@@ -21,10 +21,10 @@ jobs:
           bash scripts/lib/push-with-retry.sh
 `;
 const SRC = `const P = path.join(__dirname, '..', 'data', 'audit', 'totally-unregistered-xyz.json');
-fs.writeFileSync(P, '{}');
+fs.writeFileSync(P, '{}'); // test-data-write-guard-allow: fixture text for the auditor under test, never executed
 const D = path.join(__dirname, '../data/audit');
-fs.writeFileSync(path.join(D, 'also-unregistered-xyz.json'), '{}');
-fs.writeFileSync('data/audit/health-digest-snapshot.json', '{}');
+fs.writeFileSync(path.join(D, 'also-unregistered-xyz.json'), '{}'); // test-data-write-guard-allow: fixture text for the auditor under test, never executed
+fs.writeFileSync('data/audit/health-digest-snapshot.json', '{}'); // test-data-write-guard-allow: fixture text for the auditor under test, never executed
 console.log('see data/audit/mention-only-xyz.json');`;
 const opts = { readSrc: () => SRC, isIgnored: () => false };
 
@@ -56,7 +56,7 @@ test('`data/` with other args is still a blanket sweep (fetch-all-image-formats 
 test('catches writes via audit-dir variable, template strings and required libs', () => {
   const src = "const AUDIT_DIR = path.join(DATA_DIR, 'audit');\nconst P = path.join(AUDIT_DIR, 'viadir-xyz.json');\nwriteAuditArtifact(P, {});\nfs.writeFileSync(`${AUDIT_DIR}/tpl-xyz.json`, '');";
   assert.deepEqual(lib.auditFilesWrittenBy(src).sort(), ['data/audit/tpl-xyz.json', 'data/audit/viadir-xyz.json']);
-  const files = { 'scripts/a.js': "const l = require('./lib/b');", 'scripts/lib/b.js': "fs.appendFileSync('data/audit/inlib-xyz.jsonl', 'x');" };
+  const files = { 'scripts/a.js': "const l = require('./lib/b');", 'scripts/lib/b.js': "fs.appendFileSync('data/audit/inlib-xyz.jsonl', 'x');" }; // test-data-write-guard-allow: fixture text for the auditor under test, never executed
   assert.deepEqual(lib.auditFilesWrittenByWithLibs('scripts/a.js', (r) => files[r] ?? null), ['data/audit/inlib-xyz.jsonl']);
 });
 
