@@ -67,6 +67,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
 const { extractByline } = require('./lib/byline-extraction');
+const { resolveCritic } = require('./lib/resolve-critic');
 const { pageMentionsShowTitle } = require('./lib/submission-show-match');
 
 const args = process.argv.slice(2);
@@ -346,7 +347,13 @@ if (!show) {
   // 'Unknown' with no date or quote (Deep Heat Rivalry, 2026-09-23).
   const { extractTheStageArticleMeta, isTheStageUrl } = require('./lib/walled-page-meta');
   const stageMeta = isTheStageUrl(url) ? extractTheStageArticleMeta(html) : null;
-  const critic = criticArg || lsaCritic || extractByline(html) || (stageMeta && stageMeta.criticName) || 'Unknown';
+  const critic = resolveCritic({
+    criticArg,
+    lsaCritic,
+    byline: extractByline(html),
+    stageCritic: stageMeta && stageMeta.criticName,
+    outletEntry: (require('../data/outlet-registry.json').outlets || {})[outletId],
+  });
 
   // Page-date extraction: when --publish-date wasn't supplied, pull it from
   // standard CMS metadata (article:published_time / JSON-LD / <time>). Without

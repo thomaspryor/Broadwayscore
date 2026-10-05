@@ -203,3 +203,31 @@ describe('BRO-462: the actual self-heal wiring (findExistingReviewFile + safeWri
     assert.equal(explainExclusion(onDisk, SHOW, existing.path), null);
   });
 });
+
+describe('BRO-4655: resolveCritic promotes first-name-only byline to outlet defaultCritic', () => {
+  const { resolveCritic } = createRequire(import.meta.url)('./lib/resolve-critic.js');
+  const nyt = { defaultCritic: 'Jonathan Mandell', standingCoverage: true };
+  test('single-token byline matching defaultCritic first name -> full name', () => {
+    assert.equal(resolveCritic({ byline: 'Jonathan', outletEntry: nyt }), 'Jonathan Mandell');
+    assert.equal(resolveCritic({ byline: 'jonathan', outletEntry: nyt }), 'Jonathan Mandell');
+  });
+  test('full byline, other first name, and no outlet entry are untouched', () => {
+    assert.equal(resolveCritic({ byline: 'Jonathan Mandell', outletEntry: nyt }), 'Jonathan Mandell');
+    assert.equal(resolveCritic({ byline: 'Sam', outletEntry: nyt }), 'Sam');
+    assert.equal(resolveCritic({ byline: 'Jonathan' }), 'Jonathan');
+  });
+  test('empty/Unknown byline falls back to defaultCritic only with standingCoverage', () => {
+    assert.equal(resolveCritic({ byline: null, outletEntry: nyt }), 'Jonathan Mandell');
+    assert.equal(resolveCritic({ byline: 'Unknown', outletEntry: nyt }), 'Jonathan Mandell');
+    assert.equal(resolveCritic({ byline: null, outletEntry: { defaultCritic: 'X Y' } }), 'Unknown');
+  });
+  test('multiAuthor outlets never get defaultCritic; explicit --critic wins', () => {
+    const multi = { ...nyt, multiAuthor: true };
+    assert.equal(resolveCritic({ byline: 'Jonathan', outletEntry: multi }), 'Jonathan');
+    assert.equal(resolveCritic({ byline: null, outletEntry: multi }), 'Unknown');
+    assert.equal(resolveCritic({ criticArg: 'Jon', byline: 'Jonathan', outletEntry: nyt }), 'Jon');
+  });
+  test('stage meta beats defaultCritic fallback', () => {
+    assert.equal(resolveCritic({ stageCritic: 'Anna James', outletEntry: nyt }), 'Anna James');
+  });
+});
