@@ -129,6 +129,11 @@ test('backfillPublishedDates re-dates NA YouTube reviews only (BRO-4760)', async
   w('show-b/mh.json', { platform: 'youtube', videoId: 'v3', creatorId: 'MH', publishedAt: '20260101' });
   w('show-b/mj.json', { platform: 'youtube', videoId: 'v4', creatorId: 'MJ', publishedAt: null });
   w('raw/v1.json', { videoId: 'v1', date: 'NA' });
+  w('classified/v1.json', { id: 'v1', date: 'NA' });
+  w('show-a/wp.json', { platform: 'youtube', videoId: 'v5', publishedAt: 'NA', wrongProduction: true });
+  w('show-a/bad.json', {});
+  fs.writeFileSync(path.join(root, 'show-a/bad.json'), '{not json');
+  fs.writeFileSync(path.join(root, 'show-a/mh.json'), JSON.stringify({ platform: 'youtube', videoId: 'v1', creatorId: 'MH', publishedAt: 'NA', productionCheck: { verdict: 'same' } }));
   w('classified/v9.json', { platform: 'youtube', videoId: 'v9', publishedAt: 'NA' });
   const asked = [];
   const r = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async id => { asked.push(id); return id === 'v1' ? '20260520' : null; } });
@@ -136,8 +141,16 @@ test('backfillPublishedDates re-dates NA YouTube reviews only (BRO-4760)', async
   assert.deepEqual(r, { candidates: 2, attempted: 2, dated: 1 });
   const read = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
   assert.equal(read('show-a/mh.json').publishedAt, '20260520');
+  assert.equal(read('show-a/mh.json').productionCheck, undefined);
   assert.equal(read('raw/v1.json').date, '20260520');
+  assert.equal(read('classified/v1.json').date, '20260520');
   assert.equal(read('show-b/mj.json').publishedAt, null);
+  assert.ok(read('show-b/mj.json').dateLookupFailedAt);
+  // a failed lookup waits RETRY_DAYS before it is paid for again
+  const again = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async () => { throw new Error('cooldown'); } });
+  assert.equal(again.candidates, 0);
+  const later = await backfillPublishedDates({ transcriptsDir: root, now: new Date(Date.now() + 31 * 864e5), fetchDate: async () => '20260601' });
+  assert.deepEqual(later, { candidates: 1, attempted: 1, dated: 1 });
   const r2 = await backfillPublishedDates({ transcriptsDir: root, creatorFilter: 'mh', fetchDate: async () => { throw new Error('should not fetch'); } });
   assert.deepEqual(r2, { candidates: 0, attempted: 0, dated: 0 });
   const r3 = await backfillPublishedDates({ transcriptsDir: root, max: 0, fetchDate: async () => { throw new Error('capped'); } });
