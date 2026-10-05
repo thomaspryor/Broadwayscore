@@ -143,7 +143,16 @@ function describeAmbiguity(entry, shows) {
   let matches = resolveShowMatches(entry.title, shows);
   if (entry.market) matches = matches.filter((s) => s && s.category === entry.market);
   if (matches.length <= 1) return null;
-  return `ambiguous — "${entry.title}" matched ${matches.length} ${entry.market || ''} shows (${matches.map((s) => s.id).join(', ')}); needs a human to set entry.showId in the ledger`;
+  // Named by title, not raw show ID — this string lands verbatim in the
+  // owner's plain-English stuck-request alert (buildStuckAlert below), and
+  // /second-opinion flagged the cousin of this exact issue in
+  // content-request-routing.js: IDs belong to a technical reader, not the
+  // owner's inbox.
+  const names = matches.map((s) => {
+    const otherCategories = matches.some((m) => m.category !== s.category);
+    return otherCategories ? `${s.title} (${s.category})` : s.title;
+  });
+  return `ambiguous — "${entry.title}" matched ${matches.length} shows (${names.join(', ')}); needs a human to set entry.showId in the ledger`;
 }
 
 /**
@@ -550,6 +559,7 @@ module.exports = {
   pickRunForRequest,
   showUrl,
   resolveEntryShowId,
+  describeAmbiguity,
   entryNamesReviews,
 };
 

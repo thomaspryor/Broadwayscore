@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { resolveEntryShowId } = require('./verify-feedback-requests-live.js');
+const { resolveEntryShowId, describeAmbiguity, buildStuckAlert } = require('./verify-feedback-requests-live.js');
 
 // Mirrors the real #905 shape: a title with multiple same-titled productions.
 const BOOK_OF_MORMON_SHOWS = [
@@ -56,4 +56,34 @@ test('same-market revival ambiguity returns null, does not guess', () => {
 test('market scoping narrows to the single in-market match', () => {
   const entry = { key: 'k', title: 'The Book of Mormon', market: 'west-end' };
   assert.equal(resolveEntryShowId(entry, BOOK_OF_MORMON_SHOWS), 'book-of-mormon-we-2024');
+});
+
+// Codex /second-opinion review of ac007966312: the stuck-request alert only
+// said "still not on the site" for an ambiguous entry — the owner's alert
+// needs to say WHY, and a cousin of the content-request-routing.js finding
+// means that WHY must name shows by title, not raw ID (the text lands
+// verbatim in the owner's plain-English email).
+test('describeAmbiguity names candidates by title, not raw ID', () => {
+  const entry = { key: 'k', title: 'The Book of Mormon', market: null };
+  const note = describeAmbiguity(entry, BOOK_OF_MORMON_SHOWS);
+  assert.match(note, /matched 3 shows/);
+  assert.match(note, /The Book of Mormon \(broadway\)/);
+  assert.match(note, /The Book of Mormon \(west-end\)/);
+  assert.doesNotMatch(note, /book-of-mormon-2011/);
+});
+
+test('describeAmbiguity returns null for an unambiguous or already-resolved entry', () => {
+  assert.equal(describeAmbiguity({ key: 'k', showId: 'x', title: 'The Book of Mormon' }, BOOK_OF_MORMON_SHOWS), null);
+  assert.equal(
+    describeAmbiguity({ key: 'k', title: 'The Book of Mormon', market: 'tour' }, BOOK_OF_MORMON_SHOWS),
+    null
+  );
+});
+
+test('buildStuckAlert renders the ambiguity note instead of the generic "could not establish" line', () => {
+  const stale = [{ key: 'k', title: 'The Book of Mormon', requestedAt: new Date(Date.now() - 10 * 86400000).toISOString() }];
+  const ambiguityNotes = new Map([['k', 'ambiguous — "The Book of Mormon" matched 3 shows (A, B, C); needs a human to set entry.showId in the ledger']]);
+  const alert = buildStuckAlert(stale, new Map(), ambiguityNotes);
+  assert.match(alert.description, /ambiguous — "The Book of Mormon" matched 3 shows/);
+  assert.doesNotMatch(alert.description, /could not establish/);
 });
