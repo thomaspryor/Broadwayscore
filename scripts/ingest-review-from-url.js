@@ -114,6 +114,14 @@ const stubOnFailure = hasFlag('stub-on-failure');
 // write-guard) keep exit 1, so the workflow retries only what a retry can fix.
 const EXIT_FETCH_FAILED = 3;
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// --help must print usage and exit BEFORE any side effect (BRO-1711).
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
+  process.exit(0);
+}
+
 if (!showId || !url) {
   console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
   process.exit(1);
@@ -121,13 +129,6 @@ if (!showId || !url) {
 
 // Verify show exists before doing any expensive work.
 const showsData = require('../data/shows.json');
-const { hasHelpFlag } = require('./lib/cli-help.js');
-
-// --help must print usage and exit BEFORE any side effect (BRO-1711).
-if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js [options]\nSee the header comment of this script for options. --help/-h prints this and exits without side effects.');
-  process.exit(0);
-}
 const show = showsData.shows.find((s) => s.id === showId);
 if (!show) {
   console.error(`Show not found: ${showId}`);

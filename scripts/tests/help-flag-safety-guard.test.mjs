@@ -37,3 +37,19 @@ test('predicate catches an unguarded destructive script and passes a guarded one
     null,
   );
 });
+
+// Behavioural check (BRO-1711 review): text greps missed a guard sitting AFTER an
+// earlier usage-exit. Actually run --help on the retrofitted scripts.
+import { spawnSync } from 'node:child_process';
+const RETROFITTED = [
+  'discover-outlet-reviews-serp', 'fix-canonical-duplicate-backpointer', 'fix-duplicates-and-zeros',
+  'fix-outlet-case', 'gather-reviews', 'health-check', 'ingest-review-from-url', 'recovery-marker',
+  'rollback-reroute-backlog', 'scrape-london-box-office-roundups', 'scrape-theatre-reviews',
+];
+for (const name of RETROFITTED) {
+  test(`${name}.js --help prints usage and exits 0`, () => {
+    const r = spawnSync(process.execPath, [path.join(SCRIPTS_DIR, `${name}.js`), '--help'], { encoding: 'utf8', timeout: 30000 });
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout + r.stderr, /usage/i);
+  });
+}
