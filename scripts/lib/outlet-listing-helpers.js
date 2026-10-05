@@ -57,8 +57,24 @@ function hyphenSpaced(s) {
   return normalizeTitle(String(s || '').replace(/[-‐‑‒–—]/g, ' '));
 }
 
+// A book review names the musical's title or characters without being about
+// the stage show (1 Minute Critic's "'Galinda: A Charmed Childhood' book
+// review" landed on both Wicked entries, BRO-4656). Only the explicit "book
+// review" label or a books-section path counts, and a theatre word keeps the
+// item (a review comparing a musical with its source novel).
+const BOOK_REVIEW_RE = /\bbook[\s-]+reviews?\b/i;
+const THEATRE_WORD_RE = /\b(?:musical|stage|broadway|theat(?:er|re)|tour(?:ing)?|production|cast|play)\b/i;
+// A books-section path (WSJ's /arts-culture/books/ "'Auslander' Review" put a
+// novel on The Outsiders) counts the same as the label.
+const BOOKS_SECTION_RE = /(?:^|\/)books?\//i;
+function looksLikeBookReview(headline, urlSlug) {
+  const text = `${headline || ''} ${String(urlSlug || '').replace(/[-_/]+/g, ' ')}`;
+  return (BOOK_REVIEW_RE.test(text) || BOOKS_SECTION_RE.test(String(urlSlug || ''))) && !THEATRE_WORD_RE.test(text);
+}
+
 function findMatchingShows(headline, urlSlug, activeShows) {
   if (!headline && !urlSlug) return [];
+  if (looksLikeBookReview(headline, urlSlug)) return [];
   // Slug separators become spaces too (hyphenSpaced handles the dashes):
   // normalizeTitle glues "hamilton-review-..." into one word the whole-word
   // test below can never find a title in.
@@ -379,6 +395,7 @@ function extractListingUrls(html, domain) {
 }
 
 module.exports = {
+  looksLikeBookReview,
   findMatchingShows,
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,

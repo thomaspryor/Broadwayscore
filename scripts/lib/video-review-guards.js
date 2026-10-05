@@ -47,4 +47,15 @@ function filterPublishableReviews(reviewsByShow, knownShowIds) {
   return { kept, dropped };
 }
 
-module.exports = { filterPublishableReviews };
+// BRO-4760: a creator's own paid-promotion label (TikTok/YouTube #ad, "paid
+// partnership", "sponsored by") marks an advert, not a review; tyvid5's
+// Aladdin video ("#ad ... Thanks, Disney for the tickets and swag bag") was
+// scored 87. Free press tickets are normal for critics and are NOT matched.
+const PAID_PROMOTION_RE = /(?:^|[\s(])#(?:ad|ads|sponsored|paidpartnership|paidpartner)\b|\bpaid partnership\b|\bsponsored by\b|\bthis (?:video|post|episode) is sponsored\b/i;
+
+/** @param {{title?: string, transcript?: string}} t a transcript file */
+function isPaidPromotion(t) {
+  return PAID_PROMOTION_RE.test(`${(t && t.title) || ''}\n${(t && t.transcript) || ''}`);
+}
+
+module.exports = { filterPublishableReviews, isPaidPromotion };

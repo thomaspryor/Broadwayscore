@@ -133,6 +133,17 @@ function sdTranscriptToText(payload) {
  * null (unavailable, failed, or unrecognised payload) so the caller falls
  * back to the watch-page route.
  */
+// /youtube/video nests metadata under `video` ({video:{published_time:"Streamed
+// live on May 20, 2026"}, channel:{...}}, per Scrapingdog's docs). BRO-4760:
+// reading data.published_time at the top level missed it for all 66 videos
+// of the first run.
+function sdVideoPublishedText(data) {
+  if (!data || typeof data !== 'object') return null;
+  const v = data.video || {};
+  return v.published_time || v.publish_date || v.upload_date
+    || data.published_time || data.publish_date || data.upload_date || null;
+}
+
 async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
   const t = await sdYouTube('transcripts', videoId, { language: 'en' });
   if (!t) return null;
@@ -145,13 +156,66 @@ async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
     console.log(`  ⚠️  Scrapingdog transcripts payload unrecognised for ${videoId}: ${JSON.stringify(t.data).slice(0, 160)}`);
     return null;
   }
-  let publishedAt = null;
-  if (needDate && transcript) {
-    const v = await sdYouTube('video', videoId, {});
-    if (v && v.data) publishedAt = publishedTimeToYmd(v.data.published_time || v.data.publish_date || v.data.upload_date);
-    if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || JSON.stringify(v.data && v.data.published_time)) : 'unavailable'})`.slice(0, 220));
-  }
+  const publishedAt = needDate && transcript ? await fetchYouTubePublishedAt(videoId, sdYouTube) : null;
   return { transcript, publishedAt, source: 'scrapingdog-youtube' };
+}
+
+/** Upload date via Scrapingdog /youtube/video (5 credits) -> "YYYYMMDD", or null. */
+async function fetchYouTubePublishedAt(videoId, sdYouTube = scraper.fetchScrapingdogYouTube) {
+  const v = await sdYouTube('video', videoId, {});
+  const publishedAt = v && v.data ? publishedTimeToYmd(sdVideoPublishedText(v.data)) : null;
+  if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || `keys=${Object.keys(v.data || {}).join(',')} video=${JSON.stringify(v.data && v.data.video && v.data.video.published_time)}`) : 'unavailable'})`.slice(0, 220));
+  return publishedAt;
+}
+
+const isDateless = d => !d || d === 'NA';
+
+/**
+ * BRO-4760: published YouTube reviews collected while the date lookup was
+ * broken carry publishedAt "NA", and collect-transcripts skips cached videos,
+ * so nothing would ever re-date them. For up to `max` dateless per-show
+ * YouTube files (not already wrongProduction) it fetches the date, writes
+ * publishedAt, mirrors it into raw/ and classified/ (select-best-reviews reads
+ * classified/ and would otherwise write "NA" back), and drops productionCheck
+ * so verify-productions re-runs its date rule. A failed lookup is stamped
+ * dateLookupFailedAt and not retried for RETRY_DAYS. A bad file is skipped.
+ * @returns {Promise<{candidates: number, attempted: number, dated: number}>}
+ */
+const RETRY_DAYS = 30;
+async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, max = 250, fetchDate = fetchYouTubePublishedAt, now = new Date(), fs = require('fs'), path = require('path') }) {
+  const readJson = f => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
+  const writeJson = (f, o) => fs.writeFileSync(f, JSON.stringify(o, null, 2));
+  const todo = [];
+  for (const showId of fs.readdirSync(transcriptsDir)) {
+    if (showId === 'raw' || showId === 'classified' || showId.startsWith('.')) continue;
+    const dir = path.join(transcriptsDir, showId);
+    if (!fs.statSync(dir).isDirectory()) continue;
+    for (const f of fs.readdirSync(dir).filter(n => n.endsWith('.json'))) {
+      const file = path.join(dir, f);
+      const t = readJson(file);
+      if (!t || t.platform !== 'youtube' || !t.videoId || !isDateless(t.publishedAt) || t.wrongProduction === true) continue;
+      if (creatorFilter && String(t.creatorId).toLowerCase() !== creatorFilter.toLowerCase()) continue;
+      if (t.dateLookupFailedAt && now - new Date(t.dateLookupFailedAt) < RETRY_DAYS * 864e5) continue;
+      todo.push({ file, t });
+    }
+  }
+  let attempted = 0, dated = 0;
+  for (const { file, t } of todo.slice(0, max)) {
+    attempted++;
+    const ymd = await fetchDate(t.videoId);
+    if (!ymd) { t.dateLookupFailedAt = now.toISOString(); writeJson(file, t); continue; }
+    t.publishedAt = ymd;
+    delete t.dateLookupFailedAt;
+    delete t.productionCheck;
+    writeJson(file, t);
+    for (const sub of ['raw', 'classified']) {
+      const f = path.join(transcriptsDir, sub, `${t.videoId}.json`);
+      const o = fs.existsSync(f) ? readJson(f) : null;
+      if (o && isDateless(o.date)) { o.date = ymd; writeJson(f, o); }
+    }
+    dated++;
+  }
+  return { candidates: todo.length, attempted, dated };
 }
 
 /**
@@ -194,4 +258,4 @@ async function fetchYouTubeTranscript(videoId, fetchers = {}, opts = {}) {
   return { transcript: json3ToText(payload), publishedAt, source: page.source };
 }
 
-module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, fetchYouTubeTranscript, sliceJsonObject };
+module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, sdVideoPublishedText, fetchYouTubePublishedAt, backfillPublishedDates, fetchYouTubeTranscript, sliceJsonObject };

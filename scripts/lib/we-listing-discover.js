@@ -111,9 +111,9 @@ const WE_SLUG_MIN_LENGTH = 5;
 // positive. Those 6 get the narrower, palace/national-style treatment
 // below (WE_SLUG_FALSE_POSITIVE_RE) instead: reject only the specific
 // colliding compound, leave the bare West End match intact.
-// Checked and found to have NO practical non-West-End collision at all
-// (left matchable, no exclusion needed): adelphi, aldwych, dominion,
-// dorfman, duchess, fortune, gielgud, novello, olivier, sondheim, wyndhams/
+// Checked and found to have NO practical non-West-End collision in this UK-source audit
+// (left matchable, no exclusion needed): aldwych, dominion,
+// dorfman, fortune, gielgud, olivier, sondheim, wyndhams/
 // wyndham's. "fortune" was missed by the first pass of this audit (only 22
 // of the 23 remaining short entries were checked) — the only non-West-End
 // "Fortune Theatre" is in Dunedin, New Zealand, which closed in 2018 and is
@@ -227,7 +227,19 @@ function stripNationalAuditorium(remainder) {
 //   - phoenix: Exeter Phoenix ("exeter-phoenix").
 //   - savoy: Savoy Theatre, Monmouth ("savoy-theatre-monmouth"/
 //     "monmouth-savoy").
-const WE_SLUG_FALSE_POSITIVE_RE = /(^|-)(the-)?other-palace(-|$)|(^|-)alexandra-palace(-|$)|(^|-)(welsh-)?national-theatre-wales(-|$)|(^|-)national-theatre-scotland(-|$)|(^|-)welsh-national-opera(-|$)|(^|-)o2-apollo(-|$)|(^|-)apollo-manchester(-|$)|(^|-)manchester-apollo(-|$)|(^|-)lichfield-garrick(-|$)|(^|-)royal-lyceum(-|$)|(^|-)lyceum-edinburgh(-|$)|(^|-)edinburgh-lyceum(-|$)|(^|-)bristol-old-vic(-|$)|(^|-)old-vic-bristol(-|$)|(^|-)exeter-phoenix(-|$)|(^|-)savoy(-theatre)?-monmouth(-|$)|(^|-)monmouth(-theatre)?-savoy(-|$)/;
+// Additional BRO-3787 collisions: real regional UK venues that share a West
+// End name (from reference knowledge; the sites below were not re-fetched):
+//   - New Adelphi Theatre, Salford: salford.ac.uk/our-facilities/new-adelphi-facilities
+//   - Duchess Theatre, Long Eaton: duchess-theatre.com
+//   - Novello Theatre/Picture House, Sunninghill: savenph.org
+//   - Hammersmith/Eventim Apollo: eventimapollo.com/venue-info/venue-history/
+//   - Stockport/Altrincham Garrick: stockportgarrick.co.uk, altrinchamgarrick.co.uk
+//   - Sheffield Lyceum: sheffieldtheatres.co.uk
+//   - Phoenix Theatre, Blyth: thephoenixtheatre.org.uk
+//   - Old Savoy, Northampton: theoldsavoy.co.uk
+// Reject these compounds while preserving each bare West End venue match.
+// National Theatre of Scotland also needs its full name's "of" variant.
+const WE_SLUG_FALSE_POSITIVE_RE = /(^|-)(the-)?other-palace(-|$)|(^|-)alexandra-palace(-|$)|(^|-)(welsh-)?national-theatre-wales(-|$)|(^|-)national-theatre-(of-)?scotland(-|$)|(^|-)welsh-national-opera(-|$)|(^|-)o2-apollo(-|$)|(^|-)apollo-manchester(-|$)|(^|-)manchester-apollo(-|$)|(^|-)lichfield-garrick(-|$)|(^|-)royal-lyceum(-|$)|(^|-)lyceum-edinburgh(-|$)|(^|-)edinburgh-lyceum(-|$)|(^|-)bristol-old-vic(-|$)|(^|-)old-vic-bristol(-|$)|(^|-)exeter-phoenix(-|$)|(^|-)savoy(-theatre)?-monmouth(-|$)|(^|-)monmouth(-theatre)?-savoy(-|$)|(^|-)new-adelphi(-|$)|(^|-)(adelphi(-theatre)?-salford|salford(-theatre)?-adelphi)(-|$)|(^|-)(duchess(-theatre)?-long-eaton|long-eaton(-theatre)?-duchess)(-|$)|(^|-)(novello(-theatre)?-sunninghill|sunninghill(-theatre)?-novello|novello-picture-?house)(-|$)|(^|-)((hammersmith|eventim)-apollo|apollo(-theatre)?-hammersmith)(-|$)|(^|-)((stockport|altrincham)(-theatre)?-garrick|garrick(-theatre)?-(stockport|altrincham))(-|$)|(^|-)(sheffield(-theatre)?-lyceum|lyceum(-theatre)?-sheffield)(-|$)|(^|-)(blyth(-theatre)?-phoenix|phoenix(-theatre)?-blyth)(-|$)|(^|-)(old-savoy|northampton(-theatre)?-savoy|savoy(-theatre)?-northampton)(-|$)/;
 
 /**
  * Extracts a WET-listing post's show title from its rendered title, e.g.

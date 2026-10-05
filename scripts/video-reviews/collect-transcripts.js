@@ -25,7 +25,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { detectTranscriptOutages, isVideoSpecificError } = require('../lib/video-pipeline-health');
-const { fetchYouTubeTranscript } = require('../lib/youtube-captions');
+const { fetchYouTubeTranscript, backfillPublishedDates } = require('../lib/youtube-captions');
 
 // YouTube bot-walls yt-dlp on GitHub runner IPs (BRO-4343). When a paid
 // provider is configured, fall back to Scrapingdog's YouTube transcripts API
@@ -182,6 +182,16 @@ async function main() {
       // Rate limit
       execSync('sleep 2');
     }
+  }
+
+  // BRO-4760: re-date published YouTube reviews stored with "NA" (5 credits each).
+  if (YOUTUBE_FETCHPAGE_FALLBACK && process.env.SCRAPINGDOG_API_KEY) {
+    const bf = await backfillPublishedDates({
+      transcriptsDir: path.dirname(RAW_TRANSCRIPTS_DIR),
+      creatorFilter,
+      max: Number(process.env.YT_DATE_BACKFILL_MAX || 250),
+    });
+    console.log(`\nYouTube date backfill: ${bf.dated}/${bf.attempted} dated (${bf.candidates} undated published reviews)`);
   }
 
   console.log(`\n=== Collection Summary ===`);

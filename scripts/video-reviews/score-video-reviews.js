@@ -38,6 +38,7 @@ If rejecting: {"scoreable": false, "rejection": "<short category>", "reasoning":
 - Ignore filler words, intros, subscriber plugs, sponsor segments
 - Focus on the RECOMMENDATION SIGNAL
 - For multi-show videos (2 shows max), score ONLY the target show section
+- keyQuote is shown on its own next to the score: pick a line whose meaning matches the verdict without context (never an ironic hook like "Do not see this unless you want to rethink your life")
 
 | Bucket | Score Range | Signal |
 |--------|------------|--------|

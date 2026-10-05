@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-05T17:43:35.209Z",
+  "generatedAt": "2026-10-05T23:42:11.061Z",
   "windowDays": 1095,
-  "targets": 436,
-  "auditedThisRun": 12,
-  "carriedForward": 627,
+  "targets": 435,
+  "auditedThisRun": 17,
+  "carriedForward": 622,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 356,
-    "missingCurrentRun": 695,
-    "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 861,
+    "withGap": 357,
+    "missingCurrentRun": 692,
+    "totalCitedNoUrl": 1,
+    "totalFlaggedMisses": 866,
     "totalRecoverable": 4,
     "totalRecovered": 8,
     "priorProductionCitations": 2989
@@ -2699,8 +2699,8 @@
         "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice",
         "https://whatsbetterthanbooks.com/bookreview-natural-shocks-ohussain/",
         "https://maryrobinettekowal.com/journal/my-favorite-bit/my-favorite-bit-omar-hussain-talks-about-a-thousand-natural-shocks/",
-        "https://exeuntnyc.com/reviews/review-natural-shocks-wp-theater/",
-        "https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin"
+        "https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin",
+        "https://www.show-score.com/off-off-broadway-shows/a-thousand-natural-shocks"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -2719,15 +2719,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-natural-shocks-wp-theater/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin",
           "host": "broadstreetreview.com",
           "knownOutletId": "broadstreetreview",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/off-off-broadway-shows/a-thousand-natural-shocks",
+          "host": "show-score.com",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -2815,10 +2815,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 26,
         "byReason": {
           "non-review-host": 23,
-          "aggregator-internal-nav": 2
+          "aggregator-internal-nav": 2,
+          "licensing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -2848,18 +2849,6 @@
           "reason": "⚠️  provisional outlet \"maryrobinettekowal\" (not in registry) — onboard to outlet-registry.json afte"
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-natural-shocks-wp-theater/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
           "url": "https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin",
           "host": "broadstreetreview.com",
           "outletId": "broadstreetreview",
@@ -2870,6 +2859,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.show-score.com/off-off-broadway-shows/a-thousand-natural-shocks",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
         }
       ],
       "ingestSkippedByCap": [],
@@ -2891,18 +2892,18 @@
             "url": "https://maryrobinettekowal.com/journal/my-favorite-bit/my-favorite-bit-omar-hussain-talks-about-a-thousand-natural-shocks/"
           },
           {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-natural-shocks-wp-theater/"
-          },
-          {
             "outletId": "broadstreetreview",
             "outlet": "broadstreetreview",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-off-broadway-shows/a-thousand-natural-shocks"
           },
           {
             "outletId": "zeffy.com",
@@ -2929,18 +2930,18 @@
             "firstSeenAt": "2026-10-04T10:25:26.902Z"
           },
           {
-            "url": "https://exeuntnyc.com/reviews/review-natural-shocks-wp-theater/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
             "url": "https://www.broadstreetreview.com/articles/a-thousand-natural-shocks-a-collection-of-stories-by-richard-burgin",
             "outletId": "broadstreetreview",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-04T10:25:26.902Z"
+          },
+          {
+            "url": "https://www.show-score.com/off-off-broadway-shows/a-thousand-natural-shocks",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice",
@@ -2954,7 +2955,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
@@ -3850,23 +3851,19 @@
         "https://www.theatre-news.com/news/UK/129344/Affluenza-extends-run-following-early-ticket-demand-ahead-of-world-premiere",
         "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
         "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
-        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
-        "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
+        "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
         "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
+        "https://www.show-score.com/uk/london/off-west-end-shows/affluenza",
+        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
         "https://www.londontheatregeek.co.uk/shows/affluenza",
-        "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-        "https://www.britishtheatre.com/shows/affluenza"
+        "https://entertheatre.com/shows/affluenza/riverside-studios",
+        "https://www.britishtheatre.com/shows/affluenza",
+        "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review"
       ],
-      "dirFiles": 5,
-      "dirClean": 1,
+      "dirFiles": 8,
+      "dirClean": 3,
       "inReviewsJson": 1,
       "missing": [
-        {
-          "url": "https://www.timeout.com/london/theatre/affluenza",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
         {
           "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
           "host": "riversidestudios.co.uk",
@@ -3874,21 +3871,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
-          "host": "trustpilot.com",
-          "knownOutletId": null,
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
           "serpCensus": true
         },
         {
@@ -3898,14 +3883,26 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.show-score.com/uk/london/off-west-end-shows/affluenza",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.londontheatregeek.co.uk/shows/affluenza",
           "host": "londontheatregeek.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-          "host": "uktw.co.uk",
+          "url": "https://entertheatre.com/shows/affluenza/riverside-studios",
+          "host": "entertheatre.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -3914,9 +3911,25 @@
           "host": "britishtheatre.com",
           "knownOutletId": "british-theatre",
           "serpCensus": true
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "weRef": true,
+          "weRefSources": [
+            "lbo-roundup"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "lbo-roundup"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "trustpilot.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.bestoftheatre.co.uk/blog/post/affluenza-adds-extra-dates-riverside-studios",
@@ -3989,11 +4002,29 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "west-end-best-friend--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 1,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -4010,8 +4041,8 @@
             "fetchErrors": 0
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -4025,7 +4056,7 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
+        "currentRunRows": 1,
         "corroborated": 0,
         "perSource": {}
       },
@@ -4061,7 +4092,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -4071,7 +4102,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -4081,38 +4112,26 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 22,
         "byReason": {
+          "non-review-host": 13,
           "aggregator-internal-nav": 3,
-          "non-review-host": 15,
-          "non-review-path": 5,
-          "ticketing-listing": 1
+          "non-review-path": 4,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.timeout.com/london/theatre/affluenza",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
         {
           "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
           "host": "riversidestudios.co.uk",
@@ -4126,16 +4145,40 @@
           "reason": "Refusing to ingest — https://riversidestudios.co.uk/whats-on/uwQ-affluenza/ matches a known non-revi"
         },
         {
-          "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
-          "host": "westendbestfriend.co.uk",
-          "outletId": "west-end-best-friend",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
+          "host": "bestoftheatre.co.uk",
+          "outletId": "bestoftheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/off-west-end-shows/affluenza",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
           "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
@@ -4148,52 +4191,33 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
-          "host": "trustpilot.com",
-          "outletId": "trustpilot",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
-          "host": "bestoftheatre.co.uk",
-          "outletId": "bestoftheatre"
-        },
         {
           "url": "https://www.londontheatregeek.co.uk/shows/affluenza",
           "host": "londontheatregeek.co.uk",
           "outletId": "londontheatregeek"
         },
         {
-          "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw"
+          "url": "https://entertheatre.com/shows/affluenza/riverside-studios",
+          "host": "entertheatre.com",
+          "outletId": "entertheatre"
         },
         {
           "url": "https://www.britishtheatre.com/shows/affluenza",
           "host": "britishtheatre.com",
           "outletId": "british-theatre"
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
+          "host": "londonboxoffice.co.uk",
+          "outletId": "london-box-office"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/affluenza"
-          },
           {
             "outletId": "riversidestudios.co.uk",
             "outlet": "riversidestudios.co.uk",
@@ -4202,25 +4226,11 @@
             "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/"
           },
           {
-            "outletId": "west-end-best-friend",
-            "outlet": "west-end-best-friend",
+            "outletId": "times-uk",
+            "outlet": "times-uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/"
-          },
-          {
-            "outletId": "trustpilot.com",
-            "outlet": "trustpilot.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7"
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g"
           },
           {
             "outletId": "bestoftheatre",
@@ -4230,6 +4240,20 @@
             "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios"
           },
           {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/uk/london/off-west-end-shows/affluenza"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/"
+          },
+          {
             "outletId": "londontheatregeek.co.uk",
             "outlet": "londontheatregeek.co.uk",
             "critic": "Unknown",
@@ -4237,11 +4261,11 @@
             "url": "https://www.londontheatregeek.co.uk/shows/affluenza"
           },
           {
-            "outletId": "uktw.co.uk",
-            "outlet": "uktw.co.uk",
+            "outletId": "entertheatre.com",
+            "outlet": "entertheatre.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/"
+            "url": "https://entertheatre.com/shows/affluenza/riverside-studios"
           },
           {
             "outletId": "british-theatre",
@@ -4249,6 +4273,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.britishtheatre.com/shows/affluenza"
+          },
+          {
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review"
           },
           {
             "outletId": "bestoftheatre",
@@ -4277,6 +4308,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatre-news.com/news/UK/129344/Affluenza-extends-run-following-early-ticket-demand-ahead-of-world-premiere"
+          },
+          {
+            "outletId": "west-end-best-friend",
+            "outlet": "west-end-best-friend",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios"
           }
         ],
         "suppressedMissing": [],
@@ -4289,9 +4327,8 @@
           },
           {
             "url": "https://www.timeout.com/london/theatre/affluenza",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "outletId": "timeout.com",
+            "state": "live",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
@@ -4302,29 +4339,29 @@
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
-            "outletId": "west-end-best-friend",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
+            "outletId": "times-uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
-            "outletId": "trustpilot.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
             "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.show-score.com/uk/london/off-west-end-shows/affluenza",
+            "outletId": "show-score.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/affluenza_1726919/",
+            "outletId": "whatsonstage",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
@@ -4337,11 +4374,11 @@
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
-            "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-            "outletId": "uktw.co.uk",
+            "url": "https://entertheatre.com/shows/affluenza/riverside-studios",
+            "outletId": "entertheatre.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.britishtheatre.com/shows/affluenza",
@@ -4349,6 +4386,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
+            "outletId": "london-box-office",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/affluenza-adds-extra-dates-riverside-studios",
@@ -4377,13 +4421,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/further-casting-affluenza-riverside-studios",
+            "outletId": "west-end-best-friend",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
-        "candidateCount": 13
+        "liveCount": 2,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
@@ -17901,16 +17952,14 @@
         "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
         "https://www.newsfromme.com/2026/10/05/the-boop-report/",
         "https://meganannrasmussen.com/reviews/boop-the-musical",
-        "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
-        "https://didtheylikeit.com/shows/boop-the-musical/",
         "https://popcultblog.com/review-revisited-boop-hits-broadway",
         "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
         "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
         "https://reallytallguy.com/theatre/reviews/boop/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 2,
+      "dirClean": 2,
+      "inReviewsJson": 1,
       "missing": [
         {
           "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
@@ -18091,27 +18140,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
-          "host": "newsfromme.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
           "host": "meganannrasmussen.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://didtheylikeit.com/shows/boop-the-musical/",
-          "host": "didtheylikeit.com",
-          "knownOutletId": "dtli",
           "serpCensus": true
         },
         {
@@ -18139,7 +18170,12 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "yahoo.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -18185,7 +18221,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           },
           {
@@ -18201,19 +18237,19 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
         "count": 844,
         "byReason": {
-          "aggregator-internal-nav": 641,
+          "non-review-host": 98,
+          "roundup-page": 5,
+          "aggregator-internal-nav": 638,
+          "non-review-path": 1,
           "not-http-url": 84,
           "aggregator-section-root": 16,
-          "non-review-host": 99,
-          "roundup-page": 1,
-          "non-review-path": 2,
-          "ticketing-reseller": 1
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
@@ -18389,46 +18425,10 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
-          "host": "newsfromme.com",
-          "outletId": "newsfromme",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
           "host": "meganannrasmussen.com",
           "outletId": "meganannrasmussen",
           "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": true,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        },
-        {
-          "url": "https://didtheylikeit.com/shows/boop-the-musical/",
-          "host": "didtheylikeit.com",
-          "outletId": "dtli",
-          "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
@@ -18447,55 +18447,54 @@
           "conflictReason": null,
           "unclassified": true,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
-        }
-      ],
-      "ingestSkippedByCap": [
+        },
         {
           "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
           "host": "broadwaynews.com",
-          "outletId": "broadwaynews"
+          "outletId": "broadwaynews",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
         },
         {
           "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
           "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork"
+          "outletId": "broadwaypodcastnetwork",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
         },
         {
           "url": "https://reallytallguy.com/theatre/reviews/boop/",
           "host": "reallytallguy.com",
-          "outletId": "reallytallguy"
+          "outletId": "reallytallguy",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "newsfromme.com",
-            "outlet": "newsfromme.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/"
-          },
           {
             "outletId": "meganannrasmussen.com",
             "outlet": "meganannrasmussen.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway"
-          },
-          {
-            "outletId": "dtli",
-            "outlet": "dtli",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://didtheylikeit.com/shows/boop-the-musical/"
           },
           {
             "outletId": "popcultblog.com",
@@ -18531,27 +18530,12 @@
           {
             "url": "https://www.newsfromme.com/2026/10/05/the-boop-report/",
             "outletId": "newsfromme.com",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
             "outletId": "meganannrasmussen.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://www.show-score.com/broadway-shows/boop-the-musical-broadway",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://didtheylikeit.com/shows/boop-the-musical/",
-            "outletId": "dtli",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
@@ -18586,10 +18570,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 8
+        "liveCount": 1,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -35889,12 +35873,20 @@
         "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneath-the-hate-and-self-hate.html",
         "https://www.talkinbroadway.com/page/ob/index.html",
         "https://newyorktheater.me/2026/09/29/degenerates-review/",
+        "https://www.show-score.com/off-broadway-shows/degenerates",
         "https://melodramamag.com/shows/degenerates/"
       ],
       "dirFiles": 22,
       "dirClean": 16,
       "inReviewsJson": 15,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/degenerates",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -35970,7 +35962,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -36006,26 +35998,48 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 392,
+        "count": 390,
         "byReason": {
-          "non-review-path": 1,
-          "ticketing-reseller": 1,
-          "non-review-host": 49,
+          "non-review-host": 48,
           "roundup-page": 2,
           "aggregator-internal-nav": 259,
+          "non-review-path": 1,
+          "ticketing-listing": 1,
           "not-http-url": 67,
           "aggregator-section-root": 11,
-          "production-database-listing": 2
+          "production-database-listing": 1
         }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/degenerates",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/degenerates"
+          },
           {
             "outletId": "talkinbroadway",
             "outlet": "talkinbroadway",
@@ -36110,6 +36124,13 @@
             "firstSeenAt": "2026-09-30T14:36:15.177Z"
           },
           {
+            "url": "https://www.show-score.com/off-broadway-shows/degenerates",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
             "url": "https://www.talkinbroadway.com/page/ob/index.html",
             "outletId": "talkinbroadway",
             "state": "GAP",
@@ -36126,9 +36147,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 11,
-        "candidateCount": 13
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "delirium-off-broadway-2026",
@@ -44810,25 +44831,29 @@
       "aggregatorListedUrls": [
         "https://everything-theatre.co.uk/2026/10/review-flamenc-oh-peacock-theatre/",
         "https://thelivereview.co.uk/flamenc-oh-review-peacock-theatre/",
-        "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/",
         "https://www.londonboxoffice.co.uk/news/post/flamenc-oh-peacock-theatre-review",
-        "https://loureviews.blog/2026/10/01/dance-review-flamenc-oh-at-peacock-theatre/",
-        "https://thespyinthestalls.com/2026/10/flamenc-oh/",
-        "https://www.allthatdazzles.co.uk/post/review-flamenc-oh-peacock-theatre",
         "https://redbuslondinium.uk/2026/09/30/review-flamenc-oh-peacock-theatre/",
+        "https://thespyinthestalls.com/2026/10/flamenc-oh/",
+        "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review",
+        "https://loureviews.blog/2026/10/01/dance-review-flamenc-oh-at-peacock-theatre/",
+        "https://www.allthatdazzles.co.uk/post/review-flamenc-oh-peacock-theatre",
+        "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/",
         "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco",
-        "https://ayoungishperspective.co.uk/2026/10/02/review-flamenc-oh/",
-        "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
-        "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
+        "https://one4review.co.uk/2026/08/flamenc-oh-4/",
         "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
-        "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
-        "https://festmag.com/2026/08/28/review-flamenc-oh/",
-        "https://thelivereview.co.uk/tag/flamenc-oh/"
+        "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+        "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html"
       ],
       "dirFiles": 23,
       "dirClean": 10,
       "inReviewsJson": 9,
       "missing": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "serpCensus": true
+        },
         {
           "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
           "host": "aol.co.uk",
@@ -44837,6 +44862,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
         {
           "host": "londontheatredirect.com",
           "count": 1
@@ -44862,8 +44891,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
-          "host": "entertainment-now.com",
+          "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/",
+          "host": "one4review.co.uk",
           "knownOutletId": null,
           "recoverable": false,
           "recoverableFile": null,
@@ -44872,27 +44901,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "entertainment-now--alan-shaw.json",
+              "file": "one4review--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--jamie-body.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh"
+              "urlInDir": "https://one4review.co.uk/2026/08/flamenc-oh-4/"
             }
           ],
           "serpCensus": true
@@ -44916,9 +44927,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://festmag.com/2026/08/28/review-flamenc-oh/",
-          "host": "festmag.com",
-          "knownOutletId": null,
+          "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+          "host": "theatreinedinburgh.co.uk",
+          "knownOutletId": "theatreinedinburgh",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -44926,9 +44937,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "festmag--claire-sawers.json",
+              "file": "theatreinedinburgh--chris-omaweng.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://festmag.com/2026/08/28/review-flamenc-oh/"
+              "urlInDir": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/"
             }
           ],
           "serpCensus": true
@@ -44989,7 +45000,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -44999,7 +45010,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -45008,7 +45019,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -45029,27 +45040,39 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 19,
         "byReason": {
-          "non-review-path": 1,
           "non-review-host": 10,
-          "roundup-page": 2,
-          "ticketing-listing": 3,
+          "roundup-page": 4,
+          "non-review-path": 1,
+          "ticketing-listing": 2,
           "event-listing": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
         {
           "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
           "host": "aol.co.uk",
@@ -45060,13 +45083,20 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  ScrapingBee credits low: -5 remaining (-0.0%) — skipping SB\n⚠️  ScrapingBee failed (render_js=fa"
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review"
+          },
           {
             "outletId": "aol.co.uk",
             "outlet": "aol.co.uk",
@@ -45082,18 +45112,11 @@
             "url": "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco"
           },
           {
-            "outletId": "entertainment-now.com",
-            "outlet": "entertainment-now.com",
+            "outletId": "one4review.co.uk",
+            "outlet": "one4review.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh"
+            "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/"
           },
           {
             "outletId": "the-list",
@@ -45103,11 +45126,11 @@
             "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667"
           },
           {
-            "outletId": "festmag.com",
-            "outlet": "festmag.com",
+            "outletId": "theatreinedinburgh",
+            "outlet": "theatreinedinburgh",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://festmag.com/2026/08/28/review-flamenc-oh/"
+            "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/"
           }
         ],
         "suppressedMissing": [],
@@ -45125,20 +45148,14 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/flamenc-oh-peacock-theatre-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-30T23:32:29.097Z"
           },
           {
-            "url": "https://loureviews.blog/2026/10/01/dance-review-flamenc-oh-at-peacock-theatre/",
-            "outletId": "loureviews.blog",
+            "url": "https://redbuslondinium.uk/2026/09/30/review-flamenc-oh-peacock-theatre/",
+            "outletId": "redbuslondinium.uk",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
@@ -45149,28 +45166,29 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
+            "url": "https://loureviews.blog/2026/10/01/dance-review-flamenc-oh-at-peacock-theatre/",
+            "outletId": "loureviews.blog",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-flamenc-oh-peacock-theatre",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://redbuslondinium.uk/2026/09/30/review-flamenc-oh-peacock-theatre/",
-            "outletId": "redbuslondinium.uk",
+            "url": "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/10/02/review-flamenc-oh/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
-            "url": "https://thelivereview.co.uk/tag/flamenc-oh/",
-            "outletId": "thelivereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
@@ -45187,18 +45205,11 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
-            "outletId": "entertainment-now.com",
+            "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/",
+            "outletId": "one4review.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
@@ -45208,18 +45219,18 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://festmag.com/2026/08/28/review-flamenc-oh/",
-            "outletId": "festmag.com",
+            "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+            "outletId": "theatreinedinburgh",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
-        "candidateCount": 15
+        "liveCount": 8,
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "floyd-collins-2025",
@@ -45555,44 +45566,21 @@
         "https://www.theatrebookings.com/musical/franz-and-marie",
         "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-franz-marie",
         "https://www.theatremonkey.com/show/franz-marie/",
-        "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
         "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
-        "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
+        "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre",
+        "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
         "https://whatnightout.uk/london/events/franz-marie-8871320",
-        "https://musicalzentrale.de/151240/franz-marie/"
+        "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
+        "https://www.westendtheatre.com/363750/news/franz-and-marie-charing-cross-theatre-cast/"
       ],
-      "dirFiles": 4,
-      "dirClean": 0,
+      "dirFiles": 9,
+      "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "serpCensus": true
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
-          "host": "broadwaybaby.com",
-          "knownOutletId": "broadway-baby",
-          "serpCensus": true
-        },
-        {
-          "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
-          "host": "fillinghamweston.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://whatnightout.uk/london/events/franz-marie-8871320",
-          "host": "whatnightout.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://musicalzentrale.de/151240/franz-marie/",
-          "host": "musicalzentrale.de",
-          "knownOutletId": null,
+          "url": "https://www.westendtheatre.com/363750/news/franz-and-marie-charing-cross-theatre-cast/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
           "serpCensus": true
         }
       ],
@@ -45648,6 +45636,78 @@
               "file": "theatremonkey--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.theatremonkey.com/show/franz-marie/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-box-office--shehrazade-zafar-arif.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
+          "host": "fillinghamweston.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fillinghamweston--fwa-assistant.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/"
             }
           ],
           "serpCensus": true
@@ -45723,7 +45783,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -45749,81 +45809,32 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 35,
         "byReason": {
+          "non-review-host": 23,
           "aggregator-internal-nav": 2,
-          "non-review-host": 26,
-          "non-review-path": 3,
-          "ticketing-reseller": 3,
+          "non-review-path": 5,
           "ticketing-listing": 2,
-          "venue-production-page": 1
+          "ticketing-reseller": 3
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
+          "url": "https://www.westendtheatre.com/363750/news/franz-and-marie-charing-cross-theatre-cast/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
-          "host": "broadwaybaby.com",
-          "outletId": "broadway-baby",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
-          "host": "fillinghamweston.com",
-          "outletId": "fillinghamweston",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://whatnightout.uk/london/events/franz-marie-8871320",
-          "host": "whatnightout.uk",
-          "outletId": "whatnightout",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://musicalzentrale.de/151240/franz-marie/",
-          "host": "musicalzentrale.de",
-          "outletId": "musicalzentrale",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "Refusing to ingest — https://www.westendtheatre.com/363750/news/franz-and-marie-charing-cross-theatr"
         }
       ],
       "ingestSkippedByCap": [],
@@ -45831,39 +45842,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/"
-          },
-          {
-            "outletId": "broadway-baby",
-            "outlet": "broadway-baby",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528"
-          },
-          {
-            "outletId": "fillinghamweston.com",
-            "outlet": "fillinghamweston.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/"
-          },
-          {
-            "outletId": "whatnightout.uk",
-            "outlet": "whatnightout.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
-          },
-          {
-            "outletId": "musicalzentrale.de",
-            "outlet": "musicalzentrale.de",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicalzentrale.de/151240/franz-marie/"
+            "url": "https://www.westendtheatre.com/363750/news/franz-and-marie-charing-cross-theatre-cast/"
           },
           {
             "outletId": "theatrebookings",
@@ -45885,44 +45868,50 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatremonkey.com/show/franz-marie/"
+          },
+          {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528"
+          },
+          {
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/"
+          },
+          {
+            "outletId": "fillinghamweston.com",
+            "outlet": "fillinghamweston.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
-            "outletId": "theatre-weekly",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
-            "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
-            "outletId": "broadway-baby",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
-            "outletId": "fillinghamweston.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
             "url": "https://whatnightout.uk/london/events/franz-marie-8871320",
             "outletId": "whatnightout.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "live",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
-            "url": "https://musicalzentrale.de/151240/franz-marie/",
-            "outletId": "musicalzentrale.de",
+            "url": "https://www.westendtheatre.com/363750/news/franz-and-marie-charing-cross-theatre-cast/",
+            "outletId": "westendtheatre",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.theatrebookings.com/musical/franz-and-marie",
@@ -45944,13 +45933,41 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://broadwaybaby.com/shows/franz-and-marie-woyzeck-retold/742528",
+            "outletId": "broadway-baby",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/new-musical-franz-and-marie-to-open-at-charing-cross-theatre",
+            "outletId": "london-box-office",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://theatreweekly.com/new-musical-tragedy-franz-marie-to-make-its-debut-at-charing-cross-theatre-this-autumn/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "https://fillinghamweston.com/franz-marie-to-open-charing-cross-theatre/",
+            "outletId": "fillinghamweston.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 8
+        "liveCount": 1,
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "frieze-new-york-off-broadway-2026",
@@ -47258,7 +47275,9 @@
         "https://theatreweekly.com/the-gang-of-three-to-embark-on-major-uk-tour-following-sold-out-london-run/",
         "https://rolandcat.substack.com/p/stage-review-the-gang-of-three-kings",
         "https://www.politicshome.com/news/article/richard-baker-gang-three-play",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-gang-of-three-review-kings-head-theatre-x769c7nkn"
+        "https://www.thetimes.com/culture/theatre-dance/article/the-gang-of-three-review-kings-head-theatre-x769c7nkn",
+        "https://www.hamhigh.co.uk/news/25146859.gang-three-kings-head-theatre-islington-review/",
+        "https://firstnightmagazine.com/tag/review-the-gang-of-three-kings-head/"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -47328,6 +47347,18 @@
           "url": "https://www.thetimes.com/culture/theatre-dance/article/the-gang-of-three-review-kings-head-theatre-x769c7nkn",
           "host": "thetimes.com",
           "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.hamhigh.co.uk/news/25146859.gang-three-kings-head-theatre-islington-review/",
+          "host": "hamhigh.co.uk",
+          "knownOutletId": "hampstead-highgate-express",
+          "serpCensus": true
+        },
+        {
+          "url": "https://firstnightmagazine.com/tag/review-the-gang-of-three-kings-head/",
+          "host": "firstnightmagazine.com",
+          "knownOutletId": "firstnightmagazine",
           "serpCensus": true
         }
       ],
@@ -47471,19 +47502,19 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 7,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 22,
         "byReason": {
-          "non-review-host": 24,
+          "non-review-host": 21,
           "aggregator-internal-nav": 1
         }
       },
@@ -47580,6 +47611,16 @@
           "url": "https://www.thetimes.com/culture/theatre-dance/article/the-gang-of-three-review-kings-head-theatre-x769c7nkn",
           "host": "thetimes.com",
           "outletId": "times-uk"
+        },
+        {
+          "url": "https://www.hamhigh.co.uk/news/25146859.gang-three-kings-head-theatre-islington-review/",
+          "host": "hamhigh.co.uk",
+          "outletId": "hampstead-highgate-express"
+        },
+        {
+          "url": "https://firstnightmagazine.com/tag/review-the-gang-of-three-kings-head/",
+          "host": "firstnightmagazine.com",
+          "outletId": "firstnightmagazine"
         }
       ],
       "censusVerdict": {
@@ -47661,6 +47702,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.com/culture/theatre-dance/article/the-gang-of-three-review-kings-head-theatre-x769c7nkn"
+          },
+          {
+            "outletId": "hampstead-highgate-express",
+            "outlet": "hampstead-highgate-express",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hamhigh.co.uk/news/25146859.gang-three-kings-head-theatre-islington-review/"
+          },
+          {
+            "outletId": "firstnightmagazine",
+            "outlet": "firstnightmagazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://firstnightmagazine.com/tag/review-the-gang-of-three-kings-head/"
           },
           {
             "outletId": "artsdesk",
@@ -47757,6 +47812,20 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
+            "url": "https://www.hamhigh.co.uk/news/25146859.gang-three-kings-head-theatre-islington-review/",
+            "outletId": "hampstead-highgate-express",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/tag/review-the-gang-of-three-kings-head/",
+            "outletId": "firstnightmagazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
             "url": "https://theartsdesk.com/theatre/gang-three-kings-head-theatre-three-old-labour-ghosts-resurrected-entertain-and-educate",
             "outletId": "artsdesk",
             "state": "IN_FLIGHT",
@@ -47773,9 +47842,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 13
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -60269,20 +60338,21 @@
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/hay-fever-review-christine-baranski-richard-e-grant-noel-coward",
         "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
-        "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
         "https://westendwilma.com/review-hay-fever-wyndhams-theatre/",
-        "https://www.whatsonstage.com/news/hay-fever-review-christine-baranski-and-richard-e-grant-offer-up-a-light-and-delicious-west-end-confection_1734109/",
+        "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
         "https://www.thereviewshub.com/hay-fever-wyndhams-theatre-london/",
         "https://loureviews.blog/2026/10/02/play-review-hay-fever-at-wyndhams-theatre/",
+        "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
         "https://www.allthatdazzles.co.uk/post/review-hay-fever-wyndham-s-theatre",
         "http://www.jonathanbaz.com/2026/10/hay-fever-review.html",
         "https://everything-theatre.co.uk/2026/10/review-hay-fever-wyndhams-theatre/",
         "https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant",
         "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
         "https://www.wyndhamstheatre.co.uk/whats-on/hay-fever",
-        "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
+        "https://www.whatsonstage.com/news/hay-fever-review-christine-baranski-and-richard-e-grant-offer-up-a-light-and-delicious-west-end-confection_1734109/",
         "https://www.timeout.com/london/theatre/hay-fever-3",
         "https://www.westendbestfriend.co.uk/news/review-hay-fever-wyndhams-theatre",
+        "https://firstnightmagazine.com/2026/10/02/review-of-hay-fever-wyndhams-theatre-2026-drowsy-performances-are-something-to-sneeze-at/",
         "https://www.ft.com/content/95dcb0f2-f4d6-442d-b4b1-77fc387867ce",
         "https://www.telegraph.co.uk/theatre/what-to-see/hay-fever-wyndhams-theatre-review-richard-e-grant/",
         "https://www.standard.co.uk/culture/theatre/hay-fever-richard-e-grant-review-b1299267.html",
@@ -60290,9 +60360,9 @@
         "https://www.cityam.com/hay-fever-review-of-course-richard-e-grant-is-perfect-for-coward/",
         "https://www.broadwayworld.com/article/Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002"
       ],
-      "dirFiles": 42,
-      "dirClean": 30,
-      "inReviewsJson": 31,
+      "dirFiles": 43,
+      "dirClean": 31,
+      "inReviewsJson": 32,
       "missing": [
         {
           "url": "https://www.wyndhamstheatre.co.uk/whats-on/hay-fever",
@@ -60319,15 +60389,15 @@
           "count": 1
         },
         {
-          "host": "firstnightmagazine.com",
-          "count": 1
-        },
-        {
           "host": "londontheatrereviews.co.uk",
           "count": 1
         },
         {
           "host": "londontheatredirect.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
           "count": 1
         },
         {
@@ -60441,7 +60511,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 3,
             "error": null
           },
@@ -60472,21 +60542,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 16,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 16,
         "byReason": {
+          "non-review-host": 10,
+          "roundup-page": 4,
           "non-review-path": 1,
-          "non-review-host": 11,
-          "roundup-page": 5,
           "ticketing-listing": 1
         }
       },
@@ -60539,20 +60609,14 @@
             "firstSeenAt": "2026-10-04T22:50:25.087Z"
           },
           {
-            "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-02T09:21:15.016Z"
-          },
-          {
             "url": "https://westendwilma.com/review-hay-fever-wyndhams-theatre/",
             "outletId": "westendwilma.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/hay-fever-review-christine-baranski-and-richard-e-grant-offer-up-a-light-and-delicious-west-end-confection_1734109/",
-            "outletId": "whatsonstage.com",
+            "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-02T09:21:15.016Z"
           },
@@ -60567,6 +60631,12 @@
             "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-02T09:21:15.016Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-hay-fever-wyndham-s-theatre",
@@ -60599,8 +60669,8 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
-            "outletId": "thetimes.com",
+            "url": "https://www.whatsonstage.com/news/hay-fever-review-christine-baranski-and-richard-e-grant-offer-up-a-light-and-delicious-west-end-confection_1734109/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-02T09:21:15.016Z"
           },
@@ -60609,6 +60679,12 @@
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/2026/10/02/review-of-hay-fever-wyndhams-theatre-2026-drowsy-performances-are-something-to-sneeze-at/",
+            "outletId": "firstnightmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.ft.com/content/95dcb0f2-f4d6-442d-b4b1-77fc387867ce",
@@ -60662,10 +60738,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 20,
-        "candidateCount": 22
+        "liveCount": 21,
+        "candidateCount": 23
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -77010,33 +77086,33 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-kramer-fauci-at-st-anns-warehouse"
+        "https://playbill.com/article/read-the-reviews-for-kramer-fauci-at-st-anns-warehouse",
+        "https://www.broadwayworld.com/article/Review-Roundup-KRAMERFAUCI-Now-Playing-at-St-Anns-Warehouse-20261005"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/kramer-fauci-off-broadway-review/",
         "https://www.vulture.com/article/kramer-fauci-daniel-fish-play-st-anns-nyc.html",
+        "https://nystagereview.com/2026/10/05/kramer-fauci-friendly-adversaries-tangle-over-aids-progress/",
         "https://newyorktheater.me/2026/10/04/kramer-fauci-review/",
         "https://www.newyorktheatreguide.com/reviews/kramer-fauci-off-broadway-review",
         "https://therecs.co.uk/kramer-fauci/",
         "https://theaterpizzazz.com/kramer-fauci-talks-and-talks-without-enough-illumination/",
         "https://www.theatermania.com/news/review-kramer-fauci-unearths-a-significant-exchange-about-the-aids-crisis_1824503/",
+        "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
         "https://www.theguardian.com/stage/2026/oct/03/kramer-fauci-aids-play-brookyn-new-york",
         "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
-        "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
-        "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
+        "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
         "https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/",
+        "https://www.show-score.com/off-broadway-shows/kramer-fauci",
+        "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
+        "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
+        "https://www.seattletimes.com/entertainment/new-play-looking-at-friendship-between-aids-activist-larry-kramer-and-anthony-fauci-in-the-works/",
         "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/"
       ],
-      "dirFiles": 10,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 13,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
-        {
-          "url": "https://www.theatermania.com/news/review-kramer-fauci-unearths-a-significant-exchange-about-the-aids-crisis_1824503/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true
-        },
         {
           "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
           "host": "exeuntnyc.com",
@@ -77044,9 +77120,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci",
+          "host": "show-score.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -77056,9 +77132,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
+          "url": "https://www.seattletimes.com/entertainment/new-play-looking-at-friendship-between-aids-activist-larry-kramer-and-anthony-fauci-in-the-works/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times",
           "serpCensus": true
         },
         {
@@ -77069,10 +77145,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "nystagereview.com",
-          "count": 1
-        },
         {
           "host": "twi-ny.com",
           "count": 1
@@ -77122,7 +77194,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -77141,8 +77213,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -77152,7 +77224,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -77162,39 +77234,28 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 126,
+        "count": 401,
         "byReason": {
-          "aggregator-internal-nav": 60,
-          "not-http-url": 20,
-          "aggregator-section-root": 5,
-          "non-review-host": 40,
-          "roundup-page": 1
+          "non-review-host": 50,
+          "roundup-page": 2,
+          "aggregator-internal-nav": 270,
+          "venue-production-page": 1,
+          "not-http-url": 67,
+          "aggregator-section-root": 11
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/review-kramer-fauci-unearths-a-significant-exchange-about-the-aids-crisis_1824503/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
         {
           "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
           "host": "exeuntnyc.com",
@@ -77208,16 +77269,16 @@
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
-          "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
+          "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
           "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
@@ -77232,35 +77293,34 @@
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
-          "url": "https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://www.seattletimes.com/entertainment/new-play-looking-at-friendship-between-aids-activist-larry-kramer-and-anthony-fauci-in-the-works/",
+          "host": "seattletimes.com",
+          "outletId": "seattle-times",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        }
-      ],
-      "ingestSkippedByCap": [
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
         {
           "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
           "host": "1minutecritic.com",
-          "outletId": "one-minute-critic"
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-kramer-fauci-unearths-a-significant-exchange-about-the-aids-crisis_1824503/"
-          },
           {
             "outletId": "exeunt-magazine",
             "outlet": "exeunt-magazine",
@@ -77269,11 +77329,11 @@
             "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/"
           },
           {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html"
+            "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci"
           },
           {
             "outletId": "theatlantic",
@@ -77283,11 +77343,11 @@
             "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/"
           },
           {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
+            "outletId": "seattle-times",
+            "outlet": "seattle-times",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/"
+            "url": "https://www.seattletimes.com/entertainment/new-play-looking-at-friendship-between-aids-activist-larry-kramer-and-anthony-fauci-in-the-works/"
           },
           {
             "outletId": "one-minute-critic",
@@ -77319,6 +77379,12 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
+            "url": "https://nystagereview.com/2026/10/05/kramer-fauci-friendly-adversaries-tangle-over-aids-progress/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
             "url": "https://newyorktheater.me/2026/10/04/kramer-fauci-review/",
             "outletId": "newyorktheater.me",
             "state": "live",
@@ -77344,10 +77410,33 @@
           },
           {
             "url": "https://www.theatermania.com/news/review-kramer-fauci-unearths-a-significant-exchange-about-the-aids-crisis_1824503/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theatermania.com",
+            "state": "live",
             "firstSeenAt": "2026-10-03T01:04:31.358Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
             "url": "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
@@ -77357,11 +77446,11 @@
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
-            "outletId": "nytimes",
+            "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci",
+            "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
@@ -77371,11 +77460,11 @@
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
-            "url": "https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/",
-            "outletId": "theatermania",
+            "url": "https://www.seattletimes.com/entertainment/new-play-looking-at-friendship-between-aids-activist-larry-kramer-and-anthony-fauci-in-the-works/",
+            "outletId": "seattle-times",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
@@ -77393,10 +77482,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 6,
-        "candidateCount": 12
+        "liveCount": 9,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -114930,13 +115019,34 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
+      "aggregatorListedUrls": [
+        "https://stageraw.com/stage-raw-review-puppet-up/"
+      ],
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://stageraw.com/stage-raw-review-puppet-up/",
+          "host": "stageraw.com",
+          "knownOutletId": "stage-raw",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "stage-raw--steven-morris.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://stageraw.com/stage-raw-review-puppet-up/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -114960,7 +115070,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 5,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -114981,7 +115091,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -115007,28 +115117,44 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 0,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 38,
+        "count": 36,
         "byReason": {
-          "venue-production-page": 3,
-          "non-review-host": 26,
-          "aggregator-internal-nav": 9
+          "non-review-host": 27,
+          "aggregator-internal-nav": 7,
+          "venue-production-page": 2
         }
       },
       "dedupedVariants": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "stage-raw",
+            "outlet": "stage-raw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stageraw.com/stage-raw-review-puppet-up/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://stageraw.com/stage-raw-review-puppet-up/",
+            "outletId": "stage-raw",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "purpose-2025",
@@ -128136,22 +128262,41 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.offoffonline.com/offoffonline/2026/9/29/soon",
         "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/",
         "https://www.ootbtheatrics.com/soon"
       ],
-      "dirFiles": 1,
+      "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/",
-          "host": "indieshortsmag.com",
-          "knownOutletId": null,
+          "url": "https://www.offoffonline.com/offoffonline/2026/9/29/soon",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
           "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/",
+          "host": "indieshortsmag.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "indieshortsmag--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.ootbtheatrics.com/soon",
           "host": "ootbtheatrics.com",
@@ -128185,7 +128330,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -128231,27 +128376,27 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 33,
         "byReason": {
-          "aggregator-internal-nav": 5,
           "non-review-host": 24,
           "census-junk-host": 2,
-          "ticketing-reseller": 2,
-          "venue-production-page": 2,
-          "news-article": 1
+          "aggregator-internal-nav": 3,
+          "ticketing-listing": 1,
+          "venue-production-page": 1,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/",
-          "host": "indieshortsmag.com",
-          "outletId": "indieshortsmag",
-          "provisional": true,
+          "url": "https://www.offoffonline.com/offoffonline/2026/9/29/soon",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -128264,6 +128409,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/29/soon"
+          },
           {
             "outletId": "indieshortsmag.com",
             "outlet": "indieshortsmag.com",
@@ -128282,6 +128434,13 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/29/soon",
+            "outletId": "off-off-online",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
             "url": "https://www.indieshortsmag.com/reviews/2026/09/cancer-kid-a-tongue-in-cheek-comedy-about-dying-too-soon-too-alone/",
             "outletId": "indieshortsmag.com",
             "state": "IN_FLIGHT",
@@ -128298,9 +128457,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "space-dogs-off-west-end-2026",
@@ -147217,26 +147376,32 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
+        "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
         "https://www.uktw.co.uk/London/Bush-Theatre/Play/The-Hungry-Ghost/L580074751/",
+        "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
         "https://www.newearththeatre.org.uk/news/the-hungry-ghost-rd-casting-call-out",
-        "https://www.timeout.com/london/theatre/the-hungry-ghost",
-        "https://www.nickhernbooks.co.uk/hungry-ghost"
+        "https://www.timeout.com/london/theatre/the-hungry-ghost"
       ],
       "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
-          "host": "chiswickcalendar.co.uk",
-          "knownOutletId": "chiswickcalendar",
+          "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
+          "host": "redbuslondinium.uk",
+          "knownOutletId": "redbuslondinium",
           "serpCensus": true
         },
         {
           "url": "https://www.uktw.co.uk/London/Bush-Theatre/Play/The-Hungry-Ghost/L580074751/",
           "host": "uktw.co.uk",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
+          "host": "chiswickcalendar.co.uk",
+          "knownOutletId": "chiswickcalendar",
           "serpCensus": true
         },
         {
@@ -147262,24 +147427,6 @@
               "file": "timeout-london--unknown.json",
               "flag": "wrongShow",
               "urlInDir": "https://www.timeout.com/london/theatre/the-hungry-ghost"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.nickhernbooks.co.uk/hungry-ghost",
-          "host": "nickhernbooks.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nickhernbooks--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nickhernbooks.co.uk/hungry-ghost"
             }
           ],
           "serpCensus": true
@@ -147335,7 +147482,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -147375,7 +147522,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -147385,28 +147532,29 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 27,
         "byReason": {
-          "non-review-path": 1,
-          "non-review-host": 20,
+          "non-review-host": 21,
           "census-junk-host": 2,
           "roundup-page": 1,
-          "aggregator-internal-nav": 1
+          "aggregator-internal-nav": 1,
+          "non-review-path": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
-          "host": "chiswickcalendar.co.uk",
-          "outletId": "chiswickcalendar",
+          "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
+          "host": "redbuslondinium.uk",
+          "outletId": "redbuslondinium",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "❌ Refusing to ingest — collision with chiswickcalendar--unknown.json\n   reason: stale-flag-on-existi"
+          "reason": null
         },
         {
           "url": "https://www.uktw.co.uk/London/Bush-Theatre/Play/The-Hungry-Ghost/L580074751/",
@@ -147419,6 +147567,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+        },
+        {
+          "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
+          "host": "chiswickcalendar.co.uk",
+          "outletId": "chiswickcalendar",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "❌ Refusing to ingest — collision with chiswickcalendar--unknown.json\n   reason: stale-flag-on-existi"
         },
         {
           "url": "https://www.newearththeatre.org.uk/news/the-hungry-ghost-rd-casting-call-out",
@@ -147438,11 +147598,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "chiswickcalendar",
-            "outlet": "chiswickcalendar",
+            "outletId": "redbuslondinium",
+            "outlet": "redbuslondinium",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/"
+            "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/"
           },
           {
             "outletId": "uktw.co.uk",
@@ -147450,6 +147610,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.uktw.co.uk/London/Bush-Theatre/Play/The-Hungry-Ghost/L580074751/"
+          },
+          {
+            "outletId": "chiswickcalendar",
+            "outlet": "chiswickcalendar",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/"
           },
           {
             "outletId": "newearththeatre.org.uk",
@@ -147464,23 +147631,16 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/the-hungry-ghost"
-          },
-          {
-            "outletId": "nickhernbooks.co.uk",
-            "outlet": "nickhernbooks.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nickhernbooks.co.uk/hungry-ghost"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
-            "outletId": "chiswickcalendar",
+            "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
+            "outletId": "redbuslondinium",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-03T23:39:15.002Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.uktw.co.uk/London/Bush-Theatre/Play/The-Hungry-Ghost/L580074751/",
@@ -147488,6 +147648,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
+          },
+          {
+            "url": "https://chiswickcalendar.co.uk/event/the-hungry-ghost-bush-theatre/2026-10-20/",
+            "outletId": "chiswickcalendar",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-03T23:39:15.002Z"
           },
           {
             "url": "https://www.newearththeatre.org.uk/news/the-hungry-ghost-rd-casting-call-out",
@@ -147502,20 +147669,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
-            "url": "https://www.nickhernbooks.co.uk/hungry-ghost",
-            "outletId": "nickhernbooks.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -158913,25 +159073,22 @@
         "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
         "https://www.thereviewshub.com/the-standard-of-living-theatre-royal-haymarket-london/",
         "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
+        "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
         "https://theatre.reviews/reviews-roundup/standard-of-living-reviews/",
         "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
         "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
-        "https://trh.co.uk/whatson/the-standard-of-living/",
         "https://www.theupcoming.co.uk/2026/09/30/the-standard-of-living-at-theatre-royal-haymarket-theatre-review/",
+        "https://trh.co.uk/whatson/the-standard-of-living/",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-standard-of-living-theatre-royal-haymarket-review/",
         "https://lovelondonloveculture.com/2026/10/03/review-round-up-the-standard-of-living-theatre-royal-haymarket/",
         "https://www.westendbestfriend.co.uk/news/review-the-standard-of-living-theatre-royal-haymarket",
-        "https://www.londonboxoffice.co.uk/news/post/the-standard-of-living-theatre-royal-haymarket-review",
-        "https://www.standard.co.uk/culture/theatre/the-standard-of-living-review-b1299109.html",
         "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/the-standard-of-living-theatre-royal-haymarket",
         "https://www.afridiziak.com/reviews/the-standard-of-living/",
+        "https://www.standard.co.uk/culture/theatre/the-standard-of-living-review-b1299109.html",
         "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
-        "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-standard-of-living-rory-kinnear-john-maynard-keynes-b3058809.html",
         "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
-        "https://www.ft.com/content/8f443987-91a7-4785-83e8-51937613fc77",
-        "https://www.broadwayworld.com/westend/article/Review-THE-STANDARD-OF-LIVING-Starring-Rory-Kinnear-20260930"
+        "https://www.ft.com/content/8f443987-91a7-4785-83e8-51937613fc77"
       ],
       "dirFiles": 43,
       "dirClean": 29,
@@ -158968,11 +159125,19 @@
           "count": 1
         },
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
           "host": "closeupculture.com",
           "count": 1
         },
         {
           "host": "dailymail.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
           "count": 1
         },
         {
@@ -158993,6 +159158,10 @@
         },
         {
           "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "stagedtheatre.co.uk",
           "count": 1
         },
         {
@@ -159026,7 +159195,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 26,
+        "rowCount": 15,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -159036,8 +159205,8 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": true,
-            "rows": 11,
+            "found": false,
+            "rows": 0,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -159058,13 +159227,9 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 26,
-        "corroborated": 14,
+        "currentRunRows": 15,
+        "corroborated": 9,
         "perSource": {
-          "theatre-reviews": {
-            "cited": 11,
-            "corroborated": 11
-          },
           "lbo-roundup": {
             "cited": 7,
             "corroborated": 7
@@ -159086,8 +159251,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 6,
+            "results": 10,
+            "accepted": 7,
             "error": null
           },
           {
@@ -159097,7 +159262,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -159116,8 +159281,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -159127,7 +159292,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -159137,22 +159302,21 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 17,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 18,
         "byReason": {
           "non-review-host": 13,
-          "roundup-page": 4,
-          "ticketing-listing": 1,
-          "ticket-seller-product-page": 1
+          "roundup-page": 3,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -159267,6 +159431,12 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
+            "url": "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -159291,8 +159461,14 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/the-standard-of-living-theatre-royal-haymarket-review",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+            "outletId": "thetimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.afridiziak.com/reviews/the-standard-of-living/",
+            "outletId": "afridiziak.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
@@ -159303,32 +159479,8 @@
             "firstSeenAt": "2026-10-01T17:09:46.822Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
-            "outletId": "thetimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/the-standard-of-living-theatre-royal-haymarket",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
-            "url": "https://www.afridiziak.com/reviews/the-standard-of-living/",
-            "outletId": "afridiziak.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
             "url": "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
             "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
-            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
@@ -159349,12 +159501,6 @@
             "outletId": "ft.com",
             "state": "live",
             "firstSeenAt": "2026-09-30T19:58:03.707Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-THE-STANDARD-OF-LIVING-Starring-Rory-Kinnear-20260930",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-03T17:55:45.782Z"
           },
           {
             "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
@@ -159393,10 +159539,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 18,
-        "candidateCount": 23
+        "liveCount": 15,
+        "candidateCount": 20
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -166625,10 +166771,10 @@
       "candidatesRejected": {
         "count": 34,
         "byReason": {
-          "non-review-path": 4,
-          "non-review-host": 24,
-          "census-junk-host": 1,
-          "aggregator-internal-nav": 2,
+          "non-review-host": 22,
+          "census-junk-host": 2,
+          "aggregator-internal-nav": 4,
+          "non-review-path": 3,
           "merch-store": 3
         }
       },
@@ -166707,7 +166853,7 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "tom-at-the-farm-off-broadway-2026",
@@ -168630,11 +168776,11 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://playsinternational.org.uk/truths-a-dog-must-to-kennel-battersea-arts-centre/",
         "https://www.timcrouchtheatre.co.uk/shows-2/truths-a-dog-must-to-kennel",
+        "https://playsinternational.org.uk/truths-a-dog-must-to-kennel-battersea-arts-centre/",
+        "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
         "https://www.londontheatre1.com/reviews/truths-a-dog-must-to-kennel-at-battersea-arts-centre/",
         "https://www.researchgate.net/publication/374198011_Review_Truth's_a_Dog_Must_to_Kennel_by_Tim_Crouch",
-        "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
         "https://brightonsource.co.uk/reviews/truths-a-dog-must-to-kennel-review/",
         "https://www.bingefringe.com/2026/08/13/review-truths-a-dog-must-to-kennel-tim-crouch-edfringe-2026-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
         "https://theartsdesk.com/theatre/truths-dog-must-kennel-battersea-arts-centre-review-king-lear-goes-virtual",
@@ -168656,6 +168802,12 @@
           "serpCensus": true
         },
         {
+          "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
+          "host": "bac.org.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://www.londontheatre1.com/reviews/truths-a-dog-must-to-kennel-at-battersea-arts-centre/",
           "host": "londontheatre1.com",
           "knownOutletId": "londontheatre1",
@@ -168664,12 +168816,6 @@
         {
           "url": "https://www.researchgate.net/publication/374198011_Review_Truth's_a_Dog_Must_to_Kennel_by_Tim_Crouch",
           "host": "researchgate.net",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
-          "host": "bac.org.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -168798,7 +168944,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -168818,7 +168964,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -168859,12 +169005,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 20,
+        "count": 19,
         "byReason": {
+          "non-review-host": 12,
           "aggregator-internal-nav": 2,
-          "non-review-host": 13,
-          "ticketing-reseller": 1,
-          "ticketing-listing": 4
+          "ticketing-listing": 4,
+          "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
@@ -168880,6 +169026,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
+          "host": "bac.org.uk",
+          "outletId": "bac",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/ matches a known non-re"
         },
         {
           "url": "https://www.londontheatre1.com/reviews/truths-a-dog-must-to-kennel-at-battersea-arts-centre/",
@@ -168904,18 +169062,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=researchgate.net): Scrapingdog HTTP 400: Oops! Somethi"
-        },
-        {
-          "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
-          "host": "bac.org.uk",
-          "outletId": "bac",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/ matches a known non-re"
         },
         {
           "url": "https://brightonsource.co.uk/reviews/truths-a-dog-must-to-kennel-review/",
@@ -168983,6 +169129,13 @@
             "url": "https://playsinternational.org.uk/truths-a-dog-must-to-kennel-battersea-arts-centre/"
           },
           {
+            "outletId": "bac.org.uk",
+            "outlet": "bac.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/"
+          },
+          {
             "outletId": "londontheatre1",
             "outlet": "londontheatre1",
             "critic": "Unknown",
@@ -168995,13 +169148,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.researchgate.net/publication/374198011_Review_Truth's_a_Dog_Must_to_Kennel_by_Tim_Crouch"
-          },
-          {
-            "outletId": "bac.org.uk",
-            "outlet": "bac.org.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/"
           },
           {
             "outletId": "brightonsource.co.uk",
@@ -169084,6 +169230,13 @@
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
+            "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
+            "outletId": "bac.org.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
             "url": "https://www.londontheatre1.com/reviews/truths-a-dog-must-to-kennel-at-battersea-arts-centre/",
             "outletId": "londontheatre1",
             "state": "IN_FLIGHT",
@@ -169093,13 +169246,6 @@
           {
             "url": "https://www.researchgate.net/publication/374198011_Review_Truth's_a_Dog_Must_to_Kennel_by_Tim_Crouch",
             "outletId": "researchgate.net",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://bac.org.uk/whats-on/truths-a-dog-must-to-kennel/",
-            "outletId": "bac.org.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
@@ -169179,7 +169325,7 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "turandot-off-broadway-2025",
@@ -177334,21 +177480,23 @@
         "https://www.londontheatre1.com/reviews/what-the-animals-say-finborough-theatre/",
         "https://www.reviewsgate.co.uk/all-reviews/what-the-animals-say-by-david-ireland-the-finborough-theatre-118-finborough-road-london-sw10-until-24-october-2026",
         "https://www.thereviewshub.com/what-the-animals-say-finborough-theatre-london/",
+        "https://www.thestage.co.uk/reviews/what-the-animals-say-review-finborough-theatre-london",
         "https://fringereview.co.uk/review/fringereview-uk/2026/what-the-animals-say/",
         "https://thelivereview.co.uk/what-the-animals-say-review-finborough-theatre/",
         "https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-theatre/",
+        "https://theatreandtonic.co.uk/blog/what-the-animals-say-at-finborough-theatre-review",
         "https://viewfromthegods.co.uk/2026/10/03/what-the-animals-say-finborough-theatre/",
-        "https://www.thestage.co.uk/reviews/what-the-animals-say-review-finborough-theatre-london",
         "https://www.finboroughtheatre.co.uk/productions/what-the-animals-say",
-        "https://thespyinthestalls.com/2026/10/what-the-animals-say/",
-        "https://northwestend.com/what-the-animals-say-finborough-theatre/",
+        "https://northwestend.com/what-the-animals-say-finborough-theatre/amp/",
+        "https://www.broadwayworld.com/westend/article/Review-WHAT-THE-ANIMALS-SAY-Finborough-Theatre-20261003",
         "https://readaboutstuff.com/2026/09/19/interview-harry-burton-discusses-what-the-animals-say/",
-        "https://www.uktw.co.uk/London/Finborough/Play/What-the-Animals-Say/L472375507/",
-        "https://theatreweekly.com/david-irelands-debut-play-what-the-animals-say-returns-in-new-finborough-theatre-production/"
+        "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html",
+        "https://theatreweekly.com/david-irelands-debut-play-what-the-animals-say-returns-in-new-finborough-theatre-production/",
+        "https://www.timeout.com/london/theatre/what-the-animals-say-2"
       ],
-      "dirFiles": 19,
-      "dirClean": 10,
-      "inReviewsJson": 9,
+      "dirFiles": 20,
+      "dirClean": 11,
+      "inReviewsJson": 10,
       "missing": [
         {
           "url": "https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-theatre/",
@@ -177357,13 +177505,13 @@
           "serpCensus": true
         },
         {
-          "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/",
-          "host": "northwestend.com",
-          "knownOutletId": "north-west-end",
+          "url": "https://theatreandtonic.co.uk/blog/what-the-animals-say-at-finborough-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
           "serpCensus": true
         },
         {
-          "url": "https://www.uktw.co.uk/London/Finborough/Play/What-the-Animals-Say/L472375507/",
+          "url": "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html",
           "host": "uktw.co.uk",
           "knownOutletId": null,
           "serpCensus": true
@@ -177371,11 +177519,7 @@
       ],
       "dirOnly": [
         {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
+          "host": "thespyinthestalls.com",
           "count": 1
         }
       ],
@@ -177503,7 +177647,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 8,
             "error": null
           },
           {
@@ -177533,7 +177677,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -177549,14 +177693,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 15,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 14,
+        "count": 10,
         "byReason": {
-          "non-review-host": 12,
-          "roundup-page": 1,
+          "non-review-host": 7,
+          "roundup-page": 2,
           "aggregator-internal-nav": 1
         }
       },
@@ -177575,9 +177719,9 @@
           "reason": "Refusing to ingest — https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-the"
         },
         {
-          "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/",
-          "host": "northwestend.com",
-          "outletId": "north-west-end",
+          "url": "https://theatreandtonic.co.uk/blog/what-the-animals-say-at-finborough-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "outletId": "theatreandtonic",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -177587,16 +177731,16 @@
           "reason": null
         },
         {
-          "url": "https://www.uktw.co.uk/London/Finborough/Play/What-the-Animals-Say/L472375507/",
+          "url": "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html",
           "host": "uktw.co.uk",
           "outletId": "uktw",
           "provisional": true,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -177611,18 +177755,18 @@
             "url": "https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-theatre/"
           },
           {
-            "outletId": "north-west-end",
-            "outlet": "north-west-end",
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/"
+            "url": "https://theatreandtonic.co.uk/blog/what-the-animals-say-at-finborough-theatre-review"
           },
           {
             "outletId": "uktw.co.uk",
             "outlet": "uktw.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.uktw.co.uk/London/Finborough/Play/What-the-Animals-Say/L472375507/"
+            "url": "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html"
           },
           {
             "outletId": "viewfromthegods",
@@ -177680,6 +177824,12 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/what-the-animals-say-review-finborough-theatre-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+          },
+          {
             "url": "https://fringereview.co.uk/review/fringereview-uk/2026/what-the-animals-say/",
             "outletId": "fringereview.co.uk",
             "state": "live",
@@ -177692,16 +177842,22 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/what-the-animals-say-review-finborough-theatre-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/amp/",
+            "outletId": "northwestend.com",
             "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/what-the-animals-say/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://www.broadwayworld.com/westend/article/Review-WHAT-THE-ANIMALS-SAY-Finborough-Theatre-20261003",
+            "outletId": "broadwayworld.com",
             "state": "live",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/what-the-animals-say-2",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://theatreandartreviews.com/2026/10/04/what-the-animals-say-finborough-theatre/",
@@ -177711,18 +177867,18 @@
             "firstSeenAt": "2026-10-05T07:59:37.385Z"
           },
           {
-            "url": "https://northwestend.com/what-the-animals-say-finborough-theatre/",
-            "outletId": "north-west-end",
+            "url": "https://theatreandtonic.co.uk/blog/what-the-animals-say-at-finborough-theatre-review",
+            "outletId": "theatreandtonic",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
-            "url": "https://www.uktw.co.uk/London/Finborough/Play/What-the-Animals-Say/L472375507/",
+            "url": "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html",
             "outletId": "uktw.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://viewfromthegods.co.uk/2026/10/03/what-the-animals-say-finborough-theatre/",
@@ -177754,10 +177910,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 8,
-        "candidateCount": 15
+        "liveCount": 10,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-05T07:59:37.385Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
@@ -178063,55 +178219,55 @@
       "category": "west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-did-critics-think-of-geffen-playhouses-whos-afraid-of-virginia-woolf-starring-zachary-quinto-and-calista-flockhart",
-        "https://playbill.com/article/what-do-critics-think-of-imelda-staunton-in-whos-afraid-of-virginia-woolf",
         "https://playbill.com/article/reviews-what-do-critics-think-of-u-k-revival-of-whos-afraid-of-virginia-woolf-starring-downton-abbeys-elizabeth-mcgovern",
-        "https://www.broadwayworld.com/article/Review-Roundup-Zachary-Quinto-Calista-Flockhart-Graham-Phillips-Aimee-Carrero-in-Geffen-Playhouses-WHOS-AFRAID-OF-VIRGINIA-WOOLF-20220504",
-        "https://www.broadwayworld.com/article/Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Opens-on-Broadway-All-the-Reviews-20121014"
+        "https://playbill.com/article/what-do-critics-think-of-imelda-staunton-in-whos-afraid-of-virginia-woolf",
+        "https://www.broadwayworld.com/article/Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Opens-on-Broadway-All-the-Reviews-20121014",
+        "https://www.broadwayworld.com/article/Review-Roundup-Zachary-Quinto-Calista-Flockhart-Graham-Phillips-Aimee-Carrero-in-Geffen-Playhouses-WHOS-AFRAID-OF-VIRGINIA-WOOLF-20220504"
       ],
       "aggregatorListedUrls": [
         "https://www.latimes.com/entertainment-arts/story/2022-05-02/review-whos-afraid-of-virginia-woolf-edward-albee-geffen-playhouse",
         "https://www.independent.com/2022/05/02/review-whos-afraid-of-virginia-woolf-in-los-angeles/",
         "https://variety.com/2022/legit/reviews/edward-albee-whos-afraid-of-virginia-woolf-review-calista-flockhart-zachary-quinto-1235257488/",
+        "https://www.broadwayworld.com/article/Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Ustinov-Studio-Bath-20230119",
+        "https://www.theguardian.com/stage/2023/jan/19/whos-afraid-of-virginia-woolf-review-ustinov-studio-bath",
+        "https://www.telegraph.co.uk/theatre/what-to-see/afraid-virginia-woolf-theatre-royal-bath-review-elizabeth-mcgovern/",
+        "https://www.thetimes.co.uk/article/whos-afraid-of-virginia-woolf-review-dougray-scott-and-elizabeth-mcgovern-draw-blood-k0856kxn6",
+        "https://www.whatsonstage.com/bath-theatre/reviews/whos-afraid-of-virginia-woolf-ustinov-studio_58176.html",
         "http://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
         "http://www.standard.co.uk/goingout/theatre/whos-afraid-of-virginia-woolf-theatre-review-this-modern-classic-still-feels-lethal-a3486086.html",
         "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/whos-afraid-of-virginia-woolf-review-harold-pinter-theatre-london-a7620511.html",
         "http://www.thestage.co.uk/reviews/2017/whos-afraid-virginia-woolf-review-starring-imelda-staunton-harold-pinter-theatre-london/",
         "http://www.timeout.com/london/theatre/whos-afraid-of-virginia-woolf",
         "http://variety.com/2017/legit/reviews/whos-afraid-of-virginia-woolf-review-imelda-staunton-1202005460/",
-        "https://www.broadwayworld.com/article/Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Ustinov-Studio-Bath-20230119",
-        "https://www.theguardian.com/stage/2023/jan/19/whos-afraid-of-virginia-woolf-review-ustinov-studio-bath",
-        "https://www.telegraph.co.uk/theatre/what-to-see/afraid-virginia-woolf-theatre-royal-bath-review-elizabeth-mcgovern/",
-        "https://www.thetimes.co.uk/article/whos-afraid-of-virginia-woolf-review-dougray-scott-and-elizabeth-mcgovern-draw-blood-k0856kxn6",
-        "https://www.whatsonstage.com/bath-theatre/reviews/whos-afraid-of-virginia-woolf-ustinov-studio_58176.html",
-        "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
-        "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
-        "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
         "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid-of-virginia-woolf.html",
         "http://www.huffingtonpost.com/huff-wires/20121014/us-theater-review-who-s-afraid-of-virginia-woolf/",
         "http://www.nydailynews.com/entertainment/music-arts/theater-review-afraid-virginia-woolf-article-1.1183362",
         "http://www.northjersey.com/arts_entertainment/theater/174136991_Broadway_review___Who_s_Afraid_of_Virginia_Woolf__.html",
         "http://www.newsday.com/entertainment/theater/edward-albee-s-who-s-afraid-of-virginia-woolf-packs-a-surprising-punch-1.4113256",
+        "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
+        "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
+        "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
         "https://www.theguardian.com/stage/2026/oct/01/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-sohoplace-london",
         "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
         "https://www.allthatdazzles.co.uk/post/review-whos-afraid-of-virginia-woolf-sohoplace",
         "https://www.londontheatre.co.uk/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-marianne-elliott",
         "https://www.whatsonstage.com/news/whos-afraid-of-virginia-woolf-review-gillian-anderson-and-billy-crudup-toe-to-toe-in-the-west-end_1734062/",
+        "https://www.theupcoming.co.uk/2026/10/01/whos-afraid-of-virginia-woolf-at-soho-place-theatre-review/",
         "https://liamodell.com/2026/10/01/whos-afraid-of-virginia-woolf-review-soho-place-london-about-cast-running-time-gillian-anderson-billy-crudup-josh-dylan-phoebe-horn/",
-        "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
         "https://lovelondonloveculture.com/2026/10/03/review-round-up-whos-afraid-of-virginia-woolf-sohoplace/",
         "https://sierz.co.uk/reviews/whos-afraid-of-virginia-woolf-sohoplace/",
-        "https://www.theupcoming.co.uk/2026/10/01/whos-afraid-of-virginia-woolf-at-soho-place-theatre-review/",
         "https://readaboutstuff.com/2026/10/01/review-whos-afraid-of-virginia-woolf-sohoplace-london/",
+        "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
         "https://theatreweekly.com/review-whos-afraid-of-virginia-woolf-at-sohoplace/",
+        "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hot-mess-in-town/",
         "https://everything-theatre.co.uk/2026/10/review-whos-afraid-of-virginia-woolf-sohoplace/",
         "https://maryamphilpottblog.wordpress.com/2026/09/28/whos-afraid-of-virginia-woolf-sohoplace/",
         "https://www.telegraph.co.uk/theatre/what-to-see/whos-afraid-of-virginia-woolf-review-gillian-anderson/",
-        "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hot-mess-in-town/",
-        "https://www.thereviewshub.com/whos-afraid-of-virginia-woolf-sohoplace-london/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-b3059677.html",
         "https://www.thestage.co.uk/reviews/whos-afraid-of-virginia-woolf-review-sohoplace-london",
         "https://www.thetimes.com/culture/theatre-dance/article/whos-afraid-of-virginia-woolf-review-5m3tkqdsw",
-        "https://www.broadwayworld.com/westend/article/Review-WHOS-AFRAID-OF-VIRGINA-WOOLF-Starring-Gillian-Anderson-Billy-Crudup-20261001"
+        "https://www.broadwayworld.com/westend/article/Review-WHOS-AFRAID-OF-VIRGINA-WOOLF-Starring-Gillian-Anderson-Billy-Crudup-20261001",
+        "https://playsinternational.org.uk/whos-afraid-of-virginia-woolf-sohoplace/"
       ],
       "dirFiles": 54,
       "dirClean": 31,
@@ -178142,27 +178298,6 @@
           "url": "http://variety.com/2017/legit/reviews/whos-afraid-of-virginia-woolf-review-imelda-staunton-1202005460/",
           "host": "variety.com",
           "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
-          "host": "laartparty.com",
-          "knownOutletId": "la-art-party",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
-          "host": "stageraw.com",
-          "knownOutletId": "stage-raw",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
-          "host": "dailybruin.com",
-          "knownOutletId": "daily-bruin",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -178202,6 +178337,27 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
+          "host": "laartparty.com",
+          "knownOutletId": "la-art-party",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
+          "host": "stageraw.com",
+          "knownOutletId": "stage-raw",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
+          "host": "dailybruin.com",
+          "knownOutletId": "daily-bruin",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://lovelondonloveculture.com/2026/10/03/review-round-up-whos-afraid-of-virginia-woolf-sohoplace/",
           "host": "lovelondonloveculture.com",
           "knownOutletId": "lovelondonloveculture",
@@ -178234,10 +178390,6 @@
           "count": 1
         },
         {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
           "host": "theatreandtonic.co.uk",
           "count": 1
         },
@@ -178248,6 +178400,10 @@
         {
           "host": "theatremonkey.com",
           "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 2
         },
         {
           "host": "westendbestfriend.co.uk",
@@ -178293,15 +178449,26 @@
           "weRef": true,
           "weRefSources": [
             "westendtheatre",
+            "theatre-reviews",
             "lbo-roundup"
           ],
           "weRefStars": 5,
           "weRefStarsSource": "westendtheatre"
         }
       ],
-      "citedNoUrl": [],
+      "citedNoUrl": [
+        {
+          "outletId": "financialtimes",
+          "outletName": "The Financial Times",
+          "stars": 5,
+          "source": "theatre-reviews",
+          "sourceArticleUrl": "https://theatre.reviews/reviews-roundup/whos-afraid-of-virginia-woolf-sohoplace-reviews/",
+          "priorRun": false,
+          "hasExcludedFiles": false
+        }
+      ],
       "weReference": {
-        "rowCount": 15,
+        "rowCount": 25,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -178311,8 +178478,8 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 10,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -178333,14 +178500,18 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 15,
-        "corroborated": 9,
+        "currentRunRows": 25,
+        "corroborated": 11,
         "perSource": {
           "lbo-roundup": {
             "cited": 6,
             "corroborated": 5
           },
           "westendtheatre": {
+            "cited": 9,
+            "corroborated": 8
+          },
+          "theatre-reviews": {
             "cited": 9,
             "corroborated": 8
           }
@@ -178358,7 +178529,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -178377,8 +178548,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -178388,7 +178559,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -178398,7 +178569,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -178408,24 +178579,25 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 17,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 960,
+        "count": 962,
         "byReason": {
-          "aggregator-internal-nav": 696,
+          "non-review-host": 107,
+          "census-junk-host": 2,
+          "roundup-page": 8,
+          "aggregator-internal-nav": 692,
+          "ticketing-listing": 2,
           "not-http-url": 130,
           "aggregator-section-root": 20,
-          "non-review-host": 108,
-          "census-junk-host": 1,
-          "roundup-page": 4,
           "ticket-seller-product-page": 1
         }
       },
@@ -178444,20 +178616,20 @@
           "publishDate": "2022-05-04"
         },
         {
-          "url": "https://playbill.com/article/what-do-critics-think-of-imelda-staunton-in-whos-afraid-of-virginia-woolf",
-          "publishDate": "2017-03-15"
-        },
-        {
           "url": "https://playbill.com/article/reviews-what-do-critics-think-of-u-k-revival-of-whos-afraid-of-virginia-woolf-starring-downton-abbeys-elizabeth-mcgovern",
           "publishDate": "2023-01-19"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Zachary-Quinto-Calista-Flockhart-Graham-Phillips-Aimee-Carrero-in-Geffen-Playhouses-WHOS-AFRAID-OF-VIRGINIA-WOOLF-20220504",
-          "publishDate": "2022-05-04"
+          "url": "https://playbill.com/article/what-do-critics-think-of-imelda-staunton-in-whos-afraid-of-virginia-woolf",
+          "publishDate": "2017-03-15"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Opens-on-Broadway-All-the-Reviews-20121014",
           "publishDate": "2012-10-14"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Zachary-Quinto-Calista-Flockhart-Graham-Phillips-Aimee-Carrero-in-Geffen-Playhouses-WHOS-AFRAID-OF-VIRGINIA-WOOLF-20220504",
+          "publishDate": "2022-05-04"
         }
       ],
       "weIngestBlocked": [
@@ -178482,24 +178654,6 @@
         {
           "url": "http://variety.com/2017/legit/reviews/whos-afraid-of-virginia-woolf-review-imelda-staunton-1202005460/",
           "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
-          "host": "laartparty.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
-          "host": "stageraw.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
-          "host": "dailybruin.com",
           "priorRun": true,
           "reason": "prior-run"
         },
@@ -178530,6 +178684,24 @@
         {
           "url": "http://www.newsday.com/entertainment/theater/edward-albee-s-who-s-afraid-of-virginia-woolf-packs-a-surprising-punch-1.4113256",
           "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
+          "host": "laartparty.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
+          "host": "stageraw.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
+          "host": "dailybruin.com",
           "priorRun": true,
           "reason": "prior-run"
         }
@@ -178565,34 +178737,17 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-b3059677.html"
+          },
+          {
+            "outletId": "financialtimes",
+            "outlet": "The Financial Times",
+            "critic": "Unknown",
+            "stars": null,
+            "url": ""
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "http://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
-            "url": "http://www.standard.co.uk/goingout/theatre/whos-afraid-of-virginia-woolf-theatre-review-this-modern-classic-still-feels-lethal-a3486086.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
-            "url": "http://www.thestage.co.uk/reviews/2017/whos-afraid-virginia-woolf-review-starring-imelda-staunton-harold-pinter-theatre-london/",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
-            "url": "http://www.timeout.com/london/theatre/whos-afraid-of-virginia-woolf",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
           {
             "url": "https://www.broadwayworld.com/article/Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Ustinov-Studio-Bath-20230119",
             "outletId": "broadwayworld.com",
@@ -178620,6 +178775,30 @@
           {
             "url": "https://www.whatsonstage.com/bath-theatre/reviews/whos-afraid-of-virginia-woolf-ustinov-studio_58176.html",
             "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "http://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "http://www.standard.co.uk/goingout/theatre/whos-afraid-of-virginia-woolf-theatre-review-this-modern-classic-still-feels-lethal-a3486086.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "http://www.thestage.co.uk/reviews/2017/whos-afraid-virginia-woolf-review-starring-imelda-staunton-harold-pinter-theatre-london/",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "http://www.timeout.com/london/theatre/whos-afraid-of-virginia-woolf",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
@@ -178654,26 +178833,20 @@
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
           },
           {
+            "url": "https://www.theupcoming.co.uk/2026/10/01/whos-afraid-of-virginia-woolf-at-soho-place-theatre-review/",
+            "outletId": "theupcoming.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T22:50:25.087Z"
+          },
+          {
             "url": "https://liamodell.com/2026/10/01/whos-afraid-of-virginia-woolf-review-soho-place-london-about-cast-running-time-gillian-anderson-billy-crudup-josh-dylan-phoebe-horn/",
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-10-04T22:50:25.087Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-01T22:20:57.880Z"
-          },
-          {
             "url": "https://sierz.co.uk/reviews/whos-afraid-of-virginia-woolf-sohoplace/",
             "outletId": "sierz.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-04T22:50:25.087Z"
-          },
-          {
-            "url": "https://www.theupcoming.co.uk/2026/10/01/whos-afraid-of-virginia-woolf-at-soho-place-theatre-review/",
-            "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-04T22:50:25.087Z"
           },
@@ -178684,8 +178857,20 @@
             "firstSeenAt": "2026-10-04T22:50:25.087Z"
           },
           {
+            "url": "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
             "url": "https://theatreweekly.com/review-whos-afraid-of-virginia-woolf-at-sohoplace/",
             "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T22:50:25.087Z"
+          },
+          {
+            "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hot-mess-in-town/",
+            "outletId": "firstnightmagazine.com",
             "state": "live",
             "firstSeenAt": "2026-10-04T22:50:25.087Z"
           },
@@ -178708,18 +178893,6 @@
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
           },
           {
-            "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hot-mess-in-town/",
-            "outletId": "firstnightmagazine.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-04T22:50:25.087Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/whos-afraid-of-virginia-woolf-sohoplace-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/whos-afraid-of-virginia-woolf-review-sohoplace-london",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -178738,6 +178911,12 @@
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
           },
           {
+            "url": "https://playsinternational.org.uk/whos-afraid-of-virginia-woolf-sohoplace/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
             "url": "https://lovelondonloveculture.com/2026/10/03/review-round-up-whos-afraid-of-virginia-woolf-sohoplace/",
             "outletId": "lovelondonloveculture",
             "state": "GAP",
@@ -178750,13 +178929,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
+            "url": "",
+            "outletId": "financialtimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 20,
-        "candidateCount": 22
+        "candidateCount": 23
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T23:42:11.061Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
