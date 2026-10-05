@@ -54,13 +54,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          RUNNING_FAST=$(gh run list --workflow=rebuild-fast.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          QUEUED_FAST=$(gh run list --workflow=rebuild-fast.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
-          if [ "$RUNNING" -gt 0 ] || [ "$QUEUED" -gt 0 ] || [ "$RUNNING_FAST" -gt 0 ] || [ "$QUEUED_FAST" -gt 0 ]; then
+          # 2 API calls for both workflows (was 4 gh run list = 8 calls), BRO-4654.
+          ACTIVE=$(node scripts/lib/rebuild-in-flight.js rebuild-reviews.yml rebuild-fast.yml || echo "0")
+          if [ "${ACTIVE:-0}" -gt 0 ]; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
-            echo "Rebuild in progress/queued — skipping drift check to avoid stale counts."
+            echo "Rebuild in progress/queued ($ACTIVE run(s)) — skipping drift check to avoid stale counts."
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi

@@ -220,6 +220,7 @@ const {
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
+const { checkBudget } = require('./lib/github-api-budget.js');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
 // Rule (m) also audits composite actions. The bug that motivated it
@@ -626,6 +627,11 @@ async function checkNeverRunWorkflowCoverage(files) {
       reason: `live scan skipped on '${eventName}' trigger to keep lint-workflows fast (runs on schedule + manual)`,
     };
   }
+  // BRO-4654: the scan costs ~1 call per workflow plus the listing pages, all
+  // on a token whose hourly quota landings and deploys also need. Skip it
+  // when that quota can't cover it plus a reserve for the required work.
+  const budget = await checkBudget({ cost: files.length + 3, token });
+  if (!budget.ok) return { skipped: true, reason: `GitHub API budget: ${budget.reason}` };
 
   try {
     const workflows = [];
@@ -683,6 +689,19 @@ async function checkNeverRunWorkflowCoverage(files) {
   } catch (err) {
     return { skipped: true, reason: `API error: ${err.message}` };
   }
+}
+
+/**
+ * Pure: does this CLI run do rule (f)'s live API scan? Only on explicit
+ * opt-in (HYGIENE_NEVER_RUN_SCAN=1). health-check.js runs the same scan daily
+ * and persists it, so a CLI scan is a duplicate unless someone asks for it.
+ */
+function neverRunCliScanDecision(env = {}) {
+  if (env.HYGIENE_NEVER_RUN_SCAN === '1') return { run: true, reason: 'HYGIENE_NEVER_RUN_SCAN=1' };
+  return {
+    run: false,
+    reason: 'live scan is opt-in here (HYGIENE_NEVER_RUN_SCAN=1); health-check.js runs it daily and persists the result',
+  };
 }
 
 async function main() {
@@ -871,7 +890,13 @@ async function main() {
   // checkNeverRunWorkflowCoverage() (exported below) and writes
   // NEVER_RUN_SNAPSHOT_PATH from within data-health-check.yml — a job that
   // already commits data/audit/* daily.
-  const neverRun = await checkNeverRunWorkflowCoverage(files);
+  // BRO-4654: so here the scan is opt-in. It ran inside every land.yml
+  // gauntlet that wasn't a push (twice per dispatched land run, ~512
+  // GITHUB_TOKEN calls) and spent the repo's hourly quota on 2026-10-05.
+  const cliScan = neverRunCliScanDecision(process.env);
+  const neverRun = cliScan.run
+    ? await checkNeverRunWorkflowCoverage(files)
+    : { skipped: true, reason: cliScan.reason };
   if (neverRun.skipped) {
     console.log(`ℹ️  Never-run workflow coverage check skipped (${neverRun.reason}).`);
   } else {
@@ -1148,6 +1173,7 @@ async function main() {
 
 module.exports = {
   checkNeverRunWorkflowCoverage,
+  neverRunCliScanDecision,
   NEVER_RUN_MIN_AGE_DAYS,
   NEVER_RUN_SNAPSHOT_PATH,
   findCoreFileWritesWithoutPush,
