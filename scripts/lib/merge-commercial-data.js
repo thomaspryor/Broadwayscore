@@ -31,7 +31,9 @@
 //     delete racing an edit keeps the edit). Without base: union, as before.
 //   * A slug on both sides that is also in base: merged FIELD BY FIELD
 //     (BRO-4657). A field only one side changed takes that side's value; a
-//     field both changed differently takes the pickNewer winner's. Live
+//     field both changed differently takes the pickNewer winner's; fields
+//     validate-data checks against each other (LINKED_FIELD_GROUPS) move
+//     as one unit so the result is always one side's combination. Live
 //     2026-10-05: an approved fix rewrote Lucky Guy's designation without
 //     touching lastUpdated, Commercial Friday's stale copy (which had only
 //     refreshed model bookkeeping) tied on lastUpdated, won whole-record,
@@ -108,20 +110,39 @@ function sameValue(a, b) {
   return JSON.stringify(a) === JSON.stringify(b);
 }
 
-// Field-by-field three-way merge of one record both sides kept. A field only
-// one side changed since base takes that side's value; a field both changed
-// to different values takes `winner`'s (the pickNewer choice). Returns the
-// merged record and how many fields were true conflicts.
+// Fields validate-data checks against each other (designation vs recouped,
+// recouped vs recoupedDate, "Tour Stop" vs productionType; the classifier's
+// stamps describe the designation). Taking some from each side could build a
+// record neither side wrote, e.g. one side's Fizzle with the other's
+// recouped:true, so each group merges as one unit.
+const LINKED_FIELD_GROUPS = [
+  ['designation', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason'],
+  ['capitalization', 'capitalizationSource'],
+  ['weeklyRunningCost', 'costMethodology'],
+];
+const GROUP_OF = new Map(LINKED_FIELD_GROUPS.flatMap(g => g.map(f => [f, g])));
+
+// Three-way merge of one record both sides kept, field by field (linked
+// fields as one unit). A unit only one side changed since base takes that
+// side's values; a unit both changed differently takes `winner`'s (the
+// pickNewer choice). Returns the merged record and the number of conflicting
+// units.
 function mergeRecordFields(o, r, b, winner) {
   const out = {};
   let conflicts = 0;
+  const sourceOf = new Map();
+  const pick = (unit) => {
+    const same = (x, y) => unit.every(f => sameValue(x[f], y[f]));
+    if (same(o, b)) return r;
+    if (same(r, b) || same(o, r)) return o;
+    conflicts++;
+    return winner;
+  };
   const keys = new Set([...Object.keys(o), ...Object.keys(r), ...Object.keys(b)]);
   for (const k of keys) {
-    const ov = o[k], rv = r[k], bv = b[k];
-    let v;
-    if (sameValue(ov, bv)) v = rv;
-    else if (sameValue(rv, bv) || sameValue(ov, rv)) v = ov;
-    else { v = winner === o ? ov : rv; conflicts++; }
+    const unit = GROUP_OF.get(k) || [k];
+    if (!sourceOf.has(unit)) sourceOf.set(unit, pick(unit));
+    const v = sourceOf.get(unit)[k];
     if (v !== undefined) out[k] = v;
   }
   return { record: out, conflicts };

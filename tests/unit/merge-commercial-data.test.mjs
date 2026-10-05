@@ -203,6 +203,29 @@ describe('mergeCommercialJson with a base (field by field when both sides kept a
     assert.equal(mergeCommercialJson(ours, remote, base).merged.shows.a.humanReviewedDesignation, true);
   });
 
+  it('linked fields move together: never one side\'s label with the other\'s recoupment', () => {
+    const { commercialRecordErrors } = require('../../scripts/lib/commercial-record-checks.js');
+    const b0 = { designation: 'TBD', recouped: null, capitalization: 1000000, capitalizationSource: 'old', lastUpdated: T };
+    const base = { shows: { a: b0 } };
+    // ours (newer) labels it Fizzle; remote records a recoupment and a new cap figure.
+    const ours = { shows: { a: { ...b0, designation: 'Fizzle', recouped: false, lastUpdated: '2026-10-03T00:00:00.000Z' } } };
+    const remote = { shows: { a: { ...b0, recouped: true, recoupedDate: '2026-09', capitalizationSource: 'Playbill', lastUpdated: '2026-10-02T00:00:00.000Z' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    const m = merged.shows.a;
+    assert.deepEqual([m.designation, m.recouped, m.recoupedDate], ['Fizzle', false, undefined]);
+    assert.equal(m.capitalizationSource, 'Playbill', 'an unrelated group only remote changed still merges');
+    assert.deepEqual(commercialRecordErrors('a', m), []);
+    assert.equal(stats.fieldConflicts, 2); // the designation group and lastUpdated
+  });
+
+  it('a linked group only one side changed is taken whole from that side', () => {
+    const base = { shows: { a: baseRec } };
+    const remote = { shows: { a: { ...baseRec, designation: 'Easy Winner', recouped: true, recoupedDate: '2013-05' } } };
+    const ours = { shows: { a: { ...baseRec, notes: 'ours', lastUpdated: '2026-10-03T00:00:00.000Z' } } };
+    const m = mergeCommercialJson(ours, remote, base).merged.shows.a;
+    assert.deepEqual([m.designation, m.recouped, m.recoupedDate, m.notes], ['Easy Winner', true, '2013-05', 'ours']);
+  });
+
   it('a record not in base falls back to whole-record pickNewer', () => {
     const base = { shows: {} };
     const ours = { shows: { a: { designation: 'TBD', lastUpdated: '2026-10-01T00:00:00.000Z' } } };
