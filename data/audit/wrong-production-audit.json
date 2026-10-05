@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T01:50:55.736Z",
+  "timestamp": "2026-10-05T02:32:37.558Z",
   "stats": {
-    "totalReviews": 46297,
+    "totalReviews": 46298,
     "alreadyFlagged": 18736,
     "dateGuardCatches": 269,
-    "directorMismatch": 1240,
+    "directorMismatch": 1254,
     "tvFilmSignals": 1341,
-    "londonSignals": 1272,
-    "offBroadwaySignals": 506,
+    "londonSignals": 1274,
+    "offBroadwaySignals": 509,
     "yearMismatch": 109,
-    "noPublishDate": 4299
+    "noPublishDate": 4298
   },
   "findings": [
     {
@@ -144,6 +144,20 @@
       "score": 83,
       "publishDate": "2025-03-19",
       "url": "https://www.broadwayworld.com/madison/article/Review-THE-NEIL-DIAMOND-MUSICAL-A-BEAUTIFUL-NOISE-at-The-Overture-Center-20250319",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--tyler-hinton.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-A-BEAUTIFUL-NOISE-is-Dually-Rousing-and-Intimate-at-the-Eccles-Theater-20260121",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32417,6 +32431,63 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--angela-lin.json",
+      "score": 47,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-THE-NOTEBOOK-Presented-by-Broadway-In-Chicago-20260806",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--cheyenne-lewis.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/phoenix/article/Review-THE-NOTEBOOK-at-ASU-Gammage-20260408",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--dc-felton.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/des-moines/article/Review-THE-NOTEBOOK-at-Des-Moines-Performing-Arts-20251205",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--evan-henerson.json",
       "score": 73,
       "publishDate": null,
@@ -32440,6 +32511,20 @@
       "score": 71,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/buffalo/article/Review-THE-NOTEBOOK-at-Sheas-Buffalo-Theatre-20251008#:~:text=Where%20THE%20NOTEBOOK%20succeeds%20is,and%20unoffensive%2C%20is%20merely%20utilitarian.",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--rob-levy.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/st-louis/article/Review-THE-NOTEBOOK-at-Fox-Theatre-St-Louis-20251109",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32535,6 +32620,25 @@
       "score": 78,
       "publishDate": "2025-09-15",
       "url": "https://www.cleveland.com/entertainment/2025/09/the-notebook-review-tony-nominated-musical-launches-national-tour-at-playhouse-square.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-01-09/notebook-musical-theater-review-hollywood-pantages",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32860,6 +32964,19 @@
       "score": 86,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--jonathan-netek.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/austin/article/Review-THE-OUTSIDERS-at-Bass-Concert-Hall-20251023",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33568,6 +33685,20 @@
       "score": 93,
       "publishDate": "2025-11-25",
       "url": "https://www.minnesotamonthly.com/arts-entertainment/theater-dance/review-the-phantom-mask-returns/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "sandiegoville--sandiegoville.json",
+      "score": 91,
+      "publishDate": null,
+      "url": "https://www.sandiegoville.com/2026/09/review-phantom-of-opera-at-san-diego.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36759,6 +36890,20 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--jonathan-netek.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--taylor-clemons.json",
       "score": 78,
       "publishDate": "2025-10-17",
@@ -36852,6 +36997,20 @@
       "score": 91,
       "publishDate": "2025-10-10",
       "url": "https://revuewm.com/arts/review-water-for-elephants-is-a-spectacular-balancing-act-of-love-and-wonder",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "south-florida-sun-sentinel--rod-stafford-hagwood.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.sun-sentinel.com/2025/11/13/review-how-broadway-tour-of-water-for-elephants-at-broward-center-sticks-its-landing/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42249,6 +42408,19 @@
       ]
     },
     {
+      "showId": "chess-2025",
+      "file": "timeout--unknown.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/theater/chess-broadway-musical-revival-review-aaron-tveit-lea-michele-nicholas-christopher",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "chinglish-2011",
       "file": "theater-life--eric-march.json",
       "score": 39,
@@ -46638,6 +46810,19 @@
       "score": 81,
       "publishDate": "April 21, 2024",
       "url": "https://nypost.com/2024/04/21/entertainment/hells-kitchen-review-alicia-keys-musical-is-a-blazing-triumph/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "file": "nypost--unknown.json",
+      "publishDate": null,
+      "url": "https://nypost.com/2024/04/21/entertainment/hells-kitchen-review-alicia-keys-musical-fires-up-on-broadway/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -53357,6 +53542,20 @@
       ]
     },
     {
+      "showId": "sea-wall-a-life-2019",
+      "file": "timeout--unknown.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/theater/sea-wall-a-life-review-broadway-jake-gyllenhaal-tom-sturridge",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "seminar-2011",
       "file": "bloomberg--jeremy-gerard.json",
       "score": 80,
@@ -57257,6 +57456,20 @@
       ]
     },
     {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "file": "theatrely--emily-wyrwa.json",
+      "score": 77,
+      "publishDate": "2026-10-04",
+      "url": "https://www.theatrely.com/post/excellent-stagings-of-our-basest-selves-degenerates-the-hairy-ape-review-roundup",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "the-height-of-the-storm-2019",
       "file": "guardian--jesse-green.json",
       "score": 93,
@@ -59071,6 +59284,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-score-regional-2026",
+      "file": "whatsonstage--lucinda-everett.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/the-score-starring-brian-cox-in-the-west-end-review_1666965/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
