@@ -27,3 +27,9 @@ test('article-led subtitles still use the short title (Beaches regression)', () 
 test('real review of the clause-tail show still matches via full title words', () => {
   assert.equal(urlLooksLikeReview('https://www.nytimes.com/2026/09/20/theater/america-who-hurt-you-review.html', 'America, Who Hurt You?'), true);
 });
+
+test('"or ..." and "Part N" tails count as subtitles (second-opinion regressions)', () => {
+  assert.equal(hasSubtitleTail('The Goat, or Who Is Sylvia?'), true);
+  assert.equal(hasSubtitleTail("A Doll's House, Part 2"), true);
+  assert.equal(urlLooksLikeReview('https://www.nytimes.com/2002/03/19/theater/the-goat-review.html', 'The Goat, or Who Is Sylvia?'), true);
+});
