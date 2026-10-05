@@ -13,7 +13,11 @@ const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const adapter = require('../../scripts/codex/hook-adapter.js');
 const { diffSkills, renderSkills } = require('../../scripts/codex/sync-skills.js');
-const { mergeToml, mergeHooks } = require('../../scripts/codex/install.js');
+const { mergeToml, unmergeToml, mergeHooks } = require('../../scripts/codex/install.js');
+// End-to-end runs use only the repo's hooks and a private shadow dir, so a
+// developer's own ~/.claude hooks never run inside the test.
+const ISOLATED_ENV = { ...process.env, CODEX_HOOK_ADAPTER_USER_SETTINGS: '/nonexistent/settings.json',
+  CODEX_HOOK_ADAPTER_SHADOW_DIR: mkdtempSync(join(tmpdir(), 'codex-shadow-test-')) };
 const settings = JSON.parse(readFileSync(join(ROOT, '.claude', 'settings.json'), 'utf8'));
 const codexHooks = JSON.parse(readFileSync(join(ROOT, '.codex', 'hooks.json'), 'utf8'));
 
@@ -103,19 +107,61 @@ test('the adapter blocks a direct broadcast call end to end through the real Cla
   const host = ['api', 'resend', 'com'].join('.') + '/broad' + 'casts';
   const payload = { session_id: 'codex-parity-test', cwd: ROOT, hook_event_name: 'PreToolUse', tool_name: 'Bash',
     tool_input: { command: `echo https://${host}/x/send` }, tool_use_id: 't', transcript_path: '/nonexistent' };
-  const res = spawnSync('node', [join(ROOT, 'scripts/codex/hook-adapter.js'), '--event', 'PreToolUse'], { input: JSON.stringify(payload), encoding: 'utf8', timeout: 120000 });
+  const res = spawnSync('node', [join(ROOT, 'scripts/codex/hook-adapter.js'), '--event', 'PreToolUse'], { input: JSON.stringify(payload), encoding: 'utf8', timeout: 120000, env: ISOLATED_ENV });
   assert.equal(res.status, 0);
   const out = JSON.parse(res.stdout.trim());
   assert.equal(out.hookSpecificOutput.permissionDecision, 'deny');
   assert.match(out.hookSpecificOutput.permissionDecisionReason, /BROADCAST GUARD/);
 });
 
+test('an apply_patch the adapter cannot read is refused, not waved through', () => {
+  const payload = { session_id: 'codex-parity-test', cwd: ROOT, hook_event_name: 'PreToolUse', tool_name: 'apply_patch',
+    tool_input: { command: 'not a patch' }, tool_use_id: 't2', transcript_path: '/nonexistent' };
+  const res = spawnSync('node', [join(ROOT, 'scripts/codex/hook-adapter.js'), '--event', 'PreToolUse'], { input: JSON.stringify(payload), encoding: 'utf8', timeout: 60000, env: ISOLATED_ENV });
+  assert.equal(JSON.parse(res.stdout.trim()).hookSpecificOutput.permissionDecision, 'deny');
+  // A bare-string envelope is still read.
+  assert.equal(adapter.toClaudeToolEvents('apply_patch', '*** Begin Patch\n*** Add File: x.js\n+a\n*** End Patch', '/r').length, 1);
+});
+
+test('a guard that leaves a background child behind still resolves on time', async () => {
+  const t0 = Date.now();
+  const res = await adapter.runHook({ command: '(setsid sleep 8 &) ; exit 0' }, {}, process.env, ROOT, 3000);
+  assert.ok(Date.now() - t0 < 2500, `took ${Date.now() - t0}ms`);
+  assert.equal(res.status, 0);
+  const slow = await adapter.runHook({ command: 'sleep 8' }, {}, process.env, ROOT, 1000);
+  assert.equal(slow.timedOut, true);
+});
+
+test('failed calls are marked is_error, as Claude marks them', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'codex-parity-'));
+  const rollout = join(dir, 'rollout.jsonl');
+  writeFileSync(rollout, JSON.stringify({ type: 'event_msg', payload: { type: 'item_completed', item: { id: 'exec-1', status: 'failed', exit_code: 2 } } }) + '\n');
+  assert.equal(adapter.callFailed({ tool_use_id: 'exec-1', transcript_path: rollout, tool_response: 'ls: nope' }), true);
+  assert.equal(adapter.callFailed({ tool_use_id: 'exec-9', transcript_path: rollout, tool_response: 'ok' }), undefined);
+  assert.equal(adapter.callFailed({ tool_response: 'Exit code: 0\nOutput:\nSuccess.' }), false);
+  const rows = adapter.toolRows({ tool_use_id: 'exec-1', tool_response: 'x' }, [{ tool_name: 'Bash', tool_input: {} }], true, true);
+  const line = adapter.buildShadowLines([], rows, '').find((l) => l.message.content[0].type === 'tool_result');
+  assert.equal(line.message.content[0].is_error, true);
+  // Calls without an id still get distinct keys.
+  const a = adapter.toolRows({ turn_id: 't', tool_name: 'Bash', tool_input: { command: 'a' } }, [{ tool_name: 'Bash', tool_input: {} }], false)[0].key;
+  const b = adapter.toolRows({ turn_id: 't', tool_name: 'Bash', tool_input: { command: 'b' } }, [{ tool_name: 'Bash', tool_input: {} }], false)[0].key;
+  assert.notEqual(a, b);
+  assert.ok(adapter.blockingOutput({ status: 0, stdout: '{"hookSpecificOutput":{"permissionDecision":"ask"}}' }));
+});
+
 test('install merges into ~/.codex without clobbering hand-set values', () => {
   const repoToml = 'web_search = "live"\n\n[sandbox_workspace_write]\nnetwork_access = true\n';
-  const fresh = mergeToml('[projects."/x"]\ntrust_level = "trusted"\n', repoToml);
-  assert.match(fresh.text, /^# added by[^\n]*\nweb_search = "live"\n/);
-  assert.match(fresh.text, /\[sandbox_workspace_write\]\nnetwork_access = true/);
+  const original = '[projects."/x"]\ntrust_level = "trusted"\n';
+  const fresh = mergeToml(original, repoToml);
+  assert.match(fresh.text, /^web_search = "live" # bro-4745[^\n]*\n/);
+  assert.match(fresh.text, /\[sandbox_workspace_write\] # bro-4745[^\n]*\nnetwork_access = true # bro-4745/);
   assert.equal(mergeToml(fresh.text, repoToml).text, fresh.text); // idempotent
+  assert.equal(unmergeToml(fresh.text), original); // uninstall takes back exactly what was added
+  // An existing table, with a trailing comment and indentation, gets the key, not a second header.
+  const commented = mergeToml('web_search = "live"\n  [sandbox_workspace_write] # mine\nwritable_roots = []\n', repoToml);
+  assert.equal(commented.text.match(/\[sandbox_workspace_write\]/g).length, 1);
+  assert.match(commented.text, /# mine\nnetwork_access = true # bro-4745/);
+  assert.equal(unmergeToml(commented.text), 'web_search = "live"\n  [sandbox_workspace_write] # mine\nwritable_roots = []\n');
   const handSet = mergeToml('web_search = "cached"\n', repoToml);
   assert.equal(handSet.conflicts.length, 1);
   assert.match(handSet.text, /web_search = "cached"/);
