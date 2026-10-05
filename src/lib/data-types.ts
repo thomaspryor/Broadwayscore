@@ -551,6 +551,15 @@ export interface CommercialShowRow {
   capitalizationIsEstimate: boolean;
   /** Latest week's gross; null for closed shows. */
   weeklyGross: number | null;
+  /** Latest week's capacity (%) and average ticket price; null for closed shows. */
+  weeklyCapacity: number | null;
+  weeklyAtp: number | null;
+  /** Recorded weekly running cost (null when none). */
+  weeklyCost: number | null;
+  /** isEstimatedRunningCost(): prints "~". */
+  weeklyCostIsEstimate: boolean;
+  /** getNonprofitProducer(): nonprofit company behind the production, else null. */
+  nonprofitOrg: string | null;
   totalGross: number | null;
   modelRecoupmentPct: [number, number, number] | null;
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;

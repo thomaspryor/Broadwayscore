@@ -32,7 +32,7 @@ interface AllShowsTableProps {
   initialLimit?: number;
 }
 
-type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'totalGross' | 'recoupment' | 'return';
+type SortColumn = 'title' | 'designation' | 'capitalization' | 'gross' | 'cost' | 'totalGross' | 'recoupment' | 'return';
 type SortDirection = 'asc' | 'desc';
 
 const RECOUPED_SORT_VALUE = 1_000_000;
@@ -160,6 +160,9 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
         case 'gross':
           comparison = (a.weeklyGross ?? -Infinity) - (b.weeklyGross ?? -Infinity);
           break;
+        case 'cost':
+          comparison = (a.weeklyCost ?? -Infinity) - (b.weeklyCost ?? -Infinity);
+          break;
         case 'totalGross':
           comparison = (a.totalGross ?? -Infinity) - (b.totalGross ?? -Infinity);
           break;
@@ -192,7 +195,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
           <thead>
             <tr className="text-left text-gray-400 border-b border-white/10 bg-surface-overlay">
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group"
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
                 onClick={() => handleSort('title')}
                 aria-sort={sortColumn === 'title' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
@@ -200,7 +203,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 <SortIcon active={sortColumn === 'title'} direction={sortDirection} />
               </th>
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group"
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
                 onClick={() => handleSort('recoupment')}
                 aria-sort={sortColumn === 'recoupment' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
                 title="Recouped when trade press or an SEC filing reports it. Otherwise our model's estimate, with its range."
@@ -209,7 +212,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 <SortIcon active={sortColumn === 'recoupment'} direction={sortDirection} />
               </th>
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group"
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
                 onClick={() => handleSort('designation')}
                 aria-sort={sortColumn === 'designation' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
@@ -217,7 +220,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 <SortIcon active={sortColumn === 'designation'} direction={sortDirection} />
               </th>
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group"
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group"
                 onClick={() => handleSort('capitalization')}
                 aria-sort={sortColumn === 'capitalization' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
@@ -225,7 +228,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 <SortIcon active={sortColumn === 'capitalization'} direction={sortDirection} />
               </th>
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden md:table-cell"
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group hidden md:table-cell"
                 onClick={() => handleSort('gross')}
                 aria-sort={sortColumn === 'gross' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
@@ -233,7 +236,16 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 <SortIcon active={sortColumn === 'gross'} direction={sortDirection} />
               </th>
               <th
-                className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden lg:table-cell"
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group hidden lg:table-cell"
+                onClick={() => handleSort('cost')}
+                aria-sort={sortColumn === 'cost' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                title="What the show costs to run each week. ~ marks an estimate; a reported figure has a cited source."
+              >
+                Weekly Cost
+                <SortIcon active={sortColumn === 'cost'} direction={sortDirection} />
+              </th>
+              <th
+                className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group hidden lg:table-cell"
                 onClick={() => handleSort('totalGross')}
                 aria-sort={sortColumn === 'totalGross' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
               >
@@ -242,7 +254,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
               </th>
               {showReturnColumn && (
                 <th
-                  className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group hidden sm:table-cell"
+                  className="py-3 px-4 font-medium whitespace-nowrap cursor-pointer hover:text-white transition-colors select-none group hidden sm:table-cell"
                   onClick={() => handleSort('return')}
                   aria-sort={sortColumn === 'return' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
                   title="Investor return multiple as reported by trade press or SEC filings. Blank when none has been reported."
@@ -252,7 +264,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                 </th>
               )}
               <th
-                className="py-3 px-4 font-medium hidden sm:table-cell"
+                className="py-3 px-4 font-medium whitespace-nowrap hidden sm:table-cell"
                 title="Recouped shows: weeks from opening night to the reported recoupment date (mid-month when only the month was reported; blank when only the year was). Running shows: average gross of the last 4 weeks vs the 4 weeks before."
               >
                 Time to Recoup
@@ -283,6 +295,9 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     <span className={designation.textClass} title={designation.description}>
                       {designation.label}
                     </span>
+                    {show.nonprofitOrg && (
+                      <div className="text-xs text-gray-500">{show.nonprofitOrg}</div>
+                    )}
                   </td>
                   <td className="py-3 px-4">
                     {show.capitalization == null ? (
@@ -292,7 +307,28 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     )}
                   </td>
                   <td className="py-3 px-4 hidden md:table-cell">
-                    {running ? formatCurrency(show.weeklyGross) : <span className="text-gray-500">Closed</span>}
+                    {running ? (
+                      <>
+                        <div>{formatCurrency(show.weeklyGross)}</div>
+                        {(show.weeklyCapacity != null || show.weeklyAtp != null) && (
+                          <div className="text-xs text-gray-500 whitespace-nowrap" title="Latest week: share of seats sold (can top 100% with standing room), and average ticket price">
+                            {[
+                              show.weeklyCapacity != null ? `${Math.round(show.weeklyCapacity)}% full` : null,
+                              show.weeklyAtp != null ? `$${Math.round(show.weeklyAtp)} avg` : null,
+                            ].filter(Boolean).join(' · ')}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <span className="text-gray-500">Closed</span>
+                    )}
+                  </td>
+                  <td className="py-3 px-4 hidden lg:table-cell">
+                    {show.weeklyCost == null ? (
+                      <span className="text-gray-500">—</span>
+                    ) : (
+                      `${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`
+                    )}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">
                     {formatCurrency(show.totalGross ?? null)}
