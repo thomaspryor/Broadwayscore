@@ -98,6 +98,9 @@ async function main() {
       // Recorded in report mode too: route-tour-candidates.js reads the file.
       const n = recordTourCandidates(CANDIDATES, candidates);
       console.log(`${candidates.length} running tour(s) found; ${n} candidate row(s) tracked`);
+      // Save what discovery read now: a step killed later in the run must not
+      // send the next run back to the same pages (BRO-4725 review).
+      writeAudit({ mode: write ? 'write' : 'report', created: [], results: [], partial: true });
     } catch (e) {
       // Discovery failing must not stop roundup candidates from being created.
       console.log(`::warning::running-tour discovery failed: ${e.message}`);

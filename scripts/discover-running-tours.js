@@ -68,7 +68,7 @@ async function listShowPages(fetchText) {
  * @returns {Promise<{candidates: object[], ambiguous: string[], checked: number, pages: number, eligible: number, coverage: object, rateLimited: number, failed: number}>}
  */
 async function discoverRunningTours({ shows, budget = null, coverage = {}, fallback = null, log = console.log }) {
-  const { politeFetchText, stats } = require('./lib/tours-to-you');
+  const { politeFetchText, stats, looksLikeShowPage } = require('./lib/tours-to-you');
   const fetchText = url => politeFetchText(url, { budget, log });
   const slugs = await listShowPages(fetchText);
   // Only pages whose title is a Broadway show are worth a fetch.
@@ -88,6 +88,8 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
     const scheduleUrl = `https://tourstoyou.org/shows/${slug}/`;
     let html = '';
     try { html = await politeFetchText(scheduleUrl, { budget, fallback, log }); } catch (e) { failed++; log(`  ${slug}: ${e.message}`); continue; }
+    // A challenge or error body must not stamp the page as read.
+    if (!looksLikeShowPage(html)) { failed++; log(`  ${slug}: answer is not a Tours To You page`); continue; }
     read.push(slug);
     const r = runningTourCandidate({ slug, scheduleUrl, html, shows });
     if (r.candidate) {

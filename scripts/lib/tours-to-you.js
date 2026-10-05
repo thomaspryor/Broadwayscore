@@ -27,6 +27,12 @@ const RETRIES = 2;
 const BACKOFF_BASE_MS = 15000;
 const MAX_WAIT_MS = 60000;
 const MAX_FALLBACKS = 10;
+// A scraper.js fetchPage walks several tiers at up to 45s each; never start
+// one with less than this left in the caller's budget (BRO-4725 review).
+const FALLBACK_MIN_REMAINING_MS = 150000;
+// After this many answers in a row without a 429, the gap halves back
+// toward GAP_MS.
+const RECOVER_AFTER = 10;
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
@@ -49,13 +55,15 @@ function backoffMs(attempt, retryAfterMs = null) {
 function createPacer(gapMs = GAP_MS, { now = Date.now, wait = sleep } = {}) {
   let gap = gapMs;
   let next = 0;
+  let calm = 0;
   return {
     async take() {
       const t = now();
       if (t < next) await wait(next - t);
       next = Math.max(t, next) + gap;
     },
-    slowDown() { gap = Math.min(gap * 2, MAX_GAP_MS); },
+    slowDown() { gap = Math.min(gap * 2, MAX_GAP_MS); calm = 0; },
+    ok() { if (gap > gapMs && ++calm >= RECOVER_AFTER) { gap = Math.max(gapMs, gap / 2); calm = 0; } },
     gap: () => gap,
   };
 }
@@ -97,7 +105,9 @@ async function politeFetchText(url, { fallback = null, budget = null, log = cons
     await pace.take();
     stats.requests++;
     try {
-      return await get(url);
+      const body = await get(url);
+      if (pace.ok) pace.ok();
+      return body;
     } catch (e) {
       if (e.status !== 429) throw e;
       stats.rateLimited++;
@@ -110,7 +120,8 @@ async function politeFetchText(url, { fallback = null, budget = null, log = cons
         await wait(ms);
         continue;
       }
-      if (fallback && stats.fallbacks < MAX_FALLBACKS) {
+      const fallbackRoom = !budget || budget.remainingMs() > FALLBACK_MIN_REMAINING_MS;
+      if (fallback && fallbackRoom && stats.fallbacks < MAX_FALLBACKS) {
         stats.fallbacks++;
         try {
           const res = await fallback(url);
@@ -147,4 +158,12 @@ async function fetchSchedule(tour, fetchPage = null, opts = {}) {
   return { url: null, html: '' };
 }
 
-module.exports = { fetchText, politeFetchText, fetchSchedule, parseRetryAfter, backoffMs, createPacer, stats, USER_AGENT, MAX_FALLBACKS };
+/**
+ * A body that is a Tours To You show page, not a challenge or error page:
+ * it names the site and has a title. Only such a page counts as read.
+ */
+function looksLikeShowPage(html) {
+  return typeof html === 'string' && /<title/i.test(html) && /tourstoyou\.org/i.test(html);
+}
+
+module.exports = { looksLikeShowPage, fetchText, politeFetchText, fetchSchedule, parseRetryAfter, backoffMs, createPacer, stats, USER_AGENT, MAX_FALLBACKS };

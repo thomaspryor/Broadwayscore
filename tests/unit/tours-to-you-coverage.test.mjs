@@ -42,6 +42,29 @@ test('pacer spaces requests and slows down after a 429', async () => {
   assert.equal(p.gap(), 15000, 'gap is capped');
 });
 
+test('pacer recovers toward its base gap after a calm stretch', () => {
+  const p = ttY.createPacer(2000, { now: () => 0, wait: async () => {} });
+  p.slowDown(); p.slowDown();
+  assert.equal(p.gap(), 8000);
+  for (let i = 0; i < 10; i++) p.ok();
+  assert.equal(p.gap(), 4000);
+  for (let i = 0; i < 30; i++) p.ok();
+  assert.equal(p.gap(), 2000, 'never below the base gap');
+});
+
+test('no paid fallback when too little budget is left for one', async () => {
+  let fallbackCalls = 0;
+  const budget = { remainingMs: () => 60000 };
+  await assert.rejects(ttY.politeFetchText('u', { get: async () => { throw err429(); }, budget, fallback: async () => { fallbackCalls++; return '<html>x</html>'; }, wait: async () => {}, pace: noPace, log: quiet }), /429/);
+  assert.equal(fallbackCalls, 0);
+});
+
+test('only a real Tours To You page counts as read', () => {
+  assert.equal(ttY.looksLikeShowPage('<html><head><title>Hamilton</title><link rel="canonical" href="https://tourstoyou.org/shows/hamilton/"></head></html>'), true);
+  assert.equal(ttY.looksLikeShowPage('<html><title>Just a moment...</title></html>'), false);
+  assert.equal(ttY.looksLikeShowPage(''), false);
+});
+
 test('a 429 is retried after the wait, then succeeds', async () => {
   const waits = [];
   let calls = 0;
