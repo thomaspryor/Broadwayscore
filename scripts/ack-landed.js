@@ -484,6 +484,10 @@ function main() {
     landing.commitTs = git(['show', '-s', '--format=%cI', sha]);
     landing.authorTs = git(['show', '-s', '--format=%aI', sha]);
     landing.message = git(['show', '-s', '--format=%B', sha]);
+    // --landed-elsewhere refuses an empty / bookkeeping-only sha (first-parent
+    // diff, so a merge commit reports what it brought in).
+    landing.changedPaths = git(['diff-tree', '--no-commit-id', '--name-only', '-r', '--root', '-m', '--first-parent', sha], { maxBuffer: 64 * 1024 * 1024 })
+      .split('\n').map((l) => l.trim()).filter(Boolean);
   } catch (e) {
     refuse(ref, [`could not read commit ${sha}: ${String(e.stderr || e.message).trim()}`]);
   }

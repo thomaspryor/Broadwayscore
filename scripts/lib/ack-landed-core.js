@@ -487,47 +487,85 @@ function decideAlreadyLanded(input) {
   return { ok, refusals, row, newest, launch };
 }
 
+// Paths whose change alone is never "the card's work": ledgers, audit logs,
+// memory, scratch and handoff notes.
+function isBookkeepingPath(p) {
+  return /^(?:data\/audit\/|memory\/|scratchpad\/|\.claude\/handoff)/.test(String(p || '')) || /\.jsonl$/.test(String(p || ''));
+}
+
+// Terminal rows a dispatch attempt can end on: the job vocabulary (matched by
+// jobId) and the cmux-tab vocabulary (matched by workspaceRef, the same key
+// dispatch-ledger.js terminalForLaunch uses).
+const ATTEMPT_END_EVENTS = new Set([...ACKABLE_TERMINAL_EVENTS, 'job-done']);
+
 /**
  * Every dispatch attempt's [launch, end] authoring window across a ref's
- * ledger rows, in file order. An attempt opens at a launch/job-spawned row
- * that is not a continuation of the attempt already open (job-spawned right
- * after its own launch, or a resume after job-retried — same causal rule as
- * ledgerPrecondition) and closes at the first later terminal row (any
- * ACKABLE_TERMINAL_EVENTS member or job-done), or at the next fresh launch if
- * it never wrote one. The last attempt with no terminal row stays open
- * (end = null): it could still be authoring.
+ * ledger rows. Ends are matched by IDENTITY, never by position (BRO-4662
+ * pre-implementation review): bsc-prune.js can append a prune-closed row for
+ * an OLD cmux workspace while a later headless attempt is still running, so
+ * "the first terminal row after the launch" would close a live attempt early
+ * and let its own later commits read as outside every attempt.
+ *   - cmux launch (workspaceRef not 'headless:'): the last terminal row with
+ *     the same workspaceRef after the launch and before the next launch onto
+ *     that workspaceRef.
+ *   - headless launch: the last terminal row carrying a jobId that one of its
+ *     own job-spawned rows (before the next launch) recorded — last, so a
+ *     retried/resumed job is covered through its final leg. A headless
+ *     launch that never spawned a job ran nothing: zero-width window.
+ *   - a job-spawned with no launch of its own: ended by its own jobId.
+ * No matching end → endTs null (unbounded): the attempt may still be
+ * authoring, so every later sha counts as inside it and is refused — the
+ * safe direction; --job-id <correlationId> is the tool for that attempt.
  * @returns {{launchTs:string, endTs:string|null, endEvent:string|null}[]}
  */
 function attemptWindows(rows) {
+  const list = (rows || []).filter((r) => r && typeof r === 'object');
   const windows = [];
-  let open = null;
-  let retriedSession = null;
-  for (const r of rows || []) {
-    const e = String((r && r.event) || '');
-    if (e === 'job-retried') { retriedSession = r.sessionId || null; continue; }
-    if (LAUNCH_EVENTS.has(e)) {
-      const continuesOpen = Boolean(open && (
-        (e === 'job-spawned' && open.firstEvent === 'launch' && !open.sawSpawn)
-        || (retriedSession && r.resumed === true && r.resumeOfSession === retriedSession)));
-      if (continuesOpen) { if (e === 'job-spawned') open.sawSpawn = true; retriedSession = null; continue; }
-      // A relaunch supersedes an attempt that never wrote a terminal row:
-      // bound it at the relaunch, or one unterminated cmux launch would make
-      // every later sha read as "inside" forever.
-      if (open && open.endTs == null) { open.endTs = r.ts; open.endEvent = `superseded by ${e}`; }
-      open = { launchTs: r.ts, endTs: null, endEvent: null, firstEvent: e, sawSpawn: e === 'job-spawned' };
-      windows.push(open);
-      retriedSession = null;
+  const claimedJobIds = new Set();
+  const tsOf = (r) => Date.parse((r && r.ts) || '');
+  const lastEnd = (pred) => {
+    let found = null;
+    for (const t of list) if (ATTEMPT_END_EVENTS.has(String(t.event)) && pred(t)) found = t;
+    return found;
+  };
+  const push = (r, end) => windows.push({ launchTs: r.ts, endTs: end ? end.ts : null, endEvent: end ? String(end.event) : null });
+  for (let i = 0; i < list.length; i++) {
+    const r = list[i];
+    const e = String(r.event || '');
+    if (e === 'launch' && r.workspaceRef && !String(r.workspaceRef).startsWith('headless:')) {
+      // cmux attempt: ends on its own workspaceRef's terminal row.
+      const launchTs = tsOf(r);
+      let nextSameRef = Infinity;
+      for (let j = i + 1; j < list.length; j++) {
+        if (String(list[j].event) === 'launch' && list[j].workspaceRef === r.workspaceRef) {
+          const t = tsOf(list[j]);
+          nextSameRef = Number.isFinite(t) ? t : Infinity;
+          break;
+        }
+      }
+      push(r, lastEnd((t) => t.workspaceRef === r.workspaceRef && tsOf(t) > launchTs && tsOf(t) < nextSameRef));
       continue;
     }
-    if (open && (ACKABLE_TERMINAL_EVENTS.has(e) || e === 'job-done')) {
-      // A job-retried resume reopens the SAME window; the earlier terminal
-      // row (if any) is superseded by the one that follows the resume.
-      open.endTs = r.ts;
-      open.endEvent = e;
-      if (!retriedSession) open = null;
+    if (e === 'launch') {
+      // headless attempt: ends on the last terminal row of the job(s) it spawned.
+      const jobIds = new Set();
+      for (let j = i + 1; j < list.length; j++) {
+        if (String(list[j].event) === 'launch') break;
+        if (String(list[j].event) === 'job-spawned' && list[j].jobId) jobIds.add(list[j].jobId);
+      }
+      if (!jobIds.size) { windows.push({ launchTs: r.ts, endTs: r.ts, endEvent: 'never spawned' }); continue; }
+      for (const id of jobIds) claimedJobIds.add(id);
+      push(r, lastEnd((t) => t.jobId && jobIds.has(t.jobId)));
+      continue;
+    }
+    if (e === 'job-spawned' && !(r.jobId && claimedJobIds.has(r.jobId))) {
+      // A job with no launch row of its own (a resume under a new jobId, a
+      // watchdog redispatch): its own window, ended by its own terminal row.
+      if (r.jobId) claimedJobIds.add(r.jobId);
+      push(r, r.jobId ? lastEnd((t) => t.jobId === r.jobId) : null);
     }
   }
-  return windows.map(({ launchTs, endTs, endEvent }) => ({ launchTs, endTs, endEvent }));
+  return windows;
 }
 
 /**
@@ -554,6 +592,11 @@ function attemptWindows(rows) {
  * the ref (an arbitrary commit is never accepted — the card's optional
  * "unnamed sha + reason" variant was deliberately not built), checkout clean
  * and containing the sha, safe-form --verify exit 0, reason >= 15 chars.
+ * Plus three checks decideAck gets for free from its window (review must-
+ * fixes): the sha must change at least one non-bookkeeping path (no empty
+ * "BRO-N" commit), --verify must be the acceptance command a launch row
+ * recorded when one did, and a sha tied to the stranded job's own sha is
+ * refused (that job did the work → default ack).
  * Writes 'landed-outside-dispatch', never 'landed-acked': the ledger keeps
  * saying the stranded job failed while the CARD is recorded satisfied.
  *
@@ -563,7 +606,7 @@ function decideLandedElsewhere(input) {
   const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
   const pre = ledgerPrecondition(rows);
   const refusals = [...pre.refusals];
-  const { newest, launch: latestLaunch } = pre;
+  const { newest, launch: latestLaunch, launchVerifyCmd, stranded } = pre;
   const first = earliestLaunch(rows);
   if ((rows || []).some((r) => LAUNCH_EVENTS.has(String(r && r.event)) && !Number.isFinite(Date.parse((r && r.ts) || '')))) {
     refusals.push('one or more launch/job-spawned rows on this ref have an unreadable ts — cannot place the sha relative to every dispatch attempt');
@@ -595,6 +638,30 @@ function decideLandedElsewhere(input) {
   if (!messageNamesRef(landing.message, ref)) {
     refusals.push(`the sha's commit message does not name ${ref} — --landed-elsewhere still requires the card's own landing commit, never an arbitrary one`);
   }
+  // A stranded job's OWN work can land after its window (a squash-merge
+  // re-stamps the author date); that belongs to the default ack's stranded
+  // tie, which records the job as productive — not here.
+  if (landing.tiedToStranded || landing.tiedToStrandedByPatch) {
+    refusals.push(`the sha is tied to the stranded job's own sha${stranded && stranded.sha ? ` ${stranded.sha}` : ''} — that job DID do this work; ack it with the default mode`);
+  }
+
+  // Anti-rubber-stamp (pre-implementation review): with no attempt window to
+  // bound it, "a commit naming the card, authored after every attempt" is
+  // exactly what `git commit --allow-empty -m "BRO-N"` produces today. So the
+  // sha must change something real, and the proof must be the card's OWN
+  // recorded acceptance, not any passing safe-form test.
+  const paths = Array.isArray(landing.changedPaths) ? landing.changedPaths : null;
+  if (!paths) {
+    refusals.push('could not read the files the sha changes — cannot rule out an empty or bookkeeping-only commit');
+  } else if (!paths.some((p) => !isBookkeepingPath(p))) {
+    refusals.push(`the sha changes ${paths.length ? `only bookkeeping paths (${paths.slice(0, 3).join(', ')}${paths.length > 3 ? ', …' : ''})` : 'no files at all'} — not a landing of the card's work`);
+  }
+  const recordedVerify = [...new Set((rows || [])
+    .filter((r) => r && String(r.event) === 'launch' && r.verifyCmd)
+    .map((r) => String(r.verifyCmd).trim()))];
+  if (recordedVerify.length && verify.cmd && !recordedVerify.includes(String(verify.cmd).trim())) {
+    refusals.push(`--verify must be the acceptance command recorded at dispatch (${recordedVerify.join(' | ')}) — got ${verify.cmd}`);
+  }
 
   refusals.push(...checkoutRefusals(checkout));
   refusals.push(...verifyRefusals(verify));
@@ -612,6 +679,7 @@ function decideLandedElsewhere(input) {
     workspaceRef: (latestLaunch && latestLaunch.workspaceRef) || undefined,
     sha: landing.sha,
     verifyCmd: verify.cmd,
+    launchVerifyCmd: launchVerifyCmd || null,
     reason: reasonText,
     ackedBy: ackedBy || 'manual',
     priorEvent: newest ? newest.event : null,
@@ -626,5 +694,5 @@ function formatAckLine(ref, row) {
 module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
   rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, earliestLaunch,
-  decideAck, decideAlreadyLanded, decideLandedElsewhere, attemptWindows, formatAckLine, messageNamesRef,
+  decideAck, decideAlreadyLanded, decideLandedElsewhere, attemptWindows, isBookkeepingPath, formatAckLine, messageNamesRef,
 };

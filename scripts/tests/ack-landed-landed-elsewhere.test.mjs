@@ -47,6 +47,7 @@ const WORK = {
   message: 'test: repo-side acceptance for Gate 7 absence-claim guard (BRO-4137, BRO-4374)',
   tiedToStranded: false,
   tiedToStrandedByPatch: false,
+  changedPaths: ['tests/unit-test-manifest.txt', 'tests/unit/absence-claim-control.test.mjs'],
 };
 
 function base(overrides = {}) {
@@ -131,11 +132,14 @@ test('refused: newest row still live (a relaunch after the stranding) and no dou
   assert.match(core.decideAck(base({ rows: acked })).refusals.join('\n'), /do not double-ack/);
 });
 
-test('attemptWindows: launch+job-spawned is one attempt; a launch with no terminal row is bounded by the next relaunch', () => {
+test('attemptWindows: launch+job-spawned is one attempt, ended by its own jobId', () => {
   assert.deepEqual(core.attemptWindows(rows).map((w) => [w.launchTs, w.endEvent]), [
     ['2026-09-24T23:51:56.818Z', 'job-done'],
     ['2026-09-25T03:53:54.176Z', 'job-stranded'],
   ]);
+});
+
+test('cmux: a launch whose tab never wrote a terminal row stays UNBOUNDED (the tab may still be committing) — later shas refuse', () => {
   const cmux = [
     { ts: '2026-09-01T00:00:00Z', event: 'launch', taskId: TASK, workspaceRef: 'workspace:9' },
     { ts: '2026-09-02T00:00:00Z', event: 'launch', taskId: TASK, workspaceRef: 'workspace:10' },
@@ -143,19 +147,58 @@ test('attemptWindows: launch+job-spawned is one attempt; a launch with no termin
   ];
   const w = core.attemptWindows(cmux);
   assert.equal(w.length, 2);
-  assert.equal(w[0].endTs, '2026-09-02T00:00:00Z');
+  assert.equal(w[0].endTs, null);
   assert.equal(w[1].endEvent, 'vanished');
-  // A sha between the two cmux launches is inside the first (unterminated) attempt.
-  const d = core.decideLandedElsewhere(base({ rows: cmux, landing: { ...WORK, authorTs: '2026-09-01T12:00:00Z' } }));
-  assert.match(d.refusals.join('\n'), /INSIDE the dispatch attempt/);
-  // ...and one after the last attempt ended is accepted.
-  assert.deepEqual(core.decideLandedElsewhere(base({ rows: cmux, landing: { ...WORK, authorTs: '2026-09-05T00:00:00Z' } })).refusals, []);
+  const d = core.decideLandedElsewhere(base({ rows: cmux, landing: { ...WORK, authorTs: '2026-09-05T00:00:00Z' } }));
+  assert.match(d.refusals.join('\n'), /INSIDE the dispatch attempt launched 2026-09-01T00:00:00Z \(no terminal row\)/);
+  // Once workspace:9's own terminal row exists, the same sha is accepted.
+  const closed = [...cmux.slice(0, 2), { ts: '2026-09-01T05:00:00Z', event: 'prune-closed', taskId: TASK, workspaceRef: 'workspace:9' }, cmux[2]];
+  assert.deepEqual(core.decideLandedElsewhere(base({ rows: closed, landing: { ...WORK, authorTs: '2026-09-05T00:00:00Z' } })).refusals, []);
+});
+
+test('review fixture: a delayed prune-closed for an OLD cmux workspace during a headless attempt does not end that attempt early', () => {
+  const r = [
+    { ts: '2026-09-01T00:00:00Z', event: 'launch', taskId: TASK, workspaceRef: 'workspace:9' },
+    { ts: '2026-09-01T01:00:00Z', event: 'dead', taskId: TASK, workspaceRef: 'workspace:9' },
+    { ts: '2026-09-03T00:00:00Z', event: 'launch', taskId: TASK, workspaceRef: `headless:${TASK}` },
+    { ts: '2026-09-03T00:00:10Z', event: 'job-spawned', taskId: TASK, jobId: 'J3' },
+    { ts: '2026-09-03T00:30:00Z', event: 'prune-closed', taskId: TASK, workspaceRef: 'workspace:9' },
+    { ts: '2026-09-03T05:00:00Z', event: 'job-stopped-short', taskId: TASK, jobId: 'J3' },
+  ];
+  const w = core.attemptWindows(r);
+  assert.equal(w[1].endTs, '2026-09-03T05:00:00Z');
+  // authored at 02:00 — after the stray prune-closed, but inside J3's real window.
+  const d = core.decideLandedElsewhere(base({ rows: r, landing: { ...WORK, authorTs: '2026-09-03T02:00:00Z' } }));
+  assert.match(d.refusals.join('\n'), /INSIDE the dispatch attempt launched 2026-09-03T00:00:00Z/);
+});
+
+test('review fixture: an empty or bookkeeping-only commit naming the card after every window is REFUSED', () => {
+  const empty = core.decideLandedElsewhere(base({ landing: { ...WORK, changedPaths: [] } }));
+  assert.match(empty.refusals.join('\n'), /changes no files at all/);
+  const ledgerOnly = core.decideLandedElsewhere(base({ landing: { ...WORK, changedPaths: ['data/audit/dispatch-ledger.jsonl', 'memory/x.md'] } }));
+  assert.match(ledgerOnly.refusals.join('\n'), /only bookkeeping paths/);
+  const unknown = core.decideLandedElsewhere(base({ landing: { ...WORK, changedPaths: undefined } }));
+  assert.match(unknown.refusals.join('\n'), /could not read the files/);
+});
+
+test('review fixture: --verify that is not the acceptance command recorded at dispatch is REFUSED', () => {
+  const d = core.decideLandedElsewhere(base({ verify: { cmd: 'node --test scripts/lib/some-other.test.mjs', safe: true, unsafeReason: null, exitCode: 0 } }));
+  assert.match(d.refusals.join('\n'), /must be the acceptance command recorded at dispatch/);
+});
+
+test('a sha tied to the stranded job\'s own sha (ancestry or patch twin) is refused here — that job did the work', () => {
+  for (const tie of [{ tiedToStranded: true }, { tiedToStrandedByPatch: true }]) {
+    const d = core.decideLandedElsewhere(base({ landing: { ...WORK, ...tie } }));
+    assert.match(d.refusals.join('\n'), /tied to the stranded job's own sha/);
+  }
 });
 
 test('the verify command is actually EXECUTED in the accepted path, and its real exit code decides', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ack-elsewhere-'));
   try {
-    const decide = (extra) => core.decideLandedElsewhere(base(extra));
+    // Rows without a recorded verifyCmd, so a throwaway command is admissible.
+    const noRecorded = rows.map(({ verifyCmd, ...r }) => r);
+    const decide = (extra) => core.decideLandedElsewhere(base({ rows: noRecorded, ...extra }));
     const ok = runVerifyAndDecide(decide, { cmd: 'echo ran > marker.txt', safe: true, unsafeReason: null, exitCode: null }, { cwd: dir });
     assert.equal(fs.readFileSync(path.join(dir, 'marker.txt'), 'utf8').trim(), 'ran');
     assert.equal(ok.ok, true);
@@ -191,4 +234,17 @@ test('every consumer of the ack-event family accepts landed-outside-dispatch (th
   const dead = rows[rows.length - 1];
   assert.equal(ledger.landedAckOverridesDeath(TASK, dead, all), true);
   assert.equal(ledger.landedAckOverridesDeath(TASK, dead, rows), false);
+});
+
+// The hook's Python literals live in the private ~/.claude repo, which a CI
+// checkout does not have — that side is also pinned by a Gate O fixture in
+// ~/.claude/hooks/tests/exit-status-gate/. Here it runs wherever the hook is.
+const HOOK = path.join(os.homedir(), '.claude', 'hooks', 'exit-status-gate.sh');
+test('exit-status-gate.sh GO_ACK_EVENTS and GP_TERMINAL_EVENTS carry every ack event', { skip: fs.existsSync(HOOK) ? false : `hook not present at ${HOOK} (CI checkout)` }, () => {
+  const src = fs.readFileSync(HOOK, 'utf8');
+  for (const name of ['GO_ACK_EVENTS', 'GP_TERMINAL_EVENTS']) {
+    const m = new RegExp(`${name}\\s*=\\s*\\{([^}]*)\\}`).exec(src);
+    assert.ok(m, `${name} literal not found in the hook — positive control failed`);
+    for (const ev of ledger.LANDED_ACK_EVENTS) assert.ok(m[1].includes(`'${ev}'`), `${name} lacks ${ev}`);
+  }
 });
