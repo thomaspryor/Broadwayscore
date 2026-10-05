@@ -244,5 +244,34 @@
       }
     ],
     "queuedAt": "2026-10-05T14:15:08.117Z"
+  },
+  {
+    "conditionKey": "land:land/bro-352-attribution-triage",
+    "title": "Landing blocked: resolve red on land/bro-352-attribution-triage",
+    "description": "land.yml did not land land/bro-352-attribution-triage: the resolve gate went red at a3c0413480. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-352-attribution-triage\" is neither a local branch nor on origin (attempts 0, 0.8s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37319622075",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-352-attribution-triage"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "a3c0413480ce8040774ee3b965de940e29576587"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37319622075"
+      }
+    ],
+    "queuedAt": "2026-10-05T14:22:30.895Z"
   }
 ]
