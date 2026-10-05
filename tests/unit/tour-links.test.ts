@@ -18,10 +18,20 @@ test('every Broadway production of the title links its tour; other shows and mar
   const { getToursOf, getShowById } = await import('../../src/lib/data-core');
   const tour = getShowById('beetlejuice-tour-2022');
   assert.ok(tour, 'beetlejuice-tour-2022 exists in shows.json');
-  for (const id of ['beetlejuice-2019', 'beetlejuice-2022', 'beetlejuice-2025']) {
+  // New Beetlejuice tours get added over time (tour-2026 joined 2022's), so assert
+  // the invariant, not a fixed list: every production links the same tours, including 2022's.
+  const idsFor = (id: string) => {
     const show = getShowById(id);
     assert.ok(show, id);
-    assert.deepEqual(getToursOf(show).map(t => t.id), ['beetlejuice-tour-2022'], id);
+    return getToursOf(show).map(t => t.id).sort();
+  };
+  const expected = idsFor('beetlejuice-2019');
+  assert.ok(expected.includes('beetlejuice-tour-2022'), 'beetlejuice-2019 links tour-2022');
+  for (const id of ['beetlejuice-2022', 'beetlejuice-2025']) {
+    assert.deepEqual(idsFor(id), expected, id);
+  }
+  for (const t of expected) {
+    assert.equal(getShowById(t)?.category, 'tour', t);
   }
   assert.deepEqual(getToursOf({ id: 'beetlejuice-west-end-2026', title: 'Beetlejuice', category: 'west-end' }), []);
   assert.deepEqual(getToursOf({ id: 'hamilton-2015', title: 'Hamilton', category: 'broadway' }), []);
