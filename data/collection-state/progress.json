@@ -113,7 +113,10 @@
     "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
     "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
     "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "hay-fever-west-end-2026/plays-international--unknown.json"
+    "hay-fever-west-end-2026/plays-international--unknown.json",
+    "torera-off-broadway-2026/theatermania--kenji-fujishima.json",
+    "slam-frank-off-broadway-2026/cote-notices--david-cote.json",
+    "hay-fever-west-end-2026/jonathan-baz--unknown.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -166,11 +169,11 @@
     "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
-    "hay-fever-west-end-2026/jonathan-baz--unknown.json",
     "hay-fever-west-end-2026/londontheatredirect--unknown.json",
     "hay-fever-west-end-2026/thestage--the-stage.json",
     "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
-    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -249,7 +252,9 @@
       "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/pages-on-stages--unknown.json",
       "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theater-pizzazz--unknown.json",
       "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
-      "hay-fever-west-end-2026/plays-international--unknown.json"
+      "hay-fever-west-end-2026/plays-international--unknown.json",
+      "torera-off-broadway-2026/theatermania--kenji-fujishima.json",
+      "hay-fever-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -259,7 +264,8 @@
       "kramerfauci-st-anns-off-broadway-2026/nytimes--helen-shaw.json",
       "data/review-texts/macbeth-off-broadway-2026/deadline--baz-bamigboye.json",
       "macbeth-off-broadway-2026/deadline--baz-bamigboye.json",
-      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json"
+      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+      "data/review-texts/franz-and-marie-west-end-2026/whatnightout--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -274,7 +280,8 @@
       "gimme-a-sign-off-broadway-2026/thecomedybureau--unknown.json",
       "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
-      "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json"
+      "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "slam-frank-off-broadway-2026/cote-notices--david-cote.json"
     ],
     "scrapingbee": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
@@ -290,7 +297,8 @@
     ],
     "brightdata": [
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
-      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json"
+      "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -317,7 +325,7 @@
     ]
   },
   "startTime": "2026-10-05T18:41:26.656Z",
-  "lastProcessed": "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+  "lastProcessed": "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
   "log": [
     {
       "t": "2026-10-05T18:41:55.053Z",
@@ -371,6 +379,33 @@
       "event": "bb-session",
       "session": "3ce20aa8",
       "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-05T22:23:51.316Z",
+      "event": "bb-session",
+      "session": "f12bea98",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-05T22:24:16.486Z",
+      "event": "bb-session",
+      "session": "e66a9d18",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-05T22:24:40.528Z",
+      "event": "bb-session",
+      "session": "6819507f",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T22:24:47.420Z",
+      "event": "bb-session",
+      "session": "57005e9c",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
+  ],
+  "recoveredAfterFailure": [
+    "hay-fever-west-end-2026/jonathan-baz--unknown.json"
   ]
 }
