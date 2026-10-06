@@ -62,8 +62,8 @@ function classifyFlip(d) {
 
 test('rebuild delegates rejectionReason/rejectedAt to the canonical helpers, no inline copy', () => {
   const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'rebuild-all-reviews.js'), 'utf8');
-  assert.match(src, /if \(isRejectedByReasonExclusion\(data\)\)/);
-  assert.match(src, /if \(isRejectedAtExclusion\(data\)\)/);
+  assert.match(src, /if \(isRejectedByReasonExclusion\(data\)(?: && !laneOk\('wrongProduction'\))?\)/);
+  assert.match(src, /if \(isRejectedAtExclusion\(data\)(?: && !laneOk\('wrongProduction'\))?\)/);
   assert.doesNotMatch(src, /if \(data\.rejectionReason && !hasStructuralStarScore/);
   assert.doesNotMatch(src, /if \(data\.rejectedAt && typeof data\.rejectedAt === 'string'\)/);
 });
