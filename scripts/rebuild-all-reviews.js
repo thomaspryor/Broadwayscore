@@ -1290,6 +1290,9 @@ const SHOW_FILTER_IDS = (() => {
 // reviews.json rows by key). Their rows are carried over unchanged from the existing reviews.json
 // just before the aggregate write below, so the file never loses a leased show.
 const leaseGuard = require('./lib/opening-night-lane/lease-guard');
+// BRO-4806: a lane review (provenance block + productionVerified:"aggregator") is never excluded by the corpus guards
+// named in trust-model LANE_BYPASSED_GUARDS. Every gate below calls this one predicate, never re-derives it.
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const leasedShowIds = new Set(leaseGuard.leasedShowIds());
 if (leasedShowIds.size) console.log(`Opening-night lease: not rebuilding ${[...leasedShowIds].join(', ')}; existing rows carried over`);
 const showDirs = listShowDirs(reviewTextsDir)
@@ -1490,6 +1493,7 @@ const crossShowFingerprints = new Map();
             if (d.wrongProduction || d.wrongProductionManualClear) continue;
             if (!d.url) continue;
             if (shouldSkipWrongProductionAudit(d)) continue; // [GUARD:OB-BW-TRANSFER]
+            if (laneBypasses(d, 'wrongProduction', { openingDate: ob.openingDate })) continue; // BRO-4806: never flag a lane review
             const norm = normalizeUrlForDedup(d.url);
             if (norm && bwUrls.has(norm)) {
               // [GUARD:OB-BW-TRANSFER-483] INSIDE the URL match, not before it.
@@ -2060,6 +2064,8 @@ const crossShowFingerprints = new Map();
         const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
         const cv = d.contentVerification;
         if (!cv) continue;
+        // BRO-4806: the CV pre-pass persists wrongProduction/wrongShow flags; never onto a lane review.
+        if (laneBypasses(d, 'wrongProduction', { openingDate: showById[sid] && showById[sid].openingDate })) continue;
         // Schmigadoon 2026-04-21 bypass: CV rows with confidence='low' AND explicit
         // "completely different show" markers are treated as eligible for promotion.
         // The temporal override downgraded them, but the CV.issues evidence is definitive.
@@ -2922,7 +2928,11 @@ showDirs.forEach(showId => {
         && data.contentVerification.confidence === 'low'
         && data.contentVerification.wrongProduction === true
         && hasStrongDifferentShowSignal(data.contentVerification.issues, data.contentVerification.reasoning);
-      if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium' || cvLowButStrong)) {
+      // BRO-4806: no CV promotion (wrongProduction / wrongShow / non-review / film-TV flags, persisted to the lane file
+      // below) onto a lane review; the gates further down stand down for it, and a flag on disk would mislead every
+      // reader that does not call laneBypasses.
+      if (data.contentVerification && (data.contentVerification.confidence === 'high' || data.contentVerification.confidence === 'medium' || cvLowButStrong)
+          && !laneBypasses(data, 'wrongProduction', { openingDate: showById[showId] && showById[showId].openingDate })) {
         const cv = data.contentVerification;
 
         // Staleness check: if text was fetched after verification, skip promotion
@@ -3312,7 +3322,8 @@ showDirs.forEach(showId => {
       if (data.wrongProductionManualClear || data.wrongProductionOverride || data.humanReviewedWrongProduction === false) {
         data.wrongProduction = false;
       }
-      if (data.wrongProduction === true) {
+      const laneOk = (guard) => laneBypasses(data, guard, { openingDate: showById[showId] && showById[showId].openingDate });
+      if (data.wrongProduction === true && !laneOk('wrongProduction')) {
         if (data.wrongProductionManualClear || data.wrongProductionOverride || data.humanReviewedWrongProduction === false) {
           console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite manual clear — FORCING false`);
           data.wrongProduction = false;
@@ -3437,7 +3448,7 @@ showDirs.forEach(showId => {
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
-      if (data.wrongShow === true) {
+      if (data.wrongShow === true && !laneOk('wrongProduction')) {
         if (cvFlagVetoedInWindow(data, showById[showId], 'wrongShow', {
           urlFiledUnderOtherShow: (urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1,
         })) {
@@ -3480,7 +3491,7 @@ showDirs.forEach(showId => {
       }
 
       // Skip non-review entries (scraper misidentified content as a review)
-      if (data.isNotReview === true) {
+      if (data.isNotReview === true && !laneOk('nonReview')) {
         logExclusion("skippedNotReview", showId, file, data);
         stats.skippedNotReview = (stats.skippedNotReview || 0) + 1;
         return;
@@ -3488,7 +3499,7 @@ showDirs.forEach(showId => {
 
       // Skip scraper garbage (scraper identified content as non-review material)
       // BUT allow through if review has a valid score from aggregator data (excerpts + assignedScore)
-      if (data.incompleteReason === 'scraper_garbage') {
+      if (data.incompleteReason === 'scraper_garbage' && !laneOk('scraperGarbage')) {
         const hasAggregatorScore = (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
           || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
           || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
@@ -3518,7 +3529,7 @@ showDirs.forEach(showId => {
       // flag the copy that's farther from its show's opening year as wrongProduction.
       // Catches aggregator contamination (e.g., ShowScore listing 2013 Broadway reviews
       // on a 2026 Off-Broadway page with the same title).
-      if (data.url && !data.wrongProduction && !data.allowEarlyDate && !skipCrossShowDupeIds.has(showId)) {
+      if (data.url && !data.wrongProduction && !data.allowEarlyDate && !skipCrossShowDupeIds.has(showId) && !laneOk('wrongProduction')) {
         const norm = normalizeUrlForDedup(data.url);
         const entry = norm ? crossShowUrlIndex.get(norm) : null;
         if (entry && entry.conflicts.length > 0) {
@@ -3643,7 +3654,7 @@ showDirs.forEach(showId => {
       // humanReviewedWrongProduction:false / allowCrossMarket; plus
       // allowEarlyDate like the neighbouring guards). Exclusion + log only —
       // no disk write, same as the listing-page gate above.
-      if (!data.url && !data.allowEarlyDate && !shouldSkipWrongProductionAudit(data)) {
+      if (!data.url && !data.allowEarlyDate && !shouldSkipWrongProductionAudit(data) && !laneOk('tourCrossMarket')) {
         const relaySibling = findSiblingInOtherMarket(crossMarketCriticIndex, {
           show: showById[showId], criticName: data.criticName, publishDate: data.publishDate,
         }, { parseDate });
@@ -3666,7 +3677,7 @@ showDirs.forEach(showId => {
         }
       }
 
-      if (isLondonMarket(showCategory) && !data.allowEarlyDate && !data.allowCrossMarket
+      if (isLondonMarket(showCategory) && !data.allowEarlyDate && !data.allowCrossMarket && !laneOk('tourCrossMarket')
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         // [GUARD:CROSS-MARKET-CV-OVERRIDE] / [GUARD:CROSS-MARKET-US-ON-LONDON] — decision
         // logic lives in lib/cross-market-guard.js (BRO-254) so it's unit-testable against
@@ -3701,7 +3712,7 @@ showDirs.forEach(showId => {
       // Unlike the forward guard, we DON'T exempt Tier 1/2 here — a London Tier 1 outlet like
       // Evening Standard never covers Broadway. Only explicitly dual-market outlets (Guardian, FT, Variety)
       // are allowed to cross markets. Tier 1/2 exemption was designed for US outlets reviewing WE.
-      if ((showCategory === 'broadway' || showCategory === 'off-broadway') && !data.allowEarlyDate && !data.allowCrossMarket
+      if ((showCategory === 'broadway' || showCategory === 'off-broadway') && !data.allowEarlyDate && !data.allowCrossMarket && !laneOk('tourCrossMarket')
           && !DUAL_MARKET_OUTLETS.has(canonicalOutlet) && !DUAL_MARKET_OUTLETS.has(rawOutlet)) {
         const outletRegion = outletRegionMap[canonicalOutlet] || outletRegionMap[rawOutlet];
         // URL-domain fallback: if outlet has no region in registry, check if the URL is a .co.uk domain
@@ -3783,7 +3794,7 @@ showDirs.forEach(showId => {
       // but a URL containing "-broadway-review" or "on-broadway" is reviewing a specific production.
       // Excludes broadwayworld.com (outlet domain, not a production indicator).
       // [GUARD:URL-PATH-CROSS-MARKET] outer guard covers both inner sites
-      if (data.url && !data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !data.allowCrossMarket) {
+      if (data.url && !data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !data.allowCrossMarket && !laneOk('tourCrossMarket')) {
         try {
           const urlObj = new URL(data.url);
           const hostname = urlObj.hostname.replace(/^www\./, '');
@@ -3918,7 +3929,7 @@ showDirs.forEach(showId => {
       // — this inline check is the actual scoring-corpus enforcement (it does
       // NOT delegate to isIncludableForRebuild), so the demotion has to be
       // applied here too, not just in review-guards.js/is-scoreable.js.
-      if ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) || data.nonReviewFlag === true || data.nonReviewContent === true) {
+      if (!laneOk('nonReview') && ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) || data.nonReviewFlag === true || data.nonReviewContent === true)) {
         logExclusion("skippedNonReview", showId, file, data);
         stats.skippedNonReview = (stats.skippedNonReview || 0) + 1;
         return;
@@ -4154,7 +4165,7 @@ showDirs.forEach(showId => {
       // Pure decision: pickRerouteTarget() in scripts/lib/review-guards.js (with tests).
       // Bypass: wrongProductionManualClear, wrongProductionOverride, allowEarlyDate, allowLateDate, routedFromShowId
       // routedFromShowId: file was already rerouted to this directory by a prior rebuild — don't re-evaluate
-      if (multiProdYearGuard[showId]
+      if (multiProdYearGuard[showId] && !laneOk('wrongProduction')
           && !data.wrongProductionManualClear
           && !data.wrongProductionOverride
           && !data.allowEarlyDate
@@ -4245,7 +4256,7 @@ showDirs.forEach(showId => {
       // routedFromShowId: already rerouted — URL year reflects the original show, not a mismatch
       if (!data.publishDate && data.url && showDateMap[showId] && !data.wrongProduction
           && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate
-          && !data.routedFromShowId
+          && !data.routedFromShowId && !laneOk('wrongProduction')
           && !isLondonMarket(showCategory) && showCategory !== 'off-broadway') {
         const showYear = showDateMap[showId].getFullYear();
         // Extract years from URL bounded by path separators, hyphens, underscores, dots, or string end
@@ -4282,7 +4293,7 @@ showDirs.forEach(showId => {
       // If a review in an OLDER production's directory mentions a NEWER production's director,
       // it's almost certainly filed under the wrong show (validated pattern, zero false positives)
       // routedFromShowId: already rerouted — text may reference original show's era, skip re-evaluation
-      if (multiProdDirectorGuard[showId] && !data.routedFromShowId && data.humanReviewedWrongProduction !== false) {
+      if (multiProdDirectorGuard[showId] && !data.routedFromShowId && data.humanReviewedWrongProduction !== false && !laneOk('wrongProduction')) {
         const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
         if (text.length >= 30) {
           for (const [dirName, newerId] of multiProdDirectorGuard[showId]) {
@@ -4338,7 +4349,7 @@ showDirs.forEach(showId => {
       // rejected as garbage_text, but wos-star-images had already read 5/5 stars off
       // the page's own <img> markup. Mirrors explainExclusion's identical carve-out in
       // review-guards.js — see hasStructuralStarScore there for the full rationale.
-      if (isRejectedByReasonExclusion(data)) {
+      if (isRejectedByReasonExclusion(data) && !laneOk('wrongProduction')) {
         logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
@@ -4352,7 +4363,7 @@ showDirs.forEach(showId => {
       // fullText + isFullReview + non-roundup URL) is treated as wrong. Notion 34e637c5.
       // isRoundupPageAsReview covers unflagged roundup pages — the flag setter is
       // enrichment-gated and fast_path rebuilds shipped 4 live roundup entries (2026-07-09).
-      const roundupPageAsReview = isRoundupPageAsReview(data);
+      const roundupPageAsReview = !laneOk('roundupUrlSwap') && isRoundupPageAsReview(data);
       if (roundupPageAsReview && data.isRoundupArticle !== true) {
         // Persist so validate-data / verify-review-recovery / scoring agree with
         // this exclusion instead of counting it as a silent gap forever.
@@ -4361,14 +4372,14 @@ showDirs.forEach(showId => {
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.autoFlaggedRoundup = (stats.autoFlaggedRoundup || 0) + 1;
       }
-      if ((data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) || roundupPageAsReview) {
+      if ((data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data) && !laneOk('roundupUrlSwap')) || roundupPageAsReview) {
         logExclusion("skippedRoundup", showId, file, data);
         stats.skippedRoundup = (stats.skippedRoundup || 0) + 1;
         return;
       }
 
       // Skip reviews rejected by LLM ensemble Step 0 (wrong_show, wrong_production, not_a_review, garbage)
-      if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) {
+      if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2 && !laneOk('wrongProduction')) {
         logExclusion("skippedLlmRejected", showId, file, data);
         stats.skippedLlmRejected = (stats.skippedLlmRejected || 0) + 1;
         return;
@@ -4382,7 +4393,7 @@ showDirs.forEach(showId => {
       // collect-review-texts.js line 4247. Without this guard, the Vulture FILM review of
       // Hamlet (rejected 2026-04-20 as wrong_production) slipped back into reviews.json after
       // clear-failure-flags nulled its rejectionReason.
-      if (isRejectedAtExclusion(data)) {
+      if (isRejectedAtExclusion(data) && !laneOk('wrongProduction')) {
         logExclusion("skippedRejectedAt", showId, file, data);
         stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
         return;
@@ -4397,7 +4408,7 @@ showDirs.forEach(showId => {
       // review silently excluded despite valid humanReviewScore=63. See postmortem-balusters.
       const reasoning = data.llmScore?.reasoning || '';
       const hasScore = Number.isFinite(data.humanReviewScore) || Number.isFinite(data.llmScore?.score);
-      if (!hasScore && reasoning && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
+      if (!hasScore && reasoning && !laneOk('nonReview') && /\b(error page|error message|website error|search result|not a review|press release|announcement rather than|reality TV|Bachelor in Paradise)\b/i.test(reasoning)) {
         logExclusion("skippedWrongContent", showId, file, data);
         stats.skippedWrongContent = (stats.skippedWrongContent || 0) + 1;
         return;
@@ -4504,7 +4515,7 @@ showDirs.forEach(showId => {
           // even when scraped text was paywall junk that didn't mention the show
           const hasOriginalScore = (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
             || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
-          if (!hasExcerpt && !hasOriginalScore) {
+          if (!hasExcerpt && !hasOriginalScore && !laneOk('headlineBackstop')) {
             logExclusion("skippedShowNotMentioned", showId, file, data);
             stats.skippedShowNotMentioned = (stats.skippedShowNotMentioned || 0) + 1;
             return;
@@ -4905,7 +4916,7 @@ showDirs.forEach(showId => {
       // The LLM ensemble already catches these for reviews it scores (v5.2+ Step 0).
       // This catches reviews that bypass the LLM (excerpt-only, pre-v5.2, unscored).
       const CONTAMINATION_AUDIT_CUTOFF = process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z';
-      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy) {
+      if (data.fullText && data.textFetchedAt && data.textFetchedAt > CONTAMINATION_AUDIT_CUTOFF && !data.rejectedBy && !laneOk('tourCrossMarket')) {
         const introText = data.fullText.slice(0, 600);
 
         // Tour detection (skip tour-stop shows where touring is expected)
@@ -4947,7 +4958,7 @@ showDirs.forEach(showId => {
       // ROUNDUP URL DETECTION: Auto-flag reviews whose URL matches known roundup patterns.
       // Roundup pages aggregate multiple outlets' ratings — they are not individual reviews.
       // Guard: skip files where isRoundupArticle was manually cleared (shouldSkipRoundupAudit).
-      if (data.url && !data.isRoundupArticle && !shouldSkipRoundupAudit(data)) {
+      if (data.url && !data.isRoundupArticle && !shouldSkipRoundupAudit(data) && !laneOk('roundupUrlSwap')) {
         const roundupCheck = isRoundupUrl(data.url);
         // Quoting hosts (WOS, Playbill) aggregate OTHER outlets' critics: only the
         // host's own outletId is page-as-review; a different outletId is a review
@@ -5186,7 +5197,11 @@ showDirs.forEach(showId => {
         } : {}),
         ...(data.llmScore ? {
           scoreConfidence: data.llmScore.confidence || null,
-        } : {})
+        } : {}),
+        // BRO-4806: a lane review scored from a paywalled aggregator thumb/stars carries scoreConfidence:'low' on its
+        // file (trust-model buildLaneReview). Keep it on the row: low wins over any llmScore confidence, and it is
+        // never promoted. Ordinary reviews are untouched.
+        ...(laneOk('scraperGarbage') && data.scoreConfidence === 'low' ? { scoreConfidence: 'low' } : {})
       };
 
       // Sanitize display fields: decode HTML entities in outlet, pullQuote
