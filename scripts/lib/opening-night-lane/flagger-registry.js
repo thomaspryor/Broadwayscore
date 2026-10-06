@@ -32,29 +32,22 @@ const LANE_EXEMPT = Object.freeze({
   'scripts/apply-cross-production-llm-flags.js': R.unscheduled,
   'scripts/audit-corpus-contamination.js': R.operatorTarget,
   'scripts/audit-cross-show-excerpt-contamination.js': R.unscheduled,
-  'scripts/audit-cv-wrongproduction-lifetime.js': R.verdict,
-  'scripts/audit-exclusion-flags.js': R.clears,
   'scripts/audit-non-reviews.js': R.verdict,
   'scripts/auto-triage-cross-production.js': R.unscheduled,
   'scripts/cleanup-known-issues.js': R.unscheduled,
   'scripts/cleanup-review-sources.js': R.unscheduled,
-  'scripts/clear-stale-roundup-flags.js': R.clears,
-  'scripts/clear-wrong-show-blockers.js': R.clears,
   'scripts/extract-bww-reviews.js': R.candidate,
   'scripts/fix-aggregator-gap-override-contamination.js': R.oneOff,
   'scripts/fix-bro-3482-wrong-url-reviews.js': R.oneOff,
   'scripts/fix-timeout-we-attribution.js': R.oneOff,
   'scripts/fix-wrong-production-reviews.js': R.oneOff,
   'scripts/fix-wrong-reviews.js': R.oneOff,
-  'scripts/lib/content-verifier.js': R.verdict,
   'scripts/lib/cv-promoted-nonreview-selector.js': R.verdict,
   'scripts/lib/non-review-patterns.js': R.verdict,
   'scripts/repair-noteless-wrongprod-autoclear.js': R.unscheduled,
   'scripts/resolve-remaining-collisions.js': R.unscheduled,
   'scripts/shadow-autoclear-report.js': R.verdict,
-  'scripts/sweep-false-positive-wrong-production.js': R.clears,
   'scripts/sweep-named-non-review-urls.js': R.unscheduled,
-  'scripts/sweep-wrongproduction-corroboration.js': R.unscheduled,
   'scripts/video-reviews/verify-productions.js': R.videoRecords,
 });
 
@@ -68,6 +61,7 @@ function flagWriteLines(src) {
   const out = [];
   const setter = new RegExp(`(?:\\.\\s*|\\b)(?:${FLAGS.join('|')})\\s*(?:=(?!=)|:)\\s*true\\b`);
   let inBlock = false;
+  let inTemplate = false;
   src.split('\n').forEach((raw, i) => {
     let line = raw;
     if (inBlock) {
@@ -76,7 +70,15 @@ function flagWriteLines(src) {
       inBlock = false;
       line = line.slice(end + 2);
     }
+    if (inTemplate) {
+      const close = line.search(/(?<!\\)`/);
+      if (close === -1) return;
+      inTemplate = false;
+      line = line.slice(close + 1);
+    }
     line = stripStrings(line);
+    const tick = line.search(/(?<!\\)`/); // an unterminated template literal opens here and runs onto later lines
+    if (tick !== -1) { inTemplate = true; line = line.slice(0, tick); }
     line = line.replace(/\/\*.*?\*\//g, '');
     const open = line.indexOf('/*');
     if (open !== -1) { inBlock = true; line = line.slice(0, open); }
@@ -84,6 +86,19 @@ function flagWriteLines(src) {
     if (setter.test(line)) out.push(i + 1);
   });
   return out;
+}
+
+// A write site is guarded when a lane call (or the rebuild's skipStaleFlagWrite, which calls one) appears within
+// SITE_WINDOW lines above it, or a `lane-guarded: <where>` comment sits on the line or the two above it.
+const SITE_WINDOW = 60;
+const LANE_CALL = /\blane(?:Bypasses|Holds|Held)\(|\bskipStaleFlagWrite\(/;
+function unguardedSites(src) {
+  const lines = src.split('\n');
+  return flagWriteLines(src).filter((n) => {
+    const near = lines.slice(Math.max(0, n - 3), n).join('\n');
+    if (/lane-guarded:\s*\S/.test(near)) return false;
+    return !LANE_CALL.test(lines.slice(Math.max(0, n - 1 - SITE_WINDOW), n).join('\n'));
+  });
 }
 
 const isTestFile = (rel) => /\.test\.|(^|\/)tests?\//.test(rel) || path.basename(rel).startsWith('test-');
@@ -101,11 +116,11 @@ function findFlagWriters(root) {
       if (isTestFile(rel) || rel === 'scripts/lib/opening-night-lane/flagger-registry.js') continue;
       const src = fs.readFileSync(full, 'utf8');
       const lines = flagWriteLines(src);
-      if (lines.length) found.push({ file: rel, lines, wired: /\blaneBypasses\b/.test(src), exemptComment: /lane-exempt:\s*\S/.test(src) });
+      if (lines.length) found.push({ file: rel, lines, wired: /\blaneBypasses\b/.test(src), exemptComment: /lane-exempt:\s*\S/.test(src), unguarded: unguardedSites(src) });
     }
   };
   walk(path.join(root, 'scripts'));
   return found.sort((a, b) => a.file.localeCompare(b.file));
 }
 
-module.exports = { FLAGS, LANE_EXEMPT, flagWriteLines, findFlagWriters };
+module.exports = { FLAGS, LANE_EXEMPT, SITE_WINDOW, flagWriteLines, unguardedSites, findFlagWriters };

@@ -62,7 +62,6 @@ const {
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings } = require('./lib/prior-run-sibling');
-const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -3097,7 +3096,7 @@ showDirs.forEach(showId => {
             data.flagReason = 'cv-promotion-deferred';
             stats.cvPromotionDeferred = (stats.cvPromotionDeferred || 0) + 1;
             try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
-          } else {
+          } else if (!laneHolds(data, 'wrongProduction')) {
             data.wrongShow = true;
             data.contentVerificationPromoted = `rebuild: promoted via wrongShowReason fallback (stale cv)`;
             invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
@@ -4974,7 +4973,7 @@ showDirs.forEach(showId => {
         // SOURCED from the roundup and must stay unflagged (ship-check 2026-07-10).
         const sourcedFromQuotingRoundup = roundupCheck.isRoundup
           && isQuotingRoundupHostUrl(data.url) && !isRoundupPageAsReview(data);
-        if (roundupCheck.isRoundup && !sourcedFromQuotingRoundup) {
+        if (roundupCheck.isRoundup && !sourcedFromQuotingRoundup && !laneHolds(data, 'roundupUrlSwap')) {
           data.isRoundupArticle = true;
           data.roundupNote = roundupCheck.reason;
           stats.autoFlaggedRoundup = (stats.autoFlaggedRoundup || 0) + 1;

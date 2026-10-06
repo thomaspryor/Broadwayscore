@@ -555,6 +555,10 @@ const UNCOLLECTABLE_OUTLETS = (() => {
 // BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") stand down for the
 // classifiers and the headline backstop below; laneBypasses is the one predicate, this only adds openingDate.
 function laneHeld(rec, guard) {
+  // The collection queue item carries only filePath/showId/url, not the stamp: read it from the review file.
+  if (rec && rec.filePath && !rec.productionVerified) {
+    try { rec = JSON.parse(fs.readFileSync(rec.filePath, 'utf8')); } catch (e) { return false; }
+  }
   const show = rec && _showsJsonCache && _showsJsonCache.shows && _showsJsonCache.shows.find((x) => x.id === rec.showId);
   return laneBypasses(rec, guard, show && show.openingDate ? { openingDate: show.openingDate } : {});
 }

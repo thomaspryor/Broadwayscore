@@ -1465,7 +1465,7 @@ async function main(): Promise<void> {
         // branch above: no flag, no rejection fields, no fabricated score, and stamped so it is not re-selected.
         const laneGuard = rejection === 'not_a_review' ? 'nonReview'
           : rejection === 'garbage_text' ? 'scraperGarbage'
-          : (rejection === 'wrong_show' || rejection === 'wrong_production') ? 'wrongProduction' : null;
+          : null; // wrong_show / wrong_production lane rejections take the manuallyCleared Haiku fallback below
         if (laneGuard && laneBypasses(fileData, laneGuard)) {
           console.log(`SKIP-REJECT (${rejection} on opening-night lane review): ${rejectionReasoning?.substring(0, 80) || ''}`);
           stampTerminalScoringFailure(fileData, `lane_review_rejection:${rejection}`);
@@ -1509,7 +1509,9 @@ async function main(): Promise<void> {
           // closes the gap without requiring every sweep to be migrated.
           // Notion 362637c5-416f-8142-a088-f44f0cdaa98b.
           fileData.wrongProductionCleared === true ||
-          fileData.wrongShowCleared === true;
+          fileData.wrongShowCleared === true ||
+          // BRO-4807: an opening-night lane review is rescued by the Haiku fallback, never excluded.
+          laneBypasses(fileData, 'wrongProduction');
         if (manuallyCleared && (rejection === 'wrong_production' || rejection === 'wrong_show')) {
           console.log(`SKIP-REJECT (${rejection} on manually-cleared file): ${rejectionReasoning?.substring(0, 80) || ''}`);
           // Fallback: a human has verified this file matches the show, but the
@@ -1588,10 +1590,12 @@ async function main(): Promise<void> {
           if (fileData.isCombinedReview === true) {
             console.log(` (combined review — skipping wrongShow flag write)`);
           } else {
+            // lane-guarded: lane reviews are routed to the manuallyCleared Haiku fallback above, so they never reach here
             fileData.wrongShow = true;
             invalidateWrongShowAutoClear(fileData);
           }
         } else if (rejection === 'wrong_production' && !isOffBroadway) {
+          // lane-guarded: lane reviews are routed to the manuallyCleared Haiku fallback above, so they never reach here
           fileData.wrongProduction = true;
           invalidateWrongProductionAutoClear(fileData);
           fileData.wrongProductionProvenance = 'content';

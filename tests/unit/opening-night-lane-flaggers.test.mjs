@@ -164,3 +164,9 @@ test('every guard name passed to laneBypasses/laneHolds/laneHeld is a known lane
   }
   assert.deepEqual(bad, []);
 });
+
+test('in a wired file every flag write sits under a lane call or a "lane-guarded:" note (one wired site cannot hide the rest)', () => {
+  const sites = writers.filter((w) => w.wired).flatMap((w) => w.unguarded.map((n) => `${w.file}:${n}`));
+  assert.deepEqual(sites, [],
+    `no laneBypasses/laneHolds/laneHeld within ${reg.SITE_WINDOW} lines above these writes: guard them, or add a "// lane-guarded: <where>" comment on or just above the line`);
+});

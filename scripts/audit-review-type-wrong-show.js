@@ -108,6 +108,7 @@ function listShowDirs(dir, showFilter) {
 
 function applyPromote(data, showId, file) {
   const now = new Date().toISOString();
+  // lane-guarded: only caller (the scan loop) skips lane reviews via laneBypasses before a hit is recorded
   data.wrongShow = true;
   invalidateWrongShowAutoClear(data);
   data.isValid = false;

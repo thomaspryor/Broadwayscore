@@ -853,6 +853,7 @@ function applyFlag(item, parsed) {
   // Honor manual clears — don't re-flag a human-verified review.
   if (shouldSkipWrongProductionAudit(data)) return false;
 
+  // lane-guarded: candidate scan skips lane reviews via laneBypasses before this flag write
   data.wrongProduction = true;
   invalidateWrongProductionAutoClear(data);
   const venuePart = parsed.venue ? ` at ${parsed.venue}` : '';

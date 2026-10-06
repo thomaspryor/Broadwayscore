@@ -219,6 +219,7 @@ function run() {
             datelessRevivalFlagged++;
             flaggedDetails.push({ showId: showDir, title: show.title, file, date: '(none)', issue: 'dateless_revival', diffDays: 0, outlet: data.outlet || '?' });
             if (!DRY_RUN) {
+              // lane-guarded: the per-file loop skips lane reviews via laneBypasses before any guard runs
               data.wrongProduction = true;
               invalidateWrongProductionAutoClear(data);
               data.wrongProductionReason = 'dateless-revival';
@@ -305,6 +306,7 @@ function run() {
       });
 
       if (!DRY_RUN) {
+        // lane-guarded: the per-file loop skips lane reviews via laneBypasses before any guard runs
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = note;
