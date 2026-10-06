@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-06T13:31:25.313Z",
+    "generatedAt": "2026-10-06T13:46:30.168Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -16,7 +16,7 @@
   "flagged": [
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 279
+      "churn": 281
     },
     {
       "path": "data/audit/guard-escalation-state.json",
@@ -32,7 +32,7 @@
     },
     {
       "path": ".github/workflows/test.yml",
-      "churn": 66
+      "churn": 65
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
@@ -50,7 +50,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 448
+      "churn": 451
     },
     {
       "path": "data/llm-scoring-runs.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 121
+      "churn": 122
     },
     {
       "path": "public/opening-night-status.json",
@@ -176,17 +176,17 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 500,
+      "churn": 501,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 434,
+      "churn": 436,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 411,
+      "churn": 410,
       "mergeAttr": "ours"
     },
     {
@@ -196,17 +196,17 @@
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 378,
+      "churn": 376,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 378,
+      "churn": 376,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 378,
+      "churn": 376,
       "mergeAttr": "ours"
     },
     {
@@ -246,7 +246,7 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 136,
+      "churn": 135,
       "mergeAttr": "union"
     },
     {
@@ -276,7 +276,7 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 58,
+      "churn": 59,
       "mergeAttr": "ours"
     },
     {
