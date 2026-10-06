@@ -42,6 +42,11 @@ jobs:
           # depth 300 keeps push-with-retry.sh's shallow boundary an ancestor of main for the final ledger commit (BRO-2388)
           fetch-depth: 300
 
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Checkout review-texts
         uses: ./.github/actions/checkout-review-texts
         with:
@@ -57,10 +62,12 @@ jobs:
           esac
 
       - name: Audit (before)
+        shell: bash
         run: node scripts/audit-star-band-drift.js --json=/tmp/star-band-before.json | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Re-flag unanchored star reviews
         if: inputs.mode == 'reflag'
+        shell: bash
         run: node scripts/flag-late-star-reanchor.js --apply | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: HTML-only rating backfill
@@ -72,6 +79,7 @@ jobs:
           BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        shell: bash
         run: |
           APPLY=""
           [ "${{ inputs.mode }}" = "html-apply" ] && APPLY="--apply"
@@ -96,6 +104,7 @@ jobs:
 
       - name: Audit (after)
         if: always()
+        shell: bash
         run: node scripts/audit-star-band-drift.js | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Notify on failure
