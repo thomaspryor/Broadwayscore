@@ -137,11 +137,13 @@ async function main() {
   // every P0/P1 card, parked and started (resume) ones included: one request
   // per 50 cards.
   const candidates = issues.filter((iss) => !/^(malformed|not-p0-p1)$/.test(skipReason(iss, nowMs) || ''));
+  let commentsRead = true;
   if (candidates.length) {
     try {
       const comments = await listIssueComments(candidates.map((iss) => iss.identifier));
       for (const iss of candidates) if (comments.has(iss.identifier)) iss.comments = { nodes: comments.get(iss.identifier) };
     } catch (err) {
+      commentsRead = false;
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
@@ -153,6 +155,11 @@ async function main() {
   const historySkipped = {};
   const listN = listArg(process.argv);
   if (listN) {
+    // Without comments the Codex bounce marker is invisible: hand Codex nothing this time.
+    if (!commentsRead) {
+      console.log(JSON.stringify({ picks: [], eligible, open: issues.length, skipped, startNowSkipped, historySkipped, commentsUnavailable: true }, null, 2));
+      return;
+    }
     // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
     // Cards Codex already bounced go to the Claude worker, never back to Codex.
     const { codexBouncedRecently } = require('./lib/codex-runner.js');
@@ -187,11 +194,16 @@ async function main() {
   }
 }
 
-/** `--list=N` as a positive integer, else 0. */
+/** `--list=N` as a positive integer, 0 when absent; a malformed value is an error, never the single-pick output. */
 function listArg(argv) {
-  const a = argv.find((x) => x.startsWith('--list='));
-  const n = a ? Number(a.slice('--list='.length)) : 0;
-  return Number.isInteger(n) && n > 0 ? n : 0;
+  const a = argv.find((x) => x === '--list' || x.startsWith('--list='));
+  if (!a) return 0;
+  const n = Number(a.slice('--list='.length));
+  if (!Number.isInteger(n) || n <= 0) {
+    console.error(`[cloud-worker-pick] bad ${a}: want --list=N with N a positive integer`);
+    process.exit(2);
+  }
+  return n;
 }
 
 function pickJson(pick, resume, nowMs, verifyCommand, isStartNow) {

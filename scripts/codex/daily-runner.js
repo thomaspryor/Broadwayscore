@@ -88,16 +88,26 @@ const tail = (s, n = 1500) => (s.length > n ? `...${s.slice(-n)}` : s);
 const fence = (s) => `\`\`\`\n${String(s).replace(/```/g, "'''")}\n\`\`\``;
 
 /**
- * Env for the Codex and Claude-check shells: no service keys or tokens, so no
- * paid fetches, LLM rescoring or Linear writes. Claude's own session vars stay
- * (the check needs them to authenticate).
+ * Env for the Codex, unit-test and Claude-check shells: no service keys or tokens (so no
+ * paid fetches, LLM rescoring or Linear writes) and git pushes rewritten to nowhere.
+ * Only the reviewer keeps Claude's session vars (it needs them to authenticate).
  */
-function scrubbedEnv() {
-  return R.scrubEnv(process.env);
+function scrubbedEnv({ reviewer = false } = {}) {
+  return R.scrubEnv(process.env, { reviewer });
 }
 
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
+/** linear-brain.js with every --comment redacted; retries transient failures (429s), never a gate refusal (exit 5). */
 async function linearBrain(args) {
-  const r = sh('node', ['scripts/linear-brain.js', ...args], { timeoutMs: 1_200_000 });
+  const safe = args.map((a, i) => (args[i - 1] === '--comment' ? R.redactSecrets(a, process.env) : a));
+  let r = null;
+  for (let i = 0; i < 3; i++) {
+    r = sh('node', ['scripts/linear-brain.js', ...safe], { timeoutMs: 1_200_000 });
+    if (r.code === 0 || r.code === 5) break;
+    log(`linear-brain ${safe[0]} ${safe[1]}: exit ${r.code}, retry ${i + 1}`);
+    await sleep(30_000 * (i + 1));
+  }
   return r;
 }
 
@@ -115,7 +125,8 @@ function resetWorktree(branch) {
   git(['fetch', 'origin', 'main']);
   git(['checkout', '-f', '-B', branch, 'origin/main']);
   git(['reset', '--hard', 'origin/main']);
-  git(['clean', '-fd', '-e', 'node_modules']);
+  // -x: gitignored files Codex or tests wrote must not carry into the next card.
+  git(['clean', '-fdx', '-e', 'node_modules']);
 }
 
 function weeklyPct() {
@@ -153,9 +164,9 @@ function runCodex(id, prompt, tag) {
   return { code: r.code, report };
 }
 
-function runCheck(card, codexReport, tag) {
+function runCheck(card, body, codexReport, tag) {
   const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
-  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body: (card.description || '').slice(0, 8000), extra: fence(tail(codexReport, 6000)) })
+  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)) })
     .replace(/\{\{WORKTREE\}\}/g, WT);
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}-prompt.md`), prompt);
   const head = git(['rev-parse', 'HEAD']);
@@ -165,7 +176,7 @@ function runCheck(card, codexReport, tag) {
   const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'text',
     '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
     '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*)',
-  ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv(), input: prompt });
+  ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv({ reviewer: true }), input: prompt });
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
   // The verdict is about the committed HEAD. A moved HEAD means the reviewer committed or
   // checked out, so its verdict is void. Leftover files are test residue (tests rewrite
@@ -194,7 +205,8 @@ function commitAttempt(card, attempt) {
 // re-run on main, so the base side is cheap. Returns null when clean, else the failure text.
 const BASE_WT = path.join(ROOT, '.claude/worktrees/codex-runner-base');
 function unitBatch(cwd, files) {
-  const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000 });
+  // Same scrubbed env as Codex: the manifest and tests come from Codex's branch.
+  const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000, env: scrubbedEnv() });
   return { exit: r.code, text: r.out, root: cwd };
 }
 function newUnitFailures() {
@@ -205,7 +217,7 @@ function newUnitFailures() {
   // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
   // dirty-tree guard throws its verdict away.
   git(['reset', '-q', '--hard', 'HEAD']);
-  git(['clean', '-qfd', '-e', 'node_modules']);
+  git(['clean', '-qfdx', '-e', 'node_modules']);
   if (branch.exit === 0) return null;
   const failing = [...new Set([...D.parseGateFailures('unit-tests-node', branch.text, WT).values()].map((f) => f.file))]
     .filter((f) => f && f !== '?');
@@ -214,12 +226,13 @@ function newUnitFailures() {
     if (!fs.existsSync(path.join(BASE_WT, 'node_modules'))) fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(BASE_WT, 'node_modules'));
   }
   git(['checkout', '-q', '-f', '--detach', 'origin/main'], BASE_WT);
+  git(['clean', '-qfdx', '-e', 'node_modules'], BASE_WT);
   const onBase = failing.filter((f) => fs.existsSync(path.join(BASE_WT, f)));
   const base = onBase.length ? unitBatch(BASE_WT, onBase) : { exit: 0, text: '', root: BASE_WT };
   const d = D.decideGateDelta({ gate: 'unit-tests-node', base, branch });
   if (d.verdict === 'pass') return null;
   const lines = d.newFailures.map((f) => `- ${f.file}::${f.name}${f.payload ? `\n${String(f.payload).slice(0, 600)}` : ''}`);
-  return `${d.reason}\n${lines.join('\n') || tail(branch.text, 2000)}`;
+  return R.redactSecrets(`${d.reason}\n${lines.join('\n') || tail(branch.text, 2000)}`, process.env);
 }
 
 async function landPreflight(ref) {
@@ -244,19 +257,28 @@ async function moveCard(id, state, comment) {
   return r;
 }
 
+/** The card's runner commit is on origin/main (a landing that outlived wait-for-land). */
+function landedOnMain(id) {
+  try {
+    git(['fetch', 'origin', 'main']);
+    return git(['log', 'origin/main', '--since=2.days', '--format=%H', '-F', `--grep=fix(${id}):`]) !== '';
+  } catch { return false; }
+}
+
 async function finishLanding(entry, stats) {
   const res = await waitForLand(entry.ref);
   const { card, summary } = entry;
-  if (res.code === 0) {
+  if (res.code === 0 || landedOnMain(card.identifier)) {
     const done = await moveCard(card.identifier, 'Done', `## Codex runner: landed\n\n${summary}\n\nLanded via \`${entry.ref}\`.`);
     if (done.code === 0) { stats.landed.push(card.identifier); return; }
-    stats.doneRefusals += 1;
+    if (done.code === 5) stats.doneRefusals += 1;
     stats.inReview.push(card.identifier);
     await moveCard(card.identifier, 'In Review', `## Codex runner: landed, but the Done gate refused\n\n${fence(tail(done.out, 1200))}\n\n${summary}`);
     return;
   }
   stats.landFailed.push(card.identifier);
-  // Left In Progress on purpose: the Claude cloud worker resumes refused land/ refs.
+  // Left In Progress on purpose: the Claude cloud worker resumes refused land/ refs, and
+  // main() re-checks main for these before it exits.
   if (!OPTS.dryRun) await linearBrain(['update', card.identifier, '--comment', `## Codex runner: landing did not finish (wait-for-land exit ${res.code})\n\nThe land ref \`${entry.ref}\` is left for the cloud worker's resume step.\n\n${fence(tail(res.out, 1200))}`]);
 }
 
@@ -273,7 +295,12 @@ async function workCard(pick, stats, inFlight) {
   if (!card) { log(`${id}: not found`); return 'skip'; }
   const stateType = card.state && card.state.type;
   if (!['unstarted', 'backlog', 'triage'].includes(stateType)) { log(`${id}: state ${card.state && card.state.name}, skipped`); return 'skip'; }
-  if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}"`); return 'skip'; }
+  // Comments carry acceptance corrections and the bounce marker; never work a card blind to them.
+  let comments;
+  try { comments = (await linear.listIssueComments([id])).get(id) || []; } catch (e) { log(`${id}: comments unreadable (${e && e.message ? e.message.split('\n')[0] : e}), skipped`); return 'skip'; }
+  if (R.codexBouncedRecently(comments, Date.now())) { log(`${id}: Codex bounced it recently, skipped`); return 'skip'; }
+  const body = R.cardBody(card.description, comments);
+  if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}" (${body.length} chars with comments)`); return 'skip'; }
 
   const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`], { timeoutMs: 900_000 });
   const claimJson = (claim.stdout.split('\n').reverse().find((l) => l.startsWith('{')) || '{}');
@@ -293,16 +320,18 @@ async function workCard(pick, stats, inFlight) {
       onMain = `\`${cmd}\` on fresh main: ${v.allowed ? 'PASSES already (the card may be fixed; confirm before changing code)' : `does not pass (${v.verdict}): ${String(v.reason).slice(0, 600)}`}`;
     }
     const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8');
-    const body = (card.description || '').slice(0, 12000);
     let report = '';
     let check = null;
     let attempt = 1;
     let step = null;
+    let abort = null;
     for (; attempt <= 2; attempt++) {
       const extra = attempt === 1 ? onMain
         : `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (the repo's unit tests, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
       const cx = runCodex(id, R.fillPrompt(tpl, { id, title: card.title, body, extra }), `codex${attempt}`);
       report = cx.report;
+      // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
+      if (cx.code !== 0) { abort = `Codex exited ${cx.code}: ${tail(R.redactSecrets(report, process.env), 400)}`; break; }
       const c = commitAttempt(card, attempt);
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit-test failures half an hour after the push, when the worktree has
@@ -315,10 +344,19 @@ async function workCard(pick, stats, inFlight) {
         if (step !== 'fix-round') break;
         continue;
       }
-      check = runCheck(card, report, `check${attempt}`);
+      check = runCheck(card, body, report, `check${attempt}`);
       log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
+      // No verdict means the reviewer is broken (auth, crash), not that the work is bad.
+      if (check.verdict === 'NONE') { abort = `the Claude check gave no verdict: ${tail(R.redactSecrets(check.text, process.env), 400)}`; break; }
       step = R.nextStep({ verdict: check.verdict, hasDiff: c.hasDiff, attempt });
       if (step !== 'fix-round') break;
+    }
+    if (abort) {
+      stats.aborted = abort;
+      stats.crashed.push(id);
+      await moveCard(id, 'Todo', `## Codex runner: stopped before finishing this card\n\n${abort}\n\nNothing was landed. The run stopped; the card is free for any worker.`);
+      disposed = true;
+      return 'done';
     }
     stats.rejectStreak = check.verdict === 'REJECT' ? stats.rejectStreak + 1 : 0;
     const summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
@@ -331,7 +369,15 @@ async function workCard(pick, stats, inFlight) {
         while (inFlight.length >= MAX_IN_FLIGHT) await inFlight.shift().promise;
         // land/codex-* refs belong to the runner; a re-worked card's earlier ref (refused or
         // stale) must not block the new attempt. The claim keeps one runner per card.
-        git(['push', '--force', 'origin', `HEAD:refs/heads/${ref}`]);
+        const sha = git(['rev-parse', 'HEAD']);
+        try {
+          git(['push', '--force', 'origin', `HEAD:refs/heads/${ref}`]);
+        } catch (e) {
+          // The push can land remotely while its reply is lost; only a missing ref is a failed push.
+          let remote = '';
+          try { remote = git(['ls-remote', 'origin', `refs/heads/${ref}`]).split(/\s/)[0]; } catch { /* treat as not pushed */ }
+          if (remote !== sha) throw e;
+        }
         log(`${id}: pushed ${ref}`);
         const entry = { ref, card, summary };
         entry.promise = finishLanding(entry, stats);
@@ -343,7 +389,7 @@ async function workCard(pick, stats, inFlight) {
     if (step === 'close-already-fixed') {
       const r = await moveCard(id, 'Done', `## Codex runner: already fixed on main, no code change\n\nThe independent check confirmed nothing was needed.\n\n${summary}`);
       if (r.code === 0) { stats.alreadyFixed.push(id); disposed = true; return 'done'; }
-      stats.doneRefusals += 1;
+      if (r.code === 5) stats.doneRefusals += 1;
     }
     stats.bounced.push(id);
     await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nTwo Codex attempts did not pass the independent check, so nothing was pushed. Findings for whoever takes it next:\n\n${summary}`);
@@ -358,6 +404,42 @@ async function workCard(pick, stats, inFlight) {
   }
 }
 
+// One run at a time across containers (runs share one rotating Codex login and the same
+// cards). The lock is a branch whose tip commit says "locked <iso>" or "unlocked"; it is
+// taken and released with --force-with-lease, so two runs cannot both win. The proxy
+// refuses ref deletes, hence the "unlocked" commit. No workflow triggers on this branch.
+const LOCK_REF = 'refs/heads/codex-runner-lock';
+const LOCK_STALE_MS = 11 * 3600_000;
+let lockSha = null;
+function lockCommit(msg) {
+  const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
+  return git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg], ROOT);
+}
+function lockPush(sha, expect) {
+  return sh('git', ['push', '-q', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`]).code === 0;
+}
+/** -> null when taken, else why not. */
+function takeLock() {
+  git(['fetch', '-q', 'origin', 'main'], ROOT);
+  const ls = sh('git', ['ls-remote', 'origin', LOCK_REF]);
+  if (ls.code !== 0) return `lock unreadable: ${tail(ls.out, 200)}`;
+  const cur = ls.stdout.split(/\s/)[0] || '';
+  if (cur) {
+    git(['fetch', '-q', 'origin', LOCK_REF], ROOT);
+    const [ct, ...msg] = git(['log', '-1', '--format=%ct %s', 'FETCH_HEAD'], ROOT).split(' ');
+    const age = Date.now() - Number(ct) * 1000;
+    if (msg.join(' ').startsWith('locked') && age < LOCK_STALE_MS) return `another run holds the lock (${msg.join(' ')}, ${Math.round(age / 60_000)} min old)`;
+  }
+  const sha = lockCommit(`locked ${new Date().toISOString()}`);
+  if (!lockPush(sha, cur)) return 'another run took the lock first';
+  lockSha = sha;
+  return null;
+}
+function releaseLock() {
+  if (!lockSha) return;
+  try { if (lockPush(lockCommit('unlocked'), lockSha)) lockSha = null; } catch { /* stale after 11h anyway */ }
+}
+
 // The card claimed right now, so a kill (routine timeout, container stop) can hand it back.
 let current = null;
 for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
@@ -367,6 +449,7 @@ for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
         `## Codex runner: stopped (${sig}) mid-card\n\nNothing was landed for this card. Back to Todo.`], { timeoutMs: 600_000 });
     }
     log(`killed by ${sig}${current ? `; ${current} returned to Todo` : ''}`);
+    releaseLock();
     process.exit(1);
   });
 }
@@ -381,23 +464,51 @@ async function main() {
   for (const tool of ['codex', 'claude']) {
     if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) { log(`${tool} CLI missing`); process.exit(2); }
   }
+  if (!OPTS.dryRun) {
+    const held = takeLock();
+    if (held) { log(`not starting: ${held}`); return; }
+  }
+  try { await runLocked(startedMs); } finally { releaseLock(); }
+}
+
+/** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
+async function reconcileLanded(stats) {
+  let subjects = '';
+  try { subjects = git(['log', 'origin/main', '--since=4.days', '--author=Codex runner', '--format=%s'], ROOT); } catch { return; }
+  const ids = [...new Set(subjects.split('\n').map((l) => (l.match(/^fix\((BRO-\d+)\):/) || [])[1]).filter(Boolean))];
+  for (const id of ids) {
+    const card = await linear.getIssue(id).catch(() => null);
+    if (!card || !card.state || card.state.type !== 'started') continue;
+    // Only when the runner's own newest note on the card is "landing did not finish" (not a reopen).
+    const notes = ((await linear.listIssueComments([id]).catch(() => new Map())).get(id) || [])
+      .filter((c) => String(c.body || '').startsWith('## Codex runner'));
+    if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
+    const r = await moveCard(id, 'Done', '## Codex runner: landed\n\nThe runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.');
+    if (r.code === 0) stats.landed.push(id);
+  }
+}
+
+async function runLocked(startedMs) {
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   if (restore.code !== 0) {
     if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', `## Codex runner did not start\n\nNo usable Codex login (it may have expired). Someone with the ChatGPT account must run \`codex login --device-auth\` in a cloud session, then \`node scripts/codex/auth-store.js save\`.\n\n${fence(tail(restore.out, 600))}`]);
-    process.exit(2);
+    process.exitCode = 2;
+    return;
   }
   const install = sh('node', ['scripts/codex/install.js']);
   if (install.code !== 0) log(`codex install warning: ${tail(install.out, 300)}`);
   setupWorktree();
 
   const stats = { claimed: [], landed: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
+  if (!OPTS.dryRun) await reconcileLanded(stats);
   const inFlight = [];
   let worked = 0;
   let stop = null;
   for (const pick of await pickCards()) {
     if (worked >= OPTS.limit) break;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals });
+    if (!stop && stats.aborted) stop = stats.aborted;
     if (stop) { log(`stopping: ${stop}`); break; }
     try {
       if (await workCard(pick, stats, inFlight) === 'done') worked += 1;
@@ -406,6 +517,7 @@ async function main() {
     }
   }
   await Promise.all(inFlight.map((e) => e.promise));
+  if (!stop && stats.aborted) stop = stats.aborted;
   saveLogin();
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
@@ -426,5 +538,5 @@ async function main() {
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
 }
 
-module.exports = { newUnitFailures };
+module.exports = { newUnitFailures, takeLock, releaseLock };
 if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });

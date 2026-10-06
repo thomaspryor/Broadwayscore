@@ -52,6 +52,9 @@ test('parseVerdict: last VERDICT line wins, markdown tolerated, missing is NONE'
   assert.equal(r.parseVerdict('Options: SHIP | SHIP-WITH-FIXES | REJECT'), 'NONE');
   assert.equal(r.parseVerdict(''), 'NONE');
   assert.equal(r.parseVerdict(undefined), 'NONE');
+  // Mid-sentence mentions do not count: only a line that starts with VERDICT.
+  assert.equal(r.parseVerdict('VERDICT: REJECT\n- after fixing X this would be VERDICT: SHIP'), 'REJECT');
+  assert.equal(r.parseVerdict('I would say VERDICT: SHIP if it had tests'), 'NONE');
 });
 
 test('latestWeeklyPercent: reads the real Codex rollout rate_limits shape', () => {
@@ -108,14 +111,53 @@ test('codexBouncedRecently: only the runner marker, only for 14 days', () => {
   assert.equal(r.codexBouncedRecently(undefined, now), false);
 });
 
-test('scrubEnv: drops secrets, keeps git env config whole', () => {
+test('scrubEnv: drops secrets, keeps git env config whole, Claude auth only for the reviewer', () => {
   const env = {
-    OPENAI_API_KEY: 'x', LINEAR_API_KEY: 'x', GITHUB_TOKEN: 'x', SESSION_COOKIE: 'x',
-    CLAUDE_CODE_OAUTH_TOKEN: 'keep', ANTHROPIC_BASE_URL: 'keep', PATH: '/bin',
+    OPENAI_API_KEY: 'x', LINEAR_API_KEY: 'x', GITHUB_TOKEN: 'x', SESSION_COOKIE: 'x', DISCORD_WEBHOOK_ALERTS: 'x', GIT_ASKPASS: 'x',
+    CLAUDE_CODE_OAUTH_TOKEN: 'reviewer-only', CLAUDE_CODE_REMOTE: 'true', ANTHROPIC_BASE_URL: 'keep', PATH: '/bin',
     GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: 'url.https://github.com/.insteadOf', GIT_CONFIG_VALUE_0: 'git@github.com:',
   };
-  const out = r.scrubEnv(env);
-  assert.deepEqual(Object.keys(out).sort(), ['ANTHROPIC_BASE_URL', 'CLAUDE_CODE_OAUTH_TOKEN', 'GIT_CONFIG_COUNT', 'GIT_CONFIG_KEY_0', 'GIT_CONFIG_VALUE_0', 'PATH']);
-  // Every GIT_CONFIG_KEY_n the count promises must survive, or git refuses to run.
-  for (let i = 0; i < Number(out.GIT_CONFIG_COUNT); i++) assert.ok(`GIT_CONFIG_KEY_${i}` in out);
+  const codex = r.scrubEnv(env);
+  const reviewer = r.scrubEnv(env, { reviewer: true });
+  for (const out of [codex, reviewer]) {
+    for (const k of ['OPENAI_API_KEY', 'LINEAR_API_KEY', 'GITHUB_TOKEN', 'SESSION_COOKIE', 'DISCORD_WEBHOOK_ALERTS', 'GIT_ASKPASS']) assert.ok(!(k in out), k);
+    assert.equal(out.PATH, '/bin');
+    assert.equal(out.GIT_CONFIG_KEY_0, 'url.https://github.com/.insteadOf'); // the proxy rewrite survives
+    // Every GIT_CONFIG_KEY_n the count promises must exist, or git refuses to run.
+    for (let i = 0; i < Number(out.GIT_CONFIG_COUNT); i++) assert.ok(`GIT_CONFIG_KEY_${i}` in out && `GIT_CONFIG_VALUE_${i}` in out);
+    // Pushes to github are rewritten to nowhere.
+    const pushRewrites = Object.keys(out).filter((k) => /^GIT_CONFIG_KEY_/.test(k) && /pushInsteadOf$/.test(out[k])).map((k) => out[k.replace('KEY', 'VALUE')]);
+    assert.ok(pushRewrites.includes('https://github.com/') && pushRewrites.includes('git@github.com:'));
+  }
+  assert.ok(!('CLAUDE_CODE_OAUTH_TOKEN' in codex));
+  assert.equal(codex.CLAUDE_CODE_REMOTE, 'true');
+  assert.equal(reviewer.CLAUDE_CODE_OAUTH_TOKEN, 'reviewer-only');
+});
+
+test('redactSecrets: env secret values and token shapes never reach a comment', () => {
+  const env = { LINEAR_API_KEY: 'lin_api_abcdefghijklmnopqrstuvwxyz', OPENAI_API_KEY: 'plainsecretvalue123', SHORT_TOKEN: 'abc', PATH: '/usr/bin/longpathvalue' };
+  const out = r.redactSecrets('key plainsecretvalue123 and lin_api_abcdefghijklmnopqrstuvwxyz; path /usr/bin/longpathvalue; "refresh_token": "rt_123" sk-proj-ABCDEFGHIJKLMNOPQRSTUV ghp_ABCDEFGHIJKLMNOPQRSTUVWX eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.abcdefghij', env);
+  assert.ok(!out.includes('plainsecretvalue123'));
+  assert.ok(!out.includes('lin_api_'));
+  assert.ok(!out.includes('rt_123'));
+  assert.ok(!out.includes('sk-proj-'));
+  assert.ok(!out.includes('ghp_'));
+  assert.ok(!out.includes('eyJhbGci'));
+  assert.ok(out.includes('/usr/bin/longpathvalue')); // non-secret env values stay
+  assert.equal(r.redactSecrets(undefined, env), '');
+});
+
+test('cardBody: comments reach the prompt oldest first, newest kept when over budget', () => {
+  const comments = [
+    { body: 'newest: VERIFY: node --test x.test.mjs', createdAt: '2026-10-05T00:00:00Z' },
+    { body: '   ', createdAt: '2026-10-04T00:00:00Z' },
+    { body: 'oldest note', createdAt: '2026-10-01T00:00:00Z' },
+  ];
+  const body = r.cardBody('the description', comments);
+  assert.ok(body.startsWith('the description'));
+  assert.ok(body.indexOf('oldest note') < body.indexOf('newest: VERIFY'));
+  assert.equal(r.cardBody('only desc', []), 'only desc');
+  const tight = r.cardBody('d', comments, { maxComments: 80 });
+  assert.ok(tight.includes('newest: VERIFY') && !tight.includes('oldest note') && tight.includes('1 older omitted'));
+  assert.equal(r.cardBody('x'.repeat(40000), []).length, 30000);
 });

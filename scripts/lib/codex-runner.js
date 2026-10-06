@@ -88,7 +88,8 @@ const VERDICTS = ['SHIP-WITH-FIXES', 'SHIP', 'REJECT'];
 
 /** Last `VERDICT: X` line in a reviewer's text, or 'NONE'. Bold/markdown tolerated. */
 function parseVerdict(text) {
-  const re = /VERDICT:\**\s*\**\s*(SHIP-WITH-FIXES|SHIP|REJECT)\b/g;
+  // Line-anchored only: a blocking line that mentions "VERDICT: SHIP" mid-sentence must not count.
+  const re = /^[\s>*_#-]*VERDICT:\**\s*\**\s*(SHIP-WITH-FIXES|SHIP|REJECT)\b/gm;
   let m; let last = 'NONE';
   while ((m = re.exec(String(text || ''))) !== null) last = m[1];
   return VERDICTS.includes(last) ? last : 'NONE';
@@ -143,16 +144,64 @@ const SECRET_PATTERNS = [
 // Env vars Codex and the reviewer must not see. GIT_CONFIG_KEY_n/VALUE_n are git's own
 // env config (the proxy's github URL rewrites); dropping KEY_n while GIT_CONFIG_COUNT stays
 // makes every git command fail, which silently blinded the reviewer.
-const SECRET_ENV = /KEY|TOKEN|SECRET|PASSWORD|COOKIE|CREDENTIAL/i;
-function keepEnvVar(name) {
-  if (/^(CLAUDE_|ANTHROPIC_|GIT_CONFIG_)/.test(name)) return true;
+const SECRET_ENV = /KEY|TOKEN|SECRET|PASSWORD|COOKIE|CREDENTIAL|WEBHOOK|ASKPASS|AUTH|PRIVATE|DSN/i;
+// The Claude reviewer authenticates with its own session vars; Codex never gets them.
+function keepEnvVar(name, { reviewer = false } = {}) {
+  if (/^GIT_CONFIG_/.test(name)) return true;
+  if (reviewer && /^(CLAUDE_|ANTHROPIC_)/.test(name)) return true;
   return !SECRET_ENV.test(name);
 }
 
-function scrubEnv(env) {
+// Pushes from the Codex or reviewer shells go nowhere: only the runner lands, after the check.
+const PUSH_BLOCK = 'https://push-blocked.invalid/';
+const PUSH_PREFIXES = ['https://github.com/', 'http://github.com/', 'git@github.com:', 'ssh://git@github.com/'];
+
+function scrubEnv(env, opts = {}) {
   const out = {};
-  for (const [k, v] of Object.entries(env)) if (keepEnvVar(k)) out[k] = v;
+  for (const [k, v] of Object.entries(env)) if (keepEnvVar(k, opts)) out[k] = v;
+  let n = Number(out.GIT_CONFIG_COUNT) || 0;
+  for (const prefix of PUSH_PREFIXES) {
+    out[`GIT_CONFIG_KEY_${n}`] = `url.${PUSH_BLOCK}.pushInsteadOf`;
+    out[`GIT_CONFIG_VALUE_${n}`] = prefix;
+    n += 1;
+  }
+  out.GIT_CONFIG_COUNT = String(n);
   return out;
+}
+
+/** Replace known secret values (from env) and token-shaped strings before text is posted anywhere. */
+function redactSecrets(text, env = {}) {
+  let s = String(text || '');
+  const values = Object.entries(env)
+    .filter(([k, v]) => SECRET_ENV.test(k) && !/^GIT_CONFIG_/.test(k) && typeof v === 'string' && v.length >= 12)
+    .map(([, v]) => v)
+    .sort((a, b) => b.length - a.length);
+  for (const v of values) s = s.split(v).join('[redacted]');
+  return s
+    .replace(/\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{5,}/g, '[redacted-jwt]')
+    .replace(/\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}/g, '[redacted-key]')
+    .replace(/\blin_api_[A-Za-z0-9]{20,}/g, '[redacted-key]')
+    .replace(/\bgh[pousr]_[A-Za-z0-9]{20,}/g, '[redacted-key]')
+    .replace(/("(?:refresh_token|access_token|id_token)"\s*:\s*")[^"]+/g, '$1[redacted]');
+}
+
+/** Card description plus its comments (oldest first), so acceptance corrections in comments reach both models. */
+function cardBody(description, comments, { maxDesc = 30000, maxComments = 14000, maxEach = 2500 } = {}) {
+  const desc = String(description || '').slice(0, maxDesc);
+  const list = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && String(c.body || '').trim())
+    .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+  const parts = [];
+  let used = 0;
+  for (const c of list.slice().reverse()) { // keep the newest when over budget
+    const one = `--- comment ${String(c.createdAt || '').slice(0, 16)} ---\n${String(c.body).slice(0, maxEach)}`;
+    if (used + one.length > maxComments) break;
+    parts.unshift(one);
+    used += one.length;
+  }
+  if (!parts.length) return desc;
+  const skipped = list.length - parts.length;
+  return `${desc}\n\n## Card comments (oldest first${skipped ? `; ${skipped} older omitted` : ''}; a newer comment can correct the description)\n\n${parts.join('\n\n')}`;
 }
 
 function looksLikeSecretLeak(diffText) {
@@ -188,6 +237,8 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
 module.exports = {
   keepEnvVar,
   scrubEnv,
+  redactSecrets,
+  cardBody,
   AUTH_MARKER,
   BOUNCED_MARKER,
   codexBouncedRecently,
