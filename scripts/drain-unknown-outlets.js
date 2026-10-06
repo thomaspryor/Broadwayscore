@@ -16,11 +16,16 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { planDrain } = require('./lib/drain-unknown-outlets');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const ROOT = path.join(__dirname, '..');
 const AUDIT = path.join(ROOT, 'data/audit/unknown-aggregator-outlets.json');
 const LEDGER = path.join(ROOT, 'data/audit/unknown-outlet-drain-ledger.json');
 const argv = process.argv.slice(2);
+if (hasHelpFlag(argv)) {
+  console.log('Usage: node scripts/drain-unknown-outlets.js [--execute --hosts=a.com,b.com] [--batch=50] [--retry-failed]\nDry-run by default; --execute requires --hosts (vetted from the dry-run plan).');
+  process.exit(0);
+}
 const execute = argv.includes('--execute');
 const hostsArg = (argv.find(a => a.startsWith('--hosts=')) || '').split('=')[1];
 const retryFailed = argv.includes('--retry-failed');
