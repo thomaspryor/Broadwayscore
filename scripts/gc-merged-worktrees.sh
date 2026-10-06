@@ -243,6 +243,15 @@ is_safe_dirty() {
   return 0
 }
 
+# BRO-4815: scripts/lib/worktree-gc-salvage.js decides (and in copy mode does)
+# the salvage of untracked-only notes. stdout = its one-line JSON verdict; exit
+# 0 only when eligible (and, without --check-only, copied). Missing node/lib =>
+# not eligible, so the old keep-it behaviour is the fallback.
+salvage_worktree() {
+  command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/worktree-gc-salvage.js" ] || return 1
+  node "$SCRIPT_DIR/lib/worktree-gc-salvage.js" --path="$1" "${@:2}" 2>/dev/null
+}
+
 human_kb() {
   local kb="$1"
   if [ "$kb" -ge 1048576 ]; then awk -v k="$kb" 'BEGIN{printf "%.1fGB", k/1048576}'
@@ -610,6 +619,9 @@ flush() {
     if is_worktree_clean "$path"; then
       log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
       removed=$((removed+1))
+    elif salvage_out=$(salvage_worktree "$path" --check-only); then
+      log "WOULD-SALVAGE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only untracked notes dirty; would copy to salvage dir ($salvage_out)"
+      removed=$((removed+1))
     elif is_safe_dirty "$path"; then
       log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
       removed=$((removed+1))
@@ -631,7 +643,7 @@ flush() {
   # #1682: a run that reclaimed 26GB across dozens of worktree removals
   # logged "freed=797.9MB" because this size was never captured — accurate
   # for the wrong reason next time someone reads this log to judge impact).
-  local removal_sz remove_err force_err diag_err
+  local removal_sz remove_err force_err diag_err salvage_out
   removal_sz=$(du -sk "$path" 2>/dev/null | awk '{print $1}')
   removal_sz=${removal_sz:-0}
   # Plain remove (NO --force): git refuses if the working tree is dirty.
@@ -654,6 +666,17 @@ flush() {
     # dirty worktrees were stuck this way, gc reporting freed=0KB run after
     # run while disk hit 99% full).
     log "FORCE-REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, discarded uncommitted data/ churn (branch kept)"
+    removed=$((removed+1))
+    removed_freed_kb=$((removed_freed_kb + removal_sz))
+  elif case "$remove_err" in *"locked"*) false ;; *) true ;; esac \
+      && salvage_out=$(salvage_worktree "$path") \
+      && force_err=$(LC_ALL=C git worktree remove --force "$path" 2>&1); then
+    # BRO-4815: landed + only untracked session notes dirty. The notes were
+    # copied to the salvage dir by the CLI first (it refuses on any tracked
+    # change, symlink, big file, recent write or open handle). Single --force,
+    # never -f -f; locked worktrees were skipped above and a lock seen in the
+    # plain-remove error skips salvage so we never copy without removing.
+    log "SALVAGE-REMOVE [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, untracked notes copied ($salvage_out), worktree removed (branch kept)"
     removed=$((removed+1))
     removed_freed_kb=$((removed_freed_kb + removal_sz))
   else
