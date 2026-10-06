@@ -1,0 +1,9 @@
+name: Opening-night lease sync
+description: Fetch the shared opening-night night-lease state (BRO-4786) so scripts skip leased shows and push-review-texts refuses writes to them
+
+runs:
+  using: composite
+  steps:
+    - name: Sync opening-night leases
+      shell: bash
+      run: node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync

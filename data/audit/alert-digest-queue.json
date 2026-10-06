@@ -128,5 +128,137 @@
       }
     ],
     "queuedAt": "2026-10-06T16:40:34.789Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:affluenza-off-west-end-2026",
+    "title": "Auto-remediation gave up on affluenza-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"affluenza-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:05.824Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:affluenza-off-west-end-2026:times-uk",
+    "title": "Auto-remediation gave up on affluenza-off-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"affluenza-off-west-end-2026\",\"outlet\":\"times-uk\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:05.829Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-franz-and-marie-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Franz & Marie",
+    "description": "readaboutstuff/Unknown (readaboutstuff--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This review is evaluating a musical adaptation of Geo — https://readaboutstuff.com/2026/10/06/review-franz-marie-charing-cross-theatre-london/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:05.837Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:soon-off-broadway-2026",
+    "title": "Content mismatch on Soon",
+    "description": "thestage/Matt Barton (thestage--matt-barton.json) SHIPPED but fullText never mentions 'Soon' (303 chars): https://www.thestage.co.uk/reviews/how-soon-is-now-review",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.005Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:soon-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Soon",
+    "description": "thestage/Matt Barton SHIPPED with no publishDate — cannot confirm post-opening: https://www.thestage.co.uk/reviews/how-soon-is-now-review",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.016Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:soon-off-broadway-2026",
+    "title": "Auto-remediation gave up on soon-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"soon-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.022Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-critic-consensus:into-the-woods-noel-coward-west-end-2026",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "critics-take-present keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: update-critic-consensus.yml {\"show\":\"into-the-woods-noel-coward-west-end-2026\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.027Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:into-the-woods-noel-coward-west-end-2026:standard",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"into-the-woods-noel-coward-west-end-2026\",\"outlet\":\"standard\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.038Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:into-the-woods-noel-coward-west-end-2026:guardian",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"into-the-woods-noel-coward-west-end-2026\",\"outlet\":\"guardian\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.044Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:into-the-woods-noel-coward-west-end-2026:times-uk",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"into-the-woods-noel-coward-west-end-2026\",\"outlet\":\"times-uk\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.052Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:into-the-woods-noel-coward-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"into-the-woods-noel-coward-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T17:16:08.058Z"
   }
 ]

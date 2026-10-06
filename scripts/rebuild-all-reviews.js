@@ -1285,8 +1285,15 @@ const SHOW_FILTER_IDS = (() => {
   if (target) for (const { sibling } of findPriorRunSiblings(target, showsData.shows)) ids.add(sibling.id);
   return ids;
 })();
+// BRO-4786: shows under an opening-night lane lease are not rebuilt here (the lane writes their
+// reviews.json rows by key). Their rows are carried over unchanged from the existing reviews.json
+// just before the aggregate write below, so the file never loses a leased show.
+const leaseGuard = require('./lib/opening-night-lane/lease-guard');
+const leasedShowIds = new Set(leaseGuard.leasedShowIds());
+if (leasedShowIds.size) console.log(`Opening-night lease: not rebuilding ${[...leasedShowIds].join(', ')}; existing rows carried over`);
 const showDirs = listShowDirs(reviewTextsDir)
   .filter(f => !SHOW_FILTER_IDS || SHOW_FILTER_IDS.has(f))
+  .filter(f => !leasedShowIds.has(f))
   .filter(f => {
     const fullPath = path.join(reviewTextsDir, f);
     // Skip symlinks to avoid processing the same directory twice
@@ -5287,6 +5294,12 @@ for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
   for (const l of links) {
     console.log(`  [PRIOR-RUN INHERIT] ${l.newerId} <- ${l.olderId}: ${l.count} review(s)`);
   }
+}
+
+if (leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
+  const carried = (JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || []).filter(r => leasedShowIds.has(r.showId));
+  for (const r of carried) allReviews.push(r);
+  console.log(`  [LEASE CARRY-OVER] ${carried.length} existing review row(s) kept for leased show(s)`);
 }
 
 if (SHOW_FILTER) {

@@ -70,6 +70,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
       # Stale-checkout race guard (same class as rebuild-reviews.yml — see
       # scripts/lib/rebuild-staleness-guard.js + scripts/check-rebuild-staleness.js
       # for the full rationale). This workflow has a shorter checkout-to-rebuild
