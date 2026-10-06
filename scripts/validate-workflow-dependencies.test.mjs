@@ -18,6 +18,12 @@ const files = new Set(workflows.map((w) => w.file));
 const { edges, unresolved } = g.buildGraph(workflows);
 
 // Cross-repo writers allowed to have no concurrency block. Add a reason, never a bare entry.
+// One violation per line as the assertion message. The merged-tree floor
+// treats this file as an aggregate guard and compares message lines, and
+// deepEqual's own diff is cut off there, so without this a NEW violation in
+// an already-failing check reads as pre-existing (BRO-4812 review).
+const violations = (list) => list.map((v) => (typeof v === 'string' ? v : JSON.stringify(v))).join('\n');
+
 const NO_CONCURRENCY_OK = {
   'opening-night-orchestrator.yml': 'BW + WE orchestrators must run in parallel; serialized externally via wait-for-run.sh per poller',
 };
@@ -43,21 +49,21 @@ test('every workflow file is valid YAML (the regex parser would otherwise read a
   for (const f of files) {
     try { yaml.load(fs.readFileSync(path.join(WF_DIR, f), 'utf8')); } catch (e) { bad.push(`${f}: ${e.reason}`); }
   }
-  assert.deepEqual(bad, []);
+  assert.deepEqual(bad, [], violations(bad));
 });
 
 test('every workflow_run trigger names a workflow that exists (a typo means the trigger never fires)', () => {
-  assert.deepEqual(unresolved, []);
+  assert.deepEqual(unresolved, [], violations(unresolved));
 });
 
 test('every explicit dispatch targets an existing workflow file', () => {
   const missing = edges.filter((e) => e.via === 'dispatch' && !files.has(e.to)).map((e) => `${e.from} -> ${e.to}`);
-  assert.deepEqual(missing, []);
+  assert.deepEqual(missing, [], violations(missing));
 });
 
 test('every workflow that pushes to a private repo has a concurrency group', () => {
   const bare = g.writersWithoutConcurrency(workflows).filter((f) => !NO_CONCURRENCY_OK[f]);
-  assert.deepEqual(bare, []);
+  assert.deepEqual(bare, [], violations(bare));
 });
 
 test('NO_CONCURRENCY_OK entries are still real (no stale exemptions)', () => {
@@ -75,7 +81,7 @@ test('cross-repo writers never use bare cancel-in-progress: true on a shared gro
       }
     }
   }
-  assert.deepEqual(bad, []);
+  assert.deepEqual(bad, [], violations(bad));
 });
 
 test('workflows sharing a resource group agree on cancel-in-progress', () => {
@@ -85,7 +91,7 @@ test('workflows sharing a resource group agree on cancel-in-progress', () => {
     byGroup.set(c.group, new Set([...(byGroup.get(c.group) || []), String(c.cancelRaw)]));
   }
   const mixed = [...byGroup].filter(([, v]) => v.size > 1).map(([k]) => k);
-  assert.deepEqual(mixed, []);
+  assert.deepEqual(mixed, [], violations(mixed));
 });
 
 test('class rules: rebuild/deploy workflows classified as such', () => {

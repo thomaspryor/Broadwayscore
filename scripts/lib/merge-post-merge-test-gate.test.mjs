@@ -310,6 +310,35 @@ test('runTestGate baseline mode: a branch that ADDS a new failure is still block
   assert.equal(removed.dir, baselineDir);
 });
 
+// BRO-4812 Codex review: a run killed mid-way (spawn timeout) that parsed only
+// pre-existing failures must not pass — the tests after the kill never ran.
+test('runTestGate baseline mode: a merged run killed by a signal blocks even when every parsed failure is pre-existing', () => {
+  const baselineDir = makeScratchRepo();
+  writeFailingTest(baselineDir, 'old.test.mjs');
+  const mergedDir = makeScratchRepo();
+  writeFailingTest(mergedDir, 'old.test.mjs');
+  let baselineConsulted = false;
+  const env = { ...process.env };
+  delete env.NODE_TEST_CONTEXT;
+  const result = runTestGate({
+    cwd: mergedDir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    // Real TAP output, then report the child as killed (what spawnSync's
+    // timeout produces): status null + SIGTERM.
+    execFn: (cwd, files) => ({
+      ...spawnSync(process.execPath, ['--test', '--test-reporter=tap', ...files], { cwd, encoding: 'utf8', env }),
+      status: null,
+      signal: 'SIGTERM',
+    }),
+    makeBaselineCheckout: () => { baselineConsulted = true; return { dir: baselineDir, prepared: true }; },
+    removeBaselineCheckout: () => {},
+    retryUnparseable: false,
+  });
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /killed before finishing/);
+  assert.equal(baselineConsulted, false);
+});
+
 test('runTestGate baseline mode: a branch that merely does not fix a pre-existing failure is NOT blocked, but warns loudly', () => {
   const baselineDir = makeScratchRepo();
   writeFailingTest(baselineDir, 'old.test.mjs');
@@ -688,6 +717,21 @@ test('real repo: every manifest test that mentions the workflows dir is a select
     return mentions && !selected.has(rel) && !EXCLUDED_WORKFLOW_GUARDS.has(rel);
   });
   assert.deepEqual(missed, []);
+});
+
+test('selectTestFiles: a test-only edit selects that test (and nothing for missing/EXCLUDED ones)', () => {
+  const dir = makeScratchRepo();
+  fs.writeFileSync(path.join(dir, 'scripts', 'foo.test.mjs'), '');
+  assert.equal(shouldRunTestGate(['scripts/foo.test.mjs']), true);
+  assert.equal(shouldRunTestGate(['tests/unit/bar.test.mjs']), true);
+  assert.equal(shouldRunTestGate(['src/app.test.mjs']), false);
+  assert.deepEqual(selectTestFiles(dir, ['scripts/foo.test.mjs', 'scripts/gone.test.mjs', 'scripts/pre-push.test.mjs']), [path.join('scripts', 'foo.test.mjs')]);
+});
+
+test('REQUIRED_WORKFLOW_GUARDS: the dependency validator is selected even with no manifest (BRO-4812)', () => {
+  const dir = makeScratchRepo();
+  fs.writeFileSync(path.join(dir, 'scripts', 'validate-workflow-dependencies.test.mjs'), '');
+  assert.ok(listWorkflowGuardTestFiles(dir).includes(path.join('scripts', 'validate-workflow-dependencies.test.mjs')));
 });
 
 test('correspondingTestPaths: tests/unit, sibling and scripts/tests candidates, deduped', () => {
