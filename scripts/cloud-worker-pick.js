@@ -154,7 +154,9 @@ async function main() {
   const listN = listArg(process.argv);
   if (listN) {
     // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
-    const rest = queue.filter((q) => !q.resume);
+    // Cards Codex already bounced go to the Claude worker, never back to Codex.
+    const { codexBouncedRecently } = require('./lib/codex-runner.js');
+    const rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
     const picks = [];
     while (picks.length < listN && rest.length) {
       const chosen = await firstUnpaused(rest, nowMs, historySkipped);

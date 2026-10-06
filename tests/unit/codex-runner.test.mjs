@@ -98,3 +98,12 @@ test('stopReason: time, weekly cap, reject streak, Done refusal', () => {
   assert.match(r.stopReason({ ...base, rejectStreak: 3 }), /REJECT/);
   assert.match(r.stopReason({ ...base, doneRefusals: 1 }), /Done gate/);
 });
+
+test('codexBouncedRecently: only the runner marker, only for 14 days', () => {
+  const now = Date.parse('2026-10-20T00:00:00Z');
+  const c = (body, at) => ({ body, createdAt: at });
+  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-10T00:00:00Z')], now), true);
+  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nold`, '2026-10-01T00:00:00Z')], now), false);
+  assert.equal(r.codexBouncedRecently([c('a human mentions codex-runner-bounced', '2026-10-19T00:00:00Z')], now), false);
+  assert.equal(r.codexBouncedRecently(undefined, now), false);
+});

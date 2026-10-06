@@ -19,6 +19,10 @@
 const crypto = require('crypto');
 
 const AUTH_MARKER = '<!-- codex-auth-v1 -->';
+// Opens every comment the runner posts when Codex could not finish a card, so
+// the next day's run leaves that card to the Claude worker instead of looping.
+const BOUNCED_MARKER = '<!-- codex-runner-bounced -->';
+const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
 const HKDF_SALT = 'bsc-codex-runner-auth-v1';
 
 function deriveKey(keyMaterial) {
@@ -151,6 +155,12 @@ function fillPrompt(template, { id, title, body, extra = '' }) {
     .replace(/\{\{EXTRA\}\}/g, extra || '');
 }
 
+/** True when the runner bounced this card within the last 14 days. */
+function codexBouncedRecently(comments, nowMs) {
+  return (Array.isArray(comments) ? comments : []).some((c) => c && String(c.body || '').startsWith(BOUNCED_MARKER)
+    && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
+}
+
 /** Stop the run early (like close-stuck-verified-cards' closeRunStopReason). */
 function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rejectStreak, doneRefusals }) {
   if (maxMinutes && nowMs - startedMs > maxMinutes * 60_000) return `time budget of ${maxMinutes} min used`;
@@ -162,6 +172,8 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
 
 module.exports = {
   AUTH_MARKER,
+  BOUNCED_MARKER,
+  codexBouncedRecently,
   encryptAuth,
   decryptAuth,
   authLastRefresh,
