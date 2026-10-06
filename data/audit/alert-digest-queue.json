@@ -982,5 +982,34 @@
       }
     ],
     "queuedAt": "2026-10-06T23:03:19.828Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4234-owner-banner",
+    "title": "Landing blocked: rebase red on land/bro-4234-owner-banner",
+    "description": "land.yml did not land land/bro-4234-owner-banner: the rebase gate went red at 56b0c2c5e0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36464929245",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4234-owner-banner"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "56b0c2c5e0f9df8c98a977aff5b03104eca496ae"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36464929245"
+      }
+    ],
+    "queuedAt": "2026-10-06T23:56:13.346Z"
   }
 ]
