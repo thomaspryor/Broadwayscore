@@ -197,11 +197,45 @@ export function welcomeWriteFor(pick: WelcomePick): WelcomeWrite {
 }
 
 /**
+ * Saving one pick, given where the show already is. Already seen (a review or
+ * an earlier pick): nothing to write. On the watchlist only (e.g. a bookmark
+ * saved during sign-in): it is written all the same, stars kept, and the
+ * watchlist row goes, as rating a show anywhere else does (owner rule
+ * 2026-07-12), so it is not listed as both seen and still to see.
+ */
+export function welcomeSaveStep(pick: WelcomePick, where: { seen: boolean; watchlisted: boolean }): { write: WelcomeWrite | null; clearWatchlist: boolean } {
+  if (where.seen) return { write: null, clearWatchlist: false };
+  return { write: welcomeWriteFor(pick), clearWatchlist: where.watchlisted };
+}
+
+/**
  * Where "Done" takes them: My Shows when they now have something there to
  * look at, otherwise back to the page they were on.
  */
 export function welcomeFinishDestination(input: { showsAdded: number; imported: number }): 'my-shows' | 'stay' {
   return input.showsAdded + input.imported > 0 ? 'my-shows' : 'stay';
+}
+
+/**
+ * The last step's summary. To Be Rated is mentioned only when some of the
+ * picks went in without stars (seen_unrated); picks with stars are already
+ * in the diary.
+ */
+export function welcomeDoneMessage(input: { showsAdded: number; imported: number; unratedAdded: number }): string {
+  const { showsAdded, imported } = input;
+  if (showsAdded + imported <= 0) return 'Rate a show from its page any time, and it lands in your diary.';
+  const counts = [
+    showsAdded > 0 ? `${showsAdded} ${showsAdded === 1 ? 'show' : 'shows'} added` : null,
+    imported > 0 ? `${imported} imported` : null,
+  ].filter(Boolean).join(', ');
+  const unrated = Math.min(Math.max(input.unratedAdded, 0), Math.max(showsAdded, 0));
+  // Imports can be watchlist rows as well as diary entries.
+  if (unrated === 0) return `${counts} to ${imported > 0 ? 'My Shows' : 'your diary'}.`;
+  // "They" would take in the imports too, so name the unrated picks then.
+  const who = unrated === showsAdded && imported === 0
+    ? (showsAdded === 1 ? 'It waits' : 'They wait')
+    : (unrated === 1 ? 'The one without stars waits' : `The ${unrated} without stars wait`);
+  return `${counts}. ${who} for you under To Be Rated, where you can add the date and stars.`;
 }
 
 // ─── Where and when it opens ────────────────────────────────────────────
