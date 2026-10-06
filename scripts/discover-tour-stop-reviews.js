@@ -121,7 +121,15 @@ function ingest(showId, url, outletId, stop) {
 // deadline cut it short, or an ingest failed (fetch failure, guard refusal),
 // so the stop is retried next run (lib MAX_ATTEMPTS). `refused` holds URLs
 // ingest skipped for good (dated outside the stop, or skipped by the writer):
-// they are never fetched again.
+// they are not fetched again for REFUSED_TTL_DAYS.
+// A refusal is retried after REFUSED_TTL_DAYS: an undated page counts as
+// out-of-window, and a date the extractor misses today it may read later.
+const REFUSED_TTL_DAYS = 90;
+function isRefused(day) {
+  const t = Date.parse(day || '');
+  return !Number.isNaN(t) && Date.now() - t < REFUSED_TTL_DAYS * 86400000;
+}
+
 async function searchStop({ show, stop }, shows, budget, refused, deadline) {
   const query = buildStopQuery(show, stop);
   if (!query) return { searched: false };
@@ -131,7 +139,7 @@ async function searchStop({ show, stop }, shows, budget, refused, deadline) {
   const row = { query, candidates: results.length, ingested: [], outOfWindow: 0, errors: 0, complete: true };
   for (const r of results) {
     const norm = normalizeUrl(r.url);
-    if (!r.url || known.has(norm) || refused[norm]) continue;
+    if (!r.url || known.has(norm) || isRefused(refused[norm])) continue;
     // Social, ticketing and UGC pages (a Facebook post, a Reddit thread) are
     // refused by ingest anyway; dropping them here keeps them off the cap.
     if (isBlockedReviewUrl(r.url) || !urlLooksLikeReview(r.url, show.title) || looksLikeAggregationOrReaction(r.url, r.title) || looksLikeScreenVersion(r)) continue;
@@ -218,6 +226,9 @@ async function main() {
     process.exit(1);
   }
   if (serpFailures > 0) console.warn(`::warning::SERP provider failure for ${serpFailures}/${attempted} stop(s)`);
+  // The workflow rebuilds only when a review file was written.
+  const written = runRows.reduce((n, r) => n + ((r.ingested || []).filter((i) => i.action === 'new' || i.action === 'updated').length), 0);
+  if (process.env.GITHUB_OUTPUT && !dryRun) fs.appendFileSync(process.env.GITHUB_OUTPUT, `written=${written}\n`);
   if (!dryRun) {
     state.lastRun = { at: new Date().toISOString(), searched: attempted, ingested, outOfWindow, stops: runRows.filter((r) => (r.ingested || []).length || r.error) };
     fs.mkdirSync(path.dirname(STATE_PATH), { recursive: true });

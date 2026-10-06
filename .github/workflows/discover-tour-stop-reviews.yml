@@ -5,7 +5,7 @@ name: Discover Tour Stop Reviews
 # in the last 4 weeks, plus a capped newest-first backfill of older stops never
 # searched (state in data/audit/tour-stop-discovery.json), and ingests the
 # results into the tour. A review dated outside its stop is flagged and never
-# counts. Daily so the backfill (~1,500 past stops) clears in about a month.
+# counts. Daily so the backfill (~1,400 past stops) clears in about a month.
 
 on:
   schedule:
@@ -59,6 +59,7 @@ jobs:
         run: npm ci --ignore-scripts
 
       - name: Run tour-stop discovery
+        id: discover
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -101,8 +102,9 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      # Only when a review file was written (the script sets `written`).
       - name: Trigger rebuild
-        if: success() && github.event.inputs.dry_run != 'true'
+        if: success() && github.event.inputs.dry_run != 'true' && steps.discover.outputs.written != '0' && steps.discover.outputs.written != ''
         run: |
           gh workflow run rebuild-reviews.yml -f reason="Post tour-stop discovery"
         env:

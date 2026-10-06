@@ -86,10 +86,11 @@ function stopDateWindowArg(stop) {
 // A city query in a stop window also finds reviews of the screen version
 // (Wicked: For Good opened during the Buffalo stop). Title and URL path name
 // it outright; a stage review's snippet often mentions "the movie", so only
-// screen-release phrases count there.
+// screen-release phrases count there (a bare "box office" is the theatre's:
+// "The box office is at 650 Main St").
 const SCREEN_TITLE_RE = /\b(?:movie|film|cinema)\b/i;
 const STAGE_RE = /\b(?:stage|tour(?:ing)?|theat(?:er|re)|broadway)\b/i;
-const SCREEN_SNIPPET_RE = /\b(?:in theaters (?:now|nationwide|everywhere)|now streaming|box office|movie review|film review)\b/i;
+const SCREEN_SNIPPET_RE = /\b(?:in theaters (?:now|nationwide|everywhere)|now streaming|(?:weekend|opening) box office|box office (?:opening|haul|debut)|movie review|film review)\b/i;
 const SCREEN_PATH_RE = /\/(?:movies?|films?|streaming|videos?)\//i;
 function looksLikeScreenVersion(result) {
   const title = String(result.title || '');
