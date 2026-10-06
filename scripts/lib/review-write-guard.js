@@ -38,7 +38,8 @@
 const fs = require('fs');
 const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
-const { laneBypasses } = require('./opening-night-lane/trust-model');
+// Lazy: scripts/lib is copied flat into fixtures and sparse checkouts that carry no subdirectory, so a top-level require would break them.
+const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
 const { validateTemporalAttribution } = require('./temporal-byline-guard');
 const { wouldFormDuplicateCycle: _wouldFormDuplicateCycleN } = require('./duplicate-cycle');
 const { shouldFlipDuplicateDirection } = require('./duplicate-direction-heal');

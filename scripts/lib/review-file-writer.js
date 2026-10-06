@@ -33,7 +33,8 @@ const {
   resolveOutletFromUrl,
   loadOutletRegistry,
 } = require('./review-normalization');
-const { laneBypasses } = require('./opening-night-lane/trust-model');
+// Lazy: scripts/lib is copied flat into fixtures and sparse checkouts that carry no subdirectory, so a top-level require would break them.
+const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
 const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-guards');
