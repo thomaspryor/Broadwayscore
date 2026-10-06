@@ -33,6 +33,8 @@ const SHOW_ID = (args.find(a => a.startsWith('--show=')) || '').split('=')[1];
 const CORRECTIONS_RAW = (args.find(a => a.startsWith('--corrections=')) || '').split('=').slice(1).join('=');
 const CRITIC_NAMES_RAW = (args.find(a => a.startsWith('--critic-names=')) || '').split('=').slice(1).join('=');
 const DRY_RUN = args.includes('--dry-run');
+const ALLOW_OUTSIDE_STAR_BAND = args.includes('--allow-outside-star-band');
+const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
 const REASON = (args.find(a => a.startsWith('--reason=')) || '').split('=').slice(1).join('=')
   || 'Manual correction via batch-correct-reviews.js';
 
@@ -93,6 +95,14 @@ for (const corr of corrections) {
   const fp = path.join(REVIEW_TEXTS_DIR, matchingFile);
   const data = JSON.parse(fs.readFileSync(fp, 'utf8'));
   const oldScore = data.humanReviewScore || data.assignedScore || 'none';
+
+  // A published star/grade is a band the score must land in (anchored-v6).
+  // Refuse an override that moves a starred review outside its critic's rating.
+  const outside = ALLOW_OUTSIDE_STAR_BAND ? null : humanScoreOutsideStarBand(data, corr.score);
+  if (outside) {
+    console.log(`  ✗ ${matchingFile}: ${corr.score} is outside the ${outside.floor}-${outside.ceiling} band for the critic's own rating (${outside.starsRaw}). Skipped. Pass --allow-outside-star-band only if the star was extracted wrong.`);
+    continue;
+  }
 
   data.humanReviewScore = corr.score;
   data.scoreOverrideReason = REASON;

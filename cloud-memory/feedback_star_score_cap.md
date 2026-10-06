@@ -1,10 +1,12 @@
 ---
 name: Star ratings are authoritative — never override with LLM scores
-description: "Stars are ground truth; 5/5=100 is correct, never cap with LLM."
+description: "Stars are ground truth, but since anchored-v6 they set a score BAND (2/5=31-50, 3/5=51-70, 4/5=71-90, 5/5=91-100) the LLM lands inside, not a flat number. Never override outside the band."
 type: feedback
 ---
 
-Published star ratings are ground truth — the critic chose that rating. LLM scores are guesses from reading text. Stars ALWAYS win.
+**CURRENT RULE (anchored-v6, supersedes the flat numbers below):** a star/grade is a band, not a fixed score. 2/5→31-50, 3/5→51-70, 4/5→71-90, 5/5→91-100 (`starToBand`, `scripts/llm-scoring/config.ts`). The LLM position inside the band comes from the review text; `llmScore.band` proves it was anchored. Never set `humanReviewScore` outside the band (`scripts/lib/human-score-star-guard.js`; `batch-correct-reviews.js` refuses). Read the whole article for the rating first: it sits at the end of the page or in image alt text. See `feedback_anchored_v6_stamp_and_rescore_starvation.md`.
+
+Original (pre-v6) note, kept for history: published star ratings are ground truth — the critic chose that rating. LLM scores are guesses from reading text. Stars ALWAYS win.
 
 - 5/5 = 100 (correct, not capped)
 - 3/5 = 60
