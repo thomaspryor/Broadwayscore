@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const HOOKS = path.join(ROOT, '.claude', 'hooks');
 
-// Measured on main 2026-10-06: 18 top-level hook scripts, 5030 lines across all hook files including lib/.
+// Measured on main 2026-10-06: 18 top-level hook scripts, 5049 lines across all hook files including lib/.
 const MAX_HOOK_FILES = 18;
 const MAX_HOOK_LINES = 5100;
 

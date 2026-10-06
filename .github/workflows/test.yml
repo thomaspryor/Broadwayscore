@@ -1750,6 +1750,10 @@ on:
       - 'scripts/pre-send-check.test.mjs'
       - 'scripts/audit-show-review-gap.js'
       - 'scripts/audit-show-review-gap.test.mjs'
+      # BRO-2211: hook-budget guard (hook count/line ceiling, every hook wired). The hooks glob keeps the
+      # orphan check live when a hook is pushed alone.
+      - 'scripts/V1-V3-dispatch-status.test.mjs'
+      - '.claude/hooks/**'
       # BRO-3092: regression guard for the-addams-family-2010's WSJ same-URL
       # duplicate. The deleted paywall-boilerplate record was resurrected by a
       # stale-checkout race 29 minutes after the delete; this asserts it stays
