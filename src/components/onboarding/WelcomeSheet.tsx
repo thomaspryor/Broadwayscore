@@ -232,6 +232,9 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     let added = 0;
     let addedUnrated = 0;
     let failed = 0;
+    // Bookmarks this save replaced. The hook can't count them: this sheet's
+    // instance never loads the watchlist, so it can't tell a real row from none.
+    let bookmarksCleared = 0;
     const saved = new Set<string>();
     for (const [showId, rating] of entries) {
       const { write, clearWatchlist } = welcomeSaveStep({ showId, rating }, { seen: seen.has(showId), watchlisted: watchlisted.has(showId) });
@@ -253,7 +256,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
       // Seen now: a copy saved while signed out must not move onto the watchlist later.
       removeLocalShow(showId);
       if (clearWatchlist) {
-        try { await removeFromWatchlist(showId, 'rated'); } catch { /* pick saved; watchlist cleanup is best-effort */ }
+        try { await removeFromWatchlist(showId, 'rated'); bookmarksCleared++; } catch { /* pick saved; watchlist cleanup is best-effort */ }
       }
     }
     setSaving(false);
@@ -270,7 +273,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     setShowsAdded(added);
     setUnratedAdded(addedUnrated);
     setSaveFailed(failed);
-    track('onboarding_step_completed', { step: 'shows', shows_added: added, rated, failed });
+    track('onboarding_step_completed', { step: 'shows', shows_added: added, rated, failed, bookmarks_cleared: bookmarksCleared });
     if (thenClose) onClose();
     else go(nextWelcomeStep('shows'), added);
   };
