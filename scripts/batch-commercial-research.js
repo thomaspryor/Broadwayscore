@@ -541,7 +541,9 @@ function applyPending() {
     // the show has closed, so validate-data's matching rules cannot reject it.
     // Status comes from the show whose slug IS the key (validate-data's lookup).
     const keyShow = showsBySlug[commercialKey];
-    const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord({
+    // This path has no source verifier, so every figure lands as an estimate with no AI-written source text
+    // (the same rule apply-commercial-pending uses; BRO-4758). It never prints an unconfirmed number as fact.
+    const builtForApply = {
       designation: entry.designation || 'TBD',
       capitalization: entry.capitalization || null,
       capitalizationSource: entry.capitalizationSource || null,
@@ -554,7 +556,10 @@ function applyPending() {
       sources: normalizeSources(entry.sources || []),
       lastUpdated: new Date().toISOString(),
       firstAdded: new Date().toISOString(),
-    }, keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined);
+    };
+    require('./lib/commercial-apply-gate').applyFigureEvidence(builtForApply, entry, {});
+    const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
+      builtForApply, keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined);
     if (holdReason) {
       console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
       skipped++;

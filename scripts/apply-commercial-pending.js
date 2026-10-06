@@ -14,6 +14,7 @@
  *   --dry-run          Preview without writing
  *   --exclude=SLUG,... Skip specific shows
  *   --min-confidence=LEVEL  Only apply entries with this confidence or higher (high, medium, all)
+ *   --no-source-verify Fetch no pages; leave entries with figures pending for the verified pass (RSS poll)
  */
 
 const fs = require('fs');
@@ -50,6 +51,10 @@ const APPLY_ALL = flags['all'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const EXCLUDES = flags['exclude'] ? flags['exclude'].split(',') : [];
 const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
+// Skip page verification and leave every entry that carries a capitalization or weekly cost pending for the
+// verified weekly/Friday pass. Used by the hourly RSS poll, which only auto-applies recoupment claims: it must
+// neither fetch pages every hour nor apply unverified figures as estimates ahead of the verified pass.
+const NO_SOURCE_VERIFY = flags['no-source-verify'] === true;
 // Comma-separated list of detectedBy sources whose recouped-claim entries may
 // auto-apply without --show=SLUG, IF confidence === 'high' AND sourceHost is in
 // the trusted-recoupment-domains list. Used by the Friday scraper pipeline.
@@ -60,6 +65,7 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
 const gate = require('./lib/commercial-apply-gate');
 const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `apply-commercial-pending.js — Apply Commercial Pending Data.
 
@@ -127,6 +133,7 @@ async function main() {
 
   let applied = 0;
   let skipped = 0;
+  let pendingDirty = false; // a pending entry's verify-attempt counter changed and must be saved
 
   // Track keys that were ACTUALLY applied this run. The cleanup loop below
   // must delete only these — key-existence in commercial.json is NOT a proxy
@@ -150,7 +157,12 @@ async function main() {
     // blocking the apply pipeline.
   }
 
-  const verifyEntry = require('./lib/commercial-source-verify').createSourceVerifier();
+  const { createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS } = require('./lib/commercial-source-verify');
+  // Page verification can be slow (provider fallbacks run tens of seconds per page). The jobs that run this script
+  // have a 30 minute timeout shared with the commit and push that follow, so stop starting new verifications after
+  // 12 minutes and leave the rest pending for the next run (scripts/audit-run-budget-coverage.js).
+  const verifyBudget = createRunBudget(12);
+  const verifyEntry = createSourceVerifier({}, verifyBudget);
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
@@ -263,11 +275,42 @@ async function main() {
     // validate-data run below would otherwise reject, aborting every entry.
     // Status comes from keyShow (resolveCommercialSlug above): the show whose
     // slug IS the key, the record validate-data checks it against.
-    const figureEvidence = await verifyEntry(entry, keyShow);
+    // Entries that would be held for review are held before any page is fetched: an entry stuck on a hold would
+    // otherwise be re-verified (up to the per-run fetch cap) on every run.
+    const status = keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined;
+    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }), status).holdReason;
+    if (heldBeforeFetch) {
+      console.log(`  🛑 "${showId}" — left pending for review: ${heldBeforeFetch}`);
+      skipped++;
+      continue;
+    }
+    if (NO_SOURCE_VERIFY && !isClaimAutoApply && (entry.capitalization != null || entry.weeklyRunningCost != null)) {
+      console.log(`  ⏭  "${showId}" — has figures that need page verification; left pending for the verified pass (--no-source-verify)`);
+      skipped++;
+      continue;
+    }
+    if (!NO_SOURCE_VERIFY && verifyBudget.exceeded()) {
+      console.log(`  ⏳ "${showId}" — page-verification time budget used up; left pending for the next run`);
+      skipped++;
+      continue;
+    }
+    const figureEvidence = NO_SOURCE_VERIFY ? {} : await verifyEntry(entry, keyShow);
     if (figureEvidence.capped) {
       console.log(`  ⏳ "${showId}" — cited pages not checked (per-run fetch cap reached); left pending for the next run`);
       skipped++;
       continue;
+    }
+    // A cited page that could not be FETCHED (network, credentials, 4xx/5xx) is not "the page does not confirm
+    // the figure": leave the entry pending for a few runs instead of downgrading a figure nobody checked.
+    if (figureEvidence.fetchFailed) {
+      const { attempts, leavePending } = nextVerifyAttempt(entry);
+      if (leavePending) {
+        console.log(`  ⏳ "${showId}" — a cited page could not be fetched (attempt ${attempts} of ${SOURCE_VERIFY_MAX_ATTEMPTS}); left pending`);
+        if (!DRY_RUN) { entry.sourceVerifyAttempts = attempts; pendingDirty = true; }
+        skipped++;
+        continue;
+      }
+      console.log(`  ⚠️  "${showId}" — a cited page could not be fetched on ${attempts} runs; applying its figures as estimates`);
     }
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
       gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources, figureEvidence }),
@@ -345,6 +388,12 @@ async function main() {
     }
   } else if (DRY_RUN) {
     console.log(`\n🏁 Dry run: would apply ${applied}, skip ${skipped}`);
+  } else if (pendingDirty) {
+    // Nothing applied, but entries left pending on a fetch failure carry a bumped attempt counter: save it, or
+    // the cap would never be reached and every run would retry the same unreachable pages.
+    pending.lastUpdated = new Date().toISOString();
+    fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+    console.log(`📋 Recorded fetch attempts on ${skipped} pending entr${skipped === 1 ? 'y' : 'ies'}; nothing applied`);
   }
 }
 

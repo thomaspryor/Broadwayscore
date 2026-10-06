@@ -84,6 +84,13 @@ jobs:
         # silently progress to commit + push + deploy with a half-mutated
         # workspace. If apply throws, the commit step below short-circuits
         # via `git diff --staged --quiet` and the next Friday run retries.
+        # BRO-4758: scraper credentials so cited pages can be read before a figure may print as fact.
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           if [ -f data/commercial-pending-review.json ]; then
             # --auto-apply-claims-from bypasses the recouped:true safety gate

@@ -349,12 +349,42 @@ jobs:
         # commit step is `if: always()`, and a staged-diff guard only skips
         # when there are NO changes, whereas a half-mutated workspace has
         # exactly the changes you must not commit.
+        # BRO-4758: the apply step reads each cited trade/SEC page before a capitalization or weekly cost may print as
+        # fact, so it needs the same scraper credentials as the research job. Without them every fetch fails and the
+        # entry stays pending (3 runs) and then lands as an estimate.
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           if [ -f data/commercial-pending-review.json ]; then
             node scripts/apply-commercial-pending.js --all --min-confidence=high
           else
             echo "No pending file — nothing to apply"
           fi
+
+      - name: Report AI-researched figures no cited page confirms (read-only)
+        # BRO-4758 step 5 / BRO-4781: lists existing GPT/Deep Research figures whose cited pages do not state them.
+        # Read-only (writes nothing, commits nothing), capped at 40 page fetches, never fails the job. Downgrades go
+        # through data/pending-fixes plans, not through this step.
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          {
+            echo '### Commercial figures with no confirming cited page (read-only report, max 40 fetches)'
+            echo '```json'
+            node scripts/verify-commercial-sources.js --max-fetches=40 | head -c 60000
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Reconcile recoupment claim queue
         # Closes stale duplicates (pending claims already resolved+cited in

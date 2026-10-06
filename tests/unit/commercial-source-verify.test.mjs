@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { verifyFigure, createSourceVerifier } = require('../../scripts/lib/commercial-source-verify');
+const { verifyFigure, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS } = require('../../scripts/lib/commercial-source-verify');
 const { buildCommercialEntry } = require('../../scripts/lib/commercial-apply-gate');
 const show = { title: 'Example', openingDate: '2025-04-01' };
 const source = { type: 'trade', url: 'https://variety.com/example', date: '2025-03-01' };
@@ -31,7 +31,7 @@ test('silent, failed, missing and wrong-production sources default to estimates'
     assert.equal(result.costMethodology, 'deep-research');
   }
   const verify = createSourceVerifier({ fetchPage: async () => { throw Error('403'); } });
-  assert.deepEqual(await verify(entry, show), {});
+  assert.deepEqual(await verify(entry, show), { fetchFailed: true }, 'a fetch that threw is flagged, not read as a silent page');
   assert.equal(buildCommercialEntry(entry, null).isEstimate.capitalization, true);
 });
 test('SEC Form D XML amounts verify as fact without computing midpoints', async () => {
@@ -151,6 +151,92 @@ test('fixture apply CLI dry run marks high-confidence unverified figures as esti
     console.log(output.trim());
     fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: { example: entry } }));
     const report = execFileSync(process.execPath, ['scripts/verify-commercial-sources.js', '--max-fetches=0', `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`], { encoding: 'utf8' });
-    assert.equal(JSON.parse(report).fields.capitalization.proposedIsEstimate, true);
+    const rec = JSON.parse(report).fields.capitalization;
+    assert.equal(rec.notChecked, true, 'with no fetches allowed nothing was read');
+    assert.equal(rec.proposedIsEstimate, null, 'an unread page is "not checked", never a proposal to downgrade');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('fetch failure vs silent page: only a failed fetch leaves the entry pending, a loaded page that does not state the figure is a real "not confirmed"', async () => {
+  const loadedSilent = createSourceVerifier({ fetchPage: async () => ({ content: 'Example opened in 2025. No figures here.' }) });
+  const silent = await loadedSilent(entry, show);
+  assert.equal(silent.fetchFailed, undefined, 'the page loaded: the figure is genuinely unconfirmed');
+  const threw = createSourceVerifier({ fetchPage: async () => { throw Object.assign(new Error('missing credentials'), { status: 401 }); } });
+  assert.equal((await threw(entry, show)).fetchFailed, true);
+  const empty = createSourceVerifier({ fetchPage: async () => ({ content: '' }) });
+  assert.equal((await empty(entry, show)).fetchFailed, true, 'a page that came back with no text was not read');
+  const nullRes = createSourceVerifier({ fetchPage: async () => null });
+  assert.equal((await nullRes(entry, show)).fetchFailed, true);
+});
+
+test('one failing source does not hide confirmation from another source on the same entry', async () => {
+  const two = { ...entry, sources: [{ ...source, url: 'https://variety.com/down' }, { ...source, url: 'https://deadline.com/up' }] };
+  const verify = createSourceVerifier({ fetchPage: async (url) => { if (url.includes('down')) throw new Error('503'); return { content: 'Example in 2025 capitalization $12.5 million' }; } });
+  const ev = await verify(two, show);
+  assert.equal(ev.capitalization.found, true);
+  assert.equal(ev.fetchFailed, true, 'weekly cost stayed unconfirmed because its page failed: the entry is incomplete, not downgraded');
+});
+
+test('applyFigureEvidence: no evidence means estimate and no AI source text, the same rule for every caller', () => {
+  const { applyFigureEvidence } = require('../../scripts/lib/commercial-apply-gate');
+  const result = { capitalizationSource: 'GPT Deep Research: budget', weeklyRunningCostSource: 'GPT guess' };
+  applyFigureEvidence(result, { capitalization: 1, weeklyRunningCost: 2 }, {});
+  assert.deepEqual(result.isEstimate, { capitalization: true, weeklyRunningCost: true });
+  assert.equal(result.capitalizationSource, undefined);
+  assert.equal(result.weeklyRunningCostSource, undefined);
+  assert.equal(result.costMethodology, 'deep-research');
+  const untouched = {};
+  applyFigureEvidence(untouched, { designation: 'TBD' }, {});
+  assert.deepEqual(untouched, {}, 'entries with no figures are left alone');
+});
+
+test('nextVerifyAttempt: leaves a fetch-failed entry pending for a few runs, then lets it apply as an estimate', () => {
+  assert.equal(SOURCE_VERIFY_MAX_ATTEMPTS, 3);
+  assert.deepEqual(nextVerifyAttempt({}), { attempts: 1, leavePending: true });
+  assert.deepEqual(nextVerifyAttempt({ sourceVerifyAttempts: 1 }), { attempts: 2, leavePending: true });
+  assert.deepEqual(nextVerifyAttempt({ sourceVerifyAttempts: 2 }), { attempts: 3, leavePending: false });
+  assert.deepEqual(nextVerifyAttempt({ sourceVerifyAttempts: 'junk' }), { attempts: 1, leavePending: true }, 'a junk counter restarts from zero, never throws');
+  assert.deepEqual(nextVerifyAttempt(null), { attempts: 1, leavePending: true });
+});
+
+test('wiring: apply leaves fetch-failed entries pending and persists the counter; batch --apply goes through the shared figure rule', () => {
+  const root = path.resolve('.');
+  const apply = fs.readFileSync(path.join(root, 'scripts/apply-commercial-pending.js'), 'utf8');
+  assert.match(apply, /figureEvidence\.fetchFailed[^]*?nextVerifyAttempt\(entry\)[^]*?entry\.sourceVerifyAttempts = attempts; pendingDirty = true/);
+  assert.match(apply, /require\('\.\/lib\/run-budget'\)[^]*?verifyBudget\.exceeded\(\)[^]*?left pending for the next run/, 'page verification stops starting new entries once the time budget is spent');
+  assert.match(apply, /else if \(pendingDirty\)[^]*?fs\.writeFileSync\(PENDING_PATH/, 'the counter is saved even when nothing applied, or the cap would never be reached');
+  const batch = fs.readFileSync(path.join(root, 'scripts/batch-commercial-research.js'), 'utf8');
+  assert.match(batch, /applyFigureEvidence\(builtForApply, entry, \{\}\)[^]*?sanitizeForPublicRecord\(\s*builtForApply/, 'batch --apply marks figures as estimates before sanitising: no unverified AI figure prints as fact');
+});
+
+test('apply --no-source-verify (hourly RSS poll): figure-bearing entries stay pending, nothing is fetched, nothing applied', () => {
+  const dir = fs.mkdtempSync(path.resolve('tests/.bro4758b-'));
+  try {
+    fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: { example: { ...entry, sources: [source] } } }));
+    fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: {} }));
+    fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: [{ ...show, id: 'example-2025', slug: 'example', category: 'broadway', status: 'open' }] }));
+    const args = ['scripts/apply-commercial-pending.js', '--all', '--min-confidence=high', '--dry-run', `--pending-file=${dir}/pending.json`, `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`];
+    const out = execFileSync(process.execPath, [...args, '--no-source-verify'], { encoding: 'utf8' });
+    assert.match(out, /need page verification; left pending for the verified pass/);
+    assert.match(out, /would apply 0, skip 1/);
+    // Control with no cited source (so no network is touched either way): without the flag the entry is processed
+    // by the verifier path instead of being skipped for verification.
+    fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: { example: { ...entry, sources: [] } } }));
+    const control = execFileSync(process.execPath, [...args], { encoding: 'utf8' });
+    assert.doesNotMatch(control, /need page verification/);
+    assert.match(control, /would apply 1, skip 0/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('an exhausted run budget stops new page reads and marks the entry capped (left pending), not downgraded', async () => {
+  let calls = 0;
+  const spent = { exceeded: () => true };
+  const verify = createSourceVerifier({ fetchPage: async () => { calls++; return { content: 'Example 2025 capitalization $12.5 million' }; } }, spent);
+  const ev = await verify(entry, show);
+  assert.equal(calls, 0, 'no page is read once the budget is spent');
+  assert.equal(ev.capped, true);
+  const fresh = { exceeded: () => false };
+  const ok = createSourceVerifier({ fetchPage: async () => ({ content: 'Example 2025 capitalization $12.5 million' }) }, fresh);
+  assert.equal((await ok(entry, show)).capitalization.found, true, 'with budget left it verifies normally');
+});
+

@@ -87,8 +87,10 @@ jobs:
             # Reuses the Friday pipeline's auto-apply gate: detectedBy must be
             # in this allowlist AND confidence==='high' AND sourceHost ∈
             # TRUSTED_RECOUPMENT_HOSTS. Other entries fall through to manual review.
+            # BRO-4758: this hourly step only applies recoupment claims. --no-source-verify keeps it from fetching
+            # pages every hour and leaves entries that carry figures for the verified weekly/Friday pass.
             node scripts/apply-commercial-pending.js \
-              --all --min-confidence=high \
+              --all --min-confidence=high --no-source-verify \
               --auto-apply-claims-from=rss-poller,recoupment-announcement-scraper
           else
             echo "No pending file — nothing to apply"
