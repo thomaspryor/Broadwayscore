@@ -10,8 +10,8 @@
  * each backed by concrete evidence, never by a heuristic guess:
  *
  *   LIKELY-DONE      — the card's own acceptance command passes right now,
- *                       OR every commit SHA it names is already an ancestor
- *                       of origin/main, OR its RECHECK-AFTER date has passed
+ *                       OR a started card's commits are on origin/main and
+ *                       touch its referenced files, OR its RECHECK-AFTER date has passed
  *                       with a filled Outcome and the acceptance still holds.
  *   LIKELY-DUPLICATE — high title-token overlap with another open card, or
  *                       it names the same file AND the same symbol as one.
@@ -190,11 +190,9 @@ function checkRecheckAfterDueAndVerified(card, opts) {
   // "the acceptance still holds" is answered by the SAME acceptance-command
   // check as checkAcceptanceHolds — a RECHECK-AFTER stamp with no runnable
   // command names no bar this classifier can confirm, so it stays ambiguous.
-  const { cmd } = evaluateVerifiability(card.notes || '');
-  if (!cmd || typeof opts.runAcceptanceCmd !== 'function') return null;
-  const result = opts.runAcceptanceCmd(cmd);
-  if (result && result.status === 'pass') {
-    return { type: 'recheck-after-due-and-verified', recheckAfter: date, cmd };
+  const acceptance = checkAcceptanceHolds(card, opts);
+  if (acceptance) {
+    return { type: 'recheck-after-due-and-verified', recheckAfter: date, cmd: acceptance.cmd };
   }
   return null;
 }

@@ -226,6 +226,21 @@ test('checkRecheckAfterDueAndVerified: due date passed + filled outcome + passin
   assert.equal(result.recheckAfter, '2026-08-01');
 });
 
+test('classifyCard: due recheck cannot promote builtin-only acceptance evidence to LIKELY-DONE', () => {
+  const c = card({
+    notes: 'RECHECK-AFTER: 2026-08-01\n## Acceptance criteria\n`node --test scripts/tests/guard-only.test.mjs`',
+    outcome: 'Guard tests pass, but the domainless outlet rows remain unfixed.',
+  });
+  const opts = {
+    now: new Date('2026-08-16T00:00:00Z'),
+    runAcceptanceCmd: () => ({ status: 'pass' }),
+    readFile: () => "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\n",
+  };
+  assert.equal(checkAcceptanceHolds(c, opts), null);
+  assert.equal(checkRecheckAfterDueAndVerified(c, opts), null);
+  assert.equal(classifyCard(c, [c], opts).verdict, 'REAL');
+});
+
 test('checkRecheckAfterDueAndVerified: null when date not yet due, outcome empty, or no command', () => {
   const base = { notes: 'RECHECK-AFTER: 2026-09-01\n## Acceptance criteria\n`node --test scripts/lib/thing.test.mjs`', outcome: 'Held.' };
   const opts = { now: new Date('2026-08-16T00:00:00Z'), runAcceptanceCmd: () => ({ status: 'pass' }) };
