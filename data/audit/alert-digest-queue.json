@@ -925,5 +925,34 @@
       }
     ],
     "queuedAt": "2026-10-05T23:59:08.849Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4750-tour-runtimes",
+    "title": "Landing blocked: lint-workflows red on land/bro-4750-tour-runtimes",
+    "description": "land.yml did not land land/bro-4750-tour-runtimes: the lint-workflows gate went red at d013150a4c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37389581439",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4750-tour-runtimes"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "d013150a4c7d9a57df583ebe08d27278152d692d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37389581439"
+      }
+    ],
+    "queuedAt": "2026-10-06T00:07:12.754Z"
   }
 ]
