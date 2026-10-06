@@ -87,5 +87,17 @@
       }
     ],
     "queuedAt": "2026-10-06T13:58:04.327Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 18 review(s) flagged for anchored re-score",
+    "description": "{\"out-of-band\":18} across the whole corpus, by market {\"broadway\":4,\"west-end\":14}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [out-of-band] topdog-underdog-2022/nysr--melissa-rose-bernardo.json 4/5 stars band 71-90 score 96\n- [out-of-band] a-dolls-house-part-2-2017/ew--maya-stanton.json A- band 83-88 score 91\n- [out-of-band] book-of-mormon-2011/ew--lisa-schwarzbaum.json A band 89-94 score 75\n- [out-of-band] magic-mike-live-west-end-2021/i-paper--fiona-mountford.json 2/5 band 31-50 score 17\n- [out-of-band] the-producers-west-end-2025/artsdesk--unknown.json 5/5 stars band 91-100 score 70\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json 2/5 band 31-50 score 91\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json 4/5 band 71-90 score 64\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json 4/5 stars band 71-90 score 96\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/broadwayworld--aa-cristi.json 7.8/10 stars band 71-90 score 95\n- [out-of-band] the-phantom-of-the-opera-west-end-1986/london-theatre--julia-rank.json 3/5 band 51-70 score 87",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T14:36:11.815Z"
   }
 ]
