@@ -3,6 +3,7 @@
 // colocated test is covered by test.yml's scripts/lib/** trigger (BRO-4509).
 const { calculateDateWindow } = require('./url-discovery');
 const { _parseDomain, lookupOutletForHost } = require('./outlet-canonicalize');
+const { isOverseasHost } = require('./tour-stop-discovery');
 
 // A show stays in the discovery pool while open, or for ~15 months after
 // closing (or after opening, if closingDate is unknown) — long enough to
@@ -79,6 +80,9 @@ const TOUR_MARKER = /\btour(s|ing|ed)?\b|national[-\s]tour/i;
 const BROADWAY_MARKER = /\bbroadway\b|\bnew[-\s]york\b|\bnyc\b|nytimes\.com/i;
 function tourCandidateIsTour(show, candidate) {
   if (show.market !== 'tour') return true;
+  // An overseas production's review (Spamalot's Melbourne season, BRO-4656):
+  // tours here play the US, Canada and Mexico only.
+  if (isOverseasHost(candidate.url)) return false;
   const text = `${candidate.url || ''} ${candidate.title || ''} ${candidate.snippet || candidate.description || ''}`;
   if (TOUR_MARKER.test(text)) return true;
   return !BROADWAY_MARKER.test(text);
