@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-06T02:50:30.065Z",
+  "timestamp": "2026-10-06T02:59:24.249Z",
   "stats": {
     "totalReviews": 46558,
     "alreadyFlagged": 18663,
-    "dateGuardCatches": 265,
-    "directorMismatch": 1336,
+    "dateGuardCatches": 266,
+    "directorMismatch": 1337,
     "tvFilmSignals": 1353,
     "londonSignals": 1288,
     "offBroadwaySignals": 510,
@@ -13829,6 +13829,7 @@
     {
       "showId": "harry-potter-tour-2024",
       "file": "equality365--eric-andrews-katz.json",
+      "score": 74,
       "publishDate": "2026-08-28",
       "url": "https://equality365.com/review-harry-potter-and-the-cursed-child/",
       "findings": [
@@ -14546,6 +14547,7 @@
     {
       "showId": "hells-kitchen-tour-2025",
       "file": "so-sumi--glenn-sumi.json",
+      "score": 76,
       "publishDate": "2026-10-01",
       "url": "https://www.goaheadsumi.com/reviews-hells-kitchen-amelie-aye-caesar-wine-in-the-wilderness-to-a-flame/",
       "findings": [
@@ -16399,6 +16401,25 @@
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 96,
+      "publishDate": "2025-12-12",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -20189,6 +20210,7 @@
     {
       "showId": "maybe-happy-ending-tour-2026",
       "file": "broadwayworld--elizabeth-cortes.json",
+      "score": 88,
       "publishDate": "2026-10-01",
       "url": "https://www.broadwayworld.com/south-carolina/article/Review-MAYBE-HAPPY-ENDING-at-the-Peace-Center-20261001",
       "findings": [
@@ -22846,6 +22868,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "broadwayworld--lucia-serrano.json",
+      "score": 79,
       "publishDate": "2026-10-02",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-San-Diego-Civic-Theatre-20261002",
       "findings": [
@@ -22859,6 +22882,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "dailyactor--lance-carter.json",
+      "score": 91,
       "publishDate": "2026-10-01",
       "url": "https://www.dailyactor.com/reviews/oh-mary-national-tour-alaska-thunderfck/",
       "findings": [
@@ -32403,6 +32427,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "hartford-courant--christopher-arnott.json",
+      "score": 77,
       "publishDate": "2026-10-01",
       "url": "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
       "findings": [
@@ -32416,6 +32441,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "leagueofcincytheatres--liz-eichler.json",
+      "score": 90,
       "publishDate": "2026-09-16",
       "url": "https://www.leagueofcincytheatres.info/review-the-great-gatsby-roars-into-the-aronoff-center-in-grand-style/",
       "findings": [
@@ -34027,6 +34053,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "broadwayworld--andrew-child.json",
+      "score": 44,
       "publishDate": "2026-10-02",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-OUTSIDERS-at-Hollywood-Pantages-Theatre-20261002",
       "findings": [
@@ -34179,6 +34206,7 @@
     {
       "showId": "the-outsiders-tour-2025",
       "file": "latimes--charles-mcnulty.json",
+      "score": 75,
       "publishDate": "2026-10-05",
       "url": "https://www.latimes.com/entertainment-arts/story/2026-10-05/outsiders-review-musical-theater-tony-winner-hollywood-pantages",
       "findings": [
@@ -38228,6 +38256,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "stage-raw--steven-morris.json",
+      "score": 76,
       "publishDate": "2026-09-16",
       "url": "https://stageraw.com/stage-raw-review-water-for-elephants/",
       "findings": [
@@ -38241,6 +38270,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "stagescenela--unknown.json",
+      "score": 90,
       "publishDate": "2026-09-10",
       "url": "https://stagescenela.com/2026/09/water-for-elephants/",
       "findings": [
