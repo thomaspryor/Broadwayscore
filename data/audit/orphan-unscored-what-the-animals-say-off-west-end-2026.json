@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "what-the-animals-say-off-west-end-2026",
   "openingDate": "2026-10-02",
-  "detectedAt": "2026-10-06T00:25:12.927Z",
+  "detectedAt": "2026-10-06T01:31:40.036Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "uktw--uk-theatre-web.json",
-      "outletId": "uktw",
-      "criticName": "UK Theatre Web",
-      "url": "https://www.uktw.co.uk/news/What-The-Animals-Say/7599.html",
-      "fullTextLen": 1909,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
