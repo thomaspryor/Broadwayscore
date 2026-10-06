@@ -281,3 +281,12 @@ test('every onboarding_* event the site sends has a plain-English label', () => 
   assert.ok(sent.length >= 7, `found ${sent.length} onboarding events`);
   for (const e of sent) assert.ok(m.ACTION_LABELS[e], `${e} needs a label in ACTION_LABELS`);
 });
+
+test('weeklySummaryLines leaves welcome-screen events out of "most common this week"', () => {
+  const accounts = m.summarizeAccounts([], { ratings: [], watchlist: [], lists: [] }, NOW);
+  const d = m.buildDashboardData({ now: NOW, accounts, ph: { actions: [
+    { event: 'onboarding_shown', last7: 9, last30: 9, users30: 9 },
+    { event: 'watchlist_add', last7: 4, last30: 4, users30: 2 },
+  ] } });
+  assert.ok(m.weeklySummaryLines(d).includes('Most common this week: added to watchlist (4).'));
+});
