@@ -122,7 +122,14 @@ const LINEAR_MAPPING_PATH = path.join(__dirname, '..', '..', 'data', 'linear-imp
 // written yet reads as still owned; that false positive is fail-safe (the refusal
 // names the tab, --force bypasses) vs. the false negative that stacked 55 tabs.
 // ledgerEntries omitted/null => title-only, the pre-BRO-2949 behavior.
-function findLiveWorkspaceForTask(task, workspaces, isDone, ledgerEntries = null) {
+//
+// BRO-1703: title/ledger ownership alone never asked "is it alive", so a dead
+// 🤖 shell (dispatch died before claude started) matched forever, refused every
+// relaunch of its card, and left --force as the only way through — which
+// stacked a SECOND shell. isProvablyDead(ws) (see makeProvablyDeadFn) lets the
+// caller exempt a matching workspace it can PROVE is a corpse; omitted => the
+// pre-BRO-1703 behavior (every match blocks).
+function findLiveWorkspaceForTask(task, workspaces, isDone, ledgerEntries = null, isProvablyDead = null) {
   // titleMatchesSubject (dispatch-ledger.js) strips cmux's own activity-glyph
   // prefix (spinner/✳/etc — also eats the 🤖 auto-dispatch emoji, since it
   // isn't a letter/digit), THEN strips the "<Project>·" naming prefix (scope
@@ -139,7 +146,55 @@ function findLiveWorkspaceForTask(task, workspaces, isDone, ledgerEntries = null
     return !!launch && launch.taskId != null && String(launch.taskId) === String(task.id);
   };
   return workspaces.find(w => !isDone(w.title) &&
-    (dispatchLedger.titleMatchesSubject(w.title, task.subject) || ownedByLedger(w))) || null;
+    (dispatchLedger.titleMatchesSubject(w.title, task.subject) || ownedByLedger(w)) &&
+    !safeIsDead(isProvablyDead, w)) || null;
+}
+
+function safeIsDead(fn, w) {
+  if (typeof fn !== 'function') return false;
+  try { return fn(w) === true; } catch { return false; } // any doubt => still blocks
+}
+
+// BRO-1703: the "provably dead" predicate for findLiveWorkspaceForTask's dup
+// guard. Deliberately needs POSITIVE proof, not absence of life signals: a tab
+// still booting has neither the claude tag nor painted chrome, and its launch
+// row is only written after launch returns, so "no signals" would read a live
+// boot as a corpse and manufacture the very duplicate this exists to stop
+// (second-opinion blocker, 2026-10-05). A shell counts as dead only when BOTH:
+//   1. the ledger already holds a 'dead' row for this ref, newer than the
+//      latest launch on it, and that launch is for THIS task (deadBreadcrumbs /
+//      failedLaunchEntries only write it after the wrapper-process cross-check,
+//      BRO-2575), and
+//   2. cmux still says dead right now (both signals, checkLiveness), and
+//   3. the launch's wrapper process is not in the OS process table.
+// Unmapped tabs, pre-marker launches, other tasks' occupants, ledger outages
+// and probe throws all stay blocking. Pure given its injected probes.
+const DEAD_BEFORE_LAUNCH_SKEW_MS = 5 * 1000;
+function makeProvablyDeadFn({ task, ledgerEntries, claudeAliveInFn, surfaceAliveInFn, isWrapperAlive = null, onIgnored = null }) {
+  if (!Array.isArray(ledgerEntries) || task == null || task.id == null) return () => false;
+  return (w) => {
+    const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
+    if (!launch || launch.taskId == null || String(launch.taskId) !== String(task.id)) return false;
+    const launchTs = Date.parse(launch.ts || '');
+    if (!Number.isFinite(launchTs)) return false;
+    let deadRow = null;
+    for (const e of ledgerEntries) {
+      if (e && e.event === 'dead' && e.workspaceRef === w.ref && String(e.taskId) === String(launch.taskId)) deadRow = e;
+    }
+    // failedLaunchEntries writes 'dead' BEFORE its 'launch' on purpose (race
+    // safety), so a failed-verification shell's death can precede its launch
+    // row by a few ms; allow that skew, nothing older (a recycled ref's old death).
+    const deadTs = deadRow ? Date.parse(deadRow.ts || '') : NaN;
+    if (!Number.isFinite(deadTs) || deadTs < launchTs - DEAD_BEFORE_LAUNCH_SKEW_MS) return false;
+    if (!cmuxws.checkLiveness(w.ref, claudeAliveInFn, surfaceAliveInFn).dead) return false;
+    // Third signal (BRO-2575): both cmux probes share one daemon and fail
+    // together in a blackout, and an old false 'dead' row can predate the
+    // wrapper check. A launch wrapper still in the OS process table vouches
+    // for life and keeps the shell blocking.
+    if (dispatchLedger.wrapperVouchesAlive(launch, isWrapperAlive)) return false;
+    if (onIgnored) { try { onIgnored(w); } catch { /* reporting must not change the verdict */ } }
+    return true;
+  };
 }
 
 // Ledger rows for findLiveWorkspaceForTask's taskId match, or null when the
@@ -1086,6 +1141,7 @@ const GUARD_NAMES = [
 module.exports = {
   GUARD_NAMES,
   findLiveWorkspaceForTask,
+  makeProvablyDeadFn,
   safeLedgerEntries,
   deadDispatchGuard,
   parkedGuard,
