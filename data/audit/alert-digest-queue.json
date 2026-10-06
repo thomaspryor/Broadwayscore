@@ -1152,5 +1152,41 @@
       }
     ],
     "queuedAt": "2026-10-06T07:25:39.618Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-magic-mike-live-new-york-off-broadway-2026",
+    "title": "Placeholder synopsis on MAGIC MIKE LIVE New York",
+    "description": "synopsis for magic-mike-live-new-york-off-broadway-2026 is too thin (96 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T10:26:03.634Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:affluenza-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Affluenza",
+    "description": "london-box-office/Stuart King SHIPPED with no publishDate — cannot confirm post-opening: https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T10:26:03.912Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:into-the-woods-noel-coward-west-end-2026",
+    "title": "Content mismatch on Into the Woods",
+    "description": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED but fullText never mentions 'Into the Woods' (2790 chars): https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T10:26:09.742Z"
   }
 ]
