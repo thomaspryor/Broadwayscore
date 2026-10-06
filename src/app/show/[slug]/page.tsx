@@ -54,6 +54,7 @@ import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import ShowTrustLines from '@/components/show-page/ShowTrustLines';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
+import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
 import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
@@ -229,15 +230,6 @@ function TicketIcon() {
     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
     </svg>
-  );
-}
-
-// Limited Run badge - eye-catching for shows ending soon
-function LimitedRunBadge() {
-  return (
-    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] leading-none font-semibold uppercase tracking-wide bg-rose-500/15 text-rose-400 border border-rose-500/30">
-      LIMITED RUN
-    </span>
   );
 }
 
@@ -444,6 +436,13 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // Computed here from the full review list (showForHero strips publishDate)
   // and shared by both heroes, so they always agree on whether it shows.
   const reviewAgeNote = showTBD ? null : getReviewAgeNote(show, show.criticScore?.reviews);
+  // Hero extras the legacy header carried: how many more reviews unlock a
+  // CriticScore (only when review count, not previews/upcoming, is the gate)
+  // and which fallback fills the Critics' Take slot when there's no consensus.
+  const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
+    ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
+    : 0;
+  const criticsTakeMode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, reviewCount, !!show.synopsis);
   const roundedScore = score ? Math.round(score) : null;
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const scoreColorClass = (!showTBD && roundedScore !== null)
@@ -504,6 +503,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               isWestEnd={isWestEnd}
               isOffBroadway={isOffBroadway}
               offBroadwayVenueSlug={offBroadwayTheater?.slug ?? null}
+              reviewsRemaining={reviewsRemaining}
+              criticsTakeMode={criticsTakeMode}
               ranks={ranks}
               tourReviewYears={isTour && !show.openingDate ? getTourReviewYears(show.criticScore?.reviews) : null}
               trustLines={<ShowTrustLines show={show} />}

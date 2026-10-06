@@ -79,6 +79,8 @@ import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
+import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
+import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 
 // ─── Props ───────────────────────────────────────────────────────────────
 
@@ -100,6 +102,10 @@ interface ShowHeroRedesignProps {
   /** Slug of the off-Broadway venue page for this show's venue; null when the venue string
    *  didn't resolve to a page (render plain text rather than a dead link). */
   offBroadwayVenueSlug?: string | null;
+  /** Reviews still needed for a CriticScore; 0 when the gate isn't review count. */
+  reviewsRemaining?: number;
+  /** Which Critics' Take fallback to show when there's no consensus (see getCriticsTakeDisplayMode). */
+  criticsTakeMode?: 'consensus' | 'coming-soon' | 'synopsis' | 'none';
   /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
    *  OR no rankable data. */
   ranks: ShowRanks | null;
@@ -150,6 +156,8 @@ function Inner({
   isWestEnd,
   isOffBroadway,
   offBroadwayVenueSlug,
+  reviewsRemaining = 0,
+  criticsTakeMode = 'none',
   ranks,
   tourReviewYears,
   reviewAgeNote,
@@ -422,6 +430,38 @@ function Inner({
         ? null
         : `/theater/${slugify(show.venue)}`;
 
+  // Market + format in the poster alt text (image search / a11y), as the legacy header had.
+  const posterMarketLabel = isOperaShow(show) ? 'Met Opera'
+    : isWestEnd ? 'West End'
+    : isOffBroadway ? 'Off-Broadway'
+    : show.category === 'regional' ? 'Regional'
+    : show.category === 'tour' ? 'National Tour'
+    : 'Broadway';
+
+  // Lottery/Rush pill linking to the Discount Tickets card. `display` picks the
+  // breakpoint behavior: hidden below lg next to the Get Tickets CTA, always
+  // shown when it's the only ticket element.
+  const lotteryPill = (display: string) => {
+    if (!(featureFlags.discountTickets && lotteryRush)) return null;
+    const symbol = getCurrencySymbol(show.category, show.venue);
+    const label = lotteryRush.lottery
+      ? lotteryRush.lottery.price ? `${symbol}${lotteryRush.lottery.price} Lottery` : 'Lottery'
+      : lotteryRush.rush
+        ? lotteryRush.rush.price ? `${symbol}${lotteryRush.rush.price} Rush` : 'Rush'
+        : 'Discount';
+    return (
+      <a
+        href="#discount-tickets"
+        className={`${display} items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0`}
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+        </svg>
+        {label}
+      </a>
+    );
+  };
+
   // Hide rating section + watchlist controls if the userAccounts flag is turned off.
   const userFeaturesEnabled = featureFlags.userAccounts;
 
@@ -442,7 +482,7 @@ function Inner({
                   show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
                   show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                 ]}
-                alt={`${show.title} poster`}
+                alt={`${show.title} ${posterMarketLabel} ${show.type} poster`}
                 width={176}
                 height={264}
                 decoding="async"
@@ -462,6 +502,7 @@ function Inner({
           <div className="flex flex-wrap items-center gap-1.5">
             <FormatPill type={show.type} />
             {show.isRevival && <ProductionPill isRevival />}
+            {show.limitedRun && <LimitedRunBadge />}
             <CategoryBadge category={show.category} isOpera={isOperaShow(show)} />
             <StatusBadge status={show.status} />
           </div>
@@ -533,7 +574,7 @@ function Inner({
           inline in the title column on lg+). Awaiting card replaces both when
           there aren't enough critic reviews. */}
       {!hasEnoughCriticReviews ? (
-        <AwaitingCard show={show} reviewCount={reviewCount} />
+        <AwaitingCard show={show} reviewCount={reviewCount} reviewsRemaining={reviewsRemaining} />
       ) : (
         <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
           <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
@@ -604,6 +645,14 @@ function Inner({
           <p className="text-gray-300 text-sm leading-relaxed">{consensusText}</p>
         </div>
       )}
+      {/* No consensus yet: say so once enough reviews exist, or show the synopsis
+          for an unopened show (never unrelated copy in the verdict slot, BRO-927). */}
+      {!(hasEnoughCriticReviews && consensusText) && criticsTakeMode === 'coming-soon' && (
+        <p className="mt-3 text-gray-500 text-sm leading-relaxed italic">Critics&apos; Take coming soon.</p>
+      )}
+      {!(hasEnoughCriticReviews && consensusText) && criticsTakeMode === 'synopsis' && (
+        <p className="mt-3 text-gray-400 text-sm leading-relaxed">{show.synopsis}</p>
+      )}
 
       {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
           every gap in the button stack is identical (the old split put 16px
@@ -613,7 +662,7 @@ function Inner({
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
       {userFeaturesEnabled && (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-[1fr_1fr_auto] gap-2">
           <button
             type="button"
             onClick={handleWantToSee}
@@ -641,6 +690,8 @@ function Inner({
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
+          {/* Custom lists. Icon-only below sm so the two primary buttons keep their width. */}
+          <ShowPageAddToListButton showId={show.id} variant="hero" />
         </div>
       )}
 
@@ -760,29 +811,15 @@ function Inner({
           pageType="show"
           splitVariant
           primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 h-10 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
-          secondaryAfter={
-            featureFlags.discountTickets && lotteryRush ? (
-              <a
-                href="#discount-tickets"
-                className="hidden lg:inline-flex items-center gap-1.5 h-10 px-5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-500 hover:text-gray-300 text-sm font-medium leading-none transition-colors border border-white/5 whitespace-nowrap flex-shrink-0"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                </svg>
-                {lotteryRush.lottery
-                  ? lotteryRush.lottery.price
-                    ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.lottery.price} Lottery`
-                    : 'Lottery'
-                  : lotteryRush.rush
-                    ? lotteryRush.rush.price
-                      ? `${getCurrencySymbol(show.category, show.venue)}${lotteryRush.rush.price} Rush`
-                      : 'Rush'
-                    : 'Discount'}
-              </a>
-            ) : null
-          }
+          secondaryAfter={lotteryPill('hidden lg:inline-flex')}
         />
       )}
+
+      {/* A lottery/rush show with no ticket links and no official site never
+          mounts TicketButtonsAB, so its pill has no home above. Render it
+          standalone (all breakpoints: there is no Get Tickets button here to
+          crowd) so the hero still points at the Discount Tickets card. */}
+      {!isClosed && !(sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && lotteryPill('inline-flex self-start')}
 
       {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an explicit
           note instead of leaving a silent gap where the ticket button used to be —
@@ -830,14 +867,22 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
   );
 }
 
-function AwaitingCard({ show, reviewCount }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number }) {
+function AwaitingCard({ show, reviewCount, reviewsRemaining }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number; reviewsRemaining: number }) {
+  const progress = (
+    <>
+      {show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? 'Show opens soon' : 'Not enough reviews yet'}
+      {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}
+      {reviewsRemaining > 0 ? ` · ${reviewsRemaining} more for a CriticScore` : null}
+    </>
+  );
   return (
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
       <p className="text-sm font-semibold text-gray-300 mb-0.5">Awaiting reviews</p>
-      <p className="text-xs text-gray-500">
-        {show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? 'Show opens soon' : 'Not enough reviews yet'}
-        {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}
-      </p>
+      {reviewCount > 0 ? (
+        <a href="#critic-reviews" className="text-xs text-gray-500 hover:text-brand transition-colors">{progress}</a>
+      ) : (
+        <p className="text-xs text-gray-500">{progress}</p>
+      )}
     </div>
   );
 }
