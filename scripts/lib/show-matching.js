@@ -1014,7 +1014,7 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
 // the substring "Broadway)".
 const PAGE_MARKET_QUALIFIERS = [
   { category: 'off-broadway', re: /\(off[\s-]?broadway\)|\boff-broadway reviews\b|\/off-broadway-shows\//i },
-  { category: 'broadway', re: /\(broadway\)|\bbroadway reviews\b|\/broadway-shows\//i },
+  { category: 'broadway', re: /\(broadway\)|\bon broadway\b|\bbroadway reviews\b|\/broadway-shows\//i },
   { category: 'off-west-end', re: /\(off[\s-]?west end\)/i },
   { category: 'west-end', re: /\(west end\)/i },
 ];

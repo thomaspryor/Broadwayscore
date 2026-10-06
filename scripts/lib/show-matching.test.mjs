@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fs = require('node:fs');
-const { matchSlugToShow, matchBwwRoundupSlugToShow, cleanSlugTitle, loadShows } = require('./show-matching.js');
+const { matchSlugToShow, matchBwwRoundupSlugToShow, cleanSlugTitle, loadShows, validateRoundupPageTitle } = require('./show-matching.js');
 
 // shows.json lives in a private repo and is checked out into data/ by CI.
 // Locally, fall back to the user's private-repo clone if data/shows.json isn't
@@ -361,4 +361,22 @@ test('two-letter title words and numbers are required too (BRO-4563 cousins)', (
   assert.equal(matchSlugToShow('review-roundup-steps-at-the-park', shows), null);
   const hit = matchSlugToShow('review-roundup-the-39-steps', shows);
   assert.equal(hit && (hit.show ? hit.show.id : hit.id), 'the-39-steps-2008');
+});
+
+// BRO-2137: same-title, different-production disambiguation. Playbill's
+// "What Do Critics Think of The Outsiders on Broadway?" roundup (Broadway
+// 2024) was accepted for the 2023 La Jolla regional show: the heading has no
+// "(Broadway)" qualifier, so only the title words were compared.
+test('same-title different-production: "on Broadway" roundup is rejected for the regional sibling (BRO-2137)', () => {
+  const html = t => `<html><head><title>${t}</title></head></html>`;
+  const broadwayPage = html('What Do Critics Think of The Outsiders on Broadway? | Playbill');
+  const regional = validateRoundupPageTitle(broadwayPage, 'The Outsiders', 'regional', ['broadway']);
+  assert.equal(regional.ok, false);
+  assert.equal(regional.reason, 'cross-market-sibling');
+  // The Broadway show itself, and a regional page with no Broadway signal, still pass.
+  assert.equal(validateRoundupPageTitle(broadwayPage, 'The Outsiders', 'broadway', ['regional']).ok, true);
+  assert.equal(validateRoundupPageTitle(html('What Do Critics Think of The Outsiders at La Jolla Playhouse? | Playbill'),
+    'The Outsiders', 'regional', ['broadway']).ok, true);
+  // No same-title Broadway sibling: nothing to confuse it with.
+  assert.equal(validateRoundupPageTitle(broadwayPage, 'The Outsiders', 'regional', []).ok, true);
 });
