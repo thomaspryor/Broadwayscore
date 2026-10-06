@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-05T23:42:11.061Z",
+  "generatedAt": "2026-10-06T03:38:47.782Z",
   "windowDays": 1095,
-  "targets": 435,
-  "auditedThisRun": 17,
-  "carriedForward": 622,
+  "targets": 437,
+  "auditedThisRun": 9,
+  "carriedForward": 634,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 357,
-    "missingCurrentRun": 692,
+    "withGap": 359,
+    "missingCurrentRun": 749,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 866,
+    "totalFlaggedMisses": 867,
     "totalRecoverable": 4,
-    "totalRecovered": 8,
-    "priorProductionCitations": 2989
+    "totalRecovered": 9,
+    "priorProductionCitations": 3048
   },
   "results": [
     {
@@ -2955,7 +2955,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
@@ -4434,7 +4439,12 @@
         "liveCount": 2,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
@@ -15982,6 +15992,42 @@
       "computedAt": "2026-09-02T22:17:45.717Z"
     },
     {
+      "showId": "bettys-summer-vacation-the-heights-players-off-broadway-2026",
+      "title": "Betty's Summer Vacation (The Heights Players)",
+      "openingDate": "2026-10-09",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-06T03:38:47.782Z"
+    },
+    {
       "showId": "between-two-knees-off-broadway-2024",
       "title": "Between Two Knees",
       "openingDate": "2024-02-13",
@@ -16923,10 +16969,10 @@
       "candidatesRejected": {
         "count": 93,
         "byReason": {
-          "not-http-url": 20,
-          "non-review-host": 19,
           "aggregator-internal-nav": 49,
-          "aggregator-section-root": 5
+          "not-http-url": 20,
+          "aggregator-section-root": 5,
+          "non-review-host": 19
         }
       },
       "dedupedVariants": [],
@@ -16958,20 +17004,6 @@
       ],
       "ingestResults": [],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.express.co.uk/showbiz/tv-radio/2092873/outlander-blood-my-blood-review-prequel-series",
-          "host": "express.co.uk",
-          "file": "express-uk--neela-debnath.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "filled text dated 2025-08-09 — outside production window, flagged wrongProduction",
-          "recoveryCount": 1,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -16981,7 +17013,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-04T15:49:45.268Z"
+      "computedAt": "2026-10-06T03:38:47.782Z"
     },
     {
       "showId": "bloodlove-off-broadway-2026",
@@ -18573,7 +18605,12 @@
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "brainiac-live-west-end-2026",
@@ -20991,17 +21028,19 @@
         "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
         "https://www.londonboxoffice.co.uk/news/post/bull-park-theatre-review",
         "https://www.londontheatre1.com/reviews/bull-park-theatre/",
-        "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
         "https://www.broadwayworld.com/westend/article/Review-BULL-Park-Theatre-20261002",
+        "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
         "https://ayoungishperspective.co.uk/2026/10/04/review-bull/",
         "https://playsinternational.org.uk/bull-park-theatre/",
-        "https://rolandcat.substack.com/p/review-bull-park-theatre",
         "https://www.deafinitelytheatre.co.uk/event/bull",
         "https://www.britishtheatreguide.info/reviews/bull-birmingham-rep-26016",
+        "https://rolandcat.substack.com/p/review-bull-park-theatre",
         "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/",
         "https://www.allthatdazzles.co.uk/post/review-bull-birmingham-rep---park-theatre",
         "https://liamodell.com/2026/09/17/bull-review-deafinitely-theatre-mike-bartlett-birmingham-rep-home-manchester-park-theatre-london/",
-        "https://www.timeout.com/london/theatre/bull-2"
+        "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+        "https://www.timeout.com/london/theatre/bull-2",
+        "https://www.westendtheatre.com/345351/news/mike-bartletts-bull-to-get-major-new-production-from-deafinitely-theatre/"
       ],
       "dirFiles": 23,
       "dirClean": 9,
@@ -21069,6 +21108,18 @@
           "knownOutletId": "atlanta-intown",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.westendtheatre.com/345351/news/mike-bartletts-bull-to-get-major-new-production-from-deafinitely-theatre/",
+          "host": "westendtheatre.com",
+          "knownOutletId": "westendtheatre",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -21221,7 +21272,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           },
           {
@@ -21237,7 +21288,7 @@
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 13,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
@@ -21246,9 +21297,9 @@
           "aggregator-internal-nav": 868,
           "not-http-url": 228,
           "aggregator-section-root": 20,
-          "non-review-host": 76,
-          "census-junk-host": 1,
-          "roundup-page": 3
+          "non-review-host": 75,
+          "roundup-page": 4,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -21326,11 +21377,50 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.westendtheatre.com/345351/news/mike-bartletts-bull-to-get-major-new-production-from-deafinitely-theatre/",
+          "host": "westendtheatre.com",
+          "outletId": "westendtheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.westendtheatre.com/345351/news/mike-bartletts-bull-to-get-major-new"
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "uktw",
+            "outlet": "uktw",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/"
+          },
+          {
+            "outletId": "westendtheatre",
+            "outlet": "westendtheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.westendtheatre.com/345351/news/mike-bartletts-bull-to-get-major-new-production-from-deafinitely-theatre/"
+          },
           {
             "outletId": "alledinburghtheatre.com",
             "outlet": "alledinburghtheatre.com",
@@ -21393,14 +21483,14 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://rolandcat.substack.com/p/review-bull-park-theatre",
-            "outletId": "rolandcat.substack.com",
+            "url": "https://www.britishtheatreguide.info/reviews/bull-birmingham-rep-26016",
+            "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/bull-birmingham-rep-26016",
-            "outletId": "britishtheatreguide.info",
+            "url": "https://rolandcat.substack.com/p/review-bull-park-theatre",
+            "outletId": "rolandcat.substack.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
@@ -21415,6 +21505,20 @@
             "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+            "outletId": "uktw",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.westendtheatre.com/345351/news/mike-bartletts-bull-to-get-major-new-production-from-deafinitely-theatre/",
+            "outletId": "westendtheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
             "url": "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
@@ -21447,9 +21551,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 9,
-        "candidateCount": 13
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-06T03:38:47.782Z"
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -45230,7 +45334,12 @@
         "liveCount": 8,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "floyd-collins-2025",
@@ -45967,7 +46076,12 @@
         "liveCount": 1,
         "candidateCount": 9
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "frieze-new-york-off-broadway-2026",
@@ -47844,7 +47958,12 @@
         "liveCount": 0,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -60172,6 +60291,1235 @@
       "computedAt": "2026-09-25T19:11:42.912Z"
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-condensed-one-part-harry-potter-and-the-cursed-child-on-broadway",
+        "https://playbill.com/article/reviews-of-harry-potter-and-the-cursed-child-in-london",
+        "https://playbill.com/article/read-the-reviews-for-harry-potter-and-the-cursed-child-on-broadway",
+        "https://playbill.com/article/what-do-critics-think-of-harry-potter-and-the-cursed-child-in-san-francisco",
+        "https://www.broadwayworld.com/article/Review-Roundup-Did-The-Critics-Think-HARRY-POTTER-AND-THE-CURSED-CHILD-Was-Magical-20180422",
+        "https://www.broadwayworld.com/article/Review-Roundup-HARRY-POTTER-AND-THE-CURSED-CHILD-Reopens-on-Broadway-20211207",
+        "https://www.broadwayworld.com/article/Review-Roundup-HARRY-POTTER-AND-THE-CURSED-CHILD-Opens-in-San-Francisco-Read-All-The-Reviews-20191204",
+        "https://www.broadwayworld.com/article/Review-Roundup-HARRY-POTTER-AND-THE-CURSED-CHILD-in-Previews-20160608"
+      ],
+      "aggregatorListedUrls": [
+        "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
+        "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+        "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+        "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+        "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+        "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+        "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html",
+        "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+        "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+        "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+        "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
+        "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+        "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+        "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+        "https://www.thestage.co.uk/opinion/2016/harry-potter-cursed-child-palace-theatre-review-round/",
+        "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+        "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+        "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+        "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
+        "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+        "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+        "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+        "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+        "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+        "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
+        "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+        "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+        "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
+        "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+        "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
+        "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+        "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+        "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+        "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+        "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+        "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+        "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+        "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+        "https://www.mercurynews.com/2019/12/02/review-spellbinding-harry-potter-and-the-cursed-child-soars-into-sf/",
+        "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+        "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+        "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+        "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
+        "http://www.nytimes.com/2016/06/08/arts/international/harry-potter-and-the-cursed-child-tonight-secrets-may-be-revealed.html"
+      ],
+      "dirFiles": 4,
+      "dirClean": 3,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+          "host": "didtheylikeit.com",
+          "knownOutletId": "dtli"
+        },
+        {
+          "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune"
+        },
+        {
+          "url": "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent"
+        },
+        {
+          "url": "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+          "host": "mirror.co.uk",
+          "knownOutletId": "mirror"
+        },
+        {
+          "url": "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.thestage.co.uk/opinion/2016/harry-potter-cursed-child-palace-theatre-review-round/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+          "host": "time.com",
+          "knownOutletId": "time"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+          "host": "broadway.news",
+          "knownOutletId": "broadwaynews"
+        },
+        {
+          "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
+          "host": "mashable.com",
+          "knownOutletId": "mashable"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+          "host": "slate.com",
+          "knownOutletId": "slate"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "times-uk"
+        },
+        {
+          "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair"
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        },
+        {
+          "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.mercurynews.com/2019/12/02/review-spellbinding-harry-potter-and-the-cursed-child-soars-into-sf/",
+          "host": "mercurynews.com",
+          "knownOutletId": "san-jose-mercury-news"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle"
+        },
+        {
+          "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+          "host": "forward.com",
+          "knownOutletId": "forward"
+        },
+        {
+          "url": "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
+          "host": "mugglenet.com",
+          "knownOutletId": null
+        },
+        {
+          "url": "http://www.nytimes.com/2016/06/08/arts/international/harry-potter-and-the-cursed-child-tonight-secrets-may-be-revealed.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrebee.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1727,
+        "byReason": {
+          "aggregator-internal-nav": 1161,
+          "not-http-url": 283,
+          "aggregator-section-root": 34,
+          "non-review-host": 146,
+          "roundup-page": 103
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
+          "host": "broadwaynews.com",
+          "outletId": "broadwaynews",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133 was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+          "host": "didtheylikeit.com",
+          "outletId": "dtli",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html",
+          "host": "chicagotribune.com",
+          "outletId": "chicagotribune"
+        },
+        {
+          "url": "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+          "host": "ew.com",
+          "outletId": "ew"
+        },
+        {
+          "url": "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+          "host": "standard.co.uk",
+          "outletId": "standard"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+          "host": "independent.co.uk",
+          "outletId": "independent"
+        },
+        {
+          "url": "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+          "host": "mirror.co.uk",
+          "outletId": "mirror"
+        },
+        {
+          "url": "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.thestage.co.uk/opinion/2016/harry-potter-cursed-child-palace-theatre-review-round/",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+          "host": "time.com",
+          "outletId": "time"
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+          "host": "usatoday.com",
+          "outletId": "usatoday"
+        },
+        {
+          "url": "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+          "host": "wsj.com",
+          "outletId": "wsj"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+          "host": "amny.com",
+          "outletId": "amny"
+        },
+        {
+          "url": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+          "host": "broadway.news",
+          "outletId": "broadwaynews"
+        },
+        {
+          "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast"
+        },
+        {
+          "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+          "host": "deadline.com",
+          "outletId": "deadline"
+        },
+        {
+          "url": "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
+          "host": "ew.com",
+          "outletId": "ew"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+          "host": "theguardian.com",
+          "outletId": "guardian"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter"
+        },
+        {
+          "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
+          "host": "mashable.com",
+          "outletId": "mashable"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+          "host": "nj.com",
+          "outletId": "njcom"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
+          "host": "newsday.com",
+          "outletId": "newsday"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews"
+        },
+        {
+          "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+          "host": "slate.com",
+          "outletId": "slate"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+          "host": "thetimes.co.uk",
+          "outletId": "times-uk"
+        },
+        {
+          "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+          "host": "vanityfair.com",
+          "outletId": "vanityfair"
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+          "host": "variety.com",
+          "outletId": "variety"
+        },
+        {
+          "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://www.mercurynews.com/2019/12/02/review-spellbinding-harry-potter-and-the-cursed-child-soars-into-sf/",
+          "host": "mercurynews.com",
+          "outletId": "san-jose-mercury-news"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+          "host": "sfchronicle.com",
+          "outletId": "san-francisco-chronicle"
+        },
+        {
+          "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews"
+        },
+        {
+          "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+          "host": "forward.com",
+          "outletId": "forward"
+        },
+        {
+          "url": "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
+          "host": "mugglenet.com",
+          "outletId": "mugglenet"
+        },
+        {
+          "url": "http://www.nytimes.com/2016/06/08/arts/international/harry-potter-and-the-cursed-child-tonight-secrets-may-be-revealed.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/"
+          },
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133"
+          },
+          {
+            "outletId": "dtli",
+            "outlet": "dtli",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review"
+          },
+          {
+            "outletId": "chicagotribune",
+            "outlet": "chicagotribune",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html"
+          },
+          {
+            "outletId": "ew",
+            "outlet": "ew",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review"
+          },
+          {
+            "outletId": "standard",
+            "outlet": "standard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html"
+          },
+          {
+            "outletId": "mirror",
+            "outlet": "mirror",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/opinion/2016/harry-potter-cursed-child-palace-theatre-review-round/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/"
+          },
+          {
+            "outletId": "time",
+            "outlet": "time",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://time.com/4422192/harry-potter-cursed-child-play-review/"
+          },
+          {
+            "outletId": "usatoday",
+            "outlet": "usatoday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087"
+          },
+          {
+            "outletId": "broadwaynews",
+            "outlet": "broadwaynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/"
+          },
+          {
+            "outletId": "ew",
+            "outlet": "ew",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812"
+          },
+          {
+            "outletId": "mashable",
+            "outlet": "mashable",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/"
+          },
+          {
+            "outletId": "njcom",
+            "outlet": "njcom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html"
+          },
+          {
+            "outletId": "slate",
+            "outlet": "slate",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf"
+          },
+          {
+            "outletId": "vanityfair",
+            "outlet": "vanityfair",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/"
+          },
+          {
+            "outletId": "san-jose-mercury-news",
+            "outlet": "san-jose-mercury-news",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.mercurynews.com/2019/12/02/review-spellbinding-harry-potter-and-the-cursed-child-soars-into-sf/"
+          },
+          {
+            "outletId": "san-francisco-chronicle",
+            "outlet": "san-francisco-chronicle",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034"
+          },
+          {
+            "outletId": "forward",
+            "outlet": "forward",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/"
+          },
+          {
+            "outletId": "mugglenet.com",
+            "outlet": "mugglenet.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nytimes.com/2016/06/08/arts/international/harry-potter-and-the-cursed-child-tonight-secrets-may-be-revealed.html"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://broadwaynews.com/2021/12/07/review-harry-potter-and-the-cursed-child-retains-its-magic-and-its-heart/",
+            "outletId": "broadwaynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Harry-Potter-and-the-Cursed-Child/133",
+            "outletId": "cititour",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+            "outletId": "dtli",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2021/12/07/theater/harry-potter-cursed-child-broadway-review.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+            "outletId": "theatrely",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.chicagotribune.com/entertainment/theater/beyondchicago/sc-ent-0726-harry-potter-cursed-child-london-review-20160726-column.html",
+            "outletId": "chicagotribune",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.ew.com/article/2016/07/25/harry-potter-cursed-child-review",
+            "outletId": "ew",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.standard.co.uk/goingout/theatre/harry-potter-and-the-cursed-child-review-a-magical-experience-a3304191.html",
+            "outletId": "standard",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/harry-potter-cursed-child-parts-914055",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.independent.co.uk/arts-entertainment/tv/reviews/harry-potter-and-the-cursed-child-review-palace-theatre-a-magical-experience-tailor-made-for-the-a7155381.html",
+            "outletId": "independent",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.mirror.co.uk/tv/tv-reviews/harry-potter-cursed-child-review-8136339",
+            "outletId": "mirror",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/opinion/2016/harry-potter-cursed-child-palace-theatre-review-round/",
+            "outletId": "thestage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.telegraph.co.uk/theatre/what-to-see/harry-potter-and-the-cursed-child-opening-night-of-part-one---li/",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://time.com/4422192/harry-potter-cursed-child-play-review/",
+            "outletId": "time",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.usatoday.com/story/life/theater/2016/07/25/review-cursed-child-brings-harry-potter-into-future-but-past-present/87482170/",
+            "outletId": "usatoday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://variety.com/2016/legit/reviews/harry-potter-and-the-cursed-child-review-play-london-1201822087/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.wsj.com/articles/harry-potter-and-the-cursed-child-parts-one-and-two-review-the-spell-of-friendship-1469487661",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/harry-potter-and-the-cursed-child-review-1.18207087",
+            "outletId": "amny",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://broadway.news/2018/04/22/review-harry-potter-cursed-child-brings-magic-broadway/",
+            "outletId": "broadwaynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/harry-potter-and-the-cursed-child-on-broadway-is-a-stunning-magical-tour-de-force",
+            "outletId": "dailybeast",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+            "outletId": "deadline",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://ew.com/theater/2018/04/22/harry-potter-and-the-cursed-child-broadway-review/",
+            "outletId": "ew",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2018/apr/22/harry-potter-and-the-cursed-child-review-thrilling-broadway-transfer-is-magic",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/harry-potter-cursed-child-theater-review-1104812",
+            "outletId": "hollywood-reporter",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://mashable.com/2018/04/22/harry-potter-cursed-child-broadway-review/",
+            "outletId": "mashable",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.nj.com/entertainment/index.ssf/2018/04/harry_potter_cursed_child_broadway_review.html",
+            "outletId": "njcom",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/harry-potter-cursed-child-review-1.18173469",
+            "outletId": "newsday",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+            "outletId": "nydailynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://nystagereview.com/2018/04/22/harry-potter-and-the-cursed-child-broadways-enchanted-kingdom/",
+            "outletId": "nysr",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2018/04/22/theater/review-harry-potter-and-the-cursed-child-raises-the-bar-for-broadway-magic.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://slate.com/culture/2018/04/harry-potter-and-the-cursed-child-on-broadway-reviewed.html",
+            "outletId": "slate",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/theatre-review-harry-potter-and-the-cursed-child-i-and-ii-at-the-lyric-theatre-new-york-jsc7khbbf",
+            "outletId": "times-uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.vanityfair.com/style/2018/04/harry-potter-and-the-cursed-child-broadway-review",
+            "outletId": "vanityfair",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://variety.com/2018/legit/reviews/harry-potter-and-the-cursed-child-review-broadway-1202757827/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.thewrap.com/harry-potter-cursed-child-broadway-review-rowling-john-thorne/",
+            "outletId": "thewrap",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.mercurynews.com/2019/12/02/review-spellbinding-harry-potter-and-the-cursed-child-soars-into-sf/",
+            "outletId": "san-jose-mercury-news",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://datebook.sfchronicle.com/theater/review-whiz-bang-effects-of-cursed-child-zap-new-life-into-harry-potter",
+            "outletId": "san-francisco-chronicle",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://beta.nydailynews.com/entertainment/theater-arts/cursed-child-review-wildly-harry-potter-broadway-article-1.3944034",
+            "outletId": "nydailynews",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://forward.com/culture/theater/399247/harry-potter-and-the-cursed-child-is-jewish-and-dark/",
+            "outletId": "forward",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
+            "outletId": "mugglenet.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2016/06/08/arts/international/harry-potter-and-the-cursed-child-tonight-secrets-may-be-revealed.html",
+            "outletId": "nytimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 35
+      },
+      "computedAt": "2026-10-06T03:38:47.782Z"
+    },
+    {
       "showId": "hate-radio-off-broadway-2026",
       "title": "Hate Radio",
       "openingDate": "2026-02-12",
@@ -60741,7 +62089,12 @@
         "liveCount": 21,
         "candidateCount": 23
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "complete:10:10",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -68235,7 +69588,8 @@
         "https://playbill.com/article/read-reviews-for-hollywood-bowl-into-the-woods-starring-patina-miller-sutton-foster-skylar-astin-cheyenne-jackson",
         "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-on-Broadway--Updating-Live-20220710",
         "https://www.broadwayworld.com/article/Review-Roundup-Reimagined-INTO-THE-WOODS-Opens-Off-Broadway-20150122",
-        "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-at-New-York-City-Center-Encores-20220506"
+        "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-at-New-York-City-Center-Encores-20220506",
+        "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Enchanted-By-INTO-THE-WOODS-at-the-Hollywood-Bowl-20190728"
       ],
       "aggregatorListedUrls": [
         "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
@@ -68282,11 +69636,14 @@
         "http://www.amny.com/entertainment/into-the-woods-theater-review-a-fun-sparse-staging-1.9835176",
         "http://www.vulture.com/2015/01/theater-review-into-the-woods.html",
         "http://www.huffingtonpost.com/steven-suskin/aisle-view-into-the-woods_b_6528754.html",
-        "http://britishtheatre.com/review-into-the-woods-roundabout-at-laura-pels-theatre-4stars/"
+        "http://britishtheatre.com/review-into-the-woods-roundabout-at-laura-pels-theatre-4stars/",
+        "https://www.hollywoodreporter.com/review/into-the-woods-theater-1227473",
+        "https://www.stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
+        "https://onstageandscreen.com/2019/07/27/theater-review-into-the-woods-at-the-hollywood-bowl/"
       ],
-      "dirFiles": 5,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 38,
+      "dirClean": 27,
+      "inReviewsJson": 31,
       "missing": [
         {
           "url": "https://www.amny.com/entertainment/broadway/into-the-woods-revival-review-july-2022/",
@@ -68595,9 +69952,119 @@
           "knownOutletId": "british-theatre",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/into-the-woods-theater-1227473",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://onstageandscreen.com/2019/07/27/theater-review-into-the-woods-at-the-hollywood-bowl/",
+          "host": "onstageandscreen.com",
+          "knownOutletId": "on-stage-and-screen",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "dailymail.co.uk",
+          "count": 1
+        },
+        {
+          "host": "inews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatredirect.com",
+          "count": 1
+        },
+        {
+          "host": "loureviews.blog",
+          "count": 1
+        },
+        {
+          "host": "monstagigz.com",
+          "count": 1
+        },
+        {
+          "host": "playsinternational.org.uk",
+          "count": 1
+        },
+        {
+          "host": "radiotimes.com",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatresoutheast.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendwilma.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.nysun.com/article/even-if-youre-sondheimed-out-this-into-the-woods-is-worth-your-while",
@@ -68626,13 +70093,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1443,
+        "count": 1728,
         "byReason": {
-          "aggregator-internal-nav": 949,
-          "not-http-url": 196,
-          "aggregator-section-root": 28,
-          "non-review-host": 125,
-          "roundup-page": 145
+          "aggregator-internal-nav": 1158,
+          "not-http-url": 245,
+          "aggregator-section-root": 32,
+          "non-review-host": 140,
+          "roundup-page": 153
         }
       },
       "dedupedVariants": [],
@@ -68664,6 +70131,10 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-INTO-THE-WOODS-Opens-at-New-York-City-Center-Encores-20220506",
           "publishDate": "2022-05-06"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Enchanted-By-INTO-THE-WOODS-at-the-Hollywood-Bowl-20190728",
+          "publishDate": "2019-07-28"
         }
       ],
       "weIngestBlocked": [
@@ -68930,6 +70401,24 @@
           "host": "britishtheatre.com",
           "priorRun": true,
           "reason": "prior-run"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/into-the-woods-theater-1227473",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.stageandcinema.com/2019/07/27/into-the-woods-hollywood-bowl/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://onstageandscreen.com/2019/07/27/theater-review-into-the-woods-at-the-hollywood-bowl/",
+          "host": "onstageandscreen.com",
+          "priorRun": true,
+          "reason": "prior-run"
         }
       ],
       "ingestResults": [],
@@ -68943,7 +70432,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-04T19:06:54.776Z"
+      "computedAt": "2026-10-06T03:38:47.782Z"
     },
     {
       "showId": "into-the-woods-west-end-2025",
@@ -71554,13 +73043,12 @@
         "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
         "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-04/",
         "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets",
-        "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-02-19-00-00-3501096",
-        "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-05-19-pm/bbbe8f4a-1c82-40d5-85fb-cad542e97ae9",
+        "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462",
+        "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
         "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
         "https://www.ticketwarehouse.com/events/comedy-tickets/3501096/jena-friedman-motherfucker-2026-10-02-19-00-00",
         "https://viptickets.com/events/3501104/jena-friedman-tickets",
-        "https://www.axs.com/uk/events/1632554/jena-friedman-motherfucker-tickets",
-        "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462"
+        "https://www.axs.com/uk/events/1632554/jena-friedman-motherfucker-tickets"
       ],
       "dirFiles": 6,
       "dirClean": 0,
@@ -71579,14 +73067,8 @@
           "serpCensus": true
         },
         {
-          "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-02-19-00-00-3501096",
+          "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
           "host": "oklahomatickets.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-05-19-pm/bbbe8f4a-1c82-40d5-85fb-cad542e97ae9",
-          "host": "ticketx.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -71629,7 +73111,7 @@
           "dirFlags": [
             {
               "file": "axs--unknown.json",
-              "flag": "clean",
+              "flag": "wrongShow",
               "urlInDir": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets"
             }
           ],
@@ -71718,22 +73200,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 10,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 31,
         "byReason": {
-          "non-review-host": 13,
-          "non-review-path": 5,
+          "non-review-host": 14,
           "ticketing-reseller": 5,
-          "venue-production-page": 7
+          "venue-production-page": 7,
+          "non-review-path": 5
         }
       },
       "dedupedVariants": [],
@@ -71763,7 +73245,7 @@
           "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
-          "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-02-19-00-00-3501096",
+          "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
           "host": "oklahomatickets.com",
           "outletId": "oklahomatickets",
           "provisional": true,
@@ -71772,19 +73254,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=oklahomatickets.com): Scrapingdog HTTP 400: Oops! Some"
-        },
-        {
-          "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-05-19-pm/bbbe8f4a-1c82-40d5-85fb-cad542e97ae9",
-          "host": "ticketx.com",
-          "outletId": "ticketx",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"ticketx\" (not in registry) — onboard to outlet-registry.json after review.\n "
+          "reason": "⚠️  provisional outlet \"oklahomatickets\" (not in registry) — onboard to outlet-registry.json after r"
         },
         {
           "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
@@ -71797,14 +73267,21 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ticketsmarter.com): Scrapingdog HTTP 400: Oops! Someth"
-        }
-      ],
-      "ingestSkippedByCap": [
+        },
         {
           "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501096/jena-friedman-motherfucker-2026-10-02-19-00-00",
           "host": "ticketwarehouse.com",
-          "outletId": "ticketwarehouse"
-        },
+          "outletId": "ticketwarehouse",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ticketwarehouse.com): Scrapingdog HTTP 404: {\"message\""
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://viptickets.com/events/3501104/jena-friedman-tickets",
           "host": "viptickets.com",
@@ -71838,14 +73315,7 @@
             "outlet": "oklahomatickets.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-02-19-00-00-3501096"
-          },
-          {
-            "outletId": "ticketx.com",
-            "outlet": "ticketx.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-05-19-pm/bbbe8f4a-1c82-40d5-85fb-cad542e97ae9"
+            "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103"
           },
           {
             "outletId": "ticketsmarter.com",
@@ -71907,18 +73377,11 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-02-19-00-00-3501096",
+            "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-2026-10-09-19-00-00-3501103",
             "outletId": "oklahomatickets.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
-          },
-          {
-            "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-05-19-pm/bbbe8f4a-1c82-40d5-85fb-cad542e97ae9",
-            "outletId": "ticketx.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T07:59:37.385Z"
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
             "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-4-2026-soho-playhouse-main-theatre/3501098",
@@ -71967,7 +73430,7 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-06T03:38:47.782Z"
     },
     {
       "showId": "jesa-off-broadway-2026",
@@ -77485,7 +78948,12 @@
         "liveCount": 9,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "complete:8:8",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -115154,7 +116622,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "purpose-2025",
@@ -127224,34 +128697,35 @@
       "openingDate": "2026-10-04",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-the-off-broadway-return-of-slam-frank",
+        "https://www.broadwayworld.com/article/Review-Roundup-SLAM-FRANK-Returns-Off-Broadway-20261005"
+      ],
       "aggregatorListedUrls": [
+        "https://1minutecritic.com/slam-frank-review-off-broadway/",
+        "https://www.avclub.com/slam-frank-hamilton-off-broadway-review",
+        "https://davidcote1.substack.com/p/slam-frank-review-how-do-you-solve",
+        "https://www.vulture.com/article/slam-frank-play-musical-review-orpheum.html",
+        "https://nystagereview.com/2026/10/04/slam-frank-an-equal-opportunity-offender/",
+        "https://www.theatermania.com/news/review-slam-frank-is-back-and-she-doesnt-care-if-you-cancel-her_1855926/",
+        "https://www.nysun.com/article/slam-frank-mistakes-opportunism-for-bravery",
+        "https://t2conline.com/slam-frank-brilliant-offensive-confusing-and-impossible-to-stop-talking-about/",
         "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html",
         "https://www.theatermania.com/news/review-in-slam-frank-anne-frank-gets-the-hamilton-treatment_1806777/",
         "https://culturesauce.com/slam-frank-off-broadway-review/",
-        "https://nystagereview.com/2026/10/04/slam-frank-an-equal-opportunity-offender/",
-        "https://www.theatermania.com/news/review-slam-frank-is-back-and-she-doesnt-care-if-you-cancel-her_1855926/",
         "https://www.theguardian.com/stage/2026/sep/25/slam-frank-musical-off-broadway",
-        "https://1minutecritic.com/slam-frank-review-off-broadway/",
-        "https://www.avclub.com/slam-frank-hamilton-off-broadway-review",
-        "https://www.vulture.com/article/slam-frank-play-musical-review-orpheum.html",
-        "https://t2conline.com/slam-frank-brilliant-offensive-confusing-and-impossible-to-stop-talking-about/",
+        "https://nyunews.com/2026/10/05/10-05-arts-performing-slam-frank/",
         "https://www.show-score.com/off-broadway-shows/slam-frank",
-        "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
-        "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/",
-        "https://www.theatrebeyondbroadway.com/reviews/slam-frank",
-        "https://www.nyc.com/broadway_tickets/slam_frank.429573247206440960/"
+        "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/",
+        "https://blogs.timesofisrael.com/the-shame-of-slam-frank/",
+        "https://www.picturethispost.com/slam-frank-preview/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/slam-frank-move-off-broadway-orpheum-1236619998/",
+        "https://www.timeout.com/newyork/theater/slam-frank"
       ],
-      "dirFiles": 14,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 21,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
-        {
-          "url": "https://1minutecritic.com/slam-frank-review-off-broadway/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "serpCensus": true
-        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/slam-frank",
           "host": "show-score.com",
@@ -127259,34 +128733,25 @@
           "serpCensus": true
         },
         {
-          "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/",
-          "host": "andersonvision.com",
-          "knownOutletId": null,
+          "url": "https://blogs.timesofisrael.com/the-shame-of-slam-frank/",
+          "host": "timesofisrael.com",
+          "knownOutletId": "the-times-of-israel",
           "serpCensus": true
         },
         {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/slam-frank",
-          "host": "theatrebeyondbroadway.com",
-          "knownOutletId": null,
+          "url": "https://www.picturethispost.com/slam-frank-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
           "serpCensus": true
         },
         {
-          "url": "https://www.nyc.com/broadway_tickets/slam_frank.429573247206440960/",
-          "host": "nyc.com",
-          "knownOutletId": null,
+          "url": "https://www.timeout.com/newyork/theater/slam-frank",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "beautynewsnycofficial.com",
-          "count": 1
-        },
-        {
-          "host": "nyunews.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.nytimes.com/2025/10/24/theater/slam-frank-crooked-cross-review.html",
@@ -127343,9 +128808,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
-          "host": "thejewishvoiceandopinion.com",
-          "knownOutletId": "the-jewish-voice-and-opinion",
+          "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/",
+          "host": "beautynewsnycofficial.com",
+          "knownOutletId": "beautynewsnycofficial",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -127353,9 +128818,27 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "the-jewish-voice-and-opinion--two-sues-on-the.json",
+              "file": "beautynewsnycofficial--eva-whalen.json",
+              "flag": "clean",
+              "urlInDir": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/slam-frank-move-off-broadway-orpheum-1236619998/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--frank-digiacomo.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/"
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/slam-frank-move-off-broadway-orpheum-1236619998/"
             }
           ],
           "serpCensus": true
@@ -127375,7 +128858,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -127385,7 +128868,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -127395,7 +128878,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -127405,7 +128888,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -127415,38 +128898,29 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 405,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 12,
-          "ticketing-reseller": 2,
-          "ticketing-listing": 2
+          "aggregator-internal-nav": 262,
+          "not-http-url": 78,
+          "aggregator-section-root": 11,
+          "non-review-host": 48,
+          "roundup-page": 3,
+          "ticketing-listing": 1,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://1minutecritic.com/slam-frank-review-off-broadway/",
-          "host": "1minutecritic.com",
-          "outletId": "one-minute-critic",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/slam-frank",
           "host": "show-score.com",
@@ -127460,10 +128934,22 @@
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
-          "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/",
-          "host": "andersonvision.com",
-          "outletId": "andersonvision",
-          "provisional": true,
+          "url": "https://blogs.timesofisrael.com/the-shame-of-slam-frank/",
+          "host": "timesofisrael.com",
+          "outletId": "the-times-of-israel",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.picturethispost.com/slam-frank-preview/",
+          "host": "picturethispost.com",
+          "outletId": "picture-this-post",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -127472,22 +128958,10 @@
           "reason": null
         },
         {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/slam-frank",
-          "host": "theatrebeyondbroadway.com",
-          "outletId": "theatrebeyondbroadway",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"theatrebeyondbroadway\" (not in registry) — onboard to outlet-registry.json a"
-        },
-        {
-          "url": "https://www.nyc.com/broadway_tickets/slam_frank.429573247206440960/",
-          "host": "nyc.com",
-          "outletId": "nyc",
-          "provisional": true,
+          "url": "https://www.timeout.com/newyork/theater/slam-frank",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -127497,16 +128971,23 @@
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/slam-frank-off-broadway-review/",
+          "host": "thewrap.com",
+          "file": "thewrap--robert-hofler.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "one-minute-critic",
-            "outlet": "one-minute-critic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1minutecritic.com/slam-frank-review-off-broadway/"
-          },
           {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
@@ -127515,25 +128996,25 @@
             "url": "https://www.show-score.com/off-broadway-shows/slam-frank"
           },
           {
-            "outletId": "andersonvision.com",
-            "outlet": "andersonvision.com",
+            "outletId": "the-times-of-israel",
+            "outlet": "the-times-of-israel",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/"
+            "url": "https://blogs.timesofisrael.com/the-shame-of-slam-frank/"
           },
           {
-            "outletId": "theatrebeyondbroadway.com",
-            "outlet": "theatrebeyondbroadway.com",
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatrebeyondbroadway.com/reviews/slam-frank"
+            "url": "https://www.picturethispost.com/slam-frank-preview/"
           },
           {
-            "outletId": "nyc.com",
-            "outlet": "nyc.com",
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nyc.com/broadway_tickets/slam_frank.429573247206440960/"
+            "url": "https://www.timeout.com/newyork/theater/slam-frank"
           },
           {
             "outletId": "theatermania",
@@ -127550,18 +129031,43 @@
             "url": "https://www.theguardian.com/stage/2026/sep/25/slam-frank-musical-off-broadway"
           },
           {
-            "outletId": "the-jewish-voice-and-opinion",
-            "outlet": "the-jewish-voice-and-opinion",
+            "outletId": "beautynewsnycofficial",
+            "outlet": "beautynewsnycofficial",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/"
+            "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/slam-frank-move-off-broadway-orpheum-1236619998/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://culturesauce.com/slam-frank-off-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "https://1minutecritic.com/slam-frank-review-off-broadway/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "https://www.avclub.com/slam-frank-hamilton-off-broadway-review",
+            "outletId": "avclub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "https://davidcote1.substack.com/p/slam-frank-review-how-do-you-solve",
+            "outletId": "davidcote1.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/slam-frank-play-musical-review-orpheum.html",
+            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
@@ -127578,16 +129084,10 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://www.avclub.com/slam-frank-hamilton-off-broadway-review",
-            "outletId": "avclub.com",
+            "url": "https://www.nysun.com/article/slam-frank-mistakes-opportunism-for-bravery",
+            "outletId": "nysun.com",
             "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/slam-frank-play-musical-review-orpheum.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
             "url": "https://t2conline.com/slam-frank-brilliant-offensive-confusing-and-impossible-to-stop-talking-about/",
@@ -127596,11 +129096,16 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://1minutecritic.com/slam-frank-review-off-broadway/",
-            "outletId": "one-minute-critic",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://culturesauce.com/slam-frank-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
+          },
+          {
+            "url": "https://nyunews.com/2026/10/05/10-05-arts-performing-slam-frank/",
+            "outletId": "nyunews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/slam-frank",
@@ -127610,25 +129115,25 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://andersonvision.com/slam-frank-dares-you-to-be-offended-but-its-real-target-is-the-theater-not-anne-frank/",
-            "outletId": "andersonvision.com",
+            "url": "https://blogs.timesofisrael.com/the-shame-of-slam-frank/",
+            "outletId": "the-times-of-israel",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
-            "url": "https://www.theatrebeyondbroadway.com/reviews/slam-frank",
-            "outletId": "theatrebeyondbroadway.com",
+            "url": "https://www.picturethispost.com/slam-frank-preview/",
+            "outletId": "picture-this-post",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
-            "url": "https://www.nyc.com/broadway_tickets/slam_frank.429573247206440960/",
-            "outletId": "nyc.com",
+            "url": "https://www.timeout.com/newyork/theater/slam-frank",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-in-slam-frank-anne-frank-gets-the-hamilton-treatment_1806777/",
@@ -127645,18 +129150,25 @@
             "firstSeenAt": "2026-10-05T17:43:35.209Z"
           },
           {
-            "url": "https://thejewishvoiceandopinion.com/brash-brilliant-irreverent-slam-frank/",
-            "outletId": "the-jewish-voice-and-opinion",
+            "url": "https://www.beautynewsnycofficial.com/city-pulse/art-culture/slam-frank-at-the-orpheum-theatre-the-anne-frank-afro-latin-hip-hop-musical/",
+            "outletId": "beautynewsnycofficial",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T17:43:35.209Z"
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/slam-frank-move-off-broadway-orpheum-1236619998/",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 6,
-        "candidateCount": 14
+        "liveCount": 10,
+        "candidateCount": 18
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-06T03:38:47.782Z"
     },
     {
       "showId": "small-off-broadway-2026",
@@ -128459,7 +129971,12 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "space-dogs-off-west-end-2026",
@@ -145047,7 +146564,12 @@
         "liveCount": 6,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-05T17:43:35.209Z"
+      "computedAt": "2026-10-05T17:43:35.209Z",
+      "quarantine": {
+        "nextState": "incomplete:7:9",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "the-harder-they-come-off-west-end-2026",
@@ -147675,7 +149197,12 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -161042,6 +162569,42 @@
       "computedAt": "2026-08-25T14:45:45.152Z"
     },
     {
+      "showId": "the-turn-of-the-screw-off-west-end-2026",
+      "title": "The Turn of the Screw",
+      "openingDate": "2026-09-11",
+      "status": "open",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-06T03:38:47.782Z"
+    },
+    {
       "showId": "the-uncontainable-nausea-of-alec-baldwin-off-west-end-2026",
       "title": "The Uncontainable Nausea of Alec Baldwin",
       "openingDate": "2026-03-03",
@@ -163093,6 +164656,1265 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-24T15:49:31.318Z"
+    },
+    {
+      "showId": "the-wiz-tour-2026",
+      "title": "The Wiz",
+      "openingDate": "2026-09-26",
+      "status": "open",
+      "category": "tour",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-wiz-broadway-revival",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-WIZ-Returns-To-Broadway-20240417",
+        "https://www.broadwayworld.com/article/Review-Roundup-Pre-Broadway-THE-WIZ-Tour-Launches-What-Are-the-Critics-Saying-20231004"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.amny.com/entertainment/theater/review-the-wiz-revival/",
+        "https://www.broadwaynews.com/the-broadway-review-a-busy-revival-of-the-wiz-still-doles-out-verifiable-fun/",
+        "https://www.chicagotribune.com/2024/04/17/review-the-wiz-on-broadway-is-freshened-up-and-ready-for-an-adoring-audience/",
+        "https://cititour.com/NYC_Broadway/The-Wiz/1222",
+        "https://ew.com/the-wiz-broadway-revival-review-8635100",
+        "https://nypost.com/2024/04/17/entertainment/the-wiz-broadway-review-were-off-to-see-the-cheap-natl-tour/",
+        "https://nystagereview.com/2024/04/17/the-wiz-not-an-oz-picious-revival/",
+        "https://nystagereview.com/2024/04/17/the-wiz-revival-doesnt-ease-down-the-road-easily/",
+        "https://www.nysun.com/article/theres-no-place-like-broadway-revival-of-the-wiz-arrives-at-a-busy-time-for-musical-theater",
+        "https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/the-wiz-broadway-review-wayne-brady",
+        "https://www.nytimes.com/2024/04/17/theater/the-wiz-review-broadway.html",
+        "https://www.queerty.com/the-house-of-dorothy-reigns-supreme-in-the-wiz-with-wayne-brady-in-the-titular-role-20240417",
+        "https://www.slantmagazine.com/theater/the-wiz-broadway-revival-review/",
+        "https://www.thestage.co.uk/reviews/the-wiz-review-at-marquis-theatre-new-york-from-amber-ruffin-charlie-smalls-william-f-brown-charlie-smalls-and-schele-williams",
+        "https://www.theatermania.com/news/review-a-big-empty-revival-of-the-wiz-lacks-the-magic-of-broadway_1737204/",
+        "https://www.theatrely.com/post/the-wiz-makes-it-way-back-home-to-broadway-review",
+        "https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
+        "https://www.villagevoice.com/review-a-new-production-of-the-wiz-brings-oz-back-to-broadway/",
+        "https://www.vulture.com/article/theater-review-the-wiz-broadway-revival.html",
+        "https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-review/",
+        "https://www.thewrap.com/the-wiz-broadway-review-funniest-lion-scarecrow-tin-man/",
+        "https://www.washingtonpost.com/entertainment/theater/2023/10/26/wiz-broadway-tryout-dc-national/",
+        "https://mdtheatreguide.com/2023/09/theatre-news-the-wiz-at-the-hippodrome-theatre/",
+        "https://www.masslive.com/westfieldnews/2025/03/review-the-wiz-eases-on-into-the-bushnell.html",
+        "https://www.baltimoresun.com/entertainment/bs-fe-the-wiz-review-20230928-62r6a5azyzcvne6tala5gl5gnm-story.html",
+        "https://www.houstonchronicle.com/entertainment/theater/article/the-wiz-houston-tickets-broadway-hobby-center-home-20289228.php",
+        "https://www.clevescene.com/arts/touring-revival-of-the-wiz-now-at-playhouse-square-is-a-feast-of-voices-42903887",
+        "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439",
+        "https://www.thejewishnews.com/culture/the-wiz-returns-to-detroit-with-high-energy-revival-at-the-fisher-theatre/article_59bc82ab-b7d9-4f02-876c-d6f48db7f319.html",
+        "https://www.cleveland.com/entertainment/2023/10/the-wiz-brings-the-magic-spectacle-and-power-of-the-classic-musical-to-playhouse-square-on-its-way-to-broadway.html",
+        "https://www.theoaklandpress.com/2025/06/19/the-wiz-comes-home-slightly-but-successful-changed-at-the-fisher-theatre/",
+        "https://pittnews.com/article/184236/arts-and-entertainment/the-wiz-takes-audiences-on-a-soulful-journey-at-the-benedum-center/",
+        "https://qcitymetro.com/2023/11/09/blackness-takes-center-stage-in-the-wiz-revival-an-honest-review/",
+        "https://www.capecodtimes.com/story/entertainment/2025/08/16/review-good-performances-boston-the-wiz-hurt-by-tech-problems/85674721007/",
+        "https://www.morgancountycitizen.com/entertainment/review-the-wiz-conjures-fun-for-the-entire-family-at-the-fox-theatre/article_e8ecf4d2-5238-5ed6-b72d-ad91abdecfee.html",
+        "https://www.bostonglobe.com/2025/08/14/arts/the-wiz-boston/",
+        "https://www.clevelandjewishnews.com/columnists/sheri_gross/despite-missing-some-magic-the-wiz-shouldn-t-be-missed/article_1c480f08-6872-11ee-9403-7fbb782d603b.html",
+        "https://www.daytonlocal.com/news/entertainment/ease-on-down-the-road-a-new-found-appreciation-for-the-wiz/",
+        "https://www.stlamerican.com/arts-and-entertainment/living-it-arts-and-entertainment/the-wiz-brings-black-brilliance-to-the-fabulous-fox/",
+        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-wiz-tour-chicago-review-20231130-p32g5ryxf5hdnifohf2tfubb4e-story.html",
+        "https://www.conversationswithedtracy.com/picksinsix/2023/11/30/picksinsix-review-the-wiz-broadway-in-chicago",
+        "https://www.minnesotamonthly.com/general/review-a-modern-reimagining-of-the-wiz/",
+        "https://hotchka.com/the-wiz-tour-review-baltimore-hippodrome",
+        "https://www.newcitystage.com/2023/12/05/revival-meeting-revival-a-review-of-the-wiz-at-broadway-in-chicago/",
+        "https://www.dailyuw.com/article/review-the-wiz-glitters-at-the-paramount-theatre-on-first-stop-on-national-tour-20260213",
+        "https://www.mercurynews.com/2024/01/22/review-new-take-on-the-wiz-brings-more-heat-than-heart/",
+        "https://www.sfchronicle.com/entertainment/article/wiz-review-golden-gate-theatre-18602807.php",
+        "https://www.nuvo.net/arts/review-broadway-in-indianapolis-presents-the-wiz/article_ec0ead2f-639e-4583-8687-91cf7b1b91b4.html",
+        "https://www.latimes.com/entertainment-arts/story/2024-02-15/review-the-wiz-revival-musical-wayne-brady-pantages-broadway",
+        "https://shepherdexpress.com/culture/theater/the-wonderful-wiz-at-the-marcus-pac/",
+        "https://mdtheatreguide.com/2026/04/theatre-review-the-wiz-at-the-national-theatre/",
+        "https://www.tulsapeople.com/about-town/review-the-wiz-is-vibrant-vivacious-and-vocally-versatile/article_04998456-d7ad-41ba-b875-f1d2e5dd44ee.html",
+        "https://freepressokc.com/the-wiz-a-magical-musical-cultural-celebration-at-civic-center/",
+        "https://www.broadwayworld.com/article/Review-Ease-on-Down-to-Clowes-Memorial-Hall-for-THE-WIZ-20260319",
+        "https://www.broadwayworld.com/article/Review-THE-WIZ-Ignites-Audiences-at-the-Aronoff-Center-20260305",
+        "https://isthmus.com/api/pv/1bBgaxjfGDL07DiaAPxZiAosffduHkTRpuWc7EAArzWuo7cloiyLI9O7XgqoJDkd/++/events/the-wiz-2026/",
+        "https://sdafhwteqwe.com/the-wiz-review-vital-read/",
+        "https://theparamount.net/event/the-wiz/",
+        "https://featurepresentationvideo.substack.com/p/tour-review-the-wiz",
+        "https://ctxlivetheatre.com/reviews/20260517-review-the-wiz-by-touring-company/",
+        "https://hotchka.com/the-wiz-tour-review-washington-dc-national-theatre",
+        "https://www.leagueofcincytheatres.info/review-the-queen-city-eases-on-down-the-road-with-the-wiz/",
+        "https://onstagecolorado.com/review-the-wiz-denver-center/",
+        "https://equality365.com/review-the-wiz-a-new-take-on-an-old-oz/",
+        "https://aroundthetownchicago.com/theatre-reviews/the-wiz-touring-milwaukee-reviewed-by-amy-menzel/",
+        "https://didtheylikeit.com/shows/the-wiz-bway/the-wiz-broadway-review-were-off-to-see-the-cheap-national-tour/",
+        "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-the-wiz-revival/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-a-busy-revival-of-the-wiz-still-doles-out-verifiable-fun/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/04/17/review-the-wiz-on-broadway-is-freshened-up-and-ready-for-an-adoring-audience/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Wiz/1222",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/the-wiz-broadway-revival-review-8635100",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2024/04/17/entertainment/the-wiz-broadway-review-were-off-to-see-the-cheap-natl-tour/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/17/the-wiz-not-an-oz-picious-revival/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/17/the-wiz-revival-doesnt-ease-down-the-road-easily/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/theres-no-place-like-broadway-revival-of-the-wiz-arrives-at-a-busy-time-for-musical-theater",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-wiz-broadway-review-wayne-brady",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/04/17/theater/the-wiz-review-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/the-house-of-dorothy-reigns-supreme-in-the-wiz-with-wayne-brady-in-the-titular-role-20240417",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/the-wiz-broadway-revival-review/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-wiz-review-at-marquis-theatre-new-york-from-amber-ruffin-charlie-smalls-william-f-brown-charlie-smalls-and-schele-williams",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-big-empty-revival-of-the-wiz-lacks-the-magic-of-broadway_1737204/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-wiz-makes-it-way-back-home-to-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.villagevoice.com/review-a-new-production-of-the-wiz-brings-oz-back-to-broadway/",
+          "host": "villagevoice.com",
+          "knownOutletId": "village-voice",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-the-wiz-broadway-revival.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/the-wiz-broadway-review-funniest-lion-scarecrow-tin-man/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/26/wiz-broadway-tryout-dc-national/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2023/09/theatre-news-the-wiz-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.masslive.com/westfieldnews/2025/03/review-the-wiz-eases-on-into-the-bushnell.html",
+          "host": "masslive.com",
+          "knownOutletId": "masslive",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.baltimoresun.com/entertainment/bs-fe-the-wiz-review-20230928-62r6a5azyzcvne6tala5gl5gnm-story.html",
+          "host": "baltimoresun.com",
+          "knownOutletId": "baltimoresun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-wiz-houston-tickets-broadway-hobby-center-home-20289228.php",
+          "host": "houstonchronicle.com",
+          "knownOutletId": "houston-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.clevescene.com/arts/touring-revival-of-the-wiz-now-at-playhouse-square-is-a-feast-of-voices-42903887",
+          "host": "clevescene.com",
+          "knownOutletId": "clevescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439",
+          "host": "houstonpress.com",
+          "knownOutletId": "houston-press",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thejewishnews.com/culture/the-wiz-returns-to-detroit-with-high-energy-revival-at-the-fisher-theatre/article_59bc82ab-b7d9-4f02-876c-d6f48db7f319.html",
+          "host": "thejewishnews.com",
+          "knownOutletId": "the-detroit-jewish-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2023/10/the-wiz-brings-the-magic-spectacle-and-power-of-the-classic-musical-to-playhouse-square-on-its-way-to-broadway.html",
+          "host": "cleveland.com",
+          "knownOutletId": "cleveland-plain-dealer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theoaklandpress.com/2025/06/19/the-wiz-comes-home-slightly-but-successful-changed-at-the-fisher-theatre/",
+          "host": "theoaklandpress.com",
+          "knownOutletId": "the-oakland-press",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://pittnews.com/article/184236/arts-and-entertainment/the-wiz-takes-audiences-on-a-soulful-journey-at-the-benedum-center/",
+          "host": "pittnews.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://qcitymetro.com/2023/11/09/blackness-takes-center-stage-in-the-wiz-revival-an-honest-review/",
+          "host": "qcitymetro.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.capecodtimes.com/story/entertainment/2025/08/16/review-good-performances-boston-the-wiz-hurt-by-tech-problems/85674721007/",
+          "host": "capecodtimes.com",
+          "knownOutletId": "cape-cod-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.morgancountycitizen.com/entertainment/review-the-wiz-conjures-fun-for-the-entire-family-at-the-fox-theatre/article_e8ecf4d2-5238-5ed6-b72d-ad91abdecfee.html",
+          "host": "morgancountycitizen.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2025/08/14/arts/the-wiz-boston/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.clevelandjewishnews.com/columnists/sheri_gross/despite-missing-some-magic-the-wiz-shouldn-t-be-missed/article_1c480f08-6872-11ee-9403-7fbb782d603b.html",
+          "host": "clevelandjewishnews.com",
+          "knownOutletId": "cleveland-jewish-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.daytonlocal.com/news/entertainment/ease-on-down-the-road-a-new-found-appreciation-for-the-wiz/",
+          "host": "daytonlocal.com",
+          "knownOutletId": "dayton-local",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.stlamerican.com/arts-and-entertainment/living-it-arts-and-entertainment/the-wiz-brings-black-brilliance-to-the-fabulous-fox/",
+          "host": "stlamerican.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-wiz-tour-chicago-review-20231130-p32g5ryxf5hdnifohf2tfubb4e-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.conversationswithedtracy.com/picksinsix/2023/11/30/picksinsix-review-the-wiz-broadway-in-chicago",
+          "host": "conversationswithedtracy.com",
+          "knownOutletId": "picksinsix",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.minnesotamonthly.com/general/review-a-modern-reimagining-of-the-wiz/",
+          "host": "minnesotamonthly.com",
+          "knownOutletId": "minnesota-monthly",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://hotchka.com/the-wiz-tour-review-baltimore-hippodrome",
+          "host": "hotchka.com",
+          "knownOutletId": "hotchka",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newcitystage.com/2023/12/05/revival-meeting-revival-a-review-of-the-wiz-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "knownOutletId": "new-city-stage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.dailyuw.com/article/review-the-wiz-glitters-at-the-paramount-theatre-on-first-stop-on-national-tour-20260213",
+          "host": "dailyuw.com",
+          "knownOutletId": "the-daily",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.mercurynews.com/2024/01/22/review-new-take-on-the-wiz-brings-more-heat-than-heart/",
+          "host": "mercurynews.com",
+          "knownOutletId": "san-jose-mercury-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.sfchronicle.com/entertainment/article/wiz-review-golden-gate-theatre-18602807.php",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nuvo.net/arts/review-broadway-in-indianapolis-presents-the-wiz/article_ec0ead2f-639e-4583-8687-91cf7b1b91b4.html",
+          "host": "nuvo.net",
+          "knownOutletId": "nuvo",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2024-02-15/review-the-wiz-revival-musical-wayne-brady-pantages-broadway",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://shepherdexpress.com/culture/theater/the-wonderful-wiz-at-the-marcus-pac/",
+          "host": "shepherdexpress.com",
+          "knownOutletId": "shepherd-express",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/04/theatre-review-the-wiz-at-the-national-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.tulsapeople.com/about-town/review-the-wiz-is-vibrant-vivacious-and-vocally-versatile/article_04998456-d7ad-41ba-b875-f1d2e5dd44ee.html",
+          "host": "tulsapeople.com",
+          "knownOutletId": "tulsa-people",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://freepressokc.com/the-wiz-a-magical-musical-cultural-celebration-at-civic-center/",
+          "host": "freepressokc.com",
+          "knownOutletId": "oklahoma-city-free-press",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Ease-on-Down-to-Clowes-Memorial-Hall-for-THE-WIZ-20260319",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-THE-WIZ-Ignites-Audiences-at-the-Aronoff-Center-20260305",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://isthmus.com/api/pv/1bBgaxjfGDL07DiaAPxZiAosffduHkTRpuWc7EAArzWuo7cloiyLI9O7XgqoJDkd/++/events/the-wiz-2026/",
+          "host": "isthmus.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://sdafhwteqwe.com/the-wiz-review-vital-read/",
+          "host": "sdafhwteqwe.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://theparamount.net/event/the-wiz/",
+          "host": "theparamount.net",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-wiz",
+          "host": "featurepresentationvideo.substack.com",
+          "knownOutletId": "feature-presentation",
+          "serpCensus": true
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/20260517-review-the-wiz-by-touring-company/",
+          "host": "ctxlivetheatre.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://hotchka.com/the-wiz-tour-review-washington-dc-national-theatre",
+          "host": "hotchka.com",
+          "knownOutletId": "hotchka",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-the-queen-city-eases-on-down-the-road-with-the-wiz/",
+          "host": "leagueofcincytheatres.info",
+          "knownOutletId": "leagueofcincytheatres",
+          "serpCensus": true
+        },
+        {
+          "url": "https://onstagecolorado.com/review-the-wiz-denver-center/",
+          "host": "onstagecolorado.com",
+          "knownOutletId": "onstage-colorado",
+          "serpCensus": true
+        },
+        {
+          "url": "https://equality365.com/review-the-wiz-a-new-take-on-an-old-oz/",
+          "host": "equality365.com",
+          "knownOutletId": "equality365",
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-wiz-touring-milwaukee-reviewed-by-amy-menzel/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/the-wiz-bway/the-wiz-broadway-review-were-off-to-see-the-cheap-national-tour/",
+          "host": "didtheylikeit.com",
+          "knownOutletId": "dtli",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439/",
+          "host": "houstonpress.com",
+          "knownOutletId": "houston-press",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"The Wiz\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Wiz\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Wiz\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Wiz North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Wiz North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Wiz North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 734,
+        "byReason": {
+          "aggregator-internal-nav": 529,
+          "not-http-url": 109,
+          "aggregator-section-root": 12,
+          "non-review-host": 80,
+          "roundup-page": 3,
+          "ticketing-reseller": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-wiz-broadway-revival",
+          "publishDate": "2024-04-17"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-WIZ-Returns-To-Broadway-20240417",
+          "publishDate": "2024-04-17"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Pre-Broadway-THE-WIZ-Tour-Launches-What-Are-the-Critics-Saying-20231004",
+          "publishDate": "2023-10-04"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-the-wiz-revival/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-a-busy-revival-of-the-wiz-still-doles-out-verifiable-fun/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/04/17/review-the-wiz-on-broadway-is-freshened-up-and-ready-for-an-adoring-audience/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Wiz/1222",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://ew.com/the-wiz-broadway-revival-review-8635100",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nypost.com/2024/04/17/entertainment/the-wiz-broadway-review-were-off-to-see-the-cheap-natl-tour/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/17/the-wiz-not-an-oz-picious-revival/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/17/the-wiz-revival-doesnt-ease-down-the-road-easily/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nysun.com/article/theres-no-place-like-broadway-revival-of-the-wiz-arrives-at-a-busy-time-for-musical-theater",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-wiz-broadway-review-wayne-brady",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/04/17/theater/the-wiz-review-broadway.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.queerty.com/the-house-of-dorothy-reigns-supreme-in-the-wiz-with-wayne-brady-in-the-titular-role-20240417",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/the-wiz-broadway-revival-review/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-wiz-review-at-marquis-theatre-new-york-from-amber-ruffin-charlie-smalls-william-f-brown-charlie-smalls-and-schele-williams",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-big-empty-revival-of-the-wiz-lacks-the-magic-of-broadway_1737204/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatrely.com/post/the-wiz-makes-it-way-back-home-to-broadway-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.villagevoice.com/review-a-new-production-of-the-wiz-brings-oz-back-to-broadway/",
+          "host": "villagevoice.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-the-wiz-broadway-revival.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/17/wiz-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thewrap.com/the-wiz-broadway-review-funniest-lion-scarecrow-tin-man/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2023/10/26/wiz-broadway-tryout-dc-national/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2023/09/theatre-news-the-wiz-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.masslive.com/westfieldnews/2025/03/review-the-wiz-eases-on-into-the-bushnell.html",
+          "host": "masslive.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.baltimoresun.com/entertainment/bs-fe-the-wiz-review-20230928-62r6a5azyzcvne6tala5gl5gnm-story.html",
+          "host": "baltimoresun.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-wiz-houston-tickets-broadway-hobby-center-home-20289228.php",
+          "host": "houstonchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.clevescene.com/arts/touring-revival-of-the-wiz-now-at-playhouse-square-is-a-feast-of-voices-42903887",
+          "host": "clevescene.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439",
+          "host": "houstonpress.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.thejewishnews.com/culture/the-wiz-returns-to-detroit-with-high-energy-revival-at-the-fisher-theatre/article_59bc82ab-b7d9-4f02-876c-d6f48db7f319.html",
+          "host": "thejewishnews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2023/10/the-wiz-brings-the-magic-spectacle-and-power-of-the-classic-musical-to-playhouse-square-on-its-way-to-broadway.html",
+          "host": "cleveland.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theoaklandpress.com/2025/06/19/the-wiz-comes-home-slightly-but-successful-changed-at-the-fisher-theatre/",
+          "host": "theoaklandpress.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://pittnews.com/article/184236/arts-and-entertainment/the-wiz-takes-audiences-on-a-soulful-journey-at-the-benedum-center/",
+          "host": "pittnews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://qcitymetro.com/2023/11/09/blackness-takes-center-stage-in-the-wiz-revival-an-honest-review/",
+          "host": "qcitymetro.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.capecodtimes.com/story/entertainment/2025/08/16/review-good-performances-boston-the-wiz-hurt-by-tech-problems/85674721007/",
+          "host": "capecodtimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.morgancountycitizen.com/entertainment/review-the-wiz-conjures-fun-for-the-entire-family-at-the-fox-theatre/article_e8ecf4d2-5238-5ed6-b72d-ad91abdecfee.html",
+          "host": "morgancountycitizen.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2025/08/14/arts/the-wiz-boston/",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.clevelandjewishnews.com/columnists/sheri_gross/despite-missing-some-magic-the-wiz-shouldn-t-be-missed/article_1c480f08-6872-11ee-9403-7fbb782d603b.html",
+          "host": "clevelandjewishnews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.daytonlocal.com/news/entertainment/ease-on-down-the-road-a-new-found-appreciation-for-the-wiz/",
+          "host": "daytonlocal.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.stlamerican.com/arts-and-entertainment/living-it-arts-and-entertainment/the-wiz-brings-black-brilliance-to-the-fabulous-fox/",
+          "host": "stlamerican.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-wiz-tour-chicago-review-20231130-p32g5ryxf5hdnifohf2tfubb4e-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.conversationswithedtracy.com/picksinsix/2023/11/30/picksinsix-review-the-wiz-broadway-in-chicago",
+          "host": "conversationswithedtracy.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.minnesotamonthly.com/general/review-a-modern-reimagining-of-the-wiz/",
+          "host": "minnesotamonthly.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://hotchka.com/the-wiz-tour-review-baltimore-hippodrome",
+          "host": "hotchka.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.newcitystage.com/2023/12/05/revival-meeting-revival-a-review-of-the-wiz-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.dailyuw.com/article/review-the-wiz-glitters-at-the-paramount-theatre-on-first-stop-on-national-tour-20260213",
+          "host": "dailyuw.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.mercurynews.com/2024/01/22/review-new-take-on-the-wiz-brings-more-heat-than-heart/",
+          "host": "mercurynews.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.sfchronicle.com/entertainment/article/wiz-review-golden-gate-theatre-18602807.php",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nuvo.net/arts/review-broadway-in-indianapolis-presents-the-wiz/article_ec0ead2f-639e-4583-8687-91cf7b1b91b4.html",
+          "host": "nuvo.net",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2024-02-15/review-the-wiz-revival-musical-wayne-brady-pantages-broadway",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://shepherdexpress.com/culture/theater/the-wonderful-wiz-at-the-marcus-pac/",
+          "host": "shepherdexpress.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/04/theatre-review-the-wiz-at-the-national-theatre/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.tulsapeople.com/about-town/review-the-wiz-is-vibrant-vivacious-and-vocally-versatile/article_04998456-d7ad-41ba-b875-f1d2e5dd44ee.html",
+          "host": "tulsapeople.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://freepressokc.com/the-wiz-a-magical-musical-cultural-celebration-at-civic-center/",
+          "host": "freepressokc.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Ease-on-Down-to-Clowes-Memorial-Hall-for-THE-WIZ-20260319",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-THE-WIZ-Ignites-Audiences-at-the-Aronoff-Center-20260305",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://isthmus.com/api/pv/1bBgaxjfGDL07DiaAPxZiAosffduHkTRpuWc7EAArzWuo7cloiyLI9O7XgqoJDkd/++/events/the-wiz-2026/",
+          "host": "isthmus.com",
+          "outletId": "isthmus",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
+        },
+        {
+          "url": "https://sdafhwteqwe.com/the-wiz-review-vital-read/",
+          "host": "sdafhwteqwe.com",
+          "outletId": "sdafhwteqwe",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://theparamount.net/event/the-wiz/",
+          "host": "theparamount.net",
+          "outletId": "theparamount",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
+        },
+        {
+          "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-wiz",
+          "host": "featurepresentationvideo.substack.com",
+          "outletId": "feature-presentation",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": true,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (tour)"
+        },
+        {
+          "url": "https://ctxlivetheatre.com/reviews/20260517-review-the-wiz-by-touring-company/",
+          "host": "ctxlivetheatre.com",
+          "outletId": "ctxlivetheatre",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://hotchka.com/the-wiz-tour-review-washington-dc-national-theatre",
+          "host": "hotchka.com",
+          "outletId": "hotchka"
+        },
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-the-queen-city-eases-on-down-the-road-with-the-wiz/",
+          "host": "leagueofcincytheatres.info",
+          "outletId": "leagueofcincytheatres"
+        },
+        {
+          "url": "https://onstagecolorado.com/review-the-wiz-denver-center/",
+          "host": "onstagecolorado.com",
+          "outletId": "onstage-colorado"
+        },
+        {
+          "url": "https://equality365.com/review-the-wiz-a-new-take-on-an-old-oz/",
+          "host": "equality365.com",
+          "outletId": "equality365"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-wiz-touring-milwaukee-reviewed-by-amy-menzel/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/the-wiz-bway/the-wiz-broadway-review-were-off-to-see-the-cheap-national-tour/",
+          "host": "didtheylikeit.com",
+          "outletId": "dtli"
+        },
+        {
+          "url": "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439/",
+          "host": "houstonpress.com",
+          "outletId": "houston-press"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "isthmus.com",
+            "outlet": "isthmus.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://isthmus.com/api/pv/1bBgaxjfGDL07DiaAPxZiAosffduHkTRpuWc7EAArzWuo7cloiyLI9O7XgqoJDkd/++/events/the-wiz-2026/"
+          },
+          {
+            "outletId": "sdafhwteqwe.com",
+            "outlet": "sdafhwteqwe.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sdafhwteqwe.com/the-wiz-review-vital-read/"
+          },
+          {
+            "outletId": "theparamount.net",
+            "outlet": "theparamount.net",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theparamount.net/event/the-wiz/"
+          },
+          {
+            "outletId": "feature-presentation",
+            "outlet": "feature-presentation",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-wiz"
+          },
+          {
+            "outletId": "ctxlivetheatre.com",
+            "outlet": "ctxlivetheatre.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://ctxlivetheatre.com/reviews/20260517-review-the-wiz-by-touring-company/"
+          },
+          {
+            "outletId": "hotchka",
+            "outlet": "hotchka",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://hotchka.com/the-wiz-tour-review-washington-dc-national-theatre"
+          },
+          {
+            "outletId": "leagueofcincytheatres",
+            "outlet": "leagueofcincytheatres",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.leagueofcincytheatres.info/review-the-queen-city-eases-on-down-the-road-with-the-wiz/"
+          },
+          {
+            "outletId": "onstage-colorado",
+            "outlet": "onstage-colorado",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://onstagecolorado.com/review-the-wiz-denver-center/"
+          },
+          {
+            "outletId": "equality365",
+            "outlet": "equality365",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://equality365.com/review-the-wiz-a-new-take-on-an-old-oz/"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-wiz-touring-milwaukee-reviewed-by-amy-menzel/"
+          },
+          {
+            "outletId": "dtli",
+            "outlet": "dtli",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://didtheylikeit.com/shows/the-wiz-bway/the-wiz-broadway-review-were-off-to-see-the-cheap-national-tour/"
+          },
+          {
+            "outletId": "houston-press",
+            "outlet": "houston-press",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://isthmus.com/api/pv/1bBgaxjfGDL07DiaAPxZiAosffduHkTRpuWc7EAArzWuo7cloiyLI9O7XgqoJDkd/++/events/the-wiz-2026/",
+            "outletId": "isthmus.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://sdafhwteqwe.com/the-wiz-review-vital-read/",
+            "outletId": "sdafhwteqwe.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://theparamount.net/event/the-wiz/",
+            "outletId": "theparamount.net",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://featurepresentationvideo.substack.com/p/tour-review-the-wiz",
+            "outletId": "feature-presentation",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://ctxlivetheatre.com/reviews/20260517-review-the-wiz-by-touring-company/",
+            "outletId": "ctxlivetheatre.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://hotchka.com/the-wiz-tour-review-washington-dc-national-theatre",
+            "outletId": "hotchka",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.leagueofcincytheatres.info/review-the-queen-city-eases-on-down-the-road-with-the-wiz/",
+            "outletId": "leagueofcincytheatres",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://onstagecolorado.com/review-the-wiz-denver-center/",
+            "outletId": "onstage-colorado",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://equality365.com/review-the-wiz-a-new-take-on-an-old-oz/",
+            "outletId": "equality365",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-wiz-touring-milwaukee-reviewed-by-amy-menzel/",
+            "outletId": "around-the-town-chicago",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://didtheylikeit.com/shows/the-wiz-bway/the-wiz-broadway-review-were-off-to-see-the-cheap-national-tour/",
+            "outletId": "dtli",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          },
+          {
+            "url": "https://www.houstonpress.com/arts/review-the-wiz-at-broadway-at-the-hobby-20371439/",
+            "outletId": "houston-press",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T03:38:47.782Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 12
+      },
+      "computedAt": "2026-10-06T03:38:47.782Z"
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
@@ -166853,7 +169675,12 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "tom-at-the-farm-off-broadway-2026",
@@ -169325,7 +172152,12 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "turandot-off-broadway-2025",
@@ -177913,7 +180745,12 @@
         "liveCount": 10,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
@@ -178942,7 +181779,12 @@
         "liveCount": 20,
         "candidateCount": 23
       },
-      "computedAt": "2026-10-05T23:42:11.061Z"
+      "computedAt": "2026-10-05T23:42:11.061Z",
+      "quarantine": {
+        "nextState": "incomplete:11:13",
+        "since": "2026-10-06T03:38:47.835Z",
+        "lastAt": "2026-10-06T03:38:47.835Z"
+      }
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
