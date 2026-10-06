@@ -1364,7 +1364,10 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // + `process.kill(-pid)` on timeout instead (ship-check finding, task #361).
     ingestOut = String(execFileSync('node', args, { stdio: 'pipe', timeout: 120000, killSignal: 'SIGKILL' }) || '');
   } catch (e) {
-    return { ok: false, reason: execErrorDetail(e, 100), provisional };
+    // BRO-4765: execErrorDetail keeps only the first 100 chars, and warnings can print before the line
+    // that says extraction returned 0 chars. Look at the child's whole output for it.
+    const zeroChar = /Article extraction returned 0 chars/i.test(`${e && e.stderr || ''}${e && e.stdout || ''}${e && e.message || ''}`);
+    return { ok: false, reason: execErrorDetail(e, 100), provisional, zeroChar };
   }
   // Exit 0 is NOT proof the review landed: ingest-review-from-url.js exits 0
   // on no-op skips ("already exists", cross-show dedup) too. The recovery path
@@ -1997,6 +2000,7 @@ async function main(argv = process.argv.slice(2)) {
           conflict: !!res.conflict,
           conflictReason: res.conflictReason || null,
           unclassified: !!res.unclassified,
+          zeroChar: !!res.zeroChar,
           reason: res.reason,
         });
         const tag = res.ok
@@ -2012,7 +2016,10 @@ async function main(argv = process.argv.slice(2)) {
         saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
         const again = partitionUnextractable(r.missing, nextZero, Date.now());
         r.missing = again.missing;
-        r.unextractable = [...(r.unextractable || []), ...again.unextractable.filter(u => !(r.unextractable || []).some(x => x.url === u.url))];
+        const newlyTerminal = again.unextractable.filter(u => !(r.unextractable || []).some(x => x.url === u.url));
+        r.unextractable = [...(r.unextractable || []), ...newlyTerminal];
+        // One visible line per URL at the moment it goes terminal: it drops out of every gap count after this.
+        for (const u of newlyTerminal) console.log(`::warning::review gap — ${r.showId}: ${u.url} extracted 0 chars on ${u.zeroCharAttempts} runs over 24h+; no longer retried (may be a non-review page, a paywall or a missing extractor pattern). Retried once after 30 days.`);
       }
       if (cappedSkipped.length > 0) {
         console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);

@@ -382,16 +382,18 @@ test('computeResidualCounts: a conflict IS residual — it stays loud until reso
 
 // ---- BRO-4765: terminal "unextractable" state for 0-char aggregator URLs ----
 const {
-  ZERO_CHAR_CAP, RETRY_AFTER_DAYS, isZeroCharFailure, partitionUnextractable, updateZeroCharCounts,
+  MIN_STREAK_SPAN_MS, ZERO_CHAR_CAP, RETRY_AFTER_DAYS, isZeroCharFailure, partitionUnextractable, updateZeroCharCounts,
 } = require('./lib/gap-unextractable.js');
 const { censusVerdictFor: censusVerdictForUnx } = require('./lib/gap-audit-merge.js');
 
 const ZERO_CHAR = { ok: false, noop: false, reason: 'Article extraction returned 0 chars — pattern may be missing for this outlet.' };
 const NEWS_URL = 'https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/';
 const T0 = Date.parse('2026-10-05T12:00:00Z');
+// Runs are 13h apart (the first and last of three span 26h), so the 24h floor is met by ZERO_CHAR_CAP runs.
+const GAP_MS = 13 * 3600000;
 const runs = (stored, n, res = ZERO_CHAR, url = NEWS_URL, start = T0) => {
   let s = stored;
-  for (let i = 0; i < n; i++) s = updateZeroCharCounts(s, [{ url, ...res }], start + i * 3600000);
+  for (let i = 0; i < n; i++) s = updateZeroCharCounts(s, [{ url, ...res }], start + i * GAP_MS);
   return s;
 };
 
@@ -406,35 +408,50 @@ test('isZeroCharFailure: only a plain 0-char extraction failure counts', () => {
 test('a URL turns terminal after exactly N consecutive 0-char results, not before', () => {
   const missing = [{ url: NEWS_URL, host: 'theatermania.com', knownOutletId: 'theatermania' }];
   for (let n = 0; n < ZERO_CHAR_CAP; n++) {
-    const p = partitionUnextractable(missing, runs({}, n), T0 + 10 * 3600000);
+    const p = partitionUnextractable(missing, runs({}, n), T0 + 50 * 3600000);
     assert.equal(p.missing.length, 1, `${n} failures: still attempted`);
   }
-  const p = partitionUnextractable(missing, runs({}, ZERO_CHAR_CAP), T0 + 10 * 3600000);
+  const p = partitionUnextractable(missing, runs({}, ZERO_CHAR_CAP), T0 + 50 * 3600000);
   assert.equal(p.missing.length, 0);
   assert.equal(p.unextractable.length, 1);
   assert.equal(p.unextractable[0].url, NEWS_URL);
   assert.equal(p.unextractable[0].zeroCharAttempts, ZERO_CHAR_CAP);
 });
 
+test('hourly runs cannot make a URL terminal inside 24h, however many fail', () => {
+  let s = {};
+  for (let i = 0; i < 10; i++) s = updateZeroCharCounts(s, [{ url: NEWS_URL, ...ZERO_CHAR }], T0 + i * 3600000);
+  assert.equal(s[NEWS_URL].n, 10);
+  assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, T0 + 10 * 3600000).unextractable.length, 0, '10 failures in 10h: still retried');
+  s = updateZeroCharCounts(s, [{ url: NEWS_URL, ...ZERO_CHAR }], T0 + MIN_STREAK_SPAN_MS + 1000);
+  assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, T0 + MIN_STREAK_SPAN_MS + 2000).unextractable.length, 1, 'a failure 24h after the first goes terminal');
+});
+
+test('the zeroChar flag from the child output counts even when the truncated reason lost the line', () => {
+  const truncated = { ok: false, noop: false, zeroChar: true, reason: 'Command failed: node scripts/ingest-review-from-url.js ... [warn] provisional outlet "x" resolved from host (no regis' };
+  assert.equal(isZeroCharFailure(truncated), true);
+  assert.equal(isZeroCharFailure({ ...truncated, zeroChar: false }), false);
+});
+
 test('a different failure or a success resets the streak, so a flaky fetch never goes terminal', () => {
   let s = runs({}, ZERO_CHAR_CAP - 1);
-  s = updateZeroCharCounts(s, [{ url: NEWS_URL, ok: false, reason: 'Command failed: timed out' }], T0 + 5 * 3600000);
+  s = updateZeroCharCounts(s, [{ url: NEWS_URL, ok: false, reason: 'Command failed: timed out' }], T0 + 5 * GAP_MS);
   assert.equal(s[NEWS_URL], undefined);
-  s = runs(s, ZERO_CHAR_CAP - 1, ZERO_CHAR, NEWS_URL, T0 + 6 * 3600000);
-  assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, T0 + 20 * 3600000).unextractable.length, 0);
+  s = runs(s, ZERO_CHAR_CAP - 1, ZERO_CHAR, NEWS_URL, T0 + 6 * GAP_MS);
+  assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, T0 + 60 * GAP_MS).unextractable.length, 0);
 });
 
 test('URLs not attempted this run keep their streak; streaks are per URL', () => {
   const other = 'https://example.com/other';
   let s = runs({}, 2);
-  s = updateZeroCharCounts(s, [{ url: other, ...ZERO_CHAR }], T0 + 5 * 3600000);
+  s = updateZeroCharCounts(s, [{ url: other, ...ZERO_CHAR }], T0 + 5 * GAP_MS);
   assert.equal(s[NEWS_URL].n, 2);
   assert.equal(s[other].n, 1);
 });
 
 test('a terminal URL gets one retry after the window; a 0-char result sends it straight back to terminal', () => {
   const s = runs({}, ZERO_CHAR_CAP);
-  const later = T0 + (RETRY_AFTER_DAYS + 1) * 86400000;
+  const later = T0 + (RETRY_AFTER_DAYS + 3) * 86400000;
   assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, later).missing.length, 1, 'retry window opens');
   const again = updateZeroCharCounts(s, [{ url: NEWS_URL, ...ZERO_CHAR }], later);
   assert.equal(partitionUnextractable([{ url: NEWS_URL }], again, later + 1000).unextractable.length, 1);
