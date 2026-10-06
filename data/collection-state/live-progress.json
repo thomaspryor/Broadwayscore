@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-06T19:21:08.812Z",
-  "processed": 11,
-  "failed": 8,
-  "successRate": "57.9%",
+  "updatedAt": "2026-10-06T20:31:36.071Z",
+  "processed": 14,
+  "failed": 11,
+  "successRate": "56.0%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
@@ -53,6 +53,46 @@
     },
     {
       "t": "2026-10-06T19:20:34.022Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T20:22:31.575Z",
+      "event": "bb-session",
+      "session": "891939f6",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-06T20:25:33.408Z",
+      "event": "bb-session",
+      "session": "b8873731",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-06T20:25:41.275Z",
+      "event": "bb-session",
+      "session": "17d649cf",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-06T20:28:57.461Z",
+      "event": "bb-session",
+      "session": "3513eeae",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T20:28:58.160Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T20:29:15.961Z",
+      "event": "bb-session",
+      "session": "360070be",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T20:29:16.605Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
