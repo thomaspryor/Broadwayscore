@@ -19,6 +19,7 @@ import ImportShows, { type ImportSourceId } from '@/app/my-shows/ImportShows';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { removeLocalShow } from '@/lib/local-watchlist';
 import { IMPORT_SOURCES, importSourceNames } from '@/lib/import-sources';
 import { supabaseRestInsert, supabaseRestSelect } from '@/lib/supabase-rest';
 import { trackUgc, type UgcProps } from '@/lib/ugc-analytics';
@@ -234,7 +235,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     const saved = new Set<string>();
     for (const [showId, rating] of entries) {
       const { write, clearWatchlist } = welcomeSaveStep({ showId, rating }, { seen: seen.has(showId), watchlisted: watchlisted.has(showId) });
-      if (!write) { saved.add(showId); continue; }
+      if (!write) { saved.add(showId); removeLocalShow(showId); continue; }
       try {
         const { error } = await supabaseRestInsert(write.table, { user_id: userId, ...write.row });
         if (!error) {
@@ -248,7 +249,10 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
       } catch {
         failed++;
       }
-      if (clearWatchlist && saved.has(showId)) {
+      if (!saved.has(showId)) continue;
+      // Seen now: a copy saved while signed out must not move onto the watchlist later.
+      removeLocalShow(showId);
+      if (clearWatchlist) {
         try { await removeFromWatchlist(showId, 'rated'); } catch { /* pick saved; watchlist cleanup is best-effort */ }
       }
     }

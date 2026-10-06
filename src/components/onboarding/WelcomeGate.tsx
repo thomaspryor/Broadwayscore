@@ -125,7 +125,7 @@ export default function WelcomeGate() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, canOpenHere, open]);
+  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, canOpenHere, open, pathname]);
 
   if (!open) return null;
   if (open === 'account' && !userId) return null;
