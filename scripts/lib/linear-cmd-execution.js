@@ -44,8 +44,10 @@ const { decideClose, VERDICTS } = require('./close-time-verify.js');
 
 // Matches notion-brain.js's CLOSE_VERIFY_TIMEOUT_MS default: a person or a
 // sync loop is synchronously waiting on this, so it must answer in bounded
-// time rather than hold a close hostage.
-const DEFAULT_TIMEOUT_MS = 90000;
+// time rather than hold a close hostage. 180s, not 90s: a full-repo
+// `npx tsc --noEmit` takes ~55s on an idle 4-core box, and a timeout reads as
+// unverifiable, which this strict gate refuses (BRO-4757).
+const DEFAULT_TIMEOUT_MS = 180000;
 
 /**
  * @param {{repo?:string, timeoutMs?:number, log?:Function}} [opts]
