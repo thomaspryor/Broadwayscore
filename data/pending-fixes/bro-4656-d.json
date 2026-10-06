@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4656-d",
   "planId": "409b646d-0317-4196-8d1c-799893e66780",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -46,5 +46,28 @@
         "description": "Reason for the isNonReview flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-06T04:09:49.616Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/rough-draft-atlanta--rough-draft-staff.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/rough-draft-atlanta--rough-draft-staff.json isNonReviewReason: null -> \"Newsletter roundup, not a review (BRO-4656)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/cbsnews--dillon-thomas.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/cbsnews--dillon-thomas.json isNonReviewReason: null -> \"News preview published before the stop opened, not a review (BRO-4656)\""
+    }
+  ]
 }
