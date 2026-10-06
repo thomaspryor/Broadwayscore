@@ -72,7 +72,7 @@ function evaluateEligibility({ entries, files, nowMs, minAgeMin }) {
 /** Open handles anywhere under the worktree. Anything but a clean
  *  "nothing open" (lsof exit 1, empty stdout) counts as in-use. */
 function hasOpenHandles(dir) {
-  const r = spawnSync('lsof', ['+D', dir], { encoding: 'utf8', timeout: 20000 });
+  const r = spawnSync('lsof', ['+D', dir], { encoding: 'utf8', timeout: 45000 });
   if (r.error || r.signal) return true;
   if (r.status === 1 && !String(r.stdout).trim()) return false;
   return true;

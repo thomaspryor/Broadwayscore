@@ -619,11 +619,11 @@ flush() {
     if is_worktree_clean "$path"; then
       log "WOULD-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch fully merged"
       removed=$((removed+1))
-    elif salvage_out=$(salvage_worktree "$path" --check-only); then
-      log "WOULD-SALVAGE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only untracked notes dirty; would copy to salvage dir ($salvage_out)"
-      removed=$((removed+1))
     elif is_safe_dirty "$path"; then
       log "WOULD-FORCE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only generated data/ churn dirty"
+      removed=$((removed+1))
+    elif salvage_out=$(salvage_worktree "$path" --check-only); then
+      log "WOULD-SALVAGE-REMOVE  [$CURRENT_REPO_NAME] $(basename "$path") — $branch merged, only untracked notes dirty; would copy to salvage dir ($salvage_out)"
       removed=$((removed+1))
     else
       log "WOULD-SKIP  [$CURRENT_REPO_NAME] $(basename "$path") — merged but worktree dirty; not forcing"
