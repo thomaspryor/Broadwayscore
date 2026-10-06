@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-06T01:35:54.134Z",
+  "generated": "2026-10-06T02:07:00.708Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 21,
+  "count": 22,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -149,6 +149,13 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "loserFile": "thestage--dave-fargnoli.json",
+      "targetFile": "thestage--john-thaxter.json",
+      "reason": "orphaned-duplicate-heal: thestage--john-thaxter.json was flagged invalid after thestage--dave-fargnoli.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T01:40:34.908Z",
+  "timestamp": "2026-10-06T02:10:55.113Z",
   "stats": {
-    "totalReviews": 46500,
-    "alreadyFlagged": 18677,
-    "dateGuardCatches": 268,
+    "totalReviews": 46501,
+    "alreadyFlagged": 18680,
+    "dateGuardCatches": 265,
     "directorMismatch": 1317,
-    "tvFilmSignals": 1349,
-    "londonSignals": 1285,
+    "tvFilmSignals": 1350,
+    "londonSignals": 1286,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
-    "noPublishDate": 4310
+    "noPublishDate": 4308
   },
   "findings": [
     {
@@ -388,28 +388,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1813d before show (2021-11-25 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "thestage--natasha-tripney.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1813d before show (2021-11-25 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "thestage--tom-wicker.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1085d before show (2023-11-23 vs 2026-11-12)"
         }
       ]
     },
@@ -1057,6 +1035,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 17,
+      "publishDate": "2026-10-05",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -46053,6 +46045,19 @@
       ]
     },
     {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "thestage--tracey-sinclair.json",
+      "publishDate": "2026-08-11",
+      "url": "https://www.thestage.co.uk/review-round-ups/game-of-thrones-the-mad-king-review-round-up",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -49235,17 +49240,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "jack-and-the-beanstalk-off-west-end-2026",
-      "file": "thestage--paul-vale.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 362d before show (2025-11-24 vs 2026-11-21)"
         }
       ]
     },

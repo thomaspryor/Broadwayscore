@@ -19,6 +19,12 @@ on:
 # archives WebP under public/images/shows/<tour>/ and points shows.json at it.
 # shows.json lives in the private core-data repo, so the images commit here
 # first and core data is pushed only after that push lands.
+#
+# Tour runtimes (BRO-4750): after the tickets step, enrich-tour-runtimes.js
+# fills the runtime of every tour that has none from the tour's own Tours To You
+# page (never the Broadway parent's runtime). A tour with a runtime is never
+# fetched again, so a normal day reads no pages. A change there rides the same
+# shows.json comparison, commit step and core-data push as the tour art.
 
 concurrency:
   group: fetch-tour-schedules
@@ -27,8 +33,8 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    # ~2 min of schedules, up to 20 min of tour art (--max-minutes), and the
-    # 900s image push deadline.
+    # ~2 min of schedules, up to 5 min of tour runtimes (run budget), up to 20
+    # min of tour art (--max-minutes), and the 900s image push deadline.
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
@@ -60,6 +66,15 @@ jobs:
         id: tickets
         if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
         run: node scripts/fetch-tour-tickets.js
+
+      # Runtime for every tour without one (BRO-4750). Its failure must not hold
+      # back the schedule update or the tour art, so the steps after it run on
+      # the schedule step's outcome; shows.json changes here are shipped by the
+      # change check and the core-data push below.
+      - name: Fill tour runtimes
+        id: runtimes
+        if: ${{ !cancelled() && steps.schedules.outcome == 'success' }}
+        run: node scripts/enrich-tour-runtimes.js
 
       # Own key art for each tour (BRO-4726). The steps below run on
       # !cancelled(), so a failure here still commits the schedule update and
@@ -130,7 +145,7 @@ jobs:
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: Tour key art from fetch-tour-images'
+          message: 'data: Tour runtimes and key art (enrich-tour-runtimes, fetch-tour-images)'
 
       - name: Dispatch deploy
         if: ${{ !cancelled() && steps.webpush.outcome == 'success' }}
