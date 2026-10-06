@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "affluenza-off-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-06T11:03:36.435Z",
+  "detectedAt": "2026-10-06T11:18:57.769Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "liamodell--liam-odell.json",
+      "outletId": "liamodell",
+      "criticName": "Liam O’Dell",
+      "url": "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
+      "fullTextLen": 6207,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -40,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

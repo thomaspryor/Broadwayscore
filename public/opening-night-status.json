@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T11:03:56.731Z",
+  "generatedAt": "2026-10-06T11:19:17.894Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,25 +12,24 @@
       "status": "open",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.webp",
-      "siteScore": 40.64,
-      "liveScore": 41,
-      "scoreDrift": 0.35999999999999943,
+      "siteScore": 36.83,
+      "liveScore": 37,
+      "scoreDrift": 0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
-      "t1": 1,
-      "t2": 2,
+      "total": 6,
+      "t1": 2,
+      "t2": 3,
       "t3": 1,
       "positive": 0,
       "mixed": 2,
-      "negative": 2,
+      "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "6/8 total",
           "T1:1/3",
-          "T2:0/2",
           "hi-conf:2/6"
         ],
         "highConfidence": 2,
@@ -69,10 +68,6 @@
         {
           "name": "Daily Mail",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -90,10 +85,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -156,6 +147,18 @@
           "p": 0,
           "m": 2,
           "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-06T11:19:17.894Z",
+          "rc": 6,
+          "s": 36.83,
+          "t1": 2,
+          "t2": 3,
+          "t3": 1,
+          "p": 0,
+          "m": 2,
+          "n": 4,
           "bc": "waiting"
         }
       ]
