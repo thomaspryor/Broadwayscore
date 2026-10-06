@@ -725,6 +725,9 @@ on:
       # scripts/lib/*.test.mjs glob; path-listed so a solo edit triggers CI.
       - 'scripts/check-bundle-size.js'
       - 'scripts/extract-dtli-reviews.js'
+      # BRO-2121: top-level scripts require()d by tests/unit/sibling-misfile-cleanup.test.mjs
+      - 'scripts/audit-sibling-misfile-archive.js'
+      - 'scripts/extract-show-score-reviews.js'
       - 'scripts/audit-corpus-determinism.js'
       - 'scripts/pre-deploy-check.js'
       - 'scripts/fix-photo-credit-byline-phantoms.js'
