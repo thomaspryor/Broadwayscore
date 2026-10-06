@@ -1,13 +1,16 @@
 {
-  "generatedAt": "2026-10-05T12:54:08.219Z",
+  "generatedAt": "2026-10-06T01:40:06.819Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-05T12:49:03.953Z",
+    "reviewsJsonLastUpdated": "2026-10-06T01:31:32.689Z",
     "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 22,
-    "filesScanned": 342,
+    "showsScanned": 21,
+    "allShowsScanned": 2293,
+    "filesScanned": 46889,
     "showsOverThreshold": 0,
-    "orphanReviews": 5
+    "newOffenders": 0,
+    "blindShows": 144,
+    "orphanReviews": 8
   },
   "thresholds": {
     "suppressedPerShow": 3,
@@ -15,14 +18,28 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
+  "newOffenders": [],
+  "staleBaseline": [],
   "orphanReviews": [
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "count": 5
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "count": 24
+    },
+    {
+      "showId": "pride-bridge-theatre-off-west-end-2026",
+      "count": 21
+    },
+    {
+      "showId": "school-pictures-off-broadway-2026",
+      "count": 6
+    },
     {
       "showId": "the-apple-boys-regional-2025",
       "count": 4
-    },
-    {
-      "showId": "paranormal-activity-national-tour-regional-2025",
-      "count": 21
     },
     {
       "showId": "gun-and-powder-signature-regional-2020",
@@ -40,8 +57,16 @@
   "perShow": [
     {
       "showDir": "affluenza-off-west-end-2026",
+      "actual": 2,
+      "scanned": 10,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "boop-tour-2026",
       "actual": 1,
-      "scanned": 5,
+      "scanned": 2,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -63,33 +88,33 @@
       "overThreshold": false
     },
     {
-      "showDir": "degenerates-off-broadway-2026",
-      "actual": 15,
-      "scanned": 22,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
       "showDir": "flamenc-oh-off-west-end-2026",
-      "actual": 9,
-      "scanned": 23,
+      "actual": 10,
+      "scanned": 24,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "hay-fever-west-end-2026",
+      "actual": 32,
+      "scanned": 43,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "into-the-woods-noel-coward-west-end-2026",
       "actual": 31,
-      "scanned": 42,
+      "scanned": 7,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "kramerfauci-st-anns-off-broadway-2026",
-      "actual": 7,
-      "scanned": 9,
+      "actual": 16,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -104,48 +129,32 @@
     },
     {
       "showDir": "slam-frank-off-broadway-2026",
-      "actual": 8,
-      "scanned": 14,
+      "actual": 10,
+      "scanned": 20,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "soon-off-broadway-2026",
+      "actual": 1,
+      "scanned": 3,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "actual": 8,
-      "scanned": 14,
+      "actual": 11,
+      "scanned": 18,
       "suppressedCount": 0,
       "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-standard-of-living-west-end-2026",
-      "actual": 29,
-      "scanned": 43,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "torera-off-broadway-2026",
-      "actual": 0,
-      "scanned": 3,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "culturesauce--unknown.json",
-          "outletId": "culturesauce",
-          "criticName": "Unknown",
-          "publishDate": "2026-10-05",
-          "url": "https://culturesauce.com/torera-off-broadway-review/"
-        }
-      ],
       "overThreshold": false
     },
     {
       "showDir": "what-the-animals-say-off-west-end-2026",
-      "actual": 10,
-      "scanned": 20,
+      "actual": 12,
+      "scanned": 22,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false

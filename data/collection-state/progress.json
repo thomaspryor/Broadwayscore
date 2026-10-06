@@ -249,7 +249,12 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
     "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
-    "matilda-the-musical-west-end-2021/times-uk--dan-cairns.json"
+    "matilda-the-musical-west-end-2021/times-uk--dan-cairns.json",
+    "affluenza-off-west-end-2026/theatre-weekly--greg-stewart.json",
+    "affluenza-off-west-end-2026/times-uk--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -307,8 +312,6 @@
     "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
-    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
-    "tru-off-west-end-2026/guardian--mark-lawson.json",
     "purpose-regional-2026/deadline--greg-evans.json",
     "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "darkling-off-west-end-2026/thestage--holly-omahony.json",
@@ -377,7 +380,10 @@
     "book-of-mormon-2011/deadline--unknown.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
     "book-of-mormon-2011/wsj--terry-teachout.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "the-standard-of-living-west-end-2026/thestage--james-graham.json",
+    "a-small-and-quiet-light-off-west-end-2026/timeout-london--unknown.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -532,7 +538,10 @@
       "witness-for-the-prosecution-west-end-2022/everything-theatre--mary-pollard.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
-      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+      "affluenza-off-west-end-2026/theatre-weekly--greg-stewart.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+      "tru-off-west-end-2026/guardian--mark-lawson.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -619,13 +628,15 @@
       "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
       "wicked-tour-2021/broadwayworld--emily-short.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
-      "matilda-the-musical-west-end-2021/times-uk--dan-cairns.json"
+      "matilda-the-musical-west-end-2021/times-uk--dan-cairns.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json"
     ],
     "brightdata": [
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
       "the-unknown-off-broadway-2026/thewrap--robert-hofler.json",
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "affluenza-off-west-end-2026/times-uk--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -667,7 +678,7 @@
     ]
   },
   "startTime": "2026-10-05T18:41:26.656Z",
-  "lastProcessed": "book-of-mormon-2011/ap--mark-kennedy.json",
+  "lastProcessed": "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-05T18:41:55.053Z",
@@ -886,10 +897,24 @@
       "t": "2026-10-06T01:24:52.400Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-06T01:32:32.963Z",
+      "event": "bb-session",
+      "session": "7a952d17",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-06T01:32:59.801Z",
+      "event": "bb-session",
+      "session": "642fd91d",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
     }
   ],
   "recoveredAfterFailure": [
     "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json"
   ]
 }

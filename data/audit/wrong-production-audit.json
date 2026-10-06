@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-06T01:25:46.553Z",
+  "timestamp": "2026-10-06T01:40:34.908Z",
   "stats": {
     "totalReviews": 46500,
-    "alreadyFlagged": 18674,
-    "dateGuardCatches": 269,
-    "directorMismatch": 1318,
+    "alreadyFlagged": 18677,
+    "dateGuardCatches": 268,
+    "directorMismatch": 1317,
     "tvFilmSignals": 1349,
-    "londonSignals": 1286,
+    "londonSignals": 1285,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
     "noPublishDate": 4310
@@ -1035,6 +1035,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
+      "score": 56,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
       "findings": [
@@ -16370,25 +16371,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 96,
-      "publishDate": "2025-12-12",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 94,
@@ -27766,6 +27748,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "roc-city-mag--david-andreatta.json",
+      "score": 77,
       "publishDate": "2026-01-14",
       "url": "https://www.roccitymag.com/arts-entertainment/theater/review-monty-pythons-spamalot-is-not-dead-yet/",
       "findings": [
@@ -27779,6 +27762,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "san-jose-mercury-news--jim-harrington.json",
+      "score": 88,
       "publishDate": "2026-03-07",
       "url": "https://www.mercurynews.com/2026/03/06/review-new-spamalot-broadway-tour-proves-to-be-a-huge-winner/",
       "findings": [
@@ -60728,19 +60712,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "file": "pinkprincetheatre--neill-kovacic-clarke.json",
-      "publishDate": "2026-10-04",
-      "url": "https://www.pinkprincetheatre.com/post/review-a-super-happy-story-about-feeling-super-sad-young-vic",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
