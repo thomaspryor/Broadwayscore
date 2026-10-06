@@ -3225,6 +3225,12 @@ function protectStagedDeletions(cwd, options = {}) {
  * pin (urlManualOverride / urlVerified without Auto) is never overridden.
  */
 function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
+  // BRO-2690: never pin onto a malformed url (review body text parsed as a url,
+  // e.g. 'https://So%20what?s%20needed...'): angels-in-america thewrap and
+  // burn-this deadline were auto-pinned onto such strings while the real
+  // outlet url kept arriving. A well-formed incoming url always beats it.
+  const wellFormed = (u) => typeof u === 'string' && /^https?:\/\/[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?([\/?#]|$)/i.test(u);
+  if (!wellFormed(existingUrl) && wellFormed(incomingUrl)) return true;
   // Same site only: a host-wide named pattern can sit over real reviews
   // elsewhere, so never let this hop an auto-pin to a different outlet.
   const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };

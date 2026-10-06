@@ -88,3 +88,23 @@ describe('safeWriteReview end to end', () => {
     assert.notEqual(out.urlVerifiedAuto, true);
   });
 });
+
+describe('malformed pinned url (BRO-2690)', () => {
+  const garbage = 'https://So%20what?s%20needed?%20I?d%20say%20passion,%20or%20at%20least%20chemistry.';
+  const real = 'https://deadline.com/2019/04/burn-this-review-adam-driver-1202595894/';
+  test('well-formed incoming url beats a garbage pin', () => {
+    assert.equal(_flipFlopShouldTakeIncoming(garbage, real, { url: garbage }), true);
+  });
+  test('garbage incoming never beats a real pin', () => {
+    assert.equal(_flipFlopShouldTakeIncoming(real, garbage, { url: real }), false);
+  });
+  test('pinned real url with query string is still well-formed', () => {
+    assert.equal(_flipFlopShouldTakeIncoming(real + '?x=1', real, { url: real }), false);
+  });
+});
+
+test('a legit pinned url with %20 in the path is not treated as malformed', () => {
+  const pinned = 'https://example.com/reviews/a%20b-review';
+  const other = 'https://example.com/reviews/a-b-review';
+  assert.equal(_flipFlopShouldTakeIncoming(pinned, other, { url: pinned }), false);
+});
