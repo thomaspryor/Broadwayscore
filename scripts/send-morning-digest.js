@@ -874,6 +874,22 @@ async function main() {
     console.error(`[digest] WARN could not evaluate local dispatch-health ledger: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-2049: the shared checkout going shallow (a --shallow-since fetch) silently broke every session's
+  // did-it-land proof for ~3 weeks. health-check.js cannot measure it (GitHub Actions only, and CI checkouts
+  // are shallow by design), so this sender, which runs on the Mac that owns ~/Broadwayscore, evaluates it.
+  // A warn is pushed into health.errors so the verdict line NAMES it instead of counting it as a routine warn.
+  try {
+    const { shallowDigestRow } = require('./lib/shared-checkout-shallow.js');
+    const shallowRow = shallowDigestRow({ fromDir: REPO });
+    if (shallowRow.status === 'warn') {
+      if (!sections.health) sections.health = {};
+      if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+      sections.health.errors.push({ name: shallowRow.name, message: shallowRow.message, hint: shallowRow.hint });
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not evaluate shared-checkout depth: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
   // above, read directly. Fail-soft: a broken read degrades to one missing
   // section, never blocks the send (same rule as every other section here).
