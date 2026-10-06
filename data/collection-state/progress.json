@@ -252,7 +252,11 @@
     "wicked-west-end-2021/thestage--paul-vale.json",
     "wicked-west-end-2021/west-end-wilma--unknown.json",
     "wicked-2003/frontmezzjunkies--unknown.json",
-    "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json"
+    "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+    "kramerfauci-st-anns-off-broadway-2026/playbill--unknown.json",
+    "slam-frank-off-broadway-2026/playbill--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -276,8 +280,6 @@
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
     "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
     "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
-    "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
     "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
     "othello-off-broadway-2026/thestage--fergus-morgan.json",
     "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
@@ -383,7 +385,10 @@
     "wicked-west-end-2021/frontmezzjunkies--unknown.json",
     "wicked-west-end-2021/ign--brian-formo.json",
     "wicked-2003/standard--unknown.json",
-    "wicked-2003/times-uk--unknown.json"
+    "wicked-2003/times-uk--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -538,7 +543,10 @@
       "book-of-mormon-2011/financialtimes--brendan-lemon.json",
       "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
       "wicked-west-end-2021/west-end-wilma--unknown.json",
-      "wicked-2003/frontmezzjunkies--unknown.json"
+      "wicked-2003/frontmezzjunkies--unknown.json",
+      "kramerfauci-st-anns-off-broadway-2026/playbill--unknown.json",
+      "slam-frank-off-broadway-2026/playbill--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -588,7 +596,8 @@
       "the-story-west-end-2026/ground--unknown.json",
       "paddington-the-musical-west-end-2025/matineemouse--matinee-mouse.json",
       "hadestown-2019/the-knockturnal--justin-rodriguez.json",
-      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json"
+      "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "scrapingbee": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
@@ -629,7 +638,10 @@
       "wicked-tour-2021/broadwayworld--emily-short.json",
       "hadestown-2019/theatrely--theatrely-staff.json",
       "witness-for-the-prosecution-west-end-2022/broadwayworld--emma-watkins.json",
-      "matilda-the-musical-west-end-2021/times-uk--dan-cairns.json"
+      "matilda-the-musical-west-end-2021/times-uk--dan-cairns.json",
+      "my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--alexander-cohen.json",
+      "fire-fire-off-west-end-2026/broadwayworld--gary-naylor.json",
+      "cleansed-off-west-end-2026/broadwayworld--alexander-cohen.json"
     ],
     "brightdata": [
       "bigfoot-off-broadway-2026/thewrap--robert-hofler.json",
@@ -678,7 +690,7 @@
     ]
   },
   "startTime": "2026-10-05T18:41:26.656Z",
-  "lastProcessed": "the-lion-king-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
+  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
   "log": [
     {
       "t": "2026-10-05T18:41:55.053Z",
@@ -924,6 +936,44 @@
       "t": "2026-10-06T00:10:28.192Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-06T00:39:29.874Z",
+      "event": "bb-session",
+      "session": "bb5ebbc7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T00:39:30.628Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T00:39:48.869Z",
+      "event": "bb-session",
+      "session": "b7aeda53",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T00:39:49.542Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T00:45:08.538Z",
+      "event": "bb-session",
+      "session": "880443f8",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-06T00:45:23.439Z",
+      "event": "bb-session",
+      "session": "40a5a2f3",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
     }
+  ],
+  "recoveredAfterFailure": [
+    "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json"
   ]
 }
