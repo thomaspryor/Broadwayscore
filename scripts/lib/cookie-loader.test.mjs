@@ -309,3 +309,11 @@ test('loadCookieMeta: bundle has cookies but NO _meta + env has meta -> must sti
     resetEnv();
   }
 });
+
+// BRO-4780: stdout from this module inside a node --test worker can corrupt
+// the runner's serialized stream; diagnostics must use stderr.
+test('cookie-loader writes no diagnostics to stdout', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('./cookie-loader.js', import.meta.url), 'utf8');
+  assert.equal(/console\.(log|info)\(|process\.stdout\.write/.test(src), false);
+});

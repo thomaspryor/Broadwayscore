@@ -6,6 +6,10 @@
  *
  * Used by: collect-review-texts.js, check-cookie-health.js,
  *          recover-wsj-subscriber.js, recollect-for-scores.js
+ *
+ * Diagnostics go to stderr (BRO-4780): stdout from a library loaded inside a
+ * `node --test` worker shares the runner's serialized stream and can trip
+ * "Unable to deserialize cloned data" (main run 37407347107).
  */
 
 const fs = require('fs');
@@ -132,13 +136,13 @@ function loadBundles() {
         }
       }
     } catch (e) {
-      console.log(`  ⚠ Failed to parse ${key}: ${e.message}`);
+      console.error(`  ⚠ Failed to parse ${key}: ${e.message}`);
     }
   }
 
   const count = Object.keys(_bundleCache).length;
   if (count > 0) {
-    console.log(`  🍪 Loaded cookie bundles: ${count} outlets from COOKIES_BUNDLE_* env vars`);
+    console.error(`  🍪 Loaded cookie bundles: ${count} outlets from COOKIES_BUNDLE_* env vars`);
   }
   return _bundleCache;
 }
@@ -154,7 +158,7 @@ function loadFileMeta() {
     _fileMetaCache = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
   } catch (e) {
     // Surface — otherwise staleness silently passes for every outlet.
-    console.log(`  ⚠ Failed to parse ${metaPath}: ${e.message}`);
+    console.error(`  ⚠ Failed to parse ${metaPath}: ${e.message}`);
   }
   return _fileMetaCache;
 }
@@ -223,7 +227,7 @@ function loadEnvMeta(envVar) {
       return meta;
     }
   } catch (e) {
-    console.log(`  ⚠ Failed to parse ${envVar}_META env var: ${e.message}`);
+    console.error(`  ⚠ Failed to parse ${envVar}_META env var: ${e.message}`);
   }
   return null;
 }
@@ -267,7 +271,7 @@ function parseCookieEnvVar(envVar, rawVal, { requireNonEmpty }) {
       return cookies;
     }
   } catch (e) {
-    console.log(`  ⚠ Failed to parse ${envVar} env var: ${e.message}`);
+    console.error(`  ⚠ Failed to parse ${envVar} env var: ${e.message}`);
   }
   return null;
 }
@@ -315,7 +319,7 @@ function loadCookiesForDomain(domain) {
     if (tier === 'env') {
       const envCookies = parseCookieEnvVar(cookieConfig.envVar, envRawVal, { requireNonEmpty: true });
       if (envCookies) {
-        console.log(`  🍪 Loaded ${envCookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar} (fresher than bundle)`);
+        console.error(`  🍪 Loaded ${envCookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar} (fresher than bundle)`);
         _cookieCache[normalizedDomain] = envCookies;
         return envCookies;
       }
@@ -323,7 +327,7 @@ function loadCookiesForDomain(domain) {
   }
 
   if (bundleCookies) {
-    console.log(`  🍪 Loaded ${bundleCookies.length} cookies for ${normalizedDomain} from bundle`);
+    console.error(`  🍪 Loaded ${bundleCookies.length} cookies for ${normalizedDomain} from bundle`);
     _cookieCache[normalizedDomain] = bundleCookies;
     return bundleCookies;
   }
@@ -332,7 +336,7 @@ function loadCookiesForDomain(domain) {
   if (envRawVal) {
     const envCookies = parseCookieEnvVar(cookieConfig.envVar, envRawVal, { requireNonEmpty: true });
     if (envCookies) {
-      console.log(`  🍪 Loaded ${envCookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
+      console.error(`  🍪 Loaded ${envCookies.length} cookies for ${normalizedDomain} from env ${cookieConfig.envVar}`);
       _cookieCache[normalizedDomain] = envCookies;
       return envCookies;
     }
@@ -344,12 +348,12 @@ function loadCookiesForDomain(domain) {
     try {
       const cookies = JSON.parse(fs.readFileSync(cookieFilePath, 'utf-8'));
       if (Array.isArray(cookies) && cookies.length > 0) {
-        console.log(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from ${cookieFilePath}`);
+        console.error(`  🍪 Loaded ${cookies.length} cookies for ${normalizedDomain} from ${cookieFilePath}`);
         _cookieCache[normalizedDomain] = cookies;
         return cookies;
       }
     } catch (e) {
-      console.log(`  ⚠ Failed to parse cookie file ${cookieFilePath}: ${e.message}`);
+      console.error(`  ⚠ Failed to parse cookie file ${cookieFilePath}: ${e.message}`);
     }
   }
 
