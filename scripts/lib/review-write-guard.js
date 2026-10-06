@@ -246,6 +246,10 @@ const PROTECTED_FIELDS = [
   'allowFilmSignal',
   'allowFilmSignalReason',
   'routedFromShowId',
+  // Undo record of a tour move (tour-backfill.js prepareTourMove /
+  // clearStaleScoringFailure). The manualClearFallback* breadcrumb reads it,
+  // so it must survive a rebase alongside routedFromShowId (BRO-4656).
+  'routedPriorVerdicts',
   'urlVerified',
   // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
   // from a real human urlVerified decision. Must survive rebases alongside
@@ -849,6 +853,22 @@ const _clearBreadcrumbRetracted = (field) => (d) => {
 const _isNotReviewCleared = (d) =>
   d.isNotReviewManualClear === true || d.isNotReview === false;
 
+// manualClearFallback* give-up markers (BRO-4656): tour-backfill.js
+// clearStaleScoringFailure nulls them when a review routed to a tour carries a
+// give-up recorded against the Broadway show it came from, archiving the old
+// value in routedPriorVerdicts. Without this entry the push-review-texts
+// restore copied the committed markers back and the tour review stayed blocked
+// from scoring. Scoped tightly so the credit-loop protection still holds: an
+// explicit null only, and only while the committed value is the very marker
+// that was archived (a give-up recorded after the move is still restored).
+const _manualClearFallbackCleared = (field) => (d, committed) => {
+  if (d[field] !== null || !d.routedFromShowId) return false;
+  const prior = d.routedPriorVerdicts;
+  if (!prior || typeof prior !== 'object' || _isEmptyValue(prior[field])) return false;
+  if (!committed || _isEmptyValue(committed[field])) return false;
+  return JSON.stringify(committed[field]) === JSON.stringify(prior[field]);
+};
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -985,6 +1005,10 @@ const CLEAR_BREADCRUMBS = {
   needsRescore: (d) => _freshStuckRescoreCleared(d) || _freshRescoreCompleted(d),
   rescoreReason: _freshStuckRescoreCleared,
   lateStarAnchorBand: _freshStuckRescoreCleared,
+  manualClearFallbackFailedAt: _manualClearFallbackCleared('manualClearFallbackFailedAt'),
+  manualClearFallbackFailureReason: _manualClearFallbackCleared('manualClearFallbackFailureReason'),
+  manualClearFallbackAttempts: _manualClearFallbackCleared('manualClearFallbackAttempts'),
+  manualClearFallbackAbandoned: _manualClearFallbackCleared('manualClearFallbackAbandoned'),
 };
 
 /**
@@ -1004,7 +1028,7 @@ const CLEAR_BREADCRUMBS = {
 function isIntentionalClear(field, localData, committedData) {
   if (!localData) return false;
   const pred = CLEAR_BREADCRUMBS[field];
-  if (typeof pred === 'function' && pred(localData)) return true;
+  if (typeof pred === 'function' && pred(localData, committedData)) return true;
   return _urlChangeCleared(field, localData, committedData);
 }
 
