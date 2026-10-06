@@ -138,12 +138,16 @@ test('normUrl strips protocol, www, query string, and trailing slash for cross-s
 // BRO-4759: the scan now covers every show; shows outside the opening window alert only on a
 // NEW suppression. Real cases: kramerfauci-off-broadway-2026 (4 hidden, 0 published) and
 // going-bacharach (7 hidden, 0 published) sat unseen for days.
-const { findNewOffenders } = require('./check-review-count-drift.js');
-const row = (showDir, actual, suppressedCount) => ({ showDir, actual, suppressedCount });
+const { findNewOffenders, findStaleBaseline, renderOffendersSummary } = require('./check-review-count-drift.js');
+const row = (showDir, actual, count, prefix = 'f') => ({
+  showDir, actual, suppressedCount: count,
+  suppressed: Array.from({ length: count }, (_, i) => ({ file: `${prefix}${i + 1}.json` })),
+});
 
 test('findNewOffenders flags a dark show (publishes nothing, hides scored reviews) even for one file', () => {
   const out = findNewOffenders([row('kramerfauci-off-broadway-2026', 0, 4), row('one-hidden-0', 0, 1)], { shows: {} }, 3);
   assert.deepEqual(out.map((o) => o.showDir), ['kramerfauci-off-broadway-2026', 'one-hidden-0']);
+  assert.equal(out[0].newFiles.length, 4);
 });
 
 test('findNewOffenders ignores a published show hiding at most `delta` files, flags one hiding more', () => {
@@ -155,15 +159,39 @@ test('findNewOffenders skips shows with nothing hidden', () => {
   assert.deepEqual(findNewOffenders([row('fine-2020', 0, 0), row('fine-2021', 12, 0)], { shows: {} }, 3), []);
 });
 
-test('findNewOffenders honours the baseline and re-alerts when the hidden count grows', () => {
-  const baseline = { shows: { 'china-doll-2015': 4, 'into-the-woods-1997': 1 } };
+test('findNewOffenders honours a file-list baseline', () => {
+  const baseline = { shows: { 'china-doll-2015': ['f1.json', 'f2.json', 'f3.json', 'f4.json'], 'into-the-woods-1997': ['f1.json'] } };
   assert.deepEqual(findNewOffenders([row('china-doll-2015', 31, 4), row('into-the-woods-1997', 0, 1)], baseline, 3), []);
+});
+
+test('findNewOffenders re-alerts when a hidden file is not in the baseline, even if the count is unchanged', () => {
+  const baseline = { shows: { 'china-doll-2015': ['f1.json', 'f2.json', 'f3.json', 'f4.json'] } };
+  const swapped = findNewOffenders([row('china-doll-2015', 31, 4, 'g')], baseline, 3);
+  assert.equal(swapped.length, 1, 'a new misfire cannot hide behind an old entry by swapping one file for another');
+  assert.deepEqual(swapped[0].newFiles, ['g1.json', 'g2.json', 'g3.json', 'g4.json']);
   const grown = findNewOffenders([row('china-doll-2015', 31, 5)], baseline, 3);
-  assert.equal(grown.length, 1);
-  assert.equal(grown[0].baselined, 4);
+  assert.deepEqual(grown[0].newFiles, ['f5.json']);
 });
 
 test('findNewOffenders lists the worst offender first and tolerates a missing baseline', () => {
   const out = findNewOffenders([row('a', 0, 2), row('b', 0, 7)], undefined, 3);
   assert.deepEqual(out.map((o) => o.showDir), ['b', 'a']);
+});
+
+test('findStaleBaseline reports accepted files that are no longer hidden, and ignores unscanned shows', () => {
+  const baseline = { shows: { 'fixed-2015': ['f1.json', 'f2.json'], 'still-2016': ['f1.json'], 'gone-dir-2017': ['f1.json'] } };
+  const stale = findStaleBaseline([row('fixed-2015', 10, 1), row('still-2016', 5, 1)], baseline);
+  assert.deepEqual(stale, [{ showDir: 'fixed-2015', gone: ['f2.json'] }]);
+});
+
+test('renderOffendersSummary renders offenders and stale entries, caps rows, and tolerates old audit files', () => {
+  assert.equal(renderOffendersSummary({}), '');
+  assert.equal(renderOffendersSummary(null), '');
+  const offenders = Array.from({ length: 30 }, (_, i) => ({ showDir: `s${i}`, suppressed: 4, actual: 0, files: [], newFiles: ['a.json', 'b.json', 'c.json', 'd.json'] }));
+  const md = renderOffendersSummary({ newOffenders: offenders, staleBaseline: [{ showDir: 'old-2015', gone: ['x.json'] }] });
+  assert.match(md, /Older shows hiding scored reviews/);
+  assert.match(md, /\| s0 \| 4 \| 0 \| a\.json, b\.json, c\.json \(\+1 more\) \|/);
+  assert.match(md, /and 5 more/);
+  assert.doesNotMatch(md, /\| s25 \|/);
+  assert.match(md, /old-2015/);
 });

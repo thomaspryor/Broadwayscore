@@ -136,27 +136,37 @@ function normUrl(u) {
 }
 
 // Accepted suppressions for shows outside the opening window (tracked, reviewed in PRs).
-// Shape: { _meta, shows: { "<showDir>": <accepted suppressed count> } }.
+// Shape: { _meta, shows: { "<showDir>": ["<accepted review-text file>", ...] } }. Pinning the FILES
+// (not a count) means a new misfire cannot hide behind an old entry by swapping one file for another.
 const BASELINE_PATH = process.env.REVIEW_SUPPRESSION_BASELINE
   || path.join(REPO_ROOT, 'data', 'audit', 'review-suppression-baseline.json');
 
 function loadSuppressionBaseline() {
+  let text;
   try {
-    const raw = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
-    return { shows: (raw && raw.shows) || {} };
-  } catch {
-    return { shows: {} };
+    text = fs.readFileSync(BASELINE_PATH, 'utf8');
+  } catch (e) {
+    if (e.code === 'ENOENT') return { shows: {} };
+    throw e;
   }
+  // A corrupt or merge-conflicted baseline must fail the run, not read as "nothing accepted".
+  let raw;
+  try {
+    raw = JSON.parse(text);
+  } catch (e) {
+    throw new Error(`${path.relative(REPO_ROOT, BASELINE_PATH)} is not valid JSON (${e.message})`);
+  }
+  return { shows: (raw && raw.shows) || {} };
 }
 
 function writeSuppressionBaseline(accepted) {
   const shows = {};
-  for (const a of accepted) shows[a.showDir] = a.suppressed;
+  for (const a of accepted) shows[a.showDir] = [...a.files].sort();
   const body = {
     _meta: {
-      description: 'Shows outside the opening window whose hidden scored reviews were investigated and accepted '
+      description: 'Shows outside the opening window whose hidden scored review files were investigated and accepted '
         + '(e.g. syndicated duplicate text, a mis-dated review the late-date guard rightly drops). '
-        + 'check-review-count-drift.js alerts only on shows NOT listed here or whose count grew. '
+        + 'check-review-count-drift.js alerts only on a show that is dark or hides more than the threshold AND has a hidden file NOT listed here. '
         + 'Regenerate with: node scripts/check-review-count-drift.js --update-baseline, then review the diff.',
       generatedAt: new Date().toISOString(),
     },
@@ -167,17 +177,18 @@ function writeSuppressionBaseline(accepted) {
 }
 
 /**
- * Shows outside the opening window that hide scored, in-production-window reviews
- * beyond what the baseline accepts. A show is an offender when it is "dark" (publishes
- * nothing while holding at least one such file) or hides more than `delta` of them,
- * AND the hidden count is above its baselined count.
+ * Shows outside the opening window that hide scored, in-production-window reviews beyond
+ * what the baseline accepts. A show is an offender when it is "dark" (publishes nothing while
+ * holding at least one such file) or hides more than `delta` of them, AND at least one hidden
+ * file is not in its baselined list.
  *
  * BRO-4759: with this, Kramer/Fauci's Skirball entry (4 hidden, 0 published) and Going
  * Bacharach (7 hidden, 0 published) are caught on the first daily run instead of never.
  *
- * @param {Array<{showDir: string, actual: number, suppressedCount: number}>} rows
- * @param {{shows: Object<string, number>}} baseline
+ * @param {Array<{showDir: string, actual: number, suppressedCount: number, suppressed: Array<{file: string}>}>} rows
+ * @param {{shows: Object<string, string[]>}} baseline
  * @param {number} delta
+ * @returns {Array<{showDir: string, suppressed: number, actual: number, files: string[], newFiles: string[]}>}
  */
 function findNewOffenders(rows, baseline, delta) {
   const accepted = (baseline && baseline.shows) || {};
@@ -186,11 +197,59 @@ function findNewOffenders(rows, baseline, delta) {
     if (!r.suppressedCount) continue;
     const dark = r.actual === 0;
     if (!dark && r.suppressedCount <= delta) continue;
-    const allowed = Number.isFinite(accepted[r.showDir]) ? accepted[r.showDir] : 0;
-    if (r.suppressedCount <= allowed) continue;
-    out.push({ showDir: r.showDir, suppressed: r.suppressedCount, actual: r.actual, baselined: allowed });
+    const files = (r.suppressed || []).map((s) => s.file);
+    const ok = new Set(Array.isArray(accepted[r.showDir]) ? accepted[r.showDir] : []);
+    const newFiles = files.filter((f) => !ok.has(f));
+    if (newFiles.length === 0) continue;
+    out.push({ showDir: r.showDir, suppressed: r.suppressedCount, actual: r.actual, files, newFiles });
   }
   return out.sort((a, b) => b.suppressed - a.suppressed);
+}
+
+/** Baseline entries whose accepted files are no longer hidden: safe to drop with --update-baseline. */
+function findStaleBaseline(rows, baseline) {
+  const byShow = new Map(rows.map((r) => [r.showDir, new Set((r.suppressed || []).map((s) => s.file))]));
+  const stale = [];
+  for (const [showDir, files] of Object.entries((baseline && baseline.shows) || {})) {
+    if (!byShow.has(showDir)) continue; // not scanned this run (e.g. dir missing): say nothing
+    const now = byShow.get(showDir);
+    const gone = (Array.isArray(files) ? files : []).filter((f) => !now.has(f));
+    if (gone.length > 0) stale.push({ showDir, gone });
+  }
+  return stale;
+}
+
+/**
+ * Markdown for the workflow step summary: older shows hiding scored reviews, plus baseline entries
+ * that can be dropped. Tolerates audit files written before these fields existed. Returns '' when
+ * there is nothing to say.
+ */
+function renderOffendersSummary(audit, maxRows = 25) {
+  const offenders = (audit && Array.isArray(audit.newOffenders)) ? audit.newOffenders : [];
+  const stale = (audit && Array.isArray(audit.staleBaseline)) ? audit.staleBaseline : [];
+  const lines = [];
+  if (offenders.length > 0) {
+    lines.push('### Older shows hiding scored reviews');
+    lines.push('');
+    lines.push('These shows hold scored reviews inside their own production window that never reached reviews.json. '
+      + 'Usually a guard is misfiring: check data/audit/rebuild-exclusions-SHOWID.json and fix the guard. '
+      + 'If the exclusions are correct, accept them with `node scripts/check-review-count-drift.js --update-baseline` and review the diff.');
+    lines.push('');
+    lines.push('| Show | Hidden | Published | Not in baseline |');
+    lines.push('|---|---|---|---|');
+    for (const o of offenders.slice(0, maxRows)) {
+      const names = (o.newFiles || []).slice(0, 3).join(', ');
+      const more = (o.newFiles || []).length > 3 ? ` (+${o.newFiles.length - 3} more)` : '';
+      lines.push(`| ${o.showDir} | ${o.suppressed} | ${o.actual} | ${names}${more} |`);
+    }
+    if (offenders.length > maxRows) lines.push(`| ...and ${offenders.length - maxRows} more | | | |`);
+  }
+  if (stale.length > 0) {
+    if (lines.length > 0) lines.push('');
+    lines.push(`Baseline entries no longer needed (their files are published now): ${stale.map((s) => s.showDir).join(', ')}. `
+      + 'Run `node scripts/check-review-count-drift.js --update-baseline` to drop them.');
+  }
+  return lines.length > 0 ? lines.join('\n') + '\n' : '';
 }
 
 /** Is this show's opening night close enough to warrant the suppression scan? */
@@ -231,6 +290,9 @@ function findSuppressedForShow(showDir, show, showReviews) {
   let scanned = 0;
   for (const file of files) {
     const filePath = path.join(dirPath, file);
+    // Most files are already published: skip the read and parse on a filename hit (the scan now
+    // covers every show, so this is tens of thousands of files).
+    if (entryKeys.has(file)) { scanned++; continue; }
     let data;
     try {
       data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
@@ -238,7 +300,6 @@ function findSuppressedForShow(showDir, show, showReviews) {
       continue;
     }
     scanned++;
-    if (entryKeys.has(file)) continue;
     if (data.url && entryUrls.has(normUrl(data.url))) continue;
     // Canonical predicate WITH filePath: circular-duplicate recovery included.
     if (!isIncludableForRebuild(data, show, filePath)) continue;
@@ -282,7 +343,13 @@ function main() {
     const showsData = JSON.parse(fs.readFileSync(showsJsonPath, 'utf8'));
     const showsArr = Array.isArray(showsData) ? showsData : (showsData.shows || []);
     for (const s of showsArr) if (s && s.id) showById[s.id] = s;
-  } catch { /* shows.json missing — window scan degrades to --show only */ }
+  } catch { /* handled just below */ }
+  if (!showFilter && Object.keys(showById).length === 0) {
+    // Without show metadata the production-window test rejects every file, so the scan reports 0
+    // suppressed for every show and a strict run would pass while blind (BRO-4759 review).
+    console.error(`ERROR: ${path.relative(REPO_ROOT, showsJsonPath)} is missing or empty: the suppression scan would be blind. Cannot run.`);
+    process.exit(1);
+  }
 
   const allShowDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
     .filter((d) => d.isDirectory() && !d.name.startsWith('.') && !d.name.startsWith('_'))
@@ -351,12 +418,9 @@ function main() {
     log(`Wrote ${accepted.length} accepted suppression(s) to ${path.relative(REPO_ROOT, BASELINE_PATH)}`);
     newOffenders = []; // just accepted: the run that records them must not fail on them
   }
-  // The workflow's commit message and step summary read showsOverThreshold, so a new offender
-  // must appear there to be visible; outOfWindow keeps the two wordings apart below.
-  for (const o of newOffenders) {
-    showsOverThreshold.push({ showDir: o.showDir, suppressed: o.suppressed, actual: o.actual, outOfWindow: true });
-  }
   const offenderIds = new Set(newOffenders.map((o) => o.showDir));
+  // Informational: accepted files that are no longer hidden (fixed since); --update-baseline drops them.
+  const staleBaseline = showFilter ? [] : findStaleBaseline(outOfWindowRows, baseline);
 
   // 3. Orphans ------------------------------------------------
   const orphanReviews = [];
@@ -372,9 +436,12 @@ function main() {
     log(`Shows scanned (${showFilter ? '--show' : windowOnly ? `opening window ±${WINDOW_DAYS}d` : `all, ${windowIds.size} inside the ±${WINDOW_DAYS}d opening window`}): ${targetShows.length}`);
     log(`Files scanned:          ${totalScanned}`);
     log(`Shows over threshold:   ${showsOverThreshold.length} (suppressed > ${SHOW_DELTA_THRESHOLD})`);
-    log(`New offenders outside the window: ${newOffenders.length} (dark or suppressed > ${SHOW_DELTA_THRESHOLD}, above baseline)`);
+    log(`New offenders outside the window: ${newOffenders.length} (dark or suppressed > ${SHOW_DELTA_THRESHOLD}, with a hidden file not in the baseline)`);
     for (const o of newOffenders.slice(0, 15)) {
-      log(`  ! ${o.showDir}: ${o.suppressed} scored review(s) hidden, ${o.actual} published${o.baselined ? ` (baseline ${o.baselined})` : ''}`);
+      log(`  ! ${o.showDir}: ${o.suppressed} scored review(s) hidden (${o.newFiles.length} not in the baseline), ${o.actual} published`);
+    }
+    if (staleBaseline.length > 0) {
+      log(`Baseline entries no longer needed: ${staleBaseline.map((s) => s.showDir).join(', ')} (run --update-baseline to drop them)`);
     }
     log(`Orphan review-ids:      ${orphanReviews.length}`);
     for (const row of perShow) {
@@ -411,9 +478,13 @@ function main() {
     },
     showsOverThreshold,
     newOffenders,
+    staleBaseline,
     orphanReviews,
-    // Window shows keep their full row; the rest of the corpus only appears when it hides something.
-    perShow: perShow.filter((r) => r.suppressedCount > 0 || ((showFilter || windowIds.has(r.showDir)) && r.actual > 0)),
+    // This file is committed daily: window shows (and the --show target) keep their full row, every
+    // other show appears only when it alerts, so accepted and benign hidden files never churn it.
+    perShow: perShow.filter((r) => (showFilter || windowIds.has(r.showDir))
+      ? (r.suppressedCount > 0 || r.actual > 0)
+      : offenderIds.has(r.showDir)),
   };
 
   try {
@@ -435,7 +506,7 @@ function main() {
     if (freshnessBreach) {
       warnLog(`  reviews.json is stale: lastUpdated=${lastUpdated || 'MISSING'} (max ${maxAgeHours}h). Rebuild pipeline may be down or its push failing.`);
     }
-    for (const s of showsOverThreshold.filter((x) => !x.outOfWindow).slice(0, 10)) {
+    for (const s of showsOverThreshold.slice(0, 10)) {
       warnLog(`  ${s.showDir}: ${s.suppressed} scored in-window review(s) missing from reviews.json (has ${s.actual}).`);
     }
     for (const o of newOffenders.slice(0, 10)) {
@@ -449,6 +520,13 @@ function main() {
 
 if (require.main === module) {
   try {
+    if (args.includes('--render-offenders-summary')) {
+      // No scan: print the markdown for the audit file a previous run wrote (the workflow's step summary).
+      let audit = null;
+      try { audit = JSON.parse(fs.readFileSync(OUTPUT_PATH, 'utf8')); } catch { /* no audit yet: print nothing */ }
+      process.stdout.write(renderOffendersSummary(audit));
+      process.exit(0);
+    }
     main();
   } catch (e) {
     console.error(`ERROR: ${e.message}`);
@@ -456,4 +534,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { findSuppressedForShow, isInOpeningWindow, normUrl, findNewOffenders };
+module.exports = { findSuppressedForShow, isInOpeningWindow, normUrl, findNewOffenders, findStaleBaseline, renderOffendersSummary };

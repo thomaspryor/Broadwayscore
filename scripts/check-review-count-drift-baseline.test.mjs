@@ -1,6 +1,7 @@
 // BRO-4759 / BRO-4767: check-review-count-drift.js scans EVERY show for scored review files that
 // never reached reviews.json. Shows outside the opening window alert only on a NEW suppression
-// (dark, or more than the threshold hidden, above data/audit/review-suppression-baseline.json).
+// (dark, or more than the threshold hidden, with a hidden file not listed in
+// data/audit/review-suppression-baseline.json).
 // These tests run the real script end to end against fixture files (REVIEW_TEXTS_DIR / REVIEWS_JSON /
 // SHOWS_JSON / REVIEW_SUPPRESSION_BASELINE overrides), the case Kramer/Fauci's Skirball entry hit:
 // an old show holding scored reviews and publishing none.
@@ -19,8 +20,9 @@ const REVIEW = {
   outletId: 'nytimes', criticName: 'Ben Brantley', humanReviewScore: 80,
   fullText: 'A glowing review of the production.', publishDate: '2020-02-12T12:00:00-04:00', url: 'https://nytimes.com/old-review',
 };
+const HIDDEN_FILE = 'nytimes--ben-brantley.json';
 
-function fixture({ shows = [OLD_SHOW], files = { 'old-show-2020': [['nytimes--ben-brantley.json', REVIEW]] }, baseline } = {}) {
+function fixture({ shows = [OLD_SHOW], files = { 'old-show-2020': [[HIDDEN_FILE, REVIEW]] }, baseline } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'drift-baseline-'));
   const texts = path.join(root, 'review-texts');
   for (const [dir, list] of Object.entries(files)) {
@@ -54,24 +56,28 @@ test('a dark old show (scored reviews on disk, none published) fails the strict 
     assert.match(r.stderr, /old-show-2020/);
     const a = f.audit();
     assert.equal(a.summary.newOffenders, 1);
-    // The workflow's commit message and step summary read showsOverThreshold, so it must be there too.
-    assert.deepEqual(a.showsOverThreshold.map((s) => s.showDir), ['old-show-2020']);
+    assert.deepEqual(a.newOffenders[0].newFiles, [HIDDEN_FILE]);
+    // Offenders stay separate from the opening-window threshold list.
+    assert.deepEqual(a.showsOverThreshold, []);
     assert.equal(a.summary.allShowsScanned, 1);
     assert.equal(a.summary.showsScanned, 0, 'showsScanned keeps meaning opening-window shows');
   } finally { f.cleanup(); }
 });
 
-test('a baselined suppression does not alert, but growth beyond the baseline does', () => {
-  const f = fixture({ baseline: { 'old-show-2020': 1 } });
+test('a baselined suppression does not alert, and a different hidden file is not covered by it', () => {
+  const f = fixture({ baseline: { 'old-show-2020': [HIDDEN_FILE] } });
   try {
     assert.equal(f.run('--strict').status, 0);
+    assert.deepEqual(f.audit().staleBaseline, []);
   } finally { f.cleanup(); }
-  const grown = fixture({
-    baseline: { 'old-show-2020': 0 },
-  });
+  // A different file is hidden than the one accepted: the old entry must not cover it.
+  const swapped = fixture({ baseline: { 'old-show-2020': ['some-other-file.json'] } });
   try {
-    assert.equal(grown.run('--strict').status, 2);
-  } finally { grown.cleanup(); }
+    assert.equal(swapped.run('--strict').status, 2);
+    const a = swapped.audit();
+    assert.deepEqual(a.newOffenders[0].newFiles, [HIDDEN_FILE]);
+    assert.deepEqual(a.staleBaseline, [{ showDir: 'old-show-2020', gone: ['some-other-file.json'] }]);
+  } finally { swapped.cleanup(); }
 });
 
 test('--update-baseline accepts the current suppressions and the same run does not fail', () => {
@@ -79,14 +85,14 @@ test('--update-baseline accepts the current suppressions and the same run does n
   try {
     const r = f.run('--strict', '--update-baseline');
     assert.equal(r.status, 0, r.stderr);
-    assert.deepEqual(JSON.parse(fs.readFileSync(f.baselinePath, 'utf8')).shows, { 'old-show-2020': 1 });
+    assert.deepEqual(JSON.parse(fs.readFileSync(f.baselinePath, 'utf8')).shows, { 'old-show-2020': [HIDDEN_FILE] });
     assert.equal(f.run('--strict').status, 0, 'the next strict run is clean');
   } finally { f.cleanup(); }
 });
 
 test('--update-baseline refuses a narrowed scan instead of erasing accepted entries', () => {
   for (const narrowing of ['--show=old-show-2020', '--window-only', '--single-show-delta=0']) {
-    const f = fixture({ baseline: { 'old-show-2020': 1 } });
+    const f = fixture({ baseline: { 'old-show-2020': [HIDDEN_FILE] } });
     try {
       const before = fs.readFileSync(f.baselinePath, 'utf8');
       assert.equal(f.run('--update-baseline', narrowing).status, 1, narrowing);
@@ -100,7 +106,7 @@ test('a show inside the opening window keeps the old tolerance (a few files in f
   const fresh = { id: 'fresh-show-2026', previewsStartDate: today, openingDate: today };
   const f = fixture({
     shows: [fresh],
-    files: { 'fresh-show-2026': [['nytimes--ben-brantley.json', { ...REVIEW, publishDate: `${today}T12:00:00-04:00`, url: 'https://nytimes.com/fresh' }]] },
+    files: { 'fresh-show-2026': [[HIDDEN_FILE, { ...REVIEW, publishDate: `${today}T12:00:00-04:00`, url: 'https://nytimes.com/fresh' }]] },
   });
   try {
     const r = f.run('--strict');
@@ -114,4 +120,41 @@ test('--window-only restores the old scope: an old dark show is not scanned', ()
   try {
     assert.equal(f.run('--strict', '--window-only').status, 0);
   } finally { f.cleanup(); }
+});
+
+test('a corrupt baseline fails the run instead of reading as "nothing accepted"', () => {
+  const f = fixture();
+  try {
+    fs.writeFileSync(f.baselinePath, '<<<<<<< HEAD\n{');
+    const r = f.run('--strict');
+    assert.equal(r.status, 1);
+    assert.match(r.stderr, /not valid JSON/);
+  } finally { f.cleanup(); }
+});
+
+test('an empty shows.json fails the run instead of passing blind', () => {
+  const f = fixture({ shows: [] });
+  try {
+    assert.equal(f.run('--strict').status, 1);
+  } finally { f.cleanup(); }
+});
+
+test('--render-offenders-summary prints the table from the last audit without scanning', () => {
+  const f = fixture();
+  try {
+    f.run('--strict');
+    const r = f.run('--render-offenders-summary');
+    assert.equal(r.status, 0, r.stderr);
+    assert.match(r.stdout, /Older shows hiding scored reviews/);
+    assert.match(r.stdout, /old-show-2020/);
+  } finally { f.cleanup(); }
+});
+
+test('the committed baseline maps every show to a list of review file names', () => {
+  const file = path.join(path.dirname(SCRIPT), '..', 'data', 'audit', 'review-suppression-baseline.json');
+  const doc = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.ok(doc.shows && typeof doc.shows === 'object');
+  for (const [showDir, files] of Object.entries(doc.shows)) {
+    assert.ok(Array.isArray(files) && files.every((f) => typeof f === 'string' && f.endsWith('.json')), `${showDir} must list file names`);
+  }
 });
