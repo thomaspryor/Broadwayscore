@@ -14,7 +14,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers cancel-cascade); manual dispatch is emergency-only. Private core-data-only changes ride the next rebuild/6h backstop.
+- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Do NOT `gh workflow run "Deploy to Vercel"`; manual dispatch is emergency-only. Core-data-only changes ride the next rebuild/6h backstop.
 - **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min in bursts). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof.
 - **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`); project outcome checks: prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`. Detail: `memory/feedback_github_polling_rate_limit.md`.
 
@@ -22,8 +22,8 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
-- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit: `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
-- **Star/grade ratings are score bands (anchored-v6):** 2/5→31-50, 3/5→51-70, 4/5→71-90, 5/5→91-100 (`starToBand`, `scripts/llm-scoring/config.ts`); the LLM score must land inside, and `llmScore.band` proves a review was anchored. Read the WHOLE article for a rating (end of page, image alt text) before judging a score; never set `humanReviewScore` outside the band (`batch-correct-reviews.js` refuses). Why: Slam Frank 2/5 wrongly overridden 2026-10-05; `memory/feedback_anchored_v6_stamp_and_rescore_starvation.md`.
+- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit (`--show=ID`/`--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
+- **Stars are score bands:** 2/5→31-50, 3/5→51-70, 4/5→71-90, 5/5→91-100; read the WHOLE article for the rating, never override outside. `memory/feedback_star_score_cap.md`
 - **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads `public/data/shows/{id}.json:cs` so it's parity-by-definition with the live site. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Why: `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
@@ -78,7 +78,7 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
 ### 14. Opening Night Readiness Check (MANDATORY)
-**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** — a pre-opening 404 is normal, don't pre-stage or treat as a gap. Revisit items 6/8/9 only after first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early (handled by TB direct-URL discovery).
+**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** — a pre-opening 404 is normal, don't pre-stage or treat as a gap. Revisit items 6/8/9 only after first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early.
 
 Run `/verify-opening-night <show-id>` for the full 9-point checklist (covers orchestrator cron/CRITICAL_CRONS, ScrapingBee credits, BD zone) plus `node scripts/check-opening-night-readiness.js --show=ID` (category/status checks). Gotchas: `memory/opening-night-discovery-chains.md`.
 
@@ -121,7 +121,7 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. Production code changes → test fails — that's the point. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Memory Entries: Encode First, Write Rarely
-**Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change (rare exception: multi-cause triage recipes); (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it.
+**Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change (rare: triage recipes); (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full history.
