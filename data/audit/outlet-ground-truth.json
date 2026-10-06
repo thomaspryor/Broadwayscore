@@ -1,47 +1,49 @@
 {
-  "generatedAt": "2026-10-05T17:47:38.794Z",
+  "generatedAt": "2026-10-06T03:42:28.476Z",
   "phase": "done",
   "days": 21,
-  "shows": 71,
+  "shows": 66,
   "sources": {
     "theatermania": {
-      "queries": 44,
-      "listed": 17,
+      "queries": 39,
+      "listed": 16,
       "errors": 0
     },
     "whatsonstage": {
       "queries": 27,
-      "listed": 7,
+      "listed": 6,
       "errors": 0
     },
     "nysr": {
-      "queries": 44,
-      "listed": 16,
+      "queries": 39,
+      "listed": 13,
       "errors": 0
     },
     "newyorktheater": {
-      "queries": 44,
+      "queries": 39,
       "listed": 5,
       "errors": 0
     },
     "nytimes": {
       "queries": 4,
-      "listed": 2,
+      "listed": 1,
       "errors": 0
     },
     "theatre-reviews": {
       "queries": 27,
-      "listed": 28,
+      "listed": 29,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 75,
+  "listed": 70,
   "ingested": [
     {
-      "showId": "kramerfauci-st-anns-off-broadway-2026",
-      "url": "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
-      "ok": true
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "source": "theatre-reviews",
+      "ok": true,
+      "created": 1,
+      "updated": 0
     }
   ],
   "missing": []
