@@ -59,6 +59,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const { findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
+const { writeManualReview } = require('./lib/manual-review-url-reset');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const {
   recoverFromText,
@@ -272,7 +273,11 @@ const input = {
 // tell "the correction didn't land" apart from "the file was already fine".
 const preExisting = findExistingReviewFile(showDir, outletId, criticName, url);
 
-const result = createOrMergeReviewFile(showId, input, { dryRun });
+// Reset the old article before merging this ingest's body and scores.
+const result = writeManualReview({
+  preExisting, url, incomingBody: fullText, dryRun,
+  write: () => createOrMergeReviewFile(showId, input, { dryRun }),
+});
 
 // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
 // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto a
