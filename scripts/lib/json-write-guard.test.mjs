@@ -142,3 +142,49 @@ test('a concurrent writer\'s change to a held record is copied into the caller\'
   const written = JSON.parse(fs.readFileSync(filePath, 'utf8')).shows;
   assert.deepEqual(written, [{ id: 'a', v: 1 }, { id: 'b', v: 2, w: 'theirs' }]);
 });
+
+for (const behavior of ['write', 'skip', 'throw', 'async']) {
+  test(`mutateFresh ${behavior} uses locked current data and cleans up`, (t) => {
+    const dir = fs.mkdtempSync(path.join(process.cwd(), '.claude/bro3834-guard-'));
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const file = path.join(dir, 'data.json');
+    fs.writeFileSync(file, JSON.stringify({ shows: [{ id: 'x', title: 'old' }], _meta: { lastUpdated: 'old' } }, null, 2));
+    const guard = createJsonWriteGuard(file);
+    const data = guard.load();
+    data.shows[0].title = 'stale caller edit';
+    data._meta.lastUpdated = 'stale caller timestamp';
+    const human = createJsonWriteGuard(file);
+    const fresh = human.load();
+    fresh.shows[0].title = 'human title';
+    fresh.humanNote = 'human top-level';
+    fresh._meta.lastUpdated = 'human timestamp';
+    human.save(fresh);
+    const before = fs.readFileSync(file, 'utf8');
+    const callback = current => {
+      assert.equal(fs.existsSync(guard.lockDir), true);
+      assert.equal(current.shows[0].title, 'human title');
+      assert.equal(current._meta.lastUpdated, 'human timestamp');
+      if (behavior === 'skip') return false;
+      if (behavior === 'throw') throw new Error('abort mutation');
+      if (behavior === 'async') return Promise.resolve();
+      current.shows[0].closingDate = '2025-01-01';
+      current._meta.lastUpdated = 'callback timestamp';
+    };
+    if (behavior === 'throw' || behavior === 'async') {
+      assert.throws(() => guard.save(data, { mutateFresh: callback }), behavior === 'throw' ? /abort mutation/ : /synchronous/);
+    } else {
+      const result = guard.save(data, { mutateFresh: callback });
+      if (behavior === 'skip') assert.equal(result.wrote, false);
+    }
+    assert.equal(fs.existsSync(guard.lockDir), false);
+    if (behavior !== 'write') assert.equal(fs.readFileSync(file, 'utf8'), before);
+    else {
+      const saved = JSON.parse(fs.readFileSync(file, 'utf8'));
+      assert.equal(saved.shows[0].title, 'human title');
+      assert.equal(saved.shows[0].closingDate, '2025-01-01');
+      assert.equal(saved.humanNote, 'human top-level');
+      assert.equal(saved._meta.lastUpdated, 'callback timestamp');
+      assert.deepEqual(data, saved);
+    }
+  });
+}
