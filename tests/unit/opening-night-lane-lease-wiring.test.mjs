@@ -179,6 +179,24 @@ test('revertLeasedChanges undoes tracked, staged, untracked and _pending writes 
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+test('revertLeasedChanges handles staged new files and renames (autostash-conflict staging path)', () => {
+  const dir = tmp();
+  try {
+    git(dir, 'init', '-q');
+    git(dir, 'config', 'user.email', 't@t'); git(dir, 'config', 'user.name', 't');
+    fs.mkdirSync(path.join(dir, SHOW));
+    fs.writeFileSync(path.join(dir, SHOW, 'a.json'), '{"keep":"this one is long enough to be detected as a rename"}');
+    git(dir, 'add', '-A'); git(dir, 'commit', '-qm', 'base');
+    git(dir, 'mv', `${SHOW}/a.json`, `${SHOW}/b.json`);                       // staged rename
+    fs.writeFileSync(path.join(dir, SHOW, 'new.json'), '{}'); git(dir, 'add', `${SHOW}/new.json`); // staged add
+    guard.revertLeasedChanges(dir, [SHOW]);
+    assert.equal(git(dir, 'status', '--porcelain'), '');
+    assert.equal(fs.existsSync(path.join(dir, SHOW, 'a.json')), true);
+    assert.equal(fs.existsSync(path.join(dir, SHOW, 'b.json')), false);
+    assert.equal(fs.existsSync(path.join(dir, SHOW, 'new.json')), false);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 // ------------------------------------------------------------ structural: every workflow calls it
 
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
@@ -198,6 +216,7 @@ test('structural: push-review-texts enforces the lease before staging, and the s
   const enforceAt = a.indexOf('opening-night-lease.js" enforce');
   assert.ok(enforceAt > 0, 'enforce call missing');
   assert.ok(enforceAt < a.indexOf('# Stage all changes'), 'enforce must run before the staging step');
+  assert.ok(a.indexOf('opening-night-lease.js" sync') > 0 && a.indexOf('opening-night-lease.js" sync') < enforceAt, 'push action must re-sync before enforce');
   assert.match(a, /enforce --dir="\$GITHUB_WORKSPACE\/data\/review-texts"/);
   assert.match(read('.github/actions/opening-night-lease-sync/action.yml'), /opening-night-lease\.js" sync/);
   assert.match(read('.gitignore'), /^data\/opening-night\/leases\.json$/m);

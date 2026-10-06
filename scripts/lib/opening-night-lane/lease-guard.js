@@ -45,7 +45,8 @@ function partitionLeased(showIds, opts = {}) {
 function leasedShowIds({ file, now, env = process.env } = {}) {
   const f = file || leasesFile(env);
   if (!fs.existsSync(f)) return [];
-  const state = lease.readState(f); // an unknown marker has no leases: enumeration cannot name shows, per-show checks fail closed instead
+  if (readUnknownMarker(f)) { console.warn('::warning::opening-night lease state unknown (sync failed); cannot name leased shows'); return []; }
+  const state = lease.readState(f);
   const ignoreHolder = env.OPENING_NIGHT_LANE_HOLDER || undefined;
   const shows = new Set(Object.keys(state.leases).map((k) => k.split('|')[0]));
   return [...shows].filter((s) => lease.activeLeaseFor(state, s, { now, ignoreHolder }));
@@ -61,22 +62,21 @@ function revertLeasedChanges(repoDir, shows) {
   const leased = new Set(shows);
   if (!leased.size) return [];
   const run = (args) => execFileSync('git', args, { cwd: repoDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-  const out = run(['status', '--porcelain', '-z', '--untracked-files=all']);
   const reverted = [];
-  const entries = out.split('\0').filter(Boolean);
+  const inHead = (f) => { try { run(['cat-file', '-e', `HEAD:${f}`]); return true; } catch { return false; } };
+  const isLeased = (f) => { const seg = f.split('/'); return leased.has(seg[0] === '_pending' ? seg[1] : seg[0]); }; // _pending/<show>/ mirrors a show dir
+  const undo = (f) => {
+    if (inHead(f)) { run(['reset', '--quiet', 'HEAD', '--', f]); run(['checkout', '--', f]); } // tracked: restore from HEAD
+    else { run(['rm', '--quiet', '--cached', '-f', '--ignore-unmatch', '--', f]); fs.rmSync(path.join(repoDir, f), { force: true }); } // new (untracked or staged add): remove
+    reverted.push(f);
+  };
+  const entries = run(['status', '--porcelain', '-z', '--untracked-files=all']).split('\0').filter(Boolean);
   for (let i = 0; i < entries.length; i++) {
     const status = entries[i].slice(0, 2);
     const file = entries[i].slice(3);
-    if (status[0] === 'R' || status[0] === 'C') i++; // the next token is the rename source
-    const seg = file.split('/');
-    // _pending/<show>/... is the quarantine mirror of a show directory (review-write-guard).
-    if (!leased.has(seg[0] === '_pending' ? seg[1] : seg[0])) continue;
-    if (status === '??') fs.rmSync(path.join(repoDir, file), { force: true });
-    else {
-      run(['reset', '--quiet', 'HEAD', '--', file]);
-      run(['checkout', '--', file]);
-    }
-    reverted.push(file);
+    const source = (status[0] === 'R' || status[0] === 'C') ? entries[++i] : null; // rename/copy: next token is the old path
+    if (isLeased(file)) undo(file);
+    if (source && isLeased(source)) undo(source);
   }
   return reverted;
 }
