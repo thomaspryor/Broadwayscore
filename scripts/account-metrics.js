@@ -69,7 +69,7 @@ async function fetchAllUsers() {
 
 // Range paging needs a unique sort key, or tied rows shift between pages and
 // get skipped or counted twice.
-const UNIQUE_ORDER = { reviews: 'id', lists: 'id', watchlist: 'user_id,show_id' };
+const UNIQUE_ORDER = { reviews: 'id', lists: 'id', watchlist: 'user_id,show_id', seen_unrated: 'user_id,show_id' };
 
 async function fetchUserIds(table) {
   const rows = [];
@@ -83,10 +83,15 @@ async function fetchUserIds(table) {
 }
 
 async function collectAccounts() {
-  const [users, ratings, watchlist, lists] = await Promise.all([
+  const [users, ratings, watchlist, lists, seen] = await Promise.all([
     fetchAllUsers(), fetchUserIds('reviews'), fetchUserIds('watchlist'), fetchUserIds('lists'),
+    // Newer table (BRO-4619): if it can't be read, lose only the "seen" count, not every account number.
+    fetchUserIds('seen_unrated').catch((e) => {
+      console.error(`[account-metrics] seen_unrated failed, counting it as empty: ${e.message}`);
+      return [];
+    }),
   ]);
-  return m.summarizeAccounts(users, { ratings, watchlist, lists });
+  return m.summarizeAccounts(users, { ratings, watchlist, lists, seen });
 }
 
 async function collectPostHog() {
