@@ -103,8 +103,10 @@ export default function VideoCriticIndexClient({ critics, totalReviews }: { crit
     switch (sortMode) {
       case 'reviews': return list.sort((a, b) => b.reviewCount - a.reviewCount);
       case 'reviews-asc': return list.sort((a, b) => a.reviewCount - b.reviewCount);
-      case 'highest': return list.sort((a, b) => b.avgScore - a.avgScore);
-      case 'lowest': return list.sort((a, b) => a.avgScore - b.avgScore);
+      // Average sorts list ranked creators (volumeRank > 0 = 10+ reviews) first,
+      // so a 1-review average can't top "Highest avg".
+      case 'highest': return list.sort((a, b) => Number(b.volumeRank > 0) - Number(a.volumeRank > 0) || b.avgScore - a.avgScore);
+      case 'lowest': return list.sort((a, b) => Number(b.volumeRank > 0) - Number(a.volumeRank > 0) || a.avgScore - b.avgScore);
       case 'alpha': return list.sort((a, b) => a.name.localeCompare(b.name));
     }
   }, [filtered, sortMode]);

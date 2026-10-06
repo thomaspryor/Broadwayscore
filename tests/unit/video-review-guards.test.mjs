@@ -55,3 +55,34 @@ test('isPaidPromotion matches creator ad labels, not press tickets (BRO-4760)', 
   assert.equal(isPaidPromotion({ title: 'the #adaptation was great', transcript: 'a broad ad campaign' }), false);
   assert.equal(isPaidPromotion({}), false);
 });
+
+test('creatorLookup resolves every creator handle in the live data (BRO-4760)', () => {
+  const fs = require('fs'), path = require('path');
+  const { creatorLookup } = require('../../scripts/lib/video-review-guards.js');
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '../..');
+  const creators = JSON.parse(fs.readFileSync(path.join(root, 'data/video-creators.json'), 'utf8')).creators;
+  const find = creatorLookup(creators);
+  assert.equal(find('MatthewHardyMusical').id, 'matthewhardymusical');
+  assert.equal(find('TheatreReviewsWithPaulSeven').id, 'paulsevenlewis');
+  assert.equal(find('nobody'), undefined);
+  // first match wins in creatorLookup, so two creators sharing a key would silently swap
+  const keys = creators.flatMap(c => [...new Set([c.id, c.platforms?.youtube?.channelHandle, c.platforms?.tiktok?.handle].filter(Boolean).map(k => k.toLowerCase()))]);
+  assert.equal(new Set(keys).size, keys.length, 'two creators share an id/handle');
+  const reviews = JSON.parse(fs.readFileSync(path.join(root, 'data/video-reviews.json'), 'utf8'));
+  for (const [showId, list] of Object.entries(reviews)) {
+    if (showId === '_meta') continue;
+    for (const r of list) {
+      const c = find(r.handle);
+      assert.ok(c, `${showId}: no creator for handle ${r.handle}`);
+      if (r.creatorId) assert.equal(r.creatorId, c.id, `${showId}: creatorId ${r.creatorId} vs ${c.id}`);
+    }
+  }
+});
+
+test('built video-reviews.json carries no "NA" dates (BRO-4760)', () => {
+  const fs = require('fs'), path = require('path');
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '../..');
+  const reviews = JSON.parse(fs.readFileSync(path.join(root, 'data/video-reviews.json'), 'utf8'));
+  const bad = Object.entries(reviews).filter(([k]) => k !== '_meta').flatMap(([k, l]) => l.filter(r => r.publishedAt === 'NA').map(() => k));
+  assert.deepEqual(bad, []);
+});
