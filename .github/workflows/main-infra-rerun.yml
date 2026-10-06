@@ -3,15 +3,25 @@ name: Main infra re-run
 # BRO-4754: during a GitHub Actions incident (2026-10-05) main test.yml runs
 # went red because jobs were cancelled before any runner picked them up
 # ("The job was not acquired by Runner of type hosted even after multiple
-# attempts"). Those shas never got a code verdict. Every 15 minutes this
-# re-runs the failed jobs of the NEWEST main push run when every failed job
-# was starved that way, at most to attempt 3, and only 15+ min after the run
-# ended. Newest-only: a green re-run of an older sha would fire test-summary's
-# "Resolve alert" step while a newer run is red. Cron-only (no workflow_run)
-# so a rerun mid-incident does not chain into another immediate starve.
+# attempts"). Those shas never got a code verdict. This re-runs the failed
+# jobs of the NEWEST main push run when every failed job was starved that
+# way, at most to attempt 3, and only 15+ min after the run ended.
+# Newest-only: a green re-run of an older sha would fire test-summary's
+# "Resolve alert" step while a newer run is red.
+# Triggers (BRO-4771): the cron fires every 4-8h in this repo, not every 15
+# min, so it never ran in time. Each non-green Test Suite completion on main
+# now starts this workflow, and --wait sleeps out the 15-min age in-job, then
+# fetches and decides again. A real failure exits at once without sleeping.
+# Chaining: a rerun made with GITHUB_TOKEN does not fire workflow_run; one
+# made with the fallback PAT can, but attempt<3 and the 15-min age bound it
+# to two reruns per sha. The cron stays as a backstop.
 # Decision logic + tests: scripts/lib/main-infra-rerun{,.test}.
 
 on:
+  workflow_run:
+    workflows: ['Test Suite']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
@@ -26,10 +36,12 @@ jobs:
   rerun:
     name: Re-run newest starved main test run
     runs-on: ubuntu-latest
-    # 10, not 5: the first live run (37382363147) spent all 5 minutes in a
-    # full checkout of the 2.5 GB repo. Sparse checkout below needs only
-    # scripts/ and the notify-failure action.
-    timeout-minutes: 10
+    # Green Test Suite completions need nothing; skip before taking a runner.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion != 'success'
+    # 25: up to 16 min of --wait plus checkout. The first live run
+    # (37382363147) spent 5 minutes in a full checkout of the 2.5 GB repo;
+    # the sparse checkout below needs only scripts/ and the notify-failure action.
+    timeout-minutes: 25
     concurrency:
       group: main-infra-rerun
       cancel-in-progress: false
@@ -46,7 +58,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: node scripts/main-infra-rerun.js
+          WAIT_FLAG: ${{ github.event_name == 'workflow_run' && '--wait' || '' }}
+        run: node scripts/main-infra-rerun.js $WAIT_FLAG
 
       - name: Notify on failure
         if: failure()

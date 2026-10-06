@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { decideInfraRerun, isStarvedJob, MIN_AGE_MS } = require('./main-infra-rerun.js');
+const { decideInfraRerun, waitMsFor, isStarvedJob, MIN_AGE_MS } = require('./main-infra-rerun.js');
 
 const NOW = Date.parse('2026-10-05T20:30:00Z');
 const STARVED = [{ message: 'The job was not acquired by Runner of type hosted even after multiple attempts' }];
@@ -83,4 +83,31 @@ test('non-main or non-push runs are ignored', () => {
 test('only the aggregator failed: nothing to re-run', () => {
   const js = jobs().map((j) => (j.name === 'Test Summary' ? j : { ...j, conclusion: j.conclusion === 'skipped' ? 'skipped' : 'success' }));
   assert.equal(decideInfraRerun({ runs: [run()], jobs: js, now: NOW }).reason, 'no-failed-jobs');
+});
+
+// BRO-4771: workflow_run fires right after the run ends; --wait sleeps only
+// when the run would qualify once old enough.
+test('waitMsFor: a fresh starved-only run waits until MIN_AGE has passed', () => {
+  const ended = NOW - 60_000;
+  const ms = waitMsFor({ runs: [run({ updated_at: new Date(ended).toISOString() })], jobs: jobs(), annotationsByJobId: starvedAll() }, { now: NOW });
+  assert.ok(ms >= MIN_AGE_MS - 60_000 && ms <= MIN_AGE_MS - 60_000 + 10_000, String(ms));
+});
+
+test('waitMsFor: a fresh run with a real failure does not hold a runner asleep', () => {
+  const js = jobs();
+  js[1] = job(2, 'Unit Tests', 'failure', [{ conclusion: 'failure' }]);
+  const r = run({ updated_at: new Date(NOW - 60_000).toISOString() });
+  assert.equal(waitMsFor({ runs: [r], jobs: js, annotationsByJobId: starvedAll() }, { now: NOW }), 0);
+});
+
+test('waitMsFor: no wait when already decidable (old enough, in progress, exhausted)', () => {
+  assert.equal(waitMsFor({ runs: [run()], jobs: jobs(), annotationsByJobId: starvedAll() }, { now: NOW }), 0);
+  assert.equal(waitMsFor({ runs: [run({ status: 'in_progress', conclusion: null })] }, { now: NOW }), 0);
+  const fresh = new Date(NOW - 60_000).toISOString();
+  assert.equal(waitMsFor({ runs: [run({ updated_at: fresh, run_attempt: 3 })], jobs: jobs(), annotationsByJobId: starvedAll() }, { now: NOW }), 0);
+});
+
+test('waitMsFor: capped at maxWaitMs', () => {
+  const r = run({ updated_at: new Date(NOW).toISOString() });
+  assert.equal(waitMsFor({ runs: [r], jobs: jobs(), annotationsByJobId: starvedAll() }, { now: NOW, maxWaitMs: 1000 }), 1000);
 });

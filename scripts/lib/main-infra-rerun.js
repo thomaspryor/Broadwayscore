@@ -58,4 +58,21 @@ function decideInfraRerun({ runs, jobs, annotationsByJobId = {}, now = Date.now(
   return { retry: true, reason: 'runner-starvation-only', runId: run.id, attempt, starved: bad.map((j) => j.name) };
 }
 
-module.exports = { decideInfraRerun, isStarvedJob, candidateJobs, MAX_ATTEMPTS, MIN_AGE_MS, AGGREGATOR_JOB };
+/**
+ * BRO-4771: the 15-minute cron fires every 4-8h in this repo, so the workflow also
+ * runs on each red Test Suite completion and waits out MIN_AGE in-job. Returns
+ * how long to sleep before deciding again: > 0 only when the run is too recent
+ * AND would be re-run once old enough (decided again at ended + MIN_AGE), so a
+ * real failure never holds a runner asleep. Capped at maxWaitMs.
+ */
+function waitMsFor(input = {}, { now = Date.now(), minAgeMs = MIN_AGE_MS, maxWaitMs = MIN_AGE_MS + 60 * 1000 } = {}) {
+  const d = decideInfraRerun({ ...input, now, minAgeMs });
+  if (d.retry || d.reason !== 'too-recent') return 0;
+  const ended = Date.parse(((input.runs || [])[0] || {}).updated_at || '');
+  if (!Number.isFinite(ended)) return 0;
+  const later = ended + minAgeMs;
+  if (!decideInfraRerun({ ...input, now: later, minAgeMs }).retry) return 0;
+  return Math.max(0, Math.min(maxWaitMs, later - now + 5000));
+}
+
+module.exports = { decideInfraRerun, waitMsFor, isStarvedJob, candidateJobs, MAX_ATTEMPTS, MIN_AGE_MS, AGGREGATOR_JOB };
