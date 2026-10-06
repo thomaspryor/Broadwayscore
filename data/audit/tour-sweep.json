@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T19:04:19.569Z",
+  "generatedAt": "2026-10-06T22:18:06.238Z",
   "moved": 0,
   "held": [],
   "repaired": 0,
@@ -40,8 +40,8 @@
         "target-collision": 1,
         "wrong-show": 1,
         "duplicate": 1,
-        "duplicate-on-tour": 5,
-        "undated-after-close": 1
+        "duplicate-on-tour": 3,
+        "ambiguous-tour": 3
       }
     },
     {
@@ -384,7 +384,7 @@
       "counts": {
         "non-review": 1,
         "wrong-show": 4,
-        "undated-after-close": 1,
+        "ambiguous-tour": 1,
         "duplicate": 3,
         "no-tour-evidence": 2
       }
@@ -396,6 +396,104 @@
       ],
       "held": false,
       "counts": {}
+    },
+    {
+      "tourId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "fromIds": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "wrong-show": 4,
+        "ambiguous-tour": 1,
+        "no-tour-evidence": 3,
+        "duplicate": 1
+      }
+    },
+    {
+      "tourId": "a-christmas-story-the-musical-tour-2026",
+      "fromIds": [
+        "a-christmas-story-the-musical-2012"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "fromIds": [
+        "dr-seuss-how-the-grinch-stole-christmas-2007"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "just-in-time-tour-2027",
+      "fromIds": [
+        "just-in-time-2025"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "legally-blonde-tour-2027",
+      "fromIds": [
+        "legally-blonde-2007"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 4,
+        "wrong-show": 1
+      }
+    },
+    {
+      "tourId": "liberation-tour-2026",
+      "fromIds": [
+        "liberation-2025"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "mark-twain-tonight-tour-2027",
+      "fromIds": [
+        "mark-twain-tonight-1977",
+        "mark-twain-tonight-2005"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "shucked-tour-2027",
+      "fromIds": [
+        "shucked-2023"
+      ],
+      "held": false,
+      "counts": {
+        "no-tour-evidence": 1,
+        "non-review": 10,
+        "before-tour-launch": 4,
+        "wrong-show": 1,
+        "duplicate": 1,
+        "ambiguous-tour": 3
+      }
+    },
+    {
+      "tourId": "the-whos-tommy-tour-2026",
+      "fromIds": [
+        "the-whos-tommy-1993",
+        "the-whos-tommy-2024"
+      ],
+      "held": false,
+      "counts": {
+        "tryout": 1,
+        "before-tour-launch": 1
+      }
     }
   ]
 }

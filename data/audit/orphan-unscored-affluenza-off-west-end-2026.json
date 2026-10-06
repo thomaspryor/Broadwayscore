@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "affluenza-off-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-06T19:08:58.215Z",
+  "detectedAt": "2026-10-06T22:22:22.887Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "londontheatregeek--unknown.json",
+      "outletId": "londontheatregeek",
+      "criticName": "Unknown",
+      "url": "https://www.londontheatregeek.co.uk/shows/affluenza",
+      "fullTextLen": 3075,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -40,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-06T22:22:22.887Z"
 }

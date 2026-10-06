@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T19:09:09.553Z",
+  "timestamp": "2026-10-06T22:22:39.525Z",
   "stats": {
-    "totalReviews": 46657,
-    "alreadyFlagged": 18696,
-    "dateGuardCatches": 270,
+    "totalReviews": 46672,
+    "alreadyFlagged": 18698,
+    "dateGuardCatches": 271,
     "directorMismatch": 1326,
-    "tvFilmSignals": 1356,
-    "londonSignals": 1294,
+    "tvFilmSignals": 1360,
+    "londonSignals": 1296,
     "offBroadwaySignals": 510,
-    "yearMismatch": 114,
-    "noPublishDate": 4311
+    "yearMismatch": 115,
+    "noPublishDate": 4310
   },
   "findings": [
     {
@@ -93,6 +93,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "file": "cleveland-plain-dealer--glenn-anderson.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.audacy.com/star102cleveland/latest/glenns-review-of-a-beautiful-noise-at-playhouse-square",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (10x) more than 2022 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -1026,6 +1040,20 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 13,
+      "publishDate": "2026-10-06",
+      "url": "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
       "file": "liamodell--liam-odell.json",
       "score": 39,
       "publishDate": "2026-10-06",
@@ -1049,6 +1077,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "score": 44,
+      "publishDate": "2026-10-06",
+      "url": "https://www.londontheatre.co.uk/reviews/affluenza-review-riverside-studios",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -1082,6 +1124,39 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 42,
+      "publishDate": "2026-10-06",
+      "url": "https://theatreandtonic.co.uk/blog/affluenza-riverside-studios-london-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "thereviewshub--fiona-paterson.json",
+      "score": 78,
+      "publishDate": "2026-10-06",
+      "url": "https://www.thereviewshub.com/affluenza-riverside-studios-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
       "file": "thestage--holly-omahony.json",
       "score": 37,
       "publishDate": "2026-10-06",
@@ -1097,7 +1172,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 13,
+      "score": 10,
       "publishDate": "2026-10-05",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
       "findings": [
@@ -1111,7 +1186,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 17,
+      "score": 16,
       "publishDate": "2026-10-06",
       "url": "https://www.whatsonstage.com/news/affluenza-with-noah-schnapp-at-riverside-studios-review_1734391/",
       "findings": [
@@ -26307,6 +26382,20 @@
       ]
     },
     {
+      "showId": "school-pictures-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "November 22nd, 2023",
+      "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1050d before show (November 22nd, 2023 vs 2026-10-07)"
+        }
+      ]
+    },
+    {
       "showId": "scorched-earth-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
       "score": 71,
@@ -37444,7 +37533,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 74,
+      "score": 59,
       "publishDate": "2026-09-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
       "findings": [
@@ -48021,7 +48110,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 64,
+      "score": 60,
       "publishDate": "2026-10-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "findings": [
@@ -59019,6 +59108,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-10-06",
+      "url": "https://theatreandtonic.co.uk/blog/the-hungry-ghost-bush-theatre-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
