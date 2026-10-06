@@ -1,19 +1,66 @@
 {
-  "updatedAt": "2026-10-06T17:32:05.000Z",
-  "processed": 53,
-  "failed": 17,
-  "successRate": "75.7%",
+  "updatedAt": "2026-10-06T17:33:40.818Z",
+  "processed": 321,
+  "failed": 194,
+  "successRate": "62.3%",
   "tierBreakdown": {
-    "playwright": 36,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 188,
+    "amp": 3,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 2,
-    "brightdata": 1,
+    "scrapingdog": 35,
+    "scrapingbee": 35,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 63
   },
-  "browserbaseSessions": 3,
-  "recentActivity": []
+  "browserbaseSessions": 0,
+  "recentActivity": [
+    {
+      "t": "2026-10-06T10:17:56.351Z",
+      "event": "bb-session",
+      "session": "7ef72905",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-06T10:18:37.089Z",
+      "event": "bb-session",
+      "session": "4b4a0ad1",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-06T10:19:44.084Z",
+      "event": "bb-session",
+      "session": "3032d6f5",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-06T10:19:52.914Z",
+      "event": "bb-session",
+      "session": "7872b602",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-06T13:47:03.528Z",
+      "event": "bb-session",
+      "session": "baf790f0",
+      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
+    },
+    {
+      "t": "2026-10-06T13:47:04.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-06T14:05:16.583Z",
+      "event": "bb-session",
+      "session": "be99d9fb",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-10-06T14:05:17.164Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    }
+  ]
 }
