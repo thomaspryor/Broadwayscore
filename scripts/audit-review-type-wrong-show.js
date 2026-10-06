@@ -29,6 +29,7 @@
 'use strict';
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isReviewTypeWrongShowGap } = require('./lib/nonreview-contenttype-wrongshow');
@@ -241,7 +242,7 @@ function main() {
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
       scanned++;
 
-      if (!isReviewTypeWrongShowGap(data)) continue;
+      if (!isReviewTypeWrongShowGap(data) || laneBypasses(data, 'nonReview')) continue; // BRO-4807: lane reviews are never flagged
 
       hits.push({
         showId,

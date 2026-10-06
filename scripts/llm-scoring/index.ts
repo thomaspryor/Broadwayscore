@@ -78,6 +78,7 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 const { assessTextQuality, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
 const { getBestTextForScoring } = require('../lib/text-quality');
 const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
+const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
@@ -1454,6 +1455,20 @@ async function main(): Promise<void> {
         ) {
           console.log(`SKIP-REJECT (${rejection} on known bot-stub/paywall truncation): ${rejectionReasoning?.substring(0, 80) || ''}`);
           stampTerminalScoringFailure(fileData, `bot_stub_truncation:${rejection}`);
+          saveReviewFile(filePath, fileData);
+          skipped++;
+          return true;
+        }
+
+        // BRO-4807: an opening-night lane review (provenance + productionVerified:"aggregator") is never excluded by
+        // the ensemble's wrong-show / wrong-production / not-a-review / garbage verdict. Same shape as the bot-stub
+        // branch above: no flag, no rejection fields, no fabricated score, and stamped so it is not re-selected.
+        const laneGuard = rejection === 'not_a_review' ? 'nonReview'
+          : rejection === 'garbage_text' ? 'scraperGarbage'
+          : (rejection === 'wrong_show' || rejection === 'wrong_production') ? 'wrongProduction' : null;
+        if (laneGuard && laneBypasses(fileData, laneGuard)) {
+          console.log(`SKIP-REJECT (${rejection} on opening-night lane review): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          stampTerminalScoringFailure(fileData, `lane_review_rejection:${rejection}`);
           saveReviewFile(filePath, fileData);
           skipped++;
           return true;

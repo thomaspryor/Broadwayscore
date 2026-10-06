@@ -33,6 +33,7 @@
  *   node scripts/flag-wrong-production-by-url-date.js --show=ID    # one show
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { shouldSkipWrongProductionAudit, getWrongProductionReasonFromUrl, isCriticUnknown } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -64,6 +65,7 @@ for (const showId of dirs) {
     let d;
     try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
     if (d.wrongProduction || d.wrongShow || d.manualClear || d.allowEarlyDate || d.allowLateDate) continue;
+    if (laneBypasses(d, 'wrongProduction')) continue; // BRO-4807: lane reviews are never flagged
     if (shouldSkipWrongProductionAudit(d)) continue;
     if (!d.assignedScore && !d.llmScore?.score) continue;
 

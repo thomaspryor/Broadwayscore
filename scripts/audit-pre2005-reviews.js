@@ -17,6 +17,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { parseHistoricalDate } = require('./lib/date-utils');
@@ -447,7 +448,7 @@ if (applyMode) {
     const reviewData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
     // Honor manual clears — don't re-flag a human-verified review.
-    if (shouldSkipWrongProductionAudit(reviewData)) continue;
+    if (shouldSkipWrongProductionAudit(reviewData) || laneBypasses(reviewData, 'wrongProduction')) continue; // BRO-4807: lane reviews are never flagged or moved
 
     if (result.suggestedShowId && showById.has(result.suggestedShowId)) {
       // Move to correct show directory

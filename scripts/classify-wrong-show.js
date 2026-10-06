@@ -26,6 +26,7 @@
  * Integrated into rebuild via: .github/workflows/rebuild-reviews.yml
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
@@ -373,7 +374,7 @@ async function main() {
               const r = safeWriteReview(candidate.filePath, data);
               if (r.lockedSkipped) lockedSkipCount++;
             }
-          } else if (APPLY && parsed.confidence === 'high' && !wrongShowCleared(data)) {
+          } else if (APPLY && parsed.confidence === 'high' && !wrongShowCleared(data) && !laneBypasses(data, 'wrongProduction')) {
             // Apply: flag file with wrongShow + wrongShowReason
             data.wrongShow = true;
             data.wrongShowReason = `LLM: ${parsed.reasoning}`;

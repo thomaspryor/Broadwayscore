@@ -62,6 +62,7 @@ const {
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
 const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings } = require('./lib/prior-run-sibling');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -154,7 +155,14 @@ MUST be checked before any of it runs (see task #498 / memory/feedback_local_reb
 // six sites below were never covered, which is why the gate went red again
 // hours after that fix landed.
 let awaitingRefetchFlagSkipped = 0;
+// BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") are never flagged by a
+// corpus guard; laneBypasses is the one predicate (trust-model.js), this only supplies the show's openingDate.
+function laneHolds(d, guard) {
+  const show = d && showById[d.showId];
+  return laneBypasses(d, guard, show && show.openingDate ? { openingDate: show.openingDate } : {});
+}
 function skipStaleFlagWrite(d) {
+  if (laneHolds(d, 'wrongProduction')) return true;
   // shouldWithholdStaleExclusionFlag, NOT the bare isAwaitingUrlCorrectionRefetch:
   // the bare predicate omits the manual-clear check the gate applies, so keying
   // on it would withhold flags the gate never objected to.
@@ -1784,7 +1792,7 @@ const crossShowFingerprints = new Map();
         // EARLIER production (e.g. "based on the 2025 performance at the Asylum
         // Theater") even though the page was republished with an in-window date.
         // Runs regardless of reviewDate: the date guards cannot see this.
-        if (!d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d)) {
+        if (!d.wrongProductionCleared && d.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(d) && !laneHolds(d, 'wrongProduction')) {
           const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
           if (republish.flag) {
             console.log(`  [PRIOR-RUN-REPUBLISH] ${sid}/${f}: ${republish.reason} — "${republish.evidence}"`);
@@ -1819,6 +1827,7 @@ const crossShowFingerprints = new Map();
             priorRunSkipped++;
             continue;
           }
+          if (preWindow.exclude && laneHolds(d, 'wrongProduction')) continue;
           if (preWindow.exclude) {
             // Current-run corroboration guard (care-west-end-2026 misparse
             // incident 2026-07-11): Theatre Record archiving this review under
@@ -1852,7 +1861,7 @@ const crossShowFingerprints = new Map();
             isMultiProductionTitle: multiProductionTitleIds.has(sid),
             show: showRecord,
           });
-          if (verdict.flag) {
+          if (verdict.flag && !laneHolds(d, 'wrongProduction')) {
             console.log(`  [DATELESS-REVIVAL] ${sid}/${f}: no usable date on not-yet-opened multi-production title`);
             d.wrongProduction = true;
             invalidateWrongProductionAutoClear(d);
@@ -2124,7 +2133,7 @@ const crossShowFingerprints = new Map();
           && applyVenueClassificationCarveout(cv, showById[sid]).clearedWrongProduction
           && isReviewWithinOwnProductionWindow(showById[sid], d.publishDate);
         if (cv.wrongProduction === true && d.wrongProduction !== true
-            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket
+            && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')
             && !ppCvWpAdvisory && !ppInPriorRun && !ppInTourLeg && !ppVenueCarveout) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
@@ -2161,7 +2170,7 @@ const crossShowFingerprints = new Map();
         // BRO-4429: verdict formed from the 2500-char head of a longer article is advisory.
         const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText, d);
         if (cvPartialWindow && cv.wrongArticle === true) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
-        if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !cvNonReviewHumanCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !cvNonReviewHumanCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'nonReview')) {
           // CV outlet-style override (S3-T5): defer for known long-biographical
           // outlets when the text is substantive + opinionated. The CV pass false-positives
           // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
@@ -2177,7 +2186,7 @@ const crossShowFingerprints = new Map();
             d.isNonReviewReason = d.isNonReviewReason || `CV-promoted (not a review): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
           // Both flags true: genuinely a review, just of a different production — wrongShow family.
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
@@ -2193,7 +2202,7 @@ const crossShowFingerprints = new Map();
         } else if (cv.wrongArticle === true && ensembleSaysReview) {
           stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
         }
-        if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
             d.flagReason = 'cv-promotion-deferred';
@@ -2251,7 +2260,7 @@ showDirs.forEach(showId => {
           const uInPriorRun = isWithinPriorRun(ud.publishDate, showById[showId]?.priorRuns);
           // Same gate for a declared tourLegs window.
           const uInTourLeg = isWithinTourLeg(ud.publishDate, showById[showId]?.tourLegs);
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg) {
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction') && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             invalidateWrongProductionAutoClear(ud);
@@ -2265,7 +2274,7 @@ showDirs.forEach(showId => {
           // #651: pure non-review (wrongArticle without wrongProduction) routes to
           // isNonReview, not wrongShow — see the matching non-upcoming pass above.
           const uCvIsPureNonReview = cvWrongArticleFamily(ucv) === 'nonReview';
-          if (uCvIsPureNonReview && !isCvVerdictFromPartialWindow(ucv, ud.fullText, ud) && !uEnsembleSaysReview && ud.isNonReview !== true && !cvNonReviewHumanCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+          if (uCvIsPureNonReview && !isCvVerdictFromPartialWindow(ucv, ud.fullText, ud) && !uEnsembleSaysReview && ud.isNonReview !== true && !cvNonReviewHumanCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'nonReview')) {
             // CV outlet-style override (S3-T5 followup): defer for known long-biographical
             // outlets even on upcoming-show path. Long-biographical previews share the same
             // FP class as opening-day reviews (e.g., NY Sun biographical lead on an upcoming show).
@@ -2280,7 +2289,7 @@ showDirs.forEach(showId => {
               ud.isNonReviewReason = `CV-promoted (not a review): ${(ucv.reasoning || '').substring(0, 200)}`;
               promoted = true;
             }
-          } else if (ucv.wrongArticle === true && ucv.wrongProduction === true && !uEnsembleSaysReview && ud.wrongShow !== true && !wrongShowCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+          } else if (ucv.wrongArticle === true && ucv.wrongProduction === true && !uEnsembleSaysReview && ud.wrongShow !== true && !wrongShowCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction')) {
             if (shouldDeferCvWrongShow(ud)) {
               ud.flaggedForReview = true;
               ud.flagReason = 'cv-promotion-deferred';
@@ -2994,7 +3003,7 @@ showDirs.forEach(showId => {
           const cvInTourLeg = isWithinTourLeg(data.publishDate, showById[showId]?.tourLegs);
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
-              && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket
+              && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket && !laneHolds(data, 'wrongProduction')
               && !cvWpAdvisory && !cvInPriorRun && !cvInTourLeg) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
@@ -3022,7 +3031,7 @@ showDirs.forEach(showId => {
           // different production (both flags) is wrongShow here, and neither
           // family is promoted over a human clear.
           const cvFamily = cvWrongArticleFamily(cv);
-          if (cvFamily === 'wrongShow' && !cvPartialWindow && !ensembleSaysReview && data.wrongShow !== true && !wrongShowCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
+          if (cvFamily === 'wrongShow' && !cvPartialWindow && !ensembleSaysReview && data.wrongShow !== true && !wrongShowCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket && !laneHolds(data, 'wrongProduction')) {
             // CV outlet-style override (S3-T5): defer wrongShow for known long-biographical
             // outlets when the text is substantive + opinionated. The CV pass false-positives
             // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
@@ -3038,7 +3047,7 @@ showDirs.forEach(showId => {
               invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
               promoted = true;
             }
-          } else if (cvFamily === 'nonReview' && !cvPartialWindow && !ensembleSaysReview && data.isNonReview !== true && !cvNonReviewHumanCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
+          } else if (cvFamily === 'nonReview' && !cvPartialWindow && !ensembleSaysReview && data.isNonReview !== true && !cvNonReviewHumanCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket && !laneHolds(data, 'nonReview')) {
             // Pure not-a-review verdict: same family as the pre-pass.
             if (shouldDeferCvWrongShow(data)) {
               data.flaggedForReview = true;
@@ -3054,7 +3063,7 @@ showDirs.forEach(showId => {
           } else if (cv.wrongArticle === true && (ensembleSaysReview || cvPartialWindow)) {
             stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
-          if (cv.isFilmTv === true && !ensembleSaysReview && data.wrongShow !== true && !wrongShowCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
+          if (cv.isFilmTv === true && !ensembleSaysReview && data.wrongShow !== true && !wrongShowCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket && !laneHolds(data, 'wrongProduction')) {
             if (shouldDeferCvWrongShow(data)) {
               data.flaggedForReview = true;
               data.flagReason = 'cv-promotion-deferred';

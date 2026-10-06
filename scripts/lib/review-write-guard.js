@@ -38,6 +38,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseRating } = require('./score-conversion-rules');
+const { laneBypasses } = require('./opening-night-lane/trust-model');
 const { validateTemporalAttribution } = require('./temporal-byline-guard');
 const { wouldFormDuplicateCycle: _wouldFormDuplicateCycleN } = require('./duplicate-cycle');
 const { shouldFlipDuplicateDirection } = require('./duplicate-direction-heal');
@@ -1357,6 +1358,8 @@ function safeWriteReview(filePath, newData, options = {}) {
         // both would have silently made this flag permanent — Codex adversarial
         // review, task #1678.
         const stampWrongProductionFromGuard = (note) => {
+          // BRO-4807: a lane review is never flagged by a corpus guard (laneBypasses is the one predicate).
+          if (laneBypasses(newData, 'wrongProduction', show && show.openingDate ? { openingDate: show.openingDate } : {})) return;
           newData = { ...newData, wrongProduction: true, wrongProductionNote: note };
           invalidateWrongProductionAutoClear(newData);
           alreadyFlaggedThisWrite = true;
@@ -1482,7 +1485,7 @@ function safeWriteReview(filePath, newData, options = {}) {
       try { onDiskForArticle = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { /* new/unreadable file */ }
       const textArriving = !onDiskForArticle || onDiskForArticle.fullText !== newData.fullText;
       const humanDecided = onDiskForArticle && (onDiskForArticle._locked === true || _wrongShowCleared(onDiskForArticle) || _freshWrongShowAutoClear(onDiskForArticle));
-      if (show && textArriving && !humanDecided) {
+      if (show && textArriving && !humanDecided && !laneBypasses(newData, 'wrongProduction', show.openingDate ? { openingDate: show.openingDate } : {})) {
         const verdict = require('./wrong-article-screen').screenWrongArticle(newData.fullText, show);
         if (verdict.applicable && !verdict.sparseIdentity && verdict.suspect && verdict.titleMentions === 0) {
           newData = {

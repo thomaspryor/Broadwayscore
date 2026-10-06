@@ -13,6 +13,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
@@ -80,7 +81,7 @@ function findJunkFiles() {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
         // Skip already flagged
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'scraperGarbage')) continue; // BRO-4807: lane reviews are never flagged
 
         const url = data.url || '';
         for (const pattern of JUNK_PATTERNS) {

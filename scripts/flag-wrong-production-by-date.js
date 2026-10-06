@@ -15,6 +15,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
@@ -136,7 +137,7 @@ function run() {
       }
 
       // Skip already-flagged
-      if (data.wrongProduction || data.wrongShow || data.wrongProductionManualClear || data.allowEarlyDate) {
+      if (data.wrongProduction || data.wrongShow || data.wrongProductionManualClear || data.allowEarlyDate || laneBypasses(data, 'wrongProduction')) { // BRO-4807: lane reviews are never flagged
         skipped++;
         continue;
       }

@@ -13,6 +13,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling } = require('./lib/review-guards');
@@ -298,7 +299,7 @@ function cleanupCrossShowUrlDupes() {
     for (const entry of entries) {
       if (entry.showId === bestShow) continue;
       const fp = path.join(entry.dir, entry.file); const data = readJsonFile(fp);
-      if (!data || data.wrongProduction) continue;
+      if (!data || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue; // BRO-4807: lane reviews are never flagged
       if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
       if (isMultiShowSplitSibling(multiShowSplitGroup(data, entry.showId), bestSplitGroup)) continue; // BRO-4431: sections of one multi-show article
       console.log(`  ${entry.showId}/${entry.file} → wrongProduction (belongs to ${bestShow})`);

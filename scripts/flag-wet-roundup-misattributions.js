@@ -13,6 +13,7 @@
  * Usage: node scripts/flag-wet-roundup-misattributions.js [--apply] [--allow-included]
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const glob = require('glob');
 const { detectRoundupDigest } = require('./lib/roundup-digest');
@@ -43,7 +44,7 @@ let flagged = 0, skippedAlready = 0, skippedIncluded = 0;
 for (const f of glob.sync(path.join(REVIEW_DIR, '*', '*.json'))) {
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
-  if (d.isRoundupArticle === true) { continue; }
+  if (d.isRoundupArticle === true || laneBypasses(d, 'roundupUrlSwap')) { continue; } // BRO-4807: lane reviews are never flagged
   const verdict = detectRoundupDigest({ fullText: d.fullText, criticName: d.criticName, url: d.url, outletId: d.outletId });
   if (!verdict) continue;
   const showId = path.basename(path.dirname(f));

@@ -35,6 +35,7 @@
  * leak) without flapping on the stable FP tail.
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { detectCrossShowUrlMismatch } = require('./lib/cross-show-url');
 const { isRejectedNonReview } = require('./lib/review-guards');
@@ -114,6 +115,7 @@ function main() {
     for (const h of unhandled) {
       try {
         const d = JSON.parse(fs.readFileSync(h.filePath, 'utf8'));
+        if (laneBypasses(d, 'tourCrossMarket')) continue; // BRO-4807: lane reviews are never flagged
         d.wrongShow = true;
         invalidateWrongShowAutoClear(d);
         d.isValid = false;

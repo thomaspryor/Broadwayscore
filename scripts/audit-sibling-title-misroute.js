@@ -62,6 +62,7 @@
 'use strict';
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { buildSiblingIndex, classifyMarketRouting } = require('./lib/market-routing');
@@ -306,6 +307,7 @@ function main() {
     for (const h of ambiguousHits) {
       try {
         const d = JSON.parse(fs.readFileSync(h.filePath, 'utf8'));
+        if (laneBypasses(d, 'tourCrossMarket')) continue; // BRO-4807: lane reviews are never flagged
         d.wrongProduction = true;
         invalidateWrongProductionAutoClear(d);
         d.wrongProductionReason = h.reason || 'ambiguous-production';

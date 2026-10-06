@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry, outletOwnsUrlDomainIgnoringPath } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -474,7 +475,8 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
       existingData.humanReviewedWrongProduction === false ||
       existingData.wrongProductionManualClear === true ||
       existingData.wrongProductionOverride === true ||
-      existingData.wrongProduction === false
+      existingData.wrongProduction === false ||
+      laneBypasses(existingData, 'wrongProduction') // BRO-4807
     );
     if (humanCleared) {
       console.warn(`  ⏭️  Skipping wrongProduction stamp for ${review.showId}/${review.outletId}: human override in place`);

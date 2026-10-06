@@ -82,6 +82,7 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -3432,7 +3433,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             // Honor manual clears AND a real content-verification verdict: a weak
             // year-distance heuristic must not override CV that affirmed the existing
             // copy is the correct production (the recurring B_false_positive_wp class).
-            if (shouldSkipCrossShowUrlFlag(existingData)) {
+            if (shouldSkipCrossShowUrlFlag(existingData) || laneBypasses(existingData, 'tourCrossMarket')) {
               // Existing copy is CV-verified-correct / human-cleared — it OWNS this
               // shared URL. Don't flag it, don't re-home the URL index, and REJECT the
               // incoming review as a cross-show dupe. Without the reject both copies
@@ -3895,14 +3896,14 @@ function createReviewFile(showId, reviewData, options = {}) {
       /interestedbystander\.com\/\d{4}\/\d{2}\//i.test(url);
     const slugLooksRoundup = /\/[^/]*(?:roundup|round-up)[^/]*\.?html?$|\/[^/]*(?:roundup|round-up)[^/]*\/?$/i.test(url);
     const looksIndividual = isPerMonthPost && !slugLooksRoundup;
-    if (!looksIndividual) {
+    if (!looksIndividual && !laneBypasses(review, 'roundupUrlSwap')) {
       review.isRoundupArticle = true;
     }
   }
 
   // Auto-tag BWW Review Roundup pages by URL pattern — these are aggregator pages,
   // not individual reviews. They list excerpts from multiple outlets.
-  if (review.url && /broadwayworld\.com\/article\/.*review-roundup/i.test(review.url)) {
+  if (review.url && !laneBypasses(review, 'roundupUrlSwap') && /broadwayworld\.com\/article\/.*review-roundup/i.test(review.url)) {
     review.isRoundupArticle = true;
   }
 
@@ -3928,7 +3929,7 @@ function createReviewFile(showId, reviewData, options = {}) {
           const pubDate = parseHistoricalDate(review.publishDate);
           const earliestDate = new Date(earliest);
           const daysBefore = pubDate ? (earliestDate - pubDate) / (1000 * 60 * 60 * 24) : 0;
-          if (daysBefore > 30) {
+          if (daysBefore > 30 && !laneBypasses(review, 'wrongProduction')) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
             review.wrongProduction = true;
@@ -3946,7 +3947,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // doubt (pre-transfer UK/OB coverage is a real category the URL-date rule
   // can't distinguish from "different production"). See helper for detail.
   // Was gap on Fallen Angels 2026 — 7 wrong files needed manual cleanup.
-  if (!review.wrongProduction && _showMeta) {
+  if (!review.wrongProduction && _showMeta && !laneBypasses(review, 'wrongProduction')) {
     try {
       const reason = getWrongProductionReasonForUnknownCritic(review, _showMeta);
       if (reason) {
@@ -3983,7 +3984,7 @@ function createReviewFile(showId, reviewData, options = {}) {
   // (Method 2 supplement, ~line 2536), not a per-review verified date — an
   // in-window page date does not prove any individual review's own URL is
   // from the current run, which is exactly the gap this guard closes.
-  if (!review.wrongProduction && _showMeta) {
+  if (!review.wrongProduction && _showMeta && !laneBypasses(review, 'wrongProduction')) {
     try {
       const reason = getWrongProductionReasonForBww(review, _showMeta);
       if (reason) {

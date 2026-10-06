@@ -19,6 +19,7 @@
  * Default mode is dry-run — prints the list and exits without writing.
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { isRoundupUrl, shouldSkipRoundupAudit } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -66,6 +67,7 @@ for (const d of showDirs) {
     }
     scanned++;
     if (!data.url) continue;
+    if (laneBypasses(data, 'roundupUrlSwap')) continue; // BRO-4807: lane reviews are never flagged
     const roundup = isRoundupUrl(data.url);
     if (!roundup.isRoundup) continue;
     // Scope to BWW aggregation pages: /reviews/{slug} quote-mosaic pages plus

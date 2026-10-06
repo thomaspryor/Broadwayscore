@@ -31,6 +31,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -299,6 +300,7 @@ function updateReviewFile(review, apiResult) {
     show &&
     apiResult.webPublicationDate &&
     !shouldSkipWrongProductionAudit(data) &&
+    !laneBypasses(data, 'wrongProduction') && // BRO-4807
     isArticleOutsideProductionWindow(show, apiResult.webPublicationDate)
   ) {
     data.wrongProduction = true;

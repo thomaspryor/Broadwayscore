@@ -14,6 +14,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { parseHistoricalDate } = require('./lib/date-utils');
@@ -576,7 +577,7 @@ for (const [showId, showFindings] of Object.entries(byShow).sort((a, b) => a[0].
     if (FIX_MODE) {
       const filePath = path.join(reviewTextsDir, showId, f.file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data)) {
+      if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !laneBypasses(data, 'wrongProduction')) {
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Auto-flagged by audit: ${f.findings.map(ff => ff.type + ': ' + ff.detail).join('; ')}`;

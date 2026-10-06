@@ -46,6 +46,7 @@
 'use strict';
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
@@ -1655,7 +1656,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
       safeWriteReview(fp, after, { force: true });
       recovered = false;
       reason = `fetch served a different article (dated ${servedDate}); fill discarded, url kept`;
-    } else if (recovered && filledDateOutsideWindow(after.publishDate, openingDate, show)) {
+    } else if (recovered && filledDateOutsideWindow(after.publishDate, openingDate, show) && !laneBypasses(after, 'wrongProduction')) {
       after.wrongProduction = true;
       invalidateWrongProductionAutoClear(after);
       after.wrongProductionNote = filledDateOutsideWindowNote(after.publishDate, openingDate);

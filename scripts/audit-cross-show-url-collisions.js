@@ -12,6 +12,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -152,7 +153,7 @@ for (const showId of showDirs) {
 
     if (!data.showId || data.showId === showId) continue;
     if (data.wrongProduction || data.wrongShow) continue;
-    if (shouldSkipWrongProductionAudit(data)) continue;
+    if (shouldSkipWrongProductionAudit(data) || laneBypasses(data, 'tourCrossMarket')) continue; // BRO-4807: lane reviews are never flagged
     if (isIdMigration(showId, data.showId)) { showIdMismatchSkipped++; continue; }
 
     if (APPLY) {
@@ -193,7 +194,7 @@ for (const dirId of showDirs) {
     const filePath = path.join(showDir, file);
     let data;
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
-    if (data.wrongShow || data.wrongProduction || data.duplicateOf || wrongShowCleared(data)) { orphanedDirSkipped++; continue; }
+    if (data.wrongShow || data.wrongProduction || data.duplicateOf || wrongShowCleared(data) || laneBypasses(data, 'tourCrossMarket')) { orphanedDirSkipped++; continue; }
 
     if (APPLY) {
       data.wrongShow = true;
@@ -232,7 +233,7 @@ for (const showId of showDirs) {
     // multiShowSplit*: sections of one multi-show article split per show by
     // multi-show-review-fanout.js (BRO-4431) share its URL by design, like a
     // combined review.
-    if (data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf
+    if (laneBypasses(data, 'tourCrossMarket') || data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf
       || data.multiShowSplitChild === true || data.multiShowSplitParent === true) {
       skippedFlagged++;
       continue;
@@ -482,7 +483,7 @@ if (APPLY) {
       const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
         if (shouldSkipWrongShow(candidate.showId, data)) continue;
 
         data.wrongShow = true;
@@ -518,7 +519,7 @@ if (APPLY) {
     const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (data.wrongShow || data.wrongProduction) continue;
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
       if (shouldSkipWrongShow(loser.showId, data)) continue;
 
       data.wrongShow = true;
@@ -557,7 +558,7 @@ if (APPLY) {
       const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
         if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (revival): review has fullText in ${winner.showId}, not here`;
@@ -597,7 +598,7 @@ if (APPLY) {
       const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
         if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (revival, no signal): defaulting to most recent production ${winner.showId}`;
@@ -667,7 +668,7 @@ if (APPLY) {
     const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (data.wrongShow || data.wrongProduction) continue;
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
       if (shouldSkipWrongShow(loser.showId, data)) continue;
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision (near-revival): URL belongs to different production`;
@@ -704,7 +705,7 @@ if (APPLY) {
         const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
         try {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-          if (data.wrongShow || data.wrongProduction) continue;
+          if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
           if (shouldSkipWrongShow(candidate.showId, data)) continue;
           data.wrongShow = true;
           data.wrongShowReason = `Cross-show URL collision (multi-revival, no signal): defaulting to ${winner.showId}`;
@@ -720,7 +721,7 @@ if (APPLY) {
         const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
         try {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-          if (data.wrongShow || data.wrongProduction) continue;
+          if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
           if (shouldSkipWrongShow(candidate.showId, data)) continue;
           data.wrongShow = true;
           data.wrongShowReason = `Cross-show URL collision (multi-revival): signal only in ${winner.showId}`;
@@ -774,7 +775,7 @@ if (APPLY) {
       const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
         if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (revival, both scored): review likely belongs to ${winner.showId} (most recent production)`;
@@ -808,7 +809,7 @@ if (APPLY) {
     const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (data.wrongShow || data.wrongProduction) continue;
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
       if (shouldSkipWrongShow(loser.showId, data)) continue;
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision: review has score/text in ${winner.showId}, not here`;
@@ -844,7 +845,7 @@ if (APPLY) {
     const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
     try {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (data.wrongShow || data.wrongProduction) continue;
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
       if (shouldSkipWrongShow(loser.showId, data)) continue;
       data.wrongShow = true;
       data.wrongShowReason = `Cross-show URL collision (both scored): review likely belongs to ${winner.showId} (more recent opening)`;
@@ -934,7 +935,7 @@ if (APPLY) {
       const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
         if (shouldSkipWrongShow(candidate.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = `Cross-show URL collision (multi-revival): no score/text here, signal in other productions`;
@@ -961,7 +962,7 @@ if (APPLY) {
     for (const entry of entries) {
       try {
         const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction || !data.url) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket') || !data.url) continue;
         if (shouldSkipWrongShow(entry.showId, data)) continue;
         data.wrongShow = true;
         data.wrongShowReason = 'URL is a critic/author profile page, not a review';
@@ -1002,7 +1003,7 @@ if (APPLY) {
       const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (data.wrongShow || data.wrongProduction) continue;
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
         if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
         data.wrongProduction = true;
         data.wrongProductionNote = `Cross-show URL collision (catch-all revival): no date/signal available, defaulting to most recent production ${winner.showId}`;

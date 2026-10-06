@@ -23,6 +23,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -217,7 +218,9 @@ async function processVerify(items) {
           const data = JSON.parse(fs.readFileSync(item.filePath, 'utf8'));
           data.verifiedBy = provider;
 
-          if (result.wrongProduction) {
+          if (laneBypasses(data, 'wrongProduction')) {
+            // BRO-4807: an opening-night lane review is never flagged by the retroactive verifier
+          } else if (result.wrongProduction) {
             data.wrongProduction = true;
             invalidateWrongProductionAutoClear(data);
             data.wrongProductionReason = `Retroactive LLM verify: ${result.reasoning || reason}`;

@@ -116,6 +116,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { assessTextQuality, isGarbageContent, stripExemptedChrome, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
@@ -550,6 +551,13 @@ const UNCOLLECTABLE_OUTLETS = (() => {
   }
   return set;
 })();
+
+// BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") stand down for the
+// classifiers and the headline backstop below; laneBypasses is the one predicate, this only adds openingDate.
+function laneHeld(rec, guard) {
+  const show = rec && _showsJsonCache && _showsJsonCache.shows && _showsJsonCache.shows.find((x) => x.id === rec.showId);
+  return laneBypasses(rec, guard, show && show.openingDate ? { openingDate: show.openingDate } : {});
+}
 
 // BRO-4058 follow-up (2026-09-22): outlets whose <title>/og:title tag is
 // systemically unreliable — confirmed live for pages-on-stages, where the
@@ -4748,7 +4756,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           }
         );
     // allowEarlyDate: operator approved the early date (BRO-720) — flagging again would re-loop with the rebuild auto-clear
-    if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate) {
+    if (anticip.rejected && !shouldSkipWrongProductionAudit(data) && !data.allowEarlyDate && !laneHeld(data, 'wrongProduction')) {
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;
       data.wrongProduction = true;
@@ -5390,7 +5398,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         // said so itself: a truncated review, not a non-review (BRO-4563).
         // Keep the text; classifyContentTier below sets its tier.
         console.log(`    ⚠ LLM: "not a review" (${artType}, ${artConf}) judged on a cut-off fetch of a review URL — kept as truncated, not invalidated`);
-      } else if (artConf === 'high' && data.fullText) {
+      } else if (artConf === 'high' && data.fullText && !laneHeld(data, 'nonReview')) {
         if (alreadyScored) {
           // Don't destroy an already-scored review — flag for human review instead
           data.needsReview = true;
@@ -5415,7 +5423,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     // Human-verified files are also exempt (humanReviewedWrongProduction === false signals
     // a human has reviewed and confirmed this is NOT wrong production — DoaS Apr 9-10 #10).
     const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
-    if (shouldSkipWrongProductionAudit(data)) {
+    if (shouldSkipWrongProductionAudit(data) || laneHeld(data, 'wrongProduction')) {
       console.log(`    ⚠ wrongProduction override set (human-verified or manual) — skipping wrongProduction check`);
     } else if (contentVerification.wrongProduction && showCat !== 'off-broadway' &&
                ((isHighConfidence && data.fullText) || contentVerification.wrongArticle)) {
@@ -5451,7 +5459,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
 
     // Auto-null fullText on high/medium confidence film/TV content
-    if (contentVerification.isFilmTv && isHighConfidence && data.fullText) {
+    if (contentVerification.isFilmTv && isHighConfidence && data.fullText && !laneHeld(data, 'wrongProduction')) {
       if (alreadyScored) {
         // Don't destroy an already-scored review — flag for human review instead
         data.needsReview = true;
@@ -7131,7 +7139,7 @@ async function processReview(review) {
         canonicalTitle,
         review.showId
       );
-      if (!sanity.valid) {
+      if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
         // Stored text failing the mention check says nothing about the URL
@@ -7458,7 +7466,7 @@ async function processReview(review) {
             retryCanonicalTitle,
             review.showId
           );
-          if (!retrySanity.valid) {
+          if (!retrySanity.valid && !laneHeld(review, 'headlineBackstop')) {
             console.log(`  ✗ URL→CONTENT MISMATCH (retry): ${retrySanity.reason}`);
             recordFailedFetch(review, 'url_content_mismatch', {
               method: retryResult.method,

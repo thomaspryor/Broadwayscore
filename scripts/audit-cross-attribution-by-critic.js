@@ -26,6 +26,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
@@ -513,7 +514,7 @@ if (APPLY) {
     if (f.confidence !== 'high') continue;
     try {
       const data = JSON.parse(fs.readFileSync(f.filePath, 'utf8'));
-      if (data.wrongShow || data.wrongProduction || wrongShowCleared(data)) continue; // already flagged or manually cleared
+      if (data.wrongShow || data.wrongProduction || wrongShowCleared(data) || laneBypasses(data, 'tourCrossMarket')) continue; // already flagged or manually cleared; BRO-4807: lane reviews are never flagged
       data.wrongShow = true;
       invalidateWrongShowAutoClear(data);
       data.wrongShowReason = `Cross-attribution: content matches ${f.detectedShowId} (score ${f.score} vs filed ${f.filedScore}, margin ${f.margin}x)`;

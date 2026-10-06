@@ -7,6 +7,7 @@
  * Safe to re-run: skips files already flagged.
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -92,7 +93,7 @@ for (const dir of dirs) {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Skip already-excluded files
-      if (data.wrongProduction || data.wrongShow || data.duplicateOf || data.rejectionReason) {
+      if (data.wrongProduction || data.wrongShow || data.duplicateOf || data.rejectionReason || laneBypasses(data, 'tourCrossMarket')) { // BRO-4807: lane reviews are never flagged
         skippedAlready++;
         continue;
       }

@@ -62,6 +62,7 @@
  */
 
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -744,7 +745,7 @@ function generateCandidates() {
       stats.candidatesScanned++;
       let r;
       try { r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
-      if (r.wrongProduction || r.wrongShow || r.wrongAttribution) {
+      if (r.wrongProduction || r.wrongShow || r.wrongAttribution || laneBypasses(r, 'tourCrossMarket')) { // BRO-4807: lane reviews are never flagged
         stats.alreadyFlagged++;
         continue;
       }

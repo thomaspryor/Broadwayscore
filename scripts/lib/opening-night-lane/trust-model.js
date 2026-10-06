@@ -63,6 +63,7 @@ const SEEN_AFTER_DAYS = 3;
  */
 function isLaneReview(review, ctx = {}) {
   if (!review || typeof review !== 'object') return false;
+  if (review.laneRevoked === true) return false; // BRO-4807: a human or audit revoked the stamp; every guard applies again
   if (review.productionVerified !== PRODUCTION_VERIFIED) return false;
   const p = review[PROVENANCE_KEY];
   if (!p || typeof p !== 'object') return false;

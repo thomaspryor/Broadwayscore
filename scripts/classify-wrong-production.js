@@ -32,6 +32,7 @@
  * Integrated into rebuild via: scripts/rebuild-all-reviews.js (future)
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
@@ -599,6 +600,12 @@ async function main() {
       }
 
       const reviewData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      // BRO-4807: an opening-night lane review is never flagged or moved by this classifier.
+      const laneShow = showById.get(reviewData.showId);
+      if (laneBypasses(reviewData, 'wrongProduction', laneShow && laneShow.openingDate ? { openingDate: laneShow.openingDate } : {})) {
+        console.log(`  [LANE-SKIP] ${result.showId}/${result.file}: opening-night lane review`);
+        continue;
+      }
 
       // If we have a target show ID and it exists, try to move
       if (result.targetShowId && showById.has(result.targetShowId)) {

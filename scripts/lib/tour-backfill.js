@@ -538,9 +538,13 @@ function decideTourIntegrity(plan, listFiles) {
   return out;
 }
 
+const { laneBypasses } = require('./opening-night-lane/trust-model');
+
 /** The flag write for one decideTourIntegrity row. Returns a new object. */
 function applyIntegrityFlag(data, row, at = new Date().toISOString()) {
   const guard = require('./review-write-guard');
+  // BRO-4807: an opening-night lane review is never flagged by the tour integrity pass.
+  if (laneBypasses(data, 'tourCrossMarket')) return { ...data };
   const next = { ...data, wrongProduction: true, wrongProductionReason: row.reason,
     wrongProductionDetectedBy: 'tour-integrity', wrongProductionDetectedAt: at };
   guard.invalidateWrongProductionAutoClear(next);

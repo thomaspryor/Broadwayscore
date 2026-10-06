@@ -42,6 +42,7 @@
  *   ANTHROPIC_API_KEY  Required for claude provider
  */
 const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -1140,6 +1141,11 @@ async function main() {
           // human confirmed this IS a review (audit-non-reviews honors the same
           // flag). Without this, unconventional formats (ShowRiz Q&A reviews)
           // get re-flagged by every incremental run forever (2026-07-12).
+          // BRO-4807: an opening-night lane review is never flagged by this classifier.
+          if (laneBypasses(data, 'nonReview')) {
+            console.log(`  [LANE-SKIP] ${nr.file} — opening-night lane review`);
+            continue;
+          }
           if (data.nonReviewManualClear === true) {
             console.log(`  [LOCKED] ${nr.file} — nonReviewManualClear, skipping`);
             lockedSkipCount++;

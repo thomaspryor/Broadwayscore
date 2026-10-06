@@ -20,6 +20,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { adjudicationExpectation } = require('./lib/adjudication-expectation');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
@@ -350,7 +351,7 @@ Respond with ONLY this JSON (no markdown fences):
         if (result.confidence === 'high' || result.confidence === 'medium') {
           if (isWrongMarket) {
             // Honor manual clears — don't re-flag a human-verified review.
-            if (shouldSkipWrongProductionAudit(sourceData)) {
+            if (shouldSkipWrongProductionAudit(sourceData) || laneBypasses(sourceData, 'wrongProduction')) {
               console.log(`  ⏭️  Skipping wrongProduction set — file has manual-clear breadcrumb`);
               results.skipped++;
               continue;

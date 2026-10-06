@@ -33,6 +33,7 @@ const {
   resolveOutletFromUrl,
   loadOutletRegistry,
 } = require('./review-normalization');
+const { laneBypasses } = require('./opening-night-lane/trust-model');
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
 const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-guards');
@@ -293,6 +294,12 @@ function _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, cr
 function createOrMergeReviewFile(showId, input, options = {}) {
   const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR, _rerouteVisited } = options;
   const fields = input.fields || {};
+  // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an
+  // aggregator, so the corpus guards below stand down for it, and only for it. laneBypasses is the single predicate.
+  const laneHolds = (guard) => {
+    const openingDate = (_getShowById(showId) || {}).openingDate;
+    return laneBypasses({ ...input, ...fields, showId }, guard, openingDate ? { openingDate } : {});
+  };
   // Set below when a write is kept under its TRUE outlet on an aggregator URL,
   // either because it carries a preservable score OR because the write is
   // aggregator-SOURCED (task #1335) — see refiningOntoAggregator /
@@ -464,7 +471,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // vetting elsewhere in this file (or, for submissions, in
   // validate-review-submission.js's LLM gate) — this guard's job is
   // specifically to close the gap SERP discovery had.
-  if (input.url && require('./unvetted-serp-sources').isUnvettedSerpSource(input.source)) {
+  if (input.url && !laneHolds('nonReview') && require('./unvetted-serp-sources').isUnvettedSerpSource(input.source)) {
     const namedReason = require('./non-review-url-patterns').namedNonReviewReason(input.url);
     if (namedReason) {
       console.warn(`  ⛔ Skipping named non-review URL: ${input.url} (${namedReason})`);
@@ -524,7 +531,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // 42,251-file corpus after the fix: 201 matches, 1 plausible true positive
   // (a Dallas tour-stop review under a Broadway show entry), zero remaining
   // false positives.
-  if (isLikelyTourReview(input.url, showId)) {
+  if (isLikelyTourReview(input.url, showId) && !laneHolds('tourCrossMarket')) {
     // A tour-stop review of a title with a national tour on file goes to that
     // tour instead of being dropped (BRO-4262). No tour window match = skip as before.
     const visited = _rerouteVisited || new Set();
@@ -632,7 +639,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     const visited = _rerouteVisited || new Set();
     // BRO-2110: deliberately no existingRecord / recordMisroute here (this path
     // never had either); adding them is a separate behavior change.
-    const decision = resolveWriteTarget({
+    const decision = laneHolds('tourCrossMarket') ? { action: 'accept' } : resolveWriteTarget({
       showId,
       url: input.url,
       outletId,
@@ -690,7 +697,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // a roundup), auto-flag it. The CI audit (audit-review-contamination.js) catches
   // these after the fact, but this prevents them at write time.
   // Distinct from isRoundupUrl() which handles site-specific aggregator roundup pages.
-  if (input.url && /\/article\/Review-Roundup-/i.test(input.url)) {
+  if (input.url && !laneHolds('roundupUrlSwap') && /\/article\/Review-Roundup-/i.test(input.url)) {
     // Allow through but mark as roundup so rebuild excludes from scoring
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches BWW Review-Roundup page pattern';
@@ -709,7 +716,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // /article/Review-Roundup- pattern (df046f73aaa), isRoundupPageAsReview
   // also matches those URLs and was overwriting E's more specific reason
   // (broke the Guard E unit test on main, 2026-07-19).
-  if (!fields.isRoundupArticle && isRoundupPageAsReview({ url: input.url, outletId })) {
+  if (!fields.isRoundupArticle && !laneHolds('roundupUrlSwap') && isRoundupPageAsReview({ url: input.url, outletId })) {
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches BWW /reviews/ critics-aggregation page pattern';
   }
@@ -721,7 +728,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // NOTE: The `source: lbo-roundup` field is a discovery-path tag — many files with
   // that tag are full Stuart King individual reviews at `/news/post/{show-slug}-review`
   // URLs. Don't auto-flag on source — only on URL pattern.
-  if (input.url && /\/news\/post\/(?:review-round[-_ ]?up|Review-Round-?Up)/i.test(input.url)) {
+  if (input.url && !laneHolds('roundupUrlSwap') && /\/news\/post\/(?:review-round[-_ ]?up|Review-Round-?Up)/i.test(input.url)) {
     fields.isRoundupArticle = true;
     fields.roundupArticleReason = 'auto: URL matches LBO Review-Round-Up page pattern';
   }
@@ -733,7 +740,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // covered BWW/LBO URL patterns. Detection is content-based (digest phrasing /
   // publication-name-as-critic / known WET roundup author) so it won't fire on a
   // real critic's excerpt relayed via an aggregator. Skip if already flagged.
-  if (!fields.isRoundupArticle) {
+  if (!fields.isRoundupArticle && !laneHolds('roundupUrlSwap')) {
     const digest = detectRoundupDigest({
       fullText: input.fullText || fields.fullText,
       criticName: input.criticName || fields.criticName,
@@ -760,7 +767,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // compilation slipped past the original comma-only shape), so it won't
   // fire on a real critic's review that quotes one rival in passing. Skip if
   // already flagged.
-  if (!fields.isRoundupArticle) {
+  if (!fields.isRoundupArticle && !laneHolds('roundupUrlSwap')) {
     const compilation = detectPullQuoteCompilation({
       fullText: input.fullText || fields.fullText,
       outletId,
@@ -781,7 +788,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // never be persisted as criticName. Save-time mirror of validate-data's
   // [headline-critic]/[url-critic] gate. See byline-normalization.js.
   const criticName = sanitizeCriticName(input.criticName) || 'Unknown';
-  if (criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
+  if (!laneHolds('scraperGarbage') && criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
       && !fields.dtliExcerpt && !fields.showScoreExcerpt && !fields.nycTheatreExcerpt
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
     return { action: 'skipped', reason: 'empty-unknown: no URL, no text, unknown critic' };
@@ -863,7 +870,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // inputs today, so hoisting introduces no new false-positive class. Called
   // unconditionally — the helper self-gates on criticName internally, so no
   // outer Unknown check is needed here.
-  if (!fields.wrongProduction) {
+  if (!fields.wrongProduction && !laneHolds('wrongProduction')) {
     const wpReason = getWrongProductionReasonForUnknownCritic(
       { url: input.url, criticName },
       _getShowById(showId),
@@ -944,7 +951,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // BRO-3502 restructures (Codex adversarial review flagged this; fixing it
   // needs reordering guards around the merge decision for both Guard J and K
   // together, out of this fix's scope).
-  if (!fields.wrongProduction) {
+  if (!fields.wrongProduction && !laneHolds('wrongProduction')) {
     const bwwReason = getWrongProductionReasonForBww(
       { url: input.url, source: input.source },
       _getShowById(showId),
@@ -1151,7 +1158,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       _creditGuardInertWarned = true;
       console.warn(`  ⚠️  Credited-person guard inert: no show record for ${showId} (not in shows.json, or shows.json is missing/unreadable) — this write is not being checked against creative credits`);
     }
-    if (creditVerdict.kind === 'creative') {
+    if (creditVerdict.kind === 'creative' && !laneHolds('scraperGarbage')) {
       // Loud, like the misattribution guard above. A silent skip is how a
       // wrongly-scraped creativeTeam credit would veto a real review forever
       // with nobody ever seeing why.
