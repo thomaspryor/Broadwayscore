@@ -4834,13 +4834,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-06T18:40:11.635Z",
+      "lastSeen": "2026-10-06T18:59:58.700Z",
       "lastNotifiedAt": "2026-10-05T21:36:23.187Z",
       "lastSurfacedAt": "2026-10-05T21:36:23.187Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 53
+      "silentRefires": 54
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -10562,7 +10562,7 @@
       "resolvedAt": "2026-10-05T18:47:20.409Z"
     },
     "test-yml:red:Unit Tests:cd491ba1": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, branch stays single-commit\"",
       "firstSeen": "2026-10-05T17:48:18.697Z",
@@ -10580,7 +10580,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37348719012"
       },
       "absentRunIds": [
-        "37407347107"
+        "37407347107",
+        "37514302241"
       ]
     },
     "geo-bots:Iran": {

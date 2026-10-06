@@ -1,68 +1,63 @@
 {
-  "runDate": "2026-10-06T18:20:36.787Z",
+  "runDate": "2026-10-06T18:57:46.826Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "kramerfauci-st-anns-off-broadway-2026,slam-frank-off-broadway-2026,affluenza-off-west-end-2026,the-hairy-ape-irish-repertory-theatre-off-broadway-2026,franz-and-marie-west-end-2026,soon-off-broadway-2026,boop-tour-2026",
+    "showFilter": "franz-and-marie-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 8,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "52.9%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 10,
+    "tier1Attempts": 2,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 2,
-    "tier1_9Attempts": 3,
-    "tier1_9Success": 1,
+    "tier1_5Attempts": 2,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 0,
     "tier2Attempts": 2,
     "tier2Success": 0,
-    "tier3Attempts": 3,
+    "tier3Attempts": 2,
     "tier3Success": 0,
     "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 7,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 0.4,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 9,
-    "failed": 8,
+    "processed": 0,
+    "failed": 2,
     "shows": [
-      "affluenza-off-west-end-2026",
-      "boop-tour-2026",
-      "franz-and-marie-west-end-2026",
-      "slam-frank-off-broadway-2026",
-      "soon-off-broadway-2026",
-      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
+      "franz-and-marie-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -70,83 +65,30 @@
       "failed": 0
     }
   },
-  "processed": [
-    "affluenza-off-west-end-2026/timeout-london--unknown.json",
-    "affluenza-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-    "affluenza-off-west-end-2026/londontheatre1--unknown.json",
-    "affluenza-off-west-end-2026/plays-international--unknown.json",
-    "franz-and-marie-west-end-2026/thestage--neil-norman.json",
-    "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "slam-frank-off-broadway-2026/timeout--unknown.json",
-    "slam-frank-off-broadway-2026/off-off-online--unknown.json",
-    "boop-tour-2026/yahoo--wroc-rochester.json"
-  ],
+  "processed": [],
   "failed": [
-    "affluenza-off-west-end-2026/guardian--unknown.json",
-    "affluenza-off-west-end-2026/artsdesk--unknown.json",
-    "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
     "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
-    "franz-and-marie-west-end-2026/whatnightout--unknown.json",
-    "soon-off-broadway-2026/thestage--matt-barton.json",
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json"
+    "franz-and-marie-west-end-2026/whatnightout--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "affluenza-off-west-end-2026/timeout-london--unknown.json",
-      "affluenza-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "affluenza-off-west-end-2026/londontheatre1--unknown.json",
-      "affluenza-off-west-end-2026/plays-international--unknown.json",
-      "franz-and-marie-west-end-2026/thestage--neil-norman.json",
-      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "slam-frank-off-broadway-2026/timeout--unknown.json",
-      "slam-frank-off-broadway-2026/off-off-online--unknown.json",
-      "boop-tour-2026/yahoo--wroc-rochester.json"
-    ],
+    "processed": [],
     "failed": [
-      "affluenza-off-west-end-2026/guardian--unknown.json",
-      "affluenza-off-west-end-2026/artsdesk--unknown.json",
-      "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
       "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
-      "franz-and-marie-west-end-2026/whatnightout--unknown.json",
-      "soon-off-broadway-2026/thestage--matt-barton.json",
-      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
-      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json"
+      "franz-and-marie-west-end-2026/whatnightout--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "affluenza-off-west-end-2026/timeout-london--unknown.json",
-      "affluenza-off-west-end-2026/all-that-dazzles-uk--unknown.json",
-      "affluenza-off-west-end-2026/londontheatre1--unknown.json",
-      "affluenza-off-west-end-2026/plays-international--unknown.json",
-      "franz-and-marie-west-end-2026/thestage--neil-norman.json",
-      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "slam-frank-off-broadway-2026/timeout--unknown.json",
-      "slam-frank-off-broadway-2026/off-off-online--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json",
-      "data/review-texts/franz-and-marie-west-end-2026/whatnightout--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "boop-tour-2026/yahoo--wroc-rochester.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "First Night Magazine": {
       "count": 1,
       "domain": "firstnightmagazine.com",
@@ -154,9 +96,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Theatre Reviews Limited": {
+    "whatnightout": {
       "count": 1,
-      "domain": "theatrereviews.com",
+      "domain": "whatnightout.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
