@@ -20,7 +20,11 @@
  * (an earlier run that was discovered/scored as its own separate record
  * instead of being folded into this one via priorRuns) via
  * lib/title-normalization's normalizeTitle. That is the deterministic,
- * always-available signal.
+ * no-network signal, and it is narrow: it only catches a transfer whose
+ * earlier run already exists as its OWN shows.json record. The motivating
+ * case, dad-dont-read-this-off-broadway-2026, has no sibling record (its
+ * prior run lives only in the hand-added priorRuns block), so this tier would
+ * have classed it needs-manual-check; only --serp or a human catches that shape.
  *
  * `--serp` adds a best-effort SECOND signal: a SERP search for a Playbill/BWW
  * "transfers to" / "returns" announcement naming a prior venue, for
@@ -51,8 +55,10 @@
  *   --serp              also attempt the best-effort SERP transfer-
  *                       announcement search for candidates with no sibling
  *   --json              print the audit JSON to stdout only (no file write)
- *   --ci                exit 1 if any NEW high-confidence (sibling-found)
- *                        candidate exists
+ *   --ci                exit 1 if any high-confidence (sibling-found)
+ *                        candidate exists (no baseline diff yet: an accepted
+ *                        collision keeps it red)
+ *   --serp-limit=N      with --serp, search at most N candidates (default 15)
  *   --dry-run           don't write the audit file
  *   --verbose           log per-candidate detail to stdout
  */
@@ -77,7 +83,8 @@ Modes:
   --window-days=N       maximum days since opening to still flag (default 240)
   --serp                also attempt a best-effort SERP transfer-announcement search
   --json                print the audit JSON to stdout only
-  --ci                  exit 1 if a new high-confidence (sibling-found) candidate exists
+  --ci                  exit 1 if any high-confidence (sibling-found) candidate exists (no baseline diff yet, so an accepted collision keeps it red)
+  --serp-limit=N        with --serp, search at most N candidates per run (default 15)
   --dry-run             don't write the audit file
   --verbose             log per-candidate detail
   --help, -h            print this usage and exit
@@ -141,6 +148,7 @@ const ONLY_SHOW = getOpt('show', null);
 const MIN_DAYS_OPEN = parseInt(getOpt('min-days-open', '14'), 10);
 const WINDOW_DAYS = parseInt(getOpt('window-days', '240'), 10);
 const USE_SERP = argv.includes('--serp');
+const SERP_LIMIT = parseInt(getOpt('serp-limit', '15'), 10);
 const JSON_ONLY = argv.includes('--json');
 const CI_MODE = argv.includes('--ci');
 const DRY_RUN = argv.includes('--dry-run');
@@ -232,7 +240,11 @@ function findSiblingCandidate(show, sameTitleShows, reviewCounts) {
     // else opening) — a long-running earlier production that closed shortly
     // before the transfer is still a tight gap even if it opened years ago.
     const sibClose = parseDate(sib.closingDate);
-    const sibEnd = (sibClose && !isNaN(sibClose.getTime())) ? sibClose : sibOpen;
+    const hasClose = !!(sibClose && !isNaN(sibClose.getTime()));
+    // A sibling with no closing date that is not marked closed is still running (or its end is
+    // unknown): it cannot be the finished earlier run of a transfer, so never suggest it.
+    if (!hasClose && sib.status !== 'closed') continue;
+    const sibEnd = hasClose ? sibClose : sibOpen;
     // A genuine prior run must have actually ENDED before the candidate
     // opened (ship-check finding: anchoring only on sibOpen let a sibling
     // that closed AFTER the candidate's opening — i.e. still running,
@@ -323,6 +335,7 @@ async function main() {
   const log = VERBOSE ? console.log : () => {};
 
   const candidates = [];
+  let serpUsed = 0;
   for (const show of showList) {
     const reviewCount = reviewCounts.get(show.id) || 0;
     const sameTitleShows = byTitle.get(normalizeTitle(show.title)) || [];
@@ -338,7 +351,8 @@ async function main() {
     if (sibling) {
       classification = 'sibling-entry-found';
       suggestedPriorRun = buildSuggestedPriorRun(sibling, reviewCounts);
-    } else if (USE_SERP) {
+    } else if (USE_SERP && serpUsed < SERP_LIMIT) {
+      serpUsed++;
       // No suggestedPriorRun for this tier — a SERP snippet is unverified
       // evidence (see findSerpSignal's note on venue-side ambiguity), never a
       // paste-ready venue/date block. A human reads serpSignal.snippet and

@@ -119,7 +119,7 @@ describe('findSiblingCandidate', () => {
 
   test('picks the same-title sibling with an earlier opening and reviews', () => {
     const siblings = [
-      { id: 'dad-transfer-original-2026', title: 'Dad Transfer', openingDate: '2026-05-04' },
+      { id: 'dad-transfer-original-2026', title: 'Dad Transfer', openingDate: '2026-05-04', status: 'closed' },
     ];
     const counts = new Map([['dad-transfer-original-2026', 6]]);
     const sib = findSiblingCandidate(candidate, siblings, counts);
@@ -144,8 +144,8 @@ describe('findSiblingCandidate', () => {
 
   test('picks the LATEST-opening eligible sibling when multiple earlier runs exist', () => {
     const siblings = [
-      { id: 'run-2024', title: 'Dad Transfer', openingDate: '2024-01-01' },
-      { id: 'run-2026-may', title: 'Dad Transfer', openingDate: '2026-05-04' },
+      { id: 'run-2024', title: 'Dad Transfer', openingDate: '2024-01-01', status: 'closed' },
+      { id: 'run-2026-may', title: 'Dad Transfer', openingDate: '2026-05-04', status: 'closed' },
     ];
     const counts = new Map([['run-2024', 2], ['run-2026-may', 6]]);
     const sib = findSiblingCandidate(candidate, siblings, counts);
@@ -208,3 +208,20 @@ describe('buildSuggestedPriorRun', () => {
     assert.match(suggestion.note, /confirm/i);
   });
 });
+
+describe('BRO-1361 review follow-ups', () => {
+  const cand = { id: 'new-2026', title: 'Foo', category: 'off-broadway', status: 'open', venue: 'Big House', openingDate: '2026-08-01' };
+  const counts = new Map([['old-2025', 12]]);
+  const sib = (over) => ({ id: 'old-2025', title: 'Foo', category: 'off-broadway', venue: 'Small Room', openingDate: '2025-10-01', ...over });
+
+  test('a still-running earlier sibling (no closing date, not closed) is never suggested as the prior run', () => {
+    assert.equal(findSiblingCandidate(cand, [sib({ status: 'open' })], counts), null);
+    assert.equal(findSiblingCandidate(cand, [sib({ status: 'previews' })], counts), null);
+  });
+
+  test('a closed sibling, with or without a closing date, still matches', () => {
+    assert.equal(findSiblingCandidate(cand, [sib({ status: 'closed', closingDate: '2025-12-01' })], counts).id, 'old-2025');
+    assert.equal(findSiblingCandidate(cand, [sib({ status: 'closed' })], counts).id, 'old-2025');
+  });
+});
+
