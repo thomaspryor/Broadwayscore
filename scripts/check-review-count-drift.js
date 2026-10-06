@@ -76,6 +76,12 @@ const windowOnly = args.includes('--window-only');
 const updateBaseline = args.includes('--update-baseline');
 const singleShowDeltaArg = (args.find((a) => a.startsWith('--single-show-delta=')) || '').split('=')[1];
 const auditOutArg = (args.find((a) => a.startsWith('--audit-out=')) || '').split('=')[1] || null;
+if (updateBaseline && (showFilter || windowOnly || singleShowDeltaArg !== undefined)) {
+  // A narrowed scan sees only some shows and a different delta accepts different ones, so either
+  // would rewrite the baseline from a partial picture and silently erase accepted entries.
+  console.error('ERROR: --update-baseline needs the full default scan (no --show, --window-only or --single-show-delta).');
+  process.exit(1);
+}
 
 // Thresholds --------------------------------------------------
 // Suppressed-review tolerance: daily sweep uses 3, the pre-broadcast gate
@@ -98,7 +104,8 @@ const SHOW_MAX_AGE_HOURS = 8;
 const REPO_ROOT = path.resolve(__dirname, '..');
 // Env override for unit tests (same pattern as audit-duplicate-of-url-mismatch.js)
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(REPO_ROOT, 'data', 'review-texts');
-const REVIEWS_JSON = path.join(REPO_ROOT, 'data', 'reviews.json');
+const REVIEWS_JSON = process.env.REVIEWS_JSON || path.join(REPO_ROOT, 'data', 'reviews.json');
+const SHOWS_JSON = process.env.SHOWS_JSON || path.join(REPO_ROOT, 'data', 'shows.json');
 const DEFAULT_AUDIT_FILENAME = showFilter
   ? `review-count-drift-${showFilter}.json`
   : 'review-count-drift.json';
@@ -269,7 +276,7 @@ function main() {
     (reviewsByShow[r.showId] = reviewsByShow[r.showId] || []).push(r);
   }
 
-  const showsJsonPath = path.join(REPO_ROOT, 'data', 'shows.json');
+  const showsJsonPath = SHOWS_JSON;
   const showById = {};
   try {
     const showsData = JSON.parse(fs.readFileSync(showsJsonPath, 'utf8'));
@@ -324,8 +331,10 @@ function main() {
     );
     totalScanned += scanned;
     const actual = (reviewsByShow[showDir] || []).length;
-    // Window shows (and the --show target) use the threshold; every other show is judged
-    // against the baseline by findNewOffenders below.
+    // Window shows (and the --show target) use the threshold: right at opening a few files are
+    // legitimately in flight between collection and rebuild, so a small gap is tolerated there
+    // (the pre-broadcast gate tightens it). Every other show is long settled, so a dark show is
+    // an offender at any size; it is judged against the baseline by findNewOffenders below.
     const thresholdApplies = Boolean(showFilter) || windowIds.has(showDir);
     const overThreshold = thresholdApplies && suppressed.length > SHOW_DELTA_THRESHOLD;
     if (overThreshold) showsOverThreshold.push({ showDir, suppressed: suppressed.length, actual });
@@ -335,12 +344,19 @@ function main() {
   // 2b. Shows outside the opening window: alert only on a NEW suppression -------
   const baseline = loadSuppressionBaseline();
   const outOfWindowRows = showFilter ? [] : perShow.filter((r) => !windowIds.has(r.showDir));
-  const newOffenders = findNewOffenders(outOfWindowRows, baseline, SHOW_DELTA_THRESHOLD);
+  let newOffenders = findNewOffenders(outOfWindowRows, baseline, SHOW_DELTA_THRESHOLD);
   if (updateBaseline) {
     const accepted = findNewOffenders(outOfWindowRows, { shows: {} }, SHOW_DELTA_THRESHOLD);
     writeSuppressionBaseline(accepted);
     log(`Wrote ${accepted.length} accepted suppression(s) to ${path.relative(REPO_ROOT, BASELINE_PATH)}`);
+    newOffenders = []; // just accepted: the run that records them must not fail on them
   }
+  // The workflow's commit message and step summary read showsOverThreshold, so a new offender
+  // must appear there to be visible; outOfWindow keeps the two wordings apart below.
+  for (const o of newOffenders) {
+    showsOverThreshold.push({ showDir: o.showDir, suppressed: o.suppressed, actual: o.actual, outOfWindow: true });
+  }
+  const offenderIds = new Set(newOffenders.map((o) => o.showDir));
 
   // 3. Orphans ------------------------------------------------
   const orphanReviews = [];
@@ -363,6 +379,8 @@ function main() {
     log(`Orphan review-ids:      ${orphanReviews.length}`);
     for (const row of perShow) {
       if (row.suppressedCount === 0 && !showFilter) continue;
+      // Out-of-window shows would flood the log: print only the ones that alert.
+      if (!showFilter && !windowIds.has(row.showDir) && !offenderIds.has(row.showDir)) continue;
       log(`  ${row.overThreshold ? '!' : ' '} ${row.showDir}: ${row.actual} in reviews.json, ${row.suppressedCount} suppressed`);
       for (const s of row.suppressed.slice(0, 10)) {
         log(`      - ${s.file} (pub ${s.publishDate || '?'})`);
@@ -377,7 +395,10 @@ function main() {
       reviewsJsonLastUpdated: lastUpdated,
       reviewsJsonAgeHours: ageHours != null ? Math.round(ageHours * 10) / 10 : null,
       freshnessBreach,
-      showsScanned: targetShows.length,
+      // showsScanned keeps its meaning (the opening-window shows; the workflow labels it so);
+      // allShowsScanned is the full-corpus scan.
+      showsScanned: showFilter ? targetShows.length : windowIds.size,
+      allShowsScanned: targetShows.length,
       filesScanned: totalScanned,
       showsOverThreshold: showsOverThreshold.length,
       newOffenders: newOffenders.length,
@@ -414,7 +435,7 @@ function main() {
     if (freshnessBreach) {
       warnLog(`  reviews.json is stale: lastUpdated=${lastUpdated || 'MISSING'} (max ${maxAgeHours}h). Rebuild pipeline may be down or its push failing.`);
     }
-    for (const s of showsOverThreshold.slice(0, 10)) {
+    for (const s of showsOverThreshold.filter((x) => !x.outOfWindow).slice(0, 10)) {
       warnLog(`  ${s.showDir}: ${s.suppressed} scored in-window review(s) missing from reviews.json (has ${s.actual}).`);
     }
     for (const o of newOffenders.slice(0, 10)) {
