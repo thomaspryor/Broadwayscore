@@ -7,3 +7,4 @@
 import './ingest-manual-review-fields.test.mjs';
 import './ingest-manual-review-collision.test.mjs';
 import './ingest-manual-review-merge.test.mjs';
+import '../../scripts/ingest-manual-review.test.mjs';

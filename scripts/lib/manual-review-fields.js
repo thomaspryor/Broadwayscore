@@ -376,4 +376,33 @@ function _normUrl(url) {
   }
 }
 
-module.exports = { buildManualReviewFields, REQUIRED_PROTECTION_FIELDS, detectIngestCollision };
+// A final write guard can replace an incoming value with a fresh verdict.
+// Preserve that verdict during the clear instead of restoring operator input
+// over it. Snapshot the remaining incoming fields before the clear runs.
+function prepareManualUrlChangeFields(review, fields) {
+  const incoming = {};
+  const preserveFields = new Set();
+  for (const [key, value] of Object.entries(fields)) {
+    if (JSON.stringify(review[key]) === JSON.stringify(value)) incoming[key] = value;
+    else preserveFields.add(key);
+  }
+  return { incoming, preserveFields };
+}
+
+// Called only after the final writer accepts a URL change. Reset the old
+// slot first, then merge the incoming fields that final guards left intact.
+function mergeManualUrlChangeFields(review, fields) {
+  delete review.excludeFromScoring;
+  delete review.rejectedAt;
+  delete review.needsRefetch;
+  Object.assign(review, fields);
+  if (!review.fullText) review.needsRefetch = true;
+}
+
+function assertManualReviewBodyPersisted(incomingText, saved, filepath) {
+  if (incomingText && (typeof saved.fullText !== 'string' || saved.fullText.length === 0)) {
+    throw new Error(`Incoming body was supplied but saved fullText is empty at ${filepath}`);
+  }
+}
+
+module.exports = { buildManualReviewFields, REQUIRED_PROTECTION_FIELDS, detectIngestCollision, prepareManualUrlChangeFields, mergeManualUrlChangeFields, assertManualReviewBodyPersisted };

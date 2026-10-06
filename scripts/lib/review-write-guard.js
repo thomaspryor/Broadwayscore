@@ -1690,7 +1690,20 @@ function safeWriteReview(filePath, newData, options = {}) {
             // not lock in the incoming url (its note names the old one).
             delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
           }
-          const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
+          const manualMerge = options.manualUrlChangeFields
+            ? require('./manual-review-fields').prepareManualUrlChangeFields(newData, options.manualUrlChangeFields)
+            : null;
+          const inv = applyUrlChangeInvariant(existing, newData, {
+            fileLabel: path.basename(filePath),
+            preserveFields: manualMerge && manualMerge.preserveFields,
+          });
+          // BRO-3151: equality with the old body is not evidence of stale
+          // content when a manual ingest explicitly supplied that body. Apply
+          // the old-URL clear BEFORE merging these incoming fields, at the
+          // final write boundary so a second invariant pass cannot wipe them.
+          if (manualMerge) {
+            require('./manual-review-fields').mergeManualUrlChangeFields(newData, manualMerge.incoming);
+          }
           if (liftAutoPin) {
             // Breadcrumb so the push-review-texts action's PROTECTED_FIELDS restore
             // (isIntentionalClear) treats the lifted pin as intentional. The

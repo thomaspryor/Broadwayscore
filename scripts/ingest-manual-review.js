@@ -59,7 +59,7 @@ const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const { findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
-const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
+const { buildManualReviewFields, detectIngestCollision, assertManualReviewBodyPersisted } = require('./lib/manual-review-fields');
 const {
   recoverFromText,
   recoverFromUrl,
@@ -286,10 +286,13 @@ const result = createOrMergeReviewFile(showId, input, { dryRun });
 // the pre-existing content was actually bad — mirroring maybeUpgradeUrl's own
 // badContent gate — so re-pasting the SAME already-correct text isn't a false
 // positive).
-if (result.action !== 'new' && result.filepath && !dryRun) {
+if (result.filepath && !dryRun && (result.action !== 'new' || fullText)) {
   const intended = {};
-  if (url) intended.url = url;
-  if (fullText && isPreExistingContentBad(preExisting)) intended.fullText = fullText;
+  if (result.action !== 'new') {
+    if (url) intended.url = url;
+    if (fullText && isPreExistingContentBad(preExisting)) intended.fullText = fullText;
+    intended.criticName = normalizeCritic(criticName);
+  }
   let landed;
   try {
     landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
@@ -297,7 +300,7 @@ if (result.action !== 'new' && result.filepath && !dryRun) {
     console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
     process.exit(1);
   }
-  intended.criticName = normalizeCritic(criticName);
+  assertManualReviewBodyPersisted(fullText, landed, result.filepath);
   landed = { ...landed, criticName: normalizeCritic(landed.criticName) };
   const staleFields = findStaleMergeFields(intended, landed);
   if (staleFields.length > 0) {

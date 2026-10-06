@@ -1761,7 +1761,10 @@ function _mergeIntoExisting(filepath, existing, ctx) {
 
   if (!dryRun) {
     sanitizeDisplayFields(existing);
-    const writeResult = safeWriteReview(filepath, existing, { merge: false });
+    const writeResult = safeWriteReview(filepath, existing, {
+      merge: false,
+      manualUrlChangeFields: isManualEntry && existing.url === input.url ? fields : undefined,
+    });
     // BRO-3182: safeWriteReview can refuse/redirect a write entirely (e.g.
     // date-implausible or cross-market-contamination quarantine to
     // _pending/) and return `wrote: false` — nothing on disk changed. This
