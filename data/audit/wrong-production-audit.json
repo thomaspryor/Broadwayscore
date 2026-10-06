@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T05:18:49.368Z",
+  "timestamp": "2026-10-06T06:46:44.571Z",
   "stats": {
     "totalReviews": 46565,
     "alreadyFlagged": 18673,
-    "dateGuardCatches": 266,
-    "directorMismatch": 1340,
+    "dateGuardCatches": 267,
+    "directorMismatch": 1342,
     "tvFilmSignals": 1353,
-    "londonSignals": 1288,
+    "londonSignals": 1287,
     "offBroadwaySignals": 510,
     "yearMismatch": 114,
-    "noPublishDate": 4305
+    "noPublishDate": 4302
   },
   "findings": [
     {
@@ -200,6 +200,20 @@
       "score": 75,
       "publishDate": "2026-06-24",
       "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "milwaukee-journal-sentinel--journal-sentinel.json",
+      "score": 80,
+      "publishDate": "2025-03-26",
+      "url": "https://www.jsonline.com/story/entertainment/arts/2025/03/26/beautiful-noise-neil-diamond-marcus-center/82651341007/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -16415,6 +16429,25 @@
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 96,
+      "publishDate": "2025-12-12",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -50970,20 +51003,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 55,
-      "publishDate": "2026-04-02",
-      "url": "https://www.thetimes.com/article/24f78977-1a2a-491a-bd9e-ced1dc5821b9",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
