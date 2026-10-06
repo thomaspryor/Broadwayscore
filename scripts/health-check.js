@@ -2693,6 +2693,9 @@ function readJsonlLedgerOrNull(absPath) {
 // on the Mac (send-morning-digest.js's own read of these same files, with
 // both ledgers real-time) — CI simply has no honest answer to give, so it
 // gives none rather than a false one.
+// LOCAL-FOLD(checkAutofixCanary): CI-skipped; the real row is folded into
+// sections.health.errors by send-morning-digest.js (BRO-467 follow-up).
+// Enforced by tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
 function checkAutofixCanary(isCI) {
   if (isCI) return [];
   const { assessCanaryRow } = require('./lib/autofix-canary.js');
@@ -2703,6 +2706,9 @@ function checkAutofixCanary(isCI) {
   return [assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries })];
 }
 
+// LOCAL-FOLD(checkAutofixThroughput): CI-skipped; the real row is evaluated
+// by send-morning-digest.js localLoopDeadMessage() (BRO-3321) on the Mac.
+// Enforced by tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
 function checkAutofixThroughput(isCI) {
   if (isCI) return [];
   const { assessThroughputRow } = require('./lib/autofix-canary.js');
@@ -2733,6 +2739,8 @@ function checkAutofixThroughput(isCI) {
 // Left in place it did exactly what BRO-467's throughput row did: filed and
 // re-files BRO-3370 ("BSC Daily: Digest: content-invariant check") off a
 // message that can never say anything else. Skip here for the same reason.
+// LOCAL-FOLD(checkDigestInvariantFail): task #1648's own fix; the real row is
+// folded into sections.health.errors by send-morning-digest.js (BRO-2199 audit).
 function checkDigestInvariantFail(isCI) {
   if (isCI) return [];
   const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
@@ -2831,6 +2839,12 @@ function readPushRetryFailureLedgerOrNull() {
   }
 }
 
+// CI-ONLY-OK(checkPushRetryDeadman): NOT a per-machine ledger any more. It
+// reads the `push-retry-failures` git branch (readPushRetryFailureLedgerOrNull
+// above), which CI can fetch, so 'error'/'warn' are reachable from the CI
+// digest run and no send-morning-digest.js local fold is needed. The old
+// per-machine caveat is history; see scripts/lib/push-retry-deadman.js SOURCE.
+// Enforced by tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
 function checkPushRetryDeadman() {
   const { assessPushRetryDeadman } = require('./lib/push-retry-deadman.js');
   return [assessPushRetryDeadman(readPushRetryFailureLedgerOrNull())];
@@ -2898,6 +2912,15 @@ function infraReviewLedgerRoot() {
   }
 }
 
+// CI-ONLY-OK(checkInfraReviewGate): reads two gitignored per-machine ledgers,
+// but computeInfraReviewDigest() can only return 'pass' or 'warn', never
+// 'error' (infra-review-digest.js), so there is no unreachable error state
+// like #1648's. It is non-paging policy telemetry: in CI it says plainly
+// "cannot measure here" (warn) and the real counts are read by running
+// health-check.js on the Mac. Folding a warn into the owner email would only
+// add noise. If this ever gains an 'error' status, it needs a local fold in
+// send-morning-digest.js like checkAutofixCanary. Enforced by
+// tests/unit/audit-health-check-audit.test.mjs (BRO-2199).
 function checkInfraReviewGate() {
   const ledgerRoot = infraReviewLedgerRoot();
   const gatePath = path.join(ledgerRoot, 'data', 'audit', 'infra-review-gate.jsonl');
@@ -2947,6 +2970,10 @@ function checkInfraReviewGate() {
 // attempt counters) — this follows the same pattern.
 const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
 
+// CI-ONLY-OK(checkDispatchOutcomes): reads gitignored dispatch-ledger.jsonl but
+// computeDispatchOutcomeDigest() only yields pass/warn (no 'error' state to
+// lose), and in CI it says plainly it cannot measure. The error-capable
+// dispatch rows are checkDispatchHealth, which is folded locally (BRO-2199).
 function checkDispatchOutcomes(dryRun) {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   if (!fs.existsSync(ledgerPath)) {
@@ -3055,6 +3082,10 @@ function checkDispatchOutcomes(dryRun) {
 // Same gitignored/per-machine caveat as checkDispatchOutcomes — say so plainly
 // rather than passing on missing input (#1075 vacuous-gate class).
 
+// LOCAL-FOLD(checkDispatchHealth): reads gitignored dispatch-ledger.jsonl, so
+// in CI this is only the "(unmeasurable here)" warn. The real 'error' rows are
+// evaluated by send-morning-digest.js (computeDispatchHealthDigest /
+// computeHeadlessDispatchDigest) on the Mac (BRO-2199).
 function checkDispatchHealth() {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   const { CHECK_NAME, HEADLESS_CHECK_NAME } = require('./lib/dispatch-health.js');
