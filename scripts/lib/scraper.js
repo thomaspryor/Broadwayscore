@@ -1316,6 +1316,20 @@ function pageChainOrder(flags) {
  */
 async function fetchPage(url, options = {}) {
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
+  // EDGAR XML needs an identifying admin contact, and must retain its tags.
+  // Keep SEC access behind the same fetchPage entry point as other sources.
+  const requestedUrl = new URL(url);
+  if (requestedUrl.protocol === 'https:' && (requestedUrl.hostname === 'sec.gov' || requestedUrl.hostname.endsWith('.sec.gov'))) {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'BroadwayScorecard Research (contact@broadwayscorecard.com)', Accept: 'application/xml, text/html' },
+      signal: AbortSignal.timeout(30000),
+      redirect: 'error',
+    });
+    if (!response.ok) throw new Error(`SEC fetch failed: ${response.status}`);
+    const content = await response.text();
+    if (!content.trim()) throw new Error('SEC returned an empty page');
+    return { content, format: 'html', source: 'sec' };
+  }
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const isBroadwayWorld = url.includes('broadwayworld.com');

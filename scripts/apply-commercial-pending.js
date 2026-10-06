@@ -24,8 +24,8 @@ const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
-const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
-const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+let PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
+let SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 
@@ -40,6 +40,12 @@ for (const arg of args) {
 }
 
 const DRY_RUN = flags['dry-run'] === true;
+// Alternative inputs are read-only fixture support, never live write targets.
+if (flags['pending-file'] || flags['shows-file'] || flags['commercial-file']) {
+  if (!DRY_RUN) throw new Error('Fixture input overrides require --dry-run');
+  if (flags['pending-file']) PENDING_PATH = path.resolve(flags['pending-file']);
+  if (flags['shows-file']) SHOWS_PATH = path.resolve(flags['shows-file']);
+}
 const APPLY_ALL = flags['all'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const EXCLUDES = flags['exclude'] ? flags['exclude'].split(',') : [];
@@ -65,7 +71,7 @@ const meetsConfidenceThreshold = (entry) => gate.meetsConfidenceThreshold(entry,
 const hasRecoupedClaim = gate.hasRecoupedClaim;
 const isAutoApplyableClaim = (entry, show) => gate.isAutoApplyableClaim(entry, AUTO_APPLY_CLAIMS_FROM, show);
 
-function main() {
+async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   if (!fs.existsSync(PENDING_PATH)) {
@@ -82,7 +88,7 @@ function main() {
     process.exit(1);
   }
   try {
-    commercial = loadCommercial();
+    commercial = flags['commercial-file'] ? JSON.parse(fs.readFileSync(path.resolve(flags['commercial-file']), 'utf8')) : loadCommercial();
   } catch (e) {
     console.error(`FATAL: Malformed commercial.json: ${e.message}`);
     process.exit(1);
@@ -144,6 +150,7 @@ function main() {
     // blocking the apply pipeline.
   }
 
+  const verifyEntry = require('./lib/commercial-source-verify').createSourceVerifier();
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
@@ -256,8 +263,14 @@ function main() {
     // validate-data run below would otherwise reject, aborting every entry.
     // Status comes from keyShow (resolveCommercialSlug above): the show whose
     // slug IS the key, the record validate-data checks it against.
+    const figureEvidence = await verifyEntry(entry, keyShow);
+    if (figureEvidence.capped) {
+      console.log(`  ⏳ "${showId}" — cited pages not checked (per-run fetch cap reached); left pending for the next run`);
+      skipped++;
+      continue;
+    }
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
-      gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }),
+      gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources, figureEvidence }),
       keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined,
     );
     if (holdReason) {
@@ -278,7 +291,7 @@ function main() {
     }
 
     if (DRY_RUN) {
-      console.log(`  [DRY RUN] Would apply "${showId}" → ${JSON.stringify(commercialEntry, null, 2).slice(0, 200)}...`);
+      console.log(`  [DRY RUN] Would apply "${showId}" → ${JSON.stringify(commercialEntry)}`);
     } else {
       commercial.shows[commercialKey] = commercialEntry;
       console.log(`  ✅ Applied "${showId}" → commercial.shows["${commercialKey}"] (${commercialEntry.designation || 'TBD'})`);
@@ -335,4 +348,4 @@ function main() {
   }
 }
 
-main();
+main().catch(error => { console.error(error.message); process.exitCode = 1; });
