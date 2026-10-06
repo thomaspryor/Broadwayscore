@@ -91,3 +91,35 @@ test('parseTapOutput: matches real `node --test --test-reporter=tap` output', as
   const { failures } = parseTapOutput(`${res.stdout}${res.stderr}`, fs.realpathSync(dir));
   assert.deepEqual([...failures.keys()], ['real.test.mjs::real failure']);
 });
+
+// BRO-4812: a one-line message is a quoted scalar in node's TAP, not a block.
+// The real validator message must land in payload, unchanged, so the gate's
+// aggregate diff can call identical staleness pre-existing.
+test('parseTapOutput: a one-line assertion message (quoted scalar) is captured as payload, from real node output', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tap-parser-scalar-'));
+  const testFile = path.join(dir, 'scalar.test.mjs');
+  fs.writeFileSync(
+    testFile,
+    "import { test } from 'node:test';\nimport assert from 'node:assert/strict';\n" +
+    "test('one line', () => { assert.ok(false, \"DEPENDENCIES.md stale: committed fingerprint aa, current graph bb (it's)\"); });\n"
+  );
+  const env = { ...process.env };
+  delete env.NODE_TEST_CONTEXT;
+  const res = spawnSync(process.execPath, ['--test', '--test-reporter=tap', testFile], { encoding: 'utf8', env });
+  const { failures } = parseTapOutput(`${res.stdout}${res.stderr}`, fs.realpathSync(dir));
+  assert.equal(failures.get('scalar.test.mjs::one line').payload, "DEPENDENCIES.md stale: committed fingerprint aa, current graph bb (it's)");
+});
+
+test('parseTapOutput: quoted-scalar payload unescapes YAML quotes and rewrites the root', () => {
+  const tap = [
+    'not ok 1 - t',
+    '  ---',
+    "  location: '/r/a.test.mjs:1:1'",
+    "  error: 'it''s under /r/x'",
+    '  ...',
+  ].join('\n');
+  assert.equal(parseTapOutput(tap, '/r').failures.get('a.test.mjs::t').payload, "it's under <root>/x");
+});

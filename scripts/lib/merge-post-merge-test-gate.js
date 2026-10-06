@@ -209,7 +209,18 @@ function touchesScripts(changedFiles) {
 // Pure: does this set of changed files require running the test floor at all?
 // No I/O — trivially unit-testable.
 function shouldRunTestGate(changedFiles) {
-  return touchesLib(changedFiles) || touchesWorkflows(changedFiles) || touchesScripts(changedFiles);
+  return touchesLib(changedFiles) || touchesWorkflows(changedFiles) || touchesScripts(changedFiles) || touchesTestFiles(changedFiles);
+}
+
+// Pure: is `f` a node test file the floor can run directly? An edit to ONLY a
+// test (scripts/foo.test.mjs, tests/unit/bar.test.mjs) otherwise selected
+// nothing — isScriptSourceFile rejects tests by design (BRO-4812 Codex review).
+function isRunnableTestFile(f) {
+  return f.endsWith('.test.mjs') && (f.startsWith(SCRIPTS_PREFIX) || f.startsWith('tests/'));
+}
+
+function touchesTestFiles(changedFiles) {
+  return (changedFiles || []).some(isRunnableTestFile);
 }
 
 // List the scripts/lib/*.test.mjs files present in `cwd` (same glob as CI's
@@ -240,7 +251,13 @@ function listColocatedTestFiles(cwd) {
 // throwing mid-merge would block every session. The invariant is enforced
 // loudly instead by a colocated test ("every REQUIRED_WORKFLOW_GUARDS entry
 // exists"), which runs in CI and in this same floor.
-const REQUIRED_WORKFLOW_GUARDS = [path.join('tests', 'unit', 'workflow-line-length.test.mjs')];
+// scripts/validate-workflow-dependencies.test.mjs is required too: it is the
+// guard whose miss IS BRO-4812, and manifest discovery returns [] when the
+// manifest is missing or unreadable — the pin keeps it running regardless.
+const REQUIRED_WORKFLOW_GUARDS = [
+  path.join('tests', 'unit', 'workflow-line-length.test.mjs'),
+  path.join('scripts', 'validate-workflow-dependencies.test.mjs'),
+];
 
 // Guards deliberately kept OUT of the floor, each with the reason it cannot
 // run here. These are excluded on their cost/soundness as a PRE-PUSH LOCAL
@@ -254,7 +271,46 @@ const REQUIRED_WORKFLOW_GUARDS = [path.join('tests', 'unit', 'workflow-line-leng
 //   and (b) turn MERGE_TEST_GATE_SKIP_BASELINE=1 into a trap: that hatch
 //   disables the diff and restores all-or-nothing blocking, so this known
 //   failure would block every workflow merge outright.
-const EXCLUDED_WORKFLOW_GUARDS = new Set([path.join('tests', 'unit', 'branch-protection.test.mjs')]);
+//
+//   scripts/pre-push.test.mjs, scripts/tests/merge-gate-hook.test.mjs —
+//   create branches/worktrees in the REAL canonical repo (cleaned in after(),
+//   which a timeout kill skips) and have refused landings as one-off flakes
+//   before (BRO-4328; two 300s timeouts on main). A one-off flake here reads
+//   as NEW against a baseline that passed, blocking an unrelated push.
+//
+//   scripts/merge-worktree-to-main.test.mjs,
+//   scripts/tests/verify-edits-cloud-session-gates.test.mjs — 48s and 21s
+//   of scratch-repo git work that mention the workflows dir only in
+//   passing; they guard the merge/hook scripts, not workflow content, and
+//   would eat a third of the floor's single 5-min spawn (BRO-4812 review).
+const EXCLUDED_WORKFLOW_GUARDS = new Set([
+  path.join('tests', 'unit', 'branch-protection.test.mjs'),
+  path.join('scripts', 'pre-push.test.mjs'),
+  path.join('scripts', 'tests', 'merge-gate-hook.test.mjs'),
+  path.join('scripts', 'merge-worktree-to-main.test.mjs'),
+  path.join('scripts', 'tests', 'verify-edits-cloud-session-gates.test.mjs'),
+]);
+
+// The test list CI's "Run unit tests" step executes (one repo-relative path
+// per line). Workflow-guard discovery reads it so the floor covers every
+// workflow guard CI runs, wherever it lives — BRO-4812: scanning tests/unit
+// alone never ran scripts/validate-workflow-dependencies.test.mjs, so a
+// landing whose main moved under it pushed a stale DEPENDENCIES.md and
+// turned main red. Missing/unreadable manifest → [] (tests/unit scan still runs).
+const UNIT_TEST_MANIFEST = path.join('tests', 'unit-test-manifest.txt');
+function listManifestTestFiles(cwd) {
+  let body;
+  try {
+    body = fs.readFileSync(path.join(cwd, UNIT_TEST_MANIFEST), 'utf8');
+  } catch {
+    return [];
+  }
+  return body
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith('#') && l.endsWith('.test.mjs'))
+    .map((l) => path.normalize(l));
+}
 
 // Pure: does this test file's SOURCE refer to the workflows directory?
 //
@@ -302,6 +358,18 @@ function listWorkflowGuardTestFiles(cwd) {
       if (mentionsWorkflowsDir(body)) out.add(rel);
     }
   }
+  // Every other CI-run test (scripts/, scripts/tests/, scripts/newsletter/…)
+  // that mentions the workflows dir — same content test, CI's own list.
+  for (const rel of listManifestTestFiles(cwd)) {
+    if (out.has(rel)) continue;
+    let body;
+    try {
+      body = fs.readFileSync(path.join(cwd, rel), 'utf8');
+    } catch {
+      continue;
+    }
+    if (mentionsWorkflowsDir(body)) out.add(rel);
+  }
   for (const rel of EXCLUDED_WORKFLOW_GUARDS) out.delete(rel);
   return [...out].sort();
 }
@@ -325,10 +393,27 @@ function listCorrespondingUnitTestFiles(cwd, changedFiles) {
   const out = new Set();
   for (const f of changedFiles || []) {
     if (!isScriptSourceFile(f)) continue;
-    const rel = correspondingUnitTestPath(f);
-    if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+    for (const rel of correspondingTestPaths(f)) {
+      // EXCLUDED guards stay out of the local floor on every path, not just
+      // workflow discovery (BRO-4812 review): same cost/soundness reasons.
+      if (!EXCLUDED_WORKFLOW_GUARDS.has(rel) && fs.existsSync(path.join(cwd, rel))) out.add(rel);
+    }
   }
   return [...out].sort();
+}
+
+// Pure: every test path that may guard a scripts/ source file — the
+// tests/unit/<base>.test.mjs convention above, plus the sibling
+// <dir>/<base>.test.mjs (scripts/foo.js -> scripts/foo.test.mjs) and
+// scripts/tests/<base>.test.mjs, which held 100+ CI-run tests the floor
+// never selected (BRO-4812 review).
+function correspondingTestPaths(scriptRelPath) {
+  const base = path.basename(scriptRelPath, path.extname(scriptRelPath));
+  return [...new Set([
+    correspondingUnitTestPath(scriptRelPath),
+    path.join(path.dirname(scriptRelPath), `${base}.test.mjs`),
+    path.join('scripts', 'tests', `${base}.test.mjs`),
+  ])];
 }
 
 // Pure-ish (fs reads only): the test files to run for this change set, in a
@@ -345,6 +430,13 @@ function selectTestFiles(cwd, changedFiles) {
   if (touchesLib(changedFiles)) files.push(...listColocatedTestFiles(cwd));
   if (touchesWorkflows(changedFiles)) files.push(...listWorkflowGuardTestFiles(cwd));
   files.push(...listCorrespondingUnitTestFiles(cwd, changedFiles));
+  // Changed test files themselves (present in this tree, not EXCLUDED). A
+  // test the branch adds is absent from the baseline, so its failures read
+  // NEW there — correct, the branch owns them.
+  for (const f of changedFiles || []) {
+    const rel = path.normalize(f);
+    if (isRunnableTestFile(f) && !EXCLUDED_WORKFLOW_GUARDS.has(rel) && fs.existsSync(path.join(cwd, rel))) files.push(rel);
+  }
   return [...new Set(files)].sort();
 }
 
@@ -378,6 +470,9 @@ function defaultExec(cwd, testFiles) {
 // fixture failing-sets" test targets directly.
 // Aggregate guards (see the AGGREGATE GUARDS header note): repo-relative test
 // files whose single failing test spans many inputs.
+// The dependency validator is one too: its fingerprint test fails with the
+// same key on a stale main whatever the branch did, so only the payload
+// (committed vs current fingerprint) tells further drift apart (BRO-4812).
 const AGGREGATE_GUARD_FILES = [...REQUIRED_WORKFLOW_GUARDS];
 
 // Pure: the individual violations in a failure payload, as a multiset
@@ -566,6 +661,19 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   // never actually validated anything, exactly backwards from the pre-#1433
   // behavior (block on ANY merged-tree failure). Skip baseline diffing
   // entirely in this case and fall back to that original safe behavior.
+  // A merged run KILLED mid-way (spawn timeout → signal) never ran the tests
+  // after the kill point. Parsed failures from before it may all match the
+  // baseline, so the diff would PASS a run that skipped the rest of the
+  // selection — a silent false pass that grows with the selection (BRO-4812
+  // Codex review). Block as incomplete instead.
+  if (result.signal || (result.error && result.error.code === 'ETIMEDOUT')) {
+    return {
+      ran: true,
+      passed: false,
+      output: `${output}\n\n⚠ post-merge test floor: merged run was killed before finishing (${describeExit(result)}); tests after the kill point never ran, so a baseline diff cannot clear it — blocking as a fail-safe`,
+      reason: `ran ${testFiles.length} file(s); merged run killed before finishing (${describeExit(result)}); baseline NOT consulted`,
+    };
+  }
   if (mergedFailures.size === 0) {
     return {
       ran: true,
@@ -691,6 +799,9 @@ module.exports = {
   touchesWorkflows,
   touchesScripts,
   correspondingUnitTestPath,
+  correspondingTestPaths,
+  listManifestTestFiles,
+  mentionsWorkflowsDir,
   listCorrespondingUnitTestFiles,
   listColocatedTestFiles,
   listWorkflowGuardTestFiles,
