@@ -87,6 +87,11 @@ const TRUNCATION_PATTERNS = [
   /sponsored content/i,
 ];
 
+// Signals that only say "the text does not end like a sentence" (a footer line
+// trips both). A file whose contentTier is already 'complete' may waive these
+// (BRO-4804); paywall wording, ellipsis endings and bot-wall stubs may not.
+const ENDING_ONLY_SIGNALS = new Set(['/[a-z,]\\s*$/', 'no-final-punctuation']);
+
 // Corruption signals - indicates garbage mixed into text
 const CORRUPTION_PATTERNS = [
   // Mastheads
@@ -316,9 +321,17 @@ function endsProperlyWithPunctuation(text) {
  * Assess fullText quality
  * @param {string} fullText
  * @param {boolean} useCleanedText - If true, clean text before assessing
+ * @param {{trustedComplete?: boolean}} [opts] - trustedComplete: the file's
+ *   contentTier is already 'complete' (content-quality.js, which relabels real
+ *   truncation). Then a missing final sentence punctuation alone is NOT evidence
+ *   of truncation: it is a page footer ("Add as a preferred source on Google",
+ *   "Share:", "Leave a comment"). BRO-4804: 7,648 of 22,125 complete files were
+ *   told "text appears TRUNCATED, be cautious" and scored with low confidence.
+ *   Explicit truncation patterns and bot-wall stubs still win.
  * @returns {'complete' | 'truncated' | 'corrupted' | null}
  */
-function assessFullText(fullText, useCleanedText = true) {
+function assessFullText(fullText, useCleanedText = true, opts = {}) {
+  const trustedComplete = !!(opts && opts.trustedComplete);
   if (!fullText || fullText.length < 50) {
     return null;
   }
@@ -350,7 +363,12 @@ function assessFullText(fullText, useCleanedText = true) {
 
   // Check for explicit truncation signals
   const truncation = checkTruncation(textToAssess);
-  if (truncation.isTruncated) {
+  // Generic "does not end like a sentence" signals only: a footer line trips both
+  // the letter/comma-ending pattern and no-final-punctuation. Paywall wording,
+  // ellipsis endings and bot-wall stubs are NOT in this set and always win.
+  const punctuationOnly = truncation.signals.length > 0
+    && truncation.signals.every(s => ENDING_ONLY_SIGNALS.has(s));
+  if (truncation.isTruncated && !(trustedComplete && punctuationOnly)) {
     return 'truncated';
   }
 
@@ -360,8 +378,9 @@ function assessFullText(fullText, useCleanedText = true) {
     return 'complete';
   }
 
-  // Text doesn't end properly - likely truncated
-  return 'truncated';
+  // Text doesn't end properly - likely truncated, unless the file's own tier
+  // already says complete and a footer is the only reason (see opts above).
+  return trustedComplete ? 'complete' : 'truncated';
 }
 
 /**
@@ -420,7 +439,7 @@ function getBestTextForScoring(review) {
   // Assess fullText if present - use CLEANED text for assessment and output
   if (review.fullText && review.fullText.length >= 50) {
     const cleaned = cleanText(review.fullText);
-    const status = assessFullText(review.fullText, true); // assess with cleaning
+    const status = assessFullText(review.fullText, true, { trustedComplete: review.contentTier === 'complete' }); // assess with cleaning
     sources.push({
       text: cleaned,  // Return cleaned text, not raw
       type: 'fullText',
