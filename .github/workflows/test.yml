@@ -730,8 +730,6 @@ on:
       - 'scripts/extract-dtli-reviews.js'
       # BRO-2121: top-level scripts require()d by tests/unit/sibling-misfile-cleanup.test.mjs
       - 'scripts/audit-sibling-misfile-archive.js'
-      # BRO-2350: extractShowData guard rejection-rule test
-      - 'tests/unit/sibling-misfile-guard.test.mjs'
       - 'scripts/extract-show-score-reviews.js'
       - 'scripts/audit-corpus-determinism.js'
       - 'scripts/pre-deploy-check.js'
