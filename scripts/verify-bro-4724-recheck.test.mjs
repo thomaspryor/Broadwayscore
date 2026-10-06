@@ -5,6 +5,8 @@
  * against LIVE data, not fixtures: run by scripts/autonomous-acceptance-recheck.js
  * once those crons have acted. A red run means the pipeline did not create or
  * pick up the tours, not a code regression.
+ *
+ * timebomb-audit-exempt: dated RECHECK-AFTER probe of live cron output; the assertions are pinned to real 2026-10 run dates a shifted clock cannot simulate.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
