@@ -1,13 +1,12 @@
 {
-  "generatedAt": "2026-10-06T03:42:40.924Z",
+  "generatedAt": "2026-10-06T11:11:00.529Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 230,
-  "clean": 226,
-  "defective": 4,
+  "clean": 228,
+  "defective": 2,
   "byType": {
-    "score-drift": 2,
     "unreachable": 2
   },
   "shows": [
@@ -40,36 +39,6 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
-    },
-    {
-      "showId": "slam-frank-off-broadway-2026",
-      "title": "Slam Frank",
-      "openingDate": "2026-10-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 64.29 vs local 64.19 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 11
-    },
-    {
-      "showId": "moulin-rouge-the-musical-west-end-2021",
-      "title": "Moulin Rouge! The Musical",
-      "openingDate": "2022-01-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.29 vs local 71.58 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
     }
   ]
 }
