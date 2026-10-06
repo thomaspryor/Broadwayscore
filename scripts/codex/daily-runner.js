@@ -162,9 +162,13 @@ function runCheck(card, codexReport, tag) {
     .replace(/\{\{WORKTREE\}\}/g, WT);
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}-prompt.md`), prompt);
   const head = git(['rev-parse', 'HEAD']);
-  const r = sh('claude', ['-p', '--model', 'opus', '--add-dir', WT, '--output-format', 'text',
-    '--allowedTools', 'Read,Grep,Glob,Bash(cd:*),Bash(git -C:*),Bash(git diff:*),Bash(git show:*),Bash(git log:*),Bash(node --test:*),Bash(node scripts/:*),Bash(npx tsc:*),Bash(ls:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*)',
-  ], { cwd: os.tmpdir(), timeoutMs: 30 * 60_000, env: scrubbedEnv(), input: prompt }); // stdin: --allowedTools and --add-dir are variadic and would swallow a positional prompt
+  // cwd is the worktree so plain git/node commands work; --setting-sources user keeps
+  // the project's session hooks out of this one-shot reviewer (CLAUDE.md still loads).
+  // Prompt on stdin: --allowedTools and --add-dir are variadic and swallow a positional.
+  const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'text',
+    '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
+    '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*)',
+  ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv(), input: prompt });
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
   // The reviewer is read-only; a moved HEAD or a dirty tree means it was not.
   const tampered = git(['rev-parse', 'HEAD']) !== head || git(['status', '--porcelain']) !== '';
