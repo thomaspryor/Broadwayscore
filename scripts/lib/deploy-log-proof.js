@@ -46,13 +46,15 @@ const STALE_LISTING_MS = 60 * 60_000;
 const ANSI = /\x1b\[[0-9;]*[A-Za-z]/g;
 const TS = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z) /;
 
-function prodAliasFromLog(log) {
+function prodProofFromLog(log) {
   let aliasedAt = null;
   const readyAt = new Map(); // host -> when the wait script saw it READY
   let url = null;
   for (const raw of String(log || '').split('\n')) {
     const line = raw.replace(ANSI, '');
     const ts = (line.match(TS) || [])[1];
+    // Pre-BRO-2067 logs only (one Aliased: per run). Those logs expire from
+    // GitHub by 2027-01-04; this branch and its test can go then.
     const alias = line.match(/\bAliased: https:\/\/\S+/);
     if (alias && ts) aliasedAt = Date.parse(ts);
     const ready = line.match(READY);
@@ -64,7 +66,7 @@ function prodAliasFromLog(log) {
   const host = url.replace(/^https:\/\//, '');
   const provenAt = readyAt.has(host) ? readyAt.get(host) : aliasedAt;
   if (provenAt == null) return null;
-  return { url: host, aliasedAtMs: provenAt };
+  return { url: host, provenAtMs: provenAt };
 }
 
 function listingLooksStale(runs, nowMs, maxAgeMs = STALE_LISTING_MS) {
@@ -72,4 +74,4 @@ function listingLooksStale(runs, nowMs, maxAgeMs = STALE_LISTING_MS) {
   return !Number.isFinite(newest) || nowMs - newest > maxAgeMs;
 }
 
-module.exports = { prodAliasFromLog, listingLooksStale, DEPLOY_JOB, DEPLOY_ECHO, WAIT_CALL, READY, STALE_LISTING_MS };
+module.exports = { prodProofFromLog, listingLooksStale, DEPLOY_JOB, DEPLOY_ECHO, WAIT_CALL, READY, STALE_LISTING_MS };

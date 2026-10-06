@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { prodAliasFromLog, listingLooksStale, DEPLOY_JOB, DEPLOY_ECHO, WAIT_CALL, READY, STALE_LISTING_MS } = require('./deploy-log-proof.js');
+const { prodProofFromLog, listingLooksStale, DEPLOY_JOB, DEPLOY_ECHO, WAIT_CALL, READY, STALE_LISTING_MS } = require('./deploy-log-proof.js');
 
 // Lines from deploy run 37264715388's deploy job (2026-10-05), ANSI codes kept.
 const SOURCE_ECHO = '2026-10-05T04:48:22.1697672Z \x1b[36;1mecho "Deployed to production: $URL"\x1b[0m';
@@ -13,19 +13,19 @@ const ALIASED = '2026-10-05T04:50:00.1325664Z Aliased: https://showscorecard.com
 const DEPLOYED = '2026-10-05T04:50:00.7616236Z Deployed to production: https://broadwayscore-e4den4ngc-thomaspryors-projects.vercel.app';
 
 test('a real deploy log proves the production alias', () => {
-  assert.deepEqual(prodAliasFromLog([SOURCE_ECHO, PROGRESS, ALIASED, DEPLOYED].join('\n')), {
+  assert.deepEqual(prodProofFromLog([SOURCE_ECHO, PROGRESS, ALIASED, DEPLOYED].join('\n')), {
     url: 'broadwayscore-e4den4ngc-thomaspryors-projects.vercel.app',
-    aliasedAtMs: Date.parse('2026-10-05T04:50:00.1325664Z'),
+    provenAtMs: Date.parse('2026-10-05T04:50:00.1325664Z'),
   });
 });
 
 test('the echoed workflow source alone is not proof ($URL, not a URL)', () => {
-  assert.equal(prodAliasFromLog([SOURCE_ECHO, PROGRESS].join('\n')), null);
+  assert.equal(prodProofFromLog([SOURCE_ECHO, PROGRESS].join('\n')), null);
 });
 
 test('both lines are required: alias without the exit-0 echo, or the echo without an alias', () => {
-  assert.equal(prodAliasFromLog([SOURCE_ECHO, PROGRESS, ALIASED].join('\n')), null, 'deploy command did not finish cleanly');
-  assert.equal(prodAliasFromLog([SOURCE_ECHO, PROGRESS, DEPLOYED].join('\n')), null, 'never aliased (e.g. Vercel cancelled it)');
+  assert.equal(prodProofFromLog([SOURCE_ECHO, PROGRESS, ALIASED].join('\n')), null, 'deploy command did not finish cleanly');
+  assert.equal(prodProofFromLog([SOURCE_ECHO, PROGRESS, DEPLOYED].join('\n')), null, 'never aliased (e.g. Vercel cancelled it)');
 });
 
 // Lines from deploy run 37409019319's deploy job (2026-10-06): `--prod --no-wait`
@@ -37,24 +37,32 @@ const NOWAIT_READY = `2026-10-06T03:32:56.7848862Z deployment ${HOST}: ready (st
 const NOWAIT_DEPLOYED = `2026-10-06T03:32:56.7872723Z Deployed to production: https://${HOST}`;
 
 test('a --no-wait deploy log is proven by the wait script\'s READY line', () => {
-  assert.deepEqual(prodAliasFromLog([SOURCE_ECHO, NOWAIT_PROGRESS, NOWAIT_NOTE, NOWAIT_READY, NOWAIT_DEPLOYED].join('\n')), {
+  assert.deepEqual(prodProofFromLog([SOURCE_ECHO, NOWAIT_PROGRESS, NOWAIT_NOTE, NOWAIT_READY, NOWAIT_DEPLOYED].join('\n')), {
     url: HOST,
-    aliasedAtMs: Date.parse('2026-10-06T03:32:56.7848862Z'),
+    provenAtMs: Date.parse('2026-10-06T03:32:56.7848862Z'),
   });
 });
 
 test('READY must be for the deployment that was echoed, and both lines are required', () => {
   const otherReady = '2026-10-06T03:30:00.0000000Z deployment broadwayscore-old-thomaspryors-projects.vercel.app: ready (state=READY, polls=3, exit=0)';
-  assert.equal(prodAliasFromLog([otherReady, NOWAIT_DEPLOYED].join('\n')), null, 'a different attempt\'s READY');
-  assert.equal(prodAliasFromLog([NOWAIT_PROGRESS, NOWAIT_READY].join('\n')), null, 'no exit-0 echo');
-  assert.equal(prodAliasFromLog([NOWAIT_PROGRESS, NOWAIT_DEPLOYED].join('\n')), null, 'never seen READY');
+  assert.equal(prodProofFromLog([otherReady, NOWAIT_DEPLOYED].join('\n')), null, 'a different attempt\'s READY');
+  assert.equal(prodProofFromLog([NOWAIT_PROGRESS, NOWAIT_READY].join('\n')), null, 'no exit-0 echo');
+  assert.equal(prodProofFromLog([NOWAIT_PROGRESS, NOWAIT_DEPLOYED].join('\n')), null, 'never seen READY');
   const canceled = `2026-10-06T03:32:00.0000000Z deployment ${HOST}: canceled (state=CANCELED, polls=4, exit=5)`;
-  assert.equal(prodAliasFromLog([canceled, NOWAIT_DEPLOYED].join('\n')), null, 'superseded deploys are not live');
+  assert.equal(prodProofFromLog([canceled, NOWAIT_DEPLOYED].join('\n')), null, 'superseded deploys are not live');
+});
+
+test('a retried deploy is proven by the READY of the attempt it echoed', () => {
+  const firstTimedOut = '2026-10-06T03:30:00.0000000Z deployment broadwayscore-first-thomaspryors-projects.vercel.app: timeout (state=BUILDING, polls=48, exit=4)';
+  assert.deepEqual(prodProofFromLog([firstTimedOut, NOWAIT_PROGRESS, NOWAIT_READY, NOWAIT_DEPLOYED].join('\n')), {
+    url: HOST,
+    provenAtMs: Date.parse('2026-10-06T03:32:56.7848862Z'),
+  });
 });
 
 test('empty or missing log is not proof', () => {
-  assert.equal(prodAliasFromLog(''), null);
-  assert.equal(prodAliasFromLog(undefined), null);
+  assert.equal(prodProofFromLog(''), null);
+  assert.equal(prodProofFromLog(undefined), null);
 });
 
 test('listingLooksStale: a page whose newest run is over an hour old is stale', () => {
@@ -79,8 +87,11 @@ test('vercel-deploy.yml still has the job and echo the parser relies on', () => 
 
 test('vercel-wait-deployment.js still prints the READY line the parser reads', () => {
   const src = readFileSync(new URL('../vercel-wait-deployment.js', import.meta.url), 'utf8');
-  const printed = 'console.log(`deployment ${id}: ${r.outcome} (state=${r.state}, polls=${r.polls}, exit=${code})`);';
-  assert.ok(src.includes(printed), 'the wait script\'s result line changed: update READY in deploy-log-proof.js');
+  // Shape, not variable names: a rename inside the script is fine, a new format is not.
+  assert.match(src, /console\.log\(`deployment \$\{id\}: \$\{\w+\.outcome\} \(state=\$\{\w+\.state\}/,
+    'the wait script\'s result line changed: update READY in deploy-log-proof.js');
   assert.match(src, /const id = urlLine\.replace\(\/\^https\?:\\\/\\\/\/, ''\);/, 'id must stay the bare host the echoed URL carries');
+  const lib = readFileSync(new URL('./vercel-deploy-wait.js', import.meta.url), 'utf8');
+  assert.ok(lib.includes("case 'READY': return 'ready';"), 'the READY state must still print as outcome "ready"');
   assert.match('deployment x.vercel.app: ready (state=READY, polls=1, exit=0)', READY);
 });
