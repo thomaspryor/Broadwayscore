@@ -19,7 +19,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const { makeVerifyCmdEvidence } = require(path.join(REPO, 'scripts/lib/linear-cmd-execution.js'));
+const { makeVerifyCmdEvidence, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS } = require(path.join(REPO, 'scripts/lib/linear-cmd-execution.js'));
 const { VERDICTS } = require(path.join(REPO, 'scripts/lib/close-time-verify.js'));
 
 // withNodeModules: acceptance-check-core.js's makeFreshCheckout only links
@@ -118,4 +118,22 @@ test('makeVerifyCmdEvidence: an UNVERIFIABLE result is refused with a message th
   assert.doesNotMatch(result.reason, /closing/i, 'the refusal reason must not claim it is closing anyway');
   assert.match(result.reason, /not confirmed to pass/i);
   assert.match(result.reason, /node_modules/);
+});
+
+// BRO-4757 ship-check: two callers spawn `linear-brain.js update --state Done`
+// under a hard spawn timeout. The gate's worst case (every attempt running to
+// its timeout) plus checkout headroom must stay under the smallest of them, or
+// the caller SIGTERMs the gate mid-run. Reads the callers' real caps.
+test('Done-gate worst case stays under the callers\' spawn timeouts', () => {
+  const caps = [];
+  const close = fs.readFileSync(path.join(REPO, 'scripts/close-stuck-verified-cards.js'), 'utf8');
+  const m = close.match(/const CLOSE_TIMEOUT_MS = (\d+) \* 60 \* 1000;/);
+  assert.ok(m, 'close-stuck-verified-cards.js CLOSE_TIMEOUT_MS not found');
+  caps.push(Number(m[1]) * 60000);
+  const zombie = fs.readFileSync(path.join(REPO, 'scripts/lib/linear-started-zombie-sweep-verify.js'), 'utf8');
+  for (const z of zombie.matchAll(/timeout: (\d+),/g)) caps.push(Number(z[1]));
+  assert.ok(caps.length >= 2, 'expected both callers\' caps');
+  const CHECKOUT_HEADROOM_MS = 60000;
+  const worst = DEFAULT_TIMEOUT_MS * VERIFY_ATTEMPTS + CHECKOUT_HEADROOM_MS;
+  assert.ok(worst < Math.min(...caps), `worst case ${worst}ms >= caller cap ${Math.min(...caps)}ms`);
 });

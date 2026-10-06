@@ -42,12 +42,17 @@ const path = require('path');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./acceptance-check-core.js');
 const { decideClose, VERDICTS } = require('./close-time-verify.js');
 
-// Matches notion-brain.js's CLOSE_VERIFY_TIMEOUT_MS default: a person or a
-// sync loop is synchronously waiting on this, so it must answer in bounded
-// time rather than hold a close hostage. 180s, not 90s: a full-repo
+// A person or a sync loop is synchronously waiting on this, so it must answer
+// in bounded time rather than hold a close hostage. 180s per run: a full-repo
 // `npx tsc --noEmit` takes ~55s on an idle 4-core box, and a timeout reads as
 // unverifiable, which this strict gate refuses (BRO-4757).
 const DEFAULT_TIMEOUT_MS = 180000;
+// One run, no flake retry: runVerify's default (2) re-runs a failing command,
+// so the worst case would be 2 x 180s plus checkout, past the 300s spawn caps
+// of close-stuck-verified-cards.js and linear-started-zombie-sweep-verify.js,
+// which would SIGTERM linear-brain.js mid-gate. A refused close can simply be
+// re-run; a killed one leaves its fresh checkout behind.
+const VERIFY_ATTEMPTS = 1;
 
 /**
  * @param {{repo?:string, timeoutMs?:number, log?:Function}} [opts]
@@ -63,7 +68,7 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
     try {
       checkout = makeFreshCheckout({ repo, prefix: 'linear-done-verify-' });
       log(`[linear-cmd-execution] running \`${cmd}\` against origin/main @ ${checkout.sha ? checkout.sha.slice(0, 9) : 'unknown'}…`);
-      const verifyResult = runVerify(checkout.wt, cmd, { timeoutMs, prepared: checkout.prepared });
+      const verifyResult = runVerify(checkout.wt, cmd, { attempts: VERIFY_ATTEMPTS, timeoutMs, prepared: checkout.prepared });
       // A synthetic dispatch record — this call has no dispatch-ledger entry
       // to look up (findCardDispatch is Notion's launch-ledger lookup; the
       // command here comes straight from evaluateDoneTransition's own
@@ -116,4 +121,4 @@ function makeVerifyCmdEvidence({ repo = path.join(__dirname, '..', '..'), timeou
   };
 }
 
-module.exports = { makeVerifyCmdEvidence };
+module.exports = { makeVerifyCmdEvidence, DEFAULT_TIMEOUT_MS, VERIFY_ATTEMPTS };
