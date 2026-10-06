@@ -266,3 +266,8 @@ land-retry-cancelled.yml
 # until the next push or tick; no user-facing page goes stale. Failures surface
 # via notify-failure + the daily digest.
 main-infra-rerun.yml
+
+# detect-star-band-regressions.yml (BRO-4770): 6-hourly detector that flags needsRescore on
+# star-band drift and scoring clobbers in recently opened shows. Self-repairing (the normal
+# drain re-scores), failures surface via notify-failure + the daily digest.
+detect-star-band-regressions.yml
