@@ -33,6 +33,7 @@ const {
   getCriticRegistry,
 } = require('./lib/review-guards');
 const { isScoreable } = require('./lib/is-scoreable');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { hasExcerpt } = require('./lib/excerpt-fields');
 
 const REVIEWS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -56,17 +57,19 @@ const wpClearedFlags = (data) =>
  */
 function classifyRebuildExclusion(data, show) {
   if (!data) return 'noData';
+  // BRO-4806: opening-night lane reviews are exempt from the six lane-bypassed guards (trust-model laneBypasses).
+  const laneOk = (guard) => laneBypasses(data, guard, { openingDate: show && show.openingDate });
 
-  if (data.wrongProduction === true && !wpClearedFlags(data)) return 'wrongProduction';
-  if (data.wrongShow === true && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
+  if (data.wrongProduction === true && !wpClearedFlags(data) && !laneOk('wrongProduction')) return 'wrongProduction';
+  if (data.wrongShow === true && !wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show) && !laneOk('wrongProduction')) return 'wrongShow';
   if (data.wrongAttribution === true) return 'wrongAttribution';
   if (data.duplicateOf) return 'duplicateOf';
-  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return 'isRoundupArticle';
+  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data) && !laneOk('roundupUrlSwap')) return 'isRoundupArticle';
   if (
-    data.isNonReview === true ||
+    (data.isNonReview === true ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
-    data.nonReviewContent === true
+    data.nonReviewContent === true) && !laneOk('nonReview')
   ) {
     return 'nonReview';
   }
@@ -80,21 +83,21 @@ function classifyRebuildExclusion(data, show) {
   }
   if (
     data.contentVerification?.wrongArticle === true &&
-    data.contentVerification?.confidence === 'high'
+    data.contentVerification?.confidence === 'high' && !laneOk('nonReview')
   ) {
     return 'contentVerificationWrongHigh';
   }
-  if (isRejectedByReasonExclusion(data)) return 'rejectionReason';
-  if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedBy2plus';
-  if (isRejectedAtExclusion(data)) return 'rejectedAt';
-  if (data.incompleteReason === 'wrong_content') {
+  if (isRejectedByReasonExclusion(data) && !laneOk('wrongProduction')) return 'rejectionReason';
+  if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2 && !laneOk('wrongProduction')) return 'rejectedBy2plus';
+  if (isRejectedAtExclusion(data) && !laneOk('wrongProduction')) return 'rejectedAt';
+  if (data.incompleteReason === 'wrong_content' && !laneOk('headlineBackstop')) {
     const wpBlocking = data.wrongProduction === true && !wpClearedFlags(data);
     if (data.wrongShow || wpBlocking) return 'incompleteReason_wrong_content';
     const hasText = !!(data.fullText && data.fullText.trim().length >= 200);
     const hasSignal = !!(data.aggregatorStars != null || data.originalScore != null || data.llmScore);
     if (!hasText && !hasSignal) return 'incompleteReason_wrong_content';
   }
-  if (data.contentTier === 'invalid' && !wpClearedFlags(data)) return 'contentTier_invalid';
+  if (data.contentTier === 'invalid' && !wpClearedFlags(data) && !laneOk('headlineBackstop')) return 'contentTier_invalid';
 
   if (data.fullTextWrongAuthor === true) {
     const hasExc = !!(
@@ -124,8 +127,9 @@ function classifyRebuildExclusion(data, show) {
 function classifyLlmExclusion(data, show /* unused criticRegistry now */) {
   const rebuildReason = classifyRebuildExclusion(data, show);
   if (rebuildReason) return rebuildReason;
-  if (data.incompleteReason === 'scraper_garbage') return 'scraper_garbage';
-  if (data.showNotMentioned && !hasExcerpt(data)) return 'showNotMentioned_noExcerpt';
+  const laneOk = (guard) => laneBypasses(data, guard, { openingDate: show && show.openingDate });
+  if (data.incompleteReason === 'scraper_garbage' && !laneOk('scraperGarbage')) return 'scraper_garbage';
+  if (data.showNotMentioned && !hasExcerpt(data) && !laneOk('headlineBackstop')) return 'showNotMentioned_noExcerpt';
   return '';
 }
 
