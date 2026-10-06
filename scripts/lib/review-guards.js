@@ -4113,6 +4113,11 @@ function isRejectedAtExclusion(data) {
 
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
+  // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
+  // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
+  // inline gates call the same one.
+  const { laneBypasses } = require('./opening-night-lane/trust-model');
+  const laneOk = (guard) => laneBypasses(data, guard, { openingDate: show && show.openingDate });
 
   // BRO-931 #3 — preview-period scraping poisons opening night dedup.
   // isPreviewPlaceholder is stamped by gather-reviews.js (while show.status is
@@ -4188,7 +4193,7 @@ function explainExclusion(data, show, filePath) {
   // the production's own run window, is a low-confidence flag — it does not
   // exclude. Mirrored by rebuild-all-reviews.js's inline gate and
   // scoring-delta.js; see cvFlagVetoedInWindow for the provenance scope.
-  if (data.wrongProduction === true) {
+  if (data.wrongProduction === true && !laneOk('wrongProduction')) {
     const cleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
@@ -4211,7 +4216,7 @@ function explainExclusion(data, show, filePath) {
   //
   // In-window + slug-match veto (audit S6-T4): same rule as the
   // wrongProduction branch above, for CV-promoted / classifier wrongShow.
-  if (data.wrongShow === true) {
+  if (data.wrongShow === true && !laneOk('wrongProduction')) {
     if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)
         && !cvFlagVetoedInWindow(data, show, 'wrongShow')) return 'wrongShow';
   }
@@ -4337,12 +4342,12 @@ function explainExclusion(data, show, filePath) {
       }
     }
   }
-  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data)) return 'isRoundupArticle';
+  if (data.isRoundupArticle === true && !isLikelyStaleRoundupFlag(data) && !laneOk('roundupUrlSwap')) return 'isRoundupArticle';
   // BRO-2403: critic's personal site reposting their staff review double-counts them.
   if (require('./personal-repost-sites').personalRepostParent(data)) return 'personalRepost';
   // Unflagged roundup pages (flag setter is enrichment-gated; parity with rebuild's
   // inclusion gate so scoring never scores what rebuild excludes — ship-check 2026-07-10)
-  if (isRoundupPageAsReview(data)) return 'roundupPageAsReview';
+  if (isRoundupPageAsReview(data) && !laneOk('roundupUrlSwap')) return 'roundupPageAsReview';
   // Blocked review URLs (google redirect wrappers, ticket pages, aggregator/roundup
   // domains, social media). Rebuild has auto-rejected these since the gather-time
   // guard was added (rebuild-all-reviews.js "skippedBlockedUrl" — rebuild does NOT
@@ -4409,10 +4414,10 @@ function explainExclusion(data, show, filePath) {
   // humanReviewScore is a human's verdict, so it is exempt.
   if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
   if (
-    (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
+    ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
-    data.nonReviewContent === true
+    data.nonReviewContent === true) && !laneOk('nonReview')
   ) return 'nonReview';
   if (data.fabricatedEntry === true) return 'fabricatedEntry';
   if (data.isSyndicatedDuplicate === true) return 'isSyndicatedDuplicate';
@@ -4461,7 +4466,7 @@ function explainExclusion(data, show, filePath) {
   if (
     data.fullText && data.textFetchedAt && typeof data.textFetchedAt === 'string' &&
     data.textFetchedAt > (process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z') &&
-    !data.rejectedBy
+    !data.rejectedBy && !laneOk('tourCrossMarket')
   ) {
     const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./excerpt-validation');
     const introText = data.fullText.slice(0, 600);
@@ -4501,7 +4506,7 @@ function explainExclusion(data, show, filePath) {
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high' &&
-    !cvWrongArticleManuallyCleared(data)
+    !laneOk('nonReview') && !cvWrongArticleManuallyCleared(data)
   ) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
@@ -4509,8 +4514,8 @@ function explainExclusion(data, show, filePath) {
   // even when the outlet's JSON-LD schema records an explicit star rating. The json-ld
   // star IS the critic's published verdict — authoritative for KNOWN_STAR_OUTLETS. Allow
   // inclusion so the P0.5 path in getBestScore can use the structured-data score.
-  if (isRejectedByReasonExclusion(data)) return 'rejectionReason';
-  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedByMultipleModels';
+  if (isRejectedByReasonExclusion(data) && !laneOk('wrongProduction')) return 'rejectionReason';
+  if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2 && !laneOk('wrongProduction')) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
   // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
   // cleared by a re-scrape (collect-review-texts.js line 4247) or explicit manual reset.
@@ -4528,12 +4533,12 @@ function explainExclusion(data, show, filePath) {
   // authenticator-we): LLM ensemble told "show context specifies Broadway" for WE shows
   // rejected them, and wrongProductionManualClear alone couldn't override the rejectedAt
   // guard. See Notion card 34b637c5-416f-81ff-a6d6-d453e7ed537c.
-  if (isRejectedAtExclusion(data)) return 'rejectedAt';
+  if (isRejectedAtExclusion(data) && !laneOk('wrongProduction')) return 'rejectedAt';
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
   // Only exclude if the stale flag is still legitimate (wrong flags not cleared yet).
-  if (data.incompleteReason === 'wrong_content') {
+  if (data.incompleteReason === 'wrong_content' && !laneOk('headlineBackstop')) {
     // Respect manual clears for wrongProduction (mirrors the check above at line 1072)
     const wpCleared =
       data.wrongProductionManualClear === true ||
@@ -4551,7 +4556,7 @@ function explainExclusion(data, show, filePath) {
   // Invalid content tier: rebuild's drift-checker excludes this at line 3158.
   // Respect manual clears — if wrongProduction was the reason and has since been cleared,
   // the contentTier=invalid flag is stale and should not block inclusion.
-  if (data.contentTier === 'invalid') {
+  if (data.contentTier === 'invalid' && !laneOk('headlineBackstop')) {
     const wpCleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||

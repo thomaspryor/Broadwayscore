@@ -21,6 +21,7 @@
 
 const { hasExcerpt: hasAnyExcerpt } = require('../lib/excerpt-fields');
 const { isIncludableForRebuild } = require('../lib/review-guards');
+const { laneBypasses } = require('../lib/opening-night-lane/trust-model');
 
 export function isScoreable(data: Record<string, any>, show?: Record<string, any>, filePath?: string): boolean {
   if (!isIncludableForRebuild(data, show, filePath)) return false;
@@ -41,8 +42,11 @@ export function isScoreable(data: Record<string, any>, show?: Record<string, any
   // outlets, orphaning real reviews unscored (london-theatre, 5 WE openings,
   // 2026-05-30). This mirror must stay in sync with scripts/lib/is-scoreable.js,
   // which never carried the gate.
-  if (data.incompleteReason === 'scraper_garbage') return false;
-  if (data.showNotMentioned && !hasAnyExcerpt(data)) return false;
+  // BRO-4806: opening-night lane reviews are production-verified by an aggregator; the scraperGarbage and
+  // headlineBackstop guards stand down for them (and only them). Same predicate as scripts/lib/is-scoreable.js.
+  const laneOpts = { openingDate: show && show.openingDate };
+  if (data.incompleteReason === 'scraper_garbage' && !laneBypasses(data, 'scraperGarbage', laneOpts)) return false;
+  if (data.showNotMentioned && !hasAnyExcerpt(data) && !laneBypasses(data, 'headlineBackstop', laneOpts)) return false;
 
   return true;
 }
