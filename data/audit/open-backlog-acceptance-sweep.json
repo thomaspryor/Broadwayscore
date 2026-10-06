@@ -1,68 +1,50 @@
 {
-  "generatedAt": "2026-10-05T15:40:11.140Z",
+  "generatedAt": "2026-10-06T13:48:57.196Z",
   "shadow": true,
-  "checkoutSha": "4aedc00ba6b034de953b4a3e25c09308cfbc4196",
-  "totalCandidates": 700,
-  "eligibleCandidates": 50,
-  "checked": 14,
+  "checkoutSha": "53f03ac31df33fef8399de49a565623cfbb0a353",
+  "totalCandidates": 300,
+  "eligibleCandidates": 19,
+  "checked": 10,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 7,
+    "pass": 3,
     "fail": 0,
     "unverifiable": 7
   },
   "alreadyDone": [
     {
+      "id": "BRO-4792",
+      "name": "Schedule audit-transfer-review-gaps in the corpus-drift workflow with a baseline for --ci (BRO-1361 follow-up)",
+      "verifyCmd": "node --test scripts/lib/transfer-review-gaps.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4735",
+      "name": "commercial.json: 9 /biz fields show internal research wording (Per policy, owner review, recouped:null)",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
       "id": "BRO-4648",
       "name": "main test.yml red: Lint Workflows / Audit — no orphan unit tests",
       "verifyCmd": "node scripts/audit-workflow-concurrency.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-4386",
-      "name": "Ticket-seller product pages (theatrebookings.com/play/*, bestoftheatre.co.uk/<slug>) ingested + scored as reviews",
-      "verifyCmd": "node --test scripts/lib/non-review-url-patterns.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4373",
-      "name": "P1: nothing tells the owner when the Mac is down/logged out — digest, opening-night monitor, Friday sync silently stopped 4.5 days",
-      "verifyCmd": "node --test scripts/lib/morning-digest-liveness.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4369",
-      "name": "Playbill Verdict filed another play's TheaterMania review on School Girls and it squatted the real critic's slot",
-      "verifyCmd": "node --test scripts/lib/review-guards-other-production.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4295",
-      "name": "Unit Tests always fails on CI: bsc-next.js/linear-next.js hardcoded local path",
-      "verifyCmd": "node --test scripts/bsc-next.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4288",
-      "name": "health-check.js: 3 more backlog digests share the 'always name candidates[0]' bug",
-      "verifyCmd": "node --test tests/unit/health-check-repeat-failures.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4276",
-      "name": "main Data Validation red: critic-consensus.json orphan key sylvia-off-west-end-2026 (SHOW_NOT_IN_DB) fails audit-critic-consensus-contamination --gate",
-      "verifyCmd": "node scripts/audit-critic-consensus-contamination.js --gate",
       "detail": null
     }
   ],
   "failing": [],
   "unverifiable": [
     {
+      "id": "BRO-4748",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, branch stays single-commit\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 146832ms (timeout — no verdict)"
+    },
+    {
       "id": "BRO-4716",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 147202ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 100174ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4638",
@@ -80,7 +62,7 @@
       "id": "BRO-4549",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 114072ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 62811ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4447",
@@ -92,13 +74,7 @@
       "id": "BRO-4410",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 78509ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-4265",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"verified TodayTix-gap shows carry a real Ticketmaster link\"",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 39451ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 31400ms (timeout — no verdict)"
     }
   ]
 }
