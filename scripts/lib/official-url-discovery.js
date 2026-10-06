@@ -32,7 +32,7 @@ const BLOCKED_DOMAINS = new Set([
   // Reference/social
   'wikipedia.org', 'wikidata.org', 'imdb.com',
   'facebook.com', 'instagram.com', 'twitter.com', 'x.com',
-  'youtube.com', 'tiktok.com', 'reddit.com', 'threads.net',
+  'youtube.com', 'tiktok.com', 'reddit.com', 'threads.net', 'threads.com',
   // Generic
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'pinterest.com', 'linkedin.com', 'tumblr.com',

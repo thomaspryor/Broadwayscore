@@ -36,7 +36,7 @@ const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('
 // social, navigation, store links, internal Playbill/BWW article navigation).
 const NON_REVIEW_HOST_PATTERNS = [
   /^facebook\.com$/, /^instagram\.com$/, /^twitter\.com$/, /^x\.com$/,
-  /^youtube\.com$/, /^tiktok\.com$/, /^threads\.net$/, /^linkedin\.com$/,
+  /^youtube\.com$/, /^tiktok\.com$/, /^threads\.net$/, /^bsky\.app$/, /^linkedin\.com$/,
   /^pinterest\./, /^reddit\.com$/, /^t\.me$/, /^whatsapp\./,
   /^playbillder\.com$/, /^playbillstore\.com$/, /^playbilltravel\.com$/,
   /^stagemag\.broadwayworld\.com$/, /^broadwayworldshop\.com$/,

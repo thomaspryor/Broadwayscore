@@ -176,7 +176,7 @@ function extractReviewLinksFromArticle(html, showId) {
         href.includes('playbillstore.com') || href.includes('playbilltravel.com')) return;
     if (href.includes('facebook.com') || href.includes('twitter.com') ||
         href.includes('instagram.com') || href.includes('youtube.com') ||
-        href.includes('tiktok.com') || href.includes('threads.net')) return;
+        href.includes('tiktok.com') || href.includes('threads.net') || href.includes('threads.com')) return;
     if (href.includes('ticketmaster') || href.includes('telecharge') ||
         href.includes('todaytix') || href.includes('seatgeek')) return;
     if (href.includes('.ffm.to') || href.includes('spotify.com') ||
