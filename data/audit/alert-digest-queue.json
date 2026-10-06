@@ -835,6 +835,18 @@
     "queuedAt": "2026-10-06T21:43:07.439Z"
   },
   {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run data validation, Audit review contamination",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37536480237",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T21:52:53.562Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-4807-mux5aevv",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4807-mux5aevv",
     "description": "land.yml did not land land/job/linear-BRO-4807-mux5aevv: the unit-tests-node gate went red at 9ab5d00e80. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37532949749",
