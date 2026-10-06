@@ -23,7 +23,7 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(__dirname, '../..');
 
-const { isStaleScoreInput, markRescoreNeeded } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
+const { isStaleScoreInput, markRescoreNeeded, isFalseTruncationScore, isTruncatedScoreNowComplete } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
 
 test('fullText added to a previously excerpt-scored, isScoreable file → flag set + stamped', () => {
   const data = {
@@ -217,7 +217,8 @@ test('fullText scored as truncated, text not refetched since scoring → NOT sta
 });
 
 test('fullText scored as truncated, newer text still truncated → NOT stale (no rescore loop)', () => {
-  const data = truncatedFullTextScore({ fullText: COMPLETE_BODY.slice(0, 1500) + ' and then the' });
+  const data = truncatedFullTextScore({ fullText: COMPLETE_BODY.slice(0, 1500) + ' Subscribe to continue reading' });
+  // (BRO-4804: a bare mid-sentence ending on a complete-tier file is now a footer, not truncation; paywall wording still is.)
   assert.equal(isStaleScoreInput(data), false);
 });
 
@@ -249,4 +250,39 @@ test('every persisted wrongProduction/wrongShow clear in rebuild-all-reviews.js 
   });
   assert.ok(checked >= 10, `expected >=10 persisted clear sites, saw ${checked} (regex drift?)`);
   assert.deepEqual(missing, [], `clear without markRescoreNeeded before write at lines ${missing.join(', ')}`);
+});
+
+// BRO-4804: a page footer made the scorer call complete reviews truncated.
+const BODY_4804 = 'Slam Frank is a bucking bronco in a world of pony rides. '.repeat(30)
+  + 'But if you can hang on till the end, you might find that getting knocked around can jostle new things loose.';
+const footerScored = (over = {}) => ({
+  assignedScore: 67,
+  contentTier: 'complete',
+  fullText: BODY_4804 + ' Add as a preferred source on Google',
+  llmMetadata: { textSource: { type: 'fullText', status: 'truncated' } },
+  ...over,
+});
+
+test('BRO-4804: footer-only truncation on a complete-tier scored file is a false-truncation score', () => {
+  assert.equal(isFalseTruncationScore(footerScored()), true);
+});
+
+test('BRO-4804: not flagged when the scorer saw it as complete, the tier is not complete, or it is already queued', () => {
+  assert.equal(isFalseTruncationScore(footerScored({ llmMetadata: { textSource: { type: 'fullText', status: 'complete' } } })), false);
+  assert.equal(isFalseTruncationScore(footerScored({ contentTier: 'truncated' })), false);
+  assert.equal(isFalseTruncationScore(footerScored({ needsRescore: true })), false);
+  assert.equal(isFalseTruncationScore(footerScored({ humanReviewScore: 70 })), false);
+  assert.equal(isFalseTruncationScore(footerScored({ scoreSource: 'explicit-rating' })), false);
+});
+
+test('BRO-4804: a genuinely truncated text (paywall wording) is never flagged', () => {
+  assert.equal(isFalseTruncationScore(footerScored({ fullText: BODY_4804 + ' Subscribe to continue reading' })), false);
+});
+
+test('BRO-4804: isTruncatedScoreNowComplete reads a footer-ended complete file as complete', () => {
+  const d = footerScored({
+    llmMetadata: { scoredAt: '2026-10-01T00:00:00Z', textSource: { type: 'fullText', status: 'truncated' } },
+    textFetchedAt: '2026-10-02T00:00:00Z',
+  });
+  assert.equal(isTruncatedScoreNowComplete(d), true);
 });
