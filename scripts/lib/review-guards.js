@@ -2360,6 +2360,9 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
  */
 function isNonReviewDemotedByFreshCV(data) {
   if (!data || data.isNonReview !== true) return false;
+  // Manual non-review decisions take precedence over automated CV verdicts.
+  if (data.manualReviewedBy || (typeof data.isNonReviewReason === 'string'
+    && data.isNonReviewReason.startsWith('manual (not a review):'))) return false;
   const cv = data.contentVerification;
   if (!cv) return false;
   if (cv.articleType !== 'review') return false;

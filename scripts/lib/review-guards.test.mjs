@@ -17,6 +17,8 @@ const {
   isReviewContentTrustworthy,
 } = require('./review-guards.js');
 
+import './review-guards-manual-non-review.test.mjs';
+
 /* ──────────────────────────────────────────────────────────────────────────
  * T1-retrieval canonical predicates (Sprint 1, task #291).
  *
