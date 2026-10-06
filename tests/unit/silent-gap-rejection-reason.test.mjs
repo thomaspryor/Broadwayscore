@@ -3,7 +3,7 @@
  * gap. 'garbage_text' = bad fetch (surfaced as rejected-unscoreable), while
  * 'not_a_review' = editorial verdict (correct absence, never surfaced).
  *
- * Audit 2026-10-06: hand-sampled 20 of the 151 garbage_text files whose
+ * Audit 2026-10-06: hand-sampled 20 of the ~145-151 garbage_text files (145 at filing, 151 on rescan) whose
  * rejectionReasoning matches /not a review|promotional|.../ — 20/20 were real
  * fetch failures (error pages, nav chrome, paywall prompts, wrong newspaper
  * section). The regex matches "not a review", which garbage descriptions use
@@ -31,6 +31,8 @@ const base = {
 };
 const classify = (file) => classifySilentGap({ file, show: SHOW, tier: 1, outletScored: false, now: NOW });
 
+// Note: the gap is driven by rejectedAt + a reason code that is NOT in
+// EDITORIAL_REJECTIONS; the classifier never names garbage_text explicitly.
 test('garbage_text rejection (error page / nav chrome) still surfaces as a gap', () => {
   const gap = classify({
     ...base,
