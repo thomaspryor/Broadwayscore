@@ -3127,6 +3127,9 @@ on:
       # (tests/** already globbed above). Root-level scripts/*.test.mjs is NOT
       # globbed, so a solo edit to just this file needs its own entry.
       - 'scripts/check-review-count-drift.test.mjs'
+      # BRO-4767: end-to-end baseline tests, and the tracked baseline they validate
+      - 'scripts/check-review-count-drift-baseline.test.mjs'
+      - 'data/audit/review-suppression-baseline.json'
       - 'scripts/clear-stale-wrong-production-flags.js'
       # BRO-2323: root-level scripts/*.test.mjs is NOT globbed — a solo edit to
       # either the script or its colocated test needs its own entry, or the

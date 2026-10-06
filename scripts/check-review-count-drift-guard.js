@@ -127,7 +127,7 @@ async function main() {
   });
   const baseMsg =
     `[check-review-count-drift-guard] check-review-count-drift.js exited ${result.status} — ` +
-    `reviews.json is either stale, dropping opening-window reviews (a --strict breach), or the ` +
+    `reviews.json is either stale, dropping scored reviews (a --strict breach: an opening-window show, or an older show that now publishes nothing / hides more than the baseline accepts), or the ` +
     `checkout could not be scanned at all. Override: ${overrideCommand}`;
 
   if (!shouldAutoRecover(GUARD_ID, state.consecutiveBlocks, { firstBlockedAt: state.firstBlockedAt, now: Date.now() })) {
@@ -154,7 +154,7 @@ async function main() {
     // review-texts/reviews.json checkout — and 2 = a real --strict breach), so
     // the impact text must not assume this run was specifically a suppression
     // breach when it could just as easily be a checkout that never got scanned.
-    impact: 'the daily reviews.json freshness/suppression check is no longer running in real time — either the checkout can\'t be scanned, or opening-window reviews are silently missing from the site',
+    impact: 'the daily reviews.json freshness/suppression check is no longer running in real time — either the checkout can\'t be scanned, or scored reviews (an opening-window show\'s, or an older show\'s) are silently missing from the site',
     runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY && process.env.GITHUB_RUN_ID
       ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
       : undefined,
