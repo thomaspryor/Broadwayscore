@@ -14,7 +14,8 @@ name: Main infra re-run
 # fetches and decides again. A real failure exits at once without sleeping.
 # Chaining: a rerun made with GITHUB_TOKEN does not fire workflow_run; one
 # made with the fallback PAT can, but attempt<3 and the 15-min age bound it
-# to two reruns per sha. The cron stays as a backstop.
+# to two reruns per sha. The cron stays as a backstop, and in practice it is
+# what retries a rerun that starved again (attempt 2 -> 3).
 # Decision logic + tests: scripts/lib/main-infra-rerun{,.test}.
 
 on:
@@ -58,8 +59,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          WAIT_FLAG: ${{ github.event_name == 'workflow_run' && '--wait' || '' }}
-        run: node scripts/main-infra-rerun.js $WAIT_FLAG
+        # --wait on every trigger: a cron/dispatch run can replace a queued
+        # workflow_run one in the concurrency group, and it must still wait out
+        # the age. waitMsFor is 0 unless the newest run would qualify.
+        run: node scripts/main-infra-rerun.js --wait
 
       - name: Notify on failure
         if: failure()
