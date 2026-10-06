@@ -256,6 +256,7 @@ lint_workflows() {
   for s in \
     audit-workflow-concurrency \
     audit-data-gate-heal-paths \
+    audit-new-gate-arming \
     audit-workflow-hygiene \
     assert-broadcast-step-order \
     audit-test-yml-lib-deps \

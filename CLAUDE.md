@@ -42,9 +42,9 @@ Use shared components from `src/components/show-cards/` — never create custom 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
 **Linear is the source of truth — do NOT create Notion cards.** Notion is retired (mirror froze 2026-08-20): cards filed there have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
 - **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
-- **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line. Write it when you file, not when you close.
+- **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
-- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Soft cap ~8/session.
+- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Cap ~8/session.
 - **If Linear is down:** warn, continue untracked, output the Outcome text. Do NOT fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
@@ -97,10 +97,6 @@ Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (Theater
 `data/` — `shows.json` (source of truth), `reviews.json` (derived via rebuild), `review-texts/{show-id}/` (private repo §11).
 Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full` for fullText.
 
-### Key Files
-**App:** `engine.ts`, `data-core.ts`, `scoring.ts`, `ShowImage.tsx`
-**Scripts:** `gather-reviews.js`, `collect-review-texts.js`, `rebuild-all-reviews.js`, `validate-data.js`, `discover-new-shows.js`
-
 ### Automation
 Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
 
@@ -130,7 +126,10 @@ See `memory/email-broadcast-rules.md` for full history.
 - **NEVER send to any Resend audience with >5 real contacts for testing**
 
 ### 18. Review BEFORE editing shared infrastructure (owner decision 2026-08-05, #1079)
-Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (or `/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail verdict stands until an `owner-override` verdict. Wider `scripts/lib/**` warns only. Scope: `scripts/lib/infra-review-scope.js`.
+Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (or `/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail verdict stands until an `owner-override` verdict. Scope: `scripts/lib/infra-review-scope.js`.
+
+### 19. New blocking CI gates land advisory first (BRO-2123)
+New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseline, or `# gate-arm-ok: <proof>`), blocking later. `audit-new-gate-arming.js` enforces; `memory/feedback_new_gates_land_advisory.md`.
 
 ---
 
@@ -140,4 +139,4 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
-**Owner never reviews or merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
+**Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
