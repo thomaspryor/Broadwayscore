@@ -113,7 +113,7 @@ function recoupClaimDesignationAction(existing) {
 // sources) gets clobbered. Sources merge by URL dedupe so prior Reddit/SEC
 // citations survive alongside the new trade-press article.
 function buildCommercialEntry(entry, existing, opts = {}) {
-  const { isClaimAutoApply = false, normalizeSources = (x) => x } = opts;
+  const { isClaimAutoApply = false, normalizeSources = (x) => x, figureEvidence = {} } = opts;
   const result = isClaimAutoApply && existing ? { ...existing } : {};
   // cleanNullish() collapses "null"/"undefined"/"" sentinels to undefined so a
   // bad LLM field never overwrites an existing value or writes invalid data.
@@ -168,6 +168,22 @@ function buildCommercialEntry(entry, existing, opts = {}) {
       } else {
         result.sources = normalized;
       }
+    }
+  }
+  for (const field of ['capitalization', 'weeklyRunningCost']) {
+    if (entry[field] == null) continue;
+    const evidence = figureEvidence[field];
+    const verified = evidence?.found === true && Boolean(evidence.quote && evidence.source?.url);
+    result.isEstimate = { ...result.isEstimate, [field]: !verified || entry.isEstimate?.[field] === true };
+    const sourceField = field === 'capitalization' ? 'capitalizationSource' : 'weeklyRunningCostSource';
+    if (verified) {
+      const host = new URL(evidence.source.url).hostname.replace(/^www\./, '');
+      result[sourceField] = `${host}: "${evidence.quote}"`;
+      result.sources = [evidence.source, ...(result.sources || []).filter(s => s.url !== evidence.source.url)];
+      if (field === 'weeklyRunningCost') result.costMethodology = 'trade-reported';
+    } else {
+      delete result[sourceField];
+      if (field === 'weeklyRunningCost') result.costMethodology = 'deep-research';
     }
   }
   return result;
