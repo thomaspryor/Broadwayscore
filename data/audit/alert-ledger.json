@@ -1539,14 +1539,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-10-04T16:16:39.962Z",
-      "lastNotifiedAt": "2026-09-28T19:06:26.167Z",
+      "incidentOpenedAt": "2026-08-21T12:33:44.570Z",
+      "lastSeen": "2026-10-06T17:46:21.356Z",
+      "lastNotifiedAt": "2026-10-06T17:46:21.356Z",
       "lastSurfacedAt": null,
-      "notifyCount": 6,
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-2864",
-      "silentRefires": 6,
-      "incidentOpenedAt": "2026-08-21T12:33:44.570Z"
+      "linearIdentifier": "BRO-2285"
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1601,7 +1600,7 @@
       "linearIdentifier": "BRO-4351"
     },
     "cron-health:Commercial Friday Refresh": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Commercial Friday Refresh",
@@ -1610,7 +1609,8 @@
       "lastNotifiedAt": "2026-08-24T12:34:09.811Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-06T17:46:26.525Z"
     },
     "arm-yield:workflow:scrape-westendtheatre": {
       "status": "open",
@@ -1664,7 +1664,7 @@
       "silentRefires": 4
     },
     "cron-health-chronic:Commercial Friday Refresh": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
@@ -1675,7 +1675,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-3656",
       "incidentOpenedAt": "2026-08-25T12:35:43.960Z",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-06T17:46:26.532Z"
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1842,13 +1843,13 @@
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
       "incidentOpenedAt": "2026-10-02T17:13:10.248Z",
-      "lastSeen": "2026-10-04T16:16:39.968Z",
+      "lastSeen": "2026-10-06T17:46:26.426Z",
       "lastNotifiedAt": "2026-10-02T17:13:10.248Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-4521",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "cron-health-chronic:Opening Night Checklist": {
       "status": "resolved",
@@ -2633,18 +2634,18 @@
       "resolveReason": "backfill sweep (BRO-2765 fix): confirmed hasRealImage()===true on disk"
     },
     "cron-health:Check Opening Night Drift": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
       "firstSeen": "2026-09-08T15:48:29.053Z",
-      "lastSeen": "2026-09-27T16:10:32.874Z",
-      "lastNotifiedAt": "2026-09-27T16:10:32.874Z",
-      "lastSurfacedAt": "2026-09-27T16:10:32.874Z",
-      "notifyCount": 4,
+      "incidentOpenedAt": "2026-10-06T17:46:21.253Z",
+      "lastSeen": "2026-10-06T17:46:21.253Z",
+      "lastNotifiedAt": "2026-10-06T17:46:21.253Z",
+      "lastSurfacedAt": "2026-10-06T17:46:21.253Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-28T19:06:30.556Z"
+      "linearIdentifier": null
     },
     "cron-health-chronic:Enrich Off-Broadway Dates": {
       "status": "resolved",
@@ -2688,18 +2689,18 @@
       "silentRefires": 14
     },
     "cron-health:Audit Aggregator Review Gap": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Audit Aggregator Review Gap",
       "firstSeen": "2026-09-09T15:43:50.702Z",
-      "lastSeen": "2026-09-21T17:36:41.697Z",
-      "lastNotifiedAt": "2026-09-21T17:36:41.697Z",
-      "lastSurfacedAt": "2026-09-21T17:36:41.697Z",
-      "notifyCount": 2,
+      "incidentOpenedAt": "2026-10-06T17:46:21.242Z",
+      "lastSeen": "2026-10-06T17:46:21.242Z",
+      "lastNotifiedAt": "2026-10-06T17:46:21.242Z",
+      "lastSurfacedAt": "2026-10-06T17:46:21.242Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-24T16:18:58.319Z"
+      "linearIdentifier": null
     },
     "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026": {
       "status": "open",
@@ -8873,7 +8874,7 @@
       "silentRefires": 5
     },
     "cron-health:Weekly Grosses": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Weekly Grosses",
@@ -8884,7 +8885,8 @@
       "lastSurfacedAt": "2026-10-02T17:13:10.138Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-06T17:46:26.538Z"
     },
     "opening-night-cv-wrongproduction-unhandled-hay-fever-west-end-2026": {
       "status": "open",
@@ -9293,7 +9295,7 @@
       "linearIdentifier": null
     },
     "cron-health-chronic:Weekly Grosses": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Weekly Grosses",
       "firstSeen": "2026-10-03T15:32:30.667Z",
@@ -9304,7 +9306,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4553",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-06T17:46:26.543Z"
     },
     "land:land/job/linear-BRO-2129-mushrd1p": {
       "status": "resolved",

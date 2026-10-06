@@ -289,5 +289,39 @@
       }
     ],
     "queuedAt": "2026-10-06T17:30:17.233Z"
+  },
+  {
+    "conditionKey": "cron-health:Audit Aggregator Review Gap",
+    "title": "🚨 Critical cron stale, self-heal failed: Audit Aggregator Review Gap",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37505578191",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37505578191)"
+      }
+    ],
+    "queuedAt": "2026-10-06T17:46:21.244Z"
+  },
+  {
+    "conditionKey": "cron-health:Check Opening Night Drift",
+    "title": "🚨 Critical cron stale, self-heal failed: Check Opening Night Drift",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37505578191",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37505578191)"
+      }
+    ],
+    "queuedAt": "2026-10-06T17:46:21.253Z"
   }
 ]
