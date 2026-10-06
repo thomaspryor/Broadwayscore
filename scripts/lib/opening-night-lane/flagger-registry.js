@@ -91,7 +91,7 @@ function flagWriteLines(src) {
 // A write site is guarded when a lane call (or the rebuild's skipStaleFlagWrite, which calls one) appears within
 // SITE_WINDOW lines above it, or a `lane-guarded: <where>` comment sits on the line or the two above it.
 const SITE_WINDOW = 60;
-const LANE_CALL = /\blane(?:Bypasses|Holds|Held)\(|\bskipStaleFlagWrite\(/;
+const LANE_CALL = /\blane(?:Bypasses|Holds|Held|Ok)\(|\bskipStaleFlagWrite\(/;
 function unguardedSites(src) {
   const lines = src.split('\n');
   return flagWriteLines(src).filter((n) => {

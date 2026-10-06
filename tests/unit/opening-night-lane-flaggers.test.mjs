@@ -158,10 +158,10 @@ test('every guard name passed to laneBypasses/laneHolds/laneHeld is a known lane
   const bad = [];
   for (const w of writers.filter((x) => x.wired)) {
     const src = fs.readFileSync(path.join(ROOT, w.file), 'utf8');
-    for (const m of src.matchAll(/\b(?:laneBypasses|laneHolds|laneHeld)\(\s*(?:[\w.$]+,\s*)?'([A-Za-z]+)'/g)) {
+    for (const m of src.matchAll(/\b(?:laneBypasses|laneHolds|laneHeld|laneOk)\(\s*(?:[\w.$]+,\s*)?'([A-Za-z]+)'/g)) {
       if (!tm.LANE_BYPASSED_GUARDS.includes(m[1])) bad.push(`${w.file}: ${m[1]}`);
     }
-    assert.ok(/\blane(?:Bypasses|Holds|Held)\(/.test(src), `${w.file} mentions laneBypasses but never calls it`);
+    assert.ok(/\blane(?:Bypasses|Holds|Held|Ok)\(/.test(src), `${w.file} mentions laneBypasses but never calls it`);
   }
   assert.deepEqual(bad, []);
 });
