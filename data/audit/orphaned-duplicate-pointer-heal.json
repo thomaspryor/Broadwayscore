@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-06T16:38:12.001Z",
+  "generated": "2026-10-06T17:01:28.743Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
   "count": 22,
   "orphans": [
@@ -88,13 +88,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "loserFile": "whatsonstage--unknown.json",
-      "targetFile": "whatsonstage--rachel-agyekum.json",
-      "reason": "orphaned-duplicate-heal: whatsonstage--rachel-agyekum.json was flagged invalid after whatsonstage--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -156,6 +149,13 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "loserFile": "whatsonstage--unknown.json",
+      "targetFile": "whatsonstage--rachel-agyekum.json",
+      "reason": "orphaned-duplicate-heal: whatsonstage--rachel-agyekum.json was flagged invalid after whatsonstage--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
