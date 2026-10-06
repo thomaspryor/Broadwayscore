@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-06T11:11:00.529Z",
+  "generatedAt": "2026-10-06T17:53:22.990Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 230,
-  "clean": 228,
-  "defective": 2,
+  "checked": 227,
+  "clean": 222,
+  "defective": 5,
   "byType": {
-    "unreachable": 2
+    "unreachable": 5
   },
   "shows": [
     {
@@ -29,6 +29,51 @@
       "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
       "title": "Savage & Simon Says: A Double Bill",
       "openingDate": "2026-09-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
+      "title": "September L. Davis: The Apology Tour",
+      "openingDate": "2026-09-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "truly-howard-hughes-off-broadway-2026",
+      "title": "Truly, Howard Hughes",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
+      "title": "Repro Eco: Tomorrow Is Now",
+      "openingDate": "2026-09-16",
       "ok": false,
       "defects": [
         {
