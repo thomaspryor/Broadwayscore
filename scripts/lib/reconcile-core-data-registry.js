@@ -71,7 +71,11 @@ function main() {
       console.error(`  ::warning::reconcile-core-data-registry: ${localFile} skipped (${String(e.message).slice(0, 120)})`);
     }
   }
-  process.stdout.write(changedFiles.join('\n'));
+  // Newline-TERMINATED: the caller consumes this with `while read -r f`, which
+  // skips an unterminated last line — and the last line is the reconciled file
+  // itself (tombstones are pushed first), so reviews.json was never staged and
+  // the un-reconciled copy got pushed (BRO-4809).
+  process.stdout.write(changedFiles.map((f) => f + '\n').join(''));
 }
 
 module.exports = { main };

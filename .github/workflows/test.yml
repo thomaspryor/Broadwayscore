@@ -2786,6 +2786,7 @@ on:
       # BRO-2221: pins time-bomb fixes under the +45d clock shift
       - 'scripts/audit-time-bomb-tests.js'
       - 'scripts/audit-time-bomb-tests.test.mjs'
+      - 'scripts/byline-attribution.test.mjs'
       # Outlet stub-rate monitor (card #100): detects a broken article
       # extractor (site redesign silently breaking extraction, e.g.
       # TheaterMania's 2026 Bootstrap redesign) via a spike in the stub-tier

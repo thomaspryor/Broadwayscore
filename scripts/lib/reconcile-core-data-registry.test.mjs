@@ -158,3 +158,81 @@ test('reconcile-core-data-registry: a dropped Unknown-byline fossil leaves a dur
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// BRO-4809: the action consumed this script's stdout with `while read -r f`,
+// which skips an unterminated last line. reviews.json is always listed last, so
+// the reconciled (deduped) file was never staged and the duplicate got pushed.
+// These tests run the REAL consumer loop extracted from push-core-data/action.yml.
+const ACTION = fileURLToPath(new URL('../../.github/actions/push-core-data/action.yml', import.meta.url));
+
+function extractConsumerLoop() {
+  const yml = fs.readFileSync(ACTION, 'utf8');
+  const m = yml.match(/(while IFS= read -r f(?:(?!while IFS= read)[\s\S])*?done < \/tmp\/\.reconciled-registry-files)/);
+  assert.ok(m, 'could not find the reconciled-registry-files consumer loop in push-core-data/action.yml');
+  return m[1].replace('/tmp/.reconciled-registry-files', '"$LIST"');
+}
+
+function git(cwd, ...args) {
+  return execFileSync('git', args, { cwd, encoding: 'utf8' });
+}
+
+test('reconcile-core-data-registry: stdout is newline-terminated (BRO-4809)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'reconcile-core-data-'));
+  try {
+    const checkout = path.join(tmp, 'checkout');
+    const snapshot = path.join(tmp, 'snapshot');
+    fs.mkdirSync(checkout, { recursive: true });
+    fs.mkdirSync(snapshot, { recursive: true });
+    fs.writeFileSync(path.join(checkout, 'awards.json'), JSON.stringify({ shows: { a: {} } }, null, 2) + '\n');
+    fs.writeFileSync(path.join(snapshot, 'awards.json'), JSON.stringify({ shows: { a: {}, b: {} } }, null, 2) + '\n');
+    const out = run(checkout, snapshot);
+    assert.ok(out.endsWith('\n'), `stdout must end with a newline, got ${JSON.stringify(out)}`);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('push-core-data consumer loop stages the deduped reviews.json that follows a tombstone (BRO-4809 regression)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'reconcile-core-data-'));
+  try {
+    const checkout = path.join(tmp, 'checkout');
+    const snapshot = path.join(tmp, 'snapshot');
+    fs.mkdirSync(checkout, { recursive: true });
+    fs.mkdirSync(snapshot, { recursive: true });
+    const row = { showId: 's', outlet: 'Off Off Online', outletId: 'off-off-online', url: 'https://x.test/a', criticName: 'Marc Miller', assignedScore: 56 };
+    const doc = (rows) => JSON.stringify({ _meta: { lastUpdated: '2026-10-06T18:43:08Z' }, reviews: rows }, null, 2) + '\n';
+    fs.writeFileSync(path.join(snapshot, 'reviews.json'), doc([row]));
+    // "ours" already holds the duplicate (the run-37502222919 shape)
+    fs.writeFileSync(path.join(checkout, 'reviews.json'), doc([row, { ...row }]));
+    git(checkout, 'init', '-q');
+    git(checkout, '-c', 'user.email=t@t', '-c', 'user.name=t', 'add', 'reviews.json');
+    git(checkout, '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-qm', 'base');
+
+    const list = path.join(tmp, 'list.txt');
+    fs.writeFileSync(list, run(checkout, snapshot));
+    assert.ok(fs.readFileSync(list, 'utf8').includes('reviews.json'), 'merge must have rewritten reviews.json');
+
+    // `bash -e` mirrors the composite step's shell; LIST avoids the /tmp path.
+    execFileSync('bash', ['-e', '-c', extractConsumerLoop()], { cwd: checkout, env: { ...process.env, LIST: list } });
+    const staged = git(checkout, 'diff', '--staged', '--name-only').split('\n');
+    assert.ok(staged.includes('reviews.json'), `reviews.json must be staged, got ${JSON.stringify(staged)}`);
+    const stagedDoc = JSON.parse(git(checkout, 'show', ':reviews.json'));
+    assert.equal(stagedDoc.reviews.length, 1, 'staged reviews.json must be the deduped copy');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});
+
+test('push-core-data consumer loop tolerates an unterminated / missing last line under bash -e', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'reconcile-core-data-'));
+  try {
+    git(tmp, 'init', '-q');
+    fs.writeFileSync(path.join(tmp, 'a.json'), '{}\n');
+    const list = path.join(tmp, 'list.txt');
+    fs.writeFileSync(list, 'a.json\ngone.json'); // no trailing newline, last file absent
+    execFileSync('bash', ['-e', '-c', extractConsumerLoop()], { cwd: tmp, env: { ...process.env, LIST: list } });
+    assert.deepEqual(git(tmp, 'diff', '--staged', '--name-only').split('\n').filter(Boolean), ['a.json']);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

@@ -744,8 +744,14 @@ runs:
             RECONCILED_REGISTRY_FILES=$(node "${GITHUB_WORKSPACE}/scripts/lib/reconcile-core-data-registry.js" /tmp/remote-core-data 2>&1 >/tmp/.reconciled-registry-files) || true
             [ -n "$RECONCILED_REGISTRY_FILES" ] && echo "$RECONCILED_REGISTRY_FILES"
             if [ -s /tmp/.reconciled-registry-files ]; then
-              while IFS= read -r f; do
-                [ -n "$f" ] && [ -f "$f" ] && git add "$f"
+              # `|| [ -n "$f" ]` keeps an unterminated last line (BRO-4809: the
+              # last line is the reconciled file itself, e.g. reviews.json, and
+              # plain `read` skipped it). The body is an `if` so a missing file
+              # or refused `git add` on that last line can't trip `bash -e`.
+              while IFS= read -r f || [ -n "$f" ]; do
+                if [ -n "$f" ] && [ -f "$f" ]; then
+                  git add "$f" || echo "::warning::could not stage reconciled $f"
+                fi
               done < /tmp/.reconciled-registry-files
               if ! git diff --staged --quiet; then
                 # Same no-op-amend guard as the per-file blocks above — this
