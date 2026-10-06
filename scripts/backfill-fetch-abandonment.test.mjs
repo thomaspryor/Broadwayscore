@@ -1,16 +1,14 @@
-// BRO-2268: hermetic fixture test for scripts/backfill-fetch-abandonment.js,
-// plus a real-ledger invariant when the private review-texts repo is present.
+// BRO-2268: hermetic fixture test for scripts/backfill-fetch-abandonment.js.
+// No real-ledger check here: the gate is date-based (closedOld flips at 180d), so a
+// live-data assertion would redden with no code change. Real-data check: the script's --dry-run.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { createRequire } from 'node:module';
 
-const require = createRequire(import.meta.url);
 const SCRIPT = path.resolve('scripts/backfill-fetch-abandonment.js');
-const { shouldRetryFetch } = require('./lib/review-guards.js');
 
 function run(cwd, ...args) {
   return spawnSync('node', [SCRIPT, ...args], { cwd, encoding: 'utf8' });
@@ -44,6 +42,7 @@ test('dry-run reports candidates without writing', () => {
   const r = run(dir, '--dry-run');
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /Candidates to abandon:\s+1\b/);
+  assert.match(r.stdout, /Already abandoned:\s+1\b/);
   assert.equal(read(dir, 'old-show-2001', 'a--x.json').fetchDiscoveryAbandoned, undefined);
 });
 
@@ -57,28 +56,7 @@ test('live run abandons exhausted closed-old entry only, nothing else disturbed'
   assert.equal(a.keep, 'me');
   assert.equal(a.url, 'u1');
   assert.equal(read(dir, 'live-show-2026', 'c--z.json').fetchDiscoveryAbandoned, undefined);
+  assert.deepEqual(read(dir, 'old-show-2001', 'b--y.json'), { url: 'u2', fetchDiscoveryAbandoned: true });
   // idempotent
   assert.match(run(dir, '--dry-run').stdout, /Candidates to abandon:\s+0\b/);
 });
-
-// Real data (Mac Studio only): after the BRO-2268 backfill no ledger entry
-// may still be a gate-confirmed abandonment candidate.
-const realDir = path.join(os.homedir(), 'broadway-review-texts');
-const realShows = path.resolve('data/shows.json');
-test('real ledger has zero remaining abandonment candidates',
-  { skip: !fs.existsSync(path.join(realDir, 'failed-fetches.json')) || !fs.existsSync(realShows) },
-  () => {
-    const shows = JSON.parse(fs.readFileSync(realShows, 'utf8'));
-    const byId = Object.fromEntries((shows.shows || shows).map((s) => [s.id, s]));
-    const ledger = JSON.parse(fs.readFileSync(path.join(realDir, 'failed-fetches.json'), 'utf8'));
-    const stale = [];
-    for (const f of ledger) {
-      const p = path.join(realDir, f.showId || '', f.file || '');
-      if (!f.showId || !f.file || !fs.existsSync(p)) continue;
-      const review = JSON.parse(fs.readFileSync(p, 'utf8'));
-      const g = shouldRetryFetch(byId[f.showId] || null, review,
-        { failureReason: f.failureReason || '', failureCount: f.failureCount || 1 });
-      if (!g.shouldRetry && g.updates?.fetchDiscoveryAbandoned) stale.push(`${f.showId}/${f.file}`);
-    }
-    assert.deepEqual(stale.slice(0, 5), []);
-  });

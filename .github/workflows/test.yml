@@ -68,6 +68,9 @@ on:
       # scripts/add-verified-tours.test.mjs (manifest) tests this CLI's planVerifiedTours (BRO-4601).
       - 'scripts/add-verified-tours.js'
       - 'scripts/add-verified-tours.test.mjs'
+      # BRO-2268: backfill CLI + its manifest test; a solo edit would otherwise trigger ZERO CI.
+      - 'scripts/backfill-fetch-abandonment.js'
+      - 'scripts/backfill-fetch-abandonment.test.mjs'
       - 'scripts/wrong-url-review-attribution.test.mjs'
       # tests/unit/tour-lifecycle.test.mjs requires reopenTour and
       # earlierClosings from these two CLIs (BRO-4724).
