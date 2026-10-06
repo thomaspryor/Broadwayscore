@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-06T03:12:28.862Z",
+  "timestamp": "2026-10-06T03:21:38.574Z",
   "stats": {
-    "totalReviews": 46558,
+    "totalReviews": 46559,
     "alreadyFlagged": 18666,
-    "dateGuardCatches": 265,
-    "directorMismatch": 1340,
+    "dateGuardCatches": 266,
+    "directorMismatch": 1341,
     "tvFilmSignals": 1353,
     "londonSignals": 1288,
     "offBroadwaySignals": 510,
@@ -16401,6 +16401,25 @@
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 96,
+      "publishDate": "2025-12-12",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
