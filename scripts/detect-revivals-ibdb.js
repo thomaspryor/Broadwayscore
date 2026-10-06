@@ -21,6 +21,7 @@ const path = require('path');
 const { checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { syncRevivalTags } = require('./lib/revival-tags');
+const { shouldAcceptIbdbRevival } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -119,7 +120,9 @@ async function main() {
     const showCategory = show.category || 'broadway';
     const result = await checkIBDBForPriorProductions(show.title, { currentYear: showYear, showCategory });
 
-    if (result.isRevival) {
+    if (result.isRevival && !shouldAcceptIbdbRevival(result, show)) {
+      console.log(`  ➡️  IBDB title match ignored: synopsis describes a new work`);
+    } else if (result.isRevival) {
       changes.push({
         id: show.id,
         title: show.title,

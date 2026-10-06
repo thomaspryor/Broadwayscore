@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4793",
+  "planId": "7d1c4a52-3b0e-4f6a-9c58-2e91a6b3f0d4",
+  "status": "applied",
+  "createdAt": "2026-10-06T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Soon (St. Luke's Theatre, opened 2026-10-05) is a new musical by Nick Blaemire (poster: \"A new musical by Nick Blaemire\"; TodayTix: \"a new indie pop musical\"). shows.json flagged it isRevival:true, apparently because of the unrelated 1971 Broadway \"Soon\" (Walter Kerr, by Fagan/Kookoolis) that shares only the title.",
+    "steps": [
+      "Set isRevival to false (execute-approved-fix syncs the revival tag)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "soon-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "New musical by Nick Blaemire, not a revival of the 1971 Broadway Soon (different authors)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-06T13:31:09.271Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for soon-off-broadway-2026 (tags: [])"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
+  writersConflict, describesNewWork, shouldAcceptIbdbRevival,
 } = require('../../scripts/lib/revival-cross-reference.js');
 
 test('normalizeRevivalTitle strips leading article + punctuation, case-folds', () => {
@@ -111,4 +112,108 @@ test('discover-new-shows.js calls the extracted cross-reference detector', () =>
     require('path').join(import.meta.dirname, '..', '..', 'scripts/discover-new-shows.js'), 'utf8');
   assert.match(src, /require\(['"]\.\/lib\/revival-cross-reference['"]\)/);
   assert.match(src, /detectRevivalByTitleCrossReference\(show, existingTitleMap\)/);
+});
+
+// Soon 2026 (Off-Broadway, Nick Blaemire) was flagged a revival of the
+// unrelated 1971 Broadway "Soon" because the two only share a title.
+const SOON_1971 = {
+  id: 'soon-1971', title: 'Soon', type: 'musical', category: 'broadway',
+  creativeTeam: [
+    { name: 'Martin Duberman', role: 'Book' },
+    { name: 'Scott Fagan and J. M. Kookoolis', role: 'Lyrics' },
+    { name: 'J. M. Kookoolis and Scott Fagan', role: 'Music' },
+    { name: 'Jules Fisher', role: 'Lighting Design' },
+  ],
+};
+
+test('same title, new show describes itself as a new musical: not a revival (Soon 2026)', () => {
+  const map = buildExistingTitleMap([SOON_1971]);
+  // category-less on purpose: reads as the same market as the 1971 entry
+  const r = detectRevivalByTitleCrossReference(
+    { id: 'soon-off-broadway-2026', title: 'Soon', description: 'Soon is a new indie pop musical about a young woman\'s anxiety.' }, map);
+  assert.equal(r.isRevival, false);
+  assert.equal(r.rejected, 'title-collision');
+});
+
+test('same title, disjoint writers: not a revival', () => {
+  const map = buildExistingTitleMap([SOON_1971]);
+  const r = detectRevivalByTitleCrossReference(
+    { id: 'x', title: 'Soon', creativeTeam: [{ name: 'Nick Blaemire', role: 'Book, Music & Lyrics' }] }, map);
+  assert.equal(r.isRevival, false);
+});
+
+test('same title, shared writer: still a revival', () => {
+  const map = buildExistingTitleMap([SOON_1971]);
+  const r = detectRevivalByTitleCrossReference(
+    { id: 'x', title: 'Soon', creativeTeam: [{ name: 'Scott Fagan', role: 'Music' }] }, map);
+  assert.equal(r.isRevival, true);
+});
+
+test('same title, no creators and no new-work copy: still a revival (genuine revivals keep working)', () => {
+  const map = buildExistingTitleMap([SOON_1971]);
+  const r = detectRevivalByTitleCrossReference({ id: 'x', title: 'Soon', description: 'A bold new production of the cult classic.' }, map);
+  assert.equal(r.isRevival, true);
+});
+
+test('writersConflict: unknown on either side is not a conflict; designers do not count', () => {
+  assert.equal(writersConflict([], SOON_1971.creativeTeam), false);
+  assert.equal(writersConflict([{ name: 'Jules Fisher', role: 'Lighting Design' }], SOON_1971.creativeTeam), false);
+  assert.equal(writersConflict([{ name: 'Nick Blaemire', role: 'Music' }], SOON_1971.creativeTeam), true);
+  // music direction is not authorship
+  assert.equal(writersConflict([{ name: 'Rob Mathes', role: 'Music Direction' }], SOON_1971.creativeTeam), false);
+});
+
+test('revised book writer on a revival is not a conflict (The Last Ship 2026)', () => {
+  const lastShip2014 = { id: 'the-last-ship-2014', title: 'The Last Ship', type: 'musical', category: 'broadway',
+    creativeTeam: [{ name: 'John Logan', role: 'Book' }, { name: 'Brian Yorkey', role: 'Book' }, { name: 'Sting', role: 'Music & Lyrics' }] };
+  const map = buildExistingTitleMap([lastShip2014]);
+  const r = detectRevivalByTitleCrossReference(
+    { id: 'the-last-ship-off-broadway-2026', title: 'The Last Ship', category: 'broadway', creativeTeam: [{ name: 'Joe DiPietro', role: 'Book Writer' }] }, map);
+  assert.equal(r.isRevival, true);
+});
+
+test('describesNewWork: "revival" in the copy cancels the new-work phrase', () => {
+  assert.equal(describesNewWork({ description: 'The world premiere of a new musical' }), true);
+  assert.equal(describesNewWork({ description: 'A revival of the new musical that thrilled 1999' }), false);
+  assert.equal(describesNewWork({ description: 'A bold new production' }), false);
+});
+
+test('a genuine same-author prior production is still found behind an unrelated same-title one', () => {
+  const earlierSoon = { id: 'soon-off-broadway-2019', title: 'Soon', type: 'musical', category: 'off-broadway',
+    creativeTeam: [{ name: 'Nick Blaemire', role: 'Music & Lyrics' }] };
+  const map = buildExistingTitleMap([SOON_1971, earlierSoon]);
+  const r = detectRevivalByTitleCrossReference(
+    { id: 'soon-off-broadway-2026', title: 'Soon', category: 'off-broadway', creativeTeam: [{ name: 'Nick Blaemire', role: 'Music & Lyrics' }] }, map);
+  assert.equal(r.isRevival, true);
+  assert.equal(r.match.id, 'soon-off-broadway-2019');
+});
+
+test('a rejected cross-market collision keeps the transfer signal', () => {
+  const map = buildExistingTitleMap([{ ...SOON_1971, category: 'west-end' }]);
+  const r = detectRevivalByTitleCrossReference(
+    { id: 'x', title: 'Soon', category: 'off-broadway', creativeTeam: [{ name: 'Nick Blaemire', role: 'Music' }] }, map);
+  assert.equal(r.isRevival, false);
+  assert.equal(r.isTransfer, true);
+});
+
+test('combined authorship roles still count ("Writer/Director", "Music & Lyrics, Music Director")', () => {
+  assert.equal(writersConflict([{ name: 'Nick Blaemire', role: 'Music & Lyrics, Music Director' }], SOON_1971.creativeTeam), true);
+  assert.equal(writersConflict([{ name: 'Scott Fagan', role: 'Music & Lyrics, Music Director' }], SOON_1971.creativeTeam), false);
+  assert.equal(writersConflict([{ name: 'Ann Lee', role: 'Writer/Director' }], [{ name: 'Bo Chan', role: 'Playwright' }]), true);
+});
+
+test('shouldAcceptIbdbRevival (discover Stage 3 + detect-revivals-ibdb backfill)', () => {
+  assert.equal(shouldAcceptIbdbRevival({ isRevival: true }, { synopsis: 'Soon is a new indie pop musical.' }), false);
+  assert.equal(shouldAcceptIbdbRevival({ isRevival: true }, { synopsis: 'A bold new production.' }), true);
+  assert.equal(shouldAcceptIbdbRevival({ isRevival: false }, { synopsis: '' }), false);
+});
+
+test('transliteration variants of one author are not a conflict (Dürrenmatt / Duerrenmatt)', () => {
+  assert.equal(writersConflict(
+    [{ name: 'Friedrich Dürrenmatt', role: 'Playwright' }],
+    [{ name: 'Friedrich Duerrenmatt', role: 'Playwright' }, { name: 'Maurice Valency', role: 'Playwright' }]), false);
+});
+
+test('describesNewWork ignores "new play-by-play" style copy', () => {
+  assert.equal(describesNewWork({ description: 'a new play-by-play retelling' }), false);
 });

@@ -159,7 +159,7 @@ const {
 const { checkVenueAnomaly } = require('./lib/venue-anomaly');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { validateOne: validatePlaybillProduction } = require('./validate-show-venue');
-const { buildExistingTitleMap, detectRevivalByTitleCrossReference } = require('./lib/revival-cross-reference');
+const { buildExistingTitleMap, detectRevivalByTitleCrossReference, shouldAcceptIbdbRevival } = require('./lib/revival-cross-reference');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
@@ -3210,7 +3210,11 @@ async function discoverShows() {
       const showYear = det.show.openingDate ? parseInt(det.show.openingDate.split('-')[0]) :
                        det.show.previewsStartDate ? parseInt(det.show.previewsStartDate.split('-')[0]) : null;
       const result = await checkIBDBForPriorProductions(det.show.title, { currentYear: showYear, showCategory: det.show.category || 'off-broadway' });
-      if (result.isRevival) {
+      if (result.isRevival && !shouldAcceptIbdbRevival(result, det.show)) {
+        // IBDB matched on title only; the show's own copy says "new musical"
+        // (Soon 2026 vs the unrelated 1971 Broadway Soon).
+        console.log(`  ➡️  IBDB title match for "${det.show.title}" ignored: listing describes a new work`);
+      } else if (result.isRevival) {
         det.isRevival = true;
         if (result.confidence === 'high') det.confidence = 'high';
         det.revivalSource = 'ibdb';
