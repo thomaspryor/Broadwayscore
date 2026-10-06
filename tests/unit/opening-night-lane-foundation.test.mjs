@@ -12,6 +12,7 @@ const require = createRequire(import.meta.url);
 const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
 const lease = require('../../scripts/lib/opening-night-lane/lease.js');
 
+const LEASE_PATH = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../scripts/lib/opening-night-lane/lease.js');
 const SHOW = 'paranormal-activity-2026';
 const NIGHT = '2026-08-25';
 const T0 = Date.parse('2026-08-25T21:00:00Z');
@@ -83,7 +84,7 @@ test('ledger: summarize reports live count, distribution and where each pending 
   assert.equal(s.medianMs, 20 * 60000);
   assert.equal(s.maxMs, 30 * 60000);
   assert.deepEqual(s.pending, [{ reviewKey: 'r4', lastStage: 'fetched' }]);
-  assert.deepEqual(ledger.summarize([]), { total: 0, live: 0, medianMs: null, p90Ms: null, maxMs: null, pending: [], reviews: [] });
+  assert.deepEqual(ledger.summarize([]), { total: 0, live: 0, skewed: [], medianMs: null, p90Ms: null, maxMs: null, pending: [], reviews: [] });
 });
 
 test('rehearsal verdict: passes only when every expected review is live, fast, hands-off and complete', () => {
@@ -102,6 +103,37 @@ test('rehearsal verdict: passes only when every expected review is live, fast, h
   const manual = fullRun('r2', 0, 2).map((e) => (e.stage === 'fetched' ? { ...e, meta: { manual: true } } : e));
   assert.deepEqual(reasons([...fullRun('r1', 0, 2), ...manual]), ['r2:manual-step']);
   assert.throws(() => ledger.rehearsalVerdict(good, {}), /expectedKeys/);
+});
+
+test('ledger: a verified-live stamped before discovered (clock skew) is its own failure, not a fast pass', () => {
+  const skewed = fullRun('r1', 0, 2).map((e) => (e.stage === 'verified-live' ? { ...e, at: at(-30) } : e));
+  const v = ledger.rehearsalVerdict(skewed, { expectedKeys: ['r1'] });
+  assert.equal(v.pass, false);
+  assert.deepEqual(v.failures.map((f) => f.reason), ['negative-ttl']);
+  const s = ledger.summarize(skewed);
+  assert.equal(s.live, 0);
+  assert.deepEqual(s.skewed, ['r1']);
+});
+
+test('ledger: corrupt lines fail a rehearsal; a line for another show or night is not merged into this file', () => {
+  const good = fullRun('r1', 0, 2);
+  assert.equal(ledger.rehearsalVerdict(good, { expectedKeys: ['r1'], corrupt: 1 }).failures[0].reason, 'corrupt-lines');
+  const dir = tmp();
+  try {
+    for (const e of good) ledger.appendEvent(dir, e);
+    fs.appendFileSync(ledger.ledgerPath(dir, SHOW, NIGHT), `${JSON.stringify({ show: 'other-show-2026', night: NIGHT, reviewKey: 'x', stage: 'discovered', at: at(0) })}\n`);
+    const { events, corrupt } = ledger.readLedger(dir, SHOW, NIGHT);
+    assert.equal(events.length, good.length);
+    assert.equal(corrupt, 1);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('ledger: null timestamp is refused (it would become 1970); even-count median and p90 are nearest-rank', () => {
+  assert.throws(() => ledger.buildEvent({ show: SHOW, night: NIGHT, reviewKey: 'k', stage: 'discovered', at: null }), /timestamp/);
+  const events = [...fullRun('a', 0, 2), ...fullRun('b', 0, 4), ...fullRun('c', 0, 6), ...fullRun('d', 0, 8)]; // ttl 10, 20, 30, 40
+  const s = ledger.summarize(events);
+  assert.equal(s.medianMs, 20 * 60000, 'nearest-rank median of four is the 2nd value');
+  assert.equal(s.p90Ms, 40 * 60000);
 });
 
 // ---------------------------------------------------------------- lease
@@ -176,16 +208,48 @@ test('lease file: acquire, heartbeat, release round trip through the file', () =
     assert.equal(lease.heartbeatLease(file, { ...L, holder: 'gha', now: NOW + 2000 }).ok, true);
     assert.equal(lease.releaseLease(file, { ...L, holder: 'gha', now: NOW + 3000 }).ok, true);
     assert.equal(lease.isShowLeased(file, L.show, { now: NOW + 3000 }), null);
+    assert.equal(lease.acquireLease(file, { ...L, holder: 'gha', now: NOW + 3500 }).ok, true);
     fs.writeFileSync(file, '{not json');
-    assert.equal(lease.acquireLease(file, { ...L, holder: 'mac', now: NOW + 4000 }).reason, 'acquired', 'a corrupt file reads as empty, it does not wedge the lane');
+    const refused = lease.acquireLease(file, { ...L, holder: 'mac', now: NOW + 4000 });
+    assert.equal(refused.ok, false);
+    assert.equal(refused.reason, 'state-unreadable', 'a corrupt file is never read as "no leases": that would wipe every other show\'s live lease');
+    assert.equal(fs.readFileSync(file, 'utf8'), '{not json', 'and nothing is written over it');
+    assert.equal(lease.isShowLeased(file, L.show, { now: NOW + 4000 }).unreadable, true, 'writers that cannot read the file treat the show as leased');
+    fs.rmSync(file);
+    assert.equal(lease.acquireLease(file, { ...L, holder: 'mac', now: NOW + 5000 }).reason, 'acquired', 'a MISSING file is the only empty state');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('lease file: fails closed when the lock cannot be taken (held by a live process)', () => {
+  const dir = tmp();
+  const file = path.join(dir, 'leases.json');
+  try {
+    fs.writeFileSync(`${file}.lock`, `${process.pid} ${Date.now()}`); // a live holder: this very process, fresh
+    const r = lease.acquireLease(file, { ...L, holder: 'gha', now: NOW, lockTimeoutMs: 300 });
+    assert.equal(r.ok, false);
+    assert.equal(r.reason, 'lock-unavailable');
+    assert.equal(fs.existsSync(file), false, 'no lease was granted or written without mutual exclusion');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('lease: ttl must be positive; an unparsable expiry reads as expired everywhere; holder ids are the contract', () => {
+  assert.throws(() => lease.acquire(lease.emptyState(), { ...L, holder: 'x', ttlMs: 0 }), /ttlMs/);
+  assert.throws(() => lease.heartbeat(lease.emptyState(), { ...L, holder: 'x', ttlMs: -5 }), /ttlMs/);
+  const broken = { leases: { [`${L.show}|${L.night}`]: { holder: 'gha', expiresAt: 'garbage' } } };
+  assert.equal(lease.activeLeaseFor(broken, L.show, { now: NOW }), null);
+  assert.equal(lease.acquire(broken, { ...L, holder: 'mac', now: NOW }).reason, 'taken-over-expired');
+  assert.deepEqual(lease.sweepExpired(broken, { now: NOW }).leases, {});
+  // The same holder string renews by design, so two starters sharing a fixed name would both win.
+  const first = lease.acquire(lease.emptyState(), { ...L, holder: 'opening-night-lane', now: NOW });
+  assert.equal(lease.acquire(first.state, { ...L, holder: 'opening-night-lane', now: NOW + 1 }).ok, true);
+  assert.equal(lease.acquire(first.state, { ...L, holder: 'mac-4242-1', now: NOW + 1 }).ok, false, 'unique ids keep first-of-two-wins');
 });
 
 test('lease file: six processes race for one night, exactly one wins', async () => {
   const dir = tmp();
   const file = path.join(dir, 'leases.json');
   const script = `
-    const lease = require(${JSON.stringify(path.resolve('scripts/lib/opening-night-lane/lease.js'))});
+    const lease = require(${JSON.stringify(LEASE_PATH)});
     const r = lease.acquireLease(${JSON.stringify(file)}, { show: ${JSON.stringify(L.show)}, night: ${JSON.stringify(L.night)}, holder: process.argv[1], now: ${NOW} });
     console.log(JSON.stringify({ holder: process.argv[1], ok: r.ok, reason: r.reason }));
   `;

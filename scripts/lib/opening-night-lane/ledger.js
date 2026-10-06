@@ -36,6 +36,7 @@ function ledgerPath(dir, show, night) {
 function buildEvent({ show, night, reviewKey, stage, at, meta } = {}) {
   if (!STAGES.includes(stage)) throw new Error(`ledger: unknown stage "${stage}"`);
   if (!reviewKey || typeof reviewKey !== 'string') throw new Error('ledger: reviewKey is required (the review URL, normalised by the caller)');
+  if (at === null) throw new Error('ledger: bad timestamp "null"');
   const ts = at === undefined ? new Date() : new Date(at);
   if (Number.isNaN(ts.getTime())) throw new Error(`ledger: bad timestamp "${at}"`);
   ledgerPath('.', show, night); // validates show and night
@@ -67,7 +68,12 @@ function parseLedger(text) {
 }
 
 function readLedger(dir, show, night) {
-  try { return parseLedger(fs.readFileSync(ledgerPath(dir, show, night), 'utf8')); } catch (e) {
+  try {
+    // A line for another show or night does not belong to this file: count it, never merge it in.
+    const parsed = parseLedger(fs.readFileSync(ledgerPath(dir, show, night), 'utf8'));
+    const events = parsed.events.filter((e) => e.show === show && e.night === night);
+    return { events, corrupt: parsed.corrupt + (parsed.events.length - events.length) };
+  } catch (e) {
     if (e && e.code === 'ENOENT') return { events: [], corrupt: 0 };
     throw e;
   }
@@ -95,6 +101,8 @@ function reviewStates(events) {
       skipped: STAGES.slice(0, STAGES.indexOf(reached[reached.length - 1]) + 1).filter((s) => !(s in r.firstAt)),
       manual: r.manual,
       ttlMs: seen && live ? Date.parse(live) - Date.parse(seen) : null,
+      // verified-live stamped before discovered means two clocks disagree; never read it as a fast review.
+      clockSkew: !!(seen && live && Date.parse(live) < Date.parse(seen)),
     };
   });
 }
@@ -110,7 +118,8 @@ function summarize(events) {
   const ttls = reviews.map((r) => r.ttlMs).filter((v) => v !== null && v >= 0).sort((a, b) => a - b);
   return {
     total: reviews.length,
-    live: reviews.filter((r) => r.ttlMs !== null).length,
+    live: reviews.filter((r) => r.ttlMs !== null && !r.clockSkew).length,
+    skewed: reviews.filter((r) => r.clockSkew).map((r) => r.reviewKey),
     medianMs: percentile(ttls, 50),
     p90Ms: percentile(ttls, 90),
     maxMs: ttls.length ? ttls[ttls.length - 1] : null,
@@ -124,15 +133,18 @@ function summarize(events) {
  * maxMs of being seen, with zero manual steps and no skipped stage. `expectedKeys` is the fixture's
  * review list; a review the lane never logged at all is a failure, not a silent omission. Pure.
  */
-function rehearsalVerdict(events, { expectedKeys, maxMs = DEFAULT_MAX_MS } = {}) {
+function rehearsalVerdict(events, { expectedKeys, maxMs = DEFAULT_MAX_MS, corrupt = 0 } = {}) {
   if (!Array.isArray(expectedKeys) || !expectedKeys.length) throw new Error('rehearsalVerdict: expectedKeys is required');
   const byKey = new Map(reviewStates(events).map((r) => [r.reviewKey, r]));
   const failures = [];
+  // A damaged ledger line may have held a manual step or a stage; a rehearsal cannot pass over it.
+  if (corrupt > 0) failures.push({ reviewKey: null, reason: 'corrupt-lines', detail: corrupt });
   for (const key of expectedKeys) {
     const r = byKey.get(key);
     if (!r) { failures.push({ reviewKey: key, reason: 'never-logged' }); continue; }
     if (r.skipped.length) failures.push({ reviewKey: key, reason: 'skipped-stage', detail: r.skipped });
     if (r.ttlMs === null) failures.push({ reviewKey: key, reason: 'not-live', detail: r.lastStage });
+    else if (r.clockSkew) failures.push({ reviewKey: key, reason: 'negative-ttl', detail: r.ttlMs });
     else if (r.ttlMs > maxMs) failures.push({ reviewKey: key, reason: 'too-slow', detail: r.ttlMs });
     if (r.manual) failures.push({ reviewKey: key, reason: 'manual-step' });
   }
