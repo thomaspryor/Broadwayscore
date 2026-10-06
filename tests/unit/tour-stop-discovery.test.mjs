@@ -94,3 +94,23 @@ test('parseDateRange: a cross-New-Year run whose source repeats the start year e
   assert.equal(parseDateRange('March 5, 2022–January 14, 2021'), null);
   assert.equal(parseDateRange('June 1, 2022–June 5, 2022').end.toISOString().slice(0, 10), '2022-06-05');
 });
+
+test('an overseas production on a country domain is never a tour stop review (BRO-4656)', () => {
+  const { isOverseasHost } = require('../../scripts/lib/tour-stop-discovery.js');
+  const { tourCandidateIsTour } = require('../../scripts/lib/regional-serp-discovery.js');
+  const tour = { id: 'spamalot-tour-2025', title: 'Spamalot', market: 'tour' };
+  // The Melbourne season review the first scheduled run ingested.
+  const melbourne = { url: 'https://australianpridenetwork.com.au/monty-pythons-spamalot-review/', title: "Monty Python's SPAMALOT (review)" };
+  assert.equal(isOverseasHost(melbourne.url), true);
+  assert.equal(tourCandidateIsTour(tour, melbourne), false);
+  for (const url of ['https://www.whatsonstage.com/x', 'https://www.thestage.co.uk/reviews/x', 'https://kurier.at/kultur/x']) {
+    assert.equal(isOverseasHost(url), url.includes('.co.uk') || url.includes('.at/'), url);
+  }
+  // US, Canadian and Mexican sites, and generic ccTLDs used by US outlets.
+  for (const url of ['https://www.theglobeandmail.com/x', 'https://nowtoronto.ca/x', 'https://www.milenio.mx/x', 'https://broadwayradio.fm/x', 'https://thetheatre.co/x', 'https://ladyadventure.tv/x']) {
+    assert.equal(isOverseasHost(url), false, url);
+  }
+  assert.equal(tourCandidateIsTour(tour, { url: 'https://roughdraftatlanta.com/2026/07/23/spamalot-atlanta-review/', title: 'Spamalot review' }), true);
+  // Non-tour shows are untouched (a West End review on a .co.uk site).
+  assert.equal(tourCandidateIsTour({ id: 'x', market: 'west-end' }, { url: 'https://www.thestage.co.uk/reviews/x' }), true);
+});
