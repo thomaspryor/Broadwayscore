@@ -1,5 +1,37 @@
 [
   {
+    "startedAt": "2026-10-06T05:00:20.105Z",
+    "completedAt": "2026-10-06T05:00:23.273Z",
+    "totalReviews": 47003,
+    "processed": 0,
+    "skipped": 47002,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3638,
+      "output": 109,
+      "total": 11011
+    },
+    "costUsd": 0.012928099999999998,
+    "runId": "37416150653",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-06T05:00:25.127Z",
+    "completedAt": "2026-10-06T05:00:27.264Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37416150653",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-10-06T05:04:41.402Z",
     "completedAt": "2026-10-06T05:04:44.058Z",
     "totalReviews": 47003,
@@ -277677,35 +277709,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-06T18:04:42.424Z",
-    "completedAt": "2026-10-06T18:05:40.544Z",
-    "totalReviews": 47096,
-    "processed": 6,
-    "skipped": 47079,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 75756,
-      "output": 3353,
-      "total": 200055
-    },
-    "costUsd": 0.3182587,
-    "runId": "37506878331",
-    "errorDetails": [
-      {
-        "showId": "franz-and-marie-west-end-2026",
-        "outletId": "firstnightmagazine",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-06T18:05:42.447Z",
-    "completedAt": "2026-10-06T18:05:44.609Z",
+    "startedAt": "2026-10-06T18:06:26.254Z",
+    "completedAt": "2026-10-06T18:06:26.256Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -277716,7 +277721,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "37506878331",
+    "runId": "37508296081",
     "errorDetails": []
   }
 ]
