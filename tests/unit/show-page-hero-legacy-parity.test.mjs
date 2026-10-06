@@ -16,8 +16,9 @@ const read = (rel) => readFileSync(path.join(ROOT, rel), 'utf8');
 const PAGE = read('src/app/show/[slug]/page.tsx');
 const HERO = read('src/components/show-page/ShowHeroRedesign.tsx');
 
-test('hero renders the Add to list button', () => {
-  assert.match(HERO, /<ShowPageAddToListButton showId=\{show\.id\} variant="hero" \/>/);
+test('hero renders the Add to list button for signed-in users only', () => {
+  assert.match(HERO, /\{isAuthenticated && <ShowPageAddToListButton showId=\{show\.id\} variant="hero" \/>\}/);
+  assert.match(HERO, /isAuthenticated \? 'grid-cols-\[1fr_1fr_auto\]' : 'grid-cols-2'/);
 });
 
 test('hero renders the shared Limited Run badge for limitedRun shows', () => {

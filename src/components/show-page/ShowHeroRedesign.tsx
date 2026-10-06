@@ -662,7 +662,7 @@ function Inner({
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
       {userFeaturesEnabled && (
-        <div className="grid grid-cols-[1fr_1fr_auto] gap-2">
+        <div className={`grid gap-2 ${isAuthenticated ? 'grid-cols-[1fr_1fr_auto]' : 'grid-cols-2'}`}>
           <button
             type="button"
             onClick={handleWantToSee}
@@ -690,8 +690,10 @@ function Inner({
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
-          {/* Custom lists. Icon-only below sm so the two primary buttons keep their width. */}
-          <ShowPageAddToListButton showId={show.id} variant="hero" />
+          {/* Custom lists, signed-in only: for signed-out visitors it was a third
+              control that led straight to a sign-in wall (owner, 2026-10-06).
+              Icon-only below sm so the two primary buttons keep their width. */}
+          {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" />}
         </div>
       )}
 
