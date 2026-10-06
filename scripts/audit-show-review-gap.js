@@ -64,6 +64,7 @@ const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domain
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
+const { partitionUnextractable, updateZeroCharCounts } = require('./lib/gap-unextractable'); // BRO-4765
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // Same incident class as scripts/autonomous-run.js / autonomous-probe.js /
@@ -1791,6 +1792,13 @@ async function main(argv = process.argv.slice(2)) {
     }
     if (verbose) console.log(`\n${s.id} "${s.title}" (${s.openingDate} ${s.status})`);
     const r = await auditShow(s, { lastCensusAt: checkpoint[s.id] && checkpoint[s.id].serpCensusAt, allShows });
+    // BRO-4765: URLs whose extraction returned 0 chars on several consecutive runs are terminal. They
+    // leave missing[] (so no re-ingest and no hold on the Coverage Verdict) but stay in the report.
+    const zeroCharStored = checkpoint[s.id] && checkpoint[s.id].zeroChar;
+    const unx = partitionUnextractable(r.missing, zeroCharStored, Date.now());
+    r.missing = unx.missing;
+    r.unextractable = unx.unextractable;
+    if (unx.unextractable.length) console.log(`  ⛔ ${unx.unextractable.length} URL(s) unextractable (0-char extraction on repeated runs) — not re-ingested, excluded from the verdict`);
     if (useCheckpoint) {
       // serpCensusAt: only stamped when the census actually ran this pass
       // (cooldown gate consults it); otherwise carry forward whatever was
@@ -1820,6 +1828,7 @@ async function main(argv = process.argv.slice(2)) {
         uncollected: currentRunCount(r.missing) + currentRunCount(r.citedNoUrl),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
+        ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),
         // Cooldown stamps ONLY on a fully-successful census (every query
         // executed). Partial provider outages keep the prior stamp so the
         // next hourly run retries — bounded: ≤3 BD queries/show/hour ≈
@@ -1994,6 +2003,16 @@ async function main(argv = process.argv.slice(2)) {
           ? (res.provisional ? `✅ ingested (provisional outlet "${outletId}")` : '✅ ingested')
           : (res.conflict ? `⛔ CONFLICT (${res.conflictReason}) — ${res.reason}` : `✗ ingest failed (${res.reason || 'unknown'})`);
         console.log(`  ${tag}: ${m.url}`);
+      }
+      // BRO-4765: record this run's 0-char streaks; a URL that just hit the cap leaves missing[] now.
+      if (useCheckpoint && r.ingestResults.length) {
+        const nextZero = updateZeroCharCounts(zeroCharStored, r.ingestResults, Date.now());
+        checkpoint[s.id] = { ...(checkpoint[s.id] || {}) };
+        if (Object.keys(nextZero).length) checkpoint[s.id].zeroChar = nextZero; else delete checkpoint[s.id].zeroChar;
+        saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
+        const again = partitionUnextractable(r.missing, nextZero, Date.now());
+        r.missing = again.missing;
+        r.unextractable = [...(r.unextractable || []), ...again.unextractable.filter(u => !(r.unextractable || []).some(x => x.url === u.url))];
       }
       if (cappedSkipped.length > 0) {
         console.log(`  ⏸  skipped ${cappedSkipped.length} URL(s) over per-show cap (--ingest-cap=${INGEST_PER_SHOW_CAP}) — recorded in audit JSON for next run`);

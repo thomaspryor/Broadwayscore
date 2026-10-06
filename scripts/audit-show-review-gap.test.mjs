@@ -379,3 +379,85 @@ test('computeResidualCounts: a conflict IS residual — it stays loud until reso
   assert.equal(c.conflictIngest, 1);
   assert.equal(c.residual, 1);
 });
+
+// ---- BRO-4765: terminal "unextractable" state for 0-char aggregator URLs ----
+const {
+  ZERO_CHAR_CAP, RETRY_AFTER_DAYS, isZeroCharFailure, partitionUnextractable, updateZeroCharCounts,
+} = require('./lib/gap-unextractable.js');
+const { censusVerdictFor: censusVerdictForUnx } = require('./lib/gap-audit-merge.js');
+
+const ZERO_CHAR = { ok: false, noop: false, reason: 'Article extraction returned 0 chars — pattern may be missing for this outlet.' };
+const NEWS_URL = 'https://www.theatermania.com/news/daniel-fish-will-return-to-st-anns-warehouse-with-kramer-fauci_1843069/';
+const T0 = Date.parse('2026-10-05T12:00:00Z');
+const runs = (stored, n, res = ZERO_CHAR, url = NEWS_URL, start = T0) => {
+  let s = stored;
+  for (let i = 0; i < n; i++) s = updateZeroCharCounts(s, [{ url, ...res }], start + i * 3600000);
+  return s;
+};
+
+test('isZeroCharFailure: only a plain 0-char extraction failure counts', () => {
+  assert.equal(isZeroCharFailure(ZERO_CHAR), true);
+  assert.equal(isZeroCharFailure({ ok: false, reason: 'Command failed: timeout' }), false);
+  assert.equal(isZeroCharFailure({ ok: true, reason: null }), false);
+  assert.equal(isZeroCharFailure({ ok: false, noop: true, reason: 'Article extraction returned 0 chars' }), false);
+  assert.equal(isZeroCharFailure(null), false);
+});
+
+test('a URL turns terminal after exactly N consecutive 0-char results, not before', () => {
+  const missing = [{ url: NEWS_URL, host: 'theatermania.com', knownOutletId: 'theatermania' }];
+  for (let n = 0; n < ZERO_CHAR_CAP; n++) {
+    const p = partitionUnextractable(missing, runs({}, n), T0 + 10 * 3600000);
+    assert.equal(p.missing.length, 1, `${n} failures: still attempted`);
+  }
+  const p = partitionUnextractable(missing, runs({}, ZERO_CHAR_CAP), T0 + 10 * 3600000);
+  assert.equal(p.missing.length, 0);
+  assert.equal(p.unextractable.length, 1);
+  assert.equal(p.unextractable[0].url, NEWS_URL);
+  assert.equal(p.unextractable[0].zeroCharAttempts, ZERO_CHAR_CAP);
+});
+
+test('a different failure or a success resets the streak, so a flaky fetch never goes terminal', () => {
+  let s = runs({}, ZERO_CHAR_CAP - 1);
+  s = updateZeroCharCounts(s, [{ url: NEWS_URL, ok: false, reason: 'Command failed: timed out' }], T0 + 5 * 3600000);
+  assert.equal(s[NEWS_URL], undefined);
+  s = runs(s, ZERO_CHAR_CAP - 1, ZERO_CHAR, NEWS_URL, T0 + 6 * 3600000);
+  assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, T0 + 20 * 3600000).unextractable.length, 0);
+});
+
+test('URLs not attempted this run keep their streak; streaks are per URL', () => {
+  const other = 'https://example.com/other';
+  let s = runs({}, 2);
+  s = updateZeroCharCounts(s, [{ url: other, ...ZERO_CHAR }], T0 + 5 * 3600000);
+  assert.equal(s[NEWS_URL].n, 2);
+  assert.equal(s[other].n, 1);
+});
+
+test('a terminal URL gets one retry after the window; a 0-char result sends it straight back to terminal', () => {
+  const s = runs({}, ZERO_CHAR_CAP);
+  const later = T0 + (RETRY_AFTER_DAYS + 1) * 86400000;
+  assert.equal(partitionUnextractable([{ url: NEWS_URL }], s, later).missing.length, 1, 'retry window opens');
+  const again = updateZeroCharCounts(s, [{ url: NEWS_URL, ...ZERO_CHAR }], later);
+  assert.equal(partitionUnextractable([{ url: NEWS_URL }], again, later + 1000).unextractable.length, 1);
+});
+
+test('a show whose only blocker is an unextractable URL is no longer held incomplete, and is not read as covered', () => {
+  const base = {
+    showId: 'kramerfauci-st-anns-off-broadway-2026', title: 'Kramer Fauci', openingDate: '2026-09-01',
+    aggregatorArticles: ['https://www.broadwayworld.com/article/Review-Roundup-Kramer-Fauci'],
+    aggregatorListedUrls: [NEWS_URL, 'https://www.nytimes.com/2026/09/10/theater/kramer-fauci-review.html'],
+    flaggedMisses: [], citedNoUrl: [],
+  };
+  const NOW = '2026-10-05T12:00:00.000Z';
+  const held = censusVerdictForUnx({ ...base, missing: [{ url: NEWS_URL, host: 'theatermania.com', knownOutletId: 'theatermania' }] }, { now: NOW });
+  assert.equal(held.verdict, 'incomplete');
+  const released = censusVerdictForUnx({
+    ...base, missing: [],
+    unextractable: [{ url: NEWS_URL, host: 'theatermania.com', knownOutletId: 'theatermania', zeroCharAttempts: 3 }],
+  }, { now: NOW });
+  assert.notEqual(released.verdict, 'incomplete');
+  assert.ok(!released.candidates.some((c) => c.url === NEWS_URL), 'dropped from the census');
+  assert.ok(!released.candidates.some((c) => c.outletId === 'theatermania' && c.state === 'live'), 'never counted as a live/covered outlet');
+  // Without the skip the URL would read as covered (listed, not missing): prove the unextractable list is what prevents it.
+  const vacuous = censusVerdictForUnx({ ...base, missing: [] }, { now: NOW });
+  assert.ok(vacuous.candidates.some((c) => c.url === NEWS_URL && c.state === 'live'), 'control: with no unextractable list the URL reads as covered');
+});

@@ -89,6 +89,10 @@ function censusVerdictFor(result, opts = {}) {
   }
   const missingUrls = new Set((result.missing || []).map((m) => m.url));
   const flaggedUrls = new Set((result.flaggedMisses || []).map((m) => m.url));
+  // BRO-4765: terminal 0-char URLs are in neither missing nor covered. Without this skip the loop below
+  // would read "listed by an aggregator and not missing" as covered, a vacuous pass for an outlet we
+  // never captured. They are dropped from the census like the aggregator never listed them.
+  const unextractableUrls = new Set((result.unextractable || []).map((m) => m && m.url).filter(Boolean));
   const entries = [];
   const covered = new Set();
   // One candidate per URL, NOT per host. `covered` stays outlet(host)-level —
@@ -102,7 +106,7 @@ function censusVerdictFor(result, opts = {}) {
   // still collapse.
   const seenUrls = new Set();
   for (const url of (result.aggregatorListedUrls || [])) {
-    if (missingUrls.has(url) || flaggedUrls.has(url)) continue;
+    if (missingUrls.has(url) || flaggedUrls.has(url) || unextractableUrls.has(url)) continue;
     const id = hostOf(url);
     if (!id || seenUrls.has(url)) continue;
     seenUrls.add(url);
