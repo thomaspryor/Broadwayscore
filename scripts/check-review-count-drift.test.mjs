@@ -134,3 +134,36 @@ test('normUrl strips protocol, www, query string, and trailing slash for cross-s
   assert.equal(normUrl('https://www.nytimes.com/review/?utm=1'), 'nytimes.com/review');
   assert.equal(normUrl('http://nytimes.com/review/'), 'nytimes.com/review');
 });
+
+// BRO-4759: the scan now covers every show; shows outside the opening window alert only on a
+// NEW suppression. Real cases: kramerfauci-off-broadway-2026 (4 hidden, 0 published) and
+// going-bacharach (7 hidden, 0 published) sat unseen for days.
+const { findNewOffenders } = require('./check-review-count-drift.js');
+const row = (showDir, actual, suppressedCount) => ({ showDir, actual, suppressedCount });
+
+test('findNewOffenders flags a dark show (publishes nothing, hides scored reviews) even for one file', () => {
+  const out = findNewOffenders([row('kramerfauci-off-broadway-2026', 0, 4), row('one-hidden-0', 0, 1)], { shows: {} }, 3);
+  assert.deepEqual(out.map((o) => o.showDir), ['kramerfauci-off-broadway-2026', 'one-hidden-0']);
+});
+
+test('findNewOffenders ignores a published show hiding at most `delta` files, flags one hiding more', () => {
+  const out = findNewOffenders([row('quiet-2015', 31, 3), row('loud-2015', 31, 4)], { shows: {} }, 3);
+  assert.deepEqual(out.map((o) => o.showDir), ['loud-2015']);
+});
+
+test('findNewOffenders skips shows with nothing hidden', () => {
+  assert.deepEqual(findNewOffenders([row('fine-2020', 0, 0), row('fine-2021', 12, 0)], { shows: {} }, 3), []);
+});
+
+test('findNewOffenders honours the baseline and re-alerts when the hidden count grows', () => {
+  const baseline = { shows: { 'china-doll-2015': 4, 'into-the-woods-1997': 1 } };
+  assert.deepEqual(findNewOffenders([row('china-doll-2015', 31, 4), row('into-the-woods-1997', 0, 1)], baseline, 3), []);
+  const grown = findNewOffenders([row('china-doll-2015', 31, 5)], baseline, 3);
+  assert.equal(grown.length, 1);
+  assert.equal(grown[0].baselined, 4);
+});
+
+test('findNewOffenders lists the worst offender first and tolerates a missing baseline', () => {
+  const out = findNewOffenders([row('a', 0, 2), row('b', 0, 7)], undefined, 3);
+  assert.deepEqual(out.map((o) => o.showDir), ['b', 'a']);
+});

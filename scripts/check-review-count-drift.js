@@ -18,8 +18,13 @@
  *      (rebuild-fast runs every 4h; the daily full rebuild at 4 AM UTC).
  *      Stale = the rebuild pipeline is broken or its push is failing.
  *
- *   2. SUPPRESSION (opening-night window only) — for shows opening within
- *      ±WINDOW_DAYS, any review-text file that (a) the canonical predicate
+ *   2. SUPPRESSION — scanned for EVERY show (BRO-4759: it used to cover only
+ *      shows opening within ±WINDOW_DAYS, so a guard misfiring on an older show,
+ *      e.g. Kramer/Fauci's Skirball entry with 5 scored reviews and 0 published,
+ *      was never seen). Window shows keep the threshold below; every other show
+ *      alerts only on a NEW suppression (dark, or more than the threshold hidden,
+ *      above data/audit/review-suppression-baseline.json). For each scanned show,
+ *      any review-text file that (a) the canonical predicate
  *      review-guards.isIncludableForRebuild accepts (with filePath, so its
  *      circular-duplicate recovery runs), (b) has a valid score, (c) has a
  *      publishDate inside the show's own production window, and (d) has NO
@@ -62,6 +67,13 @@ const args = process.argv.slice(2);
 const showFilter = (args.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
 const jsonOnly = args.includes('--json-only');
 const strict = args.includes('--strict');
+// The suppression scan covers EVERY show. A guard that misfires on an older show
+// (BRO-4759: Kramer/Fauci's Skirball entry held 5 scored reviews and published 0 for
+// days) is invisible to a scan limited to the opening window. Shows outside the window
+// alert only on a NEW suppression (see findNewOffenders); --window-only restores the
+// old scope, --update-baseline rewrites the accepted set.
+const windowOnly = args.includes('--window-only');
+const updateBaseline = args.includes('--update-baseline');
 const singleShowDeltaArg = (args.find((a) => a.startsWith('--single-show-delta=')) || '').split('=')[1];
 const auditOutArg = (args.find((a) => a.startsWith('--audit-out=')) || '').split('=')[1] || null;
 
@@ -114,6 +126,64 @@ function normUrl(u) {
     .split('?')[0]
     .replace(/[\/\s]+$/, '')
     .toLowerCase();
+}
+
+// Accepted suppressions for shows outside the opening window (tracked, reviewed in PRs).
+// Shape: { _meta, shows: { "<showDir>": <accepted suppressed count> } }.
+const BASELINE_PATH = process.env.REVIEW_SUPPRESSION_BASELINE
+  || path.join(REPO_ROOT, 'data', 'audit', 'review-suppression-baseline.json');
+
+function loadSuppressionBaseline() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(BASELINE_PATH, 'utf8'));
+    return { shows: (raw && raw.shows) || {} };
+  } catch {
+    return { shows: {} };
+  }
+}
+
+function writeSuppressionBaseline(accepted) {
+  const shows = {};
+  for (const a of accepted) shows[a.showDir] = a.suppressed;
+  const body = {
+    _meta: {
+      description: 'Shows outside the opening window whose hidden scored reviews were investigated and accepted '
+        + '(e.g. syndicated duplicate text, a mis-dated review the late-date guard rightly drops). '
+        + 'check-review-count-drift.js alerts only on shows NOT listed here or whose count grew. '
+        + 'Regenerate with: node scripts/check-review-count-drift.js --update-baseline, then review the diff.',
+      generatedAt: new Date().toISOString(),
+    },
+    shows,
+  };
+  fs.mkdirSync(path.dirname(BASELINE_PATH), { recursive: true });
+  fs.writeFileSync(BASELINE_PATH, JSON.stringify(body, null, 2) + '\n');
+}
+
+/**
+ * Shows outside the opening window that hide scored, in-production-window reviews
+ * beyond what the baseline accepts. A show is an offender when it is "dark" (publishes
+ * nothing while holding at least one such file) or hides more than `delta` of them,
+ * AND the hidden count is above its baselined count.
+ *
+ * BRO-4759: with this, Kramer/Fauci's Skirball entry (4 hidden, 0 published) and Going
+ * Bacharach (7 hidden, 0 published) are caught on the first daily run instead of never.
+ *
+ * @param {Array<{showDir: string, actual: number, suppressedCount: number}>} rows
+ * @param {{shows: Object<string, number>}} baseline
+ * @param {number} delta
+ */
+function findNewOffenders(rows, baseline, delta) {
+  const accepted = (baseline && baseline.shows) || {};
+  const out = [];
+  for (const r of rows) {
+    if (!r.suppressedCount) continue;
+    const dark = r.actual === 0;
+    if (!dark && r.suppressedCount <= delta) continue;
+    const allowed = Number.isFinite(accepted[r.showDir]) ? accepted[r.showDir] : 0;
+    if (r.suppressedCount <= allowed) continue;
+    out.push({ showDir: r.showDir, suppressed: r.suppressedCount, actual: r.actual, baselined: allowed });
+  }
+  return out.sort((a, b) => b.suppressed - a.suppressed);
 }
 
 /** Is this show's opening night close enough to warrant the suppression scan? */
@@ -238,9 +308,12 @@ function main() {
       warnLog(`::warning::show "${showFilter}" missing from shows.json — suppression scan is inert, gate reduces to freshness-only`);
     }
     targetShows = [showFilter];
-  } else {
+  } else if (windowOnly) {
     targetShows = allShowDirs.filter((id) => isInOpeningWindow(showById[id], now));
+  } else {
+    targetShows = allShowDirs;
   }
+  const windowIds = new Set(targetShows.filter((id) => isInOpeningWindow(showById[id], now)));
 
   const perShow = [];
   const showsOverThreshold = [];
@@ -251,9 +324,22 @@ function main() {
     );
     totalScanned += scanned;
     const actual = (reviewsByShow[showDir] || []).length;
-    const overThreshold = suppressed.length > SHOW_DELTA_THRESHOLD;
+    // Window shows (and the --show target) use the threshold; every other show is judged
+    // against the baseline by findNewOffenders below.
+    const thresholdApplies = Boolean(showFilter) || windowIds.has(showDir);
+    const overThreshold = thresholdApplies && suppressed.length > SHOW_DELTA_THRESHOLD;
     if (overThreshold) showsOverThreshold.push({ showDir, suppressed: suppressed.length, actual });
     perShow.push({ showDir, actual, scanned, suppressedCount: suppressed.length, suppressed, overThreshold });
+  }
+
+  // 2b. Shows outside the opening window: alert only on a NEW suppression -------
+  const baseline = loadSuppressionBaseline();
+  const outOfWindowRows = showFilter ? [] : perShow.filter((r) => !windowIds.has(r.showDir));
+  const newOffenders = findNewOffenders(outOfWindowRows, baseline, SHOW_DELTA_THRESHOLD);
+  if (updateBaseline) {
+    const accepted = findNewOffenders(outOfWindowRows, { shows: {} }, SHOW_DELTA_THRESHOLD);
+    writeSuppressionBaseline(accepted);
+    log(`Wrote ${accepted.length} accepted suppression(s) to ${path.relative(REPO_ROOT, BASELINE_PATH)}`);
   }
 
   // 3. Orphans ------------------------------------------------
@@ -267,9 +353,13 @@ function main() {
   if (!jsonOnly) {
     log('');
     log(`reviews.json lastUpdated: ${lastUpdated || 'MISSING'} (${ageHours != null ? ageHours.toFixed(1) + 'h ago' : 'n/a'}, max ${maxAgeHours}h)`);
-    log(`Shows scanned (opening window ±${WINDOW_DAYS}d${showFilter ? ', --show' : ''}): ${targetShows.length}`);
+    log(`Shows scanned (${showFilter ? '--show' : windowOnly ? `opening window ±${WINDOW_DAYS}d` : `all, ${windowIds.size} inside the ±${WINDOW_DAYS}d opening window`}): ${targetShows.length}`);
     log(`Files scanned:          ${totalScanned}`);
     log(`Shows over threshold:   ${showsOverThreshold.length} (suppressed > ${SHOW_DELTA_THRESHOLD})`);
+    log(`New offenders outside the window: ${newOffenders.length} (dark or suppressed > ${SHOW_DELTA_THRESHOLD}, above baseline)`);
+    for (const o of newOffenders.slice(0, 15)) {
+      log(`  ! ${o.showDir}: ${o.suppressed} scored review(s) hidden, ${o.actual} published${o.baselined ? ` (baseline ${o.baselined})` : ''}`);
+    }
     log(`Orphan review-ids:      ${orphanReviews.length}`);
     for (const row of perShow) {
       if (row.suppressedCount === 0 && !showFilter) continue;
@@ -290,6 +380,7 @@ function main() {
       showsScanned: targetShows.length,
       filesScanned: totalScanned,
       showsOverThreshold: showsOverThreshold.length,
+      newOffenders: newOffenders.length,
       orphanReviews: orphanReviews.length,
     },
     thresholds: {
@@ -298,8 +389,10 @@ function main() {
       maxAgeHours,
     },
     showsOverThreshold,
+    newOffenders,
     orphanReviews,
-    perShow: perShow.filter((r) => r.suppressedCount > 0 || r.actual > 0),
+    // Window shows keep their full row; the rest of the corpus only appears when it hides something.
+    perShow: perShow.filter((r) => r.suppressedCount > 0 || ((showFilter || windowIds.has(r.showDir)) && r.actual > 0)),
   };
 
   try {
@@ -313,7 +406,7 @@ function main() {
   if (jsonOnly) console.log(JSON.stringify(audit, null, 2));
 
   // Alerts ----------------------------------------------------
-  const suppressionBreach = showsOverThreshold.length > 0;
+  const suppressionBreach = showsOverThreshold.length > 0 || newOffenders.length > 0;
   const breach = suppressionBreach || freshnessBreach;
   if (breach) {
     warnLog('');
@@ -323,6 +416,9 @@ function main() {
     }
     for (const s of showsOverThreshold.slice(0, 10)) {
       warnLog(`  ${s.showDir}: ${s.suppressed} scored in-window review(s) missing from reviews.json (has ${s.actual}).`);
+    }
+    for (const o of newOffenders.slice(0, 10)) {
+      warnLog(`  ${o.showDir}: ${o.suppressed} scored review(s) inside its own production window are hidden (${o.actual} published). A guard may be misfiring: see data/audit/rebuild-exclusions-${o.showDir}.json; if the exclusions are correct, accept them with --update-baseline.`);
     }
     warnLog(`  Details: ${path.relative(REPO_ROOT, OUTPUT_PATH)}`);
   }
@@ -339,4 +435,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { findSuppressedForShow, isInOpeningWindow, normUrl };
+module.exports = { findSuppressedForShow, isInOpeningWindow, normUrl, findNewOffenders };

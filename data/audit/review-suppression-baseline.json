@@ -1,0 +1,10 @@
+{
+  "_meta": {
+    "description": "Shows outside the opening window whose hidden scored reviews were investigated and accepted (e.g. syndicated duplicate text, a mis-dated review the late-date guard rightly drops). check-review-count-drift.js alerts only on shows NOT listed here or whose count grew. Regenerate with: node scripts/check-review-count-drift.js --update-baseline, then review the diff.",
+    "generatedAt": "2026-10-06T00:44:53.771Z"
+  },
+  "shows": {
+    "china-doll-2015": 4,
+    "into-the-woods-1997": 1
+  }
+}
