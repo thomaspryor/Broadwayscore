@@ -298,6 +298,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # criteria requires it committed (not scratch), so future sessions/audits
 # can find it without depending on one machine's claude-outputs copy.
 !/docs/review-effectiveness-audit.md
+# BRO-764: per-scraper SERP volume inventory; scripts/lib/aggregator-serp.test.mjs enforces it
+!/docs/aggregator-serp-cost-audit.md
 # BRO-104's health-digest warning triage — the card's acceptance criteria is
 # literally `test -f docs/health-check-triage-2026-07-24.md`, so it has to be
 # committed rather than scratch/local like the rest of /docs/.
