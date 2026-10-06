@@ -27,6 +27,11 @@ test('3/5 and 4/5 bands match starToBand (51-70, 71-90)', () => {
   assert.equal(humanScoreOutsideStarBand({ originalScore: '4/5' }, 91).floor, 71);
 });
 
+test('an uncorroborated generic-pattern star (Mincemeat junk 1/5, BRO-4499) does not block a correct override', () => {
+  const junk = { originalScore: '1/5', originalScoreSource: 'numeric-stars', llmScore: { score: 85, confidence: 'high' } };
+  assert.equal(humanScoreOutsideStarBand(junk, 80), null);
+});
+
 test('a review with no star or grade is never blocked', () => {
   assert.equal(humanScoreOutsideStarBand({ llmScore: { score: 49 } }, 90), null);
   assert.equal(humanScoreOutsideStarBand(null, 90), null);

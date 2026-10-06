@@ -22,6 +22,10 @@ function humanScoreOutsideStarBand(data, score) {
   const { detectBandFromReviewFile } = require('./star-reliability');
   const detected = detectBandFromReviewFile(data);
   if (!detected || !detected.band) return null;
+  // Only a reliable rating binds the score. A junk generic-pattern star or a
+  // relayed aggregator value (Mincemeat's wrong 1/5, BRO-4499) must not block a
+  // correct manual override.
+  if (!detected.highReliability) return null;
   const { floor, ceiling } = detected.band;
   if (!Number.isFinite(floor) || !Number.isFinite(ceiling)) return null;
   if (score >= floor && score <= ceiling) return null;

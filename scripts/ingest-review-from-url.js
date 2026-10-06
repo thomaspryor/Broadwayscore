@@ -359,11 +359,12 @@ if (!show) {
   // that lives only in the HTML (1minutecritic's alt="4 star review") was never
   // recorded and the review missed its star band. The routing block below
   // handles the result exactly like the score-only path above.
-  if (hasBody && !recoveredScore) {
+  // Same show-title check the no-body path applies, since the extractors read
+  // the whole page (related-post widgets, sidebar star images).
+  let recoveredFromHtmlWithBody = false;
+  if (hasBody && !recoveredScore && pageMentionsShowTitle(html, show.title)) {
     recoveredScore = recoverScoreFromHtml(html, text, outletId, show.title);
-    if (recoveredScore) {
-      console.log(`  → Recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
-    }
+    recoveredFromHtmlWithBody = !!recoveredScore;
   }
 
   // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
@@ -511,9 +512,11 @@ if (!show) {
   // BRO-4764: on the with-body path, never merge a freshly recovered rating onto
   // a file that already has a score signal (field-by-field merge would pair the
   // old score with the new normalized value/source).
-  if (recoveredScore && hasBody && existingHasScoreSignal(preExisting && preExisting.data)) {
-    console.log('  → Existing file already has a score signal — not overwriting with the HTML-recovered rating');
+  if (recoveredFromHtmlWithBody && existingHasScoreSignal(preExisting && preExisting.data)) {
+    console.log(`  → Existing file already has a score signal — not merging the HTML-recovered rating (${recoveredScore.originalScore})`);
     recoveredScore = null;
+  } else if (recoveredFromHtmlWithBody) {
+    console.log(`  → Recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
   }
   if (recoveredScore) {
     // Route through setExtractedScore, never hand-set originalScore: an

@@ -74,6 +74,7 @@ if (DRY_RUN) console.log('(DRY RUN — no files will be modified)\n');
 
 const files = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
 let modified = 0;
+let refusedByStarBand = 0;
 
 // Apply score corrections
 for (const corr of corrections) {
@@ -101,6 +102,7 @@ for (const corr of corrections) {
   const outside = ALLOW_OUTSIDE_STAR_BAND ? null : humanScoreOutsideStarBand(data, corr.score);
   if (outside) {
     console.log(`  ✗ ${matchingFile}: ${corr.score} is outside the ${outside.floor}-${outside.ceiling} band for the critic's own rating (${outside.starsRaw}). Skipped. Pass --allow-outside-star-band only if the star was extracted wrong.`);
+    refusedByStarBand++;
     continue;
   }
 
@@ -155,6 +157,10 @@ for (const cn of criticNames) {
 
 console.log(`\n${'═'.repeat(50)}`);
 console.log(`Modified: ${modified} files${DRY_RUN ? ' (dry run)' : ''}`);
+if (refusedByStarBand > 0) {
+  console.log(`REFUSED: ${refusedByStarBand} correction(s) outside the critic's star band (not applied). Exit code 3.`);
+  process.exitCode = 3;
+}
 
 // Auto-commit, push, and trigger rebuild
 if (modified > 0 && !DRY_RUN) {
