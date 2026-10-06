@@ -193,3 +193,21 @@ describe('lint script wired into a CI run: step', () => {
       'no scripts/lint-*.js files found — naming convention changed, guard is dead');
   });
 });
+
+// BRO-4817: GNU-only `sed -i "s/…/" file` (no backup suffix) breaks on macOS
+// BSD sed (-i eats the next arg as a suffix) while passing on Linux CI.
+// Use `perl -pi -e` or node fs in test shell strings.
+describe('tests avoid GNU-only sed -i (BRO-4817)', () => {
+  const dir = join(dirname(fileURLToPath(import.meta.url)));
+  const files = readdirSync(dir).filter((f) => /\.test\.(mjs|js|ts)$/.test(f) && f !== 'ci-config-hygiene.test.mjs');
+  const bad = [];
+  for (const f of files) {
+    readFileSync(join(dir, f), 'utf8').split('\n').forEach((line, i) => {
+      if (/\bsed\s+(-[A-Za-z]*i[A-Za-z]*|--in-place)\s+["']/.test(line) && !/-i\.\w|-i\s+''/.test(line)) bad.push(`${f}:${i + 1}`);
+    });
+  }
+  test('no suffixless sed -i in test files', () => {
+    assert.deepEqual(bad, [], `GNU-only sed -i (breaks on macOS); use perl -pi -e: ${bad.join(', ')}`);
+  });
+  test('sanity: sweep sees test files', () => assert.ok(files.length > 50));
+});
