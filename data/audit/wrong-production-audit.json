@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-10-06T02:59:24.249Z",
+  "timestamp": "2026-10-06T03:12:28.862Z",
   "stats": {
     "totalReviews": 46558,
-    "alreadyFlagged": 18663,
-    "dateGuardCatches": 266,
-    "directorMismatch": 1337,
+    "alreadyFlagged": 18666,
+    "dateGuardCatches": 265,
+    "directorMismatch": 1340,
     "tvFilmSignals": 1353,
     "londonSignals": 1288,
     "offBroadwaySignals": 510,
@@ -16409,25 +16409,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 96,
-      "publishDate": "2025-12-12",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 94,
@@ -20286,19 +20267,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: maybe-happy-ending-2024"
-        }
-      ]
-    },
-    {
-      "showId": "maybe-happy-ending-tour-2026",
-      "file": "theatermania--zachary-stewart.json",
-      "publishDate": "2026-10-05",
-      "url": "https://www.theatermania.com/news/savy-jackson-to-take-over-role-of-claire-in-maybe-happy-ending-on-broadway_1856173/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
         }
       ]
     },
@@ -27886,6 +27854,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "onstage-colorado--alex-miller.json",
+      "score": 78,
       "publishDate": "2026-08-12",
       "url": "https://onstagecolorado.com/a-revamped-spamalot-gallops-into-the-buell/",
       "findings": [
@@ -27983,6 +27952,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "trinitytripod--unknown.json",
+      "score": 72,
       "publishDate": "2025-12-11",
       "url": "https://trinitytripod.com/arts/theatre-review-the-national-tour-of-spamalot-brings-nostalgia-and-whimsy-aplenty-to-the-bushnell/",
       "findings": [
@@ -33528,6 +33498,25 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--deborah-bostock-kelley.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/tampa/article/Review-THE-NOTEBOOK-MUSICAL-at-Straz-Center-20260528",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--evan-henerson.json",
       "score": 73,
       "publishDate": null,
@@ -34782,6 +34771,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "broadwayworld--tyler-hinton.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-PHANTOM-OF-THE-OPERA-at-the-Eccles-Theater-is-Refreshed-with-Reverence-20260411",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         }
       ]
     },
@@ -38087,6 +38090,33 @@
       "score": 85,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--marie-reiter.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/louisville/article/Review-WATER-FOR-ELEPHANTS-Presented-by-Broadway-Across-America-at-Kentucky-Performing-Arts-20251017",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--michael-rabice.json",
+      "score": 80,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-WATER-FOR-ELEPHANTS-at-Sheas-Buffalo-Theatre-20260415",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
