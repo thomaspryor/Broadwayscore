@@ -16,6 +16,7 @@ permissions:
 
 concurrency:
   group: sync-followers
+  # concurrency-cancel-ok: idempotent refresh, latest run wins (BRO-934 audit)
   cancel-in-progress: true
 
 jobs:
