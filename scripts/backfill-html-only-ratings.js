@@ -16,10 +16,10 @@
  *
  * Needs scraper keys, so it is run from CI (.github/workflows/star-band-backfill.yml).
  *
- * Usage: node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--show=ID]
+ * Usage: node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--per-outlet=N] [--show=ID]
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
-if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--show=ID]\n  --help, -h   print this usage and exit'); process.exit(0); }
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/backfill-html-only-ratings.js [--apply] [--limit=N] [--per-outlet=N] [--show=ID]\n  --help, -h   print this usage and exit'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -35,19 +35,24 @@ const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;
 const showArg = process.argv.find(a => a.startsWith('--show='));
 const ONLY_SHOW = showArg ? showArg.split('=')[1] : null;
+const perOutletArg = process.argv.find(a => a.startsWith('--per-outlet='));
+const PER_OUTLET = perOutletArg ? parseInt(perOutletArg.split('=')[1], 10) : 0; // sample N per outlet (diverse dry run)
+const seenByOutlet = {};
 const ROOT = path.join(__dirname, '..');
 
 const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
 const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
 const showById = new Map(showsArr.filter(s => s && s.id).map(s => [s.id, s]));
-const { OUTLET_EXTRACTORS } = require('./lib/score-extractors');
+const { OUTLET_EXTRACTORS, KNOWN_STAR_OUTLETS } = require('./lib/score-extractors');
 
 function isCandidate(d, show, f) {
   if (!d || !d.url || !d.outletId) return false;
   const srcs = [d.source, ...(Array.isArray(d.sources) ? d.sources : [])];
   if (!srcs.includes('submit-review-form')) return false;
   if (existingHasScoreSignal(d)) return false;
-  if (!OUTLET_EXTRACTORS[d.outletId]) return false;
+  // Star-publishing outlets only (the canonical KNOWN_STAR_OUTLETS set): an outlet that
+  // prints no rating (BroadwayWorld prose, NYT) can only ever report noRating here.
+  if (!KNOWN_STAR_OUTLETS.has(d.outletId) || !OUTLET_EXTRACTORS[d.outletId]) return false;
   if (d.humanReviewScore != null || d.adjudicatedScore != null) return false;
   if (!shouldUseAnchoredMode({ category: show.market || show.category, envFlag: false })) return false;
   return !!isIncludableForRebuild(d, show, f);
@@ -56,6 +61,7 @@ function isCandidate(d, show, f) {
 (async () => {
   const stats = { candidates: 0, fetched: 0, fetchFailed: 0, recovered: 0, noRating: 0, written: 0 };
   const recovered = [];
+  const noRating = [];
   for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', ONLY_SHOW || '*', '*.json'))) {
     const showId = path.basename(path.dirname(f));
     const show = showById.get(showId);
@@ -63,6 +69,8 @@ function isCandidate(d, show, f) {
     let d;
     try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
     if (!isCandidate(d, show, f)) continue;
+    if (PER_OUTLET && (seenByOutlet[d.outletId] || 0) >= PER_OUTLET) continue;
+    seenByOutlet[d.outletId] = (seenByOutlet[d.outletId] || 0) + 1;
     if (LIMIT && stats.candidates >= LIMIT) break;
     stats.candidates++;
     let html = null;
@@ -77,7 +85,7 @@ function isCandidate(d, show, f) {
     if (!html || typeof html !== 'string' || html.length < 500) { stats.fetchFailed++; continue; }
     stats.fetched++;
     const rec = recoverScoreFromHtml(html, d.fullText || '', d.outletId, show.title);
-    if (!rec) { stats.noRating++; continue; }
+    if (!rec) { stats.noRating++; noRating.push(`${showId}/${path.basename(f)} [${d.outletId}] ${d.url}`); continue; }
     stats.recovered++;
     recovered.push(`${showId}/${path.basename(f)}  ${rec.originalScore} (${rec.normalizedScore}) [${rec.source}]`);
     if (!APPLY) continue;
@@ -93,5 +101,6 @@ function isCandidate(d, show, f) {
     stats.written++;
   }
   console.log(JSON.stringify({ mode: APPLY ? 'apply' : 'dry-run', ...stats }));
-  for (const r of recovered) console.log('  ' + r);
+  for (const r of recovered) console.log('  RECOVERED ' + r);
+for (const r of noRating.slice(0, 40)) console.log('  no-rating ' + r);
 })();

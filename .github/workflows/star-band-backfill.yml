@@ -14,6 +14,11 @@ on:
         required: true
         default: 'audit'
         type: string
+      per_outlet:
+        description: 'html modes: sample at most N files per outlet (0 = no per-outlet cap)'
+        required: false
+        default: '0'
+        type: string
       limit:
         description: 'html modes: max candidate files to fetch (0 = all)'
         required: false
@@ -85,7 +90,9 @@ jobs:
           [ "${{ inputs.mode }}" = "html-apply" ] && APPLY="--apply"
           LIMIT="${{ inputs.limit }}"
           LIMIT_ARG=""
-          [ "${LIMIT:-0}" != "0" ] && LIMIT_ARG="--limit=${LIMIT}"
+          PO="${{ inputs.per_outlet }}"
+          [ "${PO:-0}" != "0" ] && LIMIT_ARG="--per-outlet=${PO}"
+          [ "${LIMIT:-0}" != "0" ] && LIMIT_ARG="$LIMIT_ARG --limit=${LIMIT}"
           node scripts/backfill-html-only-ratings.js $APPLY $LIMIT_ARG | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Push to private repo
