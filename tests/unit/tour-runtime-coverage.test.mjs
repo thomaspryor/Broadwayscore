@@ -21,6 +21,7 @@
  * that differ; this test does not assert a tour's runtime differs from or equals
  * its parent's, only that the tour page has one.
  */
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural coverage (every tour has a runtime and a synopsis); it pins no fact about a specific show, only two documented gaps that must shrink
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
