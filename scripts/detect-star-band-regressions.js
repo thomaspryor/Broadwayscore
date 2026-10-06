@@ -20,6 +20,12 @@
  *                                 the older scoring. A clobber that dropped the
  *                                 band is also caught by check 1 on any run.
  *
+ *   3. false-truncation          (BRO-4804, EVERY market, not only anchored ones) a scored
+ *                                 file whose complete-tier text the scorer called
+ *                                 truncated only because of a page footer, so the
+ *                                 ensemble was told to hedge. Predicate:
+ *                                 isFalseTruncationScore in rescore-flagging.js.
+ *
  * (A review on the BWW/Playbill roundup but missing from the live show JSON is
  * covered by the hourly audit-aggregator-gap.yml run of
  * scripts/audit-show-review-gap.js, which ingests the missing URL directly.)
@@ -45,6 +51,7 @@ const { starBandVerdict, scoringRegression, DEFAULT_TOL } = require('./lib/star-
 const { scoringStamp } = require('./lib/scoring-recency');
 const { shouldUseAnchoredMode } = require('./lib/star-reliability');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { isFalseTruncationScore } = require('./lib/rescore-flagging');
 
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage:\n  node scripts/detect-star-band-regressions.js [--tol=2] [--history-days=7] [--apply] [--alert] [--json=PATH] [--replay=SHA[,SHA]]\n  --help, -h   print this usage and exit');
@@ -86,6 +93,17 @@ if (!REPLAY) {
       if (!d) continue;
       const v = starBandVerdict(d, { category, show, filePath: f }, TOL);
       if (v) findings.push({ showId, market: marketOf(show), file: `${showId}/${path.basename(f)}`, abs: f, kind: v.kind, detail: `${v.starsRaw} band ${v.floor}-${v.ceiling}${v.score != null ? ` score ${v.score}` : ''}` });
+    }
+  }
+}
+
+// ── 3. scorer status truncated while contentTier=complete (footer false positive), every show ──
+if (!REPLAY) {
+  for (const [showId, show] of showById) {
+    for (const f of glob.sync(path.join(RT_DIR, showId, '*.json'))) {
+      const d = readJson(f);
+      if (!d || !isFalseTruncationScore(d, show, f)) continue;
+      findings.push({ showId, market: marketOf(show), file: `${showId}/${path.basename(f)}`, abs: f, kind: 'false-truncation', detail: `score ${d.assignedScore} scored with a truncation warning on a complete-tier text` });
     }
   }
 }
@@ -135,10 +153,13 @@ try {
 let flagged = 0;
 if (APPLY) {
   for (const f of findings) {
+    // The BRO-4804 inventory (thousands of files) is drained in staged, A/B-checked waves via
+    // false-truncation-flag.yml, so the standing run only REPORTS it unless explicitly enabled.
+    if (f.kind === 'false-truncation' && process.env.FALSE_TRUNCATION_APPLY !== 'true') continue;
     const d = readJson(f.abs);
     if (!d || d.needsRescore === true) continue;
     d.needsRescore = true;
-    d.rescoreReason = f.kind === 'unanchored' ? 'late-star-anchor' : `late-star-anchor:${f.kind}`;
+    d.rescoreReason = f.kind === 'false-truncation' ? 'false-truncation-warning' : f.kind === 'unanchored' ? 'late-star-anchor' : `late-star-anchor:${f.kind}`;
     delete d.rescoreCompletedAt;
     if (f.kind === 'out-of-band') d.starBandFlaggedAt = new Date().toISOString();
     safeWriteReview(f.abs, d, { force: true });
@@ -153,6 +174,7 @@ for (const f of findings) {
   byShow[f.showId] = (byShow[f.showId] || 0) + 1;
 }
 console.log(`scope=${scopeShows.size} anchored-market shows (whole corpus) findings=${findings.length} ${JSON.stringify(byKind)} ${APPLY ? `flagged=${flagged}` : '(dry run, pass --apply to flag needsRescore)'}${historyNote}`);
+if (byKind['false-truncation'] && process.env.FALSE_TRUNCATION_APPLY !== 'true') console.log(`false-truncation: ${byKind['false-truncation']} file(s) reported, NOT flagged (staged drain via false-truncation-flag.yml, BRO-4804)`);
 console.log(`history: ${historyReach || 'not checked'}`);
 console.log(`by market: ${JSON.stringify(byMarket)}`);
 const topShows = Object.entries(byShow).sort((a, b) => b[1] - a[1]);
@@ -162,7 +184,7 @@ if (findings.length > 20) console.log(`  ...and ${findings.length - 20} more (fu
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify({ byKind, byMarket, byShow, findings: findings.map(({ abs, ...rest }) => rest) }, null, 2));
 
 (async () => {
-  if (!ALERT || findings.length === 0) return;
+  if (!ALERT || findings.every(f => f.kind === 'false-truncation')) return; // report-only kind, see above
   const { routeAlert } = require('./lib/owner-alert-router');
   await routeAlert({
     conditionKey: 'star-band:regressions',

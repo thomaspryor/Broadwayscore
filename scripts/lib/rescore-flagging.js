@@ -49,7 +49,31 @@ function isTruncatedScoreNowComplete(data) {
   const scoredAt = Date.parse(data.llmMetadata.scoredAt || '');
   const fetchedAt = Date.parse(data.textFetchedAt || '');
   if (!Number.isFinite(scoredAt) || !Number.isFinite(fetchedAt) || fetchedAt <= scoredAt) return false;
-  return assessFullText(data.fullText) === 'complete';
+  // BRO-4804: judge the new text the way the scorer will (tier-aware), or a
+  // footer-ended complete file never reads as "now complete" and stays stale.
+  return assessFullText(data.fullText, true, { trustedComplete: data.contentTier === 'complete' }) === 'complete';
+}
+
+/**
+ * BRO-4804: scored while the scorer called a COMPLETE-tier fullText truncated
+ * only because of a page footer (no final punctuation). The prompt then told the
+ * ensemble the verdict may be missing and confidence went low. True iff the
+ * recorded textSource says truncated AND the canonical predicate agrees the text
+ * is complete once contentTier is trusted (assessFullText without vs with
+ * trustedComplete), AND the file is safe to requeue.
+ */
+function isFalseTruncationScore(data, show, filePath) {
+  if (!data || typeof data !== 'object') return false;
+  if (typeof data.assignedScore !== 'number') return false;
+  if (data.contentTier !== 'complete' || !data.fullText) return false;
+  const src = data.llmMetadata && data.llmMetadata.textSource;
+  if (!src || src.type !== 'fullText' || src.status !== 'truncated') return false;
+  if (data.needsRescore === true) return false;
+  if (data.humanReviewScore != null) return false;
+  if (data.scoreSource && !isLlmScoreSource(data.scoreSource)) return false;
+  if (assessFullText(data.fullText) !== 'truncated') return false;
+  if (assessFullText(data.fullText, true, { trustedComplete: true }) !== 'complete') return false;
+  return isScoreable(data, show, filePath);
 }
 
 /**
@@ -136,4 +160,4 @@ function markRescoreNeeded(fileData, reason, flaggedAt) {
   return fileData;
 }
 
-module.exports = { isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded };
+module.exports = { isFalseTruncationScore, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded };
