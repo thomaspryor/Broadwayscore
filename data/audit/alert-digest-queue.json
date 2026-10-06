@@ -1094,5 +1094,34 @@
       }
     ],
     "queuedAt": "2026-10-06T03:48:02.333Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4758-verify",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4758-verify",
+    "description": "land.yml did not land land/bro-4758-verify: the unit-tests-node gate went red at bbc37abafa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37418412477",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4758-verify"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bbc37abafad2ffcf8eb2be753686c01d1f67dba7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37418412477"
+      }
+    ],
+    "queuedAt": "2026-10-06T05:57:36.576Z"
   }
 ]
