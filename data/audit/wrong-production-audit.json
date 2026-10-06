@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T11:19:09.002Z",
+  "timestamp": "2026-10-06T14:04:46.416Z",
   "stats": {
-    "totalReviews": 46590,
-    "alreadyFlagged": 18677,
-    "dateGuardCatches": 267,
-    "directorMismatch": 1342,
-    "tvFilmSignals": 1354,
+    "totalReviews": 46594,
+    "alreadyFlagged": 18678,
+    "dateGuardCatches": 266,
+    "directorMismatch": 1324,
+    "tvFilmSignals": 1355,
     "londonSignals": 1287,
     "offBroadwaySignals": 510,
     "yearMismatch": 114,
-    "noPublishDate": 4313
+    "noPublishDate": 4314
   },
   "findings": [
     {
@@ -1027,6 +1027,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "liamodell--liam-odell.json",
+      "score": 39,
       "publishDate": "2026-10-06",
       "url": "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
       "findings": [
@@ -1067,8 +1068,22 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 37,
+      "publishDate": "2026-10-06",
+      "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 17,
+      "score": 13,
       "publishDate": "2026-10-05",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
       "findings": [
@@ -1082,6 +1097,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
+      "score": 12,
       "publishDate": "2026-10-06",
       "url": "https://www.whatsonstage.com/news/affluenza-with-noah-schnapp-at-riverside-studios-review_1734391/",
       "findings": [
@@ -13591,20 +13607,6 @@
       ]
     },
     {
-      "showId": "hamilton-tour-2024",
-      "file": "broadwayworld--theresa-bertram.json",
-      "score": 91,
-      "publishDate": "2026-08-29",
-      "url": "https://www.broadwayworld.com/little-rock/article/Review-HAMILTON-at-Robinson-Center-in-Little-Rock-20260829",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"thomas kail\" from hamilton-2015"
-        }
-      ]
-    },
-    {
       "showId": "hamilton-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 93,
@@ -13854,48 +13856,15 @@
     },
     {
       "showId": "harry-potter-tour-2024",
-      "file": "broadwayworld--tyler-hinton.json",
-      "score": 93,
-      "publishDate": "2026-09-24",
-      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-the-Eccles-Theater-is-Staggeringly-Awe-Inspiring-20260924",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from harry-potter-2021"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-tour-2024",
       "file": "equality365--eric-andrews-katz.json",
       "score": 74,
       "publishDate": "2026-08-28",
       "url": "https://equality365.com/review-harry-potter-and-the-cursed-child/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from harry-potter-2021"
-        },
-        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2024 (0x). 2018 matches production: harry-potter-2021"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-tour-2024",
-      "file": "seattles-child--candice-mcmillan.json",
-      "score": 86,
-      "publishDate": "2026-08-27",
-      "url": "https://www.seattleschild.com/harry-potter-cursed-child-seattle-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from harry-potter-2021"
         }
       ]
     },
@@ -16449,25 +16418,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 96,
-      "publishDate": "2025-12-12",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 94,
@@ -18388,19 +18338,6 @@
       ]
     },
     {
-      "showId": "kinky-boots-tour-2025",
-      "file": "broadwayworld--chloe-rabinowitz.json",
-      "publishDate": "2026-06-09",
-      "url": "https://www.broadwayworld.com/chicago/article/KINKY-BOOTS-is-Now-Playing-at-Chicagos-James-M-Nederlander-Theatre-20260609",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
-        }
-      ]
-    },
-    {
       "showId": "kiss-me-kate-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 44,
@@ -20038,34 +19975,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-tour-2026",
-      "file": "nerds-of-color--edward-hong.json",
-      "score": 77,
-      "publishDate": "2026-06-25",
-      "url": "https://thenerdsofcolor.org/2026/06/25/a-los-angeles-theatre-review-mamma-mia/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-tour-2026",
-      "file": "pioneer-press--rob-hubbard.json",
-      "score": 87,
-      "publishDate": "2026-09-16",
-      "url": "https://www.twincities.com/2026/09/16/theater-review-mamma-mia-orpheum/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
         }
       ]
     },
@@ -26999,11 +26908,6 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"lucy moss\" from six-2021"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
           "detail": "Mentions director \"jamie armitage\" from six-2021"
         },
         {
@@ -27019,11 +26923,6 @@
       "publishDate": "2026-08-10",
       "url": "https://www.theatermania.com/news/review-six-film-captures-the-substance-if-not-the-spirit-of-the-show_1848570/",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lucy moss\" from six-2021"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -27880,11 +27779,6 @@
           "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
         },
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
-        },
-        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2025 (1x). 2005 matches production: spamalot-2005"
@@ -27902,11 +27796,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         }
       ]
     },
@@ -27921,11 +27810,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -33076,75 +32960,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "file": "akron-beacon-journal--kerry-clawson.json",
-      "score": 83,
-      "publishDate": "2021-10-07",
-      "url": "https://www.beaconjournal.com/story/entertainment/arts/2021/10/07/joy-of-lion-king-brings-just-the-needed-jolt-to-theatergoers-at-playhouse-square/6020993001/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "file": "dc-theater-arts--constance-beulah.json",
-      "score": 91,
-      "publishDate": "2023-06-28",
-      "url": "https://dctheaterarts.org/2025/02/14/phenomenal-the-lion-king-is-pure-joy-at-the-hippodrome-in-baltimore/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "file": "nippertown--bill-kellert.json",
-      "score": 90,
-      "publishDate": "2023-08-05",
-      "url": "https://nippertown.com/2023/08/05/hakuna-matata-means-no-worries-at-proctors-stunning-disneys-the-lion-king/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "file": "playbill--andrew.json",
-      "publishDate": "2026-09-11",
-      "url": "https://playbill.com/article/the-lion-king-tour-will-close-in-2027-newly-configured-production-planned",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "file": "the-austin-chronicle--richard-whittaker.json",
-      "score": 76,
-      "publishDate": null,
-      "url": "https://www.austinchronicle.com/arts/review-the-lion-king-roars-strong-12141775/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
         }
       ]
     },

@@ -1,10 +1,16 @@
 {
-  "updatedAt": "2026-10-05T15:53:33.309Z",
-  "scanned": 2287,
-  "showsWithViolations": 54,
-  "totalViolations": 54,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-06T14:00:07.001Z",
+  "scanned": 2297,
+  "showsWithViolations": 57,
+  "totalViolations": 57,
+  "newSinceLastRun": 5,
+  "newViolationKeys": [
+    "the-mousetrap-west-end-2021",
+    "water-for-elephants-tour-2025",
+    "gang-of-three-off-west-end-2026",
+    "spamalot-tour-2025",
+    "the-music-man-tour-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -29,6 +35,7 @@
     "the-lion-king-west-end-2021",
     "mamma-mia-west-end-2021",
     "moulin-rouge-the-musical-west-end-2021",
+    "the-mousetrap-west-end-2021",
     "the-phantom-of-the-opera-west-end-1986",
     "as-you-like-it-globe-west-end-2026",
     "man-to-man-west-end-2026",
@@ -44,12 +51,10 @@
     "macbeth-off-broadway-2026",
     "tosca-off-broadway-2026",
     "the-smile-of-her-off-west-end-2026",
-    "disruption-off-broadway-2026",
     "what-the-animals-say-off-west-end-2026",
     "the-standard-of-living-west-end-2026",
     "darkling-off-west-end-2026",
     "christmas-carol-goes-wrong-west-end-2026",
-    "creation-stories-and-all-the-important-importants-off-broadway-2026",
     "pre-existing-condition-off-broadway-2026",
     "tru-off-west-end-2026",
     "degenerates-off-broadway-2026",
@@ -58,8 +63,12 @@
     "lost-in-del-valle-return-off-broadway-2026",
     "beetlejuice-tour-2026",
     "the-outsiders-tour-2025",
+    "water-for-elephants-tour-2025",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
-    "elektra-off-broadway-2026"
+    "elektra-off-broadway-2026",
+    "gang-of-three-off-west-end-2026",
+    "spamalot-tour-2025",
+    "the-music-man-tour-2026"
   ],
   "hits": [
     {
@@ -138,7 +147,7 @@
       "showId": "the-outsiders-2024",
       "title": "The Outsiders",
       "openingDate": "2024-04-11",
-      "message": "the-outsiders-2024 review text mentions \"revival\" 61x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-2024 review text mentions \"revival\" 59x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -265,6 +274,15 @@
       "title": "Moulin Rouge! The Musical",
       "openingDate": "2022-01-19",
       "message": "moulin-rouge-the-musical-west-end-2021 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-mousetrap-west-end-2021",
+      "title": "The Mousetrap",
+      "openingDate": "1952-11-25",
+      "message": "the-mousetrap-west-end-2021 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -405,15 +423,6 @@
       ]
     },
     {
-      "showId": "disruption-off-broadway-2026",
-      "title": "Disruption",
-      "openingDate": "2026-08-02",
-      "message": "disruption-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
       "showId": "what-the-animals-say-off-west-end-2026",
       "title": "What The Animals Say",
       "openingDate": "2026-10-02",
@@ -445,15 +454,6 @@
       "title": "Christmas Carol Goes Wrong",
       "openingDate": null,
       "message": "christmas-carol-goes-wrong-west-end-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
-      "title": "creation stories and all the important importants",
-      "openingDate": "2026-10-01",
-      "message": "creation-stories-and-all-the-important-importants-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -525,7 +525,16 @@
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 22x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "title": "Water for Elephants",
+      "openingDate": "2025-09-27",
+      "message": "water-for-elephants-tour-2025 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -544,6 +553,33 @@
       "title": "Elektra",
       "openingDate": null,
       "message": "elektra-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "gang-of-three-off-west-end-2026",
+      "title": "Gang Of Three",
+      "openingDate": null,
+      "message": "gang-of-three-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "title": "Spamalot",
+      "openingDate": "2025-12-01",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 17x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-music-man-tour-2026",
+      "title": "The Music Man",
+      "openingDate": "2026-01-12",
+      "message": "the-music-man-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
