@@ -2365,6 +2365,9 @@ on:
       # counted it in removed=, while the real path's plain `git worktree
       # remove` refuses it. Same "scripts/tests/ is not scripts/lib/" gap.
       - 'scripts/tests/gc-dry-run-parity.test.mjs'
+      # BRO-4815: salvage of landed untracked-notes-only worktrees (lib + colocated test).
+      - 'scripts/lib/worktree-gc-salvage.js'
+      - 'tests/unit/worktree-gc-salvage.test.mjs'
       # The GC lock test had NO paths entry and no run step, so it ran in ZERO
       # CI. It guards the mutual exclusion that stops two GCs deleting
       # worktrees concurrently.
