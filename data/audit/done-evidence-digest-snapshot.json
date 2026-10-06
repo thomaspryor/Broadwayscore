@@ -1,26 +1,11 @@
 {
-  "generatedAt": "2026-10-05T15:40:22.283Z",
-  "bannerText": "145/225 Done(14d) verified on main · 6 FAILED · 2 vacuous · 29 stuck-but-done — PARTIAL RUN: 90 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-06T13:49:11.929Z",
+  "bannerText": "20/254 Done(14d) verified on main · 3 FAILED · 1 vacuous · 8 stuck-but-done — PARTIAL RUN: 258 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-328 — Live show has ZERO critic reviews on site: Matilda The Musical (Theatre Row)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opening-night-express.js",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-328/live-show-has-zero-critic-reviews-on-site-matilda-the-musical-theatre"
-    },
-    {
-      "title": "FAILED BRO-127 — Arm PUSH_VIA_API_FALLBACK on a real caller + verify in production",
-      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-127/arm-push-via-api-fallback-on-a-real-caller-verify-in-production"
-    },
-    {
-      "title": "FAILED BRO-80 — Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/triage-unopened-shows.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-80/triage-unopened-shows-carrying-scored-prior-run-reviews-55-shows-250"
-    },
-    {
-      "title": "FAILED BRO-4668 — test.yml E2E races prod deploy: wait for undeployed site changes before Playwright",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-await-deploy.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4668/testyml-e2e-races-prod-deploy-wait-for-undeployed-site-changes-before"
+      "title": "FAILED BRO-2879 — push-with-retry retries deterministic pre-push hook rejections and never names them as the cause",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2879/push-with-retry-retries-deterministic-pre-push-hook-rejections-and"
     },
     {
       "title": "FAILED BRO-2853 — P1: push-via-git-api concurrency test flakes main red — it asserts a race OCCURRED, which an uncontended runner never guarantees",
@@ -33,15 +18,30 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2824/p2-push-via-git-apish-has-no-wall-clock-deadline-the-new-rc124-retry"
     },
     {
-      "title": "STUCK BRO-989 — Schmigadoon opening-night automation fixes (postmortem queue)",
+      "title": "STUCK BRO-3162 — Roll out stale-checkout race guard to remaining 20 rebuild-all-reviews.js workflows (BRO-3161 follow-up)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-989/schmigadoon-opening-night-automation-fixes-postmortem-queue"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3162/roll-out-stale-checkout-race-guard-to-remaining-20-rebuild-all"
     },
     {
-      "title": "STUCK BRO-733 — BWW roundup extraction fails to parse critic names for some entries",
+      "title": "STUCK BRO-3135 — P1: body-less review-texts stubs carrying aggregatorStars/originalScoreNormalized are scoreable with zero text corroboration",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-733/bww-roundup-extraction-fails-to-parse-critic-names-for-some-entries"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3135/p1-body-less-review-texts-stubs-carrying"
+    },
+    {
+      "title": "STUCK BRO-3059 — Investigate cross-workflow concurrency as the dominant source of collect-review-texts.js duplicate failed attempts",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3059/investigate-cross-workflow-concurrency-as-the-dominant-source-of"
+    },
+    {
+      "title": "STUCK BRO-3021 — 👑 OWNER — Fleet cost and waste audit (every paid line, billing-first)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3021/owner-fleet-cost-and-waste-audit-every-paid-line-billing-first"
+    },
+    {
+      "title": "STUCK BRO-2997 — Wire audit-card-verifiability.js --source linear into a schedule to prevent regression",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2997/wire-audit-card-verifiabilityjs-source-linear-into-a-schedule-to"
     }
   ],
-  "moreCount": 29
+  "moreCount": 4
 }
