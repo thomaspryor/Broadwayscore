@@ -789,10 +789,11 @@ async function main() {
             console.log(`  Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
           }
         }
-      } else if (stampRedditAttempts && !redditData && !showFetchFailed) {
+      } else if (stampRedditAttempts && !redditData && !showFetchFailed && getSubreddits(show).length > 0) {
         // BRO-4215/BRO-4777: stamped in every non-dry, non-shard run, or a no-data
         // show (typical for a new opening) would never back off and be re-scraped
-        // on every dispatch and every schedule run.
+        // on every dispatch and every schedule run. Tours (no subreddit) were never
+        // searched, so they get no stamp.
         // No Reddit data this run (no qualifying posts / below MIN items). Stamp an
         // attempt marker so the oldest-first --refresh-stale drain doesn't re-select
         // this no-signal show on EVERY run and stall behind it (a bounded --limit run
