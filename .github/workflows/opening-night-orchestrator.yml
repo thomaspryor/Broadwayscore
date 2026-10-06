@@ -640,6 +640,29 @@ jobs:
               POLLER_ARGS="$POLLER_ARGS -f bww_roundup_url=$BWW_URL"
             fi
 
+            # BRO-2358: never stack a dispatch on a poller run this orchestrator
+            # is still waiting out. The poller's concurrency group holds ONE
+            # running + ONE pending run, so every extra dispatch cancels the
+            # older pending one (2026-10-04: 6 of 8 auto runs cancelled, runs
+            # take 90-150min vs the wait below). Re-wait on the previous run
+            # instead; serialization is unchanged, nothing gets superseded.
+            PREV_STILL_ACTIVE=false
+            if [ -n "${PREV_POLLER_RUN_ID:-}" ]; then
+              PREV_STATUS=$(gh run view "$PREV_POLLER_RUN_ID" --json status -q .status 2>/dev/null || echo "")
+              case "$PREV_STATUS" in
+                queued|in_progress|waiting|pending|requested) PREV_STILL_ACTIVE=true ;;
+                completed) ;;
+                # gh failed (rate limit/outage): assume still active. Dispatching
+                # blind is exactly the stacking that cancels the pending slot, and
+                # the wall-clock DEADLINE bounds any stall.
+                *) PREV_STILL_ACTIVE=true; PREV_STATUS="unknown" ;;
+              esac
+            fi
+            RUN_ID=""
+            if [ "$PREV_STILL_ACTIVE" = "true" ]; then
+              echo "⏳ Previous poller run $PREV_POLLER_RUN_ID still $PREV_STATUS — not dispatching another (would cancel the pending slot); waiting on it again"
+              RUN_ID="$PREV_POLLER_RUN_ID"
+            else
             # Record the newest poller run ID BEFORE dispatch so we can detect the new one
             PRE_DISPATCH_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
 
@@ -664,7 +687,6 @@ jobs:
             echo "Pre-dispatch latest poller run: ${PRE_DISPATCH_ID:-none}"
             echo "Waiting for new poller run to appear..."
 
-            RUN_ID=""
             for WAIT in $(seq 1 24); do
               sleep 5
               LATEST_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
@@ -674,14 +696,16 @@ jobs:
                 break
               fi
             done
+            fi
 
             if [ -n "$RUN_ID" ]; then
+              PREV_POLLER_RUN_ID="$RUN_ID"
               echo "Waiting for poller run $RUN_ID to complete..."
               # wait-for-run.sh polls once per 60-90s (one run-view call, no jobs
               # expansion) instead of gh run watch's 3s default — a 25-min poller
               # watch was ~500 calls against the repo's 1000/hr GITHUB_TOKEN budget.
-              # 75 = poller's 60-min job timeout + queue allowance, so we never
-              # abandon a still-running poller (serialization is load-bearing).
+              # 75 covers a typical run; a longer one (job timeout is 100min, plus queue
+              # time) is re-waited next iteration by the PREV_STILL_ACTIVE guard above.
               bash scripts/lib/wait-for-run.sh "$RUN_ID" 75 || echo "⚠️ Poller run $RUN_ID wait exited $? (1=run failed, 2=still running after 75min, 3=gh errors) — continuing"
             else
               echo "⚠️ Could not find new poller run after 2 min. Continuing."
