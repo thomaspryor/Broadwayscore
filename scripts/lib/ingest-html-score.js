@@ -27,4 +27,24 @@ function recoverScoreFromHtml(html, text, outletId, showTitle) {
   return extractScore(html, text || '', outletId, showTitle) || null;
 }
 
-module.exports = { recoverScoreFromHtml };
+/**
+ * True when an existing review file already carries a score signal, so a rating
+ * freshly recovered from HTML must not be merged onto it. _mergeIntoExisting
+ * fills each field independently when blank, so recovering onto a file with a
+ * human/aggregator/LLM-era originalScore but no originalScoreNormalized or
+ * originalScoreSource would pair the OLD score with the NEW extractor's
+ * normalized value and source; the rebuild trusts the normalized value.
+ * Mirrors the collector's skip (collect-review-texts.js: originalScore set).
+ *
+ * @param {object|null|undefined} existingData
+ * @returns {boolean}
+ */
+function existingHasScoreSignal(existingData) {
+  if (!existingData || typeof existingData !== 'object') return false;
+  const has = (v) => v !== null && v !== undefined && v !== '';
+  return has(existingData.originalScore)
+    || has(existingData.aggregatorStars)
+    || existingData.originalScoreCleared === true;
+}
+
+module.exports = { recoverScoreFromHtml, existingHasScoreSignal };

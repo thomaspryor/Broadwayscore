@@ -50,6 +50,7 @@ const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { isolateMultiShowSection } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
+const { recoverScoreFromHtml, existingHasScoreSignal } = require('./lib/ingest-html-score');
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
 // (checked 2026-09-28); see the refusal below.
 const INGEST_REFUSED_URL_REASONS = new Set([
@@ -334,10 +335,7 @@ if (!show) {
   // is a score-only ingest, not a failure. Card 3b5637c5 (NYSM Live).
   let recoveredScore = null;
   if (!text || text.length < 200) {
-    const { extractScore, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
-    if (OUTLET_EXTRACTORS[outletId]) {
-      recoveredScore = extractScore(html, '', outletId, show.title) || null;
-    }
+    recoveredScore = recoverScoreFromHtml(html, '', outletId, show.title);
     // With no body there is no content-based wrong-show signal left for the
     // rebuild guards to scan, so require the show's title to appear somewhere
     // in the raw page HTML (normalized: punctuation-insensitive) before
@@ -362,7 +360,6 @@ if (!show) {
   // recorded and the review missed its star band. The routing block below
   // handles the result exactly like the score-only path above.
   if (hasBody && !recoveredScore) {
-    const { recoverScoreFromHtml } = require('./lib/ingest-html-score');
     recoveredScore = recoverScoreFromHtml(html, text, outletId, show.title);
     if (recoveredScore) {
       console.log(`  → Recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
@@ -510,6 +507,13 @@ if (!show) {
   if (allowNonReviewUrl) fields.allowNonReviewUrl = true;
   if (stageMeta && stageMeta.standfirst && stageMeta.standfirst.length >= 25) {
     fields.outletStandfirst = stageMeta.standfirst;
+  }
+  // BRO-4764: on the with-body path, never merge a freshly recovered rating onto
+  // a file that already has a score signal (field-by-field merge would pair the
+  // old score with the new normalized value/source).
+  if (recoveredScore && hasBody && existingHasScoreSignal(preExisting && preExisting.data)) {
+    console.log('  → Existing file already has a score signal — not overwriting with the HTML-recovered rating');
+    recoveredScore = null;
   }
   if (recoveredScore) {
     // Route through setExtractedScore, never hand-set originalScore: an

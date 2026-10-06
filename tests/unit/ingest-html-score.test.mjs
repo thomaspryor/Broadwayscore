@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { recoverScoreFromHtml } = require('../../scripts/lib/ingest-html-score.js');
+const { recoverScoreFromHtml, existingHasScoreSignal } = require('../../scripts/lib/ingest-html-score.js');
 
 const OMC_HTML = '<article><p>Review body.</p><img data-src="https://1minutecritic.com/wp-content/uploads/2026/04/4-stars.png" alt="4 star review" class="lazyload"></article>';
 
@@ -32,4 +32,18 @@ test('no rating in the page returns null, not a guess', () => {
 test('missing html or outlet is a safe null', () => {
   assert.equal(recoverScoreFromHtml('', 'x', 'one-minute-critic', 'Slam Frank'), null);
   assert.equal(recoverScoreFromHtml(OMC_HTML, 'x', '', 'Slam Frank'), null);
+});
+
+test('existing file with an originalScore, aggregator stars, or a cleared score blocks the merge', () => {
+  assert.equal(existingHasScoreSignal({ originalScore: 100 }), true);
+  assert.equal(existingHasScoreSignal({ originalScore: '3/5 stars' }), true);
+  assert.equal(existingHasScoreSignal({ aggregatorStars: '4/5' }), true);
+  assert.equal(existingHasScoreSignal({ originalScoreCleared: true }), true);
+});
+
+test('blank or missing existing file does not block the merge', () => {
+  assert.equal(existingHasScoreSignal(null), false);
+  assert.equal(existingHasScoreSignal(undefined), false);
+  assert.equal(existingHasScoreSignal({}), false);
+  assert.equal(existingHasScoreSignal({ originalScore: null, aggregatorStars: '' }), false);
 });
