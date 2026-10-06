@@ -16,6 +16,11 @@ name: Land retry on cancel
 # of BRO-4676 applies).
 # Decision logic + tests: scripts/lib/land-retry-on-cancel{,.test} and
 # scripts/lib/land-queue-backoff{,.test}.
+# BRO-4802: everything outside that fast window used to strand for good (nine
+# finished cards sat unlanded 1-7 days on 2026-10-06). The hourly `stranded`
+# job walks every land/** ref: evicted ones get a full re-run, refused / red /
+# budget-spent ones are routed to the card they name. Logic + tests:
+# scripts/lib/land-stranded-refs{,.test}.
 
 on:
   workflow_run:
@@ -25,7 +30,16 @@ on:
     # Backstop for a missed or dropped completion event (cron is throttled
     # under load; the completion trigger does the real work).
     - cron: '*/10 * * * *'
+    # BRO-4802: hourly stranded-ref pass (the `stranded` job keys on this string).
+    - cron: '23 * * * *'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'sweep (default) or stranded'
+        required: false
+        default: 'sweep'
+        type: choice
+        options: [sweep, stranded]
 
 permissions:
   actions: write
@@ -34,6 +48,7 @@ permissions:
 jobs:
   sweep:
     name: Re-run one stranded Land job
+    if: github.event.schedule != '23 * * * *' && (github.event_name != 'workflow_dispatch' || inputs.mode != 'stranded')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency:
@@ -67,4 +82,39 @@ jobs:
         with:
           title: 'Land retry sweep failed'
           description: 'sweep after ${{ github.event_name }} could not check or re-run stranded Land jobs'
+          severity: 'warning'
+
+  stranded:
+    name: Route land refs stranded outside the fast retry
+    if: github.event.schedule == '23 * * * *' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'stranded')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      # Own group: the pass never touches the landing slot directly, so it must
+      # not queue behind (or evict) the sweep.
+      group: land-stranded-pass
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Re-run or route stranded land refs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LAND_STRANDED_KILL_SWITCH: ${{ vars.LAND_STRANDED_KILL_SWITCH }}
+        run: node scripts/land-retry-cancelled.js --stranded
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Stranded land-ref pass failed'
+          description: 'hourly pass could not read land refs or route stranded ones (BRO-4802)'
           severity: 'warning'
