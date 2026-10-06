@@ -75,6 +75,8 @@ const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
 const EXEMPT_NEVER_CI = {
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
   'ccusage-baseline.test.mjs': 'BRO-4491',
+  // BRO-2136 acceptance-command shim; re-imports the CI-registered tests/unit copy.
+  'scrape-playbill-verdict.test.mjs': 'BRO-2136',
   // BRO-3137 live-data acceptance check (data-state, would flap in CI).
   'opening-night-express.test.mjs': 'BRO-3137',
   // BRO-328 live-data acceptance check (data-state, would flap in CI).
