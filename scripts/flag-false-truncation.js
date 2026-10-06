@@ -21,6 +21,18 @@ const glob = require('glob');
 const { isFalseTruncationScore } = require('./lib/rescore-flagging');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `flag-false-truncation.js — flag scored reviews that a page footer made the scorer call truncated.
+
+Usage:
+  node scripts/flag-false-truncation.js [--apply] [--within-days=N] [--sample=N] [--limit=N] [--show=ID] [--json=PATH]
+  node scripts/flag-false-truncation.js --help, -h    print this usage and exit
+`;
+
+// --help/-h checked before any real work (see scripts/lib/cli-help.js).
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+
 const args = process.argv.slice(2);
 const arg = (n) => { const a = args.find(x => x.startsWith(`--${n}=`)); return a ? a.split('=').slice(1).join('=') : null; };
 const APPLY = args.includes('--apply');
