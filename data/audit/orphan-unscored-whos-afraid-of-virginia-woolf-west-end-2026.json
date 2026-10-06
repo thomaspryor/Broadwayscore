@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
   "openingDate": "2026-09-30",
-  "detectedAt": "2026-10-06T19:08:58.215Z",
+  "detectedAt": "2026-10-06T22:22:22.887Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "outletId": "theartsdispatch",
+      "criticName": "The Arts Dispatch",
+      "url": "https://theartsdispatch.substack.com/p/whos-afraid-of-virginia-woolf-review",
+      "fullTextLen": 2385,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "theatremonkey--unknown.json",
       "outletId": "theatremonkey",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-06T22:22:22.887Z"
 }
