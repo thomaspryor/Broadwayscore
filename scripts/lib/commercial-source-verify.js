@@ -10,8 +10,39 @@ function pageText(page) {
     .replace(/&amp;/gi, '&').replace(/\s+/g, ' ').trim();
 }
 
-// Characters either side of a figure searched for the production's opening year.
-const YEAR_WINDOW = 500;
+// Characters either side of a figure searched for the production's opening year and title.
+const YEAR_WINDOW = 300;
+const TITLE_WINDOW = 400;
+
+const key = (v) => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+// Text of the page's <title> and <h1> tags: a page about this show names it there.
+function headText(page) {
+  const out = [];
+  for (const m of String(page || '').matchAll(/<(title|h1)\b[^>]*>([\s\S]*?)<\/\1>/gi)) out.push(m[2].replace(/<[^>]+>/g, ' '));
+  return key(out.join(' '));
+}
+
+// A quote for public display: whole words only, no tag or nav debris at the edges.
+function tidyQuote(text, from, to) {
+  let q = text.slice(Math.max(0, from), to);
+  if (from > 0) q = q.replace(/^\S*\s+/, '');
+  if (to < text.length) q = q.replace(/\s+\S*$/, '');
+  return q.trim();
+}
+
+/** True when `year` appears within YEAR_WINDOW of the figure and no other year is closer to it. */
+function nearestYearIs(text, start, end, year) {
+  const lo = Math.max(0, start - YEAR_WINDOW);
+  const slice = text.slice(lo, end + YEAR_WINDOW);
+  let best = null;
+  for (const m of slice.matchAll(/\b(?:19|20)\d{2}\b/g)) {
+    const at = lo + m.index;
+    const dist = at < start ? start - (at + 4) : at - end;
+    if (!best || dist < best.dist) best = { year: m[0], dist };
+  }
+  return best !== null && best.year === year;
+}
 
 function verifyFigure(figure, page, context = {}) {
   const text = pageText(page);
@@ -24,24 +55,29 @@ function verifyFigure(figure, page, context = {}) {
     pattern = month ? new RegExp(`\\b(?:${months[Number(month) - 1]}|${months[Number(month) - 1].slice(0, 3)}\\.?)\\s+(?:\\d{1,2}(?:st|nd|rd|th)?,?\\s+)?${year}\\b`, 'gi') : new RegExp(`\\b${year}\\b`, 'g');
   } else return { found: false, quote: null };
 
-  const key = (v) => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   const title = key(context.title);
-  const pageKey = key(text);
+  const headKey = ` ${headText(page)} `;
   for (const match of text.matchAll(pattern)) {
     if (typeof figure === 'number') {
       const scale = (match[2] || '').toLowerCase();
       const value = Number(match[1].replace(/,/g, '')) * (scale.startsWith('m') ? 1e6 : scale.startsWith('b') ? 1e9 : 1);
       if (Math.abs(value - figure) > 0.01) continue;
     }
-    const quote = text.slice(Math.max(0, match.index - 180), match.index + match[0].length + 180).trim();
+    // Another currency is not this figure.
+    if (/[£€]\s*$/.test(text.slice(Math.max(0, match.index - 3), match.index))) continue;
+    const end = match.index + match[0].length;
+    const quote = tidyQuote(text, match.index - 180, end + 180);
     if (typeof figure === 'number' && !match[0].includes('$') && !match[2] && !/totalAmountSold|totalOfferingAmount/i.test(quote)) continue;
-    // The title may sit in the headline far from the figure, so it is checked on the whole page; the
-    // year (the wrong-production guard) must be near the figure.
-    if (title && !(` ${pageKey} `).includes(` ${title} `)) continue;
-    const near = text.slice(Math.max(0, match.index - YEAR_WINDOW), match.index + match[0].length + YEAR_WINDOW);
-    if (context.year && !new RegExp(`\\b${context.year}\\b`).test(near)) continue;
-    if (context.field === 'capitalization' && !/capitaliz|budget|investment|cost to (?:mount|produce)|rais(?:ed|ing)|offering|amount sold|totalAmountSold|totalOfferingAmount/i.test(quote)) continue;
-    if (context.field === 'weeklyRunningCost' && !/weekly|running cost|per week|a week/i.test(quote)) continue;
+    // Same production: the title is in the page's own <title>/<h1> or close to the figure (a roundup
+    // page naming other shows does not count just because the title appears in its nav), and the opening
+    // year is the nearest year to the figure (an earlier production's year closer by fails closed).
+    if (title) {
+      const around = key(text.slice(Math.max(0, match.index - TITLE_WINDOW), end + TITLE_WINDOW));
+      if (!(` ${around} `).includes(` ${title} `) && !headKey.includes(` ${title} `)) continue;
+    }
+    if (context.year && !nearestYearIs(text, match.index, end, context.year)) continue;
+    if (context.field === 'capitalization' && !/capitaliz|budget|investment|cost to (?:mount|produce)|\braised\b|offering|amount sold|totalAmountSold|totalOfferingAmount/i.test(quote)) continue;
+    if (context.field === 'weeklyRunningCost' && (!/running costs?|operating costs?|weekly (?:nut|budget|expenses?|costs?)|costs? [^.]{0,40}(?:per|a) week/i.test(quote) || /gross/i.test(quote))) continue;
     return { found: true, quote };
   }
   return { found: false, quote: null };
@@ -54,9 +90,11 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
     // Set when a cited page was not read because the per-run fetch cap was reached: the caller
     // leaves that entry pending for the next run instead of landing it as an unverified estimate.
     let capped = false;
+    let fieldCapped = false;
     const sources = normalizeSources(entry.sources);
     for (const field of ['capitalization', 'weeklyRunningCost']) {
       if (entry[field] == null) continue;
+      fieldCapped = false;
       for (const source of sources) {
         let host;
         try { const url = new URL(source.url); if (url.protocol !== 'https:') continue; host = url.hostname.replace(/^www\./, ''); } catch { continue; }
@@ -66,14 +104,15 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
         const year = (show?.openingDate || show?.previewsStartDate || '').slice(0, 4);
         if (!show?.title || !/^\d{4}$/.test(year)) continue;
         if (!cache.has(source.url)) {
-          if (cache.size >= maxFetches) { capped = true; continue; }
+          if (cache.size >= maxFetches) { fieldCapped = true; continue; }
           cache.set(source.url, Promise.resolve().then(() => fetchPage(source.url)).then(r => r?.content || '').catch(() => ''));
         }
         const result = verifyFigure(entry[field], await cache.get(source.url), { title: show.title, year, field });
-        if (result.found) { evidence[field] = { ...result, source }; break; }
+        if (result.found) { evidence[field] = { ...result, source }; fieldCapped = false; break; }
       }
+      if (fieldCapped) capped = true;
     }
-    if (capped && !Object.keys(evidence).length) evidence.capped = true;
+    if (capped) evidence.capped = true;
     return evidence;
   };
 }

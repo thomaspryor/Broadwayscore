@@ -92,12 +92,43 @@ test('fetch cache and cap include failures and reject untrusted hosts', async ()
 });
 test('title in the headline far from the figure still verifies; a far-off wrong year does not', async () => {
   const filler = ' lorem ipsum dolor sit amet'.repeat(40);
-  const headline = `Example sets opening date ${filler} The musical raised $12.5 million for its 2025 run.`;
+  const headline = `<html><head><title>Example sets opening date</title></head><body>${filler} The musical raised $12.5 million for its 2025 run.</body></html>`;
   const verify = createSourceVerifier({ fetchPage: async () => ({ content: headline }) });
   assert.equal((await verify(entry, show)).capitalization.found, true);
-  const wrongYear = `Example sets opening date ${filler} The 2012 production raised $12.5 million.${filler}${filler} Opens 2025.`;
+  const wrongYear = `<title>Example sets opening date</title>${filler} The 2012 production raised $12.5 million.${filler}${filler} Opens 2025.`;
   const verify2 = createSourceVerifier({ fetchPage: async () => ({ content: wrongYear }) });
   assert.equal((await verify2(entry, show)).capitalization, undefined);
+});
+test('a roundup page that names other shows near the figure does not verify, even if the title is in its nav', async () => {
+  const page = '<nav>Example | Cats | Rent</nav>' + ' lorem ipsum'.repeat(120) + ' Other Show was capitalized at $12.5 million in 2025. ' + ' dolor sit'.repeat(120);
+  assert.equal(verifyFigure(12500000, page, { title: 'Example', year: '2025', field: 'capitalization' }).found, false);
+  assert.equal(verifyFigure(12500000, 'Example was capitalized at $12.5 million in 2025.', { title: 'Example', year: '2025', field: 'capitalization' }).found, true);
+});
+test('an earlier production nearer the figure than the opening year does not verify', () => {
+  const ctx = { title: 'Example', year: '2025', field: 'capitalization' };
+  assert.equal(verifyFigure(12500000, 'The original 2012 production of Example was capitalized at $12.5 million, before the 2025 revival.', ctx).found, false);
+  assert.equal(verifyFigure(12500000, 'The 2025 revival of Example was capitalized at $12.5 million. Insiders say the show closed its original run in 2012.', ctx).found, true);
+});
+test('other currencies, weekly grosses and loose keywords do not verify', () => {
+  assert.equal(verifyFigure(12500000, 'Example 2025 capitalization of £12.5 million', { title: 'Example', year: '2025', field: 'capitalization' }).found, false);
+  assert.equal(verifyFigure(700000, 'Example 2025 weekly grosses of $700,000', { title: 'Example', year: '2025', field: 'weeklyRunningCost' }).found, false);
+  assert.equal(verifyFigure(700000, 'Example 2025 weekly running costs of $700,000', { title: 'Example', year: '2025', field: 'weeklyRunningCost' }).found, true);
+  assert.equal(verifyFigure(12500000, 'Example 2025 is raising the curtain, $12.5 million', { title: 'Example', year: '2025', field: 'capitalization' }).found, false);
+});
+test('quotes start and end on whole words', () => {
+  const page = `${'xx '.repeat(100)}Example in 2025 was capitalized at $12.5 million ${'yy '.repeat(100)}end`;
+  const q = verifyFigure(12500000, page, { title: 'Example', year: '2025', field: 'capitalization' }).quote;
+  assert.ok(q.includes('$12.5 million'));
+  assert.ok(!q.startsWith('x ') && !q.endsWith(' y'), q);
+  assert.match(q, /^(xx |Example)/);
+  assert.match(q, /(yy|million)$/);
+});
+test('a capped second field keeps the whole entry pending even when the first field verified', async () => {
+  const two = { ...entry, sources: [source] };
+  const verify = createSourceVerifier({ maxFetches: 1, fetchPage: async () => ({ content: 'Example 2025 capitalization $12.5 million' }) });
+  const ev = await verify({ ...two, weeklyRunningCost: 700000, sources: [source, { ...source, url: 'https://deadline.com/two' }] }, show);
+  assert.equal(ev.capitalization.found, true);
+  assert.equal(ev.capped, true);
 });
 test('fetch cap reached before a cited page is read marks the entry capped, not silently unverified', async () => {
   const verify = createSourceVerifier({ maxFetches: 1, fetchPage: async () => ({ content: 'Example in 2025: nothing here.' }) });
