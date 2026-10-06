@@ -1,6 +1,7 @@
 // Page evidence, never AI confidence, determines whether a figure is reported.
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { normalizeSources } = require('./commercial-sources');
+const { foldDiacritics } = require('./title-match');
 
 function pageText(page) {
   return String(page || '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
@@ -14,7 +15,7 @@ function pageText(page) {
 const YEAR_WINDOW = 300;
 const TITLE_WINDOW = 400;
 
-const key = (v) => String(v || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const key = (v) => foldDiacritics(String(v || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
 // Text of the page's <title> and <h1> tags: a page about this show names it there.
 function headText(page) {
