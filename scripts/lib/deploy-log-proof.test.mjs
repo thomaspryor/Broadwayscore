@@ -45,7 +45,17 @@ test('a --no-wait deploy log is proven by the wait script\'s READY line', () => 
 
 test('READY must be for the deployment that was echoed, and both lines are required', () => {
   const otherReady = '2026-10-06T03:30:00.0000000Z deployment broadwayscore-old-thomaspryors-projects.vercel.app: ready (state=READY, polls=3, exit=0)';
-  assert.equal(prodProofFromLog([otherReady, NOWAIT_DEPLOYED].join('\n')), null, 'a different attempt\'s READY');
+  // The echo shows $URL's first line, the wait script its last https line: a
+  // lone READY before the echo names the deployment that went live.
+  assert.deepEqual(prodProofFromLog([otherReady, NOWAIT_DEPLOYED].join('\n')), {
+    url: 'broadwayscore-old-thomaspryors-projects.vercel.app',
+    provenAtMs: Date.parse('2026-10-06T03:30:00.0000000Z'),
+  });
+  assert.equal(prodProofFromLog([NOWAIT_DEPLOYED, otherReady].join('\n')), null, 'a READY after the echo proves nothing');
+  const thirdReady = otherReady.replace('-old-', '-third-');
+  assert.equal(prodProofFromLog([otherReady, thirdReady, NOWAIT_DEPLOYED].join('\n')), null, 'two READYs, neither echoed');
+  assert.equal(prodProofFromLog([otherReady, thirdReady, ALIASED, NOWAIT_DEPLOYED].join('\n')), null,
+    'Aliased: proves only logs with no READY line at all');
   assert.equal(prodProofFromLog([NOWAIT_PROGRESS, NOWAIT_READY].join('\n')), null, 'no exit-0 echo');
   assert.equal(prodProofFromLog([NOWAIT_PROGRESS, NOWAIT_DEPLOYED].join('\n')), null, 'never seen READY');
   const canceled = `2026-10-06T03:32:00.0000000Z deployment ${HOST}: canceled (state=CANCELED, polls=4, exit=5)`;

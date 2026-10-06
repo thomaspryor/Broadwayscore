@@ -13,20 +13,24 @@
  *   `deployment <host>: ready (state=READY, …)`
  *                                      scripts/vercel-wait-deployment.js, once
  *                                      the `--prod --no-wait` deployment is
- *                                      READY (Vercel moves the production
- *                                      domains to a --prod deployment then).
- *                                      Logs from before BRO-2067 (2026-10-05)
- *                                      have the Vercel CLI's `Aliased: https://…`
- *                                      instead; that still counts.
+ *                                      READY. That is the token path's test too
+ *                                      (latest READY production deployment);
+ *                                      neither sees a failed domain assignment.
  *   `Deployed to production: https://…` the workflow's own echo, reached only
- *                                      when that deployment reached READY
- * The READY line must name the same host as the echoed URL: a retried deploy
- * logs one line per attempt. The workflow source is also echoed into the log
- * (`echo "Deployed to production: $URL"`), so a match must be a real https
- * URL, not `$URL`.
+ *                                      after that READY
+ * The retry loop stops at the first READY, so a log has at most one; earlier
+ * attempts print canceled/timeout/error lines. The READY host should equal the
+ * echoed one, but the two read $URL differently (the wait script takes its last
+ * https line, the echo shows the first), so a lone READY before the echo also
+ * counts and names the deployment. The workflow source is also echoed into the
+ * log (`echo "Deployed to production: $URL"`), so a match must be a real https
+ * URL, not `$URL`. Logs from before BRO-2067 (2026-10-05) have no READY line
+ * and are proven by the Vercel CLI's `Aliased: https://…` instead.
  *
  * Weaker than the Vercel API: it only sees deploys this workflow made, so a
- * rollback or promote from the Vercel dashboard is invisible to it. The test
+ * rollback or promote from the Vercel dashboard is invisible to it, and the
+ * READY time is when a 10 s poll saw it, so two overlapping deploys that go
+ * READY within a poll of each other can be ordered wrongly. The test
  * pins DEPLOY_JOB, DEPLOY_ECHO, WAIT_CALL and the wait script's READY line to
  * their sources, so changing how the deploy reports fails CI instead of
  * silently breaking the fallback (BRO-4778: going --no-wait dropped the
@@ -35,7 +39,7 @@
 
 const DEPLOY_JOB = 'deploy';
 const DEPLOY_ECHO = 'echo "Deployed to production: $URL"';
-const WAIT_CALL = 'node scripts/vercel-wait-deployment.js "$URL"';
+const WAIT_CALL = 'node scripts/vercel-wait-deployment.js';
 const READY = /\bdeployment (\S+): ready \(state=READY\b/;
 // The deploy cron fires every 5 min; a listing whose newest run is older than
 // this is a stale page (seen 2026-10-05: the same request returned September
@@ -48,9 +52,9 @@ const TS = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z) /;
 
 function prodProofFromLog(log) {
   let aliasedAt = null;
-  const readyAt = new Map(); // host -> when the wait script saw it READY
-  let url = null;
-  for (const raw of String(log || '').split('\n')) {
+  const readies = []; // { host, at, n } in log order
+  let echoed = null; // { host, n }
+  String(log || '').split('\n').forEach((raw, n) => {
     const line = raw.replace(ANSI, '');
     const ts = (line.match(TS) || [])[1];
     // Pre-BRO-2067 logs only (one Aliased: per run). Those logs expire from
@@ -58,15 +62,17 @@ function prodProofFromLog(log) {
     const alias = line.match(/\bAliased: https:\/\/\S+/);
     if (alias && ts) aliasedAt = Date.parse(ts);
     const ready = line.match(READY);
-    if (ready && ts) readyAt.set(ready[1], Date.parse(ts));
-    const dep = line.match(/\bDeployed to production: (https:\/\/[^\s"]+)/);
-    if (dep) url = dep[1];
+    if (ready && ts) readies.push({ host: ready[1], at: Date.parse(ts), n });
+    const dep = line.match(/\bDeployed to production: https:\/\/([^\s"]+)/);
+    if (dep) echoed = { host: dep[1], n };
+  });
+  if (!echoed) return null;
+  if (readies.length === 0) {
+    return aliasedAt == null ? null : { url: echoed.host, provenAtMs: aliasedAt };
   }
-  if (!url) return null;
-  const host = url.replace(/^https:\/\//, '');
-  const provenAt = readyAt.has(host) ? readyAt.get(host) : aliasedAt;
-  if (provenAt == null) return null;
-  return { url: host, provenAtMs: provenAt };
+  const match = readies.find((r) => r.host === echoed.host)
+    || (readies.length === 1 && readies[0].n < echoed.n ? readies[0] : null);
+  return match ? { url: match.host, provenAtMs: match.at } : null;
 }
 
 function listingLooksStale(runs, nowMs, maxAgeMs = STALE_LISTING_MS) {
