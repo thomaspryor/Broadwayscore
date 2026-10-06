@@ -11023,7 +11023,7 @@
       "resolvedAt": "2026-10-06T17:23:07.580Z"
     },
     "land:land/codex-bro-3151": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/codex-bro-3151",
       "firstSeen": "2026-10-06T17:30:17.232Z",
@@ -11033,10 +11033,11 @@
       "lastSurfacedAt": "2026-10-06T17:30:17.232Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-06T21:04:00.023Z"
     },
     "land:land/job/linear-BRO-2367-rebased": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-2367-rebased",
       "firstSeen": "2026-10-06T19:15:56.171Z",
@@ -11046,7 +11047,8 @@
       "lastSurfacedAt": "2026-10-06T19:15:56.171Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-06T21:14:54.354Z"
     },
     "ob-venue-go-live:water-walker-off-broadway-2027": {
       "status": "open",
@@ -11067,12 +11069,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"DEPENDENCIES.md covers the current graph (edges + cross-repo writers): run scripts/generate-workflow-dependencies.js\"",
       "firstSeen": "2026-10-06T20:42:26.009Z",
       "incidentOpenedAt": "2026-10-06T20:42:26.009Z",
-      "lastSeen": "2026-10-06T20:42:26.009Z",
+      "lastSeen": "2026-10-06T21:17:16.108Z",
       "lastNotifiedAt": "2026-10-06T20:42:26.009Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4811"
+      "linearIdentifier": "BRO-4811",
+      "silentRefires": 1
     },
     "scheduled-email-count:2026-10-04": {
       "status": "open",
