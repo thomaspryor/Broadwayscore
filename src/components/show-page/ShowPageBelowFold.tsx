@@ -90,6 +90,8 @@ export interface ShowPageBelowFoldProps {
   relatedShowsClosed: ShowCardShow[];
   comparisons: { slug: string; otherSlug: string }[];
   venueSlug: string | null;
+  /** Off-Broadway venue page slug; null when the venue didn't resolve to a page. */
+  offBroadwayVenueSlug?: string | null;
   isWestEnd: boolean;
   isOffBroadway: boolean;
   isOffWestEnd: boolean;
@@ -148,6 +150,7 @@ export default function ShowPageBelowFold({
   relatedShowsClosed,
   comparisons,
   venueSlug,
+  offBroadwayVenueSlug,
   isWestEnd,
   isOffBroadway,
   isOffWestEnd,
@@ -443,7 +446,11 @@ export default function ShowPageBelowFold({
               ) : isWestEnd ? (
                 <Link href={`/west-end/theater/${venueSlug}`} className="hover:text-brand transition-colors">{show.venue}</Link>
               ) : isOffBroadway ? (
-                <span>{show.venue}</span>
+                offBroadwayVenueSlug ? (
+                  <Link href={`/off-broadway/theater/${offBroadwayVenueSlug}`} className="hover:text-brand transition-colors">{show.venue}</Link>
+                ) : (
+                  <span>{show.venue}</span>
+                )
               ) : (
                 <Link href={`/theater/${venueSlug}`} className="hover:text-brand transition-colors">{show.venue}</Link>
               )}

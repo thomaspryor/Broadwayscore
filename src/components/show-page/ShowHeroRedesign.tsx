@@ -97,6 +97,9 @@ interface ShowHeroRedesignProps {
   lotteryRush: { lottery?: { price?: number | null } | null; rush?: { price?: number | null } | null } | null;
   isWestEnd: boolean;
   isOffBroadway: boolean;
+  /** Slug of the off-Broadway venue page for this show's venue; null when the venue string
+   *  didn't resolve to a page (render plain text rather than a dead link). */
+  offBroadwayVenueSlug?: string | null;
   /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
    *  OR no rankable data. */
   ranks: ShowRanks | null;
@@ -146,6 +149,7 @@ function Inner({
   lotteryRush,
   isWestEnd,
   isOffBroadway,
+  offBroadwayVenueSlug,
   ranks,
   tourReviewYears,
   reviewAgeNote,
@@ -410,10 +414,13 @@ function Inner({
 
   const venueLink = isWestEnd
     ? `/west-end/theater/${slugify(show.venue)}`
+    // Off-Broadway links only when the venue resolved to a page (freeform venue strings).
     // Regional and tour venues have no /theater page ("North American Tour" is not a house).
-    : isOffBroadway || show.category === 'regional' || show.category === 'tour'
-      ? null
-      : `/theater/${slugify(show.venue)}`;
+    : isOffBroadway
+      ? (offBroadwayVenueSlug ? `/off-broadway/theater/${offBroadwayVenueSlug}` : null)
+      : show.category === 'regional' || show.category === 'tour'
+        ? null
+        : `/theater/${slugify(show.venue)}`;
 
   // Hide rating section + watchlist controls if the userAccounts flag is turned off.
   const userFeaturesEnabled = featureFlags.userAccounts;

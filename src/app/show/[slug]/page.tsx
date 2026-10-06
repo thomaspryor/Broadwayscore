@@ -503,6 +503,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               lotteryRush={lotteryRush ?? null}
               isWestEnd={isWestEnd}
               isOffBroadway={isOffBroadway}
+              offBroadwayVenueSlug={offBroadwayTheater?.slug ?? null}
               ranks={ranks}
               tourReviewYears={isTour && !show.openingDate ? getTourReviewYears(show.criticScore?.reviews) : null}
               trustLines={<ShowTrustLines show={show} />}
@@ -1026,6 +1027,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           relatedShowsClosed={relatedShowsClosed}
           comparisons={comparisons}
           venueSlug={venueSlug}
+          offBroadwayVenueSlug={offBroadwayTheater?.slug ?? null}
           isWestEnd={isWestEnd}
           isOffBroadway={isOffBroadway}
           isOffWestEnd={isOffWestEnd}
