@@ -47,13 +47,13 @@
 
 const { execSync, execFileSync } = require('child_process');
 const { checkLanded } = require('./lib/landing-verify.js');
-const { prodAliasFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
+const { prodProofFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const ghText = (path) => execFileSync('gh', ['api', path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
 const ghJson = (path) => JSON.parse(ghText(path));
-// Overlapping deploys can alias out of run order, so read a few proven runs
-// and keep the one aliased last.
+// Overlapping deploys can go live out of run order, so read a few proven runs
+// and keep the one proven READY last.
 const GITHUB_PROOFS = 3;
 
 const PROJECT_ID = 'prj_wmBnDUrCQCwabIAYPbnMiIP3wg15'; // Broadway Scorecard (see vercel-deploy.yml)
@@ -84,14 +84,14 @@ function githubProdDeploy() {
       const job = (ghJson(`repos/${REPO}/actions/runs/${run.id}/jobs?per_page=50`).jobs || [])
         .find((j) => j.name === DEPLOY_JOB && j.conclusion === 'success');
       if (!job) continue; // gate said skip: no deploy happened in this run
-      proof = prodAliasFromLog(ghText(`repos/${REPO}/actions/jobs/${job.id}/logs`));
+      proof = prodProofFromLog(ghText(`repos/${REPO}/actions/jobs/${job.id}/logs`));
     } catch (e) {
       console.error(`(skipping deploy run ${run.id}: ${String(e.stderr || e.message).trim().split('\n')[0]})`);
       continue; // an expired (410) or not-yet-ready log must not sink the whole check
     }
     if (!proof) continue;
-    if (!best || proof.aliasedAtMs > best.createdMs) {
-      best = { sha: run.head_sha, reviewsBlobSha: null, showsBlobSha: null, url: proof.url, createdMs: proof.aliasedAtMs, via: `deploy run ${run.id}` };
+    if (!best || proof.provenAtMs > best.createdMs) {
+      best = { sha: run.head_sha, reviewsBlobSha: null, showsBlobSha: null, url: proof.url, createdMs: proof.provenAtMs, via: `deploy run ${run.id}` };
     }
     if (++proofs >= GITHUB_PROOFS) break;
   }
@@ -194,7 +194,7 @@ async function main() {
       } else {
         const shortDeployed = dep.sha ? dep.sha.slice(0, 10) : '(unknown)';
         const label = dep.via
-          ? `Production alias per ${dep.via}'s log (no VERCEL_TOKEN; blind to Vercel-dashboard rollbacks)`
+          ? `Production READY deployment per ${dep.via}'s log (no VERCEL_TOKEN; blind to Vercel-dashboard rollbacks)`
           : 'Production READY deployment';
         console.log(`${label}: ${shortDeployed}  (age ${fmtAge(dep.ageSec)})  https://${dep.url}`);
         if (commit) {
