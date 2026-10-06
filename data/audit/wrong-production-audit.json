@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T02:10:55.113Z",
+  "timestamp": "2026-10-06T02:50:30.065Z",
   "stats": {
-    "totalReviews": 46501,
-    "alreadyFlagged": 18680,
+    "totalReviews": 46558,
+    "alreadyFlagged": 18663,
     "dateGuardCatches": 265,
-    "directorMismatch": 1317,
-    "tvFilmSignals": 1350,
-    "londonSignals": 1286,
+    "directorMismatch": 1336,
+    "tvFilmSignals": 1353,
+    "londonSignals": 1288,
     "offBroadwaySignals": 510,
-    "yearMismatch": 110,
-    "noPublishDate": 4308
+    "yearMismatch": 114,
+    "noPublishDate": 4306
   },
   "findings": [
     {
@@ -4063,6 +4063,19 @@
       "score": 86,
       "publishDate": "2026-09-24",
       "url": "https://www.broadwayworld.com/raleigh/article/Review-BUENA-VISTA-SOCIAL-CLUB-National-Tour-at-Durham-Performing-Arts-Center-20260924",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-tour-2026",
+      "file": "broadwayworld--joseph-harrison.json",
+      "publishDate": "2026-10-04",
+      "url": "https://www.broadwayworld.com/atlanta/article/Interview-Robert-M-Jimenez-of-BUENA-VISTA-SOCIAL-CLUB-at-The-Fox-Theatre-20261004",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -13815,6 +13828,24 @@
     },
     {
       "showId": "harry-potter-tour-2024",
+      "file": "equality365--eric-andrews-katz.json",
+      "publishDate": "2026-08-28",
+      "url": "https://equality365.com/review-harry-potter-and-the-cursed-child/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from harry-potter-2021"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2024 (0x). 2018 matches production: harry-potter-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
       "file": "seattles-child--candice-mcmillan.json",
       "score": 86,
       "publishDate": "2026-08-27",
@@ -14509,6 +14540,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "hells-kitchen-tour-2025",
+      "file": "so-sumi--glenn-sumi.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.goaheadsumi.com/reviews-hells-kitchen-amelie-aye-caesar-wine-in-the-wilderness-to-a-flame/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -20144,6 +20188,19 @@
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
+      "file": "broadwayworld--elizabeth-cortes.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.broadwayworld.com/south-carolina/article/Review-MAYBE-HAPPY-ENDING-at-the-Peace-Center-20261001",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
       "file": "dc-theater-arts--julia-tucker.json",
       "publishDate": "2026-10-03",
       "url": "https://dctheaterarts.org/2026/10/03/mia-nicole-nelson-on-being-a-standby-in-maybe-happy-ending/",
@@ -20189,6 +20246,37 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "playbill--meg.json",
+      "publishDate": "2026-09-16",
+      "url": "https://playbill.com/article/photos-get-a-1st-look-at-the-maybe-happy-ending-north-american-tour",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: maybe-happy-ending-2024"
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2026-10-05",
+      "url": "https://www.theatermania.com/news/savy-jackson-to-take-over-role-of-claire-in-maybe-happy-ending-on-broadway_1856173/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
         }
       ]
     },
@@ -22757,6 +22845,32 @@
     },
     {
       "showId": "oh-mary-tour-2026",
+      "file": "broadwayworld--lucia-serrano.json",
+      "publishDate": "2026-10-02",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-San-Diego-Civic-Theatre-20261002",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "dailyactor--lance-carter.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.dailyactor.com/reviews/oh-mary-national-tour-alaska-thunderfck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
       "file": "hartford-courant--christopher-arnott.json",
       "score": 92,
       "publishDate": "2026-09-21",
@@ -22780,6 +22894,19 @@
       "score": 91,
       "publishDate": "2026-09-25",
       "url": "https://joshatthemovies.com/2026/09/25/theater-review-oh-mary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "playbill--logan.json",
+      "publishDate": "2026-09-18",
+      "url": "https://playbill.com/article/watch-check-in-with-the-touring-cast-of-oh-mary-as-they-prepare-to-wreak-havoc-all-across-north-america",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26570,6 +26697,20 @@
       ]
     },
     {
+      "showId": "shucked-tour-2024",
+      "file": "the-daily-gazette--bill-kellert.json",
+      "score": 74,
+      "publishDate": "2025-03-21",
+      "url": "https://www.dailygazette.com/nippertown/arts/theater/theater-review-off-broadway-schenectady/article_74cd2155-7a19-4f58-af0e-7c672f52ef24.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
       "file": "deadline--jeremy-gerard.json",
       "score": 69,
@@ -27720,6 +27861,29 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "onstage-colorado--alex-miller.json",
+      "publishDate": "2026-08-12",
+      "url": "https://onstagecolorado.com/a-revamped-spamalot-gallops-into-the-buell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2005 (2x) more than 2025 (0x). 2005 matches production: spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "pioneer-press--rob-hubbard.json",
       "score": 81,
       "publishDate": "2026-06-11",
@@ -27771,6 +27935,32 @@
       "score": 88,
       "publishDate": "2026-03-31",
       "url": "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "the-spokesman-review--azaria-podplesky.json",
+      "publishDate": "2026-08-20",
+      "url": "https://www.spokesman.com/stories/2026/aug/20/actor-major-attaway-leads-seriously-silly-spamalot/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "trinitytripod--unknown.json",
+      "publishDate": "2025-12-11",
+      "url": "https://trinitytripod.com/arts/theatre-review-the-national-tour-of-spamalot-brings-nostalgia-and-whimsy-aplenty-to-the-bushnell/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32212,6 +32402,32 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "leagueofcincytheatres--liz-eichler.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.leagueofcincytheatres.info/review-the-great-gatsby-roars-into-the-aronoff-center-in-grand-style/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "minneapolis-star-tribune--rohan-preston.json",
       "score": 44,
       "publishDate": "2026-06-03",
@@ -33810,6 +34026,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "broadwayworld--andrew-child.json",
+      "publishDate": "2026-10-02",
+      "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-OUTSIDERS-at-Hollywood-Pantages-Theatre-20261002",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "broadwayworld--jonathan-netek.json",
       "publishDate": null,
       "url": "https://www.broadwayworld.com/austin/article/Review-THE-OUTSIDERS-at-Bass-Concert-Hall-20251023",
@@ -33939,6 +34168,19 @@
       "score": 90,
       "publishDate": "2025-11-20",
       "url": "https://www.houstonpress.com/arts/the-outsiders-stays-gold-in-musical-form/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2026-10-05",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-10-05/outsiders-review-musical-theater-tony-winner-hollywood-pantages",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35373,6 +35615,19 @@
       ]
     },
     {
+      "showId": "the-sound-of-music-tour-2025",
+      "file": "broadwayworld--aa-cristi.json",
+      "publishDate": "2026-09-29",
+      "url": "https://www.broadwayworld.com/buffalo/article/THE-SOUND-OF-MUSIC-to-Play-Buffalo-This-December-20260929",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2027 (2x) more than 2025 (0x). 2027 matches production: the-sound-of-music-2027"
+        }
+      ]
+    },
+    {
       "showId": "the-standard-of-living-west-end-2026",
       "file": "london-unattached--dr-adrian-york.json",
       "score": 93,
@@ -35383,6 +35638,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-standard-of-living-west-end-2026",
+      "file": "thestage--james-graham.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.thestage.co.uk/review-round-ups/the-standard-of-living-by-james-graham-review-round-up",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -37885,6 +38158,19 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "latimes--jenelle-riley.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-09-14/water-for-elephants-at-pantages-is-circus-in-play",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "ludwig-van-toronto--paula-citron.json",
       "score": 93,
       "publishDate": "2025-10-08T10:39:26-04:00",
@@ -37931,6 +38217,32 @@
       "score": 81,
       "publishDate": "2026-06-27",
       "url": "https://splashmags.com/2026/06/water-for-elephants-at-the-nederlander-theatre-is-an-astounding-wonderment/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "stage-raw--steven-morris.json",
+      "publishDate": "2026-09-16",
+      "url": "https://stageraw.com/stage-raw-review-water-for-elephants/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "stagescenela--unknown.json",
+      "publishDate": "2026-09-10",
+      "url": "https://stagescenela.com/2026/09/water-for-elephants/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54735,6 +55047,20 @@
       "score": 79,
       "publishDate": "2025-02-27",
       "url": "https://dctheaterarts.org/2025/02/27/fantastic-musical-shucked-brings-heart-and-corny-humor-to-dc-at-the-national/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-tour-2024",
+      "file": "zebra--jordan-wright.json",
+      "score": 82,
+      "publishDate": "2025-02-28",
+      "url": "https://thezebra.org/2025/02/28/shucked-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
