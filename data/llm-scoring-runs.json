@@ -1,53 +1,5 @@
 [
   {
-    "startedAt": "2026-10-06T02:25:05.692Z",
-    "completedAt": "2026-10-06T02:25:08.427Z",
-    "totalReviews": 46939,
-    "processed": 0,
-    "skipped": 46938,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3638,
-      "output": 103,
-      "total": 11005
-    },
-    "costUsd": 0.0128531,
-    "runId": "37403741990",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-06T02:25:10.484Z",
-    "completedAt": "2026-10-06T02:25:12.631Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37403741990",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-06T02:29:18.254Z",
-    "completedAt": "2026-10-06T02:29:20.625Z",
-    "totalReviews": 46939,
-    "processed": 0,
-    "skipped": 46938,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3638,
-      "output": 102,
-      "total": 11012
-    },
-    "costUsd": 0.0128481,
-    "runId": "37404089116",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-06T02:29:22.617Z",
     "completedAt": "2026-10-06T02:29:24.741Z",
     "totalReviews": 0,
@@ -302670,6 +302622,44 @@
     },
     "costUsd": 0,
     "runId": "37488067539",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-06T15:39:09.423Z",
+    "completedAt": "2026-10-06T15:39:45.260Z",
+    "totalReviews": 47095,
+    "processed": 7,
+    "skipped": 47084,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 37486,
+      "output": 2192,
+      "total": 113365
+    },
+    "costUsd": 0.1983885,
+    "runId": "37488798976",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-06T15:39:47.292Z",
+    "completedAt": "2026-10-06T15:40:05.635Z",
+    "totalReviews": 8,
+    "processed": 8,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 14438,
+      "output": 1823,
+      "total": 16261
+    },
+    "costUsd": 0.045378499999999995,
+    "runId": "37488798976",
     "errorDetails": []
   }
 ]
