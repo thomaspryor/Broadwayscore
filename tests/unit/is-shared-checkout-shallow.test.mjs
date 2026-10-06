@@ -65,7 +65,7 @@ test('health-check: a real shallow clone goes warn, a real full clone passes', (
     // Fixing it turns the row green: the signal tracks the real repository state.
     execFileSync('git', ['fetch', '-q', '--unshallow', 'origin'], { cwd: shallow, stdio: 'pipe' });
     assert.equal(checkSharedCheckoutShallow({ ci: false, root: shallow })[0].status, 'pass');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
 test('health-check in CI or cloud returns NO row (never a reassuring pass) and never touches git', () => {
@@ -75,7 +75,7 @@ test('health-check in CI or cloud returns NO row (never a reassuring pass) and n
     let called = false;
     checkSharedCheckoutShallow({ ci: true, root: shallow, isShallow: () => { called = true; return true; } });
     assert.equal(called, false, 'no git call in CI');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
 test('the digest-sender row: real shallow clone warns, full passes, CI passes, run from a worktree it inspects the main checkout', () => {
@@ -88,7 +88,7 @@ test('the digest-sender row: real shallow clone warns, full passes, CI passes, r
     git(shallow, 'worktree', 'add', '-q', '-b', 'wt-branch', wt);
     assert.equal(fs.realpathSync(canonicalCheckoutRoot(wt)), fs.realpathSync(shallow), 'a worktree resolves to the shared checkout');
     assert.equal(shallowDigestRow({ fromDir: wt, deps: { ci: false } }).status, 'warn', 'and reports the shared checkout\'s depth');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
 test('health-check: a path that is not a git checkout warns instead of passing', () => {
@@ -97,7 +97,7 @@ test('health-check: a path that is not a git checkout warns instead of passing',
     const [row] = checkSharedCheckoutShallow({ ci: false, root: dir });
     assert.equal(row.status, 'warn');
     assert.match(row.message, /Could not read/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
 test('the Mac-side digest sender folds the row into health.errors (health-check.js alone can never measure it)', () => {
@@ -117,6 +117,6 @@ test('a corrupt .git reads as unreadable (warn), never as full history', () => {
     const row = shallowDigestRow({ fromDir: dir, deps: { ci: false, root: dir } });
     assert.equal(row.status, 'warn');
     assert.match(row.message, /Could not read/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
