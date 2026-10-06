@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-06T10:49:11.858Z",
-    "completedAt": "2026-10-06T10:49:14.623Z",
-    "totalReviews": 47014,
-    "processed": 0,
-    "skipped": 47012,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3638,
-      "output": 111,
-      "total": 11002
-    },
-    "costUsd": 0.025408049999999998,
-    "runId": "37451908735",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-06T10:49:16.768Z",
-    "completedAt": "2026-10-06T10:49:19.010Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37451908735",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-06T10:53:12.540Z",
     "completedAt": "2026-10-06T10:53:51.353Z",
     "totalReviews": 47024,
@@ -202589,6 +202551,44 @@
     },
     "costUsd": 0,
     "runId": "37520991343",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-06T22:25:51.126Z",
+    "completedAt": "2026-10-06T22:25:51.344Z",
+    "totalReviews": 2,
+    "processed": 0,
+    "skipped": 1,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37540164682",
+    "errorDetails": [
+      {
+        "showId": "boop-tour-2026",
+        "outletId": "yahoo",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-06T22:25:53.239Z",
+    "completedAt": "2026-10-06T22:25:53.241Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37540164682",
     "errorDetails": []
   }
 ]
