@@ -91,13 +91,16 @@ const DEFAULT_TIME_ZONE = 'America/New_York';
  * on where the lane happens to run, so it is refused (null).
  */
 function calendarDateIn(publishDate, timeZone = DEFAULT_TIME_ZONE) {
+  const fmt = (t) => new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(t));
+  // A Date object is one unambiguous instant (the shared feed parser returns pubDate as a Date).
+  if (publishDate instanceof Date) return Number.isNaN(publishDate.getTime()) ? null : fmt(publishDate.getTime());
   const raw = String(publishDate || '').trim();
   if (!raw) return null;
   if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return isDay(raw) ? raw : null;
   if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(raw)) return null;
   const t = Date.parse(raw);
   if (Number.isNaN(t)) return null;
-  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(t));
+  return fmt(t);
 }
 
 /**
