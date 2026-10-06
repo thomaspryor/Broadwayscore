@@ -186,6 +186,34 @@ function commitAttempt(card, attempt) {
   return { hasDiff: true, blocked: null };
 }
 
+// The node unit batch land.yml runs (tests/unit-test-manifest.txt), judged the way land.yml
+// judges it: failures the branch adds over fresh main. Only the files that fail on the branch
+// re-run on main, so the base side is cheap. Returns null when clean, else the failure text.
+const BASE_WT = path.join(ROOT, '.claude/worktrees/codex-runner-base');
+function unitBatch(cwd, files) {
+  const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000 });
+  return { exit: r.code, text: r.out, root: cwd };
+}
+function newUnitFailures() {
+  const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
+  const files = fs.readFileSync(path.join(WT, 'tests/unit-test-manifest.txt'), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean);
+  const branch = unitBatch(WT, files);
+  if (branch.exit === 0) return null;
+  const failing = [...new Set([...D.parseGateFailures('unit-tests-node', branch.text, WT).values()].map((f) => f.file))]
+    .filter((f) => f && f !== '?');
+  if (!fs.existsSync(path.join(BASE_WT, '.git'))) {
+    git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
+    if (!fs.existsSync(path.join(BASE_WT, 'node_modules'))) fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(BASE_WT, 'node_modules'));
+  }
+  git(['checkout', '-q', '-f', '--detach', 'origin/main'], BASE_WT);
+  const onBase = failing.filter((f) => fs.existsSync(path.join(BASE_WT, f)));
+  const base = onBase.length ? unitBatch(BASE_WT, onBase) : { exit: 0, text: '', root: BASE_WT };
+  const d = D.decideGateDelta({ gate: 'unit-tests-node', base, branch });
+  if (d.verdict === 'pass') return null;
+  const lines = d.newFailures.map((f) => `- ${f.file}::${f.name}${f.payload ? `\n${String(f.payload).slice(0, 600)}` : ''}`);
+  return `${d.reason}\n${lines.join('\n') || tail(branch.text, 2000)}`;
+}
+
 async function landPreflight(ref) {
   const { judgeLand } = await import(path.join(ROOT, 'scripts/lib/land-preflight.mjs'));
   return judgeLand({ cwd: WT, src: 'HEAD', target: `refs/heads/${ref}` });
@@ -264,11 +292,21 @@ async function workCard(pick, stats, inFlight) {
     let step = null;
     for (; attempt <= 2; attempt++) {
       const extra = attempt === 1 ? onMain
-        : `${onMain}\n\nYour previous attempt is committed on this branch. The independent reviewer did not pass it. Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
+        : `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (the repo's unit tests, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
       const cx = runCodex(id, R.fillPrompt(tpl, { id, title: card.title, body, extra }), `codex${attempt}`);
       report = cx.report;
       const c = commitAttempt(card, attempt);
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
+      // Land refuses new unit-test failures half an hour after the push, when the worktree has
+      // moved on; catch them here and hand them straight back without spending a Claude check.
+      const unitFails = c.hasDiff ? newUnitFailures() : null;
+      if (unitFails) {
+        check = { verdict: 'REJECT', text: `The repo's node unit batch (the one land.yml runs) has new failures on this branch that fresh main does not have:\n${unitFails}` };
+        log(`${id}: attempt ${attempt} unit tests red`);
+        step = R.nextStep({ verdict: 'REJECT', hasDiff: true, attempt });
+        if (step !== 'fix-round') break;
+        continue;
+      }
       check = runCheck(card, report, `check${attempt}`);
       log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
       step = R.nextStep({ verdict: check.verdict, hasDiff: c.hasDiff, attempt });
@@ -283,7 +321,9 @@ async function workCard(pick, stats, inFlight) {
       const pre = await landPreflight(ref);
       if (pre.decision === 'block') { step = 'bounce'; check.text = `Land preflight blocked it: ${pre.message}`; } else {
         while (inFlight.length >= MAX_IN_FLIGHT) await inFlight.shift().promise;
-        git(['push', 'origin', `HEAD:refs/heads/${ref}`]);
+        // land/codex-* refs belong to the runner; a re-worked card's earlier ref (refused or
+        // stale) must not block the new attempt. The claim keeps one runner per card.
+        git(['push', '--force', 'origin', `HEAD:refs/heads/${ref}`]);
         log(`${id}: pushed ${ref}`);
         const entry = { ref, card, summary };
         entry.promise = finishLanding(entry, stats);
@@ -378,4 +418,5 @@ async function main() {
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
 }
 
-main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });
+module.exports = { newUnitFailures };
+if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });
