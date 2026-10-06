@@ -124,3 +124,29 @@ describe('needsLateStarReanchor — non-v6 stamp extension', () => {
     })), null);
   });
 });
+
+// BRO-4770: producer/consumer seam. enrich-reviews flagged 46 scraper_garbage files
+// every 6h and audit-stuck-rescore-flags --fix cleared them again, because this
+// predicate gated on isIncludableForRebuild while the scorer gates on isScoreable.
+describe('needsLateStarReanchor agrees with the consumer (isScoreable)', () => {
+  const { isScoreable } = require('../../scripts/lib/is-scoreable.js');
+  const BODY = 'A properly written review with plenty of detail about the show. '.repeat(20);
+  const scoreable = (over = {}) => weStar({ fullText: BODY, textQuality: 'full', contentTier: 'complete', ...over });
+
+  test('scraper_garbage text is never flagged (the scorer drops it)', () => {
+    const d = scoreable({ incompleteReason: 'scraper_garbage' });
+    assert.equal(isScoreable(d), false);
+    assert.equal(needsLateStarReanchor(d, { category: 'west-end' }), null);
+  });
+
+  test('showNotMentioned without an excerpt is never flagged', () => {
+    const d = scoreable({ showNotMentioned: true });
+    assert.equal(needsLateStarReanchor(d, { category: 'west-end' }), null);
+  });
+
+  test('anything flagged is scoreable by the consumer', () => {
+    const d = scoreable();
+    const v = needsLateStarReanchor(d, { category: 'west-end' });
+    if (v) assert.equal(isScoreable(d), true);
+  });
+});

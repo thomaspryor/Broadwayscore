@@ -1,13 +1,15 @@
 name: Daily Digest (score drift)
 on:
   schedule:
-    # 06:30 UTC daily. Card #497 (owner merge decision — exactly one scheduled
+    # Daily (02:00 UTC since BRO-4800). Card #497 (owner merge decision — exactly one scheduled
     # email/day, not three): this no longer emails on its own. It writes
     # data/audit/daily-digest-snapshot.json instead; autonomous-email.js folds
     # it into the loop's single scheduled morning email. Runs BEFORE the loop
     # starts (03:30 ET / 07:30 UTC) so the snapshot is same-day fresh — same
     # reasoning as data-health-check.yml's 06:45 UTC move (card #364).
-    - cron: '30 6 * * *'
+    # BRO-4800: moved 06:30 -> 02:00 UTC with data-health-check.yml. GitHub's
+    # schedule lag here is 5-8h, so 06:30 ran after the 11:30 UTC digest.
+    - cron: '0 2 * * *'
   workflow_dispatch: {}
 
 concurrency:

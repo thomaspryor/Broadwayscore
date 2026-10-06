@@ -30,7 +30,7 @@
  */
 
 const { detectBandFromReviewFile, shouldUseAnchoredMode, LOW_RELIABILITY_EXTRACTION } = require('./star-reliability');
-const { isIncludableForRebuild } = require('./review-guards');
+const { isScoreable } = require('./is-scoreable');
 
 /**
  * @param {object} data - review-text record
@@ -72,7 +72,11 @@ function needsLateStarReanchor(data, ctx = {}) {
   // Canonical inclusion gate — same predicate the scorer applies. Subsumes wrong-*,
   // roundup, duplicateOf, isNonReview, stub/invalid-content; prevents stuck-flag
   // accumulation on reviews that can never be re-scored (see header).
-  if (!isIncludableForRebuild(data, ctx.show, ctx.filePath)) return null;
+  // The consumer's own predicate (isScoreable = includable + scraper_garbage +
+  // showNotMentioned-without-excerpt), not its includability subset: 46 files with
+  // incompleteReason=scraper_garbage were flagged here every 6h and cleared again by
+  // audit-stuck-rescore-flags --fix (BRO-4770), a perpetual flag/clear flap.
+  if (!isScoreable(data, ctx.show, ctx.filePath)) return null;
   // Only anchored markets (WE/OWE, or env-flagged) — elsewhere llm-v6 is expected.
   const category = ctx.category != null ? ctx.category : data.category;
   if (!shouldUseAnchoredMode({ category, envFlag: process.env.ANCHORED_BANDS_PILOT === '1' })) return null;
