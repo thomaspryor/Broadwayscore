@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isOtherProductionFile } = require('./lib/review-gap-triage.js');
+const { isOtherProductionFile, resolveOutletCandidates, matchesOutlet, matchesOutletFilename, classifyGap } = require('./lib/review-gap-triage.js');
 const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), 'triage-review-gap.js');
 const SHOW = 'fixture-show-west-end-2026';
 const show = { id: SHOW, title: 'Fixture Show', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', market: 'west-end' };
@@ -19,6 +19,7 @@ function run(files, outlet = 'Fixture Outlet', url = null) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-gap-'));
   fs.mkdirSync(path.join(root, 'data'), { recursive: true });
   fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [show] }));
+  fs.writeFileSync(path.join(root, 'data', 'outlet-registry.json'), JSON.stringify({ outlets: { 'fixture-outlet': { displayName: 'Fixture Outlet', domain: 'fixture.example' } } }));
   const rt = path.join(root, 'review-texts');
   for (const [rel, data] of Object.entries(files)) {
     fs.mkdirSync(path.dirname(path.join(rt, rel)), { recursive: true });
@@ -38,7 +39,7 @@ const base = { showId: SHOW, outletId: 'fixture-outlet', outlet: 'Fixture Outlet
 test('only file is wrongProduction (older production) -> true-missed-discovery', () => {
   const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2016-05-01', wrongProduction: true } });
   assert.equal(r.state, 'true-missed-discovery');
-  assert.equal(r.justifiesUrlResolution, true);
+  assert.equal(r.justifiesUrlResolution, false); // Origin checks are unavailable in this fixture.
   assert.equal(r.signals.reviewTexts.otherProductionPaths.length, 1);
 });
 
@@ -133,4 +134,42 @@ test('--url: _pending strand file with no url stays a candidate (never hidden)',
   assert.notEqual(r.state, 'true-missed-discovery');
   assert.equal(r.signals.reviewTexts.candidateCount, 1);
   assert.equal(r.signals.reviewTexts.anyPendingByline, true);
+});
+
+// BRO-3359: exact incident, using the matching and classifier used by the CLI.
+test('The QR resolves the provisional theqr ID and live prod display name', () => {
+  const candidates = resolveOutletCandidates('The QR', null, 'the-qr');
+  const review = { showId: 'bloodsport-after-helen-of-troy-off-west-end-2026', outlet: 'theqr', outletId: 'theqr', score: 63 };
+  const live = { o: 'Theqr', s: 63, u: 'https://theqr.co.uk/2026/09/14/review-bloodsport/' };
+  assert.equal(matchesOutlet(review, candidates), true);
+  assert.equal(matchesOutletFilename('theqr--critic.json', candidates), true);
+  assert.equal(matchesOutlet(live, candidates), true);
+  assert.equal(classifyGap({ inLiveProd: matchesOutlet(live, candidates) }), 'live-on-prod');
+  assert.equal(candidates.registered, false);
+});
+
+test('registry aliases, canonical ID and domains match across review payload formats', () => {
+  const candidates = resolveOutletCandidates('The QR', { outlets: { theqr: { displayName: 'Theqr', aliases: ['theqr'], domain: 'theqr.co.uk' } } }, 'the-qr');
+  assert.equal(candidates.registered, true);
+  assert.equal(matchesOutlet({ outletId: 'theqr' }, candidates), true);
+  assert.equal(matchesOutlet({ o: 'Unrelated label', u: 'https://www.theqr.co.uk/review' }, candidates), true);
+  assert.equal(matchesOutlet({ url: 'https://theqr.co.uk.evil.example/review' }, candidates), false);
+  assert.equal(matchesOutletFilename('theqr-extra--critic.json', candidates), false);
+});
+
+test('unregistered absent outlet is provisional and does not authorize URL resolution', () => {
+  const r = run({}, 'Unknown Publication');
+  assert.equal(r.outletRegistered, false);
+  assert.equal(r.provisional, true);
+  assert.equal(r.unverifiedOriginChecks, true);
+  assert.equal(r.justifiesUrlResolution, false);
+});
+
+test('review-text filename and domain fallback are wired into the real CLI', () => {
+  const r = run({ [`${SHOW}/different-id--critic.json`]: { ...base, outletId: 'different-id', outlet: 'Different Label', publishDate: '2026-09-12', url: 'https://www.fixture.example/review' } });
+  assert.equal(r.state, 'in-pipeline-awaiting-deploy');
+  assert.equal(r.signals.reviewTexts.candidateCount, 1);
+  const compact = run({ [`${SHOW}/theqr--critic.json`]: { ...base, outletId: 'theqr', outlet: 'Theqr', publishDate: '2026-09-12' } }, 'The QR');
+  assert.equal(compact.state, 'in-pipeline-awaiting-deploy');
+  assert.equal(compact.signals.reviewTexts.candidateCount, 1);
 });

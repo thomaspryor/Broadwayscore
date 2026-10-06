@@ -50,7 +50,7 @@ const { execFileSync } = require('child_process');
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
-const { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl } = require('./lib/review-gap-triage');
+const { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl, resolveOutletCandidates, matchesOutlet, matchesOutletFilename } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--json]';
@@ -184,19 +184,19 @@ function toReviewList(doc) {
 
 // ── Stage 1: review-texts file (local + data-repo origin/main, show dir + _pending) ──
 
-function localMatchesInDir(dir, outletId) {
+function localMatchesInDir(dir, candidates) {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir)
-    .filter((f) => f.toLowerCase().startsWith(`${outletId}--`) && f.endsWith('.json'))
+    .filter((f) => f.endsWith('.json') && (matchesOutletFilename(f, candidates) || matchesOutlet(loadFile(path.join(dir, f)) || {}, candidates)))
     .map((f) => path.join(dir, f));
 }
 
-function originMatchesUnderPrefix(entries, prefix, outletId) {
+function originMatchesUnderPrefix(entries, prefix) {
   return entries.filter((entry) => {
     if (!entry.startsWith(prefix)) return false;
     const rest = entry.slice(prefix.length);
     // must be a direct child (no further '/'), not a deeper nested path
-    return !rest.includes('/') && rest.toLowerCase().startsWith(`${outletId}--`) && rest.endsWith('.json');
+    return !rest.includes('/') && rest.endsWith('.json');
   });
 }
 
@@ -215,14 +215,14 @@ function loadFile(absPath) {
  * single excluded/duplicate file must not mask a second, valid file for the
  * same outlet — filename collisions across critics on one outlet do happen).
  */
-function findReviewTextFiles(outletId, showId) {
+function findReviewTextFiles(candidates, showId) {
   const reviewTextsDir = resolveReviewTextsDir();
   const showDir = path.join(reviewTextsDir, showId);
   const pendingDir = path.join(reviewTextsDir, '_pending', showId);
 
   const localFiles = [
-    ...localMatchesInDir(showDir, outletId).map((p) => ({ path: p, data: loadFile(p), pending: false })),
-    ...localMatchesInDir(pendingDir, outletId).map((p) => ({ path: p, data: loadFile(p), pending: true })),
+    ...localMatchesInDir(showDir, candidates).map((p) => ({ path: p, data: loadFile(p), pending: false })),
+    ...localMatchesInDir(pendingDir, candidates).map((p) => ({ path: p, data: loadFile(p), pending: true })),
   ];
 
   const fetchResult = gitFetchOriginMain(reviewTextsDir);
@@ -232,8 +232,8 @@ function findReviewTextFiles(outletId, showId) {
   const treeErrors = [showTree.err, pendingTree.err].filter(Boolean);
 
   const originCandidates = [
-    ...originMatchesUnderPrefix(showTree.entries, `${showId}/`, outletId).map((p) => ({ relPath: p, pending: false })),
-    ...originMatchesUnderPrefix(pendingTree.entries, `_pending/${showId}/`, outletId).map((p) => ({ relPath: p, pending: true })),
+    ...originMatchesUnderPrefix(showTree.entries, `${showId}/`).map((p) => ({ relPath: p, pending: false })),
+    ...originMatchesUnderPrefix(pendingTree.entries, `_pending/${showId}/`).map((p) => ({ relPath: p, pending: true })),
   ];
 
   const originFiles = [];
@@ -252,6 +252,7 @@ function findReviewTextFiles(outletId, showId) {
       // explainExclusion's sibling scans (duplicateOf, syndication) see real
       // local siblings instead of resolving nonsense relative to cwd (ship-check
       // adversarial review finding).
+      if (!matchesOutletFilename(path.basename(cand.relPath), candidates) && !matchesOutlet(data || {}, candidates)) continue;
       originFiles.push({ path: path.join(reviewTextsDir, cand.relPath), data, pending: cand.pending });
     } else {
       readErrors.push(result.err);
@@ -302,15 +303,15 @@ function resolveExclusion(files, showRecord) {
 
 // ── Stage 2: reviews.json (local + core-data-repo origin/main) ─────────────
 
-function reviewJsonMatches(list, showId, outletId, url) {
+function reviewJsonMatches(list, showId, candidates, url) {
   const forShow = list.filter((r) => r.showId === showId);
   if (url) return filterByUrl(forShow.filter((r) => r.url), url, (r) => r.url, normalizeUrl).length > 0;
-  return forShow.some((r) => r.outletId === outletId);
+  return forShow.some((r) => matchesOutlet(r, candidates));
 }
 
-function checkReviewsJson(showId, outletId, url) {
+function checkReviewsJson(showId, candidates, url) {
   const local = readJsonFromFirstRoot(path.join('data', 'reviews.json'));
-  const inLocal = reviewJsonMatches(toReviewList(local), showId, outletId, url);
+  const inLocal = reviewJsonMatches(toReviewList(local), showId, candidates, url);
 
   const dataRepoRoot = coreDataRepoRoot();
   const fetchResult = gitFetchOriginMain(dataRepoRoot);
@@ -326,7 +327,7 @@ function checkReviewsJson(showId, outletId, url) {
   } else {
     originError = originResult.err;
   }
-  const inOrigin = reviewJsonMatches(toReviewList(origin), showId, outletId, url);
+  const inOrigin = reviewJsonMatches(toReviewList(origin), showId, candidates, url);
 
   return {
     inLocal,
@@ -361,32 +362,24 @@ async function fetchLiveShowJson(showId) {
   }
 }
 
-// The live per-show JSON only ever carries an outlet DISPLAY name (`o`), not
-// an outletId — generate-mobile-show-details.js never emits one. Re-deriving
-// an id via normalizeOutlet is the same canonical function every write path
-// (filenames, reviews.json) already uses, so it's the best available signal,
-// but a display-name collision in outlet-registry.json's alias map (a bare
-// `Map.set`, last-write-wins) or an unregistered outlet falling through to
-// the bare-slug fallback could in principle mismatch. No existing consumer
-// does this same round-trip today (ship-check review finding) — flagged here
-// rather than "fixed" because there's no better signal in the payload to use.
-function checkLiveProd(json, outletId, url) {
+function checkLiveProd(json, candidates, url) {
   if (!json || !Array.isArray(json.rv)) return false;
   if (url) return filterByUrl(json.rv.filter((r) => r.u), url, (r) => r.u, normalizeUrl).length > 0;
-  return json.rv.some((r) => normalizeOutlet(r.o || '') === outletId);
+  return json.rv.some((r) => matchesOutlet(r, candidates));
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
 
 (async () => {
   const outletId = normalizeOutlet(outletName);
+  const candidates = resolveOutletCandidates(outletName, readJsonFromFirstRoot('data/outlet-registry.json'), outletId);
 
   const show = readJsonFromFirstRoot(path.join('data', 'shows.json'));
   const showRecord = Array.isArray(show)
     ? show.find((s) => s.id === showId)
     : (show && (show.shows || []).find((s) => s.id === showId));
 
-  const reviewText = findReviewTextFiles(outletId, showId);
+  const reviewText = findReviewTextFiles(candidates, showId);
   // With --url, only files whose own url matches count; the rest are reported
   // as outlet-only look-alikes (never evidence the review was ingested).
   const outletOnlyFiles = [];
@@ -397,9 +390,9 @@ function checkLiveProd(json, outletId, url) {
     reviewText.anyPending = reviewText.files.some((f) => f.pending);
   }
   const matchedBy = reviewUrl ? 'url' : 'outlet';
-  const reviewsJson = checkReviewsJson(showId, outletId, reviewUrl);
+  const reviewsJson = checkReviewsJson(showId, candidates, reviewUrl);
   const live = await fetchLiveShowJson(showId);
-  const inLiveProd = live.checked ? checkLiveProd(live.json, outletId, reviewUrl) : false;
+  const inLiveProd = live.checked ? checkLiveProd(live.json, candidates, reviewUrl) : false;
 
   // BRO-4098: files belonging to a different production of the same title do
   // not count as "ingested" for THIS production.
@@ -428,7 +421,9 @@ function checkLiveProd(json, outletId, url) {
     .filter(Boolean)
     .map((e) => `origin/main ref may be stale (fetch failed: ${e})`);
   if (!live.checked) gitErrors.push(`live prod check failed: ${live.err}`);
-  const unverifiedOriginChecks = gitErrors.length > 0;
+  const unverifiedOriginChecks = gitErrors.length > 0 || fetchWarnings.length > 0 || !candidates.registered;
+  const provisional = state === 'true-missed-discovery' && unverifiedOriginChecks;
+  const resolutionJustified = justifiesUrlResolution(state) && !provisional;
 
   const result = {
     showId,
@@ -438,7 +433,10 @@ function checkLiveProd(json, outletId, url) {
     url: reviewUrl,
     outletOnlyIgnoredPaths: outletOnlyFiles.map((f) => f.path),
     state,
-    justifiesUrlResolution: justifiesUrlResolution(state),
+    justifiesUrlResolution: resolutionJustified,
+    provisional,
+    outletRegistered: candidates.registered,
+    candidateOutletIds: [...candidates.ids],
     unverifiedOriginChecks,
     gitErrors,
     fetchWarnings,
@@ -469,7 +467,7 @@ function checkLiveProd(json, outletId, url) {
   if (asJson) {
     console.log(JSON.stringify(result, null, 2));
   } else {
-    console.log(state);
+    console.log(`${state}${provisional ? ' (provisional)' : ''}`);
     console.log(`  show:    ${showId}`);
     console.log(`  outlet:  ${outletName} (outletId: ${outletId})`);
     console.log(`  matched by: ${matchedBy}${reviewUrl ? ` (${reviewUrl})` : ''}`);
@@ -479,11 +477,12 @@ function checkLiveProd(json, outletId, url) {
     console.log(`  reviews.json: local=${reviewsJson.inLocal} origin/main=${reviewsJson.inOrigin}${reviewsJson.originError ? ` [origin/main check FAILED: ${reviewsJson.originError}]` : ''}`);
     console.log(`  live prod:    ${live.checked ? (live.showNotDeployed ? 'show not deployed at all (404)' : `present=${inLiveProd}`) : `unchecked (${live.err})`}`);
     if (otherProductionFiles.length > 0) console.log(`  other-production: ${otherProductionFiles.length} file(s) ignored (different production of this title): ${otherProductionFiles.map((f) => path.basename(f.path)).join(', ')}`);
+    if (!candidates.registered) console.log('  WARNING: outlet is not registered; absence is provisional because its ingested ID is uncertain.');
     for (const w of fetchWarnings) console.log(`  WARNING: ${w}`);
     if (gitErrors.length > 0) {
       console.log(`  WARNING: ${gitErrors.length} check(s) could not be completed — this classification may be understating pipeline progress. Do not treat '${state}' as final until these are resolved.`);
     }
-    console.log(`  => ${justifiesUrlResolution(state) ? 'URL-resolution work is justified.' : 'Do NOT start URL-resolution work.'}`);
+    console.log(`  => ${resolutionJustified ? 'URL-resolution work is justified.' : 'Do NOT start URL-resolution work.'}`);
   }
 
   process.exit(0);

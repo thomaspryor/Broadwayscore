@@ -116,9 +116,51 @@ function filterByUrl(records, url, getUrl, normalize) {
   });
 }
 
+// BRO-3359: display names and provisional ingestion IDs need not share a slug.
+function outletKeys(value) {
+  const lower = String(value || '').toLowerCase();
+  return [lower, lower.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), lower.replace(/[^a-z0-9]/g, '')].filter(Boolean);
+}
+
+function outletHost(value) {
+  if (!value) return null;
+  try {
+    return new URL(value.includes('://') ? value : `https://${value}`).hostname.toLowerCase().replace(/^www\./, '');
+  } catch { return null; }
+}
+
+function resolveOutletCandidates(name, registry, canonicalId) {
+  const ids = new Set([...outletKeys(name), ...outletKeys(canonicalId)]);
+  const lookupKeys = new Set(ids);
+  const domains = new Set();
+  let registered = false;
+  for (const [id, entry] of Object.entries((registry && registry.outlets) || {})) {
+    const names = [id, entry.displayName, ...(entry.aliases || []), entry.domain, ...(entry.domainAliases || [])];
+    if (!names.some((n) => outletKeys(n).some((k) => lookupKeys.has(k)))) continue;
+    registered = true;
+    for (const n of names) for (const key of outletKeys(n)) ids.add(key);
+    for (const domain of [entry.domain, ...(entry.domainAliases || [])]) {
+      const host = outletHost(domain);
+      if (host) domains.add(host);
+    }
+  }
+  return { ids, domains, registered };
+}
+
+function matchesOutlet(record, candidates) {
+  if ([record.outletId, record.outlet, record.o].some((v) => outletKeys(v).some((k) => candidates.ids.has(k)))) return true;
+  const host = outletHost(record.url || record.u);
+  return !!host && candidates.domains.has(host);
+}
+
+function matchesOutletFilename(filename, candidates) {
+  return filename.endsWith('.json') && filename.includes('--')
+    && outletKeys(filename.split('--')[0]).some((k) => candidates.ids.has(k));
+}
+
 /** Only this state justifies starting URL-resolution work (site search, RSS, sitemap). */
 function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl };
+module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl, resolveOutletCandidates, matchesOutlet, matchesOutletFilename };
