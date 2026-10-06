@@ -45,6 +45,7 @@ const WT = path.join(ROOT, '.claude/worktrees/codex-runner');
 const LOG_DIR = process.env.CODEX_RUNNER_LOG_DIR || path.join(os.tmpdir(), 'codex-runner');
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
 const MAX_IN_FLIGHT = 2;
+const CODEX_VERSION = '0.160.0';
 const SECRET_ENV = /KEY|TOKEN|SECRET|PASSWORD|COOKIE|CREDENTIAL/i;
 
 function arg(name, def) {
@@ -308,6 +309,11 @@ async function workCard(pick, stats, inFlight) {
 
 async function main() {
   const startedMs = Date.now();
+  // Fresh cloud containers do not ship the Codex CLI; install the pinned version.
+  if (sh('codex', ['--version'], { timeoutMs: 60_000 }).code !== 0) {
+    const inst = sh('npm', ['install', '-g', `@openai/codex@${CODEX_VERSION}`], { timeoutMs: 600_000 });
+    log(`installed Codex CLI ${CODEX_VERSION}: exit ${inst.code}`);
+  }
   for (const tool of ['codex', 'claude']) {
     if (sh(tool, ['--version'], { timeoutMs: 60_000 }).code !== 0) { log(`${tool} CLI missing`); process.exit(2); }
   }
