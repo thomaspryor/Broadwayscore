@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T06:46:44.571Z",
+  "timestamp": "2026-10-06T10:26:49.962Z",
   "stats": {
-    "totalReviews": 46565,
-    "alreadyFlagged": 18673,
+    "totalReviews": 46576,
+    "alreadyFlagged": 18674,
     "dateGuardCatches": 267,
     "directorMismatch": 1342,
-    "tvFilmSignals": 1353,
+    "tvFilmSignals": 1352,
     "londonSignals": 1287,
     "offBroadwaySignals": 510,
     "yearMismatch": 114,
-    "noPublishDate": 4302
+    "noPublishDate": 4313
   },
   "findings": [
     {
@@ -8737,20 +8737,6 @@
       "score": 42,
       "publishDate": "November 17, 2021",
       "url": "https://newyorktheater.me/2021/11/17/diana-the-musical-review-3-ways-its-better-on-broadway-3-ways-its-not/#more-80621",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
-      "file": "nytimes--jesse-green.json",
-      "score": 25,
-      "publishDate": "2021-11-17T19:32:08-05:00",
-      "url": "https://www.nytimes.com/2021/11/17/theater/diana-the-musical-review.html?smid=tw-nyttheater&smtyp=cur",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
