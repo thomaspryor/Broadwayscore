@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling } = require('../audit-transfer-review-gaps.js');
+const { isEligibleCandidate, findSiblingCandidate, buildSuggestedPriorRun, isPerpetualRepertoryVenue, hasSameVenueSibling } = require('./transfer-review-gaps.js');
 
 const NOW = new Date('2026-09-15T00:00:00Z');
 const OPTS = { minDaysOpen: 14, windowDays: 240 };
