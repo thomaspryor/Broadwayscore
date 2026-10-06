@@ -849,6 +849,31 @@ async function main() {
     console.error(`[digest] WARN could not read local autofix-canary ledger: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-2199: same cross-machine gap for health-check.js's two "Dispatch:"
+  // rows (checkDispatchHealth). data/audit/dispatch-ledger.jsonl is
+  // gitignored/Mac-local, so in CI those rows are always the suffixed
+  // "(unmeasurable here)" warn and the real 'error' (dead-launch or headless
+  // success rate past its floor) can never reach the owner. This sender runs
+  // on the machine that writes the ledger, so evaluate it here.
+  try {
+    const dispatchLedger = require('./lib/dispatch-ledger.js');
+    const { computeDispatchHealthDigest, computeHeadlessDispatchDigest } = require('./lib/dispatch-health.js');
+    const dispatchEntries = dispatchLedger.readEntries();
+    const nowMs = Date.now();
+    for (const row of [
+      computeDispatchHealthDigest({ entries: dispatchEntries, nowMs }),
+      computeHeadlessDispatchDigest({ entries: dispatchEntries, nowMs }),
+    ]) {
+      if (row.status === 'error') {
+        if (!sections.health) sections.health = {};
+        if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+        sections.health.errors.push({ name: row.name, message: row.message, hint: row.hint });
+      }
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not evaluate local dispatch-health ledger: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
   // above, read directly. Fail-soft: a broken read degrades to one missing
   // section, never blocks the send (same rule as every other section here).

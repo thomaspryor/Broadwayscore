@@ -5,6 +5,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,12 +14,36 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const healthSrc = readFileSync(path.join(root, 'scripts/health-check.js'), 'utf8');
 const digestSrc = readFileSync(path.join(root, 'scripts/send-morning-digest.js'), 'utf8');
 
+// Anchored on the real fold code (a call plus the push into health.errors),
+// not bare names: those also appear in imports and comments.
 const AUDITED = [
   { fn: 'checkPushRetryDeadman', disposition: 'ci-only' },
   { fn: 'checkInfraReviewGate', disposition: 'ci-only' },
-  { fn: 'checkAutofixCanary', disposition: 'fold', digestTokens: ['assessCanaryRow', 'autofix-canary-ledger.jsonl'] },
-  { fn: 'checkAutofixThroughput', disposition: 'fold', digestTokens: ['assessThroughputRow', 'digest-autofix-ledger.jsonl', 'backlog-drain-ledger.jsonl'] },
+  { fn: 'checkDispatchOutcomes', disposition: 'ci-only' },
+  { fn: 'checkAutofixCanary', disposition: 'fold', digestTokens: ['assessCanaryRow({', 'autofix-canary-ledger.jsonl\');', 'sections.health.errors.push'] },
+  { fn: 'checkAutofixThroughput', disposition: 'fold', digestTokens: ['assessThroughputRow({ digestLedgerEntries: rows', 'throughputDeathMessage(t', 'BACKLOG_LEDGER_PATH = path.join'] },
+  { fn: 'checkDigestInvariantFail', disposition: 'fold', digestTokens: ['assessDigestInvariantFailRow(entries)', 'digest-invariant-fail-ledger.jsonl\');'] },
+  { fn: 'checkDispatchHealth', disposition: 'fold', digestTokens: ['computeDispatchHealthDigest({ entries: dispatchEntries', 'computeHeadlessDispatchDigest({ entries: dispatchEntries', 'sections.health.errors.push'] },
 ];
+
+// Guard for NEW rows: any check* function in health-check.js that reads a
+// gitignored data/audit/*.jsonl must be in AUDITED above.
+test('every check* reading a gitignored audit ledger is in the audit table', () => {
+  const audited = new Set(AUDITED.map((a) => a.fn));
+  const parts = healthSrc.split(/\n(?=(?:async )?function )/);
+  const offenders = [];
+  for (const body of parts) {
+    const name = body.match(/^(?:async )?function (check\w+)\(/)?.[1];
+    if (!name || audited.has(name)) continue;
+    const ledgers = [...body.matchAll(/'([\w-]+\.jsonl)'/g)].map((m) => m[1])
+      .filter((f) => body.includes('AUDIT_DIR') || body.includes("'audit'"));
+    for (const f of new Set(ledgers)) {
+      const ignored = spawnSync('git', ['check-ignore', '-q', `data/audit/${f}`], { cwd: root }).status === 0;
+      if (ignored) offenders.push(`${name} reads gitignored data/audit/${f}`);
+    }
+  }
+  assert.deepEqual(offenders, [], 'add each to AUDITED with a LOCAL-FOLD or CI-ONLY-OK marker (BRO-2199)');
+});
 
 for (const { fn, disposition, digestTokens } of AUDITED) {
   test(`${fn}: ${disposition} is implemented and documented`, () => {
@@ -49,4 +74,8 @@ test('infra-review digest never returns error (the premise of its CI-ONLY-OK)', 
   const now = Date.now();
   const gateEvents = Array.from({ length: 50 }, () => ({ ts: new Date(now).toISOString(), tier: 'critical', action: 'warn', reason: 'NO-PLAN-REVIEW: x' }));
   assert.equal(computeInfraReviewDigest({ gateEvents, planVerdicts: [], now }).status, 'warn');
+  for (const n of [0, 1, 5, 500]) {
+    const ev = Array.from({ length: n }, () => ({ ts: new Date(now).toISOString(), tier: 'shared', action: 'block', reason: 'x' }));
+    assert.ok(['pass', 'warn'].includes(computeInfraReviewDigest({ gateEvents: ev, planVerdicts: [], now }).status));
+  }
 });

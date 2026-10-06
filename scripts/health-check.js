@@ -2739,6 +2739,8 @@ function checkAutofixThroughput(isCI) {
 // Left in place it did exactly what BRO-467's throughput row did: filed and
 // re-files BRO-3370 ("BSC Daily: Digest: content-invariant check") off a
 // message that can never say anything else. Skip here for the same reason.
+// LOCAL-FOLD(checkDigestInvariantFail): task #1648's own fix; the real row is
+// folded into sections.health.errors by send-morning-digest.js (BRO-2199 audit).
 function checkDigestInvariantFail(isCI) {
   if (isCI) return [];
   const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
@@ -2968,6 +2970,10 @@ function checkInfraReviewGate() {
 // attempt counters) — this follows the same pattern.
 const DISPATCH_OUTCOME_STATE_FILE = path.join(AUDIT_DIR, 'dispatch-outcome-digest-state.json');
 
+// CI-ONLY-OK(checkDispatchOutcomes): reads gitignored dispatch-ledger.jsonl but
+// computeDispatchOutcomeDigest() only yields pass/warn (no 'error' state to
+// lose), and in CI it says plainly it cannot measure. The error-capable
+// dispatch rows are checkDispatchHealth, which is folded locally (BRO-2199).
 function checkDispatchOutcomes(dryRun) {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   if (!fs.existsSync(ledgerPath)) {
@@ -3076,6 +3082,10 @@ function checkDispatchOutcomes(dryRun) {
 // Same gitignored/per-machine caveat as checkDispatchOutcomes — say so plainly
 // rather than passing on missing input (#1075 vacuous-gate class).
 
+// LOCAL-FOLD(checkDispatchHealth): reads gitignored dispatch-ledger.jsonl, so
+// in CI this is only the "(unmeasurable here)" warn. The real 'error' rows are
+// evaluated by send-morning-digest.js (computeDispatchHealthDigest /
+// computeHeadlessDispatchDigest) on the Mac (BRO-2199).
 function checkDispatchHealth() {
   const ledgerPath = path.join(AUDIT_DIR, 'dispatch-ledger.jsonl');
   const { CHECK_NAME, HEADLESS_CHECK_NAME } = require('./lib/dispatch-health.js');
