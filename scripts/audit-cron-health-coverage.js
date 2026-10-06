@@ -29,7 +29,9 @@ const TIGHT_BY_DESIGN = {
   // folds it into the loop's single scheduled morning email), so #409's
   // reason for spacing it away from that email no longer applies. The
   // noon-UTC check now runs ~5h AFTER it (healthy age ~5h), matching the
-  // original pre-#409 geometry, hence the restored 26h band.
+  // original pre-#409 geometry, hence the restored 26h band. BRO-4800 moved
+  // it to 02:15 UTC (schedule lag made 06:45 land after the 11:30 digest);
+  // with lag on both crons the healthy age is ~6-12h, still well inside 26h.
   // See Notion 381637c5-416f-81af and the comment on this entry in check-cron-health.yml.
   'data-health-check.yml': { maxHours: 26, why: 'digest-snapshot-carrier cancel detection (tight to 24h cadence)' },
   // BRO-3666: this entry is tighter than worst-gap + CUSHION_HOURS for the

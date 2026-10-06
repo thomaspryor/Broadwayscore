@@ -110,7 +110,7 @@ function parseArgs(argv) {
     const hit = argv.find((a) => a.startsWith(`--${name}=`));
     return hit ? hit.slice(name.length + 3) : null;
   };
-  // Judge as of TWO days back (UTC) by default. The cron fires 06:45 UTC:
+  // Judge as of TWO days back (UTC) by default. The cron fires 02:15 UTC:
   // "today" is a sliver, and "yesterday UTC" is still an OPEN day on Impact's
   // US-anchored reporting calendar (their date_display labels are relabeled,
   // not converted — Codex ship-check finding 2026-08-03). Two days back is

@@ -15,7 +15,7 @@
  * 0 for unknown providers (observability must not kill the carrier workflow);
  * only a programming error exits non-zero.
  *
- * Runs in data-health-check.yml (daily 06:45 UTC, has all provider secrets,
+ * Runs in data-health-check.yml (daily 02:15 UTC, has all provider secrets,
  * commits data/audit). CLI: --dry-run (no writes, no alerts), --day=YYYY-MM-DD.
  */
 'use strict';

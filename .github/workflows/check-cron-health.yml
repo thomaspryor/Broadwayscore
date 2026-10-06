@@ -67,7 +67,7 @@ jobs:
             "collect-review-texts.yml|36|Collect Review Texts"
             "llm-ensemble-score.yml|48|LLM Ensemble Score"
             "test.yml|48|Test Suite"
-            # Daily 06:45 UTC. Card #364 (owner merge decision 2026-07-26) moved this
+            # Daily 02:15 UTC (BRO-4800; was 06:45). Card #364 (owner merge decision 2026-07-26) moved this
             # back off the 16 UTC slot #409 put it in: health-check.js no longer sends
             # its own email (see health-check.js's sendEmailDigest) — it writes
             # data/audit/health-digest-snapshot.json, which autonomous-email.js folds
@@ -79,8 +79,9 @@ jobs:
             # run writes no snapshot, so alerting goes dark with nobody to flag it
             # (2/14 runs cancelled ~14% incl. 2026-06-14). notify-failure ignores
             # conclusion=cancelled. Staleness = hours since the last SUCCESSFUL run.
-            # This check runs at 12 UTC, ~5h AFTER the 06:45 run, so on a healthy day it
-            # sees today's run ~5h old; after a single cancel the next check sees ~29h.
+            # This check is scheduled 12 UTC but fires ~15:30-20:00 UTC (schedule lag),
+            # and the 02:15 run lands ~08:15-10:50 UTC, so on a healthy day it sees
+            # today's run ~6-12h old; after a single cancel the next check sees ~30-36h.
             # Band = 26h (the pre-#409 value, restored — same schedule geometry): tight
             # to the 24h cadence to trip a dead cron fast, with modest slack so a lagged
             # check can't false-trip. A false trip self-heals by redispatching

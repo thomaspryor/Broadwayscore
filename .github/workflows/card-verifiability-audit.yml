@@ -16,7 +16,9 @@ name: Card Verifiability Audit
 #
 # Modeled on .github/workflows/check-arm-yield.yml (same repo, same shape).
 #
-# Schedule: 05:30 UTC, ~75min before data-health-check.yml's 06:45 UTC read
+# Schedule: 05:30 UTC. data-health-check.yml moved to 02:15 UTC (BRO-4800), so
+# it now reads the previous day's report (~22h old); the 48h tolerance below covers it.
+# Originally ~75min before data-health-check.yml's 06:45 UTC read
 # of data/audit/card-verifiability.json — chosen so the health-check row
 # reflects a same-day-fresh report. check-health-row-absent.js's own 48h
 # staleness tolerance absorbs the occasional late-cron slip this repo's own
