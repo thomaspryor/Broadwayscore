@@ -167,9 +167,12 @@ function runCheck(card, codexReport, tag) {
     '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*)',
   ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv(), input: prompt });
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
-  // The reviewer is read-only; a moved HEAD or a dirty tree means it was not.
-  const tampered = git(['rev-parse', 'HEAD']) !== head || git(['status', '--porcelain']) !== '';
-  if (tampered) { git(['reset', '--hard', head]); git(['clean', '-fd', '-e', 'node_modules']); }
+  // The verdict is about the committed HEAD. A moved HEAD means the reviewer committed or
+  // checked out, so its verdict is void. Leftover files are test residue (tests rewrite
+  // data/audit/*.json): clean them either way so they never reach the next commit.
+  const tampered = git(['rev-parse', 'HEAD']) !== head;
+  git(['reset', '-q', '--hard', head]);
+  git(['clean', '-qfd', '-e', 'node_modules']);
   const verdict = r.code === 0 && !tampered ? R.parseVerdict(r.stdout) : 'NONE';
   return { verdict, text: tampered ? 'The reviewer changed the worktree, so its verdict was discarded.' : tail(r.stdout || r.out, 3000) };
 }
@@ -198,6 +201,11 @@ function newUnitFailures() {
   const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
   const files = fs.readFileSync(path.join(WT, 'tests/unit-test-manifest.txt'), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean);
   const branch = unitBatch(WT, files);
+  // Some tests rewrite tracked files (data/audit/*.json). The attempt is already committed,
+  // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
+  // dirty-tree guard throws its verdict away.
+  git(['reset', '-q', '--hard', 'HEAD']);
+  git(['clean', '-qfd', '-e', 'node_modules']);
   if (branch.exit === 0) return null;
   const failing = [...new Set([...D.parseGateFailures('unit-tests-node', branch.text, WT).values()].map((f) => f.file))]
     .filter((f) => f && f !== '?');

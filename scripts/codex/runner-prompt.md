@@ -10,7 +10,8 @@ Do the work the card asks for:
 1. Reproduce the problem first: run the card's test command and show it failing, or show the bug in real data. Real data lives in /root/broadway-scorecard-data (shows.json, reviews.json, outlet-registry.json) and data/.
 2. Make the smallest correct fix. Fix cousins of the same bug class in the same file if the card names them. Never copy logic into a test; require() the real function (CLAUDE.md section 15).
 3. Run the card's acceptance command and every test file you touched. Run `npx tsc --noEmit` only if you touched .ts files.
-4. Do NOT commit, push, touch Linear, or edit .github/workflows/**. Leave your changes in the working tree; the supervisor commits them and an independent reviewer checks them before anything lands.
+4. Tests and scripts can rewrite tracked files (data/audit/*.json, public/data). Before you finish, run `git status` and restore every file the card did not ask you to change (`git checkout -- <file>`), because everything left in the tree gets committed.
+5. Do NOT commit, push, touch Linear, or edit .github/workflows/**. Leave your changes in the working tree; the supervisor commits them and an independent reviewer checks them before anything lands.
 
 Mandatory checklist. Earlier Codex runs were rejected for exactly these misses, so answer each one in your report with evidence (a command you ran and what it printed, or file:line):
 a. Real data before and after: run the changed code path against real data before and after your change and report how many records change and 2-3 examples. A rule that also changes records the card did not mean to touch is wrong, even when the tests pass.
