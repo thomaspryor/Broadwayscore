@@ -3848,6 +3848,7 @@ function createReviewFile(showId, reviewData, options = {}) {
     criticName: reviewData.criticName || 'Unknown',
     url: reviewData.url || null,
     publishDate: normalizePublishDate(reviewData.publishDate) || null,
+    ...(reviewData.dateSource ? { dateSource: reviewData.dateSource } : {}),
     // NOTE: Previously fell back to show's opening date when no review date available.
     // Removed: fake dates mask wrong-production reviews (e.g., OB review stamped with
     // Broadway opening date defeats date-based guards). Null is safer — downstream
@@ -5219,6 +5220,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           outlet: result.outlet || (outletMeta && outletMeta.name) || result.outletId,
           criticName: isSingleCriticOutlet ? outletMeta.critics[0] : 'Unknown',
           url: result.url,
+          publishDate: result.publishDate || null,
+          dateSource: result.dateSource || null,
           source: 'site-search',
         });
       }

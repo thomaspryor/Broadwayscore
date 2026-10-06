@@ -496,6 +496,22 @@ const SITE_SEARCH_ENDPOINTS = {
     outletIdOverride: 'telegraph',
   },
 
+  'lighting-and-sound-america': {
+    name: 'Lighting & Sound America',
+    domain: 'lightingandsoundamerica.com',
+    market: 'broadway',
+    requiresJs: false,
+    skipUrlFilter: true, // Opaque story IDs; the index parser checks title and date.
+    fetchAndParse: async (showTitle, market, openingDate, showId, show) => {
+      const { discoverLightingSoundAmerica } = require('./lighting-sound-america-discovery');
+      const { fetchPage } = require('./scraper');
+      return discoverLightingSoundAmerica(showTitle, show || { openingDate }, async url => {
+        const result = await fetchPage(url, { skipVerify: true });
+        return result && result.content;
+      });
+    },
+  },
+
   // ── Opera outlets (applies only when show.type === 'opera') ──────────────────
   // All five fire exclusively for opera shows. Broadway/West End shows should
   // never hit these; the applies() gate at the call site enforces this.
@@ -1219,10 +1235,11 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     // 4th arg (showId) used by opera outlets for WARN log context — see filterOperaUrls.
     if (config.fetchAndParse) {
       const showId = (show && show.id) || null;
-      const urls = await config.fetchAndParse(searchTitle, market, openingDate, showId);
+      const urls = await config.fetchAndParse(searchTitle, market, openingDate, showId, show);
       const seen = new Set();
       results = [];
-      for (const url of urls) {
+      for (const item of urls) {
+        const url = typeof item === 'string' ? item : item.url;
         if (seen.has(url)) continue;
         // skipUrlFilter: config already scoped results to reviews (e.g. Variety /legit/reviews/).
         // Applying urlLooksLikeReview() would reintroduce title-matching and drop valid URLs.
@@ -1255,7 +1272,9 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
             effectiveOutletName = null;
           }
         }
-        results.push({ url, outletId: effectiveOutletId, outlet: effectiveOutletName, source: 'site-search' });
+        results.push({ url, outletId: effectiveOutletId, outlet: effectiveOutletName, source: 'site-search',
+          ...(typeof item === 'object' ? { publishDate: item.publishDate, dateSource: item.dateSource } : {}),
+        });
       }
     } else {
       // Standard fetch + regex path
