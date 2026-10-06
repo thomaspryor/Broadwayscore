@@ -84,7 +84,7 @@ function verifyFigure(figure, page, context = {}) {
   return { found: false, quote: null };
 }
 
-function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fetchPage(...args), maxFetches = 60 } = {}) {
+function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fetchPage(...args), maxFetches = 60 } = {}, budget = null) {
   const cache = new Map();
   return async function verifyEntry(entry, show) {
     const evidence = {};
@@ -108,7 +108,8 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
         const year = (show?.openingDate || show?.previewsStartDate || '').slice(0, 4);
         if (!show?.title || !/^\d{4}$/.test(year)) continue;
         if (!cache.has(source.url)) {
-          if (cache.size >= maxFetches) { fieldCapped = true; continue; }
+          // Out of fetches or out of wall-clock budget (scripts/lib/run-budget.js): do not start another page read.
+          if (cache.size >= maxFetches || (budget && budget.exceeded())) { fieldCapped = true; continue; }
           // A fetch that THROWS (network, 403, 429, missing credentials) is not the same as a page that loaded
           // and does not state the figure: record it so the caller can leave the entry pending instead of
           // downgrading a figure nobody actually checked.

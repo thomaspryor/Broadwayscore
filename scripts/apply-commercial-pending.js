@@ -65,6 +65,7 @@ const AUTO_APPLY_CLAIMS_FROM = flags['auto-apply-claims-from']
 const gate = require('./lib/commercial-apply-gate');
 const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { createRunBudget } = require('./lib/run-budget');
 
 const USAGE = `apply-commercial-pending.js — Apply Commercial Pending Data.
 
@@ -157,7 +158,11 @@ async function main() {
   }
 
   const { createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS } = require('./lib/commercial-source-verify');
-  const verifyEntry = createSourceVerifier();
+  // Page verification can be slow (provider fallbacks run tens of seconds per page). The jobs that run this script
+  // have a 30 minute timeout shared with the commit and push that follow, so stop starting new verifications after
+  // 12 minutes and leave the rest pending for the next run (scripts/audit-run-budget-coverage.js).
+  const verifyBudget = createRunBudget(12);
+  const verifyEntry = createSourceVerifier({}, verifyBudget);
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
@@ -281,6 +286,11 @@ async function main() {
     }
     if (NO_SOURCE_VERIFY && !isClaimAutoApply && (entry.capitalization != null || entry.weeklyRunningCost != null)) {
       console.log(`  ⏭  "${showId}" — has figures that need page verification; left pending for the verified pass (--no-source-verify)`);
+      skipped++;
+      continue;
+    }
+    if (!NO_SOURCE_VERIFY && verifyBudget.exceeded()) {
+      console.log(`  ⏳ "${showId}" — page-verification time budget used up; left pending for the next run`);
       skipped++;
       continue;
     }

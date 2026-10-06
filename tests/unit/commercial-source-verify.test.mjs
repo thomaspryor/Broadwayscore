@@ -151,7 +151,9 @@ test('fixture apply CLI dry run marks high-confidence unverified figures as esti
     console.log(output.trim());
     fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: { example: entry } }));
     const report = execFileSync(process.execPath, ['scripts/verify-commercial-sources.js', '--max-fetches=0', `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`], { encoding: 'utf8' });
-    assert.equal(JSON.parse(report).fields.capitalization.proposedIsEstimate, true);
+    const rec = JSON.parse(report).fields.capitalization;
+    assert.equal(rec.notChecked, true, 'with no fetches allowed nothing was read');
+    assert.equal(rec.proposedIsEstimate, null, 'an unread page is "not checked", never a proposal to downgrade');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -201,6 +203,7 @@ test('wiring: apply leaves fetch-failed entries pending and persists the counter
   const root = path.resolve('.');
   const apply = fs.readFileSync(path.join(root, 'scripts/apply-commercial-pending.js'), 'utf8');
   assert.match(apply, /figureEvidence\.fetchFailed[^]*?nextVerifyAttempt\(entry\)[^]*?entry\.sourceVerifyAttempts = attempts; pendingDirty = true/);
+  assert.match(apply, /require\('\.\/lib\/run-budget'\)[^]*?verifyBudget\.exceeded\(\)[^]*?left pending for the next run/, 'page verification stops starting new entries once the time budget is spent');
   assert.match(apply, /else if \(pendingDirty\)[^]*?fs\.writeFileSync\(PENDING_PATH/, 'the counter is saved even when nothing applied, or the cap would never be reached');
   const batch = fs.readFileSync(path.join(root, 'scripts/batch-commercial-research.js'), 'utf8');
   assert.match(batch, /applyFigureEvidence\(builtForApply, entry, \{\}\)[^]*?sanitizeForPublicRecord\(\s*builtForApply/, 'batch --apply marks figures as estimates before sanitising: no unverified AI figure prints as fact');
@@ -223,5 +226,17 @@ test('apply --no-source-verify (hourly RSS poll): figure-bearing entries stay pe
     assert.doesNotMatch(control, /need page verification/);
     assert.match(control, /would apply 1, skip 0/);
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('an exhausted run budget stops new page reads and marks the entry capped (left pending), not downgraded', async () => {
+  let calls = 0;
+  const spent = { exceeded: () => true };
+  const verify = createSourceVerifier({ fetchPage: async () => { calls++; return { content: 'Example 2025 capitalization $12.5 million' }; } }, spent);
+  const ev = await verify(entry, show);
+  assert.equal(calls, 0, 'no page is read once the budget is spent');
+  assert.equal(ev.capped, true);
+  const fresh = { exceeded: () => false };
+  const ok = createSourceVerifier({ fetchPage: async () => ({ content: 'Example 2025 capitalization $12.5 million' }) }, fresh);
+  assert.equal((await ok(entry, show)).capitalization.found, true, 'with budget left it verifies normally');
 });
 
