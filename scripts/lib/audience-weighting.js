@@ -58,6 +58,13 @@ function isRedditMarket(category) {
   return category !== 'tour';
 }
 
+// Below MIN_REDDIT_ITEMS a Reddit sample never enters the combined score. The
+// scraper's backoff (reddit-post-filters.js) uses the same predicate, so the
+// grade rule and the scrape-skip rule cannot drift apart (BRO-4777).
+function isRedditBelowVolumeFloor(reddit) {
+  return reddit.reviewCount < MIN_REDDIT_ITEMS;
+}
+
 function isRedditEligible(reddit, showInfo) {
   if (!reddit || reddit.score == null) return false;
   if (!isRedditMarket(showInfo?.category)) return false;
@@ -68,7 +75,7 @@ function isRedditEligible(reddit, showInfo) {
   // object). See scripts/audit-audience-buzz-contamination.js
   // REDDIT_GENERIC_VOLUME_INFLATION + scripts/neutralize-contaminated-reddit-buzz.js.
   if (reddit.suppressed) return false;
-  if (reddit.reviewCount < MIN_REDDIT_ITEMS) return false;
+  if (isRedditBelowVolumeFloor(reddit)) return false;
 
   // Recency gate: exclude closed shows >3 years ago
   if (showInfo && showInfo.status === 'closed' && showInfo.closingDate) {
@@ -175,4 +182,4 @@ function getDesignation(score) {
   return 'Loathing';
 }
 
-module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, isBroadwayComMarket, isRedditMarket, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };
+module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, isRedditBelowVolumeFloor, isBroadwayComMarket, isRedditMarket, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };
