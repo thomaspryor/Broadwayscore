@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T03:21:38.574Z",
+  "timestamp": "2026-10-06T03:51:08.722Z",
   "stats": {
-    "totalReviews": 46559,
-    "alreadyFlagged": 18666,
-    "dateGuardCatches": 266,
-    "directorMismatch": 1341,
+    "totalReviews": 46565,
+    "alreadyFlagged": 18670,
+    "dateGuardCatches": 267,
+    "directorMismatch": 1340,
     "tvFilmSignals": 1353,
     "londonSignals": 1288,
     "offBroadwaySignals": 510,
     "yearMismatch": 114,
-    "noPublishDate": 4306
+    "noPublishDate": 4307
   },
   "findings": [
     {
@@ -13813,6 +13813,32 @@
       ]
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "dtli--unknown.json",
+      "publishDate": "2021-12-08",
+      "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1766d before show (2021-12-08 vs 2026-10-09)"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "theatrely--joey-sims.json",
+      "publishDate": "2022-01-10",
+      "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1733d before show (2022-01-10 vs 2026-10-09)"
+        }
+      ]
+    },
+    {
       "showId": "harry-potter-tour-2024",
       "file": "broadwayworld--tyler-hinton.json",
       "score": 93,
@@ -16401,25 +16427,6 @@
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 96,
-      "publishDate": "2025-12-12",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 284d before show (2025-12-12 vs 2026-09-22)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
