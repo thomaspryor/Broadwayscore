@@ -40,10 +40,19 @@ class SheetBoundary extends Component<{ children: ReactNode }, { failed: boolean
 
 const FIRST_CHECK_MS = 1200;
 const BUSY_RETRY_MS = 1500;
+/**
+ * How long a pending sign-in action holds the welcome back: about 30 s on each
+ * page (the count restarts when they move to another page). It is
+ * replayed only on its show page and lives up to an hour, so one that is never
+ * replayed (they signed in and went elsewhere) must not cost a new account its
+ * welcome; after that the sheet opens anyway.
+ */
+const MAX_PENDING_RETRIES = 20;
 
-function pageIsBusy(): boolean {
-  if (getPendingAction()) return true;
-  return !!document.querySelector('[role="dialog"][aria-modal="true"], [data-testid="rating-editor"]');
+/** 'modal': something is open on screen, wait however long it takes. */
+function pageBusyReason(): 'modal' | 'pending' | null {
+  if (document.querySelector('[role="dialog"][aria-modal="true"], [data-testid="rating-editor"]')) return 'modal';
+  return getPendingAction() ? 'pending' : null;
 }
 
 export default function WelcomeGate() {
@@ -66,7 +75,11 @@ export default function WelcomeGate() {
     landingPath.current = pathname;
   }
   const canOpenHere = !!pathname && welcomeCanOpenOn({ pathname, landingPath: landingPath.current });
-  useEffect(() => () => { mounted.current = false; }, []);
+  // Set on every mount: React's dev double-mount runs the cleanup once first.
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
 
   // Signed out (e.g. in another tab) while it is open: close it rather than
   // let it fall back to preview mode, which writes nothing.
@@ -89,9 +102,11 @@ export default function WelcomeGate() {
 
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
+    let pendingTries = 0;
     const attempt = async () => {
       if (cancelled) return;
-      if (pageIsBusy()) {
+      const busy = pageBusyReason();
+      if (busy === 'modal' || (busy === 'pending' && ++pendingTries <= MAX_PENDING_RETRIES)) {
         timer = setTimeout(attempt, BUSY_RETRY_MS);
         return;
       }
@@ -102,15 +117,22 @@ export default function WelcomeGate() {
       const { data, error } = await supabaseRestRpc<boolean>('claim_onboarding');
       if (error) return; // e.g. the migration is not applied yet: show nothing
       try { localStorage.setItem(key, '1'); } catch { /* private mode */ }
-      // Once claimed it is spent, so open even if this effect re-ran meanwhile.
-      if (data === true && mounted.current) setOpen('account');
+      if (data !== true) return;
+      // Once claimed it is spent, so open even if this effect re-ran meanwhile,
+      // but never on top of a modal that opened while the claim was in flight.
+      const openWhenFree = () => {
+        if (!mounted.current) return;
+        if (pageBusyReason() === 'modal') { setTimeout(openWhenFree, BUSY_RETRY_MS); return; }
+        setOpen('account');
+      };
+      openWhenFree();
     };
     timer = setTimeout(attempt, FIRST_CHECK_MS);
     return () => {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, canOpenHere, open]);
+  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, canOpenHere, open, pathname]);
 
   if (!open) return null;
   if (open === 'account' && !userId) return null;

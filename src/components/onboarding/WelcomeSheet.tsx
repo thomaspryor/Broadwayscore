@@ -17,14 +17,18 @@ import ShowImage from '@/components/ShowImage';
 import StarRating from '@/components/user/StarRating';
 import ImportShows, { type ImportSourceId } from '@/app/my-shows/ImportShows';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
+import { useWatchlist } from '@/hooks/useWatchlist';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { removeLocalShow } from '@/lib/local-watchlist';
 import { IMPORT_SOURCES, importSourceNames } from '@/lib/import-sources';
 import { supabaseRestInsert, supabaseRestSelect } from '@/lib/supabase-rest';
 import { trackUgc, type UgcProps } from '@/lib/ugc-analytics';
 import {
   nextWelcomeStep,
+  welcomeDoneMessage,
   welcomeFinishDestination,
   welcomeMarketFor,
+  welcomeSaveStep,
   welcomeWriteFor,
   type WelcomeMarket,
   type WelcomeShow,
@@ -38,7 +42,10 @@ const MARKET_OPTIONS: { value: WelcomeMarket; label: string }[] = [
 
 const STEP_NUMBER: Record<WelcomeStep, number> = { shows: 1, import: 2, done: 3 };
 
-/** Where a show already being in My Shows makes its poster unpickable. */
+/**
+ * Where a show already being in My Shows makes its poster unpickable. At save
+ * time only reviews and seen_unrated skip a pick (welcomeSaveStep).
+ */
 const EXISTING_TABLES = ['reviews', 'watchlist', 'seen_unrated'] as const;
 
 interface WelcomeSheetProps {
@@ -50,6 +57,8 @@ interface WelcomeSheetProps {
 export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   const router = useRouter();
   const preview = userId === null;
+  // Only its remove is used: cache, other open copies and analytics stay in step.
+  const { removeFromWatchlist } = useWatchlist(userId);
   const [step, setStep] = useState<WelcomeStep>('shows');
   const pageMarket = useCurrentMarket();
   const [market, setMarket] = useState<WelcomeMarket>(() => welcomeMarketFor(pageMarket));
@@ -69,6 +78,8 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   // A close-time save failed and they were told; a second close leaves without saving.
   const [closeAnyway, setCloseAnyway] = useState(false);
   const [showsAdded, setShowsAdded] = useState(0);
+  // Of those, the ones saved without stars (they wait under To Be Rated).
+  const [unratedAdded, setUnratedAdded] = useState(0);
   const [imported, setImported] = useState(0);
   const [importSource, setImportSource] = useState<ImportSourceId | null>(null);
 
@@ -190,6 +201,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     const rated = entries.filter(([, r]) => r !== null).length;
     if (preview) {
       setShowsAdded(entries.length);
+      setUnratedAdded(entries.filter(([showId, rating]) => welcomeWriteFor({ showId, rating }).table === 'seen_unrated').length);
       track('onboarding_step_completed', { step: 'shows', shows_added: entries.length, rated });
       if (thenClose) onClose();
       else go(nextWelcomeStep('shows'), entries.length);
@@ -203,28 +215,48 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     const ids = entries.map(([id]) => id);
     const inList = `in.(${ids.map(id => `"${id}"`).join(',')})`;
     const q = `select=show_id&user_id=eq.${encodeURIComponent(userId as string)}&show_id=${encodeURIComponent(inList)}`;
-    let have: Set<string>;
+    let seen: Set<string>;
+    let watchlisted: Set<string>;
     try {
       const results = await Promise.all(EXISTING_TABLES.map(t => supabaseRestSelect<{ show_id: string }>(t, q)));
       if (results.some(x => x.error)) throw new Error('lookup failed');
-      have = new Set(results.flatMap(x => x.data || []).map(x => x.show_id));
+      const idsIn = (t: (typeof EXISTING_TABLES)[number]) =>
+        new Set((results[EXISTING_TABLES.indexOf(t)].data || []).map(x => x.show_id));
+      watchlisted = idsIn('watchlist');
+      seen = new Set([...Array.from(idsIn('reviews')), ...Array.from(idsIn('seen_unrated'))]);
     } catch {
       setSaving(false);
       failSave(thenClose);
       return;
     }
     let added = 0;
+    let addedUnrated = 0;
     let failed = 0;
+    // Bookmarks this save replaced. The hook can't count them: this sheet's
+    // instance never loads the watchlist, so it can't tell a real row from none.
+    let bookmarksCleared = 0;
     const saved = new Set<string>();
     for (const [showId, rating] of entries) {
-      if (have.has(showId)) { saved.add(showId); continue; }
-      const write = welcomeWriteFor({ showId, rating });
+      const { write, clearWatchlist } = welcomeSaveStep({ showId, rating }, { seen: seen.has(showId), watchlisted: watchlisted.has(showId) });
+      if (!write) { saved.add(showId); removeLocalShow(showId); continue; }
       try {
         const { error } = await supabaseRestInsert(write.table, { user_id: userId, ...write.row });
-        if (!error || error.code === '23505') { added++; saved.add(showId); }
-        else failed++;
+        if (!error) {
+          added++;
+          if (write.table === 'seen_unrated') addedUnrated++;
+          saved.add(showId);
+        } else if (error.code === '23505') {
+          // Already there (saved from another tab meanwhile): kept, not new.
+          saved.add(showId);
+        } else failed++;
       } catch {
         failed++;
+      }
+      if (!saved.has(showId)) continue;
+      // Seen now: a copy saved while signed out must not move onto the watchlist later.
+      removeLocalShow(showId);
+      if (clearWatchlist) {
+        try { await removeFromWatchlist(showId, 'rated'); bookmarksCleared++; } catch { /* pick saved; watchlist cleanup is best-effort */ }
       }
     }
     setSaving(false);
@@ -239,8 +271,9 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
       return;
     }
     setShowsAdded(added);
+    setUnratedAdded(addedUnrated);
     setSaveFailed(failed);
-    track('onboarding_step_completed', { step: 'shows', shows_added: added, rated, failed });
+    track('onboarding_step_completed', { step: 'shows', shows_added: added, rated, failed, bookmarks_cleared: bookmarksCleared });
     if (thenClose) onClose();
     else go(nextWelcomeStep('shows'), added);
   };
@@ -505,16 +538,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
           {step === 'done' && (
             <>
               <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-3">
-                {showsAdded + imported > 0 ? (
-                  <p className="text-sm text-gray-300">
-                    {[
-                      showsAdded > 0 ? `${showsAdded} ${showsAdded === 1 ? 'show' : 'shows'} added` : null,
-                      imported > 0 ? `${imported} imported` : null,
-                    ].filter(Boolean).join(', ')}. Shows without stars wait for you under To Be Rated, where you can add the date and stars.
-                  </p>
-                ) : (
-                  <p className="text-sm text-gray-300">Rate a show from its page any time, and it lands in your diary.</p>
-                )}
+                <p className="text-sm text-gray-300">{welcomeDoneMessage({ showsAdded, imported, unratedAdded })}</p>
                 <ul className="text-sm text-gray-400 space-y-1.5">
                   <li>Your diary and watchlist live in My Shows.</li>
                   {imported === 0 && <li>Import from {importSourceNames()} there whenever you like.</li>}

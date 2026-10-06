@@ -123,13 +123,19 @@ export function useWatchlist(userId: string | null) {
   watchlistRef.current = watchlist;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // The account whose list `watchlist` holds (fetched, synced from another
+  // instance, or merged after the local move); null while it is the initial [].
+  const loadedFor = useRef<string | null>(null);
 
   // Listen for sync events from other instances
   useEffect(() => {
     if (!userId) return;
     const handler = (e: Event) => {
       const { userId: eventUserId, entries } = (e as CustomEvent).detail;
-      if (eventUserId === userId) setWatchlist(entries);
+      if (eventUserId === userId) {
+        loadedFor.current = userId;
+        setWatchlist(entries);
+      }
     };
     document.addEventListener(WATCHLIST_SYNC, handler);
     return () => document.removeEventListener(WATCHLIST_SYNC, handler);
@@ -140,6 +146,7 @@ export function useWatchlist(userId: string | null) {
     let cancelled = false;
     migrateLocalWatchlistOnce(userId).then(merged => {
       if (cancelled || !merged) return;
+      loadedFor.current = userId;
       setWatchlist(merged);
       broadcastWatchlist(userId, merged);
     });
@@ -167,6 +174,7 @@ export function useWatchlist(userId: string | null) {
       // pre-write snapshot it captured. Stale in-flight commits were possible in
       // the pre-cache per-instance fetches too; the shared promise lets us fix it.
       if (watchlistCache?.promise === promise) {
+        loadedFor.current = userId;
         setWatchlist(result);
         broadcastWatchlist(userId, result);
       }
@@ -178,6 +186,33 @@ export function useWatchlist(userId: string | null) {
     } finally {
       setLoading(false);
     }
+  }, [userId]);
+
+  /**
+   * Optimistic update after a write + broadcast to other instances. An
+   * instance that never loaded the list (the welcome sheet only removes) must
+   * not broadcast an edit of its placeholder [], which would blank every other
+   * watchlist view on the page; it shares a fresh fetch instead. Callers
+   * invalidate the cache first, so that fetch sees their write.
+   */
+  const commitEdit = useCallback((edit: (prev: WatchlistEntry[]) => WatchlistEntry[]) => {
+    if (!userId) return;
+    if (loadedFor.current !== userId) {
+      const promise = getWatchlistCached(userId);
+      promise.then(fresh => {
+        // Superseded by a later write's fetch: that one broadcasts.
+        if (watchlistCache?.promise !== promise) return;
+        loadedFor.current = userId;
+        setWatchlist(fresh);
+        broadcastWatchlist(userId, fresh);
+      }).catch(() => { /* other views keep their list; the next mount refetches */ });
+      return;
+    }
+    setWatchlist(prev => {
+      const next = edit(prev);
+      broadcastWatchlist(userId, next);
+      return next;
+    });
   }, [userId]);
 
   const isWatchlisted = useCallback((showId: string): boolean => {
@@ -196,26 +231,21 @@ export function useWatchlist(userId: string | null) {
 
       // Later fresh mounts must refetch, not read a cache missing this show.
       invalidateWatchlistCache();
-      // Optimistic update + broadcast to other instances
-      setWatchlist(prev => {
-        const next = [
-          {
-            id: crypto.randomUUID(), user_id: userId, show_id: showId,
-            // A freshly added show has no date and therefore no time yet.
-            planned_date: null, time_slot: null, curtain_time: null,
-            created_at: new Date().toISOString(),
-          },
-          ...prev,
-        ];
-        broadcastWatchlist(userId, next);
-        return next;
-      });
+      commitEdit(prev => [
+        {
+          id: crypto.randomUUID(), user_id: userId, show_id: showId,
+          // A freshly added show has no date and therefore no time yet.
+          planned_date: null, time_slot: null, curtain_time: null,
+          created_at: new Date().toISOString(),
+        },
+        ...prev,
+      ]);
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to add to watchlist';
       setError(msg);
       throw new Error(msg);
     }
-  }, [userId]);
+  }, [userId, commitEdit]);
 
   // reason 'rated': saving a rating clears the watchlist entry unconditionally,
   // usually a no-op delete, so only a real removal is counted.
@@ -233,18 +263,13 @@ export function useWatchlist(userId: string | null) {
 
       // Later fresh mounts must refetch, not read a cache still holding this show.
       invalidateWatchlistCache();
-      // Optimistic update + broadcast to other instances
-      setWatchlist(prev => {
-        const next = prev.filter(w => w.show_id !== showId);
-        broadcastWatchlist(userId, next);
-        return next;
-      });
+      commitEdit(prev => prev.filter(w => w.show_id !== showId));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to remove from watchlist';
       setError(msg);
       throw new Error(msg);
     }
-  }, [userId]);
+  }, [userId, commitEdit]);
 
   /**
    * The single write path for everything describing WHEN a planned show is:
@@ -280,20 +305,15 @@ export function useWatchlist(userId: string | null) {
 
       // Later fresh mounts must refetch, not read a cache with stale values.
       invalidateWatchlistCache();
-      // Optimistic update + broadcast to other instances
-      setWatchlist(prev => {
-        const next = prev.map(w =>
-          w.show_id === showId ? { ...w, ...fields } : w
-        );
-        broadcastWatchlist(userId, next);
-        return next;
-      });
+      commitEdit(prev => prev.map(w =>
+        w.show_id === showId ? { ...w, ...fields } : w
+      ));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update this show';
       setError(msg);
       throw new Error(msg);
     }
-  }, [userId]);
+  }, [userId, commitEdit]);
 
   /**
    * Date-only convenience wrapper. Delegates rather than issuing its own PATCH
