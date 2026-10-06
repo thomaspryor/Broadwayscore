@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4656-e",
   "planId": "94425824-4092-412b-9f5a-d94172d0172c",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -30,5 +30,18 @@
         "description": "Reason for the flag above."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-06T05:09:43.357Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/australianpridenetwork--rohan.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spamalot-tour-2025/australianpridenetwork--rohan.json wrongProductionReason: null -> \"Melbourne, Australia production (Athenaeum Theatre), not the US national tour (BRO-4656)\""
+    }
+  ]
 }
