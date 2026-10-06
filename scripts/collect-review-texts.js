@@ -1,3 +1,4 @@
+// GUARD-A-DISPOSITION (BRO-2158): live but enrichment-only. Writes only to review files already resolved by known showId (review.filePath); never creates files from cross-show discovery, so Guard A does not apply.
 /**
  * Collect Review Texts - Multi-Tier Fallback System
  *
