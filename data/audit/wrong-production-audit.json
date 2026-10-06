@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T00:25:24.082Z",
+  "timestamp": "2026-10-06T01:25:46.553Z",
   "stats": {
-    "totalReviews": 46498,
-    "alreadyFlagged": 18671,
+    "totalReviews": 46500,
+    "alreadyFlagged": 18674,
     "dateGuardCatches": 269,
-    "directorMismatch": 1317,
-    "tvFilmSignals": 1348,
-    "londonSignals": 1285,
+    "directorMismatch": 1318,
+    "tvFilmSignals": 1349,
+    "londonSignals": 1286,
     "offBroadwaySignals": 510,
     "yearMismatch": 110,
-    "noPublishDate": 4314
+    "noPublishDate": 4310
   },
   "findings": [
     {
@@ -1029,6 +1029,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -32611,6 +32624,7 @@
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
       "file": "redbuslondinium--unknown.json",
+      "score": 79,
       "publishDate": "2026-10-05",
       "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
       "findings": [
@@ -32865,20 +32879,6 @@
       "file": "playbill--andrew.json",
       "publishDate": "2026-09-11",
       "url": "https://playbill.com/article/the-lion-king-tour-will-close-in-2027-newly-configured-production-planned",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
-      "showId": "the-lion-king-tour-2021",
-      "file": "south-florida-sun-sentinel--stafford-hagwood.json",
-      "score": 73,
-      "publishDate": "2025-03-08",
-      "url": "https://www.sun-sentinel.com/2025/03/08/review-the-lion-king-still-deserves-its-roars/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33480,6 +33480,25 @@
       "score": 74,
       "publishDate": null,
       "url": "https://www.latimes.com/entertainment-arts/story/2026-01-09/notebook-musical-theater-review-hollywood-pantages",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "out-in-stl--desire-declyne.json",
+      "score": 87,
+      "publishDate": "2025-11-05",
+      "url": "https://outinstl.com/the-notebook-at-the-fabulous-fox-theatre-a-love-that-outlasts-time/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -60709,6 +60728,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "file": "pinkprincetheatre--neill-kovacic-clarke.json",
+      "publishDate": "2026-10-04",
+      "url": "https://www.pinkprincetheatre.com/post/review-a-super-happy-story-about-feeling-super-sad-young-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
