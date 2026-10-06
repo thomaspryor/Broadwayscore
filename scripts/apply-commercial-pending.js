@@ -14,6 +14,7 @@
  *   --dry-run          Preview without writing
  *   --exclude=SLUG,... Skip specific shows
  *   --min-confidence=LEVEL  Only apply entries with this confidence or higher (high, medium, all)
+ *   --no-source-verify Fetch no pages; leave entries with figures pending for the verified pass (RSS poll)
  */
 
 const fs = require('fs');
@@ -50,6 +51,10 @@ const APPLY_ALL = flags['all'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const EXCLUDES = flags['exclude'] ? flags['exclude'].split(',') : [];
 const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
+// Skip page verification and leave every entry that carries a capitalization or weekly cost pending for the
+// verified weekly/Friday pass. Used by the hourly RSS poll, which only auto-applies recoupment claims: it must
+// neither fetch pages every hour nor apply unverified figures as estimates ahead of the verified pass.
+const NO_SOURCE_VERIFY = flags['no-source-verify'] === true;
 // Comma-separated list of detectedBy sources whose recouped-claim entries may
 // auto-apply without --show=SLUG, IF confidence === 'high' AND sourceHost is in
 // the trusted-recoupment-domains list. Used by the Friday scraper pipeline.
@@ -265,7 +270,21 @@ async function main() {
     // validate-data run below would otherwise reject, aborting every entry.
     // Status comes from keyShow (resolveCommercialSlug above): the show whose
     // slug IS the key, the record validate-data checks it against.
-    const figureEvidence = await verifyEntry(entry, keyShow);
+    // Entries that would be held for review are held before any page is fetched: an entry stuck on a hold would
+    // otherwise be re-verified (up to the per-run fetch cap) on every run.
+    const status = keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined;
+    const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources }), status).holdReason;
+    if (heldBeforeFetch) {
+      console.log(`  🛑 "${showId}" — left pending for review: ${heldBeforeFetch}`);
+      skipped++;
+      continue;
+    }
+    if (NO_SOURCE_VERIFY && !isClaimAutoApply && (entry.capitalization != null || entry.weeklyRunningCost != null)) {
+      console.log(`  ⏭  "${showId}" — has figures that need page verification; left pending for the verified pass (--no-source-verify)`);
+      skipped++;
+      continue;
+    }
+    const figureEvidence = NO_SOURCE_VERIFY ? {} : await verifyEntry(entry, keyShow);
     if (figureEvidence.capped) {
       console.log(`  ⏳ "${showId}" — cited pages not checked (per-run fetch cap reached); left pending for the next run`);
       skipped++;

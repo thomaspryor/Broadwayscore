@@ -206,3 +206,22 @@ test('wiring: apply leaves fetch-failed entries pending and persists the counter
   assert.match(batch, /applyFigureEvidence\(builtForApply, entry, \{\}\)[^]*?sanitizeForPublicRecord\(\s*builtForApply/, 'batch --apply marks figures as estimates before sanitising: no unverified AI figure prints as fact');
 });
 
+test('apply --no-source-verify (hourly RSS poll): figure-bearing entries stay pending, nothing is fetched, nothing applied', () => {
+  const dir = fs.mkdtempSync(path.resolve('tests/.bro4758b-'));
+  try {
+    fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: { example: { ...entry, sources: [source] } } }));
+    fs.writeFileSync(path.join(dir, 'commercial.json'), JSON.stringify({ shows: {} }));
+    fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: [{ ...show, id: 'example-2025', slug: 'example', category: 'broadway', status: 'open' }] }));
+    const args = ['scripts/apply-commercial-pending.js', '--all', '--min-confidence=high', '--dry-run', `--pending-file=${dir}/pending.json`, `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`];
+    const out = execFileSync(process.execPath, [...args, '--no-source-verify'], { encoding: 'utf8' });
+    assert.match(out, /need page verification; left pending for the verified pass/);
+    assert.match(out, /would apply 0, skip 1/);
+    // Control with no cited source (so no network is touched either way): without the flag the entry is processed
+    // by the verifier path instead of being skipped for verification.
+    fs.writeFileSync(path.join(dir, 'pending.json'), JSON.stringify({ shows: { example: { ...entry, sources: [] } } }));
+    const control = execFileSync(process.execPath, [...args], { encoding: 'utf8' });
+    assert.doesNotMatch(control, /need page verification/);
+    assert.match(control, /would apply 1, skip 0/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
