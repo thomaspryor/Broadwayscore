@@ -315,5 +315,5 @@ test('loadCookieMeta: bundle has cookies but NO _meta + env has meta -> must sti
 test('cookie-loader writes no diagnostics to stdout', async () => {
   const { readFileSync } = await import('node:fs');
   const src = readFileSync(new URL('./cookie-loader.js', import.meta.url), 'utf8');
-  assert.equal(/console\.(log|info)\(|process\.stdout\.write/.test(src), false);
+  assert.equal(/console\.(log|info|debug|dir|table|trace)\(|process\.stdout\.write/.test(src), false);
 });

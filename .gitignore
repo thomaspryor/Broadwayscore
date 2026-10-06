@@ -561,3 +561,7 @@ traffic-analysis/
 /data/audit/worktree-gc.launchd.log
 /data/audit/verify-merge-landed.log
 /data/audit/untracked-sweep-state.json
+
+# Python bytecode (BRO-4780: tracked .pyc was rewritten by every cookie-renewal test run)
+__pycache__/
+*.pyc
