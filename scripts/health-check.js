@@ -2850,6 +2850,19 @@ function checkPushRetryDeadman() {
   return [assessPushRetryDeadman(readPushRetryFailureLedgerOrNull())];
 }
 
+// --- Shared checkout depth (BRO-2049) ---
+// LOCAL-FOLD(checkSharedCheckoutShallow): health-check.js runs only in GitHub Actions
+// (data-health-check.yml, ubuntu-latest), which cannot see the Mac Studio's shared checkout, and CI
+// checkouts are shallow by design. So in CI this returns NO row (never a reassuring pass) and the real
+// measurement is shallowDigestRow() folded into send-morning-digest.js, which runs on the Mac under
+// launchd. Run by hand on the Mac, this row measures the canonical main checkout. `deps` exists for tests.
+function checkSharedCheckoutShallow(deps = {}) {
+  const { shallowDigestRow } = require('./lib/shared-checkout-shallow.js');
+  const ci = deps.ci !== undefined ? deps.ci : (!!process.env.CI || !!process.env.GITHUB_ACTIONS || process.env.CLAUDE_CODE_REMOTE === 'true');
+  if (ci) return [];
+  return [shallowDigestRow({ fromDir: __dirname, deps: { ...deps, ci: false } })];
+}
+
 // --- Category I3: Infra-review gate telemetry (task #1095) ---
 //
 // The #1079 gate (~/.claude/hooks/infra-plan-review-gate.sh,
@@ -5245,6 +5258,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...(await checkAlertRouterDeadman(isCI)),
     ...checkPushRetryDeadman(),
     ...checkInfraReviewGate(),
+    ...checkSharedCheckoutShallow(),
     ...checkDispatchOutcomes(dryRun),
     ...checkDispatchHealth(),
     ...(await checkCmuxReachability()),
@@ -5498,4 +5512,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };

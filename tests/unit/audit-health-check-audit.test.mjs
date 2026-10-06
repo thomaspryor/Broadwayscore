@@ -23,6 +23,7 @@ const AUDITED = [
   { fn: 'checkAutofixCanary', disposition: 'fold', digestTokens: ['assessCanaryRow({', 'autofix-canary-ledger.jsonl\');', 'sections.health.errors.push'] },
   { fn: 'checkAutofixThroughput', disposition: 'fold', digestTokens: ['assessThroughputRow({ digestLedgerEntries: rows', 'throughputDeathMessage(t', 'BACKLOG_LEDGER_PATH = path.join'] },
   { fn: 'checkDigestInvariantFail', disposition: 'fold', digestTokens: ['assessDigestInvariantFailRow(entries)', 'digest-invariant-fail-ledger.jsonl\');'] },
+  { fn: 'checkSharedCheckoutShallow', disposition: 'fold', digestTokens: ['shallowDigestRow({ fromDir: REPO })', 'sections.health.errors.push'] },
   { fn: 'checkDispatchHealth', disposition: 'fold', digestTokens: ['computeDispatchHealthDigest({ entries: dispatchEntries', 'computeHeadlessDispatchDigest({ entries: dispatchEntries', 'sections.health.errors.push'] },
 ];
 
