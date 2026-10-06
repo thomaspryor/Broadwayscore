@@ -755,6 +755,41 @@
       "attempts": 1,
       "candidates": 10,
       "ingested": 1
+    },
+    "spamalot-tour-2025|2026-08-11|Denver": {
+      "at": "2026-10-06",
+      "done": true,
+      "attempts": 1,
+      "candidates": 10,
+      "ingested": 2
+    },
+    "spamalot-tour-2025|2026-08-04|Kansas City": {
+      "at": "2026-10-06",
+      "done": true,
+      "attempts": 1,
+      "candidates": 10,
+      "ingested": 0
+    },
+    "spamalot-tour-2025|2026-07-28|Greenville": {
+      "at": "2026-10-06",
+      "done": true,
+      "attempts": 1,
+      "candidates": 10,
+      "ingested": 0
+    },
+    "spamalot-tour-2025|2026-07-21|Atlanta": {
+      "at": "2026-10-06",
+      "done": false,
+      "attempts": 1,
+      "candidates": 10,
+      "ingested": 2
+    },
+    "spamalot-tour-2025|2026-07-14|Milwaukee": {
+      "at": "2026-10-06",
+      "done": true,
+      "attempts": 1,
+      "candidates": 10,
+      "ingested": 0
     }
   },
   "refused": {
@@ -773,741 +808,54 @@
     "https://www.broadwayworld.com/minneapolis/regional/the-music-man-4366250": "2026-10-06"
   },
   "lastRun": {
-    "at": "2026-10-06T02:40:42.797Z",
-    "searched": 108,
-    "ingested": 54,
-    "outOfWindow": 11,
+    "at": "2026-10-06T02:44:50.506Z",
+    "searched": 5,
+    "ingested": 3,
+    "outOfWindow": 0,
     "stops": [
       {
-        "key": "and-juliet-tour-2024|2026-09-15|Calgary",
-        "why": "recent",
-        "searched": true,
-        "query": "\"& Juliet\" review Calgary",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/calgary/article/Review-JULIET-at-Southern-Alberta-Jubilee-Auditorium-20260916",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "and-juliet-tour-2024|2026-09-22|Edmonton",
-        "why": "recent",
-        "searched": true,
-        "query": "\"& Juliet\" review Edmonton",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/edmonton/article/Review-JULIET-Sparkles-at-Edmontons-Northern-Alberta-Jubilee-Auditorium-20260924",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "and-juliet-tour-2024|2026-09-29|Vancouver",
-        "why": "recent",
-        "searched": true,
-        "query": "\"& Juliet\" review Vancouver",
-        "candidates": 9,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/vancouver/article/Review-JULIET-Breaks-Free-From-Shakespeares-Ending-in-Vancouver-20261004",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "beetlejuice-tour-2026|2026-10-02|Kansas City",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Beetlejuice\" review Kansas City",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/kansas-city/article/Review-BEETLEJUICE-THE-MUSICAL-at-Starlight-Theatre-20261003",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "buena-vista-social-club-tour-2026|2026-10-06|Tampa",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Buena Vista Social Club\" review Tampa",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/atlanta/article/Interview-Robert-M-Jimenez-of-BUENA-VISTA-SOCIAL-CLUB-at-The-Fox-Theatre-20261004",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "hells-kitchen-tour-2025|2026-09-23|Toronto",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Hell's Kitchen\" review Toronto",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://nowtoronto.com/culture/theatre/alicia-keys-hells-kitchen-toronto-review/",
-            "outletId": null,
-            "action": "new"
-          },
-          {
-            "url": "https://www.goaheadsumi.com/reviews-hells-kitchen-amelie-aye-caesar-wine-in-the-wilderness-to-a-flame/",
-            "outletId": "so-sumi",
-            "action": "new"
-          },
-          {
-            "url": "https://www.theglobeandmail.com/culture/stage/article-hells-kitchen-at-the-caa-ed-mirvish-theatre-is-a-rarity-a-jukebox/",
-            "outletId": "the-globe-and-mail",
-            "action": "new"
-          },
-          {
-            "url": "https://slotkinletter.com/2026/09/review-hells-kitchen",
-            "outletId": null,
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "maybe-happy-ending-tour-2026|2026-09-13|Baltimore",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Maybe Happy Ending\" review Baltimore",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://playbill.com/article/photos-get-a-1st-look-at-the-maybe-happy-ending-north-american-tour",
-            "outletId": "playbill",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "maybe-happy-ending-tour-2026|2026-09-29|Greenville",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Maybe Happy Ending\" review Greenville",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/south-carolina/article/Review-MAYBE-HAPPY-ENDING-at-the-Peace-Center-20261001",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "maybe-happy-ending-tour-2026|2026-10-06|Washington",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Maybe Happy Ending\" review Washington",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.theatermania.com/news/savy-jackson-to-take-over-role-of-claire-in-maybe-happy-ending-on-broadway_1856173/",
-            "outletId": "theatermania",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-great-gatsby-tour-2026|2026-09-15|Cincinnati",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Great Gatsby\" review Cincinnati",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.leagueofcincytheatres.info/review-the-great-gatsby-roars-into-the-aronoff-center-in-grand-style/",
-            "outletId": null,
-            "action": "new"
-          },
-          {
-            "url": "https://www.citybeat.com/arts/theater/great-gatsby-actress-speaks-on-opening-night-tuesday-aronoff/",
-            "outletId": "city-beat",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 1,
-        "complete": false
-      },
-      {
-        "key": "the-great-gatsby-tour-2026|2026-09-29|Hartford",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Great Gatsby\" review Hartford",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
-            "outletId": "hartford-courant",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-notebook-tour-2025|2026-09-22|Detroit",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Notebook\" review Detroit",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/article/Video-Alysha-Deslorieux-is-Hitting-the-Road-With-THE-NOTEBOOK-20260921",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-outsiders-tour-2025|2026-09-08|Denver",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Outsiders\" review Denver",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-OUTSIDERS-at-Hollywood-Pantages-Theatre-20261002",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-outsiders-tour-2025|2026-09-30|Los Angeles",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Outsiders\" review Los Angeles",
-        "candidates": 9,
-        "ingested": [
-          {
-            "url": "https://www.latimes.com/entertainment-arts/story/2026-10-05/outsiders-review-musical-theater-tony-winner-hollywood-pantages",
-            "outletId": "latimes",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "water-for-elephants-tour-2025|2026-09-08|Los Angeles",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Water for Elephants\" review Los Angeles",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.latimes.com/entertainment-arts/story/2026-09-14/water-for-elephants-at-pantages-is-circus-in-play",
-            "outletId": "latimes",
-            "action": "new"
-          },
-          {
-            "url": "https://stagescenela.com/2026/09/water-for-elephants/",
-            "outletId": "stagescenela",
-            "action": "new"
-          },
-          {
-            "url": "https://stageraw.com/stage-raw-review-water-for-elephants/",
-            "outletId": "stage-raw",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "water-for-elephants-tour-2025|2026-09-29|Portland",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Water for Elephants\" review Portland",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/portland/article/Review-WATER-FOR-ELEPHANTS-at-Keller-Auditorium-20261001",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "oh-mary-tour-2026|2026-09-19|Hartford",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Oh, Mary!\" review Hartford",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://playbill.com/article/watch-check-in-with-the-touring-cast-of-oh-mary-as-they-prepare-to-wreak-havoc-all-across-north-america",
-            "outletId": "playbill",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 1,
-        "complete": false
-      },
-      {
-        "key": "oh-mary-tour-2026|2026-10-06|Las Vegas",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Oh, Mary!\" review Las Vegas",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.dailyactor.com/reviews/oh-mary-national-tour-alaska-thunderfck/",
-            "outletId": null,
-            "action": "new"
-          },
-          {
-            "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-San-Diego-Civic-Theatre-20261002",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "operation-mincemeat-tour-2026|2026-09-20|Providence",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Operation Mincemeat\" review Providence",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.wpri.com/rhode-show/88-five-star-reviews-and-counting-operation-mincemeat-arrives-at-ppac/",
-            "outletId": null,
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "hamilton-tour-2024|2026-09-29|Orlando",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Hamilton\" review Orlando",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.clickorlando.com/news/local/2026/10/01/a-hamilton-review-from-a-first-timer/",
-            "outletId": null,
-            "action": "new"
-          },
-          {
-            "url": "https://www.orlandosentinel.com/2026/10/01/hamilton-hits-all-the-right-notes-for-precarious-times-review/",
-            "outletId": "orlando-sentinel",
-            "action": "new"
-          },
-          {
-            "url": "https://www.broadwayworld.com/orlando/article/Review-Revisiting-HAMILTON-as-Her-Story-at-Dr-Phillips-Center-For-The-Performing-Arts-20261002",
-            "outletId": "broadwayworld",
-            "action": "new"
-          },
-          {
-            "url": "https://www.orlandoweekly.com/arts/things-to-do/hit-musical-hamilton-returns-for-orlando-run/",
-            "outletId": "orlando-weekly",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-lion-king-tour-2021|2026-09-09|Pittsburgh",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Lion King\" review Pittsburgh",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/indianapolis/article/Review-Join-the-Circle-of-Life-with-THE-LION-KING-at-Murat-Theatre-20261004",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "beauty-and-the-beast-tour-2025|2026-09-15|Las Vegas",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Beauty and the Beast\" review Las Vegas",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://soundwavestv.com/2026/09/10/review-beauty-and-the-beast/",
-            "outletId": null,
-            "action": "new"
-          },
-          {
-            "url": "https://www.broadwayworld.com/austria/article/Review-DISNEYS-BEAUTY-AND-THE-BEAST-at-Raimund-Theater-Wien-20260926",
-            "outletId": "broadwayworld",
-            "action": "new"
-          },
-          {
-            "url": "https://insidethemagic.net/2026/09/debbie-gibson-beauty-beast-las-vegas-emd1/",
-            "outletId": "insidethemagic",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "beauty-and-the-beast-tour-2025|2026-09-22|Costa Mesa",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Beauty and the Beast\" review Costa Mesa",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.ocregister.com/2026/09/24/review-a-revamped-beauty-and-the-beast-in-costa-mesa-stays-true-to-its-tale/",
-            "outletId": "oc-register",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 1,
-        "complete": false
-      },
-      {
-        "key": "the-sound-of-music-tour-2025|2026-10-06|San Antonio",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Sound of Music\" review San Antonio",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/buffalo/article/THE-SOUND-OF-MUSIC-to-Play-Buffalo-This-December-20260929",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "spamalot-tour-2025|2026-10-06|Boston",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Spamalot\" review Boston",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.bostonherald.com/2026/10/03/spamalot-brings-full-monty-python-to-boston/",
-            "outletId": "boston-herald",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-music-man-tour-2026|2026-09-13|McAllen",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Music Man\" review McAllen",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/article/THE-MUSIC-MAN-Extends-2026-National-Tour-20260908",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-music-man-tour-2026|2026-09-15|Houston",
-        "why": "recent",
-        "searched": true,
-        "query": "\"The Music Man\" review Houston",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.houstonpress.com/arts/a-classy-classic-musical-the-music-man-at-tuts/",
-            "outletId": "houston-press",
-            "action": "new"
-          },
-          {
-            "url": "https://www.houstonchronicle.com/entertainment/theater/article/tuts-music-man-show-season-opener-houston-hobby-22440871.php",
-            "outletId": "houston-chronicle",
-            "action": "new"
-          },
-          {
-            "url": "https://www.houstonpress.com/arts/the-music-man-at-tuts-dreams-and-schemes-and-76-trombones/",
-            "outletId": "houston-press",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "mamma-mia-tour-2026|2026-09-15|Minneapolis",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Mamma Mia!\" review Minneapolis",
-        "candidates": 9,
-        "ingested": [
-          {
-            "url": "https://www.phenomnaltwincities.com/review-mamma-mia-4/",
-            "outletId": null,
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 1,
-        "complete": false
-      },
-      {
-        "key": "mamma-mia-tour-2026|2026-09-22|Milwaukee",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Mamma Mia!\" review Milwaukee",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/milwaukee/article/Review-MAMMA-MIA-at-Marcus-Performing-Arts-Center-20260924-2458188",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "harry-potter-tour-2024|2026-09-19|Salt Lake City",
-        "why": "recent",
-        "searched": true,
-        "query": "\"Harry Potter and the Cursed Child\" review Salt Lake City",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://utahconcertreview.com/harry-potter-and-the-cursed-child/",
-            "outletId": null,
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "beetlejuice-tour-2026|2026-09-08|Hamilton",
+        "key": "spamalot-tour-2025|2026-08-11|Denver",
         "why": "backfill",
         "searched": true,
-        "query": "\"Beetlejuice\" review Hamilton",
+        "query": "\"Spamalot\" review Denver",
         "candidates": 10,
         "ingested": [
           {
-            "url": "https://www.broadwayworld.com/kansas-city/article/BEETLEJUICE-Will-Play-Kansas-City-at-Starlight-Theatre-20260922",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "hells-kitchen-tour-2025|2026-09-08|Charlotte",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"Hell's Kitchen\" review Charlotte",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/charlotte/article/Review-HELLS-KITCHEN-at-Blumenthal-Performing-Arts-20260919",
-            "outletId": "broadwayworld",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "wicked-tour-2021|2026-09-02|Des Moines",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"Wicked\" review Des Moines",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/des-moines/article/Review-WICKED-at-Civic-Center-Of-Greater-Des-Moines-20260907",
-            "outletId": "broadwayworld",
+            "url": "https://onstagecolorado.com/a-revamped-spamalot-gallops-into-the-buell/",
+            "outletId": "onstage-colorado",
             "action": "new"
           },
           {
-            "url": "https://www.axios.com/local/des-moines/2026/09/01/iowan-brings-wicked-home-to-des-moines",
-            "outletId": "axios",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "the-outsiders-tour-2025|2026-09-01|Fayetteville",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"The Outsiders\" review Fayetteville",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/little-rock/article/Review-THE-OUTSIDERS-MUSICAL-at-Walton-Arts-Center-20260903",
-            "outletId": "broadwayworld",
-            "action": "new"
-          },
-          {
-            "url": "https://fayettevilleflyer.com/2026/08/26/tony-award-winning-musical-the-outsiders-arrives-inside-the-walton-arts-center-on-sept-1/",
-            "outletId": "fayetteville-flyer",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "spamalot-tour-2025|2026-08-28|Victoria",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"Spamalot\" review Victoria",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://australianpridenetwork.com.au/monty-pythons-spamalot-review/",
-            "outletId": null,
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "water-for-elephants-tour-2025|2026-08-25|Salt Lake City",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"Water for Elephants\" review Salt Lake City",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-WATER-FOR-ELEPHANTS-is-a-Ride-at-the-Eccles-Theater-20260826",
-            "outletId": "broadwayworld",
+            "url": "https://www.cbsnews.com/colorado/news/monty-pythons-spamalot-musical-denver-classic-comedy/",
+            "outletId": "cbsnews",
             "action": "updated"
+          }
+        ],
+        "outOfWindow": 0,
+        "errors": 0,
+        "complete": true
+      },
+      {
+        "key": "spamalot-tour-2025|2026-07-21|Atlanta",
+        "why": "backfill",
+        "searched": true,
+        "query": "\"Spamalot\" review Atlanta",
+        "candidates": 10,
+        "ingested": [
+          {
+            "url": "https://roughdraftatlanta.com/2026/07/23/spamalot-atlanta-review/",
+            "outletId": "rough-draft-atlanta",
+            "action": "new"
           },
           {
-            "url": "https://utahconcertreview.com/water-for-elephants/",
-            "outletId": null,
+            "url": "https://roughdraftatlanta.com/2026/07/24/spamalot/",
+            "outletId": "rough-draft-atlanta",
             "action": "new"
           }
         ],
         "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "spamalot-tour-2025|2026-08-25|Spokane",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"Spamalot\" review Spokane",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://www.spokesman.com/stories/2026/aug/20/actor-major-attaway-leads-seriously-silly-spamalot/",
-            "outletId": "the-spokesman-review",
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
-      },
-      {
-        "key": "harry-potter-tour-2024|2026-08-22|Seattle",
-        "why": "backfill",
-        "searched": true,
-        "query": "\"Harry Potter and the Cursed Child\" review Seattle",
-        "candidates": 10,
-        "ingested": [
-          {
-            "url": "https://equality365.com/review-harry-potter-and-the-cursed-child/",
-            "outletId": null,
-            "action": "new"
-          }
-        ],
-        "outOfWindow": 0,
-        "errors": 0,
-        "complete": true
+        "errors": 2,
+        "complete": false
       }
     ]
   }
