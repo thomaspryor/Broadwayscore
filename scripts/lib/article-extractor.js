@@ -493,12 +493,29 @@ function extractTheatreWeeklyBody(html) {
   return stripHtml(cut);
 }
 
+function extractRadioTimesBody(html) {
+  const inner = extractBalancedDivByClass(html, 'post__content');
+  if (!inner) return null;
+  const cleaned = removeBalancedDivBlocks(inner, ['consent-placeholder', 'ad-slot', 'newsletter']);
+  // Ticket-buying sections follow the verdict. Keep editorial subheadings, but
+  // stop before the outlet's standard where/when/how-to-book headings.
+  const body = cleaned.split(/<h2\b[^>]*>\s*(?:<strong>)?\s*(?:Where can I see|When can I see|How to get)[\s\S]*?<\/h2>/i)[0];
+  return [...body.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .filter((m) => !/href=["']https?:\/\/prf\.hn\//i.test(m[1]))
+    .map((m) => stripHtml(m[1]))
+    .filter((text) => text && !/^Make sure you also check out\b/i.test(text))
+    .join('\n\n');
+}
+
 /**
  * Per-outlet patterns. Order matters: most specific first.
- * Each entry: [hostnameMatch, regex, minLength].
+ * Each entry: [hostnameMatch, regex or text extractor function, minLength].
  * minLength gates against accidental shell-match (e.g. matching 200 chars of nav).
  */
 const PATTERNS = [
+  // Radio Times: the body nests ratings, ads and image divs. Balanced matching
+  // keeps every paragraph and excludes the pension/sidebar and disclosure copy.
+  ['radiotimes.com', extractRadioTimesBody, 300],
   // Telegraph — never had an extractor pattern (task #720 added it to WE
   // discovery but extraction was never built), so every telegraph.co.uk
   // review silently saved as a stub even though the free cookie-plain fetch
@@ -704,7 +721,28 @@ const DEDICATED_EXTRACTOR_HOSTS = [
   'talkinbroadway.com', 'theatreweekly.com',
 ];
 
+const PROMO_BOILERPLATE_PATTERNS = [
+  /\bpension\s+guide\b|\bguide to accessing your pension\b/i,
+  /\bwe may earn (?:a )?commission\b/i,
+  /\bsubscribe (?:(?:now|today|to (?:our|the) (?:newsletter|magazine))\b|for [£$€])/i,
+  /\b(?:sign up|subscribe) (?:for|to) (?:our|the|[\w'-]+(?:\s+[\w'-]+){0,3}) newsletter\b/i,
+  /\bthis site is protected by recaptcha\b|\bcontent provided by (?:Google )?recaptcha\b/i,
+  /\brecaptcha (?:privacy policy|terms of service)\b/i,
+];
+
 function extractArticleText(html, hostname, criticHint) {
+  const text = extractArticleTextUnchecked(html, hostname, criticHint);
+  const host = String(hostname || '').toLowerCase();
+  const isRadioTimes = host === 'radiotimes.com' || host.endsWith('.radiotimes.com');
+  // Reject Radio Times promotions before any caller can save or score them.
+  // Match boilerplate phrases, not standalone words that can occur in criticism.
+  if (isRadioTimes && text && PROMO_BOILERPLATE_PATTERNS.some((pattern) => pattern.test(text))) {
+    return null;
+  }
+  return text;
+}
+
+function extractArticleTextUnchecked(html, hostname, criticHint) {
   if (!html || typeof html !== 'string') return null;
   const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
   const isDedicatedHost = DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d));
@@ -827,6 +865,11 @@ function extractArticleText(html, hostname, criticHint) {
   for (const [hostMatch, re, minLen] of PATTERNS) {
     if (hostMatch && !host.includes(hostMatch)) continue;
     if (hostMatch) matchedDedicatedPattern = true;
+    if (typeof re === 'function') {
+      const text = re(html);
+      // A known body missing from the page must not fall back to promo chrome.
+      return text && text.length >= minLen ? text : null;
+    }
     // Generic fallbacks (hostMatch === null) pick the LARGEST match, not the
     // first — sidebar teaser cards on Next.js/SPA sites use <article> too, and
     // the first <article> on the page is often a teaser (Joe Turner 2026-04-26
