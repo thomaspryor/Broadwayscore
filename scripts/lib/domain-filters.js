@@ -11,6 +11,9 @@
 const SOCIAL_DOMAINS = new Set([
   'facebook.com', 'instagram.com', 'twitter.com', 'x.com',
   'youtube.com', 'youtu.be', 'tiktok.com', 'threads.net',
+  // threads.com is the same site; Google now returns it (BRO-4656 tour-stop
+  // discovery tried to ingest a threads.com post as a review).
+  'threads.com', 'bsky.app',
   'reddit.com', 'linkedin.com', 'tumblr.com', 'pinterest.com',
   'vimeo.com', 'spotify.com', 'music.amazon.com', 'apple.com',
 ]);
