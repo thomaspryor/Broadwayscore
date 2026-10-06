@@ -12,6 +12,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { assessSharedCheckoutShallow } = require('../../scripts/lib/shared-checkout-shallow.js');
 const { checkSharedCheckoutShallow } = require('../../scripts/health-check.js');
+const { canonicalCheckoutRoot, shallowDigestRow } = require('../../scripts/lib/shared-checkout-shallow.js');
 
 const git = (cwd, ...args) => execFileSync('git', ['-c', 'user.name=t', '-c', 'user.email=t@example.com', '-c', 'commit.gpgsign=false', ...args], { cwd, stdio: 'pipe', env: { ...process.env, GIT_DIR: undefined, GIT_WORK_TREE: undefined } });
 
@@ -67,13 +68,26 @@ test('health-check: a real shallow clone goes warn, a real full clone passes', (
   } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
 
-test('health-check: CI or cloud never inspects the checkout, so a shallow one still passes', () => {
+test('health-check in CI or cloud returns NO row (never a reassuring pass) and never touches git', () => {
   const { base, shallow } = makeRepos();
   try {
-    assert.equal(checkSharedCheckoutShallow({ ci: true, root: shallow })[0].status, 'pass');
+    assert.deepEqual(checkSharedCheckoutShallow({ ci: true, root: shallow }), []);
     let called = false;
     checkSharedCheckoutShallow({ ci: true, root: shallow, isShallow: () => { called = true; return true; } });
     assert.equal(called, false, 'no git call in CI');
+  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+});
+
+test('the digest-sender row: real shallow clone warns, full passes, CI passes, run from a worktree it inspects the main checkout', () => {
+  const { base, full, shallow } = makeRepos();
+  try {
+    assert.equal(shallowDigestRow({ fromDir: shallow, deps: { ci: false } }).status, 'warn');
+    assert.equal(shallowDigestRow({ fromDir: full, deps: { ci: false } }).status, 'pass');
+    assert.equal(shallowDigestRow({ fromDir: shallow, deps: { ci: true } }).status, 'pass', 'CI/cloud is shallow by design');
+    const wt = path.join(base, 'wt');
+    git(shallow, 'worktree', 'add', '-q', '-b', 'wt-branch', wt);
+    assert.equal(fs.realpathSync(canonicalCheckoutRoot(wt)), fs.realpathSync(shallow), 'a worktree resolves to the shared checkout');
+    assert.equal(shallowDigestRow({ fromDir: wt, deps: { ci: false } }).status, 'warn', 'and reports the shared checkout\'s depth');
   } finally { fs.rmSync(base, { recursive: true, force: true }); }
 });
 
@@ -86,7 +100,23 @@ test('health-check: a path that is not a git checkout warns instead of passing',
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
-test('the check is in the daily check list, so the digest actually carries the row', () => {
-  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../../scripts/health-check.js'), 'utf8');
-  assert.match(src, /^\s*\.\.\.checkSharedCheckoutShallow\(\),$/m);
+test('the Mac-side digest sender folds the row into health.errors (health-check.js alone can never measure it)', () => {
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '../../scripts');
+  const digest = fs.readFileSync(path.join(dir, 'send-morning-digest.js'), 'utf8');
+  assert.match(digest, /shallowDigestRow\(\{ fromDir: REPO \}\)/);
+  assert.match(digest, /shallowRow\.status === 'warn'[^]*?sections\.health\.errors\.push/);
+  const health = fs.readFileSync(path.join(dir, 'health-check.js'), 'utf8');
+  assert.match(health, /^\s*\.\.\.checkSharedCheckoutShallow\(\),$/m, 'also registered for manual Mac runs of health-check.js');
 });
+
+test('a corrupt .git reads as unreadable (warn), never as full history', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2049-corrupt-'));
+  try {
+    fs.mkdirSync(path.join(dir, '.git'));
+    fs.writeFileSync(path.join(dir, '.git', 'HEAD'), 'garbage');
+    const row = shallowDigestRow({ fromDir: dir, deps: { ci: false, root: dir } });
+    assert.equal(row.status, 'warn');
+    assert.match(row.message, /Could not read/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+

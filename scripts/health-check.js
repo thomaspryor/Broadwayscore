@@ -2851,20 +2851,16 @@ function checkPushRetryDeadman() {
 }
 
 // --- Shared checkout depth (BRO-2049) ---
-// Not a ledger read: asks git about the canonical main checkout (resolved through the git common dir, like
-// infraReviewLedgerRoot, so a worktree run inspects the shared checkout and not itself). CI and cloud
-// sandboxes are shallow by design, so the row is a pass there. `deps` exists for tests.
+// LOCAL-FOLD(checkSharedCheckoutShallow): health-check.js runs only in GitHub Actions
+// (data-health-check.yml, ubuntu-latest), which cannot see the Mac Studio's shared checkout, and CI
+// checkouts are shallow by design. So in CI this returns NO row (never a reassuring pass) and the real
+// measurement is shallowDigestRow() folded into send-morning-digest.js, which runs on the Mac under
+// launchd. Run by hand on the Mac, this row measures the canonical main checkout. `deps` exists for tests.
 function checkSharedCheckoutShallow(deps = {}) {
-  const { assessSharedCheckoutShallow } = require('./lib/shared-checkout-shallow.js');
-  const { isShallowRepo } = require('./lib/landing-verify.js');
+  const { shallowDigestRow } = require('./lib/shared-checkout-shallow.js');
   const ci = deps.ci !== undefined ? deps.ci : (!!process.env.CI || !!process.env.GITHUB_ACTIONS || process.env.CLAUDE_CODE_REMOTE === 'true');
-  const root = deps.root || infraReviewLedgerRoot();
-  let shallow = null;
-  if (!ci) {
-    const hasGit = deps.hasGit !== undefined ? deps.hasGit : fs.existsSync(path.join(root, '.git'));
-    if (hasGit) shallow = (deps.isShallow || isShallowRepo)(root);
-  }
-  return [assessSharedCheckoutShallow({ ci, shallow, root })];
+  if (ci) return [];
+  return [shallowDigestRow({ fromDir: __dirname, deps: { ...deps, ci: false } })];
 }
 
 // --- Category I3: Infra-review gate telemetry (task #1095) ---

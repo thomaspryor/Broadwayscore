@@ -46,4 +46,35 @@ function assessSharedCheckoutShallow({ ci, shallow, root = '~/Broadwayscore' } =
   return { name, status: 'pass', message: 'Shared checkout has full history' };
 }
 
-module.exports = { assessSharedCheckoutShallow };
+/** The canonical main checkout for `fromDir`: via the git common dir, so a worktree resolves to the shared checkout. */
+function canonicalCheckoutRoot(fromDir, run = (cmd, args, opts) => require('child_process').execFileSync(cmd, args, opts)) {
+  const path = require('path');
+  try {
+    const common = String(run('git', ['rev-parse', '--git-common-dir'], { cwd: fromDir, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })).trim();
+    if (!common) return fromDir;
+    return path.dirname(path.isAbsolute(common) ? common : path.join(fromDir, common));
+  } catch { return fromDir; }
+}
+
+/**
+ * The row for the machine that owns the shared checkout. Used by scripts/send-morning-digest.js (launchd on
+ * the Mac) because scripts/health-check.js runs only in GitHub Actions and cannot see the Mac's checkout.
+ * `deps` exists for tests: ci, isShallow(root), hasGit(root), root.
+ */
+function shallowDigestRow({ fromDir, deps = {} } = {}) {
+  const ci = deps.ci !== undefined ? deps.ci : (!!process.env.CI || !!process.env.GITHUB_ACTIONS || process.env.CLAUDE_CODE_REMOTE === 'true');
+  const root = deps.root || canonicalCheckoutRoot(fromDir);
+  let shallow = null;
+  if (!ci) {
+    // `git rev-parse --git-dir` succeeding is the check, not the mere existence of .git: isShallowRepo returns
+    // false on any git error, so a corrupt checkout must be caught here or it would read as full history.
+    const hasGit = deps.hasGit ? deps.hasGit(root) : (() => {
+      try { require('child_process').execFileSync('git', ['rev-parse', '--git-dir'], { cwd: root, stdio: 'ignore' }); return true; } catch { return false; }
+    })();
+    const isShallow = deps.isShallow || require('./landing-verify.js').isShallowRepo;
+    if (hasGit) shallow = isShallow(root);
+  }
+  return assessSharedCheckoutShallow({ ci, shallow, root });
+}
+
+module.exports = { assessSharedCheckoutShallow, canonicalCheckoutRoot, shallowDigestRow };
