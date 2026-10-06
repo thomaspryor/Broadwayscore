@@ -132,6 +132,27 @@ test('a corrupt baseline fails the run instead of reading as "nothing accepted"'
   } finally { f.cleanup(); }
 });
 
+test('the per-show gate (--show) ignores the baseline, so a broken baseline cannot disable it', () => {
+  const f = fixture();
+  try {
+    fs.writeFileSync(f.baselinePath, '<<<<<<< HEAD\n{');
+    const r = f.run('--show=old-show-2020', '--single-show-delta=0', '--strict');
+    assert.equal(r.status, 2, r.stderr); // reaches the threshold breach (2), not the exit-1 "cannot run"
+  } finally { f.cleanup(); }
+});
+
+test('summary.blindShows counts dirs the scan cannot judge (no shows.json entry or no dates)', () => {
+  const f = fixture({
+    shows: [OLD_SHOW, { id: 'undated-show' }],
+    files: { 'old-show-2020': [[HIDDEN_FILE, REVIEW]], 'undated-show': [[HIDDEN_FILE, REVIEW]], 'no-entry-show': [[HIDDEN_FILE, REVIEW]] },
+    baseline: { 'old-show-2020': [HIDDEN_FILE] },
+  });
+  try {
+    assert.equal(f.run('--strict').status, 0);
+    assert.equal(f.audit().summary.blindShows, 2);
+  } finally { f.cleanup(); }
+});
+
 test('an empty shows.json fails the run instead of passing blind', () => {
   const f = fixture({ shows: [] });
   try {

@@ -409,7 +409,9 @@ function main() {
   }
 
   // 2b. Shows outside the opening window: alert only on a NEW suppression -------
-  const baseline = loadSuppressionBaseline();
+  // The per-show broadcast gate (--show) never consults the baseline, so a broken baseline file
+  // cannot turn that gate into an exit-1 "cannot run" that the workflow treats as non-blocking.
+  const baseline = showFilter ? { shows: {} } : loadSuppressionBaseline();
   const outOfWindowRows = showFilter ? [] : perShow.filter((r) => !windowIds.has(r.showDir));
   let newOffenders = findNewOffenders(outOfWindowRows, baseline, SHOW_DELTA_THRESHOLD);
   if (updateBaseline) {
@@ -469,6 +471,9 @@ function main() {
       filesScanned: totalScanned,
       showsOverThreshold: showsOverThreshold.length,
       newOffenders: newOffenders.length,
+      // Review-text dirs with no usable production window (no shows.json entry, or no opening/previews date).
+      // The scan cannot judge them, so they always report 0 hidden; this makes the blind spot visible.
+      blindShows: targetShows.filter((id) => !showById[id] || !(showById[id].openingDate || showById[id].previewsStartDate)).length,
       orphanReviews: orphanReviews.length,
     },
     thresholds: {
