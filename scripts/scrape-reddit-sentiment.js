@@ -34,7 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
 const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh, redditBackoffReason, redditSaveDecision } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -79,6 +79,15 @@ const staleDays = staleDaysArg ? parseInt(staleDaysArg.split('=')[1], 10) : 45;
 // re-dispatches the same shows ~7x/day at ~10 ScrapingBee credits per request.
 const skipFreshArg = args.find(a => a.startsWith('--skip-fresh-hours='));
 const skipFreshHours = skipFreshArg ? parseFloat(skipFreshArg.split('=')[1]) : 0;
+// BRO-4777: one policy drives both halves of the Reddit backoff, so the runs
+// that read the streak are the runs that write it. An explicit
+// --skip-fresh-hours=0 is a forced refresh (update-show-status, just-opened
+// shows); --show, --all, shards, --refresh-stale and --shows=missing are manual
+// or already-bounded selections. Everything else (the 1st/15th schedule run,
+// bot dispatches with --shows) skips shows whose Reddit can't count yet.
+const forcedRefresh = Boolean(skipFreshArg) && !(skipFreshHours > 0);
+const applyRedditBackoff = !forcedRefresh && !showFilter && !includeAll && !refreshStale && !shardMode && showsArg !== 'missing';
+const stampRedditAttempts = !dryRun && !shardMode;
 
 // Config — subreddits per market
 const SUBREDDIT_BW = 'broadway';
@@ -622,17 +631,6 @@ async function main() {
       console.error(`No shows found matching: ${showsArg}`);
       process.exit(1);
     }
-    if (skipFreshHours > 0) {
-      const fresh = shows.filter(s => isRedditFresh((audienceBuzz.shows || {})[s.id], skipFreshHours, Date.now(), s));
-      if (fresh.length > 0) {
-        console.log(`Skipping ${fresh.length} show(s) with Reddit touched in the last ${skipFreshHours}h: ${fresh.map(s => s.id).join(', ')}`);
-        shows = shows.filter(s => !fresh.includes(s));
-      }
-      if (shows.length === 0) {
-        console.log('All requested shows are fresh — nothing to scrape.');
-        process.exit(0);
-      }
-    }
     console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
   } else if (refreshStale) {
     // Score-window shows: open/previews, or closed within the 3yr Reddit-
@@ -682,6 +680,31 @@ async function main() {
     shows = shows.filter(s => isMostRecentProduction(s));
     const skipped = beforeCount - shows.length;
     if (skipped > 0) console.log(`Filtered ${skipped} older productions (kept most recent per title)`);
+  }
+
+  // Freshness + backoff gate. Runs before --skip/--limit/sharding so a
+  // continuation offset counts the same shows on every attempt.
+  if (applyRedditBackoff) {
+    const nowMs = Date.now();
+    const skippedBy = {};
+    shows = shows.filter(s => {
+      const rec = (audienceBuzz.shows || {})[s.id];
+      const reason = redditBackoffReason(rec, s, nowMs) || (isRedditFresh(rec, skipFreshHours, nowMs, s) ? 'fresh' : null);
+      if (reason) (skippedBy[reason] = skippedBy[reason] || []).push(s.id);
+      return !reason;
+    });
+    const labels = {
+      fresh: `Reddit touched in the last ${skipFreshHours}h`,
+      'no-data': 'no Reddit discussion found recently (backoff)',
+      'below-floor': 'Reddit sample too small to count toward the grade (backoff)',
+    };
+    for (const [reason, ids] of Object.entries(skippedBy)) {
+      console.log(`Skipping ${ids.length} show(s) with ${labels[reason]}: ${ids.join(', ')}`);
+    }
+    if (shows.length === 0) {
+      console.log('All selected shows are fresh or backing off — nothing to scrape.');
+      process.exit(0);
+    }
   }
 
   // Apply skip (for continuation after timeout)
@@ -738,7 +761,13 @@ async function main() {
       const after = getStats();
       if (after.errors > errorsBefore || after.circuitBroken) showFetchFailed = true;
 
-      if (redditData && !dryRun) {
+      const prevReddit = audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].sources
+        ? audienceBuzz.shows[show.id].sources.reddit : undefined;
+      const saveDecision = redditData && !dryRun && !shardMode
+        ? redditSaveDecision(prevReddit, redditData, { fetchFailed: showFetchFailed }) : null;
+      if (saveDecision === 'keep-existing') {
+        console.warn(`  ⚠️  Fetch errors left only ${redditData.reviewCount} Reddit items (stored sample: ${prevReddit.reviewCount}) — keeping the stored sample`);
+      } else if (redditData && !dryRun) {
         successful++;
 
         if (shardMode) {
@@ -748,14 +777,22 @@ async function main() {
           console.log(`  Saved to shard-${shard}.json (${successful}/${shows.length} complete)`);
         } else {
           // Direct mode: update and save after EACH show (checkpoint)
+          const prevStreak = (audienceBuzz.shows[show.id] && audienceBuzz.shows[show.id].redditNoDataStreak) || 0;
           updateAudienceBuzz(show.id, redditData);
+          if (saveDecision === 'save-below-floor' && stampRedditAttempts && !showFetchFailed) {
+            // BRO-4777: a sample too small to count toward the grade backs off
+            // like a no-data result (updateAudienceBuzz just cleared the streak).
+            audienceBuzz.shows[show.id].redditLastAttempted = new Date().toISOString();
+            audienceBuzz.shows[show.id].redditNoDataStreak = prevStreak + 1;
+          }
           if (saveAudienceBuzz()) {
             console.log(`  Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
           }
         }
-      } else if ((refreshStale || skipFreshHours > 0) && !dryRun && !shardMode && !redditData && !showFetchFailed) {
-        // BRO-4215: also stamped under --skip-fresh-hours, or a no-data show (typical
-        // for a new opening) would never look fresh and be re-scraped every dispatch.
+      } else if (stampRedditAttempts && !redditData && !showFetchFailed) {
+        // BRO-4215/BRO-4777: stamped in every non-dry, non-shard run, or a no-data
+        // show (typical for a new opening) would never back off and be re-scraped
+        // on every dispatch and every schedule run.
         // No Reddit data this run (no qualifying posts / below MIN items). Stamp an
         // attempt marker so the oldest-first --refresh-stale drain doesn't re-select
         // this no-signal show on EVERY run and stall behind it (a bounded --limit run

@@ -277,3 +277,41 @@ test('isRedditFresh caps the no-data backoff at 2 days within 14 days of opening
   assert.equal(isRedditFresh(rec, 20, now, { previewsStartDate: '2026-10-10' }), false, 'previews in 9 days: capped');
   assert.equal(isRedditFresh(rec, 20, now, { openingDate: '2026-06-01' }), true, 'months after opening: full backoff');
 });
+
+test('redditBackoffReason (BRO-4777): below-floor samples back off like no-data, without a freshness window', () => {
+  const { redditBackoffReason, isRedditFresh } = require('./reddit-post-filters.js');
+  const now = Date.parse('2026-10-06T12:00:00Z');
+  const h = (n) => new Date(now - n * 3600 * 1000).toISOString();
+  // Saved a 12-item sample 30h ago; the scraper stamps the attempt just after the save.
+  const small = (hoursAgo, streak, reviewCount = 12) => ({
+    sources: { reddit: { score: 70, reviewCount, lastUpdated: h(hoursAgo + 0.01) } },
+    redditLastAttempted: h(hoursAgo),
+    redditNoDataStreak: streak,
+  });
+  assert.equal(redditBackoffReason(small(30, 2), null, now), 'below-floor', 'streak 2 holds 2 days');
+  assert.equal(redditBackoffReason(small(50, 2), null, now), null, 'retries after 2 days');
+  assert.equal(redditBackoffReason(small(24 * 10, 5), null, now), 'below-floor', 'streak 5 holds 14 days');
+  assert.equal(redditBackoffReason(small(24 * 10, 5), { openingDate: '2026-10-01' }, now), null, 'near opening: 2-day cap');
+  assert.equal(redditBackoffReason(small(30, 2, 49), null, now), 'below-floor', '49 items is below the floor');
+  assert.equal(redditBackoffReason({ sources: {}, redditLastAttempted: h(5), redditNoDataStreak: 1 }, null, now), 'no-data');
+  assert.equal(redditBackoffReason(undefined, null, now), null, 'never touched');
+  assert.equal(redditBackoffReason({ sources: { reddit: { score: 80, reviewCount: 300, lastUpdated: h(2) } } }, null, now), null,
+    'a counting sample has no streak, so no backoff');
+  // isRedditFresh composes the same backoff with its window; hours=0 still forces.
+  assert.equal(isRedditFresh(small(30, 2), 20, now), true);
+  assert.equal(isRedditFresh(small(30, 2), 0, now), false, 'forced refresh ignores the backoff');
+});
+
+test('redditSaveDecision (BRO-4777): fetch errors never demote a counting Reddit sample', () => {
+  const { redditSaveDecision } = require('./reddit-post-filters.js');
+  const counting = { score: 80, reviewCount: 120 };
+  const small = { score: 70, reviewCount: 20 };
+  const big = { score: 75, reviewCount: 90 };
+  assert.equal(redditSaveDecision(counting, small, { fetchFailed: true }), 'keep-existing', 'partial scrape would drop it below 50');
+  assert.equal(redditSaveDecision(counting, small, { fetchFailed: false }), 'save-below-floor', 'a clean scrape is believed');
+  assert.equal(redditSaveDecision(counting, big, { fetchFailed: true }), 'save', 'still counts: save as today');
+  assert.equal(redditSaveDecision(undefined, small, { fetchFailed: true }), 'save-below-floor', 'nothing to protect');
+  assert.equal(redditSaveDecision({ score: null, reviewCount: 120 }, small, { fetchFailed: true }), 'save-below-floor',
+    'a stored sample with no score never counted');
+  assert.equal(redditSaveDecision(small, { score: 70, reviewCount: 50 }), 'save', '50 is at the floor');
+});

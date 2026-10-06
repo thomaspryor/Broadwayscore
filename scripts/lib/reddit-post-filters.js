@@ -342,11 +342,13 @@ function lastRedditTouchMs(buzzRecord) {
   return lastSourceTouchMs(buzzRecord, 'reddit', 'redditLastAttempted');
 }
 
-// Shows that keep coming back with no Reddit discussion back off: after the
-// Nth consecutive clean no-data attempt (redditNoDataStreak) the next search
-// waits this many days. On 2026-09-30, 25 of 27 shows in one dispatch had no
-// Reddit posts and each re-search cost ~100-200 ScrapingBee credits, every day,
-// for the whole opening window. Any found data resets the streak.
+// Shows whose Reddit can't reach the audience grade back off: after the Nth
+// consecutive clean attempt that found no data OR a sample below the grade's
+// volume floor (redditNoDataStreak; the field predates BRO-4777's widening to
+// below-floor results), the next search waits this many days. On 2026-09-30,
+// 25 of 27 shows in one dispatch had no Reddit posts and each re-search cost
+// ~100-200 ScrapingBee credits, every day, for the whole opening window. A
+// sample at or above the floor resets the streak.
 const REDDIT_NO_DATA_BACKOFF_DAYS = [1, 2, 4, 8, 14];
 
 // Within this many days of a show's previews start or opening, the backoff
@@ -354,27 +356,58 @@ const REDDIT_NO_DATA_BACKOFF_DAYS = [1, 2, 4, 8, 14];
 const REDDIT_OPENING_WINDOW_DAYS = 14;
 const REDDIT_OPENING_BACKOFF_CAP_DAYS = 2;
 
-function isRedditFresh(buzzRecord, hours, nowMs = Date.now(), show = null) {
-  if (!(hours > 0)) return false; // 0 = forced refresh (just-opened shows)
-  if (isSourceFresh(buzzRecord, 'reddit', hours, { attemptField: 'redditLastAttempted', nowMs })) return true;
+const { isRedditBelowVolumeFloor } = require('./audience-weighting');
+
+/**
+ * Why a Reddit re-scrape should wait, independent of any caller's freshness
+ * window: 'below-floor' (last sample too small to count) or 'no-data', while
+ * the redditNoDataStreak backoff is running. null = no backoff. The default
+ * schedule run has no freshness window, so it calls this directly (BRO-4777).
+ */
+function redditBackoffReason(buzzRecord, show = null, nowMs = Date.now()) {
   const rec = buzzRecord || {};
   const streak = rec.redditNoDataStreak || 0;
   const attempted = rec.redditLastAttempted ? new Date(rec.redditLastAttempted).getTime() : NaN;
-  const dataAt = rec.sources && rec.sources.reddit && rec.sources.reddit.lastUpdated
-    ? new Date(rec.sources.reddit.lastUpdated).getTime() : -Infinity;
-  if (!(streak > 0) || Number.isNaN(attempted) || attempted < dataAt) return false;
+  const reddit = rec.sources && rec.sources.reddit;
+  const dataAt = reddit && reddit.lastUpdated ? new Date(reddit.lastUpdated).getTime() : -Infinity;
+  if (!(streak > 0) || Number.isNaN(attempted) || attempted < dataAt) return null;
   let days = REDDIT_NO_DATA_BACKOFF_DAYS[Math.min(streak, REDDIT_NO_DATA_BACKOFF_DAYS.length) - 1];
   const nearOpening = show && ['openingDate', 'previewsStartDate'].some((k) => {
     const t = show[k] ? new Date(show[k]).getTime() : NaN;
     return !Number.isNaN(t) && Math.abs(nowMs - t) <= REDDIT_OPENING_WINDOW_DAYS * 86400 * 1000;
   });
   if (nearOpening) days = Math.min(days, REDDIT_OPENING_BACKOFF_CAP_DAYS);
-  return nowMs - attempted < Math.max(hours * 3600 * 1000, days * 86400 * 1000);
+  if (nowMs - attempted >= days * 86400 * 1000) return null;
+  return reddit && isRedditBelowVolumeFloor(reddit) ? 'below-floor' : 'no-data';
+}
+
+function isRedditFresh(buzzRecord, hours, nowMs = Date.now(), show = null) {
+  if (!(hours > 0)) return false; // 0 = forced refresh (just-opened shows)
+  if (isSourceFresh(buzzRecord, 'reddit', hours, { attemptField: 'redditLastAttempted', nowMs })) return true;
+  return redditBackoffReason(buzzRecord, show, nowMs) !== null;
+}
+
+/**
+ * What to do with a fresh scrape result for one show (BRO-4777):
+ *  'keep-existing'     the scrape hit fetch errors and would demote a sample
+ *                      that counts toward the grade to one that doesn't, so a
+ *                      proxy outage can't knock a show's Reddit out of its grade
+ *  'save-below-floor'  save it, and grow the backoff streak (unless fetches failed)
+ *  'save'              save it; the streak resets
+ */
+function redditSaveDecision(prevReddit, nextReddit, { fetchFailed = false } = {}) {
+  const nextBelow = isRedditBelowVolumeFloor(nextReddit);
+  if (fetchFailed && nextBelow && prevReddit && prevReddit.score != null && !isRedditBelowVolumeFloor(prevReddit)) {
+    return 'keep-existing';
+  }
+  return nextBelow ? 'save-below-floor' : 'save';
 }
 
 module.exports = {
   lastRedditTouchMs,
   isRedditFresh,
+  redditBackoffReason,
+  redditSaveDecision,
   REDDIT_NO_DATA_BACKOFF_DAYS,
   isRoundupOrMegathread,
   isGenericTitle,
