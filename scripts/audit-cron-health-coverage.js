@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt } = require('./lib/cron-coverage');
+const { isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt, worstGapHours, loadDigestCrons, validateExemptEntries, parseExemptEntries, parsePagingCrons, digestCadenceError } = require('./lib/cron-coverage');
 
 const CUSHION_HOURS = 12;
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
@@ -48,70 +48,6 @@ const TIGHT_BY_DESIGN = {
   'commercial-rss-poll.yml': { maxHours: 8, why: 'GitHub throttles this hourly cron to ~1.5-5.5h real cadence (max observed 5h31m, 2026-09-16->20); expression-derived gap=1h is fiction' },
 };
 
-function parseField(field, min, max) {
-  if (field === '*') return null; // wildcard
-  const out = new Set();
-  for (const part of field.split(',')) {
-    if (part.startsWith('*/')) {
-      const step = parseInt(part.slice(2), 10);
-      for (let v = min; v <= max; v += step) out.add(v);
-    } else if (part.includes('-')) {
-      const [a, b] = part.split('-').map(Number);
-      for (let v = a; v <= b; v++) out.add(v);
-    } else {
-      out.add(parseInt(part, 10));
-    }
-  }
-  return out;
-}
-
-// Compute worst-case gap (hours) across a 60-day window, treating multiple crons as a union.
-function worstGapHours(cronExprs) {
-  const matchers = cronExprs.map(expr => {
-    const [m, h, dom, mon, dow] = expr.split(/\s+/);
-    return {
-      m: parseField(m, 0, 59),
-      h: parseField(h, 0, 23),
-      dom: parseField(dom, 1, 31),
-      mon: parseField(mon, 1, 12),
-      dow: parseField(dow, 0, 6),
-    };
-  });
-
-  const fires = [];
-  const start = new Date(Date.UTC(2026, 0, 5, 0, 0, 0)); // Mon 2026-01-05 — neutral start
-  const WINDOW_MIN = 60 * 24 * 60; // 60 days
-
-  for (let i = 0; i < WINDOW_MIN; i++) {
-    const t = new Date(start.getTime() + i * 60_000);
-    const tm = t.getUTCMinutes(), th = t.getUTCHours();
-    const tdom = t.getUTCDate(), tmon = t.getUTCMonth() + 1, tdow = t.getUTCDay();
-    for (const c of matchers) {
-      if (c.m && !c.m.has(tm)) continue;
-      if (c.h && !c.h.has(th)) continue;
-      if (c.mon && !c.mon.has(tmon)) continue;
-      // cron oddity: when dom and dow are both set, they're an OR
-      const domOk = !c.dom || c.dom.has(tdom);
-      const dowOk = !c.dow || c.dow.has(tdow);
-      if (c.dom && c.dow) {
-        if (!domOk && !dowOk) continue;
-      } else {
-        if (!domOk || !dowOk) continue;
-      }
-      fires.push(t.getTime());
-      break;
-    }
-  }
-
-  if (fires.length < 2) return null; // can't determine (seasonal cron or never fires)
-
-  let maxGap = 0;
-  for (let i = 1; i < fires.length; i++) {
-    maxGap = Math.max(maxGap, fires[i] - fires[i - 1]);
-  }
-  return Math.round(maxGap / 3_600_000);
-}
-
 function extractCrons(wfPath) {
   if (!fs.existsSync(wfPath)) return [];
   const yaml = fs.readFileSync(wfPath, 'utf8');
@@ -123,7 +59,7 @@ function main() {
   // Entry format: "file.yml|max_hours|Friendly Name[|active_months]" — the
   // optional 4th field (e.g. "4-6") marks seasonal crons checked only in
   // those months.
-  const entries = [...ch.matchAll(/"([a-z0-9-]+\.yml)\|(\d+)\|([^"|]+)(?:\|(\d+-\d+))?"/g)];
+  const entries = parsePagingCrons(ch).map(entry => ['', entry.workflow, String(entry.maxHours), entry.name, entry.activeMonths]);
 
   let failures = 0, warnings = 0, skipped = 0;
   console.log(`Auditing ${entries.length} check-cron-health entries (cushion: ${CUSHION_HOURS}h)\n`);
@@ -174,10 +110,23 @@ function main() {
   const scheduledSet = new Set(scheduled);
   const exempt = parseExemptList(fs.existsSync(EXEMPT_FILE) ? fs.readFileSync(EXEMPT_FILE, 'utf8') : '');
 
+  const digest = loadDigestCrons(path.join(__dirname, '..'));
+  const exemptionErrors = validateExemptEntries(parseExemptEntries(fs.readFileSync(EXEMPT_FILE, 'utf8')), digest);
+  for (const entry of parseExemptEntries(fs.readFileSync(EXEMPT_FILE, 'utf8')).filter(entry => entry.mode === 'digest')) {
+    const workflowPath = path.join(WORKFLOWS_DIR, entry.workflow);
+    if (!fs.existsSync(workflowPath)) continue; // Existing stale-exemption reporting below.
+    const error = digestCadenceError(entry, fs.readFileSync(workflowPath, 'utf8'));
+    if (error) exemptionErrors.push(error);
+  }
+  exemptionErrors.forEach(error => console.log(`  Invalid exemption: ${error}`));
+  if (!digest.some(entry => entry.workflow === 'check-cron-health.yml')) {
+    exemptionErrors.push('check-cron-health.yml needs an independent digest monitor');
+    console.log('  Invalid coverage: check-cron-health.yml has no independent digest monitor');
+  }
   const uncovered = findUncoveredScheduled(scheduled, covered, exempt);
   const stale = findStaleExempt(exempt, scheduledSet, covered);
 
-  console.log(`\nCoverage: ${scheduled.length} scheduled workflows — ${covered.size} in CRITICAL_CRONS, ${exempt.size} exempt, ${uncovered.length} uncovered.`);
+  console.log(`\nCoverage: ${scheduled.length} scheduled workflows — ${covered.size} in CRITICAL_CRONS, ${exempt.size} exempt, ${uncovered.length} uncovered, ${digest.length} digest monitors, ${exemptionErrors.length} invalid exemptions.`);
 
   // Stale exempt entries are advisory (don't block) — they just mean the allowlist drifted.
   if (stale.notScheduled.length) {
@@ -189,13 +138,13 @@ function main() {
     warnings += stale.alsoCovered.length;
   }
 
-  let coverageFailures = 0;
+  let coverageFailures = exemptionErrors.length;
   if (uncovered.length) {
     console.log(`\n🔴 ${uncovered.length} scheduled workflow(s) have NO monitoring (not in CRITICAL_CRONS, not exempt):`);
     uncovered.forEach(f => console.log(`     ${f}`));
     console.log(`  fix: add each to check-cron-health.yml CRITICAL_CRONS (real-time paging) OR to`);
     console.log(`       .cron-health-exempt.txt (digest-only / low-stakes). Don't leave a cron unmonitored.`);
-    coverageFailures = uncovered.length;
+    coverageFailures += uncovered.length;
   }
 
   if (failures > 0) {
@@ -203,7 +152,7 @@ function main() {
     process.exit(1);
   }
   if (coverageFailures > 0) {
-    console.log(`\n::error::${coverageFailures} scheduled workflow(s) are unmonitored — add to CRITICAL_CRONS or .cron-health-exempt.txt.`);
+    console.log(`\n::error::${coverageFailures} scheduled workflow coverage errors: missing monitoring or invalid exemptions.`);
     process.exit(1);
   }
   if (warnings > 0 && process.argv.includes('--strict')) {

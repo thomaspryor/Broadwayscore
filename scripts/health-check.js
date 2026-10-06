@@ -29,6 +29,7 @@
  */
 
 const fs = require('fs');
+const { loadDigestCrons, isCronActive } = require('./lib/cron-coverage');
 const path = require('path');
 const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
@@ -539,7 +540,7 @@ function checkPushVerification() {
   return PUSH_VERIFY_CHECKS.map(({ file, field, workflow, name, maxDriftH }) =>
     runCheck(`Push verify: ${file}`, () => {
       try {
-        // Get last successful workflow run time. Cached: 15 CRITICAL_CRONS
+        // Get last successful workflow run time. Cached: configured CRITICAL_CRONS
         // entries + this check all share ONE shared PAT/rate-limit budget
         // across every concurrently-dispatched session on this Mac — see
         // scripts/lib/gh-api-cache.js header for why.
@@ -2120,35 +2121,17 @@ function checkSEO() {
 
 // --- Category H: Cron Health (via GitHub API) ---
 
-function checkCronHealth() {
+function checkCronHealth(readRuns = workflow => cachedShell(
+  runCacheKey(`cron:${workflow}`), ghRunsQuery(workflow, { limit: 5 })
+)) {
   // Uses `gh` CLI to check last run of critical workflows
   if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
     return [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
   }
 
-  // Keep in sync with .github/workflows/check-cron-health.yml CRITICAL_CRONS.
-  // User-facing data refresh workflows were added 2026-04-14 so that their
-  // most-recent-run failures surface in the daily digest with fix-now
-  // urgency (playbook entry: `^Cron failed:`). Owner reads the email, not
-  // the Discord channel the workflow's native notify-failure targets.
-  const CRITICAL_CRONS = [
-    { workflow: 'update-show-status.yml', maxHours: 36, name: 'Update Show Status' },
-    { workflow: 'rebuild-reviews.yml', maxHours: 36, name: 'Rebuild Reviews' },
-    { workflow: 'collect-review-texts.yml', maxHours: 36, name: 'Collect Review Texts' },
-    { workflow: 'llm-ensemble-score.yml', maxHours: 48, name: 'LLM Ensemble Score' },
-    { workflow: 'test.yml', maxHours: 48, name: 'Test Suite' },
-    { workflow: 'opening-night-broadcast.yml', maxHours: 36, name: 'Opening Night Broadcast' },
-    { workflow: 'update-lottery-rush.yml', maxHours: 192, name: 'Update Lottery/Rush' },
-    { workflow: 'weekly-grosses.yml', maxHours: 192, name: 'Weekly Grosses' },
-    { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
-    { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
-    { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
-    { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
-    { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
-    // 6-hourly; 24h = four missed runs. If this goes dark the evidence layer
-    // (roundup-anchored selection + missing-show candidates) silently stops.
-    { workflow: 'audit-reverse-discovery.yml', maxHours: 24, name: 'Reverse Discovery' },
-  ];
+  // Read paging and explicitly classified digest entries from their canonical files.
+  const CRITICAL_CRONS = loadDigestCrons(path.join(__dirname, '..'))
+    .filter(entry => isCronActive(entry, new Date().getUTCMonth() + 1));
 
   return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
     runCheck(`Cron: ${name}`, () => {
@@ -2160,13 +2143,10 @@ function checkCronHealth() {
         // job on the very next run — see task #80, ~75% of Test Suite runs on main
         // cancel this way. Same single API call, five records.
         // Cached (shared across every concurrently-dispatched session on this
-        // Mac, see scripts/lib/gh-api-cache.js): 15 entries in this array is
-        // 15 gh calls PER health-check.js run, and this runs on every
+        // Mac, see scripts/lib/gh-api-cache.js): one call per configured cron
+        // on a cold cache, and this runs on every
         // /ship-check + /wrap-up across ~dozens of dispatches/day.
-        const result = cachedShell(
-          runCacheKey(`cron:${workflow}`),
-          ghRunsQuery(workflow, { limit: 5 })
-        );
+        const result = readRuns(workflow);
         const runs = sortRunsNewestFirst(result ? JSON.parse(result) : []);
         if (!runs.length) {
           return { name: `Cron: ${name}`, status: 'warn', message: 'No runs found' };
@@ -5467,4 +5447,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
+module.exports = { checkCronHealth, loadDigestCrons, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };
