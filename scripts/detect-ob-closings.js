@@ -181,34 +181,30 @@ function runTodayTixStalenessDiff(obShows) {
  * Writes the two-signal-confirmed closures to shows.json. Anything short of
  * both signals is left for the alert path.
  */
-function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) {
+function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped, options = {}) {
   // Without a fresh TodayTix feed the staleness counters are whatever the last
   // successful run committed, which is not a second signal — it is the same
   // signal replayed. Fall back to alert-only.
   if (todaytixSkipped) return [];
 
   const showsById = Object.fromEntries((showsData.shows || []).map((s) => [s.id, s]));
-  const missingState = loadJson(STATE_PATH, {});
+  const missingState = loadJson(options.statePath || STATE_PATH, {});
   const selected = selectAutoApplyClosures(candidates, showsById, missingState, todayISO());
   if (selected.length === 0 || dryRun) return selected;
 
-  const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+  const { loadShows, saveShows } = (options.createGuard || createShowsWriteGuard)(options.showsPath || SHOWS_PATH);
   const snapshot = loadShows();
-  const byId = Object.fromEntries(snapshot.shows.map((s) => [s.id, s]));
   const written = [];
-  for (const closure of selected) {
-    const show = byId[closure.showId];
-    // Re-check under the write lock: a concurrent writer may have set a date
-    // between our read and this save.
-    if (!show || show.status !== 'open' || show.closingDate) continue;
-    // writeClosingDate honours humanCorrectedClosingDate and stamps
-    // closingDateSource/closingDateUpdatedAt — the same guard every other
-    // automated closing-date writer goes through.
-    if (!writeClosingDate(show, closure.closingDate, 'ob-closing-detector', { todayStr: todayISO() })) continue;
-    show.status = 'closed';
-    written.push(closure);
-  }
-  if (written.length > 0) saveShows(snapshot);
+  saveShows(snapshot, { mutateFresh(fresh) {
+    const byId = Object.fromEntries(fresh.shows.map((s) => [s.id, s]));
+    for (const closure of selectAutoApplyClosures(candidates, byId, missingState, todayISO())) {
+      const show = byId[closure.showId];
+      if (!writeClosingDate(show, closure.closingDate, 'ob-closing-detector', { todayStr: todayISO() })) continue;
+      show.status = 'closed';
+      written.push(closure);
+    }
+    return written.length > 0;
+  } });
   // Report only what actually landed: a report claiming a closure the write
   // lock rejected would read as fixed while the site still says open.
   return written;
@@ -230,23 +226,23 @@ function applyConfirmedClosures(showsData, candidates, dryRun, todaytixSkipped) 
  * stale Oct 4 date. Anything the guard rejects is left in the backlog for
  * human review instead of being silently written.
  */
-function applyFutureClosingDateFills(showsData, suppressed, dryRun) {
+function applyFutureClosingDateFills(showsData, suppressed, dryRun, options = {}) {
   const candidates = (suppressed || []).filter(isEligibleForFutureClosingDateFill);
   if (candidates.length === 0 || dryRun) return candidates;
 
-  const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
+  const { loadShows, saveShows } = (options.createGuard || createShowsWriteGuard)(options.showsPath || SHOWS_PATH);
   const snapshot = loadShows();
-  const byId = Object.fromEntries(snapshot.shows.map((s) => [s.id, s]));
   const written = [];
-  for (const c of candidates) {
-    const show = byId[c.showId];
-    // Re-check under the write lock: a concurrent writer, or this show
-    // actually closing between our read and this save, may have set a date.
-    if (!show || show.closingDate) continue;
-    if (!writeClosingDate(show, c.proposedClosingDate, 'ob-closing-detector (future date, review agreement)', { todayStr: todayISO() })) continue;
-    written.push(c);
-  }
-  if (written.length > 0) saveShows(snapshot);
+  saveShows(snapshot, { mutateFresh(fresh) {
+    const byId = Object.fromEntries(fresh.shows.map((s) => [s.id, s]));
+    for (const c of candidates) {
+      const show = byId[c.showId];
+      if (!show || show.status !== 'open' || show.closingDate || show.todaytixStalenessIgnore === true) continue;
+      if (!writeClosingDate(show, c.proposedClosingDate, 'ob-closing-detector (future date, review agreement)', { todayStr: todayISO() })) continue;
+      written.push(c);
+    }
+    return written.length > 0;
+  } });
   return written;
 }
 
@@ -359,4 +355,6 @@ function main() {
   console.log(`\nReport written to ${path.relative(ROOT, REPORT_PATH)}`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { applyConfirmedClosures, applyFutureClosingDateFills };

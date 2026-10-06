@@ -417,3 +417,87 @@ test('aggregate: carries the latest mentioned date, not just the most-cited', ()
   assert.equal(proposal.proposedClosingDate, '2026-08-30');
   assert.equal(proposal.latestMentionedDate, '2026-09-13');
 });
+
+// Exercise production writers and the real lock/atomic save with isolated files.
+const fs = require('node:fs');
+const path = require('node:path');
+const { createShowsWriteGuard } = require('./shows-write-guard.js');
+const { applyConfirmedClosures, applyFutureClosingDateFills } = require('../detect-ob-closings.js');
+const { FUTURE_DATE_NOT_YET_CLOSED } = require('./ob-closing-detector.js');
+
+for (const mode of ['confirmed', 'future']) {
+  for (const concurrentChange of [
+    { todaytixStalenessIgnore: true },
+    { humanCorrectedClosingDate: true },
+    { status: 'closed' },
+    { closingDate: '2025-01-02' },
+    { title: 'Human updated title' },
+  ]) {
+    test(`${mode} revalidates fresh records after concurrent ${Object.keys(concurrentChange)[0]} change`, (t) => {
+      const dir = fs.mkdtempSync(path.join(process.cwd(), '.claude/bro3834-test-'));
+      t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+      const showsPath = path.join(dir, 'shows.json');
+      const statePath = path.join(dir, 'state.json');
+      const original = { shows: ['protected', 'eligible'].map(id => ({ id, status: 'open', category: 'off-broadway' })), _meta: {} };
+      fs.writeFileSync(showsPath, JSON.stringify(original, null, 2));
+      fs.writeFileSync(statePath, JSON.stringify(Object.fromEntries(original.shows.map(s => [s.id, { consecutiveMissingChecks: 3, firstMissingDate: '2000-01-01' }]))));
+      const candidates = original.shows.map(s => ({ showId: s.id, confidence: 'high', proposedClosingDate: mode === 'confirmed' ? '2001-01-01' : '2099-01-01', reason: mode === 'confirmed' ? 'review agreement' : FUTURE_DATE_NOT_YET_CLOSED, evidence: [] }));
+      const options = { showsPath, statePath, createGuard(p) {
+        const guard = createShowsWriteGuard(p);
+        return { ...guard, saveShows(data, opts) {
+          // This writer lands after the detector loaded, before it acquires its lock.
+          const human = createShowsWriteGuard(p);
+          const fresh = human.loadShows();
+          Object.assign(fresh.shows[0], concurrentChange);
+          fresh.shows[0].humanNote = 'preserve this unrelated same-record field';
+          human.saveShows(fresh);
+          return guard.saveShows(data, opts);
+        } };
+      } };
+      const result = mode === 'confirmed'
+        ? applyConfirmedClosures(original, candidates, false, false, options)
+        : applyFutureClosingDateFills(original, candidates, false, options);
+      const saved = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
+      const blocked = !('title' in concurrentChange);
+      assert.deepEqual(result.map(c => c.showId), blocked ? ['eligible'] : ['protected', 'eligible']);
+      for (const [key, value] of Object.entries(concurrentChange)) assert.equal(saved[0][key], value);
+      assert.equal(saved[0].humanNote, 'preserve this unrelated same-record field');
+      assert.equal(saved[0].closingDate, blocked ? concurrentChange.closingDate : candidates[0].proposedClosingDate);
+      assert.equal(saved[0].status, concurrentChange.status || (blocked || mode === 'future' ? 'open' : 'closed'));
+      assert.equal(saved[1].closingDate, candidates[1].proposedClosingDate);
+      assert.equal(saved[1].status, mode === 'confirmed' ? 'closed' : 'open');
+      assert.equal(fs.existsSync(`${showsPath}.lock`), false);
+    });
+  }
+}
+
+for (const mode of ['confirmed', 'future']) {
+  test(`${mode} does not rewrite the file when every record becomes protected`, (t) => {
+    const dir = fs.mkdtempSync(path.join(process.cwd(), '.claude/bro3834-noop-'));
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const showsPath = path.join(dir, 'shows.json');
+    const statePath = path.join(dir, 'state.json');
+    const original = { shows: [{ id: 'x', status: 'open' }], _meta: {} };
+    fs.writeFileSync(showsPath, JSON.stringify(original, null, 2));
+    fs.writeFileSync(statePath, JSON.stringify({ x: { consecutiveMissingChecks: 3, firstMissingDate: '2000-01-01' } }));
+    const candidate = { showId: 'x', confidence: 'high', proposedClosingDate: mode === 'confirmed' ? '2001-01-01' : '2099-01-01', reason: mode === 'confirmed' ? 'review agreement' : FUTURE_DATE_NOT_YET_CLOSED };
+    let humanBytes;
+    const options = { showsPath, statePath, createGuard(p) {
+      const guard = createShowsWriteGuard(p);
+      return { ...guard, saveShows(data, opts) {
+        const human = createShowsWriteGuard(p);
+        const fresh = human.loadShows();
+        fresh.shows[0].humanCorrectedClosingDate = true;
+        human.saveShows(fresh);
+        humanBytes = fs.readFileSync(p, 'utf8');
+        return guard.saveShows(data, opts);
+      } };
+    } };
+    const result = mode === 'confirmed'
+      ? applyConfirmedClosures(original, [candidate], false, false, options)
+      : applyFutureClosingDateFills(original, [candidate], false, options);
+    assert.deepEqual(result, []);
+    assert.equal(fs.readFileSync(showsPath, 'utf8'), humanBytes);
+    assert.equal(fs.existsSync(`${showsPath}.lock`), false);
+  });
+}

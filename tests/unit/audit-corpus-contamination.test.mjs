@@ -17,6 +17,7 @@ const {
   applyFlag,
   applyClear,
 } = require('../../scripts/audit-corpus-contamination.js');
+const { isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
 
 function makeCorpus(showFiles) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'audit-corpus-'));
@@ -266,6 +267,57 @@ test('applyFlag still writes wrongProduction for a bare wrongProduction:false (a
   const updated = JSON.parse(fs.readFileSync(target, 'utf8'));
   assert.equal(updated.wrongProduction, true);
 });
+
+test('applyClear reverses applyFlag so the central guard includes the review (BRO-3591)', (t) => {
+  const dir = makeCorpus({
+    'cats-2026': {
+      'nyt--unknown.json': { showId: 'cats-2026', originalScore: '4/5' },
+    },
+  });
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const target = path.join(dir, 'cats-2026', 'nyt--unknown.json');
+  const show = { id: 'cats-2026' };
+  const readReview = () => JSON.parse(fs.readFileSync(target, 'utf8'));
+  assert.equal(isIncludableForRebuild(readReview(), show), true);
+
+  applyFlag(target, 'mistaken production flag');
+  assert.equal(isIncludableForRebuild(readReview(), show), false);
+  applyClear(target, 'verified correct production');
+
+  const cleared = readReview();
+  assert.equal(isIncludableForRebuild(cleared, show), true);
+  assert.equal(Object.hasOwn(cleared, 'wrongProduction'), false);
+  assert.equal(Object.hasOwn(cleared, 'wrongProductionNote'), false);
+  assert.equal(cleared.wrongProductionAuditCleared, true);
+  assert.equal(cleared.wrongProductionAuditClearedNote, 'verified correct production');
+  assert.ok(cleared.wrongProductionAuditClearedAt);
+  assert.equal(cleared.originalScore, '4/5');
+  assert.throws(() => applyFlag(target, 'attempted reflag'), /wrongProductionAuditCleared=true/);
+});
+
+for (const exclusion of ['wrongShow', 'wrongAttribution']) {
+  test(`applyClear preserves the unrelated ${exclusion} exclusion (BRO-3591)`, (t) => {
+    const dir = makeCorpus({
+      'cats-2026': {
+        'nyt--unknown.json': {
+          showId: 'cats-2026', originalScore: '4/5',
+          wrongProduction: true, wrongProductionNote: 'another setter',
+          [exclusion]: true,
+        },
+      },
+    });
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const target = path.join(dir, 'cats-2026', 'nyt--unknown.json');
+    applyClear(target, 'verified production only');
+    applyClear(target, 'verified production again');
+    const cleared = JSON.parse(fs.readFileSync(target, 'utf8'));
+    assert.equal(Object.hasOwn(cleared, 'wrongProduction'), false);
+    assert.equal(Object.hasOwn(cleared, 'wrongProductionNote'), false);
+    assert.equal(cleared[exclusion], true);
+    assert.equal(isIncludableForRebuild(cleared, { id: 'cats-2026' }), false);
+    assert.equal(cleared.wrongProductionAuditClearedNote, 'verified production again');
+  });
+}
 
 test('SUSPECT_SOURCES covers every source tag written by the pre-BRO-736 SERP/site-search discovery paths', () => {
   for (const s of [

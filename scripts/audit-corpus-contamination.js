@@ -196,6 +196,9 @@ function applyFlag(target, note) {
 function applyClear(target, note) {
   const full = resolveTargetPath(target);
   const review = JSON.parse(fs.readFileSync(full, 'utf8'));
+  // Reverse a prior flag so the central inclusion guard honors this clear.
+  delete review.wrongProduction;
+  delete review.wrongProductionNote;
   review.wrongProductionAuditCleared = true;
   review.wrongProductionAuditClearedNote = note || `Audit (BRO-2271): manually verified — correct production despite embedded-year mismatch`;
   review.wrongProductionAuditClearedAt = new Date().toISOString();

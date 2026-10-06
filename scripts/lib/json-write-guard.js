@@ -296,16 +296,30 @@ function createJsonWriteGuard(filePath, opts = {}) {
    *
    * @param {object} data - The file's object (as returned by load()).
    * @param {object} [options]
+   * @param {(fresh: object) => boolean|void} [options.mutateFresh] - Synchronous
+   *   mutation of freshly read data under the lock, instead of merging stale
+   *   caller edits. Return false to skip writing when nothing is eligible;
+   *   the caller object and its load snapshot then remain unchanged.
    * @param {boolean} [options.allowShrink] - Forwarded to atomicWriteJson;
    *   pass when the caller is deliberately deleting records.
    */
   function save(data, options = {}) {
     const lockToken = acquireLock(lockDir);
     try {
-      const snapshot = snapshots.get(data);
+      let snapshot = snapshots.get(data);
       let finalData = data;
+      const { mutateFresh, ...writeOptions } = options;
 
-      if (snapshot) {
+      if (mutateFresh !== undefined) {
+        if (typeof mutateFresh !== 'function') throw new TypeError('mutateFresh must be a synchronous function');
+        finalData = readJsonRaw(filePath);
+        snapshot = JSON.parse(JSON.stringify(finalData));
+        const mutation = mutateFresh(finalData);
+        if (mutation && typeof mutation.then === 'function') {
+          throw new TypeError('mutateFresh must be synchronous');
+        }
+        if (mutation === false) return { wrote: false };
+      } else if (snapshot) {
         const fresh = readJsonRaw(filePath);
         // Always merge when a snapshot exists — NOT gated on "did the
         // records change", which would miss a concurrent writer that only
@@ -343,7 +357,8 @@ function createJsonWriteGuard(filePath, opts = {}) {
         // commercial.json writers intentionally use a date-only
         // `YYYY-MM-DD` format) — a blind overwrite here would silently
         // discard that caller's explicit value every time.
-        const callerLastUpdated = data[metaKey] && data[metaKey].lastUpdated;
+        const metadataData = mutateFresh ? finalData : data;
+        const callerLastUpdated = metadataData[metaKey] && metadataData[metaKey].lastUpdated;
         const snapshotLastUpdated = snapshot && snapshot[metaKey] && snapshot[metaKey].lastUpdated;
         const callerSetLastUpdatedThisCall = callerLastUpdated !== undefined && callerLastUpdated !== snapshotLastUpdated;
         finalData[metaKey].lastUpdated = callerSetLastUpdatedThisCall ? callerLastUpdated : new Date().toISOString();
@@ -360,7 +375,7 @@ function createJsonWriteGuard(filePath, opts = {}) {
         );
       }
 
-      const result = atomicWriteJson(filePath, finalData, options);
+      const result = atomicWriteJson(filePath, finalData, writeOptions);
 
       // Sync the caller's object to the written (possibly merged) state —
       // see shows-write-guard.js for why this matters for checkpointing
