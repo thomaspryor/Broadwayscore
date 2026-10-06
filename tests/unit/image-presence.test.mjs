@@ -69,7 +69,14 @@ test("Let's Love has a real image on disk (BRO-2650)", () => {
   );
 });
 
-test('no scored show is currently flagged imageless past the self-heal threshold (similar shows)', () => {
+// The live-data sweep is a REPORT, not a CI gate (BRO-4196). Every newly
+// scored show is legitimately imageless until the fetch-all-image-formats
+// self-heal lands its image (lag of hours), so asserting [] against live
+// shows.json turned main red on each new show (ride-the-cyclone, grindr-mom,
+// ...) although images landed by the next push. Detection + alerting is
+// audit-imageless-scored-shows.js's job. Set IMAGE_PRESENCE_STRICT=1 to make
+// this sweep fatal (manual audit).
+test('imageless-scored-show sweep over live data (similar shows)', (t) => {
   const reviewCountByShow = buildReviewCountByShow(reviewsData);
   const nowMs = Date.now();
   const normalized = showsData.shows.map((s) => ({
@@ -81,11 +88,27 @@ test('no scored show is currently flagged imageless past the self-heal threshold
   }));
 
   const flagged = findImagelessScoredShows(normalized, { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
+  const msg = 'scored shows with no image on disk past the self-heal threshold: ' +
+    JSON.stringify(flagged.map((f) => ({ id: f.id, title: f.title })));
 
-  assert.deepEqual(
-    flagged.map((f) => f.id),
-    [],
-    'the following scored shows have no image on disk past the self-heal threshold: ' +
-      JSON.stringify(flagged.map((f) => ({ id: f.id, title: f.title }))),
-  );
+  if (process.env.IMAGE_PRESENCE_STRICT === '1') {
+    assert.deepEqual(flagged.map((f) => f.id), [], msg);
+  } else if (flagged.length) {
+    t.diagnostic(msg);
+  }
+});
+
+test('findImagelessScoredShows flags a scored, old, imageless show and ignores the rest (deterministic)', () => {
+  const nowMs = Date.parse('2026-09-29T00:00:00Z');
+  const old = nowMs - 72 * 3600 * 1000;
+  const fresh = nowMs - 1 * 3600 * 1000;
+  const flagged = findImagelessScoredShows([
+    { id: 'a', hasImages: false, reviewCount: 5, sinceMs: old },
+    { id: 'b', hasImages: true, reviewCount: 5, sinceMs: old },
+    { id: 'c', hasImages: false, reviewCount: 0, sinceMs: old },
+    { id: 'd', hasImages: false, reviewCount: 5, sinceMs: fresh },
+    { id: 'e', hasImages: false, reviewCount: 5, sinceMs: null },
+    { id: 'f', hasImages: false, reviewCount: 5, sinceMs: nowMs - DEFAULT_THRESHOLD_HOURS * 3600 * 1000 },
+  ], { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
+  assert.deepEqual(flagged.map((f) => f.id), ['a', 'f']);
 });
