@@ -176,7 +176,7 @@ function runCheck(card, codexReport, tag) {
 
 /** Commit Codex's working-tree changes. -> { hasDiff, blocked } */
 function commitAttempt(card, attempt) {
-  git(['add', '-A', '--', '.', ':!node_modules']);
+  git(['add', '-A']); // node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
   const names = git(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
