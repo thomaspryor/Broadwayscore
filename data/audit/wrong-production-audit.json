@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T14:04:46.416Z",
+  "timestamp": "2026-10-06T15:28:50.314Z",
   "stats": {
-    "totalReviews": 46594,
-    "alreadyFlagged": 18678,
-    "dateGuardCatches": 266,
+    "totalReviews": 46596,
+    "alreadyFlagged": 18679,
+    "dateGuardCatches": 265,
     "directorMismatch": 1324,
     "tvFilmSignals": 1355,
     "londonSignals": 1287,
     "offBroadwaySignals": 510,
     "yearMismatch": 114,
-    "noPublishDate": 4314
+    "noPublishDate": 4313
   },
   "findings": [
     {
@@ -3785,7 +3785,7 @@
     {
       "showId": "book-of-mormon-2011",
       "file": "ew--lisa-schwarzbaum.json",
-      "score": 75,
+      "score": 92,
       "publishDate": "March 24th, 2011",
       "url": "http://www.ew.com/article/2011/03/24/book-mormon",
       "findings": [
@@ -7818,7 +7818,7 @@
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 96,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-prince-edward-review",
       "findings": [
@@ -13837,20 +13837,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "dtli--unknown.json",
-      "score": 68,
-      "publishDate": "2021-12-08",
-      "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1766d before show (2021-12-08 vs 2026-10-09)"
         }
       ]
     },
@@ -56145,7 +56131,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "city-am--adam-bloodworth.json",
-      "score": 96,
+      "score": 86,
       "publishDate": "2023-12-15",
       "url": "https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/",
       "findings": [
@@ -56159,7 +56145,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "guardian--susannah-clapp.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2023-12-15",
       "url": "https://www.theguardian.com/stage/2023/dec/24/macbeth-donmar-warehouse-max-webster-david-tennant-cush-jumbo-review-stranger-things-the-first-shadow-phoenix-stephen-daldry-ulster-american-riverside-studios-david-ireland-woody-harrelson-andy-serkis-louisa-harland",
       "findings": [
@@ -59451,7 +59437,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 76,
+      "score": 79,
       "publishDate": "2026-06-28",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-misanthrope-lyttelton-theatre",
       "findings": [
