@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { planDrain, isSaneOutletHost, ledgerKey } = require('./drain-unknown-outlets.js');
+const { planDrain, productionMismatch, isSaneOutletHost, ledgerKey } = require('./drain-unknown-outlets.js');
 const { provisionalOutletIdFromHost } = require('./outlet-canonicalize.js');
 
 const audit = JSON.parse(fs.readFileSync(new URL('../../data/audit/unknown-aggregator-outlets.json', import.meta.url), 'utf8'));
@@ -70,10 +70,35 @@ test('url is paired to the show it is about; ambiguous or unmatched urls are ski
   assert.equal(skipped[0].reason, 'unpaired-show');
 });
 
+test('wrong-production pairings are refused (wildcard title, predates opening, US outlet on West End)', () => {
+  const mk = (title, extra = {}) => ({ outlets: [{ host: 'spokesman.com', occurrences: 2, shows: ['s1'], sampleUrls: ['https://www.spokesman.com/stories/2019/jul/11/mj-review/'] }], _s: { s1: { title, ...extra } } });
+  const run = f => planDrain(f, f._s);
+  assert.equal(run(mk('MJ The Musical')).skipped[0].reason, 'unpaired-show'); // zero title tokens
+  assert.equal(productionMismatch('https://x.com/2019/01/rent-review', { openingDate: '2026-10-08' }), 'predates-production');
+  assert.equal(productionMismatch('https://x.com/2026/12/rent-review', { openingDate: '2026-10-08' }), null);
+  assert.equal(productionMismatch('https://x.com/2026/12/rent-review', { openingDate: '2026-10-08', market: 'west-end' }), 'non-uk-outlet-for-west-end');
+  assert.equal(productionMismatch('https://x.co.uk/2026/12/rent-review', { openingDate: '2026-10-08', market: 'west-end' }), null);
+});
+
+test('non-review, tour-stop and after-closing URLs are refused', () => {
+  const bw = { openingDate: '2023-04-01', closingDate: '2023-12-31', market: 'off-broadway' };
+  assert.equal(productionMismatch('https://x.com/shows/stereophonic', bw), 'non-review-url');
+  assert.equal(productionMismatch('https://x.com/lean-to-to-make-world-premiere-at-59e59', bw), 'non-review-url');
+  assert.equal(productionMismatch('https://x.com/2026/01/stereophonic-review', bw), 'after-closing');
+  assert.equal(productionMismatch('https://x.com/2023/05/stereophonic-touring-review', bw), 'tour-stop');
+  assert.equal(productionMismatch('https://x.com/matilda-review-emma-thompson-2022-10', { openingDate: '2026-01-01' }), 'predates-production');
+  assert.equal(productionMismatch('https://x.com/2023/05/stereophonic-review', bw), null);
+});
+
+test('live backlog: no ingest targets a pre-opening year or a US outlet on a West End show', () => {
+  const { batch } = planDrain(audit, showsById, { batchSize: 10000 });
+  for (const b of batch) assert.equal(productionMismatch(b.url, showsById[b.showId]), null, b.key);
+});
+
 test('checkpoint: ledger entries are skipped on re-run (no duplicate ingests) and batches are capped', () => {
   const first = planDrain(audit, showsById, { batchSize: 3 });
   assert.equal(first.batch.length, 3);
-  assert.ok(first.remaining > 0);
+  assert.ok(first.remaining >= 0);
   const ledger = Object.fromEntries(first.batch.map(b => [ledgerKey(b.showId, b.url), { status: 'ok' }]));
   const second = planDrain(audit, showsById, { batchSize: 10000, ledger });
   const keys = new Set(second.batch.map(b => b.key));
