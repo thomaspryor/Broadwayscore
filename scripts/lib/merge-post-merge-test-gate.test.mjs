@@ -222,6 +222,17 @@ test('CLI: exits 0 when nothing under scripts/lib/ changed', () => {
 // --- diffFailingSets: the pure unit the acceptance criteria's "two fixture
 // failing-sets" test targets directly (card #1433) ---
 
+// BRO-4812 review: on an already-stale main the validator fails with the same
+// key either way; further graph drift must still read as NEW.
+test('diffFailingSets: dependency-validator drift on a stale main is NEW, unchanged staleness is pre-existing', () => {
+  const file = path.join('scripts', 'validate-workflow-dependencies.test.mjs');
+  const key = `${file}::DEPENDENCIES.md covers the current graph`;
+  const fail = (graph) => ({ file, payload: `DEPENDENCIES.md stale: committed fingerprint e39292afac5a5f88, current graph ${graph}\n` });
+  const base = new Map([[key, fail('aaaaaaaaaaaaaaaa')]]);
+  assert.equal(diffFailingSets(base, new Map([[key, fail('bbbbbbbbbbbbbbbb')]])).newFailures.length, 1);
+  assert.equal(diffFailingSets(base, new Map([[key, fail('aaaaaaaaaaaaaaaa')]])).preExisting.length, 1);
+});
+
 test('diffFailingSets: a NEW failure not in the baseline set is reported as new', () => {
   const baseline = new Map([['a.test.mjs::old', { file: 'a.test.mjs', name: 'old' }]]);
   const merged = new Map([

@@ -377,7 +377,9 @@ function listCorrespondingUnitTestFiles(cwd, changedFiles) {
   for (const f of changedFiles || []) {
     if (!isScriptSourceFile(f)) continue;
     for (const rel of correspondingTestPaths(f)) {
-      if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+      // EXCLUDED guards stay out of the local floor on every path, not just
+      // workflow discovery (BRO-4812 review): same cost/soundness reasons.
+      if (!EXCLUDED_WORKFLOW_GUARDS.has(rel) && fs.existsSync(path.join(cwd, rel))) out.add(rel);
     }
   }
   return [...out].sort();
@@ -444,7 +446,10 @@ function defaultExec(cwd, testFiles) {
 // fixture failing-sets" test targets directly.
 // Aggregate guards (see the AGGREGATE GUARDS header note): repo-relative test
 // files whose single failing test spans many inputs.
-const AGGREGATE_GUARD_FILES = [...REQUIRED_WORKFLOW_GUARDS];
+// The dependency validator is one too: its fingerprint test fails with the
+// same key on a stale main whatever the branch did, so only the payload
+// (committed vs current fingerprint) tells further drift apart (BRO-4812).
+const AGGREGATE_GUARD_FILES = [...REQUIRED_WORKFLOW_GUARDS, path.join('scripts', 'validate-workflow-dependencies.test.mjs')];
 
 // Pure: the individual violations in a failure payload, as a multiset
 // (Map item -> count). Only the assertion message is read — node's trailing

@@ -26,7 +26,11 @@ test('DEPENDENCIES.md covers the current graph (edges + cross-repo writers): run
   const cur = fs.readFileSync(path.join(WF_DIR, 'DEPENDENCIES.md'), 'utf8');
   const m = cur.match(/graph-fingerprint: ([0-9a-f]+)/);
   assert.ok(m, 'fingerprint line missing');
-  assert.equal(m[1], fingerprint(workflows));
+  // Both fingerprints in the message (BRO-4812): the merged-tree floor
+  // compares failure payloads for this aggregate guard, so on an already
+  // stale main a branch that drifts the graph FURTHER reads as new.
+  const actual = fingerprint(workflows);
+  assert.ok(m[1] === actual, `DEPENDENCIES.md stale: committed fingerprint ${m[1]}, current graph ${actual}`);
 });
 
 test('generator renders deterministically', () => {
