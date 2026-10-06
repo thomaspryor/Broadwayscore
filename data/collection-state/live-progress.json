@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-06T15:46:52.436Z",
-  "processed": 304,
-  "failed": 198,
-  "successRate": "60.6%",
+  "updatedAt": "2026-10-06T16:19:08.870Z",
+  "processed": 236,
+  "failed": 142,
+  "successRate": "62.4%",
   "tierBreakdown": {
-    "playwright": 179,
+    "playwright": 141,
     "amp": 3,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 31,
-    "scrapingbee": 34,
-    "brightdata": 4,
+    "scrapingdog": 32,
+    "scrapingbee": 17,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 61
+    "archive": 50
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-06T10:17:56.351Z",
@@ -61,6 +61,34 @@
       "t": "2026-10-06T14:05:17.164Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-06T16:14:34.959Z",
+      "event": "bb-session",
+      "session": "29459c4a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T16:14:35.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T16:14:52.533Z",
+      "event": "bb-session",
+      "session": "f24f2fd0",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T16:14:52.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T16:16:20.300Z",
+      "event": "bb-session",
+      "session": "9be8990d",
+      "url": "https://deadline.com/2026/09/midnight-madness-revisited-tiff-next-box-office-obs"
     }
   ]
 }
