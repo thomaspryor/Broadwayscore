@@ -28,6 +28,7 @@ on:
 
 concurrency:
   group: fetch-tour-schedules
+  # concurrency-cancel-ok: idempotent refresh, latest run wins (BRO-934 audit)
   cancel-in-progress: true
 
 jobs:

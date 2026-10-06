@@ -17,6 +17,11 @@ on:
           - dtli
           - bww
 
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: scrape-aggregators
+  cancel-in-progress: false
+
 jobs:
   scrape-dtli:
     if: ${{ inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}

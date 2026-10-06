@@ -11,6 +11,11 @@ on:
         type: boolean
         default: false
 
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: weekly-stubhub-validate
+  cancel-in-progress: false
+
 jobs:
   validate:
     runs-on: ubuntu-latest

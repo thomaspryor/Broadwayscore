@@ -12,6 +12,11 @@ on:
         required: false
         default: 'web_unlocker2'
 
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: archive-aggregator-pages
+  cancel-in-progress: false
+
 jobs:
   archive-pages:
     runs-on: ubuntu-latest

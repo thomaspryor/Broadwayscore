@@ -640,6 +640,35 @@
     "queuedAt": "2026-10-06T18:09:59.401Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-2367-rebased",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-2367-rebased",
+    "description": "land.yml did not land land/job/linear-BRO-2367-rebased: the unit-tests-node gate went red at f75ea14d21. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37512956402",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-2367-rebased"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f75ea14d213b6acf44611c08d9f873c67338049a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37512956402"
+      }
+    ],
+    "queuedAt": "2026-10-06T19:15:56.171Z"
+  },
+  {
     "conditionKey": "land:land/bro-4804-flag-inventory",
     "title": "Landing blocked: unit-tests-node red on land/bro-4804-flag-inventory",
     "description": "land.yml did not land land/bro-4804-flag-inventory: the unit-tests-node gate went red at 67fc7ff0e4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37512754560",
@@ -667,5 +696,17 @@
       }
     ],
     "queuedAt": "2026-10-06T19:10:30.450Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:water-walker-off-broadway-2027",
+    "title": "Water Walker @ HERE Arts Center — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-04-08 to 2027-04-16). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/water-walker-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-06T19:25:32.841Z"
   }
 ]

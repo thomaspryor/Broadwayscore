@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-06T18:53:32.813Z",
+    "generatedAt": "2026-10-06T19:26:40.503Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
@@ -18,7 +18,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 47095\nHas fullText: 37424\n\n--- Quality Breakdown ---\n  full: 26274 (70.2%)\n  truncated: 10331 (27.6%)\n  partial: 390 (1.0%)\n  excerpt: 311 (0.8%)\n  stub: 99 (0.3%)\n  complete: 19 (0.1%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7709\n  has_footer_junk: 1680\n  ends_with_ellipsis: 144\n  has_footer_text: 109\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 70.2% (min: 25%)\n  ✅ Truncated: 27.6% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
+      "detail": "=== TEXT QUALITY AUDIT ===\n\nTotal reviews: 47095\nHas fullText: 37425\n\n--- Quality Breakdown ---\n  full: 26275 (70.2%)\n  truncated: 10330 (27.6%)\n  partial: 391 (1.0%)\n  excerpt: 311 (0.8%)\n  stub: 99 (0.3%)\n  complete: 19 (0.1%)\n\n--- Truncation Signals ---\n  no_ending_punctuation: 7709\n  has_footer_junk: 1680\n  ends_with_ellipsis: 144\n  has_footer_text: 109\n  paywall_or_login_prompt: 76\n\n--- Threshold Checks (MONITOR / drift band) ---\n  ✅ Full: 70.2% (min: 25%)\n  ✅ Truncated: 27.6% (max: 65%)\n  ✅ Unknown: 0.0% (max: 5%)\n\n✅ AUDIT PASSED"
     },
     {
       "name": "aggregator-truth",
@@ -36,7 +36,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "audit-pull-quotes: 23076 reviews across 3314 show(s)\n\n[quality] 0 shipped pull quote(s) trip a hard guard"
+      "detail": "audit-pull-quotes: 23077 reviews across 3314 show(s)\n\n[quality] 0 shipped pull quote(s) trip a hard guard"
     },
     {
       "name": "regex-fp",
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 8 flagged, 31 exempt, 30 covered\n  ⚠️   285  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️   174  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️   116  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️   116  data/audit/tour-sweep.json  — no merge driver; needs a decision\n  ⚠️    89  data/audit/skipped-alias-collisions.json  — no merge driver; needs a decision\n  ⚠️    64  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    58  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    36  data/audit/validation/collection-report-2026-10-04.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 8 flagged, 32 exempt, 30 covered\n  ⚠️   283  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️   175  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️   117  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️   117  data/audit/tour-sweep.json  — no merge driver; needs a decision\n  ⚠️    93  data/audit/skipped-alias-collisions.json  — no merge driver; needs a decision\n  ⚠️    66  .github/workflows/test.yml  — no merge driver; needs a decision\n  ⚠️    58  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    36  data/audit/validation/collection-report-2026-10-04.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -189,7 +189,7 @@
       "exitCode": 0,
       "ok": true,
       "crashed": false,
-      "detail": "[stale-score-input] 989 candidate(s): 4 fixable, 985 unscoreable; threshold --max=25\n    - red-2010/village-voice--michael-feingold.json\n    - shucked-tour-2024/zebra--jordan-wright.json\n    - water-for-elephants-tour-2025/broadwayworld--rachel-weinberg.json\n    - water-for-elephants-tour-2025/broadwayworld--tyler-hinton.json"
+      "detail": "[stale-score-input] 990 candidate(s): 4 fixable, 986 unscoreable; threshold --max=25\n    - red-2010/village-voice--michael-feingold.json\n    - shucked-tour-2024/zebra--jordan-wright.json\n    - water-for-elephants-tour-2025/broadwayworld--rachel-weinberg.json\n    - water-for-elephants-tour-2025/broadwayworld--tyler-hinton.json"
     },
     {
       "name": "false-balance-framing",
@@ -270,7 +270,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "live reviews scanned: 23076\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 2 outlet(s)\ncorpus files scanned: 47095; provisional outlets without a decision: 3\n  should-appeal-to-two-audiences (1) e.g. angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json\n  trinitytripod (1) e.g. spamalot-tour-2025/trinitytripod--unknown.json\n  houstonchronicle (1) e.g. the-great-gatsby-tour-2026/houstonchronicle--doni-wilson.json\nPROBLEMS: 5"
+      "detail": "live reviews scanned: 23077\nlive reviews on look-alike/blocked host: 0\nregistry aliases naming a look-alike host: 0\nlive reviews with unregistered outlet: 2 outlet(s)\ncorpus files scanned: 47095; provisional outlets without a decision: 3\n  should-appeal-to-two-audiences (1) e.g. angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json\n  trinitytripod (1) e.g. spamalot-tour-2025/trinitytripod--unknown.json\n  houstonchronicle (1) e.g. the-great-gatsby-tour-2026/houstonchronicle--doni-wilson.json\nPROBLEMS: 5"
     },
     {
       "name": "critic-outlets",
