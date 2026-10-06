@@ -1,19 +1,21 @@
 {
-  "generatedAt": "2026-10-06T17:53:22.990Z",
+  "generatedAt": "2026-10-06T22:14:25.408Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 227,
+  "checked": 228,
   "clean": 222,
-  "defective": 5,
+  "defective": 6,
   "byType": {
-    "unreachable": 5
+    "score-drift": 4,
+    "unreachable": 2,
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-09-26",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
       "ok": false,
       "defects": [
         {
@@ -26,38 +28,8 @@
       "deployedCount": null
     },
     {
-      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
-      "title": "Savage & Simon Says: A Double Bill",
-      "openingDate": "2026-09-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
-      "title": "September L. Davis: The Apology Tour",
-      "openingDate": "2026-09-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
       "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
@@ -71,19 +43,70 @@
       "deployedCount": null
     },
     {
-      "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
-      "title": "Repro Eco: Tomorrow Is Now",
-      "openingDate": "2026-09-16",
+      "showId": "hells-kitchen-tour-2025",
+      "title": "Hell's Kitchen",
+      "openingDate": "2025-10-10",
       "ok": false,
       "defects": [
         {
-          "type": "unreachable",
-          "detail": "HTTP 404"
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: nowtoronto"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.13 vs local 76.01 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [
+        "nowtoronto"
+      ],
+      "localCount": 7,
+      "deployedCount": 6
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "title": "Affluenza",
+      "openingDate": "2026-10-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 34.33 vs local 30.59 (Δ3.74)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
+      "localCount": 15,
+      "deployedCount": 15
+    },
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "openingDate": "2026-09-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.27 vs local 82.99 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 28
+    },
+    {
+      "showId": "three-men-in-a-boat-off-west-end-2026",
+      "title": "Three Men in a Boat",
+      "openingDate": "2026-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.58 vs local 73.69 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 16,
+      "deployedCount": 16
     }
   ]
 }
