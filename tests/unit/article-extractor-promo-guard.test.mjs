@@ -47,8 +47,8 @@ for (const marker of [
     (text) => `<div class="entry-content">${text}</div>`,
     (text) => `<div><p>${text}</p></div>`,
   ]) {
-    test(`rejects boilerplate through ${wrap.name || wrap(marker).split('>')[0]}: ${marker.slice(0, 50)}`, () => {
-      assert.equal(extractArticleText(wrap(`${marker} ${review}`), 'unknown.example'), null);
+    test(`Radio Times rejects boilerplate through ${wrap.name || wrap(marker).split('>')[0]}: ${marker.slice(0, 50)}`, () => {
+      assert.equal(extractArticleText(wrap(`${marker} ${review}`), 'radiotimes.com'), null);
     });
   }
 }
@@ -56,6 +56,18 @@ for (const marker of [
 test('guard also rejects contaminated dedicated outlet extraction', () => {
   const html = `<div class="post__content"><p>${review}</p><p>We may earn commission from links on this page.</p></div>`;
   assert.equal(extractArticleText(html, 'radiotimes.com'), null);
+});
+
+test('Time Out London fixture still extracts substantial review text', () => {
+  const html = readFileSync(new URL('../fixtures/star-ratings/timeout-london.html', import.meta.url), 'utf8');
+  const text = extractArticleText(html, 'www.timeout.com');
+  assert.ok(text?.length > 5000, 'Time Out London review must survive unrelated promo checks');
+});
+
+test('Radio Times promo guard does not apply to unrelated hosts', () => {
+  const prose = `${review} We may earn commission from links on this page.`;
+  assert.equal(extractArticleText(`<article>${prose}</article>`, 'unknown.example'), prose);
+  assert.equal(extractArticleText(`<article>${prose}</article>`, 'WWW.RADIOTIMES.COM'), null);
 });
 
 test('ordinary criticism mentioning newsletters, subscriptions or commissions survives', () => {

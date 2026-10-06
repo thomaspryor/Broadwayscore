@@ -732,9 +732,11 @@ const PROMO_BOILERPLATE_PATTERNS = [
 
 function extractArticleText(html, hostname, criticHint) {
   const text = extractArticleTextUnchecked(html, hostname, criticHint);
-  // Reject contaminated extractions before any caller can save or score them.
+  const host = String(hostname || '').toLowerCase();
+  const isRadioTimes = host === 'radiotimes.com' || host.endsWith('.radiotimes.com');
+  // Reject Radio Times promotions before any caller can save or score them.
   // Match boilerplate phrases, not standalone words that can occur in criticism.
-  if (text && PROMO_BOILERPLATE_PATTERNS.some((pattern) => pattern.test(text))) {
+  if (isRadioTimes && text && PROMO_BOILERPLATE_PATTERNS.some((pattern) => pattern.test(text))) {
     return null;
   }
   return text;
