@@ -5851,7 +5851,7 @@ if (consistencyIssues.length > 0) {
 {
   const { reviews: uniqueReviews, removed } = dedupeByReviewKey(allReviews);
   if (removed > 0) {
-    console.log(`\nFinal key dedup: removed ${removed} exact-duplicate review row(s) (showId+outlet+date+url+critic)`);
+    console.log(`\nFinal key dedup: removed ${removed} exact-duplicate review row(s) (showId+outletId+date+url+critic)`);
     allReviews.length = 0;
     allReviews.push(...uniqueReviews);
     stats.skippedFinalKeyDedup = removed;
