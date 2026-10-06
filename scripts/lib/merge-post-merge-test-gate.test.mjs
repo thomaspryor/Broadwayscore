@@ -519,6 +519,9 @@ const {
   touchesScripts,
   correspondingUnitTestPath,
   listCorrespondingUnitTestFiles,
+  correspondingTestPaths,
+  listManifestTestFiles,
+  mentionsWorkflowsDir,
   listWorkflowGuardTestFiles,
   selectTestFiles,
   REQUIRED_WORKFLOW_GUARDS,
@@ -564,11 +567,15 @@ test('EXCLUDED_WORKFLOW_GUARDS: an excluded guard is never selected even though 
   const unitDir = path.join(dir, 'tests', 'unit');
   fs.mkdirSync(unitDir, { recursive: true });
   for (const rel of EXCLUDED_WORKFLOW_GUARDS) {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
     fs.writeFileSync(
       path.join(dir, rel),
       "import { test } from 'node:test';\n// subject: .github/workflows\ntest('live api', () => {});\n"
     );
   }
+  // Listed in the manifest too, so manifest discovery would find the
+  // scripts/ ones if the exclusion did not apply.
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest.txt'), `${[...EXCLUDED_WORKFLOW_GUARDS].join('\n')}\n`);
   const selected = selectTestFiles(dir, [path.posix.join('.github/workflows', 'a.yml')]);
   for (const rel of EXCLUDED_WORKFLOW_GUARDS) {
     assert.ok(!selected.includes(rel), `${rel} is excluded and must not run in the local floor`);
@@ -624,6 +631,70 @@ test('listWorkflowGuardTestFiles: discovers by content, ignores tests that do no
   fs.writeFileSync(path.join(dir, 'tests', 'unit', 'notatest.mjs'), '// .github/workflows\n');
   const found = listWorkflowGuardTestFiles(dir);
   assert.deepEqual(found, [path.join('tests', 'unit', 'wf-guard.test.mjs')]);
+});
+
+// BRO-4812: the validator lived in scripts/, the scan read only tests/unit,
+// so a landing pushed a stale DEPENDENCIES.md onto main.
+test('listWorkflowGuardTestFiles: discovers manifest-listed guards outside tests/unit, honours EXCLUDED', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'tests'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'scripts', 'tests'), { recursive: true });
+  const wf = "// reads .github/workflows\n";
+  fs.writeFileSync(path.join(dir, 'scripts', 'validate-x.test.mjs'), wf);
+  fs.writeFileSync(path.join(dir, 'scripts', 'tests', 'joined.test.mjs'), "path.join('.github', 'workflows')\n");
+  fs.writeFileSync(path.join(dir, 'scripts', 'unrelated.test.mjs'), '// nothing\n');
+  fs.writeFileSync(path.join(dir, 'scripts', 'pre-push.test.mjs'), wf); // EXCLUDED
+  fs.writeFileSync(path.join(dir, 'scripts', 'not-in-manifest.test.mjs'), wf);
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest.txt'),
+    'scripts/validate-x.test.mjs\nscripts/tests/joined.test.mjs\nscripts/unrelated.test.mjs\nscripts/pre-push.test.mjs\nscripts/missing.test.mjs\n');
+  assert.deepEqual(listWorkflowGuardTestFiles(dir), [
+    path.join('scripts', 'tests', 'joined.test.mjs'),
+    path.join('scripts', 'validate-x.test.mjs'),
+  ]);
+});
+
+test('listManifestTestFiles: [] without a manifest; skips blanks, comments and non-tests', () => {
+  const dir = makeScratchRepo();
+  assert.deepEqual(listManifestTestFiles(dir), []);
+  fs.mkdirSync(path.join(dir, 'tests'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest.txt'), '\n# c\nscripts/a.test.mjs\n  tests/unit/b.test.mjs  \nREADME.md\n');
+  assert.deepEqual(listManifestTestFiles(dir), [path.join('scripts', 'a.test.mjs'), path.join('tests', 'unit', 'b.test.mjs')]);
+});
+
+test('real repo: a workflow change selects scripts/validate-workflow-dependencies.test.mjs (BRO-4812)', () => {
+  assert.ok(selectTestFiles(REPO_ROOT, ['.github/workflows/land.yml']).includes(path.join('scripts', 'validate-workflow-dependencies.test.mjs')));
+});
+
+// The invariant that stops a new test directory re-opening the blind spot:
+// every CI-run workflow-mentioning test is either selected for a workflow
+// change or deliberately EXCLUDED with a reason.
+test('real repo: every manifest test that mentions the workflows dir is a selected or EXCLUDED workflow guard', () => {
+  const selected = new Set(listWorkflowGuardTestFiles(REPO_ROOT));
+  const missed = listManifestTestFiles(REPO_ROOT).filter((rel) => {
+    let body = '';
+    try { body = fs.readFileSync(path.join(REPO_ROOT, rel), 'utf8'); } catch { return false; }
+    const mentions = mentionsWorkflowsDir(body);
+    return mentions && !selected.has(rel) && !EXCLUDED_WORKFLOW_GUARDS.has(rel);
+  });
+  assert.deepEqual(missed, []);
+});
+
+test('correspondingTestPaths: tests/unit, sibling and scripts/tests candidates, deduped', () => {
+  assert.deepEqual(correspondingTestPaths('scripts/foo.js'), [
+    path.join('tests', 'unit', 'foo.test.mjs'),
+    path.join('scripts', 'foo.test.mjs'),
+    path.join('scripts', 'tests', 'foo.test.mjs'),
+  ]);
+  assert.deepEqual(correspondingTestPaths('scripts/tests/bar.js'), [
+    path.join('tests', 'unit', 'bar.test.mjs'),
+    path.join('scripts', 'tests', 'bar.test.mjs'),
+  ]);
+});
+
+test('listCorrespondingUnitTestFiles: picks up a sibling scripts/<base>.test.mjs', () => {
+  const dir = makeScratchRepo();
+  fs.writeFileSync(path.join(dir, 'scripts', 'foo.test.mjs'), '');
+  assert.deepEqual(listCorrespondingUnitTestFiles(dir, ['scripts/foo.js']), [path.join('scripts', 'foo.test.mjs')]);
 });
 
 test('listWorkflowGuardTestFiles: empty when tests/unit does not exist', () => {

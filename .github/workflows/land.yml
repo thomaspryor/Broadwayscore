@@ -443,9 +443,12 @@ jobs:
       cancel-in-progress: false
     # Starting budget (BRO-3873 step 3): the fast path (verified base, or an
     # inert-only move of main) is checkout + npm ci + core data + one push,
-    # ~2-3 min measured. A SUBSTANTIVE move of main re-runs the full gauntlet
-    # inside land.js and can approach this bound — re-measure from live runs
-    # before changing.
+    # ~2-3 min measured. A SUBSTANTIVE move of main does NOT re-run the full
+    # gauntlet: land-branch.js defaultChecks runs tier-3 checks plus the
+    # merged-tree floor (merge-post-merge-test-gate.js: scripts/lib, workflow
+    # guards, corresponding tests), so a guard outside that selection is
+    # unchecked against the moved main (BRO-4812). It can approach this
+    # bound; re-measure from live runs before changing.
     timeout-minutes: 15
     steps:
       - name: Checkout main

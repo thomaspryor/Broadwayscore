@@ -254,7 +254,46 @@ const REQUIRED_WORKFLOW_GUARDS = [path.join('tests', 'unit', 'workflow-line-leng
 //   and (b) turn MERGE_TEST_GATE_SKIP_BASELINE=1 into a trap: that hatch
 //   disables the diff and restores all-or-nothing blocking, so this known
 //   failure would block every workflow merge outright.
-const EXCLUDED_WORKFLOW_GUARDS = new Set([path.join('tests', 'unit', 'branch-protection.test.mjs')]);
+//
+//   scripts/pre-push.test.mjs, scripts/tests/merge-gate-hook.test.mjs —
+//   create branches/worktrees in the REAL canonical repo (cleaned in after(),
+//   which a timeout kill skips) and have refused landings as one-off flakes
+//   before (BRO-4328; two 300s timeouts on main). A one-off flake here reads
+//   as NEW against a baseline that passed, blocking an unrelated push.
+//
+//   scripts/merge-worktree-to-main.test.mjs,
+//   scripts/tests/verify-edits-cloud-session-gates.test.mjs — 48s and 21s
+//   of scratch-repo git work that mention the workflows dir only in
+//   passing; they guard the merge/hook scripts, not workflow content, and
+//   would eat a third of the floor's single 5-min spawn (BRO-4812 review).
+const EXCLUDED_WORKFLOW_GUARDS = new Set([
+  path.join('tests', 'unit', 'branch-protection.test.mjs'),
+  path.join('scripts', 'pre-push.test.mjs'),
+  path.join('scripts', 'tests', 'merge-gate-hook.test.mjs'),
+  path.join('scripts', 'merge-worktree-to-main.test.mjs'),
+  path.join('scripts', 'tests', 'verify-edits-cloud-session-gates.test.mjs'),
+]);
+
+// The test list CI's "Run unit tests" step executes (one repo-relative path
+// per line). Workflow-guard discovery reads it so the floor covers every
+// workflow guard CI runs, wherever it lives — BRO-4812: scanning tests/unit
+// alone never ran scripts/validate-workflow-dependencies.test.mjs, so a
+// landing whose main moved under it pushed a stale DEPENDENCIES.md and
+// turned main red. Missing/unreadable manifest → [] (tests/unit scan still runs).
+const UNIT_TEST_MANIFEST = path.join('tests', 'unit-test-manifest.txt');
+function listManifestTestFiles(cwd) {
+  let body;
+  try {
+    body = fs.readFileSync(path.join(cwd, UNIT_TEST_MANIFEST), 'utf8');
+  } catch {
+    return [];
+  }
+  return body
+    .split('\n')
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith('#') && l.endsWith('.test.mjs'))
+    .map((l) => path.normalize(l));
+}
 
 // Pure: does this test file's SOURCE refer to the workflows directory?
 //
@@ -302,6 +341,18 @@ function listWorkflowGuardTestFiles(cwd) {
       if (mentionsWorkflowsDir(body)) out.add(rel);
     }
   }
+  // Every other CI-run test (scripts/, scripts/tests/, scripts/newsletter/…)
+  // that mentions the workflows dir — same content test, CI's own list.
+  for (const rel of listManifestTestFiles(cwd)) {
+    if (out.has(rel)) continue;
+    let body;
+    try {
+      body = fs.readFileSync(path.join(cwd, rel), 'utf8');
+    } catch {
+      continue;
+    }
+    if (mentionsWorkflowsDir(body)) out.add(rel);
+  }
   for (const rel of EXCLUDED_WORKFLOW_GUARDS) out.delete(rel);
   return [...out].sort();
 }
@@ -325,10 +376,25 @@ function listCorrespondingUnitTestFiles(cwd, changedFiles) {
   const out = new Set();
   for (const f of changedFiles || []) {
     if (!isScriptSourceFile(f)) continue;
-    const rel = correspondingUnitTestPath(f);
-    if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+    for (const rel of correspondingTestPaths(f)) {
+      if (fs.existsSync(path.join(cwd, rel))) out.add(rel);
+    }
   }
   return [...out].sort();
+}
+
+// Pure: every test path that may guard a scripts/ source file — the
+// tests/unit/<base>.test.mjs convention above, plus the sibling
+// <dir>/<base>.test.mjs (scripts/foo.js -> scripts/foo.test.mjs) and
+// scripts/tests/<base>.test.mjs, which held 100+ CI-run tests the floor
+// never selected (BRO-4812 review).
+function correspondingTestPaths(scriptRelPath) {
+  const base = path.basename(scriptRelPath, path.extname(scriptRelPath));
+  return [...new Set([
+    correspondingUnitTestPath(scriptRelPath),
+    path.join(path.dirname(scriptRelPath), `${base}.test.mjs`),
+    path.join('scripts', 'tests', `${base}.test.mjs`),
+  ])];
 }
 
 // Pure-ish (fs reads only): the test files to run for this change set, in a
@@ -691,6 +757,9 @@ module.exports = {
   touchesWorkflows,
   touchesScripts,
   correspondingUnitTestPath,
+  correspondingTestPaths,
+  listManifestTestFiles,
+  mentionsWorkflowsDir,
   listCorrespondingUnitTestFiles,
   listColocatedTestFiles,
   listWorkflowGuardTestFiles,
