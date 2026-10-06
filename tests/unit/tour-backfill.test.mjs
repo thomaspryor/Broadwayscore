@@ -408,3 +408,19 @@ test('clearStaleScoringFailure leaves a give-up recorded after the move: no dail
   // Flagged-period give-up (before the move) is still cleared.
   assert.equal(clearStaleScoringFailure({ ...tourFile, manualClearFallbackFailedAt: '2026-08-05T21:23:59Z' }).manualClearFallbackAttempts, null);
 });
+
+test('an overseas production (.com.au, .de) never moves to the tour or stays on it; .ca and .com do (BRO-4656)', () => {
+  const ctx = { stops: [{ city: 'Austin, TX', venue: 'Bass Concert Hall', start: '2025-10-21', end: '2025-10-26' }], ukOutlets: new Set() };
+  const flag = { ...tourFlag, ...seen, publishDate: '2025-10-23', fullText: 'The national tour at Bass Concert Hall.' };
+  assert.equal(classifyTourBackfill({ ...flag, url: 'https://australianpridenetwork.com.au/spamalot' }, ctx).reason, 'overseas-production');
+  assert.equal(classifyTourBackfill({ ...flag, url: 'https://www.welt.de/x' }, ctx).reason, 'overseas-production');
+  assert.equal(classifyTourBackfill({ ...flag, url: 'https://www.thestar.ca/x' }, ctx).action, 'move');
+  const files = {
+    'spamalot-tour-2025': [
+      { file: 'apn.json', data: { outletId: 'australianpridenetwork', url: 'https://australianpridenetwork.com.au/x', fullText: 'Spamalot is a hoot.' } },
+      { file: 'star.json', data: { outletId: 'toronto-star', url: 'https://www.thestar.com/x', fullText: 'Spamalot is a hoot.' } },
+    ],
+  };
+  const plan = { tourId: 'spamalot-tour-2025', fromIds: [], ctx };
+  assert.deepEqual(decideTourIntegrity(plan, id => files[id] || []).map(r => `${r.kind}:${r.file}`), ['uk-on-tour:apn.json']);
+});

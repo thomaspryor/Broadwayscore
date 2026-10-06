@@ -17,6 +17,7 @@
  */
 
 const { isLikelyTourReview } = require('./review-guards');
+const { isOverseasHost } = require('./domain-filters');
 
 const TOUR_REASON_RE = /\btour(?:ing)?\b|national-tour|BWW regional\/tour/i;
 // Pre-Broadway tryouts are their own production (regional), not the post-Broadway tour.
@@ -178,6 +179,7 @@ function classifyTourBackfill(data, ctx = {}) {
   const whyForTryout = why.replace(/Tour\/regional\/pre-Broadway/gi, '');
   if (TRYOUT_RE.test(whyForTryout) || TRYOUT_RE.test(text.slice(0, 1200))) return { action: 'skip', reason: 'tryout' };
   if (UK_RE.test(`${data.url || ''} ${why}`)) return { action: 'skip', reason: 'uk-production' };
+  if (isOverseasHost(data.url)) return { action: 'skip', reason: 'overseas-production' };
   // A London outlet reviews the London run whatever stop its text names.
   if (ctx.ukOutlets && ctx.ukOutlets.has(outletOf(data))) return { action: 'skip', reason: 'uk-production' };
   if (!stop && UK_TEXT_RE.test(text.slice(0, 1500))) {
@@ -523,16 +525,14 @@ function decideTourIntegrity(plan, listFiles) {
   for (const { file, data } of listFiles(plan.tourId)) {
     if (file.startsWith('_') || !counts(data) || humanDecided(data)) continue;
     const text = String(data.fullText || '').slice(0, 6000);
-    let host = '';
-    try { host = new URL(data.url).hostname; } catch { /* no url */ }
     const ukOutlet = plan.ctx.ukOutlets && plan.ctx.ukOutlets.has(data.outletId);
     // "West End"/"London" alone is where a US tour came from (Operation
     // Mincemeat, Life of Pi); a UK town or a UK tour is where it is playing.
     const ukText = UK_TOUR_TEXT_RE.test(text);
     const namesStop = names.some(n => text.includes(n));
-    if (ukOutlet || /\.uk$/.test(host) || (ukText && !namesStop)) {
+    if (ukOutlet || isOverseasHost(data.url) || (ukText && !namesStop)) {
       out.push({ showId: plan.tourId, file, kind: 'uk-on-tour',
-        reason: `UK production reviewed, not the North American tour; ${INTEGRITY_TAG}` });
+        reason: `UK or overseas production reviewed, not the North American tour; ${INTEGRITY_TAG}` });
     }
   }
   return out;

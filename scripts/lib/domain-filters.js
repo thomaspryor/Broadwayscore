@@ -421,8 +421,27 @@ function isBlockedDomain(domain) {
     || LOOKALIKE_CONTENT_FARM_DOMAINS.has(d) || CENSUS_JUNK_DOMAINS.has(d);
 }
 
+// Overseas country domains (BRO-4656). Tours here play the US, Canada and
+// Mexico only (every stop in data/tour-schedules.json), so a tour review on one
+// of these is another production: tour-stop discovery ingested Spamalot's
+// Melbourne season onto the US tour. Used by tourCandidateIsTour and the tour
+// sweep. Generic-use ccTLDs (.co .tv .io .fm .me) are not listed; a North
+// American outlet on a listed one (.in .is .it .my .no) needs an exception.
+const OVERSEAS_CCTLDS = new Set([
+  'uk', 'ie', 'au', 'nz', 'za', 'at', 'de', 'ch', 'fr', 'be', 'nl', 'lu', 'es', 'pt', 'it',
+  'se', 'dk', 'no', 'fi', 'is', 'pl', 'cz', 'hu', 'gr', 'jp', 'kr', 'cn', 'hk', 'tw', 'sg',
+  'ph', 'my', 'in', 'il', 'ae', 'br', 'ar', 'cl',
+]);
+function isOverseasHost(url) {
+  let host = '';
+  try { host = new URL(url).hostname.toLowerCase(); } catch { return false; }
+  return OVERSEAS_CCTLDS.has(host.split('.').pop());
+}
+
 module.exports = {
   SOCIAL_DOMAINS,
+  OVERSEAS_CCTLDS,
+  isOverseasHost,
   TICKET_DOMAINS,
   AGGREGATOR_DOMAINS,
   REFERENCE_DOMAINS,

@@ -101,22 +101,6 @@ function looksLikeScreenVersion(result) {
     || SCREEN_PATH_RE.test(pathname);
 }
 
-// A city query in a stop window also finds the same show's overseas
-// productions (Spamalot's Melbourne season matched "Spamalot review" with the
-// date window of a US stop). Tours here play the US, Canada and Mexico only, so
-// a site on an overseas country domain is never a stop review. Listed
-// explicitly: generic-use ccTLDs (.co, .tv, .io, .fm, .me) stay allowed.
-const OVERSEAS_CCTLDS = new Set([
-  'uk', 'ie', 'au', 'nz', 'za', 'at', 'de', 'ch', 'fr', 'be', 'nl', 'lu', 'es', 'pt', 'it',
-  'se', 'dk', 'no', 'fi', 'is', 'pl', 'cz', 'hu', 'gr', 'jp', 'kr', 'cn', 'hk', 'tw', 'sg',
-  'ph', 'my', 'in', 'il', 'ae', 'br', 'ar', 'cl',
-]);
-function isOverseasHost(url) {
-  let host = '';
-  try { host = new URL(url).hostname.toLowerCase(); } catch { return false; }
-  return OVERSEAS_CCTLDS.has(host.split('.').pop());
-}
-
 /**
  * Whether an unregistered domain's result is safe to ingest under a
  * provisional outlet: its title names the show and calls itself a review.
@@ -132,6 +116,8 @@ function unregisteredLooksLikeStopReview(show, result) {
   if (String(show.title).length <= 5) return whole('') || (whole('i') && /\b(?:musical|stage|tour(?:ing)?|theat(?:er|re))\b/i.test(title));
   return whole('i');
 }
+
+const { isOverseasHost } = require('./domain-filters');
 
 module.exports = {
   RECENT_DAYS, WINDOW_BEFORE_DAYS, WINDOW_AFTER_DAYS, MAX_ATTEMPTS,

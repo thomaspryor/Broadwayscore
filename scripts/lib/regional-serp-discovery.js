@@ -3,7 +3,7 @@
 // colocated test is covered by test.yml's scripts/lib/** trigger (BRO-4509).
 const { calculateDateWindow } = require('./url-discovery');
 const { _parseDomain, lookupOutletForHost } = require('./outlet-canonicalize');
-const { isOverseasHost } = require('./tour-stop-discovery');
+const { isOverseasHost } = require('./domain-filters');
 
 // A show stays in the discovery pool while open, or for ~15 months after
 // closing (or after opening, if closingDate is unknown) — long enough to
