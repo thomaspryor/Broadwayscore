@@ -1174,7 +1174,9 @@ function decideInclusion(review, show, guards) {
   };
   // BRO-4806: mirrors review-guards.js / rebuild-all-reviews.js — a lane review (trust-model laneBypasses) is not
   // excluded by these guards. Same predicate the real gates call.
-  const laneOk = (guard) => require('./lib/opening-night-lane/trust-model').laneBypasses(review, guard, { openingDate: show && show.openingDate });
+  // The stamp fields are read here as a cheap pre-filter (and so FLAG_FIELDS coverage stays honest); the decision is laneBypasses.
+  const laneOk = (guard) => !!review.openingNightLane && !!review.productionVerified
+    && require('./lib/opening-night-lane/trust-model').laneBypasses(review, guard, { openingDate: show && show.openingDate });
   if (review.wrongShow === true && !wrongShowCleared && !inWindowVetoed('wrongShow') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongShow' };
   if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongProduction' };
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
