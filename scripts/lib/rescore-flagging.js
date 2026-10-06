@@ -71,7 +71,8 @@ function isFalseTruncationScore(data, show, filePath) {
   if (data.needsRescore === true) return false;
   if (data.humanReviewScore != null) return false;
   if (data.scoreSource && !isLlmScoreSource(data.scoreSource)) return false;
-  if (assessFullText(data.fullText) !== 'truncated') return false;
+  // The recorded 'truncated' status is the evidence the scorer hedged; a footer strip may since make the
+  // untrusted read complete too, so only the tier-trusted read is required here.
   if (assessFullText(data.fullText, true, { trustedComplete: true }) !== 'complete') return false;
   return isScoreable(data, show, filePath);
 }

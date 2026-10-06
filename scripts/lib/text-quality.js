@@ -232,6 +232,8 @@ function stripTrailingJunk(text) {
     // Generic WordPress sidebar widgets
     /\n\s*CategoriesCategories\n/i,
     /\n\s*Theater blogroll\n/i,
+    // TheaterMania page footer (BRO-4804): the models read this unpunctuated last line as a cut-off.
+    /\s*Add as a preferred source on Google/i,
   ];
 
   // Anchor patterns match the START of trailing junk sections (no greedy tails).

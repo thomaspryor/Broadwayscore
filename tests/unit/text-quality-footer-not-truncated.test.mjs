@@ -24,11 +24,17 @@ test('a complete review followed by a page footer is NOT truncated when contentT
 });
 
 test('without the tier signal the old behaviour is unchanged (footer still reads truncated)', () => {
-  for (const f of FOOTERS) {
+  for (const f of FOOTERS.filter(f => !/preferred source/.test(f))) {
     assert.equal(assessFullText(BODY + f), 'truncated', f);
     assert.equal(getBestTextForScoring({ fullText: BODY + f }).status, 'truncated', f);
     assert.equal(getBestTextForScoring({ fullText: BODY + f, contentTier: 'truncated' }).status, 'truncated', f);
   }
+});
+
+test('the TheaterMania footer line is stripped from the text the models see (OpenAI read it as a cut-off even without the warning)', () => {
+  const r = getBestTextForScoring({ fullText: BODY + '\nAdd as a preferred source on Google', contentTier: 'complete' });
+  assert.ok(!/preferred source/i.test(r.text), r.text.slice(-60));
+  assert.equal(r.status, 'complete');
 });
 
 test('a clean ending is complete either way', () => {
