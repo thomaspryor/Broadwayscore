@@ -409,7 +409,9 @@ async function workCard(pick, stats, inFlight) {
 // taken and released with --force-with-lease, so two runs cannot both win. The proxy
 // refuses ref deletes, hence the "unlocked" commit. No workflow triggers on this branch.
 const LOCK_REF = 'refs/heads/codex-runner-lock';
-const LOCK_STALE_MS = 11 * 3600_000;
+// Refreshed before every card, so a killed run (SIGKILL skips the release) blocks the next
+// run only until it goes stale. One card is well under 5h even at every timeout.
+const LOCK_STALE_MS = 5 * 3600_000;
 let lockSha = null;
 function lockCommit(msg) {
   const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
@@ -434,6 +436,14 @@ function takeLock() {
   if (!lockPush(sha, cur)) return 'another run took the lock first';
   lockSha = sha;
   return null;
+}
+/** Re-stamp the lock so a long healthy run never looks stale. -> false if another run took it. */
+function refreshLock() {
+  if (!lockSha) return true;
+  const sha = lockCommit(`locked ${new Date().toISOString()}`);
+  if (!lockPush(sha, lockSha)) return false;
+  lockSha = sha;
+  return true;
 }
 function releaseLock() {
   if (!lockSha) return;
@@ -509,6 +519,7 @@ async function runLocked(startedMs) {
     if (worked >= OPTS.limit) break;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals });
     if (!stop && stats.aborted) stop = stats.aborted;
+    if (!stop && !OPTS.dryRun && !refreshLock()) stop = 'another run took the lock';
     if (stop) { log(`stopping: ${stop}`); break; }
     try {
       if (await workCard(pick, stats, inFlight) === 'done') worked += 1;
