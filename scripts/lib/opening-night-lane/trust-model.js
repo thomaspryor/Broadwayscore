@@ -46,42 +46,75 @@ function buildLaneProvenance({ show, night, source, seenAt } = {}) {
   return { show, night, source, seenAt: new Date(seenAt).toISOString() };
 }
 
-/** True only for a review carrying a well-formed provenance block AND the aggregator production stamp. */
-function isLaneReview(review) {
+// seenAt must fall close to the night it claims: from a day before to a few days after. A stamp saying night
+// 2026-10-18 seen in 1999 is junk, not provenance.
+const SEEN_BEFORE_DAYS = 1;
+const SEEN_AFTER_DAYS = 3;
+
+/**
+ * True only for a review carrying a well-formed provenance block AND the aggregator production stamp, for the show
+ * the file belongs to (showId is required: a file with no showId cannot prove the stamp is for it).
+ * ctx.openingDate (the show's openingDate from shows.json, YYYY-MM-DD) is optional but the guard-wiring callers
+ * should always pass it: when given, the stamped night must be that opening night.
+ *
+ * Nothing here can prove the stamp was written by the lane (that is the write side's job: only the lane writer may
+ * emit productionVerified:"aggregator" or the provenance block, and every other writer must strip them). This
+ * function makes a forged or copied stamp as hard to pass as a pure check can.
+ */
+function isLaneReview(review, ctx = {}) {
   if (!review || typeof review !== 'object') return false;
   if (review.productionVerified !== PRODUCTION_VERIFIED) return false;
   const p = review[PROVENANCE_KEY];
   if (!p || typeof p !== 'object') return false;
   if (!/^[a-z0-9][a-z0-9-]*$/.test(String(p.show || '')) || !isDay(p.night) || !SOURCES.includes(p.source) || !isIso(p.seenAt)) return false;
-  // The provenance must be for the show the file belongs to: a stamp copied onto another show's file earns nothing.
-  if (review.showId && review.showId !== p.show) return false;
+  if (!review.showId || review.showId !== p.show) return false;
+  const nightMs = Date.parse(`${p.night}T00:00:00Z`);
+  const seenMs = Date.parse(p.seenAt);
+  if (seenMs < nightMs - SEEN_BEFORE_DAYS * DAY_MS || seenMs >= nightMs + (SEEN_AFTER_DAYS + 1) * DAY_MS) return false;
+  if (ctx.openingDate != null && String(ctx.openingDate).slice(0, 10) !== p.night) return false;
   return true;
 }
 
-/** Whether `guard` must stand down for `review`. Unknown guard names throw. */
-function laneBypasses(review, guard) {
+/** Whether `guard` must stand down for `review`. Unknown guard names throw. `ctx` is forwarded to isLaneReview. */
+function laneBypasses(review, guard, ctx = {}) {
   if (!LANE_BYPASSED_GUARDS.includes(guard)) {
     throw new Error(`laneBypasses: unknown guard "${guard}" (known: ${LANE_BYPASSED_GUARDS.join(', ')})`);
   }
-  return isLaneReview(review);
+  return isLaneReview(review, ctx);
+}
+
+const DEFAULT_TIME_ZONE = 'America/New_York';
+
+/**
+ * The calendar date (YYYY-MM-DD) a publish date falls on in `timeZone`. A date-only string IS that calendar date.
+ * A date-time must carry a zone or offset: one without is parsed in the SERVER's zone, which makes the answer depend
+ * on where the lane happens to run, so it is refused (null).
+ */
+function calendarDateIn(publishDate, timeZone = DEFAULT_TIME_ZONE) {
+  const raw = String(publishDate || '').trim();
+  if (!raw) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return isDay(raw) ? raw : null;
+  if (!/(Z|[+-]\d{2}:?\d{2})$/i.test(raw)) return null;
+  const t = Date.parse(raw);
+  if (Number.isNaN(t)) return null;
+  return new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(t));
 }
 
 /**
  * Should the lane take this candidate at all? Aggregator-cited URLs are admitted without a date check (the aggregator
- * already tied them to the show); an outlet-index find needs a publish date within opening night +/- 1 day.
+ * already tied them to the show); an outlet-index find needs a publish date within opening night +/- 1 CALENDAR day
+ * in the market's time zone (America/New_York for Broadway and Off-Broadway, Europe/London for the West End).
  * @returns {{admit: boolean, reason: string}}
  */
-function admitLaneCandidate({ source, aggregatorCited = false, publishDate = null, night } = {}) {
+function admitLaneCandidate({ source, aggregatorCited = false, publishDate = null, night, timeZone = DEFAULT_TIME_ZONE } = {}) {
   if (!isDay(night)) throw new Error(`admitLaneCandidate: bad night "${night}"`);
   if (source === 'aggregator') {
     return aggregatorCited === true ? { admit: true, reason: 'aggregator-cited' } : { admit: false, reason: 'not-cited-by-an-aggregator' };
   }
   if (source === 'outlet-index') {
-    const t = publishDate ? Date.parse(publishDate) : NaN;
-    if (Number.isNaN(t)) return { admit: false, reason: 'no-publish-date' };
-    const nightMs = Date.parse(`${night}T00:00:00Z`);
-    const day = Math.floor((t - nightMs) / DAY_MS);
-    // Floor on a UTC-midnight anchor: opening night -1 day through +1 day inclusive is day offsets -1, 0, 1.
+    const date = calendarDateIn(publishDate, timeZone);
+    if (!date) return { admit: false, reason: 'no-publish-date' };
+    const day = Math.round((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${night}T00:00:00Z`)) / DAY_MS);
     return day >= -1 && day <= 1 ? { admit: true, reason: 'outlet-index-on-night' } : { admit: false, reason: 'outside-night-window' };
   }
   return { admit: false, reason: 'unknown-source' };
@@ -98,12 +131,17 @@ function laneReviewFilename({ outletId, criticName, night, url, existing = new M
   if (!isDay(night)) throw new Error(`laneReviewFilename: bad night "${night}"`);
   if (!url) throw new Error('laneReviewFilename: url is required');
   const map = existing instanceof Map ? existing : new Map(Object.entries(existing || {}));
+  // Values may be the review url or a record carrying one.
+  const urlOf = (v) => (typeof v === 'string' ? v : (v && typeof v.url === 'string' ? v.url : null));
+  const sameUrl = (v) => { const u = urlOf(v); return !!u && normalizeReviewUrl(u) === normalizeReviewUrl(url); };
   const base = generateReviewFilename(outletId, criticName || 'unknown').replace(/\.json$/, '');
   const filename = `${base}--on-${night}.json`;
   if (!map.has(filename)) return { filename, reuse: false };
-  const there = map.get(filename);
-  if (there && normalizeReviewUrl(there) === normalizeReviewUrl(url)) return { filename, reuse: true };
-  return { filename: versionedReviewFilename(filename, url), reuse: false };
+  if (sameUrl(map.get(filename))) return { filename, reuse: true };
+  // The base slot holds a different review: this URL gets its own URL-hash file, and a re-run finds that file again.
+  const versioned = versionedReviewFilename(filename, url);
+  if (map.has(versioned) && sameUrl(map.get(versioned))) return { filename: versioned, reuse: true };
+  return { filename: versioned, reuse: false };
 }
 
 /**
@@ -114,8 +152,11 @@ function paywallFallbackScore({ thumb, stars } = {}) {
   if (thumb != null && Object.prototype.hasOwnProperty.call(THUMB_SCORES, thumb)) {
     return { assignedScore: THUMB_SCORES[thumb], scoreSource: 'lane-aggregator-thumb' };
   }
-  const n = Number(stars);
-  if (stars != null && Number.isFinite(n) && n >= 0 && n <= 5) {
+  // A number or a numeric string only: Number('') and Number(false) are 0 and would publish a 0 for a blank field.
+  // 0 stars means unrated, not a score.
+  const isNum = typeof stars === 'number' || (typeof stars === 'string' && /^\s*\d+(\.\d+)?\s*$/.test(stars));
+  const n = isNum ? Number(stars) : NaN;
+  if (Number.isFinite(n) && n > 0 && n <= 5) {
     return { assignedScore: starsToNumeric(n, 5), scoreSource: 'lane-aggregator-stars' };
   }
   return null;
@@ -158,5 +199,5 @@ function buildLaneReview({
 
 module.exports = {
   PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS,
-  buildLaneProvenance, isLaneReview, laneBypasses, admitLaneCandidate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
+  buildLaneProvenance, isLaneReview, laneBypasses, calendarDateIn, admitLaneCandidate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
 };
