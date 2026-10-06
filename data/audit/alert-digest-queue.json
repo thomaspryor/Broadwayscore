@@ -553,6 +553,35 @@
     "queuedAt": "2026-10-06T17:46:21.253Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-2367-muuuyrde",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-2367-muuuyrde",
+    "description": "land.yml did not land land/job/linear-BRO-2367-muuuyrde: the rebase gate went red at e7408db7cd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37508936036",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-2367-muuuyrde"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e7408db7cd17ba010ad2d3fbb6f708afa0d41dce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37508936036"
+      }
+    ],
+    "queuedAt": "2026-10-06T18:10:22.133Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-2997-muv913m0",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-2997-muv913m0",
     "description": "land.yml did not land land/job/linear-BRO-2997-muv913m0: the rebase gate went red at 05aa654eb5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37508939888",
