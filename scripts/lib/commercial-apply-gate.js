@@ -106,6 +106,33 @@ function recoupClaimDesignationAction(existing) {
   return 'block';
 }
 
+/**
+ * Decide, per figure, whether it prints as fact. A capitalization or weekly running cost is fact only when a
+ * cited page was read and states it (figureEvidence[field].found), in which case the quote becomes its
+ * source text; otherwise isEstimate is set and the AI-written source text is dropped. Mutates `result`.
+ * Shared by apply-commercial-pending (verified evidence) and batch-commercial-research --apply (no verifier,
+ * so every figure lands as an estimate): there is exactly one place that decides what may print as fact.
+ */
+function applyFigureEvidence(result, entry, figureEvidence = {}) {
+  for (const field of ['capitalization', 'weeklyRunningCost']) {
+    if (entry[field] == null) continue;
+    const evidence = figureEvidence[field];
+    const verified = evidence?.found === true && Boolean(evidence.quote && evidence.source?.url);
+    result.isEstimate = { ...result.isEstimate, [field]: !verified || entry.isEstimate?.[field] === true };
+    const sourceField = field === 'capitalization' ? 'capitalizationSource' : 'weeklyRunningCostSource';
+    if (verified) {
+      const host = new URL(evidence.source.url).hostname.replace(/^www\./, '');
+      result[sourceField] = `${host}: "${evidence.quote}"`;
+      result.sources = [evidence.source, ...(result.sources || []).filter(s => s.url !== evidence.source.url)];
+      if (field === 'weeklyRunningCost') result.costMethodology = 'trade-reported';
+    } else {
+      delete result[sourceField];
+      if (field === 'weeklyRunningCost') result.costMethodology = 'deep-research';
+    }
+  }
+  return result;
+}
+
 // Build the commercial.json entry from a pending-review entry. When applying
 // an auto-apply recoupment claim (the Friday pipeline hot path), the scraper
 // only carries recoupment fields — start from the existing entry and overlay,
@@ -170,26 +197,12 @@ function buildCommercialEntry(entry, existing, opts = {}) {
       }
     }
   }
-  for (const field of ['capitalization', 'weeklyRunningCost']) {
-    if (entry[field] == null) continue;
-    const evidence = figureEvidence[field];
-    const verified = evidence?.found === true && Boolean(evidence.quote && evidence.source?.url);
-    result.isEstimate = { ...result.isEstimate, [field]: !verified || entry.isEstimate?.[field] === true };
-    const sourceField = field === 'capitalization' ? 'capitalizationSource' : 'weeklyRunningCostSource';
-    if (verified) {
-      const host = new URL(evidence.source.url).hostname.replace(/^www\./, '');
-      result[sourceField] = `${host}: "${evidence.quote}"`;
-      result.sources = [evidence.source, ...(result.sources || []).filter(s => s.url !== evidence.source.url)];
-      if (field === 'weeklyRunningCost') result.costMethodology = 'trade-reported';
-    } else {
-      delete result[sourceField];
-      if (field === 'weeklyRunningCost') result.costMethodology = 'deep-research';
-    }
-  }
+  applyFigureEvidence(result, entry, figureEvidence);
   return result;
 }
 
 module.exports = {
+  applyFigureEvidence,
   CONFIDENCE_ORDER,
   cleanNullish,
   VALID_DESIGNATIONS,

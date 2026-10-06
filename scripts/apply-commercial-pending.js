@@ -127,6 +127,7 @@ async function main() {
 
   let applied = 0;
   let skipped = 0;
+  let pendingDirty = false; // a pending entry's verify-attempt counter changed and must be saved
 
   // Track keys that were ACTUALLY applied this run. The cleanup loop below
   // must delete only these — key-existence in commercial.json is NOT a proxy
@@ -150,7 +151,8 @@ async function main() {
     // blocking the apply pipeline.
   }
 
-  const verifyEntry = require('./lib/commercial-source-verify').createSourceVerifier();
+  const { createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS } = require('./lib/commercial-source-verify');
+  const verifyEntry = createSourceVerifier();
   for (const showId of showIds) {
     const entry = pending.shows[showId];
     if (!entry) continue;
@@ -269,6 +271,18 @@ async function main() {
       skipped++;
       continue;
     }
+    // A cited page that could not be FETCHED (network, credentials, 4xx/5xx) is not "the page does not confirm
+    // the figure": leave the entry pending for a few runs instead of downgrading a figure nobody checked.
+    if (figureEvidence.fetchFailed) {
+      const { attempts, leavePending } = nextVerifyAttempt(entry);
+      if (leavePending) {
+        console.log(`  ⏳ "${showId}" — a cited page could not be fetched (attempt ${attempts} of ${SOURCE_VERIFY_MAX_ATTEMPTS}); left pending`);
+        if (!DRY_RUN) { entry.sourceVerifyAttempts = attempts; pendingDirty = true; }
+        skipped++;
+        continue;
+      }
+      console.log(`  ⚠️  "${showId}" — a cited page could not be fetched on ${attempts} runs; applying its figures as estimates`);
+    }
     const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
       gate.buildCommercialEntry(entry, existing, { isClaimAutoApply, normalizeSources, figureEvidence }),
       keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined,
@@ -345,6 +359,12 @@ async function main() {
     }
   } else if (DRY_RUN) {
     console.log(`\n🏁 Dry run: would apply ${applied}, skip ${skipped}`);
+  } else if (pendingDirty) {
+    // Nothing applied, but entries left pending on a fetch failure carry a bumped attempt counter: save it, or
+    // the cap would never be reached and every run would retry the same unreachable pages.
+    pending.lastUpdated = new Date().toISOString();
+    fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+    console.log(`📋 Recorded fetch attempts on ${skipped} pending entr${skipped === 1 ? 'y' : 'ies'}; nothing applied`);
   }
 }
 

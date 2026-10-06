@@ -92,10 +92,13 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
     // leaves that entry pending for the next run instead of landing it as an unverified estimate.
     let capped = false;
     let fieldCapped = false;
+    let fetchFailed = false;
+    let sawFetchFailure = false;
     const sources = normalizeSources(entry.sources);
     for (const field of ['capitalization', 'weeklyRunningCost']) {
       if (entry[field] == null) continue;
       fieldCapped = false;
+      sawFetchFailure = false;
       for (const source of sources) {
         let host;
         try { const url = new URL(source.url); if (url.protocol !== 'https:') continue; host = url.hostname.replace(/^www\./, ''); } catch { continue; }
@@ -106,16 +109,37 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
         if (!show?.title || !/^\d{4}$/.test(year)) continue;
         if (!cache.has(source.url)) {
           if (cache.size >= maxFetches) { fieldCapped = true; continue; }
-          cache.set(source.url, Promise.resolve().then(() => fetchPage(source.url)).then(r => r?.content || '').catch(() => ''));
+          // A fetch that THROWS (network, 403, 429, missing credentials) is not the same as a page that loaded
+          // and does not state the figure: record it so the caller can leave the entry pending instead of
+          // downgrading a figure nobody actually checked.
+          cache.set(source.url, Promise.resolve().then(() => fetchPage(source.url)).then(
+            (r) => ({ content: r?.content || '', failed: !r || !r.content }),
+            () => ({ content: '', failed: true }),
+          ));
         }
-        const result = verifyFigure(entry[field], await cache.get(source.url), { title: show.title, year, field });
-        if (result.found) { evidence[field] = { ...result, source }; fieldCapped = false; break; }
+        const page = await cache.get(source.url);
+        const result = verifyFigure(entry[field], page.content, { title: show.title, year, field });
+        if (result.found) { evidence[field] = { ...result, source }; fieldCapped = false; sawFetchFailure = false; break; }
+        if (page.failed) sawFetchFailure = true;
       }
       if (fieldCapped) capped = true;
+      if (sawFetchFailure && !evidence[field]) fetchFailed = true;
     }
     if (capped) evidence.capped = true;
+    if (fetchFailed) evidence.fetchFailed = true;
     return evidence;
   };
 }
 
-module.exports = { pageText, verifyFigure, createSourceVerifier };
+// A pending entry whose cited pages could not be fetched is left pending and retried on the next run, but only
+// this many times: an entry whose page is permanently unreachable must not burn scraper credits every week
+// forever (the BRO-4765 shape). After the last attempt it applies as an estimate.
+const SOURCE_VERIFY_MAX_ATTEMPTS = 3;
+
+/** Pure: given a pending entry whose fetch failed, say whether to leave it pending and what to record. */
+function nextVerifyAttempt(entry, max = SOURCE_VERIFY_MAX_ATTEMPTS) {
+  const attempts = (Number.isInteger(entry && entry.sourceVerifyAttempts) ? entry.sourceVerifyAttempts : 0) + 1;
+  return { attempts, leavePending: attempts < max };
+}
+
+module.exports = { pageText, verifyFigure, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS };

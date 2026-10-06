@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 const require = createRequire(import.meta.url);
-const { verifyFigure, createSourceVerifier } = require('../../scripts/lib/commercial-source-verify');
+const { verifyFigure, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS } = require('../../scripts/lib/commercial-source-verify');
 const { buildCommercialEntry } = require('../../scripts/lib/commercial-apply-gate');
 const show = { title: 'Example', openingDate: '2025-04-01' };
 const source = { type: 'trade', url: 'https://variety.com/example', date: '2025-03-01' };
@@ -31,7 +31,7 @@ test('silent, failed, missing and wrong-production sources default to estimates'
     assert.equal(result.costMethodology, 'deep-research');
   }
   const verify = createSourceVerifier({ fetchPage: async () => { throw Error('403'); } });
-  assert.deepEqual(await verify(entry, show), {});
+  assert.deepEqual(await verify(entry, show), { fetchFailed: true }, 'a fetch that threw is flagged, not read as a silent page');
   assert.equal(buildCommercialEntry(entry, null).isEstimate.capitalization, true);
 });
 test('SEC Form D XML amounts verify as fact without computing midpoints', async () => {
@@ -154,3 +154,55 @@ test('fixture apply CLI dry run marks high-confidence unverified figures as esti
     assert.equal(JSON.parse(report).fields.capitalization.proposedIsEstimate, true);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('fetch failure vs silent page: only a failed fetch leaves the entry pending, a loaded page that does not state the figure is a real "not confirmed"', async () => {
+  const loadedSilent = createSourceVerifier({ fetchPage: async () => ({ content: 'Example opened in 2025. No figures here.' }) });
+  const silent = await loadedSilent(entry, show);
+  assert.equal(silent.fetchFailed, undefined, 'the page loaded: the figure is genuinely unconfirmed');
+  const threw = createSourceVerifier({ fetchPage: async () => { throw Object.assign(new Error('missing credentials'), { status: 401 }); } });
+  assert.equal((await threw(entry, show)).fetchFailed, true);
+  const empty = createSourceVerifier({ fetchPage: async () => ({ content: '' }) });
+  assert.equal((await empty(entry, show)).fetchFailed, true, 'a page that came back with no text was not read');
+  const nullRes = createSourceVerifier({ fetchPage: async () => null });
+  assert.equal((await nullRes(entry, show)).fetchFailed, true);
+});
+
+test('one failing source does not hide confirmation from another source on the same entry', async () => {
+  const two = { ...entry, sources: [{ ...source, url: 'https://variety.com/down' }, { ...source, url: 'https://deadline.com/up' }] };
+  const verify = createSourceVerifier({ fetchPage: async (url) => { if (url.includes('down')) throw new Error('503'); return { content: 'Example in 2025 capitalization $12.5 million' }; } });
+  const ev = await verify(two, show);
+  assert.equal(ev.capitalization.found, true);
+  assert.equal(ev.fetchFailed, true, 'weekly cost stayed unconfirmed because its page failed: the entry is incomplete, not downgraded');
+});
+
+test('applyFigureEvidence: no evidence means estimate and no AI source text, the same rule for every caller', () => {
+  const { applyFigureEvidence } = require('../../scripts/lib/commercial-apply-gate');
+  const result = { capitalizationSource: 'GPT Deep Research: budget', weeklyRunningCostSource: 'GPT guess' };
+  applyFigureEvidence(result, { capitalization: 1, weeklyRunningCost: 2 }, {});
+  assert.deepEqual(result.isEstimate, { capitalization: true, weeklyRunningCost: true });
+  assert.equal(result.capitalizationSource, undefined);
+  assert.equal(result.weeklyRunningCostSource, undefined);
+  assert.equal(result.costMethodology, 'deep-research');
+  const untouched = {};
+  applyFigureEvidence(untouched, { designation: 'TBD' }, {});
+  assert.deepEqual(untouched, {}, 'entries with no figures are left alone');
+});
+
+test('nextVerifyAttempt: leaves a fetch-failed entry pending for a few runs, then lets it apply as an estimate', () => {
+  assert.equal(SOURCE_VERIFY_MAX_ATTEMPTS, 3);
+  assert.deepEqual(nextVerifyAttempt({}), { attempts: 1, leavePending: true });
+  assert.deepEqual(nextVerifyAttempt({ sourceVerifyAttempts: 1 }), { attempts: 2, leavePending: true });
+  assert.deepEqual(nextVerifyAttempt({ sourceVerifyAttempts: 2 }), { attempts: 3, leavePending: false });
+  assert.deepEqual(nextVerifyAttempt({ sourceVerifyAttempts: 'junk' }), { attempts: 1, leavePending: true }, 'a junk counter restarts from zero, never throws');
+  assert.deepEqual(nextVerifyAttempt(null), { attempts: 1, leavePending: true });
+});
+
+test('wiring: apply leaves fetch-failed entries pending and persists the counter; batch --apply goes through the shared figure rule', () => {
+  const root = path.resolve('.');
+  const apply = fs.readFileSync(path.join(root, 'scripts/apply-commercial-pending.js'), 'utf8');
+  assert.match(apply, /figureEvidence\.fetchFailed[^]*?nextVerifyAttempt\(entry\)[^]*?entry\.sourceVerifyAttempts = attempts; pendingDirty = true/);
+  assert.match(apply, /else if \(pendingDirty\)[^]*?fs\.writeFileSync\(PENDING_PATH/, 'the counter is saved even when nothing applied, or the cap would never be reached');
+  const batch = fs.readFileSync(path.join(root, 'scripts/batch-commercial-research.js'), 'utf8');
+  assert.match(batch, /applyFigureEvidence\(builtForApply, entry, \{\}\)[^]*?sanitizeForPublicRecord\(\s*builtForApply/, 'batch --apply marks figures as estimates before sanitising: no unverified AI figure prints as fact');
+});
+
