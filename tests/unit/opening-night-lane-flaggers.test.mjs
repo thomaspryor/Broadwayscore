@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural; shows.json is read only to pick any show id/title/openingDate for fixtures, no fact is pinned
 // BRO-4807 (epic BRO-4210, BRO-4782 wiring C): every writer that can SET an exclusion flag stands down for an
 // opening-night lane review and ONLY for it. Each family runs the REAL guard function twice, once with a lane review
 // (not flagged) and once with an ordinary review (flagged as today); a structural test fails when a script sets one of
