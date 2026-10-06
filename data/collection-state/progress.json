@@ -236,7 +236,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json"
+      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+      "data/review-texts/franz-and-marie-west-end-2026/whatnightout--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -368,6 +369,52 @@
     },
     {
       "t": "2026-10-06T20:29:16.605Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T21:55:10.292Z",
+      "event": "bb-session",
+      "session": "4df1cb05",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-06T21:55:36.664Z",
+      "event": "bb-session",
+      "session": "96269d68",
+      "url": "https://firstnightmagazine.com/tag/franz-and-marie/"
+    },
+    {
+      "t": "2026-10-06T21:55:43.948Z",
+      "event": "bb-session",
+      "session": "b4c39e13",
+      "url": "https://firstnightmagazine.com/tag/franz-and-marie/"
+    },
+    {
+      "t": "2026-10-06T21:56:39.092Z",
+      "event": "bb-session",
+      "session": "9fc2243b",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-06T21:59:33.500Z",
+      "event": "bb-session",
+      "session": "0a493492",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T21:59:34.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-06T21:59:52.643Z",
+      "event": "bb-session",
+      "session": "a8f54266",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T21:59:53.059Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

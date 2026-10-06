@@ -85,6 +85,16 @@ function parseTapOutput(tapOutput, treeRoot) {
       errBlock = { indent: errStart[1].length, entry: last, lines: [] };
       continue;
     }
+    // A one-line assertion message is emitted as a quoted scalar
+    // (`error: 'msg'`), not a block. Without this an aggregate guard with a
+    // one-line message has an empty payload, which diffFailingSets reads as
+    // NEW on every run — a stale main would block every landing (BRO-4812).
+    const errScalar = /^\s*error:\s*(?:'((?:[^']|'')*)'|"((?:[^"\\]|\\.)*)")\s*$/.exec(line);
+    if (errScalar && last && last.payload === undefined) {
+      const text = errScalar[1] !== undefined ? errScalar[1].replace(/''/g, "'") : errScalar[2].replace(/\\(.)/g, '$1');
+      last.payload = rootText ? text.split(rootText).join('<root>') : text;
+      continue;
+    }
     const notOk = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
     if (notOk) {
       sawTap = true;

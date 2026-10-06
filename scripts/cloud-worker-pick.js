@@ -6,6 +6,9 @@
  *
  * Usage:
  *   node scripts/cloud-worker-pick.js           JSON: { pick, eligible, skipped, historySkipped }
+ *   node scripts/cloud-worker-pick.js --list=N  JSON: { picks: [up to N], eligible, ... } for the
+ *                                               daily Codex runner (BRO-4745): same rules, no
+ *                                               resume entries (those stay with the Claude worker).
  *
  * `pick` is null when nothing is eligible; the worker then ends with no
  * changes. Exit 0 on a completed pick (null or not), 1 when Linear can't be read.
@@ -22,7 +25,7 @@
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv)) {
-  console.log('Usage: node scripts/cloud-worker-pick.js\nPrints {pick, eligible, skipped} for the cloud worker routine. Read-only.');
+  console.log('Usage: node scripts/cloud-worker-pick.js [--list=N]\nPrints {pick, eligible, skipped} for the cloud worker routine, or {picks: [up to N]} with --list. Read-only.');
   process.exit(0);
 }
 
@@ -134,11 +137,13 @@ async function main() {
   // every P0/P1 card, parked and started (resume) ones included: one request
   // per 50 cards.
   const candidates = issues.filter((iss) => !/^(malformed|not-p0-p1)$/.test(skipReason(iss, nowMs) || ''));
+  let commentsRead = true;
   if (candidates.length) {
     try {
       const comments = await listIssueComments(candidates.map((iss) => iss.identifier));
       for (const iss of candidates) if (comments.has(iss.identifier)) iss.comments = { nodes: comments.get(iss.identifier) };
     } catch (err) {
+      commentsRead = false;
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
@@ -148,27 +153,32 @@ async function main() {
     ...ordered.map((iss) => ({ issue: iss, resume: null })),
   ];
   const historySkipped = {};
+  const listN = listArg(process.argv);
+  if (listN) {
+    // Without comments the Codex bounce marker is invisible: hand Codex nothing this time.
+    if (!commentsRead) {
+      console.log(JSON.stringify({ picks: [], eligible, open: issues.length, skipped, startNowSkipped, historySkipped, commentsUnavailable: true }, null, 2));
+      return;
+    }
+    // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
+    // Cards Codex already bounced go to the Claude worker, never back to Codex.
+    const { codexBouncedRecently } = require('./lib/codex-runner.js');
+    const rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
+    const picks = [];
+    while (picks.length < listN && rest.length) {
+      const chosen = await firstUnpaused(rest, nowMs, historySkipped);
+      if (!chosen) break;
+      picks.push(pickJson(chosen.issue, null, nowMs, verifyCommand, isStartNow));
+      rest.splice(0, rest.indexOf(chosen) + 1);
+    }
+    console.log(JSON.stringify({ picks, eligible, open: issues.length, skipped, startNowSkipped, historySkipped }, null, 2));
+    return;
+  }
   const chosen = await firstUnpaused(queue, nowMs, historySkipped);
   const pick = chosen && chosen.issue;
   const resume = chosen && chosen.resume;
   const out = {
-    pick: pick && {
-      identifier: pick.identifier,
-      title: pick.title,
-      priority: pick.priority,
-      state: pick.state && pick.state.name,
-      url: pick.url,
-      verify: verifyCommand(pick),
-      startNow: isStartNow(pick, nowMs),
-      ...(resume && {
-        resume: {
-          landRef: resume.ref,
-          lastRun: resume.lastRun,
-          kind: resume.kind,
-          instructions: RESUME_INSTRUCTIONS(resume.ref, resume.lastRun, resume.kind),
-        },
-      }),
-    },
+    pick: pickJson(pick, resume, nowMs, verifyCommand, isStartNow),
     eligible,
     open: issues.length,
     skipped,
@@ -182,6 +192,38 @@ async function main() {
     // overrides that. Repeat it where a skimming worker will see it.
     console.error(`[cloud-worker-pick] RESUME ${pick.identifier}: follow pick.resume.instructions (land ref ${resume.ref}), not a new branch.`);
   }
+}
+
+/** `--list=N` as a positive integer, 0 when absent; a malformed value is an error, never the single-pick output. */
+function listArg(argv) {
+  const a = argv.find((x) => x === '--list' || x.startsWith('--list='));
+  if (!a) return 0;
+  const n = Number(a.slice('--list='.length));
+  if (!Number.isInteger(n) || n <= 0) {
+    console.error(`[cloud-worker-pick] bad ${a}: want --list=N with N a positive integer`);
+    process.exit(2);
+  }
+  return n;
+}
+
+function pickJson(pick, resume, nowMs, verifyCommand, isStartNow) {
+  return pick && {
+    identifier: pick.identifier,
+    title: pick.title,
+    priority: pick.priority,
+    state: pick.state && pick.state.name,
+    url: pick.url,
+    verify: verifyCommand(pick),
+    startNow: isStartNow(pick, nowMs),
+    ...(resume && {
+      resume: {
+        landRef: resume.ref,
+        lastRun: resume.lastRun,
+        kind: resume.kind,
+        instructions: RESUME_INSTRUCTIONS(resume.ref, resume.lastRun, resume.kind),
+      },
+    }),
+  };
 }
 
 main().catch((err) => {
