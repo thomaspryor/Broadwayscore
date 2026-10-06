@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T15:59:54.396Z",
+  "timestamp": "2026-10-06T16:42:56.184Z",
   "stats": {
-    "totalReviews": 46618,
-    "alreadyFlagged": 18682,
-    "dateGuardCatches": 265,
-    "directorMismatch": 1324,
+    "totalReviews": 46622,
+    "alreadyFlagged": 18689,
+    "dateGuardCatches": 269,
+    "directorMismatch": 1326,
     "tvFilmSignals": 1355,
-    "londonSignals": 1287,
+    "londonSignals": 1292,
     "offBroadwaySignals": 510,
     "yearMismatch": 114,
-    "noPublishDate": 4329
+    "noPublishDate": 4311
   },
   "findings": [
     {
@@ -13837,6 +13837,63 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2016 (2x) more than 2018 (0x). 2016 matches production: harry-potter-and-the-cursed-child-both-parts-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2016-07-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2016-08-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3716d before show (2016-08-06 vs 2026-10-09)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2016-08-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3720d before show (2016-08-02 vs 2026-10-09)"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "file": "times-uk--maxie-szalwinska.json",
+      "publishDate": "2016-07-31",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-harry-potter-and-the-cursed-child-parts-one-and-two-tvg33p33g",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 3722d before show (2016-07-31 vs 2026-10-09)"
         }
       ]
     },
@@ -33301,6 +33358,30 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--aidan-oconnor.json",
+      "score": 75,
+      "publishDate": "2026-08-20",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-NOTEBOOK-at-The-National-Theatre-20260820",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--angela-lin.json",
       "score": 47,
       "publishDate": null,
@@ -33398,8 +33479,8 @@
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--michael-rabice.json",
       "score": 71,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/buffalo/article/Review-THE-NOTEBOOK-at-Sheas-Buffalo-Theatre-20251008#:~:text=Where%20THE%20NOTEBOOK%20succeeds%20is,and%20unoffensive%2C%20is%20merely%20utilitarian.",
+      "publishDate": "2025-10-08",
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-THE-NOTEBOOK-at-Sheas-Buffalo-Theatre-20251008",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33428,25 +33509,6 @@
       "score": 78,
       "publishDate": "2025-09-14",
       "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
-        }
-      ]
-    },
-    {
-      "showId": "the-notebook-tour-2025",
-      "file": "broadwayworld--steve-murray.json",
-      "score": 62,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/san-francisco/article/Review-THE-NOTEBOOK-at-Orpheum-Theatre-20260214",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34631,6 +34693,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "broadwayworld--lucia-serrano.json",
+      "score": 80,
+      "publishDate": "2026-09-08",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-PHANTOM-OF-THE-OPERA-Keeps-Enchanting-with-Revitalized-North-American-Tour-20260908",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         }
       ]
     },
@@ -37922,6 +37998,20 @@
       "score": 82,
       "publishDate": "2026-04-08",
       "url": "https://www.timesunion.com/theater/article/water-for-elephants-review-proctors-schenectady-22191760.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--christina-mancuso.json",
+      "score": 63,
+      "publishDate": "2026-06-10",
+      "url": "https://www.broadwayworld.com/columbus/article/Review-WATER-FOR-ELEPHANTS-at-Ohio-Theatre-A-Spectacle-in-Search-of-a-Soul-20260610",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -41887,6 +41977,20 @@
       "score": 49,
       "publishDate": "2026-07-08",
       "url": "https://dctheaterarts.org/2026/07/08/beetlejuice-on-tour-at-the-national-theatre-is-stuck-in-limbo/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2026",
+      "file": "maryland-theatre-guide--aidan-oconnor.json",
+      "score": 86,
+      "publishDate": "2026-07-09",
+      "url": "https://mdtheatreguide.com/2026/07/theatre-review-beetlejuice-at-the-national-theatre-2/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -46016,6 +46120,19 @@
       "score": 59,
       "publishDate": "2026-09-10",
       "url": "https://www.theguardian.com/stage/2026/sep/10/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-yard-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
+      "file": "guardian--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-09-14",
+      "url": "https://www.westendtheatre.com/366114/news/for-colored-girls-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -62730,6 +62847,19 @@
       "score": 39,
       "publishDate": "2026-09-28",
       "url": "https://liamodell.com/2026/10/01/whos-afraid-of-virginia-woolf-review-soho-place-london-about-cast-running-time-gillian-anderson-billy-crudup-josh-dylan-phoebe-horn/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "standard--marianne-calnan-holland.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.westendtheatre.com/370047/news/reviews/whos-afraid-of-virginia-woolf-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
