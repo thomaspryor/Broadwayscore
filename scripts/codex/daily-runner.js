@@ -46,7 +46,6 @@ const LOG_DIR = process.env.CODEX_RUNNER_LOG_DIR || path.join(os.tmpdir(), 'code
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
 const MAX_IN_FLIGHT = 2;
 const CODEX_VERSION = '0.160.0';
-const SECRET_ENV = /KEY|TOKEN|SECRET|PASSWORD|COOKIE|CREDENTIAL/i;
 
 function arg(name, def) {
   const i = process.argv.indexOf(`--${name}`);
@@ -94,9 +93,7 @@ const fence = (s) => `\`\`\`\n${String(s).replace(/```/g, "'''")}\n\`\`\``;
  * (the check needs them to authenticate).
  */
 function scrubbedEnv() {
-  const env = {};
-  for (const [k, v] of Object.entries(process.env)) if (!SECRET_ENV.test(k) || /^(CLAUDE_|ANTHROPIC_)/.test(k)) env[k] = v;
-  return env;
+  return R.scrubEnv(process.env);
 }
 
 async function linearBrain(args) {

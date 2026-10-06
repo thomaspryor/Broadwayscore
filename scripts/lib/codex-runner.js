@@ -140,6 +140,21 @@ const SECRET_PATTERNS = [
 ];
 
 /** True when an added diff line carries token material (refuse to push). */
+// Env vars Codex and the reviewer must not see. GIT_CONFIG_KEY_n/VALUE_n are git's own
+// env config (the proxy's github URL rewrites); dropping KEY_n while GIT_CONFIG_COUNT stays
+// makes every git command fail, which silently blinded the reviewer.
+const SECRET_ENV = /KEY|TOKEN|SECRET|PASSWORD|COOKIE|CREDENTIAL/i;
+function keepEnvVar(name) {
+  if (/^(CLAUDE_|ANTHROPIC_|GIT_CONFIG_)/.test(name)) return true;
+  return !SECRET_ENV.test(name);
+}
+
+function scrubEnv(env) {
+  const out = {};
+  for (const [k, v] of Object.entries(env)) if (keepEnvVar(k)) out[k] = v;
+  return out;
+}
+
 function looksLikeSecretLeak(diffText) {
   return String(diffText || '').split('\n')
     .filter((l) => l.startsWith('+') && !l.startsWith('+++'))
@@ -171,6 +186,8 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
 }
 
 module.exports = {
+  keepEnvVar,
+  scrubEnv,
   AUTH_MARKER,
   BOUNCED_MARKER,
   codexBouncedRecently,

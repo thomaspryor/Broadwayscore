@@ -107,3 +107,15 @@ test('codexBouncedRecently: only the runner marker, only for 14 days', () => {
   assert.equal(r.codexBouncedRecently([c('a human mentions codex-runner-bounced', '2026-10-19T00:00:00Z')], now), false);
   assert.equal(r.codexBouncedRecently(undefined, now), false);
 });
+
+test('scrubEnv: drops secrets, keeps git env config whole', () => {
+  const env = {
+    OPENAI_API_KEY: 'x', LINEAR_API_KEY: 'x', GITHUB_TOKEN: 'x', SESSION_COOKIE: 'x',
+    CLAUDE_CODE_OAUTH_TOKEN: 'keep', ANTHROPIC_BASE_URL: 'keep', PATH: '/bin',
+    GIT_CONFIG_COUNT: '1', GIT_CONFIG_KEY_0: 'url.https://github.com/.insteadOf', GIT_CONFIG_VALUE_0: 'git@github.com:',
+  };
+  const out = r.scrubEnv(env);
+  assert.deepEqual(Object.keys(out).sort(), ['ANTHROPIC_BASE_URL', 'CLAUDE_CODE_OAUTH_TOKEN', 'GIT_CONFIG_COUNT', 'GIT_CONFIG_KEY_0', 'GIT_CONFIG_VALUE_0', 'PATH']);
+  // Every GIT_CONFIG_KEY_n the count promises must survive, or git refuses to run.
+  for (let i = 0; i < Number(out.GIT_CONFIG_COUNT); i++) assert.ok(`GIT_CONFIG_KEY_${i}` in out);
+});

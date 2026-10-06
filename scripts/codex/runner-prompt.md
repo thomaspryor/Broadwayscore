@@ -15,7 +15,7 @@ Do the work the card asks for:
 Mandatory checklist. Earlier Codex runs were rejected for exactly these misses, so answer each one in your report with evidence (a command you ran and what it printed, or file:line):
 a. Real data before and after: run the changed code path against real data before and after your change and report how many records change and 2-3 examples. A rule that also changes records the card did not mean to touch is wrong, even when the tests pass.
 b. Find the real writer or caller before patching. Grep for who produces the bad value or calls the broken function, and fix it there, not in a downstream reader.
-c. Is it already fixed on main? Check `git log -S '<key string>' --oneline -5` and the result of the card's check on main (below). If main already passes, make no code change and say so.
+c. Is it already fixed on main? Check `git log -S '<key string>' --oneline -5` and the result of the card's check on main (below). If main already passes, make no code change for that part, then check every other item the card lists (backfills, reports, data fixes). Do any that remain; if one cannot be done from here, say so plainly, because an empty change closes the card.
 d. Wired in: every new script, flag or function must be called by an existing caller or workflow. Prove it with grep. Dead code is a reject.
 e. Cost: count any new paid fetches (Bright Data, ScrapingBee, Browserbase), LLM calls or API calls per run, and say whether they run on a cron.
 
