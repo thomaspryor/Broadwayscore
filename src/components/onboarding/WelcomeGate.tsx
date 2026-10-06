@@ -117,8 +117,15 @@ export default function WelcomeGate() {
       const { data, error } = await supabaseRestRpc<boolean>('claim_onboarding');
       if (error) return; // e.g. the migration is not applied yet: show nothing
       try { localStorage.setItem(key, '1'); } catch { /* private mode */ }
-      // Once claimed it is spent, so open even if this effect re-ran meanwhile.
-      if (data === true && mounted.current) setOpen('account');
+      if (data !== true) return;
+      // Once claimed it is spent, so open even if this effect re-ran meanwhile,
+      // but never on top of a modal that opened while the claim was in flight.
+      const openWhenFree = () => {
+        if (!mounted.current) return;
+        if (pageBusyReason() === 'modal') { setTimeout(openWhenFree, BUSY_RETRY_MS); return; }
+        setOpen('account');
+      };
+      openWhenFree();
     };
     timer = setTimeout(attempt, FIRST_CHECK_MS);
     return () => {
