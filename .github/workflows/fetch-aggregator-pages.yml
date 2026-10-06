@@ -25,6 +25,11 @@ on:
         default: false
         type: boolean
 
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: fetch-aggregator-pages
+  cancel-in-progress: false
+
 jobs:
   fetch-pages:
     runs-on: ubuntu-latest

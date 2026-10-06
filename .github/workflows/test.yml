@@ -857,6 +857,13 @@ on:
       - 'tests/unit/vercel-deploy-concurrency.test.mjs'
       # BRO-554: wrapper that runs the should-deploy gate suite (the card's VERIFY file); registered in tests/unit-test-manifest.txt, outside every glob, so path-listed.
       - 'scripts/vercel-deploy.test.mjs'
+      # BRO-934: workflow dependency graph + freeze; DEPENDENCIES.md must match the workflow files. Registered in tests/unit-test-manifest.txt (outside every glob), so path-listed.
+      - 'scripts/validate-workflow-dependencies.test.mjs'
+      - 'scripts/generate-workflow-dependencies.js'
+      - 'scripts/automation-freeze.js'
+      - 'scripts/lib/workflow-dependency-graph.js'
+      - 'scripts/lib/automation-freeze.js'
+      - '.github/workflows/DEPENDENCIES.md'
       - '.github/workflows/vercel-deploy.yml'
       - 'scripts/vercel-wait-deployment.js'
       - '.github/workflows/check-push-ledger.yml'

@@ -14,6 +14,11 @@ on:
         default: ''
         type: string
 
+# BRO-934: manual grosses-history writer; shares the group with the other grosses writers.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
 jobs:
   backfill:
     runs-on: ubuntu-latest

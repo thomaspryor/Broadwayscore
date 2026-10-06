@@ -6,7 +6,7 @@ on:
     workflows:
       - "Rebuild Reviews Data"
       - "Weekly Broadway Grosses"
-      - "Update Show Status"
+      - "Update Shows"
       - "Opening Night Broadcast"
     types: [completed]
     branches: [main]

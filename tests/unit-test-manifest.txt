@@ -313,6 +313,7 @@ scripts/tests/watchdog-skips-landed-acked.test.mjs
 scripts/trace-connect-phase.test.mjs
 scripts/triage-review-gap.test.mjs
 scripts/update-show-status.test.mjs
+scripts/validate-workflow-dependencies.test.mjs
 scripts/vercel-deploy.test.mjs
 scripts/verify-addams-wsj-dedup-held.test.mjs
 scripts/verify-bro-4724-recheck.test.mjs
@@ -844,6 +845,7 @@ tests/unit/opening-night-express-push-timeout.test.mjs
 tests/unit/opening-night-express.test.mjs
 tests/unit/opening-night-lane-foundation.test.mjs
 tests/unit/opening-night-lane-lease-wiring.test.mjs
+tests/unit/opening-night-lane-trust-model.test.mjs
 tests/unit/opening-night-latency-report.test.mjs
 tests/unit/opening-night-monitor-env.test.mjs
 tests/unit/opening-night-monitor-launch.test.mjs
