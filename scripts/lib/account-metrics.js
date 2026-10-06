@@ -533,7 +533,8 @@ function weeklySummaryLines(d) {
     lines.push(`Welcome screen, last 30 days: ${w.shown} saw it, ${w.picked} saved shows from it, ${w.imported} finished an import from another app, ${w.completed} reached the last step, ${w.closed_early} closed it early.`);
   }
   if (d.actions && d.actions.length) {
-    const top = d.actions.filter((x) => x.last7 > 0).slice(0, 3).map((x) => `${x.label.toLowerCase()} (${x.last7})`);
+    // The welcome screen has its own line above; keep this one about what people saved.
+    const top = d.actions.filter((x) => x.last7 > 0 && !x.event.startsWith('onboarding_')).slice(0, 3).map((x) => `${x.label.toLowerCase()} (${x.last7})`);
     if (top.length) lines.push(`Most common this week: ${top.join(', ')}.`);
   }
   return lines;
