@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
   "openingDate": "2026-09-30",
-  "detectedAt": "2026-10-06T15:30:18.788Z",
+  "detectedAt": "2026-10-06T15:42:55.208Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "ground--unknown.json",
-      "outletId": "ground",
-      "criticName": "Unknown",
-      "url": "https://ground.news/article/production-images-released-for-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf-theatre-weekly",
-      "fullTextLen": 3743,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "theatremonkey--unknown.json",
       "outletId": "theatremonkey",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-06T15:30:18.788Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
