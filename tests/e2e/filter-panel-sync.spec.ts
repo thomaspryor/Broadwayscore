@@ -142,13 +142,22 @@ for (const cfg of PAGES) {
       // Inline Plays pill is now pressed (the proof of cross-component sync)
       // Note: the inline ToggleBar may not be visible while the panel is open
       // on mobile (panel covers it), but aria-pressed is still queryable.
-      const playsPressed = await page.evaluate(() => {
+      // The URL changes BEFORE React re-renders the inline pill (same race the
+      // inline → panel test guards below); wait for aria-pressed to flip rather
+      // than sampling it once (BRO-4809: West End failed 3/3 retries sampling early).
+      const inlinePlaysPressed = () => {
         const btn = Array.from(document.querySelectorAll('button')).find(
           (b) => (b.textContent || '').trim() === 'Plays' && !b.closest('[role="dialog"]'),
         ) as HTMLButtonElement | undefined;
         return btn?.getAttribute('aria-pressed');
-      });
-      expect(playsPressed).toBe('true');
+      };
+      await page.waitForFunction(() => {
+        const btn = Array.from(document.querySelectorAll('button')).find(
+          (b) => (b.textContent || '').trim() === 'Plays' && !b.closest('[role="dialog"]'),
+        ) as HTMLButtonElement | undefined;
+        return btn?.getAttribute('aria-pressed') === 'true';
+      }, null, { timeout: 5000 });
+      expect(await page.evaluate(inlinePlaysPressed)).toBe('true');
     });
 
     test('inline → panel: tapping inline Musicals shows Type chip + badge in panel', async ({ page }) => {
