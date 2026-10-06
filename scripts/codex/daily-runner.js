@@ -164,7 +164,7 @@ function runCheck(card, codexReport, tag) {
   const head = git(['rev-parse', 'HEAD']);
   const r = sh('claude', ['-p', '--model', 'opus', '--add-dir', WT, '--output-format', 'text',
     '--allowedTools', 'Read,Grep,Glob,Bash(cd:*),Bash(git -C:*),Bash(git diff:*),Bash(git show:*),Bash(git log:*),Bash(node --test:*),Bash(node scripts/:*),Bash(npx tsc:*),Bash(ls:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*)',
-    prompt], { cwd: os.tmpdir(), timeoutMs: 30 * 60_000, env: scrubbedEnv(), input: '' });
+  ], { cwd: os.tmpdir(), timeoutMs: 30 * 60_000, env: scrubbedEnv(), input: prompt }); // stdin: --allowedTools and --add-dir are variadic and would swallow a positional prompt
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
   // The reviewer is read-only; a moved HEAD or a dirty tree means it was not.
   const tampered = git(['rev-parse', 'HEAD']) !== head || git(['status', '--porcelain']) !== '';
@@ -243,6 +243,7 @@ async function workCard(pick, stats, inFlight) {
   let action = null; try { action = JSON.parse(claimJson).action; } catch { /* unparseable claim output */ }
   if (claim.code !== 0 || !action || action === 'noop') { log(`${id}: claim ${action || 'failed'}, skipped`); return 'skip'; }
   stats.claimed.push(id);
+  current = id;
 
   let disposed = false;
   try {
@@ -300,11 +301,25 @@ async function workCard(pick, stats, inFlight) {
     disposed = true;
     return 'done';
   } finally {
+    current = null;
     if (!disposed) {
       stats.crashed.push(id);
       await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n\nThe runner hit an error on this card and changed nothing on main. Back to Todo for the Claude worker.`).catch(() => {});
     }
   }
+}
+
+// The card claimed right now, so a kill (routine timeout, container stop) can hand it back.
+let current = null;
+for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
+  process.on(sig, () => {
+    if (current && !OPTS.dryRun) {
+      sh('node', ['scripts/linear-brain.js', 'update', current, '--state', 'Todo', '--comment',
+        `## Codex runner: stopped (${sig}) mid-card\n\nNothing was landed for this card. Back to Todo.`], { timeoutMs: 600_000 });
+    }
+    log(`killed by ${sig}${current ? `; ${current} returned to Todo` : ''}`);
+    process.exit(1);
+  });
 }
 
 async function main() {
