@@ -107,6 +107,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
       - uses: ./.github/actions/setup-node
 
       # backfill-unknown-critics fetches review pages (fetchPage → Playwright

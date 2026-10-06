@@ -79,6 +79,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
       # Stale-checkout race guard (P1): a review-texts push landing between
       # THIS checkout and the "Rebuild reviews.json" step below is invisible
       # to that step — it exits 0 with a stale checkout and no warning

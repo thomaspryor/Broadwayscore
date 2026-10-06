@@ -1606,6 +1606,14 @@ async function pollCycle() {
     process.exit(1);
   }
 
+  // BRO-4786: the opening-night lane holds this show's night lease; the poller must not write it.
+  const leaseGuard = require('./lib/opening-night-lane/lease-guard');
+  const leased = leaseGuard.leaseSkipReason(SHOW_ID);
+  if (leased) {
+    console.log(`Opening-night lease: ${leaseGuard.describe(leased)}. Poller skipping.`);
+    return;
+  }
+
   console.log('╔══════════════════════════════════════════════╗');
   console.log('║     Opening Night Review Poller              ║');
   console.log('╚══════════════════════════════════════════════╝');

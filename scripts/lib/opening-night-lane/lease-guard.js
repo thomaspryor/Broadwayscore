@@ -19,8 +19,15 @@ const leasesFile = (env = process.env) => env.OPENING_NIGHT_LEASES_FILE || DEFAU
 /** Lease info when `show` is leased to someone other than this process, else null. */
 function leaseSkipReason(show, { file, now, env = process.env } = {}) {
   const f = file || leasesFile(env);
+  // `sync` could not read the shared store after retries: per-show callers cannot tell, so they wait.
+  if (readUnknownMarker(f)) return { show, night: null, holder: 'unknown', expiresAt: null, unreadable: true };
   const ignoreHolder = env.OPENING_NIGHT_LANE_HOLDER || undefined;
   return lease.isShowLeased(f, show, { now, ignoreHolder });
+}
+
+/** True when the local lease file is the marker `sync` writes after it could not reach the store. */
+function readUnknownMarker(f) {
+  try { return JSON.parse(fs.readFileSync(f, 'utf8')).unknown === true; } catch { return false; }
 }
 
 /** Split show ids into {kept, skipped:[{show, lease}]}. */
@@ -38,7 +45,7 @@ function partitionLeased(showIds, opts = {}) {
 function leasedShowIds({ file, now, env = process.env } = {}) {
   const f = file || leasesFile(env);
   if (!fs.existsSync(f)) return [];
-  const state = lease.readState(f);
+  const state = lease.readState(f); // an unknown marker has no leases: enumeration cannot name shows, per-show checks fail closed instead
   const ignoreHolder = env.OPENING_NIGHT_LANE_HOLDER || undefined;
   const shows = new Set(Object.keys(state.leases).map((k) => k.split('|')[0]));
   return [...shows].filter((s) => lease.activeLeaseFor(state, s, { now, ignoreHolder }));
@@ -61,7 +68,9 @@ function revertLeasedChanges(repoDir, shows) {
     const status = entries[i].slice(0, 2);
     const file = entries[i].slice(3);
     if (status[0] === 'R' || status[0] === 'C') i++; // the next token is the rename source
-    if (!leased.has(file.split('/')[0])) continue;
+    const seg = file.split('/');
+    // _pending/<show>/... is the quarantine mirror of a show directory (review-write-guard).
+    if (!leased.has(seg[0] === '_pending' ? seg[1] : seg[0])) continue;
     if (status === '??') fs.rmSync(path.join(repoDir, file), { force: true });
     else {
       run(['reset', '--quiet', 'HEAD', '--', file]);
@@ -74,4 +83,4 @@ function revertLeasedChanges(repoDir, shows) {
 
 const describe = (l) => `${l.show} leased to ${l.holder}${l.expiresAt ? ` until ${l.expiresAt}` : ''}${l.unreadable ? ' (lease file unreadable, treating as leased)' : ''}`;
 
-module.exports = { DEFAULT_LEASES_FILE, leasesFile, leaseSkipReason, partitionLeased, leasedShowIds, revertLeasedChanges, describe };
+module.exports = { readUnknownMarker, DEFAULT_LEASES_FILE, leasesFile, leaseSkipReason, partitionLeased, leasedShowIds, revertLeasedChanges, describe };

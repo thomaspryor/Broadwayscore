@@ -60,6 +60,13 @@ runs:
           git add -A
         fi
 
+        # BRO-4786: opening-night lane lease. While the lane holds a show's night lease, no
+        # other workflow may write that show's directory: undo any uncommitted change under a
+        # leased show (also covers the autostash-conflict staging above) before staging.
+        # The lane's own workflow sets OPENING_NIGHT_LANE_HOLDER and passes through.
+        node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
+          echo "::warning::push-review-texts: opening-night lease enforce failed to run"
+
         # Stage all changes
         # ROOT-CAUSE GUARD (2026-05-27): the review-texts data repo contains
         # ONLY JSON review files — never symlinks. A stray symlink
