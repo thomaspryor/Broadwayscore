@@ -3215,13 +3215,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-06T13:33:36.539Z",
+      "lastSeen": "2026-10-06T13:48:29.246Z",
       "lastNotifiedAt": "2026-10-06T03:34:45.035Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3473,13 +3473,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-06T13:33:36.544Z",
+      "lastSeen": "2026-10-06T13:48:29.252Z",
       "lastNotifiedAt": "2026-10-05T14:06:16.840Z",
       "lastSurfacedAt": "2026-10-05T14:06:16.840Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3893,12 +3893,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-06T13:33:30.414Z",
+      "lastSeen": "2026-10-06T13:48:29.225Z",
       "lastNotifiedAt": "2026-10-06T13:33:30.414Z",
       "lastSurfacedAt": "2026-10-06T13:33:30.414Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-4795"
+      "linearIdentifier": "BRO-4795",
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -5895,13 +5896,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-06T13:33:30.398Z",
+      "lastSeen": "2026-10-06T13:48:29.209Z",
       "lastNotifiedAt": "2026-10-05T14:06:16.793Z",
       "lastSurfacedAt": "2026-10-05T14:06:16.793Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9110,13 +9111,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-06T13:33:36.525Z",
+      "lastSeen": "2026-10-06T13:48:29.232Z",
       "lastNotifiedAt": "2026-10-05T14:06:16.817Z",
       "lastSurfacedAt": "2026-10-05T14:06:16.817Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
