@@ -66,6 +66,8 @@ test('admitLaneCandidate: aggregator-cited needs no date; an outlet-index find n
   // West End: the same instants judged in London.
   assert.equal(at('2026-10-19T23:30:00Z', { timeZone: 'Europe/London' }).admit, false, '00:30 BST on the 20th is two days after');
   assert.equal(at('2026-10-19T23:30:00Z').admit, true, 'the same instant is 7:30pm ET on the 19th');
+  assert.equal(at(new Date('2026-10-19T03:00:00Z')).admit, true, 'a Date object is an instant: 23:00 ET on the night itself');
+  assert.deepEqual(at(new Date('nope')), { admit: false, reason: 'no-publish-date' });
   // Anything whose calendar date would depend on the server's zone is refused.
   assert.deepEqual(at('2026-10-19T21:00:00'), { admit: false, reason: 'no-publish-date' });
   assert.deepEqual(at(null), { admit: false, reason: 'no-publish-date' });
