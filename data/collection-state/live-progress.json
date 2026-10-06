@@ -1,19 +1,43 @@
 {
-  "updatedAt": "2026-10-06T18:05:39.605Z",
-  "processed": 102,
-  "failed": 48,
-  "successRate": "68.0%",
+  "updatedAt": "2026-10-06T18:19:50.837Z",
+  "processed": 9,
+  "failed": 8,
+  "successRate": "52.9%",
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 8,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 17,
-    "scrapingbee": 7,
-    "brightdata": 2,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 11
+    "archive": 0
   },
-  "browserbaseSessions": 6,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-06T18:13:59.044Z",
+      "event": "bb-session",
+      "session": "f3ff075f",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-06T18:15:32.333Z",
+      "event": "bb-session",
+      "session": "f0b2e8ea",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-06T18:19:43.271Z",
+      "event": "bb-session",
+      "session": "8ec8e405",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-06T18:19:44.208Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
