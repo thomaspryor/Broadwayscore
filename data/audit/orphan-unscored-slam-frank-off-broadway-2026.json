@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "slam-frank-off-broadway-2026",
   "openingDate": "2026-10-04",
-  "detectedAt": "2026-10-06T13:41:25.836Z",
+  "detectedAt": "2026-10-06T13:51:02.271Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "cote-notices--david-cote.json",
+      "outletId": "cote-notices",
+      "criticName": "David Cote",
+      "url": "https://davidcote1.substack.com/p/slam-frank-review-how-do-you-solve?r=823l6&utm_medium=ios",
+      "fullTextLen": 0,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "excerpt",
+      "eligibilityReason": null
+    },
     {
       "file": "timeout--unknown.json",
       "outletId": "timeout",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
