@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// GUARD-A-DISPOSITION (BRO-2158): dead code. No workflow, script or package.json entry invokes this file. If revived, route new review-file creation through createOrMergeReviewFile() (scripts/lib/review-file-writer.js) first.
 
 /**
  * Fetch review excerpts from BroadwayWorld review roundups
