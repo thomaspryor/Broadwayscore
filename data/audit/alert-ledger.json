@@ -24,13 +24,17 @@
     },
     "health-check:Secrets: health": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Secrets: health",
       "firstSeen": "2026-07-24T07:50:33.259Z",
-      "lastSeen": "2026-07-24T07:50:33.259Z",
-      "lastNotifiedAt": "2026-07-24T07:50:33.259Z",
-      "notifyCount": 1,
-      "cardId": "3a7637c5-416f-812c-98aa-dbb17100001e"
+      "incidentOpenedAt": "2026-10-06T13:41:36.086Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-06T13:41:36.086Z",
+      "lastNotifiedAt": "2026-10-06T13:41:36.086Z",
+      "lastSurfacedAt": "2026-10-06T13:41:36.086Z",
+      "notifyCount": 2,
+      "cardId": "3a7637c5-416f-812c-98aa-dbb17100001e",
+      "linearIdentifier": null
     },
     "health-check:Credits: ScrapingDog": {
       "status": "open",
@@ -87,27 +91,27 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-10-05T15:21:35.590Z",
+      "lastSeen": "2026-10-06T13:41:36.098Z",
       "lastNotifiedAt": "2026-09-30T13:04:06.023Z",
       "lastSurfacedAt": null,
       "notifyCount": 8,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
       "linearIdentifier": "BRO-3164",
       "incidentOpenedAt": "2026-07-24T07:50:35.775Z",
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-10-05T15:21:35.605Z",
+      "lastSeen": "2026-10-06T13:41:36.112Z",
       "lastNotifiedAt": "2026-09-30T13:04:08.049Z",
       "lastSurfacedAt": null,
       "notifyCount": 9,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
       "linearIdentifier": "BRO-3081",
-      "silentRefires": 7,
+      "silentRefires": 8,
       "incidentOpenedAt": "2026-07-24T07:50:36.268Z"
     },
     "opening-night-sla:pages-stuck": {
@@ -166,12 +170,13 @@
       "firstSeen": "2026-07-27T08:00:24.727Z",
       "incidentOpenedAt": "2026-07-27T08:00:24.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-05T15:21:35.595Z",
+      "lastSeen": "2026-10-06T13:41:36.107Z",
       "lastNotifiedAt": "2026-10-05T15:21:35.595Z",
       "lastSurfacedAt": "2026-10-05T15:21:35.595Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-3978"
+      "linearIdentifier": "BRO-3978",
+      "silentRefires": 1
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -305,13 +310,12 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-05T15:32:57.488Z",
-      "lastNotifiedAt": "2026-10-05T10:48:07.225Z",
-      "lastSurfacedAt": "2026-10-05T10:48:07.225Z",
-      "notifyCount": 27,
+      "lastSeen": "2026-10-06T13:42:25.095Z",
+      "lastNotifiedAt": "2026-10-06T13:42:25.095Z",
+      "lastSurfacedAt": "2026-10-06T13:42:25.095Z",
+      "notifyCount": 28,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-3030"
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -473,13 +477,13 @@
       "firstSeen": "2026-08-05T07:41:41.804Z",
       "incidentOpenedAt": "2026-08-05T07:41:41.804Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-05T15:21:35.585Z",
+      "lastSeen": "2026-10-06T13:41:36.093Z",
       "lastNotifiedAt": "2026-10-04T12:54:02.694Z",
       "lastSurfacedAt": "2026-10-04T12:54:02.694Z",
       "notifyCount": 4,
       "cardId": "3b3637c5-416f-8197-91e3-e6b68252159b",
       "linearIdentifier": "BRO-4171",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "backstop:crazysexycool-regional-2026/washpost--thomas-floyd.json": {
       "status": "open",
@@ -644,12 +648,14 @@
       "disposition": "auto",
       "title": "BSC Daily: Revenue: affiliate health",
       "firstSeen": "2026-08-09T07:42:46.513Z",
-      "lastSeen": "2026-10-01T13:57:48.177Z",
+      "lastSeen": "2026-10-06T13:41:36.126Z",
       "lastNotifiedAt": "2026-10-01T13:57:48.177Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-3979"
+      "linearIdentifier": "BRO-3979",
+      "incidentOpenedAt": "2026-10-06T13:41:36.126Z",
+      "silentRefires": 1
     },
     "health-check:Cron failed: Reverse Discovery": {
       "status": "open",
@@ -756,13 +762,13 @@
       "firstSeen": "2026-08-11T07:57:54.489Z",
       "incidentOpenedAt": "2026-08-11T07:57:54.489Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-05T15:21:35.614Z",
+      "lastSeen": "2026-10-06T13:41:36.121Z",
       "lastNotifiedAt": "2026-10-04T20:51:58.103Z",
       "lastSurfacedAt": "2026-10-04T20:51:58.103Z",
       "notifyCount": 4,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
       "linearIdentifier": "BRO-2263",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "open",
@@ -3055,13 +3061,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: DMARC deliverability",
       "firstSeen": "2026-09-15T12:12:15.198Z",
-      "lastSeen": "2026-10-05T15:21:35.610Z",
+      "lastSeen": "2026-10-06T13:41:36.116Z",
       "lastNotifiedAt": "2026-09-30T13:04:10.136Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-4093",
-      "silentRefires": 7,
+      "silentRefires": 8,
       "incidentOpenedAt": "2026-09-15T12:12:15.198Z"
     },
     "health-check:Digest: content-invariant check": {
@@ -8255,14 +8261,14 @@
       "disposition": "digest",
       "title": "Affiliate revenue: Payout economics — anomaly",
       "firstSeen": "2026-10-01T13:56:33.074Z",
-      "lastSeen": "2026-10-05T15:19:14.318Z",
+      "lastSeen": "2026-10-06T13:39:59.800Z",
       "lastNotifiedAt": "2026-10-01T13:56:33.074Z",
       "lastSurfacedAt": "2026-10-01T13:56:33.074Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
       "incidentOpenedAt": "2026-10-01T13:56:33.074Z",
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "broadcast:never-sent:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "resolved",
@@ -8785,16 +8791,15 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 33 P0 older than 24h, 700 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 34 P0 older than 24h, 416 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-05T15:24:00.509Z",
-      "lastNotifiedAt": "2026-10-05T10:42:50.237Z",
-      "lastSurfacedAt": "2026-10-05T10:42:50.237Z",
-      "notifyCount": 4,
+      "lastSeen": "2026-10-06T13:42:01.719Z",
+      "lastNotifiedAt": "2026-10-06T13:42:01.719Z",
+      "lastSurfacedAt": "2026-10-06T13:42:01.719Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "open",
@@ -10912,6 +10917,52 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4791"
+    },
+    "owner-decisions:new": {
+      "status": "open",
+      "disposition": "human",
+      "title": "31 new decisions are waiting on you",
+      "firstSeen": "2026-10-06T13:42:06.180Z",
+      "incidentOpenedAt": "2026-10-06T13:42:06.180Z",
+      "lastSeen": "2026-10-06T13:42:06.180Z",
+      "lastNotifiedAt": "2026-10-06T13:42:06.180Z",
+      "lastSurfacedAt": "2026-10-06T13:42:06.180Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "notifiedIds": [
+        "BRO-1093",
+        "BRO-2393",
+        "BRO-2401",
+        "BRO-244",
+        "BRO-3028",
+        "BRO-313",
+        "BRO-3154",
+        "BRO-3604",
+        "BRO-3624",
+        "BRO-4053",
+        "BRO-4290",
+        "BRO-4335",
+        "BRO-48",
+        "BRO-49",
+        "BRO-50",
+        "BRO-524",
+        "BRO-534",
+        "BRO-538",
+        "BRO-539",
+        "BRO-564",
+        "BRO-567",
+        "BRO-570",
+        "BRO-634",
+        "BRO-64",
+        "BRO-789",
+        "BRO-809",
+        "BRO-835",
+        "BRO-855",
+        "BRO-953",
+        "BRO-958",
+        "BRO-990"
+      ]
     }
   }
 }
