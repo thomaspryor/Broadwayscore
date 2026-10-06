@@ -241,6 +241,19 @@ async function runStranded() {
   const { decideStrandedRef, isAbandonedRun } = require('./lib/land-stranded-refs.js');
   if (dispatchInFlight()) { console.log('a dispatched Land run is in flight (it lists under main, not its ref): skipping this pass'); return; }
   const now = Date.now();
+  // Newest successful landing per card, from any ref. Land deletes a landed
+  // ref, but an older attempt for the same card (the refused original of a
+  // rebased retry) stays behind and must not read as lost work.
+  const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
+  const cardLandedAt = new Map();
+  for (let p = 1; p <= 3; p += 1) {
+    const runs = gh([`repos/${repo}/actions/workflows/land.yml/runs?status=success&per_page=100&page=${p}`]).workflow_runs || [];
+    for (const r of runs) {
+      const n = landRefCardNumber(r.head_branch);
+      if (n != null && (!cardLandedAt.has(n) || r.updated_at > cardLandedAt.get(n))) cardLandedAt.set(n, r.updated_at);
+    }
+    if (runs.length < 100) break;
+  }
   const decisions = [];
   for (const [branch, tip] of [...landRefs()].filter(([b]) => !only || b === only).slice(0, MAX_STRANDED_REFS)) {
     // One unreadable ref (a 502 on its run or jobs) skips that ref this pass, never the whole pass.
@@ -253,8 +266,8 @@ async function runStranded() {
       if (!forTip) {
         try { tipCommittedAt = gh([`repos/${repo}/commits/${tip}`]).commit.committer.date; } catch (err) { console.log(`${branch}: tip date unreadable (${String(err.message).split('\n')[0]})`); }
       }
-      const d = decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, now });
-      if (d.reason !== 'abandoned') console.log(`${branch} @${tip.slice(0, 10)}: ${d.action} (${d.reason})${latestRun ? ` run ${latestRun.id} attempt ${latestRun.run_attempt}` : ''}`);
+      const d = decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt: cardLandedAt.get(landRefCardNumber(branch)), now });
+      if (d.reason !== 'abandoned' && d.reason !== 'superseded') console.log(`${branch} @${tip.slice(0, 10)}: ${d.action} (${d.reason})${latestRun ? ` run ${latestRun.id} attempt ${latestRun.run_attempt}` : ''}`);
       decisions.push({ branch, tip, latestRun, ...d });
     } catch (err) {
       console.log(`::warning::${branch}: skipped this pass (${String(err.message).split('\n')[0]})`);
@@ -276,6 +289,8 @@ async function runStranded() {
     }
   }
   if (escalate.length) await escalateStranded(escalate);
+  const superseded = decisions.filter((d) => d.reason === 'superseded').map((d) => d.branch);
+  if (superseded.length) console.log(`${superseded.length} leftover ref(s) whose card landed from another ref (safe to delete): ${superseded.join(' ')}`);
   const abandoned = decisions.filter((d) => d.reason === 'abandoned').map((d) => d.branch);
   if (abandoned.length) console.log(`::notice::${abandoned.length} land ref(s) idle over the abandon window (not routed): ${abandoned.join(' ')}`);
   console.log(`stranded pass: ${decisions.length} land ref(s), ${reruns.length} full re-run(s), ${escalate.length} routed to cards, ${abandoned.length} abandoned`);

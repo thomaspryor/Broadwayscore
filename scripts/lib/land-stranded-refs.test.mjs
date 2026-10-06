@@ -136,3 +136,13 @@ test('refs idle past the window are abandoned: counted, never routed or re-run',
   assert.deepEqual(decideStrandedRef({ tip: TIP, latestRun: null, tipCommittedAt: ago(ABANDONED_AFTER_DAYS * 1440 + 60), now: NOW }), { action: 'none', reason: 'abandoned' });
   assert.equal(isAbandonedRun(run({ conclusion: 'success', updated_at: ago(40 * 1440) }), NOW), false);
 });
+
+test('a ref whose card later landed from another ref is a leftover, not stranded work', () => {
+  const r = run({ conclusion: 'failure', updated_at: ago(300) });
+  assert.deepEqual(decideStrandedRef({ tip: TIP, latestRun: r, jobs: [checksOk, job('Land', 'failure')], cardLandedAt: ago(60), now: NOW }), { action: 'none', reason: 'superseded' });
+  // a landing OLDER than this ref's last run does not hide it
+  assert.equal(decideStrandedRef({ tip: TIP, latestRun: r, jobs: [checksOk, job('Land', 'failure')], cardLandedAt: ago(400), now: NOW }).action, 'escalate');
+  // never while this ref is itself landing
+  assert.equal(decideStrandedRef({ tip: TIP, latestRun: run({ status: 'in_progress', conclusion: null, updated_at: ago(300) }), cardLandedAt: ago(60), now: NOW }).action, 'none');
+  assert.equal(decideStrandedRef({ tip: TIP, latestRun: run({ status: 'in_progress', conclusion: null, updated_at: ago(300) }), cardLandedAt: ago(60), now: NOW }).reason, 'in-flight');
+});
