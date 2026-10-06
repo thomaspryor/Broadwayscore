@@ -78,6 +78,7 @@ const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { explainOutletDomainMismatch, classifyOutletHostMismatch } = require('./lib/outlet-domain-validation');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
+const { dedupeByReviewKey } = require('./lib/final-key-dedup');
 const { parseDate } = require('./lib/date-utils');
 const {
   shouldAutoClearWrongProduction,
@@ -5842,6 +5843,18 @@ if (consistencyIssues.length > 0) {
     }
   } catch (e) {
     // Non-fatal: if we can't read current reviews.json, just proceed without manual entries
+  }
+}
+
+// FINAL uniqueness guard (BRO-4809): the manual-entry merge above appends after
+// every dedup pass, so collapse exact ReviewsList-key duplicates one last time.
+{
+  const { reviews: uniqueReviews, removed } = dedupeByReviewKey(allReviews);
+  if (removed > 0) {
+    console.log(`\nFinal key dedup: removed ${removed} exact-duplicate review row(s) (showId+outlet+date+url+critic)`);
+    allReviews.length = 0;
+    allReviews.push(...uniqueReviews);
+    stats.skippedFinalKeyDedup = removed;
   }
 }
 
