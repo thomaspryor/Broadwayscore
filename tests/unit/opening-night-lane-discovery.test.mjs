@@ -142,7 +142,8 @@ test('extractPublishDate: JSON-LD, meta, itemprop, time tag; offsets normalised,
   assert.equal(d.extractPublishDate('<meta content="2026-10-19T10:00:00Z" property="article:published_time">'), '2026-10-19T10:00:00.000Z');
   assert.equal(d.extractPublishDate('<meta itemprop="datePublished" content="2026-10-19">'), '2026-10-19');
   assert.equal(d.extractPublishDate('<time datetime="2026-10-19T08:00:00-04:00">Oct 19</time>'), '2026-10-19T12:00:00.000Z');
-  assert.equal(d.extractPublishDate('<time datetime="2026-10-19T08:00:00">Oct 19</time>'), null, 'no zone: the instant would depend on the server');
+  assert.equal(d.extractPublishDate('<time datetime="2026-10-19T08:00:00">Oct 19</time>'), '2026-10-19', 'no zone: only the calendar day the outlet wrote is trusted');
+  assert.equal(d.extractPublishDate('<meta itemprop="datePublished" content="2024-03-01T10:00:00"><aside><time datetime="2026-10-06T20:00:00Z"></time></aside>'), '2024-03-01', 'the first date source decides; a sidebar date never stands in');
   assert.equal(d.extractPublishDate('<p>no dates here</p>'), null);
   assert.equal(d.extractPublishDate(null), null);
 });
@@ -150,8 +151,8 @@ test('extractPublishDate: JSON-LD, meta, itemprop, time tag; offsets normalised,
 test('a full pass admits only real reviews, once each, canonical, from aggregator, feed and section index', async () => {
   const r = await run(baseMap());
   assert.deepEqual(r.errors, []);
-  assert.deepEqual(r.admitted.map((a) => a.url).sort(), [NYT, VULTURE, VARIETY, GUARDIAN].sort());
-  const by = Object.fromEntries(r.admitted.map((a) => [a.url, a]));
+  assert.deepEqual(r.admitted.map((a) => a.key).sort(), [NYT, VULTURE, VARIETY, GUARDIAN].sort());
+  const by = Object.fromEntries(r.admitted.map((a) => [a.key, a]));
   assert.equal(by[NYT].reason, 'aggregator-cited');
   assert.equal(by[NYT].adapter, 'bww-roundup');
   assert.equal(by[NYT].outletId, 'nytimes');
@@ -159,7 +160,7 @@ test('a full pass admits only real reviews, once each, canonical, from aggregato
   assert.equal(by[VARIETY].outletId, 'variety');
   assert.equal(by[GUARDIAN].publishDate, '2026-10-19T09:00:00.000Z', 'section-index candidates get their date from the article');
   assert.equal(new Set(r.admitted.map((a) => a.key)).size, r.admitted.length);
-  assert.ok(r.admitted.every((a) => a.key === a.url), 'the ledger key is the canonical URL');
+  assert.ok(r.admitted.every((a) => a.key === d.canonicalUrl(a.url)), 'the ledger key is the canonical form of the published URL');
   // The news that names the show, dated on the night, never reaches the stamp that turns the guards off.
   const why = (frag) => (r.rejected.find((x) => x.url.includes(frag)) || {}).reason;
   assert.equal(why('other-desert-cities-extends'), 'non-review-path');
@@ -172,14 +173,13 @@ test('a full pass admits only real reviews, once each, canonical, from aggregato
   // An unregistered blog on an aggregator page is reported, never ingested blind.
   assert.ok(r.unknownHosts.includes('some-unknown-blog.example.com'));
   assert.equal(why('some-unknown-blog'), 'unknown-outlet-host');
-  assert.ok(r.rejected.some((x) => x.reason === 'wrapped-url' || true));
 });
 
 test('the same article from several sources, in different URL spellings, is one candidate keeping the aggregator claim', async () => {
   const map = baseMap();
   map['https://variety.com/feed'] = rss.replace(VARIETY_RAW, 'http://nytimes.com/2026/10/19/theater/other-desert-cities-review.html/?partner=rss');
   const r = await run(map);
-  const nyt = r.admitted.filter((a) => a.url === NYT);
+  const nyt = r.admitted.filter((a) => a.key === NYT);
   assert.equal(nyt.length, 1);
   assert.equal(nyt[0].reason, 'aggregator-cited');
 });
@@ -196,7 +196,7 @@ test('a URL already on disk or in the ledger is never emitted again, whatever it
     assert.ok(events.every((e) => e.stage === 'discovered' && e.meta.url));
     const onDisk = d.loadSeen(dir, SHOW.id, '2026-10-19', [`${NYT}?utm_medium=email`, 'http://www.' + VARIETY.slice('https://'.length) + '/', GUARDIAN_RAW]);
     const third = await run(baseMap(), { seen: onDisk });
-    assert.deepEqual(third.admitted.map((a) => a.url), [VULTURE], 'http/https, www, trailing slash and tracking variants of an on-disk URL all count as seen');
+    assert.deepEqual(third.admitted.map((a) => a.key), [VULTURE], 'http/https, www, trailing slash and tracking variants of an on-disk URL all count as seen');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
@@ -209,7 +209,7 @@ test('a new citation on a later pass is the only thing emitted', async () => {
     const map = baseMap();
     map[RR_URL] = bwwRoundup.replace('</article>', `<a href="${NEW}">Vinson Cunningham, The New Yorker</a></article>`);
     const r = await run(map, { seen: d.loadSeen(dir, SHOW.id, NIGHT) });
-    assert.deepEqual(r.admitted.map((a) => a.url), ['https://newyorker.com/culture/the-theater/other-desert-cities-review']);
+    assert.deepEqual(r.admitted.map((a) => a.key), ['https://newyorker.com/culture/the-theater/other-desert-cities-review']);
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
@@ -220,7 +220,7 @@ test('one failing source is recorded and the pass carries on', async () => {
   const r = await run(map);
   assert.equal(r.errors.length, 1, 'the bww adapter threw; the rss adapter swallows its own dead feeds');
   assert.equal(r.errors[0].adapter, 'bww-roundup');
-  assert.deepEqual(r.admitted.map((a) => a.url), [GUARDIAN], 'the section index still delivered');
+  assert.deepEqual(r.admitted.map((a) => a.key), [GUARDIAN], 'the section index still delivered');
 });
 
 test('a hung fetch cannot hang the pass: per-fetch timeout, recorded as an error', async () => {
@@ -231,7 +231,7 @@ test('a hung fetch cannot hang the pass: per-fetch timeout, recorded as an error
   const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: allAdapters(), fetchText, fetchTimeoutMs: 60 });
   assert.ok(Date.now() - started < 2000, 'the pass moved on');
   assert.ok(r.errors.some((e) => e.adapter === 'bww-roundup' && /timed out/.test(e.error)));
-  assert.deepEqual(r.admitted.map((a) => a.url).sort(), [VARIETY, GUARDIAN].sort(), 'sources that answered still count; only the hung aggregator is lost');
+  assert.deepEqual(r.admitted.map((a) => a.key).sort(), [VARIETY, GUARDIAN].sort(), 'sources that answered still count; only the hung aggregator is lost');
 });
 
 test('an overall deadline stops a slow pass and defers the rest instead of dropping it', async () => {
@@ -260,7 +260,7 @@ test('rejections are remembered: final ones are never re-fetched, and the date-c
   const memo = { rejected: {} };
   const seen = new Set(); // the caller records what it admitted, as the lane loop does via recordDiscovered
   const adapters = [d.sectionIndexAdapter({ outlets: [{ outletId: 'guardian', indexUrl: 'https://www.theguardian.com/stage' }] })];
-  const pass = () => { const p = pages(map); return d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + HOUR, startedAt: T0, adapters, fetchText: p.fetchText, memo, seen, maxDateChecks: 3 }).then((r) => { r.admitted.forEach((a) => seen.add(a.url)); return ({ r, calls: p.calls.filter((u) => u.includes('take-')) }); }); };
+  const pass = () => { const p = pages(map); return d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + HOUR, startedAt: T0, adapters, fetchText: p.fetchText, memo, seen, maxDateChecks: 3 }).then((r) => { r.admitted.forEach((a) => seen.add(a.key)); return ({ r, calls: p.calls.filter((u) => u.includes('take-')) }); }); };
   const one = await pass();
   assert.equal(one.calls.length, 3, 'cap of 3 article fetches');
   assert.equal(one.r.deferredDateChecks.length, 3);
@@ -290,7 +290,7 @@ test('SERP adapters run only after 3 hours of lane time and only while a T1/T2 o
   assert.equal(serpCalls, 1);
   assert.equal(limitSeen, 4, 'the adapter is told the cap so it can limit its searches, not just its results');
   assert.equal(late.serpRan, true);
-  assert.ok(late.admitted.some((a) => a.url === 'https://newyorker.com/2026/10/19/theater/other-desert-cities-review.html'));
+  assert.ok(late.admitted.some((a) => a.key === 'https://newyorker.com/2026/10/19/theater/other-desert-cities-review.html'));
   assert.equal(d.serpAllowed({ startedAt: T0, now: T0 + 3 * HOUR, missingOutlets: ['x'] }), true);
   assert.equal(d.serpAllowed({ startedAt: T0, now: T0 + 3 * HOUR - 1, missingOutlets: ['x'] }), false);
   assert.equal(d.serpAllowed({ startedAt: 'garbage', now: T0, missingOutlets: ['x'] }), false);
@@ -309,7 +309,7 @@ test('DTLI adapter: homepage to show page to cited links, known outlets only', a
     [showPage]: `<article><a href="${NYT_RAW}">NYT</a><a href="${GUARDIAN_RAW}">Guardian</a><a href="https://didtheylikeit.com/about">about</a></article><footer><a href="https://www.thetimes.com/x-review">footer</a></footer>`,
   };
   const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + HOUR, startedAt: T0, adapters: [d.dtliAdapter()], ...pages(map) });
-  assert.deepEqual(r.admitted.map((a) => a.url).sort(), [NYT, GUARDIAN].sort());
+  assert.deepEqual(r.admitted.map((a) => a.key).sort(), [NYT, GUARDIAN].sort());
   assert.ok(r.admitted.every((a) => a.adapter === 'dtli' && a.reason === 'aggregator-cited'));
 });
 
@@ -322,4 +322,32 @@ test('a show that no source mentions yields an empty, error-free pass', async ()
 test('runDiscoveryPass: refuses a missing title or fetch instead of silently finding nothing', async () => {
   await assert.rejects(d.runDiscoveryPass({ show: {}, night: NIGHT, fetchText: async () => '' }), /show\.title/);
   await assert.rejects(d.runDiscoveryPass({ show: SHOW, night: NIGHT }), /fetchText/);
+});
+
+test('admitted reviews carry the URL as the outlet published it (key is the canonical form), so the normal pipeline dedupes them', async () => {
+  const r = await run(baseMap());
+  const g = r.admitted.find((a) => a.key === GUARDIAN);
+  assert.equal(g.url, GUARDIAN_RAW);
+  const n = r.admitted.find((a) => a.key === NYT);
+  assert.ok(n.url.includes('nytimes.com') && n.key === NYT);
+});
+
+test('an aggregator citation overrides an earlier index-only rejection of the same URL', async () => {
+  const memo = { rejected: { [NYT]: { reason: 'not-review-like', attempts: 1 } } };
+  const r = await run(baseMap(), { memo });
+  assert.ok(r.admitted.some((a) => a.key === NYT));
+  const memo2 = { rejected: { [NYT]: { reason: 'non-review-slug', attempts: 1 } } };
+  assert.ok(!(await run(baseMap(), { memo: memo2 })).admitted.some((a) => a.key === NYT), 'a rejection about the URL itself stands');
+});
+
+test('the deadline caps every fetch inside an adapter, not just the gaps between adapters', async () => {
+  const slow = async () => { await new Promise((res) => setTimeout(res, 60)); return '<html></html>'; };
+  const started = Date.now();
+  await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0, startedAt: T0, adapters: [d.rssAdapter({ feeds: Array.from({ length: 12 }, (_, i) => ({ url: `https://f${i}.example.com/rss`, outletId: 'x' })) })], fetchText: slow, deadlineMs: 100, fetchTimeoutMs: 5000 });
+  assert.ok(Date.now() - started < 400, 'twelve 60ms feeds stop near the 100ms deadline');
+});
+
+test('star words in a slug are not review signals unless they are a rating', () => {
+  assert.equal(d.hasReviewSignal('https://x.com/2026/star-wars-musical-opens', ''), false);
+  assert.equal(d.hasReviewSignal('https://x.com/2026/odc-4-stars', ''), true);
 });

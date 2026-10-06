@@ -64,7 +64,7 @@ const NON_REVIEW_SEGMENTS = new Set([
 // News-phrase words only. Plain nouns that can be a show's title ("Dead Outlaw", "The Lottery", "Ticket to Ride") are
 // deliberately absent: rejecting them would drop real reviews of those shows.
 const NON_REVIEW_SLUG = /\b(opens[-\s]tonight|extends|extension|extended|casting|cast[-\s]album|announces?|announced|first[-\s]look|photos?|photo[-\s]gallery|red[-\s]carpet|opening[-\s]night[-\s](?:photos|party|arrivals)|interview|q[-\s]?and[-\s]?a|behind[-\s]the[-\s]scenes|giveaway|obituary)\b/i;
-const REVIEW_SIGNAL = /(\breview(?:s|ed)?\b|\bcritic'?s?[-\s]pick\b|\/reviews?\/|\brated\b|\bstars?\b)/i;
+const REVIEW_SIGNAL = /(\breview(?:s|ed)?\b|\bcritic'?s?[-\s]pick\b|\/reviews?\/|\b(?:\d|one|two|three|four|five)(?:\.5)?[-\s]stars?\b)/i;
 
 const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
 const hostMatches = (host, list) => !!host && list.some((h) => host === h || host.endsWith(`.${h}`));
@@ -149,7 +149,7 @@ function extractCitedLinks(html, pageUrl, { excludeHosts = [] } = {}) {
     const key = canonicalUrl(a.url);
     if (!key || seen.has(key) || nonReviewReason(key) === 'homepage') continue;
     seen.add(key);
-    out.push({ url: key, text: a.text });
+    out.push({ url: key, rawUrl: a.url, text: a.text });
   }
   return out;
 }
@@ -157,20 +157,24 @@ function extractCitedLinks(html, pageUrl, { excludeHosts = [] } = {}) {
 /** The article's publish time as an ISO string, from JSON-LD, article:published_time, itemprop or <time datetime>. */
 function extractPublishDate(html) {
   const s = String(html || '');
+  // Strongest source first, and the FIRST source present decides: falling through to a weaker one would let a
+  // sidebar "related story" date stand in for the article's own.
   const tries = [
-    /"datePublished"\s*:\s*"([^"]+)"/i,
-    /<meta[^>]+(?:property|name)=["']article:published_time["'][^>]*content=["']([^"']+)["']/i,
-    /<meta[^>]+content=["']([^"']+)["'][^>]*(?:property|name)=["']article:published_time["']/i,
-    /<meta[^>]+itemprop=["']datePublished["'][^>]*content=["']([^"']+)["']/i,
-    /<time\b[^>]*\bdatetime=["']([^"']+)["']/i,
+    [/"datePublished"\s*:\s*"([^"]+)"/i, s],
+    [/<meta[^>]+(?:property|name)=["']article:published_time["'][^>]*content=["']([^"']+)["']/i, s],
+    [/<meta[^>]+content=["']([^"']+)["'][^>]*(?:property|name)=["']article:published_time["']/i, s],
+    [/<meta[^>]+itemprop=["']datePublished["'][^>]*content=["']([^"']+)["']/i, s],
+    [/<time\b[^>]*\bdatetime=["']([^"']+)["']/i, bodyScope(s)],
   ];
-  for (const re of tries) {
-    const m = s.match(re);
+  for (const [re, scope] of tries) {
+    const m = scope.match(re);
     if (!m) continue;
     const raw = m[1].trim();
-    // A date-only value is a calendar date; a date-time needs a zone or offset to mean one instant.
     if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
     if (/(Z|[+-]\d{2}:?\d{2})$/i.test(raw) && !Number.isNaN(Date.parse(raw))) return new Date(raw).toISOString();
+    // No zone: the instant is unknown, but the calendar date the outlet wrote is safe inside a +/-1 day window.
+    const day = raw.match(/^(\d{4}-\d{2}-\d{2})T/);
+    return day ? day[1] : null;
   }
   return null;
 }
@@ -184,7 +188,7 @@ function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) 
     async discover({ show, fetchText }) {
       const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title);
       if (!roundup) return [];
-      return extractCitedLinks(await fetchText(roundup), roundup).map((l) => ({ url: l.url, title: l.text, source: 'aggregator', aggregatorCited: true, via: roundup }));
+      return extractCitedLinks(await fetchText(roundup), roundup).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: roundup }));
     },
   };
 }
@@ -195,7 +199,7 @@ function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/' } = {}) {
     async discover({ show, fetchText }) {
       const page = findDTLIShowLinkOnHomepage(await fetchText(homeUrl), show);
       if (!page) return [];
-      return extractCitedLinks(await fetchText(page), page).map((l) => ({ url: l.url, title: l.text, source: 'aggregator', aggregatorCited: true, via: page }));
+      return extractCitedLinks(await fetchText(page), page).map((l) => ({ url: l.url, fetchUrl: l.rawUrl, title: l.text, source: 'aggregator', aggregatorCited: true, via: page }));
     },
   };
 }
@@ -218,7 +222,8 @@ function rssAdapter({ feeds }) {
         for (const it of items) {
           if (!it.link) continue;
           if (!titleMatchesShow(it.title, show.title) && !urlSlugMatchesShow(it.link, show.title)) continue;
-          out.push({ url: it.link, title: it.title, source: 'outlet-index', publishDate: toIso(it.pubDate), via: feed.name || feed.url, outletId: feed.outletId });
+          const iso = toIso(it.pubDate);
+          out.push({ url: it.link, title: it.title, source: 'outlet-index', publishDate: iso, needsDate: !iso, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
         }
       }
       return out;
@@ -256,10 +261,12 @@ function serpAllowed({ startedAt, now, missingOutlets = [], afterMs = SERP_AFTER
 }
 
 /** Wrap a fetch so one hung request cannot hang the pass. The orphaned request is left to finish on its own. */
-function withTimeout(fetchText, ms) {
+function withTimeout(fetchText, ms, remainingMs = () => Infinity) {
   return (url) => {
+    const budget = Math.min(ms, remainingMs());
+    if (budget <= 0) return Promise.reject(new Error(`pass deadline reached before fetching ${url}`));
     let timer;
-    const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`fetch timed out after ${ms}ms: ${url}`)), ms); });
+    const timeout = new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(`fetch timed out after ${budget}ms: ${url}`)), budget); });
     // The timer is cleared on settle, so it never keeps the process alive past a finished fetch.
     return Promise.race([Promise.resolve().then(() => fetchText(url)), timeout]).finally(() => clearTimeout(timer));
   };
@@ -267,6 +274,7 @@ function withTimeout(fetchText, ms) {
 
 // Final rejections are remembered so they are not re-fetched every 2 minutes; a dateless candidate gets a few tries.
 const FINAL_REASONS = new Set(['outside-night-window', 'non-review-path', 'non-review-slug', 'homepage', 'not-review-like', 'unknown-outlet-host', 'wrapped-url', 'unknown-source', 'not-cited-by-an-aggregator']);
+const AGGREGATOR_FINAL = new Set(['non-review-path', 'non-review-slug', 'homepage', 'wrapped-url', 'unknown-outlet-host']);
 
 /**
  * @param {object} args
@@ -284,8 +292,9 @@ async function runDiscoveryPass({
   if (!show || !show.title) throw new Error('runDiscoveryPass: show.title is required');
   if (typeof rawFetch !== 'function') throw new Error('runDiscoveryPass: fetchText is required');
   memo.rejected = memo.rejected || {};
-  const fetchText = withTimeout(rawFetch, fetchTimeoutMs);
   const startedMs = Date.now();
+  // Every fetch, in every adapter, is capped by the time left in the pass, so a slow adapter cannot outrun the deadline.
+  const fetchText = withTimeout(rawFetch, fetchTimeoutMs, () => deadlineMs - (Date.now() - startedMs));
   const overDeadline = () => Date.now() - startedMs > deadlineMs;
   const errors = [];
   const byKey = new Map();
@@ -314,6 +323,7 @@ async function runDiscoveryPass({
   let serpRan = false;
   if (!deadlineHit && serpAllowed({ startedAt, now, missingOutlets })) {
     for (const a of adapters.filter((x) => x.phase === 'serp')) {
+      if (overDeadline()) { deadlineHit = true; break; }
       try {
         // `limit` goes to the adapter so it can cap the SEARCHES it runs, not just trim what came back.
         collect((await a.discover({ show, night, fetchText, missingOutlets, limit: serpMax }) || []).slice(0, serpMax), a.name);
@@ -336,7 +346,9 @@ async function runDiscoveryPass({
   for (const [key, c] of ordered) {
     if (seen.has(key)) continue;
     const memoed = memo.rejected[key];
-    if (memoed && (FINAL_REASONS.has(memoed.reason) || memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS)) continue; // decided before
+    // An aggregator citation overrides rejections that only concerned an index sighting (no review word, wrong day).
+    const stands = memoed && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
+    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited)) continue; // decided before
     if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
 
     const bad = nonReviewReason(c.url);
@@ -361,7 +373,7 @@ async function runDiscoveryPass({
       }
     }
     const verdict = admitLaneCandidate({ source: c.source, aggregatorCited: c.aggregatorCited === true, publishDate, night, ...(timeZone ? { timeZone } : {}) });
-    if (verdict.admit) admitted.push({ url: c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason });
+    if (verdict.admit) admitted.push({ url: c.fetchUrl || c.url, key, source: c.source, adapter: c.adapter, via: c.via, publishDate, outletId: c.outletId || (resolveOutletFromUrl(c.url) || {}).outletId || null, reason: verdict.reason });
     else reject(c, key, verdict.reason);
   }
   return { admitted, rejected, unknownHosts: [...unknownHosts].filter(Boolean).sort(), errors, deferredDateChecks, serpRan, deadlineHit };
