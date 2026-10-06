@@ -715,6 +715,8 @@ function isCoveredFile(d, show) {
 // merges, never clobbers). Stale-slug wrongProduction recovery is deliberately NOT
 // automated — see the deferral note on the recovery loop in main().
 
+const { lastNewReviewAt, hasRecentReviewActivity } = require('./lib/collection-phase');
+
 function isShowEligible(show) {
   // Recency falls back openingDate → previewsStartDate. This used to be a bare
   // `if (!show.openingDate) return false`, which made this audit — the one whose
@@ -732,7 +734,13 @@ function isShowEligible(show) {
   const today = new Date();
   const diffDays = (today - opened) / 86400000;
   // Eligible if opened within window OR in pre-opening (<=3 days from now)
-  return diffDays >= -3 && diffDays <= windowDays;
+  if (diffDays >= -3 && diffDays <= windowDays) return true;
+  // BRO-4770: a show past the window stays in scope while it is still collecting
+  // reviews (a review first seen in the last 10 days), so a late review re-enters it.
+  if (['open', 'previews'].includes(show.status)) {
+    return hasRecentReviewActivity(lastNewReviewAt(path.join(REVIEW_TEXTS_DIR, show.id)));
+  }
+  return false;
 }
 
 async function auditShow(show, opts = {}) {
