@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-10-06T04:41:59.223Z",
+  "timestamp": "2026-10-06T05:18:49.368Z",
   "stats": {
     "totalReviews": 46565,
-    "alreadyFlagged": 18671,
-    "dateGuardCatches": 267,
+    "alreadyFlagged": 18673,
+    "dateGuardCatches": 266,
     "directorMismatch": 1340,
     "tvFilmSignals": 1353,
     "londonSignals": 1288,
@@ -13815,6 +13815,7 @@
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "file": "dtli--unknown.json",
+      "score": 68,
       "publishDate": "2021-12-08",
       "url": "https://didtheylikeit.com/shows/harry-potter-and-the-cursed-child/harry-potter-and-the-cursed-child-come-for-the-nostalgia-stay-for-the-spectacle/",
       "findings": [
@@ -13822,19 +13823,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1766d before show (2021-12-08 vs 2026-10-09)"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "file": "theatrely--joey-sims.json",
-      "publishDate": "2022-01-10",
-      "url": "https://www.theatrely.com/post/harry-potter-and-the-cursed-child-magic-reworked-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1733d before show (2022-01-10 vs 2026-10-09)"
         }
       ]
     },
