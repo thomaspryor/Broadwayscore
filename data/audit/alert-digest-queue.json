@@ -260,5 +260,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-06T17:16:08.058Z"
+  },
+  {
+    "conditionKey": "land:land/codex-bro-3151",
+    "title": "Landing blocked: unit-tests-node red on land/codex-bro-3151",
+    "description": "land.yml did not land land/codex-bro-3151: the unit-tests-node gate went red at a042e5ac37. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37499689023",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-3151"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a042e5ac37f5a5ee58d4751dbe1ac8b5aa12920b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37499689023"
+      }
+    ],
+    "queuedAt": "2026-10-06T17:30:17.233Z"
   }
 ]
