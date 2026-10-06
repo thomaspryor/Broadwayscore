@@ -357,6 +357,17 @@ if (!show) {
     console.log(`  → Body extraction empty (${text ? text.length : 0} chars) — recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
   }
   const hasBody = !!(text && text.length >= 200);
+  // BRO-4764: a normal ingest used to skip the outlet extractors, so a rating
+  // that lives only in the HTML (1minutecritic's alt="4 star review") was never
+  // recorded and the review missed its star band. The routing block below
+  // handles the result exactly like the score-only path above.
+  if (hasBody && !recoveredScore) {
+    const { recoverScoreFromHtml } = require('./lib/ingest-html-score');
+    recoveredScore = recoverScoreFromHtml(html, text, outletId, show.title);
+    if (recoveredScore) {
+      console.log(`  → Recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
+    }
+  }
 
   // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
   const lsaCritic = hasBody && /lightingandsoundamerica\.com/i.test(url) ? extractLsaByline(text) : null;
