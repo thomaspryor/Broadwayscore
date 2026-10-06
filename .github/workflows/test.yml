@@ -2685,6 +2685,8 @@ on:
       - 'scripts/tests/orphan-task-reconciliation.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
+      - 'scripts/V1-V3-dispatch-status.test.mjs'
+      - '.claude/hooks/**'
       - 'scripts/bsc-conductor.js'
       - 'scripts/bsc-conductor.test.mjs'
       # bsc-status (owner request 2026-07-22: one-glance tab verdicts +
@@ -3051,6 +3053,8 @@ on:
       - 'scripts/tests/health-check-autofix-ci-gate.test.mjs'
       - 'scripts/bsc-prune.js'
       - 'scripts/bsc-prune.test.mjs'
+      - 'scripts/V1-V3-dispatch-status.test.mjs'
+      - '.claude/hooks/**'
       # validate-show-venue.js already path-listed above (line ~180).
       - 'scripts/verify-review-recovery.js'
       # Telegraph reviews-index card parser (task #720) — the editorial-slug /
