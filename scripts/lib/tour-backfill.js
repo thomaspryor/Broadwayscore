@@ -42,7 +42,12 @@ const AMBIGUOUS_REASON_RE = /Tour\/regional\/pre-Broadway(?: production)?|reviva
 // Tour language in the review itself.
 const TOUR_TEXT_RE = /\b(?:national tour|north american tour|touring (?:production|company|cast|version)|(?:the|this|latest|new) tour\b(?! de force)|\b(?:now|currently|is|are) on tour\b|\bon tour (?:at|in|to)\b)/i;
 // The text places the review on Broadway (a revival or return), not on the road.
-const BROADWAY_TEXT_RE = /\b(?:returns? to|back on|back to|transfers? to|revival on|opened on|opens on|now on) Broadway\b|\bBroadway revival\b(?! (?:tour|production) )|\bon Broadway (?:at|in) the\b/i;
+const BROADWAY_TEXT_RE = /\b(?:returns? to|back on|back to|transfers? to|revival on|opens on|now on) Broadway\b|\bon Broadway (?:at|in) the\b/i;
+// History most tour reviews recount ("opened on Broadway in April of 2023",
+// "the 2023 Broadway revival"): Broadway evidence only when neither the text
+// nor a tour-specific flag reason says tour (Shucked's BWW Cleveland and Spamalot's Bushnell
+// reviews were held on Broadway by it, BRO-4656).
+const BROADWAY_HISTORY_RE = /\bopened on Broadway\b|\bBroadway revival\b(?! (?:tour|production) )/i;
 const STOP_BEFORE_MS = 14 * 86400000;
 // Broadway opening to this tour's launch: past this, earlier tours likely exist.
 const PERENNIAL_GAP_MS = 4 * 365 * 86400000;
@@ -69,7 +74,7 @@ function matchStop(data, stops, settingCities = null, genericVenues = null) {
     return !Number.isNaN(a) && !Number.isNaN(b) && b >= a
       && pub.getTime() >= a - STOP_BEFORE_MS && pub.getTime() <= b + STOP_AFTER_MS;
   });
-  const venueIn = st => st.venue && st.venue.length >= 6 && text.includes(st.venue);
+  const venueIn = st => venueNamed(text, st.venue);
   const cityIn = (st) => {
     const city = cityName(st.city);
     return city.length >= 4 && !(settingCities && settingCities.has(city)) && !UK_AMBIGUOUS_CITIES.has(city)
@@ -86,7 +91,22 @@ function matchStop(data, stops, settingCities = null, genericVenues = null) {
 
 /** Whether the stop was named by a venue that identifies it on its own. */
 function namedByVenue(text, st, genericVenues) {
-  return Boolean(st.venue && st.venue.length >= 6 && text.includes(st.venue) && !(genericVenues && genericVenues.has(st.venue)));
+  return venueNamed(text, st.venue) && !(genericVenues && genericVenues.has(st.venue));
+}
+
+/**
+ * Whether the text names the venue. A leading "The" matches in either case
+ * (the schedule says "The Bushnell", the review "the Bushnell") but must be
+ * there: a bare "Playhouse" is Paper Mill's or Pasadena's, not Wilmington's
+ * "The Playhouse". The name itself stays case-sensitive.
+ */
+function venueNamed(text, venue) {
+  const m = /^the\s+(.+)$/i.exec(String(venue || '').trim());
+  const name = m ? m[1] : String(venue || '').trim();
+  if (name.length < 6) return false;
+  const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+  // Lookarounds, not \b: a venue can end in punctuation ("Fox Theatre (St. Louis)").
+  return new RegExp(`(?<![A-Za-z0-9])${m ? '[Tt]he\\s+' : ''}${esc}(?![A-Za-z0-9])`).test(text);
 }
 
 function reasonText(data) {
@@ -165,7 +185,10 @@ function classifyTourBackfill(data, ctx = {}) {
   }
   // A review that says the show is (back) on Broadway reviews a Broadway run,
   // unless it names a stop the tour was playing.
-  if (!stop && BROADWAY_TEXT_RE.test(text.slice(0, 2000))) return { action: 'skip', reason: 'broadway-production' };
+  const head = text.slice(0, 2000);
+  if (!stop && (BROADWAY_TEXT_RE.test(head) || (!textTour && !TOUR_REASON_RE.test(whySpecific) && BROADWAY_HISTORY_RE.test(head)))) {
+    return { action: 'skip', reason: 'broadway-production' };
+  }
 
   const pub = toDate(data.publishDate);
   const bway = toDate(ctx.broadwayOpeningDate);
@@ -324,7 +347,12 @@ function prepareTourMove(data, { fromShowId, tourId, at = new Date().toISOString
  */
 function clearStaleScoringFailure(data) {
   if (!data || !data.routedFromShowId || data.wrongProduction) return null;
-  const stale = FLAGGED_SCORING_FAILURE_FIELDS.filter(k => data[k] != null);
+  // A give-up recorded after the move is the scorer's verdict on the tour file:
+  // clearing it would reset the attempt count every daily run and retry forever.
+  const failedAt = Date.parse(data.manualClearFallbackFailedAt || '');
+  const routedAt = Date.parse(data.routedAt || '');
+  const failedAfterMove = !Number.isNaN(failedAt) && !Number.isNaN(routedAt) && failedAt > routedAt;
+  const stale = failedAfterMove ? [] : FLAGGED_SCORING_FAILURE_FIELDS.filter(k => data[k] != null);
   if (data.scoreStatus === 'TO_BE_CALCULATED' && hasScorableText(data)) stale.push('scoreStatus');
   if (!stale.length) return null;
   const out = { ...data, routedPriorVerdicts: { ...(data.routedPriorVerdicts || {}) } };

@@ -373,3 +373,38 @@ test('tour integrity leaves human-ruled and locked files alone; US Manchester is
   const plan = { tourId: 'gatsby-tour-2026', fromIds: ['gatsby-2024'], ctx: { stops, ukOutlets: new Set() } };
   assert.deepEqual(decideTourIntegrity(plan, id => files[id] || []), []);
 });
+
+test('a venue is matched without its leading "The" and in any case (BRO-4656 QA)', () => {
+  // Trinity Tripod: "the Bushnell", no city named; schedule says "The Bushnell".
+  const tripod = { wrongProduction: true, wrongProductionReason: 'audit-2026-06-21-prior-production-contamination', publishDate: '2025-12-12',
+    fullText: 'The national tour of the 2023 Broadway revival takes the stage at the Bushnell this week.' };
+  assert.equal(matchStop(tripod, SPAMALOT.stops)?.city, 'Hartford, CT');
+  assert.deepEqual(classifyTourBackfill(tripod, SPAMALOT), { action: 'move', reason: 'tour-review' });
+  // A venue name inside a longer word is not a mention.
+  assert.equal(matchStop({ ...tripod, fullText: 'at the Bushnellville fair' }, SPAMALOT.stops), null);
+  // The article must be there: a bare "Playhouse" is Paper Mill's, not Wilmington's "The Playhouse".
+  const wilm = [{ city: 'Wilmington, DE', venue: 'The Playhouse', start: '2025-12-09', end: '2025-12-14' }];
+  assert.equal(matchStop({ publishDate: '2025-12-10', fullText: 'a revival at Paper Mill Playhouse' }, wilm), null);
+  assert.equal(matchStop({ publishDate: '2025-12-10', fullText: 'at the Playhouse on Rodney Square' }, wilm)?.city, 'Wilmington, DE');
+});
+
+test('Broadway history a tour review recounts does not hold it on Broadway; a Broadway return still does', () => {
+  const base = { wrongProduction: true, wrongProductionReason: 'Collector LLM: wrong production (high) — evaluates the national touring production in Cleveland', publishDate: '2025-12-20' };
+  const history = 'Shucked opened on Broadway in April of 2023 and ran through January 2024.';
+  assert.equal(classifyTourBackfill({ ...base, fullText: history }, SPAMALOT).action, 'move', 'tour-specific reason outranks history');
+  // A regional-desk URL is the only tour evidence: no tour reason, no tour words,
+  // no stop. Then the history line is Broadway evidence.
+  const bwwRegional = { wrongProduction: true, wrongProductionReason: 'Tour/regional/pre-Broadway production', showId: 'spamalot-2023',
+    url: 'https://www.broadwayworld.com/cleveland/article/BWW-Review-SPAMALOT-x', publishDate: '2025-12-20' };
+  assert.equal(classifyTourBackfill({ ...bwwRegional, fullText: history }, SPAMALOT).reason, 'broadway-production');
+  assert.equal(classifyTourBackfill({ ...bwwRegional, fullText: 'A lively night out.' }, SPAMALOT).action, 'move');
+  assert.equal(classifyTourBackfill({ ...base, fullText: 'Spamalot returns to Broadway this spring.' }, SPAMALOT).reason, 'broadway-production');
+});
+
+test('clearStaleScoringFailure leaves a give-up recorded after the move: no daily retry loop (BRO-4656 QA)', () => {
+  const tourFile = { showId: 'spamalot-tour-2025', routedFromShowId: 'spamalot-2023', routedAt: '2026-10-05T19:30:15Z',
+    manualClearFallbackFailedAt: '2026-10-07T03:00:00Z', manualClearFallbackAttempts: 1, routedPriorVerdicts: { manualClearFallbackAttempts: 5 } };
+  assert.equal(clearStaleScoringFailure(tourFile), null);
+  // Flagged-period give-up (before the move) is still cleared.
+  assert.equal(clearStaleScoringFailure({ ...tourFile, manualClearFallbackFailedAt: '2026-08-05T21:23:59Z' }).manualClearFallbackAttempts, null);
+});

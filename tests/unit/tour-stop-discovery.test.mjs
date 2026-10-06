@@ -62,6 +62,9 @@ test('screen versions are rejected by title, URL section or release wording; sta
   assert.equal(looksLikeScreenVersion({ url: 'https://x.com/a', title: 'Review: Wicked', description: 'now in theaters nationwide' }), true);
   assert.equal(looksLikeScreenVersion({ url: 'https://x.com/a', title: 'Beetlejuice tour review: the movie, live on stage', description: 'fans of the movie will love it' }), false);
   assert.equal(looksLikeScreenVersion({ url: 'https://x.com/theater/a', title: 'Review: Spamalot at the Buell' }), false);
+  // A bare "box office" or "opening weekend" is the theatre's (BRO-4656 QA: Buffalo Rising's Suffs review).
+  assert.equal(looksLikeScreenVersion({ url: 'https://x.com/a', title: 'Review: Suffs', description: 'The box office is at 650 Main St. Tickets remain for opening weekend.' }), false);
+  assert.equal(looksLikeScreenVersion({ url: 'https://x.com/a', title: 'Wicked: For Good', description: 'a record opening weekend box office' }), true);
   // A news video clip found for the Des Moines stop (BRO-4656 first dry run).
   assert.equal(looksLikeScreenVersion({ url: 'https://www.yahoo.com/news/videos/wicked-musical-brings-oz-magic-214317790.html', title: 'Wicked musical brings Oz magic' }), true);
 });
