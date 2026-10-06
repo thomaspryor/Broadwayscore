@@ -173,6 +173,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
       - name: Find shows to poll
         id: find
         run: |

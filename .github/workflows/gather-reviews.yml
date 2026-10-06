@@ -159,6 +159,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
       - uses: actions/setup-node@v5
         with:
           node-version: "20"
@@ -260,6 +263,9 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
       - name: Checkout aggregator-archive (private repo)
         uses: ./.github/actions/checkout-aggregator-archive
         with:
@@ -553,6 +559,9 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
       - name: Checkout aggregator-archive (private repo)
         uses: ./.github/actions/checkout-aggregator-archive
         with:
@@ -656,6 +665,9 @@ jobs:
         uses: ./.github/actions/checkout-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
       - name: Setup Node
         uses: actions/setup-node@v5
         with:

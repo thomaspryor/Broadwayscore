@@ -5843,7 +5843,12 @@ async function main() {
     process.exit(1);
   }
 
-  const showIds = flags.showIds;
+  // BRO-4786: shows under an opening-night lane lease are the lane's to write; skip them here.
+  const leaseGuard = require('./lib/opening-night-lane/lease-guard');
+  const leaseSplit = leaseGuard.partitionLeased(flags.showIds);
+  for (const { lease } of leaseSplit.skipped) console.log(`Opening-night lease: ${leaseGuard.describe(lease)}. Skipping in gather-reviews.`);
+  const showIds = leaseSplit.kept;
+  if (!showIds.length && leaseSplit.skipped.length) { console.log('All requested shows are leased; nothing to gather.'); return; }
   const aggregatorsOnly = flags.aggregatorsOnly;
   const validateUrls = flags.validateUrls;
   const openingNight = flags.openingNight;

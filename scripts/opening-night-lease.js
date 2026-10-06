@@ -10,8 +10,8 @@
  *   claim|heartbeat|release --show= --night=YYYY-MM-DD --holder= [--ttl-min=30]
  *
  * claim exits 0 when this holder owns the night, 3 when another holder does, 1 on any failure.
- * sync fails OPEN (warns, leaves the previous local copy): a network blip must not halt every
- * pipeline, and the lane re-checks its own lease on every heartbeat.
+ * sync retries 3x, then writes an `unknown` marker: per-show writers (poller, gather) treat every
+ * show as leased until the next successful sync; enumerating callers (rebuild, enforce) warn and proceed.
  */
 const path = require('path');
 const store = require('./lib/opening-night-lane/lease-store');
@@ -25,12 +25,20 @@ const storeOpts = () => ({ repoDir, remote: arg('remote') || 'origin', branch: a
 
 function main() {
   if (cmd === 'sync') {
-    try {
-      const state = store.syncLocalFile(storeOpts(), guard.leasesFile());
-      console.log(`opening-night lease sync: ${Object.keys(state.leases).length} lease(s) in store`);
-    } catch (e) {
-      console.log(`::warning::opening-night lease sync failed, using previous local copy (${String(e.message).slice(0, 160)})`);
+    let lastErr;
+    for (let i = 1; i <= 3; i++) {
+      try {
+        const state = store.syncLocalFile(storeOpts(), guard.leasesFile());
+        console.log(`opening-night lease sync: ${Object.keys(state.leases).length} lease(s) in store`);
+        return 0;
+      } catch (e) { lastErr = e; if (i < 3) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 2000 * i); }
     }
+    // Could not reach the store: mark the local state unknown so per-show checks fail closed
+    // (a blip on a fresh runner must not unlock the lane's show); enumeration-based callers
+    // (rebuild, enforce) cannot name shows from it and proceed with a warning.
+    require('fs').mkdirSync(path.dirname(guard.leasesFile()), { recursive: true });
+    require('fs').writeFileSync(guard.leasesFile(), JSON.stringify({ leases: {}, unknown: true }) + '\n');
+    console.log(`::warning::opening-night lease sync failed after 3 tries; per-show writers will treat shows as leased (${String(lastErr.message).slice(0, 160)})`);
     return 0;
   }
   if (cmd === 'list') {
