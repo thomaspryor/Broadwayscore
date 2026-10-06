@@ -446,13 +446,13 @@ export default function ImportShows({
       await matchAndPreview(acquired, 'theatr');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Import failed. Try again.';
-      trackUgc('import_failed', { source: 'theatr', error_message: message.slice(0, 200) });
+      trackUgc('import_failed', { context, source: 'theatr', error_message: message.slice(0, 200) });
       setError(message);
       setStep('source');
     } finally {
       setTheatrProgress(null);
     }
-  }, [matchAndPreview]);
+  }, [matchAndPreview, context]);
 
   const handleShowScoreFetch = useCallback(async () => {
     setStep('matching');
