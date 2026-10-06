@@ -113,8 +113,8 @@ test('preview: a linear branch rebases clean', () => {
 
 test('preview: a conflict resolved inside a merge of main comes back (the BRO-4558 refusal)', () => {
   const d = baseRepo();
-  sh(d, 'git checkout -qb feat && sed -i "s/^c$/FEAT/" f.txt && git commit -qam feat-edit');
-  sh(d, 'git checkout -q main && sed -i "s/^c$/MAIN/" f.txt && git commit -qam main-edit');
+  sh(d, 'git checkout -qb feat && perl -pi -e "s/^c$/FEAT/" f.txt && git commit -qam feat-edit');
+  sh(d, 'git checkout -q main && perl -pi -e "s/^c$/MAIN/" f.txt && git commit -qam main-edit');
   sh(d, 'git checkout -q feat && (git merge -q main || true) && printf "a\\nb\\nBOTH\\nd\\ne\\n" > f.txt && git add f.txt && git commit -qm "merge main, resolved"');
   const p = assertParity(d, 'feat');
   assert.equal(p.status, 'conflict');
@@ -126,15 +126,15 @@ test('preview: a conflict resolved inside a merge of main comes back (the BRO-45
 test('preview: a clean merge of main (no false positive)', () => {
   const d = baseRepo();
   sh(d, 'git checkout -qb feat && echo two >> g.txt && git commit -qam feat');
-  sh(d, 'git checkout -q main && sed -i "s/^c$/MAIN/" f.txt && git commit -qam main-edit');
+  sh(d, 'git checkout -q main && perl -pi -e "s/^c$/MAIN/" f.txt && git commit -qam main-edit');
   sh(d, 'git checkout -q feat && git merge -q --no-edit main && echo three >> g.txt && git commit -qam after-merge');
   assert.equal(assertParity(d, 'feat').status, 'clean');
 });
 
 test('preview: commits already on main are dropped, not replayed; tip == main is clean', () => {
   const d = baseRepo();
-  sh(d, 'git checkout -qb feat && sed -i "s/^c$/X/" f.txt && git commit -qam dup && echo n >> g.txt && git commit -qam own');
-  sh(d, 'git checkout -q main && git cherry-pick feat~1 >/dev/null && sed -i "s/^X$/Y/" f.txt && git commit -qam later');
+  sh(d, 'git checkout -qb feat && perl -pi -e "s/^c$/X/" f.txt && git commit -qam dup && echo n >> g.txt && git commit -qam own');
+  sh(d, 'git checkout -q main && git cherry-pick feat~1 >/dev/null && perl -pi -e "s/^X$/Y/" f.txt && git commit -qam later');
   assert.equal(assertParity(d, 'feat').status, 'clean');
   assert.equal(previewRebase({ base: 'main', tip: 'main', cwd: d }).status, 'clean');
 });
@@ -196,8 +196,8 @@ function landFixture() {
   sh(d, `git remote add origin "${origin}" && git push -q origin main`);
   const wt = path.join(d, '.claude', 'worktrees', 'w');
   sh(d, `git worktree add -q -b feat "${wt}" main`);
-  sh(wt, 'sed -i "s/^c$/FEAT/" f.txt && git commit -qam feat-edit');
-  sh(d, 'sed -i "s/^c$/MAIN/" f.txt && git commit -qam main-edit && git push -q origin main');
+  sh(wt, 'perl -pi -e "s/^c$/FEAT/" f.txt && git commit -qam feat-edit');
+  sh(d, 'perl -pi -e "s/^c$/MAIN/" f.txt && git commit -qam main-edit && git push -q origin main');
   sh(wt, 'git fetch -q origin && (git merge -q origin/main || true) && printf "a\\nb\\nBOTH\\nd\\ne\\n" > f.txt && git add f.txt && git commit -qm resolved');
   return { d, wt };
 }
