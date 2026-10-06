@@ -256,6 +256,8 @@ const FLAG_FIELDS = new Set([
   // classifiedAt/textFetchedAt to judge freshness. Without these, a sweep
   // that flips ONLY one of them (isNonReview itself unchanged) would escape
   // detection the same way wrongProductionReason/-Note did above.
+  // BRO-4806: the opening-night lane's trust-model stamp decides whether the corpus guards stand down for a review.
+  'openingNightLane', 'productionVerified',
   'nonReviewFlag', 'nonReviewContent', 'contentVerification',
   'classifiedAt', 'textFetchedAt', 'isNonReviewReason',
   // BRO-3135: bodyless-aggregator-score gate reads the score fields, their
@@ -1170,8 +1172,13 @@ function decideInclusion(review, show, guards) {
       urlFiledUnderOtherShow: !!k && (getUrlShowIdsAll(guards).get(k) || new Set()).size > 1,
     });
   };
-  if (review.wrongShow === true && !wrongShowCleared && !inWindowVetoed('wrongShow')) return { included: false, reason: 'wrongShow' };
-  if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction')) return { included: false, reason: 'wrongProduction' };
+  // BRO-4806: mirrors review-guards.js / rebuild-all-reviews.js — a lane review (trust-model laneBypasses) is not
+  // excluded by these guards. Same predicate the real gates call.
+  // The stamp fields are read here as a cheap pre-filter (and so FLAG_FIELDS coverage stays honest); the decision is laneBypasses.
+  const laneOk = (guard) => !!review.openingNightLane && !!review.productionVerified
+    && require('./lib/opening-night-lane/trust-model').laneBypasses(review, guard, { openingDate: show && show.openingDate });
+  if (review.wrongShow === true && !wrongShowCleared && !inWindowVetoed('wrongShow') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongShow' };
+  if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction') && !laneOk('wrongProduction')) return { included: false, reason: 'wrongProduction' };
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
   // rebuild-all-reviews.js:3305 — no auto-clear path exists for this field
   // (unlike wrongShow/wrongProduction above). crossOutletVerified/
@@ -1182,13 +1189,13 @@ function decideInclusion(review, show, guards) {
   // actually model a wrongAttribution-driven flip in either direction.
   if (review.wrongAttribution === true) return { included: false, reason: 'wrongAttribution' };
   if (review.duplicateOf) return { included: false, reason: 'duplicateOf' };
-  if (review.isRoundupArticle) {
+  if (review.isRoundupArticle && !laneOk('roundupUrlSwap')) {
     const isStale = typeof guards.isLikelyStaleRoundupFlag === 'function'
       ? guards.isLikelyStaleRoundupFlag(review)
       : false;
     if (!isStale) return { included: false, reason: 'isRoundupArticle' };
   }
-  if (review.incompleteReason === 'wrong_content') return { included: false, reason: 'incompleteReason:wrong_content' };
+  if (review.incompleteReason === 'wrong_content' && !laneOk('headlineBackstop')) return { included: false, reason: 'incompleteReason:wrong_content' };
   // Mirror rebuild-all-reviews.js:3570 — the ACTUAL scoring-corpus enforcement
   // for isNonReview (it does not delegate to isIncludableForRebuild, so it has
   // to be replayed here explicitly too). BRO-3862: this branch was missing
@@ -1202,10 +1209,10 @@ function decideInclusion(review, show, guards) {
   const isNonReviewDemoted = typeof guards.isNonReviewDemotedByFreshCV === 'function'
     ? guards.isNonReviewDemotedByFreshCV(review)
     : false;
-  if ((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) {
+  if (((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) && !laneOk('nonReview')) {
     return { included: false, reason: 'isNonReview' };
   }
-  if (review.contentTier === 'invalid') {
+  if (review.contentTier === 'invalid' && !laneOk('headlineBackstop')) {
     // Mirror review-guards.js:3507-3514: a contentTier of 'invalid' set BECAUSE of
     // wrongProduction is stale once that flag clears, so production falls through
     // and lets the text/signal check decide. The rebuild stamps
@@ -1244,7 +1251,8 @@ function decideInclusion(review, show, guards) {
   // 2. Content-verification promotion chain (this is where temporal override acts)
   //    Mirrors rebuild-all-reviews.js:1095-1113 CV pre-pass staleness logic.
   const cv = review.contentVerification;
-  if (cv && (cv.confidence === 'high' || cv.confidence === 'medium')) {
+  // BRO-4806: rebuild skips CV promotion entirely for a lane review (nothing is promoted onto it).
+  if (cv && (cv.confidence === 'high' || cv.confidence === 'medium') && !laneOk('wrongProduction')) {
     // Staleness check: (a) timestamp-based, (b) content-hash-based, with a
     // high-confidence-wrongArticle exception that survives staleness.
     let stale = false;
