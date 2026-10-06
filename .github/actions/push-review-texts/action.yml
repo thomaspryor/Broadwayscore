@@ -198,6 +198,29 @@ runs:
           }
           if (restored > 0) console.log('Protected ' + restored + ' review(s) from data loss (' + scoreSaves + ' scores saved)');
 
+          // Newer-scoring-wins (BRO-4770): a long gather run writes whole files
+          // from a snapshot taken at checkout; if a rescore landed on HEAD since,
+          // the staged copy would revert it. Carry the newer scoring group from
+          // HEAD onto the staged file (scripts/lib/scoring-recency.js).
+          const recencyPath = process.env.GITHUB_WORKSPACE
+            ? path.join(process.env.GITHUB_WORKSPACE, 'scripts/lib/scoring-recency.js')
+            : path.resolve('scripts/lib/scoring-recency.js');
+          const { carryNewerScoring } = require(recencyPath);
+          let scoreCarried = 0;
+          for (const f of staged) {
+            if (!f.endsWith('.json') || f.includes('failed-fetches')) continue;
+            try {
+              const local = JSON.parse(fs.readFileSync(f, 'utf8'));
+              const committed = JSON.parse(execSync('git show HEAD:' + f, { encoding: 'utf8', stdio: ['pipe','pipe','pipe'] }));
+              if (carryNewerScoring(local, committed).changed) {
+                fs.writeFileSync(f, JSON.stringify(local, null, 2) + '\n');
+                scoreCarried++;
+                console.log('  Newer scoring kept from HEAD: ' + f);
+              }
+            } catch (e) { /* new file or parse error — skip */ }
+          }
+          if (scoreCarried > 0) console.log('Kept newer scoring from HEAD in ' + scoreCarried + ' review(s)');
+
           // Aggregator-score contamination strip (defense-in-depth at push time).
           // Catches the case where a rebase or merge leaves a file in the
           // (scoreSource ∈ AGGREGATOR_SCORE_SOURCES) ∧ (originalScore != null)
@@ -408,6 +431,18 @@ runs:
             done <<< "$UNMERGED"
 
             echo "Conflict resolution: kept $KEPT_OURS ours, $KEPT_THEIRS theirs"
+
+            # Newer-scoring-wins (BRO-4770): the resolver above picks a WHOLE file
+            # by fullText length, so a stale gather file with a longer body used to
+            # revert a newer rescore (slam-frank 1 Minute Critic, c7aa1d3f7), and a
+            # remote win could drop a rescore job's newer score. Carry the newest
+            # scoring group from either side onto the resolved files.
+            # shellcheck disable=SC2086
+            CARRIED=$(node ../../scripts/lib/carry-newer-scoring.js --refs=HEAD,REBASE_HEAD $UNMERGED 2>&1 | tail -1) || CARRIED="0"
+            if [ "$CARRIED" -gt 0 ] 2>/dev/null; then
+              echo "  Kept newer scoring in $CARRIED conflicted file(s)"
+              git add -A
+            fi
 
             # If all conflicts were resolved by keeping theirs, our commit is empty — skip it
             if git diff --staged --quiet 2>/dev/null && [ "$KEPT_OURS" -eq 0 ]; then

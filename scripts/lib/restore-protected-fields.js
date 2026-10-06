@@ -28,6 +28,7 @@ const { execSync } = require('child_process');
 // must NOT restore the remote value, or a CI rebase silently re-flags a
 // human-verified review. See review-write-guard.js. (2026-06-05)
 const { isIntentionalClear } = require(path.join(__dirname, 'review-write-guard.js'));
+const { carryNewerScoring } = require(path.join(__dirname, 'scoring-recency.js'));
 
 // Fields that must be preserved across rebases. Two categories:
 //   (a) MANUAL human corrections CI should never touch — see DoaS Apr 9-10
@@ -362,6 +363,20 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
       }
       modified = true;
       notes.push('Restored scoring fields from remote (stale-checkout guard)');
+    }
+  }
+
+  // Newer scoring wins (BRO-4770): a stale whole-file winner (e.g. the longer
+  // fullText side of a conflict) must not revert a newer rescore. Candidates:
+  // the remote ref and the pre-rebase commit.
+  if (staleCheckoutGuard) {
+    for (const [label, src] of [['remote', remote], ['pre-rebase HEAD', ours]]) {
+      if (!src) continue;
+      const r = carryNewerScoring(local, src);
+      if (r.changed) {
+        modified = true;
+        notes.push(`Restored newer scoring group from ${label}`);
+      }
     }
   }
 

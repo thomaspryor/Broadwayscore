@@ -1038,6 +1038,8 @@ function selectBestExcerpt(data, showTitle) {
 // normalizeQuoteWrapping — imported from ./lib/rebuild-helpers
 
 // Stats tracking
+const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
+const humanOverridesOutsideBand = [];
 const stats = {
   totalFiles: 0,
   totalReviews: 0,
@@ -5057,6 +5059,17 @@ showDirs.forEach(showId => {
       const { score, source } = scoreResult;
       stats.scoreSources[source] = (stats.scoreSources[source] || 0) + 1;
 
+      // BRO-4770: a hand override (P0b) that sits outside its critic's own star
+      // band is usually a partial-read mistake (slam-frank Culture Sauce).
+      // Warn only: the override still wins, the score is untouched.
+      if (source === 'human-review') {
+        const outside = humanScoreOutsideStarBand(data, score);
+        if (outside) {
+          stats.humanOverrideOutsideStarBand = (stats.humanOverrideOutsideStarBand || 0) + 1;
+          humanOverridesOutsideBand.push(`${showId}/${file} humanReviewScore=${score} vs ${outside.starsRaw} (band ${outside.floor}-${outside.ceiling})`);
+        }
+      }
+
       // Warn if file's showId disagrees with directory (data integrity issue)
       if (data.showId && data.showId !== showId) {
         console.log(`  [SHOW-ID MISMATCH] ${showId}/${file}: file claims showId=${data.showId} — using directory showId`);
@@ -6428,6 +6441,13 @@ Object.entries(stats.scoreSources).forEach(([source, count]) => {
     console.log(`  ${source}: ${count} (${(count/stats.totalReviews*100).toFixed(1)}%)`);
   }
 });
+
+// BRO-4770: non-blocking, the override still wins (see the P0b check in the review loop)
+if (humanOverridesOutsideBand.length > 0) {
+  console.log(`\n::warning::${humanOverridesOutsideBand.length} humanReviewScore override(s) sit outside the critic's own star band`);
+  humanOverridesOutsideBand.slice(0, 20).forEach(l => console.log(`  ${l}`));
+  if (humanOverridesOutsideBand.length > 20) console.log(`  ...and ${humanOverridesOutsideBand.length - 20} more`);
+}
 
 // Show per-show counts
 console.log('\n=== REVIEWS PER SHOW ===\n');
