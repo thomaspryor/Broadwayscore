@@ -6,8 +6,6 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
-      # BRO-2158: tests/unit/audit-guard-a-bypass.test.mjs (tests/unit node --test
-      # batch, globbed) fails when a scraper writes review-texts around Guard A.
       # Project agent definitions and the commands that name them are covered by
       # tests/unit/claude-agent-models.test.mjs (spend review 2026-10-01).
       - '.claude/agents/**'
