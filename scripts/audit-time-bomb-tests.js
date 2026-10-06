@@ -519,7 +519,13 @@ async function main() {
   if (alertDispatchFailed) process.exit(3);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(2);
-});
+// Exported for tests/unit/audit-time-bomb-test-exemption.test.mjs; main() only
+// runs when invoked as a CLI (requiring it only resolves the tsx path).
+module.exports = { readExemptFiles, EXEMPT_MARKER };
+
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(2);
+  });
+}
