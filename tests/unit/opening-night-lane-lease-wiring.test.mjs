@@ -47,7 +47,7 @@ test('CAS: two starters race for the same night, exactly one wins', () => {
     assert.equal(resA.holder, 'mac-1');
     assert.equal(resA.attempts, 2);
     assert.equal(store.readRemote({ repoDir: a }).state.leases[`${SHOW}|${NIGHT}`].holder, 'mac-1');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('CAS: simultaneous starters in separate processes, exactly one acquires', () => {
@@ -66,8 +66,8 @@ test('CAS: simultaneous starters in separate processes, exactly one acquires', (
     }))).then((results) => {
       assert.equal(results.filter((r) => r.ok).length, 1, JSON.stringify(results));
       assert.equal(results.filter((r) => r.reason === 'held-by-other').length, 1, JSON.stringify(results));
-    }).finally(() => fs.rmSync(base, { recursive: true, force: true }));
-  } catch (e) { fs.rmSync(base, { recursive: true, force: true }); throw e; }
+    }).finally(() => fs.rmSync(base, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }));
+  } catch (e) { fs.rmSync(base, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); throw e; }
 });
 
 test('CAS: same holder renews, release frees the night, branch is separate from main history', () => {
@@ -80,7 +80,7 @@ test('CAS: same holder renews, release frees the night, branch is separate from 
     assert.equal(store.release({ repoDir: b }, { ...args, holder: 'mac-2' }).ok, false);
     assert.equal(store.release({ repoDir: a }, args).reason, 'released');
     assert.equal(store.claim({ repoDir: b }, { ...args, holder: 'mac-2' }).reason, 'acquired');
-  } finally { fs.rmSync(base, { recursive: true, force: true }); }
+  } finally { fs.rmSync(base, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('CAS: unreachable remote fails closed (never a grant)', () => {
@@ -91,7 +91,7 @@ test('CAS: unreachable remote fails closed (never a grant)', () => {
     const r = store.claim({ repoDir: dir, ...noSleep }, { show: SHOW, night: NIGHT, holder: 'gha-3' });
     assert.equal(r.ok, false);
     assert.equal(r.reason, 'state-unreadable');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 // ------------------------------------------------------------ skip predicate
@@ -118,7 +118,7 @@ test('skip predicate: leased skips, others / expired / missing file do not, lane
     assert.equal(guard.leaseSkipReason(SHOW, { file: unk, env: {} }).unreadable, true);
     assert.deepEqual(guard.leasedShowIds({ file: f, env: {} }), [SHOW]);
     assert.deepEqual(guard.partitionLeased([SHOW, 'a-2026'], { file: f, env: {} }).kept, ['a-2026']);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 function runScript(args, leasesFile) {
@@ -132,7 +132,7 @@ test('opening-night-poller skips a leased show and exits 0 before any fetch', ()
     const r = runScript(['scripts/opening-night-poller.js', `--show=${SHOW}`, '--dry-run'], f);
     assert.equal(r.status, 0, r.stderr);
     assert.match(r.stdout, /Opening-night lease: .*Poller skipping/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('gather-reviews drops a leased show and does nothing when all are leased', () => {
@@ -143,7 +143,7 @@ test('gather-reviews drops a leased show and does nothing when all are leased', 
     assert.equal(r.status, 0, r.stderr);
     assert.match(r.stdout, /Skipping in gather-reviews/);
     assert.match(r.stdout, /All requested shows are leased/);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('rebuild-all-reviews skips leased dirs and carries their rows over (wired before the aggregate write)', () => {
@@ -176,7 +176,7 @@ test('revertLeasedChanges undoes tracked, staged, untracked and _pending writes 
     assert.equal(fs.existsSync(path.join(dir, SHOW, 'new.json')), false);
     assert.equal(fs.existsSync(path.join(dir, '_pending', SHOW, 'q.json')), false);
     assert.equal(fs.readFileSync(path.join(dir, 'free-show-2026', 'r.json'), 'utf8'), '{"v":2}');
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 test('revertLeasedChanges handles staged new files and renames (autostash-conflict staging path)', () => {
@@ -194,7 +194,7 @@ test('revertLeasedChanges handles staged new files and renames (autostash-confli
     assert.equal(fs.existsSync(path.join(dir, SHOW, 'a.json')), true);
     assert.equal(fs.existsSync(path.join(dir, SHOW, 'b.json')), false);
     assert.equal(fs.existsSync(path.join(dir, SHOW, 'new.json')), false);
-  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 }); }
 });
 
 // ------------------------------------------------------------ structural: every workflow calls it
