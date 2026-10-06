@@ -11,8 +11,21 @@
   "wordCount": 1103,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-04-13T03:03:26.659Z",
-  "scoreable": false,
-  "rejection": "not a first-hand review",
-  "reasoning": "The creator discusses Broadway drama, criticizes Peyton List's vocal performance based on clips circulating on the app, and compares fan reactions to Billy Porter in Cabaret. There is no indication they attended this Heathers production; the critique is based on social media clips, not a first-hand viewing.",
-  "scoredAt": "2026-10-05T12:12:29.197Z"
+  "score": 25,
+  "bucket": "Pan",
+  "confidence": "medium",
+  "reasoning": "The creator doesn't give a full production review but delivers a strongly negative assessment of the lead performance, calling it objectively bad, not Broadway caliber, and not worth the $120+ ticket price. The focus is on Peyton List's vocals being pitchy and under-rehearsed, with no positive counterweight about the show itself.",
+  "keyQuote": "Listen to it again, and tell me you think that's worth $120.",
+  "scoredAt": "2026-10-06T00:47:18.385Z",
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "same",
+    "confidence": "high",
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video discusses the Off-Broadway revival of 'Heathers The Musical' in New York City, which matches the assigned production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-06T00:48:16.085Z"
+  }
 }

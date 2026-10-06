@@ -11,8 +11,21 @@
   "wordCount": 384,
   "transcriptSource": "tiktok-subs",
   "extractedAt": "2026-09-29T10:53:28.387Z",
-  "scoreable": false,
-  "rejection": "not a review / vlog with minimal content",
-  "reasoning": "The video is a travel vlog covering a Boston trip that includes stops at a bookstore, lunch with brother, Rhinoceros, and a Heated Rivalry event. The only mention of Rhinoceros is 'very fun show' with no substantive review content about the production.",
-  "scoredAt": "2026-10-05T12:13:03.965Z"
+  "score": 72,
+  "bucket": "Positive",
+  "confidence": "low",
+  "reasoning": "The creator only briefly mentions Rhinoceros, calling it a 'very fun show,' with no further detail. The signal is positive but minimal, making confidence low.",
+  "keyQuote": "very fun show",
+  "scoredAt": "2026-10-06T00:47:38.105Z",
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "same",
+    "confidence": "high",
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video mentions being in Cambridge, MA, which matches the assigned production's location, and references 'rhinoceros,' likely indicating the assigned production at the American Repertory Theater.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-10-06T00:48:31.752Z"
+  }
 }
