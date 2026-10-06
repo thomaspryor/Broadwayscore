@@ -163,7 +163,7 @@ jobs:
           # merge path) must ride this commit too.
           bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
 
-          SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
+          SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, ' + (s.newOffenders ?? 0) + ' older show(s) hiding scored reviews, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
 
           if [ -n "${{ inputs.show }}" ]; then
             MSG="audit: Review-count drift for ${{ inputs.show }} ($SUMMARY)"
@@ -186,7 +186,7 @@ jobs:
               const d = require('./data/audit/review-count-drift.json');
               const s = d.summary;
               console.log('**reviews.json:** ' + (s.reviewsJsonLastUpdated || 'no _meta.lastUpdated') + ' (' + (s.reviewsJsonAgeHours ?? '?') + 'h old, max ' + d.thresholds.maxAgeHours + 'h' + (s.freshnessBreach ? ' — **STALE**' : '') + ')');
-              console.log('**Shows scanned (opening window ±' + d.thresholds.windowDays + 'd):** ' + s.showsScanned);
+              console.log('**Shows scanned (opening window ±' + d.thresholds.windowDays + 'd):** ' + s.showsScanned + ' (all shows: ' + (s.allShowsScanned ?? '?') + ')');
               console.log('**Shows over suppression threshold:** ' + s.showsOverThreshold + ' (suppressed > ' + d.thresholds.suppressedPerShow + ')');
               console.log('**Orphan showIds in reviews.json:** ' + s.orphanReviews);
               if (d.showsOverThreshold.length > 0) {
@@ -201,6 +201,8 @@ jobs:
                 }
               }
             " >> $GITHUB_STEP_SUMMARY
+            # BRO-4767: older shows hiding scored reviews (table + how to resolve), rendered by the script
+            node scripts/check-review-count-drift.js --render-offenders-summary >> $GITHUB_STEP_SUMMARY || true
           fi
 
       - name: Notify on failure
