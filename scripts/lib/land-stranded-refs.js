@@ -64,11 +64,17 @@ function isAbandonedRun(run, now = Date.now()) {
  *   a workflow_dispatch run lists under main, so callers skip the pass while one is in flight)
  * @param {?Array} p.jobs - the latest attempt's jobs for latestRun (needed when it is not success)
  * @param {?string} p.tipCommittedAt - committer date of the tip (needed only when no run matches the tip)
+ * @param {?string} p.cardLandedAt - newest successful Land run for the SAME card from another ref
+ *   (a rebased or retry branch); a ref last run before that is a leftover, not lost work
  * @param {number} [p.now]
  * @returns {{action:'none'|'wait'|'rerun'|'escalate', reason:string}}
  */
-function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, now = Date.now() } = {}) {
+function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt, now = Date.now() } = {}) {
   const out = (action, reason) => ({ action, reason });
+  const landedMs = Date.parse(cardLandedAt || '');
+  const lastMs = Date.parse((latestRun && (latestRun.updated_at || latestRun.created_at)) || tipCommittedAt || '');
+  if (Number.isFinite(landedMs) && Number.isFinite(lastMs) && landedMs > lastMs
+    && !(latestRun && latestRun.status !== 'completed')) return out('none', 'superseded');
   if (!latestRun || latestRun.head_sha !== tip) {
     if (latestRun && latestRun.status !== 'completed') return out('wait', 'older-tip-run-in-flight');
     const age = minutesSince(tipCommittedAt, now);
