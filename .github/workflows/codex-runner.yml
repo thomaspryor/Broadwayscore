@@ -55,7 +55,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
-          node-version: '20'
+          # claude-code 2.1.292 requires node >= 22
+          node-version: '22'
           cache: 'npm'
 
       - name: Install
@@ -76,6 +77,9 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Opens the stored Codex login: the cloud env's OpenAI key, which differs from
+          # the OPENAI_API_KEY secret above (scripts/codex/auth-store.js keyMaterial).
+          CODEX_AUTH_KEY: ${{ secrets.CODEX_AUTH_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CODEX_RUNNER_PUSH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           GH_TOKEN: ${{ github.token }}
@@ -83,6 +87,12 @@ jobs:
           IDS: ${{ inputs.ids }}
           EXTRA: ${{ inputs.extra }}
         run: |
+          # Until the owner adds the CODEX_AUTH_KEY secret the login cannot be opened here;
+          # skip instead of failing five times a day. Adding the secret starts the runner.
+          if [ -z "$CODEX_AUTH_KEY" ]; then
+            echo "::warning::CODEX_AUTH_KEY secret is not set, so the Codex runner is skipping (see BRO-4745)"
+            exit 0
+          fi
           args=(--limit "$LIMIT" --max-minutes 150)
           if [ -n "$IDS" ]; then args+=(--ids "$IDS"); fi
           # shellcheck disable=SC2206 -- word-split the free-form flags on purpose
