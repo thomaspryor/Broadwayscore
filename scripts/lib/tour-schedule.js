@@ -598,7 +598,17 @@ function duplicateScheduleOf(rows, schedules, { exceptId = null, min = 3 } = {})
   return null;
 }
 
+// A national tour plays many cities. Liberation's 2026 "tour" (Berkeley Rep,
+// Geffen, Studio Theatre: three nonprofit regional engagements) was
+// auto-created as a tour on 2026-10-06 and is not one (BRO-4262 review).
+const MIN_TOUR_STOPS = 4;
+function tooFewStops(rows) {
+  return Array.isArray(rows) && rows.length < MIN_TOUR_STOPS;
+}
+
 module.exports = {
+  MIN_TOUR_STOPS,
+  tooFewStops,
   wikiNamesOtherLaunch,
   launchSentences,
   proseOnly,

@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-07T13:59:21.924Z",
-  "processed": 196,
-  "failed": 48,
-  "successRate": "80.3%",
+  "updatedAt": "2026-10-07T14:31:03.888Z",
+  "processed": 211,
+  "failed": 113,
+  "successRate": "65.1%",
   "tierBreakdown": {
-    "playwright": 121,
+    "playwright": 130,
     "amp": 1,
     "browserbase": 16,
     "directCookies": 0,
-    "scrapingdog": 36,
-    "scrapingbee": 29,
-    "brightdata": 0,
+    "scrapingdog": 37,
+    "scrapingbee": 31,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 50
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-10-07T12:32:08.394Z",
@@ -125,6 +125,18 @@
       "t": "2026-10-07T13:54:07.103Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-07T14:21:29.897Z",
+      "event": "bb-session",
+      "session": "4292dcee",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-07T14:21:45.283Z",
+      "event": "bb-session",
+      "session": "c4f1fc69",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
     }
   ]
 }
