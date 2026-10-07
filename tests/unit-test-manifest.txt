@@ -317,7 +317,6 @@ scripts/update-show-status.test.mjs
 scripts/validate-workflow-dependencies.test.mjs
 scripts/vercel-deploy.test.mjs
 scripts/verify-addams-wsj-dedup-held.test.mjs
-scripts/verify-bro-4724-recheck.test.mjs
 scripts/verify-contamination-gate.test.mjs
 scripts/verify-feedback-requests-live.test.mjs
 scripts/verify-frankie-2002-cleanup.test.mjs
@@ -458,6 +457,7 @@ tests/unit/ci-cancellation-logic.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
 tests/unit/ci-git-auto-maintenance-off.test.mjs
 tests/unit/ci-health-test-yml-cancellation.test.mjs
+tests/unit/ci-manifest-no-dated-probes.test.mjs
 tests/unit/ci-red-claims.test.mjs
 tests/unit/circular-duplicate-pair.test.mjs
 tests/unit/classifier-prompts.test.mjs
