@@ -36,6 +36,7 @@ test('keyOf: outlet display name and its slug are one outlet (BRO-4829 Manic Mum
   assert.equal(keyOf(review({ outlet: 'Manic Mumdays' })), keyOf(review({ outlet: 'manic-mumdays' })));
   assert.notEqual(keyOf(review({ outlet: 'The Stage' })), keyOf(review({ outlet: 'The Standard' })));
   assert.equal(outletKey(''), 'unknown');
+  assert.equal(outletKey('Théâtre Café'), 'theatre-cafe');
 });
 
 test('mergeReviewsJson: concurrent writers stamping display name vs slug merge to ONE row (BRO-4829)', () => {

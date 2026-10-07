@@ -123,6 +123,7 @@
 const { canonicalizeUrlForDedup } = require('./review-guards');
 const { criticKey } = require('./manual-entry-merge');
 const { isPlaceholderByline } = require('./placeholder-byline');
+const { foldDiacritics } = require('./title-match');
 
 const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
 
@@ -137,7 +138,7 @@ function tierRank(review) {
  * NAME, not outletId: manual-entry-merge.js documents outletId drift for one
  * outlet (suntimes vs chicago-sun-times) that a name key still unifies. */
 function outletKey(outlet) {
-  const slug = String(outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const slug = foldDiacritics(String(outlet || '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   return slug || 'unknown';
 }
 
