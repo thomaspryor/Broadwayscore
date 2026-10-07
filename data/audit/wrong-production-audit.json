@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-07T21:17:17.071Z",
+  "timestamp": "2026-10-07T22:46:53.784Z",
   "stats": {
-    "totalReviews": 46886,
-    "alreadyFlagged": 18743,
+    "totalReviews": 46887,
+    "alreadyFlagged": 18749,
     "dateGuardCatches": 276,
     "directorMismatch": 1342,
-    "tvFilmSignals": 1370,
+    "tvFilmSignals": 1371,
     "londonSignals": 1303,
     "offBroadwaySignals": 509,
     "yearMismatch": 117,
-    "noPublishDate": 4389
+    "noPublishDate": 4385
   },
   "findings": [
     {
@@ -1189,7 +1189,7 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
-      "file": "standard--unknown.json",
+      "file": "standard--nick-curtis.json",
       "score": 37,
       "publishDate": "2026-10-07",
       "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
@@ -1259,6 +1259,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "theupcoming--sunny-morgan.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -50096,7 +50109,7 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "seatplan--unknown.json",
+      "file": "seatplan--laura-foulger.json",
       "score": 85,
       "publishDate": "2026-10-06",
       "url": "https://seatplan.com/london/news/into-the-woods-review-noel-coward-theatre-london/",
