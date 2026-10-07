@@ -301,6 +301,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // Caught by /code-review on 2026-09-01: ticketline.co.uk was safe only because
   // classifyReviewUrl borrows TICKET_DOMAINS, and nothing borrows UGC_PLATFORM_DOMAINS.
   { host: /(^|\.)vocal\.media$/, reason: 'ugc-platform' },
+  // Customer-review platforms, mirrored from UGC_PLATFORM_DOMAINS (BRO-4838:
+  // a Trustpilot review of a ticket seller was submitted as an Affluenza review).
+  { host: /(^|\.)trustpilot\.com$/, reason: 'ugc-platform' },
+  { host: /(^|\.)reviews\.io$/, reason: 'ugc-platform' },
+  { host: /(^|\.)feefo\.com$/, reason: 'ugc-platform' },
+  { host: /(^|\.)sitejabber\.com$/, reason: 'ugc-platform' },
   // BRO-2774. Mirrors the two entries added to domain-filters.js that
   // classifyReviewUrl does NOT get for free: it borrows TICKET_DOMAINS only
   // (see the matchesDomainSet call below), so BRO-2774's ents24.com and
