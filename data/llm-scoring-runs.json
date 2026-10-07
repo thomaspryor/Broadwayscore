@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-06T18:07:46.349Z",
-    "completedAt": "2026-10-06T18:07:46.357Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37508289823",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-06T18:10:50.393Z",
-    "completedAt": "2026-10-06T18:12:17.189Z",
-    "totalReviews": 47096,
-    "processed": 0,
-    "skipped": 47087,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 34409,
-      "output": 1112,
-      "total": 96840
-    },
-    "costUsd": 0.14768405,
-    "runId": "37508767541",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-06T18:12:19.249Z",
     "completedAt": "2026-10-06T18:12:21.393Z",
     "totalReviews": 0,
@@ -328428,6 +328390,49 @@
     },
     "costUsd": 0,
     "runId": "37633585909",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-07T14:24:46.013Z",
+    "completedAt": "2026-10-07T14:24:46.498Z",
+    "totalReviews": 47262,
+    "processed": 0,
+    "skipped": 47260,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37635303850",
+    "errorDetails": [
+      {
+        "showId": "the-outsiders-2024",
+        "outletId": "wsj",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-07T14:24:48.591Z",
+    "completedAt": "2026-10-07T14:24:50.953Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37635303850",
     "errorDetails": []
   }
 ]
