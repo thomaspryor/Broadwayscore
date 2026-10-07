@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-07T18:39:40.833Z",
+  "timestamp": "2026-10-07T19:48:58.354Z",
   "stats": {
-    "totalReviews": 46877,
+    "totalReviews": 46880,
     "alreadyFlagged": 18741,
     "dateGuardCatches": 276,
     "directorMismatch": 1342,
-    "tvFilmSignals": 1369,
-    "londonSignals": 1304,
-    "offBroadwaySignals": 510,
+    "tvFilmSignals": 1370,
+    "londonSignals": 1302,
+    "offBroadwaySignals": 509,
     "yearMismatch": 117,
-    "noPublishDate": 4389
+    "noPublishDate": 4390
   },
   "findings": [
     {
@@ -1067,6 +1067,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 698d before show (2024-09-13 vs 2026-08-12)"
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "adventuresintheatreland--oviya-thirumalai-sheher.json",
+      "score": 39,
+      "publishDate": "2026-10-06",
+      "url": "https://www.adventuresintheatreland.com/post/affluenza-riverside-studios",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -11097,7 +11111,7 @@
     {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "thereviewshub--christine-stanton.json",
-      "score": 62,
+      "score": 58,
       "publishDate": "2026-10-01",
       "url": "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/",
       "findings": [
@@ -37829,7 +37843,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "thereviewshub--the-reviews-hub-london.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-09-28",
       "url": "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
       "findings": [
@@ -42791,32 +42805,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "file": "theatremonkey--unknown.json",
-      "publishDate": null,
-      "url": "https://www.theatremonkey.com/show/blood-of-my-blood/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-09-22",
-      "url": "https://www.timeout.com/london/theatre/blood-of-my-blood",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -56065,19 +56053,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "soon-off-broadway-2026",
-      "file": "nick-blaemire--unknown.json",
-      "publishDate": null,
-      "url": "https://www.nick-blaemire.com/soon",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
