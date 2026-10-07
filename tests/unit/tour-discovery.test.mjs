@@ -251,3 +251,10 @@ test('a page whose current tour is tracked still yields the next one booked', ()
   const later = { ...first, id: 'the-wiz-tour-2027', openingDate: '2027-05-04', closingDate: null, status: 'upcoming' };
   assert.match(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: runningThenBooked, shows: [...SHOWS, running, later], now: NOW }).skip, /already tracked/);
 });
+
+test('a three-engagement regional co-production is not a national tour (Liberation, BRO-4262)', () => {
+  const { tooFewStops, MIN_TOUR_STOPS } = require('../../scripts/lib/tour-schedule.js');
+  assert.equal(tooFewStops([{}, {}, {}]), true);
+  assert.equal(tooFewStops(new Array(MIN_TOUR_STOPS).fill({})), false);
+  assert.equal(tooFewStops(undefined), false);
+});
