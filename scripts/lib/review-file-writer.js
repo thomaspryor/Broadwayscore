@@ -1001,40 +1001,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // Cross-scraper dedup: find by outlet+critic regardless of filename format.
   // Use the refined outletId (not input.outlet) so URL-based disambiguation is respected —
   // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
-  const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
-
-  // --- Guard: unregistered outlet on a non-review URL (BRO-2717) ---
-  // An UNREGISTERED outlet on a blocked/listing/ticketing/venue/PR-shaped URL is
-  // never a review outlet; refuse before it becomes a new outletId that turns
-  // audit-outlet-registry --strict red. Create-only (re-merges into an existing
-  // file are left alone, like BRO-4596 below); aggregator-sourced writes keep the
-  // aggregator's own URL by design; submit-review-form has its own, more specific
-  // guard. Escape hatch: allowNonReviewUrl (input or fields).
-  if (input.url && !outletRegisteredForJunkCheck && !(existing && existing.data) && !fs.existsSync(filepath)
-    && input.source !== 'submit-review-form' && !isAggregatorReviewSource(input.source) && !aggregatorScoreStub
-    && !input.allowNonReviewUrl && fields.allowNonReviewUrl !== true) {
-    const junk = require('./review-normalization').classifyJunkOutletForUrl(outletId, input.url, { outletKnown: false });
-    if (junk.junk) {
-      console.warn(`  ⛔ Skipping unregistered outlet "${outletId}" on non-review URL ${input.url} (${junk.reason})`);
-      return { action: 'skipped', reason: `unregistered-outlet-non-review-url:${junk.reason}`, guardRefused: true };
-    }
-  }
-
-  // --- Guard: listing / section-index page (BRO-4596) ---
-  // A section page (express.co.uk/entertainment/theatre) is not a review. Four
-  // express-uk rows were created on one and scored off a text-pattern star.
-  // The read-time exclusion (review-guards 'listingPageUrl') already hides such
-  // a row; this stops it being CREATED. Create-only: a re-merge into an existing
-  // file is left alone so a human-cleared record (listingPageUrlManualClear)
-  // can still be refreshed. Pattern-matched listings only: the bare-host case
-  // is left to the read side. Escape hatch: fields.allowNonReviewUrl.
-  if (input.url && fields.allowNonReviewUrl !== true && !(existing && existing.data) && !fs.existsSync(filepath)) {
-    const listingReason = require('./non-review-url-patterns').listingPageUrlReason(input.url);
-    if (listingReason && listingReason !== 'bare-host') {
-      console.warn(`  ⛔ Skipping listing/section page: ${input.url} (${listingReason})`);
-      return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
-    }
-  }
+  let existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
 
   // --- Slot collision for a LANE review (BRO-4805, BRO-4782 wiring A) ---
   // The slot (outlet + critic) already holds a DIFFERENT review that the corpus flagged (wrongProduction, rejected,
@@ -1068,6 +1035,40 @@ function createOrMergeReviewFile(showId, input, options = {}) {
         return _mergeIntoExisting(filepath, JSON.parse(fs.readFileSync(filepath, 'utf8')), { showId, outletId, input, fields, criticName, dryRun, onMerge });
       }
       laneRedirected = true;
+      existing = null; // the redirected create is judged as a create: the junk-outlet and listing guards below apply to it
+    }
+  }
+
+  // --- Guard: unregistered outlet on a non-review URL (BRO-2717) ---
+  // An UNREGISTERED outlet on a blocked/listing/ticketing/venue/PR-shaped URL is
+  // never a review outlet; refuse before it becomes a new outletId that turns
+  // audit-outlet-registry --strict red. Create-only (re-merges into an existing
+  // file are left alone, like BRO-4596 below); aggregator-sourced writes keep the
+  // aggregator's own URL by design; submit-review-form has its own, more specific
+  // guard. Escape hatch: allowNonReviewUrl (input or fields).
+  if (input.url && !outletRegisteredForJunkCheck && !(existing && existing.data) && !fs.existsSync(filepath)
+    && input.source !== 'submit-review-form' && !isAggregatorReviewSource(input.source) && !aggregatorScoreStub
+    && !input.allowNonReviewUrl && fields.allowNonReviewUrl !== true) {
+    const junk = require('./review-normalization').classifyJunkOutletForUrl(outletId, input.url, { outletKnown: false });
+    if (junk.junk) {
+      console.warn(`  ⛔ Skipping unregistered outlet "${outletId}" on non-review URL ${input.url} (${junk.reason})`);
+      return { action: 'skipped', reason: `unregistered-outlet-non-review-url:${junk.reason}`, guardRefused: true };
+    }
+  }
+
+  // --- Guard: listing / section-index page (BRO-4596) ---
+  // A section page (express.co.uk/entertainment/theatre) is not a review. Four
+  // express-uk rows were created on one and scored off a text-pattern star.
+  // The read-time exclusion (review-guards 'listingPageUrl') already hides such
+  // a row; this stops it being CREATED. Create-only: a re-merge into an existing
+  // file is left alone so a human-cleared record (listingPageUrlManualClear)
+  // can still be refreshed. Pattern-matched listings only: the bare-host case
+  // is left to the read side. Escape hatch: fields.allowNonReviewUrl.
+  if (input.url && fields.allowNonReviewUrl !== true && !(existing && existing.data) && !fs.existsSync(filepath)) {
+    const listingReason = require('./non-review-url-patterns').listingPageUrlReason(input.url);
+    if (listingReason && listingReason !== 'bare-host') {
+      console.warn(`  ⛔ Skipping listing/section page: ${input.url} (${listingReason})`);
+      return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
     }
   }
 

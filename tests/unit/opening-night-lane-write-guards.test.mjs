@@ -82,7 +82,8 @@ test('an ordinary review with the same content on the flagged slot is NOT redire
   const s = slotWith({ wrongProduction: true, wrongProductionNote: 'earlier corpus verdict' });
   try {
     const r = put(s, URL_B, {});
-    assert.equal(path.basename(r.filepath || s.slot), 'variety--frank-rizzo.json');
+    assert.ok(r.filepath, `expected a filepath, got ${JSON.stringify(r)}`);
+    assert.equal(path.basename(r.filepath), 'variety--frank-rizzo.json');
     assert.deepEqual(files(s), ['variety--frank-rizzo.json'], 'no lane-named file for an ordinary review');
     assert.equal(read(s.slot).wrongProduction, true, 'the flag is still there');
   } finally { s.cleanup(); }
@@ -121,6 +122,52 @@ test('rejected and duplicateOf slots count as flagged too', () => {
       assert.equal(path.basename(r.filepath), `variety--frank-rizzo--on-${NIGHT}.json`, JSON.stringify(flag));
     } finally { s.cleanup(); }
   }
+});
+
+test('after a lane file exists, an ORDINARY write for the same critic never merges into it (it keeps its own slot)', () => {
+  const s = slotWith({ wrongProduction: true, wrongProductionNote: 'earlier corpus verdict' });
+  try {
+    const lane = put(s, URL_B, stamp());
+    const laneBefore = fs.readFileSync(lane.filepath, 'utf8');
+    // An ordinary re-scrape of the OLD flagged review, and an ordinary write for a third URL.
+    for (const url of [URL_A, 'https://variety.com/2026/legit/reviews/third-take-review-4444/']) {
+      const r = put(s, url, { assignedScore: 40 });
+      assert.notEqual(r.filepath, lane.filepath, `ordinary write for ${url} must not land on the lane file`);
+    }
+    assert.equal(fs.readFileSync(lane.filepath, 'utf8'), laneBefore, 'the lane file is byte-identical');
+  } finally { s.cleanup(); }
+});
+
+test('findExistingReviewFile finds a lane night file by its URL and by nothing else', () => {
+  const s = slotWith({ wrongProduction: true, wrongProductionNote: 'earlier corpus verdict' });
+  try {
+    const lane = put(s, URL_B, stamp());
+    const { findExistingReviewFile } = require('../../scripts/lib/review-normalization.js');
+    assert.equal(findExistingReviewFile(s.showDir, 'variety', 'Frank Rizzo', URL_B).path, lane.filepath);
+    const other = findExistingReviewFile(s.showDir, 'variety', 'Frank Rizzo', 'https://variety.com/2026/legit/reviews/elsewhere-review-5555/');
+    assert.ok(!other || other.path !== lane.filepath);
+  } finally { s.cleanup(); }
+});
+
+test('a redirected lane create still faces the listing-page guard (it is not a lane-exempt guard)', () => {
+  const s = slotWith({ wrongProduction: true, wrongProductionNote: 'earlier corpus verdict' });
+  try {
+    const r = put(s, 'https://www.express.co.uk/entertainment/theatre', stamp());
+    assert.equal(r.action, 'skipped');
+    assert.match(r.reason, /listing-page-url/);
+    assert.deepEqual(files(s), ['variety--frank-rizzo.json']);
+  } finally { s.cleanup(); }
+});
+
+test('dryRun with a redirect writes nothing; the real write then reuses the same name', () => {
+  const s = slotWith({ wrongProduction: true, wrongProductionNote: 'earlier corpus verdict' });
+  try {
+    const dry = quiet(() => writer.createOrMergeReviewFile(SHOW.id, { outletId: 'variety', outlet: 'Variety', criticName: 'Frank Rizzo', url: URL_B, source: 'serp', fields: { fullText: body, ...stamp() } }, { reviewTextsDir: s.dir, dryRun: true }));
+    assert.deepEqual(files(s), ['variety--frank-rizzo.json'], 'a dry run created no file');
+    const real = put(s, URL_B, stamp());
+    assert.equal(path.basename(real.filepath), `variety--frank-rizzo--on-${NIGHT}.json`);
+    assert.ok(dry);
+  } finally { s.cleanup(); }
 });
 
 test('safeWriteReview date-plausibility stamp: a lane review is not auto-flagged wrongProduction when its date arrives after scoring; an ordinary one is', () => {
