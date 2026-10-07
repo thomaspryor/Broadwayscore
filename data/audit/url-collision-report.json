@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-07T15:32:13.695Z",
+  "generatedAt": "2026-10-07T15:49:05.946Z",
   "summary": {
-    "total": 6,
+    "total": 7,
     "high": 2,
     "medium": 3,
-    "low": 1
+    "low": 2
   },
   "collisions": [
     {
@@ -60,6 +60,33 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PA484",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "delirium-off-broadway-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-09-24",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "soon-off-broadway-2026",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": null,
+          "openingDate": "2026-10-05",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "soon-off-broadway-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",

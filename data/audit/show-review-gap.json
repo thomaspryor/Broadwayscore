@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-07T09:33:11.946Z",
-  "windowDays": 1095,
-  "targets": 467,
-  "auditedThisRun": 12,
-  "carriedForward": 632,
+  "generatedAt": "2026-10-07T15:42:41.979Z",
+  "windowDays": 21,
+  "targets": 1,
+  "auditedThisRun": 1,
+  "carriedForward": 643,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 366,
-    "missingCurrentRun": 786,
+    "missingCurrentRun": 783,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 873,
+    "totalFlaggedMisses": 872,
     "totalRecoverable": 5,
-    "totalRecovered": 9,
+    "totalRecovered": 11,
     "priorProductionCitations": 3047
   },
   "results": [
@@ -3779,26 +3779,26 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
         "https://www.londontheatre.co.uk/reviews/affluenza-review-riverside-studios",
         "https://theatreandtonic.co.uk/blog/affluenza-riverside-studios-london-review",
-        "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
+        "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
         "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
-        "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
+        "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/",
         "https://www.thereviewshub.com/affluenza-riverside-studios-london/",
-        "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
         "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
+        "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
         "https://theatreweekly.com/review-affluenza-at-riverside-studios/",
-        "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
+        "https://www.whatsonstage.com/news/affluenza-with-noah-schnapp-at-riverside-studios-review_1734391/",
+        "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
+        "https://www.allthatdazzles.co.uk/post/review-affluenza-riverside-studios",
         "https://playsinternational.org.uk/affluenza-riverside-studios/",
-        "https://uk.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
-        "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-        "https://www.londontheatregeek.co.uk/shows/affluenza",
-        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
-        "https://entertheatre.com/shows/affluenza/riverside-studios",
-        "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review"
+        "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
+        "https://www.london-unattached.com/affluenza-riverside-studios/",
+        "https://www.timeout.com/london/theatre/affluenza",
+        "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
+        "https://thelivereview.co.uk/affluenza-review-riverside-studios/"
       ],
-      "dirFiles": 23,
+      "dirFiles": 25,
       "dirClean": 17,
       "inReviewsJson": 15,
       "missing": [
@@ -3809,82 +3809,29 @@
           "serpCensus": true
         },
         {
-          "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
-          "host": "riversidestudios.co.uk",
-          "knownOutletId": null,
+          "url": "https://www.london-unattached.com/affluenza-riverside-studios/",
+          "host": "london-unattached.com",
+          "knownOutletId": "london-unattached",
           "serpCensus": true
         },
         {
-          "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatregeek.co.uk/shows/affluenza",
-          "host": "londontheatregeek.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://entertheatre.com/shows/affluenza/riverside-studios",
-          "host": "entertheatre.com",
-          "knownOutletId": null,
+          "url": "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
+          "host": "thelivereview.co.uk",
+          "knownOutletId": "thelivereview",
           "serpCensus": true
         }
       ],
       "dirOnly": [
         {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
           "host": "broadwayworld.com",
           "count": 1
         },
         {
-          "host": "chiswickcalendar.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "timeout.com",
-          "count": 1
-        },
-        {
-          "host": "whatsonstage.com",
+          "host": "trustpilot.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "londontheatre1--chris-omaweng.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 1,
@@ -3940,7 +3887,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 8,
+            "accepted": 6,
             "error": null
           },
           {
@@ -3950,7 +3897,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -3960,7 +3907,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -3970,7 +3917,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -3980,22 +3927,20 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 17,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
         "count": 13,
         "byReason": {
-          "non-review-host": 7,
-          "aggregator-internal-nav": 3,
-          "ticketing-listing": 1,
-          "non-review-path": 2
+          "non-review-host": 12,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -4015,36 +3960,10 @@
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riversid"
         },
         {
-          "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
-          "host": "riversidestudios.co.uk",
-          "outletId": "riversidestudios",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Refusing to ingest — https://riversidestudios.co.uk/whats-on/uwQ-affluenza/ matches a known non-revi"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
+          "url": "https://www.london-unattached.com/affluenza-riverside-studios/",
+          "host": "london-unattached.com",
+          "outletId": "london-unattached",
           "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-        },
-        {
-          "url": "https://www.londontheatregeek.co.uk/shows/affluenza",
-          "host": "londontheatregeek.co.uk",
-          "outletId": "londontheatregeek",
-          "provisional": true,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -4054,24 +3973,44 @@
           "reason": null
         },
         {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
-          "host": "bestoftheatre.co.uk",
-          "outletId": "bestoftheatre",
+          "url": "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
+          "host": "thelivereview.co.uk",
+          "outletId": "thelivereview",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": null
         }
       ],
-      "ingestSkippedByCap": [
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
         {
-          "url": "https://entertheatre.com/shows/affluenza/riverside-studios",
-          "host": "entertheatre.com",
-          "outletId": "entertheatre"
+          "url": "https://theartsdesk.com/theatre/affluenza-riverside-studios-review-too-rich-mix-rich-kids-tale",
+          "host": "theartsdesk.com",
+          "file": "artsdesk--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
+          "host": "standard.co.uk",
+          "file": "standard--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
         }
       ],
       "censusVerdict": {
@@ -4085,56 +4024,22 @@
             "url": "https://lovelondonloveculture.com/2026/10/06/review-round-up-affluenza-riverside-studios/"
           },
           {
-            "outletId": "riversidestudios.co.uk",
-            "outlet": "riversidestudios.co.uk",
+            "outletId": "london-unattached",
+            "outlet": "london-unattached",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/"
+            "url": "https://www.london-unattached.com/affluenza-riverside-studios/"
           },
           {
-            "outletId": "uktw",
-            "outlet": "uktw",
+            "outletId": "thelivereview",
+            "outlet": "thelivereview",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/"
-          },
-          {
-            "outletId": "londontheatregeek.co.uk",
-            "outlet": "londontheatregeek.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatregeek.co.uk/shows/affluenza"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios"
-          },
-          {
-            "outletId": "entertheatre.com",
-            "outlet": "entertheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://entertheatre.com/shows/affluenza/riverside-studios"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/"
+            "url": "https://thelivereview.co.uk/affluenza-review-riverside-studios/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-06T22:14:07.067Z"
-          },
           {
             "url": "https://www.londontheatre.co.uk/reviews/affluenza-review-riverside-studios",
             "outletId": "londontheatre.co.uk",
@@ -4144,6 +4049,12 @@
           {
             "url": "https://theatreandtonic.co.uk/blog/affluenza-riverside-studios-london-review",
             "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-06T22:14:07.067Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/06/affluenza-review-stranger-things-star-noah-schnapp-riverside-studios-london-andy-sandberg",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
@@ -4160,16 +4071,16 @@
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
-            "url": "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-06T11:06:11.373Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/affluenza-review-riverside-studios-f36n6c99g",
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T23:42:11.061Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/06/affluenza-review-riverside-studios-london-noah-schnapp-andy-sandberg-meaning/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-06T11:06:11.373Z"
           },
           {
             "url": "https://theatreweekly.com/review-affluenza-at-riverside-studios/",
@@ -4178,16 +4089,40 @@
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
+            "url": "https://www.whatsonstage.com/news/affluenza-with-noah-schnapp-at-riverside-studios-review_1734391/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-affluenza-riverside-studios",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
+          },
+          {
             "url": "https://playsinternational.org.uk/affluenza-riverside-studios/",
             "outletId": "playsinternational.org.uk",
             "state": "live",
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
-            "url": "https://uk.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-6abb807d62fab7e444d8b1f7",
-            "outletId": "uk.trustpilot.com",
+            "url": "https://chiswickcalendar.co.uk/affluenza-riverside-studios-theatre-review/",
+            "outletId": "chiswickcalendar.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-06T11:06:11.373Z"
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/affluenza",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/affluenza-riverside-studios-review",
@@ -4203,53 +4138,25 @@
             "firstSeenAt": "2026-10-06T22:14:07.067Z"
           },
           {
-            "url": "https://riversidestudios.co.uk/whats-on/uwQ-affluenza/",
-            "outletId": "riversidestudios.co.uk",
+            "url": "https://www.london-unattached.com/affluenza-riverside-studios/",
+            "outletId": "london-unattached",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
           },
           {
-            "url": "https://www.uktw.co.uk/London/Riverside-Studios/Play/Affluenza/L0509433874/",
-            "outletId": "uktw",
+            "url": "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
+            "outletId": "thelivereview",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-06T11:06:11.373Z"
-          },
-          {
-            "url": "https://www.londontheatregeek.co.uk/shows/affluenza",
-            "outletId": "londontheatregeek.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-affluenza-riverside-studios",
-            "outletId": "bestoftheatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://entertheatre.com/shows/affluenza/riverside-studios",
-            "outletId": "entertheatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-06T22:14:07.067Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/affluenza-riverside-studios-review/",
-            "outletId": "londontheatre1",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-06T22:14:07.067Z"
+            "firstSeenAt": "2026-10-07T15:42:41.979Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 11,
+        "liveCount": 15,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-06T22:14:07.067Z"
+      "computedAt": "2026-10-07T15:42:41.979Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",

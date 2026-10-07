@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-07T09:35:35.306Z",
+  "generatedAt": "2026-10-07T15:46:12.459Z",
   "phase": "done",
   "days": 21,
-  "shows": 63,
+  "shows": 64,
   "sources": {
     "theatermania": {
       "queries": 38,
@@ -10,8 +10,8 @@
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 25,
-      "listed": 7,
+      "queries": 26,
+      "listed": 8,
       "errors": 0
     },
     "nysr": {
@@ -30,13 +30,27 @@
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 25,
+      "queries": 26,
       "listed": 38,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 80,
-  "ingested": [],
-  "missing": []
+  "listed": 81,
+  "ingested": [
+    {
+      "showId": "fences-off-west-end-2026",
+      "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+      "ok": true
+    }
+  ],
+  "missing": [
+    {
+      "source": "whatsonstage",
+      "showId": "fences-off-west-end-2026",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/fences-at-leeds-playhouse-and-on-tour-review_1731583/",
+      "date": "2026-09-17"
+    }
+  ]
 }
