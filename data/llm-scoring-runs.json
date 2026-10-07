@@ -328365,20 +328365,26 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-07T13:04:31.806Z",
-    "completedAt": "2026-10-07T13:14:23.553Z",
+    "startedAt": "2026-10-07T13:20:37.997Z",
+    "completedAt": "2026-10-07T13:21:06.084Z",
     "totalReviews": 47262,
-    "processed": 91,
-    "skipped": 47163,
-    "errors": 0,
+    "processed": 1,
+    "skipped": 47252,
+    "errors": 1,
     "tokensUsed": {
-      "input": 549355,
-      "output": 29412,
-      "total": 1396582
+      "input": 39915,
+      "output": 1291,
+      "total": 110827
     },
-    "costUsd": 2.2093478,
-    "runId": "37625141475",
-    "errorDetails": [],
+    "costUsd": 0.14196499999999998,
+    "runId": "37627281750",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",
@@ -328742,8 +328748,8 @@
         "showId": "romeo-and-juliet-west-end-2026",
         "ourDistribution": {
           "up": 38,
-          "flat": 17,
-          "down": 10,
+          "flat": 18,
+          "down": 9,
           "total": 65
         },
         "bwwDistribution": {
@@ -330388,8 +330394,8 @@
       {
         "showId": "american-psycho-off-west-end-2026",
         "ourDistribution": {
-          "up": 6,
-          "flat": 1,
+          "up": 7,
+          "flat": 0,
           "down": 0,
           "total": 7
         },
@@ -330464,8 +330470,8 @@
       {
         "showId": "an-ark-off-broadway-2026",
         "ourDistribution": {
-          "up": 7,
-          "flat": 5,
+          "up": 8,
+          "flat": 4,
           "down": 5,
           "total": 17
         },
@@ -330476,7 +330482,7 @@
           "total": 7
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Down thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "BWW: Up thumbs differ by 33% (ours: 47%, theirs: 14%)"
       },
       {
         "showId": "an-enemy-of-the-people-2024",
@@ -336025,8 +336031,8 @@
         "ourDistribution": {
           "up": 38,
           "flat": 20,
-          "down": 23,
-          "total": 81
+          "down": 24,
+          "total": 82
         },
         "dtliDistribution": {
           "up": 5,
@@ -336035,15 +336041,15 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 53% (ours: 47%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 54% (ours: 46%, theirs: 100%)"
       },
       {
         "showId": "frozen-2018",
         "ourDistribution": {
           "up": 38,
           "flat": 20,
-          "down": 23,
-          "total": 81
+          "down": 24,
+          "total": 82
         },
         "dtliDistribution": {
           "up": 5,
@@ -336052,7 +336058,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 53% (ours: 47%, theirs: 100%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 54% (ours: 46%, theirs: 100%)"
       },
       {
         "showId": "fully-committed-2016",
@@ -337479,8 +337485,8 @@
       {
         "showId": "heart-wall-west-end-2026",
         "ourDistribution": {
-          "up": 7,
-          "flat": 8,
+          "up": 8,
+          "flat": 7,
           "down": 1,
           "total": 16
         },
@@ -337725,8 +337731,8 @@
       {
         "showId": "hercules-west-end-2025",
         "ourDistribution": {
-          "up": 8,
-          "flat": 15,
+          "up": 9,
+          "flat": 14,
           "down": 8,
           "total": 31
         },
@@ -337737,7 +337743,7 @@
           "total": 13
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Flat thumbs differ by 48% (ours: 48%, theirs: 0%)"
+        "disagreementDetails": "BWW: Flat thumbs differ by 45% (ours: 45%, theirs: 0%)"
       },
       {
         "showId": "here-comes-j-edgar-off-west-end-2026",
@@ -338580,8 +338586,8 @@
       {
         "showId": "in-the-print-off-west-end-2026",
         "ourDistribution": {
-          "up": 6,
-          "flat": 4,
+          "up": 7,
+          "flat": 3,
           "down": 1,
           "total": 11
         },
@@ -338624,8 +338630,8 @@
         "showId": "indian-ink-off-west-end-2025",
         "ourDistribution": {
           "up": 11,
-          "flat": 4,
-          "down": 1,
+          "flat": 5,
+          "down": 0,
           "total": 16
         },
         "hasDisagreement": false
@@ -339580,8 +339586,8 @@
       {
         "showId": "kiss-me-kate-2019",
         "ourDistribution": {
-          "up": 65,
-          "flat": 14,
+          "up": 66,
+          "flat": 13,
           "down": 6,
           "total": 85
         },
@@ -339596,8 +339602,8 @@
       {
         "showId": "kiss-me-kate-1999",
         "ourDistribution": {
-          "up": 65,
-          "flat": 14,
+          "up": 66,
+          "flat": 13,
           "down": 6,
           "total": 85
         },
@@ -340256,8 +340262,8 @@
         "showId": "lifeline-off-west-end-2026",
         "ourDistribution": {
           "up": 1,
-          "flat": 4,
-          "down": 1,
+          "flat": 5,
+          "down": 0,
           "total": 6
         },
         "hasDisagreement": false
@@ -340916,8 +340922,8 @@
       {
         "showId": "making-a-show-of-myself-off-broadway-2026",
         "ourDistribution": {
-          "up": 5,
-          "flat": 1,
+          "up": 6,
+          "flat": 0,
           "down": 0,
           "total": 6
         },
@@ -344034,8 +344040,8 @@
       {
         "showId": "present-laughter-1982",
         "ourDistribution": {
-          "up": 61,
-          "flat": 16,
+          "up": 62,
+          "flat": 15,
           "down": 2,
           "total": 79
         },
@@ -344046,13 +344052,13 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 77%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 78%, theirs: 40%)"
       },
       {
         "showId": "present-laughter-2017",
         "ourDistribution": {
-          "up": 61,
-          "flat": 16,
+          "up": 62,
+          "flat": 15,
           "down": 2,
           "total": 79
         },
@@ -344063,13 +344069,13 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 77%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 78%, theirs: 40%)"
       },
       {
         "showId": "present-laughter-2010",
         "ourDistribution": {
-          "up": 61,
-          "flat": 16,
+          "up": 62,
+          "flat": 15,
           "down": 2,
           "total": 79
         },
@@ -344080,13 +344086,13 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 77%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 78%, theirs: 40%)"
       },
       {
         "showId": "present-laughter-1996",
         "ourDistribution": {
-          "up": 61,
-          "flat": 16,
+          "up": 62,
+          "flat": 15,
           "down": 2,
           "total": 79
         },
@@ -344097,7 +344103,7 @@
           "total": 5
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Up thumbs differ by 37% (ours: 77%, theirs: 40%)"
+        "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 78%, theirs: 40%)"
       },
       {
         "showId": "pretty-woman-the-musical-2018",
@@ -347004,8 +347010,8 @@
       {
         "showId": "the-adding-machine-off-broadway-2026",
         "ourDistribution": {
-          "up": 11,
-          "flat": 3,
+          "up": 12,
+          "flat": 2,
           "down": 6,
           "total": 20
         },
@@ -348611,8 +348617,8 @@
       {
         "showId": "the-holy-rosenbergs-west-end-2026",
         "ourDistribution": {
-          "up": 14,
-          "flat": 4,
+          "up": 13,
+          "flat": 5,
           "down": 1,
           "total": 19
         },
@@ -350382,8 +350388,8 @@
       {
         "showId": "the-rat-trap-west-end-2026",
         "ourDistribution": {
-          "up": 8,
-          "flat": 5,
+          "up": 9,
+          "flat": 4,
           "down": 1,
           "total": 14
         },
@@ -352719,8 +352725,8 @@
       {
         "showId": "waiting-for-godot-2009",
         "ourDistribution": {
-          "up": 54,
-          "flat": 28,
+          "up": 55,
+          "flat": 27,
           "down": 14,
           "total": 96
         },
@@ -352737,13 +352743,13 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
       },
       {
         "showId": "waiting-for-godot-2013",
         "ourDistribution": {
-          "up": 54,
-          "flat": 28,
+          "up": 55,
+          "flat": 27,
           "down": 14,
           "total": 96
         },
@@ -352760,13 +352766,13 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
       },
       {
         "showId": "waiting-for-godot-2025",
         "ourDistribution": {
-          "up": 54,
-          "flat": 28,
+          "up": 55,
+          "flat": 27,
           "down": 14,
           "total": 96
         },
@@ -352783,7 +352789,7 @@
           "total": 18
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
       },
       {
         "showId": "waitress-2016",
@@ -353046,8 +353052,8 @@
       {
         "showId": "what-the-animals-say-off-west-end-2026",
         "ourDistribution": {
-          "up": 12,
-          "flat": 3,
+          "up": 13,
+          "flat": 2,
           "down": 0,
           "total": 15
         },
@@ -353513,19 +353519,19 @@
     ]
   },
   {
-    "startedAt": "2026-10-07T13:15:27.693Z",
-    "completedAt": "2026-10-07T13:21:01.155Z",
-    "totalReviews": 148,
-    "processed": 148,
+    "startedAt": "2026-10-07T13:22:05.191Z",
+    "completedAt": "2026-10-07T13:22:07.052Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 381492,
-      "output": 34948,
-      "total": 416440
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 1.0750642,
-    "runId": "37625141475",
+    "costUsd": 0,
+    "runId": "37627281750",
     "errorDetails": []
   }
 ]
