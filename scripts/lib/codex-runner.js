@@ -264,7 +264,8 @@ function orphanAction({ stateName, startedAtMs, lockMs, onMain, landRefMs }) {
 }
 
 /** Stop the run early (like close-stuck-verified-cards' closeRunStopReason). */
-function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rejectStreak, doneRefusals }) {
+function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rejectStreak, doneRefusals, checkSpentUsd = 0, checkBudgetUsd = null }) {
+  if (checkBudgetUsd != null && checkSpentUsd >= checkBudgetUsd) return `Claude check spend $${checkSpentUsd.toFixed(2)} reached the run cap of $${checkBudgetUsd}`;
   if (maxMinutes && nowMs - startedMs > maxMinutes * 60_000) return `time budget of ${maxMinutes} min used`;
   if (weeklyPct != null && maxWeeklyPct != null && weeklyPct >= maxWeeklyPct) return `Codex weekly allowance at ${weeklyPct}% (cap ${maxWeeklyPct}%)`;
   if (rejectStreak >= 3) return '3 Claude REJECTs in a row';
@@ -272,7 +273,23 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
   return null;
 }
 
+/**
+ * `claude -p --output-format json` -> { text, costUsd }. The JSON carries the review text in
+ * `result` and the API cost in `total_cost_usd`; anything else (a crash banner) is kept as text.
+ */
+function parseCheckOutput(stdout) {
+  const s = String(stdout || '').trim();
+  try {
+    const j = JSON.parse(s.slice(s.indexOf('{')));
+    if (j && typeof j === 'object') {
+      return { text: typeof j.result === 'string' ? j.result : '', costUsd: Number(j.total_cost_usd) || 0, error: j.is_error ? String(j.subtype || 'error') : null };
+    }
+  } catch { /* not JSON */ }
+  return { text: s, costUsd: 0, error: null };
+}
+
 module.exports = {
+  parseCheckOutput,
   lockMessage,
   lockCards,
   orphanAction,

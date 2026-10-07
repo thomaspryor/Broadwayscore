@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * daily-runner.js — the unattended Codex card worker (BRO-4745). A daily
- * cloud routine runs it; no Claude session supervises the work itself.
+ * daily-runner.js — the unattended Codex card worker (BRO-4745). The
+ * codex-runner.yml workflow runs it three times a day; no Claude session
+ * supervises the work itself.
  *
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
+ *        [--check-max-usd 4] [--check-budget-usd 30]
  *
  * Per card (same picker rules as the hourly Claude cloud worker, minus
  * resumes and cards Codex already bounced):
@@ -60,7 +62,13 @@ const OPTS = {
   maxWeeklyPct: Number(arg('max-weekly-pct', 60)),
   land: !process.argv.includes('--no-land'),
   dryRun: process.argv.includes('--dry-run'),
+  // The Claude check bills per review when run outside a subscription session (Actions):
+  // each review stops at --check-max-usd, the run stops picking cards at --check-budget-usd.
+  checkMaxUsd: Number(arg('check-max-usd', 4)),
+  checkBudgetUsd: Number(arg('check-budget-usd', 30)),
 };
+let checkSpentUsd = 0;
+let checkCount = 0;
 
 fs.mkdirSync(LOG_DIR, { recursive: true });
 const RUN_LOG = path.join(LOG_DIR, `run-${new Date().toISOString().slice(0, 10)}.log`);
@@ -178,7 +186,8 @@ function runCheck(card, body, codexReport, tag) {
   // cwd is the worktree so plain git/node commands work; --setting-sources user keeps
   // the project's session hooks out of this one-shot reviewer (CLAUDE.md still loads).
   // Prompt on stdin: --allowedTools and --add-dir are variadic and swallow a positional.
-  const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'text',
+  const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'json',
+    '--max-budget-usd', String(OPTS.checkMaxUsd),
     '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
     '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*)',
   ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv({ reviewer: true }), input: prompt });
@@ -189,8 +198,12 @@ function runCheck(card, body, codexReport, tag) {
   const tampered = git(['rev-parse', 'HEAD']) !== head;
   git(['reset', '-q', '--hard', head]);
   git(['clean', '-qfd', '-e', 'node_modules']);
-  const verdict = r.code === 0 && !tampered ? R.parseVerdict(r.stdout) : 'NONE';
-  return { verdict, text: tampered ? 'The reviewer changed the worktree, so its verdict was discarded.' : tail(r.stdout || r.out, 3000) };
+  const out = R.parseCheckOutput(r.stdout);
+  checkSpentUsd += out.costUsd;
+  checkCount += 1;
+  log(`${card.identifier} ${tag}: Claude check cost $${out.costUsd.toFixed(2)}${out.error ? ` (${out.error})` : ''}`);
+  const verdict = r.code === 0 && !tampered && !out.error ? R.parseVerdict(out.text) : 'NONE';
+  return { verdict, text: tampered ? 'The reviewer changed the worktree, so its verdict was discarded.' : tail(out.text || r.out, 3000) };
 }
 
 /** Commit Codex's working-tree changes. -> { hasDiff, blocked } */
@@ -618,7 +631,7 @@ async function runLocked(startedMs) {
   let stop = null;
   for (const pick of await pickCards()) {
     if (worked >= OPTS.limit) break;
-    stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals });
+    stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals, checkSpentUsd, checkBudgetUsd: OPTS.checkBudgetUsd });
     if (!stop && stats.aborted) stop = stats.aborted;
     let held = true;
     try { held = refreshLock(); } catch { /* transient git error: the keep-alive retries */ }
@@ -646,6 +659,7 @@ async function runLocked(startedMs) {
     `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
     `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
+    `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
     `- Stopped early: ${stop || 'no'}`,
   ].join('\n');
   log(text);
