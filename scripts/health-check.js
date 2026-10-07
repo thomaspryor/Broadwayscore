@@ -4311,7 +4311,7 @@ function cardVerifiabilityBacklogResults(report, drainMetric, linearReport, now 
       results.push({
         name: 'Data: undispatchable Linear backlog cards',
         status: 'warn',
-        message: `${refusedL.length} of ${linearReport.total} open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [${f.priority || '?'}] ${f.id || ''} ${f.name || ''}`.trim(),
+        message: `${refusedL.length} of ${linearReport.total != null ? linearReport.total : "?"} open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [${f.priority || '?'}] ${f.id || ''} ${f.name || ''}`.trim(),
         hint: 'node scripts/enrich-card-acceptance.js --source linear drafts missing criteria; re-run node scripts/audit-card-verifiability.js --source linear after to confirm.',
       });
     }

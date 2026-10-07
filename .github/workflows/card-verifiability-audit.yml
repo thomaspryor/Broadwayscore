@@ -73,7 +73,7 @@ jobs:
     # also runs the Notion leg and both audit passes. 35 gives real margin
     # without needing a live-cost measurement against production Linear to
     # pin an exact number.
-    timeout-minutes: 35
+    timeout-minutes: 50 # BRO-3619: +15 for the separate Linear audit step
     steps:
       - uses: actions/checkout@v5
         with:
