@@ -743,6 +743,17 @@ test('selectTestFiles: skips tsx-manifest tests, whether changed or reached by n
   assert.deepEqual(selectTestFiles(dir, ['scripts/tests/tm-gap.test.mjs']), [path.join('scripts', 'tests', 'tm-gap.test.mjs')]);
 });
 
+test('every top-level sibling require() of the gate is copied into the bash harness scratch repo (BRO-4842)', () => {
+  // The harness builds a minimal scripts/lib/ by cp; a sibling it misses makes
+  // the gate die MODULE_NOT_FOUND there, which only surfaced in land.yml.
+  const lib = path.join(REPO_ROOT, 'scripts', 'lib');
+  const gateSrc = fs.readFileSync(path.join(lib, 'merge-post-merge-test-gate.js'), 'utf8');
+  const harness = fs.readFileSync(path.join(lib, 'merge-worktree-to-main.post-merge-test-gate.test.sh'), 'utf8');
+  const siblings = [...gateSrc.matchAll(/^const [^=]+= require\('\.\/([^']+)'\);/gm)].map((m) => m[1]);
+  assert.ok(siblings.length >= 3, `expected top-level sibling requires, got ${siblings.join(', ')}`);
+  assert.deepEqual(siblings.filter((f) => !harness.includes(`scripts/lib/${f}`)), []);
+});
+
 test('REQUIRED_WORKFLOW_GUARDS: the dependency validator is selected even with no manifest (BRO-4812)', () => {
   const dir = makeScratchRepo();
   fs.writeFileSync(path.join(dir, 'scripts', 'validate-workflow-dependencies.test.mjs'), '');
