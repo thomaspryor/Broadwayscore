@@ -1,21 +1,44 @@
 {
-  "updatedAt": "2026-10-07T05:35:26.484Z",
-  "processed": 370,
-  "failed": 244,
-  "successRate": "60.3%",
+  "updatedAt": "2026-10-07T06:01:32.851Z",
+  "processed": 407,
+  "failed": 277,
+  "successRate": "59.5%",
   "tierBreakdown": {
-    "playwright": 223,
+    "playwright": 232,
     "amp": 3,
     "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 42,
-    "scrapingbee": 46,
-    "brightdata": 8,
+    "scrapingdog": 44,
+    "scrapingbee": 69,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 65
+    "archive": 69
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-10-07T01:20:44.404Z",
+      "event": "bb-session",
+      "session": "457b7eb9",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-07T01:20:45.046Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-07T01:21:02.963Z",
+      "event": "bb-session",
+      "session": "11b08b6e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-07T01:21:03.502Z",
+      "event": "bb-session",
+      "session": "f4ebd8fb",
+      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
+    },
     {
       "t": "2026-10-07T01:21:03.741Z",
       "event": "bb-cookie-inject",
@@ -108,30 +131,6 @@
       "t": "2026-10-07T02:03:25.446Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-07T05:05:24.830Z",
-      "event": "bb-session",
-      "session": "86019687",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
-    },
-    {
-      "t": "2026-10-07T05:05:37.909Z",
-      "event": "bb-session",
-      "session": "993efed3",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
-    },
-    {
-      "t": "2026-10-07T05:06:46.932Z",
-      "event": "bb-session",
-      "session": "9419e720",
-      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
-    },
-    {
-      "t": "2026-10-07T05:07:47.614Z",
-      "event": "bb-session",
-      "session": "be818a86",
-      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
     }
   ]
 }
