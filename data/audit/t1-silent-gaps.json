@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-06T22:14:09.534Z",
+  "generatedAt": "2026-10-07T02:08:53.984Z",
   "windowDays": 45,
-  "showsScanned": 137,
+  "showsScanned": 140,
   "gaps": [
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-09-29T06:59:42.774Z",
-      "fileAgeHours": 183.24037333333334,
+      "fileAgeHours": 187.15251972222222,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 165.12598166666666
+      "nonTerminalAgeHours": 169.03832888888888
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -34,27 +34,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T11:13:40.183Z",
-      "fileAgeHours": 155.00784305555555,
+      "fileAgeHours": 158.92002527777777,
       "gapSeenAt": "2026-09-30T14:36:19.168Z",
-      "nonTerminalAgeHours": 151.63065722222223
-    },
-    {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
-      "openingDate": "2026-09-17",
-      "file": "cititour--unknown.json",
-      "outletId": "cititour",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://cititour.com/NYC_Events/Truly-Howard-Hughes/34944",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
-      "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 655.2932808333334,
-      "gapSeenAt": "2026-10-06T11:07:38.455Z",
-      "nonTerminalAgeHours": 11.108633055555556
+      "nonTerminalAgeHours": 155.54300444444445
     },
     {
       "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
@@ -69,27 +51,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-hairy-ape-irish-repertory-theatre-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-05T23:24:55.495Z",
-      "fileAgeHours": 22.820359166666666,
+      "fileAgeHours": 26.73259722222222,
       "gapSeenAt": "2026-10-06T03:40:07.959Z",
-      "nonTerminalAgeHours": 18.567104166666667
-    },
-    {
-      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
-      "title": "September L. Davis: The Apology Tour",
-      "openingDate": "2026-09-20",
-      "file": "timeout--unknown.json",
-      "outletId": "timeout",
-      "tier": 1,
-      "type": "unscored",
-      "dispatchable": false,
-      "url": "https://www.timeout.com/newyork/theater/september-l-davis-the-apology-tour",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=september-l-davis-the-apology-tour-off-broadway-2026",
-      "firstSeen": "2026-09-28T17:47:33.366Z",
-      "fileAgeHours": 196.4432522222222,
-      "gapSeenAt": "2026-10-06T11:07:38.455Z",
-      "nonTerminalAgeHours": 11.108633055555556
+      "nonTerminalAgeHours": 22.47945138888889
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -104,9 +68,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:34:19.900Z",
-      "fileAgeHours": 168.6636638888889,
+      "fileAgeHours": 172.57595305555554,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 165.12598166666666
+      "nonTerminalAgeHours": 169.03832888888888
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -124,9 +88,27 @@
       "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ --outlet=tennessean   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:40:48.734Z",
-      "fileAgeHours": 168.55565444444446,
+      "fileAgeHours": 172.4679438888889,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 165.12598166666666
+      "nonTerminalAgeHours": 169.03832888888888
+    },
+    {
+      "showId": "the-secret-circus-musical-off-broadway-2026",
+      "title": "The Secret Circus Musical",
+      "openingDate": "2026-09-26",
+      "file": "broadwayworld--unknown.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "url": "https://www.broadwayworld.com/off-off-broadway/regional/The-Secret-Circus-Musical-4401274",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-secret-circus-musical-off-broadway-2026",
+      "firstSeen": "2026-09-27T01:33:21.008Z",
+      "fileAgeHours": 240.59235444444445,
+      "gapSeenAt": "2026-10-07T02:08:53.984Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -141,9 +123,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 247.32790833333334,
+      "fileAgeHours": 251.24022027777778,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 244.51118416666668
+      "nonTerminalAgeHours": 248.42353138888888
     },
     {
       "showId": "a-slow-fire-off-west-end-2026",
@@ -158,9 +140,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T11:13:07.795Z",
-      "fileAgeHours": 179.01711194444445,
+      "fileAgeHours": 182.9294438888889,
       "gapSeenAt": "2026-09-29T12:07:43.506Z",
-      "nonTerminalAgeHours": 178.10723
+      "nonTerminalAgeHours": 182.0195772222222
     },
     {
       "showId": "burning-leaves-off-broadway-2026",
@@ -176,9 +158,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
       "firstSeen": "2026-09-30T14:32:12.902Z",
-      "fileAgeHours": 151.6990461111111,
+      "fileAgeHours": 155.61138583333334,
       "gapSeenAt": "2026-10-01T02:44:11.346Z",
-      "nonTerminalAgeHours": 139.49949666666666
+      "nonTerminalAgeHours": 143.41184388888888
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -193,9 +175,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 126.37672777777777,
+      "fileAgeHours": 130.28907,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 125.07195916666667
+      "nonTerminalAgeHours": 128.98430638888888
     },
     {
       "showId": "the-visit-regional-2026",
@@ -210,9 +192,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-visit-regional-2026 --url=https://www.curtainup.com/visitwtf14.html --outlet=curtainup   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-02T06:13:33.238Z",
-      "fileAgeHours": 112.01008,
+      "fileAgeHours": 115.92242666666667,
       "gapSeenAt": "2026-10-02T09:21:24.837Z",
-      "nonTerminalAgeHours": 108.8790825
+      "nonTerminalAgeHours": 112.79142972222222
     }
   ],
   "contradictions": []
