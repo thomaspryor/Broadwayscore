@@ -1950,6 +1950,10 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
     }
     if (!data || !data.outletId) continue;
     if (normalizeOutlet(data.outletId) !== normalizedOutlet) continue;
+    // BRO-4805: a lane night file (outlet--critic--on-<night>.json, written beside a flagged slot) is found by its URL in
+    // Pass 0 and by nothing else. Matching it here by outlet + critic would let an ordinary re-scrape of the OLD
+    // flagged review merge into it, past the wrongProduction guards the lane exempts it from.
+    if (data.openingNightLane && file.replace('.json', '').split('--').length > 2) continue;
 
     // Prefer the stored criticName; only fall back to the filename's critic
     // slug when the file has none recorded internally. A file whose
