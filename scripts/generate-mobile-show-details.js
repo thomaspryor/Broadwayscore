@@ -66,6 +66,7 @@ const DETAIL_SCHEMA_VERSION = 3;
 // Lives at data/cache/mobile-show-details/last-hash.json (gitignored;
 // persisted across CI runs via the .github/workflows/vercel-deploy.yml
 // "Cache Next.js build" step which includes data/cache/).
+const { loadPriorIndexIds, planPrune } = require('./lib/mobile-detail-prune');
 const HASH_CACHE_DIR = path.join(__dirname, '../data/cache/mobile-show-details');
 const HASH_CACHE_FILE = path.join(HASH_CACHE_DIR, 'last-hash.json');
 
@@ -959,26 +960,24 @@ if (!SHOW_ARG) {
   // grace-period-satisfied and pruning would silently never fire under --force.
   const priorCache = FORCE_REGEN ? readCachedHash() : cachedHashes;
   const previousCandidates = (priorCache && priorCache.pruneCandidates) || {};
-  const nextCandidates = {};
-  const toPrune = [];
+  // BRO-4826: also treat "absent from the committed (prior-run) mobile-shows.json"
+  // as grace-satisfied, since workflows that commit never restore the hash cache.
+  const priorIndexIds = loadPriorIndexIds(path.join(__dirname, '../public/data/mobile-shows.json'));
+  const orphanFiles = new Map();
   for (const f of fs.readdirSync(outputDir)) {
     const m = DETAIL_FILE_RE.exec(f);
     if (!m) continue;
     const id = m[1];
     if (validIds.has(id) && visibleIds.has(id)) continue;
-    if (previousCandidates[id]) {
-      toPrune.push({ id, file: f });
-    } else {
-      nextCandidates[id] = true;
-    }
+    orphanFiles.set(id, f);
   }
-  const PRUNE_CEILING = Math.max(50, Math.round(shows.length * 0.1));
-  if (toPrune.length > PRUNE_CEILING) {
-    console.error(`✗ Orphan prune SKIPPED — ${toPrune.length} candidate(s) exceeds sanity ceiling (${PRUNE_CEILING}). This usually means an upstream data problem, not genuine show churn — investigate before the next run. Candidates remain armed (not consumed).`);
-    for (const { id } of toPrune) nextCandidates[id] = true;
+  const plan = planPrune({ orphanIds: [...orphanFiles.keys()], previousCandidates, priorIndexIds, showCount: shows.length });
+  const nextCandidates = plan.nextCandidates;
+  if (plan.skipped) {
+    console.error(`✗ Orphan prune SKIPPED — ${plan.toPrune.length || 'too many'} candidate(s) exceeds sanity ceiling (${plan.ceiling}). This usually means an upstream data problem, not genuine show churn — investigate before the next run. Candidates remain armed (not consumed).`);
   } else {
-    for (const { id, file } of toPrune) {
-      fs.unlinkSync(path.join(outputDir, file));
+    for (const id of plan.toPrune) {
+      fs.unlinkSync(path.join(outputDir, orphanFiles.get(id)));
       delete newShowHashes[id];
       pruned++;
     }
