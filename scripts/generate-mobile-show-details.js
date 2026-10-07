@@ -23,7 +23,7 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
-const { isPublishedShowFile } = require('./lib/markets');
+const { isPublishedShowFile, isHiddenFromAppFeed } = require('./lib/markets');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -968,6 +968,9 @@ if (!SHOW_ARG) {
   const previousCandidates = (priorCache && priorCache.pruneCandidates) || {};
   // BRO-4826: also treat "absent from the committed (prior-run) mobile-shows.json"
   // as grace-satisfied, since workflows that commit never restore the hash cache.
+  const showById = new Map(shows.map(s => [s.id, s]));
+  // Index omits app-feed-hidden categories (tours): their absence is not grace evidence.
+  const indexCovers = id => !showById.has(id) || !isHiddenFromAppFeed(showById.get(id).category);
   const priorIndexIds = loadPriorIndexIds(path.join(__dirname, '../public/data/mobile-shows.json'));
   const orphanFiles = new Map();
   for (const f of fs.readdirSync(outputDir)) {
@@ -977,10 +980,10 @@ if (!SHOW_ARG) {
     if (validIds.has(id) && visibleIds.has(id)) continue;
     orphanFiles.set(id, f);
   }
-  const plan = planPrune({ orphanIds: [...orphanFiles.keys()], previousCandidates, priorIndexIds, showCount: shows.length });
+  const plan = planPrune({ orphanIds: [...orphanFiles.keys()], previousCandidates, priorIndexIds, indexCovers, showCount: shows.length });
   const nextCandidates = plan.nextCandidates;
   if (plan.skipped) {
-    console.error(`✗ Orphan prune SKIPPED — ${plan.toPrune.length || 'too many'} candidate(s) exceeds sanity ceiling (${plan.ceiling}). This usually means an upstream data problem, not genuine show churn — investigate before the next run. Candidates remain armed (not consumed).`);
+    console.error(`✗ Orphan prune SKIPPED — ${plan.skippedCount} candidate(s) exceeds sanity ceiling (${plan.ceiling}). This usually means an upstream data problem, not genuine show churn — investigate before the next run. Candidates remain armed (not consumed).`);
   } else {
     for (const id of plan.toPrune) {
       fs.unlinkSync(path.join(outputDir, orphanFiles.get(id)));

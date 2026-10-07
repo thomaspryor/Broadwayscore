@@ -12,8 +12,9 @@
 # (2026-06-22 incident, commit 6f9e196939). Routing every site through one
 # wrapper makes "regenerate one, forget the other" structurally impossible.
 #
-# The two scripts read the SAME core-data files and write DISJOINT outputs, so
-# order is not load-bearing; we run detail then index to match prebuild.sh.
+# The two scripts read the SAME core-data files and write DISJOINT outputs, but
+# order IS load-bearing for one thing: the detail orphan-prune reads the committed
+# mobile-shows.json as the PRIOR run's index (BRO-4826), so detail must run first.
 #
 # STAGING IS NOT THIS SCRIPT'S JOB — each workflow keeps its own `git add`
 # rules (the cast backfills stage only public/data/shows/; the rebuild pipeline
