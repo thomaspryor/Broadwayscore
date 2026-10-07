@@ -11587,31 +11587,24 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "land:land/bro-4838-affluenza-coverage": {
+    "test-yml:red:Unit Tests:d40249b9": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: scripts-lib-tests red on land/bro-4838-affluenza-coverage",
-      "firstSeen": "2026-10-07T16:14:36.795Z",
-      "incidentOpenedAt": "2026-10-07T16:14:36.795Z",
-      "lastSeen": "2026-10-07T16:14:36.795Z",
-      "lastNotifiedAt": "2026-10-07T16:14:36.795Z",
-      "lastSurfacedAt": "2026-10-07T16:14:36.795Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"TodayTix-gap shows without TodayTix have at least 2 real Ticketmaster links (documented ceiling — see file header; 3 until The Gruffalo closed 2026-09-08)\"",
+      "firstSeen": "2026-10-07T16:29:03.152Z",
+      "incidentOpenedAt": "2026-10-07T16:29:03.152Z",
+      "lastSeen": "2026-10-07T16:29:03.152Z",
+      "lastNotifiedAt": "2026-10-07T16:29:03.152Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
-    },
-    "land:land/worktree-bro-4842-tm-gap": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: bash-integration red on land/worktree-bro-4842-tm-gap",
-      "firstSeen": "2026-10-07T16:22:53.500Z",
-      "incidentOpenedAt": "2026-10-07T16:22:53.500Z",
-      "lastSeen": "2026-10-07T16:22:53.500Z",
-      "lastNotifiedAt": "2026-10-07T16:22:53.500Z",
-      "lastSurfacedAt": "2026-10-07T16:22:53.500Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4844",
+      "dispatch": {
+        "requestedAt": "2026-10-07T16:29:03.152Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37647981254",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37647981254"
+      }
     }
   }
 }
