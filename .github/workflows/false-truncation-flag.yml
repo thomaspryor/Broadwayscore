@@ -1,0 +1,92 @@
+name: False-truncation flag (BRO-4804)
+
+# Manual only. Past-inventory repair for scored reviews whose complete-tier text the
+# scorer called TRUNCATED because of a page footer (fixed in text-quality.js).
+#   dry    count what would be flagged, write nothing
+#   apply  set needsRescore + rescoreReason=false-truncation-warning, push to the private repo
+# The rescore itself is drained by llm-ensemble-score.yml --needs-rescore.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry | apply'
+        required: true
+        default: 'dry'
+        type: string
+      within_days:
+        description: 'only shows opened within N days (0 = every show)'
+        required: false
+        default: '30'
+        type: string
+      sample:
+        description: 'flag only a deterministic spread of N files (0 = all), the A/B sample'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: false-truncation-flag
+  cancel-in-progress: false
+
+jobs:
+  flag:
+    name: Flag false-truncation scores
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Validate inputs
+        env:
+          MODE: ${{ inputs.mode }}
+          WITHIN: ${{ inputs.within_days }}
+          SAMPLE: ${{ inputs.sample }}
+        run: |
+          case "$MODE" in dry|apply) ;; *) echo "::error::mode must be dry|apply"; exit 1 ;; esac
+          case "$WITHIN" in ''|*[!0-9]*) echo "::error::within_days must be a number"; exit 1 ;; esac
+          case "$SAMPLE" in ''|*[!0-9]*) echo "::error::sample must be a number"; exit 1 ;; esac
+
+      - name: Flag
+        env:
+          MODE: ${{ inputs.mode }}
+          WITHIN: ${{ inputs.within_days }}
+          SAMPLE: ${{ inputs.sample }}
+        shell: bash
+        run: |
+          APPLY=""
+          [ "$MODE" = "apply" ] && APPLY="--apply"
+          node scripts/flag-false-truncation.js $APPLY --within-days="$WITHIN" --sample="$SAMPLE" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Push to private repo
+        if: inputs.mode == 'apply'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'chore: flag false-truncation scores for rescore [BRO-4804]'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'False-truncation flag failed'
+          severity: 'warning'

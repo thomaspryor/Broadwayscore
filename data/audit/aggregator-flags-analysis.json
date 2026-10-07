@@ -1,0 +1,422 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-28T20:15:00.000Z",
+    "description": "Analysis of 48 flagged shows from aggregator-truth-flags.json",
+    "categories": {
+      "resolved": "Flags that have been fixed or are no longer applicable",
+      "needs_action": "Flags requiring manual intervention or re-fetching",
+      "false_positives": "Flags that don't indicate real problems"
+    }
+  },
+  "summary": {
+    "totalFlagged": 48,
+    "resolved": 13,
+    "needsAction": 19,
+    "falsePositives": 16
+  },
+  "resolved": {
+    "description": "Duplicates partially fixed by recent merging work - counts reduced",
+    "shows": [
+      {
+        "showId": "the-great-gatsby-2024",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 31,
+        "currentCount": 30,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "mj-2022",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 43,
+        "currentCount": 42,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "six-2021",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 31,
+        "currentCount": 30,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 28,
+        "currentCount": 26,
+        "reduction": 2,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 50,
+        "currentCount": 49,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 40,
+        "currentCount": 39,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 29,
+        "currentCount": 27,
+        "reduction": 2,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 31,
+        "currentCount": 27,
+        "reduction": 4,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 32,
+        "currentCount": 31,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "flagType": "likely-duplicates",
+        "flaggedCount": 23,
+        "currentCount": 22,
+        "reduction": 1,
+        "status": "partially_fixed"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "flagType": "check-bww-url",
+        "reason": "Review count dropped from 15 to 14 - likely fixed via dedup",
+        "currentCount": 14,
+        "status": "count_corrected"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "flagType": "possibly-missing",
+        "reason": "Review count dropped from 20 to 19 - closer to aggregator count (26)",
+        "currentCount": 19,
+        "status": "count_corrected"
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "flagType": "check-bww-url",
+        "reason": "Review count dropped from 24 to 21 - partially corrected",
+        "currentCount": 21,
+        "status": "count_corrected"
+      }
+    ]
+  },
+  "needsAction": {
+    "description": "Requires re-fetching or manual URL correction",
+    "showScoreArchiveRedirects": {
+      "description": "Show Score archives redirected to homepage - need correct URLs",
+      "shows": [
+        {
+          "showId": "two-strangers-bway-2025",
+          "localReviews": 18,
+          "issue": "Archive is homepage redirect",
+          "archiveUrl": "https://www.show-score.com/broadway-shows/two-strangers",
+          "canonicalUrl": "https://www.show-score.com/shows/all",
+          "action": "Find correct Show Score URL (try two-strangers-broadway or similar pattern)"
+        },
+        {
+          "showId": "maybe-happy-ending-2024",
+          "localReviews": 23,
+          "issue": "Archive is homepage redirect",
+          "archiveUrl": "https://www.show-score.com/broadway-shows/maybe-happy-ending",
+          "canonicalUrl": "https://www.show-score.com/shows/all",
+          "action": "Find correct Show Score URL (try maybe-happy-ending-broadway)"
+        },
+        {
+          "showId": "the-outsiders-2024",
+          "localReviews": 27,
+          "issue": "Archive is homepage redirect",
+          "archiveUrl": "https://www.show-score.com/broadway-shows/the-outsiders",
+          "canonicalUrl": "https://www.show-score.com/shows/all",
+          "action": "Find correct Show Score URL (the-outsiders-broadway or the-outsiders-musical)"
+        }
+      ]
+    },
+    "bwwArchiveIssues": {
+      "description": "BWW archives exist but have issues - wrong show or no reviews extracted",
+      "shows": [
+        {
+          "showId": "death-becomes-her-2024",
+          "localReviews": 21,
+          "issue": "Archive redirected to BWW homepage",
+          "action": "Re-fetch with correct BWW review roundup URL"
+        },
+        {
+          "showId": "the-wiz-2024",
+          "localReviews": 14,
+          "issue": "Archive contains WRONG SHOW (Wizard of Oz London Palladium)",
+          "action": "Find correct BWW URL for The Wiz 2024 Broadway revival"
+        },
+        {
+          "showId": "mary-jane-2024",
+          "localReviews": 23,
+          "issue": "BWW shows 0 reviews",
+          "action": "Check if BWW has review roundup, re-fetch if exists"
+        },
+        {
+          "showId": "patriots-2024",
+          "localReviews": 26,
+          "issue": "BWW shows 0 reviews",
+          "action": "Check if BWW has review roundup, re-fetch if exists"
+        },
+        {
+          "showId": "chess-2025",
+          "localReviews": 19,
+          "issue": "BWW shows 0 reviews",
+          "action": "Check if BWW has review roundup, re-fetch if exists"
+        }
+      ]
+    },
+    "dtliArchiveIssues": {
+      "description": "DTLI archives may have incomplete data (JS-rendered content)",
+      "shows": [
+        {
+          "showId": "back-to-the-future-2023",
+          "localReviews": 30,
+          "issue": "DTLI archive has page structure but 0 extractable reviews",
+          "action": "Re-fetch with JS rendering or use Playwright"
+        }
+      ]
+    },
+    "upcomingShowsNoArchives": {
+      "description": "2026 shows in previews - no archives expected yet (will need archives after opening)",
+      "shows": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "openingDate": "2026-02-21",
+          "status": "previews",
+          "action": "Archive after opening (fetch aggregators once reviews published)"
+        },
+        {
+          "showId": "death-of-a-salesman-2026",
+          "openingDate": "2026-03-06",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "beaches-2026",
+          "openingDate": "2026-03-27",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "the-balusters-2026",
+          "openingDate": "2026-03-31",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "becky-shaw-2026",
+          "openingDate": "2026-03-18",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "cats-the-jellicle-ball-2026",
+          "openingDate": "2026-03-18",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "dog-day-afternoon-2026",
+          "openingDate": "2026-03-10",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "fallen-angels-2026",
+          "openingDate": "2026-03-27",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "the-fear-of-13-2026",
+          "openingDate": "2026-03-19",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "giant-2026",
+          "openingDate": "2026-03-11",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "joe-turners-come-and-gone-2026",
+          "openingDate": "2026-03-30",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "the-lost-boys-2026",
+          "openingDate": "2026-03-27",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "proof-2026",
+          "openingDate": "2026-03-31",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "the-rocky-horror-show-2026",
+          "openingDate": "2026-03-26",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "schmigadoon-2026",
+          "openingDate": "2026-04-04",
+          "status": "previews",
+          "action": "Archive after opening"
+        },
+        {
+          "showId": "titanique-2026",
+          "openingDate": "2026-03-26",
+          "status": "previews",
+          "action": "Archive after opening"
+        }
+      ]
+    }
+  },
+  "falsePositives": {
+    "description": "Flags that indicate legitimate data, not problems",
+    "likelyDuplicatesStillValid": {
+      "description": "Shows with more local reviews than aggregators - may have additional legitimate sources",
+      "note": "Having more local reviews than aggregators is often correct - we collect from multiple sources (3 aggregators + direct scraping). The 1.5x threshold may be too conservative.",
+      "shows": [
+        {
+          "showId": "stranger-things-2024",
+          "localReviews": 32,
+          "maxAggregator": 17,
+          "ratio": 1.88,
+          "assessment": "Likely legitimate - blockbuster show with wide coverage"
+        },
+        {
+          "showId": "suffs-2024",
+          "localReviews": 40,
+          "maxAggregator": 17,
+          "ratio": 2.35,
+          "assessment": "Likely legitimate - Tony-winning show with extensive coverage"
+        },
+        {
+          "showId": "the-roommate-2024",
+          "localReviews": 36,
+          "maxAggregator": 18,
+          "ratio": 2.0,
+          "assessment": "Likely legitimate - star-driven play with wide coverage"
+        },
+        {
+          "showId": "our-town-2024",
+          "localReviews": 29,
+          "maxAggregator": 19,
+          "ratio": 1.53,
+          "assessment": "Likely legitimate - classic revival with Kenny Leon"
+        },
+        {
+          "showId": "illinoise-2024",
+          "localReviews": 40,
+          "maxAggregator": 13,
+          "ratio": 3.08,
+          "assessment": "May need audit - ratio is high"
+        },
+        {
+          "showId": "lempicka-2024",
+          "localReviews": 28,
+          "maxAggregator": 18,
+          "ratio": 1.56,
+          "assessment": "Likely legitimate - barely over threshold"
+        },
+        {
+          "showId": "heart-of-rock-and-roll-2024",
+          "localReviews": 20,
+          "maxAggregator": 13,
+          "ratio": 1.54,
+          "assessment": "Likely legitimate - barely over threshold"
+        },
+        {
+          "showId": "mother-play-2024",
+          "localReviews": 24,
+          "maxAggregator": 14,
+          "ratio": 1.71,
+          "assessment": "Likely legitimate - Jessica Lange vehicle with wide coverage"
+        },
+        {
+          "showId": "an-enemy-of-the-people-2024",
+          "localReviews": 41,
+          "maxAggregator": 19,
+          "ratio": 2.16,
+          "assessment": "Likely legitimate - high-profile Ivo van Hove production"
+        }
+      ]
+    },
+    "bwwArchivesExistButNoExtraction": {
+      "description": "BWW archives exist with correct pages, but extraction shows 0 - may be JS rendering issue",
+      "shows": [
+        {
+          "showId": "wicked-2003",
+          "localReviews": 27,
+          "issue": "BWW archive has correct page but 0 extractable reviews",
+          "assessment": "Archive exists, extraction logic may need update"
+        },
+        {
+          "showId": "the-lion-king-1997",
+          "localReviews": 27,
+          "issue": "BWW archive has correct page but 0 extractable reviews",
+          "assessment": "Archive exists, extraction logic may need update"
+        }
+      ]
+    }
+  },
+  "recommendedActions": [
+    {
+      "priority": "high",
+      "action": "Fix Show Score URL patterns for redirected shows",
+      "shows": ["two-strangers-bway-2025", "maybe-happy-ending-2024", "the-outsiders-2024"],
+      "details": "These shows redirect to /shows/all - need to find correct URL pattern (likely -broadway suffix)"
+    },
+    {
+      "priority": "high",
+      "action": "Re-fetch BWW archives for shows with wrong/missing pages",
+      "shows": ["death-becomes-her-2024", "the-wiz-2024"],
+      "details": "death-becomes-her got homepage, the-wiz got London show"
+    },
+    {
+      "priority": "medium",
+      "action": "Audit high-ratio shows for potential duplicates",
+      "shows": ["illinoise-2024"],
+      "details": "3.08x ratio suggests manual review of reviews is warranted"
+    },
+    {
+      "priority": "medium",
+      "action": "Update BWW extraction logic",
+      "details": "BWW pages for wicked-2003 and lion-king-1997 have review content but extractor returns 0"
+    },
+    {
+      "priority": "low",
+      "action": "Set up automated archive fetching for upcoming shows",
+      "shows": "16 shows in previews (2026)",
+      "details": "These will need archives after they open - could integrate with gather-reviews workflow"
+    }
+  ]
+}

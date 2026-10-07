@@ -1,0 +1,78 @@
+name: Check SEO Health
+
+on:
+  schedule:
+    - cron: '0 8 * * 0'  # Sunday 8 AM UTC
+  workflow_dispatch: {}
+
+concurrency:
+  group: seo-health
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Backstop: the script wraps every external call in a 30-60s timeout, but cap the
+    # whole job too so a pathological stall can never burn the 360-min default ceiling.
+    # 30 (not 25): the health check itself runs ~13min (GSC/PageSpeed calls across 50
+    # sample URLs) with some run-to-run variance — a little slack beyond the original
+    # 25 covers that without over-provisioning for the push step (which is non-blocking
+    # and uses the default retry budget; see "Push audit data" below, task #353).
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run SEO health check
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-seo-health.js
+
+      - name: Commit audit data
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Only add specific SEO audit files — never git add -A
+          bash scripts/lib/git-add-existing.sh --force data/audit/seo-health.json data/audit/seo-performance-history.json data/audit/indexing-api-usage.json
+          if git diff --cached --quiet; then
+            echo "No audit data changes to commit"
+          else
+            git commit -m "chore: Update SEO health audit data [skip ci]"
+          fi
+
+      - name: Push audit data
+        if: always()
+        run: |
+          # Non-blocking: this push races main's commit churn (task #353 —
+          # live-reproduced on runs 30055222564 and 30057838225, 2026-07-24;
+          # the second test widened the retry budget to 20 attempts/900s and
+          # STILL lost every attempt over 16min, proving a bigger budget just
+          # burns CI time on an unwinnable race rather than fixing it). The
+          # audit snapshot isn't time-sensitive — next week's cron re-derives
+          # it — so a lost race must not redden this run.
+          bash scripts/lib/push-with-retry.sh || echo "::warning::SEO audit data push failed — next scheduled run will recommit"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'SEO Health Check Failed'
+          email: 'true'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

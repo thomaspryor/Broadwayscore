@@ -1,0 +1,1128 @@
+#!/usr/bin/env node
+/**
+ * Opening-Night Coverage Audit
+ *
+ * Checks recently-opened shows for missing T1/T2 reviews and optionally
+ * sends Discord alerts + dispatches targeted collection workflows.
+ *
+ * Usage:
+ *   node scripts/audit-opening-night-coverage.js                    # check last 3 days
+ *   node scripts/audit-opening-night-coverage.js --days=7           # check last 7 days
+ *   node scripts/audit-opening-night-coverage.js --show=SHOW_ID     # check specific show
+ *   node scripts/audit-opening-night-coverage.js --dispatch         # auto-dispatch collection for gaps
+ *   node scripts/audit-opening-night-coverage.js --alert            # send Discord alerts for gaps
+ *   node scripts/audit-opening-night-coverage.js --scoreboard --alert         # B3: queue coverage-% scoreboard into daily digest
+ *   node scripts/audit-opening-night-coverage.js --ack=showId::outletId [--ack-note="..."]  # silence a known-permanent gap
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { isLondonMarket } = require('./lib/venue-classification');
+const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
+const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
+const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, GRACE_HOURS } = require('./lib/t1-ledger');
+const { buildDigest } = require('./lib/t1-digest');
+const { isNoReviewExpectedActive, detectReactivation } = require('./lib/coverage-expectation');
+const { detectLateAdd, GRACE_DAYS: LATE_ADD_GRACE_DAYS } = require('./lib/late-add-detector');
+const { routeAlert } = require('./lib/owner-alert-router');
+const { capNewStandingCells, DEFAULT_MAX_NEW_PER_RUN, isNoPressNightShow } = require('./lib/standing-outlets');
+const { loadAcks, addAck, saveAcks, buildScoreboardText } = require('./lib/t1-scoreboard');
+const {
+  isOutletTripped, outletBreakerInfo, updateBreaker, buildEvidence,
+  loadBreaker, saveBreaker, BREAKER_PATH,
+} = require('./lib/outlet-circuit-breaker');
+
+const DATA_DIR = path.join(__dirname, '..', 'data');
+const LEDGER_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-ledger.json');
+const DIGEST_STATE_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-digest-state.json');
+// B3 scoreboard: per-market coverage % snapshot, written every --write-ledger
+// run (see writeLedger's marketStats block below); consumed by --scoreboard.
+const MARKET_STATS_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-stats.json');
+// S4-T3/S5-T1 signals (reactivations, late-adds): sendAlert() at 'warning'
+// severity is log-only by design in this codebase (discord-notify.js — no
+// Discord webhook, no email at non-critical severity), so without a durable
+// file these findings existed only in a transient GitHub Actions run log
+// (ship-check finding, 2026-07-23). Every hourly --write-ledger run
+// overwrites this with the CURRENT findings — it's a snapshot, not a log.
+const SIGNALS_PATH = path.join(DATA_DIR, 'audit', 't1-coverage-signals.json');
+
+// Expected-outlet authority: the multi-source aggregator CENSUS (review-census.js),
+// not a hardcoded list. Every market — Broadway, Off-Broadway, West End — now flows
+// through buildCensusFromArchives + censusVerdict. The old per-market hardcoded
+// expected-outlet arrays (and the census-vs-legacy precedence ladder) were retired
+// in S2-T2: they went stale, under-counted the long tail the roundups actually
+// list, and disagreed with the WE census. The roundups ARE the expected list.
+
+// Census sources that scrape review-link URLs rather than a critic-listing roundup.
+// They frequently point at a DIFFERENT production's article (a pre-Broadway tryout's
+// local critics), so an outlet named ONLY by these is treated as soft-missing:
+// visible + blocks `complete`, but alert-only, never dispatchable (no gather storm).
+const SUPPLEMENTARY_CENSUS_SOURCES = new Set(['playbill-verdict', 'show-score']);
+
+// Opening-night floor: silent-failure detection for Broadway shows.
+// FA (2026-04-19) landed 14/17 reviews because the BWW extractor silently
+// dropped 3 outlets. The outlet-gap check didn't flag it because the missing
+// outlets weren't all in core T1. A total-count floor catches this class.
+// Window: 36-72h post-open. 36h lower bound chosen because late-drop T1s
+// (WSJ, Observer) routinely publish 24-36h after opening; a 24h floor
+// would false-alarm while the opening-night-poller is still ingesting.
+// OB shows are exempt (floor constants are null for that market).
+const BROADWAY_FLOOR_REVIEWS = 10;   // critic files captured
+const BROADWAY_FLOOR_SCORED = 5;     // scored reviews
+const WE_FLOOR_REVIEWS = 6;
+const WE_FLOOR_SCORED = 3;
+const FLOOR_WINDOW_MIN_HOURS = 36;
+const FLOOR_WINDOW_MAX_HOURS = 72;
+// B1: how recent a show's opening must be to get standingOutlets applied.
+// Deliberately its OWN constant, not opts.ledgerDays — see --standing-recency-days.
+const DEFAULT_STANDING_RECENCY_DAYS = 90;
+
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const opts = { days: 3, dispatch: false, alert: false, showId: null,
+    writeLedger: false, ledgerPath: LEDGER_PATH, ledgerDays: 90, standingRecencyDays: DEFAULT_STANDING_RECENCY_DAYS };
+  for (const arg of args) {
+    if (arg.startsWith('--days=')) opts.days = parseInt(arg.split('=')[1], 10);
+    if (arg.startsWith('--show=')) opts.showId = arg.split('=')[1];
+    if (arg === '--dispatch') opts.dispatch = true;
+    if (arg === '--alert') opts.alert = true;
+    // Ledger mode (S2-T3): rebuild data/audit/t1-coverage-ledger.json. Single
+    // writer = audit-aggregator-gap.yml; commit-on-change (deterministic bytes).
+    if (arg === '--write-ledger') opts.writeLedger = true;
+    if (arg.startsWith('--ledger-path=')) opts.ledgerPath = arg.split('=')[1];
+    if (arg.startsWith('--ledger-days=')) opts.ledgerDays = parseInt(arg.split('=')[1], 10);
+    // B1's "how recent must an opening be to get standingOutlets applied" is
+    // DELIBERATELY independent of --ledger-days (how far back the whole ledger
+    // scans) — conflating them meant a backfill run with --ledger-days=365
+    // would silently create a year of "always expected" standing-outlet gaps
+    // for old shows, or a shortened ledger-days run would exclude valid
+    // recent openings (adversarial review finding, 2026-07-30).
+    if (arg.startsWith('--standing-recency-days=')) opts.standingRecencyDays = parseInt(arg.split('=')[1], 10);
+    // B1 fan-out cap override (default lib/standing-outlets.js DEFAULT_MAX_NEW_PER_RUN).
+    if (arg.startsWith('--standing-cap=')) opts.standingCap = parseInt(arg.split('=')[1], 10);
+    // Digest mode (S2-T7): read the ledger, list GAP cells, ACTION-email only NEW
+    // >24h gaps. Without --alert it is a pure dry-run (prints, emails nothing).
+    if (arg === '--digest') opts.digest = true;
+    if (arg.startsWith('--digest-state=')) opts.digestStatePath = arg.split('=')[1];
+    // B3 scoreboard mode: build coverage%/oldest-gap text, route through
+    // routeAlert(disposition:'digest'). Dry-run without --alert.
+    if (arg === '--scoreboard') opts.scoreboard = true;
+    if (arg.startsWith('--market-stats-path=')) opts.marketStatsPath = arg.split('=')[1];
+    // Ack a known-permanent gap (e.g. "hamilton-2015::nytimes") so the scoreboard's
+    // oldest-gap callout stops repeating it — the cell still counts against
+    // coverage %, only the callout is silenced. Adversarial review finding
+    // (2026-07-30): the ack file/helpers existed with no operator-facing writer.
+    if (arg.startsWith('--ack=')) opts.ackKey = arg.split('=')[1];
+    if (arg.startsWith('--ack-note=')) opts.ackNote = arg.slice('--ack-note='.length);
+    // B2 per-outlet circuit-breaker state (default lib/outlet-circuit-breaker.js BREAKER_PATH).
+    if (arg.startsWith('--breaker-path=')) opts.breakerPath = arg.split('=')[1];
+  }
+  opts.digestStatePath = opts.digestStatePath || DIGEST_STATE_PATH;
+  return opts;
+}
+
+// Census market key for a category (which roundup set to read).
+// (kept adjacent to parseArgs so both entrypoints can use it)
+
+
+function loadJSON(filename) {
+  const filepath = path.join(DATA_DIR, filename);
+  if (!fs.existsSync(filepath)) {
+    console.error(`Missing data file: ${filepath}`);
+    console.error('Run: npm run data:check');
+    process.exit(1);
+  }
+  return JSON.parse(fs.readFileSync(filepath, 'utf8'));
+}
+
+// Map a show category to the census market key (which roundup set to read).
+function censusMarket(category) {
+  if (isLondonMarket(category)) return 'west-end';
+  if (category === 'off-broadway') return 'off-broadway';
+  return 'broadway';
+}
+
+// Registry evidence that an outlet does not review this market → NO_REVIEW_EXPECTED.
+// S4-T3: decay-aware — delegates to coverage-expectation.js so a determination
+// older than 14 days (or missing its coverageExpectationDecidedAt evidence
+// timestamp) stops suppressing and the cell falls back to normal GAP evaluation.
+function outletNoReviewExpected(outlets, outletId, nowMs) {
+  return isNoReviewExpectedActive(outlets, outletId, nowMs);
+}
+
+// Compute the ledger cells (missing/suppressed T1 outlets) for one show. Reuses the
+// exact census + verdict the console audit uses. Soft-missing (supplementary-source-
+// only, e.g. tryout-city critics) are EXCLUDED — they are alert-only noise, not real
+// T1 retrieval gaps, so they must not pollute the SLA burn-down.
+//
+// Also returns `reactivations` (S4-T3): outlets with a SCORED review this run whose
+// registry entry statically claims they don't review theatre — always surfaced,
+// decayed or not, since a real review directly contradicts the determination.
+//
+// `standingCtx` (B1, optional): { existingCellKeys: Set<"showId::outletId">, counter: {used,cap} }.
+// When passed, buildCensusFromArchives also unions in the standingOutlets pseudo-source
+// (outlets/market both flow through opts) and any resulting cell whose census source
+// is standing-outlets-only is subject to the fan-out cap — see lib/standing-outlets.js.
+// Omitted entirely (undefined) → identical behavior to before B1 (no pseudo-source,
+// no cap), which is how the non-ledger console audit path still calls this indirectly
+// via its own separate computation (unaffected — it doesn't call computeShowCells).
+// `censusOpts` (test-only, optional): a synthetic `sources`/`archiveDir` pair
+// merged into the opts passed to buildCensusFromArchives — lets unit tests
+// inject fixture archives instead of relying on real files under
+// data/aggregator-archive/ (a private, gitignored repo not present in every
+// checkout). Deliberately allowlisted to ONLY `sources`/`archiveDir` below
+// (never blind-spread) — an accidental sixth argument like `{ outlets:
+// undefined }` must never be able to silently clobber the computed
+// show/market/outlets and disable standing-coverage insertion (adversarial
+// review finding, 2026-07-30). Never passed by any production call site
+// (writeLedger calls with 5 args only), so this is a no-op in real usage.
+//
+// `breakerCtx` (B2, optional): { breaker, observations:[], successes:[] }.
+// `breaker` is the PRIOR cycle's per-outlet circuit-breaker state (read-only here) —
+// using the prior state, not one derived from this run's own cells, is what keeps
+// the breaker a hysteresis device instead of a circular self-justifying decision.
+// `observations`/`successes` are APPENDED to (this run's evidence for the NEXT
+// cycle's breaker update). Omitted → no CIRCUIT_OPEN cells, i.e. pre-B2 behavior.
+function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts, breakerCtx) {
+  const showId = show.id || show.slug;
+  const category = show.category || 'broadway';
+  const scoredOutlets = new Set(
+    reviews.filter(r => r.showId === showId && r.assignedScore != null).map(r => r.outletId).filter(Boolean)
+  );
+  const reactivations = detectReactivation(outlets, scoredOutlets);
+  const market = censusMarket(category);
+
+  // B2 success evidence — recorded BEFORE the census build, because both early
+  // returns below (census threw / no roundup archived yet) would otherwise drop
+  // it. "Did this outlet produce a scored review on an in-window show" is a fact
+  // about reviews.json; it has nothing to do with whether WE archived a roundup
+  // for the show. Getting this order wrong tripped guardian/observer/independent/
+  // i-paper/timeout in a live smoke-test even though guardian alone had 34 scored
+  // in-window reviews — the successes were all on shows with no census archive.
+  const clockStrForSuccess = show.openingDate || show.previewsStartDate || null;
+  const clockMsForSuccess = clockStrForSuccess ? Date.parse(clockStrForSuccess + 'T23:00:00-04:00') : NaN;
+  const successAgeHours = Number.isFinite(clockMsForSuccess) ? (nowMs - clockMsForSuccess) / 3600000 : null;
+  if (breakerCtx) {
+    for (const outletId of scoredOutlets) {
+      if (!isDispatchTierOutlet(outlets, outletId)) continue;
+      breakerCtx.successes.push({ outletId, clockAgeHours: successAgeHours });
+    }
+  }
+  // Standing outlets apply only to LITERAL category==='broadway' shows, not merely
+  // whatever censusMarket() falls back to for unrecognized categories (e.g.
+  // 'regional' resolves to the 'broadway' roundup set for archive-source routing,
+  // but a regional tryout is never plausibly covered by NYT/NYPost/HR — applying
+  // the pseudo-source there produced false GAP cells for Black Swan/CrazySexyCool
+  // regional tryouts in a live smoke-test). censusMarket's fallback is intentional
+  // for roundup routing and stays untouched; this is a narrower gate on top of it.
+  // ...and only to shows that actually held a press night — see
+  // isNoPressNightShow. Recorded on standingCtx so the run can report how many
+  // shows it skipped (a silent cap reads as "covered everything").
+  const scoredDispatchTier = [...scoredOutlets].filter((id) => isDispatchTierOutlet(outlets, id)).length;
+  const noPressNight = category === 'broadway' && isNoPressNightShow(successAgeHours, scoredDispatchTier);
+  if (standingCtx && noPressNight && Array.isArray(standingCtx.noPressNightShows)) {
+    standingCtx.noPressNightShows.push(showId);
+  }
+  const applyStanding = standingCtx && category === 'broadway' && !noPressNight;
+  let census = null;
+  try {
+    census = buildCensusFromArchives(showId, {
+      ...(applyStanding ? { show, market, outlets } : { show, market }),
+      // Allowlisted merge, not a blind spread: censusOpts may ONLY override
+      // sources/archiveDir (test fixtures) — it must never be able to clobber
+      // the computed show/market/outlets (adversarial review finding).
+      ...(censusOpts && censusOpts.sources !== undefined ? { sources: censusOpts.sources } : {}),
+      ...(censusOpts && censusOpts.archiveDir !== undefined ? { archiveDir: censusOpts.archiveDir } : {}),
+    });
+  }
+  catch (_) { return { cells: [], reactivations, coverage: null }; }
+  if (!census || !census.hadAnySource) return { cells: [], reactivations, coverage: null };
+  const cVerdict = censusVerdict(census, scoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
+  // B3 scoreboard input: total dispatch-tier (T1/T2) outlets this show's census
+  // expects, regardless of covered/missing — the denominator the scoreboard
+  // needs and the ledger (missing-only, by design) doesn't carry.
+  // Deduped by canonical id (strip '-london'): censusVerdict's variants() below
+  // treats e.g. 'timeout'/'timeout-london' as the same outlet for covered/missing
+  // purposes, but unionCensus() dedupes only exact ids — if two census sources
+  // ever emit both spellings as separate entries, an ungapped count here would
+  // double-count one logical outlet in the denominator (adversarial review finding).
+  const canonicalTierId = (id) => (id.endsWith('-london') ? id.slice(0, -'-london'.length) : id);
+  const totalTier = new Set(
+    census.entries.filter((e) => isDispatchTierOutlet(outlets, e.outletId)).map((e) => canonicalTierId(e.outletId))
+  ).size;
+
+  // Clock start: max(openingDate, showCreatedAt) is the S2-T6 refinement; here we
+  // use openingDate/previewsStartDate. No date → null clock → IN_FLIGHT (never a GAP).
+  const clockStr = show.openingDate || show.previewsStartDate || null;
+  const clockMs = clockStr ? Date.parse(clockStr + 'T23:00:00-04:00') : NaN;
+  const clockAgeHours = Number.isFinite(clockMs) ? (nowMs - clockMs) / 3600000 : null;
+
+  const cells = [];
+  // Coverage accounting is intentionally SEPARATE from the ledger-display cells
+  // below: totalTier already counts every tier-gated census entry regardless of
+  // source, so "covered" must be computed the same way — an entry filtered out
+  // of the ledger for display reasons (supplementary-only source, fan-out cap)
+  // is still genuinely un-scored and must still count as missing here, or the
+  // % silently inflates (ship-check finding, adversarial review 2026-07-30:
+  // a supplementary-only-sourced entry was skipped from `cells` but NOT from
+  // `totalTier`, so `covered = totalTier - cells.length` counted it as covered).
+  let coverageMissing = 0;
+  let noReviewExpectedCount = 0;
+  for (const m of cVerdict.missing) {
+    // T1 ledger means T1/T2: a roundup-named T3 blog (or unregistered junk id)
+    // is not a retrieval SLA cell — same scoping as the audit's dispatch triggers,
+    // and the same gate totalTier itself uses (so coverage math stays consistent).
+    if (!isDispatchTierOutlet(outlets, m.outletId)) continue;
+    const noReviewExpected = outletNoReviewExpected(outlets, m.outletId, nowMs);
+    if (noReviewExpected) noReviewExpectedCount++; else coverageMissing++;
+
+    const srcs = m.sources || [];
+    if (srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s))) continue; // soft — skip from the LEDGER only
+    // B1 fan-out cap: a cell discovered ONLY via the standingOutlets pseudo-source
+    // (no archive names it — sources is EXACTLY ['standing-outlets'], not a real
+    // archive union'd with it) is the new-discovery class that can burst across
+    // many shows in one registry edit — throttle new ones from the LEDGER only,
+    // never from coverage (still genuinely missing) and never cells already
+    // tracked in the prior ledger. See lib/standing-outlets.js. Scoping to the
+    // standing-only case (not "includes") matters: an ordinary archive-confirmed
+    // gap that ALSO happens to be a standing outlet must never consume the cap
+    // budget meant for outlet-silence discovery (adversarial review finding).
+    if (standingCtx && srcs.length === 1 && srcs[0] === 'standing-outlets') {
+      const allowed = capNewStandingCells(standingCtx.existingCellKeys, standingCtx.counter, showId, [m.outletId]);
+      if (allowed.length === 0) continue; // deferred to a later cycle (ledger only)
+    }
+    // B2 evidence: every dispatch-tier cell we lack and don't structurally
+    // exclude is one observation for the per-outlet breaker. Recorded BEFORE
+    // classification and with `wouldBeGap` keyed off the raw clock, not the
+    // final state — otherwise a cell the breaker already suppressed would stop
+    // counting as evidence and the breaker would starve itself back to closed
+    // on the next cycle (the self-erasing-evidence trap).
+    if (breakerCtx && !noReviewExpected) {
+      breakerCtx.observations.push({
+        outletId: m.outletId,
+        showId, // the trip bar counts DISTINCT shows — see buildEvidence
+        wouldBeGap: clockAgeHours != null && clockAgeHours >= GRACE_HOURS,
+        clockAgeHours,
+      });
+    }
+    const state = classifyCell({
+      noReviewExpected,
+      suppressed: false,
+      clockAgeHours,
+      circuitOpen: !!(breakerCtx && isOutletTripped(breakerCtx.breaker, m.outletId)),
+    });
+    cells.push({ outletId: m.outletId, state, url: m.url || '' });
+  }
+  for (const m of cVerdict.suppressedMissing) {
+    cells.push({ outletId: m.outletId, state: 'SUPPRESSED', url: m.url || '' });
+    // suppressedMissing isn't pre-filtered to tier<=2 the way cVerdict.missing's
+    // loop above is — gate it the same way totalTier is, so a hypothetical
+    // non-tier suppressed outlet can't skew the denominator/numerator apart.
+    // Also apply the SAME noReviewExpected exclusion the missing-loop above uses
+    // (adversarial review finding): without it, a future registry decision to
+    // mark e.g. wsj/newyorker as NO_REVIEW_EXPECTED would still count them
+    // against coverageMissing here, contradicting the stated rule that such
+    // outlets affect neither numerator nor denominator.
+    if (isDispatchTierOutlet(outlets, m.outletId)) {
+      if (outletNoReviewExpected(outlets, m.outletId, nowMs)) noReviewExpectedCount++;
+      else coverageMissing++;
+    }
+  }
+  // NO_REVIEW_EXPECTED entries are excluded from BOTH numerator and denominator
+  // (the registry says this outlet doesn't apply here — it should neither help
+  // nor hurt the %), matching t1-ledger's classifyCell rationale.
+  const coverage = {
+    totalTier,
+    denominator: totalTier - noReviewExpectedCount,
+    covered: totalTier - noReviewExpectedCount - coverageMissing,
+  };
+  return { cells, reactivations, coverage };
+}
+
+// Build + write the T1 coverage ledger. Scans shows that are open OR opened within
+// the window; merges with the prior ledger (preserving each gap's firstSeenAt) and
+// writes deterministic bytes so an unchanged corpus produces NO file diff.
+function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
+  const cutoff = new Date(nowMs - opts.ledgerDays * 86400000).toISOString().split('T')[0];
+  // B1's own cutoff — NEVER opts.ledgerDays. See DEFAULT_STANDING_RECENCY_DAYS.
+  const standingCutoff = new Date(nowMs - (opts.standingRecencyDays || DEFAULT_STANDING_RECENCY_DAYS) * 86400000)
+    .toISOString().split('T')[0];
+  // Evidence-anchored arm (v2 reconciler plan, Sprint A): a show with fresh
+  // review-evidence — a roundup naming it published recently — belongs in the
+  // ledger even when its status is stuck in previews/announced or its
+  // openingDate is null (the Broad Strokes class: this audit shared the
+  // selector's blind spot, so the safety net missed exactly what the primary
+  // missed). Same canonical predicate the selector uses.
+  const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence.js');
+  const evidence = loadReviewEvidence();
+  const target = shows.filter(s => s.status === 'open'
+    || (s.openingDate && s.openingDate >= cutoff)
+    || (s.status !== 'closed' && hasFreshEvidence(evidence, s.id || s.slug, { now: new Date(nowMs), lookbackDays: opts.ledgerDays })));
+  const freshShows = [];
+  const reactivations = []; // S4-T3: { showId, title, outletId }
+  const lateAdds = []; // S5-T1: { showId, title, ...detectLateAdd() }
+
+  // B1 fan-out cap setup — loaded BEFORE the per-show loop (not after, like the
+  // mergeLedger `prev` read below) so computeShowCells can tell "already tracked"
+  // cells apart from genuinely new standing-outlet discovery this run.
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { prev = {}; }
+  const existingCellKeys = new Set();
+  for (const showId of Object.keys(prev.shows || {})) {
+    for (const outletId of Object.keys((prev.shows[showId] || {}).cells || {})) {
+      existingCellKeys.add(`${showId}::${outletId}`);
+    }
+  }
+  const standingCtx = {
+    existingCellKeys,
+    counter: { used: 0, cap: opts.standingCap != null ? opts.standingCap : DEFAULT_MAX_NEW_PER_RUN },
+    noPressNightShows: [], // reported below — a silent skip reads as "covered everything"
+  };
+  const marketCoverage = new Map(); // B3 scoreboard: market -> {covered, denominator}
+
+  // B2 per-outlet circuit breaker. The PRIOR cycle's state decides this run's
+  // CIRCUIT_OPEN cells; this run's observations decide the NEXT cycle's state.
+  // Reading prior state (rather than deriving it from the cells we're about to
+  // compute) is what makes it hysteresis instead of a circular argument.
+  const breakerCtx = {
+    breaker: loadBreaker(opts.breakerPath || BREAKER_PATH),
+    observations: [],
+    successes: [],
+  };
+
+  for (const show of target) {
+    const showId = show.id || show.slug;
+    // B1 recency gate: standingOutlets targets outlet SILENCE on a show whose
+    // opening is still within the retrieval window, not "does this evergreen
+    // revival's original 1996/2003/1997 opening have an NYT review on file"
+    // (Chicago/Wicked/Lion King all surfaced as false GAPs in a live smoke-test —
+    // status:'open' alone qualifies a show for `target` regardless of age, so
+    // without this gate every long-running revival would get a permanent,
+    // unactionable GAP the day this shipped). Everything else about the show
+    // (archive-source census, dispatch, digest) is completely unaffected.
+    // The window is bounded on BOTH sides: an outlet cannot be silent about a
+    // show that has not opened. Announced 2027 openings are legitimately in
+    // `target`, and before this bound each one minted a standing cell per
+    // flagged outlet — cells that can only ever be IN_FLIGHT, yet still consume
+    // the fan-out cap that real opening-night discovery needs (card #627: 9
+    // upcoming shows saturated the 15-cell budget, starving the one show that
+    // had actually opened). They cost nothing to skip: the cell is created on
+    // the first run after the show opens.
+    // ET, not UTC: openingDate is a bare YYYY-MM-DD authored in show-local time,
+    // and toISOString() rolls over at 20:00 ET — which would call a show "opened"
+    // for the last four hours of the day before it actually does.
+    const todayStr = new Date(nowMs).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const isRecentOpening = show.openingDate
+      && show.openingDate >= standingCutoff
+      && show.openingDate <= todayStr;
+    const showStandingCtx = isRecentOpening ? standingCtx : null;
+    const { cells, reactivations: showReactivations, coverage } = computeShowCells(show, reviews, outlets, nowMs, showStandingCtx, undefined, breakerCtx);
+    for (const outletId of showReactivations) {
+      reactivations.push({ showId, title: show.title, outletId });
+    }
+
+    // B3 scoreboard: accumulate per-market coverage BEFORE the cells.length===0
+    // continue below — a fully-covered show contributes covered/denominator
+    // too, not just shows with an open gap, or the % would only ever count
+    // the numerator from incomplete shows and never reach 100%.
+    if (coverage && coverage.denominator > 0) {
+      const mkt = censusMarket(show.category || 'broadway');
+      const acc = marketCoverage.get(mkt) || { covered: 0, denominator: 0 };
+      acc.covered += coverage.covered;
+      acc.denominator += coverage.denominator;
+      marketCoverage.set(mkt, acc);
+    }
+
+    // S5-T1: late-add defect — earliest scored review predates our own
+    // previews/opening clock by more than a normal preview window (the
+    // dad-dont-read-this class: we catalog a transfer's dates, but critics
+    // reviewed the earlier run over a month before). Measured across ALL
+    // reviews for the show (any outlet/tier), not just census-missing cells.
+    //
+    // NOTE the precedence is deliberately REVERSED from computeShowCells'
+    // GAP-clock above (`openingDate || previewsStartDate`, S2-T6) — these are
+    // two different clocks answering two different questions, not one clock
+    // duplicated with a bug. The GAP clock asks "how long has retrieval had
+    // to work" and defaults to the later, more conservative date so it never
+    // starts the SLA before a T1 review could plausibly exist. This clock
+    // asks "what's the earliest date a review would NOT be suspicious" and
+    // needs the earlier, more generous date — previews start weeks before
+    // opening and legitimately draw reviews, so anchoring on openingDate here
+    // would flag every ordinary early-preview review as a false late-add.
+    // (ship-check finding, 2026-07-23 — do not "fix" this into matching the
+    // other clock without re-deriving both from first principles.)
+    const showReviews = reviews.filter((r) => r.showId === showId);
+    const catalogClock = show.previewsStartDate || show.openingDate || null;
+    const lateAdd = detectLateAdd(showReviews, catalogClock);
+    if (lateAdd.isLateAdd) lateAdds.push({ showId, title: show.title, ...lateAdd });
+
+    if (cells.length === 0) continue;
+    freshShows.push({
+      showId,
+      title: show.title,
+      market: censusMarket(show.category || 'broadway'),
+      openingDate: show.openingDate || null,
+      cells,
+    });
+  }
+  const ledger = mergeLedger(prev, freshShows, nowIso);
+  const bytes = serializeLedger(ledger);
+  const before = fs.existsSync(opts.ledgerPath) ? fs.readFileSync(opts.ledgerPath, 'utf8') : '';
+  const changed = before !== bytes;
+  if (changed) {
+    fs.mkdirSync(path.dirname(opts.ledgerPath), { recursive: true });
+    fs.writeFileSync(opts.ledgerPath, bytes);
+  }
+  // B3 scoreboard: per-market coverage %, written as its own snapshot file (NOT
+  // folded into the ledger's ledger.shows schema) — it's a point-in-time metric,
+  // not an incremental gap-tracking structure, so it doesn't need mergeLedger's
+  // firstSeenAt-preservation or serializeLedger's commit-on-change determinism.
+  const marketStats = {};
+  for (const [mkt, acc] of marketCoverage) {
+    marketStats[mkt] = {
+      covered: acc.covered,
+      denominator: acc.denominator,
+      coveragePct: acc.denominator > 0 ? Math.round((acc.covered / acc.denominator) * 1000) / 10 : null,
+    };
+  }
+  const marketStatsPath = opts.marketStatsPath || MARKET_STATS_PATH;
+  try {
+    fs.mkdirSync(path.dirname(marketStatsPath), { recursive: true });
+    fs.writeFileSync(marketStatsPath, JSON.stringify({ generatedAt: nowIso, markets: marketStats }, null, 2) + '\n');
+  } catch (e) { console.error('Failed to write t1-coverage-stats.json:', e.message); }
+  // B2: advance the per-outlet breaker with THIS run's evidence, for the next
+  // cycle. Written after the ledger so a crash mid-loop can't half-trip anything.
+  const breakerPath = opts.breakerPath || BREAKER_PATH;
+  // successWindowHours is tied to the SAME window the observations came from
+  // (--ledger-days). Anything narrower rigs the predicate — gaps would accumulate
+  // over 90 days while successes only counted from a slice of it, so a healthy
+  // outlet in a quiet stretch trips (live smoke-test: 14 false trips).
+  const { breaker: nextBreaker, transitions, massTripSuppressed } = updateBreaker(
+    breakerCtx.breaker,
+    buildEvidence(breakerCtx.observations, breakerCtx.successes, { successWindowHours: opts.ledgerDays * 24 }),
+    nowMs);
+  let breakerChanged = false;
+  try { breakerChanged = saveBreaker(breakerPath, nextBreaker); }
+  catch (e) { console.error('Failed to write t1-outlet-breaker.json:', e.message); }
+
+  const cellCount = freshShows.reduce((n, s) => n + s.cells.length, 0);
+  const gapCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'GAP').length, 0);
+  const brokenCount = freshShows.reduce((n, s) => n + s.cells.filter(c => c.state === 'CIRCUIT_OPEN').length, 0);
+  console.log(`T1 coverage ledger: ${freshShows.length} shows, ${cellCount} open cells (${gapCount} GAP, ${brokenCount} CIRCUIT_OPEN) → ${opts.ledgerPath} ${changed ? '[written]' : '[unchanged — no commit]'}`);
+  if (massTripSuppressed) {
+    // Loud, because the correct read is "our pipeline is broken", not "outlets
+    // blocked us" — and the breaker deliberately did NOT act.
+    console.log(`\n🚨 MASS-TRIP SUPPRESSED: ${massTripSuppressed} outlets would have tripped this cycle `
+      + `(cap ${require('./lib/outlet-circuit-breaker').MAX_NEW_TRIPS_PER_CYCLE}). That many at once means OUR pipeline `
+      + `produced no scored reviews — check the rebuild/scoring chain, not the outlets. No breaker was opened.`);
+  }
+  if (transitions.length) {
+    console.log(`\n🔌 Outlet circuit breaker (${breakerChanged ? 'written' : 'unchanged'}):`);
+    for (const t of transitions) {
+      const info = outletBreakerInfo(nextBreaker, t.outletId);
+      const detail = t.transition === 'closed'
+        ? 'retrieval verified — dispatch re-enabled'
+        : t.transition === 'half-open'
+          ? 'probe window open — ONE dispatch allowed this cycle'
+          : `no dispatch until ${t.nextProbeAt} (probe #${info.probesUsed + 1}, ${info.gapCells} gapped show(s))`;
+      console.log(`  ${t.outletId}: ${t.transition} — ${detail}`);
+    }
+  } else if (brokenCount > 0) {
+    const openIds = Object.keys(nextBreaker.outlets).filter((id) => nextBreaker.outlets[id].state === 'open');
+    console.log(`  circuit-open outlets (no dispatch, still counted as missing): ${openIds.join(', ')}`);
+  }
+  if (standingCtx.counter.used > 0) {
+    console.log(`  standing-outlets: ${standingCtx.counter.used}/${standingCtx.counter.cap} new cell(s) this run (fan-out cap)`);
+  }
+  if (standingCtx.noPressNightShows.length) {
+    console.log(`  standing-outlets: skipped ${standingCtx.noPressNightShows.length} show(s) with no press night (archive-named gaps still counted): ${standingCtx.noPressNightShows.join(', ')}`);
+  }
+  if (reactivations.length) {
+    console.log(`\n⚠️  Reactivation: ${reactivations.length} scored review(s) from a registry "no review expected" outlet:`);
+    for (const r of reactivations) console.log(`  ${r.showId} / ${r.outletId} — update outlet-registry.json coverageExpectation`);
+  }
+  if (lateAdds.length) {
+    console.log(`\n⚠️  Late-add defect: ${lateAdds.length} show(s) whose earliest scored review predates our catalog clock by >${LATE_ADD_GRACE_DAYS}d:`);
+    for (const r of lateAdds) {
+      console.log(`  ${r.showId} — earliest ${r.earliestOutletId} review ${r.earliestReviewDate}, catalog clock ${r.catalogClock} (${r.gapDays}d early). Check for a missing priorRuns entry or wrong openingDate.`);
+    }
+  }
+  // Persist reactivations + lateAdds as a snapshot (not a log) — sendAlert() at
+  // 'warning' severity is log-only in this codebase (no Discord webhook, no
+  // email below 'critical'), so without this file these findings only ever
+  // existed in a transient GitHub Actions run log that nobody reads on a
+  // healthy hourly cron (ship-check finding, 2026-07-23).
+  try {
+    fs.mkdirSync(path.dirname(SIGNALS_PATH), { recursive: true });
+    // noPressNightShows is a SUPPRESSION, so it belongs in the machine-readable
+    // trail, not only in stdout: the failure mode it can't distinguish is "this
+    // engagement had no press night" from "our ingest collected almost nothing
+    // for a real opening", and only an operator (or a downstream digest) reading
+    // the list can tell those apart. A skip nobody can enumerate is a silent one.
+    fs.writeFileSync(SIGNALS_PATH, JSON.stringify({
+      generatedAt: nowIso, reactivations, lateAdds,
+      standingSuppressedNoPressNight: standingCtx.noPressNightShows,
+    }, null, 2));
+  } catch (e) { console.error('Failed to write t1-coverage-signals.json:', e.message); }
+  return { changed, shows: freshShows.length, cells: cellCount, gaps: gapCount, reactivations, lateAdds };
+}
+
+// Run the daily digest over the ledger. Prints the full GAP burn-down; with --alert,
+// fires ACTION emails ONLY for NEW (post-rollout) gaps that crossed 24h, deduped via
+// the digest-state file. Pre-rollout backlog is digest-only forever (storm guard).
+async function runDigest(opts) {
+  let ledger = { shows: {} };
+  try { ledger = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); }
+  catch (_) { console.log('No ledger yet — run --write-ledger first.'); return; }
+  let state = {};
+  try { state = JSON.parse(fs.readFileSync(opts.digestStatePath, 'utf8')); } catch (_) { state = {}; }
+
+  const now = new Date();
+  const { rolloutAt, digest, actions, preRolloutCount } = buildDigest(ledger, state, now.getTime());
+
+  console.log(`\n=== T1 Coverage Digest (rollout ${rolloutAt}) ===`);
+  console.log(`GAP cells: ${digest.length} (${preRolloutCount} pre-rollout burn-down, ${digest.length - preRolloutCount} post-rollout)`);
+  console.log(`NEW gaps crossing 24h → ACTION: ${actions.length}${opts.alert ? '' : ' (dry-run — no email)'}`);
+  for (const r of digest.slice(0, 60)) {
+    console.log(`  ${r.preRollout ? '·' : (r.ageHours >= 24 ? '‼' : '⧗')} ${r.showId} / ${r.outletId}  (${r.ageHours}h)  ${r.preRollout ? '[pre-rollout]' : ''}`);
+  }
+  if (digest.length > 60) console.log(`  … ${digest.length - 60} more`);
+
+  // At most 10 gaps per email; the rest stay un-alerted (NOT deduped) so they
+  // surface on the next run instead of being silently marked-seen (S2 fixup).
+  const emailed = actions.slice(0, 10);
+  let delivered = false;
+  if (opts.alert && actions.length) {
+    try {
+      // Routed through owner-alert-router (not raw sendAlert) with a STATIC
+      // conditionKey + 24h cooldown — card #608 (2026-07-28): this alert fired
+      // 4x in ~25h because the per-cell alertedCells dedup below only silences
+      // a cell ONCE IT'S BEEN IN A DELIVERED EMAIL, but every hourly run that
+      // finds even one freshly-24h-old cell fired a brand new "new gaps" email
+      // immediately — there was no cooldown on the ALERT itself, only on
+      // individual cells. Batching behavior is preserved: routeAlert's 'silent'
+      // branch below still leaves `delivered=false`, so cells stay un-marked in
+      // alertedCells and accumulate into one batch the next time the cooldown
+      // clears (see the two-guard rationale in the block below this one).
+      const routed = await routeAlert({
+        conditionKey: 't1-coverage:new-gaps-24h',
+        title: 'T1 Coverage — new gaps past 24h',
+        description: `${actions.length} T1/T2 outlet(s) still missing >24h after they became measurable${actions.length > emailed.length ? ` (first ${emailed.length} below; the rest escalate next run)` : ''}.`,
+        severity: 'error',
+        disposition: 'human',
+        cooldownHours: 24,
+        fields: emailed.map(r => ({ name: `${r.title} — ${r.outletId} (${r.ageHours}h)`, value: r.fix })),
+      });
+      delivered = routed.action !== 'silent' && routed.delivered !== false;
+      console.log(delivered
+        ? `\nSent ACTION alert for ${emailed.length}/${actions.length} new gap(s).`
+        : routed.action === 'silent'
+          ? `\nACTION alert suppressed by 24h cooldown (condition still open) — gaps stay un-deduped and accumulate for the next real send.`
+          : `\nACTION alert NOT delivered — gaps stay un-deduped and retry next run.`);
+    } catch (e) { console.error('Digest alert failed:', e.message); }
+  }
+  // No resolveCondition() call when actions.length === 0: unlike a monotonic
+  // health check, "zero NEW actionable gaps this hour" does NOT mean the
+  // incident is over — audit-aggregator-gap.yml runs hourly, but a cell only
+  // becomes "actionable" at the exact hour it crosses the 24h grace period, so
+  // most hourly ticks see actions.length===0 between events even while older
+  // gaps sit un-alerted (ship-check finding, 2026-07-28: an earlier version of
+  // this fix called resolveCondition() here, which reset routeAlert's 24h
+  // cooldown on every quiet hour — so a DIFFERENT gap crossing 24h just 1-2
+  // hours after a real send would page immediately instead of waiting out the
+  // cooldown, reproducing the exact "4 emails in 25h" bug this card fixes).
+  // The cooldown already expires naturally 24h after lastNotifiedAt — no
+  // early-resolve signal is needed or safe here.
+
+  // Persist state ONLY on a real (non-dry-run) alert pass: stamp rolloutAt once and
+  // record alerted cells so they dedupe next run. Two guards (review 2026-07-23):
+  // only cells actually IN the delivered email are marked (delivery failure or the
+  // 10-cap must not dedupe an alert nobody saw), and keys are pruned to cells still
+  // present in the ledger so the state file can't grow unboundedly.
+  if (opts.alert) {
+    const liveKeys = new Set();
+    for (const showId of Object.keys(ledger.shows || {})) {
+      for (const outletId of Object.keys((ledger.shows[showId] || {}).cells || {})) {
+        liveKeys.add(`${showId}::${outletId}`);
+      }
+    }
+    const alertedCells = new Set((state.alertedCells || []).filter(k => liveKeys.has(k)));
+    if (delivered) for (const r of emailed) alertedCells.add(`${r.showId}::${r.outletId}`);
+    const next = { rolloutAt, alertedCells: [...alertedCells].sort() };
+    fs.mkdirSync(path.dirname(opts.digestStatePath), { recursive: true });
+    fs.writeFileSync(opts.digestStatePath, JSON.stringify(next, null, 2) + '\n');
+  } else if (!state.rolloutAt) {
+    // First-ever contact is usually a dry-run; seed rolloutAt so the current backlog
+    // is correctly classified pre-rollout on the first REAL alert pass too.
+    console.log(`(note: rolloutAt not yet persisted — the first --alert run stamps it to now, freezing the current backlog as pre-rollout)`);
+  }
+}
+
+// B3 scoreboard: coverage % per market + oldest gaps, routed through
+// routeAlert(disposition:'digest') — a single conditionKey so it rides the
+// existing daily-digest "Automation (queued)" section (health-check.js) as
+// ONE line, not a new send path. cooldownHours < 24 so a roughly-daily
+// digest-consumption cadence always sees fresh content (routeAlert's default
+// 7-day cooldown would otherwise let a stale scoreboard sit for a week).
+async function runScoreboard(opts) {
+  const marketStatsPath = opts.marketStatsPath || MARKET_STATS_PATH;
+  let marketStats = {};
+  try { ({ markets: marketStats } = JSON.parse(fs.readFileSync(marketStatsPath, 'utf8'))); }
+  catch (_) { console.log('No coverage stats yet — run --write-ledger first.'); return; }
+  let ledger = { shows: {} };
+  try { ledger = JSON.parse(fs.readFileSync(opts.ledgerPath, 'utf8')); } catch (_) { /* no ledger yet */ }
+  const acks = loadAcks();
+  const { text, marketLines, oldestGapLines, omittedByAck, totalOpenGaps } =
+    buildScoreboardText(marketStats, ledger, acks, Date.now());
+
+  console.log('\n=== T1 Coverage Scoreboard ===');
+  console.log(text || '(no market data yet)');
+  if (omittedByAck > 0) console.log(`(${omittedByAck} acked gap(s) omitted from the callout)`);
+
+  if (opts.alert && marketLines.length) {
+    try {
+      const routed = await routeAlert({
+        conditionKey: 't1-coverage:scoreboard',
+        title: 'T1 Coverage Scoreboard',
+        description: text,
+        severity: 'warning',
+        disposition: 'digest',
+        cooldownHours: 20,
+      });
+      console.log(routed.action === 'silent'
+        ? '\nScoreboard queue refresh suppressed (cooldown still open — a fresher line already queued within 20h).'
+        : `\nScoreboard queued for the daily digest (${oldestGapLines.length} oldest-gap line(s), ${totalOpenGaps} total open GAP(s)).`);
+    } catch (e) { console.error('Scoreboard queue failed:', e.message); }
+  }
+}
+
+async function main() {
+  const opts = parseArgs();
+
+  if (opts.digest) { await runDigest(opts); return; }
+  if (opts.scoreboard) { await runScoreboard(opts); return; }
+  if (opts.ackKey) {
+    const acks = addAck(loadAcks(), opts.ackKey, opts.ackNote || '', new Date().toISOString());
+    saveAcks(acks);
+    console.log(`Acked "${opts.ackKey}" — it stays in coverage %, but drops out of the scoreboard's oldest-gap callout.`);
+    return;
+  }
+
+  if (opts.writeLedger) {
+    const showsData = loadJSON('shows.json');
+    const shows = showsData.shows || showsData;
+    const reviewsData = loadJSON('reviews.json');
+    const reviews = reviewsData.reviews || reviewsData;
+    const outletRegistry = loadJSON('outlet-registry.json');
+    const outlets = outletRegistry.outlets || outletRegistry;
+    const now = new Date();
+    const result = writeLedger(opts, shows, reviews, outlets, now.toISOString(), now.getTime());
+    if (opts.alert && result.reactivations.length) {
+      try {
+        const { sendAlert } = require('./lib/discord-notify');
+        await sendAlert({
+          title: 'T1 Coverage — outlet reactivation',
+          description: `${result.reactivations.length} scored review(s) landed from an outlet the registry marks as not reviewing theatre.`,
+          severity: 'warning',
+          fields: result.reactivations.slice(0, 10).map(r => ({
+            name: `${r.title} — ${r.outletId}`,
+            value: 'Update outlet-registry.json coverageExpectation/reviewsTheater',
+          })),
+        });
+        console.log(`\nSent reactivation alert for ${result.reactivations.length} outlet(s).`);
+      } catch (e) { console.error('Reactivation alert failed:', e.message); }
+    }
+    return;
+  }
+
+
+  // Load data
+  const showsData = loadJSON('shows.json');
+  const shows = showsData.shows || showsData;
+  const reviewsData = loadJSON('reviews.json');
+  const reviews = reviewsData.reviews || reviewsData;
+  const outletRegistry = loadJSON('outlet-registry.json');
+  const outlets = outletRegistry.outlets || outletRegistry;
+
+  // Find recently-opened shows
+  const now = new Date();
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - opts.days);
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+
+  let targetShows;
+  if (opts.showId) {
+    targetShows = shows.filter(s => s.id === opts.showId || s.slug === opts.showId);
+    if (targetShows.length === 0) {
+      console.error(`Show not found: ${opts.showId}`);
+      process.exit(1);
+    }
+  } else {
+    targetShows = shows.filter(s => {
+      // Recency falls back openingDate -> previewsStartDate (scripts/lib/collection-priority.js) —
+      // this used to be a bare `if (!s.openingDate) return false`, the same class of bug fixed in
+      // audit-show-review-gap.js: a live show stuck in previews with a null openingDate (The
+      // Winter's Tale, An American Daughter, 2026-08-12) never entered this audit's population.
+      if (!['open', 'previews'].includes(s.status)) return false;
+      // A national tour has no Broadway roundup census or T1 floor to miss
+      // (censusMarket would read it as 'broadway'): its launch would only
+      // raise false gap alerts (BRO-4724).
+      if (s.category === 'tour') return false;
+      const recencyDate = showRecencyKey(s);
+      if (recencyDate === NO_DATE_SENTINEL) return false;
+      return recencyDate >= cutoffStr;
+    });
+  }
+
+  if (targetShows.length === 0) {
+    console.log(`No shows opened in the last ${opts.days} days.`);
+    return;
+  }
+
+  console.log(`\n=== Opening-Night Coverage Audit ===`);
+  console.log(`Checking ${targetShows.length} show(s) opened since ${cutoffStr}\n`);
+
+  const gaps = [];
+  const floorBreaches = [];
+  // B2: read the breaker ONCE for the whole console pass (it's a per-run
+  // snapshot; the --write-ledger path is its only writer).
+  const breaker = loadBreaker(opts.breakerPath || BREAKER_PATH);
+
+  for (const show of targetShows) {
+    const showId = show.id || show.slug;
+    const category = show.category || 'broadway';
+    const showReviews = reviews.filter(r => r.showId === showId);
+    const scoredReviews = showReviews.filter(r => r.assignedScore != null);
+
+    // Get outlets that have reviews
+    const coveredOutlets = new Set(showReviews.map(r => r.outletId).filter(Boolean));
+    // Census completeness keys off SCORED outlets only — a discovered-but-unscored
+    // review (assignedScore == null) is NOT live, so it must count as missing (the
+    // MJ / All My Sons class). See cloud-memory postmortem 2026-06.
+    const coveredScoredOutlets = new Set(scoredReviews.map(r => r.outletId).filter(Boolean));
+
+    // Get outlet display names
+    const getName = (id) => outlets[id]?.displayName || id;
+
+    // Floor check — silent-failure detection (catches broken extractors when
+    // no specific outlet gap stands out). Only runs in 36-72h post-open window.
+    // `-04:00` is EDT (summer Broadway openings). hoursSinceOpen reported in
+    // Discord may be off ±1h in winter; the 36h floor gives enough slack.
+    const openingMs = show.openingDate ? Date.parse(show.openingDate + 'T23:00:00-04:00') : null;
+    if (show.openingDate && !Number.isFinite(openingMs)) {
+      console.warn(`  ⚠ Unparseable openingDate for ${showId}: "${show.openingDate}" — floor check skipped`);
+    }
+    const hoursSinceOpen = Number.isFinite(openingMs) ? (now - openingMs) / (1000 * 60 * 60) : null;
+    const inFloorWindow = hoursSinceOpen != null
+      && hoursSinceOpen >= FLOOR_WINDOW_MIN_HOURS
+      && hoursSinceOpen <= FLOOR_WINDOW_MAX_HOURS;
+    // Positive-match by market so regional/off-off/typos don't silently
+    // inherit the Broadway floor (10 reviews) and false-breach.
+    const isBroadway = category === 'broadway';
+    const floorReviews = isBroadway ? BROADWAY_FLOOR_REVIEWS : (isLondonMarket(category) ? WE_FLOOR_REVIEWS : null);
+    const floorScored = isBroadway ? BROADWAY_FLOOR_SCORED : (isLondonMarket(category) ? WE_FLOOR_SCORED : null);
+    const belowReviewFloor = floorReviews != null && showReviews.length < floorReviews;
+    const belowScoredFloor = floorScored != null && scoredReviews.length < floorScored;
+    const floorBreached = inFloorWindow && (belowReviewFloor || belowScoredFloor);
+
+    console.log(`${show.title} (${showId})`);
+    console.log(`  Category: ${category} | Opened: ${show.openingDate}`);
+    console.log(`  Reviews: ${showReviews.length} total, ${scoredReviews.length} scored`);
+    console.log(`  Covered outlets: ${[...coveredOutlets].sort().join(', ')}`);
+
+    if (floorBreached) {
+      console.log(`  🚨 FLOOR BREACH: ${showReviews.length}/${floorReviews} reviews, ${scoredReviews.length}/${floorScored} scored at ${Math.round(hoursSinceOpen)}h post-open`);
+    }
+
+    // === Census-anchored completeness (multi-source roundup union) — SOLE authority ===
+    // The roundups list EVERY critic; the census is the honest target. Every market
+    // (Broadway / Off-Broadway / West End) flows through it. Three states:
+    // complete / incomplete(list missing) / no-census-yet (no roundup published —
+    // never falsely green). Census-missing outlets become real gaps.
+    let census = null, cVerdict = null;
+    const censusMissing = [];       // HARD: named by an authoritative roundup — dispatchable
+    const censusMissingSoft = [];   // SOFT: only supplementary URL-sources — alert-only
+    const censusSuppressed = [];
+    let censusExtractorBroken = false;
+    {
+      try { census = buildCensusFromArchives(showId, { show, market: censusMarket(category) }); } catch (e) { console.warn(`  ⚠ census build failed for ${showId}: ${e.message}`); }
+      if (census) {
+        // Pass the CI-unfetchable block list so paywalled-from-CI outlets (WSJ /
+        // New Yorker) stay visible + block `complete` but don't drive endless
+        // re-dispatch of a gather that can never satisfy them.
+        cVerdict = censusVerdict(census, coveredScoredOutlets, { suppressed: CI_UNFETCHABLE_OUTLETS });
+        for (const m of cVerdict.missing) {
+          // Soft-missing: the outlet is named ONLY by supplementary URL-scraped
+          // sources (Playbill Verdict / Show Score), never by an authoritative
+          // critic-listing roundup (BWW / DTLI / theatre.reviews / WET / The Stage).
+          // These URL-sources routinely cite a DIFFERENT production's roundup — a
+          // pre-Broadway tryout's local critics (Beaches → Chicago Tribune / Sun-Times).
+          // Keeping them dispatchable would re-fire a FULL gather every run for a
+          // gap a NYC gather can never close (dispatch storm). So: visible + blocks
+          // `complete`, but alert-only, not dispatchable, not major-severity.
+          const srcs = m.sources || [];
+          const isSoft = srcs.length > 0 && srcs.every((s) => SUPPLEMENTARY_CENSUS_SOURCES.has(s));
+          const bucket = isSoft ? censusMissingSoft : censusMissing;
+          if (!bucket.includes(m.outletId)) bucket.push(m.outletId);
+        }
+        for (const m of cVerdict.suppressedMissing) {
+          if (!censusSuppressed.includes(m.outletId)) censusSuppressed.push(m.outletId);
+        }
+        // An archive present but extracting 0 reviews = a silently-broken parser
+        // masquerading as no-census-yet. Surface it — the monitor must catch its
+        // own blindness, not go quiet exactly when coverage is unverifiable.
+        if (census.zeroExtract && census.zeroExtract.length) {
+          censusExtractorBroken = true;
+          console.log(`  🚨 CENSUS EXTRACTOR BROKEN: archive present but 0 reviews extracted from [${census.zeroExtract.join(', ')}] — parser likely broke (DOM drift).`);
+        }
+        // Parser worked but every entry was a DIFFERENT show → the archived roundup is
+        // the wrong show's (mis-saved combined roundup). Alert so it gets re-fetched;
+        // reuse the same flag so it's surfaced + never silently no-census-yet.
+        if (census.wrongRoundup && census.wrongRoundup.length) {
+          censusExtractorBroken = true;
+          console.log(`  🚨 WRONG-SHOW ROUNDUP: [${census.wrongRoundup.join(', ')}] archive is for a different show (combined roundup) — re-fetch this show's roundup.`);
+        }
+        if (census.hadAnySource) {
+          console.log(`  Census (${census.sourcesPresent.join('+')}): ${census.count} outlets; verdict=${cVerdict.verdict}`);
+          if (censusMissing.length) {
+            const hard = cVerdict.missing.filter(m => censusMissing.includes(m.outletId));
+            const hardT12 = hard.filter(m => isDispatchTierOutlet(outlets, m.outletId));
+            const hardT3 = hard.filter(m => !isDispatchTierOutlet(outlets, m.outletId));
+            if (hardT12.length) {
+              console.log(`  CENSUS-MISSING T1/T2 (${hardT12.length}, dispatch-driving): ${hardT12.map(m => `${m.outletId}${m.url ? ' '+m.url : ''}`).join(' | ')}`);
+            }
+            if (hardT3.length) {
+              console.log(`  CENSUS-MISSING T3+/unregistered (${hardT3.length}, informational only): ${hardT3.map(m => m.outletId).join(', ')}`);
+            }
+          }
+          if (censusMissingSoft.length) {
+            console.log(`  CENSUS-MISSING (soft, supplementary-source only, alert-only): ${censusMissingSoft.join(', ')}`);
+          }
+          if (cVerdict.suppressedMissing.length) {
+            console.log(`  CENSUS-BLOCKED (unfetchable from CI, alert-only): ${censusSuppressed.join(', ')}`);
+          }
+        } else {
+          console.log(`  Census: no roundup published yet → no-census-yet (holding at floor check)`);
+        }
+      }
+    }
+
+    // Status — census verdict is the sole authority. No census published yet means
+    // the floor is met but the long tail is unverified (never falsely "complete").
+    if (floorBreached) {
+      console.log(`  Status: FLOOR BREACH (silent extractor failure likely)`);
+    } else if (cVerdict && census.hadAnySource) {
+      console.log(`  Status: ${cVerdict.verdict.toUpperCase().replace(/-/g, ' ')}`);
+    } else {
+      console.log(`  Status: NO CENSUS YET (no roundup published — long tail unverified)`);
+    }
+    console.log('');
+
+    if (floorBreached) {
+      floorBreaches.push({
+        showId,
+        title: show.title,
+        category,
+        openingDate: show.openingDate,
+        hoursSinceOpen: Math.round(hoursSinceOpen),
+        reviewCount: showReviews.length,
+        scoredCount: scoredReviews.length,
+        reviewFloor: floorReviews,
+        scoredFloor: floorScored,
+        belowReviewFloor,
+        belowScoredFloor,
+      });
+    }
+
+    // A census-incomplete show is a gap even if the review-count floor is met (the
+    // whole point: the floor missed the long tail the census enumerates).
+    const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
+    // Tier scoping (mirrors the ledger's census∩T1/T2): only registered T1/T2
+    // outlets drive dispatch and major severity. A roundup naming 3+ unscored
+    // T3 blogs (or unregistered/phantom outletIds — see review-census.js's
+    // normalizeOutlet) is honest census data but a FULL gather re-fired for it
+    // every run is the dispatch storm — the T3 long tail stays visible in
+    // censusMissing, it just doesn't ACT. Pulled into a pure, unit-tested
+    // function (scripts/lib/t1-ledger.js) so this decision has a regression
+    // test independent of live census/archive fixtures (BRO-89).
+    const { censusMissingT12, circuitOpenIds, censusMissingActionable, dispatchable, severity } =
+      computeDispatchDecision({ censusMissing, outlets, censusExtractorBroken, isTripped: (id) => isOutletTripped(breaker, id) });
+    if (circuitOpenIds.length) {
+      console.log(`  🔌 CIRCUIT OPEN (missing but NOT dispatchable — retrieval failing across shows): ${circuitOpenIds.join(', ')}`);
+    }
+    // Only surface a gap when there's a HARD (roundup-named) census-missing outlet
+    // or a broken extractor. A show whose only census-missing outlets are soft
+    // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
+    // act on — recording it as a gap would storm-dispatch a gather that can't help.
+    if (censusMissing.length > 0 || censusExtractorBroken) {
+      gaps.push({
+        showId,
+        title: show.title,
+        category,
+        openingDate: show.openingDate,
+        reviewCount: showReviews.length,
+        scoredCount: scoredReviews.length,
+        censusMissing,
+        censusMissingT12,
+        censusMissingActionable,
+        circuitOpen: circuitOpenIds,
+        censusMissingSoft,
+        censusSuppressed,
+        censusExtractorBroken,
+        censusVerdict: cVerdict ? cVerdict.verdict : null,
+        dispatchable,
+        // Severity counts only ACTIONABLE misses: escalating to 'major' (which
+        // pages) on outlets we've already decided we cannot fetch is precisely
+        // the alert fatigue B3's ack mechanism exists to prevent. Circuit-open
+        // cells still ride the digest + scoreboard, which is where a
+        // known-permanent gap belongs.
+        severity,
+      });
+    }
+  }
+
+  // Summary
+  console.log(`\n=== Summary ===`);
+  console.log(`Shows checked: ${targetShows.length}`);
+  console.log(`Shows with gaps: ${gaps.length}`);
+  const majorGaps = gaps.filter(g => g.severity === 'major');
+  if (majorGaps.length > 0) {
+    console.log(`Major gaps (3+ T1/T2 census-missing outlets or broken extractor): ${majorGaps.length}`);
+  }
+  if (floorBreaches.length > 0) {
+    console.log(`🚨 Floor breaches (silent extractor failure): ${floorBreaches.length}`);
+  }
+
+  // Discord alert
+  if (opts.alert && (gaps.length > 0 || floorBreaches.length > 0)) {
+    await sendDiscordAlert(gaps, floorBreaches);
+  }
+
+  // Auto-dispatch collection — ONLY for gaps with something fetchable. A show
+  // that's incomplete only because of suppressed (unfetchable-from-CI) outlets,
+  // or whose extractor broke, is alerted above but not re-gathered (a gather
+  // can't satisfy a CI-blocked outlet — re-firing it every run is the storm).
+  if (opts.dispatch && (gaps.length > 0 || floorBreaches.length > 0)) {
+    const dispatchableGaps = gaps.filter(g => g.dispatchable);
+    const toDispatch = [
+      ...dispatchableGaps,
+      ...floorBreaches.filter(b => !dispatchableGaps.some(g => g.showId === b.showId)),
+    ];
+    if (toDispatch.length) await dispatchCollection(toDispatch);
+    const skipped = gaps.length - dispatchableGaps.length;
+    if (skipped > 0) console.log(`\n⏭️  ${skipped} gap(s) alert-only (suppressed/unfetchable or broken extractor) — not dispatched.`);
+  }
+
+  // Machine-readable output
+  const report = {
+    timestamp: new Date().toISOString(),
+    daysChecked: opts.days,
+    showsChecked: targetShows.length,
+    gaps,
+    floorBreaches,
+  };
+  console.log('\n' + JSON.stringify(report, null, 2));
+
+  // Exit with non-zero if major gaps or floor breaches found (useful for CI)
+  if (majorGaps.length > 0 || floorBreaches.length > 0) {
+    process.exit(1);
+  }
+}
+
+async function sendDiscordAlert(gaps, floorBreaches = []) {
+  try {
+    const { sendAlert } = require('./lib/discord-notify');
+
+    // Floor breaches take priority — they indicate a silent extractor failure.
+    if (floorBreaches.length > 0) {
+      const fields = floorBreaches.map(b => ({
+        name: `🚨 ${b.title} (${b.openingDate})`,
+        value: `**${b.reviewCount}/${b.reviewFloor} reviews, ${b.scoredCount}/${b.scoredFloor} scored** at ${b.hoursSinceOpen}h post-open\nLikely silent extractor failure (BWW RR sanitizer, DTLI, aggregator parse). Check latest gather-reviews logs.`,
+      }));
+      await sendAlert({
+        title: '🚨 Opening-Night Review Floor Breach',
+        description: `${floorBreaches.length} show(s) below minimum review count 24-72h post-open`,
+        severity: 'error',
+        fields: fields.slice(0, 10),
+      });
+      console.log('\nDiscord floor-breach alert sent.');
+    }
+
+    if (gaps.length > 0) {
+      const fields = gaps.map(g => {
+        const lines = [`${g.reviewCount} reviews, ${g.scoredCount} scored`];
+        const t12 = g.censusMissingT12 || [];
+        const t3 = (g.censusMissing || []).filter(id => !t12.includes(id));
+        if (t12.length) lines.push(`Census-missing T1/T2 (roundup lists, we lack/unscored): ${t12.join(', ')}`);
+        if (t3.length) lines.push(`Census-missing T3+/unregistered (informational, not dispatched): ${t3.join(', ')}`);
+        if (!t12.length && !t3.length && g.censusVerdict === 'no-census-yet') lines.push(`Census: no roundup published yet`);
+        if (g.censusSuppressed && g.censusSuppressed.length) lines.push(`⛔ Blocked (unfetchable from CI — needs manual grab): ${g.censusSuppressed.join(', ')}`);
+        if (g.circuitOpen && g.circuitOpen.length) lines.push(`🔌 Circuit open (retrieval failing across shows — dispatch paused, auto-probes): ${g.circuitOpen.join(', ')}`);
+        if (g.censusExtractorBroken) lines.push(`🚨 Census extractor broke (archive present, 0 extracted) — check roundup parser`);
+        return { name: `${g.title} (${g.openingDate})`, value: lines.join('\n') };
+      });
+      const t12Gaps = gaps.filter(g => (g.censusMissingT12 || []).length > 0).length;
+      await sendAlert({
+        title: 'Opening-Night Coverage Gaps',
+        description: `${gaps.length} show(s) with census gaps (${t12Gaps} missing T1/T2 reviews)`,
+        severity: gaps.some(g => g.severity === 'major') ? 'error' : 'warning',
+        fields: fields.slice(0, 10),
+      });
+      console.log('\nDiscord gap alert sent.');
+    }
+  } catch (e) {
+    console.error('Failed to send Discord alert:', e.message);
+  }
+}
+
+async function dispatchCollection(gaps) {
+  const { execSync } = require('child_process');
+  // Per-show in-flight dedup so a still-incomplete show (slow roundups keep it
+  // incomplete for DAYS) doesn't re-fire FULL gather on every 2x-daily run — a
+  // dispatch storm. Reuses the gather-idempotency run-name match (same as
+  // opening-night-reviews.yml's dispatch step). Codex ship-check #2.
+  let activeRuns = [];
+  try {
+    const out = execSync('gh run list --workflow=gather-reviews.yml --json status,displayTitle --limit 100', { encoding: 'utf8' });
+    activeRuns = JSON.parse(out || '[]');
+  } catch (_) { /* if we can't list, fall through and dispatch (fail-open) */ }
+  let showsNeedingGather = null;
+  try { ({ showsNeedingGather } = require('./lib/gather-idempotency')); } catch (_) {}
+  const wanted = gaps.map((g) => g.showId);
+  const needing = showsNeedingGather ? new Set(showsNeedingGather(activeRuns, wanted)) : new Set(wanted);
+
+  for (const gap of gaps) {
+    if (!needing.has(gap.showId)) {
+      console.log(`\n⏭️  ${gap.showId}: gather already in-flight — skipping dispatch (no storm).`);
+      continue;
+    }
+    try {
+      // FULL gather (aggregators_only=false, max_tier=3) so the per-outlet SERP
+      // pass searches the long tail the census flagged — not just aggregators.
+      // collect-review-texts (chain=true, below) then triggers rebuild → score,
+      // so the recovered reviews reach reviews.json and the broadcast re-fires.
+      console.log(`\nDispatching FULL gather-reviews for ${gap.showId}...`);
+      execSync(
+        `gh workflow run gather-reviews.yml -f shows="${gap.showId}" -f max_tier=3 -f aggregators_only=false`,
+        { stdio: 'inherit' }
+      );
+
+      console.log(`Dispatching collect-review-texts for ${gap.showId}...`);
+      execSync(
+        `gh workflow run "Collect Review Texts" -f show_filter="${gap.showId}" -f max_reviews=0 -f chain=true`,
+        { stdio: 'inherit' }
+      );
+    } catch (e) {
+      console.error(`Failed to dispatch for ${gap.showId}:`, e.message);
+    }
+  }
+}
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+module.exports = { computeShowCells, censusMarket };

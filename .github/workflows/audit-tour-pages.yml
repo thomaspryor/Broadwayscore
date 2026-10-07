@@ -1,0 +1,125 @@
+name: Audit Tour Pages
+
+# Daily crawl of every national-tour surface on the live site (BRO-4723):
+# the tours list, every category:'tour' show page and every /tours/<city>
+# page, checked against data/shows.json, data/tour-schedules.json and
+# data/tour-tickets.json, plus a 390px overflow probe. Read-only against prod.
+#
+# Findings never fail this job: each error code files (or refreshes) one
+# Linear card through owner-alert-router.js and the card closes itself on the
+# first run that no longer reports the code (the audit-dependencies.yml
+# pattern). A new code files on its second consecutive run, so a deploy that
+# trails core data by a few hours never opens a card
+# (data/audit/tour-audit-last-codes.json). The job goes red only when the audit could not run (exit 2) or a
+# card could not be filed (exit 3); check-cron-health.yml then pages after 36h.
+#
+# 11:23 UTC: after fetch-tour-schedules.yml (07:47), which dispatches its own
+# deploy on a data change, so the live build has normally caught up. The audit
+# accepts yesterday's or today's "Now in" answer for the remaining lag.
+
+on:
+  schedule:
+    - cron: '23 11 * * *'
+  workflow_dispatch:
+    inputs:
+      alert:
+        description: 'File a Linear card per error code'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-tour-pages
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    # ~150 pages at 6 in flight plus the Playwright probe: a few minutes.
+    # Headroom for checkout variance and the ledger push-with-retry.
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run tour page audit
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          ALERT_FLAG=""
+          # Not `inputs.alert || 'true'`: false || 'true' is 'true'.
+          if [ "${{ github.event_name == 'schedule' || inputs.alert == true }}" = "true" ]; then
+            ALERT_FLAG="--alert"
+          fi
+          set +e
+          node scripts/audit-tour-pages.js --mobile --warnings --json=/tmp/tour-audit.json $ALERT_FLAG
+          EC=$?
+          set -e
+          if [ -f /tmp/tour-audit.json ]; then
+            node -e "
+              const r = require('/tmp/tour-audit.json');
+              const lines = ['## Tour page audit', '', r.base + ' as of ' + r.today + ': ' + r.pagesChecked + ' pages, ' + r.errors + ' error(s), ' + r.warnings + ' warning(s)', ''];
+              for (const [k, n] of Object.entries(r.byCode).sort()) lines.push('- ' + k + ' x' + n);
+              console.log(lines.join('\n'));
+            " >> "$GITHUB_STEP_SUMMARY"
+          fi
+          case "$EC" in
+            0) ;;
+            1) echo "::error::tour page audit found errors (run without --alert)"; exit 1 ;;
+            2) echo "::error::audit-tour-pages.js could not run (exit 2: site, sitemap or data unreadable); see log above"; exit 1 ;;
+            3) echo "::error::audit-tour-pages.js found errors but could not file a card for each (exit 3); check LINEAR_API_KEY"; exit 1 ;;
+            *) echo "::error::audit-tour-pages.js exited $EC (unexpected)"; exit 1 ;;
+          esac
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tour-audit-${{ github.run_id }}
+          path: /tmp/tour-audit.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+      # Without this commit every run starts from a cold ledger and the
+      # router's 7-day cooldown never holds across days. A failed persist
+      # degrades to the router's Linear-search dedupe; it never fails the job.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json data/audit/tour-audit-last-codes.json; do
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist audit-tour-pages alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Tour page audit could not run or could not file its cards'
+          description: 'Exit 2 = the live site, sitemap or data was unreadable; exit 3 = an error has no Linear card (check LINEAR_API_KEY). Findings themselves file cards and never fail this job.'
+          severity: 'warning'

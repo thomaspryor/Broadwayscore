@@ -1,0 +1,287 @@
+{
+  "issueNumber": "bro-4429",
+  "planId": "81130b68-3144-4415-9ef4-8a97ee0bd3b4",
+  "status": "partial",
+  "createdAt": "2026-09-30T16:10:02.994Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4429: five real reviews were excluded by classifiers that read only part of the text (CV 2.5k window, Gemini head+tail sample, JSON-blob fullText, multi-show column). Clear the exclusion flags with operator-clear markers so the fixed classifiers do not re-stamp them.",
+    "steps": [
+      "the-saviors TheaterMania: clear wrongShow + isNonReview (CV read 2500-char head, called it a preview)",
+      "cleansed Standard: clear Gemini isNonReview (JSON blob prefix)",
+      "electra NYT: clear Gemini isNonReview (bot-truncated text)",
+      "les-mis arena NY Sun: clear Gemini isNonReview (history opening)",
+      "hungry-women Theatrely: clear wrongProduction (multi-show column)",
+      "under-the-shadow + woman-in-mind Standard (Nick Curtis): clear Gemini isNonReview (same JSON-blob cousin as cleansed)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "isNonReviewReason",
+        "oldValue": "CV-promoted (not a review): The scraped content reads as a preview or plot synopsis of 'The Saviors' at Atlantic Theater Company, describing the characters, setting, and themes without offering critical evaluation. The text is i",
+        "newValue": null,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cleansed-off-west-end-2026/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cleansed-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "wrongProductionReason",
+        "oldValue": "CV-promoted: The scraped content is a review of 'The Pass' by John Donnelly, featuring cast members Matisse Ratron-Neal, Terry Bell, Ino Badanjak, and Oliver Rowland-Jones, directed by Max Hunter. This is complete",
+        "newValue": null,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T17:06:05.392Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json isNonReviewReason: \"CV-promoted (not a review): The scraped content reads as a preview or plot synopsis of 'The Saviors' at Atlantic Theater Company, describing the characters, setting, and themes without offering critical evaluation. The text is i\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/standard--nick-curtis.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/nytimes--houman-barekat.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/nytimes--houman-barekat.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json wrongProductionReason: write guard kept \"CV-promoted: The scraped content is a review of 'The Pass' by John Donnelly, featuring cast members Matisse Ratron-Neal, Terry Bell, Ino Badanjak, and Oliver Rowland-Jones, directed by Max Hunter. This is complete\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json isNonReview: true -> false"
+    }
+  ]
+}

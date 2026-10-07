@@ -1,0 +1,68 @@
+name: Generate Guide Editorials
+
+on:
+  schedule:
+    # Weekly on Mondays at 3 AM UTC (shows open/close weekly)
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  generate-editorials:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: editorial-generation
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate guide editorials
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/generate-guide-editorials.js
+
+      - name: Validate output file size
+        run: |
+          FILE_SIZE=$(wc -c < data/guide-editorials.json)
+          echo "File size: $FILE_SIZE bytes"
+          if [ "$FILE_SIZE" -gt 512000 ]; then
+            echo "ERROR: guide-editorials.json exceeds 500KB limit"
+            exit 1
+          fi
+
+      - name: Commit and push if changed
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/guide-editorials.json
+          if git diff --staged --quiet; then
+            echo "No changes to guide editorials"
+          else
+            git commit -m "chore: Update guide page editorials (automated weekly)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Generate Guide Editorials Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

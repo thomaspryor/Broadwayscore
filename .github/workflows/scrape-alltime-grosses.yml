@@ -1,0 +1,131 @@
+name: Scrape All-Time Grosses
+
+on:
+  # Monthly on the 1st at 6 AM UTC
+  schedule:
+    - cron: '0 6 1 * *'
+
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Specific year to scrape (leave empty for main page)'
+        required: false
+        type: string
+      all_years:
+        description: 'Loop through main page + per-year pages 2005..currentYear (default: true). Set false to scrape only the lifetime top-100 main page.'
+        required: false
+        default: 'true'
+        type: boolean
+      dry_run:
+        description: 'Preview matches without writing'
+        required: false
+        default: 'false'
+        type: boolean
+
+# Serialize against weekly-grosses.yml — both workflows write data/grosses.json. The shared
+# push-with-retry helper's rebase fallback uses -X ours and can silently drop the other
+# writer's edits if they collide. The shared group name (not per-workflow) is the point.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
+jobs:
+  scrape-alltime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Scrape all-time cumulative grosses
+        run: |
+          # Default (cron, no inputs): --all-years
+          # The main page only lists the top ~100 shows by lifetime gross, so
+          # newly-opened shows are absent for months/years. --all-years also
+          # scrapes per-year pages (2005..currentYear from new Date().getUTCFullYear())
+          # which list every show that played that season, regardless of cumulative rank.
+          # In-run merge uses Math.max per slug, so partial-year stats from the per-year
+          # pages cannot overwrite the main page's lifetime totals.
+          ARGS="--all-years"
+          if [ -n "${{ inputs.year }}" ]; then
+            ARGS="--year ${{ inputs.year }}"
+          elif [ "${{ inputs.all_years }}" = "false" ]; then
+            ARGS=""
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          echo "Invoking: npx tsx scripts/scrape-alltime.ts $ARGS"
+          npx tsx scripts/scrape-alltime.ts $ARGS
+        env:
+          NODE_ENV: production
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+
+      - name: Check for changes
+        if: inputs.dry_run != 'true'
+        id: changes
+        run: |
+          if git diff --quiet data/grosses.json 2>/dev/null; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat data/grosses.json
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-alltime-grosses'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "## Dry Run" >> $GITHUB_STEP_SUMMARY
+            echo "Preview mode - no changes written." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Updated" >> $GITHUB_STEP_SUMMARY
+            SHOW_COUNT=$(node -e "const d=require('./data/grosses.json'); console.log(Object.keys(d.shows).length)")
+            echo "Updated all-time grosses for **$SHOW_COUNT shows**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "Scrape completed but no new data found." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape All-Time Grosses Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

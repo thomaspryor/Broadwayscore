@@ -1,0 +1,246 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import Link from 'next/link';
+import { TrophyIcon } from '@/components/icons';
+import { ToggleBar } from '@/components/show-cards';
+import Breadcrumb from '@/components/Breadcrumb';
+import { isActingCategory } from '@/config/awards';
+import type { LeaderboardRow } from './page';
+
+type FilterMode = 'all' | 'acting' | 'creative';
+
+const INITIAL_COUNT = 50;
+
+function normalizeForSearch(s: string): string {
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+function abbreviateCategory(cat: string): string {
+  // "Best Actress in a Musical" → "Actress (Musical)"
+  // "Best Scenic Design of a Play" → "Scenic Design (Play)"
+  // "Best Original Score" → "Original Score"
+  let s = cat.replace('Best ', '');
+  if (s.includes(' in a Musical')) return s.replace(' in a Musical', '') + ' (Musical)';
+  if (s.includes(' in a Play')) return s.replace(' in a Play', '') + ' (Play)';
+  if (s.includes(' of a Musical')) return s.replace(' of a Musical', '') + ' (Musical)';
+  if (s.includes(' of a Play')) return s.replace(' of a Play', '') + ' (Play)';
+  return s;
+}
+
+export default function TonyLeaderboardClient({
+  rows,
+  totalNominations,
+  totalWins,
+  coverage,
+}: {
+  rows: LeaderboardRow[];
+  totalNominations: number;
+  totalWins: number;
+  coverage: string;
+}) {
+  const [filter, setFilter] = useState<FilterMode>('all');
+  const [showCount, setShowCount] = useState(INITIAL_COUNT);
+  const [query, setQuery] = useState('');
+
+  const filtered = useMemo(() => {
+    let result: LeaderboardRow[];
+    if (filter === 'acting') {
+      result = rows
+        .filter(r => r.actingNominations > 0)
+        .map(r => ({ ...r, wins: r.actingWins, nominations: r.actingNominations, showCount: r.actingShowCount, categories: r.categories.filter(c => isActingCategory(c)) }))
+        .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
+    } else if (filter === 'creative') {
+      result = rows
+        .filter(r => r.nominations - r.actingNominations > 0)
+        .map(r => ({
+          ...r,
+          wins: r.wins - r.actingWins,
+          nominations: r.nominations - r.actingNominations,
+          showCount: r.creativeShowCount,
+          categories: r.categories.filter(c => !isActingCategory(c)),
+        }))
+        .sort((a, b) => b.wins - a.wins || b.nominations - a.nominations);
+    } else {
+      result = rows;
+    }
+    if (query.trim()) {
+      const q = normalizeForSearch(query.trim());
+      result = result.filter(r => normalizeForSearch(r.name).includes(q));
+    }
+    return result;
+  }, [rows, filter, query]);
+
+  // Compute tied ranks: same wins+noms = same rank
+  const ranks = useMemo(() => {
+    const result: number[] = [];
+    let rank = 1;
+    for (let i = 0; i < filtered.length; i++) {
+      if (i > 0 && (filtered[i].wins !== filtered[i - 1].wins || filtered[i].nominations !== filtered[i - 1].nominations)) {
+        rank = i + 1;
+      }
+      result.push(rank);
+    }
+    return result;
+  }, [filtered]);
+
+  const visible = filtered.slice(0, showCount);
+  const remaining = filtered.length - showCount;
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <Breadcrumb items={[
+        { label: 'Home', href: '/' },
+        { label: 'Tony Awards', href: '/tony-awards' },
+        { label: 'People' },
+      ]} />
+
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
+          <TrophyIcon className="w-7 h-7 text-yellow-400" />
+          Tony Awards Leaderboard
+        </h1>
+        <p className="text-gray-400 text-sm mt-1">
+          Individual Tony Award winners and nominees since {coverage.split('-')[0]} in performing, directing, and design categories. {totalWins.toLocaleString()} wins across {totalNominations.toLocaleString()} nominations.
+        </p>
+      </div>
+
+      {/* Filter */}
+      <div className="mb-4">
+        <ToggleBar
+          label="FILTER:"
+          options={[
+            { value: 'all' as FilterMode, label: 'ALL' },
+            { value: 'acting' as FilterMode, label: 'ACTING' },
+            { value: 'creative' as FilterMode, label: 'CREATIVE' },
+          ]}
+          value={filter}
+          onChange={(v: FilterMode) => { setFilter(v); setQuery(''); setShowCount(INITIAL_COUNT); }}
+          ariaLabel="Filter by category type"
+          size="compact"
+        />
+      </div>
+
+      {/* Search */}
+      <div className="mb-4">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => { setQuery(e.target.value); setShowCount(INITIAL_COUNT); }}
+          placeholder="Search by name..."
+          className="w-full sm:w-64 px-3 py-2 text-sm bg-surface-overlay border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-brand/50"
+          aria-label="Search leaderboard by name"
+        />
+      </div>
+
+      {filter !== 'all' && (
+        <p className="text-xs text-gray-500 mb-3">
+          Showing {filter === 'acting' ? 'acting' : 'creative'} nominations only. People with both acting and creative nominations may have different totals in each view.
+        </p>
+      )}
+
+      {/* No results */}
+      {filtered.length === 0 && query.trim() && (
+        <p className="text-sm text-gray-500 py-8 text-center">No results for &ldquo;{query.trim()}&rdquo;</p>
+      )}
+
+      {/* Table */}
+      {filtered.length > 0 && <><div className="overflow-x-auto">
+        <table className="w-full" aria-label="Tony Awards leaderboard ranked by wins">
+          <thead>
+            <tr className="text-left text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide border-b border-white/10">
+              <th className="pb-2 pr-2 w-8 text-center">#</th>
+              <th className="pb-2 pr-3">Name</th>
+              <th className="pb-2 pr-3 text-center w-16">Wins</th>
+              <th className="pb-2 pr-3 text-center w-16">Noms</th>
+              <th className="pb-2 hidden sm:table-cell">Categories</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visible.map((row, i) => (
+              <tr key={row.ibdbPersonId || row.name} className="border-b border-white/5 hover:bg-white/[0.02]">
+                <td className="py-2.5 pr-2 text-center text-xs text-gray-500 tabular-nums">{ranks[i]}</td>
+                <td className="py-2.5 pr-3">
+                  {row.profileUrl ? (
+                    <Link href={row.profileUrl} className="text-sm font-medium text-white hover:text-brand transition-colors">
+                      {row.name}
+                    </Link>
+                  ) : (
+                    <span className="text-sm font-medium text-gray-300">{row.name}</span>
+                  )}
+                  <span className="text-xs text-gray-500 ml-1.5">
+                    ({row.showCount} show{row.showCount !== 1 ? 's' : ''})
+                  </span>
+                  {/* Mobile-only: show categories under name since column is hidden */}
+                  <div className="sm:hidden flex flex-wrap gap-1 mt-0.5">
+                    {row.categories.slice(0, 3).map(cat => (
+                      <span key={cat} className="text-[10px] text-gray-600">
+                        {abbreviateCategory(cat)}
+                      </span>
+                    ))}
+                    {row.categories.length > 3 && (
+                      <span className="text-[10px] text-gray-600">+{row.categories.length - 3}</span>
+                    )}
+                  </div>
+                </td>
+                <td className="py-2.5 pr-3 text-center">
+                  {row.wins > 0 ? (
+                    <span className="text-sm font-bold text-yellow-300 tabular-nums">{row.wins}</span>
+                  ) : (
+                    <span className="text-sm text-gray-600 tabular-nums">0</span>
+                  )}
+                </td>
+                <td className="py-2.5 pr-3 text-center">
+                  <span className="text-sm text-gray-400 tabular-nums">{row.nominations}</span>
+                </td>
+                <td className="py-2.5 hidden sm:table-cell">
+                  <div className="flex flex-wrap gap-1">
+                    {row.categories.slice(0, 3).map(cat => (
+                      <span key={cat} className="text-[10px] px-1.5 py-0.5 rounded border bg-white/5 text-gray-500 border-white/10 whitespace-nowrap">
+                        {abbreviateCategory(cat)}
+                      </span>
+                    ))}
+                    {row.categories.length > 3 && (
+                      <span className="text-[10px] text-gray-600">+{row.categories.length - 3}</span>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {remaining > 0 && (
+        <button
+          onClick={() => setShowCount(prev => prev + 50)}
+          className="w-full mt-4 py-3 text-sm font-medium text-brand hover:text-brand-hover border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+        >
+          Show {Math.min(remaining, 50)} more ({remaining} remaining)
+        </button>
+      )}
+      </>}
+
+      {/* Source note */}
+      <p className="text-xs text-gray-600 mt-6">
+        Data sourced from IBDB for Broadway shows tracked since 1970. Producing credits (Best Musical, Best Play, Best Revival) are not yet tracked individually.
+      </p>
+
+      {/* Footer links */}
+      <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="flex flex-wrap gap-4">
+          <Link href="/tony-awards" className="text-brand hover:text-brand-hover transition-colors">
+            Tony Awards hub &rarr;
+          </Link>
+          <Link href="/tony-awards/predictions" className="text-brand hover:text-brand-hover transition-colors">
+            Tony Predictions &rarr;
+          </Link>
+          <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
+            Scoring methodology &rarr;
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

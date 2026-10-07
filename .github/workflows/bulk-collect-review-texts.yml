@@ -1,0 +1,645 @@
+# Bulk collection of review full texts across all shows
+# Partitions shows across parallel runners for fast processing
+# Self-chaining: automatically dispatches next round when work remains
+# Re-runnable: reviews with fullText are skipped automatically
+name: Bulk Collect Review Texts
+
+on:
+  workflow_dispatch:
+    inputs:
+      parallel_jobs:
+        description: 'Number of parallel jobs (1-10)'
+        required: false
+        default: '5'
+        type: string
+      max_per_job:
+        description: 'Max reviews per job (0 = all in partition)'
+        required: false
+        default: '0'
+        type: string
+      batch_size:
+        description: 'Git commit checkpoint interval'
+        required: false
+        default: '10'
+        type: string
+      browserbase_enabled:
+        description: 'Enable Browserbase for CAPTCHA sites'
+        required: false
+        default: true
+        type: boolean
+      browserbase_per_job:
+        description: 'Browserbase sessions per job (5 × 5 jobs = 25, under 30 daily cap)'
+        required: false
+        default: '5'
+        type: string
+      retry_failed:
+        description: 'Retry previously failed reviews'
+        required: false
+        default: true
+        type: boolean
+      archive_first:
+        description: 'Try Archive.org first (best success rate)'
+        required: false
+        default: true
+        type: boolean
+      content_tier:
+        description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
+        required: false
+        default: ''
+        type: string
+      exclude_domains:
+        description: 'Comma-separated domains to exclude (paywall domains handled by dedicated streams)'
+        required: false
+        default: 'nytimes.com,vulture.com,nymag.com,wsj.com,washingtonpost.com,newyorker.com,ft.com,telegraph.co.uk,thetimes.co.uk,theatermania.com,timeout.com,ew.com,deadline.com,observer.com,chicagotribune.com,nypost.com,variety.com,hollywoodreporter.com,nydailynews.com,newsday.com'
+        type: string
+      aggressive:
+        description: 'Skip Playwright for known-blocked sites (faster, uses API tiers directly)'
+        required: false
+        default: true
+        type: boolean
+      test_mode:
+        description: 'Test mode: limit each job to 5 reviews'
+        required: false
+        default: false
+        type: boolean
+      max_rounds:
+        description: 'Max chained rounds (0 = single run, no chaining)'
+        required: false
+        default: '3'
+        type: string
+      current_round:
+        description: 'Current round number (auto-set by chaining, do not change)'
+        required: false
+        default: '1'
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+# Per-run group (not shared): the `collect` job's matrix partitions shows
+# into DISJOINT SHOW_FILTER shards, and the `rebuild` job self-chains the
+# next round with a NEW run_id after counting remaining work. A shared
+# group would only queue a second concurrent manual dispatch, never affect
+# the chain or the matrix. See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: bulk-collect-review-texts-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.split.outputs.matrix }}
+      total_reviews: ${{ steps.split.outputs.total_reviews }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Split shows into load-balanced batches
+        id: split
+        env:
+          JOBS: ${{ inputs.parallel_jobs }}
+          CURRENT_ROUND: ${{ inputs.current_round }}
+          MAX_ROUNDS: ${{ inputs.max_rounds }}
+        run: |
+          # Validate parallel_jobs is 1-10
+          if [ "$JOBS" -lt 1 ] 2>/dev/null || [ "$JOBS" -gt 10 ] 2>/dev/null; then
+            export JOBS=5
+          fi
+
+          # Count reviews needing fullText per show, sort by count for load balancing
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const reviewsDir = "data/review-texts";
+            const dirs = fs.readdirSync(reviewsDir).filter(d => {
+              try { return fs.statSync(path.join(reviewsDir, d)).isDirectory(); } catch { return false; }
+            });
+
+            const showCounts = [];
+            let totalReviews = 0;
+
+            for (const showId of dirs) {
+              const showDir = path.join(reviewsDir, showId);
+              const files = fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json");
+              let needsText = 0;
+              for (const f of files) {
+                try {
+                  const data = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (data.url && (!data.fullText || data.fullText.length < 50)) {
+                    needsText++;
+                  }
+                } catch {}
+              }
+              if (needsText > 0) {
+                showCounts.push({ showId, count: needsText });
+                totalReviews += needsText;
+              }
+            }
+
+            // Sort descending by review count for load-balanced round-robin
+            showCounts.sort((a, b) => b.count - a.count);
+
+            const jobs = parseInt(process.env.JOBS);
+            const actualJobs = Math.min(jobs, showCounts.length);
+            const batches = Array.from({ length: actualJobs }, () => ({ shows: [], count: 0 }));
+
+            // Round-robin distribution (sorted descending = largest shows spread evenly)
+            for (let i = 0; i < showCounts.length; i++) {
+              const batchIdx = i % actualJobs;
+              batches[batchIdx].shows.push(showCounts[i].showId);
+              batches[batchIdx].count += showCounts[i].count;
+            }
+
+            // Build matrix
+            const matrix = {
+              include: batches.map((b, i) => ({
+                batch_id: i,
+                shows: b.shows.join(","),
+                delay: i * 45,
+                review_count: b.count,
+                show_count: b.shows.length
+              }))
+            };
+
+            console.log("=== BULK COLLECTION PLAN (Round " + (process.env.CURRENT_ROUND || "1") + "/" + (process.env.MAX_ROUNDS || "1") + ") ===");
+            console.log("Total reviews needing fullText:", totalReviews);
+            console.log("Shows with pending reviews:", showCounts.length);
+            console.log("Parallel jobs:", actualJobs);
+            console.log("");
+            for (const b of matrix.include) {
+              console.log("  Batch " + b.batch_id + ": " + b.show_count + " shows, " + b.review_count + " reviews (delay: " + b.delay + "s)");
+            }
+
+            // Write outputs
+            fs.writeFileSync("/tmp/matrix.json", JSON.stringify(matrix));
+            fs.writeFileSync("/tmp/total.txt", String(totalReviews));
+          '
+
+          echo "matrix=$(cat /tmp/matrix.json)" >> $GITHUB_OUTPUT
+          echo "total_reviews=$(cat /tmp/total.txt)" >> $GITHUB_OUTPUT
+
+  collect:
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state for independent execution
+        run: rm -f data/collection-state/progress.json
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Stagger start
+        if: matrix.delay > 0
+        run: |
+          echo "Batch ${{ matrix.batch_id }} (${{ matrix.show_count }} shows, ${{ matrix.review_count }} reviews): waiting ${{ matrix.delay }}s..."
+          sleep ${{ matrix.delay }}
+
+      - name: Collect review texts for batch ${{ matrix.batch_id }}
+        env:
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BLOOMBERG_EMAIL: ${{ secrets.BLOOMBERG_EMAIL }}
+          BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
+          NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
+          NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
+          NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_per_job || '15' }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MAX_REVIEWS: ${{ inputs.test_mode == true && '5' || inputs.max_per_job }}
+          SHOW_FILTER: ${{ matrix.shows }}
+          RETRY_FAILED: ${{ inputs.retry_failed }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first }}
+          CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
+          CLOSED_SHOW_MODE: 'true'
+          COMMIT_EVERY: '25'
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops for
+          # the whole run — the final "Push review-texts to private repo"
+          # step below still catches a normal completion, but a timeout/
+          # cancellation mid-run loses everything since the last checkpoint.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.aggressive }}" = "true" ]; then
+            ARGS="$ARGS --aggressive"
+          fi
+          node scripts/collect-review-texts.js $ARGS
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Bulk Collect Review Texts — Final commit and push"
+      - name: Final commit and push
+        if: always()
+        run: |
+          git add data/archives/reviews/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for batch ${{ matrix.batch_id }}"
+            exit 0
+          fi
+
+          git commit -m "feat: Bulk collect review texts (round ${{ inputs.current_round }}, batch ${{ matrix.batch_id }}/${{ strategy.job-total }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from bulk-collect-review-texts'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: bulk-collect-review-texts
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: collection-report-batch-${{ matrix.batch_id }}
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+            data/collection-state/live-progress.json
+          retention-days: 30
+
+  rebuild:
+    needs: [prepare, collect]
+    if: always() && needs.collect.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Trigger rebuild (concurrency-gated)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Don't rebuild inline — trigger the centralized rebuild workflow which has
+          # a concurrency group to prevent races with scoring shards and other collection runs.
+          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=rebuild-reviews.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=rebuild-reviews.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "Rebuild already active ($RUNNING running, $QUEUED queued). Skipping trigger."
+          else
+            gh workflow run rebuild-reviews.yml \
+              -f reason="Auto-triggered after bulk collection (round ${{ inputs.current_round }})"
+            echo "Rebuild triggered."
+          fi
+
+      - name: Trigger pull quote extraction
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow=extract-pull-quotes.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=extract-pull-quotes.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=extract-pull-quotes.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
+            echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+          echo "Dispatching pull quote extraction for newly collected texts..."
+          gh workflow run extract-pull-quotes.yml -f chain=true -f remaining_batches=3
+          echo "Pull quote extraction dispatched."
+        continue-on-error: true
+
+      - name: Count remaining reviews needing fullText
+        id: count-remaining
+        run: |
+          git pull origin main --rebase 2>/dev/null || true
+          REMAINING=$(node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const base = "data/review-texts";
+            // Load global failed-fetches to exclude permanently failed URLs
+            // (scripts/lib/failed-fetch-policy.js — single source of truth, BRO-2266)
+            const { isPermanentlyFailed } = require("./scripts/lib/failed-fetch-policy");
+            let failedUrls = new Set();
+            const globalFF = path.join(base, "failed-fetches.json");
+            if (fs.existsSync(globalFF)) {
+              try {
+                const ff = JSON.parse(fs.readFileSync(globalFF, "utf8"));
+                (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
+                  if (!e.url) return;
+                  if (isPermanentlyFailed(e)) failedUrls.add(e.url);
+                });
+              } catch {}
+            }
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              const showDir = path.join(base, d);
+              fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (failedUrls.has(r.url)) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Reviews still needing fullText: $REMAINING"
+
+      - name: Chain next round
+        if: always() && inputs.max_rounds != '0' && inputs.test_mode != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REMAINING=${{ steps.count-remaining.outputs.remaining }}
+          CURRENT_ROUND=${{ inputs.current_round }}
+          MAX_ROUNDS=${{ inputs.max_rounds }}
+
+          INITIAL=${{ needs.prepare.outputs.total_reviews }}
+
+          echo "=== CHAIN DECISION ==="
+          echo "Round: $CURRENT_ROUND / $MAX_ROUNDS"
+          echo "Remaining reviews: $REMAINING (started with $INITIAL)"
+
+          # Stop if no progress was made (remaining >= initial means nothing was collected)
+          if [ "$REMAINING" -ge "$INITIAL" ] 2>/dev/null; then
+            echo "No progress this round ($INITIAL → $REMAINING). Stopping chain to avoid infinite loop."
+            exit 0
+          fi
+
+          # Stop if no more rounds
+          if [ "$CURRENT_ROUND" -ge "$MAX_ROUNDS" ]; then
+            echo "Reached max rounds ($MAX_ROUNDS). Chain complete."
+            exit 0
+          fi
+
+          # Stop if fewer than 50 reviews remain (diminishing returns)
+          if [ "$REMAINING" -lt 50 ]; then
+            echo "Only $REMAINING reviews remaining (< 50 threshold). Chain complete."
+            exit 0
+          fi
+
+          NEXT_ROUND=$((CURRENT_ROUND + 1))
+
+          echo "Dispatching round $NEXT_ROUND..."
+          echo "  Reviews remaining: $REMAINING"
+          echo "  Rounds remaining: $((MAX_ROUNDS - NEXT_ROUND + 1))"
+
+          gh workflow run bulk-collect-review-texts.yml \
+            -f parallel_jobs=${{ inputs.parallel_jobs }} \
+            -f max_per_job=${{ inputs.max_per_job }} \
+            -f batch_size=${{ inputs.batch_size }} \
+            -f browserbase_enabled=${{ inputs.browserbase_enabled }} \
+            -f browserbase_per_job=${{ inputs.browserbase_per_job }} \
+            -f retry_failed=${{ inputs.retry_failed }} \
+            -f archive_first=${{ inputs.archive_first }} \
+            -f content_tier="${{ inputs.content_tier }}" \
+            -f exclude_domains="${{ inputs.exclude_domains }}" \
+            -f aggressive=${{ inputs.aggressive }} \
+            -f test_mode=false \
+            -f max_rounds="$MAX_ROUNDS" \
+            -f current_round="$NEXT_ROUND"
+
+          echo "Round $NEXT_ROUND dispatched successfully."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Bulk Collect Review Texts Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Auto-trigger LLM scoring if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Count reviews needing LLM scoring (have scorable text, no score)
+          UNSCORED=$(node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const base = "data/review-texts";
+            // Load global failed-fetches to exclude permanently failed URLs
+            // (scripts/lib/failed-fetch-policy.js — single source of truth, BRO-2266)
+            const { isPermanentlyFailed } = require("./scripts/lib/failed-fetch-policy");
+            let failedUrls = new Set();
+            const globalFF = path.join(base, "failed-fetches.json");
+            if (fs.existsSync(globalFF)) {
+              try {
+                const ff = JSON.parse(fs.readFileSync(globalFF, "utf8"));
+                (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
+                  if (!e.url) return;
+                  if (isPermanentlyFailed(e)) failedUrls.add(e.url);
+                });
+              } catch {}
+            }
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              const showDir = path.join(base, d);
+              fs.readdirSync(showDir).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(showDir, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
+                  if (r.contentTier === "invalid") return;
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
+                  if (!hasText && !hasExcerpt) return;
+                  const needsScore = !r.assignedScore && !r.llmScore && !r.humanReviewScore;
+                  const needsRescore = !!r.rescoreReason;
+                  if (needsScore || needsRescore) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing LLM scoring: $UNSCORED"
+
+          THRESHOLD=100
+          if [ "$UNSCORED" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping auto-trigger."
+            exit 0
+          fi
+
+          # Check if LLM scoring is already running or queued
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=llm-ensemble-score.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "LLM scoring already active ($RUNNING running, $QUEUED queued). Skipping."
+            exit 0
+          fi
+
+          # Cap batch at 400 (safe under 6-hour timeout)
+          LIMIT=400
+          if [ "$UNSCORED" -lt "$LIMIT" ]; then
+            LIMIT=$UNSCORED
+          fi
+
+          echo "Triggering LLM scoring for $UNSCORED reviews (limit=$LIMIT)..."
+          gh workflow run llm-ensemble-score.yml \
+            -f limit=$LIMIT \
+            -f run_calibration=false
+
+          echo "LLM scoring auto-triggered successfully."

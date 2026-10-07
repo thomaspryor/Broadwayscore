@@ -1,0 +1,147 @@
+name: Audit Critic Coverage
+
+# Weekly cron — Mondays 09:00 UTC (Sunday night ET).
+# Compares each active T1/T2 critic's Muckrack page to our reviews.json,
+# bucketizes gaps, and commits the audit + bucket reports to data/audit/.
+# Surfaces misattributions and true missing Broadway reviews so they can be
+# fixed/ingested before they pile up.
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Mondays 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-critic-coverage
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Run critic coverage audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/audit-critic-coverage.js
+
+      - name: Bucketize coverage gaps
+        run: node scripts/audit-critic-coverage-bucket.js
+
+      - name: Write weekly history snapshot
+        run: node -e "require('./scripts/lib/critic-coverage-history-snapshot').writeWeeklySnapshot()"
+
+      - name: Check coverage drift
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/lib/critic-coverage-checks/coverage-drift.check.js
+
+      # Card #627: outlet-registry standingCoverage is DERIVED from measured
+      # Broadway coverage, so it rots unless something re-measures. This is the
+      # natural home — the same weekly job already reasons about per-outlet
+      # coverage behaviour. Read-only and non-blocking (|| true): drift is a
+      # judgement call for the operator, not a reason to fail the audit. The
+      # promote/demote lines land in the run log and the step summary.
+      - name: Check standingCoverage drift (advisory)
+        run: |
+          node scripts/audit-standing-coverage.js --strict > /tmp/standing-drift.txt 2>&1 || DRIFTED=1
+          cat /tmp/standing-drift.txt
+          if [ "${DRIFTED:-0}" = "1" ]; then
+            {
+              echo '### ⚠️ standingCoverage drift — outlet-registry.json needs review'
+              echo '```'
+              tail -20 /tmp/standing-drift.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Card #640: the mirror check for coverageExpectation (the "outlet does
+      # NOT review theatre" suppression claim) — same rot risk in the opposite
+      # direction: a wrong claim here HIDES a real gap instead of just adding
+      # noise. Read-only and non-blocking (|| true), same as standingCoverage.
+      - name: Check coverageExpectation drift (advisory)
+        run: |
+          node scripts/audit-standing-coverage.js --coverage-expectation --strict > /tmp/coverage-expectation-drift.txt 2>&1 || DRIFTED=1
+          cat /tmp/coverage-expectation-drift.txt
+          if [ "${DRIFTED:-0}" = "1" ]; then
+            {
+              echo '### ⚠️ coverageExpectation drift — outlet-registry.json needs re-decision'
+              echo '```'
+              tail -20 /tmp/coverage-expectation-drift.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Print summary
+        run: |
+          if [ -f data/audit/critic-coverage-buckets.md ]; then
+            head -30 data/audit/critic-coverage-buckets.md
+          fi
+
+      - name: Commit and push audit reports
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Stage paths individually so a missing/gitignored file (buckets.md) doesn't
+          # abort staging of the others. Drop buckets.md entirely — gitignored
+          # (`/data/audit/**/*.md`), never tracked, harmless to skip.
+          for f in data/audit/critic-coverage-audit.json \
+                   data/audit/critic-coverage-buckets.json \
+                   data/audit/critic-coverage-cooldown.json \
+                   data/audit/outlet-heartbeat.json \
+                   data/audit/outlet-heartbeat-state.json; do
+            if [ -f "$f" ]; then
+              git add "$f"
+            else
+              echo "skip (missing): $f"
+            fi
+          done
+          if [ -d data/audit/critic-coverage-history ]; then
+            shopt -s nullglob
+            snapshots=( data/audit/critic-coverage-history/*.json )
+            shopt -u nullglob
+            if [ ${#snapshots[@]} -gt 0 ]; then
+              git add "${snapshots[@]}"
+            else
+              echo "skip (empty dir): data/audit/critic-coverage-history"
+            fi
+          else
+            echo "skip (missing dir): data/audit/critic-coverage-history"
+          fi
+          echo "--- Staged files ---"
+          git diff --cached --stat
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+          else
+            git commit -m "audit: weekly critic coverage report"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::push failed; will retry next week"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Critic Coverage Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,982 @@
+name: LLM Ensemble Score Reviews
+
+# Separate concurrency groups per rescore_reason allow parallel scoring of disjoint file sets.
+# Default group "scoring-reviews" serializes regular (scheduled/bulk) runs; "scoring-reviews-{reason}" for
+# targeted rescores; "scoring-reviews-show-{id}" for any show-targeted dispatch (ingest-urls, opening night)
+# so it never queues behind the 350-min scheduled batch (BRO-4466). Guarded by tests/unit/scoring-concurrency-lane.test.mjs.
+concurrency:
+  group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || (inputs.show_id && format('-show-{0}', inputs.show_id)) || '' }}
+  cancel-in-progress: false
+
+on:
+  schedule:
+    - cron: '30 4 * * *'  # Daily at 4:30 AM UTC — after rebuild (4 AM), before adjudicate (5:15 AM)
+  # Manual trigger with options
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show slug to process (leave empty for all)'
+        required: false
+        default: ''
+      limit:
+        description: 'Max reviews to process (leave empty for no limit)'
+        required: false
+        default: ''
+      max_cost:
+        description: 'Max cumulative token cost in USD before aborting (circuit breaker, --ensemble only; leave empty for unlimited)'
+        required: false
+        default: ''
+      run_calibration:
+        description: 'Run calibration after scoring (weekly Sunday auto-run only)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      run_validation:
+        description: 'Run aggregator validation after scoring'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      dry_run:
+        description: 'Dry run (no file changes)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      needs_rescore:
+        description: 'Only rescore reviews flagged with needsRescore=true'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      rescore_reason:
+        description: 'Filter rescores to this reason prefix (e.g. "fullText added" or "re-ensemble"). Enables parallel runs.'
+        required: false
+        default: ''
+        type: string
+      outdated:
+        description: 'Re-score reviews with promptVersion older than current PROMPT_VERSION'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      stale_scores:
+        description: 'Score reviews with stale excerpt-based scores that now have fullText'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      retry_emergency:
+        description: 'Retry stuck singleModelEmergency reviews once (auto-clears flag if 2+ models succeed)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      upgrade_ensemble:
+        description: 'Upgrade old single-model scores to ensemble scoring (llmScore but no ensembleData)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      rescore:
+        description: 'Re-score all reviews (even already scored ones)'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      chain:
+        description: 'Auto-trigger next batch if unscored reviews remain'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+      remaining_batches:
+        description: 'Max remaining batches for chaining (decrements each run)'
+        required: false
+        default: '0'
+      shard:
+        description: 'Shard index for parallel runs (0-based)'
+        required: false
+        default: ''
+      total_shards:
+        description: 'Total number of parallel shards'
+        required: false
+        default: ''
+      fast_rebuild:
+        description: 'After scoring, dispatch rebuild-fast.yml instead of rebuild-reviews.yml. Use for /ingest UI flows where reviews must reach the live page in <20 min.'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+
+permissions:
+  contents: write
+  actions: write
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+  # OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}  # Kimi disabled — 3-model ensemble is faster and equally accurate
+
+jobs:
+  ensemble-score:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # fetch-depth: 0 keeps the full commit graph so push-with-retry.sh's
+          # rebase/merge/reset path (the "Commit and push changes" step below)
+          # always has a resolvable merge-base — a depth-1 checkout is the #209
+          # parentless-root shape (see opening-night-poller.yml's Checkout).
+          #
+          # filter: blob:none (BRO-4231, same change as BRO-4273/BRO-4219 on
+          # the poller): keep that graph but stop downloading every historical
+          # blob of this repo's data/*.json rewrites. Measured on run
+          # 36523767401 (2026-09-29): this step took 24m37s of a 27-minute run
+          # whose scoring took 3 seconds, and the workflow ran 30 times in the
+          # preceding 12.5 hours (dispatched after every rebuild with unscored
+          # reviews, plus self-chained batches). The same full-graph checkout
+          # with the filter takes ~35s (poller run 36533022161, land.yml).
+          # Nothing here reads history: the job diffs the index against HEAD
+          # (`git diff --staged`) and pushes through push-with-retry.sh, which
+          # runs on this exact checkout shape in the poller, land.yml,
+          # autonomous-merge.yml and check-direct-push-to-main.yml.
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh review-texts before scoring
+        env:
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          # Review-texts was checked out at job start, but fixes may have been pushed
+          # while this run was queued. Pull latest to avoid scoring stale data.
+          # (Becky Shaw incident: wrongShow:false was pushed but scoring used the old checkout)
+          cd data/review-texts
+          git remote set-url origin "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" 2>/dev/null || true
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            # Targeted refresh: only pull the specific show directory (faster)
+            echo "Refreshing review-texts for show: ${{ github.event.inputs.show_id }}"
+            git fetch origin main --depth=1
+            git checkout origin/main -- "${{ github.event.inputs.show_id }}/" 2>/dev/null || echo "Show directory not found in remote — using existing checkout"
+          else
+            # Full refresh: pull all latest changes
+            echo "Refreshing all review-texts..."
+            git pull origin main --rebase --quiet 2>/dev/null || echo "Pull failed — using existing checkout"
+          fi
+          cd ../..
+          echo "Review-texts refreshed"
+
+      - name: Check if scoring needed
+        id: check-needed
+        run: |
+          # BRO-3029: this gate used to be schedule-only (if:
+          # github.event_name == 'schedule'), so every workflow_dispatch —
+          # including the ~49-runs-in-2-days per-show auto-dispatch from
+          # scripts/lib/dispatch-rescore.js — always spun up the full
+          # pipeline even when there was nothing to score for that show,
+          # producing near-empty scoring-progress.json commits. Now runs on
+          # every trigger; downstream steps gate on `skip` OR `force_run`
+          # (set below) so an EXPLICIT dispatch request — a show_id, or any
+          # of the action-selecting inputs — is NEVER swallowed by this
+          # GLOBAL (corpus-wide, not per-show) count. That matters most for
+          # the Phase-4 runaway guard below (EMERGENCY -gt 50): its own log
+          # message tells the operator to manually dispatch
+          # retry_emergency=true after investigating, and this gate must not
+          # then block that recovery dispatch just because the rest of the
+          # corpus happens to have nothing pending.
+          FORCE_RUN=false
+          if [ -n "${{ github.event.inputs.show_id }}" ] || \
+             [ "${{ github.event.inputs.rescore }}" == "true" ] || \
+             [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || \
+             [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ] || \
+             [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || \
+             [ "${{ github.event.inputs.stale_scores }}" == "true" ] || \
+             [ "${{ github.event.inputs.outdated }}" == "true" ] || \
+             [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            FORCE_RUN=true
+          fi
+          echo "force_run=$FORCE_RUN" >> $GITHUB_OUTPUT
+          # ONE canonical counter for all four phases (task #652). Every phase
+          # count used to be its own hand-rolled `node -e` block here, each
+          # LOOSER than the selection filter scripts/llm-scoring/index.ts
+          # actually applies. Because this is a STRICT cascade (phases 2-4 only
+          # run once UNSCORED hits 0), that drift starved the whole thing: on
+          # 2026-08-02 the old block counted 147 unscored reviews of which the
+          # scorer could act on exactly 1. The other 146 were files it skips
+          # before the model call — 97 not scoreable, 33 already carrying a
+          # terminal text-gate stamp, 16 with no scoreable text at all — so the
+          # counter could never reach 0 and Phase 4 had never executed once (38
+          # reviews stuck at singleModelEmergencyRetryCount=0).
+          # scripts/count-scoring-queue.js shares its predicates with the
+          # scorer and PRINTS the excluded residue rather than hiding it.
+          # One scan (~15s over 41K files): counts to stdout, human report to stderr.
+          # --min-scanned + --require-shows make a half-checked-out corpus FAIL
+          # rather than report a drained queue (which would silently stop the
+          # scorer forever on a green run).
+          # BRO-2423 (port of BRO-545's guard-escalation auto-recovery): a scan
+          # that keeps failing run after run (a checkout that stays broken)
+          # used to hard-block this step forever with no real-time escalation
+          # — see scripts/check-scoring-queue-guard.js header. Fails loud on
+          # the first occurrence exactly like a bare count-scoring-queue.js
+          # call would; only auto-recovers (reporting a safe zero-count no-op)
+          # after 2+ consecutive failures past a 24h floor.
+          node scripts/check-scoring-queue-guard.js --github-output --require-shows --min-scanned=10000 \
+            > /tmp/scoring-queue-counts.txt
+          # Match the WHOLE line, not a prefix: `grep '^unscored=' | cut -f2` would
+          # accept `unscored=1=bad` as the number 1 and then append that raw line
+          # to $GITHUB_OUTPUT. Anchoring on ^key=<digits>$ and re-emitting the
+          # validated value is the only form that can't smuggle garbage through.
+          # Without this, a malformed/short CLI output leaves the vars empty;
+          # `[ "" -ge 1 ]` returns 2, every branch below falls through, and the
+          # run silently reports skip=true. Fail loudly instead.
+          read_count() {
+            grep -E "^$1=[0-9]+$" /tmp/scoring-queue-counts.txt | head -1 | cut -d= -f2
+          }
+          UNSCORED=$(read_count unscored)
+          RESCORE=$(read_count rescore)
+          STALE=$(read_count stale)
+          EMERGENCY=$(read_count emergency)
+          for pair in "unscored:$UNSCORED" "rescore:$RESCORE" "stale:$STALE" "emergency:$EMERGENCY"; do
+            name="${pair%%:*}"; value="${pair#*:}"
+            if [ -z "$value" ]; then
+              echo "::error::count-scoring-queue.js did not emit a numeric '$name' — refusing to gate the cascade on it."
+              cat /tmp/scoring-queue-counts.txt
+              exit 1
+            fi
+            echo "$name=$value" >> $GITHUB_OUTPUT
+          done
+          echo "Unscored reviews: $UNSCORED"
+          # Lowered from 5 to 1 on 2026-04-11. The 5-review threshold meant
+          # 1-4 unscored reviews would sit indefinitely — combined with the
+          # retry-pending-scores bug (which cleared the pending flag on
+          # extraction failure without leaving a marker), this let 70 orphan
+          # reviews accumulate across 57 shows with a median age of 57 days
+          # before being caught by validate-data.js's new silent-gap guard.
+          # Running the scorer daily on even a single unscored review is fine
+          # — the script has its own rate limiting and per-run limit.
+          if [ "$UNSCORED" -ge 1 ]; then
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "run_rescore=false" >> $GITHUB_OUTPUT
+            echo "run_stale=false" >> $GITHUB_OUTPUT
+          else
+            # No unscored reviews — check for reviews flagged needsRescore (highest priority fallback)
+            echo "Reviews flagged needsRescore: $RESCORE"
+            if [ "$RESCORE" -gt 0 ]; then
+              echo "Found $RESCORE reviews needing rescore."
+              echo "skip=false" >> $GITHUB_OUTPUT
+              echo "run_rescore=true" >> $GITHUB_OUTPUT
+              echo "run_stale=false" >> $GITHUB_OUTPUT
+            else
+              # No rescore needed — check for stale excerpt-based scores (lowest priority)
+              echo "Stale excerpt-based scores: $STALE"
+              if [ "$STALE" -gt 0 ]; then
+                echo "Found stale scores to sweep."
+                echo "skip=false" >> $GITHUB_OUTPUT
+                echo "run_rescore=false" >> $GITHUB_OUTPUT
+                echo "run_stale=true" >> $GITHUB_OUTPUT
+                echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
+              else
+                # Phase 4: stuck-emergency retry (lowest priority)
+                # Reviews flagged singleModelEmergency=true that haven't been auto-retried yet.
+                # Most common cause: Gemini was rate-limited at original scoring time. Retry once;
+                # if 2+ models succeed now, the flag clears naturally inside ensemble.ts. If still
+                # single-model, retryCount=1 sticks and the next cron skips it (see scripts/llm-scoring/index.ts retryEmergency filter).
+                echo "Stuck-emergency reviews eligible for retry: $EMERGENCY"
+                if [ "$EMERGENCY" -gt 50 ]; then
+                  # Runaway guard: a model outage that flagged dozens of reviews per day means
+                  # something is systemically broken (e.g. a model API key revoked). Don't burn
+                  # the daily budget retrying — alert and require manual intervention.
+                  echo "::warning::Stuck-emergency count ($EMERGENCY) exceeds runaway cap (50). Auto-retry disabled — investigate before manual rescore."
+                  echo "skip=true" >> $GITHUB_OUTPUT
+                  echo "run_rescore=false" >> $GITHUB_OUTPUT
+                  echo "run_stale=false" >> $GITHUB_OUTPUT
+                  echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
+                elif [ "$EMERGENCY" -gt 0 ]; then
+                  echo "Found $EMERGENCY stuck-emergency reviews — dispatching one-shot retry."
+                  echo "skip=false" >> $GITHUB_OUTPUT
+                  echo "run_rescore=false" >> $GITHUB_OUTPUT
+                  echo "run_stale=false" >> $GITHUB_OUTPUT
+                  echo "run_emergency_retry=true" >> $GITHUB_OUTPUT
+                else
+                  echo "No unscored, no rescore, no stale, no stuck-emergency. Skipping."
+                  echo "skip=true" >> $GITHUB_OUTPUT
+                  echo "run_rescore=false" >> $GITHUB_OUTPUT
+                  echo "run_stale=false" >> $GITHUB_OUTPUT
+                  echo "run_emergency_retry=false" >> $GITHUB_OUTPUT
+                fi
+              fi
+            fi
+          fi
+
+      - name: Build CLI arguments
+        id: build-args
+        if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
+        run: |
+          ARGS="--ensemble"
+
+          # Show filter
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
+          else
+            ARGS="$ARGS --all"
+          fi
+
+          # Limit — scheduled runs default to 400
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ github.event.inputs.limit }}"
+          elif [ "${{ github.event_name }}" == "schedule" ]; then
+            ARGS="$ARGS --limit=400"
+          fi
+
+          # Budget cap — circuit breaker for large manual dispatches (BRO-78).
+          # index.ts requires --ensemble to track per-model token deltas, which
+          # every ARGS build above already sets unconditionally.
+          # Validate the input is a positive number: index.ts's own parsing
+          # (parseFloat || 0) silently treats NaN/negative as "unlimited" —
+          # exactly backwards for a cost-safety feature — so a typo here must
+          # fail loud rather than pass through and silently disable the cap.
+          MAX_COST="${{ github.event.inputs.max_cost }}"
+          if [ -n "$MAX_COST" ]; then
+            if ! [[ "$MAX_COST" =~ ^[0-9]+(\.[0-9]+)?$ ]] || ! awk -v v="$MAX_COST" 'BEGIN { exit !(v > 0) }'; then
+              echo "::error::max_cost must be a positive number (got '$MAX_COST')"
+              exit 1
+            fi
+            ARGS="$ARGS --max-cost=$MAX_COST"
+          fi
+
+          # Calibration — weekly only (Sunday scheduled) or manual override
+          # Saves ~7 min/run by not loading 17K+ human reviews for accuracy stats
+          DOW=$(date -u +%u)  # 7 = Sunday
+          if [ "${{ github.event.inputs.run_calibration }}" == "true" ]; then
+            ARGS="$ARGS --calibrate"
+          elif [ "${{ github.event_name }}" == "schedule" ] && [ "$DOW" == "7" ]; then
+            ARGS="$ARGS --calibrate"
+            echo "Sunday scheduled run — including calibration"
+          fi
+
+          # Validation
+          if [ "${{ github.event.inputs.run_validation }}" == "true" ]; then
+            ARGS="$ARGS --validate"
+          fi
+
+          # Dry run
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          # Needs rescore (only reviews flagged for rescoring)
+          # Also auto-triggered when scheduled run detects needsRescore backlog
+          if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
+            ARGS="$ARGS --needs-rescore"
+          fi
+
+          # Rescore reason filter (enables parallel runs for different reason buckets)
+          if [ -n "${{ github.event.inputs.rescore_reason }}" ]; then
+            ARGS="$ARGS --rescore-reason=${{ github.event.inputs.rescore_reason }}"
+          fi
+
+          # Outdated (rescore reviews with old prompt versions)
+          if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
+            ARGS="$ARGS --outdated"
+          fi
+
+          # Stale scores (fullText + old excerpt-based score)
+          if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
+            ARGS="$ARGS --stale-scores"
+          fi
+
+          # Retry stuck singleModelEmergency reviews (auto-clears flag if 2+ models succeed on retry)
+          if [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_emergency_retry }}" == "true" ]; then
+            ARGS="$ARGS --retry-emergency"
+          fi
+
+          # Upgrade single-model scores to ensemble
+          if [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ]; then
+            ARGS="$ARGS --upgrade-ensemble"
+          fi
+
+          # Rescore all (even already scored)
+          if [ "${{ github.event.inputs.rescore }}" == "true" ]; then
+            ARGS="$ARGS --rescore"
+          fi
+
+          # Sharding for parallel runs
+          if [ -n "${{ github.event.inputs.shard }}" ] && [ -n "${{ github.event.inputs.total_shards }}" ]; then
+            ARGS="$ARGS --shard=${{ github.event.inputs.shard }} --total-shards=${{ github.event.inputs.total_shards }}"
+          fi
+
+          # Batch API mode (task #516) — scheduled runs only.
+          # Vendor Batch APIs bill at 50% but are submit-now/poll-later
+          # (minutes to 24h). The nightly cron has no latency requirement, so
+          # it takes the discount. workflow_dispatch and chain=true runs stay
+          # synchronous: those are the opening-night paths where getting a
+          # score onto the site within minutes is the entire point.
+          # Kill switch: repo variable DISABLE_BATCH_SCORING=1.
+          if [ "${{ github.event_name }}" == "schedule" ] \
+             && [ "${{ github.event.inputs.chain }}" != "true" ] \
+             && [ "${{ vars.DISABLE_BATCH_SCORING }}" != "1" ]; then
+            # Poll budget sits well under this job's timeout-minutes: 350,
+            # leaving room for the merge, the checkpoint push, and the
+            # rescore-drain step afterwards. If the batch outlives the budget,
+            # state persists and the next scheduled run resumes polling.
+            ARGS="$ARGS --batch --batch-poll-minutes=120"
+            echo "Scheduled run — using --batch (50% vendor discount)"
+          fi
+
+          # Always verbose in CI
+          ARGS="$ARGS --verbose"
+
+          echo "args=$ARGS" >> $GITHUB_OUTPUT
+
+      - name: Configure git for checkpoints
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # BRO-2423 (port of BRO-545's guard-escalation auto-recovery): a
+      # scoring-pipeline crash that keeps recurring run after run used to
+      # hard-block this step forever with no real-time escalation (its own
+      # "Notify on failure" call below carries no severity override, defaults
+      # to 'low' — a no-op for anything but 'critical') — see
+      # scripts/run-ensemble-scoring-guard.js header. Fails loud on the first
+      # occurrence exactly like a bare npx ts-node call would; only
+      # auto-recovers after 2+ consecutive crashes past a 24h floor.
+      - name: Run ensemble scoring pipeline
+        if: steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true'
+        run: |
+          node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}
+
+      # Backstop for multi-show blog posts (interestedbystander etc.): every
+      # text writer isolates the show's own section at write time, but a file
+      # written before that landed, or a push conflict that keeps the longer
+      # fullText, leaves the whole post in place and other shows get scored
+      # into this one. Idempotent, scoped to MULTI_SHOW_POST_HOSTS; rewritten
+      # files get needsRescore, drained below.
+      - name: Isolate multi-show blog post sections
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/isolate-multi-show-sections.js --apply
+
+      # Hand re-fetched reviews back to the scorer when an automated
+      # text-quality verdict (not_a_review / garbage_text / truncated_text,
+      # heuristic+llm nonReviewFlag) predates the complete fullText now on
+      # disk. The verdict moves into priorAutomatedTextVerdicts[] and the file
+      # is flagged needsRescore, so the drain below re-judges it on the new
+      # text (a re-rejection stamps a fresh rejectedAt, so no loop). Never
+      # touches wrong_production/wrong_show or human verdicts; see
+      # scripts/lib/stale-automated-text-verdict.js. Surge guard: >25 files
+      # refuses (predicate/writer regression), continue-on-error keeps scoring.
+      - name: Clear stale automated text verdicts on re-fetched reviews
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/clear-stale-automated-text-verdicts.js --apply
+
+      # Turn excerpt-based scores whose full text has since arrived into
+      # rescore requests before the capped drain below picks them up. The
+      # collect-time trigger only fires when a score already exists; when the
+      # text lands first (another job) and an excerpt score is merged on top,
+      # nothing flagged it (School Girls 2026-09-29: 6 of 19 reviews). The
+      # predicate skips human/extracted-star scores and files already rescored
+      # on the current text (no re-flag loop). Own if: so it still runs when
+      # the drain is skipped; the drain's cap bounds spend.
+      - name: Flag excerpt-scored reviews that now have full text
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/audit-stale-score-input.js --fix
+
+      # Anti-starvation drain (2026-07-11). check-needed is a strict priority
+      # cascade: the needsRescore branch only fires when UNSCORED==0 corpus-wide.
+      # New reviews arrive near-continuously, so flagged files sat for days (47
+      # WE files found 2026-07-11; JCS opening-night flags from Jul 7 still
+      # pending Jul 11). This step runs AFTER the main scheduled scoring pass
+      # and drains a capped slice of the needsRescore backlog regardless of
+      # unscored inflow, so the queue can never be starved.
+      #
+      # No pre-count here on purpose: a hand-rolled backlog predicate drifts
+      # from the scorer's real filter (needsRescore===true + isScoreable,
+      # index.ts ~813) — the exact producer/consumer drift stuck-rescore-flag.js
+      # warns about. The scorer self-filters and exits cheaply at zero matches.
+      # Capped at 50/run to bound API spend; flags clear on success
+      # (rescoreCompletedAt), so the step is idempotent.
+      # Skipped when the main pass already ran in rescore mode.
+      # Kill switch: set repo variable DISABLE_RESCORE_DRAIN=1.
+      - name: Drain needsRescore backlog (capped, scheduled only)
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true' && steps.check-needed.outputs.run_rescore != 'true' && vars.DISABLE_RESCORE_DRAIN != '1'
+        run: |
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/index.ts --ensemble --all --needs-rescore --limit=50 --verbose
+
+      # Comparative within-band re-scoring (BRO-37, 2026-08-26). anchored-v6
+      # scores each review in ISOLATION, so genuine strong-rave 5-star reviews
+      # all snap to the same q3≈97 within-band anchor (War Horse WE 2026 showed
+      # 97/97/97/97 across four 5-star raves whose prose warmth genuinely
+      # differs — corpus 5-star band spiked at 96-97, 122/198 reviews). The
+      # comparative pass (scripts/lib/comparative-band.js, validated 2026-06-05)
+      # re-scores a show's same-band group together so warmth differences
+      # spread instead of collapsing. Was built as a manual-only script and
+      # never wired into the regular pipeline, so new anchored-v6 reviews kept
+      # clustering — this step closes that gap. Idempotent (skips groups where
+      # every entry already carries a comparative verdict — see script header)
+      # and capped at 30 API-calling groups/run to bound spend; the group-level
+      # skip means most scheduled runs process a small delta, not the backlog.
+      # Kill switch: set repo variable DISABLE_COMPARATIVE_RESCORE=1.
+      # Skipped on dry_run dispatches (BRO-4467): the script's own --dry-run
+      # still pays for every model call, and dry_run sets force_run above, so
+      # a "dry run" used to spend up to 30 groups and write scores.
+      - name: Comparative within-band rescore (WE/OWE anchored-v6, capped)
+        if: (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true') && vars.DISABLE_COMPARATIVE_RESCORE != '1' && github.event.inputs.dry_run != 'true'
+        continue-on-error: true
+        run: |
+          # BRO-3029: used to always pass --all-we, so a single-show dispatch
+          # (e.g. the per-show auto-rescore from dispatch-rescore.js) fired a
+          # comparative pass across EVERY West End show's anchored-v6 backlog,
+          # rewriting unrelated shows' scores nobody aimed this run at.
+          # comparative-rescore.ts already supports --show=ID; a Broadway
+          # show_id just finds zero anchored-v6 groups and no-ops (that scope
+          # is WE/OWE-only by design — see the script's own header).
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --show=${{ github.event.inputs.show_id }} --max-rescores=30
+          else
+            npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/comparative-rescore.ts --all-we --max-rescores=30
+          fi
+
+      # Liveness snapshot (task #597): the drain step above only tells you it
+      # RAN, not whether the backlog actually moved — a queue can sit at the
+      # same count across every green drain (bw-v6-decompression frozen at
+      # 141 for ~6 days, rescore-lifecycle.js header). Snapshots the unblocked
+      # needsRescore count every scheduled run regardless of whether the drain
+      # fired this cycle, so 3 flat samples surface in the daily digest
+      # (health-check.js's progressWatchResults). Never fails the job.
+      - name: Snapshot progress-watch state
+        if: always() && github.event_name == 'schedule'
+        continue-on-error: true
+        run: node scripts/check-progress-stalls.js
+
+      - name: Check for changes
+        id: check-changes
+        if: always() && github.event.inputs.dry_run != 'true'
+        run: |
+          # data/audit/progress-watch-state.json is ALSO listed explicitly
+          # (redundant with the data/audit/ directory glob below, which
+          # already stages it) so scripts/lib/api-fallback-writer-drift.js's
+          # static git-add scanner can see the literal path and confirm the
+          # single-writer apiFallbackSafe registry claim in
+          # core-data-merge-registry.js (BRO-2722) — a bare directory glob
+          # is invisible to that scanner.
+          bash scripts/lib/git-add-existing.sh data/collection-state/ data/llm-scoring-runs.json data/llm-scoring-garbage-skips.json data/audit/progress-watch-state.json data/audit/
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            git diff --staged --stat
+          fi
+          # Check if actual review files changed via scoring-progress.json
+          # (review-texts is a nested git repo, so git diff --staged can't detect changes there).
+          # Reads filesModified (every saveReviewFile() call this run, scored OR
+          # rejected) instead of processed alone — an all-rejected batch still
+          # writes rejectedAt/rejectionReason to disk and must not read as
+          # "nothing happened" (P1 352637c5-416f-81ab).
+          HAS_SCORED=$(node -e "
+            const { hasScoredReviews } = require('./scripts/lib/scoring-progress-gate.js');
+            let p = {};
+            try { p = JSON.parse(require('fs').readFileSync('data/collection-state/scoring-progress.json','utf8')); } catch {}
+            console.log(hasScoredReviews(p) ? '1' : '0');
+          ")
+          if [ "$HAS_SCORED" = "1" ]; then
+            echo "has_scored_reviews=true" >> $GITHUB_OUTPUT
+            echo "Review files changed this run (scored and/or rejected-with-state-write)"
+          else
+            echo "has_scored_reviews=false" >> $GITHUB_OUTPUT
+            echo "No review files changed this run"
+          fi
+
+      - name: Check for large files
+        if: always() && steps.check-changes.outputs.has_changes == 'true'
+        uses: ./.github/actions/check-file-sizes
+
+      # Never on a dry_run dispatch (BRO-4467): one writer forgetting to honor
+      # dry_run would otherwise reach the private repo.
+      - name: Push review-texts to private repo
+        if: always() && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: LLM ensemble scoring"
+
+      # Wall-clock time AFTER the push attempt finished — NOT the local commit's
+      # committer timestamp. push-review-texts can commit locally then spend
+      # several retry/rebase cycles (random 5-15s backoff, up to 5 attempts)
+      # before `git push origin main` actually lands. A rebuild-reviews.yml run
+      # dispatched in that gap has already checked out a ref that predates the
+      # push, even though it's "after" our local commit time — using commit
+      # time there would wrongly mark that run as safe. This timestamp is a
+      # safe upper bound: any run dispatched before it definitely couldn't see
+      # the push (ship-check finding, Notion 39d637c5-416f-81039).
+      - name: Record score-push timestamp
+        if: always()
+        id: score-push-time
+        run: echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push changes
+        if: always() && steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Build commit message
+          SHOW_MSG=""
+          if [ -n "${{ github.event.inputs.show_id }}" ]; then
+            SHOW_MSG=" for ${{ github.event.inputs.show_id }}"
+          fi
+
+          git commit -m "feat: Ensemble LLM score reviews${SHOW_MSG}
+
+          Models: Claude Sonnet + GPT-4o + Gemini 2.0 Flash (v5)
+          Triggered by: @${{ github.actor }}
+
+          Co-Authored-By: Claude <noreply@anthropic.com>"
+
+          # Stash unstaged changes (review-texts files modified by scoring but pushed separately)
+          git stash --include-untracked --quiet 2>/dev/null || true
+
+          # Use shared push-with-retry script (handles rebase, conflict resolution,
+          # and manual field restoration). Replaces 70-line inline loop.
+          bash scripts/lib/push-with-retry.sh 5 "HEAD:${{ github.ref_name }}"
+
+          # Restore stashed changes (review-texts files for downstream steps)
+          git stash pop --quiet 2>/dev/null || true
+
+      - name: Push core data to private repo
+        if: always() && github.event.inputs.dry_run != 'true'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from llm-ensemble-score'
+
+      - name: Auto-trigger rebuild for non-chain runs
+        if: ${{ github.event.inputs.chain != 'true' && github.event_name != 'schedule' && github.event.inputs.dry_run != 'true' && steps.check-changes.outputs.has_changes == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Two rebuild targets:
+          #   - rebuild-reviews.yml (default): full ~15 min pipeline. Shared
+          #     concurrency group → "skip if active" is correct (a queued
+          #     rebuild would just cancel-in-progress=false serialize anyway).
+          #   - rebuild-fast.yml (fast_rebuild=true): ~5 min, per-run concurrency.
+          #     Multiple concurrent runs are SAFE and intended — the per-run
+          #     group exists exactly so opening-night ingests don't queue
+          #     behind unrelated rebuild-fast runs (memory/feedback_gha_concurrency_queue_limit.md).
+          #     So we MUST NOT skip if another rebuild-fast is in flight —
+          #     ship-check 2026-04-27 caught that the old code silently
+          #     swallowed the dispatch when an unrelated fast rebuild was
+          #     already running, leaving freshly scored reviews unrebuilt.
+          #
+          # Retry-on-rate-limit (Notion 362637c5-416f-81ce, 2026-05-16): the bare
+          # `gh workflow run` returned HTTP 403 once during a data session and
+          # `set -e` aborted the step, silently losing the rebuild dispatch.
+          # The market pages /opera, /broadway, /off-broadway, /west-end stayed
+          # frozen at their last-build snapshot until a manual rebuild fired the
+          # next day. Shared helper handles 403/429/secondary-rate-limit with
+          # exponential backoff; rebuild-fast.yml's 4-hourly cron is the safety
+          # net if all retries still fail.
+          # shellcheck source=scripts/lib/dispatch-with-retry.sh
+          source scripts/lib/dispatch-with-retry.sh
+
+          if [ "${{ github.event.inputs.fast_rebuild }}" = "true" ]; then
+            REBUILD_WF="rebuild-fast.yml"
+            REASON="Auto-triggered after LLM scoring (fast path — admin ingest)"
+            echo "Triggering $REBUILD_WF to incorporate new scores (per-run concurrency, no skip-if-active check)..."
+            dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
+            exit 0
+          fi
+
+          REBUILD_WF="rebuild-reviews.yml"
+          REASON="Auto-triggered after LLM scoring"
+
+          # Shared concurrency group on rebuild-reviews.yml — skip if active to
+          # prevent multiple scoring shards each queuing their own rebuild.
+          RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          ACTIVE=$((RUNNING + QUEUED + WAITING))
+          if [ "$ACTIVE" -gt 0 ]; then
+            echo "$REBUILD_WF already active ($RUNNING running, $QUEUED queued, $WAITING waiting)."
+
+            # Stranded-scores gap (Notion 39d637c5-416f-81039, 2026-07-14, run
+            # 29366309506): "skip if active" assumes the active run will pick up
+            # our scores. It won't if that run's "Checkout review-texts" step
+            # already executed before this job's push landed — rebuild-reviews.yml
+            # uses `ref: main` (a live branch ref, re-resolved when the checkout
+            # STEP runs, not frozen at dispatch time), so a merely QUEUED/WAITING
+            # run will actually self-heal once it starts. Only a genuinely
+            # RUNNING run (checkout already behind it) can be stuck stale — which
+            # is exactly what the incident run was ("1 running"). We can't query
+            # "has checkout run yet" via `gh run list`, so createdAt is a safe
+            # proxy: an active run created before the push is treated as
+            # possibly-stale and gets the supplement — a false positive here
+            # (a QUEUED run that would've self-healed) just costs one harmless
+            # extra rebuild-fast.yml dispatch. Without this check the scores sat
+            # stranded until the 4-hourly rebuild-fast safety-net cron (up to 4h
+            # on opening night). Only matters if we actually scored something
+            # this run (has_scored_reviews) — otherwise there's nothing to
+            # strand. Compare the oldest active run's createdAt against the
+            # score-push-time step's timestamp (captured AFTER the push attempt,
+            # not the local commit time — push-review-texts can retry for tens
+            # of seconds before landing, so commit time would wrongly clear a
+            # run dispatched in that gap); if uncertain, dispatch anyway (fail
+            # safe). rebuild-fast.yml has PER-RUN concurrency so this can never
+            # collide with the in-flight rebuild-reviews run.
+            if [ "${{ steps.check-changes.outputs.has_scored_reviews }}" = "true" ]; then
+              SCORE_COMMIT_TIME="${{ steps.score-push-time.outputs.timestamp }}"
+              OLDEST_RUNNING=$(gh run list --workflow="$REBUILD_WF" --status=in_progress --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
+              OLDEST_QUEUED=$(gh run list --workflow="$REBUILD_WF" --status=queued --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
+              OLDEST_WAITING=$(gh run list --workflow="$REBUILD_WF" --status=waiting --json createdAt --jq 'sort_by(.createdAt) | .[0].createdAt // empty' 2>/dev/null || echo "")
+              OLDEST_ACTIVE=$(printf '%s\n' "$OLDEST_RUNNING" "$OLDEST_QUEUED" "$OLDEST_WAITING" | grep -v '^$' | sort | head -1)
+
+              NEED_SUPPLEMENT=1
+              if [ -n "$SCORE_COMMIT_TIME" ] && [ -n "$OLDEST_ACTIVE" ]; then
+                SCORE_EPOCH=$(date -d "$SCORE_COMMIT_TIME" +%s 2>/dev/null || echo "")
+                ACTIVE_EPOCH=$(date -d "$OLDEST_ACTIVE" +%s 2>/dev/null || echo "")
+                if [ -n "$SCORE_EPOCH" ] && [ -n "$ACTIVE_EPOCH" ] && [ "$ACTIVE_EPOCH" -ge "$SCORE_EPOCH" ] 2>/dev/null; then
+                  NEED_SUPPLEMENT=0
+                  echo "Active $REBUILD_WF run (created $OLDEST_ACTIVE) postdates score commit ($SCORE_COMMIT_TIME) — it will include these scores. Skipping supplement."
+                fi
+              fi
+
+              if [ "$NEED_SUPPLEMENT" -eq 1 ]; then
+                echo "Active $REBUILD_WF run predates score commit (run=$OLDEST_ACTIVE, scores=$SCORE_COMMIT_TIME) — would strand fresh scores for up to 4h. Dispatching rebuild-fast.yml as a supplement."
+                dispatch_with_retry "rebuild-fast.yml" -f reason="Supplemental fast rebuild — active rebuild-reviews run predates fresh scores" || true
+              fi
+            else
+              echo "No reviews scored this run — nothing to strand. Skipping."
+            fi
+            exit 0
+          fi
+
+          echo "Triggering $REBUILD_WF to incorporate new scores..."
+          dispatch_with_retry "$REBUILD_WF" -f reason="$REASON" || true
+
+      - name: Count remaining unscored reviews
+        if: always() && (github.event.inputs.chain == 'true' || github.event_name == 'schedule') && github.event.inputs.dry_run != 'true' && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')
+        id: count-remaining
+        run: |
+          # Count review files without llmScore (excluding unscorable: roundups, garbage, no text)
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            let garbageSuffix = new Set();
+            try {
+              const g = JSON.parse(fs.readFileSync('data/llm-scoring-garbage-skips.json','utf8'));
+              if (Array.isArray(g)) g.forEach(e => {
+                if (e.filePath) { const m = e.filePath.match(/data\\/review-texts\\/(.+)/); if (m) garbageSuffix.add(m[1]); }
+              });
+            } catch {}
+            const dirs = fs.readdirSync(base).filter(d => { try { return fs.statSync(path.join(base,d)).isDirectory(); } catch(e) { return false; } });
+            let n = 0;
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base,d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const fp = path.join(base,d,f);
+                  const r = JSON.parse(fs.readFileSync(fp,'utf8'));
+                  if (r.llmScore || r.wrongShow || r.wrongProduction || r.wrongAttribution) return;
+                  if (r.duplicateOf || r.rejectionReason || r.isRoundupArticle) return;
+                  if (r.contentTier === 'invalid') return;
+                  if (garbageSuffix.has(d + '/' + f)) return;
+                  const hasText = r.fullText && r.fullText.length > 100;
+                  const hasExcerpt = r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt || r.pvExcerpt || r.nycExcerpt || (r.excerpt && r.excerpt.length > 50);
+                  if (!hasText && !hasExcerpt) return;
+                  n++;
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Unscored reviews remaining: $REMAINING"
+
+      - name: Log zero reviews scored
+        if: >-
+          always() && job.status != 'cancelled'
+          && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && steps.check-changes.outputs.has_scored_reviews == 'false'
+          && (steps.check-needed.outputs.skip != 'true' || steps.check-needed.outputs.force_run == 'true')
+        run: |
+          REMAINING="${{ steps.count-remaining.outputs.remaining }}"
+          echo "::notice::Scoring run processed 0 reviews with ${REMAINING} remaining unscored (likely all have insufficient text)"
+
+      - name: Chain next batch
+        if: >-
+          always() && job.status != 'cancelled'
+          && (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && steps.check-changes.outputs.has_scored_reviews == 'true'
+          && (fromJSON(steps.count-remaining.outputs.remaining) > 10 || github.event.inputs.outdated == 'true' || github.event.inputs.needs_rescore == 'true' || github.event.inputs.stale_scores == 'true' || github.event.inputs.upgrade_ensemble == 'true')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BATCHES_LEFT="${{ github.event.inputs.remaining_batches }}"
+          if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
+            if [ "${{ github.event_name }}" == "schedule" ]; then
+              BATCHES_LEFT=5
+            else
+              echo "No remaining batches. Stopping chain."
+              exit 0
+            fi
+          fi
+          if [ "$BATCHES_LEFT" -le 0 ] 2>/dev/null; then
+            echo "No remaining batches. Stopping chain."
+            exit 0
+          fi
+          NEXT_BATCHES=$((BATCHES_LEFT - 1))
+          LIMIT="${{ github.event.inputs.limit }}"
+          LIMIT="${LIMIT:-400}"
+          SHARD="${{ github.event.inputs.shard }}"
+          TOTAL_SHARDS="${{ github.event.inputs.total_shards }}"
+          echo "Triggering next batch (${NEXT_BATCHES} remaining after this)..."
+          echo "Reviews still unscored: ${{ steps.count-remaining.outputs.remaining }}"
+
+          CHAIN_ARGS="-f limit=$LIMIT -f chain=true -f remaining_batches=$NEXT_BATCHES -f run_calibration=false -f run_validation=false"
+          if [ -n "$SHARD" ] && [ -n "$TOTAL_SHARDS" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f shard=$SHARD -f total_shards=$TOTAL_SHARDS"
+          fi
+          # Pass through outdated flag so rescore chains continue rescoring
+          if [ "${{ github.event.inputs.outdated }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f outdated=true"
+          fi
+          # Pass through max_cost so a budget cap applies across the whole chain,
+          # not just the first batch
+          if [ -n "${{ github.event.inputs.max_cost }}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f max_cost=${{ github.event.inputs.max_cost }}"
+          fi
+          # Pass through needs_rescore flag so rescore chains continue
+          # Also pass through when scheduled run detected needsRescore backlog
+          if [ "${{ github.event.inputs.needs_rescore }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_rescore }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f needs_rescore=true"
+          fi
+          # Pass through rescore_reason filter so parallel chains stay in their lane
+          if [ -n "${{ github.event.inputs.rescore_reason }}" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f rescore_reason=${{ github.event.inputs.rescore_reason }}"
+          fi
+          # Pass through stale_scores flag so stale-score chains continue
+          # Also pass through when scheduled run detected stale scores
+          if [ "${{ github.event.inputs.stale_scores }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_stale }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f stale_scores=true"
+          fi
+          # Pass through upgrade_ensemble flag so upgrade chains continue
+          if [ "${{ github.event.inputs.upgrade_ensemble }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f upgrade_ensemble=true"
+          fi
+          # Pass through retry_emergency flag so emergency-retry chains continue
+          # (capped at 50 reviews/run by Phase 4, so chaining is rare but kept for symmetry)
+          if [ "${{ github.event.inputs.retry_emergency }}" == "true" ] || [ "${{ steps.check-needed.outputs.run_emergency_retry }}" == "true" ]; then
+            CHAIN_ARGS="$CHAIN_ARGS -f retry_emergency=true"
+          fi
+
+          gh workflow run llm-ensemble-score.yml $CHAIN_ARGS
+          echo "Next batch dispatched."
+
+      - name: Trigger rebuild + consensus (chain complete)
+        # Trigger rebuild when chain ends for ANY reason: remaining ≤ 10, batches exhausted,
+        # or chain stopped because this batch scored 0 (earlier batches may have scored reviews
+        # that are now stranded in source files without a rebuild).
+        if: >-
+          ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
+              || github.event.inputs.remaining_batches == '0'
+              || steps.check-changes.outputs.has_scored_reviews == 'false') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # NOTE: Rebuild dispatch removed 2026-04-01. LLM scores are written to review-text
+          # files and pushed to private repo. The daily 4 AM rebuild cron picks them up.
+          # For opening nights, the orchestrator/poller handles the fast-path rebuild.
+          # Dispatching rebuild here created a Rebuild→Score→Rebuild cascade (1000+ runs/day).
+          echo "Scoring chain complete. Scores committed to review-texts."
+          echo "Daily rebuild cron (4 AM UTC) will incorporate new scores into reviews.json."
+
+      - name: Trigger pull quote extraction (chain complete)
+        if: >-
+          ${{ (github.event.inputs.chain == 'true' || github.event_name == 'schedule')
+          && (fromJSON(steps.count-remaining.outputs.remaining) <= 10
+              || github.event.inputs.remaining_batches == '0') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow=extract-pull-quotes.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          QUEUED=$(gh run list --workflow=extract-pull-quotes.yml --status=queued --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          WAITING=$(gh run list --workflow=extract-pull-quotes.yml --status=waiting --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$((RUNNING + QUEUED + WAITING))" -gt 0 ]; then
+            echo "Pull quote extraction already active ($RUNNING running, $QUEUED queued, $WAITING waiting). Skipping."
+            exit 0
+          fi
+          echo "Dispatching pull quote extraction post-scoring..."
+          gh workflow run extract-pull-quotes.yml -f chain=true -f remaining_batches=3
+          echo "Pull quote extraction dispatched."
+        continue-on-error: true
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'LLM Ensemble Scoring Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

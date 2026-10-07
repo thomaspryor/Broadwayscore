@@ -1,0 +1,176 @@
+'use client';
+
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { track } from '@vercel/analytics';
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+    posthog?: { capture: (event: string, properties?: Record<string, unknown>) => void; flush?: () => void; get_distinct_id?: () => string; getFeatureFlag?: (key: string) => string | boolean | undefined };
+  }
+}
+
+import { buildAffiliateUrl, affiliateRel, trackTicketClick } from '@/lib/affiliate-utils';
+
+// Re-export affiliate helpers so existing consumers don't break
+export { isAffiliateEnabled, isAffiliatePartner } from '@/lib/affiliate-utils';
+
+// Re-export sorting utilities from shared module (not 'use client' — safe for SSR)
+export { sortTicketLinks, type TicketLinkData } from '@/lib/ticket-utils';
+
+// ─── Component ───────────────────────────────────────────
+
+interface TicketLinkProps {
+  showName: string;
+  showId: string;
+  showSlug?: string;
+  showStatus?: string;
+  showCategory?: string;
+  showScore?: number | null;
+  platform: string;
+  url: string;
+  pageType: 'show' | 'guide' | 'browse' | 'comparison' | 'showtimes';
+  linkPosition?: number;
+  totalLinks?: number;
+  /** A/B test variant — tracked in analytics events */
+  abVariant?: string;
+  className?: string;
+  children: ReactNode;
+}
+
+export default function TicketLink({
+  showName, showId, showSlug, showStatus, showCategory, showScore,
+  platform, url, pageType,
+  linkPosition = 0, totalLinks = 1,
+  abVariant,
+  className, children,
+}: TicketLinkProps) {
+  // Read PostHog distinct_id so the rendered href carries it (Impact
+  // subId1). We need it on the href, not just the click handler, because
+  // users middle-click / right-click → copy URL too. TicketButtonsAB no
+  // longer withholds render until the PostHog SDK loads (task #1936 —
+  // that gate caused the primary CTA to be invisible for up to 5s, which
+  // is what drove the rage clicks), so TicketLink can now mount before
+  // `window.posthog` exists on ANY call site, not just the ones the old
+  // comment already accepted this for (compare/guides/showtimes). A
+  // one-shot read at mount would then permanently miss the id — nothing
+  // re-ran it once PostHog finished loading a moment later. Poll instead
+  // (same 250ms/~2s budget as AnalyticsWrapper's own load window) so a
+  // click that happens shortly after mount still gets a populated href;
+  // first paint before that resolves is still acceptable — the id
+  // reaches the href well before a human can realistically click.
+  //
+  // ⚠ If anyone ever calls `posthog.identify()` (e.g. on login), this state
+  // snapshot goes stale: the rendered href keeps the old anonymous UUID
+  // while the click-time beacon (~line 78) reads the fresh identified ID.
+  // That breaks the join between PostHog clicks and Impact subId1. Either
+  // subscribe to PostHog's distinct_id changes here, or audit identify()
+  // call sites before adding one. There are no identify() calls today.
+  const [distinctId, setDistinctId] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    let attempts = 0;
+    const maxAttempts = 8; // 8 × 250ms = 2s — covers AnalyticsWrapper's ≤1.5s load budget
+    const tryRead = () => {
+      const id = window.posthog?.get_distinct_id?.();
+      if (typeof id === 'string' && id.length > 0) {
+        setDistinctId(id);
+        return true;
+      }
+      return false;
+    };
+    if (tryRead()) return;
+    const intervalId = setInterval(() => {
+      attempts++;
+      if (tryRead() || attempts >= maxAttempts) clearInterval(intervalId);
+    }, 250);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const { url: affiliateUrl, isAffiliate } = useMemo(
+    () => buildAffiliateUrl(url, platform, pageType, { distinctId, abVariant }),
+    [url, platform, pageType, distinctId, abVariant],
+  );
+
+  const handleClick = () => {
+    if (typeof window === 'undefined') return;
+
+    // Vercel Analytics
+    track('ticket_click', { show_id: showId, platform, page_type: pageType, is_affiliate: isAffiliate });
+
+    // PostHog — send via sendBeacon for guaranteed delivery.
+    // PostHog SDK batches capture() on a 30s timer. With target="_blank", the page
+    // doesn't unload and the batch never flushes. sendBeacon fires immediately and
+    // survives tab focus changes.
+    trackTicketClick({
+      showId, showName, platform, pageType, showStatus, isAffiliate,
+      linkPosition, totalLinks, abVariant,
+    });
+
+    if (typeof window.gtag !== 'function') return;
+
+    // Primary click event — enriched with full attribution context
+    window.gtag('event', 'ticket_link_click', {
+      show_name: showName,
+      show_id: showId,
+      show_slug: showSlug ?? '',
+      show_status: showStatus ?? '',
+      show_category: showCategory ?? '',
+      show_score: showScore ?? null,
+      platform,
+      ticket_url: url,
+      affiliate_url: affiliateUrl,
+      is_affiliate: isAffiliate,
+      page_type: pageType,
+      link_position: linkPosition,
+      total_links: totalLinks,
+    });
+
+    // Separate affiliate-specific event for easy GA4 filtering / conversion setup
+    if (isAffiliate) {
+      window.gtag('event', 'affiliate_click', {
+        show_name: showName,
+        show_id: showId,
+        platform,
+        affiliate_url: affiliateUrl,
+        page_type: pageType,
+      });
+    }
+  };
+
+  // Primary CTA (position 0, affiliate) gets a filled gold button matching the iOS app.
+  // Secondary affiliates get a subtle warm tint. Non-affiliates stay gray.
+  const isPrimaryCta = isAffiliate && linkPosition === 0;
+  const resolvedClassName = isPrimaryCta
+    ? (className ?? '')
+        .replace(/bg-surface-overlay/g, 'bg-accent-gold')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-accent-gold/80')
+        .replace(/border-white\/10/g, 'border-accent-gold')
+        .replace(/text-gray-300/g, 'text-gray-900')
+        .replace(/hover:text-white/g, 'hover:text-gray-900')
+        .replace(/py-1\.5/g, 'py-2.5')
+        .replace(/px-3/g, 'px-5')
+        .replace(/text-xs/g, 'text-sm')
+        + ' font-bold shadow-sm shadow-accent-gold/20'
+    : isAffiliate
+    ? (className ?? '')
+        .replace(/bg-surface-overlay/g, 'bg-accent-gold/10')
+        .replace(/hover:bg-white\/10/g, 'hover:bg-accent-gold/20')
+        .replace(/border-white\/10/g, 'border-accent-gold/20')
+        .replace(/text-gray-300/g, 'text-accent-gold/70')
+        .replace(/hover:text-white/g, 'hover:text-accent-gold')
+    : className ?? '';
+
+  if (showStatus === 'closed') return null;
+
+  return (
+    <a
+      href={affiliateUrl}
+      target="_blank"
+      rel={affiliateRel(isAffiliate)}
+      className={resolvedClassName}
+      onClick={handleClick}
+    >
+      {children}
+    </a>
+  );
+}

@@ -1,0 +1,109 @@
+name: Audit BWW RR Attributions
+
+# Weekly scan of archived BWW Review Roundup pages for authorName mismatches
+# at single-author outlets. Feeds CRITIC_CANONICAL_MAP candidates so mis-
+# attributions get caught proactively instead of at opening-night scramble.
+#
+# Background: Rocky Horror 2026-04-23 shipped with BWW-credited "David Finkle,
+# Cote Notices" — actual byline is David Cote. This audit surfaces NEW such
+# cases so we can add them to scripts/lib/critic-canonicalization.js before
+# they affect an opening night.
+
+on:
+  schedule:
+    # Weekly Saturday 08:00 UTC — after Friday's BWW RR scrape (scrape-bww-reviews.yml)
+    - cron: '0 8 * * 6'
+  workflow_dispatch:
+    inputs:
+      since:
+        description: 'Only audit archives modified since this date (YYYY-MM-DD). Blank = all.'
+        required: false
+        default: ''
+      show:
+        description: 'Audit a single show archive only.'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  # per-run group intended: single weekly cron + rare manual dispatch, no
+  # external dispatcher can stack triggers. This is a read-mostly audit that
+  # writes an advisory report (task #922 audit, 2026-08-03) — even a rare
+  # overlap just double-writes the same conclusions via push-with-retry.sh.
+  group: audit-bww-rr-attributions-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Run BWW RR mismatch audit
+        id: audit
+        env:
+          SINCE: ${{ inputs.since }}
+          SHOW: ${{ inputs.show }}
+        run: |
+          set +e
+          FLAGS=""
+          if [ -n "$SINCE" ]; then FLAGS="$FLAGS --since=$SINCE"; fi
+          if [ -n "$SHOW" ]; then FLAGS="$FLAGS --show=$SHOW"; fi
+          echo "Running: node scripts/audit-bww-rr-critic-mismatches.js $FLAGS"
+          # BRO-4157: this used to run the script TWICE — once with --json
+          # (captured to $RC), once in text mode piped through tee to
+          # /tmp/audit.txt for a human-readable log. Only $RC gated the step,
+          # but the script's own exit(2) check only ran on the text-mode path
+          # (fixed at the source), so $RC could never actually be 2 — a
+          # structurally dead check, not just an unread one. audit.txt was
+          # never read downstream either (only audit.json is uploaded/parsed
+          # below), so the second invocation added cost without adding safety.
+          # One --json run now gives both a real exit code and the artifact.
+          node scripts/audit-bww-rr-critic-mismatches.js $FLAGS --json > /tmp/audit.json
+          RC=$?
+          # Exit code 2 means "found new candidates" — surface as workflow warning
+          # but don't fail the run (non-blocking advisory).
+          if [ "$RC" -eq 2 ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          elif [ "$RC" -ne 0 ]; then
+            echo "::error::audit script crashed with exit $RC"
+            exit 1
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Log new candidates
+        if: steps.audit.outputs.found == 'true'
+        run: |
+          COUNT=$(jq '[.findings[] | select(.alreadyInCanonMap == false)] | length' /tmp/audit.json)
+          SUMMARY=$(jq -r '.findings[] | select(.alreadyInCanonMap == false) | "• \(.showId) — \(.outletId): \"\(.observedCritic)\" (expected \"\(.expectedCritic)\")"' /tmp/audit.json | head -20)
+          echo "BWW RR mis-attribution audit found $COUNT new candidate(s):"
+          echo "$SUMMARY"
+          echo "Action: review each, add confirmed mis-attributions to scripts/lib/critic-canonicalization.js CRITIC_CANONICAL_MAP."
+
+      - name: Upload audit artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: bww-rr-audit-${{ github.run_id }}
+          path: /tmp/audit.json
+          retention-days: 30
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'BWW RR Attribution Audit Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

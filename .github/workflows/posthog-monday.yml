@@ -1,0 +1,121 @@
+name: PostHog Monday Analysis
+# Unified Monday PostHog pipeline.
+# Routing policy:
+#   - Weekly Insights  → GitHub issue (what happened this week — metrics/trends)
+#   - Friction Analyzer → Linear issues (what to fix — actionable backlog)
+# These are different questions for different audiences.
+#
+# Replaced posthog-weekly-insights.yml (Mon 14:00 UTC) — that workflow's schedule
+# has been disabled; workflow_dispatch is preserved for manual runs.
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Monday 8 AM UTC (4 AM EST)
+  workflow_dispatch: {}
+
+jobs:
+  weekly-insights:
+    name: Weekly Insights → GitHub Issue
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Query PostHog and create GitHub issue
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/posthog-weekly-insights.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Weekly Insights Failed'
+          severity: 'warning'
+
+  friction-analyzer:
+    name: Friction Analyzer → Linear Issues
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Run after insights, but don't block on its failure
+    needs: weekly-insights
+    if: always()
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Analyze friction and file Linear issues
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/posthog-friction-analyzer.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Friction Analyzer Failed'
+          severity: 'warning'
+
+  friction-fixer:
+    name: Auto-fix Friction Cards → Draft PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Only run when analyzer succeeded — don't act on stale Linear backlog from failed runs
+    needs: friction-analyzer
+    if: needs.friction-analyzer.result == 'success'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Auto-fix friction cards
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/auto-fix-friction-card.js
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'PostHog Friction Fixer Failed'
+          severity: 'warning'

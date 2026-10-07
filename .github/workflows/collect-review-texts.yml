@@ -1,0 +1,807 @@
+name: Collect Review Texts
+
+# Prevent un-filtered runs from duplicating each other; show-targeted runs are independent
+# per-run group intended (hybrid): scheduled/no-filter runs share a stable
+# 'global' group (queued, not cancelled) so the 3x-daily cron can't overlap
+# itself. Parallel manual dispatches WITH a show_filter deliberately fall
+# back to github.run_id — that's the documented multi-runner pattern ("launch
+# multiple with different show_filter values" in .github/workflows/CLAUDE.md)
+# where each partition must run independently, not queue behind the others
+# (task #922 audit, 2026-08-03).
+concurrency:
+  group: collect-reviews-${{ github.event.inputs.show_filter && github.run_id || 'global' }}-${{ github.event.inputs.content_tier || 'all' }}-${{ github.event.inputs.domain_filter || 'any' }}-${{ github.event.inputs.market_filter || 'all-markets' }}
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # 3x daily: 4:30 AM, 10 AM, 6 PM UTC
+    # Note: 2 AM slot was moved to 4:30 AM — the 2–3 AM window collides with
+    # opening-night-poller dispatch chains + mirror-to-gitlab pushes, causing
+    # push-with-retry.sh to exhaust all 5 attempts and fail.
+    - cron: '30 4,10,18 * * *'
+    # Weekly backlog sweep: Sunday midnight UTC — targets not_attempted reviews that the
+    # daily runs never reach (daily prioritizes open shows, closed-show backlog gets starved)
+    - cron: '0 0 * * 0'
+    # WE/OB collection moved to collect-we-ob-reviews.yml (separate concurrency group)
+  workflow_dispatch:
+    inputs:
+      opening_night:
+        description: 'This run is part of the opening-night chain — exempt from the Bright Data daily breaker (Scraping cost v3)'
+        required: false
+        type: boolean
+        default: false
+      batch_size:
+        description: 'Number of reviews to process per batch'
+        required: false
+        default: '10'
+      max_reviews:
+        description: 'Maximum total reviews to process (0 = all)'
+        required: false
+        default: '1000'
+      priority:
+        description: 'Priority filter (tier1, all)'
+        required: false
+        default: 'all'
+      show_filter:
+        description: 'Only process specific show (leave empty for all)'
+        required: false
+        default: ''
+      aggressive:
+        description: 'Skip Playwright for known-blocked sites (true/false)'
+        required: false
+        default: 'false'
+      retry_failed:
+        description: 'Retry previously failed reviews (true/false)'
+        required: false
+        default: 'true'
+      stealth_proxy:
+        description: 'Use ScrapingBee stealth proxy - costs 75 credits/request but better CAPTCHA bypass'
+        required: false
+        default: 'false'
+      parallel:
+        description: 'Run parallel jobs by outlet tier (true/false)'
+        required: false
+        default: 'false'
+      archive_first:
+        description: 'Try Archive.org first for older reviews (true/false)'
+        required: false
+        default: 'true'
+      browserbase_enabled:
+        description: 'Enable Browserbase tier for CAPTCHA-heavy sites (costs ~$0.10/session)'
+        required: false
+        default: 'true'
+      browserbase_max_sessions:
+        description: 'Max Browserbase sessions per run (default 30, daily cap 250 — see scripts/lib/browserbase-caps.js)'
+        required: false
+        default: '30'
+      content_tier:
+        description: 'Filter by content tier: excerpt, truncated, needs-rescrape (empty = all)'
+        required: false
+        default: ''
+      chain:
+        description: 'Auto-trigger next batch when this one finishes (true/false)'
+        required: false
+        default: 'false'
+      remaining_batches:
+        description: 'Remaining batches for chaining (decrements each run, 0 = stop)'
+        required: false
+        default: '0'
+      chain_browserbase_budget:
+        description: 'Remaining Browserbase sessions across chained runs (daily cap awareness)'
+        required: false
+        default: '30'
+      domain_filter:
+        description: 'Only process reviews from these domains (comma-separated, e.g. theatermania.com,huffpost.com)'
+        required: false
+        default: ''
+      exclude_domains:
+        description: 'Exclude reviews from these domains (inverse of domain_filter, comma-separated)'
+        required: false
+        default: ''
+      reason_filter:
+        description: 'Filter by incompleteReason (comma-separated: paywall,scraper_garbage,not_attempted,url_dead,bot_blocked,etc.)'
+        required: false
+        default: ''
+      market_filter:
+        description: 'Filter by market (west-end, off-broadway). Matches show ID suffix.'
+        required: false
+        default: ''
+      review_filter:
+        description: 'Only process these specific review filenames (comma-separated, e.g. "nytimes--unknown.json,vulture--sara-holdren.json"). FAST PATH: skips all other files.'
+        required: false
+        default: ''
+      url_discovery_limit:
+        description: 'Max SERP URL discovery attempts per run (default 300; raise for bulk runs)'
+        required: false
+        default: '300'
+
+## PARALLEL RUNS: Max 5 simultaneous runs recommended.
+## Browserbase daily limit is 30 sessions; default 5/run × 5 runs = 25 (safe).
+## Launching >5 runs will cause Browserbase 429 rate limits.
+
+env:
+  # Opening-night provenance for the Bright Data daily breaker (Scraping cost
+  # v3 S2, ship-check finding). This workflow is dispatched BOTH by bulk crons
+  # and by the opening-night chain; by the time the chain reaches here,
+  # GITHUB_WORKFLOW no longer says "Opening Night", so the breaker's
+  # workflow-name exemption has already been lost. The explicit flag is what
+  # survives a dispatch hop — see scripts/lib/brightdata-caps.js isExemptCaller.
+  BD_OPENING_NIGHT: ${{ inputs.opening_night && '1' || '' }}
+
+jobs:
+  # Sequential single-job mode (default)
+  collect-reviews-single:
+    if: ${{ inputs.parallel != 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Check Sunday backlog (early exit if empty)
+        id: sched
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            DAY=$(date -u +%u)  # 7 = Sunday
+            if [ "$DAY" = "7" ]; then
+              # Check if any not_attempted reviews exist before expensive setup
+              NOT_ATTEMPTED=$(node -e "
+                const fs = require('fs');
+                const dir = 'data/review-texts';
+                let count = 0;
+                try {
+                  const shows = fs.readdirSync(dir);
+                  for (const show of shows.slice(0, 100)) {
+                    const showDir = dir + '/' + show;
+                    if (!fs.statSync(showDir).isDirectory()) continue;
+                    const files = fs.readdirSync(showDir);
+                    for (const f of files) {
+                      if (!f.endsWith('.json')) continue;
+                      try {
+                        const r = JSON.parse(fs.readFileSync(showDir + '/' + f, 'utf8'));
+                        if (r.incompleteReason === 'not_attempted') count++;
+                      } catch {}
+                      if (count > 0) break;
+                    }
+                    if (count > 0) break;
+                  }
+                } catch {}
+                console.log(count);
+              " 2>/dev/null || echo "1")
+              if [ "$NOT_ATTEMPTED" = "0" ]; then
+                echo "Sunday backlog sweep: no not_attempted reviews found — skipping"
+                echo "skip=true" >> $GITHUB_OUTPUT
+              else
+                echo "max_reviews=300" >> $GITHUB_OUTPUT
+                echo "reason_filter=not_attempted" >> $GITHUB_OUTPUT
+                echo "market_filter=" >> $GITHUB_OUTPUT
+                echo "skip=false" >> $GITHUB_OUTPUT
+                echo "Weekly backlog sweep: targeting not_attempted reviews"
+              fi
+            else
+              echo "max_reviews=300" >> $GITHUB_OUTPUT
+              echo "reason_filter=" >> $GITHUB_OUTPUT
+              echo "market_filter=" >> $GITHUB_OUTPUT
+              echo "skip=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "max_reviews=${{ inputs.max_reviews }}" >> $GITHUB_OUTPUT
+            echo "reason_filter=${{ inputs.reason_filter }}" >> $GITHUB_OUTPUT
+            echo "market_filter=" >> $GITHUB_OUTPUT
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node.js
+        if: steps.sched.outputs.skip != 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.sched.outputs.skip != 'true'
+        run: npm install
+
+      - name: Setup Playwright
+        if: steps.sched.outputs.skip != 'true'
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        if: steps.sched.outputs.skip != 'true'
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state for parallel runs
+        if: steps.sched.outputs.skip != 'true' && inputs.show_filter != ''
+        run: |
+          echo "Filtered run (show_filter set) - clearing progress state for independent parallel execution"
+          rm -f data/collection-state/progress.json
+
+      - name: Configure git for incremental commits
+        if: steps.sched.outputs.skip != 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run review collection
+        if: steps.sched.outputs.skip != 'true'
+        id: collect
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BLOOMBERG_EMAIL: ${{ secrets.BLOOMBERG_EMAIL }}
+          BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
+          NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
+          NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
+          NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MAX_REVIEWS: ${{ steps.sched.outputs.max_reviews }}
+          PRIORITY: ${{ inputs.priority }}
+          SHOW_FILTER: ${{ inputs.show_filter }}
+          RETRY_FAILED: ${{ inputs.retry_failed }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first }}
+          CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
+          DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
+          INCOMPLETE_REASON_FILTER: ${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}
+          MARKET_FILTER: ${{ steps.sched.outputs.market_filter || inputs.market_filter }}
+          REVIEW_FILTER: ${{ inputs.review_filter }}
+          URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '300' }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.aggressive }}" = "true" ]; then
+            ARGS="$ARGS --aggressive"
+          fi
+          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+            ARGS="$ARGS --stealth-proxy"
+          fi
+          node scripts/collect-review-texts.js $ARGS
+
+      - name: Validate data before commit
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Fix URL collisions
+        if: steps.sched.outputs.skip != 'true'
+        run: |
+          echo "Running cross-show URL collision audit with auto-fix..."
+          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
+          FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
+          if [ "$FIXED" -gt 0 ] 2>/dev/null; then
+            echo "Collision auto-fix applied ($FIXED files modified)"
+            # Review-texts changes flow through push-review-texts action below.
+            # Only stage the audit report for the public repo commit.
+            git add data/audit/url-collision-report.json || true
+            if ! git diff --staged --quiet; then
+              git commit -m "data: Auto-fix $FIXED URL collisions
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            fi
+          else
+            echo "No collisions to fix"
+          fi
+        continue-on-error: true
+
+      - name: Check for large files
+        if: always()
+        uses: ./.github/actions/check-file-sizes
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Review Texts — Final commit and push"
+      - name: Final commit and push
+        if: always()
+        id: push
+        env:
+          # Task #784: scraper-spend-ledger.jsonl accumulates rows from many
+          # concurrent CI writers (this workflow's own matrix path, opening-
+          # night-poller.js, gather-reviews.js, sweep-we-aggregators.js,
+          # scrape-thestage-roundups.js). `git rebase -X theirs` resolves a
+          # conflicting hunk in favour of the replayed local commit WITHOUT
+          # reporting a conflict (#420/#698 class), so a losing run's rows can
+          # be silently dropped instead of unioned. Opts into the same
+          # post-rebase reconcile pass #698 built for bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git add data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            TIER_LABEL="${{ inputs.content_tier }}"
+            JOB_LABEL="single job${TIER_LABEL:+ — $TIER_LABEL}"
+            git commit -m "feat: Collect review texts ($JOB_LABEL)
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            bash scripts/lib/push-with-retry.sh
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      # Belt-and-suspenders: explicitly dispatch rebuild since workflow_run events
+      # can be silently dropped by GitHub during high-activity periods.
+      - name: Trigger rebuild
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Skip if a rebuild is already running or was triggered recently
+          RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Rebuild already running — skipping dispatch"
+            exit 0
+          fi
+          echo "Dispatching rebuild..."
+          gh workflow run rebuild-reviews.yml -f reason="Auto-triggered by collect-review-texts" || echo "Rebuild dispatch failed (non-critical — workflow_run backup exists)"
+
+      - name: Trigger scoring for newly collected reviews
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Score reviews immediately after text collection instead of waiting
+          # for the daily 4:30 AM scheduled scoring run
+          RUNNING=$(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Scoring already running — skipping dispatch"
+            exit 0
+          fi
+          echo "Dispatching scoring for newly collected reviews..."
+          gh workflow run llm-ensemble-score.yml || echo "Scoring dispatch failed (non-critical — daily schedule is backup)"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Review Text Collection Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: collection-report
+          path: |
+            data/audit/validation/collection-report-*.json
+            data/collection-state/progress.json
+          retention-days: 30
+
+      - name: Count remaining reviews needing text
+        if: always() && (inputs.chain == 'true' || github.event_name == 'schedule')
+        id: count-remaining
+        run: |
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            // Load global failed-fetches to exclude permanently failed URLs
+            // (scripts/lib/failed-fetch-policy.js — single source of truth, BRO-2266)
+            const { isPermanentlyFailed } = require('./scripts/lib/failed-fetch-policy');
+            let failedUrls = new Set();
+            const globalFF = path.join(base, 'failed-fetches.json');
+            if (fs.existsSync(globalFF)) {
+              try {
+                const ff = JSON.parse(fs.readFileSync(globalFF, 'utf8'));
+                (Array.isArray(ff) ? ff : Object.values(ff)).forEach(e => {
+                  if (!e.url) return;
+                  if (isPermanentlyFailed(e)) failedUrls.add(e.url);
+                });
+              } catch {}
+            }
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            let n = 0;
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json').forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (failedUrls.has(r.url)) return;
+                  if (r.url && !r.fullText) n++;
+                } catch(e) {}
+              });
+            });
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "Reviews still needing full text: $REMAINING"
+
+      - name: Chain next collection batch
+        if: always() && (inputs.chain == 'true' || github.event_name == 'schedule') && fromJSON(steps.count-remaining.outputs.remaining) > 10
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BATCHES_LEFT="${{ inputs.remaining_batches }}"
+          if [ -z "$BATCHES_LEFT" ] || [ "$BATCHES_LEFT" = "0" ]; then
+            if [ "${{ github.event_name }}" == "schedule" ]; then
+              # Weekly backlog sweep (Sunday) gets more chains to clear the backlog faster
+              REASON="${{ steps.sched.outputs.reason_filter }}"
+              if [ -n "$REASON" ]; then
+                BATCHES_LEFT=8
+              else
+                BATCHES_LEFT=2
+              fi
+            else
+              echo "No remaining batches. Chain complete."
+              exit 0
+            fi
+          fi
+          if [ "$BATCHES_LEFT" -le 0 ] 2>/dev/null; then
+            echo "No remaining batches. Chain complete."
+            exit 0
+          fi
+
+          NEXT_BATCHES=$((BATCHES_LEFT - 1))
+
+          # Browserbase budget tracking across chain
+          BB_BUDGET="${{ inputs.chain_browserbase_budget }}"
+          BB_BUDGET="${BB_BUDGET:-30}"
+          BB_PER_RUN="${{ inputs.browserbase_max_sessions }}"
+          BB_PER_RUN="${BB_PER_RUN:-20}"
+          NEXT_BB_BUDGET=$((BB_BUDGET - BB_PER_RUN))
+
+          # Determine Browserbase settings for next run
+          if [ "$NEXT_BB_BUDGET" -le 0 ]; then
+            echo "Browserbase daily budget exhausted. Next run without Browserbase."
+            NEXT_BB_ENABLED="false"
+            NEXT_BB_SESSIONS="0"
+            NEXT_BB_BUDGET="0"
+          else
+            NEXT_BB_ENABLED="true"
+            # Cap next run's sessions to remaining budget
+            if [ "$BB_PER_RUN" -gt "$NEXT_BB_BUDGET" ]; then
+              NEXT_BB_SESSIONS="$NEXT_BB_BUDGET"
+            else
+              NEXT_BB_SESSIONS="$BB_PER_RUN"
+            fi
+          fi
+
+          echo "Dispatching next batch..."
+          echo "  Remaining batches after this: $NEXT_BATCHES"
+          echo "  Browserbase budget remaining: $NEXT_BB_BUDGET sessions"
+          echo "  Browserbase this run: $NEXT_BB_ENABLED ($NEXT_BB_SESSIONS sessions)"
+          echo "  Reviews still needing text: ${{ steps.count-remaining.outputs.remaining }}"
+
+          TIER_FILTER="${{ inputs.content_tier }}"
+
+          SHOW_FILTER="${{ inputs.show_filter }}"
+          AGGRESSIVE="${{ inputs.aggressive }}"
+          STEALTH="${{ inputs.stealth_proxy }}"
+          DOMAIN_FILTER="${{ inputs.domain_filter }}"
+          EXCLUDE_DOMAINS="${{ inputs.exclude_domains }}"
+          REASON_FILTER="${{ steps.sched.outputs.reason_filter || inputs.reason_filter }}"
+          MARKET_FILTER="${{ steps.sched.outputs.market_filter || inputs.market_filter }}"
+
+          gh workflow run collect-review-texts.yml \
+            -f max_reviews=${{ steps.sched.outputs.max_reviews || '300' }} \
+            -f batch_size=${{ inputs.batch_size || '10' }} \
+            -f show_filter="$SHOW_FILTER" \
+            -f aggressive="$AGGRESSIVE" \
+            -f stealth_proxy="$STEALTH" \
+            -f browserbase_enabled="$NEXT_BB_ENABLED" \
+            -f browserbase_max_sessions="$NEXT_BB_SESSIONS" \
+            -f retry_failed=${{ inputs.retry_failed }} \
+            -f archive_first=${{ inputs.archive_first }} \
+            -f content_tier="$TIER_FILTER" \
+            -f domain_filter="$DOMAIN_FILTER" \
+            -f exclude_domains="$EXCLUDE_DOMAINS" \
+            -f reason_filter="$REASON_FILTER" \
+            -f market_filter="$MARKET_FILTER" \
+            -f chain=true \
+            -f remaining_batches="$NEXT_BATCHES" \
+            -f chain_browserbase_budget="$NEXT_BB_BUDGET"
+
+          echo "Next batch dispatched successfully."
+
+      - name: Record pipeline success
+        if: success()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mkdir -p data/audit/pipeline-health
+          date -u > data/audit/pipeline-health/collect-review-texts.last-success
+          git add data/audit/pipeline-health/
+          git diff --staged --quiet || git commit -m "health: Record collect-review-texts success" && bash scripts/lib/push-with-retry.sh || echo "::warning::Health recording push failed"
+
+  # Parallel multi-job mode (matrix strategy)
+  collect-reviews-parallel:
+    if: ${{ inputs.parallel == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        outlet_tier: [tier1, tier2, tier3]
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state for parallel runs
+        run: |
+          echo "Parallel matrix run - clearing progress state for independent execution"
+          rm -f data/collection-state/progress.json
+
+      - name: Configure git for incremental commits
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run review collection for ${{ matrix.outlet_tier }}
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+          NYT_EMAIL: ${{ secrets.NYT_EMAIL }}
+          NYT_PASSWORD: ${{ secrets.NYTIMES_PASSWORD }}
+          VULTURE_EMAIL: ${{ secrets.VULTURE_EMAIL }}
+          VULTURE_PASSWORD: ${{ secrets.VULTURE_PASSWORD }}
+          NEW_YORKER_EMAIL: ${{ secrets.NEW_YORKER_EMAIL }}
+          NEW_YORKER_PASSWORD: ${{ secrets.NEW_YORKER_PASSWORD }}
+          WAPO_EMAIL: ${{ secrets.WAPO_EMAIL }}
+          WAPO_PASSWORD: ${{ secrets.WASHPOST_PASSWORD }}
+          WSJ_EMAIL: ${{ secrets.WSJ_EMAIL }}
+          WSJ_PASSWORD: ${{ secrets.WSJ_PASSWORD }}
+          BLOOMBERG_EMAIL: ${{ secrets.BLOOMBERG_EMAIL }}
+          BLOOMBERG_PASSWORD: ${{ secrets.BLOOMBERG_PASSWORD }}
+          NORTHJERSEY_EMAIL: ${{ secrets.NORTHJERSEY_EMAIL }}
+          NORTHJERSEY_PASSWORD: ${{ secrets.NORTHJERSEY_PASSWORD }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
+          NYDAILYNEWS_EMAIL: ${{ secrets.NYDAILYNEWS_EMAIL }}
+          NYDAILYNEWS_PASSWORD: ${{ secrets.NYDAILYNEWS_PASSWORD }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_ENABLED: ${{ inputs.browserbase_enabled || 'true' }}
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: ${{ inputs.browserbase_max_sessions || '30' }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BATCH_SIZE: ${{ inputs.batch_size }}
+          MAX_REVIEWS: ${{ inputs.max_reviews }}
+          OUTLET_TIER: ${{ matrix.outlet_tier }}
+          SHOW_FILTER: ${{ inputs.show_filter }}
+          RETRY_FAILED: ${{ inputs.retry_failed }}
+          ARCHIVE_FIRST: ${{ inputs.archive_first }}
+          CONTENT_TIER_FILTER: ${{ inputs.content_tier }}
+          DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          EXCLUDE_DOMAINS: ${{ inputs.exclude_domains }}
+          INCOMPLETE_REASON_FILTER: ${{ inputs.reason_filter }}
+          MARKET_FILTER: ${{ inputs.market_filter }}
+          REVIEW_FILTER: ${{ inputs.review_filter }}
+          URL_DISCOVERY_LIMIT: ${{ inputs.url_discovery_limit || '300' }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.aggressive }}" = "true" ]; then
+            ARGS="$ARGS --aggressive"
+          fi
+          if [ "${{ inputs.stealth_proxy }}" = "true" ]; then
+            ARGS="$ARGS --stealth-proxy"
+          fi
+          node scripts/collect-review-texts.js $ARGS
+
+      - name: Validate data before commit
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Fix URL collisions
+        run: |
+          echo "Running cross-show URL collision audit with auto-fix..."
+          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
+          FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
+          if [ "$FIXED" -gt 0 ] 2>/dev/null; then
+            echo "Collision auto-fix applied ($FIXED files modified)"
+            git add data/audit/url-collision-report.json || true
+            if ! git diff --staged --quiet; then
+              git commit -m "data: Auto-fix $FIXED URL collisions — ${{ matrix.outlet_tier }}
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            fi
+          else
+            echo "No collisions to fix"
+          fi
+        continue-on-error: true
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect Review Texts — Commit and push changes for ${{ matrix.outlet_tier }}"
+      - name: Commit and push changes for ${{ matrix.outlet_tier }}
+        if: always()
+        env:
+          # Task #784: N matrix jobs commit to the same scraper-spend-ledger.jsonl
+          # concurrently — the exact race this card exists to close. `git rebase
+          # -X theirs` resolves a conflicting hunk in favour of the replayed
+          # local commit WITHOUT reporting a conflict (#420/#698 class), so a
+          # losing job's rows can be silently dropped instead of unioned. Opts
+          # into the same post-rebase reconcile pass #698 built for
+          # bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          # review-texts now pushed via push-review-texts composite action
+          # Task #752: this matrix path never staged data/audit/ broadly (only the
+          # URL-collision-report add above) — Browserbase/BD/SB/SD attribution rows
+          # written by scripts/lib/provider-telemetry.js during collect-review-texts.js
+          # were silently dropped on every parallel bulk-backfill run.
+          git add data/audit/ data/collection-state/ || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit for ${{ matrix.outlet_tier }}"
+          else
+            git commit -m "feat: Collect review texts (${{ matrix.outlet_tier }})
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+            # Robust retry loop for parallel job conflicts
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Upload collection report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: collection-report-${{ matrix.outlet_tier }}
+          path: |
+            data/audit/validation/collection-report-*.json
+          retention-days: 30
+
+  # Rebuild also triggered via workflow_run as backup, but explicit dispatch above
+  # is more reliable during high-activity periods.

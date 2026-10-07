@@ -1,0 +1,161 @@
+name: Scrape The Stage Roundups
+
+on:
+  schedule:
+    # Weekly on Tuesdays at 7 AM UTC (2 AM EST)
+    - cron: '0 7 * * 2'
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: 'Re-fetch shows with existing archives'
+        required: false
+        type: boolean
+        default: false
+      extract_only:
+        description: 'Extract from existing archives only (no Playwright)'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: thestage-roundups-scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  scrape-thestage-roundups:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        if: inputs.extract_only != true
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run The Stage roundups scraper
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+        run: |
+          ARGS=""
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          if [ "${{ inputs.extract_only }}" = "true" ]; then
+            ARGS="$ARGS --extract-only"
+          fi
+
+          # shellcheck disable=SC2086
+          node scripts/scrape-thestage-roundups.js $ARGS
+
+      - name: Commit archives
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Aggregator archives are pushed to private repo via push-review-texts (below).
+          # Do NOT commit them to the public repo — they contain copyrighted content.
+          echo "Aggregator archives will be pushed to private repo only"
+
+      # This script creates Browserbase sessions via scripts/lib/browserbase-session.js
+      # (task #752), which writes attribution rows to data/audit/scraper-spend-ledger.jsonl
+      # on the runner's local disk. Without this step those rows never reach the public
+      # repo and are lost when the runner is torn down — attributedPct silently reads low
+      # for this workflow's traffic even though every session WAS attributed at the source.
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.dry_run != true
+        env:
+          # Task #784: concurrent shows/runs can each append to this ledger.
+          # `git rebase -X theirs` resolves a conflicting hunk in favour of the
+          # replayed local commit WITHOUT reporting a conflict (#420/#698
+          # class), so a losing run's appended row(s) can be silently dropped
+          # instead of unioned. Opts into the same post-rebase reconcile pass
+          # #698 built for bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git add data/audit/scraper-spend-ledger.jsonl || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (scrape-thestage-roundups)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-thestage-roundups'
+
+      - name: Trigger rebuild
+        if: always() && inputs.dry_run != true
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post The Stage roundups scrape" || echo "Rebuild dispatch failed"
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape The Stage Roundups Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

@@ -1,0 +1,288 @@
+/**
+ * Unit tests for resolveCanonicalOutletId (scripts/lib/outlet-canonicalize.js).
+ *
+ * Fixtures drawn from the 2026-04-23 Rocky Horror opening + 2021 SIX drift.
+ * Those 5 files caused class-C domain-mismatch audits to fail and kept Data
+ * Validation red on main for ~16 hours. This test proves the helper catches
+ * the drift before it's written.
+ */
+
+import { test, describe } from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { resolveCanonicalOutletId, _buildDomainMap, lookupOutletForHost } = require('../../scripts/lib/outlet-canonicalize.js');
+
+describe('resolveCanonicalOutletId — 2026-04-23 Rocky Horror drift fixtures', () => {
+  test('davidcote-substack + davidcote1.substack.com → cote-notices (URL wins)', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'davidcote-substack',
+      url: 'https://davidcote1.substack.com/p/the-rocky-horror-show-our-lust-is',
+    });
+    assert.strictEqual(r.outletId, 'cote-notices');
+    assert.strictEqual(r.source, 'url');
+    assert.ok(r.warning, 'should warn about unregistered input');
+  });
+
+  test('nystagereview + nystagereview.com → nysr (alias already resolves; URL confirms)', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'nystagereview',
+      url: 'https://nystagereview.com/2026/04/23/the-rocky-horror-show/',
+    });
+    assert.strictEqual(r.outletId, 'nysr');
+    assert.strictEqual(r.source, 'url');
+  });
+
+  test('newyorktheatreguide + newyorktheatreguide.com → nytg', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'newyorktheatreguide',
+      url: 'https://www.newyorktheatreguide.com/reviews/the-rocky-horror-show-broadway-review-luke-evans',
+    });
+    assert.strictEqual(r.outletId, 'nytg');
+    assert.strictEqual(r.source, 'url');
+  });
+});
+
+describe('resolveCanonicalOutletId — 2021 SIX drift fixture', () => {
+  test('edge-media-network + boston.edgemedianetwork.com → edge-boston (URL beats generic input)', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'edge-media-network',
+      url: "https://boston.edgemedianetwork.com/entertainment/theatre///280939/Queens%20Have%20Their%20Say%20in%20Sizzling%20'Six'",
+    });
+    assert.strictEqual(r.outletId, 'edge-boston');
+    assert.strictEqual(r.source, 'url');
+    assert.ok(r.warning, 'should warn about input-vs-URL canonical drift');
+    assert.match(r.warning, /edge-media-network/);
+    assert.match(r.warning, /edge-boston/);
+  });
+});
+
+describe('resolveCanonicalOutletId — happy paths', () => {
+  test('human-readable outlet name + URL → canonical (display-name input)', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'The New York Times',
+      url: 'https://www.nytimes.com/2026/04/23/theater/rocky-horror-review.html',
+    });
+    assert.strictEqual(r.outletId, 'nytimes');
+  });
+
+  test('alias input, no URL → alias resolution', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'nystagereview',
+      url: null,
+    });
+    assert.strictEqual(r.outletId, 'nysr');
+    assert.strictEqual(r.source, 'alias');
+  });
+});
+
+describe('resolveCanonicalOutletId — edge cases', () => {
+  test('unregistered outlet + no URL → slug fallback with warning', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'bogus-unregistered-blog-12345',
+      url: null,
+    });
+    assert.strictEqual(r.source, 'slug-fallback');
+    assert.ok(r.warning);
+    assert.match(r.warning, /not registered/);
+  });
+
+  test('missing outletArg throws', () => {
+    assert.throws(() => resolveCanonicalOutletId({ outletArg: '', url: null }));
+    assert.throws(() => resolveCanonicalOutletId({ url: null }));
+  });
+
+  test('BRO-4153: timeout.com (hosts timeout AND timeout-london) now resolves by URL PATH, not alias', () => {
+    // timeout.com is a DECLARED path-split edition domain (timeout vs
+    // timeout-london — see outlet-registry-domain-collisions.js's
+    // EDITION_PAIRS): unlike a genuinely undecidable collision, the path
+    // itself IS positive evidence (BRO-4153's resolveOutletFromUrlIfPathInformed),
+    // so the URL now wins over a generic operator input rather than falling
+    // through to alias resolution. A /newyork path resolves to "timeout".
+    const r = resolveCanonicalOutletId({
+      outletArg: 'timeout',
+      url: 'https://www.timeout.com/newyork/theater/rocky-horror-review',
+    });
+    assert.strictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'timeout');
+  });
+
+  test('BRO-4153: a /london path on timeout.com overrides a generic "timeout" operator input', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'timeout',
+      url: 'https://www.timeout.com/london/theatre/rocky-horror-review',
+    });
+    assert.strictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'timeout-london');
+    assert.match(r.warning || '', /drift detected/);
+  });
+
+  test('an undeclared collision (no path signal) still falls through to alias, unlike timeout.com', () => {
+    // Contrast case: telegraph.co.uk (telegraph/sunday-telegraph) has no path
+    // split — the URL truly cannot disambiguate, so operator input still wins.
+    const r = resolveCanonicalOutletId({
+      outletArg: 'sunday-telegraph',
+      url: 'https://www.telegraph.co.uk/theatre/2026/09/24/some-review/',
+    });
+    assert.notStrictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'sunday-telegraph');
+  });
+});
+
+describe('resolveCanonicalOutletId — task #1926 outlet-domain-borrowing fixture', () => {
+  // Real incident (2026-08-26): review-texts/paranormal-activity-2026/
+  // vulture--sandy-macdonald.json was ingested with outletId "vulture" (T1,
+  // weight 1.0) but a url on newyorknotebook.substack.com — a host that
+  // matches none of vulture's registered domains (vulture.com, domainAliases
+  // nymag.com/newyorkmetro.com). normalizeOutlet('newyorknotebook') fuzzy-
+  // matches vulture's "newyork"/"nymag" alias fragments, and Case B used to
+  // trust that blind. This is exactly the "New York Notebook class" the
+  // provisionalOutletIdFromHost docstring above already names.
+  // FIXTURE ROTATED 2026-08-26: New York Notebook has since been REGISTERED in
+  // outlet-registry.json (canonical "new-york-notebook", domain
+  // newyorknotebook.substack.com), so the original fixture no longer reaches
+  // the slug-fallback branch at all — it now resolves by domain, which is the
+  // better outcome and is asserted separately below. This test reddened main
+  // once the registry entry landed, expecting the pre-registration id.
+  //
+  // The borrowing-refusal branch still needs coverage, so it moved to a host
+  // that fuzzy-matches vulture's "newyork" alias fragment but is NOT in the
+  // registry. If newyorkbulletin.substack.com is ever registered as a real
+  // outlet, rotate this fixture again rather than deleting the case — the
+  // branch under test is "refuse to borrow", not this particular hostname.
+  test('operator input fuzzy-matches a registered outlet, but the URL host does not — falls back to a host-derived provisional, not the borrowed outlet', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'newyorkbulletin',
+      url: 'https://newyorkbulletin.substack.com/p/paranormal-activity',
+    });
+    assert.notStrictEqual(r.outletId, 'vulture', 'must not borrow a registered T1 outlet\'s identity');
+    assert.strictEqual(r.outletId, 'newyorkbulletin');
+    assert.strictEqual(r.source, 'slug-fallback');
+    assert.ok(r.warning);
+    assert.match(r.warning, /vulture/);
+  });
+
+  // The original #1926 incident case, kept as a regression guard on the thing
+  // that actually mattered: this URL must never resolve to vulture (T1, weight
+  // 1.0). Registration changed HOW that is achieved — domain match instead of
+  // a provisional slug — but not WHETHER it holds.
+  test('the registered New York Notebook resolves by its own domain and still never borrows vulture', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'newyorknotebook',
+      url: 'https://newyorknotebook.substack.com/p/paranormal-activity',
+    });
+    assert.notStrictEqual(r.outletId, 'vulture', 'must not borrow a registered T1 outlet\'s identity');
+    assert.strictEqual(r.outletId, 'new-york-notebook');
+    assert.strictEqual(r.source, 'url');
+  });
+
+  test('operator input matching a registered outlet AND a matching host is unaffected', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'vulture',
+      url: 'https://www.vulture.com/2026/08/paranormal-activity-review.html',
+    });
+    assert.strictEqual(r.outletId, 'vulture');
+  });
+
+  test('operator input matching a registered outlet via a domainAlias host is unaffected', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'nymag',
+      url: 'https://nymag.com/vulture/2026/08/paranormal-activity-review.html',
+    });
+    assert.strictEqual(r.outletId, 'vulture');
+  });
+
+  // Adversarial-review finding on this same fix: the Case B domain-mismatch
+  // guard above has no wire-service exemption, so a legitimate AP submission
+  // syndicated on a non-apnews.com partner site would get wrongly demoted to
+  // a bogus host-derived provisional outlet — the exact false-positive class
+  // the sibling outlet-domain-validation.js gate exempts wire services from.
+  test('wire-service outlet (AP) with a partner-syndication host is NOT demoted to a provisional outlet', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'ap',
+      url: 'https://www.somepartnersite.example/ap-review-of-a-show',
+    });
+    assert.strictEqual(r.outletId, 'ap');
+    assert.strictEqual(r.source, 'alias');
+  });
+});
+
+describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BRO-247)', () => {
+  // silent-exclusion-detectors.js (#1254) and review-normalization.js's
+  // buildDomainToOutletIndex (BRO-247, PR #573) both had the same bug: they
+  // stripped the TLD to a bare "domainBase" fallback key, so two legitimately
+  // distinct outlets sharing a brand word across TLDs (dancemagazine.com vs
+  // dancemagazine.co.uk) collided on the bare key and printed a live warning
+  // every build. outlet-canonicalize.js's _buildDomainMap() never had that
+  // bug — it keys the map by the outlet's FULL registered domain/domainAliases
+  // string, no TLD stripping — so dancemagazine.com and dancemagazine.co.uk
+  // were never the same key and never collided. These tests lock that in so a
+  // future edit can't reintroduce the class a third time by "generalizing"
+  // this function to match the other two's old (buggy) bare-base behavior.
+  const CROSS_TLD = [
+    { a: 'dancemagazine.com', aId: 'dance-magazine', b: 'dancemagazine.co.uk', bId: 'dance-informa-uk' },
+    { a: 'independent.com', aId: 'santa-barbara-independent', b: 'independent.co.uk', bId: 'independent' },
+    { a: 'boston.com', aId: 'boston-com', b: 'boston.edgemedianetwork.com', bId: 'edge-boston' },
+  ];
+
+  test('each full-TLD domain resolves to its own outlet, independently of its cross-TLD sibling', () => {
+    const { domainToOutlet, ambiguous } = _buildDomainMap();
+    for (const { a, aId, b, bId } of CROSS_TLD) {
+      assert.strictEqual(ambiguous.has(a), false, `${a} must not be marked ambiguous`);
+      assert.strictEqual(ambiguous.has(b), false, `${b} must not be marked ambiguous`);
+      assert.strictEqual(domainToOutlet[a], aId, `${a} should resolve to ${aId}`);
+      assert.strictEqual(domainToOutlet[b], bId, `${b} should resolve to ${bId}`);
+    }
+  });
+
+  test('resolveCanonicalOutletId resolves both sides of a cross-TLD brand pair via URL', () => {
+    for (const { a, aId, b, bId } of CROSS_TLD) {
+      const ra = resolveCanonicalOutletId({ outletArg: aId, url: `https://${a}/x` });
+      const rb = resolveCanonicalOutletId({ outletArg: bId, url: `https://${b}/x` });
+      assert.strictEqual(ra.outletId, aId);
+      assert.strictEqual(ra.source, 'url');
+      assert.strictEqual(rb.outletId, bId);
+      assert.strictEqual(rb.source, 'url');
+    }
+  });
+});
+
+// Issue #908 (Golden Boy, 2026-09-22): newspaper.dailymail.com is a subdomain of
+// the registered alias dailymail.com. Exact-only lookup minted a phantom
+// provisional outlet "dailymail", which tripped the critic misattribution guard
+// and kept a real Daily Mail review off the site.
+describe('lookupOutletForHost — parent-domain resolution (issue #908)', () => {
+  test('subdomain of a registered alias resolves to that outlet', () => {
+    assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('www.mailplus.co.uk'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('artsbeat.blogs.nytimes.com'), 'nytimes');
+  });
+
+  test('exactOnly refuses a parent-domain match', () => {
+    assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com', { exactOnly: true }), null);
+    assert.strictEqual(lookupOutletForHost('dailymail.com', { exactOnly: true }), 'daily-mail');
+  });
+
+  test('never walks onto a blog platform or a bare public suffix', () => {
+    assert.strictEqual(lookupOutletForHost('someone.medium.com'), null, 'a medium.com blog is not the "medium" outlet');
+    assert.strictEqual(lookupOutletForHost('theater.jerryportwood.substack.com'), null);
+    assert.strictEqual(lookupOutletForHost('unregistered.co.uk'), null);
+  });
+
+  test('ingest path: unregistered operator input + subdomain URL resolves to the registered outlet', () => {
+    const r = resolveCanonicalOutletId({ outletArg: 'dailymail', url: 'https://newspaper.dailymail.com/edition/showbiz/theatre/472292/x' });
+    assert.strictEqual(r.outletId, 'daily-mail');
+  });
+
+  test('a parent-domain match never overrides a registered operator outlet', () => {
+    const r = resolveCanonicalOutletId({ outletArg: 'the-jewish-chronicle', url: 'https://jewishchronicle.timesofisrael.com/x' });
+    assert.notStrictEqual(r.outletId, 'the-times-of-israel');
+  });
+
+  test('a partner publication on a publisher subdomain is not the publisher', () => {
+    assert.strictEqual(lookupOutletForHost('jewishchronicle.timesofisrael.com'), null);
+    assert.strictEqual(lookupOutletForHost('blogs.timesofisrael.com'), 'the-times-of-israel');
+    assert.strictEqual(lookupOutletForHost('preview.ew.com'), 'ew', 'short generic labels never block');
+  });
+});

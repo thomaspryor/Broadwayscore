@@ -1,0 +1,835 @@
+name: Opening Night Orchestrator
+# Market in the run title so the Redundancy guard in OTHER runs can tell what a
+# dispatched run covers ("(broadway)" / "(west-end)"); "(auto)" = all markets.
+# Scheduled runs always render "(auto)" — the guard derives their market from
+# the cron hour instead.
+run-name: 'Opening Night Orchestrator (${{ inputs.market || ''auto'' }})'
+
+# Sustained polling for opening nights. Dispatches the single-shot poller
+# every N minutes for up to M iterations. Each poller run gets a fresh
+# checkout — no stale git state issues.
+#
+# Five crons. GitHub Actions crons have CONSISTENT delays:
+#   - 1 AM UTC crons: DROPPED entirely (never fires)
+#   - 2:30 AM UTC: fires ~4 AM UTC (1.5h late)
+#   - 7 AM: fires ~8:15 UTC (1.25h late)
+#   - 10 AM: fires ~10:45 UTC (45m late)
+#   - 20:00: fires ~20:30 UTC (30m late)
+#
+# Crons are shifted 2h EARLIER to compensate for consistent GitHub delay.
+# With ~2h lag, actual fire times hit the intended windows:
+#   - Broadway evening: 23:00 + 00:00 UTC → fires ~1-2 AM UTC = 9-10 PM ET ✓
+#   - Broadway morning: 8:00 UTC → fires ~9 AM UTC = 4 AM ET ✓
+#   - West End morning: 5:00 UTC → fires ~6:30 AM UTC = 7:30 AM BST ✓
+#   - West End evening: 18:00 UTC → fires ~19 UTC = 8 PM BST ✓
+#
+# On nights with no opening, exits in <1 min (zero cost).
+
+on:
+  schedule:
+    - cron: '0 23 * * *'   # Broadway evening (primary) — fires ~1 AM UTC = 9 PM ET
+    - cron: '0 0 * * *'    # Broadway evening (backup) — fires ~2 AM UTC = 10 PM ET
+    - cron: '0 5 * * *'    # West End morning — fires ~6:30 AM UTC = 7:30 AM BST
+    - cron: '0 8 * * *'    # Broadway morning — fires ~9 AM UTC = 4 AM ET
+    - cron: '0 18 * * *'   # West End evening — fires ~19 UTC = 8 PM BST
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID to poll (leave empty for auto-discovery)'
+        required: false
+        type: string
+        default: ''
+      market:
+        description: 'Market filter (auto = detect from cron time)'
+        required: false
+        type: choice
+        options:
+          - auto
+          - broadway
+          - west-end
+        default: auto
+      max_iterations:
+        description: 'Max poll iterations (default 16 = ~4 hours at 15 min — iterations 17-24 yielded near-zero new URLs and burned SERP)'
+        required: false
+        type: number
+        default: 16
+      poll_interval_minutes:
+        description: 'Minutes between poll cycles (default 15 — rate-limit safe; use 10 only for short windows)'
+        required: false
+        type: number
+        default: 15
+      fast_path:
+        description: 'Poller inlines rebuild+deploy after scoring (default true for opening nights)'
+        required: false
+        type: boolean
+        default: true
+      bww_roundup_url:
+        description: 'Direct BWW Review Roundup URL (pass to poller to bypass SERP discovery)'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  actions: write
+
+# No workflow-level concurrency group (NOT per-run group intended, unlike the
+# other workflows in this repo): a group keyed on github.run_id (the old
+# setup) is unique per run and serializes NOTHING, and a shared group can't be
+# market-aware (scheduled runs only resolve their market mid-run). Same-market
+# dedup is handled by the "Redundancy guard" step below; BW and WE orchestrators
+# still run in parallel. This is the workflow that caused the 2026-08-03 alert
+# storm — see task #922 audit for the 14 other run_id-keyed groups reviewed
+# afterward (memory/feedback_concurrency_group_must_serialize_work_not_runs.md).
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360  # GitHub max — allows ~6 hours of polling
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Determine market
+        id: market
+        # NOTE: the hour→market ranges below are DUPLICATED in the Redundancy
+        # guard's hour_to_market() (it derives OTHER scheduled runs' markets
+        # from their startedAt hour). Editing the cron schedule or these ranges
+        # means updating both.
+        run: |
+          INPUT_MARKET="${{ inputs.market }}"
+          if [ "$INPUT_MARKET" != "" ] && [ "$INPUT_MARKET" != "auto" ]; then
+            echo "market=$INPUT_MARKET" >> $GITHUB_OUTPUT
+            echo "Using manual market: $INPUT_MARKET"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            # Hour ranges account for GitHub's consistent 1-2h cron delay.
+            # Crons shifted 2h early → actual fire times shown in comments above.
+            HOUR=$(date -u +%H)
+            HOUR_INT=$((10#$HOUR))
+            if [ "$HOUR_INT" -ge 22 ] || [ "$HOUR_INT" -le 4 ]; then
+              echo "market=broadway" >> $GITHUB_OUTPUT
+              echo "${HOUR} UTC (evening cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 5 ] && [ "$HOUR_INT" -le 7 ]; then
+              echo "market=west-end" >> $GITHUB_OUTPUT
+              echo "${HOUR} UTC (WE morning cron window) → west-end market"
+            elif [ "$HOUR_INT" -ge 8 ] && [ "$HOUR_INT" -le 13 ]; then
+              echo "market=broadway" >> $GITHUB_OUTPUT
+              echo "${HOUR} UTC (BW morning cron window) → broadway market"
+            elif [ "$HOUR_INT" -ge 17 ] && [ "$HOUR_INT" -le 21 ]; then
+              echo "market=west-end" >> $GITHUB_OUTPUT
+              echo "${HOUR} UTC (WE evening cron window) → west-end market"
+            else
+              echo "market=broadway" >> $GITHUB_OUTPUT
+              echo "Unknown cron hour $HOUR — defaulting to broadway"
+            fi
+          else
+            echo "market=" >> $GITHUB_OUTPUT
+            echo "Manual dispatch without market — polling all markets"
+          fi
+
+      - name: Redundancy guard
+        id: guard
+        # 2026-08-03 alert storm: the 23:00 cron, the 00:00 backup cron, and the
+        # launchd backup trigger all fired for the same night and stacked FOUR
+        # concurrent multi-hour orchestrator loops. Each loop dispatched its own
+        # pollers; the overlapping pollers raced the review-texts push and the
+        # losers paged the owner (4 emails in 1h). Redundant triggers exist BY
+        # DESIGN (GitHub crons can be hours late), so the dedup belongs here: if
+        # an earlier-started orchestrator covering the same market is still
+        # running, this run bows out quietly. Targeted dispatches (show_id set)
+        # and manual all-market dispatches (market resolves empty) are exempt —
+        # those are explicit owner intent. Fails open: if the API call errors,
+        # we proceed rather than risk skipping real opening-night coverage.
+        if: inputs.show_id == '' && steps.market.outputs.market != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MY_MARKET: ${{ steps.market.outputs.market }}
+          MY_ID: ${{ github.run_id }}
+        run: |
+          # Same hour→market mapping as the "Determine market" step above —
+          # edits to either must update both. Guard input is validated to two
+          # digits before this is called, so $((10#$H)) can't syntax-error.
+          hour_to_market() {
+            local H=$((10#$1))
+            if [ "$H" -ge 22 ] || [ "$H" -le 4 ]; then echo broadway
+            elif [ "$H" -ge 5 ] && [ "$H" -le 7 ]; then echo west-end
+            elif [ "$H" -ge 8 ] && [ "$H" -le 13 ]; then echo broadway
+            elif [ "$H" -ge 17 ] && [ "$H" -le 21 ]; then echo west-end
+            else echo broadway; fi
+          }
+
+          # in_progress only, deliberately NOT queued/pending: our own guard
+          # runs while we're already in_progress, and a queued run will see US
+          # when it starts — deferring to queued runs here would let two runs
+          # each defer to the other (mutual skip = zero coverage). Limit 50:
+          # busy nights push active runs past 20 (watch-aggregator-urls.js
+          # learned this the hard way).
+          RUNS=$(gh run list --workflow=opening-night-orchestrator.yml \
+            --status=in_progress --limit=50 \
+            --json databaseId,event,displayTitle,startedAt \
+            --jq '.[] | [.databaseId, .event, .startedAt, .displayTitle] | @tsv' 2>/dev/null || echo "")
+
+          MY_START=$(printf '%s\n' "$RUNS" | awk -F'\t' -v id="$MY_ID" '$1==id {print $3}')
+          if [ -z "$MY_START" ]; then
+            # We're in_progress but absent from the listing — the API view is
+            # stale or partial, so any verdict from it is unreliable. Fail open.
+            echo "redundant=false" >> $GITHUB_OUTPUT
+            echo "Own run $MY_ID not in the in_progress listing — API view unreliable, proceeding (fail open)."
+            exit 0
+          fi
+
+          REDUNDANT=false
+          while IFS=$'\t' read -r ID EVENT START TITLE; do
+            [ -z "$ID" ] && continue
+            [ "$ID" = "$MY_ID" ] && continue
+            # Malformed startedAt (empty, wrong shape) → say nothing about this
+            # row rather than risk a bash arithmetic error failing the job and
+            # paging — the exact storm this guard exists to prevent.
+            case "$START" in
+              [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:*) ;;
+              *) echo "Skipping run $ID — malformed startedAt '$START'"; continue ;;
+            esac
+            # Only defer to runs that started earlier (same-second tie broken by
+            # run id, so two runs can never both skip in each other's favor).
+            if [[ "$START" > "$MY_START" ]]; then continue; fi
+            if [ "$START" = "$MY_START" ] && [ "$ID" -gt "$MY_ID" ]; then continue; fi
+            if [ "$EVENT" = "schedule" ]; then
+              OTHER_MARKET=$(hour_to_market "${START:11:2}")
+            else
+              case "$TITLE" in
+                *"(broadway)"*) OTHER_MARKET=broadway ;;
+                *"(west-end)"*) OTHER_MARKET=west-end ;;
+                *) OTHER_MARKET=all ;;
+              esac
+            fi
+            if [ "$OTHER_MARKET" = "$MY_MARKET" ] || [ "$OTHER_MARKET" = "all" ]; then
+              echo "Earlier orchestrator run $ID (started $START, market=$OTHER_MARKET) already covers market=$MY_MARKET."
+              REDUNDANT=true
+              break
+            fi
+          done <<< "$RUNS"
+
+          echo "redundant=$REDUNDANT" >> $GITHUB_OUTPUT
+          if [ "$REDUNDANT" = "true" ]; then
+            echo "::notice::Redundant trigger — an earlier orchestrator already covers market=$MY_MARKET; exiting quietly."
+            {
+              echo "## ⏭️ Redundant trigger — skipped"
+              echo "An earlier-started orchestrator run already covers market **$MY_MARKET** (see log for run id)."
+              echo "If that run dies, the next cron/backup trigger takes over — this skip does not cancel anything."
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No earlier in-progress orchestrator covers market=$MY_MARKET — proceeding."
+          fi
+
+      - name: Find shows to poll
+        id: find
+        run: |
+          if [ "${{ steps.guard.outputs.redundant }}" = "true" ]; then
+            echo "Redundant trigger — an earlier orchestrator for this market is already running. Exiting."
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          INPUT_SHOW="${{ inputs.show_id }}"
+          MARKET="${{ steps.market.outputs.market }}"
+
+          if [ -n "$INPUT_SHOW" ]; then
+            echo "Using manual show: $INPUT_SHOW"
+            echo "shows=$INPUT_SHOW" >> $GITHUB_OUTPUT
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Lookback window for shows the orchestrator queues. Tier-3 outlets
+          # (Front Mezz Junkies, StageZine, Newsnotes, etc.) routinely publish
+          # 7-14 days after opening, and BWW Review Roundups have been seen at
+          # +14d (Heated Rivalry, opened 2026-05-12, BWW RR dropped 2026-05-26,
+          # missed by the previous 14-day cutoff). Cadence within the window
+          # is gated by pollMode in opening-night-poller.js:
+          #   - days 0-2: 'aggressive' (every cron fire)
+          #   - days 3-13: 'daily' (only morning-cron slot — once/day per show)
+          #   - days 14-59: 'every-3d' (~once every 3 mornings)
+          # The 30-shows/cycle SERP_BUDGET cap limits total cost.
+          LOOKBACK=21
+          echo "lookback=$LOOKBACK" >> $GITHUB_OUTPUT
+
+          # Selection predicate lives in scripts/lib/opening-night-selection.js
+          # (extracted 2026-07-24 so the local opening-night monitor launcher
+          # shares the SAME predicate instead of forking it — parity-tested in
+          # opening-night-selection.test.mjs). Full gate rationale (cold-open
+          # previewsStartDate fallback, WE untrusted-source suppression, 6h
+          # look-ahead) documented in the lib.
+          SHOWS=$(node scripts/lib/opening-night-selection.js --market="$MARKET")
+
+          if [ -z "$SHOWS" ]; then
+            echo "No recently opened shows for market=${MARKET:-all}"
+            echo "has_shows=false" >> $GITHUB_OUTPUT
+          else
+            echo "Shows to poll: $SHOWS (market=${MARKET:-all})"
+            echo "shows=$SHOWS" >> $GITHUB_OUTPUT
+            echo "has_shows=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Early exit if no shows
+        if: steps.find.outputs.has_shows != 'true'
+        run: echo "No shows opening tonight. Exiting."
+
+      - name: Check API budget
+        id: budget
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          if [ -z "$SCRAPINGBEE_API_KEY" ]; then
+            echo "skip_serp=false" >> $GITHUB_OUTPUT
+            echo "No SCRAPINGBEE_API_KEY — SERP enabled by default"
+            exit 0
+          fi
+          # Delegate to shared helper. Emits ::warning:: at 90% used, skip_serp=true below 1% remaining.
+          OUT=$(node scripts/lib/check-sb-credits.js --warn-used-pct=90 --output=skip_serp --floor-remaining-pct=1 2>&1 || true)
+          echo "$OUT" | grep -v '^{' || true
+          SKIP_LINE=$(echo "$OUT" | grep '^skip_serp=' | tail -1)
+          if [ -n "$SKIP_LINE" ]; then
+            echo "$SKIP_LINE" >> $GITHUB_OUTPUT
+          else
+            echo "skip_serp=false" >> $GITHUB_OUTPUT
+            echo "Could not read SB credit balance — SERP enabled by default"
+          fi
+
+      - name: Resource budget pre-flight
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        env:
+          SHOWS: ${{ steps.find.outputs.shows }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # GHA_BILLING_PAT (optional): PAT with read:user + billing scope.
+          # GITHUB_TOKEN can't read /users/{owner}/settings/billing/actions —
+          # without GHA_BILLING_PAT, the GHA-minutes pre-flight is cap-based only.
+          GHA_BILLING_PAT: ${{ secrets.GHA_BILLING_PAT }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          # Multi-show concurrency budgeting. Counts N shows in window and
+          # calls checkBudget(N) against ScrapingBee/Browserbase/LLM/GHA caps.
+          # Fires a Discord alert if blockers detected; never fails the job —
+          # the orchestrator continues, but we want budget exhaustion visible.
+          # See scripts/lib/opening-night-budget.js + memory/opening-night-budget-tuning.md.
+          node scripts/opening-night-budget-preflight.js --shows="$SHOWS"
+
+      - name: Enroll commercial stubs (Broadway)
+        id: commercial-stubs
+        if: steps.find.outputs.has_shows == 'true'
+        # S2-T4 (Notion 39b637c5-416f-815f): new Broadway opens were never
+        # enrolled in commercial.json — 7 spring-2026 shows were missing
+        # entirely. Enrollment here is LLM-free and idempotent (stub script
+        # exits 0 when the entry exists); a human/research pass fills numbers
+        # later. continue-on-error: enrollment must never block review polling.
+        continue-on-error: true
+        env:
+          SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          if [ ! -f data/commercial.json ]; then
+            # checkout-core-data only hard-fails on shows.json/reviews.json —
+            # surface the gap loudly instead of throwing inside node (which
+            # continue-on-error would swallow into an invisible forever-skip).
+            echo "::warning::data/commercial.json missing from core-data checkout — skipping stub enrollment this run"
+            echo "enrolled=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          SLUGS=$(node -e "
+            const shows = require('./data/shows.json').shows;
+            const commercial = require('./data/commercial.json').shows || {};
+            const ids = (process.env.SHOWS || '').split(',').filter(Boolean);
+            const slugs = ids
+              .map(id => shows.find(s => s.id === id))
+              .filter(Boolean)
+              .filter(s => (s.category || 'broadway') === 'broadway')
+              .map(s => s.slug)
+              .filter(slug => !commercial[slug]);
+            console.log(slugs.join(' '));
+          ")
+          if [ -z "$SLUGS" ]; then
+            echo "All Broadway shows in window already enrolled"
+            echo "enrolled=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          ARGS=""
+          for s in $SLUGS; do ARGS="$ARGS --show=$s"; done
+          node scripts/initialize-commercial-stub.js $ARGS
+          echo "enrolled=true" >> $GITHUB_OUTPUT
+
+      - name: Push commercial stub enrollment
+        if: steps.commercial-stubs.outputs.enrolled == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Enroll commercial stubs for opening-night shows'
+
+      - name: Refresh audience data (opening night)
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Dispatch audience scrapers at the START of the orchestrator so data is
+          # ready before the broadcast window (~11:30 PM ET). Runs once per session,
+          # not per polling iteration. All dispatches are fire-and-forget: we don't
+          # block polling on them, but we DO surface dispatch failures as warnings
+          # (see memory/feedback_silent_workflow_failures.md — never swallow dispatch
+          # errors with `|| true`).
+          #
+          # Each target audience-scraper workflow uses per-run concurrency groups
+          # so back-to-back dispatches don't lose middle ones to GitHub's
+          # 1-pending-queue limit. (Broadway.com is one batched dispatch since BRO-4242.)
+          SHOWS="${{ steps.find.outputs.shows }}"
+          MARKET="${{ steps.market.outputs.market }}"
+          echo "Dispatching audience scrapers for: $SHOWS (market: ${MARKET:-all})"
+
+          dispatch() {
+            local label="$1"; shift
+            if ! gh workflow run "$@"; then
+              echo "::warning::Failed to dispatch $label (dispatch call returned non-zero)"
+            fi
+          }
+
+          # Guardian reviews BOTH markets (Hassenger is the US critic). Its
+          # starRating is only in the Content API, not the HTML — opening-night
+          # SERP-discovery captures the URL but leaves originalScore=null. Run
+          # this for Broadway too, or Broadway stars are lost (Schmig 2026-04-20).
+          echo "  → Dispatching Guardian API for: $SHOWS"
+          dispatch "fetch-guardian-reviews" fetch-guardian-reviews.yml -f shows="$SHOWS"
+
+          if [ "$MARKET" = "west-end" ] || [ -z "$MARKET" ]; then
+            # West End audience scrapers (also dispatched when market is empty = all markets)
+            echo "  → Dispatching SeatPlan for: $SHOWS"
+            dispatch "update-seatplan" update-seatplan.yml -f shows="$SHOWS"
+
+            echo "  → Dispatching LBO for: $SHOWS"
+            dispatch "update-lbo" update-lbo.yml -f shows="$SHOWS"
+          fi
+
+          if [ "$MARKET" != "west-end" ]; then
+            # Broadway audience scrapers (also dispatched when market is empty = all markets)
+            # BRO-4242: one batched run, not one workflow run per show (was 35
+            # dispatches per tick, ~100 full job setups/day for one show each).
+            echo "  → Dispatching Broadway.com scraper for: $SHOWS"
+            dispatch "update-broadway-com" update-broadway-com.yml -f shows="$SHOWS"
+
+            echo "  → Dispatching Mezzanine for: $SHOWS"
+            dispatch "update-mezzanine" update-mezzanine.yml -f shows="$SHOWS"
+
+            echo "  → Dispatching Theatr for: $SHOWS"
+            dispatch "update-theatr" update-theatr.yml -f shows="$SHOWS"
+          fi
+
+          # These work for both markets (Reddit uses r/TheWestEnd for WE, r/Broadway for BW)
+          echo "  → Dispatching Reddit sentiment for: $SHOWS"
+          dispatch "update-reddit-sentiment" update-reddit-sentiment.yml -f shows="$SHOWS"
+
+          echo "  → Dispatching Show Score for: $SHOWS"
+          dispatch "update-show-score" update-show-score.yml -f shows="$SHOWS"
+
+          echo "Audience scrapers dispatched — they will run concurrently with review polling."
+
+      - name: Polling loop
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SKIP_SERP: ${{ steps.budget.outputs.skip_serp }}
+        run: |
+          # 2026-05-16: cut 16 → 10 to reduce duplicate aggregator+SERP fetches.
+          # With SERP_DEFER_ITERATIONS=8, iterations 1-8 are aggregator-only (no SERP),
+          # iterations 9-10 add SERP. Net: ~75% reduction in orchestrator SERP load and
+          # ~37% reduction in aggregator page-fetch load vs 16 iterations. Aggregator
+          # coverage during the first 80 min (the window when most reviews drop) is
+          # unchanged. Early-exit on broadcast-complete still applies. Manual dispatches
+          # can override with -f max_iterations=16.
+          MAX_ITERATIONS=${{ inputs.max_iterations || 10 }}
+          # BRO-66: scheduled (cron) runs never populate `inputs.*`, so this
+          # fallback — not the workflow_dispatch default of 15 above — is the
+          # cadence every opening night actually runs at. It used to fall back
+          # to 10min (rate-limit UNsafe per the input's own description),
+          # which is the "aggressive 10-min cadence" this card is named after:
+          # more iterations/hour → proportionally more REVIEW_TEXTS_TOKEN API
+          # calls from checkout-core-data + checkout-review-texts per poller
+          # dispatch, and that PAT has a flat 5000 req/hr ceiling shared by
+          # every workflow using it. 15min matches the documented safe default.
+          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 15 }}
+          SHOWS="${{ steps.find.outputs.shows }}"
+          MARKET="${{ steps.market.outputs.market }}"
+
+          # Check maintenance mode — pause orchestrator during manual corrections.
+          # Variable formats:
+          #   Legacy manual pause: plain string "true" (honored indefinitely)
+          #   Express lease:       JSON {"value":"express","setAt":"<ISO>"} (auto-expires after 90 min)
+          # Set manual:   gh variable set ORCHESTRATOR_PAUSED --body true
+          # Clear manual: gh variable delete ORCHESTRATOR_PAUSED
+          # Capture exit code instead of `|| echo ""` inside the subshell — gh prints the 404
+          # error JSON to stdout when the variable doesn't exist, and the inner `|| echo` only
+          # APPENDS to stdout, leaving PAUSED with the error body. That made the next case match
+          # `*)` (Orchestrator PAUSED — value=<404 JSON>) and silently skip every iteration after
+          # Express cleared the variable. Capturing exit code outside resets PAUSED="" on failure.
+          PAUSED=$(gh api repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED --jq '.value' 2>/dev/null) || PAUSED=""
+          if [ -n "$PAUSED" ]; then
+            DECISION=$(PAUSED_VALUE="$PAUSED" node -e "
+              const raw = process.env.PAUSED_VALUE || '';
+              let parsed = null;
+              try { parsed = JSON.parse(raw); } catch (e) { /* legacy string */ }
+              if (parsed && typeof parsed === 'object' && parsed.value === 'express') {
+                const setAt = new Date(parsed.setAt || 0).getTime();
+                const ageMin = (Date.now() - setAt) / 60000;
+                if (!isFinite(ageMin) || ageMin > 90) {
+                  console.log('EXPIRED|' + Math.round(ageMin) + 'min');
+                } else {
+                  console.log('ACTIVE|express|' + Math.round(ageMin) + 'min');
+                }
+              } else {
+                console.log('HONOR|' + raw);
+              }
+            " 2>/dev/null || echo "HONOR|$PAUSED")
+            case "$DECISION" in
+              EXPIRED*)
+                AGE=$(echo "$DECISION" | cut -d'|' -f2)
+                echo "::warning::ORCHESTRATOR_PAUSED=express lease expired ($AGE, >90min). Auto-clearing and proceeding."
+                gh variable delete ORCHESTRATOR_PAUSED 2>/dev/null \
+                  && echo "Stale lease cleared." \
+                  || echo "::warning::Could not clear stale ORCHESTRATOR_PAUSED — continuing anyway"
+                ;;
+              ACTIVE*)
+                AGE=$(echo "$DECISION" | cut -d'|' -f3)
+                echo "::notice::Orchestrator PAUSED (express lease, $AGE old). Exiting."
+                exit 0
+                ;;
+              *)
+                echo "::notice::Orchestrator PAUSED (value=$PAUSED). Exiting. Clear with: gh variable delete ORCHESTRATOR_PAUSED"
+                exit 0
+                ;;
+            esac
+          fi
+
+          # skip_serp=true ONLY when SB credits drop below 1% remaining (check-sb-credits.js
+          # --floor-remaining-pct=1, set in the "Check API budget" step above); auto-clears when
+          # credits renew. NOTE: this is a near-empty-tank backstop, NOT a 15% threshold — SB
+          # credits have never dropped below ~30% in practice, so budget-driven SERP skips are
+          # effectively never the cause of a missed opening-night SERP. The real SERP-skip driver
+          # is SERP_DEFER_ITERATIONS below. See data/audit/we-serp-diagnosis-corrected.md.
+          SKIP_SERP_FLAG=""
+          if [ "$SKIP_SERP" = "true" ]; then
+            SKIP_SERP_FLAG="-f skip_serp=true"
+          fi
+
+          echo "╔══════════════════════════════════════════════════╗"
+          echo "║  Opening Night Orchestrator"
+          echo "║  Shows: $SHOWS"
+          echo "║  Market: ${MARKET:-all}"
+          echo "║  Max iterations: $MAX_ITERATIONS"
+          echo "║  Interval: ${POLL_INTERVAL}min"
+          echo "║  Skip SERP: ${SKIP_SERP:-false}"
+          echo "╚══════════════════════════════════════════════════╝"
+
+          # Wall-clock deadline, 60min under `timeout-minutes: 360`.
+          #
+          # The loop could never finish: MAX_ITERATIONS=10 x (poller p50 45.8min +
+          # POLL_INTERVAL 10min) = 558min against a 360min cap. As the selection
+          # window grew (14 shows on Jul 5 -> 40 on Jul 30) per-iteration cost
+          # crossed the threshold, and from 2026-07-19 EVERY scheduled run was
+          # killed at exactly 360.0min with conclusion=cancelled — 11 straight days
+          # (last scheduled success 2026-07-19T00:19:57Z).
+          #
+          # Two things died with it, both silently:
+          #   1. SERP_DEFER_ITERATIONS=8 means iterations 9-10 are the ONLY
+          #      SERP-enabled ones, so the targeted per-outlet SERP arm of the
+          #      review hunt never ran at all.
+          #   2. `if: always()` does NOT run on cancellation, so the Discord status
+          #      report and the checklist + SLA dispatch tail steps never fired.
+          # Exiting cleanly under the cap restores both.
+          # 240min, not 300: the deadline is only checked at the TOP of each
+          # iteration, and one iteration can then run ~80min (poller's own 60min
+          # job timeout + POLL_INTERVAL sleep [15min default for scheduled runs
+          # since BRO-66, was 10] + dispatch/verify overhead). So the true worst
+          # case is DEADLINE + ~80min, and 240+80=320 stays under the 360 cap
+          # with a real reserve for the always() tail steps. It also has to
+          # absorb the steps that run BEFORE this one (checkout, npm ci, budget
+          # pre-flight), which are not covered by this clock.
+          DEADLINE=$(( $(date +%s) + 240*60 ))
+          COMPLETED_ITERATIONS=0
+          DEADLINE_EXIT=false
+
+          for ITERATION in $(seq 1 $MAX_ITERATIONS); do
+            if [ "$(date +%s)" -ge "$DEADLINE" ]; then
+              DEADLINE_EXIT=true
+              echo "::warning::Wall-clock deadline reached at iteration $ITERATION/$MAX_ITERATIONS — exiting loop cleanly so the always() tail steps run"
+              break
+            fi
+            echo ""
+            echo "══════════════════════════════════════════════════"
+            echo "  ITERATION $ITERATION / $MAX_ITERATIONS — $(date -u '+%Y-%m-%d %H:%M UTC')"
+            echo "══════════════════════════════════════════════════"
+
+            # Early exit: stop if all shows have already been broadcast.
+            # opening-night-sent.json is untracked+ignored in THIS repo as of
+            # task #1759 (no longer readable via this repo's Contents API) —
+            # the private data repo is the authoritative, continuously-synced
+            # copy (checkout-core-data/push-core-data), so read it there.
+            SENT_JSON=$(GH_TOKEN="${{ secrets.REVIEW_TEXTS_TOKEN }}" gh api repos/thomaspryor/broadway-scorecard-data/contents/opening-night-sent.json --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo '{}')
+            ALL_DONE=true
+            IFS=',' read -ra CHECK_SHOWS <<< "$SHOWS"
+            for SID in "${CHECK_SHOWS[@]}"; do
+              COMPLETED=$(echo "$SENT_JSON" | node -e "
+                try {
+                  const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+                  const e = d.shows && d.shows['$SID'];
+                  console.log(e && e.completed ? 'true' : 'false');
+                } catch { console.log('false'); }
+              " 2>/dev/null || echo "false")
+              if [ "$COMPLETED" != "true" ]; then
+                ALL_DONE=false
+                break
+              fi
+            done
+
+            if [ "$ALL_DONE" = "true" ]; then
+              echo "★ All shows already broadcast — stopping orchestrator early"
+              break
+            fi
+
+            # Dispatch the poller with show_id and market
+            echo "Dispatching opening-night-poller..."
+
+            # SERP deferral: skip SERP for first 8 iterations (~80-160 min at 10-20 min
+            # intervals). On opening night, Google hasn't indexed reviews yet — SERP
+            # returns wrong URLs that contaminate the pipeline. Layers 1-3 (aggregators,
+            # RSS, site-search) handle discovery until SERP catches up. Google indexing
+            # of major outlets takes 2-4h post-publication so the extra deferral is free.
+            # Budget override still takes precedence.
+            SERP_DEFER_ITERATIONS=8
+            ITER_SKIP_SERP="$SKIP_SERP_FLAG"
+            if [ "$ITERATION" -le "$SERP_DEFER_ITERATIONS" ] && [ -z "$SKIP_SERP_FLAG" ]; then
+              echo "  ℹ️ SERP deferred (iteration $ITERATION <= $SERP_DEFER_ITERATIONS) — Layers 1-3 only"
+              ITER_SKIP_SERP="-f skip_serp=true"
+            elif [ -n "$SKIP_SERP_FLAG" ]; then
+              echo "  ℹ️ SERP skipped (budget override)"
+            else
+              echo "  ✅ SERP enabled (iteration $ITERATION > $SERP_DEFER_ITERATIONS)"
+            fi
+
+            POLLER_ARGS="$ITER_SKIP_SERP"
+            if [ -n "$MARKET" ]; then
+              POLLER_ARGS="$POLLER_ARGS -f market=$MARKET"
+            fi
+
+            # Fast path: inline rebuild+deploy (default true for orchestrator dispatches)
+            FAST_PATH="${{ inputs.fast_path }}"
+            if [ "$FAST_PATH" = "true" ] || [ -z "$FAST_PATH" ]; then
+              POLLER_ARGS="$POLLER_ARGS -f fast_path=true"
+            fi
+
+            # BWW roundup URL passthrough (only on first iteration — subsequent ones discover via shows.json)
+            BWW_URL="${{ inputs.bww_roundup_url }}"
+            if [ -n "$BWW_URL" ] && [ "$ITERATION" -eq 1 ]; then
+              POLLER_ARGS="$POLLER_ARGS -f bww_roundup_url=$BWW_URL"
+            fi
+
+            # BRO-2358: never stack a dispatch on a poller run this orchestrator
+            # is still waiting out. The poller's concurrency group holds ONE
+            # running + ONE pending run, so every extra dispatch cancels the
+            # older pending one (2026-10-04: 6 of 8 auto runs cancelled, runs
+            # take 90-150min vs the wait below). Re-wait on the previous run
+            # instead; serialization is unchanged, nothing gets superseded.
+            PREV_STILL_ACTIVE=false
+            if [ -n "${PREV_POLLER_RUN_ID:-}" ]; then
+              PREV_STATUS=$(gh run view "$PREV_POLLER_RUN_ID" --json status -q .status 2>/dev/null || echo "")
+              case "$PREV_STATUS" in
+                queued|in_progress|waiting|pending|requested) PREV_STILL_ACTIVE=true ;;
+                completed) ;;
+                # gh failed (rate limit/outage): assume still active. Dispatching
+                # blind is exactly the stacking that cancels the pending slot, and
+                # the wall-clock DEADLINE bounds any stall.
+                *) PREV_STILL_ACTIVE=true; PREV_STATUS="unknown" ;;
+              esac
+            fi
+            RUN_ID=""
+            if [ "$PREV_STILL_ACTIVE" = "true" ]; then
+              echo "⏳ Previous poller run $PREV_POLLER_RUN_ID still $PREV_STATUS — not dispatching another (would cancel the pending slot); waiting on it again"
+              RUN_ID="$PREV_POLLER_RUN_ID"
+            else
+            # Record the newest poller run ID BEFORE dispatch so we can detect the new one
+            PRE_DISPATCH_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+
+            # Use comma-separated shows for single-show dispatch, or let poller auto-discover
+            IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
+            if [ ${#SHOW_ARRAY[@]} -eq 1 ]; then
+              gh workflow run opening-night-poller.yml -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || {
+                echo "⚠️ Failed to dispatch poller, retrying in 30s..."
+                sleep 30
+                gh workflow run opening-night-poller.yml -f show_id="${SHOW_ARRAY[0]}" $POLLER_ARGS || true
+              }
+            else
+              # Multiple shows — let poller auto-discover
+              gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || {
+                echo "⚠️ Failed to dispatch poller, retrying in 30s..."
+                sleep 30
+                gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || true
+              }
+            fi
+
+            # Wait for the dispatched poller run to appear and complete
+            echo "Pre-dispatch latest poller run: ${PRE_DISPATCH_ID:-none}"
+            echo "Waiting for new poller run to appear..."
+
+            for WAIT in $(seq 1 24); do
+              sleep 5
+              LATEST_ID=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
+              if [ -n "$LATEST_ID" ] && [ "$LATEST_ID" != "$PRE_DISPATCH_ID" ]; then
+                RUN_ID="$LATEST_ID"
+                echo "Found new poller run: $RUN_ID"
+                break
+              fi
+            done
+            fi
+
+            if [ -n "$RUN_ID" ]; then
+              PREV_POLLER_RUN_ID="$RUN_ID"
+              echo "Waiting for poller run $RUN_ID to complete..."
+              # wait-for-run.sh polls once per 60-90s (one run-view call, no jobs
+              # expansion) instead of gh run watch's 3s default — a 25-min poller
+              # watch was ~500 calls against the repo's 1000/hr GITHUB_TOKEN budget.
+              # 75 covers a typical run; a longer one (job timeout is 100min, plus queue
+              # time) is re-waited next iteration by the PREV_STILL_ACTIVE guard above.
+              bash scripts/lib/wait-for-run.sh "$RUN_ID" 75 || echo "⚠️ Poller run $RUN_ID wait exited $? (1=run failed, 2=still running after 75min, 3=gh errors) — continuing"
+            else
+              echo "⚠️ Could not find new poller run after 2 min. Continuing."
+            fi
+
+            COMPLETED_ITERATIONS=$ITERATION
+
+            # Sleep between iterations (skip on last iteration)
+            if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
+              echo "Sleeping ${POLL_INTERVAL} minutes until next iteration..."
+              sleep $((POLL_INTERVAL * 60))
+            fi
+          done
+
+          echo ""
+          echo "╔══════════════════════════════════════════════════╗"
+          if [ "$DEADLINE_EXIT" = "true" ]; then
+            echo "║  Orchestrator PARTIAL: $COMPLETED_ITERATIONS/$MAX_ITERATIONS iterations (wall-clock deadline)"
+            echo "║  SERP arm starts at iteration $((SERP_DEFER_ITERATIONS + 1)) — if that was not reached,"
+            echo "║  per-outlet SERP discovery did NOT run this cycle."
+            echo "::warning::Orchestrator exited on deadline after $COMPLETED_ITERATIONS/$MAX_ITERATIONS iterations — coverage is partial"
+          else
+            echo "║  Orchestrator complete: $COMPLETED_ITERATIONS/$MAX_ITERATIONS iterations"
+          fi
+          echo "╚══════════════════════════════════════════════════╝"
+
+      - name: Setup Node for status notification
+        if: always() && steps.find.outputs.has_shows == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Send opening night status to Discord
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/opening-night-status.js --notify --lookback=2
+        continue-on-error: true
+
+      - name: Run opening night checklist + SLA dispatch
+        if: always() && steps.find.outputs.has_shows == 'true'
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          STAGE_LATENCY_LOG: data/audit/stage-latency.jsonl
+          # BRO-67: this step's opening-night-checklist.js invocation runs the
+          # bww/dtli count-mismatch checks, same as opening-night-checklist.yml
+          # — needs the key for the same reason (see that workflow's comment).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # --out keeps the JSON free of stdout/stderr log noise — a merged
+          # redirect made checklist.json unparseable and silently un-scoped
+          # the SLA dispatcher (2026-08-02 false P0 storm).
+          # rc discrimination (task #1073, Codex ship-check): 0/1 are designed
+          # outcomes (clean / shows-have-errors — the SLA dispatcher consumes
+          # the JSON either way); >1 means the checklist CRASHED (the exact
+          # MODULE_NOT_FOUND that ran swallowed for 3 months) — fail the step
+          # loudly instead of feeding the SLA dispatcher an empty/stale file.
+          RC=0
+          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json 2>&1 || RC=$?
+          if [ "$RC" -gt 1 ]; then
+            echo "::error::opening-night-checklist crashed (exit $RC) — SLA dispatch skipped"
+            exit "$RC"
+          fi
+          node scripts/opening-night-sla-dispatch.js /tmp/checklist.json
+
+      # BRO-3671: opening-night-checklist.js requires routeAlert and passes it
+      # into executeRemediations() (dependency injection, not a direct call in
+      # this file), and opening-night-sla-dispatch.js reaches the router via
+      # opening-night-sla.js — this job had NO commit step for any of these
+      # files anywhere in its 700+ lines, so the cooldown ledger, queued
+      # digest lines (opening-night-remediation.js uses disposition:'digest'),
+      # and the dispatch-attempts log never persisted across runs. Mirrors
+      # opening-night-checklist.yml's own "Commit shared audit telemetry" step.
+      - name: Commit alert state
+        if: always() && steps.find.outputs.has_shows == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: opening-night-orchestrator alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
+      # in-progress orchestrator run before taking over (its "Cancel competing
+      # orchestrator/poller runs" step), then sets ORCHESTRATOR_PAUSED — an
+      # expected, routine cancellation, not a hang. Without this check, adding
+      # cancelled() to Notify below would page "Orchestrator Failed" on every
+      # Express takeover. If the lease is set, this cancellation is very
+      # likely that takeover, not a genuine job-timeout; skip the alert.
+      - name: Check for Express preemption
+        id: check_preemption
+        if: cancelled()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          PAUSED=$(gh api "repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED" --jq '.value' 2>/dev/null) || PAUSED=""
+          if [ -n "$PAUSED" ]; then
+            echo "preempted=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::ORCHESTRATOR_PAUSED=$PAUSED — treating this cancellation as an Express takeover, not a hang. Skipping alert."
+          else
+            echo "preempted=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Notify on failure
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 360 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. Guarded against the Express-
+        # takeover false positive by check_preemption above.
+        if: failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Orchestrator Failed'
+          severity: 'critical'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

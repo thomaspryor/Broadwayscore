@@ -1,0 +1,22 @@
+[
+  {
+    "id": "robin-hood-and-the-merry-mandem-off-west-end-2026",
+    "ackedAt": "2026-08-31T19:36:32.983Z",
+    "note": "BRO-2382 triage: all 6 collected review files are wrong-show contamination (Palladium panto Robin Hood, Julian Clary) title-substring-collided onto this entry; flagged wrongShow/wrongProduction. No genuine evidence this show has opened yet."
+  },
+  {
+    "id": "hallelujah-baby-off-broadway-2026",
+    "ackedAt": "2026-08-31T19:36:33.056Z",
+    "note": "BRO-2382 triage: all 8 collected review files are the 2018 York Theatre production; flagged wrongProduction. The 2026-27 announced production (closingDate already stamped 2027-03-28) has not opened yet."
+  },
+  {
+    "id": "kings-2-off-west-end-2026",
+    "ackedAt": "2026-08-31T19:36:33.130Z",
+    "note": "BRO-2382 triage: all 3 collected review files are wrong-show/wrong-venue contamination (Here Comes J. Edgar / Fanny / Stalled at King's Head Theatre, not Kiln Theatre); flagged wrongShow/wrongProduction. No genuine evidence this show has opened yet."
+  },
+  {
+    "id": "age-is-a-feeling-off-broadway-2024",
+    "ackedAt": "2026-09-08T14:32:32.494Z",
+    "note": "BRO-93/BRO-3091 triage 2026-09-08: Vineyard Theatre postponed the US premiere indefinitely on 2024-09-05 (McGee health issue, days before scheduled 2024-09-11 opening) — confirmed via vineyardtheatre.org, no rescheduled date announced as of 2026-09. Original opening/previewsStartDate were stale from the cancelled date and have been nulled in shows.json (matches convention of the other 187 announced shows with unconfirmed dates). The lone review-texts file is a pre-postponement BWW creative-team-announcement article (not a real review, scoreExtractionPending, 0 entries in reviews.json) so it still trips the review-texts signal; acked rather than reclassified since NOT_EVIDENCE_OF_OPENING is deliberately narrow (wrongShow/wrongProduction only) and changing that shared predicate for one show is out of scope here."
+  }
+]

@@ -1,0 +1,151 @@
+name: Update LBO Data
+
+on:
+  schedule:
+    # Weekly on Sundays at 3:30 PM UTC (10:30 AM EST), after SeatPlan at 3 PM
+    - cron: '30 15 * * 0'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single show ID to update (e.g., hamilton-west-end-2021)'
+        required: false
+        type: string
+      shows:
+        description: 'Comma-separated show IDs (e.g., show1,show2). Overrides show.'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        type: string
+        default: '22'
+
+concurrency:
+  # per-run group intended: prevents the orchestrator's back-to-back dispatches from
+  # dropping each other at GitHub's 1-pending-queue limit. See Cats 2026-04-07
+  # poller postmortem — shared groups silently discard the middle runs.
+  # (task #922 audit, 2026-08-03)
+  group: lbo-${{ github.run_id }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-lbo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Run LBO scraper
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: |
+          DRY_RUN_FLAG=""
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+          fi
+
+          # Exit cleanly before the 30-min job timeout; deferred shows/pages are
+          # picked up next run. Default in bash, not a GHA || expression — the
+          # expression coerces a literal 0 (= unlimited) to falsy.
+          TB="${{ inputs.time_budget_min }}"
+          [ -z "$TB" ] && TB=22
+          TB_FLAG="--time-budget-min=$TB"
+
+          if [ -n "${{ inputs.shows }}" ]; then
+            IFS=',' read -ra SHOW_IDS <<< "${{ inputs.shows }}"
+            # Each show runs in its own subprocess, so a flat TB_FLAG would be
+            # applied N times (createRunBudget starts fresh per subprocess) —
+            # re-derate the total budget across the show count so the loop
+            # can't overrun the job timeout. TB=0 (unlimited) stays 0.
+            # Truncate to an integer first: bash arithmetic (unlike Node's
+            # parseFloat below) errors out on a decimal like "22.5".
+            TB_INT="${TB%%.*}"
+            [ -z "$TB_INT" ] && TB_INT=0
+            PER_SHOW_TB=$(( TB_INT / ${#SHOW_IDS[@]} ))
+            if [ "$TB_INT" -gt 0 ] && [ "$PER_SHOW_TB" -lt 1 ]; then
+              PER_SHOW_TB=1
+            fi
+            PER_SHOW_TB_FLAG="--time-budget-min=$PER_SHOW_TB"
+            echo "Total budget ${TB_INT}min across ${#SHOW_IDS[@]} shows: ${PER_SHOW_TB}min/show"
+            for sid in "${SHOW_IDS[@]}"; do
+              echo "Running LBO for: $sid"
+              node scripts/scrape-lbo-audience.js --show="$sid" $DRY_RUN_FLAG $PER_SHOW_TB_FLAG || true
+            done
+            exit 0
+          fi
+
+          ARGS=""
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          ARGS="$ARGS $DRY_RUN_FLAG $TB_FLAG"
+
+          # shellcheck disable=SC2086
+          node scripts/scrape-lbo-audience.js $ARGS
+
+      # NOTE: snapshot-overwrite step removed 2026-07-19. /tmp/core-data-snapshot/ is
+      # the checkout-time baseline push-core-data diffs against (2beb6617c58);
+      # overwriting it with the scraper's output made audience files read as
+      # "untouched" and silently skipped from the private-repo push.
+
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-lbo'
+
+      - name: Dispatch deploy
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      # scrape-lbo-audience.js's slug discovery calls serp-slug-discovery.js's
+      # url-discovery.js SERP path, which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784) — never staged before this weekly cron (Sprint 3, card
+      # 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.dry_run != true
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (update-lbo)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update LBO Data Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

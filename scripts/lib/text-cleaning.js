@@ -1,0 +1,537 @@
+/**
+ * Text Cleaning Module
+ *
+ * Centralized text cleaning for review data. Used by:
+ * - gather-reviews.js (clean text before writing review files)
+ * - collect-review-texts.js (clean scraped text before quality classification)
+ * - rebuild-all-reviews.js (decode entities when building reviews.json)
+ *
+ * @module text-cleaning
+ */
+
+/**
+ * Decode ALL HTML entities properly
+ * Handles both numeric (&#8220;, &#x201C;) and named (&amp;, &rsquo;) entities.
+ *
+ * @param {string} text - Text with HTML entities
+ * @returns {string} Text with entities decoded
+ */
+function decodeHtmlEntities(text) {
+  if (!text) return text;
+  return text
+    // Numeric entities
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)))
+    // Named entities - common ones
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&rsquo;|&lsquo;/g, "'")
+    .replace(/&rdquo;|&ldquo;/g, '"')
+    .replace(/&mdash;/g, '—')
+    .replace(/&ndash;/g, '–')
+    .replace(/&hellip;/g, '...')
+    .replace(/&auml;/g, 'ä')
+    .replace(/&ouml;/g, 'ö')
+    .replace(/&uuml;/g, 'ü')
+    .replace(/&apos;/g, "'")
+    .replace(/&copy;/g, '©')
+    .replace(/&reg;/g, '®')
+    .replace(/&trade;/g, '™')
+    .replace(/&euro;/g, '€')
+    .replace(/&pound;/g, '£')
+    .replace(/&iacute;/g, 'í')
+    .replace(/&eacute;/g, 'é')
+    .replace(/&oacute;/g, 'ó')
+    .replace(/&aacute;/g, 'á')
+    .replace(/&uacute;/g, 'ú')
+    .replace(/&ntilde;/g, 'ñ')
+    .replace(/&ccedil;/g, 'ç')
+    // Grave + remaining diaeresis/circumflex accents. egrave/euml were missing,
+    // so a value like "M&egrave;re" survived decode and kept tripping the
+    // validate-data [html-entity] detector. Completed so the save-time guard in
+    // review-file-writer.js can fully clean every entity that detector flags.
+    .replace(/&agrave;/g, 'à')
+    .replace(/&egrave;/g, 'è')
+    .replace(/&igrave;/g, 'ì')
+    .replace(/&ograve;/g, 'ò')
+    .replace(/&ugrave;/g, 'ù')
+    .replace(/&euml;/g, 'ë')
+    .replace(/&iuml;/g, 'ï')
+    .replace(/&yuml;/g, 'ÿ')
+    .replace(/&acirc;/g, 'â')
+    .replace(/&ecirc;/g, 'ê')
+    .replace(/&icirc;/g, 'î')
+    .replace(/&ocirc;/g, 'ô')
+    .replace(/&ucirc;/g, 'û')
+    .replace(/&atilde;/g, 'ã')
+    .replace(/&otilde;/g, 'õ')
+    .replace(/&aring;/g, 'å')
+    .replace(/&oslash;/g, 'ø')
+    .replace(/&aelig;/g, 'æ')
+    .replace(/&szlig;/g, 'ß');
+}
+
+// ─── Shared display-field artifact detectors ─────────────────────────────────
+// These are the canonical predicates for validate-data's [html-entity] (CHECK 5)
+// and [jsonld-artifact] (CHECK 4) gates AND the save-time guards in
+// review-file-writer.js. Detector and write-guard share ONE definition so they
+// can't drift (CLAUDE.md §15), mirroring looksLikeUrlCriticName.
+
+// True when a display string contains an undecoded HTML entity. Defined as
+// "decodeHtmlEntities() would change this value" so the detector and the
+// save-time guard can NEVER drift: a value is flagged iff the decoder can clean
+// it (symmetry by construction — adding an entity to the decoder automatically
+// extends the detector too). The `&` fast-path skips the decode for the ~99% of
+// values that contain no entity at all.
+function hasUndecodedHtmlEntities(value) {
+  if (typeof value !== 'string' || value.indexOf('&') === -1) return false;
+  return decodeHtmlEntities(value) !== value;
+}
+
+// True when a display string carries JSON-LD / structured-data markers — the
+// scraper grabbed schema.org markup instead of a real pull-quote/excerpt.
+const JSONLD_ARTIFACT_RE = /@type|@context|schema\.org|"@id"|itemReviewed|reviewBody/i;
+function hasJsonLdArtifact(value) {
+  return typeof value === 'string' && JSONLD_ARTIFACT_RE.test(value);
+}
+
+// Junk patterns to strip from end of reviews (newsletter promos, login prompts, site footers)
+const TRAILING_JUNK_PATTERNS = [
+  // TheaterMania newsletter promos
+  /\s*Get the latest news, discounts and updates on theater and shows by signing up for TheaterMania.*$/is,
+  /\s*TheaterMania&#039;s newsletter today!.*$/is,
+  // BroadwayNews login prompts
+  /\s*Already have an account\?\s*(Sign in|Log in).*$/is,
+  // amNY "Read more" promos
+  /\s*Read more:\s*[^\n]+$/i,
+  // Vulture/NY Mag signup junk
+  /\s*This email will be used to sign into all New York sites.*$/is,
+  /\s*By submitting your email, you agree to our Terms and Privacy Policy.*$/is,
+  /\s*Password must be at least 8 characters.*$/is,
+  /\s*You're in!\s*As part of your account.*$/is,
+  /\s*which you can opt out of anytime\.\s*$/i,
+  /\s*occasional updates and offers from New York.*$/is,
+  // Generic newsletter/promo junk
+  /\s*Sign up for our newsletter.*$/is,
+  /\s*Subscribe to our newsletter.*$/is,
+  // Site footers
+  /\s*About Us\s*\|\s*Editorial Guidelines\s*\|\s*Contact Us.*$/is,
+  /\s*Share full article\d*Related Content.*$/is,
+  /\s*Copyright\s*©?\s*\d{4}.*$/is,
+  /\s*All rights reserved\.?\s*$/i,
+  /\s*Excerpts and links to the content may be used.*$/is,
+  // NYT bio junk
+  /\s*is the chief theater critic for The Times\..*$/is,
+  /\s*is a theater critic for The Times\..*$/is,
+
+  // === Outlet-specific patterns (added Feb 2026) ===
+
+  // EW: image tags, srcsets, "Related Articles/Content" blocks
+  /\s*<img\b[^>]*>.*$/is,
+  /\s*srcset\s*=\s*"[^"]*".*$/is,
+  /\s*Related\s+(Articles?|Content)\s*[\n\r].*$/is,
+
+  // BWW: paywall text
+  /\s*Get Access To Every Broadway Story.*$/is,
+  /\s*Unlock access to every one of our articles.*$/is,
+
+  // Variety: interstitials
+  /\s*Related Stories\s*[\n\r].*$/is,
+  /\s*Popular on Variety\s*[\n\r].*$/is,
+  /\s*More From Our Brands\s*[\n\r].*$/is,
+
+  // BroadwayNews: site navigation junk (JS-rendered content)
+  /\s*Broadway News\s*Menu\s*Close.*$/is,
+  /\s*Broadway Briefing.*$/is,
+
+  // The Times UK: paywall prefix
+  /^We haven't been able to take payment.*?(?=\b[A-Z][a-z])/s,
+
+  // === Time Out New York: newsletter subscription forms ===
+  // Leading junk: repeated newsletter signup blocks (appear 3+ times at top of scraped pages)
+  /^Thanks for subscribing!.*?inbox soon!\s*/is,
+  /^The best of New York straight to your inbox\s*/i,
+  /^By entering your email address you agree to our Terms of Use and Privacy Policy[^\n]*\n?\s*/i,
+  /^Déjà vu! We already have this email\. Try another\?\s*/i,
+  /^Our newsletter hand-delivers the best bits[^\n]*\n?\s*/i,
+  /^Sign up to unlock our digital magazines[^\n]*\n?\s*/i,
+  /^Sign up to our newsletter[^\n]*\n?\s*/i,
+  /^An email you['']ll actually love\s*/i,
+  /^Broadway review by [A-Z][a-z]+ [A-Z][a-z]+\s*/,
+  // Time Out show metadata lines (ratings, categories, venue info)
+  /^\d+ out of \d+ stars\s*/,
+  /^Theater,?\s*Musicals?\s*$/m,
+  /^Musicals?,?\s*Theater\s*$/m,
+  /^Open run\s*/i,
+  /^Recommended\s*/,
+  // Trailing junk: signup form remnants that appear at end of scraped text
+  /\s*(?:By entering your email address you agree to our|Thanks for subscribing).*$/is,
+  // Trailing junk: social media follow links and event details
+  /\s*Follow\s+\w[\w\s]+on\s+Twitter:.*$/is,
+  /\s*TwitterPinterestEmail.*$/is,
+  /\s*DetailsEvent website:.*$/is,
+  // Trailing junk: footer navigation
+  /\s*Been there, done that\? Think again, my friend\..*$/is,
+  /\s*Discover Time Out original video.*$/is,
+  /\s*Back to Top\s*Close\s*Get us in your inbox.*$/is,
+  /\s*tiktokfacebooktwitteryoutube\s*About us.*$/is,
+  /\s*An email you['']ll actually love.*$/is,
+
+  // === Chicago Tribune: social sharing junk ===
+  /^Things To Do Theater (?:Review|Critic's Notebook): /,
+  /^Share this:\s*/,
+  /^Click to share on (?:Facebook|Bluesky|X|print) \(Opens in new window\)\s*(?:Facebook|Bluesky|X|print)\s*/,
+
+  // === IndieWire / Penske Media boilerplate ===
+  /^IndieWire is a part of Penske Media Corporation\.\s*©\s*\d{4}[^.]*\.\s*All Rights Reserved\.\s*/i,
+
+  // === Generic corporate boilerplate at start of text ===
+  /^©\s*\d{4}\s+[A-Z][\w\s,]+(?:LLC|Inc|Corp|Ltd|Media|Entertainment)[^.]*\.\s*All Rights Reserved\.\s*/i,
+
+  // === WSJ: article navigation sidebar content + paywall prompts ===
+  /\s*Article viewed icon.*$/is,
+  /\s*Read\d+\s*hours?\s*ago\s*\|.*$/is,
+  /\s*Recommended\s*Videos?\s*Advertisement.*$/is,
+  /\s*[Cc]ancel your subscription at anytime.*$/is,
+  /\s*[Pp]lease click confirm to resume now.*$/is,
+
+  // === Financial Times: footer terms ===
+  /\s*['']Financial Times[''].*?trademarks.*$/is,
+  /\s*Privacy policy\s*\|\s*Terms\s*\|\s*Copyright.*$/is,
+
+  // === NY Sun: newsletter CTA ===
+  /\s*ILLUMINATE\s+(?:your\s+world|YOUR\s+WORLD).*$/is,
+
+  // === Condé Nast (New Yorker, Vogue, etc.) ===
+  /\s*may not be reproduced.*?Cond[eé] Nast.*$/is,
+
+  // === Blogspot: CSS/HTML remnants ===
+  /\s*mso-[\w-]+:[^}]+\}\s*-*>?\s*$/is,
+  /\s*div\.WordSection\d+\s*\{.*$/is,
+
+  // === Talkin' Broadway: site navigation ===
+  /\s*Broadway show merchandise.*$/is,
+  /\s*Off-Broadway Reviews.*Share:?\s*$/is,
+
+  // === uinterview.com: venue promo ===
+  /\s*[A-Z]{2,}\s+IS\s+NOW\s+PLAYING\s+AT\s+THE\s+.*$/is,
+
+  // === Generic: slideshow promos ===
+  /\s*\d+\s+CELEBRITIES\s+WHO\s+DIED.*$/is,
+
+  // === Timeout: show metadata at end of reviews ===
+  /\s*See complete event information\s*$/is,
+  /\s*\d+hrs?\s+\d+mins?\.\s+(?:One|No)\s+intermission\.?\s*$/is,
+
+  // === Newsday: unrelated article links appended to review text ===
+  /\s*Advertising Opportunities\s*\|\s*FAQ\s*\|\s*Sitemap.*$/is,
+
+  // === Observer: ad blocker message ===
+  /\s*But advertising revenue helps support our journalism\.\s*To read our full stories.*$/is,
+  /\s*Click the AdBlock button on your browser.*$/is,
+
+  // === Time Out: contentpass ad-removal promo ===
+  /\s*Pay to remove ads with contentpass.*$/is,
+  /\s*Access Time Out and over \d+ other websites.*$/is,
+  /\s*Already have a contentpass account\?.*$/is,
+  /\s*More information about our ads.*$/is,
+
+  // === Chelsea Community News: donation CTA ===
+  /\s*Our Promise:\s*Never a paywall.*$/is,
+  /\s*With that in mind, if circumstances allow.*$/is,
+
+  // === Generic: trailing paywall/subscription junk ===
+  /\s*(?:Subscribe|Sign up)\s+(?:now|today)\s+(?:to|for)\s+(?:continue|read|access|unlock).*$/is,
+  /\s*(?:Already a (?:member|subscriber)\?|Become a (?:member|subscriber)).*$/is,
+
+  // === nyt-theater WordPress sidebar ===
+  /\s*Most Popular Posts[\s\S]*$/is,
+  /\s*New York Theater Archives[\s\S]*$/is,
+
+  // === nytg (New York Theatre Guide) ticket page boilerplate ===
+  /\s*Frequently asked questions\s*Where is[\s\S]*$/is,
+];
+
+// High-confidence patterns — definitively junk, bypass back-half guard.
+// These use [\s\S]*$ to consume everything after the anchor.
+const HIGH_CONFIDENCE_JUNK_PATTERNS = [
+  // nyt-theater WordPress sidebar
+  /\s*Most Popular Posts[\s\S]*$/is,
+  /\s*New York Theater Archives[\s\S]*$/is,
+  // nytg ticket/FAQ pages
+  /\s*Frequently asked questions\s*Where is[\s\S]*$/is,
+  /\s*Get directions\s*(?:\||View map)[\s\S]*$/is,
+  // Generic WordPress sidebar widgets
+  /\s*CategoriesCategories[\s\S]*$/is,
+  /\s*Theater blogroll[\s\S]*$/is,
+  // washingtonpost.com comment-count + "The 7" newsletter footer (task #876,
+  // confirmed live on masquerade-2025 / the-wiz-2024 recoveries — without
+  // this the trailing footer makes detectTruncationSignals() misclassify a
+  // complete review as truncated).
+  /\s*\d+\s*Comments\s*NEWSLETTER\s*WEEKDAYS\s*The 7[\s\S]*$/i,
+  // londontheatre.co.uk / newyorktheatreguide.com (one platform): after the
+  // review and its FAQ comes "Originally published on <Mon D, YYYY HH:MM>",
+  // then the booking calendar, "Latest News" and "Related articles", which name
+  // a dozen other shows. assessTextQuality read that as a multi-show page and
+  // the Tru London Theatre review was never scored (BRO-4430).
+  /\s*Originally published on [A-Z][a-z]{2,8}\.? \d{1,2}, \d{4}[\s\S]*$/,
+];
+
+/**
+ * Strip trailing junk (newsletter promos, login prompts, site footers) from review text.
+ * Also strips known leading junk (e.g., The Times UK paywall prefix).
+ * Runs iteratively until no more patterns match.
+ *
+ * Guards (ported from text-quality.js) prevent catastrophic text destruction:
+ *   - Back-half guard: only strip if match is in the last 40% of current text
+ *   - Minimum-remaining guard: at least 200 chars (or 15% of original) must survive
+ *   - High-confidence patterns bypass back-half guard (lower min-remaining threshold)
+ *
+ * @param {string} text - Review text to clean
+ * @returns {string} Cleaned text
+ */
+function stripTrailingJunk(text) {
+  if (!text) return text;
+  let cleaned = text;
+  const originalLength = text.length;
+  const minRemaining = Math.max(200, originalLength * 0.15);
+  const minRemainingHighConf = Math.max(100, originalLength * 0.10);
+
+  // Pass 1: High-confidence patterns — no back-half guard, lower min-remaining
+  for (const pattern of HIGH_CONFIDENCE_JUNK_PATTERNS) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+    if (match.index < minRemainingHighConf) continue;
+
+    const before = cleaned;
+    cleaned = cleaned.replace(pattern, '').trim();
+    if (cleaned !== before) break; // Re-evaluate from shorter text
+  }
+
+  // Pass 2: Regular patterns — with back-half guard and standard min-remaining
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const pattern of TRAILING_JUNK_PATTERNS) {
+      // Leading patterns (^ anchored, e.g., Times UK paywall prefix) bypass position guards
+      if (pattern.source.startsWith('^')) {
+        const before = cleaned;
+        cleaned = cleaned.replace(pattern, '').trim();
+        if (cleaned !== before) changed = true;
+        continue;
+      }
+
+      // Find where the pattern matches
+      const match = cleaned.match(pattern);
+      if (!match) continue;
+
+      // Back-half guard: only strip if match is in the last 40% of current text.
+      // Prevents keywords like "Copyright" in page headers from eating the review.
+      if (match.index < cleaned.length * 0.6) continue;
+
+      // Minimum-remaining guard: don't strip if too little text would remain.
+      if (match.index < minRemaining) continue;
+
+      const before = cleaned;
+      cleaned = cleaned.replace(pattern, '').trim();
+      if (cleaned !== before) changed = true;
+    }
+  }
+  return cleaned;
+}
+
+/**
+ * Strip a raw leading HTML tag left behind when the article's first child is
+ * an image (e.g. a WordPress star-rating graphic) and the extractor's
+ * HTML-to-text pass didn't convert it. Found in Theatre Weekly's Dog Man
+ * review (BRO-4154 punctuation-bug recovery, 2026-09-25): fullText started
+ * with a full `<img ... srcset="...">` tag before any review prose. Only
+ * strips void tags that never wrap real prose (img/source/br/meta/link) and
+ * <picture> wrappers, so genuine text starting with "<" is untouched. Runs
+ * BEFORE entity decoding so prose that begins with an escaped "&lt;img&gt;"
+ * is never mistaken for markup.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function stripLeadingHtmlArtifacts(text) {
+  if (!text) return text;
+  let out = text;
+  for (let i = 0; i < 8; i++) {
+    // Void/self-closing image tags, plus open/close of <picture>, which only
+    // wraps <source>/<img>. <figure> is NOT stripped: it can carry a
+    // <figcaption> that would be left dangling.
+    // Quoted attribute values may contain '>' (alt="5 > 3 stars"); the
+    // length cap keeps a stray '<img' in prose from eating a paragraph.
+    const next = out.replace(/^\s*(?:<(?:img|source|br|meta|link)\b(?:"[^"]*"|'[^']*'|[^>"']){0,4000}>|<\/?picture\b[^>]{0,200}>)\s*/i, '');
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
+
+/**
+ * Strip leading navigation junk from scraped review text.
+ * Many sites (TheWrap, BroadwayNews, NY Daily News, Chicago Tribune) include
+ * "Skip to content" followed by site navigation menus, whitespace, and other
+ * non-review content at the start of scraped text.
+ *
+ * Detects "Skip to content" / "Skip to main" at the start, then finds the first
+ * substantial content line (>60 chars with sentence punctuation) and strips
+ * everything before it.
+ *
+ * @param {string} text - Text that may start with navigation junk
+ * @returns {string} Text with leading navigation stripped
+ */
+function stripLeadingNavigation(text) {
+  if (!text) return text;
+
+  // Check first 150 chars for "Skip to content/main" (may be preceded by event schedules etc.)
+  const head = text.substring(0, 150);
+  const skipMatch = head.match(/skip\s+to\s+(content|main)/i);
+  if (!skipMatch) return text;
+
+  // Cut everything before and including the "Skip to..." marker
+  const markerEnd = text.indexOf(skipMatch[0]) + skipMatch[0].length;
+  let cleaned = text.substring(markerEnd);
+
+  // Also strip any trailing "...or skip to search" continuation
+  cleaned = cleaned.replace(/^[,\s]*or\s+skip\s+to\s+search\.?\s*/i, '');
+
+  // Find the first substantial line (>60 chars with sentence punctuation)
+  const lines = cleaned.split('\n');
+  let cutLine = -1;
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (trimmed.length > 60 && /[.!?,'"]/.test(trimmed)) {
+      cutLine = i;
+      break;
+    }
+  }
+
+  // If substantial content starts after line 0, strip preceding nav junk lines
+  if (cutLine > 0) {
+    cleaned = lines.slice(cutLine).join('\n').trim();
+  } else {
+    cleaned = cleaned.trim();
+  }
+
+  // Always return stripped text — let downstream classifiers handle short content.
+  // Returning the original nav-polluted text causes false "complete" classifications.
+  if (cleaned.length > 0) {
+    return cleaned;
+  }
+
+  return text;
+}
+
+/**
+ * Strip NYSR-style cross-reference lines that contain star ratings from other critics.
+ * e.g., "[Read Steven Suskin's ★★★★☆ review here.]"
+ * These contaminate star extraction if not removed.
+ */
+function stripCrossReferences(text) {
+  if (!text) return text;
+  return text
+    .replace(/\[Read\s+[^\]]*?★[^\]]*?review[^\]]*?\]/gi, '')
+    .replace(/Read\s+\w[^.]*?★+☆*[^.]*?review here\.?/gi, '');
+}
+
+// IAB TCF consent-layer text that some fetchers capture AHEAD of the article
+// (WhatsOnStage's CMP: "Please note that your choices apply across all our
+// subdomains..." followed by ~6,500 chars of purpose/vendor notices). The
+// article follows the block, so the text is not garbage, but the content
+// verifier reads only the first 2,500 chars and judged 78 such captures
+// "junk, not a review" (BRO-4185 A). Stripped only when the text OPENS with a
+// known consent-layer marker AND the block's closing sentence is found, so a
+// review that merely mentions consent is never touched.
+const CONSENT_LAYER_START_PATTERNS = [
+  /your\s+choices\s+apply\s+across\s+all\s+our\s+subdomains/i,
+  /we\s+and\s+our\s+partners\s+process\s+data\s+to\s+provide/i,
+];
+const CONSENT_LAYER_START_WINDOW = 600;
+const CONSENT_LAYER_END_SCAN_LIMIT = 20000;
+const CONSENT_LAYER_END_RE = /in\s+support\s+of\s+the\s+purposes\s+(?:explained|exposed)\s+in\s+this\s+notice\./gi;
+
+function stripConsentLayerPrefix(text) {
+  if (!text || typeof text !== 'string') return text;
+  const head = text.slice(0, CONSENT_LAYER_START_WINDOW);
+  if (!CONSENT_LAYER_START_PATTERNS.some(re => re.test(head))) return text;
+  const endRe = new RegExp(CONSENT_LAYER_END_RE.source, CONSENT_LAYER_END_RE.flags);
+  let lastEnd = -1;
+  let m;
+  while ((m = endRe.exec(text)) && m.index < CONSENT_LAYER_END_SCAN_LIMIT) {
+    lastEnd = m.index + m[0].length;
+  }
+  if (lastEnd < 0) return text;
+  return text.slice(lastEnd).trim();
+}
+
+/** True when stripConsentLayerPrefix would remove a consent-layer prefix. */
+function hasStrippableConsentLayer(text) {
+  return !!text && typeof text === 'string' && stripConsentLayerPrefix(text) !== text;
+}
+
+function cleanText(text) {
+  if (!text) return text;
+
+  let cleaned = text;
+
+  // Step 1a: Strip a raw leading <img>/<picture>/<source> tag artifact —
+  // before decoding, so an escaped "&lt;img&gt;" in prose is never touched.
+  cleaned = stripLeadingHtmlArtifacts(cleaned);
+
+  // Step 1: Decode HTML entities
+  cleaned = decodeHtmlEntities(cleaned);
+
+  // Step 1b: Strip a leading IAB consent-layer block (see stripConsentLayerPrefix)
+  cleaned = stripConsentLayerPrefix(cleaned);
+
+  // Step 2: Strip control characters (keep \n, \r, \t)
+  cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+
+  // Step 2b: Strip leading navigation junk ("Skip to content" + nav menus)
+  cleaned = stripLeadingNavigation(cleaned);
+
+  // Step 3: Strip cross-reference lines (before whitespace collapse so we don't leave gaps)
+  cleaned = stripCrossReferences(cleaned);
+
+  // Step 3b: Strip inline photo credit lines (e.g., "Show Name | Photograph: Courtesy Photographer")
+  // Limit prefix to 100 chars and suffix to 150 chars to avoid eating entire single-line texts
+  cleaned = cleaned.replace(/^.{0,100}\|\s*Photograph:.{0,150}$/gm, '');
+
+  // Step 3c: Strip embedded JavaScript blocks (Chicago Tribune Trinity Audio player, etc.)
+  cleaned = cleaned.replace(/function\s+\w+\s*\([^)]*\)\s*\{[^}]*(?:\{[^}]*\}[^}]*)*\}/g, '');
+
+  // Step 3d: Strip JSON-LD blocks (schema.org structured data that leaks into scraped text)
+  cleaned = cleaned.replace(/\{[^{}]*"@context"\s*:\s*"https?:\/\/schema\.org"[^{}]*\}/g, '');
+
+  // Step 4: Collapse whitespace runs
+  // Multiple spaces/tabs on same line → single space
+  cleaned = cleaned.replace(/[^\S\n\r]+/g, ' ');
+  // 3+ consecutive newlines → 2 newlines (preserve paragraph breaks)
+  cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+
+  // Step 5: Strip trailing/leading junk
+  cleaned = stripTrailingJunk(cleaned);
+
+  return cleaned.trim();
+}
+
+module.exports = {
+  decodeHtmlEntities,
+  stripLeadingHtmlArtifacts,
+  stripLeadingNavigation,
+  stripTrailingJunk,
+  stripCrossReferences,
+  cleanText,
+  stripConsentLayerPrefix,
+  hasStrippableConsentLayer,
+  TRAILING_JUNK_PATTERNS,
+  hasUndecodedHtmlEntities,
+  hasJsonLdArtifact,
+};

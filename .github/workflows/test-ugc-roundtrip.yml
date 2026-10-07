@@ -1,0 +1,177 @@
+name: UGC Auth Round-trip
+
+# Verifies the signed-in Rating/Watchlist/List round-trip against the LIVE
+# Supabase project: real user JWT → PostgREST write → read-back → RLS isolation
+# → delete. Catches "sign-in works in the UI but nothing actually saves / is
+# leaked across users / the project is down."
+#
+# SELF-HEALING: the #1 failure cause is the free-tier project idle-pausing
+# (INACTIVE → host NXDOMAINs → all auth dead). So on failure we auto-restore the
+# project and re-run, and only page the owner if the self-fix didn't recover it.
+# A successful self-heal sends one informational email (the pause is worth
+# knowing — it's the signal to consider Supabase Pro).
+
+on:
+  schedule:
+    - cron: '17 13 * * *'  # daily 13:17 UTC (~8am ET) — also keep-alive
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Deploy Demo Site']
+    types: [completed]
+
+concurrency:
+  group: test-ugc-roundtrip
+  cancel-in-progress: false
+
+jobs:
+  roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Round-trip (attempt 1)
+        id: rt1
+        continue-on-error: true
+        run: node scripts/test-ugc-roundtrip.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Self-heal — restore project if paused
+        id: heal
+        if: steps.rt1.outcome == 'failure'
+        run: node scripts/restore-supabase-project.mjs
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+
+      - name: Round-trip (attempt 2, after self-heal)
+        id: rt2
+        if: steps.rt1.outcome == 'failure' && steps.heal.outcome == 'success'
+        run: node scripts/test-ugc-roundtrip.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+      - name: Notify — self-heal succeeded (informational)
+        if: steps.rt1.outcome == 'failure' && steps.rt2.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Was a direct sendAlert(severity:'error', email:true) — an
+            // immediate [CRITICAL] email for a condition its OWN title calls
+            // "no action needed". Card #475 (2026-07-26): the step's stated
+            // intent ("worth knowing, signal to consider Supabase Pro") is a
+            // trend to notice over time, not a page — routed through
+            // owner-alert-router's 'digest' disposition instead, so repeated
+            // idle-pauses accumulate visibly in the daily digest.
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            await routeAlert({
+              conditionKey: 'ugc-roundtrip:supabase-self-heal',
+              title: 'UGC: Supabase auto-restored (no action needed)',
+              description: 'The Supabase project had idle-paused (sign-in was briefly down); the round-trip auto-restored it and re-verified all UGC flows are working. If this recurs, consider Supabase Pro to stop idle-pauses.',
+              severity: 'info',
+              disposition: 'digest',
+              url: runUrl,
+              cooldownHours: 20,
+            }).catch(e => console.error('Self-heal notice failed:', e.message));
+
+      # BRO-4603: the owner is emailed ONLY when signed-in users are hurt: the
+      # round-trip itself failed AND the self-heal could not run/recover or a
+      # failing check is urgent (sign-in, rating save/read-back, privacy).
+      # scripts/test-ugc-roundtrip.mjs writes `urgent`/`failed_checks`; a
+      # missing output counts as urgent. Routed (not notify-failure) so it
+      # notifies once per open incident: a time cooldown counted earlier
+      # non-urgent red runs as "already alerted" and could swallow a real one.
+      # The Oct 1-3 2026 emails were all one hardening check (GET refusal),
+      # now NOT_URGENT; such failures still fail this run and reach the digest.
+      - name: Page owner — signed-in users affected
+        if: >-
+          always() &&
+          (steps.rt1.outcome == 'failure' || steps.rt1.outcome == 'cancelled') &&
+          (steps.heal.outcome != 'success' || (steps.rt2.outcome != 'success' && steps.rt2.outputs.urgent != 'false'))
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          FAILED_CHECKS: ${{ steps.rt2.outputs.failed_checks || steps.rt1.outputs.failed_checks }}
+          HEAL_OUTCOME: ${{ steps.heal.outcome }}
+        with:
+          script: |
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const failed = process.env.FAILED_CHECKS || (process.env.HEAL_OUTCOME !== 'success' ? 'the automatic database restore did not work' : 'see the run log');
+            const r = await routeAlert({
+              conditionKey: 'ugc-roundtrip:users-affected',
+              title: 'Urgent: signed-in users may be unable to save, or may see data that is not theirs',
+              description: `A live check of sign-in, saving or privacy failed and the automatic fix did not work. Failing checks: ${failed}. What to do: open a Claude Code session and paste this email. If a failing check mentions RLS, anonymous or another user, also ask it to switch sign-in off until it is fixed.`,
+              severity: 'critical',
+              disposition: 'human',
+              cooldownHours: 12,
+              url: runUrl,
+            }).catch(e => { console.error('::warning::users-affected alert failed: ' + e.message); return null; });
+            if (r && r.action !== 'human') console.error(`::warning::users-affected alert routed as '${r.action}', not an email — check 'ugc-roundtrip:users-affected' in scripts/lib/page-worthy-alerts.js`);
+
+      - name: Resolve users-affected incident
+        if: always() && (steps.rt1.outcome == 'success' || steps.rt2.outcome == 'success')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { resolveCondition } = require('./scripts/lib/owner-alert-router.js');
+            if (resolveCondition('ugc-roundtrip:users-affected', { reason: 'round-trip green' })) console.log('Resolved ugc-roundtrip:users-affected');
+
+      - name: Fail job if not recovered
+        if: steps.rt1.outcome == 'failure' && steps.rt2.outcome != 'success'
+        run: |
+          echo "::error::UGC round-trip failed and self-heal did not recover it (restore outcome: ${{ steps.heal.outcome }}, retry outcome: ${{ steps.rt2.outcome }})."
+          exit 1
+
+      # routeAlert() above writes data/audit/alert-ledger.json (and, for
+      # disposition='digest', data/audit/alert-digest-queue.json) — this step
+      # was missing entirely (ship-check finding, 2026-07-28, same class as
+      # card #394): without it the cooldown/queue state never persisted past
+      # job end, so the 20h cooldown on 'ugc-roundtrip:supabase-self-heal' was
+      # silently a no-op and every self-heal re-queued a fresh digest line.
+      - name: Commit alert state
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --cached --quiet; then
+            echo "No alert state changes to commit"
+          else
+            git commit -m "audit: UGC round-trip alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 15 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        # BRO-4603: any red run (e.g. the alert-state commit) reaches the digest;
+        # the owner page for users being affected is the routed step above.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'UGC Auth Round-trip Failed'
+          severity: 'warning'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

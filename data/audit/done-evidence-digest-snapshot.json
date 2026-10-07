@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-10-06T13:49:11.929Z",
+  "bannerText": "20/254 Done(14d) verified on main · 3 FAILED · 1 vacuous · 8 stuck-but-done — PARTIAL RUN: 258 checks not re-run (ran out of time), so these numbers understate the board",
+  "items": [
+    {
+      "title": "FAILED BRO-2879 — push-with-retry retries deterministic pre-push hook rejections and never names them as the cause",
+      "detail": "TAP version 13",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2879/push-with-retry-retries-deterministic-pre-push-hook-rejections-and"
+    },
+    {
+      "title": "FAILED BRO-2853 — P1: push-via-git-api concurrency test flakes main red — it asserts a race OCCURRED, which an uncontended runner never guarantees",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2853/p1-push-via-git-api-concurrency-test-flakes-main-red-it-asserts-a-race"
+    },
+    {
+      "title": "FAILED BRO-2824 — P2: push-via-git-api.sh has no wall-clock deadline — the new rc=124 retry can burn ~13 min where a chronic timeout previously capped at ~1 attempt",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2824/p2-push-via-git-apish-has-no-wall-clock-deadline-the-new-rc124-retry"
+    },
+    {
+      "title": "STUCK BRO-3162 — Roll out stale-checkout race guard to remaining 20 rebuild-all-reviews.js workflows (BRO-3161 follow-up)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3162/roll-out-stale-checkout-race-guard-to-remaining-20-rebuild-all"
+    },
+    {
+      "title": "STUCK BRO-3135 — P1: body-less review-texts stubs carrying aggregatorStars/originalScoreNormalized are scoreable with zero text corroboration",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3135/p1-body-less-review-texts-stubs-carrying"
+    },
+    {
+      "title": "STUCK BRO-3059 — Investigate cross-workflow concurrency as the dominant source of collect-review-texts.js duplicate failed attempts",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3059/investigate-cross-workflow-concurrency-as-the-dominant-source-of"
+    },
+    {
+      "title": "STUCK BRO-3021 — 👑 OWNER — Fleet cost and waste audit (every paid line, billing-first)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3021/owner-fleet-cost-and-waste-audit-every-paid-line-billing-first"
+    },
+    {
+      "title": "STUCK BRO-2997 — Wire audit-card-verifiability.js --source linear into a schedule to prevent regression",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2997/wire-audit-card-verifiabilityjs-source-linear-into-a-schedule-to"
+    }
+  ],
+  "moreCount": 4
+}

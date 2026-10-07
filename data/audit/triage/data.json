@@ -1,0 +1,35 @@
+{
+  "system": "data",
+  "status": "error",
+  "lastChecked": "2026-10-05T11:14:04.820Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Data: OB closing candidates awaiting review",
+      "status": "warn",
+      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 14d)"
+    },
+    {
+      "name": "Data: tour review sweep held",
+      "status": "error",
+      "message": "The daily tour sweep refused to move reviews for spamalot-tour-2025: more than it should ever need to, so nothing was moved."
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "warn",
+      "message": "13 discovered review(s) not reaching the composite score (6 T1). First: school-girls-or-the-african-mean-girls-play-2026 — nydailynews (unscored)"
+    },
+    {
+      "name": "Data: live show with zero critic reviews on site",
+      "status": "error",
+      "message": "1 live show(s) have discovered review URL(s) but NOTHING collected. First: hamilton-tour-2024"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "error",
+      "message": "24 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Tartuffe (Remixed)\" (wet-roundup — missing 22d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+    }
+  ]
+}

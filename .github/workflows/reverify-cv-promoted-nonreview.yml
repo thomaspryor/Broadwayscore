@@ -1,0 +1,92 @@
+name: Re-verify CV-promoted isNonReview backlog
+
+# BRO-4552 (follow-up to BRO-4189). Manual-dispatch only: re-runs the production
+# Haiku content verifier on CV-promoted isNonReview files (opening-night reviews
+# wrongly stamped "not a review") so a fresh high-confidence `review` verdict can
+# clear them. Selector: scripts/lib/cv-promoted-nonreview-selector.js. Clears are
+# gated by assessClearSafety; dry_run=true verifies and writes nothing.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Verify only, write and push nothing'
+        required: false
+        default: true
+        type: boolean
+      limit:
+        description: 'Max files to process (blank = all)'
+        required: false
+        default: '10'
+        type: string
+      opened_since:
+        description: 'Only shows opened on/after this date'
+        required: false
+        default: '2026-07-01'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reverify-cv-promoted-nonreview
+  cancel-in-progress: false
+
+jobs:
+  reverify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Re-verify
+        id: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
+          LIMIT: ${{ inputs.limit }}
+          OPENED_SINCE: ${{ inputs.opened_since }}
+        run: |
+          set -o pipefail
+          case "$LIMIT" in *[!0-9]*) echo "limit must be digits"; exit 1;; esac
+          case "$OPENED_SINCE" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "bad opened_since"; exit 1;; esac
+          ARGS=(--cv-promoted-nonreview "--opened-since=${OPENED_SINCE}")
+          [ -n "$LIMIT" ] && ARGS+=("--limit=$LIMIT")
+          [ "$DRY_RUN" = "true" ] && ARGS+=(--dry-run)
+          node scripts/reverify-stale-cv-promoted.js "${ARGS[@]}" 2>&1 | tee /tmp/reverify.log
+          CLEARED=$(grep -c '>>> CLEARED' /tmp/reverify.log || true)
+          echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
+
+      - name: Push to private repo
+        if: ${{ !inputs.dry_run }}
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: re-verify CV-promoted isNonReview backlog, cleared ${{ steps.run.outputs.cleared }} (BRO-4552)
+
+      - name: Summary
+        if: always()
+        run: |
+          { echo "## CV-promoted isNonReview re-verify"; echo '```'; tail -40 /tmp/reverify.log 2>/dev/null; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Re-verify CV-promoted isNonReview Failed'
+          severity: 'warning'

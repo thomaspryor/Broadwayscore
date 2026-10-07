@@ -1,0 +1,263 @@
+name: Newsletter Draft Refresh (Sunday)
+
+# The weekly Resend broadcast drafts generate Saturday ~11:00/11:30 UTC
+# (newsletter-draft.yml / we-newsletter-draft.yml) but the owner usually sends
+# Sunday. Reviews landing in the gap drift the scores baked into the draft —
+# 2026-07-26 incident: 7 of ~26 shows in the drafts had moved between the
+# Saturday commit and Sunday send (Sukkot 83->82 flipped the subject line from
+# "rave" to "strong"; Hamilton 92->91; Titanique 75->76; EBT 80->79). The
+# drafts sat stale until a manual refresh-drafts.sh run. Card #481.
+#
+# This refreshes both weekly drafts in place, Sunday late morning, keyed off
+# a read-only --status check (GET /broadcasts, via the sanctioned wrapper —
+# no raw curl): "draft" -> regenerate + PATCH in place (drift refresh, the
+# original card #481 purpose below). "sent" -> no-op (owner already sent).
+# "none" -> Saturday's newsletter-draft.yml never got as far as creating a
+# draft at all (task #recovery-2026-08-23: both editions died at the
+# "Verify data freshness" hard gate on 2026-08-22 because rebuild-reviews.yml
+# lost a push race under contention for 24+h — nobody was notified because
+# notify-failure severity here is 'warning', digest-only). For "none" this
+# workflow now DISPATCHES newsletter-draft.yml itself (same pattern
+# we-newsletter-draft.yml already uses to fan out the WE edition) rather than
+# silently doing nothing — that reuses the full, tested creation pipeline
+# (including the regression-test step this refresh workflow doesn't have)
+# instead of duplicating it here, and still sends the owner's [DRAFT] preview
+# so a fully-missed week doesn't go unnoticed a second day running.
+#
+# Never sends. The "draft" path is the same generate -> pre-send -> overflow
+# -> PATCH chain refresh-drafts.sh uses locally (card #478), just running
+# against fresh CI data instead of a developer's local checkout.
+#
+# Known limitation (shared with refresh-drafts.sh, not new here): the "draft"
+# regenerate path does NOT thread through any workflow_dispatch editorial
+# overrides (subjectOverride, ledeOverride, obLead, dropSections) the owner
+# may have hand-applied via a manual newsletter-draft.yml run after Saturday
+# — a Sunday refresh would silently regenerate over those. Rare in practice
+# (overrides aren't persisted anywhere for a refresh to pick up). The "none"
+# recovery dispatch below has the same limitation for the same reason.
+
+on:
+  schedule:
+    # Sunday ~12:00 UTC — ahead of the owner's usual Sunday send, well after
+    # the Saturday draft-creation crons (11:00 / 11:30 UTC) have landed.
+    - cron: '4 12 * * 0'
+  workflow_dispatch:
+    inputs:
+      weekStart:
+        description: 'Week start (Monday, YYYY-MM-DD). Empty = last Monday in America/New_York.'
+        required: false
+        default: ''
+      # String, NOT type:boolean. pre-send-check.mjs gates on
+      # NEWSLETTER_ALLOW_GAPS === '1' (strict), and GitHub renders a boolean
+      # input as "true"/"false" — which is not '1', so a boolean here would
+      # render a toggle that silently does nothing and the coverage swap would
+      # still strip every featured opening. Same '1'-or-empty convention as
+      # newsletter-draft.yml's allowGaps input. Do not "modernize" to boolean.
+      allowGaps:
+        description: "Set to 1 to keep featured openings whose reviews are uncollected (skips the coverage-gap swap). Empty = swap as usual."
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: newsletter-draft
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        edition: [broadway, west-end]
+
+    # Job-level so EVERY step that touches the draft sees the same generator
+    # environment — including pre-send-check.mjs, which re-invokes generate.mjs
+    # when it applies a coverage swap. When its step env omitted
+    # NEWSLETTER_EDITION, that regen silently rewrote a west-end draft as the
+    # Broadway edition (see newsletter-draft.yml for the 2026-08-08 incident).
+    # The scripts now pin the edition themselves, so this is defense in depth —
+    # and it's what gets GA creds to the regen so it keeps the Trending section.
+    # Step-level env still wins where a step needs something different.
+    env:
+      NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+      NEWSLETTER_EDITION: ${{ matrix.edition }}
+      # Job-level so the pre-send-check regen inherits it too — a step-level
+      # value would be lost in exactly the way NEWSLETTER_EDITION was.
+      # Consumed as a strict === '1' test; see the allowGaps input comment.
+      #
+      # Deliberately reads ONLY the dispatch input — NOT vars.NEWSLETTER_ALLOW_GAPS,
+      # which newsletter-draft.yml uses as a persistent, manually-toggled escape
+      # hatch. This workflow's Sunday cron is UNATTENDED: honouring that repo
+      # variable would mean an owner who set it for a one-off manual send, and
+      # forgot to unset it, silently ships a featured opening with an incomplete
+      # review set with nobody in the loop. On a cron run this expression yields
+      # '' (missing inputs resolve to null, not an error), so the swap applies
+      # exactly as it did before this input existed. Waiving gaps here must
+      # always be a deliberate, per-run human act.
+      NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || '' }}
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # Same pipeline-health gate as newsletter-draft.yml: don't regenerate
+      # against stale data (that would erase the very score updates this
+      # workflow exists to pick up).
+      - name: Verify data freshness
+        run: |
+          marker=data/audit/pipeline-health/rebuild-reviews.last-success
+          if [ ! -f "$marker" ]; then
+            echo "::error::No rebuild-reviews health marker — data freshness unknown"
+            exit 1
+          fi
+          marker_epoch=$(date -d "$(cat $marker)" +%s 2>/dev/null || date -j -f "%a %b %e %H:%M:%S %Z %Y" "$(cat $marker)" +%s 2>/dev/null || echo 0)
+          now=$(date -u +%s)
+          age_hours=$(( (now - marker_epoch) / 3600 ))
+          echo "rebuild-reviews last success: $age_hours hours ago"
+          if [ "$age_hours" -gt 24 ]; then
+            echo "::error::Data is $age_hours hours stale (limit: 24h). Refresh would use outdated reviews."
+            exit 1
+          fi
+
+      - name: Compute week-start (Monday in America/New_York)
+        id: week
+        run: |
+          if [ -n "${{ github.event.inputs.weekStart }}" ]; then
+            ws="${{ github.event.inputs.weekStart }}"
+          else
+            ws=$(TZ=America/New_York date -d 'last monday' +%Y-%m-%d 2>/dev/null \
+              || TZ=America/New_York date -v-mon +%Y-%m-%d)
+          fi
+          echo "weekStart=$ws" >> "$GITHUB_OUTPUT"
+          echo "Checking ${{ matrix.edition }} draft for week starting $ws"
+
+      # Read-only: GET /broadcasts via the sanctioned wrapper (never a raw
+      # curl to the Resend API — CLAUDE.md rule 16/17). Prints one word:
+      # "draft" (unsent, safe to refresh), "sent" (already went out, leave
+      # alone), or "none" (nothing drafted yet — nothing to refresh).
+      - name: Check draft status (read-only)
+        id: status
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          status=$(node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" --status)
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "Draft status for ${{ matrix.edition }} ${{ steps.week.outputs.weekStart }}: $status"
+
+      # Self-heal the ledger against what was ACTUALLY sent before
+      # regenerating — see the "Commit newsletter de-dup state" step below for
+      # why this workflow in particular needs it (it's the last write to the
+      # live draft each week).
+      - name: Verify de-dup state against actually-sent broadcasts
+        if: steps.status.outputs.status == 'draft'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/newsletter/verify-sent-vs-state.mjs --fix --edition="${{ matrix.edition }}"
+
+      - name: Generate newsletter HTML + meta.json
+        if: steps.status.outputs.status == 'draft'
+        run: |
+          node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Pre-send check (HTML invariants, UTMs, subject, lede)
+        if: steps.status.outputs.status == 'draft'
+        run: |
+          node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Mobile overflow gate
+        if: steps.status.outputs.status == 'draft'
+        run: |
+          node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      # PATCH only — the draft already exists (status == 'draft'), so this
+      # always hits the PATCH branch in create-broadcast-draft.mjs, never POST.
+      - name: PATCH Resend draft (never sends)
+        if: steps.status.outputs.status == 'draft'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
+            --create --audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}"
+
+      # Recovery path: Saturday's newsletter-draft.yml never reached "Create
+      # Resend broadcast draft" (e.g. the data-freshness gate blocked it, or
+      # any other early failure) — no draft exists for this week at all. Fire
+      # the exact same dispatch we-newsletter-draft.yml uses for the WE
+      # edition, so this week gets the FULL creation pipeline (generate,
+      # pre-send-check, mobile overflow gate, regression-test, owner preview
+      # send, Resend draft creation) instead of a second, drifted copy of it
+      # living in this file. Runs async — this job doesn't wait for it, and
+      # doesn't need to: the dispatched run shares this workflow's
+      # `newsletter-draft` concurrency group, so it simply queues behind this
+      # job rather than racing it. The subjectPrefix flags it as a recovered
+      # send so the owner can tell it didn't arrive on the normal Saturday
+      # schedule.
+      - name: Dispatch full creation pipeline (recovery — no draft exists yet)
+        if: steps.status.outputs.status == 'none'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run newsletter-draft.yml \
+            --ref main \
+            -f edition="${{ matrix.edition }}" \
+            -f weekStart="${{ steps.week.outputs.weekStart }}" \
+            -f audience="${{ matrix.edition == 'west-end' && 'west-end' || 'general' }}" \
+            -f subjectPrefix="[DRAFT] (Sunday recovery)"
+          echo "Dispatched newsletter-draft.yml for ${{ matrix.edition }} — Saturday never created a draft for ${{ steps.week.outputs.weekStart }}."
+
+      - name: No-op (already sent)
+        if: steps.status.outputs.status == 'sent'
+        run: |
+          echo "No refresh needed for ${{ matrix.edition }} (status=${{ steps.status.outputs.status }})."
+
+      # Persist the cross-issue de-dup state (data/newsletter-state.json).
+      # MISSING until 2026-08-16 (#the-pass duplicate): this workflow is the
+      # LAST thing to PATCH the live Resend draft every Sunday (it runs after
+      # the Saturday creation workflow and any manual reruns), but without
+      # this step its generate.mjs run's featuredShowIds update only ever
+      # existed on the ephemeral runner — discarded at job end. So the ledger
+      # the NEXT week's anti-repeat guard reads never matched what the CURRENT
+      # week's draft (and therefore what got sent) actually contained. Mirrors
+      # newsletter-draft.yml's commit step exactly; success()-gated so a
+      # failed gate above doesn't advance the ledger for a draft that was
+      # never actually refreshed.
+      - name: Commit newsletter de-dup state
+        if: success() && steps.status.outputs.status == 'draft'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/newsletter-state.json
+          if git diff --cached --quiet; then
+            echo "::notice::newsletter-state.json unchanged — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }} (Sunday refresh)"
+          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Newsletter Draft Refresh Failed'
+          severity: 'warning'

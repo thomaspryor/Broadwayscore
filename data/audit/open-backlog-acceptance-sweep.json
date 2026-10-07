@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-10-06T13:48:57.196Z",
+  "shadow": true,
+  "checkoutSha": "53f03ac31df33fef8399de49a565623cfbb0a353",
+  "totalCandidates": 300,
+  "eligibleCandidates": 19,
+  "checked": 10,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 3,
+    "fail": 0,
+    "unverifiable": 7
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-4792",
+      "name": "Schedule audit-transfer-review-gaps in the corpus-drift workflow with a baseline for --ci (BRO-1361 follow-up)",
+      "verifyCmd": "node --test scripts/lib/transfer-review-gaps.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4735",
+      "name": "commercial.json: 9 /biz fields show internal research wording (Per policy, owner review, recouped:null)",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-4648",
+      "name": "main test.yml red: Lint Workflows / Audit — no orphan unit tests",
+      "verifyCmd": "node scripts/audit-workflow-concurrency.js",
+      "detail": null
+    }
+  ],
+  "failing": [],
+  "unverifiable": [
+    {
+      "id": "BRO-4748",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, branch stays single-commit\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 146832ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4716",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 100174ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4638",
+      "name": "Mac-to-cloud step 1: retire Mac opening-night monitor after verifying cloud watch",
+      "verifyCmd": "node --test tests/unit/opening-night-monitor-retired.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-monitor-retired.test.mjs"
+    },
+    {
+      "id": "BRO-4617",
+      "name": "P1: update-show-status closes a just-opened show via prior-production ShowScore URL + stale todaytixId",
+      "verifyCmd": "node --test scripts/lib/update-show-status.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/update-show-status.test.mjs"
+    },
+    {
+      "id": "BRO-4549",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 62811ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4447",
+      "name": "Concurrent rebuild renamed a byline-corrected --unknown file from a stale checkout and deleted the newer copy with the fetched text (The Pass NYTG, 2026-09-30)",
+      "verifyCmd": "node --test scripts/lib/rename-race-keeps-newer-text.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/rename-race-keeps-newer-text.test.mjs"
+    },
+    {
+      "id": "BRO-4410",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 31400ms (timeout — no verdict)"
+    }
+  ]
+}

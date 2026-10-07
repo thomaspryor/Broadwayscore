@@ -1,0 +1,389 @@
+#!/usr/bin/env node
+/**
+ * Recoupment Announcement Scraper
+ *
+ * Detects "X recouped" / "X earned back capitalization" trade-press announcements
+ * for Broadway shows. Designed for the Sunday newsletter pipeline — runs Friday
+ * to surface late-week recoupment news that the weekly commercial-weekly.yml run
+ * (Sundays 6pm UTC) would otherwise miss for 6 days.
+ *
+ * Flow per show:
+ *   1. SERP queries on the show title scoped to recoupment language
+ *   2. Filter results to credible Broadway outlets
+ *   3. fetchPage() each candidate, LLM-extract (OpenAI gpt-4o-mini):
+ *        { recouped, recoupedDate, productionMatch, confidence }
+ *   4. Write high-confidence finds into commercial-pending-review.json
+ *      with promoteRecommended:true so apply-commercial-pending picks them up.
+ *
+ * Default scope (scripts/lib/recoupment-scan-scope.js SERP_SCOPE, BRO-4623):
+ * Broadway shows not yet recouped and not pure-Nonprofit that are running
+ * (opened 28+ days ago, NO upper age bound: a show can recoup in year two or
+ * three) or closed within the last year (late recoupment via the revived NY
+ * State tax credit is real: Purpose recouped ~9 months after closing). The
+ * old 30-365-day opening window silently dropped every long runner.
+ *
+ * Usage:
+ *   node scripts/scrape-recoupment-announcements.js                  # default scope
+ *   node scripts/scrape-recoupment-announcements.js --shows=giant,ragtime
+ *   node scripts/scrape-recoupment-announcements.js --dry-run        # print only
+ *   node scripts/scrape-recoupment-announcements.js --window-days=14
+ *   node scripts/scrape-recoupment-announcements.js --time-budget-min=20
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 = unlimited, default).
+ * BRO-2303: the per-show loop (up to 5 SERP queries + up to 4 fetchPage+LLM
+ * classifications each) has no per-show cap and was overrunning
+ * commercial-friday.yml's job timeout weekly (run 34658940127 etc. — 43min
+ * inside this step alone, killed by the 45min job timeout). A timeout-killed
+ * job reports `cancelled`, not `failure`, so notify-failure's `if: failure()`
+ * never fires and the staleness went undetected for weeks (same class as
+ * BRO-2285's batch-commercial-research.js fix). Findings are only written
+ * after the loop, so breaking early loses nothing already scanned.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const { serpQuery } = require('./lib/url-discovery');
+const { fetchPage, cleanup } = require('./lib/scraper');
+const { classifyArticle } = require('./lib/recoupment-classify');
+const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
+const { pickRecoupmentCandidates, rotateScanOrder, SERP_SCOPE } = require('./lib/recoupment-scan-scope');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { runMain } = require('./lib/run-main');
+
+// Worktrees don't ship the gitignored data files (shows.json, commercial.json
+// live in the private repo and are only symlinked in the main checkout). Fall
+// back to the main repo's data dir for inputs; keep pending-review writes local.
+function dataPath(filename, { writable = false } = {}) {
+  const local = path.join(__dirname, '..', 'data', filename);
+  if (fs.existsSync(local)) return local;
+  if (writable) return local;
+  const mainRepo = path.join('/Users/tompryor/Broadwayscore/data', filename);
+  if (fs.existsSync(mainRepo)) return mainRepo;
+  return local;
+}
+const SHOWS_PATH = dataPath('shows.json');
+const COMMERCIAL_PATH = dataPath('commercial.json');
+const PENDING_PATH = dataPath('commercial-pending-review.json', { writable: true });
+
+const OPENAI_KEY = process.env.OPENAI_API_KEY;
+
+const args = process.argv.slice(2);
+const flags = {};
+for (const a of args) {
+  if (a.startsWith('--')) {
+    const [k, v] = a.slice(2).split('=');
+    flags[k] = v === undefined ? true : v;
+  }
+}
+const DRY_RUN = flags['dry-run'] === true;
+const WINDOW_DAYS = parseInt(flags['window-days'], 10) || 30;
+const TARGETED = flags['shows'] ? flags['shows'].split(',').map(s => s.trim()).filter(Boolean) : null;
+const MAX_RESULTS_PER_QUERY = 8;
+const TIME_BUDGET_MIN = parseTimeBudgetMin(args);
+const timeBudget = createRunBudget(TIME_BUDGET_MIN);
+// Conservative per-show worst case: 5 SERP queries (~1-3s each + 1200ms
+// throttle) + up to 4 fetchPage() @25s timeout + LLM classification calls —
+// none of which have a combined per-show timeout, so a single show can run
+// 2+ minutes. Mirrors batch-commercial-research.js's MIN_REMAINING_MS_TO_START
+// guard (BRO-2285/BRO-2303 same root-cause class): don't start a show
+// unlikely to finish before the budget. Smaller than that script's 5min
+// because this per-show cost ceiling is lower (no SEC EDGAR, no Claude
+// analysis pass).
+const MIN_REMAINING_MS_TO_START = 2 * 60_000;
+
+// Outlets we trust for recoupment announcements (preferred sources). Shared with
+// apply-commercial-pending.js so the auto-apply gate uses the same whitelist.
+const { TRUSTED_RECOUPMENT_HOSTS: TRUSTED_OUTLETS } = require('./lib/trusted-recoupment-domains');
+
+function log(...args) { console.log(...args); }
+
+function isoToday() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function hostnameOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; }
+}
+
+function loadJSON(p) {
+  return JSON.parse(fs.readFileSync(p, 'utf8'));
+}
+
+function pickCandidates(allShows, commercial) {
+  const shows = allShows.shows || allShows;
+  const cMap = commercial.shows || {};
+
+  if (TARGETED) {
+    return TARGETED.map(slug => {
+      const show = shows.find(s => s.slug === slug) || shows.find(s => s.id === slug);
+      if (!show) {
+        log(`  ⚠ --shows=${slug}: not found in shows.json`);
+        return null;
+      }
+      return show;
+    }).filter(Boolean);
+  }
+
+  // Scope is shared with the hourly RSS poller (scripts/lib/recoupment-scan-
+  // scope.js). This SERP scan pays ~5 SERP calls per show per week, so it
+  // uses the narrower SERP_SCOPE: every running unrecouped Broadway show
+  // (no upper age bound, BRO-4623 item 5) plus closed ones within a year.
+  // rotateScanOrder starts each week at a different point in the list, so a
+  // run that hits --time-budget-min defers different shows each week instead
+  // of the same shows.json tail forever.
+  return rotateScanOrder(pickRecoupmentCandidates(shows, cMap, SERP_SCOPE));
+}
+
+// Generic queries rank by whatever Google surfaces highest — usually NYT/
+// Deadline/Variety. BroadwayWorld and Playbill are both in TRUSTED_OUTLETS
+// but have no RSS feed (confirmed defunct/nonexistent — see rss-discovery.js
+// comments), so the hourly RSS poller can never catch their exclusives (e.g.
+// The Outsiders' Jan 27 2026 recoupment, which was BWW-only and missed
+// entirely). Site-restricted queries guarantee a BWW/Playbill article
+// surfaces here if Google has indexed it, independent of generic ranking.
+function buildQueries(showTitle) {
+  return [
+    `"${showTitle}" Broadway recouped`,
+    `"${showTitle}" recoupment announcement`,
+    `"${showTitle}" earned back investment`,
+    `"${showTitle}" recoups site:broadwayworld.com`,
+    `"${showTitle}" recoups site:playbill.com`,
+  ];
+}
+
+async function searchShow(show) {
+  const title = show.title;
+  const queries = buildQueries(title);
+  const allResults = [];
+  const seen = new Set();
+  for (const q of queries) {
+    log(`    🔎 ${q}`);
+    let res;
+    try {
+      res = await serpQuery(q, { nbResults: MAX_RESULTS_PER_QUERY, preferSpeed: true });
+    } catch (e) {
+      log(`      ✗ SERP error: ${e.message}`);
+      continue;
+    }
+    if (!res) continue;
+    for (const r of res) {
+      if (seen.has(r.url)) continue;
+      seen.add(r.url);
+      allResults.push({ ...r, query: q });
+    }
+    await new Promise(r => setTimeout(r, 1200));
+  }
+  return allResults;
+}
+
+function filterCandidates(results, showTitle) {
+  return results.filter(r => {
+    const host = hostnameOf(r.url);
+    if (!host) return false;
+    const titleLc = (r.title || '').toLowerCase();
+    const haystack = `${titleLc} ${r.url.toLowerCase()}`;
+    // Must mention recoupment or "recouped"
+    if (!/recoup|earned back|paid off|profit/i.test(haystack)) return false;
+    // Soft filter: prefer trusted outlets
+    if (!TRUSTED_OUTLETS.has(host)) return false;
+    return true;
+  });
+}
+
+function loadPending() {
+  if (!fs.existsSync(PENDING_PATH)) return { shows: {}, lastUpdated: null };
+  return loadJSON(PENDING_PATH);
+}
+
+// Archive of human-rejected pending entries (sweep moves things here). We read
+// the archive before writing new finds — if a slug appears there with a
+// rejected recouped:true claim, the scraper has already found and a human said
+// no. Don't re-surface the same article.
+function loadArchive() {
+  const archivePath = dataPath('commercial-pending-archive.json', { writable: true });
+  if (!fs.existsSync(archivePath)) return { shows: {} };
+  try { return JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { return { shows: {} }; }
+}
+
+// Strip volatile URL bits (utm_*, fbclid, gclid, ref, hash, trailing slash) so
+// a single article shared with different tracking params still matches a prior
+// rejection. Ship-check P1: without this, the same NYT recoupment article
+// keeps re-surfacing through trivial URL variations.
+function normalizeUrl(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    u.hash = '';
+    const drop = [];
+    for (const k of u.searchParams.keys()) {
+      if (k.startsWith('utm_') || ['fbclid', 'gclid', 'mc_eid', 'mc_cid', 'ref', 'source'].includes(k)) {
+        drop.push(k);
+      }
+    }
+    for (const k of drop) u.searchParams.delete(k);
+    return u.toString().replace(/\/$/, '');
+  } catch { return url; }
+}
+
+function isRejectedInArchive(archive, slug, finding) {
+  const e = archive.shows?.[slug];
+  if (!e) return false;
+  // Rejected if archived for being a recouped claim that didn't pass review,
+  // and the same source URL (normalized) reappears.
+  if (e.archivedReason !== 'rejected-recouped-claim') return false;
+  if (!e.recoupedSource || !finding.url) return false;
+  return normalizeUrl(e.recoupedSource) === normalizeUrl(finding.url);
+}
+
+function writePending(pending) {
+  pending.lastUpdated = new Date().toISOString();
+  fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+}
+
+async function processShow(show) {
+  log(`\n— ${show.slug} (${show.title}) —`);
+  const serpResults = await searchShow(show);
+  const candidates = filterCandidates(serpResults, show.title);
+  log(`  ${serpResults.length} SERP hits → ${candidates.length} credible candidates`);
+  if (candidates.length === 0) return null;
+
+  const findings = [];
+  for (const c of candidates.slice(0, 4)) {  // cap per show
+    log(`    📰 ${hostnameOf(c.url)} :: ${c.title?.slice(0, 80)}`);
+    let html;
+    try {
+      const fetched = await fetchPage(c.url, { timeout: 25_000 });
+      html = typeof fetched === 'string' ? fetched : (fetched?.content || '');
+    } catch (e) {
+      log(`      ✗ fetch failed: ${e.message}`);
+      continue;
+    }
+    // opts.show turns on the production guard (BRO-4623): a recoupment dated
+    // before this production's first preview (death-of-a-salesman got the
+    // 2012 revival's article) or a tour / West End / Off-Broadway article
+    // (beetlejuice-2025 got the national tour's) is rejected here.
+    const verdict = await classifyArticle(show.title, c.url, html, { show, headline: c.title });
+    log(`      → recouped=${verdict.recouped} match=${verdict.productionMatch} conf=${verdict.confidence}`);
+    if (verdict.guardReason) {
+      log(`         ⛔ production guard: ${verdict.guardReason}`);
+      console.log(guardRejectionWarning(show.slug, c.url, verdict));
+    }
+    if (verdict.evidence) log(`         "${String(verdict.evidence).slice(0, 140)}"`);
+    findings.push({ url: c.url, host: hostnameOf(c.url), serpTitle: c.title, verdict });
+    if (verdict.recouped && verdict.productionMatch === 'exact' && verdict.confidence === 'high') break;
+  }
+  return findings;
+}
+
+function summarize(allFindings) {
+  const promotable = [];
+  for (const { show, findings } of allFindings) {
+    if (!findings) continue;
+    const positive = findings.find(f =>
+      f.verdict.recouped === true &&
+      f.verdict.productionMatch === 'exact' &&
+      ['high', 'medium'].includes(f.verdict.confidence)
+    );
+    if (positive) promotable.push({ show, finding: positive, all: findings });
+  }
+  return promotable;
+}
+
+async function main() {
+  if (!OPENAI_KEY) {
+    console.error('FATAL: OPENAI_API_KEY not set');
+    process.exit(1);
+  }
+
+  const allShows = loadJSON(SHOWS_PATH);
+  const commercial = loadJSON(COMMERCIAL_PATH);
+  const candidates = pickCandidates(allShows, commercial);
+
+  log(`Recoupment scraper — ${candidates.length} shows in scope (window=${WINDOW_DAYS}d, dry-run=${DRY_RUN}, time-budget-min=${TIME_BUDGET_MIN || 'unlimited'})`);
+  log('');
+
+  const allFindings = [];
+  let attempted = 0;
+  for (const show of candidates) {
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
+      const remaining = candidates.length - attempted;
+      log(`\n⏱ Time budget (${TIME_BUDGET_MIN} min) reached after ${timeBudget.elapsedMin()} min — stopping cleanly. ${remaining} show(s) deferred to next run.`);
+      break;
+    }
+    attempted++;
+    try {
+      const findings = await processShow(show);
+      allFindings.push({ show, findings });
+    } catch (e) {
+      log(`  ✗ ${show.slug} errored: ${e.message}`);
+    }
+  }
+
+  const promotable = summarize(allFindings);
+
+  log(`\n========== SUMMARY ==========`);
+  log(`Shows scanned: ${attempted}${attempted < candidates.length ? ` of ${candidates.length}` : ''}`);
+  log(`Promotable recoupment findings: ${promotable.length}`);
+  for (const p of promotable) {
+    log(`  ✅ ${p.show.slug}: ${p.finding.verdict.recoupedDate || 'date?'} (${p.finding.host})`);
+    log(`     ${p.finding.url}`);
+  }
+
+  if (DRY_RUN) {
+    log('\n[dry-run] not writing to commercial-pending-review.json');
+    return;
+  }
+
+  if (promotable.length === 0) {
+    log('\nNo high-confidence findings to write.');
+    return;
+  }
+
+  const pending = loadPending();
+  const archive = loadArchive();
+  pending.shows = pending.shows || {};
+  const now = new Date().toISOString();
+  let written = 0;
+  let skippedRejected = 0;
+  for (const { show, finding } of promotable) {
+    if (isRejectedInArchive(archive, show.slug, finding)) {
+      log(`  ⏭️  ${show.slug}: same URL was archived as rejected — skipping`);
+      skippedRejected++;
+      continue;
+    }
+    pending.shows[show.slug] = {
+      ...(pending.shows[show.slug] || {}),
+      // Match deep-research-commercial.js:696-699 pattern: set BOTH
+      // `recouped: true` (the value flowing into commercial.json on apply, see
+      // apply-commercial-pending.js:145) AND `_recoupedClaim: true` (the
+      // safety flag the apply gate checks). The auto-apply gate
+      // (--auto-apply-claims-from + sourceHost + confidence) is what decides
+      // whether this lands in commercial.json automatically.
+      recouped: true,
+      _recoupedClaim: true,
+      recoupedDate: finding.verdict.recoupedDate || null,
+      recoupedSource: finding.url,
+      confidence: finding.verdict.confidence,
+      evidence: finding.verdict.evidence || null,
+      sourceHost: finding.host,
+      detectedBy: 'recoupment-announcement-scraper',
+      detectedAt: now,
+      researchedAt: now, // canonical age-tracking field (sweep + apply use this)
+      promoteRecommended: true,
+    };
+    written++;
+  }
+  writePending(pending);
+  log(`\nWrote ${written} promote-recommended entries to ${path.relative(process.cwd(), PENDING_PATH)}` +
+      (skippedRejected ? ` (skipped ${skippedRejected} previously-rejected URLs)` : ''));
+}
+
+module.exports = { pickCandidates };
+
+// BRO-4623: runMain awaits scraper cleanup() and then exits explicitly. The
+// old `main().catch(... process.exit(1))` only exited on failure, so a
+// successful Playwright fetch left Chromium holding the event loop open and
+// every Friday run since 2026-08-26 was cancelled at the 60-min job timeout
+// with its findings discarded.
+if (require.main === module) runMain(main, { teardown: [cleanup] });

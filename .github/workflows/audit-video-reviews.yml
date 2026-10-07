@@ -1,0 +1,110 @@
+name: Audit Video Reviews
+
+# Pre-share audit for the Video Critic feature (scripts/video-reviews/
+# audit-before-share.js). Side A re-verifies every PUBLISHED video review
+# actually reviews the claimed show — the "embarrassment check" that must
+# pass before sharing the feature with the creators themselves. Side B
+# checks classified-but-hidden transcripts for real reviews that were
+# wrongly dropped. Writes data/audit/video-review-audit.json (verdicts:
+# KEEP / REMOVE / RECOVER / REVIEW_MANUALLY) and commits it. Nothing is
+# changed automatically — review the report and act on it.
+#
+# Manual dispatch only. Run before any public launch or creator outreach.
+
+on:
+  workflow_dispatch:
+    inputs:
+      side:
+        description: 'Audit side: A = published reviews, B = hidden transcripts'
+        type: choice
+        options:
+          - both
+          - A
+          - B
+        default: both
+      limit:
+        description: 'Max entries per side (0 = all). Smoke test with 10.'
+        required: false
+        default: '0'
+
+concurrency:
+  group: audit-video-reviews
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    name: Re-verify published and hidden video reviews
+    runs-on: ubuntu-latest
+    # ~490 published reviews x (API call + 500ms spacing) ≈ 30-45 min for
+    # side A alone; side B adds a smaller set. 120 min gives headroom.
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js and configure git
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      # audit-before-share.js reads data/shows.json (private core data)
+      # to resolve show titles for the auditor prompt.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Run pre-share audit
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          set -euo pipefail
+          ARGS=("--side=${{ inputs.side }}")
+          if [ -n "${{ inputs.limit }}" ] && [ "${{ inputs.limit }}" != "0" ]; then
+            ARGS+=("--limit=${{ inputs.limit }}")
+          fi
+          node scripts/video-reviews/audit-before-share.js "${ARGS[@]}"
+
+      - name: Commit audit report
+        run: |
+          set -euo pipefail
+          git add data/audit/video-review-audit.json
+          if git diff --cached --quiet; then
+            echo "No changes to audit report."
+            exit 0
+          fi
+          git commit -m "chore(video-reviews): pre-share audit report [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Video Reviews Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Job summary
+        if: always()
+        run: |
+          echo "## Video Review Pre-Share Audit" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            try {
+              const d = require('./data/audit/video-review-audit.json');
+              for (const side of ['sideA', 'sideB']) {
+                if (!d[side]) continue;
+                const counts = {};
+                for (const r of d[side]) counts[r.verdict] = (counts[r.verdict] || 0) + 1;
+                console.log('- **' + side + ':** ' + JSON.stringify(counts));
+                const bad = d[side].filter(r => r.verdict === 'REMOVE' || r.verdict === 'RECOVER');
+                for (const r of bad.slice(0, 20)) {
+                  console.log('  - ' + r.verdict + ' ' + r.showId + '/' + r.handle + ': ' + (r.reason || ''));
+                }
+              }
+            } catch (e) { console.log('Could not parse audit report: ' + e.message); }
+          " >> $GITHUB_STEP_SUMMARY 2>/dev/null || true

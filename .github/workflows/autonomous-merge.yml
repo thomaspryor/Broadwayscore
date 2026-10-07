@@ -1,0 +1,138 @@
+name: Autonomous Merge
+
+# Sprint 3 (Notion 39b637c5-416f-81c4-9258-f8821c066e24): the ONLY place a
+# branch the autonomous nightly loop produced reaches main. Dispatched either
+# by the signed-endpoint tap (src/app/api/autonomous-action/route.ts, approve
+# or revert) or directly by the Mac Studio executor for a deterministic-green
+# diff (scripts/autonomous-run.js — test/docs/fixture-only changes merge
+# without a human tap, see scripts/lib/autonomous-eligibility.js
+# isDiffDeterministicGreen). All actual git/Notion logic lives in
+# scripts/autonomous-merge.js so it's testable via its colocated
+# scripts/lib/autonomous-merge-core.js unit tests — this workflow is a thin
+# wrapper.
+#
+# Sprint 4 (S4-T4): a Tier-2 data card's branch lives on a PRIVATE repo's own
+# origin (broadway-scorecard-data or broadway-review-texts), not this repo's —
+# scripts/autonomous-merge.js detects this from the branch's Notion evidence
+# comment (repoKey) and clones/merges that repo directly using
+# REVIEW_TEXTS_TOKEN (the same PAT push-core-data/push-review-texts already
+# use). No new workflow_dispatch input needed — approve/revert stay the same
+# two actions either way.
+
+on:
+  workflow_dispatch:
+    inputs:
+      card_id:
+        description: 'Notion card id'
+        required: true
+        type: string
+      branch:
+        description: 'auto/* branch to merge or revert'
+        required: true
+        type: string
+      action:
+        description: 'approve (rebase+reverify+merge) or revert (undo a prior merge)'
+        required: true
+        type: choice
+        options: [approve, revert]
+
+# GLOBAL concurrency group (not per-card): two cards merging at once could
+# race on main in ways push-with-retry.sh's data-file conflict auto-resolution
+# doesn't safely cover for code changes (ship-check finding, 2026-07-14).
+# Serializing means the second dispatch just queues briefly — the loop caps
+# at 3 items/night, so throughput is a non-issue.
+# Group renamed autonomous-merge → landing (BRO-3873 step 3): land.yml's
+# `land` job shares it, so a hand/CI landing and an autonomous merge never
+# race the same fast-forward either.
+concurrency:
+  group: landing
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    # timeout history: raised 15 → 30 (2026-07-14, a real dispatch got
+    # cancelled mid `npm ci`), then 30 → 50 for tier-3 (Sprint 2): a src/
+    # diff's re-verify includes a production `next build` (20min own
+    # timeout) on top of checkout + npm ci + core-data checkout.
+    #
+    # BRO-423: fetch-depth: 0 alone was measured eating ~35 of these 50
+    # minutes on the Checkout repository step (runs 32086045215,
+    # 32089222063) — this repo's large data/*.json files have been rewritten
+    # by CI every ~30min for a long history, and a full checkout transfers
+    # every historical BLOB of every one of those rewrites, not just commit
+    # metadata. `filter: blob:none` keeps fetch-depth: 0's full commit graph
+    # (still required — scripts/autonomous-merge.js's countPriorMerges greps
+    # the ENTIRE history on origin/main for "Auto-merge-card: <id>" trailers,
+    # the oscillation breaker's hard-stop-at-2 guard must never undercount)
+    # but defers blob content to on-demand fetches for whatever the rebase
+    # actually touches — commit/tree metadata only, no blob transfer, for
+    # everything else. Same filter already used successfully for the Tier-2
+    # data-repo clone in scripts/autonomous-merge.js's cloneDataRepo().
+    # scripts/lib/check-merge-history.js is the safety net: if this ever
+    # regresses to a truly shallow clone, it deepens via `git fetch
+    # --unshallow` before the oscillation scan instead of silently
+    # undercounting.
+    timeout-minutes: 50
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Tier-3 re-verify (Sprint 2) runs `npx tsc --noEmit`, `npx next lint`
+      # and a production `npx next build` on a src/ diff — all three import
+      # data/*.json via resolveJsonModule and fail TS2307 without the private
+      # core data. Same composite action + manifest generation the
+      # typescript-check job in test.yml already uses; a Tier-1 (tests/docs)
+      # merge does not need them but pays only the checkout cost.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Generate gitignored manifests
+        run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
+
+      - name: Run merge/revert
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ github.token }}
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          node scripts/autonomous-merge.js \
+            --card "${{ github.event.inputs.card_id }}" \
+            --branch "${{ github.event.inputs.branch }}" \
+            --action "${{ github.event.inputs.action }}"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Autonomous Merge failed'
+          description: 'card ${{ github.event.inputs.card_id }} · branch ${{ github.event.inputs.branch }} · action ${{ github.event.inputs.action }} — check the card, the loop leaves it in a safe non-merged state on any failure'
+          severity: 'warning'

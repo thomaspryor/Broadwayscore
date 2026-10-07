@@ -1,0 +1,16 @@
+{
+  "issue": "BRO-385",
+  "frozenAt": "2026-08-26",
+  "thawAt": "2026-09-25",
+  "freezeDays": 30,
+  "note": "Fleet self-audit ledgers frozen 2026-08-26 for 30 days (thaw 2026-09-25) as part of BRO-385 Phase 3 (Notion→Linear cutover cleanup). These ledgers back the daily \"BSC Daily\" digest cards and fleet/dispatch drift cards that make up roughly a third of the open backlog — closing existing duplicate cards without freezing the source would just regenerate them tomorrow. This record is documentation of the decision and window; it does not itself change what health-check.js or the dispatch watchdogs do — wiring them to respect it is shared dispatch infra (CLAUDE.md rule 18) and needs its own reviewed change.",
+  "ledgers": [
+    "data/audit/health-check-history.json",
+    "data/audit/health-digest-snapshot.json",
+    "data/audit/dispatch-ledger.jsonl",
+    "data/audit/autonomous-ledger.jsonl",
+    "data/audit/autonomous-recheck-ledger.jsonl",
+    "data/audit/arm-yield-ledger.jsonl",
+    "data/audit/digest-autofix-ledger.jsonl"
+  ]
+}

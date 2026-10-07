@@ -1,0 +1,673 @@
+#!/usr/bin/env node
+/**
+ * audit-closing-dates.js
+ *
+ * Daily bidirectional audit of closingDate values for open shows.
+ *
+ * Replaces the brittle Broadway.org "Through:" scraper. Compares stored
+ * closingDate against authoritative on-sale calendar pages:
+ *   - Broadway: https://www.broadway.com/shows/{slug}/schedule/
+ *   - West End: TODO (separate workflow — westendtheatre.com has no central calendar)
+ *
+ * Logic:
+ *   - latestScheduled = max scheduled performance date on the show's
+ *     official schedule page. This is a LOWER BOUND on the announced
+ *     closing date (the show plays at least through that day).
+ *   - If latestScheduled > stored closingDate → EXTENSION confirmed,
+ *     auto-update (high confidence — calendars don't list performances
+ *     for closed shows).
+ *   - If latestScheduled < stored closingDate → AMBIGUOUS. Calendar
+ *     window often only goes ~5 months out, so a far-future close is
+ *     normal. Flag for human review only if delta > 30 days AND stored
+ *     date is within the calendar window (i.e. shorter run, not longer).
+ *   - If stored is null → NEW CLOSING detected, auto-update.
+ *
+ * Output:
+ *   - data/audit/closing-date-discrepancies.json (full report)
+ *   - shows.json (only EXTENSION + NEW updates applied)
+ *   - Discord alert if any AMBIGUOUS flagged
+ *
+ * Why this exists:
+ *   The previous check-closing-dates.js scraped broadway.org's /shows/ page
+ *   which often lists "Through: <date>" that's months behind the announced
+ *   close. update-show-status.js uses TodayTix endDate which is the on-sale
+ *   window, not the final performance. Both are monotonic-extension-only.
+ *   See memory/feedback_closing_date_audit_gaps.md.
+ *
+ * Usage:
+ *   node scripts/audit-closing-dates.js [--dry-run] [--shows=id1,id2] [--time-budget-min=N]
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 or omitted = unlimited).
+ * Exits cleanly once exceeded instead of running into the job timeout;
+ * deferred shows are picked up on the next run.
+ *
+ * Env:
+ *   BRIGHTDATA_TOKEN, BRIGHTDATA_ZONE, SCRAPINGBEE_API_KEY
+ *   DISCORD_WEBHOOK_ALERTS (optional)
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { fetchPage, cleanup } = require('./lib/scraper');
+const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib/closing-audit-classify');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `audit-closing-dates.js — Daily bidirectional audit of closingDate values for open shows.
+
+Usage:
+  node scripts/audit-closing-dates.js [options]
+  node scripts/audit-closing-dates.js --help, -h    print this usage and exit
+`;
+const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const AUDIT_FILE = path.join(__dirname, '..', 'data', 'audit', 'closing-date-discrepancies.json');
+const CONFIG_FILE = path.join(__dirname, '..', 'data', 'closing-date-audit-config.json');
+const TODAY = new Date().toISOString().slice(0, 10);
+const TODAY_YEAR = new Date().getFullYear();
+
+const argv = process.argv.slice(2);
+const DRY_RUN = argv.includes('--dry-run');
+const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
+const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
+const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
+// "Possibly closed early" signal: broadway.com gives us no future performances
+// for a show whose stored closingDate claims it still runs for at least this
+// many more days. Two shapes, both routed through classifyMissingSchedule():
+//   empty_schedule — page matched by title but ZERO future performances
+//     (Burnout Paradise class: stored 2026-06-28, actually closed 2026-05-23).
+//   title_mismatch — the page no longer mentions the show at all. broadway.com
+//     REMOVES show pages shortly after closing, so this is at least as strong
+//     a closed signal (Celebrity Autobiography class: closed 2026-06-21, page
+//     removed, sat silently in `errors` for 3+ weeks while stored said 9/6).
+// Flag for human review + triple-signal rescue instead of dropping to
+// `errors`. Threshold of 5 days avoids false-positives on shows in their
+// final days (calendars can legitimately go empty when the last performances
+// sell out / drop off the on-sale window).
+const POSSIBLY_CLOSED_MIN_DAYS = 5;
+// Cap auto-applied extensions per run. Broadway.com calendar windows
+// expand in ~3-month chunks, so any single observed jump > 180d is more
+// likely a parseScheduleDates() false-positive (e.g. promo banner showing
+// the 2027 Tony Awards date) than a real extension. Fall through to
+// ambiguous review instead of writing a fabricated date.
+const MAX_AUTO_EXTENSION_DAYS = 180;
+// Triple-signal auto-fix: when broadway.com schedule + press article + LLM
+// extraction agree within ±7 days, auto-apply the new closingDate. Bounds
+// hallucination risk: a single wrong article can't move the date unless the
+// schedule and a second source corroborate. See clusterDates() in
+// scripts/lib/closing-date-discovery.js.
+const TRIPLE_SIGNAL_TOLERANCE_DAYS = 7;
+// Cap auto-fix attempts per run. With ~$0.10 of SERP+SB+LLM per show, this
+// caps a runaway audit (e.g., 50 ambiguous after a broadway.com layout
+// change) at ~$1. Excess flows through to the Notion card path normally.
+const MAX_TRIPLE_SIGNAL_ATTEMPTS = 10;
+// Flood guard: shows genuinely disappear from broadway.com one at a time.
+// If MANY title-mismatch possibly-closed flags appear in a single run, the
+// far more likely cause is pageMatchesShow() breaking against a broadway.com
+// layout change — routing the whole slate into review + SERP discovery would
+// spam the Notion card and burn the triple-signal budget on a parser bug.
+// Overflow beyond this cap goes to `errors` with an explicit reason.
+const TITLE_MISMATCH_FLOOD_CAP = 5;
+
+const CONFIG = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+const SLUG_OVERRIDES = CONFIG.slugOverrides;
+const OPEN_RUN_SKIP = new Set(CONFIG.openRunSkip.ids);
+// Self-cleaning allowlist for known calendar-window-short false positives.
+// Entry honored only while stored closingDate still matches verifiedStored —
+// any drift (extension or retraction) bypasses the allowlist and the show
+// re-enters the normal ambiguous-flagging path.
+const AMBIGUOUS_ALLOWLIST = (CONFIG.ambiguousAllowlist && CONFIG.ambiguousAllowlist.entries) || {};
+
+// Normalize a date value to YYYY-MM-DD before equality. shows.json today
+// stores plain YYYY-MM-DD, but if a future writer emits ISO-with-time
+// (2027-02-14T00:00:00Z), the raw string comparison would fail and break the
+// allowlist — silently turning verified false-positives back into daily
+// Notion noise. Slicing to first 10 chars is field-format-agnostic.
+function normalizeDate(d) {
+  if (!d || typeof d !== 'string') return null;
+  return d.slice(0, 10);
+}
+
+function isAllowlisted(showId, storedClosingDate) {
+  const entry = AMBIGUOUS_ALLOWLIST[showId];
+  if (!entry || !storedClosingDate) return false;
+  return normalizeDate(entry.verifiedStored) === normalizeDate(storedClosingDate);
+}
+
+function slugFor(s) {
+  if (SLUG_OVERRIDES[s.id]) return SLUG_OVERRIDES[s.id];
+  return (s.slug || s.id.replace(/-\d{4}$/, '')).toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+// Years we'll accept in the schedule. Window relative to TODAY_YEAR so this
+// doesn't silently break in 2030.
+function buildYearPattern() {
+  const years = [TODAY_YEAR, TODAY_YEAR + 1, TODAY_YEAR + 2, TODAY_YEAR + 3];
+  return `(${years.join('|')})`;
+}
+
+function parseScheduleDates(html) {
+  const text = html
+    .replace(/<script[^]*?<\/script>/g, ' ')
+    .replace(/<style[^]*?<\/style>/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ');
+  const re = new RegExp(`\\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\\.?\\s+\\d{1,2},?\\s*${buildYearPattern()}`, 'g');
+  const dates = new Set();
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const d = new Date(m[0].replace(/Sept/, 'Sep'));
+    if (!isNaN(d.getTime())) dates.add(d.toISOString().slice(0, 10));
+  }
+  return [...dates].sort();
+}
+
+// Title-confirmation guard against broadway.com slug collisions across
+// revivals. `cabaret-2014` (id) → `cabaret` (slug) → could resolve to a
+// later revival's schedule. Require the page to mention a recognisable
+// keyword from the stored title before we trust its dates.
+function pageMatchesShow(html, showName) {
+  if (!html || !showName) return false;
+  // Strip HTML, lowercase, normalize whitespace
+  const haystack = html
+    .replace(/<[^>]+>/g, ' ')
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+  // Use the longest word from the title as the keyword (skips articles).
+  // For multi-word titles, also try the first 2 words concatenated.
+  const words = showName.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
+  if (words.length === 0) return true; // single-syllable title: skip guard
+  // Require at least one of the meaningful words
+  return words.some(w => haystack.includes(w));
+}
+
+async function fetchLatestSchedule(show, slug) {
+  const url = `https://www.broadway.com/shows/${slug}/schedule/`;
+  const r = await fetchPage(url, { source: 'audit-closing-dates' });
+  const content = r.content || '';
+  if (!pageMatchesShow(content, show.name || show.title || '')) {
+    return { url, latest: null, count: 0, source: r.source, error: 'title_mismatch' };
+  }
+  const dates = parseScheduleDates(content).filter(d => d >= TODAY);
+  return { url, latest: dates.length ? dates[dates.length - 1] : null, count: dates.length, source: r.source };
+}
+
+// One-line description of an ambiguous row, shared by the console and
+// Discord renderings (Notion has its own richer format). POSSIBLY_CLOSED
+// rows have latestScheduled=null — without this branch they render as
+// "schedule cuts off at null (-54d earlier)".
+function describeAmbiguous(a) {
+  if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+    const evidence = a.missingScheduleKind === 'title_mismatch'
+      ? 'broadway.com page removed/mismatched'
+      : 'broadway.com schedule empty';
+    const storedDesc = a.stored ? `stored ${a.stored} (${Math.abs(a.delta)}d out)` : 'no stored closingDate';
+    return `${a.id}: ${storedDesc} but ${evidence} — possibly closed`;
+  }
+  return `${a.id}: stored ${a.stored}, schedule cuts off at ${a.latestScheduled} (${a.delta}d)`;
+}
+
+async function notifyDiscord(message) {
+  const webhook = process.env.DISCORD_WEBHOOK_ALERTS;
+  if (!webhook) return;
+  try {
+    await fetch(webhook, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: message.slice(0, 1900) }),
+    });
+  } catch (e) {
+    console.warn('Discord notify failed:', e.message);
+  }
+}
+
+// Route ambiguous flags into Linear (the board per CLAUDE.md §6 — repointed
+// from Notion during the BRO-3430 sweep, same shape as audit-opening-dates.js).
+// Discord alerts were silently ignored — Beaches stored=2026-09-06 was flagged
+// every day for >1 week before the actual close (2026-05-24) was caught manually.
+// One rollup issue per audit run, deduped against existing open audit issues
+// so daily re-flagging of the same shows doesn't spam the board.
+async function notifyLinear(ambiguous, todayStr) {
+  if (ambiguous.length === 0) return;
+  if (!process.env.LINEAR_API_KEY) {
+    // A missing secret here would recreate the exact silent-drop bug
+    // BRO-3430 fixed in the sibling audit-opening-dates.js: real findings
+    // exist (ambiguous.length > 0 above) and nobody would be told. Fail
+    // loudly instead.
+    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
+  }
+
+  const { spawnSync } = require('child_process');
+  const brain = path.join(__dirname, 'linear-brain.js');
+
+  // Dedup: skip create if a prior closing-date audit issue is already OPEN.
+  // linear-brain.js's `find` searches title+body over open (non-completed,
+  // non-canceled) issues only — the same "not Done" scope the old
+  // multi-status Notion search covered with three separate calls.
+  const dedup = spawnSync('node', [brain, 'find', 'Closing date audit'], { encoding: 'utf8', timeout: 60_000 });
+  if (dedup.status !== 0) {
+    throw new Error(`notifyLinear: dedup search failed (exit ${dedup.status}): ${(dedup.stderr || dedup.stdout || '').slice(0, 500)}`);
+  }
+  if (dedup.stdout && dedup.stdout.trim() !== 'null') {
+    console.log('Linear: existing open closing-audit issue found — skipping create (dedup)');
+    return;
+  }
+
+  const title = `Closing date audit: ${ambiguous.length} show${ambiguous.length > 1 ? 's' : ''} need review (${todayStr})`;
+  // For each row, render the basic schedule discrepancy + (if present) the
+  // triple-signal discovery result. When the audit found credible press
+  // articles but their date disagreed with broadway.com schedule by >7d
+  // (action: NEEDS_HUMAN_REVIEW with tripleSignalConflict attached), surface
+  // the discovered date AND its sources so the human reviewer doesn't repeat
+  // the same SERP search the audit just did.
+  const rows = ambiguous.map(a => {
+    if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+      // Empty calendar (or removed page) while stored date is still
+      // days/weeks out → likely already closed (no latestScheduled to
+      // report). |delta| = days the stored date is still in the future.
+      const evidence = a.missingScheduleKind === 'title_mismatch'
+        ? "broadway.com page no longer matches this show (removed after closing, or slug collision — if the show is running, add a SLUG_OVERRIDE)"
+        : 'broadway.com lists NO future performances';
+      const storedDesc = a.stored ? `stored=${a.stored} (${Math.abs(a.delta)}d out)` : 'no stored closingDate';
+      let row = `- **${a.id}** (POSSIBLY-CLOSED): ${storedDesc} but ${evidence} — likely closed. ${a.url}`;
+      if (a.tripleSignalConflict) {
+        const c = a.tripleSignalConflict;
+        const sourceLinks = c.sources.slice(0, 3).map(s => s.url).join(', ');
+        row += `\n  📰 Press cluster: **${c.pressDate}** (${c.sources.length} source${c.sources.length > 1 ? 's' : ''}: ${sourceLinks}) — did not meet the possibly-closed auto-apply bar (must be earlier than stored, and already past for removed pages); review.`;
+      } else if (a.tripleSignalWriteFailed) {
+        row += `\n  ⚠️ Triple-signal would have applied ${a.tripleSignalWriteFailed.newDate} but write was skipped (${a.tripleSignalWriteFailed.reason}). Apply manually.`;
+      }
+      return row;
+    }
+    const action = a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' ? 'EXTENSION-CAP' : 'EARLIER';
+    let line = `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
+    if (a.tripleSignalConflict) {
+      const c = a.tripleSignalConflict;
+      const sourceLinks = c.sources.slice(0, 3).map(s => s.url).join(', ');
+      line += `\n  📰 Press cluster: **${c.pressDate}** (${c.sources.length} source${c.sources.length > 1 ? 's' : ''}: ${sourceLinks}) — ${c.dayDelta}d off broadway.com schedule.`;
+      if (c.sources[0] && c.sources[0].quote) {
+        line += `\n  💬 “${c.sources[0].quote.replace(/[\n\r]+/g, ' ').slice(0, 200)}”`;
+      }
+    } else if (a.tripleSignalWriteFailed) {
+      line += `\n  ⚠️ Triple-signal would have applied ${a.tripleSignalWriteFailed.newDate} but write was skipped (${a.tripleSignalWriteFailed.reason}). Apply manually.`;
+    }
+    return line;
+  }).join('\n');
+
+  const notes = [
+    '## Problem',
+    `Closing-date audit found ${ambiguous.length} show(s) where stored closingDate disagrees with broadway.com schedule by more than ${AMBIGUOUS_DELTA_THRESHOLD_DAYS} days. Could be either (a) calendar window short and stored is correct, or (b) show actually closing earlier than stored.`,
+    '',
+    '## Shows flagged',
+    rows,
+    '',
+    '## Resolution steps',
+    '1. For each show, check the 📰 Press cluster line — if present, that date is what credible theater press is announcing. Click the source URLs to verify, then update `data/shows.json`.',
+    '2. If no press cluster shown, search Variety / Playbill / Deadline for closing or extension announcements yourself.',
+    '3. If retraction confirmed → update closingDate in shows.json (lives in private repo `thomaspryor/broadway-scorecard-data` — symlinked at `data/shows.json`).',
+    '4. Commit + push private repo; Vercel cron picks up within ~5 min.',
+    '5. If stored date is correct (calendar window short), no action — add to `data/closing-date-audit-config.json` `ambiguousAllowlist` to suppress repeat alerts. Mark Done.',
+    '',
+    '## Acceptance criteria',
+    "- Each show's stored closingDate matches the actual announced final performance, OR is confirmed as far-future with calendar-window short being the cause.",
+    '',
+    `_Auto-created by scripts/audit-closing-dates.js on ${todayStr}._`,
+  ].join('\n');
+
+  const create = spawnSync('node', [
+    brain, 'create', title,
+    '--priority', '2',
+    '--notes', notes,
+    '--park', 'Daily closing-date audit finding — needs human verification against press sources before any shows.json edit',
+  ], { encoding: 'utf8', timeout: 60_000 });
+
+  // This assertion IS the fix (BRO-3430 class): a refused/failed create used
+  // to be logged as a warning and swallowed, so the audit ran, found real
+  // drift, and the job still went green with nobody ever seeing the finding.
+  if (create.status !== 0) {
+    throw new Error(`notifyLinear: create failed (exit ${create.status}): ${(create.stderr || create.stdout || '').slice(0, 500)}`);
+  }
+  const match = (create.stderr || '').match(/__BOARD_CARD_ID__=([A-Z]+-\d+)/);
+  console.log(`Linear: created issue ${match ? match[1] : '(unknown id)'}`);
+}
+
+async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  console.log('='.repeat(60));
+  console.log('CLOSING DATE AUDIT (bidirectional)');
+  console.log('='.repeat(60));
+  console.log(`Date: ${TODAY}`);
+  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+
+  const data = loadShows();
+  // Broadway only. broadway.com reliably lists the full performance calendar
+  // for Broadway shows, but NOT for Off-Broadway: empirically (2026-06-21
+  // probe) 4/5 running OB shows returned zero future dates and the OB slug
+  // pattern often doesn't resolve (broadway.com uses /shows/heathers-the-musical/
+  // not /heathers-the-musical-off-broadway/). Extending this audit to OB
+  // therefore produces false "possibly closed" flags on shows that are running
+  // (Heathers, stored 2026-09-30, is open and extended — it got falsely flagged
+  // in that probe). OB/WE closing-date verification needs a different source
+  // (Playbill / TodayTix production pages) — tracked as a separate gap; do NOT
+  // shoehorn it onto broadway.com. See memory/feedback_closing_date_audit_gaps.md.
+  const candidates = data.shows.filter(s => {
+    if (s.status !== 'open' || s.category !== 'broadway') return false;
+    if (OPEN_RUN_SKIP.has(s.id)) return false;
+    if (SHOWS_FILTER.length && !SHOWS_FILTER.includes(s.id)) return false;
+    return true;
+  });
+
+  console.log(`Auditing ${candidates.length} open Broadway shows...`);
+  console.log('');
+
+  const extensions = [];   // applied auto
+  const newClosings = [];  // applied auto
+  const ambiguous = [];    // logged, NOT applied
+  const errors = [];
+  const matches = [];
+  let budgetExit = false;
+  let budgetExitIndex = candidates.length;
+
+  for (let ci = 0; ci < candidates.length; ci++) {
+    // Each show's fetchLatestSchedule() goes through the full fetchPage()
+    // fallback chain (SD→BD→SB→Playwright, each with its own retries/45s
+    // timeouts) — with 30 open Broadway shows and growing, this can run
+    // past the job's timeout-minutes with nothing committed (same class
+    // as #369/#415).
+    if (timeBudget.exceeded()) {
+      budgetExit = true;
+      budgetExitIndex = ci;
+      console.log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — ${candidates.length - ci} shows deferred to next run.`);
+      break;
+    }
+
+    const show = candidates[ci];
+    const slug = slugFor(show);
+    try {
+      const r = await fetchLatestSchedule(show, slug);
+      if (r.error === 'title_mismatch' || !r.latest) {
+        // No usable future dates. Two kinds:
+        //   title_mismatch — the slug's page no longer mentions this show.
+        //     broadway.com REMOVES a show's page shortly after it closes, so
+        //     for a show still stored as running this is a strong closed
+        //     signal (Celebrity Autobiography class: closed 6/21, page
+        //     removed, sat in `errors` for 3+ weeks). It can also be a slug
+        //     collision on a running show — the review card / SLUG_OVERRIDE
+        //     path resolves that.
+        //   empty_schedule — title matched but ZERO future performances
+        //     (the Burnout Paradise class).
+        // Either way: if the show claims to still be running for a clear
+        // stretch (stored close >= POSSIBLY_CLOSED_MIN_DAYS out), flag
+        // POSSIBLY_CLOSED for review + triple-signal rescue instead of
+        // dropping silently to errors. Allowlisted dates short-circuit.
+        const kind = r.error === 'title_mismatch' ? 'title_mismatch' : 'empty_schedule';
+        const verdict = classifyMissingSchedule({
+          closingDate: show.closingDate,
+          todayStr: TODAY,
+          minDays: POSSIBLY_CLOSED_MIN_DAYS,
+          allowlisted: isAllowlisted(show.id, show.closingDate),
+          kind,
+        });
+        if (verdict.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+          const titleMismatchFlags = ambiguous.filter(x => x.missingScheduleKind === 'title_mismatch').length;
+          if (kind === 'title_mismatch' && titleMismatchFlags >= TITLE_MISMATCH_FLOOD_CAP) {
+            console.warn(`  ⚠️ ${show.id}: title_mismatch possibly-closed flood cap (${TITLE_MISMATCH_FLOOD_CAP}) reached — suspected pageMatchesShow() breakage; routing to errors`);
+            errors.push({ id: show.id, reason: 'possibly_closed_flood_suspected_parser_breakage', url: r.url });
+            continue;
+          }
+          ambiguous.push({
+            id: show.id, name: show.name, stored: show.closingDate || null,
+            latestScheduled: null, url: r.url,
+            delta: verdict.daysUntilStored == null ? null : -verdict.daysUntilStored,
+            action: 'POSSIBLY_CLOSED_NEEDS_REVIEW',
+            missingScheduleKind: kind,
+          });
+        } else if (kind === 'title_mismatch') {
+          errors.push({ id: show.id, reason: verdict.reason, url: r.url, hint: 'Slug may resolve to a different production — add a SLUG_OVERRIDE in data/closing-date-audit-config.json or add to openRunSkip.' });
+        } else {
+          errors.push({ id: show.id, reason: verdict.reason, url: r.url });
+        }
+        continue;
+      }
+
+      const stored = show.closingDate;
+      const verdict = { id: show.id, name: show.name, stored, latestScheduled: r.latest, url: r.url };
+
+      if (!stored) {
+        // Shows with no closingDate are typically open-run musicals (Wicked,
+        // MJ, Lion King). The latest scheduled date is the broadway.com
+        // calendar window, NOT an announced close. Flag for human review;
+        // never auto-assign.
+        newClosings.push({ ...verdict, action: 'NEW_CLOSING_NEEDS_REVIEW' });
+        continue;
+      }
+
+      const delta = Math.round((new Date(r.latest) - new Date(stored)) / 86400000);
+      if (delta > 0 && delta > MAX_AUTO_EXTENSION_DAYS) {
+        // Suspiciously large jump — likely a parseScheduleDates() false-positive
+        // (unrelated date on the page). Surface to human instead of auto-applying.
+        ambiguous.push({ ...verdict, delta, action: 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' });
+      } else if (delta > 0) {
+        if (!canWriteClosingDate(show)) {
+          // Human override in effect — log the extension finding but don't write.
+          // The audit report still records it for transparency.
+          extensions.push({ ...verdict, delta, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
+        } else {
+          extensions.push({ ...verdict, delta, action: 'EXTENSION' });
+          if (!DRY_RUN) {
+            writeClosingDate(show, r.latest, `broadway.com schedule (audit ${TODAY})`, { todayStr: TODAY });
+          }
+        }
+      } else if (delta < 0 && Math.abs(delta) > AMBIGUOUS_DELTA_THRESHOLD_DAYS) {
+        // Schedule ends earlier than stored. Could be: (a) calendar
+        // window short, stored is the real future close; (b) show actually
+        // closing earlier than announced. We can't tell from this signal
+        // alone — flag for human review.
+        //
+        // Allowlist short-circuit: if the show is human-verified-correct in
+        // data/closing-date-audit-config.json AND stored still matches the
+        // verified value, treat as a silent match. Drift (extension or
+        // retraction) makes the stored date diverge from verifiedStored,
+        // which bypasses this branch and resumes ambiguous flagging.
+        if (isAllowlisted(show.id, stored)) {
+          matches.push({ ...verdict, delta, allowlistedFalsePositive: true });
+        } else {
+          ambiguous.push({ ...verdict, delta, action: 'NEEDS_HUMAN_REVIEW' });
+        }
+      } else {
+        matches.push({ ...verdict, delta });
+      }
+    } catch (e) {
+      errors.push({ id: show.id, reason: 'fetch_error', message: e.message.slice(0, 120) });
+    }
+  }
+
+  // ── Triple-signal auto-fix pass ────────────────────────────────────────
+  // For each ambiguous show, SERP credible theater press for closing
+  // announcements within the last month and LLM-extract dates. Auto-apply
+  // when the press cluster and broadway.com schedule agree within ±7 days.
+  // Cap attempts to bound cost; sort by stored-closing-date ascending so
+  // the most-urgent retractions (closing soonest) get the auto-fix budget.
+  const autoFixedTripleSignal = [];
+  if (process.env.ANTHROPIC_API_KEY && ambiguous.length > 0) {
+    // Run discovery for earlier-than-stored (NEEDS_HUMAN_REVIEW),
+    // suspicious-large-jump extensions (EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW) —
+    // a real 200-day extension shouldn't be locked out of the LLM rescue path —
+    // and POSSIBLY_CLOSED (empty/removed page): those have no schedule date to
+    // corroborate, so they use possiblyClosedPressAgreement() below instead of
+    // the ±7d schedule check.
+    const byUrgency = ambiguous
+      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW')
+      // stored=null (no-closingDate possibly-closed rows) sorts LAST, not as
+      // epoch-0 first — genuine stored-close retractions are the urgent ones.
+      .sort((a, b) => (a.stored ? new Date(a.stored).getTime() : Infinity) - (b.stored ? new Date(b.stored).getTime() : Infinity))
+      .slice(0, MAX_TRIPLE_SIGNAL_ATTEMPTS);
+    console.log(`\nTriple-signal auto-fix: attempting ${byUrgency.length} ambiguous show(s)`);
+    for (const a of byUrgency) {
+      const show = candidates.find(c => c.id === a.id);
+      if (!show) continue;
+      // Title-field consistency: rest of the file uses show.name, fall through
+      // to show.title only if name is missing. shows.json schema uses `title`,
+      // but the audit script normalized to `name` earlier — use both as a
+      // safety net.
+      const showTitle = show.name || show.title || a.id;
+      let discovery;
+      try {
+        discovery = await discoverAnnouncedClosingDate(showTitle, { log: (msg) => console.log(msg) });
+      } catch (e) {
+        console.warn(`  [auto-fix] ${a.id}: discovery error: ${e.message.slice(0, 120)}`);
+        continue;
+      }
+      if (!discovery) continue;
+
+      let dayDelta = null;
+      if (a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW') {
+        // No schedule date exists (page empty or removed) — the missing page
+        // is itself the corroborating signal. Auto-apply only when the press
+        // cluster announces a close EARLIER than stored, confirming the
+        // possibly-closed hypothesis; anything else goes to human review.
+        if (!possiblyClosedPressAgreement(a.stored, discovery.date, { kind: a.missingScheduleKind, todayStr: TODAY })) {
+          a.tripleSignalConflict = {
+            pressDate: discovery.date,
+            scheduleDate: null,
+            dayDelta: null,
+            sources: discovery.sources,
+          };
+          continue;
+        }
+      } else {
+        dayDelta = Math.abs((new Date(discovery.date) - new Date(a.latestScheduled)) / 86400000);
+        if (dayDelta > TRIPLE_SIGNAL_TOLERANCE_DAYS) {
+          // Press article disagrees with broadway.com schedule. Don't apply;
+          // log for human review (the Notion card will surface it).
+          a.tripleSignalConflict = {
+            pressDate: discovery.date,
+            scheduleDate: a.latestScheduled,
+            dayDelta,
+            sources: discovery.sources,
+          };
+          continue;
+        }
+      }
+
+      // All three signals agree (stored disagrees by definition since this
+      // is ambiguous). Auto-apply the press date — it's the authoritative
+      // announcement; broadway.com schedule is just the lower-bound proof.
+      const newDate = discovery.date;
+      const scheduleSignal = a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW'
+        ? `broadway.com page ${a.missingScheduleKind === 'title_mismatch' ? 'removed' : 'empty'}`
+        : 'broadway.com';
+      const targetShow = !DRY_RUN ? data.shows.find(s => s.id === a.id) : null;
+      if (!DRY_RUN && !targetShow) {
+        // Found in `candidates` but missing in `data.shows`: this means the
+        // arrays diverged (concurrent reformat, hot-rebuild). Don't claim
+        // we fixed it; log and surface to Notion review.
+        console.warn(`  [auto-fix] ${a.id}: in candidates but not data.shows — skipping write`);
+        a.tripleSignalWriteFailed = { reason: 'target_not_in_data_shows', newDate };
+        continue;
+      }
+      if (targetShow) {
+        if (!canWriteClosingDate(targetShow)) {
+          console.warn(`  [auto-fix] ${a.id}: humanCorrectedClosingDate=true — skipping triple-signal write`);
+          a.tripleSignalWriteFailed = { reason: 'humanCorrectedClosingDate', newDate };
+          continue;
+        }
+        // Record what we replaced BEFORE overwriting — single field to roll back from.
+        targetShow.closingDatePrevious = a.stored;
+        // Cite ALL corroborating sources, not just the first — preserves
+        // the audit trail when reviewing a wrong auto-fix later.
+        const sourceList = discovery.sources.map(s => s.url).join(', ');
+        writeClosingDate(targetShow, newDate,
+          `triple-signal audit (${TODAY}): ${scheduleSignal} + ${sourceList}`,
+          { todayStr: TODAY });
+      }
+      autoFixedTripleSignal.push({
+        id: a.id,
+        previousStored: a.stored,
+        newClosingDate: newDate,
+        scheduleDate: a.latestScheduled,
+        scheduleSignal,
+        pressDate: discovery.date,
+        dayDelta,
+        sources: discovery.sources,
+      });
+    }
+    // Remove auto-fixed shows from ambiguous so they don't double-flag
+    // in the Discord/Notion path.
+    if (autoFixedTripleSignal.length > 0) {
+      const fixedIds = new Set(autoFixedTripleSignal.map(x => x.id));
+      for (let i = ambiguous.length - 1; i >= 0; i--) {
+        if (fixedIds.has(ambiguous[i].id)) ambiguous.splice(i, 1);
+      }
+    }
+  } else if (ambiguous.length > 0 && !process.env.ANTHROPIC_API_KEY) {
+    console.log('\nTriple-signal auto-fix: skipped (ANTHROPIC_API_KEY not set)');
+  }
+
+  const report = {
+    generatedAt: new Date().toISOString(),
+    mode: DRY_RUN ? 'dry-run' : 'live',
+    summary: {
+      audited: budgetExitIndex,
+      extensions: extensions.length,
+      autoFixedTripleSignal: autoFixedTripleSignal.length,
+      newClosings: newClosings.length,
+      ambiguous: ambiguous.length,
+      matches: matches.length,
+      errors: errors.length,
+      budgetExit,
+      deferred: budgetExit ? candidates.length - budgetExitIndex : 0,
+    },
+    extensions,
+    autoFixedTripleSignal,
+    newClosings,
+    ambiguous,
+    matches,
+    errors,
+  };
+
+  fs.mkdirSync(path.dirname(AUDIT_FILE), { recursive: true });
+  fs.writeFileSync(AUDIT_FILE, JSON.stringify(report, null, 2) + '\n');
+  console.log(`Wrote ${AUDIT_FILE}`);
+
+  console.log('\nResults:');
+  console.log(`  ✅ Matches (within ${AMBIGUOUS_DELTA_THRESHOLD_DAYS}d): ${matches.length}`);
+  console.log(`  📈 Extensions auto-applied:    ${extensions.length}`);
+  console.log(`  🤖 Triple-signal auto-fixed:   ${autoFixedTripleSignal.length}`);
+  console.log(`  🆕 New-closing candidates (review only): ${newClosings.length}`);
+  console.log(`  ⚠️  Ambiguous (>30d earlier):  ${ambiguous.length}`);
+  console.log(`  ❌ Errors:                     ${errors.length}`);
+
+  for (const e of extensions) console.log(`  EXT  ${e.id}: ${e.stored} → ${e.latestScheduled} (+${e.delta}d)`);
+  for (const f of autoFixedTripleSignal) console.log(`  AUTO ${f.id}: ${f.previousStored} → ${f.newClosingDate} (3-signal: ${f.scheduleSignal || 'broadway.com'} + ${f.sources.length} press source(s))`);
+  for (const n of newClosings) console.log(`  NEW  ${n.id}: null → schedule ends ${n.latestScheduled} (review — may be open run)`);
+  for (const a of ambiguous) console.log(`  AMB  ${describeAmbiguous(a)}`);
+
+  const changed = extensions.length + autoFixedTripleSignal.length;
+  if (changed > 0 && !DRY_RUN) {
+    saveShows(data);
+    console.log(`\n✅ Wrote ${changed} closingDate updates to shows.json`);
+  }
+
+  if (ambiguous.length > 0) {
+    const lines = ambiguous.map(a => `• ${describeAmbiguous(a)}`).join('\n');
+    await notifyDiscord(`⚠️ Closing-date audit found ${ambiguous.length} show(s) where stored closingDate is >30d after schedule end. Verify whether stored is correct (calendar window short) or stale.\n\n${lines}`);
+    await notifyLinear(ambiguous, TODAY);
+  }
+
+  await cleanup();
+  process.exit(0);
+}
+
+main().catch(async (e) => {
+  console.error('FATAL:', e);
+  await cleanup();
+  process.exit(1);
+});

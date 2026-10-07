@@ -1,0 +1,710 @@
+name: Land
+# BRO-3873 step 4 live case (c2), 2026-09-21: workflow-file landing probe (PAT `workflow` scope).
+# 2026-09-29: owner granted REVIEW_TEXTS_TOKEN the `workflow` scope, so landings that edit
+# .github/workflows/** now push (before this, GitHub refused them at the final push; BRO-3425).
+
+# BRO-3873 step 3 — the landing workflow. Push a branch to `land/<anything>`
+# and this runs CI's blocking gates against that branch REBASED onto the
+# current origin/main, then (green only) lands it on main through the ONE
+# landing actor, scripts/lib/land-branch.js (`node scripts/land.js`), and
+# deletes the land/** ref once the landed sha is proven to be an ancestor of
+# origin/main. Red: nothing is pushed, the ref is left in place, and the
+# owner gets one digest line per branch (routeAlert conditionKey
+# `land:<branch>`, scripts/land-alert.js). The lib's contract holds here as
+# everywhere: rebase → checks → ONE fast-forward push, never a replay behind
+# the checks' back; a substantive move of main between `checks` and `land`
+# re-runs the full gauntlet inside land.js (bounded, `attempts` surfaced in
+# the step summary), an inert-only move (bot data churn) is fast-forwarded
+# across with the verdict kept — see INERT_FOR_VERIFICATION_RE there.
+#
+# Two jobs, two concurrency shapes:
+#   checks  — PER BRANCH, cancel-in-progress (a newer push to the same
+#             land/** branch supersedes the older tip's checks; nothing is
+#             lost because the older tip is never landed — the `land` job
+#             refuses a tip that is not the one its checks verified via
+#             --expect-tip). Runs in parallel across branches.
+#   land    — ONE global group, `landing`, shared with autonomous-merge.yml,
+#             cancel-in-progress false, so two landings never race the
+#             fast-forward. GitHub keeps at most ONE pending run per group and
+#             cancels an older pending one when a newer arrives; with 3+
+#             land/** pushes inside one landing window the middle one can be
+#             cancelled un-landed with its ref intact — re-push (an empty
+#             commit is fine) or dispatch this workflow with its branch name.
+#
+# PUSH TOKEN: the `land` job checks out with REVIEW_TEXTS_TOKEN (the classic
+# PAT every workflow here already uses for cross-repo pushes) and land.js's
+# `git push origin HEAD:main` inherits that credential. A push made with the
+# default GITHUB_TOKEN triggers NO workflows on main — test.yml would never
+# run for the landed sha and scripts/ci-green-rate.js would be blind to it.
+# test.yml has no workflow_dispatch trigger, so there is no fallback: the PAT
+# push is the only way the landed sha gets its own Test Suite run.
+#
+# What runs in `checks` (parity with test.yml's blocking gates on main), via
+# scripts/lib/land-gauntlet.sh, run TWICE — on origin/main @ base and on the
+# rebased branch — and judged by scripts/lib/land-gate-delta.js:
+#   - TypeScript Check: tsc root + tsc scripts/llm-scoring + next lint
+#   - Unit Tests: the no-data-dependency batch and the scripts/lib batch,
+#     the same manifests/timeouts as test.yml (the bash integration tests and
+#     the slow network batch are not repeated here)
+#   - Lint Workflows: actionlint + the same audit scripts, in one gate
+#   NOT here, on purpose: test.yml's data-validation job (validate-data.js
+#   and the corpus gates against the private core data — that is what makes
+#   a run slow, and it stays on main's own push run for the landed sha),
+#   E2E, visual regression. Those still run on main after the landing.
+#
+# VERDICT = NEW FAILURES VS BASE, not strict parity (BRO-3873 step 3
+# follow-up). Strict parity meant that while main itself was red nothing
+# could land — including the fix. Per gate: a failure present on the rebased
+# branch and ABSENT on origin/main @ base refuses the landing; a failure red
+# on both is reported (pre-existing, not blocking); a base failure gone on
+# the branch is reported as fixed. tsc and lint-workflows are strict while
+# green on base (against an empty base set every failure is new — the same
+# rule). Same judgement as land-branch.js's merged-tree gate and
+# merge-post-merge-test-gate.js, whose diffFailingSets() this reuses. The
+# base result is cached per verification-relevant tree hash + UTC day
+# (actions/cache for this branch, an artifact for every other land/** branch)
+# so a second landing against the same base code does not pay for the base
+# twice; a cached base is trusted for a PASS only — a refusal made on it is
+# re-decided against a fresh base run before it is final. Rollback: repo
+# variable LAND_STRICT_GATES=1 restores strict parity without a code change.
+
+on:
+  push:
+    branches: ['land/**']
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'land/** branch to check and land (name only, no refs/heads/)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  # actions: read — the checks job looks up a base-gauntlet artifact by name
+  # across runs (gh api …/actions/artifacts) before re-running the base.
+  actions: read
+
+env:
+  BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    # Per-branch: a newer push to the same land/** branch cancels the older
+    # tip's checks. Safe: the older tip is never landed (the land job pins the
+    # tip it verified with --expect-tip), so a cancelled run here loses nothing.
+    concurrency:
+      group: land-checks-${{ github.event.inputs.branch || github.ref_name }}
+      # concurrency-cancel-ok: per-branch group on land/** pushes only (never
+      # main); a superseded tip is never landed, so cancelling its checks is
+      # latest-wins by design, not a lost validation. Read by
+      # scripts/audit-workflow-concurrency.js.
+      cancel-in-progress: true
+    # Budget (measured, run 35536264524): checkout ~30s, npm ci ~25s, core
+    # data ~10s, one gauntlet ~6.5 min (tsc x2 + lint ~35s, unit batches ~4.3
+    # min, scripts/lib ~40s, lint audits ~40s). The base gauntlet is a second
+    # ~6.5 min ONLY when neither the cache nor an artifact has it for this
+    # base tree. Re-measure from the live runs before changing.
+    timeout-minutes: 40
+    outputs:
+      tip: ${{ steps.rebase.outputs.tip }}
+      base: ${{ steps.rebase.outputs.base }}
+      gate: ${{ steps.verdict.outputs.gate }}
+      new_failures: ${{ steps.delta.outputs.new_failures }}
+      pre_existing: ${{ steps.delta.outputs.pre_existing }}
+    steps:
+      - name: Checkout the land branch
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.branch && format('refs/heads/{0}', github.event.inputs.branch) || github.ref }}
+          # Full commit graph (the rebase below needs the merge-base with
+          # main) but NO historical blobs — this repo's data/*.json history
+          # makes a plain fetch-depth: 0 take ~35 min (autonomous-merge.yml,
+          # BRO-423). Blobs are fetched on demand for the trees touched.
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # The gauntlet's temp-git-repo tests rm their repos in teardown;
+          # detached auto-maintenance writing into them makes that ENOTEMPTY.
+          # Global (not GIT_CONFIG_COUNT env, which git strips for local
+          # receive-pack). BRO-4749; guard tests/unit/ci-git-auto-maintenance-off.test.mjs.
+          git config --global gc.auto 0
+          git config --global gc.autoDetach false
+          git config --global maintenance.auto false
+          git config --global receive.autogc false
+
+      - name: Rebase onto origin/main
+        id: rebase
+        # The gates below judge the branch AS IT WOULD LAND — rebased onto the
+        # main of right now — not the branch's own stale base. The base sha is
+        # handed to the land job (--verified-base) so land.js can tell an
+        # inert move of main from a substantive one and only re-run the
+        # gauntlet for the latter.
+        run: |
+          TIP=$(git rev-parse HEAD)
+          git fetch origin main
+          BASE=$(git rev-parse origin/main)
+          echo "tip=$TIP" >> "$GITHUB_OUTPUT"
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "branch $BRANCH @ ${TIP:0:10} → rebase onto origin/main @ ${BASE:0:10}"
+          # Run the BASE tree's copy (the land branch may predate the script)
+          # and its classifier; retries a blobless lazy-fetch failure and
+          # reports it apart from a real conflict (BRO-4165).
+          HELPER="$RUNNER_TEMP/land-rebase"; mkdir -p "$HELPER"
+          for f in land-rebase.sh promisor-fetch-failure.js; do
+            # HEAD fallback: the very landing that introduces the script.
+            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || { echo "::warning::scripts/lib/$f not readable from origin/main @ ${BASE:0:10} — using the branch's copy"; git show "HEAD:scripts/lib/$f" > "$HELPER/$f"; } || { echo "::error::scripts/lib/$f exists on neither origin/main @ ${BASE:0:10} nor the branch"; exit 1; }
+          done
+          BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
+          echo "rebased=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          # A dependency change means the installed node_modules are the
+          # branch's; the base gauntlet must reinstall its own (see
+          # land-gauntlet.sh --deps-changed).
+          if git diff --name-only "$BASE"...HEAD -- package.json package-lock.json | grep -q .; then
+            echo "deps_changed=true" >> "$GITHUB_OUTPUT"; echo "package.json/package-lock.json changed — the base run reinstalls its own node_modules"
+          else
+            echo "deps_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
+          git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        id: deps
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Checkout core data
+        id: coredata
+        # src/lib/data-*.ts import data/*.json via resolveJsonModule; tsc and
+        # the unit batches need the private core data exactly as test.yml's
+        # typescript-check and unit-tests jobs do.
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Generate gitignored manifests
+        id: manifests
+        run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
+
+      - name: Install actionlint
+        id: actionlint
+        run: |
+          ACTIONLINT_VERSION=1.7.7
+          curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
+          sudo mv actionlint /usr/local/bin/
+
+      - name: Stage the branch's gauntlet harness
+        id: harness
+        # Both runs use the BRANCH's copy of the harness: the base tree may
+        # predate scripts/lib/land-gauntlet.sh entirely (the first landing of
+        # this workflow) or carry an older one. Only the tree under test
+        # changes between the two runs, never the harness.
+        run: cp scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet.sh"
+
+      # ── Base gauntlet: origin/main @ base, reused when already measured ─────
+      # Key = sha256 over the base tree's VERIFICATION-RELEVANT paths
+      # (scripts/lib/land-gate-delta.js --code-hash: INERT_FOR_VERIFICATION_RE
+      # from land-branch.js excluded, test manifests/CLAUDE.md kept), not the
+      # raw base sha — main moves every minute or two on bot data churn, and a
+      # raw-sha key would never hit — salted per UTC day, because the private
+      # core data the unit batches read is in no tree hash at all.
+      # Rollback switch: repo variable LAND_STRICT_GATES=1 skips the base
+      # entirely and land-gate-delta.js judges the branch strictly (any red
+      # gate refuses) — the pre-delta behaviour, no code change needed.
+      - name: Base cache key
+        id: basekey
+        env:
+          BASE: ${{ steps.rebase.outputs.base }}
+        run: |
+          HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$BASE") || { echo "::error::could not hash the base tree"; exit 1; }
+          DAY=$(date -u +%Y%m%d)
+          echo "code_hash=$HASH" >> "$GITHUB_OUTPUT"
+          echo "key=land-base-gauntlet-v1-${HASH:0:32}-$DAY" >> "$GITHUB_OUTPUT"
+          echo "base ${BASE:0:10} → code tree hash ${HASH:0:16}, day $DAY"
+
+      - name: Restore the base gauntlet result (actions/cache)
+        id: base_cache
+        if: vars.LAND_STRICT_GATES != '1'
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/land-gauntlet/base
+          key: ${{ steps.basekey.outputs.key }}
+
+      - name: Restore the base gauntlet result (artifact saved by another land/** run)
+        id: base_artifact
+        if: vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NAME: ${{ steps.basekey.outputs.key }}
+        # actions/cache is scoped to the branch that saved it (plus main), so a
+        # base result saved from land/a is invisible to land/b. Artifacts are
+        # not scoped: look one up by name across runs before paying to re-run.
+        run: |
+          ID=$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts?name=$NAME&per_page=10" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | reverse | .[0].id // empty') || ID=""
+          if [ -z "$ID" ]; then
+            echo "hit=false" >> "$GITHUB_OUTPUT"
+            echo "no artifact named $NAME — the base gauntlet runs now"
+            exit 0
+          fi
+          mkdir -p "$RUNNER_TEMP/land-gauntlet/base"
+          if gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ID/zip" > "$RUNNER_TEMP/base-artifact.zip" \
+             && unzip -oq "$RUNNER_TEMP/base-artifact.zip" -d "$RUNNER_TEMP/land-gauntlet/base" \
+             && [ -f "$RUNNER_TEMP/land-gauntlet/base/meta.json" ]; then
+            echo "hit=true" >> "$GITHUB_OUTPUT"
+            echo "restored artifact $NAME (id $ID): $(node -p 'const m=require(process.argv[1]); `base ${m.sha.slice(0,10)}, measured ${(m.wallMs/1000).toFixed(0)}s`' "$RUNNER_TEMP/land-gauntlet/base/meta.json")"
+          else
+            rm -rf "$RUNNER_TEMP/land-gauntlet/base"
+            echo "hit=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::artifact $NAME (id $ID) could not be restored — running the base gauntlet"
+          fi
+
+      - name: Run the base gauntlet (origin/main @ base) — nothing cached
+        id: base_run
+        if: vars.LAND_STRICT_GATES != '1' && steps.base_cache.outputs.cache-hit != 'true' && steps.base_artifact.outputs.hit != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        # The staged harness checks out the base sha in this same checkout
+        # (node_modules, core data and manifests are gitignored and survive;
+        # tracked check residue is discarded), runs the gates, and returns to
+        # the rebased tip on every exit path. It never fails on a red gate —
+        # the per-gate exit codes are the verdict's input.
+        run: |
+          rm -rf "$RUNNER_TEMP/land-gauntlet/base"
+          bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base" \
+            --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
+
+      - name: Save the base gauntlet result (actions/cache)
+        if: steps.base_run.outcome == 'success'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/land-gauntlet/base
+          key: ${{ steps.basekey.outputs.key }}
+
+      - name: Save the base gauntlet result (artifact, visible to every land/** run)
+        if: steps.base_run.outcome == 'success'
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.basekey.outputs.key }}
+          path: ${{ runner.temp }}/land-gauntlet/base
+          retention-days: 7
+          if-no-files-found: error
+
+      # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
+      - name: Run the gauntlet on the rebased branch
+        id: branch_run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+        run: |
+          if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
+            echo "::error::HEAD $(git rev-parse --short HEAD) is not the rebased tip ${REBASED:0:10} — refusing to judge the wrong tree"
+            exit 1
+          fi
+          bash scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet/branch"
+
+      - name: Gate verdict — new failures vs base
+        id: delta
+        # scripts/lib/land-gate-delta.js: per gate, PASS unless a failure is
+        # present on the branch and absent on the base; both sets (new,
+        # pre-existing) and the fixed set go to the step summary. Exit 1 names
+        # the first failing gate in `gate` for the digest line.
+        # continue-on-error: a refusal on the strength of a CACHED base is
+        # re-checked against a fresh base below before it is final; the
+        # "Gate verdict" step at the end fails the job on the final answer.
+        continue-on-error: true
+        env:
+          LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
+        run: |
+          SRC="ran now (nothing cached)"
+          [ "${{ steps.base_cache.outputs.cache-hit }}" = "true" ] && SRC="actions/cache hit"
+          [ "${{ steps.base_artifact.outputs.hit }}" = "true" ] && SRC="artifact hit (saved by another land/** run)"
+          node scripts/lib/land-gate-delta.js \
+            --base-dir "$RUNNER_TEMP/land-gauntlet/base" \
+            --branch-dir "$RUNNER_TEMP/land-gauntlet/branch" \
+            --summary-file "$GITHUB_STEP_SUMMARY" \
+            --github-output "$GITHUB_OUTPUT" \
+            --base-source "$SRC"
+
+      - name: Confirm a refusal against a FRESH base (the cached one may be stale)
+        id: confirm
+        if: steps.delta.outcome == 'failure' && (steps.base_cache.outputs.cache-hit == 'true' || steps.base_artifact.outputs.hit == 'true')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          LAND_BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        # A cached base was measured against an older private-data clone (the
+        # unit batches read data/*.json, which is in no tree hash — it changes
+        # every ~30 min and keying on it would never hit). If the data has
+        # since broken a test, a cached-green base would refuse EVERY branch
+        # as "new" until the key rolls. So a cached base is trusted for a PASS
+        # only; a refusal costs one fresh base run and is re-decided against
+        # it. The fresh result is published as the newer artifact so later
+        # runs pick it up.
+        run: |
+          echo "refused on a cached base (gate: ${{ steps.delta.outputs.gate }}) — re-measuring origin/main @ ${BASE:0:10} now"
+          rm -rf "$RUNNER_TEMP/land-gauntlet/base-fresh"
+          bash "$RUNNER_TEMP/land-gauntlet.sh" "$RUNNER_TEMP/land-gauntlet/base-fresh" \
+            --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed)
+          echo "fresh=true" >> "$GITHUB_OUTPUT"
+          node scripts/lib/land-gate-delta.js \
+            --base-dir "$RUNNER_TEMP/land-gauntlet/base-fresh" \
+            --branch-dir "$RUNNER_TEMP/land-gauntlet/branch" \
+            --summary-file "$GITHUB_STEP_SUMMARY" \
+            --github-output "$GITHUB_OUTPUT" \
+            --base-source "fresh re-run to confirm a refusal made on a cached base"
+
+      - name: Publish the fresh base result (artifact)
+        if: always() && steps.confirm.outputs.fresh == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ steps.basekey.outputs.key }}
+          path: ${{ runner.temp }}/land-gauntlet/base-fresh
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Gate verdict
+        id: verdict
+        if: always()
+        # Names the FIRST red gate for the land job's digest line and the step
+        # summary: an infrastructure step that failed outright, else the first
+        # gate the delta rule refused. A job that reaches here green hands
+        # tip+base to `land`.
+        run: |
+          GATE=""
+          for pair in \
+            "rebase:${{ steps.rebase.outcome }}" \
+            "npm-ci:${{ steps.deps.outcome }}" \
+            "core-data:${{ steps.coredata.outcome }}" \
+            "manifests:${{ steps.manifests.outcome }}" \
+            "actionlint-install:${{ steps.actionlint.outcome }}" \
+            "harness:${{ steps.harness.outcome }}" \
+            "base-key:${{ steps.basekey.outcome }}" \
+            "base-restore:${{ steps.base_cache.outcome }}" \
+            "base-artifact:${{ steps.base_artifact.outcome }}" \
+            "base-gauntlet:${{ steps.base_run.outcome }}" \
+            "branch-gauntlet:${{ steps.branch_run.outcome }}" \
+            "delta:${{ steps.delta.outcome }}" \
+            "confirm:${{ steps.confirm.outcome }}"; do
+            name="${pair%%:*}"; outcome="${pair#*:}"
+            [ -z "$GATE" ] && [ "$outcome" = "failure" ] && GATE="$name"
+            echo "  $name: $outcome"
+          done
+          # The delta step is continue-on-error: its refusal is final only if
+          # no fresh-base confirmation ran, or the confirmation refused too.
+          if [ "$GATE" = "delta" ]; then
+            case "${{ steps.confirm.outcome }}" in
+              success) GATE=""; echo "refusal on the cached base NOT confirmed against a fresh base — verdict is GREEN" ;;
+              failure) GATE="${{ steps.confirm.outputs.gate }}"; GATE="${GATE:-confirm}" ;;
+              *)       GATE="${{ steps.delta.outputs.gate }}"; GATE="${GATE:-delta}" ;;
+            esac
+          fi
+          echo "gate=$GATE" >> "$GITHUB_OUTPUT"
+          {
+            echo "### land.yml checks — \`$BRANCH\`"
+            echo ""
+            echo "- tip: \`${{ steps.rebase.outputs.tip }}\`"
+            echo "- rebased onto origin/main: \`${{ steps.rebase.outputs.base }}\` (rebased tip \`${{ steps.rebase.outputs.rebased }}\`)"
+            echo "- verdict: ${GATE:+RED (first failing gate: $GATE)}${GATE:-GREEN}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$GATE" ]; then
+            echo "::error::checks RED — first failing gate: $GATE"
+            exit 1
+          fi
+
+  land:
+    name: Land
+    needs: checks
+    runs-on: ubuntu-latest
+    # ONE landing at a time, across this workflow AND autonomous-merge.yml
+    # (same group name there): the fast-forward push must never be raced.
+    # cancel-in-progress is false — a landing in flight is never killed.
+    concurrency:
+      group: landing
+      cancel-in-progress: false
+    # Starting budget (BRO-3873 step 3): the fast path (verified base, or an
+    # inert-only move of main) is checkout + npm ci + core data + one push,
+    # ~2-3 min measured. A SUBSTANTIVE move of main does NOT re-run the full
+    # gauntlet: land-branch.js defaultChecks runs tier-3 checks plus the
+    # merged-tree floor (merge-post-merge-test-gate.js: scripts/lib, workflow
+    # guards, corresponding tests), so a guard outside that selection is
+    # unchecked against the moved main (BRO-4812). It can approach this
+    # bound; re-measure from live runs before changing.
+    timeout-minutes: 15
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # REVIEW_TEXTS_TOKEN, not GITHUB_TOKEN: land.js's `git push origin
+          # HEAD:main` inherits this credential, and only a PAT push triggers
+          # test.yml on main for the landed sha (see the header).
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Checkout core data
+        # Only the re-check path (main moved substantively since `checks`)
+        # needs it — land.js's gauntlet copies data/*.json into its throwaway
+        # worktree from this checkout. Cheap enough to always have.
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Generate gitignored manifests
+        run: |
+          node scripts/build-actor-slugs-manifest.js
+          node scripts/build-cast-manifest.js
+
+      - name: Land the branch
+        id: land
+        env:
+          TIP: ${{ needs.checks.outputs.tip }}
+          BASE: ${{ needs.checks.outputs.base }}
+        # --expect-tip: land ONLY the tip `checks` verified — a newer push to
+        #   the branch has its own run; this one refuses rather than landing
+        #   an unverified tip.
+        # --verified-base: the origin/main sha `checks` rebased onto. land.js
+        #   skips its gauntlet while main is still that sha or has moved past
+        #   it across inert paths only (bot data churn); any substantive move
+        #   re-runs the full gauntlet, bounded by --max-attempts (3), and the
+        #   attempt count lands in the summary below.
+        run: |
+          set +e
+          node scripts/land.js --branch "$BRANCH" --source origin \
+            --expect-tip "$TIP" --verified-base "$BASE" \
+            --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          if [ ! -f /tmp/land-result.json ]; then
+            echo "landed=false" >> "$GITHUB_OUTPUT"
+            echo "failed_check=fatal" >> "$GITHUB_OUTPUT"
+            echo "::error::land.js exited $rc without a result — see the log above"
+            exit 0
+          fi
+          node -e '
+            const r = require("/tmp/land-result.json");
+            const out = [
+              `landed=${r.landed ? "true" : "false"}`,
+              `sha=${r.sha || ""}`,
+              `attempts=${r.attempts}`,
+              `failed_check=${r.failedCheck || ""}`,
+              `reason=${String(r.reason || "").replace(/\r?\n/g, " ").slice(0, 300)}`,
+            ];
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT, out.join("\n") + "\n");
+            const secs = (Number(r.wallMs || 0) / 1000).toFixed(1);
+            const lines = [
+              `### land.yml landing — \`${r.branch}\``,
+              "",
+              `- verdict: ${r.landed ? (r.pushed ? "LANDED" : "ALREADY ON MAIN (nothing pushed)") : `REFUSED (${r.failedCheck || "unknown"})`}`,
+              `- sha: \`${r.sha || ""}\``,
+              `- attempts: ${r.attempts} (churn fast-forwards: ${r.churnSkips || 0})`,
+              `- verified base: \`${r.verifiedBase || ""}\` → landed base: \`${r.baseSha || ""}\``,
+              `- ancestry: ${r.verified || "n/a"}`,
+              `- wall: ${secs}s`,
+              r.reason ? `- note: ${r.reason}` : "",
+              r.contentNote ? `- content: ${r.contentNote}` : "",
+            ].filter(Boolean);
+            require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, lines.join("\n") + "\n");
+          '
+
+      - name: Verify ancestry, then delete the land/** ref
+        if: steps.land.outputs.landed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ steps.land.outputs.sha }}
+          TIP: ${{ needs.checks.outputs.tip }}
+        # The ref is deleted only AFTER scripts/lib/landing-verify.js confirms
+        # the landed sha is an ancestor of a freshly fetched origin/main (exit
+        # 0). UNKNOWN (exit 2) or NOT_LANDED keep the ref and say so; a ref
+        # is never deleted on the strength of a push's own exit code.
+        run: |
+          git fetch origin main
+          if node scripts/lib/landing-verify.js --sha="$SHA" --cwd="$PWD"; then
+            # BRO-3873 step 5: the landing record FIRST, before any cleanup.
+            # A fast-forward creates no commit to stamp a trailer on, so
+            # data/audit/landings.jsonl is the proof
+            # check-direct-push-to-main.yml consults for every non-bot push
+            # to main; the merge script also reads it for the landed sha.
+            # Committed by the ledger step below (a crash between here and
+            # there loses the row, never the landing).
+            # The lib from the checkout, else from the main JUST fetched: the
+            # landing that introduced this lib (2026-09-23, run 35818561142)
+            # pushed fine and then this step crashed on `require`, because
+            # the runner's main checkout predates the landing. A landed sha
+            # must never be left without its record over a missing helper.
+            LAND_LIB="scripts/lib/landings-ledger.js"
+            if [ ! -f "$LAND_LIB" ]; then
+              if git show "FETCH_HEAD:$LAND_LIB" > "$RUNNER_TEMP/landings-ledger.js" 2>/dev/null; then
+                LAND_LIB="$RUNNER_TEMP/landings-ledger.js"
+              else
+                LAND_LIB=""
+              fi
+            fi
+            # The record is best-effort by design: the sha IS on main (verified
+            # above), so a missing helper must warn loudly and still let the
+            # ref be deleted below — never redden a landing that happened.
+            if [ -n "$LAND_LIB" ]; then
+              LAND_LIB="$LAND_LIB" LAND_BRANCH="$BRANCH" LAND_SHA="$SHA" LAND_TIP="$TIP" LAND_BASE="${{ needs.checks.outputs.base }}" \
+              LAND_RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" LAND_ATTEMPTS="${{ steps.land.outputs.attempts }}" \
+              node -e '
+                const { appendLanding } = require(require("path").resolve(process.env.LAND_LIB));
+                const e = process.env;
+                const row = appendLanding({ repoDir: process.cwd(), branch: e.LAND_BRANCH, sha: e.LAND_SHA, tip: e.LAND_TIP, base: e.LAND_BASE, runUrl: e.LAND_RUN_URL, attempts: e.LAND_ATTEMPTS || null });
+                console.log(`landings.jsonl += ${JSON.stringify(row)}`);
+              ' && echo "- landings.jsonl: row appended for \`${SHA:0:10}\`" >> "$GITHUB_STEP_SUMMARY" \
+                || echo "::warning::landings.jsonl row for ${SHA:0:10} could NOT be written — the landing itself is verified; check-direct-push-to-main.yml may digest this sha as unrecorded"
+            else
+              echo "::warning::scripts/lib/landings-ledger.js is neither in this checkout nor on the fetched main — landing ${SHA:0:10} is verified but unrecorded"
+            fi
+            # Delete the ref ONLY if it still points at the tip this run
+            # verified — a newer push to the same land/** branch has its own
+            # run and must not lose its ref to this one (Codex finding).
+            NOW_AT=$(gh api "repos/${{ github.repository }}/git/ref/heads/$BRANCH" --jq .object.sha 2>/dev/null || echo "")
+            if [ "$NOW_AT" = "$TIP" ]; then
+              gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/$BRANCH"
+              echo "deleted refs/heads/$BRANCH — ${SHA:0:10} is an ancestor of origin/main"
+              echo "- ref: deleted after ancestry verification" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "refs/heads/$BRANCH now points at ${NOW_AT:-<gone>} (this run verified ${TIP:0:10}) — left for its own run"
+              echo "- ref: KEPT (moved to a newer tip since this run's checks)" >> "$GITHUB_STEP_SUMMARY"
+            fi
+            # A branch of this name that goes red later must notify fresh.
+            node scripts/land-alert.js --branch "$BRANCH" --resolve
+          else
+            echo "::warning::landing-verify could not confirm ${SHA:0:10} on origin/main (exit $?) — leaving refs/heads/$BRANCH in place"
+            echo "- ref: KEPT (ancestry not confirmed)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Alert — landing refused
+        if: steps.land.outputs.landed != 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GATE: ${{ steps.land.outputs.failed_check || 'landing' }}
+        run: |
+          node scripts/land-alert.js --branch "$BRANCH" \
+            --gate "$GATE" \
+            --sha "${{ needs.checks.outputs.tip }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --detail-file /tmp/land.log
+
+      - name: Commit alert-router ledger changes
+        if: always()
+        # scripts/land-alert.js calls routeAlert()/resolveCondition(); the
+        # ledger, digest queue and attempts log only exist on this runner's
+        # disk until committed. Non-blocking by rule (ledger-step-guard).
+        # data/audit/landings.jsonl (the landing record above) rides the
+        # same commit — it must reach main within the direct-push
+        # detector's 6-minute wait, so this step never waits on anything.
+        run: |
+          # Each path staged on its own (scripts/lib/git-add-existing.sh): a
+          # plain `git add A B C` stages NOTHING when any one path is absent —
+          # landings.jsonl does not exist until the first landing writes it.
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/landings.jsonl
+          if ! git diff --staged --quiet; then
+            git commit -m "data: alert-router ledger + landings record (land.yml) [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+          else
+            echo "No ledger changes to commit."
+          fi
+
+      - name: Fail the job on a refused landing
+        id: refused
+        if: steps.land.outputs.landed != 'true'
+        env:
+          FAILED_CHECK: ${{ steps.land.outputs.failed_check }}
+          REASON: ${{ steps.land.outputs.reason }}
+        run: |
+          echo "::error::$BRANCH was NOT landed — $FAILED_CHECK: $REASON (ref left in place; the owner digest carries this)"
+          exit 1
+
+      - name: Notify on failure
+        # Skipped for a refused landing (already routed through land-alert.js
+        # above — one signal, not two); fires for a genuine job failure
+        # (checkout, npm ci, core data, a crashed step).
+        if: failure() && steps.refused.outcome != 'failure'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Land workflow failed'
+          description: 'branch ${{ env.BRANCH }} — the land job itself failed (not a gate verdict); the branch ref is intact and nothing was pushed to main'
+          severity: 'warning'
+
+  alert-red:
+    name: Alert on red checks
+    needs: checks
+    if: failure() && needs.checks.result == 'failure'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout main
+        # main, not the land branch: the alert ledger is committed to main.
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Alert — a gate went red
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          node scripts/land-alert.js --branch "$BRANCH" \
+            --gate "${{ needs.checks.outputs.gate || 'checks' }}" \
+            --sha "${{ needs.checks.outputs.tip }}" \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "- owner digest: land:$BRANCH (${{ needs.checks.outputs.gate || 'checks' }} red) — ref left in place, nothing pushed" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit alert-router ledger changes
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if ! git diff --staged --quiet; then
+            git commit -m "data: alert-router ledger update (land.yml) [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::Alert-router ledger push failed — next run will recompute state"
+          else
+            echo "No ledger changes to commit."
+          fi

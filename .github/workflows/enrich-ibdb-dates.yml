@@ -1,0 +1,151 @@
+name: Enrich IBDB Dates
+
+on:
+  schedule:
+    # Weekly on Wednesdays at 7 AM UTC (2 AM EST) — catch newly announced closing dates
+    - cron: '0 7 * * 3'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all)'
+        required: true
+        default: 'enrich'
+        type: choice
+        options:
+          - enrich
+          - verify
+          - force
+      show:
+        description: 'Optional: specific show slug to process'
+        required: false
+        type: string
+      status:
+        description: 'Optional: filter by show status'
+        required: false
+        type: choice
+        options:
+          - all
+          - open
+          - previews
+          - closed
+
+permissions:
+  contents: write
+
+# Serialize with update-show-status/enrich-off-broadway-dates on the shared
+# shows.json writer group — this workflow read-mutate-writes shows.json, and
+# widening scheduled runs to open,previews,upcoming,announced (2026-07-14)
+# increases overlap with the daily status writer.
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+jobs:
+  enrich-dates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run IBDB date enrichment
+        id: enrich
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          FLAGS=""
+          MODE="${{ inputs.mode || 'enrich' }}"
+
+          # Mode flags
+          if [ "$MODE" = "verify" ]; then
+            FLAGS="$FLAGS --verify --dry-run"
+          elif [ "$MODE" = "force" ]; then
+            FLAGS="$FLAGS --force"
+          else
+            FLAGS="$FLAGS --missing-only"
+          fi
+
+          # Scheduled runs: enrich active + pipeline shows (skip 700+ closed shows).
+          # announced/upcoming/previews included 2026-07-14: announced Broadway
+          # shows (e.g. Dolly) never got date backfill, so update-show-status.js
+          # Check 2e could never promote them out of 'announced'.
+          STATUS="${{ inputs.status || '' }}"
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            FLAGS="$FLAGS --status=open,previews,upcoming,announced"
+          elif [ -n "$STATUS" ] && [ "$STATUS" != "all" ]; then
+            FLAGS="$FLAGS --status=$STATUS"
+          fi
+
+          # Show filter
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          echo "Running: node scripts/enrich-ibdb-dates.js $FLAGS"
+          node scripts/enrich-ibdb-dates.js $FLAGS
+
+      # shows.json is gitignored in the public repo (core-data lives in the
+      # private repo). All syncing happens via `push-core-data` below — no
+      # public-repo commit needed. A prior `git add data/shows.json` step was
+      # either a silent no-op (diff on gitignored file always clean) or a hard
+      # failure, depending on the runner.
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from enrich-ibdb-dates'
+
+      # ibdb-dates.js's SERP fallback calls url-discovery.js, which writes
+      # attribution rows to data/audit/scraper-spend-ledger.jsonl on the
+      # runner's local disk (task #752/#784) — a root-repo file, unaffected by
+      # push-core-data's separate /tmp checkout above. Never staged before this
+      # weekly cron (Sprint 3, card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (enrich-ibdb-dates)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'IBDB Date Enrichment Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

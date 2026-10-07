@@ -1,0 +1,348 @@
+/**
+ * Unit tests for score conversion rules
+ *
+ * Sprint 3 - Score Conversion Audit
+ *
+ * Run with: npm run test:unit
+ * Or: node --test tests/unit/score-conversion-rules.test.mjs
+ */
+
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const {
+  parseRating,
+  validateScore,
+  getExpectedScore
+} = require('../../scripts/lib/score-conversion-rules');
+
+describe('Score Conversion Rules', () => {
+  describe('Letter Grade Conversions', () => {
+    it('A+ = 95', () => {
+      assert.strictEqual(getExpectedScore('A+'), 95);
+    });
+
+    it('A = 90', () => {
+      assert.strictEqual(getExpectedScore('A'), 90);
+    });
+
+    it('A- = 85', () => {
+      assert.strictEqual(getExpectedScore('A-'), 85);
+    });
+
+    it('B+ = 80', () => {
+      assert.strictEqual(getExpectedScore('B+'), 80);
+    });
+
+    it('B = 76', () => {
+      assert.strictEqual(getExpectedScore('B'), 76);
+    });
+
+    it('B- = 72', () => {
+      assert.strictEqual(getExpectedScore('B-'), 72);
+    });
+
+    it('C+ = 67', () => {
+      assert.strictEqual(getExpectedScore('C+'), 67);
+    });
+
+    it('C = 62', () => {
+      assert.strictEqual(getExpectedScore('C'), 62);
+    });
+
+    it('C- = 57', () => {
+      assert.strictEqual(getExpectedScore('C-'), 57);
+    });
+
+    it('D = 35', () => {
+      assert.strictEqual(getExpectedScore('D'), 35);
+    });
+
+    it('F = 20', () => {
+      assert.strictEqual(getExpectedScore('F'), 20);
+    });
+
+    it('case insensitive', () => {
+      assert.strictEqual(getExpectedScore('b+'), 80);
+      assert.strictEqual(getExpectedScore('a-'), 85);
+    });
+  });
+
+  describe('Letter Grade Ranges', () => {
+    it('B+/A- averages to 82.5', () => {
+      const result = parseRating('B+/A-');
+      assert.strictEqual(result.type, 'letter_range');
+      assert.strictEqual(result.expected, 82.5);
+    });
+
+    it('B+ to A- averages to 82.5', () => {
+      const result = parseRating('B+ to A-');
+      assert.strictEqual(result.type, 'letter_range');
+      assert.strictEqual(result.expected, 82.5);
+    });
+  });
+
+  describe('Star Rating Conversions (out of 5)', () => {
+    it('5 stars = 100', () => {
+      assert.strictEqual(getExpectedScore('5 stars'), 100);
+    });
+
+    it('4.5 stars = 90', () => {
+      assert.strictEqual(getExpectedScore('4.5 stars'), 90);
+    });
+
+    it('4 stars = 80', () => {
+      assert.strictEqual(getExpectedScore('4 stars'), 80);
+    });
+
+    it('3.5 stars = 70', () => {
+      assert.strictEqual(getExpectedScore('3.5 stars'), 70);
+    });
+
+    it('3 stars = 60', () => {
+      assert.strictEqual(getExpectedScore('3 stars'), 60);
+    });
+
+    it('2.5 stars = 50', () => {
+      assert.strictEqual(getExpectedScore('2.5 stars'), 50);
+    });
+
+    it('2 stars = 40', () => {
+      assert.strictEqual(getExpectedScore('2 stars'), 40);
+    });
+
+    it('1 star = 20', () => {
+      assert.strictEqual(getExpectedScore('1 star'), 20);
+    });
+
+    it('0 stars = 0', () => {
+      assert.strictEqual(getExpectedScore('0 stars'), 0);
+    });
+  });
+
+  describe('Star Rating Variations', () => {
+    it('3.5 out of 5 = 70', () => {
+      assert.strictEqual(getExpectedScore('3.5 out of 5'), 70);
+    });
+
+    it('4/5 = 80', () => {
+      assert.strictEqual(getExpectedScore('4/5'), 80);
+    });
+
+    it('3/5 stars = 60', () => {
+      assert.strictEqual(getExpectedScore('3/5 stars'), 60);
+    });
+  });
+
+  describe('Star Rating Conversions (out of 4)', () => {
+    it('4/4 = 100', () => {
+      assert.strictEqual(getExpectedScore('4/4'), 100);
+    });
+
+    it('3.5/4 = 88', () => {
+      assert.strictEqual(getExpectedScore('3.5/4'), 88);
+    });
+
+    it('3/4 = 75', () => {
+      assert.strictEqual(getExpectedScore('3/4'), 75);
+    });
+
+    it('2.5/4 = 63', () => {
+      assert.strictEqual(getExpectedScore('2.5/4'), 63);
+    });
+
+    it('2/4 = 50', () => {
+      assert.strictEqual(getExpectedScore('2/4'), 50);
+    });
+
+    it('1/4 = 25', () => {
+      assert.strictEqual(getExpectedScore('1/4'), 25);
+    });
+
+    it('0/4 = 0', () => {
+      assert.strictEqual(getExpectedScore('0/4'), 0);
+    });
+  });
+
+  describe('Sentiment Conversions', () => {
+    it('Rave = 90', () => {
+      assert.strictEqual(getExpectedScore('Rave'), 90);
+    });
+
+    it('Positive = 75', () => {
+      assert.strictEqual(getExpectedScore('Positive'), 75);
+    });
+
+    it('Mixed = 60', () => {
+      assert.strictEqual(getExpectedScore('Mixed'), 60);
+    });
+
+    it('Negative = 40', () => {
+      assert.strictEqual(getExpectedScore('Negative'), 40);
+    });
+
+    it('Pan = 25', () => {
+      assert.strictEqual(getExpectedScore('Pan'), 25);
+    });
+
+    it('Sentiment: Positive format = 75', () => {
+      assert.strictEqual(getExpectedScore('Sentiment: Positive'), 75);
+    });
+
+    it('case insensitive', () => {
+      assert.strictEqual(getExpectedScore('RAVE'), 90);
+      assert.strictEqual(getExpectedScore('positive'), 75);
+    });
+  });
+
+  describe('Thumb Conversions', () => {
+    it('Up = 80', () => {
+      assert.strictEqual(getExpectedScore('Up'), 80);
+    });
+
+    it('Meh = 60', () => {
+      assert.strictEqual(getExpectedScore('Meh'), 60);
+    });
+
+    it('Flat = 60', () => {
+      assert.strictEqual(getExpectedScore('Flat'), 60);
+    });
+
+    it('Down = 40', () => {
+      assert.strictEqual(getExpectedScore('Down'), 40);
+    });
+  });
+
+  describe('Numeric Ratings', () => {
+    it('direct numeric value 80 = 80', () => {
+      assert.strictEqual(getExpectedScore(80), 80);
+    });
+
+    it('string numeric "88" = 88', () => {
+      assert.strictEqual(getExpectedScore('88'), 88);
+    });
+
+    it('numeric 100 = 100', () => {
+      assert.strictEqual(getExpectedScore(100), 100);
+    });
+
+    it('numeric 0 = 0', () => {
+      assert.strictEqual(getExpectedScore(0), 0);
+    });
+  });
+
+  describe('Designation-Only Entries', () => {
+    it('Recommended is not scoreable', () => {
+      const result = parseRating('Recommended');
+      assert.strictEqual(result.isDesignation, true);
+      assert.strictEqual(result.expected, null);
+    });
+
+    it('Critics Pick is not scoreable', () => {
+      const result = parseRating('Critics Pick');
+      assert.strictEqual(result.isDesignation, true);
+    });
+
+    it('Must See is not scoreable', () => {
+      const result = parseRating('Must See');
+      assert.strictEqual(result.isDesignation, true);
+    });
+  });
+
+  describe('Null/Missing Ratings', () => {
+    it('null rating returns null expected', () => {
+      const result = parseRating(null);
+      assert.strictEqual(result.type, 'null');
+      assert.strictEqual(result.expected, null);
+      assert.strictEqual(result.unparseable, false);
+    });
+
+    it('undefined rating returns null expected', () => {
+      const result = parseRating(undefined);
+      assert.strictEqual(result.type, 'null');
+      assert.strictEqual(result.expected, null);
+    });
+
+    it('empty string returns null expected', () => {
+      const result = parseRating('');
+      assert.strictEqual(result.type, 'null');
+      assert.strictEqual(result.expected, null);
+    });
+  });
+
+  // BRO-4204 S7-T11: the audit's 96 "unparseable" ratings were all `NN%`
+  // strings (80% x32, 70% x17, 100% x15, 90%, 60%, 40%, 50%). A percent is
+  // already on the 0-100 scale, so the expected score is the number itself.
+  describe('Percent Conversions (NN%)', () => {
+    it('"80%" = 80 (type percent)', () => {
+      const result = parseRating('80%');
+      assert.strictEqual(result.type, 'percent');
+      assert.strictEqual(result.expected, 80);
+      assert.strictEqual(result.unparseable, false);
+    });
+
+    it('tolerates whitespace, decimals and the word "percent"', () => {
+      assert.strictEqual(getExpectedScore('72.5 %'), 72.5);
+      assert.strictEqual(getExpectedScore(' 100% '), 100);
+      assert.strictEqual(getExpectedScore('60 percent'), 60);
+    });
+
+    it('every NN% value the 2026 audit found parses', () => {
+      for (const v of ['80%', '70%', '100%', '90%', '60%', '40%', '50%']) {
+        assert.strictEqual(parseRating(v).unparseable, false, v);
+        assert.strictEqual(getExpectedScore(v), parseInt(v, 10), v);
+      }
+    });
+
+    it('out-of-range percents stay unparseable', () => {
+      assert.strictEqual(parseRating('101%').unparseable, true);
+      assert.strictEqual(parseRating('-5%').unparseable, true);
+    });
+
+    it('validateScore treats a percent like any other convertible rating', () => {
+      const ok = validateScore('80%', 78, 10);
+      assert.strictEqual(ok.valid, true);
+      assert.strictEqual(ok.expected, 80);
+      assert.strictEqual(ok.reason, 'correct');
+      const bad = validateScore('40%', 85, 10);
+      assert.strictEqual(bad.valid, false);
+      assert.strictEqual(bad.reason, 'miscalculated');
+    });
+  });
+
+  describe('validateScore', () => {
+    it('correct score within tolerance passes', () => {
+      const result = validateScore('B+', 78, 10);
+      assert.strictEqual(result.valid, true);
+      assert.strictEqual(result.expected, 80);
+      assert.strictEqual(result.difference, 2);
+    });
+
+    it('incorrect score outside tolerance fails', () => {
+      const result = validateScore('A', 50, 10);
+      assert.strictEqual(result.valid, false);
+      assert.strictEqual(result.expected, 90);
+      assert.strictEqual(result.difference, 40);
+    });
+
+    it('null rating is skipped', () => {
+      const result = validateScore(null, 75);
+      assert.strictEqual(result.skipped, true);
+      assert.strictEqual(result.reason, 'null_rating');
+    });
+
+    it('designation is skipped', () => {
+      const result = validateScore('Recommended', 75);
+      assert.strictEqual(result.skipped, true);
+      assert.strictEqual(result.reason, 'designation_only');
+    });
+
+    it('unparseable rating fails', () => {
+      const result = validateScore('gibberish123', 75);
+      assert.strictEqual(result.valid, false);
+      assert.strictEqual(result.reason, 'unparseable');
+    });
+  });
+});

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.broadwayscore.pr-supervisor</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/tompryor/Broadwayscore/scripts/pr-supervisor.js</string>
+  </array>
+  <!-- Loop 5: finished agent PRs pile up unmerged and nothing says so. This
+       publishes ~/.cyrus/pr-supervisor-status.json, which send-morning-digest.js
+       renders. Without a scheduler the file is never written and the verdicts
+       reach nobody — which was the original bug, so the schedule IS the fix.
+
+       Every 30 min, matching com.broadwayscore.linear-delegation-check. The
+       cadence is not arbitrary: assessSupervisorStatus() disowns a payload older
+       than STATUS_STALE_AFTER_MS (6h), and the digest sends at 07:30, so the
+       interval has to guarantee a fresh write inside that window every morning
+       even if the Mac sleeps for a stretch. 30 min leaves a wide margin.
+
+       One `gh pr list` call per run (~48/day) — negligible against the API
+       budget, and deliberately NOT a polling loop: it exits immediately. -->
+  <!-- launchd gives a job a minimal PATH that does NOT include /opt/homebrew/bin,
+       so `gh` is not found and the run dies with spawnSync gh ENOENT. Caught by
+       actually loading this job and reading its log rather than assuming it worked.
+       The script exits 2 without publishing in that case, so the failure is safe
+       (the digest sees a stale-or-absent file) but it is still a dead job. -->
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+  <key>StartInterval</key>
+  <integer>1800</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/tompryor/.cyrus/pr-supervisor.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tompryor/.cyrus/pr-supervisor.log</string>
+  <key>WorkingDirectory</key>
+  <string>/Users/tompryor/Broadwayscore</string>
+</dict>
+</plist>

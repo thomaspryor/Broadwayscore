@@ -1,0 +1,52 @@
+name: Check URL Health
+on:
+  schedule:
+    - cron: '30 11 * * 1'  # Monday 11:30 AM UTC (weekly, offset to avoid contention)
+  workflow_dispatch: {}
+
+concurrency:
+  group: check-url-health
+  cancel-in-progress: true
+
+jobs:
+  check-urls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run URL health check
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: node scripts/health-check-urls.js
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: url-health-report
+          path: data/audit/url-health-report.json
+          retention-days: 90
+          if-no-files-found: ignore
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'URL Health Check Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

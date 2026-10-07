@@ -1,0 +1,15 @@
+{
+  "system": "cmux socket",
+  "status": "warn",
+  "lastChecked": "2026-10-05T11:14:04.823Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "cmux socket: reachability (unmeasurable here)",
+      "status": "warn",
+      "message": "cmux.app is not installed on this machine (or this is CI) — reachability cannot be measured from here."
+    }
+  ]
+}

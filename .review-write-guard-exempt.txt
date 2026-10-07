@@ -1,0 +1,140 @@
+# Allowlist for the safeWriteReview lint (test.yml).
+#
+# Format: one line per script: filename followed by `--` and a one-line reason.
+# Lines starting with `#` are comments. Trailing whitespace is trimmed.
+#
+# Add a new entry only when a script legitimately must write to data/review-texts/
+# without going through safeWriteReview — typically because it does file moves
+# or unlinks that the per-field guard cannot protect (the topology gap, see
+# memory/feedback_locked_files_enrichment_chain.md).
+#
+# Do NOT use this as a workaround for a routine migration. The default path is
+# always: import safeWriteReview, route the write through it.
+#
+# Once the follow-up "Topology preservation for _locked files" Notion card lands,
+# these exemptions can be tightened (e.g. to specific call sites only).
+
+replay-pending-bylines.js -- _pending/{showId}/ → {showId}/ MOVE at line 151, promotes byline-resolved drafts
+split-multi-show-roundups.js -- topology: rewrites parent fullText + creates parallel {otherShowId}/file.json children at lines 148/159/179
+
+# === Legacy violators (pre-Sprint-1 P0 #2) ===
+# These scripts have raw fs.writeFileSync to review-texts paths but predate the
+# Joe Turner P0 #2 lock-at-the-writer migration (Sprint 1, 2026-04-26). They
+# are tracked here as a ratchet — new scripts cannot join this list, and each
+# entry should be removed as the script is migrated to safeWriteReview. The
+# follow-up Notion card 'Migrate legacy review-texts writers to safeWriteReview'
+# tracks this work.
+
+adjudicate-review-queue.js -- legacy-pending-migration
+apply-designations.js -- legacy-pending-migration
+audit-data-integrity.js -- legacy-pending-migration
+audit-non-reviews.js -- legacy-pending-migration
+audit-outlet-registry.js -- legacy-pending-migration
+audit-touring-contamination.js -- legacy-pending-migration
+audit-wrong-production.js -- legacy-pending-migration
+backfill-classified-at.js -- legacy-pending-migration
+backfill-llm-dates.js -- legacy-pending-migration
+backfill-locked-reasons.js -- legacy-pending-migration
+backfill-original-scores.js -- legacy-pending-migration
+backfill-outlet-from-sitemap.js -- legacy-pending-migration
+backfill-preview-placeholders.js -- legacy-pending-migration
+backfill-pv-critics.js -- legacy-pending-migration
+backfill-text-dates.js -- legacy-pending-migration
+backfill-url-dates.js -- legacy-pending-migration
+block-review.js -- legacy-pending-migration
+check-nyt-critics-pick.js -- legacy-pending-migration
+clean-review-entities.js -- legacy-pending-migration
+cleanup-data-integrity.js -- legacy-pending-migration
+cleanup-known-issues.js -- legacy-pending-migration
+cleanup-stale-multishow-flags.js -- legacy-pending-migration
+cleanup-unfetchable-urls.js -- legacy-pending-migration
+clear-stale-roundup-flags.js -- legacy-pending-migration
+clear-stale-suspected-misattribution-flags.js -- legacy-pending-migration
+collect-outlet-reviews.js -- legacy-pending-migration
+collect-west-end-reviews.js -- legacy-pending-migration
+convert-show-score-to-review-texts.js -- legacy-pending-migration
+create-stubs-from-reviews-json.js -- legacy-pending-migration
+detect-cross-outlet-duplicates.js -- legacy-pending-migration
+extract-dtli-reviews.js -- legacy-pending-migration
+extract-embedded-grades.js -- legacy-pending-migration
+extract-explicit-ratings.js -- legacy-pending-migration
+extract-full-reviews.js -- legacy-pending-migration
+fetch-bww-roundups.js -- legacy-pending-migration
+fetch-from-wayback.js -- legacy-pending-migration
+fetch-nysr-scores.js -- legacy-pending-migration
+fix-contaminated-reviews.js -- legacy-pending-migration
+fix-critic-typos.js -- legacy-pending-migration
+fix-default-scores.js -- legacy-pending-migration
+fix-excerpt-as-fulltext.js -- legacy-pending-migration
+fix-garbage-reviews.js -- legacy-pending-migration
+fix-garbage-scores.js -- legacy-pending-migration
+fix-html-entities.js -- legacy-pending-migration
+fix-nav-contaminated.js -- legacy-pending-migration
+fix-non-review-misclassifications.js -- legacy-pending-migration
+fix-null-dates.js -- legacy-pending-migration
+fix-nysr-scores.js -- legacy-pending-migration
+fix-outlet-case.js -- legacy-pending-migration
+fix-p0-score-corruption.js -- legacy-pending-migration
+fix-remaining-domain-mismatches.js -- legacy-pending-migration
+fix-review-dedup-gaps.js -- legacy-pending-migration
+fix-theatre-reviews-star-ratings.js -- legacy-pending-migration
+fix-timeout-and-invalid.js -- legacy-pending-migration
+fix-timeout-we-attribution.js -- legacy-pending-migration
+fix-unknown-critics.js -- legacy-pending-migration
+fix-wrong-production-reviews.js -- legacy-pending-migration
+fix-wrong-reviews.js -- legacy-pending-migration
+flag-junk-url-reviews.js -- legacy-pending-migration
+flag-rescore-needed.js -- legacy-pending-migration
+flag-single-model-for-rescore.js -- legacy-pending-migration
+flag-we-cross-production.js -- legacy-pending-migration
+mark-uncalculated-reviews.js -- legacy-pending-migration
+merge-dtli-excerpts.js -- legacy-pending-migration
+merge-showscore-excerpts.js -- legacy-pending-migration
+migrate-add-core-data-checkout.js -- legacy-pending-migration
+migrate-aggregator-originalscores.js -- legacy-pending-migration
+migrate-numeric-scores.js -- legacy-pending-migration
+migrate-ss-score-labels.js -- legacy-pending-migration
+newspapers-com-extract.js -- legacy-pending-migration
+opening-night-poller.js -- legacy-pending-migration
+paywall-browser-extract.js -- legacy-pending-migration
+prep-recollect-hallucinations.js -- legacy-pending-migration
+protect-review-field.js -- legacy-pending-migration
+reclassify-invalid-reviews.js -- legacy-pending-migration
+reclean-truncated.js -- legacy-pending-migration
+reconcile-source-scores.js -- legacy-pending-migration
+recover-login-page-reviews.js -- legacy-pending-migration
+recover-null-dates.js -- legacy-pending-migration
+reset-adjudication.js -- legacy-pending-migration
+retry-pending-scores.js -- legacy-pending-migration
+retry-wrong-urls.js -- legacy-pending-migration
+reverify-with-haiku.js -- legacy-pending-migration
+score-all-unscored.js -- legacy-pending-migration
+score-final-unscored.js -- legacy-pending-migration
+score-remaining-reviews.js -- legacy-pending-migration
+scrape-broadway-and-me.js -- legacy-pending-migration
+scrape-reviews.js -- legacy-pending-migration
+scrape-showscore-we.js -- legacy-pending-migration
+scrape-wp-theater-blogs.js -- legacy-pending-migration
+sync-review-texts.js -- legacy-pending-migration
+unabandon-non-serp-cycles.js -- legacy-pending-migration
+unflag-content-reviewed.js -- legacy-pending-migration
+backfill-critics-archive-org.js -- legacy-pending-migration
+backfill-lbo-individual-stars.js -- legacy-pending-migration
+batch-correct-reviews.js -- legacy-pending-migration
+clean-timeout-junk.js -- legacy-pending-migration
+cleanup-dedup-comprehensive.js -- legacy-pending-migration
+clear-we-longrunner-fps-2026-04-24.js -- legacy-pending-migration
+extract-scores-from-archives.js -- legacy-pending-migration
+extract-we-star-ratings.js -- legacy-pending-migration
+fix-url-outlet-mismatches.js -- legacy-pending-migration
+flag-wrong-production-by-url-date.js -- legacy-pending-migration
+flag-wrong-production-pending.js -- legacy-pending-migration
+migrate-reroute-backlog.js -- legacy-pending-migration
+opening-night-latency-report.js -- legacy-pending-migration
+unflag-wrong-production-fps.js -- legacy-pending-migration
+notion-action-poll.js -- writes to scripts/agent-memory/ only; review-texts appears in dep-existence check (line 358) not in any writeFileSync path
+audit-serp-census-recall.js -- read-only audit; writes only data/audit/serp-census-recall.json (OUT_PATH, line 54). review-texts appears at line 53 as REVIEW_TEXTS_DIR, a READ root, never in a writeFileSync path. Same false-positive shape as notion-action-poll.js above. Was blocking every session push via run-push-audits.sh (#863 class).
+coverage-adversarial-probe.js -- read-only probe (task #903); writes only data/audit/coverage-adversarial-probe*.json via outPath (OUT_PATH default). REVIEW_TEXTS_DIR is a READ root for onDiskByUrlFor(), never in a writeFileSync path. Same false-positive shape as audit-serp-census-recall.js above.
+audit-self-contradictory-clears.js -- DELIBERATE raw write (#1020/#1022/#1023). --fix REMOVES clear breadcrumbs that safeWriteReview's isIntentionalClear machinery would otherwise treat as protected and restore, so routing through the guard would make the sweep a permanent no-op. Survival instead comes from the field-scoped clearBreadcrumbRetracted stamp registered in review-write-guard CLEAR_BREADCRUMBS. Listed explicitly so this is a reviewed exemption, not a lint pass-by-accident (the lint import check is textual and "safeWriteReview" appears in the file's comments).
+audit-duplicate-of-cleared-contradiction.js -- DELIBERATE raw write (#1655). --fix deletes the stale _duplicateOfCleared breadcrumb, which unlike audit-self-contradictory-clears.js's targets is NOT in review-write-guard PROTECTED_FIELDS at all -- there is no CLEAR_BREADCRUMBS entry to make it survivable through the guard, and none is needed: once the field is gone from disk there is nothing left for a future safeWriteReview merge-restore to resurrect. Routing through the guard would add no protection here and would re-trigger the guard's own URL-collision decision logic (unrelated to this sweep's job). Listed explicitly so this is a reviewed exemption, not a lint pass-by-accident.
+find-punctuation-nulled-reviews.js -- read-only scan; its only write is the --out report, which it refuses to place inside review-texts (BRO-4154)

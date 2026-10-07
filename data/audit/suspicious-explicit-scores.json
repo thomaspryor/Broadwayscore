@@ -1,0 +1,449 @@
+{
+  "generatedAt": "2026-01-31T23:16:40.153Z",
+  "stats": {
+    "totalReviews": 2123,
+    "withExplicitScore": 278,
+    "numericScores": 239,
+    "flaggedSentimentMismatch": 11,
+    "flaggedSourceIssues": 11,
+    "flaggedTotal": 22
+  },
+  "flaggedReviews": [
+    {
+      "reviewId": "an-enemy-of-the-people-2024/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"Gold’s 'An Enemy of the People'... feels pointedly modern\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "book-of-mormon-2011/nypost--elisabeth-vincentelli.json",
+      "originalScore": "A",
+      "numericScore": 95,
+      "criticName": "Elisabeth Vincentelli",
+      "outlet": "New York Post",
+      "scoreSource": "letter-grade",
+      "issues": [
+        "High score (95) but text has 2 negative signals: avoid, poor"
+      ],
+      "textSample": "Trey Parker, right, and Matt Stone, co-creators of the Broadway show “The Book of Mormon,” pose for a portrait outside the Eugene O’Neill Theatre in New York. (AP) Told the creators of “South Park” were making a Broadway musical, you’d naturally expect a broad, foul-mouthed, juvenile, scatological, ...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "brilliant"
+        ],
+        "negativeSignals": [
+          "avoid",
+          "poor"
+        ]
+      }
+    },
+    {
+      "reviewId": "boop-2025/nysr--frank-scheck.json",
+      "originalScore": "4/5 stars",
+      "numericScore": 80,
+      "criticName": "Frank Scheck",
+      "outlet": "New York Stage Review",
+      "scoreSource": "og-description",
+      "issues": [
+        "High score (80) but text has 2 negative signals: poor, slog"
+      ],
+      "textSample": "★★★★☆ It’s hard to imagine who was clamoring for a Broadway musical based on Betty Boop. Not to be ageist, but it’s safe to say that most fans of the venerable cartoon character who made her debut in 1930 are now facing severe mobility issues. But here it is anyway in the form of the new show featur...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "brilliant"
+        ],
+        "negativeSignals": [
+          "poor",
+          "slog"
+        ]
+      }
+    },
+    {
+      "reviewId": "boop-2025/nysr--frank.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Frank",
+      "outlet": "New York Stage Review",
+      "scoreSource": "extracted-unicode-stars",
+      "issues": [
+        "High score (80) but text has 2 negative signals: poor, slog"
+      ],
+      "textSample": "★★★★☆ Jasmine Amy Rogers adorably brings the venerable cartoon character to life in this Broadway musical directed and choreographed by Jerry Mitchell. It’s hard to imagine who was clamoring for a Broadway musical based on Betty Boop. Not to be ageist, but it’s safe to say that most fans of the vene...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "brilliant"
+        ],
+        "negativeSignals": [
+          "poor",
+          "slog"
+        ]
+      }
+    },
+    {
+      "reviewId": "bug-2026/nysr--frank-scheck.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Frank Scheck",
+      "outlet": "New York Stage Review",
+      "issues": [
+        "High score (80) but text has 2 negative signals: tedious, lackluster"
+      ],
+      "textSample": "★★★★☆ Carrie Coon and Namir Smallwood star in the Steppenwolf Theater Company's production, directed by David Cromer. When Bug was first seen Off-Broadway in 2004, it seemed prescient in its portrayal of mental illness and conspiracy theories. Now — after the world has gone collectively crazy with w...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "superb"
+        ],
+        "negativeSignals": [
+          "tedious",
+          "lackluster"
+        ]
+      }
+    },
+    {
+      "reviewId": "chess-2025/ew--shania-russell.json",
+      "originalScore": "C+",
+      "numericScore": 78,
+      "criticName": "Shania Russell",
+      "outlet": "Entertainment Weekly",
+      "scoreSource": "letter-grade",
+      "issues": [
+        "High score (78) but text has 4 negative signals: disappointing, waste, flat"
+      ],
+      "textSample": "​ \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n\n\n\n\n\n\n\n\n\n\n\n\nChess review: The infamous Broadway flop attempts to shed its checkered past with a powerhouse cast\nLea Michele, Aaron Tveit, and Nicholas Christopher headline the Cold War musical about two warring chess champions.\n\nWhen chess master Johannes Zukertort ...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "riveting",
+          "flawless",
+          "perfect"
+        ],
+        "negativeSignals": [
+          "disappointing",
+          "waste",
+          "flat",
+          "muddled"
+        ]
+      }
+    },
+    {
+      "reviewId": "doubt-2024/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\" 'Doubt' is an odd kind of mystery, less a whodunit than a wasitdunatall.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "hadestown-2019/nysr--michael-sommers.json",
+      "originalScore": "4/5 stars",
+      "numericScore": 80,
+      "criticName": "Michael Sommers",
+      "outlet": "New York Stage Review",
+      "scoreSource": "live-fetch",
+      "issues": [
+        "High score (80) but text has 2 negative signals: weak, lackluster"
+      ],
+      "textSample": "★★★★☆ A new Broadway musical that takes audiences to hell and back, Hadestown looks and sounds terrific, and yet it lacks something vital. Drawn from a classical Greek legend, the musical somehow reminds me of a handsome ancient statue that is missing its head.\n\nTrue, the tuner that opened on Wednes...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "brilliant"
+        ],
+        "negativeSignals": [
+          "weak",
+          "lackluster"
+        ]
+      }
+    },
+    {
+      "reviewId": "hells-kitchen-2024/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"Hell’s Kitchen is ultimately a celebration of the city—and the people who make it pop.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "liberation-2025/ew--emlyn-travis.json",
+      "originalScore": "B+",
+      "numericScore": 88,
+      "criticName": "Emlyn Travis",
+      "outlet": "Entertainment Weekly",
+      "scoreSource": "letter-grade",
+      "issues": [
+        "High score (88) but text has 2 negative signals: weak, mess"
+      ],
+      "textSample": "​ \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n\n\n\n\n\n\n\n\n\n\n\n\nLiberation review: Bess Wohl's new Broadway play highlights how the times, they aren't a-changin'\nThe play follows a young mom as she attempts to better understand her own late mother by reimagining her experience founding a women's liberation group in 1...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "perfect"
+        ],
+        "negativeSignals": [
+          "weak",
+          "mess"
+        ]
+      }
+    },
+    {
+      "reviewId": "mary-jane-2024/timeout--adam-feldman.json",
+      "originalScore": "5/5",
+      "numericScore": 100,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"...Herzog’s play shines like a candle in the dark.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "mother-play-2024/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"While Mother Play may be punitive, it is never pitilessly so.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "moulin-rouge-2019/thewrap--robert-hofler.json",
+      "originalScore": "A",
+      "numericScore": 95,
+      "criticName": "Robert Hofler",
+      "outlet": "TheWrap",
+      "scoreSource": "extracted-grade",
+      "issues": [
+        "High score (95) but text has 2 negative signals: poor, uninspired"
+      ],
+      "textSample": "ut sense of humor, which would crash and burn onstage. Instead, he focuses on grandiose emotions, sensuality and the storybook sensation of first love, for which Tveit's puppy-dog innocence is ideal. Robert Hofler, TheWrap : Under the direction of Alex Timbers, a veteran of movie-to-stage musicals l...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [],
+        "negativeSignals": [
+          "poor",
+          "uninspired"
+        ]
+      }
+    },
+    {
+      "reviewId": "oh-mary-2024/nysr--bob-verini.json",
+      "originalScore": "4/5 stars",
+      "numericScore": 80,
+      "criticName": "Bob Verini",
+      "outlet": "New York Stage Review",
+      "scoreSource": "live-fetch",
+      "issues": [
+        "High score (80) but text has 2 negative signals: waste, mess"
+      ],
+      "textSample": "★★★★☆ Whatever one thinks about Oh, Mary! as a play – and for all its choppiness and messiness, it does offer some of the biggest bellylaughs in town – it memorably introduces a unique comic monster I hope we'll see a lot more of. Where Peter Sellers had his Dr. Strangelove, Betty White had her Sue ...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "remarkable"
+        ],
+        "negativeSignals": [
+          "waste",
+          "mess"
+        ]
+      }
+    },
+    {
+      "reviewId": "patriots-2024/timeout--raven-snook.json",
+      "originalScore": "3/5",
+      "numericScore": 60,
+      "criticName": "Raven Snook",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "3/5 Stars. The play's not the thing here...Stuhlbarg and Keen are the crème de la Kremlin.",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "ragtime-2025/nyt-theater--jonathan-mandell.json",
+      "originalScore": "B",
+      "numericScore": 85,
+      "criticName": "Jonathan Mandell",
+      "outlet": "New York Theater",
+      "scoreSource": "letter-grade",
+      "issues": [
+        "High score (85) but text has 4 negative signals: avoid, poor, flat"
+      ],
+      "textSample": "The revival of “Ragtime” has taken on more of the epic feel to which it aspires, thanks to its move from an Encores series concert to a full Broadway production on the Vivian Beaumont’s grander stage, turning an already superb production into a sumptuous spectacle. The opening number, “Prologue: Rag...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [
+          "superb",
+          "spectacular"
+        ],
+        "negativeSignals": [
+          "avoid",
+          "poor",
+          "flat",
+          "slog"
+        ]
+      }
+    },
+    {
+      "reviewId": "suffs-2024/timeout--regina-robbins.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Regina Robbins",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"...a full-throated musical call to action, its message is neither subtle nor ambivalent\"",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [],
+        "negativeSignals": [
+          "mess"
+        ]
+      }
+    },
+    {
+      "reviewId": "the-cottage-2023/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Score may have been extracted from link to another review"
+      ],
+      "textSample": "Listen, I enjoy the plays of Noel Coward as much as the next Anglophile. Who could fail to appreciate the rapier wit, the keen insight into human behavior, and the sheer silliness of such great comedies as Private Lives, Present Laughter, and Blithe Spirit, among others. But never once while watchin...",
+      "sentiment": {
+        "overall": "positive",
+        "positiveSignals": [
+          "superb",
+          "perfect"
+        ],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "the-notebook-2024/timeout--adam-feldman.json",
+      "originalScore": "3/5",
+      "numericScore": 60,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"As much as I rolled my eyes at The Notebook, I canât deny that they sometimes welled up.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "the-whos-tommy-2024/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"As musical theater, Tommy is limited. On its own terms, it’s often sensational.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "water-for-elephants-2024/timeout--adam-feldman.json",
+      "originalScore": "4/5",
+      "numericScore": 80,
+      "criticName": "Adam Feldman",
+      "outlet": "Time Out New York",
+      "scoreSource": "text-pattern",
+      "issues": [
+        "Very short text - hard to validate score"
+      ],
+      "textSample": "\"The main attraction is the pull of the circus itself.\"",
+      "sentiment": {
+        "overall": "neutral",
+        "positiveSignals": [],
+        "negativeSignals": []
+      }
+    },
+    {
+      "reviewId": "wicked-2003/ew--alice-king.json",
+      "originalScore": "B",
+      "numericScore": 85,
+      "criticName": "Alice King",
+      "outlet": "Entertainment Weekly",
+      "scoreSource": "letter-grade",
+      "issues": [
+        "High score (85) but text has 2 negative signals: weak, dreary"
+      ],
+      "textSample": "Starring: Kristin Chenoweth, Idina Menzel; Director: Joe Mantello\n\nPosted November 21 2003 — 12:00 AM EST\n\nWhat if the Wicked Witch of the West was just misunderstood? So  posits this lavishly designed reimagining of the cackling baddie  from ”The Wizard of Oz.” From the novel by Gregory Maguire, th...",
+      "sentiment": {
+        "overall": "negative",
+        "positiveSignals": [],
+        "negativeSignals": [
+          "weak",
+          "dreary"
+        ]
+      }
+    }
+  ]
+}

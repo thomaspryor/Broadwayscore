@@ -1,0 +1,15 @@
+{
+  "shows": [
+    "titanique",
+    "860",
+    "its-a-wonderful-life-a-live-radio-play",
+    "paranormal-activity-2026"
+  ],
+  "triggers": {
+    "860": "new-show",
+    "titanique": "closing",
+    "its-a-wonderful-life-a-live-radio-play": "new-show",
+    "paranormal-activity-2026": "sweep-requeue-low-conf"
+  },
+  "updatedAt": "2026-10-03T21:35:56.358Z"
+}

@@ -1,0 +1,796 @@
+#!/usr/bin/env bash
+# Shared workflow-guard lints — single source of truth for the inline guard
+# steps in .github/workflows/test.yml's Lint Workflows job that fire on files
+# sessions edit constantly (.github/workflows/*, src/). Companion to
+# scripts/lint-write-routing.sh (same pattern, 2026-07-12: CI-only lints let
+# violations redden main for hours; running the identical script from the
+# local pre-push hook blocks them at push time instead).
+#
+# Called from BOTH:
+#   - CI: .github/workflows/test.yml (Lint Workflows job, one step per check)
+#   - local: scripts/hooks/pre-push (scoped by the push's changed paths)
+#
+# Usage: lint-workflow-guards.sh <check>[,<check>...]
+#   Checks: prebuild | core-data-pairing | private-git-add | merge-drivers
+#         | scraping-fallback | scrapingdog-pairing | theatr-token | demo-flags
+#         | snapshot-overwrite | alert-ledger-commit | ledger-coverage | ledger-step-guard
+#         | reset-soft-partial-commit | dry-run-flag-setter | swallowed-audit-writers
+#   Groups: workflows (all .github/workflows-scoped checks) | all
+
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel 2>/dev/null || echo .)"
+
+FAILED=0
+
+check_prebuild() {
+  # `npx next build` (or bare `next build`) in a workflow step skips the npm
+  # `prebuild` lifecycle hook (scripts/prebuild.sh), which is the only thing
+  # that generates the gitignored data/cast-manifest.json and
+  # data/actor-slugs.json. Without those, `next build` fails with
+  #   Module not found: '../../data/cast-manifest.json'.
+  # (2026-05-26 Test UGC Features failure, test-ugc.yml.)
+  local VIOLATIONS="" f
+  for f in .github/workflows/*.yml; do
+    # Match `npx next build` and `npx --no-install next build`; tolerate extra
+    # flags after. Avoid matching `npm run build` (which is fine).
+    if grep -E '^[[:space:]]*(run:[[:space:]]*)?(npx([[:space:]]+--[a-z-]+)*[[:space:]]+next[[:space:]]+build|next[[:space:]]+build)([[:space:]]|$)' "$f" >/dev/null 2>&1; then
+      VIOLATIONS="$VIOLATIONS $(basename "$f")"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Workflows invoke 'next build' directly (bypasses npm prebuild):$VIOLATIONS"
+    echo "Fix: change 'npx next build' to 'npm run build'. The prebuild hook"
+    echo "generates data/cast-manifest.json + data/actor-slugs.json (both gitignored)"
+    echo "which next build imports at compile time."
+    FAILED=1
+  else
+    echo "All workflows use 'npm run build' (prebuild lifecycle preserved)"
+  fi
+}
+
+check_core_data_pairing() {
+  # v2 (2026-07-12): workflows that invoke a KNOWN core-data-writing script
+  # must also push-core-data, or the writes are silently discarded at job end
+  # (core files are gitignored in this repo — only push-core-data persists
+  # them to the private broadway-scorecard-data repo).
+  #
+  # History: v1 matched checkout-core-data + contents:write + no push-core-data
+  # and was a dead no-op since birth ($(grep -c ... || echo 0) yields "0\n0" on
+  # no match, silently erroring every integer test). With the arithmetic fixed
+  # it flagged ~50 workflows, nearly all read-only. The 2026-07-12 audit traced
+  # every script invoked by all 50 (Notion 39b637c5-416f-8127): exactly three
+  # scripts write core files, so v2 keys on those. Add to CORE_WRITER_SCRIPTS
+  # when a new script gains a core-file write (the write-routing lint's
+  # reviews.json check catches new direct writers at PR time).
+  #
+  # validate-data.js    — unconditional shows.json auto-fixes (:585,:636,:776,:830)
+  # pre-deploy-check.js — shows.json self-heal before build (:215)
+  # rebuild-all-reviews.js — reviews.json (:4405). Also writes data/outlet-
+  # registry.json (its own "AUTO-REGISTER NEW OUTLETS" block), but that file
+  # is public-repo-tracked as of BRO-1084 — push-core-data itself now stages
+  # + commits it directly to this checkout (see that action's own trailing
+  # step), so it's no longer a reason a caller of this script needs
+  # push-core-data; reviews.json alone still is.
+  local CORE_WRITER_SCRIPTS="validate-data.js pre-deploy-check.js rebuild-all-reviews.js"
+  # Exemptions — audited 2026-07-12, every entry verified benign:
+  #   test.yml                        CI validation; writes never meant to persist
+  #   vercel-deploy/demo/preview.yml  pre-deploy-check self-heal is build-local by design
+  #   update-deploy-watermark.yml     reads counts for the watermark; self-heal incidental
+  #   collect-review-texts.yml        validate-data auto-fix incidental; canonical
+  #   collect-we-ob-reviews.yml       persistence happens in update-show-status /
+  #   sweep-we-aggregators.yml        gather-reviews / rebuild-reviews (all push)
+  #   generate-theater-tips.yml       same validate-data-incidental class
+  #   scoring-audit.yml               rebuild is audit-only (commits data/audit/* only)
+  #   opening-night-stage-alert.yml   mentions rebuild in alert runbook TEXT, not an invocation
+  local EXEMPT="test.yml vercel-deploy.yml vercel-demo.yml vercel-preview.yml update-deploy-watermark.yml collect-review-texts.yml collect-we-ob-reviews.yml sweep-we-aggregators.yml generate-theater-tips.yml scoring-audit.yml opening-night-stage-alert.yml"
+  local MISSING="" f name s
+  for f in .github/workflows/*.yml; do
+    name=$(basename "$f")
+    # -Fx exact-name match (grep -qw would let vercel-demo.yml exempt a future
+    # foo-vercel-demo.yml — '-' and '.' are non-word chars to grep)
+    if grep -Fxq "$name" <<<"${EXEMPT// /$'\n'}"; then continue; fi
+    # Require an actual `uses: .../push-core-data` step, not a mere text
+    # mention in a comment or heredoc.
+    if grep -qE '^[[:space:]]*uses:.*push-core-data' "$f"; then continue; fi
+    # Match against the file with FULL-LINE comments stripped. The search
+    # below is plain text, so a script merely NAMED in a YAML comment (a
+    # rationale block, a runbook note) read as an invocation. This is not
+    # real: on 2026-09-15 it blocked every push on the owner's machine for ~2h
+    # when BRO-3426 added a comment reading "`node scripts/validate-data.js`-class
+    # commands" to data-health-check.yml -- a workflow whose ONLY mention of
+    # validate-data.js is that comment.
+    #
+    # Stripping full-line comments can NEVER mask a real invocation: a
+    # commented-out line does not execute. Trailing comments are deliberately
+    # NOT stripped -- '#' is legal inside quoted strings and URL fragments in
+    # both YAML and shell, so cutting at the first '#' would corrupt real
+    # run: lines and could hide a genuine invocation.
+    #
+    # NOT covered, and the EXEMPT list above still carries it: a script named in
+    # HEREDOC BODY TEXT. opening-night-stage-alert.yml:70 reads "Manually run
+    # `node scripts/rebuild-all-reviews.js` locally and push" inside a `cat
+    # <<EOF` that builds a gh issue body -- that is data, not a comment, so
+    # sed leaves it and the exemption is LOAD-BEARING. Do not delete it.
+    #
+    # The match is a HERESTRING, not `printf | grep`. `grep -q` exits at the
+    # first hit, so the writer takes SIGPIPE and the pipeline's status is 141;
+    # under `set -uo pipefail` (top of this file) that made the `if` FALSE and
+    # the gate fail OPEN -- a real invocation silently not flagged. Measured:
+    # MATCHED at 20/40 KB, MISSED(141) at 70/100/300 KB, 20/20 reproducible.
+    # data-health-check.yml is 73 KB and has no push-core-data, so it was on the
+    # failing side of that threshold. -F because these are literal filenames
+    # ('.' would otherwise be a wildcard).
+    local BODY
+    BODY=$(sed -E 's/^[[:space:]]*#.*$//' "$f")
+    for s in $CORE_WRITER_SCRIPTS; do
+      if grep -qF "scripts/$s" <<<"$BODY"; then
+        MISSING="$MISSING $name($s)"
+        break
+      fi
+    done
+  done
+  if [ -n "$MISSING" ]; then
+    echo "::error::Workflows invoke a core-data-writing script but never push-core-data (writes silently discarded at job end):$MISSING"
+    echo "Core files are gitignored in this repo — only the push-core-data action persists them."
+    echo "Fix: add the push-core-data step (see gather-reviews.yml), or if the write is"
+    echo "genuinely build-local/audit-only, add the workflow to EXEMPT in"
+    echo "scripts/lint-workflow-guards.sh with a one-line reason."
+    FAILED=1
+  else
+    echo "All workflows invoking core-data writers have push-core-data (or are audited exemptions)"
+  fi
+}
+
+check_private_git_add() {
+  # Core data files live in the private broadway-scorecard-data repo and are
+  # gitignored here; they sync via push-core-data. Any `git add data/<core>`
+  # here is a silent no-op or a hard failure (2026-04-14:
+  # update-lottery-rush.yml; 5 other workflows silently broken for weeks).
+  # The authoritative list is in push-core-data/action.yml — keep in sync.
+  # Force-adds (`git add -f`) are allowed (explicit overrides,
+  # e.g. opening-night-sent.json). outlet-registry.json is deliberately NOT
+  # in this list as of BRO-1084 — it moved to public-repo-tracked, so a
+  # plain `git add data/outlet-registry.json` in a workflow is now the
+  # CORRECT way to commit a registry change, not a silent no-op.
+  local CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json followers.json subscribers.json subscribers-westend.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json"
+  local VIOLATIONS="" f core
+  for f in .github/workflows/*.yml; do
+    for core in $CORE_FILES; do
+      # Match `git add` (no -f/--force) then data/<core>. Reject both
+      # `git add data/shows.json` and `git add a b data/shows.json c`.
+      if grep -E "^[[:space:]]*git add([[:space:]]+[^-][^[:space:]]*)*[[:space:]]+data/$core([[:space:]]|$)" "$f" >/dev/null 2>&1; then
+        VIOLATIONS="$VIOLATIONS $(basename "$f"):$core"
+      fi
+    done
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Workflows git-add private core data files:$VIOLATIONS"
+    echo "These files are gitignored and synced via push-core-data."
+    echo "Remove them from git-add lines. See .github/workflows/CLAUDE.md §Data Sync Architecture."
+    FAILED=1
+  else
+    echo "No workflows git-add private core data files"
+  fi
+}
+
+check_merge_drivers() {
+  # A custom `merge=<name>` driver in .gitattributes silently NO-OPS unless
+  # `git config merge.<name>.driver ...` is registered (feature-flags.ts
+  # merge=ours sat broken this way until 830c1f5b48). Canonical registration
+  # point is setup-local-data.sh (CI bots use push-with-retry.sh strategy
+  # options, not per-path drivers). Built-in drivers need no registration.
+  local BUILTIN="union text binary"
+  local REG_FILE="scripts/setup-local-data.sh"
+  local MISSING="" DRIVERS d
+  DRIVERS=$(grep -oE 'merge=[A-Za-z0-9_.-]+' .gitattributes | sed 's/^merge=//' | sort -u)
+  for d in $DRIVERS; do
+    if grep -qw "$d" <<<"$BUILTIN"; then continue; fi
+    # Tolerant match: `git config [--global] merge.<d>.driver ...`
+    if ! grep -qE "merge\.$d\.driver" "$REG_FILE"; then
+      MISSING="$MISSING $d"
+    fi
+  done
+  if [ -n "$MISSING" ]; then
+    echo "::error::Custom .gitattributes merge driver(s) not registered in $REG_FILE:$MISSING"
+    echo "::error::Unregistered drivers silently no-op and let these files CONFLICT on a human git merge."
+    echo "Fix: add a line like 'git config --global merge.<name>.driver <command>' to $REG_FILE,"
+    echo "or, if <name> is actually a git built-in, add it to the BUILTIN allowlist in lint-workflow-guards.sh."
+    FAILED=1
+  else
+    echo "All custom merge drivers registered:${DRIVERS:+ }$DRIVERS"
+  fi
+}
+
+check_scraping_fallback() {
+  # Any workflow that uses SCRAPINGBEE_API_KEY for actual scraping must also
+  # have BRIGHTDATA_TOKEN so there's always a fallback. Exemptions:
+  # (A) health checks / credential validators — SB key checked for validity
+  # (B) scripts require JS rendering — correct fallback is SB → Playwright,
+  #     already implemented in the scripts themselves
+  local EXEMPT="
+    check-secrets-health.yml
+    opening-night-orchestrator.yml
+    check-cookie-health.yml
+    data-health-check.yml
+    backfill-historical-metadata.yml
+    check-show-freshness.yml
+    scrape-alltime-grosses.yml
+    weekly-grosses.yml
+    reddit-engagement-digest.yml
+    scrape-dtli-show-score.yml
+    scraper-cost-report.yml
+    btc-results-preview.yml
+    verify-reviews.yml
+  "
+  local VIOLATIONS="" f name
+  for f in .github/workflows/*.yml; do
+    name=$(basename "$f")
+    if grep -qw "$name" <<<"$EXEMPT"; then continue; fi
+    if grep -q "SCRAPINGBEE_API_KEY" "$f" && ! grep -q "BRIGHTDATA_TOKEN" "$f"; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scraping workflows must use scraper.js with BD+SB fallback, not a single service."
+    echo "::error::Missing BRIGHTDATA_TOKEN in:$VIOLATIONS"
+    echo "Fix: add BRIGHTDATA_TOKEN: \${{ secrets.BRIGHTDATA_TOKEN }} to the scraping step's env block."
+    echo "If this workflow legitimately uses only SB (health check, etc), add it to the EXEMPT list in scripts/lint-workflow-guards.sh."
+    FAILED=1
+  else
+    echo "All scraping workflows have multi-service fallback"
+  fi
+}
+
+check_scrapingdog_pairing() {
+  # Scraping v2 Sprint 1 T9: fetchPage()'s SD tier is ~3x cheaper than BD and
+  # runs before it in the fallback chain, but only when SCRAPINGDOG_API_KEY is
+  # actually wired into the workflow's env block — 5 scraping workflows
+  # (discover-regional-serp-reviews, scrape-theatre-reviews, update-lbo,
+  # update-ltd, update-seatplan) were missing it entirely, silently paying BD
+  # rates for every fetch. Same pairing pattern as check_scraping_fallback:
+  # any workflow using BD or SB for real scraping must also carry SD.
+  local EXEMPT="
+    check-secrets-health.yml
+    check-cookie-health.yml
+    test.yml
+    verify-reviews.yml
+  "
+  # verify-reviews.yml: also exempt from check_scraping_fallback (SB-only by
+  # design, not a bulk fetchPage() scraper) — same rationale here.
+  local VIOLATIONS="" f name
+  for f in .github/workflows/*.yml; do
+    name=$(basename "$f")
+    if grep -qw "$name" <<<"$EXEMPT"; then continue; fi
+    if (grep -q "BRIGHTDATA_TOKEN" "$f" || grep -q "SCRAPINGBEE_API_KEY" "$f") && ! grep -q "SCRAPINGDOG_API_KEY" "$f"; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Scraping workflows must also carry SCRAPINGDOG_API_KEY (fetchPage()'s cheapest tier, ~3x less than BD)."
+    echo "::error::Missing SCRAPINGDOG_API_KEY in:$VIOLATIONS"
+    echo "Fix: add SCRAPINGDOG_API_KEY: \${{ secrets.SCRAPINGDOG_API_KEY }} to the scraping step's env block."
+    echo "If this workflow legitimately never calls fetchPage() (health check, CI, etc), add it to the EXEMPT list in scripts/lint-workflow-guards.sh."
+    FAILED=1
+  else
+    echo "All scraping workflows have SCRAPINGDOG_API_KEY wired in"
+  fi
+}
+
+check_theatr_token() {
+  # THEATR_REFRESH_TOKEN burns on use (Theatr rotates refresh tokens). Only
+  # update-theatr.yml and rotate-theatr-token.yml may use it — any other
+  # caller races the rotation and burns the token chain
+  # (fetch-all-image-formats.yml did this for 2 weeks, April 2026).
+  local ALLOWED="update-theatr.yml rotate-theatr-token.yml"
+  local VIOLATIONS="" f name
+  for f in .github/workflows/*.yml; do
+    name=$(basename "$f")
+    if grep -qw "$name" <<<"$ALLOWED"; then continue; fi
+    # Match actual secret usage, not comments
+    if grep -E '^\s+THEATR_REFRESH_TOKEN:\s+\$\{\{' "$f" >/dev/null 2>&1; then
+      VIOLATIONS="$VIOLATIONS $name"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::THEATR_REFRESH_TOKEN must only be used by update-theatr.yml and rotate-theatr-token.yml"
+    echo "::error::Unauthorized usage in:$VIOLATIONS"
+    echo "Theatr rotates refresh tokens on every use. Multiple callers race and burn the token chain."
+    echo "Use data/theatr-image-cache.json (populated by update-theatr.yml) instead of calling the API directly."
+    FAILED=1
+  else
+    echo "Theatr token restricted to authorized workflows only"
+  fi
+}
+
+check_demo_flags() {
+  # Demo feature flags require window (runtime) and MUST be checked inside
+  # 'use client' components. In server components / SSR pages, isDemo()
+  # returns false and the feature silently disappears (fix 7770e1b567).
+  # Emergency escape hatch (opening-night hotfixes only): commit message
+  # containing "[skip-demo-flag-check]" skips this gate.
+  if git log -1 --format=%B | grep -Fq "[skip-demo-flag-check]"; then
+    echo "::warning::demo-flag check skipped via [skip-demo-flag-check] commit-message tag"
+    return
+  fi
+  # Keep in sync with DEMO_FEATURES in src/config/feature-flags.ts.
+  # awards/awardScoreV2 (launched 2026-05-17) and userAccounts/showPageRedesign
+  # (launched 2026-10-02, BRO-4525) were removed once their getters returned
+  # true unconditionally. Re-add any flag here if you put it back in
+  # DEMO_FEATURES.
+  local DEMO_FLAGS="theaterScorecard|showtimes"
+  local VIOLATIONS="" f
+  for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
+    # Check if file has 'use client' directive
+    if ! head -3 "$f" | grep -q "'use client'"; then
+      VIOLATIONS="$VIOLATIONS $f"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Demo feature flags used in server components (will always be false during SSR):"
+    echo "::error::$VIOLATIONS"
+    echo "Move the featureFlags check inside a 'use client' component."
+    echo "Emergency bypass (opening-night hotfix only): include [skip-demo-flag-check] in the commit message."
+    FAILED=1
+  else
+    echo "All demo feature flag checks are in client components"
+  fi
+}
+
+check_snapshot_overwrite() {
+  # /tmp/core-data-snapshot is the CHECKOUT-TIME baseline push-core-data diffs
+  # data/ against (a file identical to its snapshot is treated as untouched
+  # and skipped). ONLY checkout-core-data may write it. Workflows that copied
+  # their own freshly-written files into the snapshot silently disabled their
+  # core-data pushes for a week (2026-07-12..19: rebuild-reviews stopped
+  # pushing reviews.json; caught via a newsletter with stale scores). Six
+  # workflows had this pattern removed on 2026-07-19 — this lint keeps it out.
+  # Only writes INTO the snapshot are violations — the snapshot as cp/rsync
+  # DESTINATION (final argument). Reading FROM it (e.g. commercial-weekly.yml
+  # restoring the pristine baseline on failure) is legitimate.
+  local VIOLATIONS="" f
+  for f in .github/workflows/*.yml; do
+    if grep -E '(cp|rsync)[^#]*[[:space:]]"?/tmp/core-data-snapshot/?"?[[:space:]]*$' "$f" >/dev/null 2>&1; then
+      VIOLATIONS="$VIOLATIONS $(basename "$f")"
+    fi
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::Workflows write into /tmp/core-data-snapshot (breaks push-core-data change detection — files matching the snapshot are treated as untouched and never pushed):$VIOLATIONS"
+    echo "Fix: delete the snapshot-copy step. The snapshot is the checkout-time baseline; overwriting it makes your workflow's own output read as 'unchanged'. See push-core-data/action.yml + 2026-07-19 incident."
+    FAILED=1
+  else
+    echo "No workflow writes into /tmp/core-data-snapshot"
+  fi
+}
+
+check_alert_ledger_commit() {
+  # Any job calling routeAlert()/resolveCondition() (owner-alert-router.js) —
+  # directly in its YAML, OR by invoking a script that requires the router,
+  # directly or one hop through a scripts/lib/ wrapper (BRO-3671's require-
+  # graph resolution; see scripts/lib/require-graph-ast.js) — must stage
+  # data/audit/alert-ledger.json + alert-router-attempts.jsonl for commit in
+  # the SAME job, or the cooldown/dedup ledger resets every run (5th
+  # recurrence of this class after audit-aggregator-gap.yml,
+  # test-ugc-roundtrip.yml, ux-walkthrough.yml, check-cron-health.yml —
+  # card #618). Pure-function check lives in
+  # scripts/lib/alert-ledger-commit-check.js (colocated test:
+  # scripts/lib/alert-ledger-commit-check.test.mjs).
+  #
+  # A single Node process handles every workflow file (mirrors
+  # check_ledger_coverage() below) — findRouterCallerScripts()'s scan over
+  # scripts/*.js is the expensive part and must run once, not once per
+  # workflow. Fails loudly (not silently-clean) if acorn is unavailable —
+  # routerCallerScripts would otherwise come back empty and every
+  # require-graph-indirect violation would silently vanish, same failure
+  # mode check_ledger_coverage() already guards against.
+  #
+  # BRO-3684: also fails loudly if .github/workflows yields too few files to
+  # be a real tree (wrong cwd, sparse checkout) — previously an empty/near-
+  # empty glob just meant the `for` loop never ran, `any` stayed false, and
+  # the check printed __CLEAN__ having scanned nothing. (The other class of
+  # fail-open this card reported — a THROWN exception inside the node -e
+  # reads as CLEAN — does NOT apply here: this function's
+  # __CLEAN__/__ACORN_MISSING__ checks are exact-string matches, so a throw's
+  # empty/partial stdout matches neither and falls into the
+  # violation-reporting `else` branch below, which sets FAILED=1. Confirmed
+  # by fault injection: a broken alert-ledger-commit-check.js exits this
+  # function via that `else` branch.)
+  #
+  # BRO-3686: the floor + file-listing logic now lives in
+  # scripts/lib/workflow-glob-guard.js, shared with check_ledger_coverage,
+  # check_ledger_step_guard and check_swallowed_audit_writers below — this
+  # was the ONE call site BRO-3684 fixed directly; the other three
+  # reimplemented the same unguarded readdirSync+filter line.
+  local OUT MIN_WORKFLOWS
+  MIN_WORKFLOWS=$(node -e "console.log(require('./scripts/lib/scan-alert-ledger-gaps.js').MIN_EXPECTED_WORKFLOWS)")
+  OUT=$(node -e "
+    let acorn;
+    try { acorn = require('acorn'); } catch { acorn = null; }
+    if (!acorn) {
+      console.log('__ACORN_MISSING__');
+      process.exit(0);
+    }
+    const fs = require('fs');
+    const path = require('path');
+    const { findMissingLedgerCommits, findRouterCallerScripts } = require('./scripts/lib/alert-ledger-commit-check.js');
+    const { readWorkflowFilesOrFailClosed } = require('./scripts/lib/workflow-glob-guard.js');
+    const routerCallerScripts = findRouterCallerScripts('scripts');
+    const dir = '.github/workflows';
+    let files;
+    try {
+      files = readWorkflowFilesOrFailClosed(dir);
+    } catch (e) {
+      console.log(e.message);
+      process.exit(0);
+    }
+    let any = false;
+    for (const name of files) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findMissingLedgerCommits(text, routerCallerScripts)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  ")
+  if [ "$OUT" = "__ACORN_MISSING__" ]; then
+    echo "::error::acorn is unavailable — cannot resolve the routeAlert()/resolveCondition() require-graph (scripts/lib/require-graph-ast.js). Run 'npm ci' to restore it."
+    FAILED=1
+  elif grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
+    echo "::error::alert-ledger-commit check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
+    FAILED=1
+  elif [ "$OUT" = "__CLEAN__" ]; then
+    echo "All routeAlert()/resolveCondition() callers commit data/audit/alert-ledger.json + alert-router-attempts.jsonl in the same job"
+  else
+    echo "::error::Workflows call routeAlert()/resolveCondition() (directly or via a script that requires owner-alert-router.js) without committing the alert state in the same job:"
+    echo "$OUT"
+    echo "Fix: stage data/audit/alert-ledger.json + data/audit/alert-router-attempts.jsonl (git add, or scripts/lib/git-add-existing.sh) before the job's commit step."
+    echo "See scripts/lib/owner-alert-router.js header comment + check-cron-health.yml for a working example."
+    FAILED=1
+  fi
+}
+
+check_ledger_coverage() {
+  # Card 3b1637c5 / task #996: any workflow job that runs a script calling
+  # url-discovery.js's serpQuery()/discoverCorrectUrl() (SERP path) must also
+  # stage data/audit/scraper-spend-ledger.jsonl for commit in the SAME job,
+  # or that job's SERP telemetry is silently discarded when the runner exits
+  # (19/~40 SERP-calling workflows had this gap; 18 fixed by hand in
+  # 436f4a24092/943bd4a9327, the remaining ~39 by BRO-163, 2026-08-15).
+  # BRO-2961 (2026-09-07) extended tracking to scraper.js's fetchPage() too —
+  # the deferred "separate, much larger sweep" ledger-coverage-check.js's own
+  # header comment flagged back in BRO-163. 12 real gaps found and fixed
+  # (aggregator-url-watcher, audit-reverse-discovery, backfill-review-dates,
+  # discover-historical-shows, enrich-reviews, enrich-runtimes,
+  # generate-theater-tips, ingest-urls, process-review-submission,
+  # update-broadway-com, update-commercial, update-lottery-rush).
+  # Logic lives in scripts/lib/ledger-coverage-check.js (real acorn AST walk
+  # — not text regex — because "requires url-discovery.js" != "calls its
+  # SERP function"; see that file's header comment for the false-positive it
+  # avoids). A single Node process handles every workflow file — the AST
+  # walk over scripts/**/*.js is the expensive part and must run once, not
+  # once per workflow.
+  #
+  # scripts/lib/ledger-coverage-exemptions.js now lists exactly one entry —
+  # a documented detector false positive, not a real gap (see that file's
+  # header). Remove a real-gap entry there the moment its workflow is fixed
+  # — a STALE exemption (one that no longer matches a real violation) is
+  # itself a failure below, so fixing a workflow without removing its
+  # exemption entry doesn't silently rot forever (ship-check finding,
+  # 2026-08-04).
+  #
+  # Fails loudly (not silently-clean) if acorn is unavailable — ledgerScripts
+  # would otherwise come back empty and every workflow would read as
+  # violation-free, which is the wrong failure mode for a cost-control gate.
+  #
+  # BRO-3686: also fails loudly if .github/workflows yields too few files to
+  # be a real tree (wrong cwd, sparse checkout) — this call site had the same
+  # unguarded `fs.readdirSync(dir).filter(f => f.endsWith('.yml'))` BRO-3684
+  # fixed in check_alert_ledger_commit above, just not fixed here yet. Uses
+  # the same shared scripts/lib/workflow-glob-guard.js helper.
+  local OUT MIN_WORKFLOWS
+  MIN_WORKFLOWS=$(node -e "console.log(require('./scripts/lib/scan-alert-ledger-gaps.js').MIN_EXPECTED_WORKFLOWS)")
+  OUT=$(node -e "
+    let acorn;
+    try { acorn = require('acorn'); } catch { acorn = null; }
+    if (!acorn) {
+      console.log('__ACORN_MISSING__');
+      process.exit(0);
+    }
+    const fs = require('fs');
+    const path = require('path');
+    const { findLedgerScripts, findMissingLedgerCommits } = require('./scripts/lib/ledger-coverage-check.js');
+    const { EXEMPTIONS, isExempt } = require('./scripts/lib/ledger-coverage-exemptions.js');
+    const { readWorkflowFilesOrFailClosed } = require('./scripts/lib/workflow-glob-guard.js');
+    const ledgerScripts = findLedgerScripts('scripts');
+    const dir = '.github/workflows';
+    let files;
+    try {
+      files = readWorkflowFilesOrFailClosed(dir);
+    } catch (e) {
+      console.log(e.message);
+      process.exit(0);
+    }
+    const usedExemptions = new Set();
+    let any = false;
+    for (const name of files) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findMissingLedgerCommits(text, ledgerScripts)) {
+        if (isExempt(name, v.job)) {
+          usedExemptions.add(name + '#' + v.job);
+        } else {
+          any = true;
+          console.log(name + ': ' + v.message);
+        }
+      }
+    }
+    for (const e of EXEMPTIONS) {
+      if (!usedExemptions.has(e.file + '#' + e.job)) {
+        any = true;
+        console.log('STALE EXEMPTION: ' + e.file + \" job '\" + e.job + \"' is listed in ledger-coverage-exemptions.js but is no longer a violation — remove the entry.\");
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if grep -qF '__ACORN_MISSING__' <<<"$OUT"; then
+    echo "::error::ledger-coverage check could not run — acorn is not installed (run 'npm ci' first). This gate fails closed rather than silently reporting clean."
+    FAILED=1
+  elif grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
+    echo "::error::ledger-coverage check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
+    FAILED=1
+  elif grep -qF '__CLEAN__' <<<"$OUT" && ! grep -qvF '__CLEAN__' <<<"$OUT"; then
+    echo "All ledger-reaching (provider-telemetry record* writers, incl. via url-discovery.js serpQuery/discoverCorrectUrl and scraper.js fetchPage) workflows commit data/audit/scraper-spend-ledger.jsonl in the same job (or are documented, non-stale exemptions)"
+  else
+    echo "::error::Workflows reach a scraper-spend telemetry writer (provider-telemetry record*, serpQuery/discoverCorrectUrl, fetchPage) but no step stages data/audit/scraper-spend-ledger.jsonl for commit in the same job (or an exemption entry has gone stale):"
+    echo "$OUT" | grep -vF '__CLEAN__'
+    echo "Fix: add a 'Commit scraper-spend ledger' step (see audit-closing-dates.yml for the pattern) to the violating job."
+    echo "If this is a known, tracked gap, add it to scripts/lib/ledger-coverage-exemptions.js with a dated reason."
+    echo "If a STALE EXEMPTION is listed, remove that entry from ledger-coverage-exemptions.js — its workflow is already fixed."
+    FAILED=1
+  fi
+}
+
+check_ledger_step_guard() {
+  # BRO-2243: a job that commits data/audit/scraper-spend-ledger.jsonl is
+  # racing every other concurrent workflow pushing to main — a losing race
+  # is expected, routine contention, not a data problem. The composite
+  # action's own header comment documents the contract every caller must
+  # follow (if: always() + continue-on-error: true on the CALLING step) so
+  # that race can never fail the job using it for bookkeeping. Investigation
+  # found all 30 existing call sites already compliant (fixed BRO-163,
+  # 2026-08-14) — this is the structural guard so a new call site, or an
+  # edit that drops one of the two flags, can't silently reopen the race.
+  # Logic lives in scripts/lib/ledger-step-guard-check.js (colocated test:
+  # scripts/lib/ledger-step-guard-check.test.mjs) — shared with the local
+  # pre-push hook.
+  #
+  # BRO-3686: also fails loudly if .github/workflows yields too few files to
+  # be a real tree (wrong cwd, sparse checkout) — same unguarded
+  # readdirSync+filter gap BRO-3684 fixed in check_alert_ledger_commit,
+  # closed here via the shared scripts/lib/workflow-glob-guard.js helper.
+  local OUT MIN_WORKFLOWS
+  MIN_WORKFLOWS=$(node -e "console.log(require('./scripts/lib/scan-alert-ledger-gaps.js').MIN_EXPECTED_WORKFLOWS)")
+  OUT=$(node -e "
+    const fs = require('fs');
+    const path = require('path');
+    const { findLedgerStepGuardIssues } = require('./scripts/lib/ledger-step-guard-check.js');
+    const { readWorkflowFilesOrFailClosed } = require('./scripts/lib/workflow-glob-guard.js');
+    const dir = '.github/workflows';
+    let files;
+    try {
+      files = readWorkflowFilesOrFailClosed(dir);
+    } catch (e) {
+      console.log(e.message);
+      process.exit(0);
+    }
+    let any = false;
+    for (const name of files) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findLedgerStepGuardIssues(text)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
+    echo "::error::ledger-step-guard check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
+    FAILED=1
+  elif grep -qF '__CLEAN__' <<<"$OUT" && ! grep -qvF '__CLEAN__' <<<"$OUT"; then
+    echo "Every commit-scraper-spend-ledger call site has if: always() + continue-on-error: true — a ledger push race can never fail the calling job"
+  else
+    echo "::error::Workflow step(s) call commit-scraper-spend-ledger without both if: always() and continue-on-error: true — a routine push race on the ledger file would fail the job (BRO-2243):"
+    echo "$OUT" | grep -vF '__CLEAN__'
+    echo "Fix: add both 'if: always()' and 'continue-on-error: true' to the calling step (see test.yml's Data Validation job for the pattern)."
+    FAILED=1
+  fi
+}
+
+check_dry_run_flag_setter() {
+  # Task #653 ship-check finding: scripts/flag-wrong-production-by-date.js is
+  # DRY_RUN unless --apply (flag-wrong-production-by-date.js:43). rebuild-fast.yml
+  # invoked it WITHOUT --apply from the day its opening-night contamination guard
+  # shipped, so that guard wrote zero flags and the "rebuild-fast runs the sweeps,
+  # review-refresh doesn't" asymmetry was never real — nothing but the daily
+  # rebuild-reviews.yml ever re-applied a cleared wrongProduction flag. A dry-run
+  # flag-setter in a persistence workflow is silent, not loud: the step is green.
+  local VIOLATIONS=""
+  for f in .github/workflows/*.yml; do
+    while IFS= read -r line; do
+      case "$line" in
+        *"flag-wrong-production-by-date.js --apply"*) ;;
+        *"flag-wrong-production-by-date.js"*)
+          VIOLATIONS="$VIOLATIONS$(basename "$f"): $(echo "$line" | sed 's/^[[:space:]]*//')"$'\n' ;;
+      esac
+    # Only executable run: lines — comments mentioning the script are fine.
+    done < <(grep -E '^[[:space:]]*(run:|[[:space:]]+)?[^#]*node[[:space:]]+scripts/flag-wrong-production-by-date\.js' "$f" 2>/dev/null)
+  done
+  if [ -n "$VIOLATIONS" ]; then
+    echo "::error::flag-wrong-production-by-date.js invoked without --apply (DRY RUN — writes nothing, step still passes):"
+    echo "$VIOLATIONS"
+    FAILED=1
+  else
+    echo "flag-wrong-production-by-date.js always invoked with --apply"
+  fi
+}
+
+check_reset_soft_partial_commit() {
+  # Flags the "phantom-staged-revert" bug class (card #687, generalized from
+  # task #677's ship-check finding, fixed in record-push-ledger.js commit
+  # 613c6bd8eeb): a script that does `git reset --soft <ref>` to fast-forward
+  # local HEAD, then stages ONLY a specific path (a scoped `git add`, not
+  # `-A`/`.`/`--all`) and commits. --soft leaves the INDEX frozen at the
+  # pre-reset tree, so if <ref> moved past that point (routine under
+  # concurrent CI pushes), the whole stale index — not just the one path
+  # actually `git add`ed — gets committed, silently reverting concurrent
+  # commits' real content. Pure-function detector lives in
+  # scripts/lib/reset-soft-partial-commit-check.js (colocated test:
+  # scripts/lib/reset-soft-partial-commit-check.test.mjs). Scans top-level
+  # scripts/*.js (same scope as lint-write-routing.sh's writer checks) —
+  # that's where every git-operating CI script in this repo lives.
+  # Single node process for the whole scripts/*.js set (not one spawn per
+  # file, ~200x faster) — this runs from the local pre-push hook on every
+  # push touching scripts/*.js, which promises "a few seconds total".
+  local VIOLATIONS
+  VIOLATIONS=$(node -e "
+    const { findResetSoftPartialCommitIssues } = require('./scripts/lib/reset-soft-partial-commit-check.js');
+    const fs = require('fs');
+    for (const f of process.argv.slice(1)) {
+      const issues = findResetSoftPartialCommitIssues(fs.readFileSync(f, 'utf8'));
+      if (issues.length) console.log(require('path').basename(f) + ': ' + issues.join('; '));
+    }
+  " scripts/*.js)
+  if [ -n "$VIOLATIONS" ]; then
+    VIOLATIONS=$'\n'"$VIOLATIONS"
+    echo "::error::Scripts use a dangerous reset --soft + scoped-add + commit pattern (phantom-staged-revert risk):"
+    echo -e "$VIOLATIONS"
+    echo "Fix: use 'git reset --mixed' instead of '--soft' before staging+committing a single path."
+    echo "See fastForwardHeadToOrigin() in scripts/record-push-ledger.js for the fixed pattern."
+    FAILED=1
+  else
+    echo "No scripts use the reset --soft + scoped-add + commit phantom-staged-revert pattern"
+  fi
+}
+
+check_swallowed_audit_writers() {
+  # Task #1073 W5.1: a workflow step that (a) runs `node scripts/X.js` where
+  # X.js writes to data/audit/ (heuristic: grep the script file for the
+  # literal string 'data/audit/' — same loose/over-inclusive style as
+  # check_core_data_pairing()'s CORE_WRITER_SCRIPTS grep above), AND (b) that
+  # step swallows its own failure via `continue-on-error: true` or `|| true`
+  # anywhere in the step body, silently discards audit-ledger writes with
+  # zero signal anywhere. This is exactly the bug class that let
+  # opening-night-checklist.yml's history append fail invisibly for 100+ days
+  # (2026-04-26 -> 2026-08-05 — see the diagnosis comment above
+  # appendToHistory() in scripts/opening-night-checklist.js). Inline
+  # `# lint-allow-swallow: <reason>` anywhere in a step suppresses a specific,
+  # reviewed exemption for that step.
+  # Pure-function detector: scripts/lib/swallowed-audit-writer-check.js
+  # (colocated test: scripts/lib/swallowed-audit-writer-check.test.mjs).
+  #
+  # BRO-3686: also fails loudly if .github/workflows yields too few files to
+  # be a real tree (wrong cwd, sparse checkout) — same unguarded
+  # readdirSync+filter gap BRO-3684 fixed in check_alert_ledger_commit,
+  # closed here via the shared scripts/lib/workflow-glob-guard.js helper.
+  # This is orthogonal to this check's exclusion from the 'workflows'
+  # composite below (that's about which composite CALLS this function, not
+  # about how this function itself validates the tree it scans).
+  local OUT MIN_WORKFLOWS
+  MIN_WORKFLOWS=$(node -e "console.log(require('./scripts/lib/scan-alert-ledger-gaps.js').MIN_EXPECTED_WORKFLOWS)")
+  OUT=$(node -e "
+    const fs = require('fs');
+    const path = require('path');
+    const { findSwallowedAuditWriters } = require('./scripts/lib/swallowed-audit-writer-check.js');
+    const { readWorkflowFilesOrFailClosed } = require('./scripts/lib/workflow-glob-guard.js');
+
+    const auditWriterCache = new Map();
+    function isAuditWriterScript(scriptPath) {
+      if (auditWriterCache.has(scriptPath)) return auditWriterCache.get(scriptPath);
+      let result = false;
+      try {
+        result = fs.readFileSync(scriptPath, 'utf8').includes('data/audit/');
+      } catch { result = false; }
+      auditWriterCache.set(scriptPath, result);
+      return result;
+    }
+
+    const dir = '.github/workflows';
+    let files;
+    try {
+      files = readWorkflowFilesOrFailClosed(dir);
+    } catch (e) {
+      console.log(e.message);
+      process.exit(0);
+    }
+    let any = false;
+    for (const name of files) {
+      const text = fs.readFileSync(path.join(dir, name), 'utf8');
+      for (const v of findSwallowedAuditWriters(text, isAuditWriterScript)) {
+        any = true;
+        console.log(name + ': ' + v);
+      }
+    }
+    if (!any) console.log('__CLEAN__');
+  " 2>&1)
+  if grep -qF '__TOO_FEW_WORKFLOWS__:' <<<"$OUT"; then
+    echo "::error::swallowed-audit-writers check found only $(echo "$OUT" | sed -n 's/^__TOO_FEW_WORKFLOWS__://p') workflow file(s) in .github/workflows (expected at least $MIN_WORKFLOWS) — refusing to report a verdict rather than silently pass on a near-empty or wrong-cwd scan."
+    FAILED=1
+  elif grep -qF '__CLEAN__' <<<"$OUT" && ! grep -qvF '__CLEAN__' <<<"$OUT"; then
+    echo "No workflow step swallows a data/audit/-writing script's failure via continue-on-error/|| true (or all are documented lint-allow-swallow exemptions)"
+  else
+    echo "::error::Workflow step(s) swallow a data/audit/-writing script's failure (continue-on-error: true or '|| true'), discarding writes with no signal anywhere:"
+    echo "$OUT" | grep -vF '__CLEAN__'
+    echo "Fix: remove continue-on-error/|| true and handle the script's real exit code explicitly (see opening-night-checklist.yml's 'Run opening night checklist' step for the pattern), or if this step's failure genuinely is optional, add '# lint-allow-swallow: <reason>' to the step."
+    FAILED=1
+  fi
+}
+
+run_check() {
+  case "$1" in
+    prebuild)          check_prebuild ;;
+    core-data-pairing) check_core_data_pairing ;;
+    private-git-add)   check_private_git_add ;;
+    merge-drivers)     check_merge_drivers ;;
+    scraping-fallback) check_scraping_fallback ;;
+    scrapingdog-pairing) check_scrapingdog_pairing ;;
+    theatr-token)      check_theatr_token ;;
+    demo-flags)        check_demo_flags ;;
+    snapshot-overwrite) check_snapshot_overwrite ;;
+    alert-ledger-commit) check_alert_ledger_commit ;;
+    ledger-coverage)    check_ledger_coverage ;;
+    ledger-step-guard)  check_ledger_step_guard ;;
+    reset-soft-partial-commit) check_reset_soft_partial_commit ;;
+    dry-run-flag-setter) check_dry_run_flag_setter ;;
+    swallowed-audit-writers) check_swallowed_audit_writers ;;
+    workflows)
+      # check_swallowed_audit_writers is deliberately NOT in this composite yet:
+      # the pre-push hook runs `workflows`, and the check has ~70 pre-existing
+      # violations (task #1073 follow-up card) — including it here would block
+      # every push repo-wide until the triage lands. Run it standalone
+      # (`swallowed-audit-writers`) or via `all`.
+      check_prebuild; check_core_data_pairing; check_private_git_add
+      check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
+      check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_ledger_step_guard
+      check_dry_run_flag_setter ;;
+    all)
+      check_prebuild; check_core_data_pairing; check_private_git_add
+      check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
+      check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage
+      check_ledger_step_guard; check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|ledger-coverage|ledger-step-guard|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
+  esac
+}
+
+if [ $# -eq 0 ]; then
+  run_check all
+elif [ $# -gt 1 ]; then
+  # Space-separated args would silently run only $1 — force the comma form.
+  echo "usage: $0 <check>[,<check>...]  (comma-separated, not space-separated)" >&2
+  exit 2
+else
+  IFS=',' read -ra CHECKS <<< "$1"
+  for c in "${CHECKS[@]}"; do
+    run_check "$c"
+  done
+fi
+
+exit "$FAILED"

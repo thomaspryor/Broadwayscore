@@ -1,0 +1,17 @@
+{
+  "_comment": "Shows whose drift is explained by rebuild dedup logic, not real missing reviews. Add entries here to suppress alerts. Remove when show closes or drift genuinely clears.",
+  "allowlist": [
+    {
+      "showId": "cats-the-jellicle-ball-2026",
+      "maxDrift": 4,
+      "reason": "Design-intent: 4 includable files excluded by rebuild dedup — unknown-critic dedup (culturesauce), cross-outlet fingerprint dedup (nydailynews/chicagotribune syndication), duplicateTextOf (nysr), cross-outlet fingerprint (whatsonstage/theatermania). countLocalIncluded over-counts because isIncludableForRebuild does not replicate these runtime dedup rules.",
+      "expires": "2026-07-01"
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "maxDrift": 3,
+      "reason": "Design-intent: 3 includable files excluded by rebuild dedup — duplicateTextOf (times-uk/dominic-maxwell), unknown-critic dedup (london-theatre, theupcoming). Same systemic issue as cats-jellicle.",
+      "expires": "2026-07-01"
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+name: Add Requested Show
+
+# Dispatched by process-feedback.yml's content-request routing (task #722)
+# for a `missing-show` action — a user asked for a show that isn't in the
+# catalog. Only promotes regional feeder-venue shows off their BWW/Playbill
+# Verdict review roundup page (CLAUDE.md §3 auto-promotion path — "the
+# roundup IS the validation"). Off-Broadway/Broadway titles are NOT handled
+# here: they need the operator-run promote-ob-venue-candidates.js path with
+# Playbill-OB/Lortel cross-validation, and scripts/add-requested-show.js
+# refuses (non-zero exit, no write) rather than guessing.
+#
+# NEVER stubs shows.json from memory — a rejection here just means the show
+# stays unrouted for manual follow-up; it is never fabricated.
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Show title as the user typed it'
+        required: true
+        type: string
+      venue_hint:
+        description: 'Optional venue hint extracted from the submission ("at X")'
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        # Smoke-test lane. This workflow is dispatched only by
+        # process-feedback.yml on a real user request, so between shipping
+        # (task #722) and 2026-08-01 it had executed ZERO times — the
+        # checkout/core-data/npm/secrets path was entirely unproven, the
+        # same shape as tasks #657 and #688 where a workflow sat dead or
+        # silently degraded for days because nothing ever exercised it.
+        # There was no way to prove it without attempting a real
+        # shows.json write, so verifying it was strictly riskier than
+        # leaving it unverified — which is why nobody did.
+        #
+        # dry_run=true runs the whole live path (SERP -> fetchPage ->
+        # classifyCandidate -> title-delta + regional guards) and stops
+        # immediately before writeStagingCandidates(), so it proves the
+        # CI wiring end-to-end and cannot write, commit, or push.
+        description: 'Resolve + classify only — skip staging, promotion, and every push (CI smoke test)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  # A dedicated lane, NOT shared with scrape-new-aggregators (reverted —
+  # ship-check second-opinion review, task #722): GitHub Actions only keeps
+  # ONE run queued per concurrency group with cancel-in-progress: false: a
+  # second run doesn't wait behind the first, it's silently CANCELLED and
+  # replaced by whichever run queues next. Sharing the nightly's group meant
+  # a feedback dispatch queued behind a scrape-new-aggregators run (up to 5
+  # jobs x 60min timeout each) could be silently dropped by a THIRD run
+  # queuing in before it's ever dequeued — the opposite of the "bounded
+  # wait" this was meant to be. The actual write race this was trying to
+  # prevent is already closed by --only-hash (this dispatch's promoter run
+  # only ever touches its own staged candidate — see promote-ob-venue-
+  # candidates.js) plus push-core-data's existing rebase+retry handling for
+  # any residual shows.json conflict.
+  #
+  # dry_run gets its OWN lane. Sharing it would reintroduce exactly the
+  # silent-drop this comment describes, one layer up: an operator smoke test
+  # sitting in the lane means a real user-request dispatch has to queue, and
+  # a third run queuing behind it would silently cancel that real request.
+  # A smoke test must never be able to drop a real user's content request.
+  # PER-TITLE, not one global lane (2026-08-05). One submission can now ask for
+  # several shows (GH #542 asked for two), which means several dispatches ~10s
+  # apart. With a single shared group GitHub keeps only ONE queued run: the
+  # second show's dispatch sat queued and was silently CANCELLED the moment a
+  # third run arrived — observed live on run 31028164530, which lost
+  # Two Strangers while The Outsiders ran. That is precisely the silent-drop
+  # this comment block was already written to prevent, reintroduced one level
+  # down by multi-show requests.
+  #
+  # Two different shows have no reason to serialize against each other: the
+  # shows.json write race is already closed by --only-hash plus push-core-data's
+  # rebase+retry, as described below. Same title dispatched twice still
+  # serializes, which is the only case that ever needed it.
+  group: add-requested-show-${{ inputs.dry_run == true && 'dry-run-' || '' }}${{ inputs.title }}
+  cancel-in-progress: false
+
+jobs:
+  add-show:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve roundup + stage + promote
+        id: add
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # Passed as env vars, NOT interpolated into the run: script — user
+          # feedback text reaches this workflow unsanitized (it's the raw
+          # form `show` field), and `${{ inputs.title }}` inside a shell
+          # command is a script-injection vector (ship-check adversarial
+          # review, task #722). Node's argv receives the value verbatim;
+          # bash never re-parses it.
+          SHOW_TITLE: ${{ inputs.title }}
+          VENUE_HINT: ${{ inputs.venue_hint }}
+          # Same reason as the two above: never interpolated into the shell.
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT" --dry-run
+          else
+            node scripts/add-requested-show.js --title="$SHOW_TITLE" --venue_hint="$VENUE_HINT"
+          fi
+
+      - name: Validate data (push-refusal gate on failure)
+        if: always()
+        run: node scripts/validate-data.js
+
+      - name: Commit staging + audit trail (public repo)
+        # Runs BEFORE push-core-data (task #722 ship-check P1): the promoter
+        # writes data/audit/ob-venue-candidates.json (staging removal),
+        # last-promotion-ids.json, and ob-promotion-log.jsonl to THIS
+        # checkout, not the private core-data repo — push-core-data only
+        # syncs shows.json et al (CORE_FILES). Without this commit those
+        # writes are discarded at job end and the staged candidate never
+        # actually leaves the queue, so nightly re-stages/re-promotes it.
+        #
+        # Gated on the ABSENCE of validate-data.js's push-refusal sentinel
+        # (ship-check second-opinion review, task #722): an unconditional
+        # `if: always()` here committed the staging-removal even when
+        # validate-data.js had just refused the shows.json write — the
+        # candidate would vanish from the queue while its show entry never
+        # reached shows.json, permanently losing it instead of just
+        # delaying it to the next nightly run (it's no longer staged
+        # either at that point).
+        #
+        # Skipped entirely on dry_run: the script returns before
+        # writeStagingCandidates(), so there is nothing staged to commit and
+        # nothing to push.
+        if: always() && inputs.dry_run != true
+        env:
+          SHOW_TITLE: ${{ inputs.title }}
+          # BRO-158: data/audit/ob-venue-candidates.json is now a union-merged
+          # registry file (scripts/lib/core-data-merge-registry.js) — the
+          # default `-X theirs` rebase resolves a non-overlapping hunk (two
+          # producers adding different candidates) silently, without ever
+          # reaching resolve_conflicts()'s case-arm merge. This flag routes
+          # that path through reconcile-merged-json.js instead.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          SENTINEL="${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+          if [ -f "$SENTINEL" ]; then
+            echo "validate-data.js refused the push (sentinel present) — leaving staging untouched so this candidate can be retried."
+            cat "$SENTINEL"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/ob-venue-candidates.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No staging/audit changes to commit"
+          else
+            git commit -m "data: add-requested-show staging + audit trail for '$SHOW_TITLE'"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push core data
+        # dry_run never writes shows.json, so there is nothing to push — and
+        # skipping keeps the smoke test provably incapable of touching core
+        # data even if a future edit made the script write before its
+        # dry-run return.
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: add requested show '${{ inputs.title }}' via feedback-pipeline routing"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: add-requested-show
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Add Requested Show Failed'
+          severity: 'warning'

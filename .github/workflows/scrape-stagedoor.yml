@@ -1,0 +1,134 @@
+name: Scrape Stagedoor Critics
+
+on:
+  # RETIRED 2026-06-25: stagedoor.com was shut down and now 302-redirects the
+  # whole domain to a ticketing site (londontheatredirect.com) — there are no
+  # critic-review pages left to scrape. The weekly cron is disabled so it stops
+  # spending Browserbase/SERP credits on a dead host. The scraper itself now
+  # exits early via checkStagedoorAlive(). The 48 frozen archive files under
+  # data/aggregator-archive/stagedoor/ remain available to the opening-night
+  # poller as historical data. workflow_dispatch is kept so the dead-domain
+  # guard can be re-tested, or the cron restored if Stagedoor ever returns.
+  # schedule:
+  #   - cron: '0 6 * * 1'  # Weekly Mondays 6 AM UTC (disabled — domain dead)
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Single show ID to scrape (e.g., hadestown-west-end-2024)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      limit:
+        description: 'Max shows to process'
+        required: false
+        type: number
+        default: 0
+
+concurrency:
+  group: stagedoor-scrape
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  scrape-stagedoor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 30-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Stagedoor scraper
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+        run: |
+          ARGS=""
+
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            ARGS="$ARGS --limit=${{ inputs.limit }}"
+          fi
+
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+
+          # shellcheck disable=SC2086
+          node scripts/scrape-stagedoor-critics.js $ARGS
+
+      - name: Run extraction
+        if: always() && inputs.dry_run != true
+        run: node scripts/extract-stagedoor-reviews.js
+
+      - name: Commit archives
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Aggregator archives are pushed to private repo via push-review-texts (below).
+          # Do NOT commit them to the public repo — they contain copyrighted content.
+          echo "Aggregator archives will be pushed to private repo only"
+
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-stagedoor'
+
+      - name: Trigger rebuild
+        if: always() && inputs.dry_run != true
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post Stagedoor scrape" || echo "Rebuild dispatch failed"
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-stagedoor
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Scrape Stagedoor Critics Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

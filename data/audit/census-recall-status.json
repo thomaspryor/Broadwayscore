@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-10-05T19:52:39.389Z",
+  "verdict": "regressed",
+  "reason": "naive: recall 0.167 vs 0.38 median over 4 prior run(s) — down 0.213 (threshold 0.15), yield 3 vs 6.367 URLs/show",
+  "regressions": [
+    {
+      "level": "families",
+      "arm": "naive",
+      "baseline": 0.38,
+      "current": 0.167,
+      "drop": 0.213,
+      "rule": "week-on-week",
+      "reason": "recall 0.167 vs 0.38 median over 4 prior run(s) — down 0.213 (threshold 0.15), yield 3 vs 6.367 URLs/show"
+    }
+  ],
+  "comparedArms": 3,
+  "trendEntries": 7,
+  "latest": {
+    "date": "2026-10-05",
+    "generatedAt": "2026-10-05T19:52:39.389Z",
+    "naivePages": 2,
+    "shows": 1,
+    "excluded": {
+      "settling": 4
+    },
+    "truthUrls": 18,
+    "onDiskUrls": 17,
+    "newFromNaive": 1,
+    "families": {
+      "naive": 0.167,
+      "onDisk": 0.944,
+      "scoped": 0.444
+    },
+    "arms": {
+      "naive-p0": 0.111,
+      "naive-p1": 0.056,
+      "onDisk": 0.944,
+      "scoped-q0": 0.222,
+      "scoped-q1": 0.333,
+      "scoped-q2": 0.333
+    },
+    "combinedRecall": 0.944,
+    "familyYield": {
+      "naive": 3,
+      "onDisk": 17,
+      "scoped": 8
+    },
+    "armYield": {
+      "naive-p0": 2,
+      "naive-p1": 1,
+      "onDisk": 17,
+      "scoped-q0": 4,
+      "scoped-q1": 6,
+      "scoped-q2": 6
+    },
+    "armsFailed": {
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 0,
+      "scoped-q0": 0,
+      "scoped-q1": 0,
+      "scoped-q2": 0
+    },
+    "unavailableArms": [],
+    "byCategory": {
+      "off-broadway": {
+        "shows": 1,
+        "truthUrls": 18,
+        "families": {
+          "naive": 0.167,
+          "onDisk": 0.944,
+          "scoped": 0.444
+        }
+      }
+    },
+    "sampleIds": [
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026"
+    ]
+  }
+}

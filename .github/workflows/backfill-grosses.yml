@@ -1,0 +1,95 @@
+name: Backfill Grosses History
+
+on:
+  workflow_dispatch:
+    inputs:
+      weeks:
+        description: 'Number of weeks to backfill (default 55 for ~1 year)'
+        required: false
+        default: '55'
+        type: string
+      start_from:
+        description: 'Start date (YYYY-MM-DD, defaults to most recent Sunday)'
+        required: false
+        default: ''
+        type: string
+
+# BRO-934: manual grosses-history writer; shares the group with the other grosses writers.
+concurrency:
+  group: data-grosses-writers
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run backfill
+        run: |
+          ARGS="--weeks ${{ github.event.inputs.weeks || '55' }}"
+          if [ -n "${{ github.event.inputs.start_from }}" ]; then
+            ARGS="$ARGS --start-from ${{ github.event.inputs.start_from }}"
+          fi
+          npx tsx scripts/backfill-grosses-history.ts $ARGS
+        env:
+          NODE_ENV: production
+
+      - name: Check for changes
+        if: always()
+        id: changes
+        run: |
+          if git diff --quiet data/grosses-history.json 2>/dev/null || [ ! -f data/grosses-history.json ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            WEEK_COUNT=$(node -e "const d=JSON.parse(require('fs').readFileSync('data/grosses-history.json','utf-8'));console.log(Object.keys(d.weeks).length)")
+            echo "week_count=$WEEK_COUNT" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from backfill-grosses'
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ steps.changes.outputs.has_changes }}" = "true" ]; then
+            echo "## Backfill Complete" >> $GITHUB_STEP_SUMMARY
+            echo "Added historical grosses data. Total weeks in history: **${{ steps.changes.outputs.week_count }}**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## No Changes" >> $GITHUB_STEP_SUMMARY
+            echo "All requested weeks already present in history." >> $GITHUB_STEP_SUMMARY
+          fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Grosses Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

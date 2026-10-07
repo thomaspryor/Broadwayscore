@@ -1,0 +1,173 @@
+# Adjudicate Review Queue
+# Auto-resolves flagged reviews where LLM scores disagree with aggregator thumbs
+name: Adjudicate Review Queue
+
+on:
+  schedule:
+    # Daily at 5:15 AM UTC — staggered 15 min after scoring (5 AM) and rebuild (4 AM)
+    - cron: '15 5 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no file changes)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+# BRO-917: this workflow writes review-texts/ (humanReviewScore) and can overlap
+# with a manual dispatch during its own 5:15 AM UTC cron window. Queued, not
+# cancelled — an in-flight adjudication pass must finish and push, not be killed
+# mid-write. Matches the pattern used by every other review-texts-writing cron
+# (rebuild-reviews, opening-night-checklist, update-critic-consensus, etc.).
+concurrency:
+  group: adjudicate-review-queue
+  cancel-in-progress: false
+
+jobs:
+  adjudicate:
+    name: Adjudicate flagged reviews
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Check if queue has items
+        id: check_queue
+        run: |
+          if [ ! -f data/audit/needs-human-review.json ]; then
+            echo "has_items=false" >> $GITHUB_OUTPUT
+            echo "Queue file not found — nothing to do."
+            exit 0
+          fi
+
+          COUNT=$(node -e "const q = require('./data/audit/needs-human-review.json'); console.log(q.reviews ? q.reviews.length : 0)")
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+          if [ "$COUNT" = "0" ]; then
+            echo "has_items=false" >> $GITHUB_OUTPUT
+            echo "Queue is empty — nothing to do."
+          else
+            echo "has_items=true" >> $GITHUB_OUTPUT
+            echo "Queue has $COUNT item(s) to process."
+          fi
+
+      - name: Setup Node.js
+        if: steps.check_queue.outputs.has_items == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.check_queue.outputs.has_items == 'true'
+        run: npm ci
+
+      - name: Reset mis-adjudicated reviews (one-time)
+        if: steps.check_queue.outputs.has_items == 'true'
+        run: |
+          # One-time reset for reviews mis-adjudicated before outlet-awareness fix.
+          # Safe to leave permanently — the script is idempotent (skips already-cleared reviews).
+          node scripts/reset-adjudication.js ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+
+      - name: Run adjudication
+        if: steps.check_queue.outputs.has_items == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            node scripts/adjudicate-review-queue.js --dry-run
+          else
+            node scripts/adjudicate-review-queue.js
+          fi
+
+      - name: Check for changes
+        if: always() && steps.check_queue.outputs.has_items == 'true'
+        id: changes
+        run: |
+          if git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No files changed."
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            CHANGED=$(git diff --name-only | wc -l | tr -d ' ')
+            echo "changed_count=$CHANGED" >> $GITHUB_OUTPUT
+            echo "$CHANGED file(s) changed."
+          fi
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Adjudicate Review Queue — Commit and push"
+      - name: Commit and push public repo changes
+        if: always() && steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # review-texts already pushed via push-review-texts composite action
+          # Only commit if there are actual public repo changes (e.g. audit files)
+          git add data/audit/ 2>/dev/null || true
+
+          if git diff --staged --quiet; then
+            echo "No public repo changes to commit (review-texts already pushed separately)"
+            exit 0
+          fi
+
+          CHANGED=${{ steps.changes.outputs.changed_count }}
+          git commit -m "data: Auto-adjudicate $CHANGED review(s) from queue
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Trigger rebuild
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post-adjudication rebuild (${{ steps.changes.outputs.changed_count }} reviews)"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Review Queue Adjudication Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        run: |
+          echo "## Review Queue Adjudication" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Queue items:** ${{ steps.check_queue.outputs.count || 0 }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check_queue.outputs.has_items }}" = "true" ]; then
+            echo "**Files changed:** ${{ steps.changes.outputs.changed_count || 0 }}" >> $GITHUB_STEP_SUMMARY
+            if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** Dry run" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "**Status:** Queue empty, no action taken" >> $GITHUB_STEP_SUMMARY
+          fi

@@ -1,0 +1,25 @@
+{
+  "system": "stuck work",
+  "status": "warn",
+  "lastChecked": "2026-10-05T11:14:04.822Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Stuck work: paused P0/P1 cards",
+      "status": "warn",
+      "message": "37 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (49d, stamp overdue 47d); BRO-235: The Stage + pages-on-stages stub extraction (49d); P1: ~20% of cmux dispatches die silently — chronic week-long (49d) [24 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+    },
+    {
+      "name": "Stuck work: orphaned in-progress cards",
+      "status": "warn",
+      "message": "36 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (73d); P1: headless-claude fallback for the opening-night monitor l (73d); P1: register review-census carriers (audit-aggregator-gap +  (73d) [26 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+    },
+    {
+      "name": "Stuck work: paused P2/other cards",
+      "status": "warn",
+      "message": "6 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [20 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+    }
+  ]
+}

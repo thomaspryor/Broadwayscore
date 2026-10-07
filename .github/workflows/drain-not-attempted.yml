@@ -1,0 +1,189 @@
+name: Drain Not-Attempted Backlog
+
+# Daily drain of review-text files that have URLs but were never scraped.
+# Uses recover-wayback-reviews.js (archive.org CDX + archive.today) instead of
+# the full collector — 100x faster, $0 cost, with domain circuit breaker.
+
+on:
+  schedule:
+    # Daily at 11 PM UTC (after daily collection + rebuild settle)
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+    inputs:
+      max_urls:
+        description: 'Max URLs to process (default 500)'
+        required: false
+        default: '500'
+      domain_filter:
+        description: 'Only process specific domains (comma-separated)'
+        required: false
+        default: ''
+      tier_filter:
+        description: 'Only process specific tier (1, 2, or 3)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'CDX discovery only, no file writes'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: drain-not-attempted
+  cancel-in-progress: false
+
+jobs:
+  drain:
+    name: Drain not-attempted via Wayback Machine
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run Wayback recovery (not_attempted mode)
+        env:
+          SOURCE_MODE: not_attempted
+          MAX_URLS: ${{ inputs.max_urls || '500' }}
+          DOMAIN_FILTER: ${{ inputs.domain_filter }}
+          TIER_FILTER: ${{ inputs.tier_filter }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: node scripts/recover-wayback-reviews.js
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Drain not-attempted backlog via Wayback recovery"
+
+      - name: Final commit and push (audit data)
+        if: always()
+        run: |
+          git add data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              console.log(r.recovered || 0);
+            } catch { console.log(0); }
+          ")
+
+          git commit -m "feat: Drain not-attempted backlog — $RECOVERED reviews recovered via Wayback
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Trigger rebuild if recoveries
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              console.log(r.recovered || 0);
+            } catch { console.log(0); }
+          ")
+
+          if [ "$RECOVERED" -gt "0" ]; then
+            echo "Triggering rebuild for $RECOVERED recovered reviews..."
+            gh workflow run rebuild-reviews.yml \
+              -f reason="Post not-attempted drain ($RECOVERED reviews recovered)"
+          else
+            echo "No recoveries, skipping rebuild."
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          node -e "
+            try {
+              const r = require('./data/audit/wayback-recovery-report.json');
+              const lines = [
+                '## Not-Attempted Drain Summary',
+                '',
+                '| Metric | Count |',
+                '|--------|-------|',
+                '| Candidates | ' + (r.totalCandidates || 0) + ' |',
+                '| CDX snapshots found | ' + (r.cdxFound || 0) + ' |',
+                '| **Recovered** | **' + (r.recovered || 0) + '** |',
+                '|   via archive.today | ' + (r.archiveTodayRecovered || 0) + ' |',
+                '| Not in archive | ' + (r.notInArchive || 0) + ' |',
+                '| Domain-skipped | ' + (r.domainSkipped || 0) + ' |',
+                '| Errors | ' + (r.errors || 0) + ' |',
+              ];
+              if (r.circuitBrokenDomains && r.circuitBrokenDomains.length > 0) {
+                lines.push('', '### Circuit-broken domains', r.circuitBrokenDomains.join(', '));
+              }
+              console.log(lines.join('\n'));
+            } catch(e) {
+              console.log('No report generated: ' + e.message);
+            }
+          " >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Drain Not-Attempted Backlog Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,70 @@
+{
+  "issueNumber": "bro-4431-e",
+  "planId": "ca57f7e7-78c4-4e1d-a714-4c0765727b4f",
+  "status": "partial",
+  "createdAt": "2026-10-01T00:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4431 follow-up: re-read the Hungry Women NY Sun review (its stub holds a garbage fetch), re-read The Times' A Slow Fire and Standard of Living reviews so the page star rating is recovered (theatre.reviews has no round-up for either), and name the New York Theater critic on Brooklyn's Bridge (newyorktheater.me is Jonathan Mandell's site).",
+    "steps": [
+      "Ingest the NY Sun Hungry Women review",
+      "Ingest The Times' A Slow Fire and Standard of Living reviews",
+      "Set the Brooklyn's Bridge New York Theater byline"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hungry-women-off-broadway-2026 --url=https://www.nysun.com/article/hungry-women-unevenly-takes-aim-at-the-patriarchy",
+        "description": "NY Sun: Hungry Women"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s",
+        "description": "The Times: A Slow Fire page rating"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-standard-of-living-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+        "description": "The Times: The Standard of Living page rating"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json",
+        "field": "criticName",
+        "oldValue": "Jonathan",
+        "newValue": "Jonathan Mandell",
+        "description": "newyorktheater.me is Jonathan Mandell's site"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T00:04:48.403Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=hungry-women-off-broadway-2026 --url=https://www.nysun.com/article/hungry-women-unevenly-takes-aim-at-the-patriarchy"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-standard-of-living-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json criticName: \"Jonathan\" -> \"Jonathan Mandell\""
+    }
+  ]
+}

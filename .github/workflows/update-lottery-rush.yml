@@ -1,0 +1,150 @@
+name: Update Lottery/Rush Data
+
+# hygiene-run-budget-ok: scrape-lottery-rush.js's TodayTix URL-resolution loop
+# (toResolve) is bounded by open shows currently missing a TodayTix lottery/rush
+# URL — typically a handful, not a scanning backlog. #421 audit classified this
+# LOW RISK; #425 run-budget-coverage guard would otherwise flag it.
+on:
+  schedule:
+    # Run Monday + Thursday at 10 AM UTC (5 AM EST)
+    # Twice-weekly catches mid-week policy changes (new shows launch Tue-Wed)
+    - cron: '0 10 * * 1,4'
+  workflow_dispatch: # Allow manual trigger
+    inputs:
+      force:
+        description: 'Bypass the >5-added/>3-removed stability guard (--force). Use to absorb legitimate accumulated drift after the cron has been stale a while — without it, a large delta aborts every run and the cron stays red forever (deadlock).'
+        type: boolean
+        required: false
+        default: false
+
+# Serialize schedule + manual-dispatch runs against the same data/lottery-rush.json
+# (+ data/show-schedules.json). Both files are pushed via the plain public-repo
+# push-with-retry.sh, whose generic conflict fallback is "accept remote" — on a
+# push race, the losing run's freshly-scraped policy changes are silently
+# discarded (same class as the update-cast-changes.yml incident, Notion
+# 3a5637c5-416f-812a). Same shape here: a Mon/Thu 10 AM UTC cron overlapping a
+# manual dispatch. Queued, not cancelled, to avoid losing either run's writes.
+concurrency:
+  group: update-lottery-rush
+  cancel-in-progress: false
+
+jobs:
+  update-lottery-rush:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Scrape lottery/rush data
+        run: node scripts/scrape-lottery-rush.js --verbose ${{ inputs.force && '--force' || '' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # shows.json lives in the private core-data repo; it is synced via
+          # push-core-data below, so we only add public-repo files here.
+          if [[ -n $(git status --porcelain data/lottery-rush.json data/show-schedules.json) ]]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in lottery/rush data"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          fi
+
+      - name: Commit and push changes
+        if: always() && steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/lottery-rush.json data/show-schedules.json
+          git commit -m "chore: Update lottery/rush data from BwayRush + Playbill + Twopenny
+
+          Automated weekly update of Broadway + West End lottery/rush policies.
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from update-lottery-rush'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-lottery-rush
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      # BRO-873: this workflow failed 4+ consecutive scheduled runs (Apr 10-14
+      # 2026) with zero owner-visible alert. Root cause: this step had no
+      # `severity`/`email` inputs, which default to 'low'/'false' — and
+      # notify-failure/action.yml is a no-op for any severity other than
+      # 'critical' (see .github/workflows/CLAUDE.md §Notification Severity).
+      # This is a twice-weekly, user-facing data feed (/lotteries, /rush,
+      # /discount-tickets) — a single failure already means 3-4 days of stale
+      # discount data before the next scheduled attempt. BRO-4603: it no
+      # longer emails (nothing for the owner to do); check-cron-health.yml
+      # keeps the failure owner-visible in the morning digest (110h threshold).
+      - name: Notify on failure
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 10 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert.
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Update Lottery/Rush Failed'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
+          # BRO-4141: one-off failures of this job are not owner-actionable; email
+          # only when it keeps failing (streak mode re-pages every 4th failure after).
+          min_consecutive_failures: '2'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        run: |
+          echo "## Lottery/Rush Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]]; then
+            echo "Updated lottery/rush data and synced tags" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No changes detected - data is already up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Sources: BwayRush.com + Playbill (Broadway) + Twopenny Theatre (West End)" >> $GITHUB_STEP_SUMMARY

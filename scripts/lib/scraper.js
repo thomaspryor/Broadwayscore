@@ -1,0 +1,2056 @@
+#!/usr/bin/env node
+/**
+ * Universal Web Scraper with Fallback
+ *
+ * Tries multiple scraping services with smart ordering:
+ * - Public sites (IBDB, Broadway.com): Playwright first (free), then BD/SB
+ * - BroadwayWorld: Playwright first (complex JS rendering)
+ * - All other sites: Bright Data → ScrapingBee → Playwright
+ *
+ * Usage:
+ *   const { fetchPage } = require('./lib/scraper');
+ *   const content = await fetchPage('https://example.com');
+ *
+ * Environment variables:
+ *   BRIGHTDATA_TOKEN - Bright Data API token (primary)
+ *   BRIGHTDATA_ZONE - Bright Data zone name (default: web_unlocker2)
+ *   SCRAPINGBEE_API_KEY - ScrapingBee API key (fallback)
+ */
+
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
+// playwright is lazy-loaded inside fetchWithPlaywright() so that merely
+// requiring this module never needs the package. Several lightweight scraper
+// workflows (update-lbo/seatplan/ltd) run without `npm ci` and only ever use
+// the Bright Data / ScrapingBee HTTP paths — a top-level require('playwright')
+// crashed them with MODULE_NOT_FOUND the moment they imported scraper.js,
+// even though they never reach the browser fallback. See feedback memory.
+let chromium = null;
+const {
+  loadCookiesForDomain,
+  buildCookieHeaderForUrl,
+  hasCookiesForUrl,
+} = require('./cookie-loader');
+const { fetchWithCookiesPlain } = require('./fetch-plain');
+const { readEnvKeys } = require('./load-env');
+const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
+const { sdBilledCredits } = require('./provider-telemetry');
+const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
+const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
+const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
+const { creditsFor } = require('./provider-credits');
+const { usdFor } = require('./provider-pricing');
+const { fallbackFromLabel } = require('./fallback-attribution');
+
+// --- Domain-tier-skip: skip providers known to fail for specific domains ---
+// Sourced from collect-review-texts.js empirical data (30K+ collection results).
+const { getSkippedTiers } = require('./domain-tier-skip');
+let _domainTierSkip = null;
+function _getDomainSkips(url) {
+  if (!_domainTierSkip) {
+    try {
+      const skipPath = path.join(__dirname, '..', 'config', 'domain-tier-skip.json');
+      _domainTierSkip = JSON.parse(fs.readFileSync(skipPath, 'utf8'));
+    } catch { _domainTierSkip = {}; }
+  }
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return getSkippedTiers(_domainTierSkip, hostname);
+  } catch { return new Set(); }
+}
+
+// --- Domain alias groups ---
+// Sites that legitimately redirect between each other
+// (e.g., Penske Media properties, NY Mag network). Both directions are checked.
+const DOMAIN_ALIAS_GROUPS = [
+  ['vulture.com', 'nymag.com', 'thecut.com', 'grubstreet.com'], // NY Mag network
+  ['variety.com', 'deadline.com', 'indiewire.com', 'rollingstone.com', 'hollywoodlife.com'], // Penske Media
+  ['ew.com', 'people.com'], // Dotdash Meredith
+  ['usatoday.com', 'northjersey.com', 'azcentral.com', 'jsonline.com'], // Gannett/USA Today Network
+  ['newyorktheatreguide.com', 'broadwayworld.com'], // NYTG merged into BWW
+];
+
+const DOMAIN_ALIASES = new Map();
+for (const group of DOMAIN_ALIAS_GROUPS) {
+  for (const domain of group) {
+    if (!DOMAIN_ALIASES.has(domain)) DOMAIN_ALIASES.set(domain, new Set());
+    for (const alias of group) {
+      if (alias !== domain) DOMAIN_ALIASES.get(domain).add(alias);
+    }
+  }
+}
+
+// --- Public sites that should try free Playwright before paid APIs ---
+// Only includes domains that actually flow through scraper.js's fetchPage().
+// BWW already has separate Playwright-first handling (line ~203).
+const PLAYWRIGHT_FIRST_DOMAINS = new Set([
+  // ibdb.com REMOVED 2026-08-05 — IBDB is now behind Cloudflare (task #712).
+  // Playwright can't solve the challenge and _checkAndReturn had no challenge
+  // detection on the Playwright path, so a 4.3KB "Attention Required!" page
+  // was accepted as Success and wiped all 29 open-show casts twice (Jul 29 +
+  // Aug 5 cron). BD web_unlocker2 fetches IBDB fine — let it go straight there.
+  'broadway.com',       // Schedule/runtime pages — public, needs JS for some content
+  'broadway.org',       // Playbill/closing dates — public HTML
+  'playbill.com',       // Production pages — public static HTML, but the "last
+                         // resort" Playwright tier waits for networkidle, and
+                         // playbill.com's ad/analytics XHRs never let it settle
+                         // (times out at 30s, same failure mode as Signature
+                         // Theatre). Fast domcontentloaded works fine (BRO-2023).
+  'web.playbill.com',   // Same site, alternate hostname seen in cached URLs
+                         // (data/playbill-urls.json) — same fix applies.
+  'whatsonstage.com',   // Star ratings rendered via client-side JS (yellow.png/star-grey.png)
+  'dailymail.co.uk',    // Star ratings rendered via client-side JS (rating-star CSS classes)
+  // talkinbroadway.com removed — behind Cloudflare managed challenge since ~2026-04;
+  // Playwright (headless, even with stealth) cannot solve it. BrightData goes first.
+  'stagebuddy.com',     // WordPress blog — free Playwright works reliably
+  'londontheatre.co.uk', // React SPA (Material-UI) — BD returns empty, Playwright renders JS
+  'bachtrack.com',      // review body (.pcm-walled-full) renders only in a real browser; BD/SB (even render_js) get a shell with meta description only. Verified Playwright renders full body 2026-07-13 (Met opera backfill)
+  'todaytix.com',       // Public server-rendered show pages (run time, metadata) — no anti-bot; keeps bulk runtime audits off BD/SB credits
+]);
+
+// --- Domains where ScrapingBee MUST use render_js=true (JS-rendered content) ---
+// Most review pages are static HTML and work fine with render_js=false (1 credit vs 5).
+// Only add domains here where render_js=false returns broken/empty content.
+// NOTE: whatsonstage.com and dailymail.co.uk are already in PLAYWRIGHT_FIRST_DOMAINS,
+// so SB never reaches them — no need to list here.
+const JS_REQUIRED_DOMAINS = new Set([
+  'show-score.com',     // React SPA — requires JS rendering
+  'theatermania.com',   // Dynamic content loading
+  'timeout.com',        // Star ratings rendered via client-side SVG (_ratingStars_ CSS classes)
+]);
+
+/**
+ * Detect a Cloudflare (or similar) challenge/interstitial page that a scraper
+ * tier accepted as a normal 200 response. Shared by every tier's success check
+ * — Scrapingdog/Bright Data had this already; Playwright didn't (task #712:
+ * a valid-but-content-free "Attention Required!" IBDB page was returned as
+ * Success and wiped 29 shows' cast data twice).
+ */
+function _isChallengeOrGarbage(content) {
+  return !!content && content.length < 10000 && (
+    content.includes('Just a moment...') ||
+    content.includes('cf_chl_opt') ||
+    content.includes('challenge-platform') ||
+    content.includes('Enable JavaScript and cookies to continue') ||
+    content.includes('Attention Required!') ||
+    // Anubis proof-of-work bot wall — a 200 whose body is only the interstitial.
+    content.includes('Protected by Anubis') ||
+    content.includes('anubis_challenge') ||
+    // thetimes.com device-verification interstitial (toadmash/Monocle) served as a
+    // 200 by Scrapingdog; without this the chain stops on a 1.4KB page (BRO-4450).
+    content.includes('<title>Verifying Device</title>') ||
+    content.includes('p.toadmash.net')
+  );
+}
+
+function _isJsRequiredDomain(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return JS_REQUIRED_DOMAINS.has(hostname);
+  } catch { return false; }
+}
+
+/**
+ * Check if a URL's domain is in the Playwright-first set.
+ */
+function _isPlaywrightFirstDomain(url) {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return PLAYWRIGHT_FIRST_DOMAINS.has(hostname);
+  } catch { return false; }
+}
+
+// --- Domains whose pages never reach networkidle (BRO-2763) ---
+// Ad/analytics-heavy WordPress sites: Playwright's default networkidle wait
+// times out at 30s on every call. domcontentloaded is enough for them.
+const NEVER_IDLE_DOMAINS = new Set([
+  'westendtheatre.com',
+  'britishtheatreguide.info',
+]);
+
+function _isNeverIdleDomain(url) {
+  try {
+    return NEVER_IDLE_DOMAINS.has(new URL(url).hostname.replace(/^www\./, ''));
+  } catch { return false; }
+}
+
+// --- Listing/index pages whose canonical legitimately differs (BRO-2763) ---
+// A requested section index can canonicalise to a sibling path on the SAME
+// host (whatsonstage /reviews/ -> /news/, westendtheatre /category/reviews/ ->
+// /category/news/reviews/, britishtheatreguide /reviews/index -> /reviews?q=index).
+// Every provider returned the real page and verifyFetchedUrl rejected all of
+// them, burning an SD + BD + SB credit per call (BRO-2763). EXACT paths only:
+// britishtheatreguide.info publishes articles at /reviews/<slug>, so any prefix
+// or depth rule would switch the wrong-page guard off for real review URLs.
+const SAME_HOST_INDEX_REDIRECTS = {
+  'whatsonstage.com': ['/reviews'],
+  'westendtheatre.com': ['/category/reviews'],
+  'britishtheatreguide.info': ['/reviews', '/reviews/index'],
+};
+
+function _isSameHostIndexRedirect(expectedUrl) {
+  try {
+    const u = new URL(expectedUrl);
+    const paths = SAME_HOST_INDEX_REDIRECTS[u.hostname.replace(/^www\./, '')];
+    return !!paths && paths.includes(u.pathname.replace(/\/$/, ''));
+  } catch { return false; }
+}
+
+/**
+ * Check if an actual domain matches the expected domain, accounting for
+ * subdomains (amp.nytimes.com vs nytimes.com) and known alias groups
+ * (vulture.com → nymag.com). Domains should be pre-stripped of www. prefix.
+ */
+function domainMatchesExpected(expectedDomain, actualDomain) {
+  if (actualDomain === expectedDomain) return true;
+  // Subdomain match (e.g., amp.nytimes.com vs nytimes.com)
+  if (actualDomain.includes(expectedDomain) || expectedDomain.includes(actualDomain)) return true;
+  // Known alias from DOMAIN_ALIAS_GROUPS (e.g., vulture.com → nymag.com)
+  const aliases = DOMAIN_ALIASES.get(expectedDomain);
+  if (aliases && aliases.has(actualDomain)) return true;
+  // Registry domain aliases (e.g., oneminutecritic.com ↔ 1minutecritic.com).
+  // Subdomain-aware on the alias itself: an outlet's real content can live on
+  // a subdomain of a registered alias (Daily Mail's e-edition publishes at
+  // newspaper.dailymail.com, a subdomain of the registered alias
+  // dailymail.com, not dailymail.com itself) — a bare Set.has() only matched
+  // the literal alias string, so those hosts were silently dropped by every
+  // caller of this gate (SERP host validation, URL-mismatch verification).
+  // Found via issue #908; validate-review-submission.js's parallel
+  // findMatchingOutletByDomain() already does this suffix check.
+  if (_registryDomainAliases) {
+    const regAliases = _registryDomainAliases[expectedDomain];
+    if (regAliases && [...regAliases].some(a => actualDomain === a || actualDomain.endsWith('.' + a))) {
+      return true;
+    }
+    const regAliases2 = _registryDomainAliases[actualDomain];
+    if (regAliases2 && [...regAliases2].some(a => expectedDomain === a || expectedDomain.endsWith('.' + a))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Registry domain aliases injected by url-discovery.js at load time
+let _registryDomainAliases = null;
+function setRegistryDomainAliases(aliases) {
+  _registryDomainAliases = aliases;
+}
+
+// .env top-up, scoped to exactly these 3 keys — NOT the mutating loadEnv(),
+// which would publish all ~75 .env keys process-wide. scraper.js is required
+// by ~90 scripts including ones claude-cli.js spawns as untrusted "implementer"
+// subprocesses with a 7-key stripped env specifically so Notion/Resend/Vercel
+// secrets never reach them (Codex P0 on commit fc4999cfc71, 2026-08-01) — a
+// mutating loadEnv() here would silently reopen that containment gap one hop
+// removed. SCRAPINGDOG_API_KEY is deliberately excluded: it lives only in GH
+// Actions secrets, never in local .env (see USE_SCRAPINGDOG comment below).
+const _envTopUp = readEnvKeys(['BRIGHTDATA_TOKEN', 'BRIGHTDATA_ZONE', 'SCRAPINGBEE_API_KEY']);
+const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN || _envTopUp.BRIGHTDATA_TOKEN;
+const BRIGHTDATA_ZONE = process.env.BRIGHTDATA_ZONE || _envTopUp.BRIGHTDATA_ZONE || 'web_unlocker2';
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY || _envTopUp.SCRAPINGBEE_API_KEY;
+
+// Scrapingdog — cheap tier inserted AHEAD of Bright Data. BD Web Unlocker is
+// ~$1.50/1k req; Scrapingdog plain HTML is ~$0.09/1k (1 credit), dynamic
+// ~$0.45/1k (5cr). Bake-off (2026-06-21) confirmed content-identical results
+// on the dominant BD hosts (DTLI/Playbill/BWW) + working Google SERP; task
+// #213 (2026-07) hardened SD's own failure handling so BD no longer silently
+// absorbs its overflow at 3x cost. 71+ workflows already opt in explicitly —
+// default ON now that it's proven; set SCRAPER_USE_SCRAPINGDOG=0 to opt out
+// (e.g. a workflow that intentionally wants BD/SB only). No effect without
+// SCRAPINGDOG_API_KEY set (only in GH secrets, not local .env). Bright Data
+// stays in the chain as the fallback for the hard sites Scrapingdog can't
+// unblock.
+const SCRAPINGDOG_API_KEY = process.env.SCRAPINGDOG_API_KEY;
+const USE_SCRAPINGDOG = process.env.SCRAPER_USE_SCRAPINGDOG !== '0';
+
+// --- SB credit pre-check ---
+let _sbCreditCheckDone = false;
+let _sbCreditsLow = false;
+
+// --- SB page-fetch reactive circuit breaker ---
+// checkScrapingBeeCredits() (below) is a proactive precheck, but nothing calls
+// it automatically — it must be invoked explicitly by a script's setup code,
+// and most callers don't. fetchWithScrapingBee() had no fallback for that: with
+// the account genuinely over its monthly cap (2026-07-20 incident, #224), every
+// single call did a full HTTP round-trip before dying on a 401, for the entire
+// duration of every run, across every script, all day. url-discovery.js's SERP
+// path already self-heals this way (_scrapingBeeSerpExhausted, set on first
+// 401/403/429) — this mirrors that same pattern for the page-fetch path so ONE
+// failed call disables SB for the rest of the process instead of all of them.
+let _scrapingBeePageExhausted = false;
+
+/**
+ * Check ScrapingBee remaining credits. Call once per process.
+ * Returns true if credits are available, false if low/exhausted/missing key.
+ * Sets _sbCreditsLow flag which fetchPage() and SERP functions check.
+ */
+async function checkScrapingBeeCredits() {
+  if (_sbCreditCheckDone) return !_sbCreditsLow;
+  _sbCreditCheckDone = true;
+
+  if (!SCRAPINGBEE_KEY) return false;
+
+  return new Promise((resolve) => {
+    const req = https.get(
+      `https://app.scrapingbee.com/api/v1/usage?api_key=${SCRAPINGBEE_KEY}`,
+      { timeout: 5000 },
+      (res) => {
+        let body = '';
+        res.on('data', chunk => body += chunk);
+        res.on('end', () => {
+          try {
+            const data = JSON.parse(body);
+            const used = data.used_api_credit || 0;
+            const max = data.max_api_credit || 1;
+            const remaining = max - used;
+            const pctRemaining = (remaining / max) * 100;
+
+            if (remaining <= 0 || pctRemaining < 5) {
+              console.warn(`⚠️  ScrapingBee credits low: ${remaining} remaining (${pctRemaining.toFixed(1)}%) — skipping SB`);
+              _sbCreditsLow = true;
+              resolve(false);
+            } else {
+              console.log(`[SB Credits] ${remaining} remaining (${pctRemaining.toFixed(1)}%)`);
+              resolve(true);
+            }
+          } catch {
+            resolve(true); // Can't parse, assume OK
+          }
+        });
+      }
+    );
+    req.on('error', () => resolve(true)); // Network error, assume OK
+    req.on('timeout', () => { req.destroy(); resolve(true); });
+  });
+}
+
+// --- SD quota pre-check (actual-exhaustion circuit breaker) ---
+// History: task #213 A3 originally tripped this on a PACE PROJECTION
+// (daysUntilExhaustion < daysToRenewal), reasoning SD "bills PAYG" and should
+// be paced. Both halves were wrong (2026-07-26 BD recharge incident): the
+// account is a prepaid monthly plan whose credits expire at renewal, and the
+// projection tripped while 87% of the pool was unspent — rerouting every
+// request to Bright Data at ~$1.50/1k while paid-for SD credits
+// (~$0.09-0.45/1k) sat idle. The skip decision now lives in
+// scrapingdog-ack.js's shouldSkipScrapingdogAtRuntime (§15 extraction) and
+// trips ONLY on actual exhaustion, where skipping saves a doomed round-trip
+// per call. Pace projections stay health-check-only (they alert, never route).
+let _sdQuotaCheckPromise = null;
+let _sdQuotaExceeded = false;
+
+function _checkScrapingdogQuotaOnce() {
+  if (_sdQuotaCheckPromise) return _sdQuotaCheckPromise;
+  _sdQuotaCheckPromise = (async () => {
+    if (!SCRAPINGDOG_API_KEY) return;
+    try {
+      const body = await new Promise((resolve, reject) => {
+        const req = https.get(
+          `https://api.scrapingdog.com/account?api_key=${SCRAPINGDOG_API_KEY}`,
+          { timeout: 8000 },
+          (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => resolve(data));
+          }
+        );
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+      });
+      const acct = JSON.parse(body);
+      // BRO-4215: timestamped balance reading in every CI log (mirrors "[SB Credits]").
+      // Sampling these across job logs vs ledger rows per interval is how an
+      // attribution gap gets traced to the workflow causing it.
+      if (Number.isFinite(acct.requestUsed)) console.log(`[SD Credits] ${acct.requestUsed} used of ${acct.requestLimit}`);
+      const { skip, logLine } = shouldSkipScrapingdogAtRuntime(acct);
+      if (logLine) console.warn(`  ⚠️  ${logLine}`);
+      if (skip) {
+        _sdQuotaExceeded = true;
+        recordSdCall({ host: 'account', fn: 'quota-check', success: false, status: 'quota', credits: 0 });
+      }
+    } catch {
+      // Pre-check failure must never block scraping — fall through to normal SD flow.
+    }
+  })();
+  return _sdQuotaCheckPromise;
+}
+
+let playwright = null; // Lazy load only if needed
+
+// --- Per-run SB credit budget ---
+// Default 250: allows ~250 render_js=false calls or ~50 render_js=true calls.
+// Gather-reviews with 5 shows uses ~30-50 SB fallback calls; opening night ~100.
+// For bulk runs (backfills, large dispatches), override via env:
+//   SB_CREDIT_BUDGET=1000 node scripts/gather-reviews.js ...
+// or in a workflow step:  env: { SB_CREDIT_BUDGET: '1000' }
+const SB_CREDIT_BUDGET = parseInt(process.env.SB_CREDIT_BUDGET || '250', 10);
+
+// Scrapingdog per-run credit budget. Unlike SB (a fixed monthly plan we ration
+// per run), Scrapingdog is the new cheap primary, so default to no cap (0 =
+// unlimited). Set SD_CREDIT_BUDGET=N to ration bulk runs.
+const SD_CREDIT_BUDGET = parseInt(process.env.SD_CREDIT_BUDGET || '0', 10);
+
+// --- Per-run cost tracking ---
+const _scraperStats = {
+  bdRequests: 0,
+  sbRequests: 0,
+  sbCredits: 0,
+  sbBudgetExceeded: false,
+  sdRequests: 0,
+  sdCredits: 0,
+  sdBudgetExceeded: false,
+  pwAttempts: 0,
+  pwSuccess: 0,
+  // Incremented every time a Playwright launch fails because no browser is
+  // installed in this environment (missing `npx playwright install`), as
+  // opposed to a real navigation/scrape failure. A COUNTER, not a sticky
+  // boolean: a caller that wants to know whether THIS SPECIFIC fetch hit a
+  // missing-browser error (vs. an earlier, unrelated show in the same
+  // process) must snapshot this before its own fetchPage() call and compare
+  // after — a boolean that never resets would misattribute every later
+  // total-fetch-failure (a real 404, a real block, exhausted paid providers)
+  // to "missing browser" just because it happened once earlier in the run
+  // (BRO-2560 review finding, both the Claude and Codex ship-check
+  // reviewers). See getScraperStats().
+  pwBrowserMissingCount: 0,
+  pwDeadlineHits: 0, // BRO-4401: Playwright tiers abandoned at PLAYWRIGHT_TIER_DEADLINE_MS
+  pwIdleCloses: 0, // BRO-4623: shared browser closed after PLAYWRIGHT_IDLE_CLOSE_MS with no fetch in flight
+};
+
+// Matches ONLY the two known "no usable Playwright browser in this
+// environment" shapes: the missing-executable launch error, and the
+// module-not-installed error thrown above (whose message tells the operator
+// to run `npx playwright install`). Deliberately NOT a bare
+// `browserType\.launch` match — that alternative also matches unrelated
+// launch failures (timeout, OOM, sandbox/EPERM) that have nothing to do with
+// a missing browser and would send an operator to run an install that won't
+// fix anything (ship-check review finding).
+const PLAYWRIGHT_MISSING_BROWSER_RE = /Executable doesn't exist|playwright install/i;
+function isPlaywrightMissingBrowserError(message) {
+  return PLAYWRIGHT_MISSING_BROWSER_RE.test(message || '');
+}
+
+function getScraperStats() {
+  const bd = getBrightDataRunStats();
+  const sd = getScrapingdogCapStats();
+  return {
+    ..._scraperStats,
+    // Bright Data cap telemetry (S2-T3). bdBlocked > 0 means at least one BD
+    // request was withheld by the daily breaker or the per-run budget — the
+    // collector reads this to record such a miss as budget_capped rather than
+    // as a failure that counts toward permanent retirement.
+    bdBlocked: bd.blocked,
+    bdBlockedByBreaker: bd.blockedByBreaker,
+    bdBlockedByBudget: bd.blockedByBudget,
+    // Scrapingdog daily-breaker telemetry (card #1252) — same shape as BD's,
+    // one counter narrower (SD has no separate per-run bulk/exempt pools;
+    // SD_CREDIT_BUDGET already covers that role).
+    sdBlockedByBreaker: sd.blockedByBreaker,
+  };
+}
+
+/**
+ * Fetch page using Bright Data Web Unlocker API (raw HTML output)
+ */
+async function fetchWithBrightData(url, opts = {}) {
+  // opts.fallbackFrom (BRO-3009 S1-T8) is telemetry only — it never affects
+  // whether or how the request is made, just which tier's failure gets the
+  // blame in the spend ledger. Optional, so the direct callers outside
+  // fetchPage (scrape-alltime.ts, fetchJSON) keep working unchanged.
+  const fallbackFrom = opts.fallbackFrom || null;
+  const onSkip = typeof opts.onSkip === 'function' ? opts.onSkip : () => {};
+  if (!BRIGHTDATA_TOKEN) {
+    return null;
+  }
+
+  // Daily circuit breaker + per-run request budget (Scraping cost v3 S2-T3).
+  // This helper is the ONLY place a Web Unlocker request is issued, which is
+  // why the check lives here rather than at fetchPage()/fetchJSON(): outer-gate
+  // placement is what left BD SERP spend 99% unattributed, and it would let
+  // every direct caller bypass the cap. Blocking returns null so the tier
+  // simply falls through, exactly like the domain-tier-skip path above.
+  const bdVerdict = consultBrightData({ zone: BRIGHTDATA_ZONE });
+  if (!bdVerdict.allowed) {
+    // One ledger row per process, not per withheld call: a capped backfill can
+    // attempt thousands, and each row would push a genuine spend row out of the
+    // rotating ledger. Per-call totals live in getScraperStats().bdBlocked.
+    if (bdVerdict.firstBlock) {
+      recordBdCall({ url, fn: 'web-unlocker', success: false, status: 'budget_capped', purpose: 'budget_capped', fallbackFrom });
+    }
+    onSkip('bd-budget');
+    return null;
+  }
+
+  try {
+    const apiUrl = 'https://api.brightdata.com/request';
+    const bodyObj = {
+      zone: BRIGHTDATA_ZONE,
+      url: url,
+      format: 'raw',
+    };
+    // Attach subscriber cookies (WSJ/FT/NYT/etc.) so BD's proxied request carries them
+    const cookieHeader = buildCookieHeaderForUrl(url);
+    if (cookieHeader) {
+      bodyObj.headers = { Cookie: cookieHeader };
+    }
+    const body = JSON.stringify(bodyObj);
+
+    const response = await new Promise((resolve, reject) => {
+      const options = {
+        method: 'POST',
+        // Explicit timeout — matches SD's 45s. Previously unbounded; harmless
+        // while BD was only ever the last tier fetchPage() tried, but fetchJSON
+        // (task #203 reopen) now reaches it on the hot path too, where a hung
+        // request would otherwise block indefinitely with no way out.
+        timeout: 45000,
+        headers: {
+          'Authorization': `Bearer ${BRIGHTDATA_TOKEN}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body)
+        }
+      };
+
+      const req = https.request(apiUrl, options, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            // BRO-4665: BD answered youtube.com with 200 + an empty body; keep
+            // its error headers so the "empty content" log says why.
+            const hdrs = res.headers || {};
+            const brdError = hdrs['x-brd-error'] || hdrs['x-luminati-error'] || null;
+            resolve({ data, status: 200, brdError });
+          } else {
+            const err = new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+            err.bdStatus = res.statusCode;
+            reject(err);
+          }
+        });
+      });
+
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('Bright Data request timeout')); });
+      req.end(body);
+    });
+
+    _scraperStats.bdRequests++;
+    recordBdCall({ url, fn: 'web-unlocker', success: true, status: response.status, fallbackFrom });
+    return {
+      content: response.data,
+      format: 'html',
+      source: 'brightdata',
+      brdError: response.brdError,
+    };
+  } catch (error) {
+    console.error(`⚠️  Bright Data failed: ${error.message}`);
+    recordBdCall({ url, fn: 'web-unlocker', success: false, status: error.bdStatus || error.message?.slice(0, 80) || 'error', fallbackFrom });
+    return null;
+  }
+}
+
+/**
+ * Fetch page using Scrapingdog API (HTML output).
+ * Credit model mirrors ScrapingBee: plain=1, dynamic(JS)=5, premium proxy=10.
+ * stealth_mode (options.stealthMode) is a heavier anti-bot bypass tier
+ * (billed like premium, 10cr) — Scrapingdog's own 400 response body on a
+ * WAF-protected host literally recommends "try enabling stealth_mode=true"
+ * (task #203 reopen: westendtheatre.com wp-json 400s from the plain tier).
+ * render/dynamic default is domain-aware (same JS_REQUIRED_DOMAINS as SB) unless
+ * options.renderJs is explicitly set. premium proxy only when options.premium.
+ * options.throwOn400: throw (instead of swallowing to null) when SD returns
+ * HTTP 400, with `err.sdStatus = 400` set — lets a caller (fetchJSON) detect
+ * "this specific request was refused, try the next tier" vs. other failure
+ * modes (budget/quota/network) where escalating tiers wouldn't help.
+ */
+async function fetchWithScrapingdog(url, options = {}) {
+  // options.onSkip(reason) (BRO-3009 S1-T8) lets the caller learn WHY this
+  // function declined to make the call, without changing what it RETURNS —
+  // every path below still returns null exactly as before, so routing is
+  // untouched. Reported per call, so it cannot be confused with another
+  // concurrent request's skip the way a shared counter could.
+  const onSkip = typeof options.onSkip === 'function' ? options.onSkip : () => {};
+  if (!SCRAPINGDOG_API_KEY) {
+    onSkip('sd-unavailable');
+    return null;
+  }
+
+  // Fire-and-forget (not awaited): a live /account HTTP round-trip must never
+  // add latency to the scraping hot path, especially opening-night polling.
+  // The very first SD call in a process may proceed before the check resolves
+  // — acceptable: it only skips on ACTUAL exhaustion, and a truly dry account
+  // also trips the reactive HTTP-status latch below on the first failure.
+  _checkScrapingdogQuotaOnce();
+  if (_sdQuotaExceeded) {
+    onSkip('sd-quota');
+    return null;
+  }
+
+  // Daily circuit breaker (card #1252) — mirrors fetchWithBrightData's
+  // consultBrightData() check. Blocking here returns null, same shape as
+  // every other SD miss in this function, so fetchPage()'s fallback chain
+  // (SD -> BD -> SB -> Playwright) routes around it automatically.
+  const sdBreakerVerdict = consultScrapingdog();
+  if (!sdBreakerVerdict.allowed) {
+    if (sdBreakerVerdict.firstBlock) {
+      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0, fallbackFrom: options.fallbackFrom || null });
+    }
+    onSkip('sd-breaker');
+    return null;
+  }
+
+  const renderJs = options.renderJs === true ? true :
+                   options.renderJs === false ? false :
+                   _isJsRequiredDomain(url);
+  const premium = options.premium === true;
+  const stealthMode = options.stealthMode === true;
+  // premium and stealth_mode both imply a heavier anti-bot bypass (10cr); dynamic/JS is 5cr; plain is 1cr.
+  // sdMode also feeds recordSdCall's telemetry `fn` field below (BRO-3057:
+  // computed once and reused, instead of 3 independent copies of this ternary).
+  const sdMode = stealthMode ? 'stealth' : (premium ? 'premium' : (renderJs ? 'render' : 'page'));
+  const creditCost = creditsFor('sd', sdMode);
+
+  // Per-run budget guard (0 = unlimited).
+  if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
+    if (!_scraperStats.sdBudgetExceeded) {
+      console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
+    }
+    _scraperStats.sdBudgetExceeded = true;
+    onSkip('sd-budget');
+    return null;
+  }
+
+  const params = new URLSearchParams({
+    api_key: SCRAPINGDOG_API_KEY,
+    url,
+    dynamic: renderJs ? 'true' : 'false',
+  });
+  if (premium) params.set('premium', 'true');
+  if (stealthMode) params.set('stealth_mode', 'true');
+  // Attach subscriber cookies so the proxied request carries them (same as SB/BD).
+  const cookieHeader = buildCookieHeaderForUrl(url);
+  if (cookieHeader) params.set('cookies', cookieHeader);
+  const apiUrl = `https://api.scrapingdog.com/scrape?${params}`;
+
+  // Retry once on transient failures (timeouts, socket errors, 5xx) before
+  // giving up — the A0 billing probe confirmed SD failures are free, and these
+  // often clear on a second attempt. 4xx (e.g. DTLI's structural "URL does not
+  // exist") is NOT transient — retrying just adds latency; domain-tier-skip
+  // handles those domains instead (task #213 A2).
+  const MAX_ATTEMPTS = 2;
+  let lastError = null;
+  let attemptsMade = 0;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    // Budget guard + credit accounting per attempt (not once up front) — a
+    // retried call can bill twice, and the local ledger/SD_CREDIT_BUDGET must
+    // reflect the worst case, not just the first attempt (codebase-review finding).
+    if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
+      if (!_scraperStats.sdBudgetExceeded) {
+        console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD for remaining requests`);
+      }
+      _scraperStats.sdBudgetExceeded = true;
+      if (attemptsMade === 0) { onSkip('sd-budget'); return null; }
+      break;
+    }
+    _scraperStats.sdRequests++;
+    _scraperStats.sdCredits += creditCost;
+    attemptsMade++;
+    try {
+      const response = await new Promise((resolve, reject) => {
+        // Explicit timeout: without one, a hung SD request waits indefinitely —
+        // and now that a transient failure retries once, an unbounded first
+        // attempt could block the retry from ever running. 45s matches the
+        // longest observed SD render/premium latency.
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) resolve(data);
+            else reject(new Error(`Scrapingdog HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
+      });
+
+      recordSdCall({ url, fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
+      return {
+        content: response,
+        format: 'html',
+        source: 'scrapingdog'
+      };
+    } catch (error) {
+      lastError = error;
+      const isTransient = !/Scrapingdog HTTP 4\d\d/.test(error.message || '');
+      if (isTransient && attempt < MAX_ATTEMPTS) continue;
+      break;
+    }
+  }
+
+  const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+  // SD bills only successful requests (A0 billing probe — see sdBilledCredits
+  // in provider-telemetry.js); booking creditCost here overstated SD spend in
+  // the ledger by ~9,900 credits/7d (BRO-3325 what-else, 2026-09-15).
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade), fallbackFrom: options.fallbackFrom || null });
+  console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
+
+  // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400
+  // (scraping cost v3, S1-T2). Live parity retest (2026-08-03, 30 URLs) found
+  // this exact signature accounted for ~1/3 of didtheylikeit.com's failures,
+  // and every one of them succeeded on a stealth_mode retry — production was
+  // treating this 400 as terminal (§ "4xx is NOT transient" above, which is
+  // true for STRUCTURAL 4xx like DTLI's "URL does not exist", but this one
+  // is SD explicitly telling the caller how to fix it) and falling straight
+  // through to a Bright Data call ~17x the cost. One extra attempt, only when
+  // not already in stealth_mode, so premium/stealth callers can't recurse.
+  // throwOn400 is deliberately dropped on the recursive call (ship-check
+  // finding): fetchJSON's own SD block already does its own "plain 400 ->
+  // try stealth_mode" escalation via that flag. Without stripping it here, a
+  // stealth attempt that ALSO 400s would throw sdStatus=400 back up through
+  // this same call chain, and fetchJSON's catch would think it just saw the
+  // PLAIN tier fail and fire a second, redundant stealth_mode attempt —
+  // ~40 credits on one URL instead of the intended ~11. Returning null lets
+  // fetchJSON's `if (raw && raw.content)` fall through without a throw, so
+  // its manual escalation never redundantly re-fires.
+  if (!stealthMode && !premium && /stealth_mode\s*=\s*true/i.test(lastError.message || '')) {
+    return fetchWithScrapingdog(url, { ...options, stealthMode: true, throwOn400: false });
+  }
+  // Reactive quota latch (mirrors _scrapingBeePageExhausted): the /account
+  // pre-check is memoized once per process, so credits hitting 0 MID-RUN would
+  // otherwise leave every later call paying a doomed SD round-trip (up to 45s)
+  // before falling to BD/SB. 401/403/429 from the scrape endpoint means
+  // out-of-credits/auth — disable SD for the rest of the process. The exported
+  // sdQuotaExceeded getter carries this to url-discovery's SERP path too.
+  {
+    const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
+    if (failStatus && isSdQuotaHttpStatus(failStatus) && !_sdQuotaExceeded) {
+      _sdQuotaExceeded = true;
+      console.warn(`  ⚠️  Scrapingdog disabled for the rest of this process (HTTP ${failStatus} — credits exhausted or auth failure)`);
+    }
+  }
+  if (options.throwOn400) {
+    const statusMatch = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '');
+    if (statusMatch && statusMatch[1] === '400') {
+      const err = new Error(lastError.message);
+      err.sdStatus = 400;
+      throw err;
+    }
+  }
+  return null;
+}
+
+/**
+ * Scrapingdog's dedicated YouTube APIs (BRO-4665). YouTube bot-walls runner
+ * IPs, Scrapingdog's /scrape returns a watch page without the player response,
+ * and Bright Data's web unlocker answers youtube.com with HTTP 200 + empty
+ * body. These endpoints return parsed JSON instead:
+ *   kind 'transcripts' -> /youtube/transcripts (1 credit): {transcripts:[{text,start,duration}]}
+ *   kind 'video'       -> /youtube/video (5 credits): {published_time, thumbnail, ...}
+ * Same quota latch, daily breaker, per-run budget and ledger rows as
+ * fetchWithScrapingdog. Returns {data} (parsed JSON) on success, {error}
+ * when the request failed, or null when SD is unavailable/capped.
+ */
+const SD_YOUTUBE_KINDS = { transcripts: 'youtube-transcripts', video: 'youtube-video' };
+let _sdYouTubeBudgetLogged = false;
+async function fetchScrapingdogYouTube(kind, videoId, options = {}) {
+  const sdMode = SD_YOUTUBE_KINDS[kind];
+  if (!sdMode) throw new Error(`fetchScrapingdogYouTube: unknown kind "${kind}"`);
+  if (!SCRAPINGDOG_API_KEY || !USE_SCRAPINGDOG) return null;
+  _checkScrapingdogQuotaOnce();
+  if (_sdQuotaExceeded) return null;
+  const breaker = consultScrapingdog();
+  if (!breaker.allowed) {
+    if (breaker.firstBlock) {
+      recordSdCall({ host: 'breaker', fn: 'day-cap', success: false, status: 'budget_capped', credits: 0 });
+    }
+    return null;
+  }
+  const creditCost = creditsFor('sd', sdMode);
+  const params = new URLSearchParams({ api_key: SCRAPINGDOG_API_KEY, v: videoId });
+  if (options.language) params.set('language', options.language);
+  const apiUrl = `https://api.scrapingdog.com/youtube/${kind}?${params}`;
+
+  const MAX_ATTEMPTS = 2;
+  let lastError = null;
+  let attemptsMade = 0;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    if (SD_CREDIT_BUDGET > 0 && _scraperStats.sdCredits + creditCost > SD_CREDIT_BUDGET) {
+      _scraperStats.sdBudgetExceeded = true;
+      break;
+    }
+    _scraperStats.sdRequests++;
+    _scraperStats.sdCredits += creditCost;
+    attemptsMade++;
+    try {
+      const body = await new Promise((resolve, reject) => {
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) resolve(data);
+            else reject(new Error(`Scrapingdog HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
+          });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('Scrapingdog request timeout')); });
+      });
+      const json = JSON.parse(body);
+      recordSdCall({ host: 'youtube.com', fn: sdMode, success: true, status: 200, credits: creditCost * attemptsMade });
+      return { data: json };
+    } catch (error) {
+      lastError = error;
+      const isTransient = !/Scrapingdog HTTP 4\d\d/.test(error.message || '') && !(error instanceof SyntaxError);
+      if (isTransient && attempt < MAX_ATTEMPTS) continue;
+      break;
+    }
+  }
+  if (!lastError) {
+    if (_scraperStats.sdBudgetExceeded && !_sdYouTubeBudgetLogged) {
+      _sdYouTubeBudgetLogged = true;
+      console.log(`  ⚠️  Scrapingdog credit budget exhausted (${_scraperStats.sdCredits}/${SD_CREDIT_BUDGET}) — skipping SD YouTube calls`);
+    }
+    return null;
+  }
+  // A 200 with an unparseable body was still billed; other failures are not.
+  const billed = lastError instanceof SyntaxError ? creditCost : sdBilledCredits(false, creditCost * attemptsMade);
+  recordSdCall({ host: 'youtube.com', fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: billed });
+  const failStatus = /Scrapingdog HTTP (\d+)/.exec(lastError.message || '')?.[1];
+  // 403 is not latched here: the YouTube endpoints may answer 403 for one
+  // private/region-locked video, which must not disable SD for the whole run.
+  if (failStatus && failStatus !== '403' && isSdQuotaHttpStatus(failStatus) && !_sdQuotaExceeded) {
+    _sdQuotaExceeded = true;
+    console.warn(`  ⚠️  Scrapingdog disabled for the rest of this process (HTTP ${failStatus} — credits exhausted or auth failure)`);
+  }
+  return { error: lastError.message };
+}
+
+/**
+ * Fetch page using ScrapingBee API (HTML output)
+ */
+async function fetchWithScrapingBee(url, options = {}) {
+  if (!SCRAPINGBEE_KEY || _scrapingBeePageExhausted) {
+    return null;
+  }
+
+  // Fire-and-forget (not awaited): mirrors _checkScrapingdogQuotaOnce (SD) —
+  // a live /usage HTTP round-trip must never add latency to the scraping hot
+  // path. checkScrapingBeeCredits() was previously only invoked by scripts
+  // that opted in explicitly (most don't), so _sbCreditsLow stayed false for
+  // the whole process even with the account genuinely exhausted at the
+  // monthly-plan level — every call paid a full doomed round-trip until the
+  // reactive 401/403/429 latch (_scrapingBeePageExhausted) happened to trip
+  // (2026-08-03 cost investigation: SB attempted 86 times at 0% success).
+  // The very first SB call in a process may still proceed before this
+  // resolves — acceptable, matches the SD pattern exactly.
+  checkScrapingBeeCredits();
+  if (_sbCreditsLow) {
+    return null;
+  }
+
+  // Resolve render_js: explicit true/false honored, otherwise domain-aware default.
+  // Most pages are static HTML → render_js=false (1 credit) unless domain needs JS (5 credits).
+  const renderJs = options.renderJs === true ? true :
+                   options.renderJs === false ? false :
+                   _isJsRequiredDomain(url);
+  // premium_proxy (10cr) is opt-in only — task #5/B0. options.premium:true is
+  // meant to reach Scrapingdog's premium tier (~$0.90/1k) and Bright Data
+  // ($1.50/1k) FIRST via fetchPage()'s earlier tiers; ScrapingBee's own
+  // premium_proxy costs $2.48/1k, the most expensive of the three, so it's
+  // only worth paying for as the last-resort tier — but it must still be a
+  // REAL premium request when it gets there, not a silent non-premium
+  // downgrade that could return a blocked/garbage page unflagged.
+  const premium = options.premium === true;
+  // sbMode also feeds recordSbCall's telemetry `fn` field below (BRO-3057:
+  // computed once and reused, instead of 3 independent copies of this ternary).
+  const sbMode = premium ? 'premium' : (renderJs ? 'render' : 'page');
+  const creditCost = creditsFor('sb', sbMode);
+
+  // Per-run budget guard — skip SB if budget would be exceeded
+  if (_scraperStats.sbCredits + creditCost > SB_CREDIT_BUDGET) {
+    if (!_scraperStats.sbBudgetExceeded) {
+      console.log(`  ⚠️  SB credit budget exhausted (${_scraperStats.sbCredits}/${SB_CREDIT_BUDGET}) — skipping SB for remaining requests`);
+    }
+    _scraperStats.sbBudgetExceeded = true;
+    return null;
+  }
+
+  // Count credit spend BEFORE the call — SB charges even for 404/error responses
+  _scraperStats.sbRequests++;
+  _scraperStats.sbCredits += creditCost;
+
+  try {
+    let apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=${renderJs}`;
+    if (premium) apiUrl += '&premium_proxy=true';
+    // Attach subscriber cookies so SB's proxied request carries them. SB expects
+    // semicolon-separated "name=value" pairs URL-encoded as one value. WSJ cookie
+    // payloads can be large (~1-2KB); SB caps URL length around 8KB so this is fine.
+    const cookieHeader = buildCookieHeaderForUrl(url);
+    if (cookieHeader) {
+      apiUrl += `&cookies=${encodeURIComponent(cookieHeader)}`;
+    }
+
+    const response = await new Promise((resolve, reject) => {
+      // Explicit timeout — same class of gap as fetchWithBrightData's (task
+      // #203 what-else finding): previously unbounded, so a hung SB connection
+      // would stall the whole fetchPage()/fetchJSON() chain indefinitely.
+      const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          if (res.statusCode === 200) {
+            resolve(data);
+          } else {
+            const err = new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
+            err.statusCode = res.statusCode;
+            reject(err);
+          }
+        });
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
+    });
+
+    recordSbCall({ url, fn: sbMode, success: true, status: 200, credits: creditCost, fallbackFrom: options.fallbackFrom || null });
+    return {
+      content: response,
+      format: 'html',
+      source: 'scrapingbee'
+    };
+  } catch (error) {
+    const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
+    recordSbCall({ host: hostname, fn: sbMode, success: false, status: error.message?.slice(0, 80) || 'error', credits: creditCost, fallbackFrom: options.fallbackFrom || null });
+    console.error(`⚠️  ScrapingBee failed (render_js=${renderJs}${premium ? ', premium' : ''}, domain=${hostname}): ${error.message}`);
+    // Same trigger set as url-discovery.js's _serpViaScrapingBee circuit breaker:
+    // 401 (auth/limit), 403 (forbidden/plan), 429 (rate limit) all mean "stop
+    // asking SB for the rest of this process" — a monthly-cap 401 doesn't
+    // resolve itself mid-run, so retrying it per-call just burns time.
+    if ([401, 403, 429].includes(error.statusCode)) {
+      _scrapingBeePageExhausted = true;
+      console.warn(`  ⚠️  ScrapingBee page-fetch disabled for the rest of this process (HTTP ${error.statusCode})`);
+    }
+    return null;
+  }
+}
+
+/**
+ * Fetch page using Playwright (browser automation)
+ * @param {string} url
+ * @param {object} [options]
+ * @param {boolean} [options.fast] - Use domcontentloaded instead of networkidle (for simple public sites)
+ */
+// BRO-4401: the Playwright tier is bounded END TO END. page.goto() has its
+// own 30s timeout, but the first run of fetch-all-image-formats.yml with a
+// real browser (36655690883, 2026-09-30) sat for 2.5 hours on one
+// google.com/search fetch with a live chrome-headless-shell orphan — some
+// step between launch and page.content() never returned, and nothing above
+// it had a clock. The wrapper races the whole tier against
+// PLAYWRIGHT_TIER_DEADLINE_MS; on expiry it abandons the page, resets the
+// browser so the next call relaunches cleanly, and returns null exactly like
+// any other Playwright failure (the caller falls through to the paid tiers).
+const PLAYWRIGHT_TIER_DEADLINE_MS = 90 * 1000;
+
+// Bumped on every reset. An abandoned tier that resumes later (its launch
+// or navigation finally returning) compares the generation it started under
+// with the current one and must never touch a browser it did not launch.
+let playwrightGeneration = 0;
+
+/**
+ * Close a browser with a bound, and SIGKILL its process if close() does not
+ * settle in time. Promise.race alone only abandons the JS await: a genuinely
+ * hung Chromium keeps its own stdio pipes open, and THOSE are what keep
+ * node's event loop alive (task #438: 44 minutes of dead air after the real
+ * work finished). Shared by cleanup(), the BRO-4401 deadline reset and the
+ * BRO-4623 idle close so no close path can leave an orphan holding the
+ * process open. The timer is cleared once the race settles, so a fast close
+ * never holds the loop open for the full bound either.
+ */
+async function _closeBrowserBounded(target, timeoutMs) {
+  if (!target) return true;
+  let closed = false;
+  let timer;
+  await Promise.race([
+    Promise.resolve().then(() => target.close()).then(() => { closed = true; }, () => { closed = true; }),
+    new Promise((resolve) => { timer = setTimeout(resolve, timeoutMs); }),
+  ]);
+  clearTimeout(timer);
+  if (!closed) {
+    try {
+      const proc = target.process && target.process();
+      if (proc && !proc.killed) proc.kill('SIGKILL');
+    } catch (_) { /* best-effort */ }
+  }
+  return closed;
+}
+
+async function _resetPlaywrightBrowser() {
+  const b = playwright;
+  playwright = null;
+  playwrightGeneration++;
+  _cancelIdleClose();
+  if (!b) return;
+  // browser.close() can itself hang on a wedged renderer — bound it too.
+  await _closeBrowserBounded(b, 5000);
+}
+
+// BRO-4623: idle auto-close of the shared browser. Every caller is supposed
+// to call cleanup() (or process.exit()) once its work is done, but 2 of the
+// commercial entry points did not, and the audit that should have caught
+// them (audit-fetchpage-cleanup.js) counted an early-exit guard as coverage.
+// A successful Playwright fetch leaves the module-level browser open, its
+// pipes keep the event loop alive, and the script hangs until the CI job
+// timeout cancels it and discards its output: commercial-friday has been
+// `cancelled` every week since 2026-08-26, batch-commercial-research too.
+// So the library no longer depends on every caller remembering: once no
+// Playwright fetch has been in flight for PLAYWRIGHT_IDLE_CLOSE_MS, the
+// browser is closed, and a script that forgot cleanup() exits on its own
+// that long after its last page. The next fetch simply relaunches (~1s).
+// The timer is unref()'d: it must never keep a process alive by itself, and
+// it still fires while the browser's own handles keep the loop running,
+// which is exactly the hang case. SCRAPER_PLAYWRIGHT_IDLE_CLOSE_MS=0 turns
+// it off.
+const PLAYWRIGHT_IDLE_CLOSE_MS = (() => {
+  const raw = process.env.SCRAPER_PLAYWRIGHT_IDLE_CLOSE_MS;
+  if (raw === undefined || raw === '') return 60 * 1000;
+  const n = parseInt(raw, 10);
+  return Number.isFinite(n) && n >= 0 ? n : 60 * 1000;
+})();
+let _pwInFlight = 0;
+let _pwIdleTimer = null;
+// The launch in progress ({generation, promise}), shared by concurrent first
+// fetches of the same generation; see _fetchWithPlaywrightInner.
+let _pwLaunch = null;
+
+function _cancelIdleClose() {
+  if (_pwIdleTimer) {
+    clearTimeout(_pwIdleTimer);
+    _pwIdleTimer = null;
+  }
+}
+
+function _armIdleClose() {
+  _cancelIdleClose();
+  if (!PLAYWRIGHT_IDLE_CLOSE_MS || !playwright || _pwInFlight > 0) return;
+  _pwIdleTimer = setTimeout(() => {
+    _pwIdleTimer = null;
+    if (_pwInFlight > 0 || !playwright) return;
+    const target = playwright;
+    playwright = null;
+    playwrightGeneration++;
+    _scraperStats.pwIdleCloses++;
+    _closeBrowserBounded(target, 10000).catch(() => {});
+  }, PLAYWRIGHT_IDLE_CLOSE_MS);
+  if (typeof _pwIdleTimer.unref === 'function') _pwIdleTimer.unref();
+}
+
+/**
+ * Race a tier against a deadline. Resolves the tier's own value, or
+ * `{ timedOut: true }` when `ms` elapses first. Pure control flow, exported
+ * for its test; the Playwright-specific reset happens in fetchWithPlaywright.
+ */
+function raceTierAgainstDeadline(tierPromise, ms) {
+  let timer;
+  // Deliberately NOT unref()'d: the timer is what guarantees the race ends.
+  // It is cleared the moment the tier settles, so it never holds a finished
+  // run open; unref'ing it let a hung tier with nothing else on the loop
+  // exit the process before the deadline could fire (test finding).
+  const deadline = new Promise((resolve) => { timer = setTimeout(() => resolve({ timedOut: true }), ms); });
+  return Promise.race([tierPromise, deadline]).finally(() => clearTimeout(timer));
+}
+
+async function fetchWithPlaywright(url, options = {}) {
+  // BRO-4623: counted from here (not inside the inner tier) so an abandoned,
+  // deadline-expired inner can never pin the count above zero and block the
+  // idle close forever.
+  _pwInFlight++;
+  _cancelIdleClose();
+  try {
+    const inner = _fetchWithPlaywrightInner(url, options);
+    // A tier that times out is abandoned, not awaited: if it later rejects
+    // (browser closed under it), that rejection must not surface as unhandled.
+    inner.catch(() => {});
+    const result = await raceTierAgainstDeadline(inner, PLAYWRIGHT_TIER_DEADLINE_MS);
+    if (result && result.timedOut) {
+      _scraperStats.pwDeadlineHits = (_scraperStats.pwDeadlineHits || 0) + 1;
+      console.error(`⚠️  Playwright tier exceeded ${PLAYWRIGHT_TIER_DEADLINE_MS / 1000}s at ${url} — abandoning the page and resetting the browser (BRO-4401)`);
+      await _resetPlaywrightBrowser();
+      return null;
+    }
+    return result;
+  } finally {
+    _pwInFlight--;
+    _armIdleClose();
+  }
+}
+
+async function _fetchWithPlaywrightInner(url, options = {}) {
+  _scraperStats.pwAttempts++;
+  let context = null;
+  const myGeneration = playwrightGeneration;
+  let myBrowser = null;
+  try {
+    if (!chromium) {
+      try {
+        ({ chromium } = require('playwright'));
+      } catch (e) {
+        // No browser fallback available in this environment (workflow ran
+        // without devDeps installed). Surface a clear, catchable error rather
+        // than a raw MODULE_NOT_FOUND so callers degrade gracefully.
+        throw new Error(
+          'Playwright fallback unavailable — playwright package not installed. ' +
+          'Run `npm ci` (includes devDeps) or add `npx playwright install chromium`. ' +
+          `Underlying: ${e.message}`
+        );
+      }
+    }
+    if (!playwright) {
+      // BRO-4623: concurrent first fetches share ONE launch per generation.
+      // Each used to launch its own browser and the last assignment below
+      // won, leaving the others with no reference for cleanup() or the idle
+      // close to reach, so their pipes held the process open forever.
+      let launch = _pwLaunch;
+      if (!launch || launch.generation !== myGeneration) {
+        const pending = { generation: myGeneration, promise: chromium.launch({ headless: true }) };
+        const clear = () => { if (_pwLaunch === pending) _pwLaunch = null; };
+        pending.promise.then(clear, clear);
+        _pwLaunch = pending;
+        launch = pending;
+      }
+      const launched = await launch.promise;
+      if (playwrightGeneration !== myGeneration) {
+        // A deadline reset happened while this launch was pending: this tier
+        // has been abandoned, so its browser must not become the shared one
+        // (that would orphan whatever the newer generation launched).
+        // Bounded: nothing else references this browser, so a hung close
+        // would hold the process open forever.
+        await _closeBrowserBounded(launched, 5000);
+        throw new Error('Playwright tier abandoned by deadline during launch');
+      }
+      if (!playwright) {
+        playwright = launched;
+      } else if (playwright !== launched) {
+        // Defensive: never leave a second live browser without an owner.
+        await _closeBrowserBounded(launched, 5000);
+      }
+    }
+    myBrowser = playwright;
+
+    // Attach subscriber cookies (WSJ/FT/NYT/etc.) when available. Cookie-loader
+    // returns Playwright-compatible objects {name, value, domain, path, ...}.
+    const cookieDomain = hasCookiesForUrl(url);
+    if (cookieDomain) {
+      context = await playwright.newContext();
+      const cookies = loadCookiesForDomain(cookieDomain);
+      if (cookies && cookies.length > 0) {
+        await context.addCookies(cookies);
+      }
+    }
+
+    const page = context ? await context.newPage() : await playwright.newPage();
+    // When caller asks us to wait for a specific selector, use
+    // domcontentloaded (not networkidle) — pages that need selector-waiting
+    // typically have ongoing analytics/ad XHRs that never let networkidle
+    // settle (Signature Theatre being the canonical example — networkidle
+    // times out at 45s; domcontentloaded + waitForSelector('.type-event')
+    // returns in ~3s).
+    const waitUntil = options.playwrightWaitForSelector
+      ? 'domcontentloaded'
+      : (options.fast ? 'domcontentloaded' : 'networkidle');
+    await page.goto(url, { waitUntil, timeout: 30000 });
+    // Optional: wait for a specific selector to appear before reading content.
+    // Required when networkidle times out (e.g. Signature Theatre's
+    // /productions/ — see scripts/lib/venue-listing-discover.js for the
+    // venue that needs this). If the selector never appears within 15s,
+    // log a warning and proceed with whatever rendered — partial content
+    // is still useful for selector-tolerant parsers.
+    if (options.playwrightWaitForSelector) {
+      try {
+        await page.waitForSelector(options.playwrightWaitForSelector, { timeout: 15000 });
+      } catch (e) {
+        // Only swallow TimeoutError — real Playwright failures (Target closed,
+        // navigation crash, invalid selector) bubble up so the outer catch
+        // can fall back to Bright Data / ScrapingBee / last-resort path.
+        if (e?.name !== 'TimeoutError') throw e;
+        console.warn(`  ⚠️  Playwright waitForSelector "${options.playwrightWaitForSelector}" timed out at ${url} — proceeding with partial content`);
+      }
+    }
+    // Dismiss any GDPR/consent banner so we read the article, not the consent
+    // wall. Best-effort: never throws. Fixes the recurring whatsonstage.com
+    // false "not a review" flag (Sinatra/Much Ado/Misanthrope opening nights).
+    // Skip via options.skipConsentDismiss if a caller already has its content.
+    if (!options.skipConsentDismiss) {
+      try {
+        const { dismissConsent } = require('./cookie-consent');
+        const r = await dismissConsent(page);
+        if (r.clicked && !r.navigatedAway) console.log(`  🍪 dismissed consent banner (${r.clicked})`);
+        // If the consent click navigated off-page, try to return to the article
+        // so page.content() captures the review, not the redirect target.
+        if (r.navigatedAway) {
+          try { await page.goBack({ waitUntil: 'domcontentloaded', timeout: 8000 }); } catch (_) {}
+        }
+      } catch (_) { /* best-effort — proceed with whatever rendered */ }
+    }
+    const content = await page.content();
+    await page.close();
+    if (context) {
+      try { await context.close(); } catch (_) {}
+    }
+
+    _scraperStats.pwSuccess++;
+    return {
+      content,
+      format: 'html',
+      source: 'playwright'
+    };
+  } catch (error) {
+    console.error(`⚠️  Playwright failed: ${error.message}`);
+    if (isPlaywrightMissingBrowserError(error.message)) {
+      _scraperStats.pwBrowserMissingCount++;
+      // BRO-4326: a workflow that forgot ./.github/actions/setup-playwright
+      // hides behind the paid fallbacks — every attempt logs this error and
+      // then succeeds on Bright Data / Scrapingdog, so the job stays green
+      // and nobody sees the 50+ wasted launches per run. One GitHub
+      // annotation per process makes the missing step visible in the run
+      // summary of ANY workflow with the gap, not just the ones a test lists.
+      if (_scraperStats.pwBrowserMissingCount === 1 && process.env.GITHUB_ACTIONS === 'true') {
+        console.log(`::warning title=Playwright browser missing::${process.env.GITHUB_WORKFLOW || 'this workflow'} runs a fetchPage() scraper with no Playwright browser installed — every Playwright tier falls straight through to paid providers. Add "- uses: ./.github/actions/setup-playwright" after "npm ci" (BRO-4326).`);
+      }
+    }
+    if (context) {
+      try { await context.close(); } catch (_) {}
+    }
+    // If the browser is in a bad state (e.g. after a timeout), close and
+    // reset so the next call can relaunch a fresh instance — but only the
+    // browser THIS tier used. An abandoned tier failing late ("Target
+    // closed" after a deadline reset) must not close a browser a newer call
+    // has since launched (review finding, BRO-4401).
+    // _resetPlaywrightBrowser bounds the close (SIGKILL on a hang), like every
+    // other close path.
+    if (playwright && playwright === myBrowser) {
+      await _resetPlaywrightBrowser();
+    }
+    return null;
+  }
+}
+
+/**
+ * Unwrap Google redirect wrappers (e.g. `https://www.google.com/url?q=<real>&sa=D&...`),
+ * which appear when a URL is scraped from Google Docs/Sheets/editors exports or a SERP
+ * link that escaped the discovery-time unwrap in url-discovery.js. Such a URL fetches the
+ * Google chrome rather than the article (→ scraper_garbage), silently dropping a real
+ * review (e.g. grace-pervades / The Stage, 2026-06). Idempotent and no-op for normal URLs.
+ *
+ * @param {string} url
+ * @returns {string} the unwrapped target URL, or the input unchanged
+ */
+function unwrapRedirectUrl(url) {
+  if (typeof url !== 'string') return url;
+  if (!/\/\/(www\.)?google\.[^/]+\/url\?/.test(url)) return url;
+  try {
+    const params = new URL(url).searchParams;
+    const target = params.get('q') || params.get('url');
+    if (target && /^https?:\/\//.test(target)) return target;
+  } catch (_) { /* malformed URL — fall through */ }
+  return url;
+}
+
+/**
+ * Fetch a page with automatic fallback
+ *
+ * @param {string} url - URL to fetch
+ * @param {object} options - Options
+ * @param {boolean} options.renderJs - Whether to render JavaScript (default: false unless domain is in JS_REQUIRED_DOMAINS)
+ * @param {boolean} options.preferPlaywright - Skip APIs and go straight to Playwright (e.g. for BroadwayWorld)
+ * @returns {Promise<{content: string, format: 'html'|'markdown', source: string}>}
+ */
+/**
+ * Pure decision function: ordered tier names for fetchPage's fallback chain.
+ * Extracted for testability (CLAUDE.md rule 15), mirroring serpChainOrder in
+ * url-discovery.js. Reproduces fetchPage's if-chain EXACTLY — each condition
+ * here is copied from the branch it replaces; see page-chain-order.test.mjs
+ * for the enumerated flag combinations this is checked against.
+ *
+ * flags: { hasCookies, preferPlaywright, isBroadwayWorld, isPublicSite,
+ *   skips (Set), useScrapingdog, hasBdToken, sbAllowed }
+ * useScrapingdog/hasBdToken/sbAllowed are pre-computed by the caller from the
+ * same key+budget+quota checks the original branches used — this function
+ * only decides ORDER, never whether a key/budget/quota check itself passes.
+ */
+function pageChainOrder(flags) {
+  const skips = flags.skips || new Set();
+  const order = [];
+  if (flags.hasCookies && !flags.preferPlaywright && !skips.has('cookies-plain')) {
+    order.push('cookies-plain');
+  }
+  if ((flags.preferPlaywright || flags.isBroadwayWorld || flags.isPublicSite) && !skips.has('playwright')) {
+    order.push('playwright-first');
+  }
+  if (flags.useScrapingdog && !skips.has('scrapingdog')) {
+    order.push('scrapingdog');
+  }
+  if (flags.hasBdToken && !skips.has('brightdata')) {
+    order.push('brightdata');
+  }
+  if (flags.sbAllowed && !skips.has('scrapingbee')) {
+    order.push('scrapingbee');
+  }
+  if (!flags.preferPlaywright && !flags.isPublicSite && !flags.isBroadwayWorld && !skips.has('playwright')) {
+    order.push('playwright-last');
+  }
+  return order;
+}
+
+/**
+ * Fetch a page through the provider chain (see pageChainOrder).
+ *
+ * RETURNS `{ content, format, source }` — NOT `{ html }` / `{ body }`. Read
+ * `result.content` (string), `result.format` ('html' | 'markdown' | ...) and
+ * `result.source` (tier label). Reading r.html/r.body yields undefined, which
+ * looked like "length 0 = blocked" for six opening-night passes (BRO-2763).
+ * Throws Error('All scraping methods failed') when every tier misses.
+ *
+ * @param {string} url
+ * @param {object} [options]
+ * @param {boolean} [options.skipVerify] - skip the canonical/url_mismatch guard
+ * @param {boolean} [options.preferPlaywright]
+ * @param {string} [options.playwrightWaitForSelector]
+ * @returns {Promise<{content: string, format: string, source: string}>}
+ */
+async function fetchPage(url, options = {}) {
+  url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
+  // EDGAR XML needs an identifying admin contact, and must retain its tags.
+  // Keep SEC access behind the same fetchPage entry point as other sources.
+  let requestedUrl = null;
+  try { requestedUrl = new URL(url); } catch { /* malformed URLs fall through to the provider chain, as before */ }
+  if (requestedUrl && requestedUrl.protocol === 'https:' && (requestedUrl.hostname === 'sec.gov' || requestedUrl.hostname.endsWith('.sec.gov'))) {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': 'BroadwayScorecard Research (contact@broadwayscorecard.com)', Accept: 'application/xml, text/html' },
+      signal: AbortSignal.timeout(30000),
+      redirect: 'error',
+    });
+    if (!response.ok) throw new Error(`SEC fetch failed: ${response.status}`);
+    const content = await response.text();
+    if (!content.trim()) throw new Error('SEC returned an empty page');
+    return { content, format: 'html', source: 'sec' };
+  }
+  const preferPlaywright = options.preferPlaywright || false;
+  const isPublicSite = _isPlaywrightFirstDomain(url);
+  const isBroadwayWorld = url.includes('broadwayworld.com');
+  const skips = _getDomainSkips(url);
+  const cookieDomain = hasCookiesForUrl(url);
+
+  console.log(`Fetching: ${url}`);
+
+  // Whether to verify the fetched URL matches what was requested.
+  // Skip for root-level URLs (homepage fetches are intentional).
+  const shouldVerify = options.skipVerify !== true && (() => {
+    try { return new URL(url).pathname.length > 1; } catch { return false; }
+  })();
+
+  /**
+   * Run verifyFetchedUrl and escalate if the result is a known-bad page.
+   * Returns the result unchanged if verified (or if verification is skipped).
+   * Returns null to signal "try next provider" on failure.
+   */
+  function _checkAndReturn(result, source) {
+    if (!shouldVerify) {
+      console.log(`  ✅ Success (${source}, ${result.format})`);
+      return result;
+    }
+    const vr = verifyFetchedUrl(result.content, url);
+    if (vr.verified) {
+      console.log(`  ✅ Success (${source}, ${result.format})`);
+      return result;
+    }
+    if (vr.reason === 'url_mismatch') {
+      try {
+        const hostname = new URL(url).hostname;
+        recordUrlMismatch(url, vr.actual, source, hostname);
+      } catch { /* never crash the scrape */ }
+    }
+    console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}) — trying next provider...`);
+    return null;
+  }
+
+  // Live re-check at chain-build time — matches the original code's gate
+  // conditions exactly, reproduced again (unchanged) inside the scrapingdog/
+  // scrapingbee tier functions below. Scrapingdog/ScrapingBee gate on
+  // module-level mutable state (budgets, quotas, the SB credits-low latch)
+  // that a CONCURRENT fetchPage() call or a fire-and-forget credits check can
+  // flip while THIS call is still awaiting an earlier tier (cookies/
+  // Playwright/SD/BD) — a window that's now as long as those earlier tiers'
+  // combined latency, not "immediately before" as it was pre-refactor. Each
+  // tier's own fetchWithScrapingdog/fetchWithScrapingBee already re-checks
+  // its budget/quota/breaker internally, so a stale "allowed" chain entry
+  // can never overspend — but re-evaluating live here (rather than trusting
+  // the chain's snapshot) keeps the log lines and dispatch decision honest.
+  const chain = pageChainOrder({
+    hasCookies: !!cookieDomain,
+    preferPlaywright,
+    isBroadwayWorld,
+    isPublicSite,
+    skips,
+    // Scrapingdog (flag-gated cheap tier — tried BEFORE Bright Data to avoid BD's
+    // ~$1.50/1k cost on the many hosts Scrapingdog handles for ~$0.09-0.45/1k).
+    useScrapingdog: USE_SCRAPINGDOG && !!SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded,
+    // Bright Data: primary for non-public sites, fallback for public.
+    hasBdToken: !!BRIGHTDATA_TOKEN,
+    // ScrapingBee: skip if credits exhausted, budget exceeded, or page-exhausted.
+    sbAllowed: !!SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted,
+  });
+
+  // Original code logged this the instant it decided to skip Playwright for a
+  // domain-tier-skipped host; pageChainOrder just omits the tier, so log it
+  // here from the same condition to keep that observable behavior identical.
+  if ((preferPlaywright || isBroadwayWorld || isPublicSite) && skips.has('playwright')) {
+    console.log('  → Skipping Playwright (domain-tier-skip)');
+  }
+
+  // Each tier function returns the final result to hand back from fetchPage,
+  // or null/undefined to fall through to the next tier in `chain`. Bodies are
+  // copied verbatim from the branches pageChainOrder replaces — behavior is
+  // unchanged, only the ordering/gating moved into the pure function above.
+  //
+  // Each takes `fallbackFrom`: the label of the tier that ran and came back
+  // empty immediately before it (BRO-3009 S1-T8). Purely a telemetry
+  // passenger — no tier branches on it — so the spend ledger can say WHY this
+  // provider was reached, not just what it cost.
+  const tiers = {
+    // Cookie-gated outlets (WSJ, FT, NYT, Telegraph, etc.): try plain HTTPS
+    // with subscriber cookies FIRST. WSJ's DataDome blocks BD/Playwright even
+    // with cookies, but plain HTTP + subscriber cookies bypasses it (the
+    // recover-wsj-subscriber.js pattern). For non-WSJ cookie outlets this
+    // just skips one proxy hop — cheap.
+    'cookies-plain': async (fallbackFrom) => {
+      console.log(`  → Trying plain HTTPS with ${cookieDomain} cookies...`);
+      const raw = await fetchWithCookiesPlain(url);
+      if (raw && raw.content && raw.content.length > 0) {
+        const checked = _checkAndReturn(raw, 'Cookie-plain');
+        if (checked) return checked;
+      }
+      return null;
+    },
+    // Playwright-first for known public sites (free, fast with domcontentloaded).
+    // Also for BroadwayWorld (complex JS) and explicit preferPlaywright.
+    'playwright-first': async (fallbackFrom) => {
+      const label = isPublicSite ? 'public site' : 'complex site';
+      console.log(`  → Using Playwright (${label})...`);
+      const raw = await fetchWithPlaywright(url, {
+        fast: isPublicSite || _isNeverIdleDomain(url),
+        playwrightWaitForSelector: options.playwrightWaitForSelector,
+      });
+      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+        console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
+      } else if (raw) {
+        const checked = _checkAndReturn(raw, 'Playwright');
+        if (checked) return checked;
+      }
+      return null;
+    },
+    // A challenge/short response falls through to Bright Data, which keeps
+    // its role as the strong unblocker for the hard sites Scrapingdog can't crack.
+    scrapingdog: async (fallbackFrom, onSkip) => {
+      // Live re-check (see the comment above `chain`): the exact same
+      // condition pageChainOrder was given, re-evaluated now instead of
+      // trusting the snapshot from before the earlier tiers' awaits.
+      if (!(USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded)) {
+        // Same three states fetchWithScrapingdog reports for itself, so this
+        // early return is attributed identically rather than collapsing to a
+        // plain "scrapingdog was tried and missed".
+        onSkip(_scraperStats.sdBudgetExceeded ? 'sd-budget'
+             : _sdQuotaExceeded ? 'sd-quota'
+             : 'sd-unavailable');
+        return null;
+      }
+      console.log('  → Trying Scrapingdog...');
+      const raw = await fetchWithScrapingdog(url, { ...options, fallbackFrom, onSkip });
+      if (raw && raw.content && raw.content.length > 0) {
+        if (_isChallengeOrGarbage(raw.content)) {
+          console.log(`  ⚠️  Scrapingdog returned challenge/garbage (${raw.content.length} bytes), trying next provider...`);
+        } else {
+          const checked = _checkAndReturn(raw, 'Scrapingdog');
+          if (checked) return checked;
+        }
+      }
+      return null;
+    },
+    brightdata: async (fallbackFrom, onSkip) => {
+      console.log('  → Trying Bright Data...');
+      const raw = await fetchWithBrightData(url, { fallbackFrom, onSkip });
+      if (raw && raw.content && raw.content.length > 0) {
+        // Detect Cloudflare challenge pages — BD returns HTTP 200 with challenge
+        // HTML that passes length > 0 but isn't real content. Fall through to ScrapingBee.
+        if (_isChallengeOrGarbage(raw.content)) {
+          console.log(`  ⚠️  Bright Data returned Cloudflare challenge (${raw.content.length} bytes), trying next provider...`);
+        } else {
+          const checked = _checkAndReturn(raw, 'Bright Data');
+          if (checked) return checked;
+        }
+      } else if (raw) {
+        console.log(`  ⚠️  Bright Data returned empty content (${raw.content ? raw.content.length : 0} bytes${raw.brdError ? `, x-brd-error: ${String(raw.brdError).slice(0, 160)}` : ''}), trying next provider...`);
+      }
+      return null;
+    },
+    scrapingbee: async (fallbackFrom) => {
+      // Live re-check (see the comment above `chain`): the exact same
+      // condition pageChainOrder was given, re-evaluated now instead of
+      // trusting the snapshot from before the earlier tiers' awaits.
+      if (!(SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted)) {
+        return null;
+      }
+      console.log('  → Trying ScrapingBee...');
+      const raw = await fetchWithScrapingBee(url, { ...options, fallbackFrom });
+      if (raw) {
+        const checked = _checkAndReturn(raw, 'ScrapingBee');
+        if (checked) return checked;
+      }
+      return null;
+    },
+    // Last resort: Playwright (only reached if not already tried above).
+    // playwrightWaitForSelector pass-through is not needed here (that's only
+    // for caller-explicit Playwright via preferPlaywright, above) — this
+    // tier is "everything else failed" fallback, no specific selector.
+    'playwright-last': async (fallbackFrom) => {
+      console.log('  → Trying Playwright (last resort)...');
+      const raw = await fetchWithPlaywright(url, { fast: _isNeverIdleDomain(url) });
+      if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
+        console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
+      } else if (raw) {
+        const checked = _checkAndReturn(raw, 'Playwright');
+        if (checked) return checked;
+      }
+      return null;
+    },
+  };
+
+  // BRO-3009 S1-T8: carry the previous tier's identity into the next tier's
+  // ledger row, so the spend ledger records WHY a provider was reached and
+  // not just what it cost. A tier that declined to call at all reports its
+  // own reason through `onSkip` — scoped to THIS call, never inferred from
+  // shared module state (see SKIP_REASONS in fallback-attribution.js for why
+  // the counter-delta version of this was wrong). Telemetry only: no tier
+  // reads `fallbackFrom`, and every tier still returns exactly what it did.
+  let fallbackFrom = null;
+  for (const tierName of chain) {
+    let skipReason = null;
+    const result = await tiers[tierName](fallbackFrom, (reason) => { skipReason = reason; });
+    if (result) return result;
+    fallbackFrom = fallbackFromLabel(tierName, { skipReason });
+  }
+
+  throw new Error('All scraping methods failed');
+}
+
+/**
+ * Clean up resources (call this when done with all scraping)
+ */
+async function cleanup() {
+  // Print cost summary if any scraping happened
+  const s = _scraperStats;
+  const total = s.pwAttempts + s.bdRequests + s.sbRequests + s.sdRequests;
+  if (total > 0) {
+    const parts = [];
+    if (s.pwSuccess > 0 || s.pwAttempts > 0) parts.push(`${s.pwSuccess}/${s.pwAttempts} Playwright (free)`);
+    if (s.sdRequests > 0) parts.push(`${s.sdRequests} SD (${s.sdCredits} credits${s.sdBudgetExceeded ? ', BUDGET HIT' : ''})`);
+    // BRO-3009 S1-T6: rate from scripts/config/provider-pricing.json, not an
+    // inline 0.0015 — this string is what scraper-cost-report.yml re-prices,
+    // so a drift here silently skews the weekly spend report.
+    if (s.bdRequests > 0) parts.push(`${s.bdRequests} BD (~$${usdFor('brightdata', s.bdRequests).toFixed(3)})`);
+    if (s.sbRequests > 0) parts.push(`${s.sbRequests} SB (${s.sbCredits} credits${s.sbBudgetExceeded ? ', BUDGET HIT' : ''})`);
+    console.log(`[Scraper Summary] ${parts.join(', ')}`);
+  }
+
+  _cancelIdleClose();
+  if (playwright) {
+    // browser.close() can hang indefinitely if the Chromium process is in a
+    // bad state (unresponsive CDP connection) — this is what actually caused
+    // task #438's "45-min timeout": discover-new-shows.js finished all real
+    // work in ~30s, then this awaited close() with no timeout kept the
+    // process's event loop alive for 44 more minutes until GitHub's hard
+    // step timeout SIGKILLed it (verified via run 30166720704 logs — last
+    // content line at 17:04:22, kill at 17:49:04, nothing in between).
+    // Shared by 27 scripts; a hang here silently blows any caller's wall-clock
+    // budget checks, since those only guard the WORK, not process exit.
+    // _closeBrowserBounded() SIGKILLs the process if close() hangs.
+    const target = playwright;
+    playwright = null; // clear immediately so a hung close() can't block a fresh launch
+    playwrightGeneration++;
+    await _closeBrowserBounded(target, 10000);
+  }
+}
+
+// Test seam (BRO-4623): swap in a fake `chromium` so the idle-close and
+// cleanup paths can be exercised without a real browser. Never used by
+// production code.
+function __setChromiumForTest(fake) {
+  chromium = fake;
+}
+
+/**
+ * Fetch a JSON API endpoint through the proxy chain.
+ * Order: direct fetch (free) → Scrapingdog (cheap tier, 1 credit plain, escalating
+ * to stealth_mode=true on a 400) → ScrapingBee (render_js=false, 1 credit) →
+ * Bright Data (final tier, format=raw — task #203 reopen: SB exhaustion + SD's
+ * daily-pace guard were stranding JSON endpoints with no unblocker left to try,
+ * e.g. westendtheatre.com's wp-json API behind a WAF).
+ * Unlike fetchPage(), returns parsed JSON instead of HTML.
+ *
+ * @param {string} url - The JSON API URL to fetch
+ * @param {object} [options]
+ * @param {object} [options.headers] - Additional headers (e.g. Accept: application/json)
+ * @returns {Promise<any>} Parsed JSON response
+ */
+async function fetchJSON(url, options = {}) {
+  const headers = { Accept: 'application/json', ...options.headers };
+  // fetchPage() consults this same domain-tier-skip registry for SD/SB/BD —
+  // fetchJSON must too, or an empirically-dead tier for a given host keeps
+  // getting tried on every call (ship-check finding, task #203 reopen).
+  const skips = _getDomainSkips(url);
+
+  // Try direct fetch first — free, and most JSON API endpoints (WP-JSON, etc.)
+  // aren't bot-protected. May be TLS-blocked for some hosts in CI; falls
+  // through to Scrapingdog/ScrapingBee below when that happens. Now the FIRST
+  // thing every call attempts (was previously a last-resort fallback), so an
+  // explicit timeout matters here in a way it didn't before — an unbounded
+  // hang would delay every single call, not just the rare one that fell
+  // through past ScrapingBee.
+  try {
+    const proto = url.startsWith('https') ? https : require('http');
+    const DIRECT_TIMEOUT_MS = 15000;
+    const response = await new Promise((resolve, reject) => {
+      const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
+        if ([301, 302, 307, 308].includes(res.statusCode)) {
+          // Resolve against the original URL (handles relative Location headers)
+          // and pick the protocol client from the RESOLVED target, not the
+          // original request — a cross-scheme redirect (http->https or
+          // https->http) must not be followed with the wrong client.
+          let redirectUrlObj;
+          try {
+            redirectUrlObj = new URL(res.headers.location, url);
+          } catch (err) {
+            reject(new Error(`invalid redirect Location: ${err.message}`));
+            return;
+          }
+          const redirectUrl = redirectUrlObj.toString();
+          const redirectProto = redirectUrlObj.protocol === 'https:' ? https : require('http');
+          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
+            let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
+              if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
+            });
+          });
+          req2.on('error', reject);
+          req2.on('timeout', () => { req2.destroy(); reject(new Error('direct fetch redirect timeout')); });
+          return;
+        }
+        if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); return; }
+        let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d));
+      });
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('direct fetch timeout')); });
+    });
+    return JSON.parse(response);
+  } catch (err) {
+    console.log(`  fetchJSON direct failed: ${err.message}`);
+  }
+
+  // Scrapingdog next — cheap tier (1 credit, plain fetch), handles the
+  // TLS-blocked-in-CI case direct fetch can't. Escalates to stealth_mode=true
+  // (10cr) when the plain tier 400s — Scrapingdog's own error body on a
+  // WAF-protected host explicitly recommends that (task #203 reopen:
+  // westendtheatre.com wp-json). Respects the same budget/quota guards as
+  // every other SD caller so an actual account exhaustion or per-run budget
+  // still routes past SD to ScrapingBee/Bright Data below instead of retrying.
+  if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded && !skips.has('scrapingdog')) {
+    let sdStealthEligible = false;
+    try {
+      const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, throwOn400: true });
+      if (raw && raw.content) {
+        return JSON.parse(raw.content);
+      }
+    } catch (err) {
+      if (err.sdStatus === 400) {
+        sdStealthEligible = true;
+        console.log('  fetchJSON Scrapingdog plain tier 400\'d — escalating to stealth_mode=true');
+      } else {
+        console.log(`  fetchJSON Scrapingdog failed: ${err.message}`);
+      }
+    }
+    if (sdStealthEligible && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded) {
+      try {
+        const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, stealthMode: true });
+        if (raw && raw.content) {
+          return JSON.parse(raw.content);
+        }
+      } catch (err) {
+        console.log(`  fetchJSON Scrapingdog stealth_mode failed: ${err.message}`);
+      }
+    }
+  }
+
+  // Last resort: ScrapingBee (render_js=false = 1 credit)
+  if (SCRAPINGBEE_KEY && !_sbCreditsLow && !_scraperStats.sbBudgetExceeded && !_scrapingBeePageExhausted && !skips.has('scrapingbee')) {
+    try {
+      const apiUrl = `https://app.scrapingbee.com/api/v1/?api_key=${SCRAPINGBEE_KEY}&url=${encodeURIComponent(url)}&render_js=false`;
+      const response = await new Promise((resolve, reject) => {
+        const req = https.get(apiUrl, { timeout: 45000 }, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => {
+            if (res.statusCode === 200) resolve(data);
+            else {
+              const err = new Error(`ScrapingBee HTTP ${res.statusCode}`);
+              err.statusCode = res.statusCode;
+              reject(err);
+            }
+          });
+        });
+        req.on('error', reject);
+        req.on('timeout', () => { req.destroy(); reject(new Error('ScrapingBee request timeout')); });
+      });
+      _scraperStats.sbRequests++;
+      _scraperStats.sbCredits += 1; // render_js=false = 1 credit
+      recordSbCall({ url, fn: 'json', success: true, status: 200, credits: 1 });
+      return JSON.parse(response);
+    } catch (err) {
+      recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: 1 });
+      console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
+      if ([401, 403, 429].includes(err.statusCode)) {
+        _scrapingBeePageExhausted = true;
+        console.warn(`  ⚠️  ScrapingBee disabled for the rest of this process (HTTP ${err.statusCode})`);
+      }
+    }
+  }
+
+  // Final tier: Bright Data (format=raw returns the endpoint's raw JSON body
+  // directly, no HTML wrapper to strip). Strongest unblocker, tried last
+  // because it's the most expensive (~$1.50/1k vs SD's $0.09-0.45/1k) — but
+  // without it, SB exhaustion + SD's daily-pace guard left JSON endpoints with
+  // nothing left to try (task #203 reopen, scrape-westendtheatre.yml run
+  // 30056408665: direct 403, SD 400, SB 401-exhausted-until-2026-08-05 → 0 posts).
+  if (BRIGHTDATA_TOKEN && !skips.has('brightdata')) {
+    const raw = await fetchWithBrightData(url);
+    if (raw && raw.content) {
+      try {
+        return JSON.parse(raw.content);
+      } catch (err) {
+        console.log(`  fetchJSON Bright Data returned non-JSON: ${err.message}`);
+      }
+    }
+  }
+
+  throw new Error(`fetchJSON: all methods failed for ${url}`);
+}
+
+// --- Homepage title detection ---
+// High-risk outlets that return their homepage with HTTP 200 when an article URL fails.
+// Pattern: title starts with the site name followed by punctuation or "Latest News" etc.
+const HOMEPAGE_TITLE_RE = /^BroadwayWorld:|^The Wall Street Journal\s*$|^The New York Sun\s*$|^Playbill\s*[-|]|^TimeOut\s*[-|]/i;
+
+// Host-scoped trailing-ID extractors for verifyFetchedUrl's post_id_match check
+// (task #6 Variety, BRO-151 ft.com). Hoisted to module scope — these are static
+// and were previously rebuilt on every verifyFetchedUrl() call.
+//
+// `exactActual`: when true, the ACTUAL (modern/canonical) segment must be
+// nothing but the extracted ID — ft.com's real /content/<uuid> paths are
+// always bare, so requiring an exact match there (while still tolerating
+// cruft like `,Authorised=false.html` on the legacy/expected side) rules out
+// a hypothetical future suffixed variant, e.g. /content/<uuid>-related,
+// matching on a shared ID prefix (adversarial review finding, BRO-151).
+// Variety's end-anchored digit ID is a suffix of a full slug on both sides,
+// so it must stay exempt from this constraint.
+const TRAILING_ID_EXTRACTORS = {
+  'variety.com': {
+    extract: (s) => { const m = s && s.match(/(\d{6,})$/); return m && m[1]; },
+    exactActual: false,
+  },
+  'ft.com': {
+    extract: (s) => {
+      const m = s && s.match(/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+      return m && m[1].toLowerCase();
+    },
+    exactActual: true,
+  },
+};
+
+// BRO-151: show-score.com re-categorizes shows across market/venue-type
+// directories (broadway-shows ↔ off-broadway-shows ↔ off-off-broadway-shows
+// ↔ uk/london/{west-end,off-west-end}-shows) while keeping the show's own
+// slug stable. Unlike the generic suffix_redirect check (same host, same
+// parent directory, word-boundary suffix), this drops the parent-directory
+// requirement entirely — so it intentionally requires an EXACT final-segment
+// match rather than a word-boundary suffix match: two independent adversarial
+// reviews (BRO-151) flagged that a word-boundary allowance here (e.g.
+// requested .../bull matching actual .../bull-2) has no directory constraint
+// backing it up, unlike suffix_redirect, and show-score's slugs are
+// human-readable titles (not opaque IDs), so a same-titled-but-different
+// production (a revival, a transfer) could collide. Exact match gives up the
+// small number of suspects where show-score also appends a suffix (e.g.
+// "-offline-productions") but eliminates that false-accept class entirely.
+const CATEGORY_DRIFT_HOSTS = new Set(['show-score.com']);
+
+/**
+ * Verify that fetched HTML actually corresponds to the requested URL.
+ * Detects Cloudflare redirects, homepage returns, and canonical URL mismatches.
+ *
+ * @param {string} html - The fetched HTML content
+ * @param {string} expectedUrl - The URL that was requested
+ *   Exact listing URLs in SAME_HOST_INDEX_REDIRECTS may canonicalise to another
+ *   path on the same host; every other same-host path change is a mismatch.
+ * @returns {{ verified: boolean, reason?: string, actual?: string }}
+ */
+function verifyFetchedUrl(html, expectedUrl) {
+  if (!html || !expectedUrl) return { verified: false, reason: 'missing_input' };
+
+  // 1. Homepage title detection — high-risk outlets return homepage with 200
+  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+  const pageTitle = titleMatch ? titleMatch[1].trim() : '';
+  if (pageTitle && HOMEPAGE_TITLE_RE.test(pageTitle)) {
+    // Only flag if we requested an article URL (not root or /article)
+    try {
+      const { pathname } = new URL(expectedUrl);
+      if (pathname && pathname.length > 1) {
+        return { verified: false, reason: 'title_matches_homepage', actual: pageTitle };
+      }
+    } catch { /* invalid URL, fall through */ }
+  }
+
+  // 2. Canonical URL check — most CMS-powered pages include <link rel="canonical">
+  const canonicalMatch = html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)["']/i)
+    || html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);
+  const ogUrlMatch = html.match(/<meta[^>]+property=["']og:url["'][^>]+content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:url["']/i);
+
+  const actualUrl = (canonicalMatch && canonicalMatch[1]) || (ogUrlMatch && ogUrlMatch[1]) || null;
+
+  // No canonical/og:url — can't verify, but can't disprove either. Pass through.
+  // Only homepage-title detection (above) and explicit URL mismatch (below) should block.
+  if (!actualUrl) return { verified: true, reason: 'no_canonical' };
+
+  // Strip invisible/bidi Unicode (zero-width spaces, LTR/RTL marks, BOM) that
+  // some sites (e.g. theatre.reviews) inject into canonical URLs, and NFC-normalize
+  // so visually-identical URLs with different codepoint decompositions compare equal.
+  // Confirmed 2026-07-30: theatre.reviews canonical URLs carry a trailing U+200E
+  // (LEFT-TO-RIGHT MARK) that byte-for-byte differs from the requested URL despite
+  // being visually and semantically identical — 1,412 wasted provider escalations.
+  const INVISIBLE_UNICODE_RE = /[\u200B-\u200F\u202A-\u202E\u2060-\u2064\uFEFF]/g;
+  function stripInvisibleUnicode(u) {
+    return u.normalize('NFC').replace(INVISIBLE_UNICODE_RE, '');
+  }
+
+  // Normalize both URLs to hostname + pathname (drop scheme, query string, and hash).
+  // Canonical URLs from <link rel="canonical"> are query-free by convention, so comparing
+  // anything beyond host+path causes false mismatches whenever the request URL carries:
+  //   - tracking params (utm_*, fbclid, gclid, SocialFlow, ref, etc.)
+  //   - HTML-encoded `&amp;utm_*` keys that don't match the utm_ strip list
+  //   - http:// vs https:// (e.g. old NYPost URLs stored as http but canonicalized to https)
+  //   - invisible/bidi Unicode marks (see stripInvisibleUnicode above)
+  // Path-only comparison is robust: none of these change the article served.
+  //
+  // Second arg to `new URL()` resolves relative canonical/og:url values (legal
+  // per the HTML spec, resolved against the page's own URL absent a <base>
+  // tag) — e.g. todaytix.com's og:url is a bare `/nyc/shows/<id>-<slug>?...`
+  // path with no scheme/host. Without a base, `new URL()` throws and the catch
+  // branch compared the raw relative string against a full hostname+path,
+  // guaranteeing a false url_mismatch even when the path matched exactly.
+  //
+  // Base resolution is deliberately restricted to unambiguous ROOT-RELATIVE
+  // paths (`/foo`, not `//foo`, `?foo`, `#foo`, or `foo`) — a query-only or
+  // fragment-only reference resolved against a base silently INHERITS the
+  // base's path, which would make a page with a vacuous/malformed canonical
+  // tag falsely verify against whatever we requested (adversarial review
+  // finding, BRO-151). Root-relative is the only shape confirmed in the wild.
+  const ROOT_RELATIVE_RE = /^\/[^/]/;
+  function normalizeForVerify(u) {
+    const cleaned = stripInvisibleUnicode(u);
+    const base = ROOT_RELATIVE_RE.test(cleaned) ? expectedUrl : undefined;
+    try {
+      const parsed = new URL(cleaned, base);
+      return parsed.hostname.toLowerCase() + parsed.pathname.replace(/\/$/, '');
+    } catch { return cleaned.toLowerCase().replace(/\/$/, ''); }
+  }
+
+  const normExpected = normalizeForVerify(expectedUrl);
+  const normActual = normalizeForVerify(actualUrl);
+
+  if (normExpected === normActual) return { verified: true };
+
+  // Allow if actual is a subdomain/alias of expected (e.g., amp. prefix) but only
+  // when the domains actually differ — same-domain path differences are still mismatches.
+  try {
+    const expHost = new URL(stripInvisibleUnicode(expectedUrl)).hostname.replace(/^www\./, '');
+    const actHost = new URL(stripInvisibleUnicode(actualUrl)).hostname.replace(/^www\./, '');
+    if (expHost !== actHost) {
+      // Different domains: allow subdomain relationships and known alias groups
+      if (actHost.endsWith('.' + expHost) || expHost.endsWith('.' + actHost)) {
+        return { verified: true };
+      }
+      if (domainMatchesExpected(expHost, actHost)) return { verified: true };
+    } else {
+      if (_isSameHostIndexRedirect(expectedUrl)) {
+        return { verified: true, reason: 'same_host_redirect' };
+      }
+      // Same host: tolerate a path-suffix redirect, where the CMS resolves a short/
+      // partial slug to its full canonical article (e.g. didtheylikeit.com resolves
+      // /shows/the-gin-game/ to /shows/the-gin-game-review/). Requires same directory
+      // depth AND the actual last segment to extend the expected last segment AT A
+      // WORD BOUNDARY (next char is '-', '_', '.', or end-of-string) — this rejects
+      // unrelated pages nested under a different path, AND rejects a bare substring
+      // match against a different show sharing a prefix (e.g. requested /shows/proof/
+      // must NOT verify against actual /shows/proofs/ or /shows/proof-2/, both of
+      // which could be a genuinely different production). Confirmed 2026-07-30:
+      // didtheylikeit.com accounts for 4,889 of these, ~67% of its Bright Data spend.
+      const expSegments = new URL(stripInvisibleUnicode(expectedUrl)).pathname.replace(/\/$/, '').split('/');
+      const actSegments = new URL(stripInvisibleUnicode(actualUrl)).pathname.replace(/\/$/, '').split('/');
+      const expLast = expSegments.pop();
+      const actLast = actSegments.pop();
+      if (expLast && expSegments.join('/') === actSegments.join('/') && actLast.startsWith(expLast)) {
+        const nextChar = actLast.charAt(expLast.length);
+        if (nextChar === '' || /[-_.]/.test(nextChar)) {
+          return { verified: true, reason: 'suffix_redirect' };
+        }
+      }
+
+      // Trailing numeric post-ID match (task #6, Variety): permalink schemes
+      // vary by category/era but the numeric post ID embedded at the end of
+      // the last path segment stays constant for the same article — e.g.
+      // variety.com/2026/tv/reviews/...-1236685975/ vs its own canonical tag
+      // .../legit/reviews/...-1236685975/ (Variety's canonical and og:url tags
+      // disagree on which category slug "wins" for the same post), or a
+      // legacy variety.com/review/VE1117947963 vs modern
+      // /2012/legit/reviews/the-producers-1117947963/. Directory depth is
+      // irrelevant here (legacy URLs use a totally different structure), so
+      // this runs independent of the suffix_redirect depth check above.
+      //
+      // Host-scoped deliberately (unlike suffix_redirect above, which is safe
+      // on any host because it requires a word-boundary AND matching parent
+      // directory): a bare trailing-digit-run match is NOT safe generically.
+      // BroadwayWorld's Review-Roundup-<SHOW>-<MMDDYYYY> URLs (see the
+      // title_matches_homepage fixture below) carry an 8-digit date suffix,
+      // so two different shows' roundups published on the same date would
+      // false-match under this rule with no host restriction — confirmed in
+      // review. Only allowlist hosts verified to use a CMS-unique numeric
+      // post ID (not a date/index) in this position.
+      //
+      // BRO-151: audited the top hosts in url-mismatch-suspects.json for the
+      // same class of bug. ft.com's legacy /cms/s/<n>/<uuid>.html permalinks
+      // (pre-2016) redirect to a totally different /content/<uuid> structure
+      // — the FT.com content UUID is embedded at the START of the legacy
+      // segment (sometimes followed by `,Authorised=false.html` cruft). 17
+      // live suspects (all same-article) confirmed this is safe to allowlist.
+      // See TRAILING_ID_EXTRACTORS (module scope, above) for extractor defs.
+      const idCfg = TRAILING_ID_EXTRACTORS[expHost];
+      if (idCfg) {
+        const expId = idCfg.extract(expLast);
+        const actId = idCfg.extract(actLast);
+        const actualIsBareId = !idCfg.exactActual || (actLast && actLast.toLowerCase() === actId);
+        if (expId && actId && expId === actId && actualIsBareId) {
+          return { verified: true, reason: 'post_id_match' };
+        }
+      }
+
+      // BRO-151: show-score.com re-categorizes shows across market/venue-type
+      // directories (broadway-shows ↔ off-broadway-shows ↔ off-off-broadway-shows
+      // ↔ uk/london/{west-end,off-west-end}-shows) while keeping the show's own
+      // slug stable — the suffix_redirect check above requires matching parent
+      // directories, which fails here because the ENTIRE directory changes, not
+      // just the final segment. See CATEGORY_DRIFT_HOSTS (module scope, above)
+      // for why this requires an EXACT slug match rather than a word-boundary
+      // suffix match. 29 of 30 live suspects confirmed safe under exact match
+      // (the 30th, a show-score-appended "-offline-productions" suffix, is
+      // deliberately left unmatched — see comment above).
+      if (CATEGORY_DRIFT_HOSTS.has(expHost) && expLast && actLast && expLast === actLast) {
+        return { verified: true, reason: 'category_redirect' };
+      }
+    }
+  } catch { /* fall through */ }
+
+  return { verified: false, reason: 'url_mismatch', actual: actualUrl };
+}
+
+// --- Audit log for url_mismatch rejections ---
+// When verifyFetchedUrl rejects due to a canonical URL redirect (e.g. Variety's
+// /legit/reviews/ → /film/awards/ path for Joe Turner 2009), the scraper correctly
+// refuses the wrong-path response and falls over to the next provider. But canonical
+// redirects ARE sometimes legitimate (CMS restructuring), so we record each rejection
+// here for human review. A human can then decide which are safe to allowlist.
+// The rejection behavior itself is NOT changed — this is purely telemetry.
+// SCRAPER_URL_MISMATCH_AUDIT_PATH override (task #1662): lets tests point
+// recordUrlMismatch() at a throwaway fixture instead of racing CI/parallel
+// sessions on the real tracked data/audit/url-mismatch-suspects.json.
+const URL_MISMATCH_AUDIT_PATH = process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH
+  || path.join(__dirname, '..', '..', 'data', 'audit', 'url-mismatch-suspects.json');
+const URL_MISMATCH_MAX_ENTRIES = 10000;
+
+/**
+ * Append a url_mismatch rejection record to data/audit/url-mismatch-suspects.json.
+ * File is a JSON array; created if missing. Capped at URL_MISMATCH_MAX_ENTRIES (oldest dropped).
+ * Never throws — audit failures must not crash the scrape.
+ *
+ * @param {string} requestedUrl - The URL that was requested
+ * @param {string} actualUrl - The canonical/og:url found in the fetched HTML
+ * @param {string} source - Which fetch tier returned the mismatch (e.g. 'Bright Data')
+ * @param {string} hostname - Hostname of the requested URL (for quick filtering)
+ */
+function recordUrlMismatch(requestedUrl, actualUrl, source, hostname) {
+  try {
+    fs.mkdirSync(path.dirname(URL_MISMATCH_AUDIT_PATH), { recursive: true });
+    let entries = [];
+    try {
+      const raw = fs.readFileSync(URL_MISMATCH_AUDIT_PATH, 'utf8');
+      entries = JSON.parse(raw);
+      if (!Array.isArray(entries)) {
+        console.warn('[scraper] url-mismatch-suspects.json is not an array — resetting');
+        entries = [];
+      }
+    } catch (readErr) {
+      if (readErr.code !== 'ENOENT') {
+        console.warn('[scraper] Could not read url-mismatch-suspects.json:', readErr.message);
+      }
+      entries = [];
+    }
+    entries.push({
+      requestedUrl,
+      actualUrl,
+      fetchedAt: new Date().toISOString(),
+      source,
+      hostname,
+    });
+    if (entries.length > URL_MISMATCH_MAX_ENTRIES) {
+      entries = entries.slice(entries.length - URL_MISMATCH_MAX_ENTRIES);
+    }
+    fs.writeFileSync(URL_MISMATCH_AUDIT_PATH, JSON.stringify(entries, null, 2));
+  } catch (err) {
+    console.warn('[scraper] Failed to record url_mismatch audit entry:', err.message);
+  }
+}
+
+module.exports = {
+  fetchPage,
+  pageChainOrder,
+  fetchJSON,
+  fetchWithCookiesPlain,
+  fetchWithBrightData,
+  fetchWithScrapingBee,
+  fetchWithScrapingdog,
+  fetchScrapingdogYouTube,
+  fetchWithPlaywright,
+  raceTierAgainstDeadline,
+  PLAYWRIGHT_TIER_DEADLINE_MS,
+  PLAYWRIGHT_IDLE_CLOSE_MS,
+  __setChromiumForTest,
+  isChallengeOrGarbage: _isChallengeOrGarbage,
+  cleanup,
+  domainMatchesExpected,
+  setRegistryDomainAliases,
+  DOMAIN_ALIAS_GROUPS,
+  checkScrapingBeeCredits,
+  checkScrapingdogQuotaOnce: _checkScrapingdogQuotaOnce,
+  getScraperStats,
+  isPlaywrightMissingBrowserError,
+  verifyFetchedUrl,
+  SAME_HOST_INDEX_REDIRECTS,
+  NEVER_IDLE_DOMAINS,
+  recordUrlMismatch,
+  unwrapRedirectUrl,
+  get sbCreditsLow() { return _sbCreditsLow; },
+  get sdQuotaExceeded() { return _sdQuotaExceeded; },
+  get scrapingBeePageExhausted() { return _scrapingBeePageExhausted; },
+};

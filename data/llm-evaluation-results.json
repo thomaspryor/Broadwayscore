@@ -1,0 +1,358 @@
+{
+  "summary": {
+    "testSetSize": 20,
+    "promptVersion": "2.0.0",
+    "model": "claude-sonnet-4-20250514",
+    "timestamp": "2026-01-24T04:03:26.795Z",
+    "mae": 13.8,
+    "rmse": 18,
+    "meanBias": -7.3,
+    "bucketAccuracy": 20,
+    "tier1": {
+      "count": 3,
+      "mae": 11.67,
+      "bias": -3.67
+    },
+    "tier2": {
+      "count": 4,
+      "mae": 16.5,
+      "bias": -16.5
+    },
+    "tier3": {
+      "count": 13,
+      "mae": 13.46,
+      "bias": -5.31
+    },
+    "byHumanBucket": {
+      "Rave": {
+        "count": 4,
+        "mae": 10.25,
+        "bias": -10.25
+      },
+      "Positive": {
+        "count": 5,
+        "mae": 13.2,
+        "bias": -6
+      },
+      "Mixed": {
+        "count": 9,
+        "mae": 18,
+        "bias": -7.555555555555555
+      },
+      "Pan": {
+        "count": 2,
+        "mae": 3.5,
+        "bias": -3.5
+      }
+    },
+    "largestErrors": [
+      {
+        "showId": "queen-versailles-2025",
+        "outlet": "Vulture",
+        "humanScore": 72,
+        "llmScore": 25,
+        "delta": -47,
+        "reasoning": "The critic uses vivid negative metaphors (car crash, whiplash, salmon slapping) and explicitly suggests saving money rather than seeing the show, making this a clear pan with dark humor."
+      },
+      {
+        "showId": "cabaret-2024",
+        "outlet": "Vulture",
+        "humanScore": 72,
+        "llmScore": 38,
+        "delta": -34,
+        "reasoning": "While acknowledging the performers' talent and effort, the critic clearly identifies systemic directorial failures that prevent the actors from succeeding, making this a qualified negative review."
+      },
+      {
+        "showId": "just-in-time-2025",
+        "outlet": "Deadline",
+        "humanScore": 80,
+        "llmScore": 50,
+        "delta": -30,
+        "reasoning": "This appears to be a descriptive excerpt focusing on a performer's stage banter rather than actual critical evaluation, making it impossible to determine the critic's recommendation."
+      },
+      {
+        "showId": "stranger-things-2024",
+        "outlet": "The New York Times",
+        "humanScore": 65,
+        "llmScore": 45,
+        "delta": -20,
+        "reasoning": "The critic dismisses the show as superficial entertainment with 'cheap thrills' despite expensive production, suggesting a fundamentally unsatisfying theatrical experience."
+      },
+      {
+        "showId": "ragtime-2025",
+        "outlet": "Cititour",
+        "humanScore": 68,
+        "llmScore": 88,
+        "delta": 20,
+        "reasoning": "The critic uses superlative language throughout ('magnificent,' 'unforgettable,' 'stunning') with detailed praise for all elements and an explicit recommendation not to miss it."
+      }
+    ],
+    "recommendations": [
+      "LLM scores 7.3 points lower on average. Consider adding examples showing higher scores for positive language.",
+      "Bucket accuracy is only 20%. Review the score anchor definitions and add more few-shot examples.",
+      "Rave reviews have underscoring bias of 10.3 points. Add few-shot examples for this bucket."
+    ]
+  },
+  "results": [
+    {
+      "showId": "mamma-mia-2025",
+      "outlet": "Variety",
+      "tier": 1,
+      "humanScore": 85,
+      "humanBucket": "Rave",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "delta": -7,
+      "bucketMatch": false,
+      "reasoning": "The critic acknowledges the show's flaws but ultimately celebrates its irresistible entertainment value and crowd-pleasing nature."
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "outlet": "The New York Times",
+      "tier": 1,
+      "humanScore": 88,
+      "humanBucket": "Rave",
+      "llmScore": 72,
+      "llmBucket": "Mixed-Positive",
+      "llmConfidence": "low",
+      "delta": -16,
+      "bucketMatch": false,
+      "reasoning": "The review fragment shows appreciation for the show's comfortable flow and psychological depth, with mixed-positive language about formula and tonal shifts, but lacks explicit recommendation language or complete assessment."
+    },
+    {
+      "showId": "just-in-time-2025",
+      "outlet": "The Guardian",
+      "tier": 1,
+      "humanScore": 60,
+      "humanBucket": "Mixed",
+      "llmScore": 72,
+      "llmBucket": "Mixed-Positive",
+      "llmConfidence": "medium",
+      "delta": 12,
+      "bucketMatch": false,
+      "reasoning": "The critic praises Groff's performance and the show's interesting conceptual twist, but qualifies the recommendation by noting the retro style will have selective appeal, suggesting a positive but not universal recommendation."
+    },
+    {
+      "showId": "just-in-time-2025",
+      "outlet": "Deadline",
+      "tier": 2,
+      "humanScore": 80,
+      "humanBucket": "Positive",
+      "llmScore": 50,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "delta": -30,
+      "bucketMatch": false,
+      "reasoning": "This appears to be a descriptive excerpt focusing on a performer's stage banter rather than actual critical evaluation, making it impossible to determine the critic's recommendation."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "outlet": "Entertainment Weekly",
+      "tier": 2,
+      "humanScore": 85,
+      "humanBucket": "Rave",
+      "llmScore": 72,
+      "llmBucket": "Mixed-Positive",
+      "llmConfidence": "medium",
+      "delta": -13,
+      "bucketMatch": false,
+      "reasoning": "Travis gives an explicit rave calling it a 'must-see spectacle' that pushes theater to new heights, while Rubins is more critical of the predictable plot but acknowledges the spectacle aspects, creating a mixed-positive overall assessment."
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "outlet": "Entertainment Weekly",
+      "tier": 2,
+      "humanScore": 76,
+      "humanBucket": "Positive",
+      "llmScore": 58,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "delta": -18,
+      "bucketMatch": false,
+      "reasoning": "Critics acknowledge the show delivers spectacle and satisfies audience seeking glamorous entertainment, but consistently note it lacks depth and emotional resonance, creating a conditional recommendation based on audience expectations."
+    },
+    {
+      "showId": "oedipus-2025",
+      "outlet": "The Daily Beast",
+      "tier": 2,
+      "humanScore": 88,
+      "humanBucket": "Rave",
+      "llmScore": 83,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "delta": -5,
+      "bucketMatch": false,
+      "reasoning": "Strong praise for performances (especially Manville's 'supremely acted' work), direction ('potently conceived'), and production concept ('seductively watchable'), with minor character development issues but overall enthusiastic recommendation."
+    },
+    {
+      "showId": "cabaret-2024",
+      "outlet": "Vulture",
+      "tier": 3,
+      "humanScore": 72,
+      "humanBucket": "Mixed",
+      "llmScore": 38,
+      "llmBucket": "Mixed-Negative",
+      "llmConfidence": "medium",
+      "delta": -34,
+      "bucketMatch": false,
+      "reasoning": "While acknowledging the performers' talent and effort, the critic clearly identifies systemic directorial failures that prevent the actors from succeeding, making this a qualified negative review."
+    },
+    {
+      "showId": "stranger-things-2024",
+      "outlet": "The New York Times",
+      "tier": 3,
+      "humanScore": 65,
+      "humanBucket": "Mixed",
+      "llmScore": 45,
+      "llmBucket": "Mixed-Negative",
+      "llmConfidence": "medium",
+      "delta": -20,
+      "bucketMatch": false,
+      "reasoning": "The critic dismisses the show as superficial entertainment with 'cheap thrills' despite expensive production, suggesting a fundamentally unsatisfying theatrical experience."
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "outlet": "Vulture",
+      "tier": 3,
+      "humanScore": 72,
+      "humanBucket": "Mixed",
+      "llmScore": 58,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "delta": -14,
+      "bucketMatch": true,
+      "reasoning": "The critic acknowledges technical craft and quality production values but expresses fundamental disappointment with the emotional impact and artificiality of the work, resulting in qualified praise that doesn't amount to a recommendation."
+    },
+    {
+      "showId": "chess-2025",
+      "outlet": "Time Out New York",
+      "tier": 3,
+      "humanScore": 45,
+      "humanBucket": "Pan",
+      "llmScore": 38,
+      "llmBucket": "Mixed-Negative",
+      "llmConfidence": "high",
+      "delta": -7,
+      "bucketMatch": false,
+      "reasoning": "Despite praising individual elements like music and performances, the critic clearly states the show 'blows its assets' and 'goes down in forfeit' due to terrible storytelling, indicating they cannot recommend it overall."
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "outlet": "Theater News Online",
+      "tier": 3,
+      "humanScore": 72,
+      "humanBucket": "Mixed",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "delta": 6,
+      "bucketMatch": false,
+      "reasoning": "Despite initial overwhelm, the critic's strong delayed positive reaction ('in love with the show') and recognition of 'genius' indicates a clear positive recommendation for a challenging but ultimately rewarding theatrical experience."
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "outlet": "The New York Times",
+      "tier": 3,
+      "humanScore": 76,
+      "humanBucket": "Positive",
+      "llmScore": 83,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "delta": 7,
+      "bucketMatch": true,
+      "reasoning": "The critic uses strongly positive language ('smart', 'extravagantly entertaining', 'genius') and praises the creative approach to the jukebox musical format, indicating clear recommendation despite some implicit acknowledgment of the material's inherent limitations."
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "outlet": "The Daily Beast",
+      "tier": 3,
+      "humanScore": 80,
+      "humanBucket": "Positive",
+      "llmScore": 88,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "delta": 8,
+      "bucketMatch": true,
+      "reasoning": "The critic uses unqualified superlatives like 'brilliance,' calls it 'the most original and innovative show' of the season, and praises all creative elements without any reservations."
+    },
+    {
+      "showId": "ragtime-2025",
+      "outlet": "Chicago Tribune",
+      "tier": 3,
+      "humanScore": 72,
+      "humanBucket": "Mixed",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "delta": 6,
+      "bucketMatch": false,
+      "reasoning": "Strong praise for performances and vocals with superlative language like 'best work of the night' and 'standing ovations,' indicating clear recommendation despite being an excerpt focused on cast strengths."
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outlet": "The New York Times",
+      "tier": 3,
+      "humanScore": 75,
+      "humanBucket": "Positive",
+      "llmScore": 78,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "delta": 3,
+      "bucketMatch": true,
+      "reasoning": "Strong praise for Chenoweth's performance with specific song examples and vocal appreciation, plus intelligent character analysis, suggests clear recommendation despite some thematic darkness."
+    },
+    {
+      "showId": "chess-2025",
+      "outlet": "amNewYork",
+      "tier": 3,
+      "humanScore": 62,
+      "humanBucket": "Mixed",
+      "llmScore": 65,
+      "llmBucket": "Mixed-Positive",
+      "llmConfidence": "high",
+      "delta": 3,
+      "bucketMatch": false,
+      "reasoning": "Critic clearly states fundamental problems with the book and staging remain unsolved, but finds the musical performances and score compelling enough to justify seeing it as a concert experience."
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "outlet": "New York Post",
+      "tier": 3,
+      "humanScore": 45,
+      "humanBucket": "Pan",
+      "llmScore": 45,
+      "llmBucket": "Mixed-Negative",
+      "llmConfidence": "medium",
+      "delta": 0,
+      "bucketMatch": false,
+      "reasoning": "The review acknowledges some positive elements like cleverness and wit but is predominantly critical of the exhausting pacing and irritating style, making it hard to recommend despite its merits."
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "outlet": "Vulture",
+      "tier": 3,
+      "humanScore": 72,
+      "humanBucket": "Mixed",
+      "llmScore": 25,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "delta": -47,
+      "bucketMatch": false,
+      "reasoning": "The critic uses vivid negative metaphors (car crash, whiplash, salmon slapping) and explicitly suggests saving money rather than seeing the show, making this a clear pan with dark humor."
+    },
+    {
+      "showId": "ragtime-2025",
+      "outlet": "Cititour",
+      "tier": 3,
+      "humanScore": 68,
+      "humanBucket": "Mixed",
+      "llmScore": 88,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "delta": 20,
+      "bucketMatch": false,
+      "reasoning": "The critic uses superlative language throughout ('magnificent,' 'unforgettable,' 'stunning') with detailed praise for all elements and an explicit recommendation not to miss it."
+    }
+  ]
+}

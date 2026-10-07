@@ -1,0 +1,80 @@
+{
+  "system": "cron",
+  "status": "warn",
+  "lastChecked": "2026-10-05T11:14:04.821Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Cron: Update Show Status",
+      "status": "pass",
+      "message": "22h ago, success"
+    },
+    {
+      "name": "Cron: Rebuild Reviews",
+      "status": "pass",
+      "message": "0h ago, success"
+    },
+    {
+      "name": "Cron: Collect Review Texts",
+      "status": "pass",
+      "message": "1h ago, success"
+    },
+    {
+      "name": "Cron: LLM Ensemble Score",
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
+    },
+    {
+      "name": "Cron: Test Suite",
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
+    },
+    {
+      "name": "Cron: Opening Night Broadcast",
+      "status": "pass",
+      "message": "1h ago, success"
+    },
+    {
+      "name": "Cron: Update Lottery/Rush",
+      "status": "pass",
+      "message": "22h ago, success"
+    },
+    {
+      "name": "Cron: Weekly Grosses",
+      "status": "pass",
+      "message": "10h ago, success"
+    },
+    {
+      "name": "Cron: Update Show Score",
+      "status": "pass",
+      "message": "10h ago, success"
+    },
+    {
+      "name": "Cron: Update Mezzanine",
+      "status": "pass",
+      "message": "10h ago, success"
+    },
+    {
+      "name": "Cron: Update Cast Changes",
+      "status": "pass",
+      "message": "2d ago, success"
+    },
+    {
+      "name": "Cron: NYT Critics Picks",
+      "status": "pass",
+      "message": "1d ago, success"
+    },
+    {
+      "name": "Cron: Weekly Video Reviews",
+      "status": "pass",
+      "message": "5h ago, success"
+    },
+    {
+      "name": "Cron: Reverse Discovery",
+      "status": "pass",
+      "message": "10h ago, success"
+    }
+  ]
+}

@@ -1,0 +1,336 @@
+name: Weekly Newsletter Draft
+
+# Generates the upcoming week's newsletter draft and emails a preview to the
+# owner every Saturday morning. The preview is transactional (single-recipient,
+# per CLAUDE.md rule 16 — never broadcast for previews) and subject-prefixed
+# "[DRAFT]" so it's distinct from any future broadcast.
+#
+# Owner review flow (Phase 2, separate workflow): owner replies/forwards the
+# preview to the +claude email alias with edits or "ship it". A Claude session
+# reads the reply, edits data/newsletter-overrides/<weekStart>.json, and the
+# matching newsletter-draft-rebuild.yml workflow regenerates + re-sends the
+# preview. Final ship → creates a Resend broadcast draft via the existing
+# rule-16-safe wrapper; owner clicks Send in Resend UI.
+#
+# This workflow is preview-only: no broadcasts ever fire from here.
+
+on:
+  # Saturday 11 UTC = 7am ET (or 6am during EDT — close enough for a weekly).
+  # GitHub crons routinely run 15-60 min late on weekends; acceptable for a
+  # Saturday-morning preview that doesn't need to land at a precise time.
+  schedule:
+    - cron: '0 11 * * 6'
+
+  # Manual fire for testing (matches the workflow_dispatch pattern in
+  # weekly-grosses.yml). Optional weekStart override — defaults to the most
+  # recent Monday in NY time.
+  workflow_dispatch:
+    inputs:
+      weekStart:
+        description: 'Week start (Monday, YYYY-MM-DD). Empty = last Monday in America/New_York.'
+        required: false
+        default: ''
+      subjectPrefix:
+        description: 'Subject prefix (e.g. [DRAFT], [DRAFT MANUAL]).'
+        required: false
+        default: '[DRAFT]'
+      ledeOverride:
+        description: 'Optional editorial lede override (overrides auto-generated intro).'
+        required: false
+        default: ''
+      subjectOverride:
+        description: 'Optional subject-line override (overrides auto-generated subject).'
+        required: false
+        default: ''
+      allowGaps:
+        description: 'Set to 1 to waive the review-completeness HARD gate for this run (task #823) — gaps land in the draft banner instead of failing.'
+        required: false
+        default: ''
+      obLead:
+        description: 'Optional show id to float to the top of the Opened Off-Broadway section (editorial lead override).'
+        required: false
+        default: ''
+      weLead:
+        description: 'Optional show id to float to WE opening story #1 (subject/lede + first card, WE edition).'
+        required: false
+        default: ''
+      dropSections:
+        description: 'Comma-separated section names to drop this issue (e.g. biggest-movers). One-off editorial lever.'
+        required: false
+        default: ''
+      edition:
+        description: 'Newsletter edition / market.'
+        required: false
+        type: choice
+        default: broadway
+        options:
+          - broadway
+          - west-end
+      catchupDays:
+        description: 'One-off: also include scored openings from the last N days before this week (first-issue catch-up). 0 = off.'
+        required: false
+        default: '0'
+      audience:
+        description: 'Resend audience for the broadcast DRAFT (never sent automatically). Only "test" is honored as an override — otherwise the audience FOLLOWS the edition (general/west-end), because choice inputs always submit their default and a stale "general" alongside edition=west-end used to trip the mismatch guard late in the run.'
+        required: false
+        type: choice
+        default: general
+        options:
+          - general
+          - west-end
+          - test
+      skipBroadcastDraft:
+        description: 'Skip creating the Resend broadcast draft (owner preview only).'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+# Avoid racing a manual dispatch against the Saturday cron, or back-to-back
+# manual runs against each other. cancel-in-progress=false so a scheduled run
+# isn't dropped mid-flight by a manual click.
+concurrency:
+  group: newsletter-draft
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    # 25 (was 15): on 2026-07-19 both regen runs finished every substantive
+    # step (generate → gates → preview → Resend draft PATCH) but hit the
+    # 15-min ceiling inside the final "Commit newsletter de-dup state" push
+    # retry under commit churn, marking green runs 'cancelled' and dropping
+    # the dedup-state commit.
+    timeout-minutes: 25
+
+    # Job-level so EVERY step that touches the draft shares one generator
+    # environment. This block used to be copy-pasted into the generate and
+    # regression-test steps and OMITTED from the pre-send-check step — which
+    # also re-invokes generate.mjs (its coverage-swap regeneration). With
+    # NEWSLETTER_EDITION missing there, the west-end runs on 2026-08-08 and
+    # 2026-07-25 regenerated as the Broadway edition, failed send-test.mjs's
+    # edition guard, and died before ever creating the Resend broadcast draft:
+    # no West End newsletter reached Resend at all. The scripts now pin the
+    # edition themselves (scripts/lib/newsletter-regen-guard.js enforces it),
+    # so this hoist is defense in depth — plus it's what finally gets the GA
+    # creds and the owner's editorial leads through to the regen, which
+    # previously silently lost the Trending This Week section.
+    # A step-level env key of the same name still wins, so per-step overrides
+    # (NEWSLETTER_ALLOW_GAPS, the send-test-only vars) stay where they are.
+    env:
+      # CI lacks ~/Documents/claude-outputs — write to the repo workspace
+      # instead. Every script in the chain picks up the same path.
+      NEWSLETTER_OUT_DIR: ${{ github.workspace }}/data/newsletter-drafts
+      NEWSLETTER_EDITION: ${{ github.event.inputs.edition || 'broadway' }}
+      NEWSLETTER_CATCHUP_DAYS: ${{ github.event.inputs.catchupDays || '0' }}
+      # GA4 creds for the Trending This Week section. Without these,
+      # popular-pages.mjs returns null and the section silently no-ops.
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+      LEDE_OVERRIDE: ${{ github.event.inputs.ledeOverride }}
+      SUBJECT_OVERRIDE: ${{ github.event.inputs.subjectOverride }}
+      NEWSLETTER_OB_LEAD: ${{ github.event.inputs.obLead }}
+      NEWSLETTER_WE_LEAD: ${{ github.event.inputs.weLead }}
+      NEWSLETTER_DROP_SECTIONS: ${{ github.event.inputs.dropSections }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Core data files (shows.json, reviews.json, etc.) live in a private
+      # data repo and aren't checked into the main repo. Same pattern every
+      # other weekly cron uses — see .github/workflows/weekly-grosses.yml.
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      # Chromium for the mobile-overflow gate below (renders the email at phone
+      # width to catch a layout that would zoom-out in iOS Gmail).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # Pipeline-health gate: don't generate against stale data. Cron at 11 UTC
+      # Saturday assumes Friday-night reviews have been ingested via the daily
+      # rebuild cron. If that's stale, fail fast — the draft would otherwise
+      # ship with last-week's numbers.
+      - name: Verify data freshness
+        run: |
+          marker=data/audit/pipeline-health/rebuild-reviews.last-success
+          if [ ! -f "$marker" ]; then
+            echo "::error::No rebuild-reviews health marker — data freshness unknown"
+            exit 1
+          fi
+          marker_epoch=$(date -d "$(cat $marker)" +%s 2>/dev/null || date -j -f "%a %b %e %H:%M:%S %Z %Y" "$(cat $marker)" +%s 2>/dev/null || echo 0)
+          now=$(date -u +%s)
+          age_hours=$(( (now - marker_epoch) / 3600 ))
+          echo "rebuild-reviews last success: $age_hours hours ago"
+          if [ "$age_hours" -gt 24 ]; then
+            echo "::error::Data is $age_hours hours stale (limit: 24h). Draft would use outdated reviews."
+            exit 1
+          fi
+
+      # Self-heal the anti-repeat ledger against what was ACTUALLY sent in
+      # Resend BEFORE generating anything new (2026-08-16, #the-pass
+      # duplicate). A prior run can advance data/newsletter-state.json's
+      # featuredShowIds without the matching Resend draft ever getting
+      # re-PATCHed with that content — state.json then disagrees with what
+      # subscribers actually received, and the next issue's lastFeaturedIds
+      # guard (generate.mjs) trusts the wrong one and re-airs an already-sent
+      # show. This makes every generation start from ground truth. Any fix it
+      # makes rides the existing "Commit newsletter de-dup state" step below.
+      - name: Verify de-dup state against actually-sent broadcasts
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/newsletter/verify-sent-vs-state.mjs --fix
+
+      - name: Compute week-start (Monday in America/New_York)
+        id: week
+        run: |
+          if [ -n "${{ github.event.inputs.weekStart }}" ]; then
+            ws="${{ github.event.inputs.weekStart }}"
+          else
+            # "Last Monday" in NY tz — handles DST transitions correctly.
+            ws=$(TZ=America/New_York date -d 'last monday' +%Y-%m-%d 2>/dev/null \
+              || TZ=America/New_York date -v-mon +%Y-%m-%d)
+          fi
+          echo "weekStart=$ws" >> "$GITHUB_OUTPUT"
+          echo "Generating newsletter for week starting $ws"
+
+      - name: Generate newsletter HTML + meta.json
+        run: |
+          mkdir -p "$NEWSLETTER_OUT_DIR"
+          node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Pre-send check (HTML invariants, UTMs, subject, lede, images, completeness)
+        env:
+          # Owner escape hatch for the review-completeness HARD gate (task #823):
+          # set repo variable NEWSLETTER_ALLOW_GAPS=1 (Settings → Variables) or
+          # pass the allowGaps dispatch input to downgrade gap failures to the
+          # draft banner without a code change. Unset both to re-arm.
+          NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || vars.NEWSLETTER_ALLOW_GAPS || '' }}
+        run: |
+          node scripts/newsletter/pre-send-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      # HARD GATE: fail the draft if the email overflows a phone screen. A long
+      # venue name inside a nowrap meta line once forced the whole email to
+      # ~533px, so iOS Gmail zoomed everything out (2026-07-12). Renders the
+      # generated HTML at 375px and blocks if it can't fit.
+      - name: Mobile overflow gate
+        run: |
+          node scripts/newsletter/overflow-check.mjs "${{ steps.week.outputs.weekStart }}"
+
+      - name: Regression test (catches silent section drops)
+        run: |
+          # Skip regression test if no fixture exists for this week yet —
+          # the fixture system is per-week and a fresh weekly run is the
+          # first time we see that week's data. A failed fixture-existence
+          # check here is informational, not blocking.
+          node scripts/newsletter/regression-test.mjs "${{ steps.week.outputs.weekStart }}" || \
+            echo "::warning::Regression test skipped (no fixture for this week — expected on first weekly run)"
+
+      - name: Send [DRAFT] preview to owner
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_SLUG: A-${{ steps.week.outputs.weekStart }}
+          NEWSLETTER_TEST_RECIPIENT: ${{ secrets.OWNER_EMAIL }}
+          NEWSLETTER_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
+        run: |
+          node scripts/newsletter/send-test.mjs
+
+      # Create the Resend BROADCAST DRAFT so the finished newsletter lands in the
+      # Resend dashboard, built on this same fresh CI data (so GA-driven Trending
+      # etc. are present — unlike a local run). create-broadcast-draft.mjs has NO
+      # send path: it only POSTs/PATCHes a draft, never POST /broadcasts/{id}/send.
+      # The newsletter is therefore NEVER sent to subscribers automatically — the
+      # owner reviews the draft and clicks Send in the Resend UI. (The owner
+      # preview above is the only auto-send, and it's single-recipient to the owner.)
+      - name: Create Resend broadcast draft (DRAFT ONLY — never sends to subscribers)
+        if: ${{ github.event.inputs.skipBroadcastDraft != 'true' }}
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        # Audience FOLLOWS the edition; only "test" is honored as an override.
+        # workflow_dispatch always submits the choice default ("general"), so a
+        # human dispatching edition=west-end while leaving audience untouched
+        # used to reach the script as an edition/audience mismatch and fail the
+        # run at the last step (after the owner preview already sent).
+        run: |
+          node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
+            --audience="${{ github.event.inputs.audience == 'test' && 'test' || (github.event.inputs.edition == 'west-end' && 'west-end' || 'general') }}" --create
+
+      # BRO-4592: make sure the NEXT regen (Sunday newsletter-draft-refresh) sees
+      # complete reviews for every show this issue features. The hourly
+      # back-catalogue audit cannot be relied on to reach them (Arias with a Twist
+      # and Purpose shipped never audited, 2026-10-04), so dispatch a targeted
+      # audit with exactly the shows the draft displays a score for. Best effort,
+      # no waiting: the refresh runs ~20h later, and a failure here must never
+      # fail the draft. Dispatch only; nothing here can send to subscribers.
+      - name: Dispatch targeted review-gap audit for featured shows
+        if: success() && github.event.inputs.skipBroadcastDraft != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          IDS="$(node scripts/lib/newsletter-audit-targets.js "$NEWSLETTER_OUT_DIR/A-${{ steps.week.outputs.weekStart }}.meta.json" data/audit/gap-audit-checkpoint.json)"
+          if [ -z "$IDS" ]; then
+            echo "::notice::no featured shows to audit"
+            exit 0
+          fi
+          echo "Targeted audit: $IDS"
+          gh workflow run audit-aggregator-gap.yml -f show_ids="$IDS"
+
+      # Persist the cross-issue de-dup state (data/newsletter-state.json). The
+      # generator UPSERTs this week's mover/announced-closing IDs so next week's
+      # run can suppress a slow-moving show (e.g. Fallen Angels) from being
+      # re-featured as the Biggest Mover two weeks running. Committed to main —
+      # it's a small app-state file, not one of the private core-data files.
+      # No-op guard so a byte-identical state doesn't create an empty commit.
+      # success()-gated (was always()): the generator upserts state as a side
+      # effect, so a run that later FAILS a gate (pre-send-check, overflow,
+      # edition/audience guard) must not advance the de-dup memory — the issue
+      # never drafted, and next week's run would wrongly suppress its movers/
+      # closings as "already featured". Same reason for the skipBroadcastDraft
+      # condition: a preview-only dispatch skips the draft step (skipped ≠
+      # failed, so success() alone still passes) yet no issue was drafted.
+      - name: Commit newsletter de-dup state
+        if: success() && github.event.inputs.skipBroadcastDraft != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/newsletter-state.json
+          if git diff --cached --quiet; then
+            echo "::notice::newsletter-state.json unchanged — nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }}"
+          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Newsletter Draft Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Newsletter Draft" >> $GITHUB_STEP_SUMMARY
+          echo "Week: ${{ steps.week.outputs.weekStart }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "Status: owner preview sent + Resend broadcast DRAFT created (review & Send in Resend — never auto-sent)." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Status: FAILED — see job logs." >> $GITHUB_STEP_SUMMARY
+          fi

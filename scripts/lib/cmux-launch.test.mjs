@@ -1,0 +1,794 @@
+// timebomb-audit-exempt: cmux-launch.js:205's cmuxIdleSec() measures freshness
+//   as nowMs - fs.statSync(markerPath).mtimeMs. audit-time-bomb-tests.js shifts
+//   the PROCESS clock (nowMs) but cannot shift the FILESYSTEM (mtimeMs), so
+//   under a shifted run the "real marker round-trip" test's freshly-written
+//   marker reads as decades old/negative. Not a real time bomb — production
+//   compares two readings of the same real clock. Same class as
+//   tests/unit/ttl-cache.test.mjs; see that file's exemption for the general
+//   note in scripts/audit-time-bomb-tests.js's own docstring.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { hasSeedProcess, shouldAdoptLateStart, waitForLaunchOutcome, osActivateCmuxApp, CMUX_APP, shouldRefuseForAuth,
+  shouldPreWake, cmuxIdleSec, noteLaunchAttempt, IDLE_GATE_SEC, buildLaunchCommand,
+  computeStrictAliveness, isUsableString, describeLaunchArgError, launchCmuxSession,
+  makeSeedProcessProbe } = require('./cmux-launch.js');
+const { STATES } = require('./cmux-launch-state.js');
+
+// BRO-2251 (P0 regression, 2026-08-20): a crowned-successor handoff call
+// passed seedKey=undefined and a cwd stringified from an undefined template
+// variable (e.g. `${REPO}/${branchDir}` with branchDir undefined literally
+// yields the STRING "undefined" as a path segment) — both slipped past every
+// existing check and produced a workspace whose pty could never open its cwd.
+test('isUsableString: rejects non-strings, empty strings, and the stringified-undefined/null shape', () => {
+  assert.equal(isUsableString('workspace-id-123'), true);
+  assert.equal(isUsableString(undefined), false);
+  assert.equal(isUsableString(null), false);
+  assert.equal(isUsableString(''), false);
+  assert.equal(isUsableString('undefined'), false); // `` `${x}` `` on undefined x
+  assert.equal(isUsableString('null'), false);
+  assert.equal(isUsableString(42), false);
+});
+
+test('describeLaunchArgError: flags missing seedKey/seed/cwd by name, passes a well-formed call', () => {
+  assert.match(describeLaunchArgError({ seed: 's', seedKey: undefined, cwd: '/tmp' }), /seedKey/);
+  assert.match(describeLaunchArgError({ seed: undefined, seedKey: 'k', cwd: '/tmp' }), /seed is required/);
+  assert.match(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: undefined }), /cwd/);
+  // '/repo/undefined' is a well-formed non-empty string — this pure check
+  // passes it; catching it is the job of launchCmuxSessionInner's separate
+  // fs.statSync-backed cwdIsDir check (below), not this string-only gate.
+  assert.equal(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: '/repo/undefined' }), null);
+  // cwd === the bare literal string "undefined" IS caught here.
+  assert.equal(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: 'undefined' }) !== null, true);
+  assert.equal(describeLaunchArgError({ seed: 's', seedKey: 'k', cwd: '/tmp' }), null);
+});
+
+// Integration-level: the real launchCmuxSession must refuse BEFORE calling
+// cmux at all — the probes.newWorkspace/cmuxExists spies below must never
+// fire, proving no workspace is created for a malformed call.
+test('launchCmuxSession: refuses a missing seedKey without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: 'test launch bad seedKey', seed: 'seed text', seedKey: undefined, cwd: os.tmpdir(),
+    probes: { cmuxExists: () => true, newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; } },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /seedKey/);
+  assert.equal(res.seedFile, null);
+  assert.equal(res.command, null);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: refuses a cwd that does not exist on disk without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const badCwd = path.join(os.tmpdir(), `bro-2251-does-not-exist-${process.pid}`);
+  const res = launchCmuxSession({
+    title: 'test launch bad cwd', seed: 'seed text', seedKey: 'k-bro-2251', cwd: badCwd,
+    probes: { cmuxExists: () => true, newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; } },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cwd does not exist/);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: refuses the literal stringified-undefined cwd (the exact reproducing shape)', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: 'test launch stringified undefined cwd', seed: 'seed text', seedKey: 'k-bro-2251-b',
+    cwd: `${os.tmpdir()}/undefined`,
+    probes: { cmuxExists: () => true, newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; } },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+// BRO-2953: launchCmuxSession is the one chokepoint every launch path funnels
+// through (fresh dispatch, succession hand-off, manual) — the crown-fanout
+// guard belongs here, not in any one caller, so it sees every attempt.
+test('launchCmuxSession: refuses a duplicate crown launch without creating any workspace', () => {
+  let newWorkspaceCalls = 0;
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-a', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      newWorkspace: () => { newWorkspaceCalls++; return { status: 0, stdout: 'OK workspace:1' }; },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.equal(newWorkspaceCalls, 0);
+});
+
+test('launchCmuxSession: force:true bypasses the crown-fanout guard', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-b', cwd: os.tmpdir(), force: true,
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('listWorkspaces must not even be called when force:true'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
+test('launchCmuxSession: an ordinary (non-crown) launch is never blocked, even with 5 live crowns', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-c', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => [
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0' },
+        { ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' },
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/); // never refused for a crown-fanout reason
+});
+
+// BRO-3064 what-else finding: `cmuxExists: () => false` short-circuits at
+// cmux-launch.js:988, BEFORE the crown-fanout guard's try/catch ever runs —
+// the listWorkspaces throw below was NEVER actually reached, so this test
+// previously passed unconditionally regardless of whether the fail-open
+// catch worked at all. Isolate with a controlled post-guard failure instead
+// (see the successorOf UUID tests above for the same technique).
+test('launchCmuxSession: a listWorkspaces failure fails OPEN (never blocks a launch on an unrelated cmux-socket error)', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-d', cwd: os.tmpdir(),
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => { throw new Error('cmux socket unavailable'); },
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // proceeded past the guard despite the listWorkspaces throw
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+test('launchCmuxSession: refusal carries refusedForCrownFanout so callers can distinguish it from a generic failure', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-e', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      crownAlive: () => true,
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, true);
+});
+
+// Same BRO-3064 what-else finding as the listWorkspaces-failure test above —
+// this test's crownAlive:false claim was never actually exercised either.
+test('launchCmuxSession: a crown-titled workspace listed but with no live claude process (a corpse tab) does not block a new launch', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-f', cwd: os.tmpdir(),
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:44', title: '👑 OWNER — Crown v40 (BRO-343 backlog triage + dispatch loop)' }],
+      crownAlive: () => false, // corpse tab: listed, but no live claude process
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the corpse never counted
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+test('launchCmuxSession: successorOf exempts exactly the caller\'s own predecessor, but a THIRD unrelated crown still refuses', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v46 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-g', cwd: os.tmpdir(), successorOf: 'workspace:45',
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        { ref: 'workspace:45', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }, // my own predecessor — exempt
+        { ref: 'workspace:11', title: '👑 OWNER — Crown v43 S0: unrelated independent start' }, // NOT my predecessor — still refuses
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.match(res.reason, /workspace:11/);
+});
+
+// `cmuxExists: () => false` short-circuits at cmux-launch.js:988, BEFORE the
+// crown-fanout guard even runs (the guard sits at ~1088) — that probe choice
+// would make this test pass unconditionally, whether or not the exemption
+// ever fired, and prove nothing about the guard. Isolate the guard's effect
+// with a controllable failure AFTER it instead: skipAuthPreflight skips the
+// one gate between the guard and the capacity preflight, and a
+// terminalCapacity probe reporting no capacity refuses deterministically
+// right after, with its own distinct `reason` and `refusedForCapacity` flag
+// — so a passing assertion here only holds if the guard itself let the
+// launch through (refusedForCrownFanout absent, reason is the capacity
+// one, not "already running").
+test('launchCmuxSession: successorOf lets a hand-off through when its own predecessor is the ONLY live crown', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v46 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-2953-h', cwd: os.tmpdir(), successorOf: 'workspace:45',
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [{ ref: 'workspace:45', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }],
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the guard let it through
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+// BRO-3064: the refusal message documents passing process.env.CMUX_WORKSPACE_ID
+// (a UUID) as successorOf, not a workspace ref — a ref-only comparison at the
+// guard's filter can never match that. This is the exact bug: reproduce it by
+// giving the predecessor workspace an `id` (as the real listWorkspacesWithCwd
+// source would) and passing THAT as successorOf, the same shape a real crown
+// hand-off script uses per the message's own instructions.
+test('launchCmuxSession: successorOf exempts the caller\'s own predecessor when given as the workspace UUID (id), not just its ref', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v51 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-3064-a', cwd: os.tmpdir(),
+    successorOf: '67060685-eaf2-45bb-be5d-d7571d31ab3a', // process.env.CMUX_WORKSPACE_ID shape
+    skipAuthPreflight: true,
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        // my own predecessor, listed the way listWorkspacesWithCwd (JSON
+        // source) actually returns it: ref AND id both present, id is the
+        // UUID successorOf was given as.
+        { ref: 'workspace:162', id: '67060685-eaf2-45bb-be5d-d7571d31ab3a', title: '👑 OWNER — Crown v50 (BRO-343 backlog triage + dispatch loop)' },
+      ],
+      terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.equal(res.refusedForCrownFanout, undefined); // never refused for a crown-fanout reason — the UUID exemption fired
+  assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+});
+
+test('launchCmuxSession: successorOf given as the UUID exempts only that predecessor — a different live crown (matched by neither ref nor id) still refuses', () => {
+  const res = launchCmuxSession({
+    title: '👑 OWNER — Crown v51 successor (BRO-343 backlog triage + dispatch loop)',
+    seed: 'seed text', seedKey: 'k-bro-3064-b', cwd: os.tmpdir(),
+    successorOf: '67060685-eaf2-45bb-be5d-d7571d31ab3a',
+    probes: {
+      cmuxExists: () => true,
+      crownAlive: () => true,
+      listWorkspaces: () => [
+        { ref: 'workspace:162', id: '67060685-eaf2-45bb-be5d-d7571d31ab3a', title: '👑 OWNER — Crown v50 (BRO-343 backlog triage + dispatch loop)' }, // my own predecessor — exempt
+        { ref: 'workspace:11', id: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee', title: '👑 OWNER — Crown v43 S0: unrelated independent start' }, // NOT my predecessor — still refuses
+      ],
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /already running/);
+  assert.match(res.reason, /workspace:11/);
+});
+
+// Same BRO-3064 what-else finding: cmuxExists:false meant listWorkspaces was
+// never reached regardless of the kill switch, so this test could not have
+// caught a regression that deleted the CROWN_FANOUT_GUARD_DISABLED check. A
+// REAL live crown is now present (which would refuse without the kill
+// switch) to prove the switch is what let the launch through, not mere luck.
+test('launchCmuxSession: CROWN_FANOUT_GUARD_DISABLED=1 skips the guard entirely (operational kill switch)', () => {
+  const prev = process.env.CROWN_FANOUT_GUARD_DISABLED;
+  process.env.CROWN_FANOUT_GUARD_DISABLED = '1';
+  try {
+    const res = launchCmuxSession({
+      title: '👑 OWNER — Crown v49 (BRO-343 backlog triage + dispatch loop)',
+      seed: 'seed text', seedKey: 'k-bro-2953-i', cwd: os.tmpdir(),
+      skipAuthPreflight: true,
+      probes: {
+        cmuxExists: () => true,
+        crownAlive: () => true,
+        listWorkspaces: () => [{ ref: 'workspace:117', title: '👑 OWNER — Crown v45 (BRO-343 backlog triage + dispatch loop)' }], // would refuse without the kill switch
+        terminalCapacity: () => ({ hasCapacity: false, known: true, liveRuntimes: 99, ceiling: 90, reason: 'test-isolation: no terminal capacity' }),
+      },
+    });
+    assert.equal(res.ok, false);
+    assert.equal(res.refusedForCrownFanout, undefined); // the live crown above did NOT refuse it — the kill switch skipped the guard
+    assert.match(res.reason, /test-isolation: no terminal capacity/); // refused later, for an unrelated, controlled reason
+  } finally {
+    if (prev === undefined) delete process.env.CROWN_FANOUT_GUARD_DISABLED;
+    else process.env.CROWN_FANOUT_GUARD_DISABLED = prev;
+  }
+});
+
+test('launchCmuxSession: a non-crown launch never pays the listWorkspaces/crownAlive cost at all', () => {
+  const res = launchCmuxSession({
+    title: '🤖 Data·BRO-1234 unrelated card', seed: 'seed text', seedKey: 'k-bro-2953-j', cwd: os.tmpdir(),
+    probes: {
+      cmuxExists: () => false, // fail immediately AFTER the guard, to isolate the guard's own effect
+      listWorkspaces: () => { throw new Error('must not be called for a non-crown launch'); },
+    },
+  });
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /cmux CLI not found/);
+});
+
+// Task #1438: replaces a source-regex in bsc-next.test.mjs that pinned this
+// exact template-literal formatting (would break on a harmless reformat while
+// the launched command stayed byte-identical — the #1432/#1434 fragile class).
+test('buildLaunchCommand: always carries the resolved model + --dangerously-skip-permissions', () => {
+  const cmd = buildLaunchCommand('opus', null, '/tmp/seed.txt');
+  assert.match(cmd, /^claude --model opus --dangerously-skip-permissions /);
+  assert.ok(cmd.includes('--dangerously-skip-permissions'));
+  assert.ok(cmd.includes('$(cat /tmp/seed.txt)'));
+});
+
+test('buildLaunchCommand: settingsPath adds --settings, omitted when null', () => {
+  const withSettings = buildLaunchCommand('sonnet', '/path/to/deny.json', '/tmp/seed.txt');
+  assert.ok(withSettings.includes('--settings /path/to/deny.json'));
+  const withoutSettings = buildLaunchCommand('sonnet', null, '/tmp/seed.txt');
+  assert.ok(!withoutSettings.includes('--settings'));
+});
+
+// Card #856 (Session-system overhaul S3): launcher auth pre-check gate.
+test('shouldRefuseForAuth: refuses only on an explicit ok:false result', () => {
+  assert.equal(shouldRefuseForAuth({ ok: false, mode: 'fail', detail: 'Not logged in' }), true);
+  assert.equal(shouldRefuseForAuth({ ok: true, mode: 'oauth' }), false);
+  assert.equal(shouldRefuseForAuth({ ok: true, mode: 'api-key' }), false);
+  assert.equal(shouldRefuseForAuth(null), false);
+  assert.equal(shouldRefuseForAuth(undefined), false);
+});
+
+// Fake clock + probes for the verification wait (card #705). intervalSec 0
+// keeps `sleep 0` cheap; `now` advances 5 simulated seconds per poll so a
+// 6-minute wait costs milliseconds.
+function fakeWait({ wrapperAliveAt = () => false, tagAliveAt = () => false, wrapperStartedAt = () => false, ...opts }) {
+  let t = 0;
+  const polls = [];
+  let startedCalls = 0;
+  const res = waitForLaunchOutcome({
+    ws: { ref: 'workspace:900' }, marker: 'bsc-cmd-705-abcd1234.sh',
+    attempt: 1, maxAttempts: 2, injectionGraceSec: 90, slowBootCapSec: 360,
+    ...opts,
+    probes: {
+      intervalSec: 0,
+      now: () => { const v = t; t += 5000; return v; },
+      wrapperAlive: () => { const v = wrapperAliveAt(t / 1000); polls.push({ t: t / 1000, wrapperAlive: v }); return v; },
+      claudeTagAlive: () => tagAliveAt(t / 1000),
+      wrapperStarted: () => { startedCalls += 1; return wrapperStartedAt(t / 1000); },
+      // MUST be stubbed: without it the deferred-render wake default fires a
+      // REAL `cmux set-app-focus active` on the host with no clear (lazy-exec
+      // fix ship-check finding, 2026-08-02).
+      wake: () => {},
+      // Likewise MUST be stubbed (BRO-2575 ship-check): unstubbed, this falls
+      // through to the REAL cmuxws.terminalSurfaceConfirmedMissing, which asks
+      // the live cmux on the host about workspace:900. On a machine running
+      // cmux that ref is genuinely not found, so the harness reported
+      // surfaceConfirmedMissing=true and every INJECTION_NEVER_RAN expectation
+      // below resolved to TERMINAL_RUNTIME_MISSING instead — 4 tests that fail
+      // locally and pass in CI (where there is no cmux binary and the throw is
+      // an unrecognised ENOENT). Host-dependent tests are worse than no tests;
+      // callers that want the surface-missing branch pass it explicitly.
+      surfaceConfirmedMissing: () => false,
+    },
+  });
+  return { res, polls, startedCalls: () => startedCalls };
+}
+
+// Captured shape from `ps -e -ww -o command=` on the host, 2026-07-26 — the
+// bash wrapper stays alive as the foreground claude process's parent for the
+// whole session (card #548). Markers are nonce-suffixed cmd-file basenames —
+// seedKey alone (task.id) is NOT unique across dispatch attempts of the same
+// task, so the launcher matches on the full basename, not the bare seedKey.
+const PS_SAMPLE = `/sbin/launchd
+bash /var/folders/__/n5f8n1yj2wnch4lpmz1138840000gn/T/bsc-cmd-545-a1b2c3d4.sh
+/Users/tompryor/.local/bin/claude --session-id abc --model sonnet --dangerously-skip-permissions [#545] Retrofit hasHelpFlag —
+bash /var/folders/__/n5f8n1yj2wnch4lpmz1138840000gn/T/bsc-cmd-548-e5f6a7b8.sh
+/Users/tompryor/.local/bin/claude --session-id def --model opus --dangerously-skip-permissions [#548] bsc-next false verified running —
+grep -i bsc-cmd
+`;
+
+test('hasSeedProcess: finds the bash wrapper for a live launch marker', () => {
+  assert.equal(hasSeedProcess(PS_SAMPLE, 'bsc-cmd-545-a1b2c3d4.sh'), true);
+  assert.equal(hasSeedProcess(PS_SAMPLE, 'bsc-cmd-548-e5f6a7b8.sh'), true);
+});
+
+test('hasSeedProcess: false for a marker with no matching wrapper (the #548 false-positive case)', () => {
+  // workspace:115's real bug: cmux's own tag said alive, but no OS process
+  // existed for #545's second attempt — this is what that looks like.
+  assert.equal(hasSeedProcess(PS_SAMPLE, 'bsc-cmd-545-deadbeef.sh'), false);
+  assert.equal(hasSeedProcess(PS_SAMPLE, 'bsc-cmd-999-a1b2c3d4.sh'), false);
+});
+
+test('hasSeedProcess: a STALE wrapper from an earlier attempt on the same task does not match a different attempt\'s marker', () => {
+  // The exact bug an adversarial review caught pre-ship: seedKey (task.id)
+  // repeats across dispatch attempts, so two concurrently-live bash wrappers
+  // for task #545 existed on the host from separate attempts. Matching on
+  // the bare seedKey would let attempt A's leftover process confirm attempt
+  // B's workspace. The nonce-suffixed marker must not conflate them.
+  const staleAttempt = `bash /tmp/bsc-cmd-545-oldnonce1.sh\n`;
+  assert.equal(hasSeedProcess(staleAttempt, 'bsc-cmd-545-newnonce2.sh'), false);
+});
+
+test('hasSeedProcess: empty/garbage ps output is never a false positive', () => {
+  assert.equal(hasSeedProcess('', 'bsc-cmd-545-a1b2c3d4.sh'), false);
+  assert.equal(hasSeedProcess('not a process list', 'bsc-cmd-545-a1b2c3d4.sh'), false);
+});
+
+test('waitForLaunchOutcome: a slow boot NEVER asks for a retry while the wrapper lives (card #705)', () => {
+  // The reproduced incident: the typed command starts at ~40s, claude
+  // registers at ~4.5 min. The old fixed window declared this dead at 90s and
+  // relaunched — three identical crowned sessions on 2026-07-31.
+  const { res, polls } = fakeWait({
+    wrapperAliveAt: t => t >= 40,
+    tagAliveAt: t => t >= 270,
+  });
+  assert.equal(res.action, 'ok');
+  assert.equal(res.state, STATES.REGISTERED);
+  assert.ok(polls.some(p => p.t > 90 && p.wrapperAlive), 'must have kept polling past the old 90s window');
+});
+
+test('waitForLaunchOutcome: wrapper alive but claude never registers → slow-boot-timeout, still not a retry', () => {
+  const { res } = fakeWait({ wrapperAliveAt: t => t >= 10 });
+  assert.equal(res.action, 'fail', 'a live wrapper must never yield action:retry — that relaunch is the duplicate factory');
+  assert.equal(res.state, STATES.SLOW_BOOT_TIMEOUT);
+  assert.equal(res.wrapperAlive, true, 'callers use this to know the workspace is NOT a corpse');
+  assert.ok(res.elapsedSec >= 360);
+});
+
+test('waitForLaunchOutcome: nothing ever runs → injection-never-ran, retry allowed', () => {
+  const { res } = fakeWait({});
+  assert.equal(res.action, 'retry');
+  assert.equal(res.state, STATES.INJECTION_NEVER_RAN);
+  assert.equal(res.wrapperAlive, false);
+  assert.ok(res.elapsedSec >= 90 && res.elapsedSec < 360, 'must give up on a never-started command in the grace window, not the slow-boot cap');
+
+  // Last attempt: same state, terminal.
+  const last = fakeWait({ attempt: 2 }).res;
+  assert.equal(last.action, 'fail');
+  assert.equal(last.state, STATES.INJECTION_NEVER_RAN);
+});
+
+// ── Started-marker file signal (card #1812) ────────────────────────────────
+// Live-reproduced 2026-08-19 via scripts/probe-cmux-launch.js: a fast-exit
+// wrapper can complete and vanish entirely BETWEEN two 3s ps snapshots, so
+// osProcessAliveForSeed never once samples it alive even though the command
+// genuinely ran (ground-truth marker file existed). THIS TEST FAILS ON
+// PRE-FIX CODE: without startedProbe wired in, wrapperAliveAt always
+// returning false gives wrapperEverSeen no way to become true, so the wait
+// times out to INJECTION_NEVER_RAN/retry exactly like the case above — proven
+// by running this test against `git stash` of the cmux-launch.js change.
+test('waitForLaunchOutcome: a wrapper the ps probe NEVER samples alive still verifies via the started-marker file (card #1812)', () => {
+  const { res, startedCalls } = fakeWait({
+    wrapperAliveAt: () => false, // ps snapshot NEVER once catches it — the reproduced false-negative
+    wrapperStartedAt: t => t >= 5, // but the marker file the wrapper touched first proves it ran, within the #548 debounce grace
+    tagAliveAt: t => t >= 5, // claude registers on the same poll
+  });
+  assert.equal(res.action, 'ok', 'the started-marker signal must let a genuinely-running launch verify instead of timing out dead');
+  assert.equal(res.state, STATES.REGISTERED);
+  assert.ok(startedCalls() > 0, 'the started-marker probe must actually be consulted');
+});
+
+// Coverage gap named in ship-check (2026-08-19): the marker signal at attempt
+// 2 must still verify normally — nothing about it is attempt-scoped.
+test('waitForLaunchOutcome: the started-marker signal also verifies on the LAST attempt (action:fail territory, not just retry)', () => {
+  const { res } = fakeWait({
+    attempt: 2,
+    wrapperAliveAt: () => false,
+    wrapperStartedAt: t => t >= 5,
+    tagAliveAt: t => t >= 5,
+  });
+  assert.equal(res.action, 'ok', 'attempt number must not gate whether the started-marker signal counts');
+  assert.equal(res.state, STATES.REGISTERED);
+});
+
+test('waitForLaunchOutcome: started-marker never fires → unchanged INJECTION_NEVER_RAN behavior (regression safety)', () => {
+  const { res, startedCalls } = fakeWait({ wrapperStartedAt: () => false });
+  assert.equal(res.action, 'retry');
+  assert.equal(res.state, STATES.INJECTION_NEVER_RAN);
+  assert.ok(startedCalls() > 0, 'the probe must be polled, not skipped');
+});
+
+test('waitForLaunchOutcome: started-marker probe is never consulted when ps catches the wrapper on the very first sample (no wasted fs calls)', () => {
+  const { startedCalls } = fakeWait({
+    wrapperAliveAt: () => true, // ps catches it immediately — sampleAlive short-circuits startedProbe
+    tagAliveAt: t => t >= 10,
+    wrapperStartedAt: () => { throw new Error('must not be called once the ps sample alone already confirmed the wrapper'); },
+  });
+  assert.equal(startedCalls(), 0, 'the marker-file probe is short-circuited by `sampleAlive ||`, never consulted');
+});
+
+test('waitForLaunchOutcome: started via marker but never comes alive → WRAPPER_EXITED, not INJECTION_NEVER_RAN (more honest diagnosis)', () => {
+  // The command genuinely ran (marker proves it) and then nothing ever
+  // registered — this is now correctly distinguishable from "nothing ever
+  // ran at all", even though both are still a 'retry'/'fail' verdict.
+  const { res } = fakeWait({
+    wrapperAliveAt: () => false,
+    wrapperStartedAt: t => t >= 5,
+    tagAliveAt: () => false,
+  });
+  assert.equal(res.state, STATES.WRAPPER_EXITED);
+});
+
+test('waitForLaunchOutcome: claude tag alone never verifies without a live wrapper process (#548 cross-check intact)', () => {
+  const { res } = fakeWait({ wrapperAliveAt: () => false, tagAliveAt: () => true });
+  assert.notEqual(res.action, 'ok', 'cmux tag registry can desync — the OS process is ground truth');
+  // …but it also must not retry into a workspace cmux says is live: unverified,
+  // not dead (ship-check hardening).
+  assert.equal(res.action, 'fail');
+  assert.equal(res.state, STATES.WRAPPER_GONE_TAG_ALIVE);
+});
+
+test('waitForLaunchOutcome: ONE flaky ps sample never closes a live launch (probe fails closed)', () => {
+  // osProcessAliveForSeed returns false on any ps error/timeout/truncation.
+  // Without debouncing, that single miss reads as "the wrapper died" and the
+  // launcher closes and relaunches a healthy session.
+  let polls = 0;
+  const { res } = fakeWait({
+    wrapperAliveAt: () => { polls += 1; return polls !== 3; }, // one bad sample mid-flight
+    tagAliveAt: t => t >= 120,
+  });
+  assert.equal(res.action, 'ok', 'a single missed sample must not end the wait');
+});
+
+test('waitForLaunchOutcome: a REAL wrapper exit (sustained misses) still ends the wait', () => {
+  // The debounce must not make a genuine death undetectable.
+  const { res } = fakeWait({ wrapperAliveAt: t => t < 30 });
+  assert.equal(res.state, STATES.WRAPPER_EXITED);
+  assert.equal(res.action, 'retry');
+});
+
+test('waitForLaunchOutcome: the boot budget starts when the wrapper appears, not at workspace creation', () => {
+  // Injection lands at 60s (inside the 90s grace); claude registers at 400s.
+  // Total elapsed then exceeds the 360s cap, but the BOOT only took ~340s —
+  // measuring the cap from workspace creation would kill this healthy launch.
+  const { res } = fakeWait({
+    wrapperAliveAt: t => t >= 60,
+    tagAliveAt: t => t >= 400,
+  });
+  assert.equal(res.action, 'ok');
+  assert.ok(res.elapsedSec >= 360, 'total elapsed exceeded the slow-boot cap, yet the launch verified');
+});
+
+test('shouldAdoptLateStart: adopts a failed-verify result whose leftover workspace is now alive', () => {
+  const result = { ok: false, workspaceRef: 'workspace:115', reason: 'no running claude' };
+  assert.equal(shouldAdoptLateStart(result, true), true);
+});
+
+test('shouldAdoptLateStart: refuses when the workspace never came alive, or the launch already succeeded', () => {
+  assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: 'workspace:115' }, false), false);
+  assert.equal(shouldAdoptLateStart({ ok: true, workspaceRef: 'workspace:115' }, true), false);
+  assert.equal(shouldAdoptLateStart({ ok: false, workspaceRef: null }, true), false);
+});
+
+// ── Card #1829: terminal-surface signal now required for "alive" ──────────
+// The incident: 7/7 cmux-tab dispatches on 2026-08-19 created a workspace
+// record with a live cmux tag AND a live OS wrapper process, but the
+// terminal surface never rendered (`cmux read-screen` returned "Terminal
+// surface not found" on all seven, one 50 minutes old). strictlyAliveWorkspace
+// previously only checked the tag + OS-process signals, so it reported these
+// ALIVE and the launcher adopted them as ok:true with nothing actually
+// running. computeStrictAliveness is the pure AND-gate that function now
+// delegates to.
+test('computeStrictAliveness: a live tag + live OS process is NOT enough — a confirmed-dead surface still means dead', () => {
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: true, osProcessAlive: true, surfaceAlive: false }), false,
+    'the exact 2026-08-19 incident shape: every existing signal said alive, only read-screen knew the surface was gone');
+});
+
+test('computeStrictAliveness: all four signals alive → alive', () => {
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: true, osProcessAlive: true, surfaceAlive: true }), true);
+});
+
+test('computeStrictAliveness: not listed → dead regardless of the other three', () => {
+  assert.equal(computeStrictAliveness({ listed: false, claudeAlive: true, osProcessAlive: true, surfaceAlive: true }), false);
+});
+
+test('computeStrictAliveness: any single false signal → dead (unanimous AND)', () => {
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: false, osProcessAlive: true, surfaceAlive: true }), false);
+  assert.equal(computeStrictAliveness({ listed: true, claudeAlive: true, osProcessAlive: false, surfaceAlive: true }), false);
+});
+
+test('osActivateCmuxApp: best-effort OS-level activation, never throws (card #900)', () => {
+  // set-app-focus (the existing wake) is an IPC call INTO cmux's own socket
+  // handler — it never touches the real macOS window server, which is the
+  // gap this function closes (six cross-task INJECTION_NEVER_RAN failures
+  // in the two hours after the 8/3 restart despite the IPC flag firing on
+  // every one of them). `open -a` asks the OS itself to activate the app,
+  // which reaches states set-app-focus cannot. Must be silent/non-throwing
+  // even when `open` or the app bundle is unavailable (CI has no GUI).
+  assert.doesNotThrow(() => osActivateCmuxApp());
+  assert.equal(CMUX_APP, '/Applications/cmux.app');
+});
+
+test('waitForLaunchOutcome: wake() sees isFirstWake=true only on the FIRST call, false on rewakes (Codex P1, 2026-08-03)', () => {
+  // osActivateCmuxApp (real OS foreground) is gated on !isFirstWake — firing
+  // it on every 5s-delayed launch would steal screen focus for the common
+  // brief-lag case, not just a genuine outage. Pin the sequence the caller
+  // (launchCmuxSessionInner) relies on to make that gating correct.
+  let t = 0;
+  const wakeCalls = [];
+  waitForLaunchOutcome({
+    ws: { ref: 'workspace:900' }, marker: 'bsc-cmd-705-abcd1234.sh',
+    attempt: 1, maxAttempts: 2, injectionGraceSec: 90, slowBootCapSec: 360,
+    probes: {
+      intervalSec: 0,
+      now: () => { const v = t; t += 5000; return v; },
+      wrapperAlive: () => false,
+      claudeTagAlive: () => false,
+      wake: isFirstWake => wakeCalls.push(isFirstWake),
+    },
+  });
+  assert.ok(wakeCalls.length >= 2, 'the never-injects case must rewake more than once inside the grace window');
+  assert.equal(wakeCalls[0], true);
+  assert.ok(wakeCalls.slice(1).every(v => v === false), 'every call after the first must report isFirstWake=false');
+});
+
+// ── Idle-gated pre-wake (card #1199) ───────────────────────────────────────
+// Measured over 399 real cmux launches: deaths cluster on launches into an
+// IDLE app (>10m gap = 22% dead vs <5s gap = 8%; solo = 19% vs 1-2 concurrent
+// siblings = 7%; 00:00-05:00 ET = 31% vs 10:00-11:00 = 0%). The existing wake
+// is reactive — it only fires after the surface has already failed to render.
+
+test('shouldPreWake: wakes on a long-idle app, stays out of the way of a busy one', () => {
+  assert.equal(shouldPreWake({ idleSec: 600 }), true, '10m idle is the 22%-dead segment');
+  assert.equal(shouldPreWake({ idleSec: IDLE_GATE_SEC }), true, 'exactly at the gate wakes');
+  assert.equal(shouldPreWake({ idleSec: 3 }), false, 'a launch 3s after another is the 8%-dead segment');
+  assert.equal(shouldPreWake({ idleSec: IDLE_GATE_SEC - 1 }), false);
+});
+
+// The finally-clear in launchCmuxSession is launch-scoped and NOT refcounted,
+// so a concurrent launcher's clear can re-defer a sibling's still-unrendered
+// surface. Waking on EVERY launch would make that rare collision the common
+// case, and precisely in the regime the data says is already safest. The gate
+// is what keeps `woke` correlated with genuinely-idle launches.
+test('shouldPreWake: a concurrent batch does NOT wake, so the unrefcounted clear stays rare', () => {
+  const busy = [0, 1, 5, 30, 119].map(idleSec => shouldPreWake({ idleSec }));
+  assert.deepEqual(busy, [false, false, false, false, false]);
+});
+
+test('shouldPreWake: an unknown idle reading always wakes — the cheap flag is the safe answer', () => {
+  assert.equal(shouldPreWake({ idleSec: Infinity }), true, 'no marker = first launch since boot');
+  assert.equal(shouldPreWake({ idleSec: NaN }), true);
+  assert.equal(shouldPreWake({ idleSec: undefined }), true);
+  assert.equal(shouldPreWake({ idleSec: -50 }), true, 'marker stamped in the future by a clock step');
+});
+
+test('shouldPreWake: attempt 2 always wakes — a retry only happens after nothing ran', () => {
+  assert.equal(shouldPreWake({ idleSec: 0, attempt: 2 }), true);
+  assert.equal(shouldPreWake({ idleSec: 0, attempt: 1 }), false);
+});
+
+test('cmuxIdleSec/noteLaunchAttempt: real marker round-trip, and Infinity when absent', () => {
+  const marker = path.join(os.tmpdir(), `bsc-cmux-last-launch-test-${process.pid}`);
+  try { fs.unlinkSync(marker); } catch { /* fresh */ }
+  assert.equal(cmuxIdleSec(marker), Infinity, 'a missing marker must read as idle, not 0');
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker) }), true);
+
+  noteLaunchAttempt(marker);
+  const idle = cmuxIdleSec(marker);
+  assert.ok(idle >= 0 && idle < 5, `a just-stamped marker must read as busy, got ${idle}`);
+  assert.equal(shouldPreWake({ idleSec: idle }), false, 'a sibling launcher one second later must skip its own pre-wake');
+
+  // 10 minutes ago → back over the gate.
+  const old = Date.now() - 600_000;
+  fs.utimesSync(marker, new Date(old), new Date(old));
+  assert.ok(cmuxIdleSec(marker) > IDLE_GATE_SEC);
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker) }), true);
+  fs.unlinkSync(marker);
+});
+
+test('cmuxIdleSec: sub-ms negative jitter clamps to 0, a real clock step reads as unknown', () => {
+  // Date.now() is ms-resolution, mtimeMs carries the filesystem's finer clock,
+  // so a marker stamped microseconds ago legitimately reads slightly negative.
+  // Unclamped, shouldPreWake's "negative = unknown = wake" rule would fire on
+  // a marker a concurrent launcher had JUST stamped — which is exactly the
+  // collision the idle gate exists to avoid. Found by this file's own
+  // round-trip test failing at -0.0005s.
+  const marker = path.join(os.tmpdir(), `bsc-cmux-jitter-test-${process.pid}`);
+  noteLaunchAttempt(marker);
+  const st = fs.statSync(marker);
+  assert.equal(cmuxIdleSec(marker, st.mtimeMs - 0.5), 0, 'half a millisecond in the future is jitter');
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker, st.mtimeMs - 0.5) }), false);
+  assert.equal(cmuxIdleSec(marker, st.mtimeMs - 60_000), Infinity, 'a minute in the future is a clock step, not jitter');
+  assert.equal(shouldPreWake({ idleSec: cmuxIdleSec(marker, st.mtimeMs - 60_000) }), true);
+  fs.unlinkSync(marker);
+});
+
+// ── BRO-2575: makeSeedProcessProbe ─────────────────────────────────────────
+// The OS process table is the only liveness signal not read through cmux, so
+// it is the one that still tells the truth when cmux's tag registry and
+// terminal surface go quiet together (2026-08-31: five live dispatches
+// journaled dead in the same 2ms). bsc-prune and checkDeadDispatch both gate
+// their 'dead' verdict on it. These cover the two properties that matter:
+// the sample is taken at most once, and a broken `ps` never manufactures life.
+test('makeSeedProcessProbe: samples the process table exactly once, however many markers are tested', () => {
+  let samples = 0;
+  const probe = makeSeedProcessProbe(() => {
+    samples++;
+    return 'bash /var/folders/__/T/bsc-cmd-linear_BRO-80-f09deda2.sh\n';
+  });
+  assert.equal(samples, 0, 'the sample must be lazy — a probe nobody consults must not spawn ps');
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(probe('bsc-cmd-linear_BRO-99-00000000.sh'), false);
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(samples, 1,
+    'a 25-workspace sweep must dump the process table once, not 25 times');
+});
+
+test('makeSeedProcessProbe: a failing process-table read reports every marker not-alive (fail CLOSED)', () => {
+  const probe = makeSeedProcessProbe(() => { throw new Error('ps: cannot allocate memory'); });
+  assert.equal(probe('bsc-cmd-linear_BRO-80-f09deda2.sh'), false,
+    'a broken ps must never vouch for a session — the caller then keeps its pre-existing verdict');
+});
+
+test('makeSeedProcessProbe: a marker that is not running reports false, not a throw', () => {
+  const probe = makeSeedProcessProbe();
+  assert.equal(probe('bsc-cmd-no-such-launch-deadbeef.sh'), false);
+});
+
+// hasSeedProcess is the pure half both the launch path and the death path
+// share; the marker's nonce is what stops a stale wrapper from an OLDER
+// attempt vouching for a NEW workspace (card #548).
+test('hasSeedProcess: matches the real wrapper line shape, and only the exact nonce', () => {
+  const psText = 'bash /var/folders/__/T/bsc-cmd-linear_BRO-80-f09deda2.sh\n/sbin/launchd\n';
+  assert.equal(hasSeedProcess(psText, 'bsc-cmd-linear_BRO-80-f09deda2.sh'), true);
+  assert.equal(hasSeedProcess(psText, 'bsc-cmd-linear_BRO-80-99999999.sh'), false,
+    'a different attempt of the SAME task must not vouch for this one');
+  assert.equal(hasSeedProcess('', 'bsc-cmd-linear_BRO-80-f09deda2.sh'), false);
+});
+
+// BRO-2982: crown succession launches must reach the dispatch ledger with
+// succession data so successionDepthForTask's cap engages.
+const { recordSuccessionLaunchRow, ledgerTaskIdForLaunch } = require('./cmux-launch.js');
+const dispatchLedger = require('./dispatch-ledger.js');
+
+test('BRO-2982: succession launch appends a launch row carrying succession + successionOf', () => {
+  const rows = [];
+  const res = { ok: true, ref: 'workspace:900', marker: 'bsc-cmd-x.sh' };
+  recordSuccessionLaunchRow(
+    { title: 'OWNER-crown v49 — BRO-343 backlog triage', successorOf: 'workspace:120', model: 'opus' }, res, r => { rows.push(r); return r; });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].event, 'launch');
+  assert.equal(rows[0].taskId, 'linear:BRO-343');
+  assert.equal(rows[0].workspaceRef, 'workspace:900');
+  assert.equal(rows[0].succession, true);
+  assert.equal(rows[0].successionOf, 'workspace:120');
+  assert.equal(rows[0].linearId, 'BRO-343');
+  // depth cap engages: prior fresh launch + this succession = depth 2, not reset to 1
+  const entries = [{ event: 'launch', taskId: 'linear:BRO-343', ts: '2026-01-01T00:00:00Z' }, { ...rows[0], ts: '2026-01-02T00:00:00Z' }];
+  assert.equal(dispatchLedger.successionDepthForTask('linear:BRO-343', entries), 2);
+});
+
+test('BRO-2982: no row for plain launches (bsc-next/linear-next write their own), failed launches, or unidentifiable tasks', () => {
+  const rows = []; const sink = r => { rows.push(r); return r; };
+  recordSuccessionLaunchRow({ title: 'BRO-5 x' }, { ok: true, ref: 'workspace:1' }, sink);
+  recordSuccessionLaunchRow({ title: 'BRO-5 x', successorOf: 'workspace:2' }, { ok: false, ref: 'workspace:1' }, sink);
+  recordSuccessionLaunchRow({ title: 'crown no id', successorOf: 'workspace:2' }, { ok: true, ref: 'workspace:1' }, sink);
+  assert.equal(rows.length, 0);
+  recordSuccessionLaunchRow({ title: 't', ledgerTaskId: 'linear:BRO-9' }, { ok: true, ref: 'workspace:3' }, sink);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].succession, undefined);
+  assert.equal(ledgerTaskIdForLaunch({ title: 't' }), null);
+});
+
+test('BRO-2982: a throwing ledger never fails the launch', () => {
+  assert.equal(recordSuccessionLaunchRow({ title: 'BRO-1', successorOf: 'w' }, { ok: true, ref: 'workspace:4' }, () => { throw new Error('disk'); }), null);
+});
+
+test('BRO-2982: the FIRST crown of a chain (crown title, no successorOf) also gets a non-succession row', () => {
+  const rows = [];
+  recordSuccessionLaunchRow({ title: '👑 OWNER-crown v1 — BRO-4001 and BRO-343 mandate' }, { ok: true, ref: 'workspace:5' }, r => { rows.push(r); return r; });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].taskId, 'linear:BRO-343');
+  assert.equal(rows[0].succession, undefined);
+});

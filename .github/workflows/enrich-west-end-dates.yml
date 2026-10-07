@@ -1,0 +1,125 @@
+name: Enrich West End Dates
+
+on:
+  schedule:
+    # Weekly Monday 7 AM UTC — fix shows with unconfirmed press night sources
+    # (todaytix, showscore, unknown). Cut from daily 2026-05-08 to reduce
+    # Bright Data SERP spend; manually trigger via workflow_dispatch if a
+    # specific WE show needs fast date correction ahead of opening night.
+    - cron: '0 7 * * 1'
+    # Weekly on Thursdays at 8 AM UTC — full enrichment for newly announced WE shows
+    - cron: '0 8 * * 4'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Mode: enrich (fill missing), verify (compare only), force (overwrite all), fix-unconfirmed (correct todaytix/showscore dates)'
+        required: true
+        default: 'enrich'
+        type: choice
+        options:
+          - enrich
+          - verify
+          - force
+          - fix-unconfirmed
+      show:
+        description: 'Optional: specific show slug to process'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: enrich-west-end-dates
+  cancel-in-progress: false
+
+jobs:
+  enrich-dates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Run West End date enrichment
+        id: enrich
+        run: |
+          FLAGS=""
+          MODE="${{ inputs.mode || '' }}"
+
+          # Auto-detect mode from WHICH cron fired — never from the wall clock.
+          # The old check was `date -u +%H` == "08" && `date -u +%u` == 4, but
+          # GitHub crons fire 30 min-3 h late: 4 of 5 Thursday runs in the 30 days
+          # to 2026-07-30 started 09:00-09:14 UTC and silently downgraded to
+          # fix-unconfirmed (run 30529008354 logged "Daily 7 AM UTC cron" on a
+          # Thursday). Thursday's `enrich` arm is the ONLY one that fills MISSING
+          # West End dates -- fix-unconfirmed merely corrects dates that already
+          # exist -- so lateness left 13 null-openingDate WE/OWE shows with no
+          # live filler. github.event.schedule is the literal cron string that
+          # triggered this run, so it is immune to delay.
+          if [ -z "$MODE" ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            if [ "${{ github.event.schedule }}" = "0 8 * * 4" ]; then
+              MODE="enrich"
+              echo "Thursday cron (0 8 * * 4) → enrich mode (full enrichment)"
+            else
+              MODE="fix-unconfirmed"
+              echo "Monday cron (${{ github.event.schedule }}) → fix-unconfirmed mode (correct unconfirmed sources)"
+            fi
+          fi
+          MODE="${MODE:-enrich}"
+
+          if [ "$MODE" = "verify" ]; then
+            FLAGS="$FLAGS --verify --dry-run"
+          elif [ "$MODE" = "force" ]; then
+            FLAGS="$FLAGS --force"
+          elif [ "$MODE" = "fix-unconfirmed" ]; then
+            FLAGS="$FLAGS --fix-unconfirmed"
+          fi
+
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          echo "Running: node scripts/enrich-west-end-dates.js $FLAGS"
+          node scripts/enrich-west-end-dates.js $FLAGS
+
+      - name: Check for changes
+        if: (inputs.mode || 'enrich') != 'verify'
+        id: git-check
+        run: |
+          git diff --exit-code data/shows.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      # shows.json is gitignored in the public repo — see note in
+      # enrich-ibdb-dates.yml. push-core-data below handles the sync.
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from enrich-west-end-dates'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'West End Date Enrichment Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

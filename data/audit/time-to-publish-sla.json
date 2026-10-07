@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-10-06T14:00:25.234Z",
+  "scope": "2 opening window(s): affluenza-off-west-end-2026 (2026-10-05), franz-and-marie-west-end-2026 (2026-10-05)",
+  "degraded": null,
+  "windows": [
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "openingDate": "2026-10-05",
+      "from": "2026-10-04T00:00:00.000Z",
+      "to": "2026-10-09T23:59:59.999Z"
+    },
+    {
+      "showId": "franz-and-marie-west-end-2026",
+      "openingDate": "2026-10-05",
+      "from": "2026-10-04T00:00:00.000Z",
+      "to": "2026-10-09T23:59:59.999Z"
+    }
+  ],
+  "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
+  "logEntryCount": 264193,
+  "logOldestEntryAt": "2026-09-29T18:41:56.321Z",
+  "publishTimesLoaded": 0,
+  "verdict": {
+    "verdict": "insufficient-data",
+    "pass": false,
+    "evaluated": 0,
+    "inFlight": 0,
+    "compliant": 0,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
+    "targetMinutes": 15,
+    "targetPct": 90,
+    "minSample": 5,
+    "breaches": [],
+    "byBasis": {}
+  },
+  "records": []
+}

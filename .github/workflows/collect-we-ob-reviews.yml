@@ -1,0 +1,279 @@
+name: Collect WE/OB Review Texts
+
+# Dedicated daily collection for West End and Off-Broadway markets.
+# The main collect-review-texts.yml processes 150/batch across all markets,
+# starving WE/OB reviews behind the 18K+ Broadway backlog.
+# This workflow uses MARKET_FILTER to collect only one market per run.
+# Chains up to 2 additional runs to clear backlogs (450 reviews max/market/day).
+
+on:
+  schedule:
+    # Daily at 8 AM UTC — WE on even days, OB on odd days
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+    inputs:
+      market:
+        description: 'Market to collect (west-end or off-broadway)'
+        required: true
+        default: 'west-end'
+        type: choice
+        options:
+          - west-end
+          - off-broadway
+      max_reviews:
+        description: 'Max reviews per run (0 = unlimited)'
+        required: false
+        default: '150'
+      remaining_chains:
+        description: 'Remaining chain dispatches (0 = no chaining)'
+        required: false
+        default: '0'
+
+concurrency:
+  group: collect-we-ob-${{ inputs.market || 'scheduled' }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: |
+          mkdir -p data/archives/reviews
+          mkdir -p data/audit/validation
+          mkdir -p data/collection-state
+
+      - name: Clear progress state
+        run: rm -f data/collection-state/progress.json
+
+      - name: Determine market
+        id: market
+        run: |
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            DAY_OF_MONTH=$(date -u +%d)
+            if [ $((DAY_OF_MONTH % 2)) -eq 0 ]; then
+              echo "market=west-end" >> $GITHUB_OUTPUT
+              echo "Scheduled: West End collection (even day)"
+            else
+              echo "market=off-broadway" >> $GITHUB_OUTPUT
+              echo "Scheduled: Off-Broadway collection (odd day)"
+            fi
+          else
+            echo "market=${{ inputs.market }}" >> $GITHUB_OUTPUT
+            echo "Manual: ${{ inputs.market }} collection"
+          fi
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Collect review texts (${{ steps.market.outputs.market }})
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+          FT_EMAIL: ${{ secrets.FT_EMAIL }}
+          FT_PASSWORD: ${{ secrets.FT_PASSWORD }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          BROWSERBASE_ENABLED: 'true'
+          BROWSERBASE_MAX_SESSIONS_PER_RUN: '10'
+          BATCH_SIZE: '10'
+          MAX_REVIEWS: ${{ inputs.max_reviews || '150' }}
+          MARKET_FILTER: ${{ steps.market.outputs.market }}
+          RETRY_FAILED: 'true'
+          ARCHIVE_FIRST: 'true'
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/collect-review-texts.js
+
+      # The Stage walls most reviews behind a free-account prompt. The
+      # collector salvages the date/byline/standfirst/stars above the wall
+      # inline, but only while it still retries; stubs it has abandoned stay
+      # unscored and never reach the site (BRO-4428). Each file is re-checked
+      # at most every 14 days, so this costs a few dozen fetches at most.
+      - name: Salvage The Stage walled-page metadata
+        if: always() && steps.market.outputs.market == 'west-end'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: node scripts/backfill-walled-page-meta.js --limit=40 --delay-ms=3000 --time-budget-min=12
+
+      - name: Validate data
+        if: always()
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Push review-texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Collect ${{ steps.market.outputs.market }} review texts"
+
+      - name: Count remaining uncollected
+        if: always()
+        id: remaining
+        run: |
+          MARKET="${{ steps.market.outputs.market }}"
+          REMAINING=$(node -e "
+            const fs = require('fs'), path = require('path');
+            const base = 'data/review-texts';
+            const dirs = fs.readdirSync(base).filter(d => d.includes('$MARKET') && fs.statSync(path.join(base, d)).isDirectory());
+            let n = 0;
+            for (const d of dirs) {
+              for (const f of fs.readdirSync(path.join(base, d)).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')) {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), 'utf8'));
+                  if (r.assignedScore || r.duplicateOf || r.wrongShow || r.wrongProduction ||
+                      r.wrongAttribution || r.contentTier === 'invalid' || r.isRoundupArticle ||
+                      r.rejectionReason) continue;
+                  const hasText = r.fullText || r.bwwExcerpt || r.dtliExcerpt || r.showScoreExcerpt ||
+                                  r.nycTheatreExcerpt || r.lboRoundupExcerpt;
+                  if (!hasText && r.url && r.url.startsWith('http')) n++;
+                } catch {}
+              }
+            }
+            console.log(n);
+          ")
+          echo "remaining=$REMAINING" >> $GITHUB_OUTPUT
+          echo "$MARKET reviews still needing collection: $REMAINING"
+
+      - name: Chain next collection batch
+        if: always() && fromJSON(steps.remaining.outputs.remaining) > 5
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MARKET="${{ steps.market.outputs.market }}"
+          # Scheduled runs get 2 chains (450 total). Manual runs chain if remaining_chains > 0.
+          if [ "${{ github.event_name }}" == "schedule" ]; then
+            CHAINS_LEFT=2
+          else
+            CHAINS_LEFT="${{ inputs.remaining_chains }}"
+            CHAINS_LEFT="${CHAINS_LEFT:-0}"
+          fi
+
+          if [ "$CHAINS_LEFT" -le 0 ] 2>/dev/null; then
+            echo "No remaining chains. Done."
+            exit 0
+          fi
+
+          NEXT_CHAINS=$((CHAINS_LEFT - 1))
+          echo "Dispatching chain ($NEXT_CHAINS chains remaining after this)..."
+
+          gh workflow run collect-we-ob-reviews.yml \
+            -f market="$MARKET" \
+            -f max_reviews=150 \
+            -f remaining_chains="$NEXT_CHAINS"
+
+      - name: Trigger rebuild
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run rebuild-reviews.yml \
+            -f reason="Post ${{ steps.market.outputs.market }} collection"
+
+      # collect-review-texts.js's discoverCorrectUrl path calls url-discovery.js
+      # (SERP), which writes attribution rows to
+      # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
+      # #752/#784). This workflow is a separate daily entry point from
+      # collect-review-texts.yml (which already stages data/audit/ broadly) and
+      # never staged the ledger before (Sprint 3, card 3b1637c5).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (collect-we-ob-reviews)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'WE/OB Collection Failed (${{ steps.market.outputs.market }})'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

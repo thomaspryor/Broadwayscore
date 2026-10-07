@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Xcode toolchain guard, periodic arm (BRO-3375). Runs
+         scripts/check-xcode-toolchain.js, which repairs the managed `git`
+         shim at ~/.claude/bin/git and /opt/homebrew/bin/git and, best-effort,
+         re-accepts a lapsed Xcode license.
+
+         WHY THIS EXISTS ALONGSIDE THE SESSION-START HOOK
+         ~/.claude/hooks/session-start.sh repairs the shim whenever a new
+         session starts, which covers interactive work. It does not cover the
+         unattended launchd fleet, which can run for days without a single new
+         session starting — and that fleet's PATH
+         (/opt/homebrew/bin:/usr/local/bin:/usr/bin:...) contains no
+         ~/.claude/bin at all, so it depends entirely on the
+         /opt/homebrew/bin/git shim staying intact. This job is what keeps it
+         intact between sessions.
+
+         RunAtLoad is deliberate and is the most valuable trigger here: an OS
+         update is what revokes the Xcode license, and a reboot is what follows
+         an OS update. Running at load means the machine is repaired on the way
+         back up rather than at the next scheduled tick.
+
+         StartInterval 10800 = every 3 hours. Cheap (~0.1s, a handful of
+         defaults reads and one git --version) and license revocation from an
+         OS update is rare, so there is nothing to gain from going tighter.
+
+         MUST run on this Mac, not GitHub Actions — it guards this machine's
+         own PATH and license state, which no runner can see. Same rationale as
+         com.broadwayscore.claude-auth-health.plist.
+
+         On an unrepairable problem: routes a digest-tier row via routeAlert
+         (NOT a page). With the shim invariant held a license lapse no longer
+         takes git out fleet-wide, so it is worth telling the owner about but
+         not worth waking them for.
+
+         Install:  cp scripts/launchd/com.broadwayscore.xcode-toolchain.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.xcode-toolchain.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.xcode-toolchain
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.xcode-toolchain
+         Manual check: node scripts/check-xcode-toolchain.js --dry-run -->
+    <key>Label</key>
+    <string>com.broadwayscore.xcode-toolchain</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/check-xcode-toolchain.js</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StartInterval</key>
+    <integer>10800</integer>
+    <key>StandardOutPath</key>
+    <string>/tmp/xcode-toolchain-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/xcode-toolchain-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

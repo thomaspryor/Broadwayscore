@@ -1,0 +1,1434 @@
+{
+  "generatedAt": "2026-02-01T20:50:21.419Z",
+  "summary": {
+    "totalReviews": 2299,
+    "reviewsWithScore": 2084,
+    "reviewsWithFullText": 1612,
+    "reviewsWithLlmScore": 2084,
+    "pctScored": 91,
+    "pctWithFullText": 70
+  },
+  "textQuality": {
+    "full": 128,
+    "partial": 63,
+    "truncated": 82,
+    "excerpt": 299,
+    "missing": 1,
+    "unknown": 1693
+  },
+  "flags": {
+    "showNotMentioned": 17,
+    "misattributed": 40,
+    "duplicateText": 178,
+    "total": 235
+  },
+  "flaggedReviews": {
+    "showNotMentioned": [
+      {
+        "showId": "aladdin-2014",
+        "file": "ap--mark-kennedy.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "file": "ap--mark-kennedy.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "book-of-mormon-2011",
+        "file": "backstage--david-sheward.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "bug-2026",
+        "file": "washpost--naveen-kumar.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "hamilton-2015",
+        "file": "ap--mark-kennedy.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "hamilton-2015",
+        "file": "nbcny--robert-kahn.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "file": "cititour--brian-scott-lipton.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "file": "dcmetro--deb-miller.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "file": "drama-queen-nyc--jonathan-warman.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "file": "ap--mark-kennedy.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "file": "broadwaynews--brittani-samuel.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "six-2021",
+        "file": "deadline--greg-evans.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "ap--mark-kennedy.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "broadwaynews--brittani-samuel.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "washpost--elisabeth-vincentelli.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "wicked-2003",
+        "file": "the-journal-news-lohud--jacques-le-sourd.json",
+        "reason": "Show title not found in text"
+      },
+      {
+        "showId": "wicked-2003",
+        "file": "washpost--peter-marks.json",
+        "reason": "Show title not found in text"
+      }
+    ],
+    "misattributed": [
+      {
+        "showId": "aladdin-2014",
+        "file": "talkinbroadway--matthew-murray.json",
+        "extractedByline": "Ron Clements",
+        "expectedCritic": "Matthew Murray"
+      },
+      {
+        "showId": "aladdin-2014",
+        "file": "uinterview--danny-graugnard.json",
+        "extractedByline": "Daniel Graugnard",
+        "expectedCritic": "Danny Graugnard"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "ew--dalton.json",
+        "extractedByline": "Norwegian playwright",
+        "expectedCritic": "Dalton"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "file": "talkinbroadway--howard-miller.json",
+        "extractedByline": "Robert Zemeckis",
+        "expectedCritic": "Howard Miller"
+      },
+      {
+        "showId": "bug-2026",
+        "file": "4columns--david-cote.json",
+        "extractedByline": "Tracy Letts",
+        "expectedCritic": "David Cote"
+      },
+      {
+        "showId": "bug-2026",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "extractedByline": "Tracy Letts",
+        "expectedCritic": "Jonathan Mandell"
+      },
+      {
+        "showId": "chicago-1996",
+        "file": "nytimes--ben-brantley.json",
+        "expectedCritic": "Ben Brantley"
+      },
+      {
+        "showId": "death-becomes-her-2024",
+        "file": "talkinbroadway--howard-miller.json",
+        "extractedByline": "Martin Donovan",
+        "expectedCritic": "Howard Miller"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "theatrely--juan-a-ramirez.json",
+        "extractedByline": "Scott Brown",
+        "expectedCritic": "Juan A. Ramirez"
+      },
+      {
+        "showId": "hamilton-2015",
+        "file": "ew--leah-greenblatt.json",
+        "extractedByline": "Entertainment Weekly",
+        "expectedCritic": "Leah Greenblatt"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "nytg--amelia-merrill.json",
+        "extractedByline": "Barry Manilow",
+        "expectedCritic": "Amelia Merrill"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "file": "ew--marc-snetiker.json",
+        "extractedByline": "Entertainment Weekly",
+        "expectedCritic": "Marc Snetiker"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "file": "forward--jay-michaelson.json",
+        "extractedByline": "And Dark",
+        "expectedCritic": "Jay Michaelson"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "guardian--gloria-oladipo.json",
+        "extractedByline": "Theresa Rebeck",
+        "expectedCritic": "Gloria Oladipo"
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "file": "nysr--david-finkle.json",
+        "extractedByline": "Benny Andersson",
+        "expectedCritic": "David Finkle"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "nytg--joe-dziemianowicz.json",
+        "extractedByline": "Pulitzer Prize",
+        "expectedCritic": "Joe Dziemianowicz"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "thewrap--robert-hofler.json",
+        "extractedByline": "Henrik Ibsen",
+        "expectedCritic": "Robert Hofler"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "thewrap--robert.json",
+        "extractedByline": "Henrik Ibsen",
+        "expectedCritic": "Robert"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "variety--aramide-tinubu.json",
+        "extractedByline": "Amy Herzog",
+        "expectedCritic": "Aramide Tinubu"
+      },
+      {
+        "showId": "mj-2022",
+        "file": "nypost--johnny-oleksinski.json",
+        "extractedByline": "Pulitzer Prize",
+        "expectedCritic": "Johnny Oleksinski"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "variety--aramide-tinubu.json",
+        "extractedByline": "Paula Vogel",
+        "expectedCritic": "Aramide Timubu"
+      },
+      {
+        "showId": "moulin-rouge-2019",
+        "file": "broadwayworld--michael-dale.json",
+        "extractedByline": "Baz Luhrmann",
+        "expectedCritic": "Michael Dale"
+      },
+      {
+        "showId": "moulin-rouge-2019",
+        "file": "variety--marilyn-stasio.json",
+        "extractedByline": "Kenny Noland",
+        "expectedCritic": "Marilyn Stasio"
+      },
+      {
+        "showId": "oh-mary-2024",
+        "file": "nytg--austin-fimmano.json",
+        "extractedByline": "and starring",
+        "expectedCritic": "Austin Fimmano"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "nytg--gillian-russo.json",
+        "extractedByline": "Jon Hartmere",
+        "expectedCritic": "Gillian Russo"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "nytg--gillian.json",
+        "extractedByline": "Jon Hartmere",
+        "expectedCritic": "Gillian"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "nytg--austin-fimmano.json",
+        "extractedByline": "Thornton Wilder",
+        "expectedCritic": "Austin Fimmano"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "nytg--kyle-turner.json",
+        "extractedByline": "The Crown",
+        "expectedCritic": "Kyle Turner"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "guardian--jesse-hassenger.json",
+        "extractedByline": "the late",
+        "expectedCritic": "Jesse Hassenger"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "nytg--joe-dziemianowicz.json",
+        "extractedByline": "Sandy Rustin",
+        "expectedCritic": "Joe Dziemianowicz"
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "file": "ew--emlyn-travis.json",
+        "expectedCritic": "Emlyn Travis"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "nytimes--jesse-green.json",
+        "extractedByline": "an actual",
+        "expectedCritic": "Jesse Green"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "nytimes--jesse.json",
+        "extractedByline": "an actual",
+        "expectedCritic": "Jesse"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "nytg--amelia-merrill.json",
+        "extractedByline": "Jen Silverman",
+        "expectedCritic": "Amelia Merrill"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "variety--daniel-daddario.json",
+        "extractedByline": "Jen Silverman",
+        "expectedCritic": "Daniel D'Addario"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "broadwaynews--naveen-kumar.json",
+        "extractedByline": "Ian Shaw",
+        "expectedCritic": "Naveen Kumar"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "thewrap--robert-hofler.json",
+        "extractedByline": "Ian Shaw",
+        "expectedCritic": "Robert Hofler"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "ew--lester-fabian-brathwaite.json",
+        "expectedCritic": "Lester Fabian Brathwaite"
+      },
+      {
+        "showId": "uncle-vanya-2024",
+        "file": "theatermania--david-gordon.json",
+        "extractedByline": "Heidi Schreck",
+        "expectedCritic": "David Gordon"
+      },
+      {
+        "showId": "wicked-2003",
+        "file": "dailybeast--kevin-fallon.json",
+        "extractedByline": "Stephen Schwartz",
+        "expectedCritic": "Kevin Fallon"
+      }
+    ],
+    "duplicateText": [
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "ew--unknown.json",
+        "duplicateOf": "ew--dalton-ross.json"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "hollywood-reporter--unknown.json",
+        "duplicateOf": "hollywood-reporter--david-rooney.json"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--sara-holdren.json"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "ew--allison-considine.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "appropriate-2023",
+        "file": "nytg--unknown.json",
+        "duplicateOf": "nytg--allison-considine.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "dailybeast--tim-teeman.json",
+        "duplicateOf": "daily-beast-tim-teeman--tim-teeman.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "nypost--johnny-oleksinski.json",
+        "duplicateOf": "new-york-post-johnny-oleksinski--johnny-oleksinski.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "new-york-post-johnny-oleksinski--johnny-oleksinski.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "nysr--frank-scheck.json",
+        "duplicateOf": "new-york-stage-review-frank-scheck--frank-scheck.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "nytg--allison-considine.json",
+        "duplicateOf": "new-york-theatre-guide-allison-considine--allison-considine.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "variety--youtube-frank-rizzo.json",
+        "duplicateOf": "variety--frank-rizzo.json"
+      },
+      {
+        "showId": "boop-2025",
+        "file": "variety-frank-rizzo--frank-rizzo.json",
+        "duplicateOf": "variety--frank-rizzo.json"
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "duplicateOf": "nyt-theater--adam-feldman.json"
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "file": "nytimes--jesse-green.json",
+        "duplicateOf": "nytimes--elizabeth-vincentelli.json"
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "file": "variety--frank-rizzo.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "bug-2026",
+        "file": "theatermania--zachary-stewart.json",
+        "duplicateOf": "theatermania--david-gordon.json"
+      },
+      {
+        "showId": "bug-2026",
+        "file": "variety-aramide-tinubu--aramide-tinubu.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "cabaret-2024",
+        "file": "amny--matt-windman.json",
+        "duplicateOf": "amny--emlyn-travis.json"
+      },
+      {
+        "showId": "cabaret-2024",
+        "file": "ew--amelia-merrill.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "cabaret-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "cabaret-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "chicago-1996",
+        "file": "talkinbroadway--matthew-murray.json",
+        "duplicateOf": "curtainup--elyse-sommer.json"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nytimes--laura-collins-hughes.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "nytimes--unknown.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "days-of-wine-and-roses-2024",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "ew--dalton.json",
+        "duplicateOf": "ew--dalton-ross.json"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "nydailynews--chris-jones.json",
+        "duplicateOf": "chicagotribune--chris.json"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "theatrely--kobi-kassal.json",
+        "duplicateOf": "theatrely--joey-sims.json"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "variety--unknown.json",
+        "duplicateOf": "variety--ad-amorosi.json"
+      },
+      {
+        "showId": "grey-house-2023",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--jackson-mchenry.json"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "nydailynews--chris-jones.json",
+        "duplicateOf": "chicagotribune--chris-jones.json"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "nytimes--korea-jesse-green.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "variety--jesse-green.json",
+        "duplicateOf": "variety--frank-rizzo.json"
+      },
+      {
+        "showId": "gutenberg-2023",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "vulture--helen-shaw.json"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "amny--matt.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "harmony-2023",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "ew--elysa-gardner.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "file": "variety-aramide-tinubu--aramide-tinubu.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "nytimes--jesse-green.json",
+        "duplicateOf": "nytimes--ben-brantley.json"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "file": "variety--peter-marks.json",
+        "duplicateOf": "variety--naveen-kumar.json"
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "ew--dalton.json",
+        "duplicateOf": "ew--dalton-ross.json"
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "hollywood-reporter--unknown.json",
+        "duplicateOf": "hollywood-reporter--david-rooney.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "latimes--charles.json",
+        "duplicateOf": "latimes--charles-mcnulty.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "nypost--unknown.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "variety--maya-phillips.json",
+        "duplicateOf": "variety--christian-lewis.json"
+      },
+      {
+        "showId": "illinoise-2024",
+        "file": "variety--unknown.json",
+        "duplicateOf": "variety--christian-lewis.json"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "nytimes--taraji-p-henson-jesse-green.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "nytimes--unknown.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "variety--unknown.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "just-in-time-2025",
+        "file": "guardian--adrian-horton.json",
+        "duplicateOf": "deadline--greg-evans.json"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "ew--elysa-gardner.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "lempicka-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "liberation-2025",
+        "file": "nytg--austin-fimmano.json",
+        "duplicateOf": "nytg--amelia-merrill.json"
+      },
+      {
+        "showId": "liberation-2025",
+        "file": "thewrap--robert-hofler.json",
+        "duplicateOf": "thewrap--emlyn-travis.json"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "file": "nytimes--unknown.json",
+        "duplicateOf": "nytimes--elisabeth-vincentelli.json"
+      },
+      {
+        "showId": "marjorie-prime-2025",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "new-york-magazinevulture-sara-holdren--sara-holdren.json"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "mary-jane-2024",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "maybe-happy-ending-2024",
+        "file": "vulture--jackson-mchenry.json",
+        "duplicateOf": "unknown--unknown.json"
+      },
+      {
+        "showId": "maybe-happy-ending-2024",
+        "file": "washpost--peter-marks.json",
+        "duplicateOf": "washpost--naveen-kumar.json"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "nydailynews--chris-jones.json",
+        "duplicateOf": "chicagotribune--chris.json"
+      },
+      {
+        "showId": "merrily-we-roll-along-2023",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "ew--allison-considine.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--jackson-mchenry.json"
+      },
+      {
+        "showId": "oedipus-2025",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "new-york-magazine-vulture-sara-holdren--sara-holdren.json"
+      },
+      {
+        "showId": "oh-mary-2024",
+        "file": "nytimes--jesse-green.json",
+        "duplicateOf": "nytimes--assistant-stage-manager-jesse-green.json"
+      },
+      {
+        "showId": "oh-mary-2024",
+        "file": "variety--christian-lewis.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "oh-mary-2024",
+        "file": "variety-christian-lewis--christian-lewis.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "ew--emlyn.json",
+        "duplicateOf": "ew--emlyn-travis.json"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "nytimes--unknown.json",
+        "duplicateOf": "nytimes--elizabeth-vincentelli.json"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--jackson-mchenry.json"
+      },
+      {
+        "showId": "operation-mincemeat-2025",
+        "file": "nytg--caroline.json",
+        "duplicateOf": "nytg--caroline-cao.json"
+      },
+      {
+        "showId": "operation-mincemeat-2025",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "operation-mincemeat-2025",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "new-york-magazine-vulture-sara-holdren--sara-holdren.json"
+      },
+      {
+        "showId": "our-town-2024",
+        "file": "nytimes--pulitzer-prize-jesse-green.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "amny--matt.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "ew--christian.json",
+        "duplicateOf": "ew--christian-holub.json"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "patriots-2024",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "nyt-theater--jonathan-mandell.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "nytimes--visit-jesse-green.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "variety--daniel-dand8217addario.json",
+        "duplicateOf": "variety--daniel-daddario.json"
+      },
+      {
+        "showId": "prayer-for-the-french-republic-2024",
+        "file": "variety--unknown.json",
+        "duplicateOf": "variety--daniel-daddario.json"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "nytg--unknown.json",
+        "duplicateOf": "nytg--joe-dziemianowicz.json"
+      },
+      {
+        "showId": "purlie-victorious-2023",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "latimes--charles.json",
+        "duplicateOf": "latimes--charles-mcnulty.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "the-interested-bystander--cary-wong.json",
+        "duplicateOf": "lighting-and-sound-america--david-barbour.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "theatre-reviews-limited--david-roberts.json",
+        "duplicateOf": "ew--dalton.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "variety-aramide-tinubu--aramide-tinubu.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "vulture--sara-holdren-and-jesse-david-fox.json",
+        "duplicateOf": "vulture--david-fox.json"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "vulture--david-fox.json"
+      },
+      {
+        "showId": "ragtime-2025",
+        "file": "amny--shania-russell.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "nytimes--unknown.json",
+        "duplicateOf": "nytimes--laura-collins-hughes.json"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "variety--unknown.json",
+        "duplicateOf": "variety--frank-rizzo.json"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--sara-holdren.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "ew--shania.json",
+        "duplicateOf": "ew--shania-russell.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "nyt-theater--jonathan.json",
+        "duplicateOf": "nyt-theater--jonathan-mandell.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "redwood-2025",
+        "file": "usatoday--patrick.json",
+        "duplicateOf": "usatoday--patrick-ryan.json"
+      },
+      {
+        "showId": "six-2021",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "six-2021",
+        "file": "vulture--helen-shaw.json",
+        "duplicateOf": "nytg--suzy-evans.json"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "nytg--gillian.json",
+        "duplicateOf": "nytg--gillian-russo.json"
+      },
+      {
+        "showId": "spamalot-2023",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "ew--allison-considine.json",
+        "duplicateOf": "broadwaynews--brittani-samuel.json"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "nytimes--naveen-kumar.json",
+        "duplicateOf": "nytimes--csa-naveen-kumar.json"
+      },
+      {
+        "showId": "stereophonic-2024",
+        "file": "vulture-sara-holdren--sara-holdren.json",
+        "duplicateOf": "vulture--sara-holdren.json"
+      },
+      {
+        "showId": "suffs-2024",
+        "file": "variety-frank-rizzo--unknown.json",
+        "duplicateOf": "variety--frank-rizzo.json"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "the-cottage-2023",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--jackson-mchenry.json"
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "file": "variety--christian-lewis.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "file": "variety-christian-lewis--christian-lewis.json",
+        "duplicateOf": "variety--aramide-tinubu.json"
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "file": "vulture--helen-shaw.json",
+        "duplicateOf": "new-york-magazinevulture-sara-holdren--unknown.json"
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "new-york-magazinevulture-sara-holdren--unknown.json"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "the-notebook-2024",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "vu--sara-holdren.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "amny--matt.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "variety--naveen-kumar.json",
+        "duplicateOf": "variety--maya-phillips.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "variety-naveen-kumar--naveen-kumar.json",
+        "duplicateOf": "variety--maya-phillips.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "vulture--jackson-mchenry.json",
+        "duplicateOf": "new-york-magazinevulture-sara-holdren--sara-holdren.json"
+      },
+      {
+        "showId": "the-outsiders-2024",
+        "file": "vulture--sara-holdren.json",
+        "duplicateOf": "new-york-magazinevulture-sara-holdren--sara-holdren.json"
+      },
+      {
+        "showId": "the-roommate-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "ew--dalton.json",
+        "duplicateOf": "ew--dalton-ross.json"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "the-shark-is-broken-2023",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "ew--emlyn.json",
+        "duplicateOf": "ew--emlyn-travis.json"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "the-whos-tommy-2024",
+        "file": "vulture--unknown.json",
+        "duplicateOf": "vulture--sara-holdren.json"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "amny--matt.json",
+        "duplicateOf": "amny--matt-windman.json"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "uncle-vanya-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "uncle-vanya-2024",
+        "file": "nypost--johnny.json",
+        "duplicateOf": "nypost--johnny-oleksinski.json"
+      },
+      {
+        "showId": "uncle-vanya-2024",
+        "file": "nytimes--jesse.json",
+        "duplicateOf": "nytimes--jesse-green.json"
+      },
+      {
+        "showId": "uncle-vanya-2024",
+        "file": "thewrap--robert.json",
+        "duplicateOf": "thewrap--robert-hofler.json"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "nydailynews--chris.json",
+        "duplicateOf": "nydailynews--chris-jones.json"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "theatermania--zachary-stewart.json",
+        "duplicateOf": "deadline--greg-evans.json"
+      },
+      {
+        "showId": "water-for-elephants-2024",
+        "file": "theatermania--zachary.json",
+        "duplicateOf": "deadline--greg-evans.json"
+      }
+    ]
+  },
+  "scoringIssues": {
+    "highDeltaCount": 49,
+    "top20HighDelta": [
+      {
+        "showId": "mj-2022",
+        "file": "hollywood-reporter--lovia-gyarkye.json",
+        "critic": "Lovia Gyarkye",
+        "llmScore": 25,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 55
+      },
+      {
+        "showId": "the-great-gatsby-2024",
+        "file": "slantmagazine--dan-rubins.json",
+        "critic": "Dan Rubins",
+        "llmScore": 10,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 50
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "file": "ew--dalton.json",
+        "critic": "Dalton",
+        "llmScore": 15,
+        "thumbScore": 60,
+        "thumb": "DOWN",
+        "delta": 45
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "file": "broadwaynews--brittani-samuel.json",
+        "critic": "Brittani Samuel",
+        "llmScore": 40,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 40
+      },
+      {
+        "showId": "mamma-mia-2025",
+        "file": "nysr--michael-sommers.json",
+        "critic": "Michael Sommers",
+        "llmScore": 40,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 40
+      },
+      {
+        "showId": "doubt-2024",
+        "file": "washpost--naveen-kumar.json",
+        "critic": "Naveen Kumar",
+        "llmScore": 42,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 38
+      },
+      {
+        "showId": "the-wiz-2024",
+        "file": "ew--lester-fabian-brathwaite.json",
+        "critic": "Lester Fabian Brathwaite",
+        "llmScore": 42,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 38
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "vulture--sara-holdren.json",
+        "critic": "Sara Holdren",
+        "llmScore": 23,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 37
+      },
+      {
+        "showId": "wicked-2003",
+        "file": "ew--alice-king.json",
+        "critic": "Alice King",
+        "llmScore": 71,
+        "thumbScore": 35,
+        "thumb": "Down",
+        "delta": 36
+      },
+      {
+        "showId": "and-juliet-2022",
+        "file": "nytimes--jesse-green.json",
+        "critic": "Jesse Green",
+        "llmScore": 45,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 35
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "file": "thewrap--robert-hofler.json",
+        "critic": "Robert Hofler",
+        "llmScore": 25,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 35
+      },
+      {
+        "showId": "heart-of-rock-and-roll-2024",
+        "file": "theatrely--joey-sims.json",
+        "critic": "Joey Sims",
+        "llmScore": 25,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 35
+      },
+      {
+        "showId": "hells-kitchen-2024",
+        "file": "ap--mark-kennedy.json",
+        "critic": "Mark Kennedy",
+        "llmScore": 25,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 35
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "nypost--johnny-oleksinski.json",
+        "critic": "Johnny Oleksinski",
+        "llmScore": 25,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 35
+      },
+      {
+        "showId": "how-to-dance-in-ohio-2023",
+        "file": "theatermania--christian-lewis.json",
+        "critic": "Christian Lewis",
+        "llmScore": 45,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 35
+      },
+      {
+        "showId": "i-need-that-2023",
+        "file": "theatrely--juan-a-ramirez.json",
+        "critic": "Juan A. Ramirez",
+        "llmScore": 25,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 35
+      },
+      {
+        "showId": "jajas-african-hair-braiding-2023",
+        "file": "ew--emlyn-travis.json",
+        "critic": "Emlyn Travis",
+        "llmScore": 45,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 35
+      },
+      {
+        "showId": "just-in-time-2025",
+        "file": "broadwaynews--brittani-samuel.json",
+        "critic": "Brittani Samuel",
+        "llmScore": 25,
+        "thumbScore": 60,
+        "thumb": "Meh",
+        "delta": 35
+      },
+      {
+        "showId": "just-in-time-2025",
+        "file": "ew--shania-russell.json",
+        "critic": "Shania Russell",
+        "llmScore": 45,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 35
+      },
+      {
+        "showId": "mother-play-2024",
+        "file": "variety--aramide-tinubu.json",
+        "critic": "Aramide Timubu",
+        "llmScore": 45,
+        "thumbScore": 80,
+        "thumb": "Up",
+        "delta": 35
+      }
+    ],
+    "singleExcerptNonLow": 59,
+    "mehThumbIgnored": 0
+  },
+  "flagPctOfTotal": 10.2,
+  "exceedsThreshold": true
+}

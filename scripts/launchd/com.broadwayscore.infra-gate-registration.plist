@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Infra-review gate registration + liveness probe (task #1094). Runs
+         scripts/check-infra-gate-registration.js, which checks that
+         ~/.claude/settings.json still registers infra-plan-review-gate.sh,
+         that the hook file still exists and is non-empty, that
+         scripts/lib/infra-review-scope.js is still on origin/main, and — the
+         check that actually proves something, not just looks — RUNS the hook
+         against a synthetic critical-infra edit for an unrecorded session id
+         and asserts it exits 2 (blocks). A gate that only checks file
+         presence is the exact vacuous-gate class #1063/#1066-#1069 closed for
+         corpus audits; this closes the same class for the gate itself.
+
+         MUST run on this Mac, not GitHub Actions — health-check.js runs on
+         ubuntu-latest CI runners, which never see this machine's ~/.claude.
+         Mirrors com.broadwayscore.claude-auth-health.plist (task #1076): a
+         local-only condition needs a local-only detector.
+
+         On failure: routes an error-severity digest row via routeAlert
+         (disposition='digest', not a page — this is a silently-broken safety
+         net, not a ticking-clock incident).
+
+         08:30 ET daily, ahead of claude-auth-health (09:00) — both are
+         Mac-only session-integrity probes and this one is cheaper/faster.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+
+         Install:  cp scripts/launchd/com.broadwayscore.infra-gate-registration.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.infra-gate-registration.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.infra-gate-registration
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.infra-gate-registration
+         Manual check: node scripts/check-infra-gate-registration.js -->
+    <key>Label</key>
+    <string>com.broadwayscore.infra-gate-registration</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/check-infra-gate-registration.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/infra-gate-registration-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/infra-gate-registration-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

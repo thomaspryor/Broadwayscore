@@ -1,0 +1,555 @@
+# hygiene-push-ok: uses custom inline retry loop (git push || pull --rebase retry)
+name: Audit Aggregator Review Gap
+
+on:
+  schedule:
+    # Hourly during opening-night window. Each run takes <5 min (one SERP per
+    # show + one fetch per aggregator article) and tagged shows are usually
+    # under 15. Detect aggregator-listed URLs missing from our review-texts and
+    # auto-dispatch gather-reviews for the affected shows so the next poller
+    # cron finds them.
+    - cron: '37 * * * *'
+  workflow_dispatch:
+    inputs:
+      window_days:
+        description: 'How many days post-opening to audit (default 21)'
+        required: false
+        default: '21'
+      dispatch_gather:
+        description: 'Auto-dispatch gather-reviews for shows with gaps (default false — gather already ran; prefer --ingest-missing)'
+        required: false
+        default: 'false'
+      ingest_missing:
+        description: 'Directly ingest aggregator-listed URLs whose outlets are in the registry (default true)'
+        required: false
+        default: 'true'
+      fail_on_gap:
+        description: 'Exit non-zero when any in-window show has gaps (default false — advisory)'
+        required: false
+        default: 'false'
+      include_closed:
+        description: 'Also audit closed shows — back-catalogue backfill (default true)'
+        required: false
+        default: 'true'
+      show_ids:
+        description: 'Targeted run: comma-separated show ids, audited in the order given with ingest + checkpoint (BRO-4592). Empty = normal back-catalogue grind.'
+        required: false
+        default: ''
+
+concurrency:
+  # Targeted (show_ids) runs share this group on purpose (BRO-4592). This workflow
+  # is the single writer of data/audit/gap-audit-checkpoint.json and its siblings,
+  # which core-data-merge-registry.js registers as apiFallbackSafe BECAUSE of this
+  # group: two runs in parallel could push through the whole-file API fallback and
+  # let a stale run overwrite the other's checkpoint stamps. Cost of sharing: GitHub
+  # keeps one pending run, so a later cron tick can replace a queued targeted run.
+  # Runs last ~25 min against an hourly-ish cron, and the cron queue now puts live
+  # newest shows first, so the exposure is small. Verify a targeted dispatch started.
+  group: audit-aggregator-gap
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    # 48 (was 40, was 25): the audit honors an 18-min soft time budget, then the
+    # commit + review-texts push (5-retry, racing concurrent CI) needs headroom.
+    # At 25 the job was hard-cancelled MID-COMMIT so the checkpoint + ingests
+    # never landed and the backfill stalled (2026-06-07). At 40, the commit
+    # step's own PUSH_DEADLINE_SEC=900 override (task #1791) left only ~2-3min
+    # of job-timeout margin for the trailing steps — raised to 48 to restore
+    # the same proportional buffer update-show-status.yml uses for its own
+    # PUSH_DEADLINE_SEC override (task #458).
+    # 60 (was 48): BRO-4431 added the outlet ground-truth audit (hard-capped
+    # at 12 min by `timeout 720`, runs at most every 6h) before the commit.
+    timeout-minutes: 60
+    if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      # The audit's scraper fallback chain (Bright Data → ScrapingBee →
+      # Playwright) reaches Playwright for complex sites (e.g. BroadwayWorld).
+      # Without browsers installed, Playwright throws "Executable doesn't exist"
+      # and the article fetch fails. Shared cached action per .github/workflows/CLAUDE.md.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # --ingest-missing writes new review-text files into data/review-texts/.
+      # That directory MUST be a real checkout of the private review-texts repo,
+      # otherwise the downstream `cd data/review-texts && git …` block falls
+      # through to the MAIN repo's .git, re-points origin at broadway-review-texts,
+      # and a failed `git pull --rebase` checks out the review-texts tree over the
+      # workspace — wiping .github/actions/ and failing every post-step
+      # (the recurring "Post Setup Playwright: Can't find action.yml", 2026-06-20).
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # The Stage reference source is ARCHIVE-ONLY (cookie-gated live) — the WE
+      # gap reference reads data/aggregator-archive/thestage-roundups/*.html
+      # written by gather-reviews/opening-night-poller. Without this checkout the
+      # source is silently absent (passive — audit still runs, just without TS).
+      - name: Checkout aggregator archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Record the review-texts HEAD before the audit ingests anything, so the
+      # rebuild trigger below fires only when --ingest-missing actually added files.
+      - name: Record review-texts SHA (pre-ingest)
+        id: rt_before
+        run: echo "sha=$(git -C data/review-texts rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Run gap audit
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          # REVIEW_TEXTS_TOKEN (not GITHUB_TOKEN): the self-proving auto-enable
+          # block below calls `gh variable get/set WE_GAP_INGEST` — GitHub's
+          # Actions Variables API rejects the default workflow token outright,
+          # so with GITHUB_TOKEN both the read AND the write always failed.
+          # That made the code permanently believe the variable didn't exist,
+          # so it kept re-attempting (and re-failing) the flip and re-emailing
+          # "one command to enable" every ~24h forever, even after the owner
+          # set WE_GAP_INGEST manually (2026-07-23 email-noise Sprint 2 —
+          # traced from 2 same-day "PROVEN" emails to this token gap).
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # WE completeness gate (2026-07-10). Email delivery for the named-missing-
+          # outlet alerts (discord-notify email path — log-only alerts reached nobody):
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # WE auto-ingest is DEFAULT-OFF: reference-derived URLs ingest only when the
+          # repo variable WE_GAP_INGEST is '1'. Absent/deleted variable = report-only
+          # (fails closed — plan-review 2026-07-09 pre-mortem: a dropped env line must
+          # not silently enable ingest). Prior-run roundup URLs never ingest regardless.
+          WE_GAP_INGEST: ${{ vars.WE_GAP_INGEST || '' }}
+          # SERP-census auto-ingest, same fail-closed posture as WE_GAP_INGEST:
+          # census-discovered URLs ingest only when the repo variable
+          # SERP_CENSUS_INGEST is '1'. Report-only was the deliberate rollout
+          # gate (#371); census proven via the Sukkot validation (2026-07-25),
+          # variable flipped 2026-07-26. Kill switch: delete the variable.
+          SERP_CENSUS_INGEST: ${{ vars.SERP_CENSUS_INGEST || '' }}
+          # WE-only kill switch (leaves the Broadway audit untouched):
+          WE_GAP_REFERENCE_DISABLED: ${{ vars.WE_GAP_REFERENCE_DISABLED || '' }}
+          # SERP-census throttles (#872). Without these lines the knobs exist in
+          # code but are unreachable from the cron that actually spends the
+          # credits: SERP_CENSUS_NAIVE_PAGES trims the naive arm's depth
+          # (3 → 1, or 0 to drop the arm) and SERP_GAP_CENSUS_DISABLED kills
+          # the whole census. Both default to unset = current behavior.
+          SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
+          SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          SHOW_IDS: ${{ github.event.inputs.show_ids || '' }}
+          # BRO-3717: this step's routeAlert() calls (review-gap:blast-radius-refused
+          # and friends) are disposition='digest', which decideDigestEscalation() can
+          # silently promote to 'auto' -> dispatchCard() -> createLinearIssue(),
+          # which hard-needs this key. Without it, health-check.js's "Alert Router:
+          # dispatch deadman" check sees the failed attempt (see owner-alert-router.js
+          # dispatchCard()'s GITHUB_ACTIONS+LINEAR_API_KEY annotation).
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          # Default window widened to 3y + include-closed so the cron grinds the
+          # whole back-catalogue, not just the last 21d. Checkpointing + the soft
+          # time budget keep each 25-min run from timing out (every run was being
+          # cancelled at the cap before, so the sweep never finished — 2026-06-06).
+          WINDOW="${{ github.event.inputs.window_days || '1095' }}"
+          DISPATCH="${{ github.event.inputs.dispatch_gather || 'false' }}"
+          INGEST="${{ github.event.inputs.ingest_missing || 'true' }}"
+          FAIL="${{ github.event.inputs.fail_on_gap || 'false' }}"
+          INCLUDE_CLOSED="${{ github.event.inputs.include_closed || 'true' }}"
+          # Always checkpoint so consecutive hourly runs resume from where the last
+          # one stopped rather than re-auditing the same first shows forever.
+          # Budget 18 (not 25): a single deep show can overshoot the between-show
+          # budget check by several minutes, and the commit/push to the busy main
+          # repo (5-retry, racing concurrent CI) needs slack — at 25 some runs were
+          # still pushing when the 40-min job cap hit (exit 143). 18 leaves the
+          # commit ~17 min even after a slow-show overshoot (2026-06-07).
+          ARGS="--window=$WINDOW --checkpoint --time-budget-min=18"
+          # Targeted run (BRO-4592): the newsletter workflows pass the exact featured
+          # shows. Value arrives via env (never interpolated into the script) and is
+          # validated, so a bad input fails loudly instead of auditing nothing.
+          if [ -n "$SHOW_IDS" ]; then
+            if ! printf '%s' "$SHOW_IDS" | grep -Eq '^[a-z0-9][a-z0-9-]*(,[a-z0-9][a-z0-9-]*)*$'; then
+              echo "::error::show_ids must be a comma-separated list of show ids"; exit 1
+            fi
+            # Budget stays near the cron's 18: the commit + push below and the
+            # outlet ground-truth step need the same headroom inside the 60-min cap.
+            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=20"
+            # A targeted run is an explicit "re-check these now". The SERP census
+            # cooldown would otherwise skip the census for any show it ran on
+            # recently, and with no aggregator URLs the entry is rewritten blank
+            # (no-census-yet), discarding the gaps the previous pass found.
+            export SERP_CENSUS_COOLDOWN_HOURS=0
+          fi
+          if [ "$INCLUDE_CLOSED" = "true" ]; then
+            ARGS="$ARGS --include-closed"
+          fi
+          if [ "$DISPATCH" = "true" ]; then
+            ARGS="$ARGS --dispatch-gather"
+          fi
+          if [ "$INGEST" = "true" ]; then
+            ARGS="$ARGS --ingest-missing"
+          fi
+          if [ "$FAIL" = "true" ]; then
+            ARGS="$ARGS --fail-on-gap"
+          fi
+          # Fast-forward the review-texts checkout at the last possible moment.
+          # The job checkout can be many minutes old by the time the audit's
+          # recovery ingests run; a file filled by a parallel push in that window
+          # otherwise reads as still-empty here and the stale husk gets
+          # re-ingested + pushed over the real review (2026-07-18: heathers
+          # theatre-weekly lost a scored 3367-char review this way).
+          git -C data/review-texts pull --ff-only origin main \
+            || echo "::warning::review-texts ff-pull failed — recovery may run against a stale checkout"
+          node scripts/audit-show-review-gap.js $ARGS
+
+      # Coverage Verdict S2 (#906) scope item 4 — WARN-ONLY. The audit step
+      # above is the single writer of data/audit/show-review-gap.json and, since
+      # #906, stamps a censusVerdict (with per-candidate states) onto every show
+      # it re-audited. This reads that fresh file back and reports any review URL
+      # the audit knows about that came out WITHOUT a state — the monitor for the
+      # producer's own output.
+      #
+      # It always exits 0 (the script has no strict mode at all): the plan
+      # forbids a hard fail until the report has been clean for two weeks AND the
+      # failure sits behind the kill switch. COVERAGE_GATE_DISABLED makes it a
+      # no-op. Belt AND braces on never failing the job:
+      #   - continue-on-error: the script's own crash guard cannot cover a
+      #     LOAD-time throw (its top-level requires run before the try), e.g. a
+      #     partial checkout — that would exit non-zero and fail this job.
+      #   - `success() || failure()` rather than `always()`: always() also runs
+      #     on CANCELLATION, and this job is routinely hard-cancelled at the
+      #     timeout cap, where always()-steps cost ~5 extra minutes for a report
+      #     nobody will read.
+      - name: Stateless coverage-candidate report (warn-only)
+        if: success() || failure()
+        continue-on-error: true
+        run: node scripts/report-stateless-candidates.js
+
+      # Dir-driven sweep for tier-1/2 reviews that were discovered but sit in a
+      # terminal unscoreable state (empty paywall stub / bot-stub rejection /
+      # never-scored). Complements the aggregator-driven audit above: it needs
+      # no aggregator citation (the 2026-07-18 Times/Oresteia + NYT/Potluck
+      # incident class was invisible to the citation-based recovery) and always
+      # covers the full recent window regardless of the back-catalogue
+      # checkpoint rotation. Recovers empty bodies from each file's own URL
+      # (shared aggUrlRecoveryCount cap) and emails a deduped ACTION alert for
+      # whatever remains.
+      # Kill switch: set repo variable T1_SILENT_GAP_DISABLED=true to stop the
+      # sweep (spam / credit burn / bad writes) without shipping a commit.
+      - name: T1/T2 silent-gap sweep
+        if: ${{ always() && vars.T1_SILENT_GAP_DISABLED != 'true' }}
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Self-heal: 'unscored' gaps dispatch llm-ensemble-score.yml instead
+          # of emailing the dispatch command to the operator (workflow-level
+          # permissions already grant actions: write).
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The >24h backstop alert (card #475) now dispatches via
+          # owner-alert-router's disposition='auto', which shells to
+          # notion-brain.js to file an Action Queue card — that hard-exits
+          # without this key (ship-check finding: every backstop dispatch
+          # would silently fail without it).
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-t1-silent-gaps.js --recover --alert
+
+      # BRO-4431: ask the outlets themselves (TheaterMania/WhatsOnStage/NYSR/
+      # New York Theater WP search, NYT daily sitemaps, theatre.reviews
+      # round-ups) what they reviewed in the last 21 days, ingest what we
+      # lack (retry stub + TR star relay on paywalled rows) and digest-alert
+      # what is still missing. Every step above reasons from aggregators or
+      # files we already hold, so a review nobody cited (TheaterMania on
+      # Beyond the Stardust, New York Theater on Brooklyn's Bridge, FT/Times
+      # on Cleansed) was invisible. Self-throttled to once per 6h; its report
+      # is committed below so the throttle survives across runs.
+      # Kill switch: repo variable OUTLET_GROUND_TRUTH_DISABLED=true.
+      - name: Outlet ground-truth audit
+        if: ${{ always() && vars.OUTLET_GROUND_TRUTH_DISABLED != 'true' }}
+        # lint-allow-swallow: an outlet API outage must not fail the hourly gap job before its audit/review-texts commits; the report's `missing`/`sources.errors` and the digest alerts carry the signal
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # A manual dispatch's window_days widens the audit (backfill) and
+          # skips the 6h throttle; the hourly cron uses 21 days / 6h.
+          GT_DAYS: ${{ github.event.inputs.window_days || '21' }}
+          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && !github.event.inputs.show_ids && '0' || '6' }}
+        run: timeout 720 node scripts/audit-outlet-ground-truth.js --days="$GT_DAYS" --ingest --ingest-cap=12 --alert --min-interval-hours="$GT_INTERVAL" --time-budget-min=8
+
+      # Date-independent backstop for a live show sitting on a discovered
+      # review URL we never fetched (card #1408). Every OTHER coverage check
+      # in this job keys off a show's opening window; this one reads no date
+      # field at all, so it cannot go blind the way the null-openingDate bug
+      # let The Winter's Tale and An American Daughter reach opening night
+      # uncollected on 2026-08-12 (11 and 9 discovered URLs, 0 collected).
+      # --alert pages ONLY the totalBlackout case (a live show with ZERO
+      # usable critic reviews) via routeAlert(disposition:'auto') — same
+      # urgent-vs-backlog split as the T1/T2 sweep above. Ordinary strands
+      # (a show that still has other coverage) stay advisory: they surface
+      # once daily via health-check.js's uncollectedStrandResults reading
+      # this step's own data/audit/uncollected-live-reviews.json.
+      # Kill switch: repo variable UNCOLLECTED_STRAND_AUDIT_DISABLED=true.
+      - name: Uncollected-review strand guard
+        if: ${{ always() && vars.UNCOLLECTED_STRAND_AUDIT_DISABLED != 'true' }}
+        continue-on-error: true
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # routeAlert's disposition='auto' path shells to notion-brain.js to
+          # file the Action Queue card for a blackout finding — same
+          # requirement as the T1/T2 sweep step above.
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-uncollected-live-reviews.js --alert
+
+      # T1 coverage ledger (S2-T3). This job is the SINGLE WRITER of
+      # data/audit/t1-coverage-ledger.json — the deterministic serializer + the
+      # commit-on-change guard below mean an unchanged corpus produces no commit.
+      # Runs after --recover so newly-ingested reviews are reflected in this tick.
+      - name: Rebuild T1 coverage ledger
+        if: always()
+        # BRO-3717: same script/binary as the --scoreboard/--digest steps below,
+        # which need LINEAR_API_KEY for their routeAlert() digest->auto escalation
+        # path (see that comment on the "Run gap audit" step's env: block above).
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-opening-night-coverage.js --write-ledger
+
+      # B3 scoreboard (coverage % per market + oldest gap). Shipped as a --scoreboard
+      # mode but was never invoked by any workflow, so the whole feature was dead
+      # code on main (found wiring this sprint). Reads t1-coverage-stats.json which
+      # the --write-ledger step above just wrote, and routes ONE line into the daily
+      # digest via routeAlert(disposition:'digest') — no new send path.
+      - name: T1 coverage scoreboard (daily digest line)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-3717: routeAlert(conditionKey:'t1-coverage:scoreboard', disposition:
+          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
+          # LINEAR_API_KEY to file the Linear issue.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
+
+      # B4 deployed-JSON coverage diff. Every other audit in this job compares
+      # aggregator evidence against reviews.json — INTERNAL state. This one asks
+      # what broadwayscorecard.com actually serves, so publish-stage silence (a
+      # cancel-cascaded Vercel deploy: green GitHub run, CANCELED deployment) shows
+      # up as a visible gap instead of a false green. Advisory: no --fail-on-defect
+      # here, because normal deploy lag (5-10 min) would flap the job red.
+      - name: Deployed coverage diff (prod JSON)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-3717: routeAlert(conditionKey:'deployed-coverage:stale', disposition:
+          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
+          # LINEAR_API_KEY to file the Linear issue.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-deployed-coverage.js --days=21 --alert
+
+      # T1 coverage digest (S2-T7). Reads the ledger just rebuilt above; ACTION-emails
+      # only NEW post-rollout gaps that crossed 24h, deduped via the digest-state file
+      # (committed below). Hourly is safe: a gap emails once per gap LIFETIME — a
+      # gap that closes and later regresses re-alerts by design, re-damped by the
+      # 24h grace (its ledger firstSeenAt resets too). The first --alert run stamps
+      # rolloutAt, freezing the pre-existing backlog as digest-only. NOTE: step env
+      # does NOT inherit — this step needs its own RESEND_API_KEY/OWNER_EMAIL or
+      # sendAlert silently resolves undelivered.
+      - name: T1 coverage digest (ACTION alerts)
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # BRO-3717: routeAlert(conditionKey:'t1-coverage:new-gaps-24h', disposition:
+          # 'digest') can be promoted to 'auto' by decideDigestEscalation() -> needs
+          # LINEAR_API_KEY to file the Linear issue.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-opening-night-coverage.js --digest --alert
+
+      # T1 coverage scoreboard (B3, v2 reconciler Sprint B): coverage % per market +
+      # oldest-gap callout, queued via routeAlert(disposition:'digest') into the
+      # existing daily digest (health-check.js "Automation (queued)" section) —
+      # NOT its own email. Reads data/audit/t1-coverage-stats.json written by the
+      # "Rebuild T1 coverage ledger" step above, so it must run after that step.
+      - name: T1 coverage scoreboard
+        if: always()
+        # BRO-3717: same routeAlert() escalation path as the "T1 coverage scoreboard
+        # (daily digest line)" step above (this step is a near-duplicate of that one
+        # -- see task tracker for a separate follow-up to consolidate them; not
+        # touched here to keep this fix a minimal, additive secret-wiring change).
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-opening-night-coverage.js --scoreboard --alert
+
+      # Auto-clear shadow report (S3-T4): refresh the evidence verdict from the
+      # shadow log the sweep just appended to. Auto-clear stays OFF until this
+      # verdict is 'clean' (≥3 live candidates over ≥48h, 0 human disagreements).
+      - name: Refresh auto-clear shadow report
+        if: always()
+        run: node scripts/shadow-autoclear-report.js
+
+      # Coverage Verdict digest line (S3, task #905): reads the censusVerdict
+      # the gap-audit step above just wrote onto show-review-gap.json and
+      # formats "N of M known reviews live" lines into
+      # coverage-digest-snapshot.json for send-morning-digest.js — the "small
+      # producer on the audit cron" the plan calls for. Fails open (kill
+      # switch / missing audit file → no write, section just omitted from the
+      # email) so it can never block this job.
+      - name: Coverage digest snapshot
+        if: always()
+        run: node scripts/produce-coverage-digest-snapshot.js
+
+      - name: Commit audit JSON (public repo)
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PUSH_DEADLINE_SEC override (task #1791, same class as update-show-status.yml's
+          # task #458 fix). This step already had if: always() — it was NOT skipped by the
+          # gap-audit step's exit code (that step's own exit(1) is a separate, deliberate
+          # blast-radius guard in audit-show-review-gap.js, unrelated to this). The actual
+          # failure on 3 consecutive hourly runs (2026-08-18) was push-with-retry.sh's own
+          # default 240s deadline: it fit only ~2 real fetch->rebase-conflict->cherry-pick
+          # cycles under this repo's heavy main-branch churn, then reverted local HEAD and
+          # exited 1 — discarding the commit before it ever reached origin (runners are
+          # ephemeral, so nothing survived to the next run). Per push-with-retry.sh's own
+          # sizing comment: "DO NOT raise this SHARED default... Callers that measurably
+          # need more real cycles should override... at their own call site, after
+          # confirming their OWN job-timeout headroom." This step starts ~22-23min into the
+          # 48-min job timeout below (checkouts + the audit's own --time-budget-min=18), so
+          # 900s (15min) leaves ~10-11min of headroom for the trailing steps (push-review-texts,
+          # trigger-rebuild, notify), which historically take well under 30s combined.
+          PUSH_DEADLINE_SEC: '900'
+          # BRO-3068: lower the per-attempt network cap from push-with-retry.sh's
+          # 90s default to 30s. This step's own hangs (see PUSH_DEADLINE_SEC
+          # comment above) were pre-transfer connection stalls burning the FULL
+          # 90s with zero transfer progress, so only ~4-6 retries fit inside the
+          # 900s deadline. 30s roughly triples realized attempts in the same
+          # budget without affecting a healthy connection. Same fix as
+          # rebuild-reviews.yml/rebuild-fast.yml (BRO-334/BRO-346).
+          GIT_NET_TIMEOUT_SEC: '30'
+          # scraper-spend-ledger.jsonl is now in the file list below (Sprint 3,
+          # card 3b1637c5) — opt into the post-rebase union reconcile so a
+          # concurrent writer's rows survive `git rebase -X theirs` instead of
+          # being silently dropped (see reconcile-merged-json.js).
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Audit JSON lives in the public repo. Commit the checkpoint too — it's
+          # what lets consecutive runs resume instead of re-auditing the same
+          # first shows (the 25-min-timeout fix).
+          # t1-recovery-state.json = the self-heal circuit-breaker ledger (S3-T2).
+          # MUST be committed so the global 10/day refetch budget + per-file
+          # attempt history survive across hourly runs (otherwise the daily
+          # counter resets every tick and the cap can never bind).
+          # Per-file adds with an existence guard: `git add a b c` is ATOMIC on an
+          # unmatched pathspec (exit 128, stages NOTHING), so one file that a failed
+          # or skipped step never created would silently drop EVERY audit artifact
+          # from this run's commit (2026-07-23 review; the never-born
+          # t1-coverage-ledger.json carried exactly this hazard).
+          # alert-ledger.json: routeAlert()'s cooldown ledger — audit-t1-silent-gaps.js's
+          # backstop alerts AND this job's T1 Coverage "new gaps" alert (card #608,
+          # 2026-07-28) both call routeAlert(), which is a no-op cooldown without this
+          # file surviving across hourly runs (same persistence-gap class as #394).
+          # alert-router-attempts.jsonl (BRO-3671): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes a
+          # rebase refuse pre-flight and forces the clobber-prone merge path in
+          # push-with-retry.sh (BRO-3662).
+          # t1-coverage-stats.json: B3 scoreboard's per-market coverage % snapshot,
+          # written by --write-ledger above. t1-coverage-ack.json: B3's ack file
+          # (owner-maintained, see --ack CLI flag).
+          # t1-outlet-breaker.json = the B2 per-outlet circuit-breaker state. This
+          # one MUST persist: its whole value is hysteresis across hourly runs
+          # (consecutive-failure evidence, the half-open probe clock, the doubled
+          # cooldown). Without the commit every run starts closed and the breaker
+          # can never trip — the same persistence-gap class as #394's alert-ledger.
+          # deployed-coverage-diff.json = B4's prod-vs-internal report.
+          # alert-digest-queue.json: this job queues digest lines (the B3
+          # scoreboard + the B4 deployed-coverage diff both route with
+          # disposition 'digest'), and queueDigestLine() writes this file
+          # SEPARATELY from alert-ledger.json — so without staging it the queued
+          # line dies on the runner and never reaches the morning email. Enforced
+          # by scripts/lib/alert-ledger-commit-check.js. NOTE this makes a third
+          # workflow a committer of the file; the keep-local interaction that
+          # implies is tracked in task #537 and is not made worse by ALSO
+          # persisting here (the alternative is losing the line outright).
+          # scraper-spend-ledger.jsonl: this job's serpQuery/site-search/brand-
+          # mention SERP calls (via url-discovery.js) write attribution rows to
+          # data/audit/scraper-spend-ledger.jsonl on the runner's local disk
+          # (task #752/#784). This is an HOURLY cron — without staging it here
+          # those rows never reach the public repo and are lost every run,
+          # which is why attributedPct read near-zero for BD's SERP zone
+          # (Sprint 3, card 3b1637c5).
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json data/audit/outlet-ground-truth.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+          done
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+          else
+            git commit -m "audit: show-review-gap [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      # Push review-text files written by --ingest-missing back to the private
+      # repo via the shared action (content-aware conflict resolution, symlink
+      # guard, protected-field restore). Replaces the old hand-rolled push block
+      # that corrupted the workspace when data/review-texts wasn't a real checkout.
+      - name: Push ingested review-texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "ingest: audit-aggregator-gap auto-ingested review-texts"
+
+      - name: Trigger rebuild if review-texts changed
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          AFTER="$(git -C data/review-texts rev-parse HEAD)"
+          if [ "$AFTER" != "${{ steps.rt_before.outputs.sha }}" ]; then
+            echo "review-texts advanced ${{ steps.rt_before.outputs.sha }} -> $AFTER — triggering rebuild"
+            gh workflow run "Rebuild Reviews Data" -f reason="audit-aggregator-gap ingested new reviews" || true
+          else
+            echo "No new review-texts ingested — skipping rebuild trigger"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Aggregator Review Gap Audit Failed'
+          severity: 'warning'

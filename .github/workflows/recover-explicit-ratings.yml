@@ -1,0 +1,267 @@
+name: Recover Explicit Ratings
+
+on:
+  schedule:
+    - cron: '0 20 * * 0'   # Sunday 8 PM UTC (after aggregator scrapers)
+  workflow_dispatch:
+    inputs:
+      phases:
+        description: 'Phases to run (comma-separated: 0,1,2,3)'
+        required: false
+        default: '0,1,2,3'
+      limit:
+        description: 'Max reviews per phase (0 = all)'
+        required: false
+        default: '0'
+      outlet:
+        description: 'Filter to specific outlet'
+        required: false
+        default: ''
+      show:
+        description: 'Filter to a single show ID (opening-night remediation, task #389)'
+        required: false
+        default: ''
+      market:
+        description: 'Filter by market (west-end, off-broadway)'
+        required: false
+        default: ''
+      source:
+        description: 'Filter by source (theatre-record)'
+        required: false
+        default: ''
+      since:
+        description: 'Only shows opened on/after date (YYYY-MM-DD) + open shows'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Report only, no file writes'
+        required: false
+        default: 'false'
+      time_budget_min:
+        description: 'Wall-clock budget in minutes (0 = unlimited)'
+        required: false
+        default: '100'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: recover-explicit-ratings
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    name: Recover missing star ratings
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run rating recovery
+        env:
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+        run: |
+          ARGS=""
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            # Weekly cron: all phases, 100-min wall-clock budget. The script
+            # exits cleanly at the budget and rotates the backlog via
+            # data/audit/recover-ratings-state.json (least-recently-attempted
+            # first), so successive weeks cover different slices. The 120-min
+            # job timeout is a backstop, not the cap — timeout kills made 5 of
+            # the last 6 weekly runs red before 2026-06-11.
+            ARGS="--phase=0,1,2,3 --time-budget-min=100"
+          else
+            PHASES="${{ inputs.phases || '0,1,2,3' }}"
+            LIMIT="${{ inputs.limit || '0' }}"
+            ARGS="--phase=$PHASES --limit=$LIMIT"
+            # Default in bash, not a GHA || expression — the expression coerces
+            # a literal 0 (= unlimited) to falsy and would silently turn it into 100.
+            TB="${{ inputs.time_budget_min }}"
+            [ -z "$TB" ] && TB=100
+            ARGS="$ARGS --time-budget-min=$TB"
+            if [ -n "${{ inputs.outlet }}" ]; then
+              ARGS="$ARGS --outlet=${{ inputs.outlet }}"
+            fi
+            # Single-show mode — opening-night-checklist.js dispatches
+            # {show, outlet} together so an unparsed Guardian 3/5 on tonight's
+            # opening recovers that one review, not the whole Guardian backlog
+            # (task #389; the script's --show= filter predates this).
+            if [ -n "${{ inputs.show }}" ]; then
+              ARGS="$ARGS --show=${{ inputs.show }}"
+            fi
+            if [ -n "${{ inputs.market }}" ]; then
+              ARGS="$ARGS --market=${{ inputs.market }}"
+            fi
+            if [ -n "${{ inputs.source }}" ]; then
+              ARGS="$ARGS --source=${{ inputs.source }}"
+            fi
+            if [ -n "${{ inputs.since }}" ]; then
+              ARGS="$ARGS --since=${{ inputs.since }}"
+            fi
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              ARGS="$ARGS --dry-run"
+            fi
+          fi
+          echo "Running: node scripts/recover-explicit-ratings.js $ARGS"
+          node scripts/recover-explicit-ratings.js $ARGS
+
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != 'true'
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Recover explicit star ratings"
+
+      - name: Commit audit data
+        if: always() && inputs.dry_run != 'true'
+        id: push
+        run: |
+          bash scripts/lib/stage-data-changes.sh data/audit/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            RECOVERED=$(node -e "
+              try {
+                const r = require('./data/audit/recover-ratings-report.json');
+                console.log((r.phase1Recovered || 0) + (r.phase2Recovered || 0) + (r.phase3Recovered || 0));
+              } catch { console.log(0); }
+            ")
+            git commit -m "data: Recover $RECOVERED explicit star ratings
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            bash scripts/lib/push-with-retry.sh
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger rebuild
+        if: steps.push.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RECOVERED=$(node -e "
+            try {
+              const r = require('./data/audit/recover-ratings-report.json');
+              console.log((r.phase1Recovered || 0) + (r.phase2Recovered || 0) + (r.phase3Recovered || 0));
+            } catch { console.log(0); }
+          ")
+          if [ "$RECOVERED" -gt "0" ]; then
+            RUNNING=$(gh run list --workflow=rebuild-reviews.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+            if [ "$RUNNING" -gt "0" ]; then
+              echo "Rebuild already running — skipping dispatch"
+              exit 0
+            fi
+            echo "Triggering rebuild for $RECOVERED recovered ratings..."
+            gh workflow run rebuild-reviews.yml \
+              -f reason="Post rating recovery ($RECOVERED ratings)"
+          else
+            echo "No recoveries, skipping rebuild."
+          fi
+
+      - name: Upload recovery report
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: recover-ratings-report
+          path: data/audit/recover-ratings-report.json
+          retention-days: 30
+
+      - name: Summary
+        if: always()
+        run: |
+          node -e "
+            try {
+              const r = require('./data/audit/recover-ratings-report.json');
+              const total = (r.phase1Recovered||0) + (r.phase2Recovered||0) + (r.phase3Recovered||0);
+              const lines = [
+                '## Rating Recovery Summary',
+                '',
+                '| Phase | Recovered |',
+                '|-------|-----------|',
+                '| Phase 0 (URL discovery) | ' + (r.phase0UrlsFound || 0) + ' URLs |',
+                '| Phase 1 (local text) | ' + (r.phase1Recovered || 0) + ' |',
+                '| Phase 2 (free APIs) | ' + (r.phase2Recovered || 0) + ' |',
+                '| Phase 3 (URL scraping) | ' + (r.phase3Recovered || 0) + ' |',
+                '| **Total** | **' + total + '** |',
+                '',
+                'Missing: ' + (r.totalMissing || 0) + ' | Errors: ' + (r.errors || 0),
+                r.timeBudgetExhausted
+                  ? '⏱ **Time budget exhausted** at ' + r.timeBudgetMin + ' min — backlog rotates to next run. If this fires every week while Missing grows, recovery is degrading; investigate instead of raising the budget.'
+                  : '',
+              ];
+              console.log(lines.join('\n'));
+            } catch(e) {
+              console.log('No report generated: ' + e.message);
+            }
+          " >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recover Explicit Ratings Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

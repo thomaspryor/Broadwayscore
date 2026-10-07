@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Autonomous nightly loop (Sprint 2). 03:30 local ET = 07:30 UTC during
+         EDT — the slot chosen in memory/autonomous-loop-schedule.md (launchd
+         calendar intervals are LOCAL time; the winter DST shift moves this to
+         08:30 UTC, which stays clear per the schedule memo).
+         Install:  cp scripts/launchd/com.broadwayscore.autonomous-nightly.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.autonomous-nightly.plist
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.autonomous-nightly -->
+    <key>Label</key>
+    <string>com.broadwayscore.autonomous-nightly</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/autonomous-nightly.sh</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>3</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/autonomous-nightly-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/autonomous-nightly-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

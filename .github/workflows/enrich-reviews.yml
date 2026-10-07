@@ -1,0 +1,370 @@
+# LLM enrichment of review-texts — flags and metadata only.
+#
+# Runs the 4 LLM/scraper enrichers that previously lived inside rebuild-reviews.yml
+# and that pushed total runtime over the cancellation threshold (rebuild step then
+# got skipped, leaving reviews.json stale for hours). Decoupled per Notion
+# 351637c5-416f-8177 review.
+#
+# This workflow does NOT rebuild reviews.json or trigger a deploy. It only mutates
+# `data/review-texts/{showId}/*.json` (sets isNonReview / wrongProduction / wrongShow
+# / criticName), drains the `_pending/` no-byline sink (6-hourly for open shows,
+# weekly for every show — see the drain_scope input), and pushes those changes
+# back to the broadway-review-texts private repo. The next rebuild-reviews /
+# rebuild-fast run picks the flags up and excludes affected reviews via
+# isIncludableForRebuild.
+#
+# Per CLAUDE.md §15 (Test Extraction Pattern): all four enrichment scripts already
+# live in scripts/ and are exercised independently. This workflow is just plumbing.
+
+name: Enrich Reviews
+
+concurrency:
+  # per-run group intended: NOT queueing (run_id is unique per run, so this
+  # never serializes) — the goal is letting concurrent runs proceed rather
+  # than a shared group's queue-depth-1 cancelling one and losing progress on
+  # long-running scraper passes (backfill-unknown-critics). Same pattern as
+  # rebuild-fast.yml. See memory/feedback_gha_concurrency_queue_limit.md.
+  # (task #922 audit, 2026-08-03)
+  group: enrich-reviews-${{ github.run_id }}
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # Every 6 hours, offset 30min from the daily 4 AM rebuild and the 5 AM scoring
+    # cron so they don't collide. Times: 04:30, 10:30, 16:30, 22:30 UTC.
+    - cron: '30 4,10,16,22 * * *'
+    # Weekly, Sunday 01:30 UTC (2026 data audit S7-T8): the same enrichment
+    # chain, but the _pending no-byline drain runs with --all-pending (EVERY
+    # show with a _pending dir, closed included) instead of --all-open. The
+    # 6-hourly --all-open drain never reaches a show that closed the week
+    # its reviews landed, so 107 shows / 287 files sat stranded (86 of those
+    # shows closed; Othello Off-Broadway had 34 waiting vs 2 live and no
+    # score). Which drain runs is decided from github.event.schedule in the
+    # "Resolve pending-drain scope" step — never from the wall clock (GHA
+    # crons fire late). The weekly run swaps the open drain for the
+    # all-pending one under the same 16-min budget / 20-min timeout, so the
+    # job's worst-case runtime is unchanged.
+    - cron: '30 1 * * 0'
+  workflow_dispatch:
+    inputs:
+      skip_classify_non_reviews:
+        description: 'Skip classify-non-reviews step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_classify_wrong_production:
+        description: 'Skip classify-wrong-production step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_classify_wrong_show:
+        description: 'Skip classify-wrong-show step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      skip_backfill_critics:
+        description: 'Skip backfill-unknown-critics step (true/false)'
+        required: false
+        default: 'false'
+        type: string
+      drain_scope:
+        description: 'Which shows the _pending no-byline drain covers: open (open/previews — the 6-hourly default), closed-90d (open/previews + shows closed in the last 90 days), all-pending (every show with a _pending dir — the weekly cron scope)'
+        required: false
+        default: 'open'
+        type: choice
+        options:
+          - open
+          - closed-90d
+          - all-pending
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  enrich:
+    name: LLM enrichment of review-texts
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 50-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
+      - uses: ./.github/actions/setup-node
+
+      # backfill-unknown-critics fetches review pages (fetchPage → Playwright
+      # tier) to extract bylines; classify-* steps also scrape. Without Chromium
+      # installed those fetches fail ("Executable doesn't exist"), so byline
+      # backfill silently yielded ~0 (verified 2026-06-28, run 28334270827).
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      # ---- LLM enrichment chain ----
+      # All four steps were previously in rebuild-reviews.yml between checkout and
+      # rebuild. Order preserved to keep per-script dependencies intact:
+      #   classify-non-reviews → flags isNonReview, narrows the corpus
+      #   audit-pre2005-reviews + flag-wrong-production-by-date already ran in
+      #     rebuild-reviews.yml and produced data/audit/wrong-production-flags.json,
+      #     which classify-wrong-production.js consumes (line ~337). Both stay in
+      #     rebuild-reviews.yml — they are fast utility steps. classify-wrong-production
+      #     here will fall back to running audit-pre2005-reviews itself if the audit
+      #     file is missing (handled internally; ~+90s slow path).
+
+      - name: Classify new review files
+        if: inputs.skip_classify_non_reviews != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-non-reviews.js --incremental --limit=50 --verbose 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Classify medium-confidence wrong-production flags
+        if: inputs.skip_classify_wrong_production != 'true'
+        # Opus, not the Gemini default: Gemini over-accepts garbage for
+        # classification (memory/feedback_llm_verifier_hallucinates.md, ~48% on
+        # garbage); this step --apply's wrongProduction flags, so accuracy wins.
+        # --resume + already-flagged skip means steady-state only NEW reviews hit
+        # the model, so recurring cost tracks review inflow, not 200/run.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/classify-wrong-production.js --apply --resume --limit=200 --provider=opus 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      - name: Classify wrong-show flags (LLM)
+        if: inputs.skip_classify_wrong_show != 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/classify-wrong-show.js --apply --resume --limit=100 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
+      # Self-healing late-star re-anchor (no API — pure local flag pass).
+      # Opening-night race: a WE/OWE review is LLM-scored UNANCHORED (llm-v6) before
+      # the outlet's star widget is scraped; the star arrives later but nothing
+      # re-anchors it, so a 3/5 review can sit at 77 outside its band. This flags
+      # such reviews needsRescore=true + rescoreReason='late-star-anchor'; the daily
+      # 5 AM scoring cron auto-detects the needsRescore backlog (llm-ensemble-score.yml
+      # check-needed → run_rescore) and re-scores them in ANCHORED mode. Runs AFTER
+      # the wrong-* classifiers so it respects fresh wrongProduction/wrongShow flags
+      # (needsLateStarReanchor returns null for those). See scripts/lib/late-star-anchor.js
+      # and the one-shot backfill scripts/flag-late-star-reanchor.js it shares logic with.
+      # BRO-4486: a star printed in the review text but never stored in
+      # originalScore (write paths that skipped the outlet extractor). Store it
+      # first so the late-star flag below re-anchors the file.
+      - name: Capture star ratings printed in review text
+        run: node scripts/capture-published-stars.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Flag late-arriving stars for anchored re-score
+        run: node scripts/flag-late-star-reanchor.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
+      # Self-draining needsRescore queue (no API — pure local flag pass).
+      # A review flagged needsRescore=true that a LATER enricher marks
+      # wrongShow/wrongProduction/contentTier=invalid/duplicate becomes non-scoreable;
+      # the scorer filters it out BEFORE processing and only clears the flag AFTER
+      # scoring, so the flag strands forever and the rescore queue accumulates (1170
+      # found 2026-07-01). --fix clears needsRescore on any flagged-but-non-scoreable
+      # review (isScoreable=false → the scorer will never touch it). Runs AFTER the
+      # wrong-* classifiers AND after the late-star flagger, so it sees fresh flags
+      # and never undoes late-star's work (those reviews are scoreable, so kept).
+      # Holds the corpus invariant asserted by scripts/audit-stuck-rescore-flags.js.
+      - name: Drain stuck needsRescore flags (non-scoreable)
+        run: node scripts/audit-stuck-rescore-flags.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
+      - name: Backfill unknown critics (via scraper infrastructure)
+        if: inputs.skip_backfill_critics != 'true'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        # --limit raised 50→150 (2026-06-26): the 6-hourly cap of 50 couldn't keep
+        # pace with opening-night review surges (a backlog of 150+ unknown-author
+        # files built up across recent WE/OB openings). At ~1 req/s, 150 fits the
+        # 15-min step timeout with headroom. Notion 38a637c5-416f-81a7.
+        run: node scripts/backfill-unknown-critics.js --critics-only --limit=150 --time-budget-min=12 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 15
+
+      # Which shows the _pending drain below covers (audit S7-T8). A dispatch
+      # names it via the drain_scope input; the weekly Sunday cron
+      # ('30 1 * * 0') is all-pending; every other run (the 6-hourly crons,
+      # a dispatch that left the input blank) is the historical open scope.
+      # Keyed off github.event.schedule, the literal cron string that fired,
+      # never the wall clock — GHA crons fire 30 min-3 h late (see
+      # enrich-west-end-dates.yml's mode detection for the incident).
+      - name: Resolve pending-drain scope
+        id: drain-scope
+        env:
+          INPUT_SCOPE: ${{ inputs.drain_scope }}
+          EVENT_NAME: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          SCOPE="$INPUT_SCOPE"
+          if [ -z "$SCOPE" ]; then
+            if [ "$EVENT_NAME" = "schedule" ] && [ "$SCHEDULE" = "30 1 * * 0" ]; then
+              SCOPE="all-pending"
+            else
+              SCOPE="open"
+            fi
+          fi
+          case "$SCOPE" in
+            open|closed-90d|all-pending) ;;
+            *)
+              echo "::warning::unknown drain_scope '$SCOPE' — falling back to 'open'"
+              SCOPE="open"
+              ;;
+          esac
+          echo "Pending drain scope: $SCOPE (event=$EVENT_NAME schedule='$SCHEDULE')"
+          echo "scope=$SCOPE" >> "$GITHUB_OUTPUT"
+
+      # Drain the _pending/ no-byline sink for all open shows. Multi-critic-outlet
+      # hits (Times/Standard/Guardian) route to _pending awaiting byline extraction,
+      # but nothing drained it for non-opera shows — 500+ real reviews across 70+
+      # WE/Broadway shows stranded. See data/audit/we-discovery-diagnosis.md.
+      # Scope open → --all-open (open/previews, unchanged 6-hourly behaviour);
+      # scope closed-90d → --all-open --closed-within-days=90 (also shows that
+      # closed in the last 90 days, via scripts/lib/show-liveness.js).
+      - name: Drain pending no-byline reviews (open shows, or open + closed-90d)
+        if: inputs.skip_backfill_critics != 'true' && steps.drain-scope.outputs.scope != 'all-pending'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          DRAIN_SCOPE: ${{ steps.drain-scope.outputs.scope }}
+        run: |
+          FLAGS="--all-open"
+          if [ "$DRAIN_SCOPE" = "closed-90d" ]; then
+            FLAGS="$FLAGS --closed-within-days=90"
+          fi
+          echo "Running: node scripts/replay-pending-bylines.js $FLAGS --time-budget-min=16"
+          node scripts/replay-pending-bylines.js $FLAGS --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 20
+
+      # Weekly (Sunday cron) or on dispatch with drain_scope=all-pending: drain
+      # EVERY show that has a _pending dir, closed shows included — the
+      # --all-pending flag already existed in the script, nothing scheduled it.
+      # Same env, same 16-min budget and 20-min timeout as the open drain it
+      # replaces on this run; the budget defers the remainder to next week
+      # rather than letting the job time out.
+      - name: Drain pending no-byline reviews (all pending, weekly)
+        if: inputs.skip_backfill_critics != 'true' && steps.drain-scope.outputs.scope == 'all-pending'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: node scripts/replay-pending-bylines.js --all-pending --time-budget-min=16 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 20
+
+      # ---- Push review-texts changes ----
+      # if: always() so even partial enrichment (one step cancelled / errored) still
+      # pushes the flags written by the steps that did complete. Same pattern as
+      # rebuild-reviews.yml / rebuild-fast.yml.
+
+      - name: Aggregate locked-skip counts (S2-T4)
+        if: always()
+        run: |
+          # Joe Turner postmortem P0 #2 (2026-04-26): each enrichment script logs
+          # `[LOCKED-SKIP-COUNT] {script}: N` at exit. Mirrors the aggregation in
+          # rebuild-reviews.yml — when those scripts moved here, the metric had
+          # to come along.
+          LOG="${LOCKED_SKIP_TEST_LOG_OVERRIDE:-/tmp/locked-skip.log}"
+          if [ ! -f "$LOG" ]; then
+            echo "::notice::No locked-skip log produced — enrichment steps may have been skipped"
+            exit 0
+          fi
+          echo "## Locked-skip aggregation"
+          declare -A counts
+          while IFS= read -r line; do
+            script=$(echo "$line" | sed -nE 's/.*\[LOCKED-SKIP-COUNT\] ([^:]+):.*/\1/p')
+            count=$(echo "$line" | sed -nE 's/.*: ([0-9]+)$/\1/p')
+            [ -z "$script" ] || [ -z "$count" ] && continue
+            counts["$script"]=$count
+          done < <(grep '\[LOCKED-SKIP-COUNT\]' "$LOG")
+          MODIFIED=$(git -C data/review-texts diff --name-only 2>/dev/null | wc -l | tr -d ' ' || echo 0)
+          [ "$MODIFIED" -lt 1 ] && MODIFIED=1
+          for script in "${!counts[@]}"; do
+            count=${counts[$script]}
+            echo "  $script: $count"
+            PCT_THRESHOLD=${LOCKED_SKIP_THRESHOLD_PCT:-50}
+            ratio=$(( count * 100 / MODIFIED ))
+            if [ "$ratio" -gt "$PCT_THRESHOLD" ]; then
+              echo "::warning::High locked-skip ratio in $script: $count skipped vs $MODIFIED files modified ($ratio%) — likely something is wrong"
+            fi
+          done
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: enrich-reviews — LLM flags + critic backfill'
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: enrich-reviews — audit-trail snapshots'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: enrich-reviews
+
+      # We do NOT trigger a deploy here. Flag changes don't surface on the public
+      # site until the next rebuild reads them and regenerates reviews.json. The
+      # 4 AM UTC scheduled rebuild + the auto-trigger from collect-review-texts
+      # workflow_run will pick them up within the hour.
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Enrich Reviews Failed'
+          description: 'Enrich Reviews workflow failed. continue-on-error is set on every step so this means a setup/checkout/push failure, not a script error. Check run logs.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Enrich Reviews Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Ran 4 LLM/scraper enrichers against review-texts. Flag changes" >> $GITHUB_STEP_SUMMARY
+          echo "land in the next rebuild via isIncludableForRebuild." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Steps with cancellations or failures: see step logs above." >> $GITHUB_STEP_SUMMARY

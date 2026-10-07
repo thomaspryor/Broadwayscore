@@ -1,0 +1,397 @@
+{
+  "issueNumber": "bro-4626",
+  "planId": "3a01a492-de77-4f4a-9919-0b977dab7fd8",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 3: remove eight capitalization figures that were our own estimates with no press or SEC source. Each removal clears the figure, its 'Source:' line and the figure in the notes, so the estimate no longer shows anywhere. Also fixes two factual note errors (All Out, Wicked).",
+    "steps": [
+      "Unsourced estimates: each entry's own capitalizationSource said 'industry estimate', 'unconfirmed' or 'comparable to'; the trade press reports no figure.",
+      "How to Dance in Ohio keeps a source line saying Broadway Journal put it under $15M without an exact figure."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "showId": "aint-too-proud-2019",
+        "field": "capitalization",
+        "oldValue": 16000000,
+        "newValue": null,
+        "description": "aint-too-proud-2019: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "showId": "aint-too-proud-2019",
+        "field": "capitalizationSource",
+        "oldValue": "Industry estimate (~$16M)",
+        "newValue": null,
+        "description": "aint-too-proud-2019: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "capitalization",
+        "oldValue": 5000000,
+        "newValue": null,
+        "description": "all-out: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing (All In was $4.8M, All Out comparable)",
+        "newValue": null,
+        "description": "all-out: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "capitalization",
+        "oldValue": 8000000,
+        "newValue": null,
+        "description": "once-upon-a-mattress-2024: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "capitalizationSource",
+        "oldValue": "Unconfirmed (industry estimate)",
+        "newValue": null,
+        "description": "once-upon-a-mattress-2024: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "showId": "patriots",
+        "field": "capitalization",
+        "oldValue": 7000000,
+        "newValue": null,
+        "description": "patriots: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "showId": "patriots",
+        "field": "capitalizationSource",
+        "oldValue": "Industry estimate (~$6-8M range for commercial play)",
+        "newValue": null,
+        "description": "patriots: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "showId": "spamalot",
+        "field": "capitalization",
+        "oldValue": 11000000,
+        "newValue": null,
+        "description": "spamalot: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "showId": "spamalot",
+        "field": "capitalizationSource",
+        "oldValue": "Industry estimate (~$10-12M)",
+        "newValue": null,
+        "description": "spamalot: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "showId": "the-roommate",
+        "field": "capitalization",
+        "oldValue": 4800000,
+        "newValue": null,
+        "description": "the-roommate: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "showId": "the-roommate",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing / industry sources (comparable to All In at $4.8M per SEC Form D)",
+        "newValue": null,
+        "description": "the-roommate: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "capitalization",
+        "oldValue": 17000000,
+        "newValue": null,
+        "description": "tina-2019: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "capitalizationSource",
+        "oldValue": "Industry estimate (~$16-18M)",
+        "newValue": null,
+        "description": "tina-2019: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "capitalization",
+        "oldValue": 13000000,
+        "newValue": null,
+        "description": "how-to-dance-in-ohio: capitalization (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "capitalizationSource",
+        "oldValue": "Industry estimate (under $15M per Broadway Journal)",
+        "newValue": "Broadway Journal: under $15M (exact figure not reported)",
+        "description": "how-to-dance-in-ohio: capitalizationSource (unsourced estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "showId": "aint-too-proud-2019",
+        "field": "notes",
+        "oldValue": "Temptations jukebox musical that opened Mar 2019 and ran 488 performances until Jan 2022. Capitalized at ~$16M. Consistently grossed >$1M/week pre-pandemic. Despite 19-month COVID closure, producers announced full recoupment in late 2021. Received $10M SVOG grant. One of few new musicals of its season to turn a profit on Broadway.",
+        "newValue": "Temptations jukebox musical that opened Mar 2019 and ran 488 performances until Jan 2022. Consistently grossed over $1M a week before the pandemic. Despite a 19-month COVID closure, producers announced full recoupment in late 2021 (Forbes). Capitalization not publicly reported.",
+        "description": "aint-too-proud-2019: notes (remove estimated figure from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "once-upon-a-mattress-2024",
+        "showId": "once-upon-a-mattress-2024",
+        "field": "notes",
+        "oldValue": "Sutton Foster-led Encores! transfer to Hudson Theatre. $8M capitalization (unconfirmed industry estimate). Reddit post-mortem: $650-$700K/week operating cost, $760K avg gross, 92% capacity, $110 ATP. Gross Less-Fees: $673K. 128 performances + 13 previews. Estimated operating loss $(1.0M)-$(285K). Did not come close to recouping. NYT Critics' Pick.",
+        "newValue": "Sutton Foster-led Encores! transfer to the Hudson Theatre; 128 performances plus 13 previews. NYT Critics' Pick. No capitalization reported and no recoupment announced.",
+        "description": "once-upon-a-mattress-2024: notes (remove estimated figure from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "patriots",
+        "showId": "patriots",
+        "field": "notes",
+        "oldValue": "Commercial play produced by Sonia Friedman, 12-week limited engagement at Barrymore Theatre (Apr-Jun 2024). Struggled to find audience — averaged only 74% capacity with $64 average ticket (very low for Broadway). Best week grossed only $513.6K. Total gross $4.54M against estimated ~$7M budget. Closed without extending. Investors did not recoup.",
+        "newValue": "Commercial play produced by Sonia Friedman, 12-week limited engagement at the Ethel Barrymore (Apr to Jun 2024). Averaged about 74% capacity; total gross about $4.54M. Closed without extending. No capitalization reported and no recoupment announced.",
+        "description": "patriots: notes (remove estimated figure from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "spamalot",
+        "showId": "spamalot",
+        "field": "notes",
+        "oldValue": "Revival of Monty Python musical. Ran Nov 2023 to Apr 2024 (164 regular performances, 5 months). Capitalized at an estimated $10-12M (Kennedy Center transfer). Grossed $20.38M total but did not recoup. Original 2005 production recouped in 6 months and grossed $175M+.",
+        "newValue": "Revival of the Monty Python musical (Kennedy Center transfer). Ran Nov 2023 to Apr 2024 (164 regular performances) and grossed about $20.4M. No capitalization reported and no recoupment announced. The original 2005 production recouped in about six months.",
+        "description": "spamalot: notes (remove estimated figure from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-roommate",
+        "showId": "the-roommate",
+        "field": "notes",
+        "oldValue": "Star vehicle for Patti LuPone and Mia Farrow. Limited run closed as scheduled Dec 15, 2024 (previews from Aug 29). $4.8M cap, but weekly grosses (~$465K avg) barely covered estimated $400-500K weekly nut. Total all-time gross $6.97M over 113 performances. Operating profit was negligible (0-5% of cap). Eligible for NY State tax credit (up to $3M), which could push investor recovery to 60-70% — but payout is slow and not confirmed. No SVOG (post-pandemic). Producer: Chris Harper. Playwright royalties (Jen Silverman) carved out as operating expense.",
+        "newValue": "Star vehicle for Patti LuPone and Mia Farrow; limited run closed as scheduled Dec 15, 2024 (previews from Aug 29). Total gross about $6.97M over 113 performances. No capitalization reported and no recoupment announced.",
+        "description": "the-roommate: notes (remove estimated figure from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "notes",
+        "oldValue": "Tina Turner jukebox bio-musical produced with Stage Entertainment. Opened Nov 2019, closed Aug 2022 after 482 performances. Opening weeks grossed $1.3-1.5M. Interrupted by pandemic. Received $10M SVOG grant. Did not recoup Broadway investment despite strong brand, though West End production and tours provided additional revenue. Estimated $50-60M total gross.",
+        "newValue": "Tina Turner jukebox bio-musical produced with Stage Entertainment. Opened Nov 2019 and closed Aug 2022 after 482 performances, interrupted by the pandemic. No capitalization reported and no recoupment announced; the West End production and tours continued.",
+        "description": "tina-2019: notes (remove estimated figures from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-to-dance-in-ohio",
+        "showId": "how-to-dance-in-ohio",
+        "field": "notes",
+        "oldValue": "Original musical that opened Dec 2023 and closed Feb 2024 after only 72 performances due to poor sales. One of only three new musicals capitalized under ~$15M in 2023-24 season. Averaged only 62% capacity at the 1,016-seat Belasco with $65 average ticket — far below sustainable levels. Lost its entire capitalization. Estimated gross ~$5-6M total. Qualified for maximum $3M NYC tax credit but closed early.",
+        "newValue": "Original musical that opened Dec 2023 and closed Feb 2024 after 72 performances. Broadway Journal listed it among the few new musicals of the 2023-24 season capitalized under about $15M; the exact figure was not reported. Averaged about 62% capacity at the Belasco. No recoupment announced.",
+        "description": "how-to-dance-in-ohio: notes (remove estimated figures from notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "all-out",
+        "showId": "all-out",
+        "field": "notes",
+        "oldValue": "Sequel to All In: Comedy About Love which recouped its $4.8M in just 10 weeks. Same format: rotating celebrity comedians with live band. Hit $2M+ weekly gross (record for a play). Very lean $200-300K weekly costs with 4-performer format. LIMITED RUN through March 8, 2026 - did NOT receive NY tax credit (missed application deadline by 2 months). Stars include Sarah Silverman, Ray Romano, Jason Mantzoukas. [Auto-designated Fizzle: closed without known recoupment data]",
+        "newValue": "Limited-run comedy anthology at the Nederlander (Dec 2025 to Mar 8, 2026). Total gross about $8.7M; best week about $1.07M. No capitalization reported and no recoupment announced.",
+        "description": "all-out: notes (false weekly-gross claim)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wicked",
+        "showId": "wicked",
+        "field": "notes",
+        "oldValue": "Recouped in ~26 months (just over 2 years). Has grossed over $1.4B on Broadway alone. Film adaptation boosted 2024-2025 grosses significantly.",
+        "newValue": "Opened Oct 30, 2003 with a $14M capitalization and recouped about 14 months later, by the end of 2004 (Playbill, Dec 2004). One of the highest-grossing Broadway shows ever.",
+        "description": "wicked: notes (note contradicted recoupedDate)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T00:52:35.000Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for once-upon-a-mattress-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for patriots"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for spamalot"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-roommate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for how-to-dance-in-ohio"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for all-out"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for wicked"
+    }
+  ]
+}

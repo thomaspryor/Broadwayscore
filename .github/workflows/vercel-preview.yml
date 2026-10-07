@@ -1,0 +1,191 @@
+name: Deploy Preview to Vercel
+
+on:
+  push:
+    branches: [staging]
+    paths:
+      - 'api/**'
+      - 'src/**'
+      - 'public/**'
+      - 'content/**'
+      - 'next.config.*'
+      - 'vercel.json'
+      - 'tailwind.config.*'
+      - 'tsconfig.*'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'data/shows.json'
+      - 'data/reviews.json'
+      - 'data/grosses.json'
+      - 'data/grosses-history.json'
+      - 'data/commercial.json'
+      - 'data/audience-buzz.json'
+      - 'data/critic-consensus.json'
+      - 'data/lottery-rush.json'
+      - 'data/awards.json'
+      - 'data/gold-lists-computed.json'
+      - 'data/critic-registry.json'
+  workflow_dispatch:
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: vercel-preview-deploy
+      # Intentionally true: for previews, only the latest staging push matters.
+      # Queuing (false) would waste time building stale intermediate versions.
+      cancel-in-progress: true
+    steps:
+      - name: Checkout staging
+        uses: actions/checkout@v5
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: ./.github/actions/setup-node
+
+      - name: Pre-deploy data integrity check
+        run: node scripts/pre-deploy-check.js
+
+      - name: Pull Vercel Environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+
+      - name: Cache Next.js build
+        uses: actions/cache@v5
+        with:
+          path: .next/cache
+          key: nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            nextjs-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            nextjs-cache-${{ runner.os }}-
+
+      - name: Check if data changed
+        id: check-data
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Full prebuild (manual trigger or no prior commit)"
+            exit 0
+          fi
+          git fetch --depth=2 origin "$BEFORE" 2>/dev/null || true
+          CHANGED=$(git diff --name-only "$BEFORE"..HEAD 2>/dev/null)
+          if [ -z "$CHANGED" ] || echo "$CHANGED" | grep -qE '^(data/|public/data/|content/reviews/)'; then
+            echo "data_changed=true" >> "$GITHUB_OUTPUT"
+            echo "Data files changed (or diff unavailable) — full prebuild"
+          else
+            echo "data_changed=false" >> "$GITHUB_OUTPUT"
+            echo "Code-only change — fast prebuild"
+          fi
+
+      - name: Build
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          SKIP_HEAVY_PREBUILD: ${{ steps.check-data.outputs.data_changed == 'false' && 'true' || '' }}
+        run: |
+          # /what-else sweep after card #90 (vercel-deploy.yml): this job has
+          # NO job-level timeout-minutes at all, so if Vercel server-side
+          # cancels this build's deployment (its "latest wins" dedup) while
+          # the CLI hangs waiting on it instead of exiting, this job could
+          # run for GH's default 6-HOUR job timeout with zero alert — a
+          # bigger blast radius than the production case card #90 fixed.
+          # Same inline-timeout + explicit-exit fix, not step-level
+          # timeout-minutes (reports conclusion=cancelled, which any future
+          # if:failure() step here would silently skip).
+          status=0
+          timeout 900 npx vercel build --token=$VERCEL_TOKEN || status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel build timed out after 15m (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel build failed (exit $status)"
+            fi
+            exit 1
+          fi
+
+      - name: Deploy Preview
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # BRO-451 what-else sweep (2026-09-11): mirrors the retry fix
+          # applied to vercel-deploy.yml's "Deploy to Production" step after
+          # a transient network write EPIPE mid-upload there. No job-level
+          # timeout-minutes exists on this job (see the Build step's comment
+          # above), so there's no ceiling to fit the retry worst-case into.
+          # Guarded `A && B || C` form is required under this step's
+          # `bash -e` — an unguarded `URL=$(...); status=$?` trips errexit
+          # and kills the script before status=$? runs (task #1911 pattern,
+          # see checkout-core-data/action.yml).
+          MAX_RETRIES=3
+          for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+            ATTEMPT_TIMEOUT=600
+            if [ "$ATTEMPT" -gt 1 ]; then
+              ATTEMPT_TIMEOUT=240
+            fi
+            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --archive=tgz --token=$VERCEL_TOKEN) && status=0 || status=$?
+            if [ "$status" -eq 0 ]; then
+              break
+            fi
+            if [ "$status" -eq 124 ]; then
+              echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::warning::vercel deploy failed (exit $status) on attempt $ATTEMPT/$MAX_RETRIES"
+            fi
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              sleep $(( 10 * ATTEMPT ))
+            fi
+          done
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::vercel deploy timed out on all $MAX_RETRIES attempts (possible Vercel-side cancellation hang, see card #90)"
+            else
+              echo "::error::vercel deploy failed (exit $status) on all $MAX_RETRIES attempts"
+            fi
+            exit 1
+          fi
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "::notice::Preview URL: $URL"
+
+      - name: Smoke test preview
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          # Poll until preview returns 200, up to 60s (typically <10s)
+          OK=false
+          for attempt in $(seq 1 12); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PREVIEW_URL/")
+            if [ "$STATUS" = "200" ]; then
+              echo "Homepage returned HTTP 200 (attempt ${attempt})"
+              OK=true
+              break
+            fi
+            echo "Homepage returned HTTP ${STATUS} — retrying in 5s (attempt ${attempt}/12)"
+            sleep 5
+          done
+          if [ "$OK" != "true" ]; then
+            echo "::error::Preview smoke test failed — homepage never returned HTTP 200 after 60s"
+            exit 1
+          fi
+          echo "Preview is live at $PREVIEW_URL"
+
+      - name: Write deploy summary
+        if: always()
+        run: |
+          echo "## Preview Deployment" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "${{ steps.deploy.outputs.url }}" ]; then
+            echo "**Preview URL:** ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Deploy failed — no preview URL generated." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Vercel Preview Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

@@ -1,0 +1,646 @@
+/**
+ * Text Quality Assessment Module
+ *
+ * Assesses review text quality for LLM scoring decisions.
+ * Does NOT use character count as a proxy for quality.
+ */
+
+// Excerpt field names — imported from excerpt-fields.js (single source of truth).
+// The objects add display names for use in getBestTextForScoring().
+const { EXCERPT_FIELDS: _EXCERPT_FIELD_NAMES } = require('./excerpt-fields');
+// Bot-wall stub patterns (NYT anti-bot JS-loader + verify-access interstitial) —
+// imported from content-quality.js rather than re-declared here (BRO-36). This
+// module's own truncation/cleaning logic is a separate code path from
+// classifyContentTier's and was blind to the stub: getBestTextForScoring() fed
+// the raw stub text to the LLM scorer as 'complete'/high-confidence even for
+// reviews content-quality.js had already correctly relabeled contentTier=truncated.
+// This array is reused for three purposes here (signal detection in
+// checkTruncation, strip-anchors in stripTrailingJunk, and the raw-text
+// pre-check in assessFullText) as well as content-quality.js's own tier
+// classification — narrowing/widening a pattern there changes all four call
+// sites at once. That's the intended single-source-of-truth behavior, but
+// keep it in mind before tightening a pattern for classification purposes only.
+const { TRUNCATION_SIGNALS: _CONTENT_QUALITY_SIGNALS, stripLeadingJsonBlob } = require('./content-quality');
+const BOT_STUB_PATTERNS = _CONTENT_QUALITY_SIGNALS.severeAnywhere;
+const EXCERPT_FIELDS = _EXCERPT_FIELD_NAMES.map(field => ({
+  field,
+  name: {
+    showScoreExcerpt: 'Show Score',
+    dtliExcerpt: 'DTLI',
+    bwwExcerpt: 'BWW',
+    nycTheatreExcerpt: 'NYC Theatre',
+    lboRoundupExcerpt: 'LBO Roundup',
+  }[field] || field,
+}));
+
+// Verdict language patterns - indicates the critic's final assessment
+const VERDICT_PATTERNS = [
+  // Positive verdicts
+  /\b(must[- ]see|essential|brilliant|masterpiece|triumph|unmissable)\b/i,
+  /\b(highly recommend|worth (seeing|the trip|every penny))\b/i,
+  /\b(don'?t miss|not to be missed|shouldn'?t miss)\b/i,
+  /\b(hits (its|the) (target|mark)|delivers|succeeds|soars)\b/i,
+  /\b(exhilarating|thrilling|riveting|captivating|mesmerizing)\b/i,
+  /\b(remarkable|extraordinary|exceptional|stunning|dazzling)\b/i,
+  /\b(best .{0,20} (season|year|broadway))\b/i,
+
+  // Negative verdicts
+  /\b(skip|avoid|miss this one|don'?t bother)\b/i,
+  /\b(disappointing|disappoints|waste of time)\b/i,
+  /\b(fails to|never comes together|doesn'?t work)\b/i,
+  /\b(falls (flat|short)|misses the mark|underwhelms)\b/i,
+  /\b(tedious|tiresome|dreary|dull|lifeless)\b/i,
+
+  // Qualified/mixed verdicts
+  /\b(worth seeing (despite|if)|recommended (with|for))\b/i,
+  /\b(flawed but|imperfect but|despite .{0,30} worth)\b/i,
+  /\b(mixed (results|feelings|bag))\b/i,
+  /\b(has (its|some) (moments|charms))\b/i,
+
+  // Star/grade language often appears with verdicts
+  /\b\d\s*(out of|\/)\s*\d\s*(stars?|points?)?\b/i,
+  /\bgrade:?\s*[A-F][+-]?\b/i,
+
+  // Common closing phrases
+  /\b(in (short|sum|summary|conclusion))\b/i,
+  /\b(the (bottom line|verdict|takeaway))\b/i,
+];
+
+// Truncation signals - indicates text was cut off
+const TRUNCATION_PATTERNS = [
+  // Paywall/subscription markers
+  /subscribe to (continue|read|keep)/i,
+  /sign in to (continue|read|keep)/i,
+  /to continue reading/i,
+  /read more\.?\.?\.?$/i,
+  /continue reading/i,
+  /for subscribers only/i,
+  /members only/i,
+  /unlock this article/i,
+
+  // Cut-off indicators
+  /\.{3}\s*$/,  // Ends with ellipsis
+  /[a-z,]\s*$/,  // Ends mid-word or after comma (no punctuation)
+
+  // Promotional interruptions (often appear at truncation point)
+  /advertisement\s*$/i,
+  /sponsored content/i,
+];
+
+// Signals that only say "the text does not end like a sentence" (a footer line
+// trips both). A file whose contentTier is already 'complete' may waive these
+// (BRO-4804); paywall wording, ellipsis endings and bot-wall stubs may not.
+const ENDING_ONLY_SIGNALS = new Set(['/[a-z,]\\s*$/', 'no-final-punctuation']);
+
+// Corruption signals - indicates garbage mixed into text
+const CORRUPTION_PATTERNS = [
+  // Mastheads
+  /^democracy dies in darkness/i,
+  /^all the news that'?s fit to print/i,
+
+  // Navigation elements
+  /\bshare\s+(this\s+)?(article|story|on)\b/i,
+  /\blisten\s+\d+\s*min\b/i,
+  /\bcomment\s*\(\d+\)/i,
+  /\bsave\s+(article|story)\b/i,
+
+  // Photo/media credits mixed in
+  /\(?\s*(photo|image|credit|getty|ap photo|reuters)\s*:?/i,
+  /\bcredit\s*\.\.\./i,
+
+  // Cookie/privacy notices
+  /\bcookies?\s+(policy|settings|preferences)\b/i,
+  /\bprivacy\s+(policy|notice)\b/i,
+
+  // Social media junk
+  /\bfollow us on\b/i,
+  /\btweet\s+this\b/i,
+];
+
+/**
+ * Check if text contains verdict language
+ * @param {string} text - Text to check
+ * @param {boolean} checkEndOnly - If true, only check last 600 chars
+ * @returns {boolean}
+ */
+function hasVerdict(text, checkEndOnly = false) {
+  if (!text) return false;
+
+  const textToCheck = checkEndOnly ? text.slice(-600) : text;
+
+  return VERDICT_PATTERNS.some(pattern => pattern.test(textToCheck));
+}
+
+/**
+ * Check if text shows truncation signals
+ * @param {string} text
+ * @returns {{isTruncated: boolean, signals: string[]}}
+ */
+function checkTruncation(text) {
+  if (!text) return { isTruncated: false, signals: [] };
+
+  const signals = [];
+
+  for (const pattern of TRUNCATION_PATTERNS) {
+    if (pattern.test(text)) {
+      signals.push(pattern.toString());
+    }
+  }
+
+  // Bot-wall stub — position-independent, full-text scan (mirrors
+  // content-quality.js detectTruncationSignals' severeAnywhere check). The stub
+  // appears at 90-95% of the file, so it can survive stripTrailingJunk's back-half
+  // guard on files where the min-remaining threshold isn't met; check the raw
+  // text directly rather than relying solely on stripping.
+  for (const pattern of BOT_STUB_PATTERNS) {
+    if (pattern.test(text)) {
+      signals.push('bot-wall-stub');
+      break;
+    }
+  }
+
+  // Check for abrupt ending (no sentence-final punctuation in last 20 chars)
+  const ending = text.slice(-20).trim();
+  if (ending && !/[.!?]["']?\s*$/.test(ending)) {
+    // But not if it ends with a quote attribution or similar
+    if (!/["']\s*$/.test(ending) && !/—\s*\w+\s*$/.test(ending)) {
+      signals.push('no-final-punctuation');
+    }
+  }
+
+  return {
+    isTruncated: signals.length > 0,
+    signals
+  };
+}
+
+/**
+ * Check if text has corruption (garbage mixed in)
+ * @param {string} text
+ * @returns {{isCorrupted: boolean, signals: string[]}}
+ */
+function checkCorruption(text) {
+  if (!text) return { isCorrupted: false, signals: [] };
+
+  const signals = [];
+
+  for (const pattern of CORRUPTION_PATTERNS) {
+    if (pattern.test(text)) {
+      signals.push(pattern.toString());
+    }
+  }
+
+  // Check for suspicious character sequences (encoding issues)
+  if (/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(text)) {
+    signals.push('control-characters');
+  }
+
+  // Check for repeated navigation-like text (but not "email" which is common in content)
+  // Only flag if we see specific nav patterns like "Share Save Print"
+  if (/\b(share|save|print)\b[^.]{0,20}\b(share|save|print)\b/i.test(text)) {
+    signals.push('repeated-nav-elements');
+  }
+  // Or explicit nav bars
+  if (/Share\s+(on\s+)?(Facebook|Twitter|Email|Print)/i.test(text)) {
+    signals.push('social-sharing-bar');
+  }
+
+  return {
+    isCorrupted: signals.length > 0,
+    signals
+  };
+}
+
+/**
+ * Remove trailing website junk from text for assessment
+ * @param {string} text
+ * @returns {string}
+ */
+function stripTrailingJunk(text) {
+  if (!text) return text;
+
+  // High-confidence anchors — definitively junk, NEVER legitimate review content.
+  // Bypass the back-half guard (these patterns are specific enough to avoid false positives).
+  // Still respect a lower min-remaining guard to avoid destroying very short texts.
+  const highConfidenceAnchors = [
+    // nyt-theater WordPress sidebar
+    /\n\s*Most Popular Posts/i,
+    /\n\s*New York Theater Archives/i,
+    // nytg ticket/FAQ pages (no newlines in scraped ticket pages)
+    /Frequently asked questions/i,
+    /Get directions\s*(?:\||View map)/i,
+    // Generic WordPress sidebar widgets
+    /\n\s*CategoriesCategories\n/i,
+    /\n\s*Theater blogroll\n/i,
+    // TheaterMania page footer (BRO-4804): the models read this unpunctuated last line as a cut-off.
+    /\s*Add as a preferred source on Google/i,
+  ];
+
+  // Anchor patterns match the START of trailing junk sections (no greedy tails).
+  // We find where junk begins, then truncate from that position.
+  // Guards prevent false positives when keywords appear in review body.
+  const junkAnchors = [
+    /\n\s*(When we learn of a mistake|If you spot an error|A version of this)/i,
+    /\n\s*(Share full article|Related Content|Advertisement|Share this)/i,
+    /\n\s*(Running time|Tickets|At the .{0,50}Theater|Through \w+ \d+)/i,
+    /\n\s*Learn more\s*$/i,
+    /\n\s*More from/i,
+    /\n\s*Read more/i,
+
+    // NYT-style related article sections (headlines followed by colons)
+    // Uses [ ] not \s to avoid matching across newlines
+    /(?<=\.)\s+[A-Z][A-Za-z ]{5,50}:\s+[A-Z]/,
+
+    // Explicit related content patterns
+    /\s+(Related|Also Read|You May Also Like|More Stories|Recommended)[:\s]/i,
+
+    // Vulture/Vox related content
+    /\s+See All\s*$/i,
+    /\s+More:\s+/i,
+  ];
+
+  let cleaned = text;
+  const originalLength = text.length;
+  const minRemaining = Math.max(200, originalLength * 0.15);
+  // Lower threshold for high-confidence patterns (handles cases where junk is 80%+ of text)
+  const minRemainingHighConf = Math.max(100, originalLength * 0.10);
+
+  // Pass 1: High-confidence anchors — no back-half guard, lower min-remaining
+  for (const pattern of highConfidenceAnchors) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+
+    if (match.index < minRemainingHighConf) continue;
+
+    cleaned = cleaned.slice(0, match.index);
+  }
+
+  // Pass 1b: NYT bot-wall stub (BRO-36) — unlike the anchors above (built for
+  // WordPress sidebar chrome that could theoretically appear mid-review), these
+  // patterns are position-independent and never legitimate content at all, so
+  // they strip unconditionally — no minRemainingHighConf floor. That floor is
+  // exactly what let the stub's own opening sentences ("trouble retrieving...",
+  // "please enable javascript...") survive uncut on short/thin scrapes, the
+  // files with the LEAST real prose before the bot wall and the highest need
+  // for cleanup — the ship-check follow-up that caught this (2026-08-31).
+  for (const pattern of BOT_STUB_PATTERNS) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+    cleaned = cleaned.slice(0, match.index);
+  }
+
+  // Pass 2: Regular anchors — with back-half guard and standard min-remaining
+  for (const pattern of junkAnchors) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+
+    // Back-half guard: only strip if match is in the last 40% of current text.
+    // Prevents keywords like "Tickets" in page headers from eating the review.
+    if (match.index < cleaned.length * 0.6) continue;
+
+    // Minimum-remaining guard: don't strip if too little text would remain.
+    if (match.index < minRemaining) continue;
+
+    cleaned = cleaned.slice(0, match.index);
+  }
+
+  return cleaned.trim();
+}
+
+/**
+ * Check if text ends properly (with sentence-final punctuation)
+ * @param {string} text
+ * @returns {boolean}
+ */
+function endsProperlyWithPunctuation(text) {
+  if (!text) return false;
+  const trimmed = text.trim();
+  // Ends with . ! ? optionally followed by closing quote
+  return /[.!?]["']?\s*$/.test(trimmed);
+}
+
+/**
+ * Assess fullText quality
+ * @param {string} fullText
+ * @param {boolean} useCleanedText - If true, clean text before assessing
+ * @param {{trustedComplete?: boolean}} [opts] - trustedComplete: the file's
+ *   contentTier is already 'complete' (content-quality.js, which relabels real
+ *   truncation). Then a missing final sentence punctuation alone is NOT evidence
+ *   of truncation: it is a page footer ("Add as a preferred source on Google",
+ *   "Share:", "Leave a comment"). BRO-4804: 7,648 of 22,125 complete files were
+ *   told "text appears TRUNCATED, be cautious" and scored with low confidence.
+ *   Explicit truncation patterns and bot-wall stubs still win.
+ * @returns {'complete' | 'truncated' | 'corrupted' | null}
+ */
+function assessFullText(fullText, useCleanedText = true, opts = {}) {
+  const trustedComplete = !!(opts && opts.trustedComplete);
+  if (!fullText || fullText.length < 50) {
+    return null;
+  }
+
+  // Bot-wall stub — check the RAW text before cleaning. Once stripTrailingJunk
+  // removes the stub sentence(s), the surviving pre-stub prose can coincidentally
+  // end with proper punctuation and read as 'complete' — but the raw text proves
+  // the scraper hit NYT's bot wall, so the article is objectively incomplete
+  // regardless of how the cleaned remainder looks (BRO-36).
+  for (const pattern of BOT_STUB_PATTERNS) {
+    if (pattern.test(fullText)) {
+      return 'truncated';
+    }
+  }
+
+  // Clean text for assessment - removes known artifacts
+  const textToAssess = useCleanedText ? cleanText(fullText) : fullText;
+
+  if (!textToAssess || textToAssess.length < 50) {
+    return null;
+  }
+
+  // After cleaning, check if still has corruption signals
+  const corruption = checkCorruption(textToAssess);
+  if (corruption.isCorrupted && corruption.signals.length > 1) {
+    // Only mark corrupted if multiple signals (single photo credit is tolerable)
+    return 'corrupted';
+  }
+
+  // Check for explicit truncation signals
+  const truncation = checkTruncation(textToAssess);
+  // Generic "does not end like a sentence" signals only: a footer line trips both
+  // the letter/comma-ending pattern and no-final-punctuation. Paywall wording,
+  // ellipsis endings and bot-wall stubs are NOT in this set and always win.
+  const punctuationOnly = truncation.signals.length > 0
+    && truncation.signals.every(s => ENDING_ONLY_SIGNALS.has(s));
+  if (truncation.isTruncated && !(trustedComplete && punctuationOnly)) {
+    return 'truncated';
+  }
+
+  // If text ends with proper punctuation, it's likely complete
+  // (even without explicit verdict language - some reviews are subtle)
+  if (endsProperlyWithPunctuation(textToAssess)) {
+    return 'complete';
+  }
+
+  // Text doesn't end properly - likely truncated, unless the file's own tier
+  // already says complete and a footer is the only reason (see opts above).
+  return trustedComplete ? 'complete' : 'truncated';
+}
+
+/**
+ * Score a text source for quality (higher = better)
+ * @param {Object} source
+ * @returns {number}
+ */
+function scoreSource(source) {
+  let score = 0;
+
+  // Base score by type
+  if (source.type === 'fullText') {
+    if (source.status === 'complete') score = 100;
+    else if (source.status === 'truncated') score = 40;
+    else if (source.status === 'corrupted') score = 20;
+  } else if (source.type === 'excerpt') {
+    score = 60; // Curated excerpts are reliable
+  }
+
+  // Bonus for having verdict
+  if (source.hasVerdict) {
+    score += 25;
+  }
+
+  // Length bonus — truncated fullText with substantial content should beat short excerpts
+  // A 4000-char truncated review is far more useful than a 30-char curated excerpt
+  if (source.text?.length > 500) score += 10;
+  if (source.text?.length > 1000) score += 10;
+  if (source.text?.length > 2000) score += 10;
+
+  return score;
+}
+
+/**
+ * Get the best text source for LLM scoring
+ * @param {Object} review - Review object with fullText and excerpt fields
+ * @returns {{text: string, type: string, status: string, confidence: string, reasoning: string}}
+ */
+function getBestTextForScoring(review) {
+  // 2B: Skip scoring of flagged text — treat fullText as null so excerpt fallback is used
+  const hasDataQualityFlag = review.misattributedFullText || review.wrongShow ||
+    review.wrongProduction || review.showNotMentioned;
+
+  if (hasDataQualityFlag && review.fullText) {
+    const flagName = review.misattributedFullText ? 'misattributedFullText' :
+      review.wrongShow ? 'wrongShow' : review.wrongProduction ? 'wrongProduction' : 'showNotMentioned';
+    // Proceed without fullText — only excerpts will be used
+    const reviewWithoutFullText = { ...review, fullText: null };
+    const excerptResult = getBestTextForScoring(reviewWithoutFullText);
+    excerptResult.reasoning = `Skipped fullText (${flagName} flag). ${excerptResult.reasoning}`;
+    return excerptResult;
+  }
+
+  const sources = [];
+
+  // Assess fullText if present - use CLEANED text for assessment and output
+  if (review.fullText && review.fullText.length >= 50) {
+    const cleaned = cleanText(review.fullText);
+    const status = assessFullText(review.fullText, true, { trustedComplete: review.contentTier === 'complete' }); // assess with cleaning
+    sources.push({
+      text: cleaned,  // Return cleaned text, not raw
+      type: 'fullText',
+      status: status,
+      hasVerdict: hasVerdict(cleaned),
+      field: 'fullText',
+      originalLength: review.fullText.length,
+      cleanedLength: cleaned.length
+    });
+  }
+
+  // Add aggregator excerpts — uses canonical EXCERPT_FIELDS list (single source of truth)
+  const excerptFields = EXCERPT_FIELDS;
+
+  for (const { field, name } of excerptFields) {
+    const excerpt = review[field];
+    if (excerpt && excerpt.length >= 30) {
+      sources.push({
+        text: excerpt,
+        type: 'excerpt',
+        status: 'curated',
+        hasVerdict: hasVerdict(excerpt),
+        field: field,
+        sourceName: name
+      });
+    }
+  }
+
+  if (sources.length === 0) {
+    return {
+      text: null,
+      type: null,
+      status: 'insufficient',
+      confidence: 'none',
+      reasoning: 'No usable text found'
+    };
+  }
+
+  // Score and sort sources
+  sources.forEach(s => { s.score = scoreSource(s); });
+  sources.sort((a, b) => b.score - a.score);
+
+  const best = sources[0];
+
+  // 2A: Augment short fullText (300-1500 chars) with non-duplicate excerpts
+  if (best.type === 'fullText' && best.text && best.text.length >= 300 && best.text.length <= 1500) {
+    const excerptSources = sources.filter(s => s.type === 'excerpt');
+    if (excerptSources.length > 0) {
+      const additionalExcerpts = [];
+      for (const excerptSource of excerptSources) {
+        // Skip if the excerpt is already a substring of fullText
+        if (best.text.includes(excerptSource.text)) continue;
+        additionalExcerpts.push(excerptSource.text);
+      }
+      if (additionalExcerpts.length > 0) {
+        const separator = '\n\n--- Additional context from this review ---\n';
+        const combined = best.text + separator + additionalExcerpts.join('\n\n');
+        // Cap at 3000 chars total
+        best.text = combined.substring(0, 3000);
+        best.augmented = true;
+        best.augmentedExcerptCount = additionalExcerpts.length;
+      }
+    }
+  }
+
+  // Determine confidence level
+  let confidence;
+  let reasoning;
+
+  if (best.type === 'fullText' && best.status === 'complete') {
+    confidence = 'high';
+    reasoning = 'Complete review text with verdict';
+  } else if (best.type === 'fullText' && best.status === 'complete' && !best.hasVerdict) {
+    confidence = 'medium';
+    reasoning = 'Complete text but no clear verdict language detected';
+  } else if (best.type === 'excerpt' && best.hasVerdict) {
+    confidence = 'medium';
+    reasoning = `Curated ${best.sourceName} excerpt with verdict`;
+  } else if (best.type === 'excerpt') {
+    confidence = 'medium';
+    reasoning = `Curated ${best.sourceName} excerpt`;
+  } else if (best.type === 'fullText' && best.status === 'truncated') {
+    // Check if we have a better excerpt
+    const excerptWithVerdict = sources.find(s => s.type === 'excerpt' && s.hasVerdict);
+    if (excerptWithVerdict) {
+      // Prefer excerpt with verdict over truncated fullText without
+      if (!best.hasVerdict) {
+        const betterSource = excerptWithVerdict;
+        return {
+          text: betterSource.text,
+          type: betterSource.type,
+          status: betterSource.status,
+          confidence: 'medium',
+          reasoning: `Truncated fullText lacks verdict; using curated ${betterSource.sourceName} excerpt with verdict instead`,
+          field: betterSource.field
+        };
+      }
+    }
+    confidence = 'low';
+    reasoning = 'Truncated text - may be missing final verdict';
+  } else if (best.type === 'fullText' && best.status === 'corrupted') {
+    confidence = 'low';
+    reasoning = 'Text contains artifacts/corruption - needs cleaning';
+  } else {
+    confidence = 'low';
+    reasoning = 'Limited text available';
+  }
+
+  return {
+    text: best.text,
+    type: best.type,
+    status: best.status,
+    confidence,
+    reasoning,
+    field: best.field,
+    allSources: sources.map(s => ({
+      field: s.field,
+      type: s.type,
+      status: s.status,
+      score: s.score,
+      hasVerdict: s.hasVerdict,
+      length: s.text?.length
+    }))
+  };
+}
+
+/**
+ * Clean corrupted text by removing common artifacts
+ * @param {string} text
+ * @returns {string}
+ */
+function cleanText(text) {
+  if (!text) return text;
+
+  // Decode HTML entities first (&#8217; → ', &#8220; → ", etc.)
+  const { decodeHtmlEntities } = require('./text-cleaning');
+  // BRO-4429: a leading JSON blob (wayback fetch of a news homepage) made the
+  // ensemble reject real Standard reviews as garbage_text.
+  let cleaned = decodeHtmlEntities(stripLeadingJsonBlob(text));
+
+  // === LEADING JUNK ===
+
+  // Remove common mastheads
+  cleaned = cleaned.replace(/^(Democracy Dies in Darkness|All the News That's Fit to Print)\s*/i, '');
+
+  // Remove Vox Media affiliate disclosure (various formats)
+  cleaned = cleaned.replace(/^Things you buy through our links[^.]*\.\s*/i, '');
+  cleaned = cleaned.replace(/^We may earn a commission[^.]*\.\s*/i, '');
+
+  // Remove leading photo credits (e.g., "Photo: Name\n")
+  // Requires newline after credit to avoid eating single-line reviews
+  cleaned = cleaned.replace(/^Photo\s*:\s*[^\n]{1,200}\n[\s]*/i, '');
+
+  // Remove leading whitespace and empty lines
+  cleaned = cleaned.replace(/^[\s\n]+/, '');
+
+  // Sometimes the junk has multiple lines - clean again
+  if (cleaned.match(/^(Photo|Things you buy|We may earn)/i)) {
+    cleaned = cleaned.replace(/^[^\n]+\n\s*/i, '');
+  }
+
+  // === INLINE JUNK ===
+
+  // Remove photo captions (various formats)
+  cleaned = cleaned.replace(/\([^)]*(?:Photo|Credit|Getty|AP Photo|Reuters)[^)]*\)/gi, '');
+  cleaned = cleaned.replace(/Photo\s*:\s*[A-Z][^.\n]{0,50}\s*/gi, ''); // "Photo: Name"
+  cleaned = cleaned.replace(/Credit\s*\.{3}[^.]+\./gi, '');
+  cleaned = cleaned.replace(/\(Getty Images\)/gi, '');
+
+  // Remove "Listen X min Share Comment" patterns
+  cleaned = cleaned.replace(/Listen\s*\d+\s*min\s*(Share\s*)?(Comment\s*)?/gi, '');
+
+  // Remove social sharing prompts
+  cleaned = cleaned.replace(/Share\s+(this\s+)?(article|story|on\s+\w+)/gi, '');
+
+  // Remove cookie/privacy notices
+  cleaned = cleaned.replace(/We use cookies[^.]+\./gi, '');
+  cleaned = cleaned.replace(/Privacy Policy[^.]*\./gi, '');
+
+  // === TRAILING JUNK ===
+
+  // Use stripTrailingJunk for thorough trailing cleanup
+  cleaned = stripTrailingJunk(cleaned);
+
+  // Normalize whitespace
+  cleaned = cleaned.replace(/\s+/g, ' ').trim();
+
+  return cleaned;
+}
+
+module.exports = {
+  EXCERPT_FIELDS,
+  hasVerdict,
+  checkTruncation,
+  checkCorruption,
+  assessFullText,
+  getBestTextForScoring,
+  cleanText,
+  stripTrailingJunk,
+  endsProperlyWithPunctuation,
+  scoreSource
+};

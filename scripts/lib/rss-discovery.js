@@ -1,0 +1,467 @@
+/**
+ * RSS Feed Discovery for Opening Night Poller
+ *
+ * Checks theater-specific and entertainment RSS feeds for new reviews.
+ * Theater feeds (Variety Legit, NYT Theater, Guardian Stage) are
+ * topic-specific and don't need keyword filtering. Entertainment feeds
+ * (THR, Deadline) need title matching.
+ *
+ * Supports both RSS 2.0 (<item>) and Atom (<entry>) feed formats.
+ */
+
+const https = require('https');
+const http = require('http');
+const { foldDiacritics } = require('./title-match');
+const { passesGenericTitleIdentity } = require('./generic-title-guard');
+
+// Theater-specific feeds (narrow enough that date-window filtering is safe)
+// NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
+// Guardian is handled by the Guardian Open Platform API in site-search-discovery.js (tag=stage/stage).
+// openingWindow: true — marks feeds narrow enough to use a date window around openingDate (see
+// openingWindowFeedAccepts) when openingDate is known; an identity match is always required too.
+// Only Broadway-specific feeds qualify; WE feeds (even without needsFilter) must still title-match.
+// trackRecoupment: true marks feeds the hourly recoupment poller
+// (scripts/poll-trade-press-rss.js) reads. Only set on feeds whose host is also
+// in TRUSTED_RECOUPMENT_HOSTS — see scripts/lib/trusted-recoupment-domains.js —
+// since the apply-commercial-pending auto-apply gate cross-checks sourceHost.
+// Playbill RSS is defunct (no entry here); BroadwayWorld has no RSS feed
+// registered; Broadway News Reviews is a reviews-tag feed (no recoupment news).
+const THEATER_FEEDS = [
+  { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway', trackRecoupment: true },
+  // Playbill RSS is defunct (404 as of March 2026) — kept for future reference
+  // { url: 'https://playbill.com/feed', outletId: 'playbill', name: 'Playbill' },
+  { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true, market: 'broadway' },
+  // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
+  // Use Guardian Open Platform API in site-search-discovery.js instead.
+  { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true, market: 'broadway' },
+  { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true, market: 'broadway' },
+  // newyorktheater.me is Jonathan Mandell's single-author blog — stamp the byline so
+  // RSS hits don't land in _pending/ with criticName='Unknown'. See feedback_rss_discovery_pending_strand.md.
+  { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true, market: 'broadway', defaultCritic: 'Jonathan Mandell' },
+];
+
+// West End theater feeds (verified March 2026)
+const WE_THEATER_FEEDS = [
+  { url: 'https://www.whatsonstage.com/feed/', outletId: 'whatsonstage', name: 'WhatsOnStage', market: 'west-end' },
+  { url: 'https://www.standard.co.uk/culture/theatre/rss', outletId: 'standard', name: 'Evening Standard Theatre', needsFilter: true, market: 'west-end' },
+  { url: 'https://theatreweekly.com/feed/', outletId: 'theatre-weekly', name: 'Theatre Weekly', needsFilter: true, market: 'west-end' },
+  // The Stage has no RSS feed (404 as of March 2026)
+  // Telegraph theatre RSS is defunct (404 as of March 2026)
+  // Time Out London theatre RSS is defunct (404 as of March 2026)
+  // London Theatre (londontheatre.co.uk) returns HTML, not RSS (March 2026)
+  // BWW West End RSS is defunct (404 as of March 2026)
+];
+
+// Individual-critic Substack feeds (tier-3 critics publishing outside aggregator coverage).
+// Substack feeds are standard RSS 2.0 — reuse parseRSSItems. These feeds always need
+// title-matching: the publication covers reviews mixed with research notes, picks
+// roundups, and off-topic culture posts ("Artgoing: Caravaggio..."). The existing
+// non-review pattern filter + title-match guard handles both.
+//
+// defaultCritic: single-author publication — stamp the critic on every emitted hit
+// so the review bypasses the "Unknown + rss-discovery → _pending/" routing in
+// gather-reviews.js (see tests/unit/pending-strand-routing.test.mjs). Without this,
+// Cote's discoveries strand in _pending/ since rebuild-all-reviews.js never reads it.
+//
+// To add a new Substack critic: one entry here + matching outlet-registry.json entry.
+const SUBSTACK_CRITIC_FEEDS = [
+  { url: 'https://davidcote1.substack.com/feed', outletId: 'cote-notices', name: 'Cote Notices', needsFilter: true, market: 'broadway', defaultCritic: 'David Cote' },
+];
+
+// General entertainment feeds (need title keyword filtering)
+const ENTERTAINMENT_FEEDS = [
+  // Vulture RSS is defunct (404 as of March 2026) — kept for future reference
+  // { url: 'https://www.vulture.com/feed/rss/index.xml', outletId: 'vulture', name: 'Vulture', needsFilter: true },
+  { url: 'https://www.hollywoodreporter.com/feed/', outletId: 'hollywood-reporter', name: 'THR', needsFilter: true, trackRecoupment: true },
+  { url: 'https://deadline.com/feed/', outletId: 'deadline', name: 'Deadline', needsFilter: true, trackRecoupment: true },
+  { url: 'https://feeds.content.dowjones.io/public/rss/RSSLifestyle', outletId: 'wsj', name: 'WSJ Lifestyle', needsFilter: true },
+  { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
+  { url: 'https://feeds.washingtonpost.com/rss/entertainment', outletId: 'washpost', name: 'WashPost Entertainment', needsFilter: true },
+  { url: 'https://www.newyorker.com/feed/culture', outletId: 'newyorker', name: 'New Yorker Culture', needsFilter: true },
+  { url: 'https://www.nbcnewyork.com/entertainment/?rss=y', outletId: 'nbcny', name: 'NBC New York', needsFilter: true },
+  { url: 'https://www.huffpost.com/section/entertainment/feed', outletId: 'huffpost', name: 'HuffPost Entertainment', needsFilter: true },
+  { url: 'https://www.slantmagazine.com/feed/', outletId: 'slantmagazine', name: 'Slant Magazine', needsFilter: true },
+  // Added April 2026 — verified working, expand non-SERP coverage for opening nights
+  { url: 'https://nypost.com/entertainment/feed/', outletId: 'nypost', name: 'NY Post Entertainment', needsFilter: true },
+  { url: 'https://www.indiewire.com/feed/', outletId: 'indiewire', name: 'IndieWire', needsFilter: true },
+  { url: 'https://www.rollingstone.com/tv-movies/feed/', outletId: 'rollingstone', name: 'Rolling Stone', needsFilter: true },
+];
+
+const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...SUBSTACK_CRITIC_FEEDS, ...ENTERTAINMENT_FEEDS];
+
+// Subset consumed by scripts/poll-trade-press-rss.js (hourly recoupment poll).
+const TRACK_RECOUPMENT_FEEDS = ALL_FEEDS.filter(f => f.trackRecoupment === true);
+
+/**
+ * Fetch a URL and return the body text
+ */
+function fetchUrl(url, timeoutMs = 10000) {
+  return new Promise((resolve, reject) => {
+    const proto = url.startsWith('https') ? https : http;
+    const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' } }, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return fetchUrl(res.headers.location, timeoutMs).then(resolve).catch(reject);
+      }
+      if (res.statusCode !== 200) {
+        return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+      res.on('error', reject);
+    });
+    req.on('error', reject);
+    req.setTimeout(timeoutMs, () => { req.destroy(); reject(new Error('Timeout')); });
+  });
+}
+
+/**
+ * Parse RSS 2.0 XML and extract items with title, link, pubDate.
+ * Uses regex — no XML library dependency needed for simple RSS structure.
+ */
+// Decode the HTML entities RSS titles actually ship. &amp;/&lt;/&gt; are the
+// obvious ones; numeric-coded curly quotes (&#8220;, &#8221;, &#8217;) and
+// &quot;/&#39;/&apos; appear in NYT Theater / Standard / Substack feeds and
+// break titleMatchesShow word-boundary matching when left raw.
+function decodeEntities(s) {
+  return s.replace(/&amp;/g, '&')
+          .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+          .replace(/&#39;/g, "'")
+          .replace(/&#8216;/g, "‘").replace(/&#8217;/g, "’")
+          .replace(/&#8220;/g, "“").replace(/&#8221;/g, "”")
+          .replace(/&#8212;/g, '—').replace(/&#8211;/g, '–');
+}
+
+function parseRSSItems(xml) {
+  const items = [];
+  const itemRegex = /<item[\s>]([\s\S]*?)<\/item>/gi;
+  let match;
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const itemXml = match[1];
+    const title = (itemXml.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/) || [])[1] || '';
+    const link = (itemXml.match(/<link[^>]*>([\s\S]*?)<\/link>/) || [])[1] || '';
+    const pubDate = (itemXml.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || [])[1] || '';
+    // <guid> may be a permalink or an opaque id; either works as a dedup key.
+    // Falls back to link below.
+    const guid = (itemXml.match(/<guid[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/guid>/) || [])[1] || '';
+    // <description> often carries the article dek/lede — used by the recoupment
+    // poller's pre-filter regex so a title like "Hamilton hits milestone" still
+    // qualifies if the dek says "recouped".
+    const description = (itemXml.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) || [])[1] || '';
+    // <dc:creator> is the byline on NYT/Variety items (BRO-4435: the NYT
+    // Degenerates review came in as nytimes--unknown.json while the feed said Helen Shaw).
+    // One element per author on multi-author WordPress feeds: keep only a sole creator.
+    const creators = [...itemXml.matchAll(/<dc:creator[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/dc:creator>/g)].map(m => m[1]);
+    const creator = creators.length === 1 ? creators[0] : '';
+    if (title && link) {
+      const linkTrim = link.trim();
+      items.push({
+        title: decodeEntities(title.trim()),
+        link: linkTrim,
+        pubDate: pubDate.trim() ? new Date(pubDate.trim()) : null,
+        guid: (guid.trim() || linkTrim),
+        description: decodeEntities(description.trim()),
+        creator: decodeEntities(creator.trim()),
+      });
+    }
+  }
+  return items;
+}
+
+/**
+ * Parse Atom XML and extract entries with title, link, updated/published.
+ * Handles <link href="..."/> (self-closing) and <link>text</link> formats.
+ */
+function parseAtomItems(xml) {
+  const items = [];
+  const entryRegex = /<entry[\s>]([\s\S]*?)<\/entry>/gi;
+  let match;
+  while ((match = entryRegex.exec(xml)) !== null) {
+    const entryXml = match[1];
+    const title = (entryXml.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/) || [])[1] || '';
+    // Atom links: <link href="URL"/> or <link rel="alternate" href="URL"/>
+    const linkHref = (entryXml.match(/<link[^>]*rel=["']alternate["'][^>]*href=["']([^"']+)["']/) || [])[1]
+      || (entryXml.match(/<link[^>]*href=["']([^"']+)["']/) || [])[1] || '';
+    const dateStr = (entryXml.match(/<updated[^>]*>([\s\S]*?)<\/updated>/) || [])[1]
+      || (entryXml.match(/<published[^>]*>([\s\S]*?)<\/published>/) || [])[1] || '';
+    // Atom: <id> is the canonical permalink/identifier.
+    const id = (entryXml.match(/<id[^>]*>([\s\S]*?)<\/id>/) || [])[1] || '';
+    // Atom: <summary> or <content> carries the body excerpt.
+    const summary = (entryXml.match(/<summary[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/summary>/) || [])[1]
+      || (entryXml.match(/<content[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/content>/) || [])[1] || '';
+    if (title && linkHref) {
+      const linkTrim = linkHref.trim();
+      items.push({
+        title: decodeEntities(title.trim()),
+        link: linkTrim,
+        pubDate: dateStr.trim() ? new Date(dateStr.trim()) : null,
+        guid: (id.trim() || linkTrim),
+        description: decodeEntities(summary.trim()),
+      });
+    }
+  }
+  return items;
+}
+
+/**
+ * Auto-detect feed format and parse accordingly.
+ * Handles RSS 2.0 (<rss>/<item>) and Atom (<feed>/<entry>).
+ */
+function parseFeedItems(xml) {
+  if (xml.includes('<feed') && xml.includes('<entry')) {
+    return parseAtomItems(xml);
+  }
+  return parseRSSItems(xml);
+}
+
+/**
+ * Check if a title likely contains a review for the given show.
+ * Matches show title words (ignoring articles) against RSS item title.
+ */
+function titleMatchesShow(itemTitle, showTitle) {
+  // Strip articles and punctuation, get significant words.
+  // foldDiacritics runs BEFORE the [^a-z0-9' ] filter: without it "Misérables"
+  // loses the é entirely and tokenizes to "misrables", which matches nothing.
+  // See title-match.js foldDiacritics (task #648).
+  // Hyphens/dashes become spaces BEFORE the strip (BRO-4185): deleting them
+  // turned "Deep-Heat Rivalry" into "deepheat rivalry", so "deep" and "heat"
+  // never matched and Theatre Weekly's review was dropped. Curly quotes fold
+  // to ASCII here too — the old class ['\u0027\u0027'] held two plain
+  // apostrophes (cloud-memory/feedback_rss_discovery_curly_apostrophe_bug.md).
+  const normalize = t => foldDiacritics(String(t || '')).toLowerCase()
+    .replace(/[\u2018\u2019\u02BC]/g, "'")
+    .replace(/[-\u2010-\u2015]/g, ' ')
+    .replace(/[^a-z0-9' ]/g, '').replace(/\s+/g, ' ').trim();
+  const showWords = normalize(showTitle)
+    .split(/\s+/)
+    .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
+    .filter(w => w.length > 1);
+
+  if (showWords.length === 0) return false;
+  // BRO-2760: "The Story"-style titles need the article+word phrase, not a lone word.
+  if (!passesGenericTitleIdentity(itemTitle, showTitle)) return false;
+
+  const itemLower = normalize(itemTitle);
+  // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".
+  // Boundaries: start/end of string, space, hyphen, slash, period, quote, underscore.
+  const wordMatch = (haystack, word) => {
+    const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_])', 'i').test(haystack);
+  };
+  // A title whose significant words are one repeated word ("Man to Man") has
+  // no distinctive token: splitting compounds made "Spider-Man" headlines
+  // match it (BRO-4185 live probe). Require the whole title as a phrase.
+  if (new Set(showWords).size === 1 && showWords.length > 1) {
+    return wordMatch(itemLower, normalize(showTitle));
+  }
+
+  // All significant show words must appear in the item title
+  const matchCount = showWords.filter(w => wordMatch(itemLower, w)).length;
+  // Require at least 80% of words to match (handles subtitles, alternate names)
+  return matchCount >= Math.ceil(showWords.length * 0.8);
+}
+
+/**
+ * Check if a URL's path slug mentions the show (task #1073). Used as the
+ * identity fallback for openingWindow feeds whose RSS titles are stylized
+ * ("Review: A Heated Rivalry, but Short-Lived") while the URL slug carries
+ * the title (/theater/the-pass-review.html). Converts slug separators to
+ * spaces and reuses titleMatchesShow's word-boundary matching.
+ */
+function urlSlugMatchesShow(url, showTitle) {
+  if (!url) return false;
+  let pathname;
+  try { pathname = new URL(url).pathname; } catch { return false; }
+  const slugText = pathname.replace(/\.[a-z0-9]+$/i, '').replace(/[-_/]+/g, ' ');
+  const normalize = t => String(t || '').toLowerCase().replace(/['']/g, "'").replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const significantWords = normalize(showTitle).split(' ')
+    .filter(w => !['the', 'a', 'an', 'of', 'and', 'in', 'at', 'on', 'to', 'for'].includes(w))
+    .filter(w => w.length > 1);
+  // Single-significant-word titles ("The Pass", "The Vessel"): a lone common
+  // token anywhere in a slug is not identity — "celebrity-sex-pass-review"
+  // would match The Pass (Codex ship-check finding). Require the FULL title
+  // (articles included) as a contiguous phrase in the slug instead:
+  // "the-pass-review-..." → "the pass review" contains "the pass" ✓;
+  // "...celebrity-sex-pass-review..." has "sex pass", not "the pass" ✗.
+  if (significantWords.length <= 1) {
+    const phrase = normalize(showTitle);
+    if (!phrase) return false;
+    return (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ');
+  }
+  return titleMatchesShow(slugText, showTitle);
+}
+
+/**
+ * Check if an item was published within the lookback window
+ */
+function isRecent(pubDate, maxHoursAgo = 48) {
+  if (!pubDate || isNaN(pubDate.getTime())) return true; // No date = include it
+  const hoursAgo = (Date.now() - pubDate.getTime()) / (1000 * 60 * 60);
+  return hoursAgo <= maxHoursAgo;
+}
+
+/**
+ * Check if an item was published within [-windowDays, +postWindowDays] calendar days
+ * of the show's opening date (postWindowDays defaults to windowDays).
+ * Compares UTC calendar days, so time of day never pushes an item out: a review
+ * posted 09:00 UTC two days after opening counts as day +2 (BRO-4435).
+ * Returns true if no openingDate or invalid pubDate (fail-open).
+ */
+function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2, postWindowDays = windowDays) {
+  if (!openingDate || !pubDate || isNaN(pubDate.getTime())) return true;
+  const opening = new Date(openingDate);
+  if (isNaN(opening.getTime())) return true;
+  const DAY_MS = 1000 * 60 * 60 * 24;
+  const pubDay = Math.floor(pubDate.getTime() / DAY_MS);
+  const openDay = Math.floor(opening.getTime() / DAY_MS);
+  const diffDays = pubDay - openDay;
+  return diffDays >= -windowDays && diffDays <= postWindowDays;
+}
+
+// Days before/after opening an openingWindow-feed item may be published.
+// Post-opening is wider because the NYT often posts Off-Broadway reviews 2-3
+// days after opening (Degenerates, BRO-4435). Beyond REVIEW_FREE_POST_DAYS the
+// item must also look like a review, so same-show news (extensions, closings,
+// transfers) published later in the week stays out.
+const OPENING_WINDOW_PRE_DAYS = 2;
+const OPENING_WINDOW_POST_DAYS = 7;
+const REVIEW_FREE_POST_DAYS = 2;
+
+/**
+ * Decide whether an openingWindow-feed item (NYT Theater, Variety Legit) belongs to a show.
+ * The window used to REPLACE title matching entirely, which attributed every
+ * theater-section article published near an opening to that show: 8 NYT
+ * obituaries/news items landed in _pending/the-vessel-off-broadway-2026 and an
+ * Oh Mary piece in _pending/the-pass-off-broadway-2026 (2026-08-05, task #1073).
+ * The date window is an ADDITIONAL signal, never a substitute for identity: the
+ * item's title OR URL slug must mention the show. titleMatchesShow is word-boundary +
+ * diacritic-folded, so short titles ("The Pass") match safely.
+ */
+function openingWindowFeedAccepts(item, showTitle, openingDate) {
+  if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, OPENING_WINDOW_POST_DAYS)) return false;
+  if (!titleMatchesShow(item.title, showTitle) && !urlSlugMatchesShow(item.link, showTitle)) return false;
+  if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, REVIEW_FREE_POST_DAYS)) {
+    return /review/i.test(`${item.title || ''} ${item.link || ''}`);
+  }
+  return true;
+}
+
+/**
+ * Return a feed item's byline when it names exactly one person, else null.
+ * Multi-author ("A and B", "A, B") or non-name creators are left for the
+ * text collector, which reads the byline from the page.
+ */
+function singleBylineName(creator) {
+  const name = String(creator || '').replace(/^by\s+/i, '').trim();
+  if (!name || /,|&|\band\b/i.test(name)) return null;
+  if (/\b(staff|press|reporter|contributor|editors?|wire|associated|desk|team)\b/i.test(name)) return null;
+  const words = name.split(/\s+/);
+  if (words.length < 2 || words.length > 4) return null;
+  if (!words.every(w => /^[\p{Lu}][\p{L}'.-]*$/u.test(w))) return null;
+  return name;
+}
+
+/**
+ * Check all RSS feeds for reviews of a show.
+ *
+ * @param {string} showTitle - The show title to search for
+ * @param {Object} options
+ * @param {number} options.maxHoursAgo - How far back to look (default 48h)
+ * @param {Set} options.knownUrls - URLs already discovered (skip these)
+ * @param {boolean} options.verbose - Log progress
+ * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). When provided,
+ *   openingWindow feeds use openingWindowFeedAccepts (date window + identity match).
+ *   Entertainment feeds always use title matching regardless of this option.
+ * @returns {Promise<Array<{url: string, outletId: string, source: string}>>}
+ */
+async function checkRSSFeeds(showTitle, options = {}) {
+  const { maxHoursAgo = 48, knownUrls = new Set(), verbose = false, openingDate = null, market = null, outletFilter = null } = options;
+  const results = [];
+
+  for (const feed of ALL_FEEDS) {
+    // Skip feeds restricted to a different market
+    if (market && feed.market && feed.market !== market) continue;
+    // Skip feeds not in the outlet filter (when provided)
+    if (outletFilter && !outletFilter.includes(feed.outletId)) continue;
+    try {
+      const xml = await fetchUrl(feed.url);
+      const items = parseFeedItems(xml);
+
+      let feedResults = 0;
+      for (const item of items) {
+        // Skip old items
+        if (!isRecent(item.pubDate, maxHoursAgo)) continue;
+
+        // Skip already-known URLs
+        if (knownUrls.has(item.link)) continue;
+
+        if (feed.needsFilter) {
+          // Entertainment feeds (THR, Deadline): always title-match — they cover everything
+          if (!titleMatchesShow(item.title, showTitle)) continue;
+        } else if (feed.openingWindow && openingDate) {
+          // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): date window AND
+          // identity match (task #1073), see openingWindowFeedAccepts.
+          if (!openingWindowFeedAccepts(item, showTitle, openingDate)) continue;
+        } else {
+          // All other feeds (WE feeds, Broadway feeds without openingDate): title-match
+          if (!titleMatchesShow(item.title, showTitle)) continue;
+        }
+
+        // Reject non-review content: interviews, box office, cast news, photos, prep essays, roundups.
+        // Normalize curly apostrophes (U+2019) → straight so "Critic's Picks" (curly) matches
+        // the straight-apostrophe pattern below. Substack + NYT titles routinely use U+2019.
+        const titleLower = item.title.toLowerCase().replace(/['']/g, "'");
+        const nonReviewPatterns = ['interview', 'box office', 'grosses', 'begins previews',
+          'first look', 'cast announced', 'full cast', 'meet the cast', 'photos:',
+          'tickets on sale', 'lottery', 'rush policy',
+          'research notes', "critic's picks", 'critics picks'];
+        if (nonReviewPatterns.some(t => titleLower.includes(t))) continue;
+
+        // Check for review-like keywords in title (applied to all feeds)
+        const isReviewLike = titleLower.includes('review') ||
+          titleLower.includes('critic') ||
+          titleMatchesShow(item.title, showTitle);
+
+        if (isReviewLike || !feed.needsFilter) {
+          const hit = {
+            url: item.link,
+            outletId: feed.outletId,
+            outlet: feed.name,
+            title: item.title,
+            publishDate: item.pubDate ? item.pubDate.toISOString().slice(0, 10) : null,
+            source: 'rss-discovery',
+          };
+          // Stamp critic on single-author feeds (Substack critics). Prevents the
+          // Unknown+rss-discovery → _pending/ strand that rebuild-all-reviews
+          // never re-reads. See tests/unit/pending-strand-routing.test.mjs.
+          if (feed.defaultCritic) hit.criticName = feed.defaultCritic;
+          // RSS bylines are untrusted (review-guards VERIFIED_DISCOVERY_SOURCES), so only
+          // stamp items that say they are reviews; the rest keep the _pending replay path.
+          else if (/review/i.test(`${item.title} ${item.link}`) && singleBylineName(item.creator)) {
+            hit.criticName = singleBylineName(item.creator);
+          }
+          results.push(hit);
+          feedResults++;
+          if (verbose) {
+            console.log(`    RSS [${feed.name}]: ${item.title}`);
+          }
+        }
+      }
+
+      // Sanity check: if a single feed returns many items, it may indicate date window is too broad
+      if (feedResults > 20 && verbose) {
+        console.warn(`    RSS [${feed.name}]: WARNING — ${feedResults} items returned (possible over-broad match)`);
+      }
+    } catch (err) {
+      if (verbose) {
+        console.log(`    RSS [${feed.name}]: ${err.message}`);
+      }
+      // Feed errors are non-fatal — other layers will catch missed reviews
+    }
+  }
+
+  return results;
+}
+
+module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

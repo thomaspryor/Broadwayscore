@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-04-22",
+  "triggerEvent": "commit b636854001 fixed duplicate-send bug in Resend reconciler on retention 404",
+  "rule": "memory/feedback_404_not_terminal.md — API 404 is not always terminal failure; never flip a success flag on 404 alone",
+  "summary": {
+    "totalHandlers": 17,
+    "riskyFound": 1,
+    "riskyFixed": 1,
+    "safe": 16
+  },
+  "canonicalReference": "scripts/lib/broadcast-state.js:applyResendStatusUpdate",
+  "handlers": [
+    { "file": "scripts/lib/broadcast-state.js", "api": "Resend broadcasts", "404Means": "retention reap OR pre-send delete", "flipsOnSuccess404": "differentiated by prior state (fixed 2026-04-22)", "verdict": "FIXED" },
+    { "file": "scripts/reconcile-broadcast-state.js:64", "api": "Resend broadcasts", "404Means": "passes to broadcast-state.js", "flipsOnSuccess404": "delegated", "verdict": "SAFE" },
+    { "file": "scripts/send-opening-night-broadcast.js:146", "api": "gh api contents (opening-night-sent.json)", "404Means": "file does not exist yet", "flipsOnSuccess404": "no — treated as empty tracker", "verdict": "SAFE" },
+    { "file": "scripts/send-opening-night-broadcast.js:~520", "api": "Resend broadcast DELETE", "404Means": "already gone", "flipsOnSuccess404": "no — 'continuing anyway'", "verdict": "SAFE" },
+    { "file": "scripts/recover-wayback-reviews.js:385", "api": "Wayback Machine", "404Means": "no such snapshot", "flipsOnSuccess404": "no — skip", "verdict": "SAFE" },
+    { "file": "scripts/scrape-seatplan-audience.js:172", "api": "SeatPlan page", "404Means": "no such page", "flipsOnSuccess404": "no — return null", "verdict": "SAFE" },
+    { "file": "scripts/scrape-ltd-audience.js:222", "api": "LTD page", "404Means": "no such page", "flipsOnSuccess404": "no — return null", "verdict": "SAFE" },
+    { "file": "scripts/scrape-lbo-audience.js:279", "api": "LBO page", "404Means": "no such page", "flipsOnSuccess404": "no — return null", "verdict": "SAFE" },
+    { "file": "scripts/scrape-bww-reviews.js:99", "api": "BWW page", "404Means": "no such page", "flipsOnSuccess404": "no — resolve null", "verdict": "SAFE" },
+    { "file": "scripts/recover-login-page-reviews.js:218", "api": "Outlet login page", "404Means": "no such page", "flipsOnSuccess404": "no — skip", "verdict": "SAFE" },
+    { "file": "scripts/collect-review-texts.js:2289,2459", "api": "Review URL fetch", "404Means": "no such article", "flipsOnSuccess404": "no — skip", "verdict": "SAFE" },
+    { "file": "scripts/fix-todaytix-links.js:198", "api": "TodayTix page", "404Means": "URL genuinely broken (ID recycled)", "flipsOnSuccess404": "link replaced; factual not a success flip", "verdict": "SAFE" },
+    { "file": "scripts/rediscover-review-urls.js:457,548", "api": "Review URL", "404Means": "URL dead", "flipsOnSuccess404": "flags for SERP re-discovery; does not delete review", "verdict": "SAFE" },
+    { "file": "scripts/backfill-pv-critics.js:176", "api": "Playbill Verdict critic URL", "404Means": "URL dead", "flipsOnSuccess404": "no — skip extraction, no state flip", "verdict": "SAFE" },
+    { "file": "scripts/lib/send-lock.js:82,124", "api": "gh api gist contents (send-lock)", "404Means": "lock does not exist / already gone", "flipsOnSuccess404": "no — treated as 'no lock'", "verdict": "SAFE" },
+    { "file": "scripts/check-secrets-health.js:371", "api": "gh api workflow file", "404Means": "file not found", "flipsOnSuccess404": "returns 'skip' status", "verdict": "SAFE" },
+    { "file": "scripts/process-review-formspree.js:73", "api": "Formspree submissions", "404Means": "API error (rare)", "flipsOnSuccess404": "no — returns empty array, no state flip; processedIds is append-only", "verdict": "SAFE" }
+  ],
+  "exclusionCriteria": [
+    "Scraping-class 404 handlers (404 means no such page, not a state transition) — safe by definition",
+    "Config-file / gh api contents 404 (file doesn't exist yet) — safe by definition",
+    "Lock primitive 404 (lock doesn't exist / already gone) — safe by definition",
+    "URL link-checks (404 means factual broken link for replacement) — safe by definition"
+  ],
+  "recommendation": "Any future poller that reconciles local completed/sent/processed state against an external API must copy the prior-state differentiation pattern from scripts/lib/broadcast-state.js:applyResendStatusUpdate. See memory/feedback_404_not_terminal.md."
+}

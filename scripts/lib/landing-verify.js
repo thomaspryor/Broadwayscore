@@ -1,0 +1,237 @@
+#!/usr/bin/env node
+'use strict';
+// land.yml live case (c), 2026-09-23: docs-only line from a PRE-change worktree, landed by re-exec of origin/main's script copy (BRO-3873 step 4).
+/**
+ * Shallow-aware "did it land" ancestry check (task #1489).
+ *
+ * `git merge-base --is-ancestor <sha> <ref>` silently answers "not an
+ * ancestor" when the local repo is shallow and the commit graph has been
+ * truncated past <sha> — even when <sha>'s commit object is still present
+ * locally (`git cat-file -e <sha>` succeeds) and it genuinely landed on
+ * <ref>. That false negative is exactly what caused a 2026-08-14 incident:
+ * a session's shared checkout went shallow, and every landing check after
+ * that reported real commits as "not landed," nearly triggering a
+ * re-push/force-push "recovery."
+ *
+ * checkLanded() refuses to return that false negative. If the repo is
+ * shallow it first tries to restore full history (`git fetch --unshallow`);
+ * if that fails it reports UNKNOWN — never NOT_LANDED — so callers can
+ * escalate to a remote-side check (git ls-remote / GitHub compare API)
+ * instead of assuming the work was reverted.
+ *
+ * The unshallow attempt is timeout-bounded via GIT_NET_TIMEOUT_SEC — the
+ * same env knob scripts/lib/push-with-retry.sh's git_fetch wrapper uses —
+ * so both the bash and Node fetch paths share one timeout value instead of
+ * drifting apart.
+ *
+ * IT IS ALSO SKIPPED ENTIRELY IN CI (BRO-3320, 2026-09-14). GIT_NET_TIMEOUT_SEC
+ * bounds the DURATION of the fetch, not the AMOUNT OF HISTORY it has to move,
+ * and on this repo those are not close: a depth-1 checkout's .git is 485 MB
+ * against 2.3 GB of full history, so an unshallow has to pull ~1.8 GB. The
+ * depth-1 clone alone measured 36.9s. There is no timeout value at which that
+ * completes — not the 30s CI now uses, not the 90s default it used before.
+ *
+ * That mattered far more than "one slow check", because the pre-push hook calls
+ * this (scripts/hooks/pre-push's non-fast-forward guard) and the hook runs
+ * INSIDE `timeout $GIT_NET_TIMEOUT_SEC git push` (scripts/lib/push-with-retry.sh's
+ * git_push wrapper). So on every CI push the doomed unshallow ate the entire
+ * push budget and git was SIGTERMed before it ever started its own transport.
+ * Run 34848771085's curl trace is the proof: across 13 retry attempts, 14
+ * occurrences of git-upload-pack (a FETCH) and ZERO of git-receive-pack (the
+ * PUSH). 211 of the 237 workflows that check out (239 files total) leave
+ * actions/checkout at its default fetch-depth, i.e. shallow, and
+ * postinstall installs the hook in every CI job, so this was the wall behind
+ * ~3,800 push failures since 2026-08-23 (~165/day, origin/push-retry-failures).
+ *
+ * And it bought nothing: a timed-out unshallow returns STILL-shallow, which
+ * checkLanded reports as UNKNOWN, which every caller already fails open on (see
+ * the call-site walk below). Skipping reaches the identical verdict instantly.
+ *
+ * The skip condition and its PUSH_SKIP_UNSHALLOW escape hatch deliberately
+ * mirror scripts/lib/push-with-retry.sh:1549-1551, which made exactly this call
+ * for its OWN unshallow ("local checkout is SHALLOW outside CI — this should
+ * never happen"). Keep the two in step; they are one policy expressed in two
+ * languages. This module was simply the copy that never got the guard.
+ *
+ * Callers and what UNKNOWN means to each (verified 2026-09-14 — none of them
+ * force-pushes, re-pushes or "recovers" on it):
+ *   scripts/hooks/pre-push:82           exit!=1 -> non_ff=0, push proceeds
+ *   scripts/check-prod-deploy.js:97     warns, treats as not-yet-live
+ *   scripts/lib/review-gate.mjs:449     caches shallow, ancestry "can't confirm"
+ *   scripts/merge-worktree-to-main.sh   rc=2 -> retry, then die loudly
+ *   scripts/gc-merged-worktrees.sh:457  rc=2 -> falls through to `git cherry`
+ */
+const { execFileSync } = require('child_process');
+
+const GIT_NET_TIMEOUT_SEC = Number(process.env.GIT_NET_TIMEOUT_SEC || 90);
+
+function git(args, cwd, timeoutMs = GIT_NET_TIMEOUT_SEC * 1000) {
+  try {
+    return execFileSync('git', args, {
+      cwd,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+      timeout: timeoutMs,
+    }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function isShallowRepo(cwd) {
+  return git(['rev-parse', '--is-shallow-repository'], cwd) === 'true';
+}
+
+/**
+ * Shared shallow-guard: if `cwd` is shallow, try once to restore full history
+ * via `git fetch --unshallow`. Factored out of checkLanded() (task #1497) so
+ * bulk callers doing many ancestry checks in one process (e.g.
+ * review-gate.mjs's ancestorSet()) can call this ONCE up front instead of
+ * paying a per-call shallow-detection cost, and so the same "attempt once,
+ * report loudly if it's still shallow" behavior isn't reimplemented per site.
+ * @returns {{shallow: boolean}} shallow: true if STILL shallow after the attempt
+ */
+function ensureFullHistory({ cwd = process.cwd(), remote = 'origin', log = () => {}, timeoutMs = null } = {}) {
+  if (!isShallowRepo(cwd)) return { shallow: false };
+  // Read from process.env directly rather than through an injectable
+  // parameter. scripts/lib/push-with-retry.sh:1550 reads GITHUB_ACTIONS the
+  // same way, and a per-caller override here would be a second mechanism for
+  // one policy — the forgettable-flag shape this fix exists to avoid. The
+  // tests save/delete/restore these two vars instead (they have to: they run
+  // in GitHub Actions, where GITHUB_ACTIONS is always set, so a test reading
+  // the ambient environment would silently exercise the skip path in CI while
+  // appearing to cover the fetch path).
+  const env = process.env;
+  if (env.GITHUB_ACTIONS || env.PUSH_SKIP_UNSHALLOW === '1') {
+    // Distinct and greppable on purpose: this is the line that tells you a
+    // shallow verdict was a deliberate skip rather than a failed fetch, and
+    // it is the only external signal if a stray GITHUB_ACTIONS ever leaks
+    // into a local shell (review-gate.mjs caches `shallow` for 5 min, so a
+    // poisoned entry would otherwise degrade silently).
+    log(
+      `NOTE: local checkout is shallow and 'git fetch --unshallow ${remote}' is SKIPPED here (${env.GITHUB_ACTIONS ? 'GITHUB_ACTIONS' : 'PUSH_SKIP_UNSHALLOW=1'}) — on this repo it must move ~1.8 GB and cannot finish inside GIT_NET_TIMEOUT_SEC, and when it runs inside a pre-push hook it kills the push itself (BRO-3320). Reporting UNKNOWN immediately, which is the same verdict the timeout produced. Mirrors scripts/lib/push-with-retry.sh:1549-1551.`
+    );
+    return { shallow: true, skipped: true };
+  }
+  log(
+    `WARNING: local checkout is shallow — 'git merge-base --is-ancestor' can false-negative on commits genuinely present. Attempting 'git fetch --unshallow ${remote}' (task #1489).`
+  );
+  // `timeoutMs` lets a LATENCY-BOUNDED caller cap this network fetch below the
+  // 90s GIT_NET_TIMEOUT_SEC default. review-gate.mjs runs inside PreToolUse
+  // hooks that are killed at 20s, so an unbounded-by-their-standards 90s fetch
+  // is not a slow path there — it is a guaranteed kill. Timing out simply lands
+  // on the STILL-shallow branch below, which is an outcome this function
+  // already defines and every caller already handles.
+  git(['fetch', '--unshallow', remote], cwd, timeoutMs || GIT_NET_TIMEOUT_SEC * 1000);
+  const stillShallow = isShallowRepo(cwd);
+  if (stillShallow) {
+    log(
+      `WARNING: repo is STILL shallow after 'git fetch --unshallow' — a local ancestry check cannot be trusted. Verify via 'git ls-remote ${remote} <branch>' or the GitHub compare API instead of concluding a commit did not land.`
+    );
+  }
+  return { shallow: stillShallow };
+}
+
+/**
+ * Tri-state, not boolean: `git merge-base --is-ancestor` exits 1 SPECIFICALLY
+ * for "genuinely not an ancestor" — any other nonzero exit (128 for a
+ * missing/invalid object, a timeout, a corrupt ref) is an ERROR, not a
+ * verdict (ship-check finding, task #1489). Collapsing both into `false`
+ * meant a fetch that silently left `origin/<branch>` unresolved, or a
+ * timed-out check, read as NOT_LANDED just as wrongly as the shallow-graph
+ * case this module exists to fix.
+ * @returns {boolean|null} true/false = definitive verdict, null = error (caller must not treat as NOT_LANDED)
+ */
+function isAncestor(sha, ref, cwd) {
+  try {
+    execFileSync('git', ['merge-base', '--is-ancestor', sha, ref], {
+      cwd,
+      stdio: 'ignore',
+      timeout: GIT_NET_TIMEOUT_SEC * 1000,
+    });
+    return true;
+  } catch (err) {
+    if (err && err.status === 1) return false;
+    return null;
+  }
+}
+
+/**
+ * @param {object} opts
+ * @param {string} opts.sha - commit to check
+ * @param {string} [opts.branch='main']
+ * @param {string} [opts.remote='origin']
+ * @param {string} [opts.ref] - explicit target to check ancestry against
+ *   (any commit-ish: a raw SHA, a tag, another branch). Overrides
+ *   `${remote}/${branch}` — for callers comparing two arbitrary commits
+ *   rather than "is this on a remote-tracking branch" (task #1497, e.g.
+ *   check-prod-deploy.js comparing a commit-ish against a deployed SHA, or
+ *   scripts/hooks/pre-push comparing a push's remote_oid against local_oid).
+ * @param {string} [opts.cwd=process.cwd()]
+ * @param {(msg: string) => void} [opts.log]
+ * @returns {{verdict: 'LANDED'|'NOT_LANDED'|'UNKNOWN', landed: boolean|null, shallow: boolean, reason: string|null}}
+ *
+ * PRECONDITION: reads the LOCAL `<remote>/<branch>` tracking ref (or `ref`,
+ * if given) as-is — it does not fetch it (except to unshallow, see below).
+ * Callers that need a fresh remote-side answer must `git fetch <remote>
+ * <branch>` immediately before calling this, same as
+ * scripts/merge-worktree-to-main.sh's two call sites do; a stale local ref
+ * can read LANDED against a tip the remote has since moved past.
+ */
+function checkLanded({ sha, branch = 'main', remote = 'origin', ref, cwd = process.cwd(), log = () => {} } = {}) {
+  if (!sha) throw new Error('checkLanded requires sha');
+  const targetRef = ref || `${remote}/${branch}`;
+
+  const { shallow, skipped } = ensureFullHistory({ cwd, remote, log });
+  if (shallow) {
+    // Two different roads to the same UNKNOWN, kept distinguishable: a fetch
+    // that was TRIED and failed is a network/repo problem worth chasing, while
+    // a deliberate CI skip is expected and not worth a single minute of
+    // anyone's debugging. check-prod-deploy.js:99 interpolates this straight
+    // into its operator-facing warning, so the distinction lands where it is
+    // actually read.
+    return { verdict: 'UNKNOWN', landed: null, shallow: true, reason: skipped ? 'unshallow-skipped-ci' : 'unshallow-failed' };
+  }
+
+  const landed = isAncestor(sha, targetRef, cwd);
+  if (landed === null) {
+    log(
+      `WARNING: ancestry check for ${sha} against ${targetRef} errored (not a definitive "not an ancestor" — a timeout, missing ref, or invalid object). Reporting UNKNOWN, not NOT_LANDED.`
+    );
+    return { verdict: 'UNKNOWN', landed: null, shallow: false, reason: 'ancestor-check-error' };
+  }
+  return { verdict: landed ? 'LANDED' : 'NOT_LANDED', landed, shallow: false, reason: null };
+}
+
+function parseArgs(argv) {
+  const out = {};
+  for (const arg of argv) {
+    const m = /^--([^=]+)=(.*)$/.exec(arg);
+    if (m) out[m[1]] = m[2];
+  }
+  return out;
+}
+
+function main() {
+  const { sha, branch, remote, ref, cwd } = parseArgs(process.argv.slice(2));
+  if (!sha) {
+    console.error('usage: landing-verify.js --sha=<sha> [--branch=main] [--remote=origin] [--ref=<commit-ish>] [--cwd=.]');
+    process.exit(2);
+  }
+  const result = checkLanded({
+    sha,
+    branch: branch || 'main',
+    remote: remote || 'origin',
+    ref: ref || undefined,
+    cwd: cwd || process.cwd(),
+    log: (m) => console.error(m),
+  });
+  console.log(JSON.stringify(result));
+  // Exit codes: 0 = LANDED, 1 = NOT_LANDED, 2 = UNKNOWN — lets bash callers
+  // branch on `$?` without parsing JSON.
+  process.exit(result.verdict === 'LANDED' ? 0 : result.verdict === 'UNKNOWN' ? 2 : 1);
+}
+
+if (require.main === module) main();
+
+module.exports = { checkLanded, isShallowRepo, isAncestor, ensureFullHistory };

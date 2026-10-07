@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+/**
+ * Recalculate all Audience Buzz scores with dynamic weighting
+ *
+ * Run this after changing the weighting algorithm to update all existing scores.
+ *
+ * Data dir resolution order:
+ *   1. --data-dir=<path> CLI flag
+ *   2. DATA_DIR env var (used by CI to point at private repo checkout)
+ *   3. <repo>/data (default — public repo working directory)
+ *
+ * This lets the same script run locally against the public repo AND in
+ * CI against the private core-data checkout (/tmp/core-data-checkout/).
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { calculateCombinedScore, getDesignation, isBroadwayComMarket, isRedditMarket } = require('./lib/audience-weighting');
+const { createAudienceBuzzWriteGuard } = require('./lib/audience-buzz-write-guard');
+
+// Resolve data dir: --data-dir flag > DATA_DIR env > default
+const cliDataDir = process.argv.find(a => a.startsWith('--data-dir='));
+const dataDir = cliDataDir
+  ? cliDataDir.split('=').slice(1).join('=')
+  : (process.env.DATA_DIR || path.join(__dirname, '..', 'data'));
+
+const audienceBuzzPath = path.join(dataDir, 'audience-buzz.json');
+const showsPath = path.join(dataDir, 'shows.json');
+
+if (!fs.existsSync(audienceBuzzPath)) {
+  console.error(`audience-buzz.json not found at ${audienceBuzzPath}`);
+  console.error(`Set DATA_DIR or pass --data-dir=<path> to point at the correct directory.`);
+  process.exit(1);
+}
+if (!fs.existsSync(showsPath)) {
+  console.error(`shows.json not found at ${showsPath}`);
+  process.exit(1);
+}
+
+console.log(`Reading from: ${dataDir}`);
+// Guard is bound to the resolved dataDir (not necessarily the repo's default
+// data/audience-buzz.json) — CI points this at /tmp/core-data-checkout/ via
+// --data-dir/DATA_DIR, so the default singleton guard would write the wrong file.
+const { loadAudienceBuzz, saveAudienceBuzz } = createAudienceBuzzWriteGuard(audienceBuzzPath);
+const audienceBuzz = loadAudienceBuzz();
+const showsFile = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+const showMap = {};
+for (const s of showsFile.shows) showMap[s.id] = s;
+
+console.log('Recalculating all Audience Buzz scores with dynamic weighting...\n');
+
+let updated = 0;
+for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
+  const oldScore = show.combinedScore;
+  const showData = showMap[showId];
+  const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
+  // Broadway.com is Broadway only, and a tour shares its parent's Reddit
+  // title search: on the wrong market either source is the Broadway
+  // production's data (isBroadwayComMarket / isRedditMarket).
+  let droppedSource = false;
+  if (show.sources?.broadwayCom && showData && !isBroadwayComMarket(showData.category)) {
+    console.log(`${showId}: dropping Broadway.com source (${showData.category} show, score ${show.sources.broadwayCom.score})`);
+    delete show.sources.broadwayCom;
+    droppedSource = true;
+  }
+  if (show.sources?.reddit && showData && !isRedditMarket(showData.category)) {
+    console.log(`${showId}: dropping Reddit source (${showData.category} show, score ${show.sources.reddit.score})`);
+    delete show.sources.reddit;
+    droppedSource = true;
+  }
+  const { score, weights } = calculateCombinedScore(show.sources, showInfo);
+  if (droppedSource) {
+    updated++;
+    // It was the only qualifying source: don't leave its grade behind.
+    if (score === null) { delete show.combinedScore; delete show.designation; delete show.weights; }
+  }
+
+  if (score !== null) {
+    show.combinedScore = score;
+
+    show.designation = getDesignation(score);
+
+    if (oldScore !== score) {
+      const weightStr = Object.entries(weights).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v}%`).join(', ');
+      console.log(`${show.title}: ${oldScore} → ${score} (${weightStr})`);
+      updated++;
+    }
+  }
+}
+
+audienceBuzz._meta.designationThresholds = {
+  'Loving': '88-100',   // A+, A
+  'Liking': '78-87',    // A-, B+
+  'Shrugging': '68-77', // B, B-
+  'Disliking': '53-67', // C+, C, C-
+  'Loathing': '0-52'    // D, F
+};
+audienceBuzz._meta.notes = 'Proportional weighting by reviewCount volume (max 80% single source)';
+
+saveAudienceBuzz(audienceBuzz);
+console.log(`\nUpdated ${updated} shows. Saved to audience-buzz.json`);

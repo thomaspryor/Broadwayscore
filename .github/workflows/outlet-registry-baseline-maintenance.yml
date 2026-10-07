@@ -1,0 +1,127 @@
+name: Outlet Registry Baseline Maintenance
+on:
+  schedule:
+    # 07:15 UTC daily — after the 04:00 rebuild so the corpus is fresh, clear
+    # of the 07:00 cron cluster (commercial-pending-review-notify, poll-
+    # loureviews, recover-wsj-subscriber).
+    - cron: '15 7 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: outlet-registry-baseline-maintenance
+  cancel-in-progress: false
+
+jobs:
+  update-baseline:
+    runs-on: ubuntu-latest
+    # Two private-repo checkouts + a corpus scan; check-corpus-drift.yml (similar
+    # shape) budgets 15 min for the same work.
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      # Card #1766: audit-outlet-registry.js --strict (test.yml's Data
+      # Validation gate) flaps main CI red whenever a new critic outlet
+      # appears in the corpus faster than someone manually runs
+      # --update-baseline. This automates JUST that command on a daily
+      # cadence.
+      #
+      # Deliberately NEVER runs --update/--auto here. Those flags write NEW
+      # entries into data/outlet-registry.json itself (including inferring a
+      # domain) — the genuinely risky path that can entrench a corrupt
+      # venue/year-suffixed outletId with a live domain (the exact
+      # domain-collision bug fixed same-day in data-repo commit f89903dcc).
+      # --update-baseline (verified by reading scripts/audit-outlet-registry.js
+      # lines ~906-923) only rewrites data/audit/outlet-registry-baseline.json
+      # + the junk baseline — pure CI-noise suppression, never touches the
+      # registry file, consumed only by --strict's new-vs-known-missing diff.
+      # Curating real registry entries (display name, tier, domain) stays a
+      # manual, reviewed `--update` run — the full missing-outlet list remains
+      # visible via this script's default (non-strict) report mode.
+      #
+      # Burst guard + visibility trace (second-opinion review, task #1766):
+      # silently baselining an unbounded batch in one run would hide a
+      # generation-bug burst (like the 8bdc2b54d regression this card traced)
+      # as easily as organic growth. Threshold 5 mirrors update-lottery-rush.yml's
+      # existing "abort if >5 new show IDs" stability guard.
+      - name: Maintain outlet-registry baseline (with burst guard)
+        run: |
+          set -e
+          node scripts/audit-outlet-registry.js --json > /tmp/audit-report.json
+
+          node - <<'NODE'
+          const fs = require('fs');
+          const THRESHOLD = 5; // precedent: update-lottery-rush.yml stability guard
+
+          const before = JSON.parse(fs.readFileSync('data/audit/outlet-registry-baseline.json', 'utf8')).outletIds || [];
+          const beforeSet = new Set(before);
+
+          const report = JSON.parse(fs.readFileSync('/tmp/audit-report.json', 'utf8'));
+          const missing = (report.missingOutlets || []).map(m => m.outletId);
+          const fresh = [...new Set(missing)].filter(id => !beforeSet.has(id)).sort();
+
+          fs.writeFileSync('/tmp/new-outlet-ids.json', JSON.stringify(fresh));
+          console.log(`Missing outlets: ${missing.length} total, ${fresh.length} new since last baseline`);
+          if (fresh.length > 0) {
+            console.log('New outletIds since last baseline run:');
+            for (const id of fresh) console.log(`  - ${id}`);
+          }
+
+          if (fresh.length > THRESHOLD) {
+            console.log(`::warning::${fresh.length} new missing outlets in one run (>${THRESHOLD}) — looks like a burst (id-generation bug?), not organic growth. Skipping baseline auto-update; needs manual review: ${fresh.join(', ')}`);
+            fs.writeFileSync('/tmp/skip-baseline-update', '1');
+          }
+          NODE
+
+          if [ -f /tmp/skip-baseline-update ]; then
+            echo "## Outlet registry baseline maintenance" >> "$GITHUB_STEP_SUMMARY"
+            echo "⚠️ Burst guard tripped — more than 5 new missing outlets in one run. Baseline NOT updated; investigate before running \`--update-baseline\` manually." >> "$GITHUB_STEP_SUMMARY"
+            node -e "JSON.parse(require('fs').readFileSync('/tmp/new-outlet-ids.json','utf8')).forEach(id => console.log('- ' + id))" >> "$GITHUB_STEP_SUMMARY"
+            echo "Skipping --update-baseline (burst guard tripped)."
+            exit 0
+          fi
+
+          node scripts/audit-outlet-registry.js --update-baseline
+
+          if [ -s /tmp/new-outlet-ids.json ] && [ "$(cat /tmp/new-outlet-ids.json)" != "[]" ]; then
+            echo "## Outlet registry baseline maintenance" >> "$GITHUB_STEP_SUMMARY"
+            echo "Auto-absorbed into the CI baseline (not registered — still visible via non-strict audit for manual curation):" >> "$GITHUB_STEP_SUMMARY"
+            node -e "JSON.parse(require('fs').readFileSync('/tmp/new-outlet-ids.json','utf8')).forEach(id => console.log('- ' + id))" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Commit updated baseline
+        if: always()
+        run: |
+          git add data/audit/outlet-registry-baseline.json data/audit/outlet-registry-junk-baseline.json
+          if git diff --staged --quiet; then
+            echo "No baseline changes"
+          else
+            git commit -m "data: Update outlet-registry baseline [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Outlet Registry Baseline Maintenance Failed'
+          description: 'Card #1766 maintenance cron failed — the outlet-registry gaps audit baseline may go stale, and test.yml''s Data Validation gate can start flapping red again on new critic outlets.'
+          severity: 'warning'

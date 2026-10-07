@@ -1,0 +1,68 @@
+{
+  "showTitle": "Fallen Angels",
+  "showContext": {
+    "venue": "Todd Haimes Theatre",
+    "market": "Broadway",
+    "type": "play",
+    "openingDate": "2026-04-19",
+    "closingDate": "2026-06-07"
+  },
+  "note": "Hand-labeled ground truth for BRO-985 (Reddit sentiment classifier over-labeling mild/comparative comments as negative). Categories: comparative, lukewarm, scorecard_meta, negative, positive, edge. Each item's `expected` is the ground-truth {is_relevant, sentiment}. `sentiment` is omitted when is_relevant is false.",
+  "items": [
+    { "id": 1, "category": "comparative", "postTitle": "Proof, Becky Shaw, or Fallen Angels?", "body": "I'd pick Becky Shaw over Fallen Angels if you can only see one, but Fallen Angels was still a great time.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 2, "category": "comparative", "postTitle": "Proof, Becky Shaw, or Fallen Angels?", "body": "Becky Shaw was far superior for me, but I wouldn't say Fallen Angels was bad, just not my top pick of the three.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 3, "category": "comparative", "postTitle": "Which revival is worth the money this spring?", "body": "Between the two I'd rank Fallen Angels below the other revival, mostly because I already knew the play. Didn't hate it though.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 4, "category": "comparative", "postTitle": "Proof, Becky Shaw, or Fallen Angels?", "body": "Fallen Angels was the weakest of the three for me - the pacing dragged and the leads had zero chemistry. Becky Shaw was much better written.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 5, "category": "comparative", "postTitle": "Spring play roundup - which to see", "body": "Saw both. Fallen Angels made me laugh way more than the other one, though the other has stronger performances overall.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 6, "category": "comparative", "postTitle": "Fallen Angels vs Present Laughter", "body": "I liked Present Laughter more, it's just a stronger play, but Fallen Angels has Consuelos who was fun to watch.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 7, "category": "comparative", "postTitle": "Two Coward revivals this season, thoughts?", "body": "Honestly comparing the two isn't fair since Fallen Angels is a much lighter play, but on its own terms it delivered exactly what it promised.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 8, "category": "comparative", "postTitle": "Proof, Becky Shaw, or Fallen Angels?", "body": "Went with Fallen Angels over the other two based on reviews. Wish I'd picked differently - it just didn't land for me and I wouldn't recommend it over the alternatives.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 9, "category": "comparative", "postTitle": "What should I see this weekend, Fallen Angels or a musical?", "body": "I'd do the musical instead honestly, Fallen Angels is a slighter show, but I don't regret seeing it.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 10, "category": "comparative", "postTitle": "Fallen Angels previews", "body": "My friend liked the other Coward revival better than this one but I actually preferred Fallen Angels - laughed the whole time.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+
+    { "id": 11, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "It was fine. Nothing amazing but a pleasant enough evening.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 12, "category": "lukewarm", "postTitle": "A roaring good time at Fallen Angels", "body": "Slow start but worth it once the champagne scene kicked in.", "expected": { "is_relevant": true, "sentiment": "mixed" } },
+    { "id": 13, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "Not my favorite Coward, but I still had a good time.", "expected": { "is_relevant": true, "sentiment": "mixed" } },
+    { "id": 14, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "Decent production, nothing that's going to stick with me but I don't feel like I wasted an evening.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 15, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "I wasn't blown away, but the second act picked up a lot.", "expected": { "is_relevant": true, "sentiment": "mixed" } },
+    { "id": 16, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "A bit long in the first act, but overall a fun, frothy night out.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 17, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "Mild recommend. It's a trifle - don't go in expecting anything deep.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 18, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "Middle of the road for me. Some big laughs, some dead air.", "expected": { "is_relevant": true, "sentiment": "mixed" } },
+    { "id": 19, "category": "lukewarm", "postTitle": "Fallen Angels previews", "body": "It's okay! Not essential theatre but a nice way to spend a Tuesday.", "expected": { "is_relevant": true, "sentiment": "neutral" } },
+    { "id": 20, "category": "lukewarm", "postTitle": "A roaring good time at Fallen Angels", "body": "Consuelos's part felt underwritten and small, but the two female leads carried the show.", "expected": { "is_relevant": true, "sentiment": "mixed" } },
+
+    { "id": 21, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "The audience score of B+ seems way too low compared to how packed and loud that theater was on preview night.", "expected": { "is_relevant": false } },
+    { "id": 22, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "Broadway Scorecard always underrates comedies, their algorithm just doesn't know what to do with a farce.", "expected": { "is_relevant": false } },
+    { "id": 23, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "That critic score can't be right, half these reviews they're citing are raves.", "expected": { "is_relevant": false } },
+    { "id": 24, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "I don't trust any of these aggregator scores, they're all gamed by a handful of super-fans voting.", "expected": { "is_relevant": false } },
+    { "id": 25, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "Does anyone know how they weight the critic score vs audience score on that site?", "expected": { "is_relevant": false } },
+    { "id": 26, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "The score being 'low compared to' other shows is a weird framing, scores aren't really comparable across genres.", "expected": { "is_relevant": false } },
+    { "id": 27, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "I actually saw it last week and thought it was terrific, way better than a 76 - laughed nonstop and the audience gave a standing ovation.", "expected": { "is_relevant": true, "sentiment": "enthusiastic" } },
+    { "id": 28, "category": "scorecard_meta", "postTitle": "Fallen Angels reviews are in: 76/100", "body": "These composite scores never match my experience with comedies in general, they always come out lower than dramas.", "expected": { "is_relevant": false } },
+
+    { "id": 29, "category": "negative", "postTitle": "Fallen Angels previews", "body": "Honestly disappointing. The jokes fell flat for most of the audience and I wouldn't recommend it.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 30, "category": "negative", "postTitle": "Fallen Angels previews", "body": "Regretted spending the money on this one, felt like a waste of an evening.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 31, "category": "negative", "postTitle": "Fallen Angels previews", "body": "We walked out at intermission, it just wasn't working for either of us.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 32, "category": "negative", "postTitle": "Fallen Angels previews", "body": "Bored out of my mind. Wouldn't go back.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 33, "category": "negative", "postTitle": "Fallen Angels previews", "body": "Skip this one. The direction is sloppy and the leads seemed to be performing two different plays.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 34, "category": "negative", "postTitle": "Fallen Angels previews", "body": "Genuinely one of the worst nights I've had at the theater this year.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 35, "category": "negative", "postTitle": "Fallen Angels previews", "body": "Not worth full price at all, felt cheated honestly.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+    { "id": 36, "category": "negative", "postTitle": "Fallen Angels previews", "body": "It dragged so badly, I checked my watch three times in the first act alone.", "expected": { "is_relevant": true, "sentiment": "negative" } },
+
+    { "id": 37, "category": "positive", "postTitle": "Fallen Angels previews", "body": "AMAZING. A 10/10 tour de force from both leads, laughed until I cried.", "expected": { "is_relevant": true, "sentiment": "enthusiastic" } },
+    { "id": 38, "category": "positive", "postTitle": "A roaring good time at Fallen Angels", "body": "Fabulous production, strong contender for Best Revival this season.", "expected": { "is_relevant": true, "sentiment": "enthusiastic" } },
+    { "id": 39, "category": "positive", "postTitle": "Proof, Becky Shaw, or Fallen Angels?", "body": "SOOOOO funny. Great show with great acting all around.", "expected": { "is_relevant": true, "sentiment": "enthusiastic" } },
+    { "id": 40, "category": "positive", "postTitle": "Fallen Angels previews", "body": "Really enjoyed it, would recommend to anyone who likes classic drawing-room comedy.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 41, "category": "positive", "postTitle": "Fallen Angels previews", "body": "Saw it twice already, taking my mom next week.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 42, "category": "positive", "postTitle": "Fallen Angels previews", "body": "Great fun, glad I went, worth the ticket price.", "expected": { "is_relevant": true, "sentiment": "positive" } },
+    { "id": 43, "category": "positive", "postTitle": "A roaring good time at Fallen Angels", "body": "Loved every minute, the champagne scene alone is worth the price of admission.", "expected": { "is_relevant": true, "sentiment": "enthusiastic" } },
+    { "id": 44, "category": "positive", "postTitle": "Fallen Angels previews", "body": "Slapstick at its best, wonderful performances across the board.", "expected": { "is_relevant": true, "sentiment": "enthusiastic" } },
+
+    { "id": 45, "category": "edge", "postTitle": "Fallen Angels previews", "body": "Can't wait to see it next month, tickets are booked!", "expected": { "is_relevant": false } },
+    { "id": 46, "category": "edge", "postTitle": "Fallen Angels casting news", "body": "The lead actress reportedly hurt her ankle during previews and missed two performances.", "expected": { "is_relevant": false } },
+    { "id": 47, "category": "edge", "postTitle": "What did you see this week?", "body": "The show was great, highly recommend.", "expected": { "is_relevant": false } },
+    { "id": 48, "category": "edge", "postTitle": "Fallen Angels previews", "body": "I saw Hamilton last night and loved it, so much better than the play I saw the week before.", "expected": { "is_relevant": false } },
+    { "id": 49, "category": "edge", "postTitle": "Fallen Angels previews", "body": "Rush tickets for this one are $40, cash only at the box office.", "expected": { "is_relevant": false } },
+    { "id": 50, "category": "edge", "postTitle": "Fallen Angels previews", "body": "The usher at the Todd Haimes was so rude to us at will call.", "expected": { "is_relevant": false } }
+  ]
+}

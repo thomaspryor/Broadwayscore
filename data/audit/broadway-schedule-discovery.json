@@ -1,0 +1,73 @@
+{
+  "card": "#1426",
+  "runAt": "2026-08-13T23:50:15.000Z",
+  "source": "https://playbill.com/article/schedule-of-upcoming-and-announced-broadway-shows",
+  "parser": "scripts/lib/playbill-broadway-schedule.js",
+  "wiredInto": "scripts/discover-new-shows.js (fetchShowsFromPlaybillBroadway, runs daily via update-show-status.yml cron '0 8 * * *')",
+  "parsedEntries": 23,
+  "resolvedShows": [
+    {
+      "action": "updated-in-place",
+      "id": "wanted-2022",
+      "title": "Wanted",
+      "reason": "Stale 2022 placeholder (previewsStartDate 2022-10-28 never happened, wrong ibdbUrl wanted-10398, fabricated cast) matched by title against the real 2026 production instead of duplicated.",
+      "before": { "venue": "James Earl Jones Theatre", "previewsStartDate": "2022-10-28", "openingDate": null },
+      "after": { "venue": "James Earl Jones Theatre", "previewsStartDate": "2026-10-15", "openingDate": "2026-11-08" },
+      "validateShowVenue": { "result": "match", "playbillUrl": "https://playbill.com/production/wanted-broadway-james-earl-jones-theatre-2026", "parsedOpening": "2026-11-08" },
+      "relatedFix": "Deleted contaminated awards.json entry (tony.season=1975-76, 0 noms/wins — same fabricated-placeholder class as the 8 records purged in commit 35cf05da83d)"
+    },
+    {
+      "action": "added",
+      "id": "much-ado-about-nothing-2026",
+      "title": "Much Ado About Nothing",
+      "venue": "Winter Garden Theatre",
+      "previewsStartDate": "2026-10-31",
+      "openingDate": "2026-11-19",
+      "validateShowVenue": { "result": "match", "playbillUrl": "https://playbill.com/production/much-ado-about-nothing-broadway-winter-garden-theatre-2026", "parsedOpening": "2026-11-19" }
+    },
+    {
+      "action": "added",
+      "id": "mix-and-master-2027",
+      "title": "Mix and Master",
+      "venue": "Todd Haimes Theatre",
+      "previewsStartDate": "2027-01-05",
+      "openingDate": "2027-01-27",
+      "validateShowVenue": { "result": "match", "playbillUrl": "https://playbill.com/production/mix-and-master-broadway-todd-haimes-theatre-2027", "parsedOpening": "2027-01-27" }
+    },
+    {
+      "action": "added",
+      "id": "the-full-monty-2027",
+      "title": "The Full Monty",
+      "venue": "Todd Haimes Theatre",
+      "previewsStartDate": "2027-04-03",
+      "openingDate": "2027-04-25",
+      "validateShowVenue": { "result": "match", "playbillUrl": "https://playbill.com/production/the-full-monty-broadway-todd-haimes-theatre-2027", "parsedOpening": "2027-04-25" }
+    }
+  ],
+  "deliberatelyDeferred": [
+    {
+      "title": "Three Days of Rain",
+      "reason": "Playbill has no confirmed venue yet (\"theatre + opening not yet confirmed\"); only an approximate first-preview month (\"February 2027\"). Every existing shows.json entry has a non-null venue — writing a placeholder would violate that invariant. Matches the codebase's existing defer-don't-stub convention (discover-new-shows.js cards #994/#1060). fetchShowsFromPlaybillBroadway() will pick this up automatically once Playbill publishes a venue."
+    }
+  ],
+  "gap1RootCause": {
+    "claim": "Comment in tony-awards/predictions/[season]/page.tsx blamed IBDB returning a bot challenge for the 6 shows with null openingDate.",
+    "verified": false,
+    "evidence": [
+      "That specific bug (ibdb.com in PLAYWRIGHT_FIRST_DOMAINS, Cloudflare challenge accepted as success) was real but was already fixed in commit 136cc7f9bd8 on 2026-08-05 (scripts/lib/scraper.js:82-87) — 'BD web_unlocker2 fetches IBDB fine — let it go straight there.'",
+      "The Aug 12 scheduled run (gh run 31577283452) shows enrich-ibdb-dates.js successfully fetching IBDB pages via Scrapingdog and extracting correct openingDate for galileo-2026 (2026-12-06), inter-alia-2026 (2026-12-01), and paranormal-activity-2026 (2026-08-25) — no bot challenge involved.",
+      "The actual blocker: applying those 3 shows' openingDate made their PRE-EXISTING awards.json tony.season placeholders (all '1969-70', 0 nominations/wins — fabricated) inconsistent (validate-data.js's Tony-season-vs-openingDate check, added recently). validate-data.js correctly flagged this as 3 NEW errors. evaluateCommitDecision (scripts/lib/validation-setdiff.js) is an ALL-OR-NOTHING gate: 3 new errors blocked the commit for the entire batch of 11 shows, discarding 8 shows' completely clean writes (Dolly, School Girls, Evita, The Fantasticks, Gloria, Billy Crystal 860, Paddington, Purple Rain) along with the 3 broken ones. The push-refusal sentinel then blocked that week's push-core-data step entirely.",
+      "awake-and-sing-2026 and the-imaginary-invalid-2026 hit a DIFFERENT, correctly-firing guard: their stored ibdbUrl points at a decades-old prior Broadway production of the same title (1935 / 1967), and ibdb-year-guard.js correctly refused to trust that data as wrong-production contamination — this is not a bug, IBDB genuinely can't answer for these two without a URL correction.",
+      "billy-crystal-860-2026's openingDate was found cleanly by IBDB in the same Aug 12 run but was discarded anyway by the same all-or-nothing gate."
+    ]
+  },
+  "gap1Fix": {
+    "description": "scripts/lib/validation-setdiff.js: new evaluatePerShowCommitDecision() attributes each new validation error to the show ID it names (validate-data.js quotes the ID in every per-show error) and only holds back those specific shows, committing the rest. If any new error can't be attributed to a candidate show, falls back to the original block-everything behavior. scripts/enrich-ibdb-dates.js now snapshots each touched show before mutating it, and on a partial block, reverts just the implicated show(s) and re-validates to CONFIRM the revert actually cleared the error before trusting the attribution.",
+    "test": "tests/unit/discovery-validation-setdiff.test.mjs (attributeNewErrorsToShowIds, evaluatePerShowCommitDecision — reproduces the exact card #1426 scenario: 3 of 11 shows blocked, 8 commit)",
+    "collateralFix": "Deleted the wanted-2022 awards.json placeholder (tony.season=1975-76) that would have hit the exact same class of error the moment this session set its real openingDate."
+  },
+  "verification": {
+    "validateDataJs": "PASSED WITH 1698 WARNING(S), 0 errors, exit code 0 (all 1698 warnings pre-existing/unrelated — verified via grep for the 4 touched show IDs, zero matches)",
+    "validateShowVenueJs": "4/4 shows: 1 match / 0 mismatch / 0 unresolved each, independently cross-checked against playbill.com/production/* pages (a different Playbill endpoint than the schedule article used for discovery)"
+  }
+}

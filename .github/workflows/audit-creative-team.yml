@@ -1,0 +1,120 @@
+name: Audit Creative Team Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Optional: specific show slug to audit'
+        required: false
+        type: string
+      status:
+        description: 'Filter by show status'
+        required: false
+        type: choice
+        options:
+          - all
+          - open
+          - previews
+          - closed
+      limit:
+        description: 'Max shows to process (0 = all)'
+        required: false
+        default: '0'
+        type: string
+
+permissions:
+  contents: write
+
+# BRO-3071: added so two overlapping workflow_dispatch runs can't race a
+# lost push on data/audit/creative-team-audit.json (now apiFallbackSafe —
+# see scripts/lib/core-data-merge-registry.js — which requires this group).
+concurrency:
+  group: audit-creative-team
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 180-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 1000
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run creative team audit
+        id: audit
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          FLAGS="--checkpoint"
+
+          if [ -n "${{ inputs.show }}" ]; then
+            FLAGS="$FLAGS --show=${{ inputs.show }}"
+          fi
+
+          if [ -n "${{ inputs.status }}" ] && [ "${{ inputs.status }}" != "all" ]; then
+            FLAGS="$FLAGS --status=${{ inputs.status }}"
+          fi
+
+          if [ "${{ inputs.limit }}" != "0" ] && [ -n "${{ inputs.limit }}" ]; then
+            FLAGS="$FLAGS --limit=${{ inputs.limit }}"
+          fi
+
+          echo "Running: node scripts/audit-creative-team.js $FLAGS"
+          node scripts/audit-creative-team.js $FLAGS
+
+      - name: Commit audit results
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add data/audit/creative-team-audit.json || true
+
+          if git diff --cached --quiet; then
+            echo "No audit changes to commit"
+            exit 0
+          fi
+
+          git commit -m "data: Creative team audit results"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: audit-creative-team
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Creative Team Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

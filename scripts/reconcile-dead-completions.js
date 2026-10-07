@@ -1,0 +1,315 @@
+#!/usr/bin/env node
+/**
+ * reconcile-dead-completions — defense-in-depth for card #1144: find tasks
+ * in the shared task list that are marked 'completed' even though their
+ * most recent bsc-next/bsc-runner dispatch attempt is journaled dead (never
+ * actually ran), and reopen them.
+ *
+ * The primary fix is a PreToolUse hook on TaskUpdate (~/.claude/hooks) that
+ * refuses the bad write before it lands. This script exists for what still
+ * slips past that hook: a cloud session with no ~/.claude/hooks (CLAUDE.md:
+ * "Cloud sessions ... have no ~/.claude/"), a long-running session that
+ * started before the hook was registered, or an explicit --force override.
+ * Both consult the SAME decision function (scripts/lib/dispatch-dead-launch-
+ * guard.js's reconcileDeadCompletions) — a task can't pass one check and
+ * fail the other for the same underlying state.
+ *
+ *   node scripts/reconcile-dead-completions.js             report only
+ *   node scripts/reconcile-dead-completions.js --fix        reopen matches
+ *   node scripts/reconcile-dead-completions.js --help, -h   show this message
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const { TASKS_DIR } = require('./bsc-next.js');
+// loadTasksWithMtime (not bsc-next.js's loadTasks) — attachCompletedAtEstimates
+// below needs each task's live-file mtime (card #1770/task #1701 incident).
+// Already tested (task-store-archive.test.mjs) and already scoped to the LIVE
+// TASKS_DIR only (never archive/, whose move rewrites mtime — see that file's
+// header on attachCompletedAtEstimates).
+const { loadTasksWithMtime } = require('./lib/task-store-archive.js');
+const { readEntries } = require('./lib/dispatch-ledger.js');
+const { reconcileDeadCompletions, shouldCorrectNotionStatus, attachCompletedAtEstimates } = require('./lib/dispatch-dead-launch-guard.js');
+const { acquireLock, readMap, writeMap } = require('./notion-tasks-sync.js');
+
+const USAGE = `reconcile-dead-completions — reopen tasks marked 'completed' whose latest dispatch never ran.
+
+Usage:
+  node scripts/reconcile-dead-completions.js             report only, reopen nothing
+  node scripts/reconcile-dead-completions.js --fix        reopen matches (status -> pending)
+  node scripts/reconcile-dead-completions.js --help, -h   show this message
+`;
+
+// Ship-check adversarial finding: a bare prepend re-run of --fix (e.g. a
+// scheduled job firing twice before the reopened task is re-dispatched)
+// would stack duplicate banners onto `description` forever. The marker
+// prefix makes the reopen idempotent — a task already carrying it is left
+// untouched on a repeat run.
+//
+// Card #1795: that any-marker check was too coarse — it can't tell "this
+// SAME dead-dispatch event already reopened this task, don't restack" from
+// "a task reopened once for an EARLIER dead event was genuinely re-
+// completed via a SECOND dead dispatch and needs reopening again". A task
+// stuck in the latter shape kept the marker forever and reconcileDeadCompletions()
+// flagged it every run with no way to ever actually fix it (live incidents:
+// tasks #1756/#1763). Fix: key idempotency to task.lastReopenedForEventTs, a
+// structured field stamped with the dead ledger entry's own `ts`
+// (deadAttemptTs, threaded from dispatch-dead-launch-guard.js's
+// reconcileDeadCompletions -> dispatch-ledger.js's resolveDeadAttempt) —
+// only a repeat of THAT EXACT event is a no-op. A structured field (not
+// substring-matching prose) mirrors this file's own manuallyResolvedReason/
+// manuallyResolvedAt convention rather than adding a second text-matching
+// scheme. deadAttemptTs absent (malformed/legacy ledger data) falls back to
+// the original any-marker guard — conservative, matches pre-fix behavior.
+const REOPEN_MARKER = '[reconcile-dead-completions ';
+
+function reopenTask(id, dir = TASKS_DIR, deadAttemptTs = null) {
+  const file = path.join(dir, `${id}.json`);
+  const task = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (deadAttemptTs) {
+    if (task.lastReopenedForEventTs === deadAttemptTs) return; // this exact dead-dispatch event was already handled, no-op
+  } else if (String(task.description || '').startsWith(REOPEN_MARKER)) {
+    return; // no event id to key off of — fall back to the old any-marker no-op
+  }
+  const note = `${REOPEN_MARKER}${new Date().toISOString().slice(0, 10)}] `
+    + `reopened — marked completed while its most recent dispatch was journaled dead in dispatch-ledger.jsonl (card #1144).\n\n`;
+  task.status = 'pending';
+  task.owner = null;
+  task.lastReopenedForEventTs = deadAttemptTs || null;
+  task.description = note + (task.description || '');
+  fs.writeFileSync(file, JSON.stringify(task, null, 2));
+}
+
+// Card #1157: reopenTask() only fixes the LOCAL task-store copy. The
+// mirrored Notion card can have already been pushed to "Done" by
+// notion-tasks-sync.js's push command (markCardDone) before the dead
+// dispatch was discovered — real incident 2026-08-09, 4 cards found stuck
+// on Done after their tasks were reopened. Mirrors bsc-prune.js's
+// parkCard(): spawnSync notion-brain.js non-fatally from the CLI wrapper,
+// never from the pure lib. Ledger/local reopen above is authoritative and
+// already happened by the time this runs — a failure here is logged and
+// paged, never re-thrown, and never un-reopens the local task.
+// Card #1779: correctNotionCard() flips the card back to "Not started" but
+// never told notion-tasks-sync.js's own bookkeeping — cmdPush's push-
+// eligibility check (notion-tasks-sync.js's isPushEligible/cmdPush) skips
+// any sync-map entry with pushed:true, so the SAME card could never be
+// auto-reclosed again even after the underlying task was genuinely
+// completed a second time (real incident: task #1709 had to be closed by
+// hand via notion-brain.js update). Same acquireLock/writeMap discipline
+// cmdPush/reconcileStaleMirrors already use (notion-tasks-sync.js:1054-1128)
+// — re-read the map fresh inside the lock so this can't clobber a
+// concurrent pull/push's unrelated entries. Returns a reason string instead
+// of a bool so the caller can tell a benign no-op (already clear, no
+// matching entry) from a lock-contention failure worth surfacing — the
+// latter is the exact silent-failure door that would reproduce this same
+// bug through a narrower path.
+function resetPushedFlag(dir, pageId, taskId) {
+  const release = acquireLock(dir);
+  if (!release) return 'lock-contention';
+  try {
+    const map = readMap(dir);
+    const entry = map[pageId];
+    if (!entry || String(entry.taskId) !== String(taskId)) return 'no-entry';
+    if (!entry.pushed) return 'already-clear';
+    entry.pushed = false;
+    writeMap(dir, map);
+    return 'reset';
+  } catch {
+    // Adversarial ship-check catch (gpt-5.4-mini): an fs error here (e.g.
+    // ENOSPC writing the .tmp file) must not propagate up as an uncaught
+    // throw — correctNotionCard()'s caller (main()) would catch it and log
+    // "Notion correction failed", which is false: the Notion status update
+    // already succeeded by the time this runs. Report it as its own reason
+    // instead so it pages correctly without mislabeling a successful Notion
+    // correction as a failure.
+    return 'write-failed';
+  } finally {
+    release();
+  }
+}
+
+// Mirrors pageNotionCorrectionFailure below: every partial-failure mode in
+// this file is escalated to the digest, never silently swallowed. Scoped to
+// 'lock-contention'/'write-failed' — 'no-entry'/'already-clear' are the
+// common, benign no-op cases (e.g. this card was never pushed via cmdPush in
+// the first place) and would just make the digest noisy.
+function pagePushedFlagResetFailure(taskId, notionId, reason) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    const cause = reason === 'write-failed'
+      ? 'writing the sync-map back to disk failed'
+      : 'another sync (pull/push/sync-drift) held the lock';
+    routeAlert({
+      conditionKey: `reconcile-dead-completions:pushed-flag-reset-failed:${taskId}`,
+      title: `Reopened task #${taskId} but its Notion sync-map pushed flag may still be stuck`,
+      description: `reconcile-dead-completions corrected Notion card ${notionId} back off "Done" for task #${taskId}, but could not reset its sync-map entry.pushed flag — ${cause}. This is NOT automatically retried (the task already flipped to 'pending' and permanently drops out of the next run's completed-task scan). If this task is genuinely completed again, cmdPush will silently skip re-closing the card until the flag clears. Fix by hand: node -e "const{acquireLock,readMap,writeMap}=require('./scripts/notion-tasks-sync.js');const{TASKS_DIR}=require('./scripts/bsc-next.js');const r=acquireLock(TASKS_DIR);const m=readMap(TASKS_DIR);if(m['${notionId}'])m['${notionId}'].pushed=false;writeMap(TASKS_DIR,m);r();"`,
+      severity: 'warning',
+      disposition: 'digest',
+      cooldownHours: 24,
+    }).catch(() => {});
+  } catch { /* alerting must never mask the reopen/correction that already succeeded */ }
+}
+
+function correctNotionCard(notionId, taskId) {
+  const brain = path.join(__dirname, 'notion-brain.js');
+  const getRes = spawnSync('node', [brain, 'get', notionId], { encoding: 'utf8', timeout: 60_000 });
+  if (getRes.status !== 0) {
+    throw new Error(`card lookup failed: ${(getRes.stderr || getRes.stdout || '').trim().split('\n').slice(-1)[0]}`);
+  }
+  let card;
+  try { card = JSON.parse(getRes.stdout); }
+  catch { throw new Error('card lookup returned unparseable JSON'); }
+  // Read-then-check, not an unconditional write: a card the owner has since
+  // re-triaged by hand (e.g. to "In progress") must not be clobbered back to
+  // "Not started" just because its task was independently reopened.
+  if (!card || !shouldCorrectNotionStatus(card.status)) return false;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const updRes = spawnSync('node', [brain, 'update', notionId,
+    '--status', 'Not started',
+    '--outcome', `Auto-corrected ${today} by reconcile-dead-completions: task #${taskId} was marked completed while its dispatch was journaled dead (card #1144/#1157) — this card had been incorrectly pushed to Done.`,
+  ], { encoding: 'utf8', timeout: 60_000 });
+  if (updRes.status !== 0) {
+    throw new Error(`card update failed: ${(updRes.stderr || updRes.stdout || '').trim().split('\n').slice(-1)[0]}`);
+  }
+  // The Notion status correction above already succeeded — a failure to
+  // reset the sync-map's pushed flag must never undo it or be thrown as an
+  // error here (that would falsely mark a successful correction as failed).
+  const resetResult = resetPushedFlag(TASKS_DIR, notionId, taskId);
+  if (resetResult === 'lock-contention' || resetResult === 'write-failed') {
+    pagePushedFlagResetFailure(taskId, notionId, resetResult);
+  }
+  return true;
+}
+
+// A failed correction leaves a "Done" card that will never be retried by
+// this script (once reopenTask flips the task to 'pending' it permanently
+// drops out of reconcileDeadCompletions's 'completed' filter) — the exact
+// silent-drift this card exists to fix. A launchd log nobody tails doesn't
+// close that gap, so a failure is also paged to the digest (best-effort;
+// never blocks or masks the console.error already printed).
+function pageNotionCorrectionFailure(taskId, notionId, err) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router.js');
+    routeAlert({
+      conditionKey: `reconcile-dead-completions:notion-correction-failed:${taskId}`,
+      title: `Reopened task #${taskId} but its Notion card is still "Done"`,
+      description: `reconcile-dead-completions reopened task #${taskId} locally (dead-dispatch completion) but could not correct its mirrored Notion card ${notionId} back off "Done": ${err.message}. Fix by hand: node scripts/notion-brain.js update ${notionId} --status "Not started".`,
+      severity: 'warning',
+      disposition: 'digest',
+      cooldownHours: 24,
+    }).catch(() => {});
+  } catch { /* alerting must never mask the reopen that already succeeded */ }
+}
+
+// BRO-3431: correctLinearIssue's counterpart to correctNotionCard(). Never
+// throws its own read-then-check decision — that lives in
+// shouldReopenLinearIssue (read-then-check, same discipline as
+// shouldCorrectNotionStatus: an issue the owner has since re-triaged by hand
+// is left alone). Non-fatal on any failure, same contract as
+// correctNotionCard's caller — the local reopen (not applicable here, since
+// there IS no local mirror file for a linear:-only task) already happened by
+// the time this runs; nothing to un-reopen.
+//
+// BRO-4075 (Codex adversarial review catch): the candidate list main() loops
+// over is a SNAPSHOT taken once at startup (readEntries() below), but each
+// correctLinearIssue() call is a slow network round-trip (getIssue + a
+// spawnSync'd linear-brain.js update) — if `scripts/ack-landed.js` finishes
+// acking this exact taskId in that window (writing landed-acked, which
+// never itself touches Linear state), the stale candidate would still
+// reopen an issue the FRESH ledger no longer considers dead. taskId is
+// re-verified against a fresh readEntries() right before the Linear
+// mutation, mirroring the read-then-check discipline shouldReopenLinearIssue
+// already applies to the Linear side of this same decision. opts.entries is
+// an injection point for tests only — production always re-reads live
+// (opts.entries defaults to undefined, which falls through to readEntries()).
+async function correctLinearIssue(identifier, taskId, opts = {}) {
+  const linearClient = require('./lib/linear-client.js');
+  const { shouldReopenLinearIssue } = require('./lib/linear-dead-completion-source.js');
+  if (taskId) {
+    const { isLatestDispatchDead } = require('./lib/dispatch-ledger.js');
+    const freshEntries = opts.entries || readEntries();
+    if (!isLatestDispatchDead(taskId, freshEntries)) return false;
+  }
+  const issue = await linearClient.getIssue(identifier);
+  if (!shouldReopenLinearIssue(issue)) return false;
+  const today = new Date().toISOString().slice(0, 10);
+  const res = spawnSync('node', [path.join(__dirname, 'linear-brain.js'), 'update', identifier,
+    '--state', 'Todo',
+    '--comment', `Auto-corrected ${today} by reconcile-dead-completions: this issue's most recent dispatch attempt was journaled dead in dispatch-ledger.jsonl (card #1144/#1157's Linear counterpart, BRO-3431) — it had been incorrectly left/moved to a completed state.`,
+  ], { encoding: 'utf8', timeout: 60_000 });
+  if (res.status !== 0) {
+    throw new Error(`linear-brain update failed: ${(res.stderr || res.stdout || '').trim().split('\n').slice(-1)[0]}`);
+  }
+  return true;
+}
+
+async function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  const fix = argv.includes('--fix');
+
+  const tasks = attachCompletedAtEstimates(loadTasksWithMtime(TASKS_DIR));
+  // readEntries() already fails open (returns [] on any read error) — no
+  // try/catch needed here; it can't throw.
+  const entries = readEntries();
+
+  const flagged = reconcileDeadCompletions(tasks, entries);
+  if (!flagged.length) {
+    console.log('[reconcile-dead-completions] no false completions found (Notion mirror).');
+  } else {
+    console.log(`${fix ? 'Reopening' : '[dry-run] would reopen'} ${flagged.length} task(s) completed while their dispatch was dead:`);
+    for (const t of flagged) {
+      console.log(`  #${t.id}  ${t.subject || '(no subject)'}${t.notionId ? `  [notion:${t.notionId}]` : ''}`);
+      if (fix) {
+        try { reopenTask(t.id, TASKS_DIR, t.deadAttemptTs); }
+        catch (e) { console.error(`    WARN reopen failed for #${t.id}: ${e.message}`); }
+        if (t.notionId) {
+          try {
+            const corrected = correctNotionCard(t.notionId, t.id);
+            if (corrected) console.log(`    corrected Notion card ${t.notionId} status Done -> Not started`);
+          } catch (e) {
+            console.error(`    WARN Notion correction failed for #${t.id} (card ${t.notionId}): ${e.message}`);
+            pageNotionCorrectionFailure(t.id, t.notionId, e);
+          }
+        }
+      }
+    }
+    if (!fix) console.log('\nRe-run with --fix to reopen these.');
+  }
+
+  // BRO-3431: a linear:-only dispatch has no local mirror file at all — the
+  // Notion-scoped pass above can never see it. Candidates are derived from
+  // the SAME ledger entries already read above (bounded by ledger activity,
+  // never a query of the whole board — see linear-dead-completion-source.js
+  // header for why that matters).
+  const { findLinearDeadLaunchCandidates } = require('./lib/linear-dead-completion-source.js');
+  const linearCandidates = findLinearDeadLaunchCandidates(entries);
+  if (!linearCandidates.length) {
+    console.log('[reconcile-dead-completions] no dead-launch candidates found (Linear).');
+    return;
+  }
+  console.log(`\nChecking ${linearCandidates.length} Linear dead-launch candidate(s) live:`);
+  for (const c of linearCandidates) {
+    try {
+      const corrected = fix ? await correctLinearIssue(c.identifier, c.taskId) : false;
+      if (fix && corrected) {
+        console.log(`  ${c.identifier}  reopened Todo -> was Done while its dispatch was journaled dead`);
+      } else if (!fix) {
+        console.log(`  ${c.identifier}  dead-launch candidate — re-run with --fix to check live and reopen if still Done`);
+      }
+    } catch (e) {
+      console.error(`  WARN Linear correction failed for ${c.identifier}: ${e.message}`);
+    }
+  }
+}
+
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`[reconcile-dead-completions] FATAL: ${err && err.stack ? err.stack : err}`);
+    process.exit(1);
+  });
+}
+
+module.exports = { main, USAGE, reopenTask, correctNotionCard, correctLinearIssue, resetPushedFlag };

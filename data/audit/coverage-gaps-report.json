@@ -1,0 +1,200 @@
+{
+  "_meta": {
+    "generatedAt": "2026-01-28T21:26:52.470Z",
+    "description": "Coverage gaps where aggregators report more reviews than we have locally",
+    "methodology": "Gap = maxAggregator - localCount for shows where aggregator > local"
+  },
+  "summary": {
+    "totalShowsWithGaps": 8,
+    "openShowsWithGaps": 1,
+    "closedShowsWithGaps": 7,
+    "totalMissingReviews": 25,
+    "avgGapPerShow": "3.1"
+  },
+  "prioritizedShows": [
+    {
+      "rank": 1,
+      "showId": "chicago-1996",
+      "title": "Chicago",
+      "status": "open",
+      "localCount": 8,
+      "maxAggregator": 10,
+      "gap": 2,
+      "priorityScore": 102,
+      "aggregatorBreakdown": {
+        "showScore": 10,
+        "dtli": 2,
+        "bww": 0
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 10,
+          "diff": 2
+        }
+      ],
+      "ratio": 0.8
+    },
+    {
+      "rank": 2,
+      "showId": "jajas-african-hair-braiding-2023",
+      "title": "Jaja's African Hair Braiding",
+      "status": "closed",
+      "localCount": 20,
+      "maxAggregator": 26,
+      "gap": 6,
+      "priorityScore": 6,
+      "aggregatorBreakdown": {
+        "showScore": 26,
+        "dtli": 11,
+        "bww": 12
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 26,
+          "diff": 6
+        }
+      ],
+      "ratio": 0.77
+    },
+    {
+      "rank": 3,
+      "showId": "i-need-that-2023",
+      "title": "I Need That",
+      "status": "closed",
+      "localCount": 22,
+      "maxAggregator": 27,
+      "gap": 5,
+      "priorityScore": 5,
+      "aggregatorBreakdown": {
+        "showScore": 27,
+        "dtli": 12,
+        "bww": 15
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 27,
+          "diff": 5
+        }
+      ],
+      "ratio": 0.81
+    },
+    {
+      "rank": 4,
+      "showId": "the-cottage-2023",
+      "title": "The Cottage",
+      "status": "closed",
+      "localCount": 22,
+      "maxAggregator": 26,
+      "gap": 4,
+      "priorityScore": 4,
+      "aggregatorBreakdown": {
+        "showScore": 26,
+        "dtli": 12,
+        "bww": 15
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 26,
+          "diff": 4
+        }
+      ],
+      "ratio": 0.85
+    },
+    {
+      "rank": 5,
+      "showId": "the-shark-is-broken-2023",
+      "title": "The Shark Is Broken",
+      "status": "closed",
+      "localCount": 27,
+      "maxAggregator": 31,
+      "gap": 4,
+      "priorityScore": 4,
+      "aggregatorBreakdown": {
+        "showScore": 31,
+        "dtli": 13,
+        "bww": 19
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 31,
+          "diff": 4
+        }
+      ],
+      "ratio": 0.87
+    },
+    {
+      "rank": 6,
+      "showId": "just-for-us-2023",
+      "title": "Just for Us",
+      "status": "closed",
+      "localCount": 21,
+      "maxAggregator": 23,
+      "gap": 2,
+      "priorityScore": 2,
+      "aggregatorBreakdown": {
+        "showScore": 23,
+        "dtli": 0,
+        "bww": 4
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 23,
+          "diff": 2
+        }
+      ],
+      "ratio": 0.91
+    },
+    {
+      "rank": 7,
+      "showId": "back-to-the-future-2023",
+      "title": "Back to the Future: The Musical",
+      "status": "closed",
+      "localCount": 30,
+      "maxAggregator": 31,
+      "gap": 1,
+      "priorityScore": 1,
+      "aggregatorBreakdown": {
+        "showScore": 31,
+        "dtli": 0,
+        "bww": 23
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 31,
+          "diff": 1
+        }
+      ],
+      "ratio": 0.97
+    },
+    {
+      "rank": 8,
+      "showId": "appropriate-2023",
+      "title": "Appropriate",
+      "status": "closed",
+      "localCount": 28,
+      "maxAggregator": 29,
+      "gap": 1,
+      "priorityScore": 1,
+      "aggregatorBreakdown": {
+        "showScore": 29,
+        "dtli": 11,
+        "bww": 15
+      },
+      "aggregatorsToScrape": [
+        {
+          "name": "Show Score",
+          "count": 29,
+          "diff": 1
+        }
+      ],
+      "ratio": 0.97
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "promptVersion": "v2-clean",
+  "timestamp": "2026-04-18T17:22:55.770Z",
+  "score": {
+    "composite": 64.6,
+    "sectionScore": 46,
+    "claimScore": 38.6,
+    "warningPenalty": 20
+  },
+  "totals": {
+    "theaters_total": 3,
+    "theaters_with_errors": 0,
+    "sections_total": 15,
+    "sections_by_support": {
+      "STRONG": 11,
+      "MODERATE": 4,
+      "WEAK": 0,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 50,
+    "claims_by_support": {
+      "STRONG": 24,
+      "MODERATE": 17,
+      "WEAK": 9,
+      "UNSUPPORTED": 0
+    },
+    "warnings_total": 43,
+    "urls_fetched_total": 75,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": []
+  },
+  "perTheater": [
+    {
+      "theater": "Majestic Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 16,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Music Box Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 2,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 9,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 18,
+      "unsupported_claims": 0
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+#!/usr/bin/env node
+/**
+ * Post-rebase reconciliation for the union-merged JSON files. Task #420,
+ * ship-check finding (Codex adversarial review, 2026-07-26).
+ *
+ * THE HOLE THIS CLOSES
+ * --------------------
+ * push-with-retry.sh rebases with `-X theirs`, which resolves every conflicting
+ * hunk in favour of OUR replayed commits WITHOUT ever raising a conflict. Its
+ * resolve_conflicts() function — the one that knows to per-slug UNION
+ * commercial-pending-review.json, diary-shows.json, etc. instead of picking a
+ * winner — only runs when the rebase actually conflicts. So on the common path
+ * the union merger never fires, and a concurrent writer's edit inside the same
+ * diff hunk is silently dropped.
+ *
+ * Measured 2026-07-26 on a two-branch fixture editing DIFFERENT slugs three
+ * lines apart in commercial-pending-review.json:
+ *     git rebase -X theirs  ->  "Successfully rebased" (no conflict reported)
+ *     result: local slug kept, REMOTE slug's edit gone.
+ * The per-slug merger never ran because there was nothing git called a conflict.
+ *
+ * This script is the reconciliation pass: after the rebase/merge has moved HEAD,
+ * re-merge each managed file against the remote tip using the SAME union
+ * functions resolve_conflicts() would have used, so both sides survive.
+ *
+ * OPT-IN, BY DESIGN
+ * -----------------
+ * push-with-retry.sh only invokes this when PUSH_RECONCILE_MERGED_JSON=1. ~114
+ * workflows push through that helper and changing their conflict semantics
+ * wholesale is not something to do as a side effect of this card — the default
+ * stays byte-for-byte today's behaviour. Callers that write a union-merged file
+ * (deep-research-commercial.js) opt in. Generalising the flag to every caller is
+ * tracked separately.
+ *
+ * Usage:
+ *   node scripts/lib/reconcile-merged-json.js <remote-ref> [file...]
+ *
+ * With no file list, every managed file that exists is considered. Prints one
+ * repo-relative path per line on stdout for each file actually CHANGED by
+ * reconciliation (empty output = nothing to do), so the caller can both skip
+ * an empty `git commit --amend` AND `git add` exactly those paths — never a
+ * blanket `-A` (task #574 hardening: see the call site's comment for why).
+ * Fails OPEN: any error leaves the file untouched and exits 0 — a
+ * reconciliation problem must never block a push that would otherwise
+ * succeed.
+ *
+ * JSONL FILES (task #698, #784, #809)
+ * ------------------------------------
+ * MANAGED entries with `format: 'jsonl'` (the BWW roundup miss-ledger, the
+ * scraper-spend ledger, and the owner-email send log) are read/written as
+ * one JSON value PER LINE instead of a single JSON.parse'd document — same
+ * reconciliation pass, different serialization. Their merge function
+ * takes/returns an ARRAY of parsed line entries (see
+ * merge-bww-roundup-ledger.js / merge-scraper-spend-ledger.js /
+ * merge-owner-email-log.js), not the whole-document ours/remote shape the
+ * JSON mergers use.
+ *
+ * CWD-INDEPENDENCE (task #698, ship-check finding)
+ * -------------------------------------------------
+ * MANAGED file paths are repo-root-relative, but this module's fs.* calls
+ * resolve them against process.cwd() — every existing caller happens to
+ * invoke push-with-retry.sh from repo root, so this was latent until
+ * opening-night-poller.yml's commit step (which used to `cd data` first)
+ * needed the flag. main() chdir's to the git toplevel up front so a future
+ * caller with a non-root cwd degrades to a loud `::warning::` skip (via the
+ * per-file try/catch below) instead of silently never reconciling.
+ */
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { execFileSync } = require('child_process');
+
+function repoRoot() {
+  try {
+    return execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+  } catch {
+    return null; // not a git repo, or git unavailable — fall through and use cwd as-is
+  }
+}
+
+const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor, findEntry } = require('./core-data-merge-registry');
+
+// Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
+// matches diary-shows.json's producers, which write no trailing newline — so a
+// no-op reconciliation is byte-identical and does not create a phantom diff.
+//
+// BRO-76: derived from the canonical registry (scripts/lib/core-data-merge-
+// registry.js) instead of an independently hand-maintained array — this used
+// to be the ORIGINAL of what reconcile-coverage.js's MANAGED_BASENAMES called
+// itself "kept in sync with... by comment only." Registry entries store bare
+// basenames (shared with the private-core-data surface); the 'data/' prefix
+// is this surface's own convention, applied here.
+const MANAGED = activeEntriesFor('public-repo').map((e) => ({
+  file: `data/${e.file}`,
+  merge: e.merge,
+  ...(e.format === 'jsonl' ? { format: 'jsonl' } : { newline: e.newline }),
+}));
+
+// push-with-retry.sh's Git Data API fallback disqualifier (task: data-health-
+// check.yml push-race hardening, session 2026-08-22, plan-reviewed) — a
+// SEPARATE list from MANAGED above, deliberately not folded into it or into
+// activeEntriesFor(): these entries have no `merge` function (there is
+// nothing to merge for a genuinely single, concurrency-group-guarded
+// writer — "ours wins outright" is correct by construction, not a special
+// case of the union-merge logic MANAGED exists for). Mirrors MANAGED's own
+// `data/${e.file}` prefixing so the two lists stay comparable at a glance.
+// Deliberately does NOT widen activeEntriesFor()/MANAGED themselves —
+// reconcile-coverage.js's MANAGED_BASENAMES gate reads activeEntriesFor()
+// independently to assert every push-with-retry.sh-calling step opts into
+// RECONCILIATION; single-writer entries have no reconciliation to opt into,
+// so folding them in would make that gate demand an opt-in flag that does
+// nothing (plan-review finding).
+const API_FALLBACK_SAFE = apiFallbackSafeEntriesFor('public-repo').map((e) => ({ file: `data/${e.file}` }));
+
+// BRO-2413: files that ARE in MANAGED (genuinely need a merge) but ALSO
+// carry a real merge function push-via-git-api.sh knows how to run — see
+// core-data-merge-registry.js's apiFallbackMergeEntriesFor() header comment.
+// Used by push-with-retry.sh's disqualifier to distinguish "MANAGED, slow
+// path only" from "MANAGED, but also fast-path-safe because the fallback
+// itself now reconciles it" — and by push-via-git-api.sh to find the same
+// merge function these three already use on the slow path, so a no-op vs.
+// merged edit is byte-identical regardless of which path won the race.
+const API_FALLBACK_MERGE = apiFallbackMergeEntriesFor('public-repo').map((e) => ({
+  file: `data/${e.file}`,
+  merge: e.merge,
+  ...(e.format === 'jsonl' ? { format: 'jsonl' } : { newline: e.newline }),
+}));
+
+/** Pure: pick the merger for a path (exported so the test does not shell out). */
+function mergerFor(file) {
+  return MANAGED.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
+}
+
+/** Pure: pick the apiFallbackMerge-eligible merger for a path, or null. */
+function apiFallbackMergerFor(file) {
+  return API_FALLBACK_MERGE.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
+}
+
+/** Pure: pick the merger for an EXPLICITLY-named path (BRO-257), unlike
+ * mergerFor() above which only searches MANAGED (activeEntriesFor(), which
+ * excludes `optInReconcile: false` registry entries by design — those are
+ * meant to be reconciled only via push-with-retry.sh's resolve_conflicts()
+ * case arms, not via this module's opt-in whole-sweep default). A caller
+ * that names a specific file is a DIFFERENT, deliberate call site (not the
+ * blanket "reconcile everything opted in" sweep `main()` runs with no file
+ * args) and should find that file's real merge function regardless of its
+ * optInReconcile flag — see push-with-retry.sh's unconditional single-file
+ * call for data/audit/alert-digest-queue.json. Falls back to registry data
+ * (bare basename, no `data/` prefix) the same way MANAGED does above. */
+function explicitMergerFor(file) {
+  const entry = findEntry(file, 'public-repo');
+  if (!entry || !entry.merge) return null;
+  return { file, merge: entry.merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
+}
+
+/** Blank lines are skipped; a genuinely corrupt (non-blank, unparsable) line
+ * THROWS — deliberately, unlike bww-roundup-persistence.js's own lenient
+ * readRoundupMisses(). This function only feeds the reconciliation pass
+ * below, whose per-file try/catch fails OPEN (skips that file, logs a
+ * `::warning::`) on any error — the same fail-open behavior JSON.parse
+ * already gives the 5 non-JSONL MANAGED files. A lenient skip-and-continue
+ * here would silently drop the corrupt line from the parsed array and then
+ * COMMIT that deletion when the reconciled file is written back (ship-check/
+ * Opus review finding) — appendFileSync in recordRoundupMiss() isn't atomic
+ * across a killed runner, so a torn last line is a realistic occurrence this
+ * pass must never permanently erase. */
+function parseJsonlLines(text) {
+  const entries = [];
+  for (const line of text.split('\n')) {
+    const t = line.trim();
+    if (!t) continue;
+    entries.push(JSON.parse(t));
+  }
+  return entries;
+}
+
+function readRemote(ref, file, format) {
+  try {
+    // maxBuffer: `file` can be registry-scale — the 1MB default silently
+    // ENOBUFS-throws into this catch, reporting "absent" for a file that IS
+    // there (BRO-3153 what-else: same bug class fixed in triage-review-gap.js).
+    const text = execFileSync('git', ['show', `${ref}:${file}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['ignore', 'pipe', 'ignore'] });
+    return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
+  } catch {
+    return null; // absent on the remote side, or unparsable — nothing to reconcile against
+  }
+}
+
+/**
+ * The common-ancestor content of `file`, for the three-argument mergers.
+ *
+ * BRO-2955 ship-check. Three registry mergers (alert-ledger.json,
+ * alert-digest-queue.json, alert-router-attempts.jsonl) take (local, remote,
+ * base) and NEED the base to tell "the other side added a row" apart from "WE
+ * DELETED a row the other side still has". This pass was calling every merger
+ * with two arguments, which is exactly the shape merge-alert-digest-queue.js's
+ * own header calls the Codex adversarial ship-check P0: health-check.js drains
+ * the queue to [] after emailing it, and a two-way union against a remote that
+ * still holds the pre-drain rows puts every already-delivered row straight
+ * back — the owner re-receives the same digest. Verified: two-way [] vs [row]
+ * yields 1 row, three-way with base [row] yields 0.
+ *
+ * Returns undefined when no base is obtainable, which the mergers treat as
+ * "fall back to the conservative two-way behavior" — same as before this fix.
+ *
+ * BRO-4484: this pass runs AFTER push-with-retry.sh's rebase/merge, so
+ * `merge-base HEAD <ref>` is <ref>'s tip itself and "base" equals remote. A
+ * merger fed that base reads every row other writers added since the run
+ * started as "we removed it". push-with-retry.sh therefore passes the run's
+ * pre-rebase fork point (its SCRIPT_ENTRY_BASE) as PUSH_RECONCILE_BASE, which
+ * is used whenever it names a readable commit. No ancestry check: on a
+ * depth-1 checkout the bounded fetch may not connect HEAD back to it, and the
+ * value comes from push-with-retry.sh itself, not from a user. Without it,
+ * mergers marked `requiresTrueBase` (the venue-candidate staging merges) get
+ * no base (two-way union); the others keep the legacy merge-base fallback
+ * they were built against.
+ */
+function envBase() {
+  const sha = (process.env.PUSH_RECONCILE_BASE || '').trim();
+  if (!/^[0-9a-f]{7,64}$/i.test(sha)) return null;
+  try {
+    execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], { stdio: 'ignore' });
+    return sha;
+  } catch {
+    return null;
+  }
+}
+
+function readBase(ref, file, format, { requiresTrueBase = false } = {}) {
+  try {
+    let base = envBase();
+    if (!base) {
+      if (requiresTrueBase) return undefined;
+      base = execFileSync('git', ['merge-base', 'HEAD', ref], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    }
+    if (!base) return undefined;
+    // maxBuffer: same registry-scale-file rationale as readRemote() above.
+    const text = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['ignore', 'pipe', 'ignore'] });
+    return format === 'jsonl' ? parseJsonlLines(text) : JSON.parse(text);
+  } catch {
+    return undefined; // no common ancestor, file absent there, or unparsable
+  }
+}
+
+function main() {
+  const [ref, ...only] = process.argv.slice(2);
+  if (!ref) { console.error('reconcile-merged-json: missing <remote-ref>'); process.exit(0); }
+
+  const root = repoRoot();
+  if (root) { try { process.chdir(root); } catch { /* fall through, per-file try/catch below fails open */ } }
+
+  // BRO-257: explicit file args resolve via explicitMergerFor() (registry
+  // lookup, unfiltered by optInReconcile) rather than mergerFor()/MANAGED
+  // (the no-args sweep below) — so naming a file here reconciles it even if
+  // its registry entry is optInReconcile:false. Today's only caller is
+  // push-with-retry.sh's single-file alert-digest-queue.json call; any
+  // FUTURE explicit-arg caller gets the same "any active registry entry,
+  // regardless of optInReconcile" behavior — deliberate, not scoped to one
+  // filename, since a caller that names a specific file is making its own
+  // explicit choice, distinct from the opt-in whole-sweep default below.
+  const targets = only.length
+    ? only.map((f) => explicitMergerFor(f)).filter(Boolean)
+    : MANAGED;
+
+  const changedFiles = [];
+  for (const t of targets) {
+    try {
+      if (!fs.existsSync(t.file)) continue;
+      const before = fs.readFileSync(t.file, 'utf8');
+      const ours = t.format === 'jsonl' ? parseJsonlLines(before) : JSON.parse(before);
+      const remote = readRemote(ref, t.file, t.format);
+      if (remote === null) continue;
+
+      // Three-argument mergers get the common ancestor; two-argument ones are
+      // called exactly as before (arity is the dispatch, so a future merger
+      // cannot silently receive a third argument it defines differently).
+      const result = t.merge.length >= 3
+        ? t.merge(ours, remote, readBase(ref, t.file, t.format, { requiresTrueBase: t.merge.requiresTrueBase === true }))
+        : t.merge(ours, remote);
+      const after = t.format === 'jsonl'
+        ? result.merged.map((e) => JSON.stringify(e)).join('\n') + (result.merged.length ? '\n' : '')
+        : JSON.stringify(result.merged, null, 2) + (t.newline ? '\n' : '');
+      if (after === before) continue;
+
+      fs.writeFileSync(t.file, after);
+      changedFiles.push(t.file);
+      console.error(`  reconciled ${t.file} against ${ref} — ${JSON.stringify(result.stats)}`);
+    } catch (e) {
+      // Fail OPEN, loudly enough to debug but never blocking.
+      console.error(`  ::warning::reconcile-merged-json: ${t.file} skipped (${String(e.message).slice(0, 120)})`);
+    }
+  }
+  // One changed path per line on stdout — NOT just a count. push-with-retry.sh
+  // uses this to `git add` exactly these paths before amending, instead of
+  // `git add -A` (ship-check/Codex finding: a blanket -A would also sweep up
+  // any OTHER untracked file sitting in the working tree at reconcile time —
+  // e.g. update-show-status.yml's discovery-blocked audit JSON, which is
+  // deliberately pushed to the PRIVATE repo only and must never land in this
+  // public amended commit).
+  process.stdout.write(changedFiles.join('\n'));
+}
+
+module.exports = { readBase, MANAGED, mergerFor, explicitMergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
+
+if (require.main === module) main();

@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "description": "Template for manual review entries",
+    "instructions": "Copy this file and fill in reviews, then run: npm run reviews:fetch -- --manual <your-file>.json",
+    "notes": [
+      "showId must match an ID in data/shows.json",
+      "outlet should match an outlet in scripts/critic-reviews-agent/config.ts",
+      "rating can be: stars (4/5), letter (B+), or bucket (Positive)",
+      "assignedScore overrides rating normalization if provided"
+    ]
+  },
+  "reviews": [
+    {
+      "_comment": "Example 1: Using rating normalization",
+      "showId": "two-strangers-bway-2025",
+      "outlet": "Variety",
+      "criticName": "Frank Rizzo",
+      "url": "https://variety.com/2025/legit/reviews/two-strangers-broadway-review/",
+      "publishDate": "2025-11-20",
+      "rating": "Positive",
+      "pullQuote": "A delightful surprise that exceeds expectations."
+    },
+    {
+      "_comment": "Example 2: Using explicit assignedScore",
+      "showId": "cabaret-2024",
+      "outlet": "The Guardian",
+      "criticName": "Alexis Soloski",
+      "url": "https://www.theguardian.com/stage/cabaret-broadway-review",
+      "publishDate": "2024-04-21",
+      "rating": "5/5",
+      "assignedScore": 95,
+      "designation": "Critics_Pick",
+      "pullQuote": "A searing revival that makes the familiar feel dangerous."
+    },
+    {
+      "_comment": "Example 3: Minimal entry",
+      "showId": "the-outsiders-2024",
+      "outlet": "Entertainment Weekly",
+      "rating": "A-"
+    }
+  ]
+}

@@ -1,0 +1,216 @@
+# Review-count drift health check — compares data/reviews.json (derived) against
+# data/review-texts/ (source of truth). READ-ONLY: never triggers rebuild or scraping.
+#
+# Motivation: Schmigadoon 2026 postmortem finding #4 — manual opening-morning
+# edits to reviews.json can leave it out of sync with review-texts with no
+# automatic signal. This check runs daily and commits per-show deltas to
+# data/audit/review-count-drift.json.
+name: Check Review-Count Drift
+
+on:
+  schedule:
+    # Daily at 6 AM UTC (2 AM EDT / 1 AM EST). After the 4 AM rebuild cron + 5 AM
+    # scoring cron, so drift reflects the freshly-rebuilt reviews.json.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      show:
+        description: 'Audit a single show (slug)'
+        required: false
+        default: ''
+        type: string
+      strict:
+        description: 'Fail the job if threshold breached'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: check-review-count-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    name: Compare reviews.json vs review-texts
+    runs-on: ubuntu-latest
+    # 15 min: push-with-retry on the audit commit can spend 10+ min against a
+    # busy main (2026-07-11 run 29158806185 timed out mid-retry at 10).
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # The drift check reads data/review-texts/ directly. This checkout was
+      # missing since the workflow's creation (2026-04-22) — every scheduled
+      # run died with "review-texts dir not found" (exit 1), which was the
+      # actual cause of the daily red, not review-count drift.
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Run drift check
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          # Scheduled runs are ALWAYS strict: a suppression/freshness breach is
+          # actionable (reviews silently missing on an opening-window show, or
+          # the rebuild pipeline down). A green-with-warning run reaches nobody —
+          # the exact silent-strand failure mode (Springwood 2026-07) that the
+          # now-silenced warning emails were originally added to patch. A red run
+          # surfaces in the daily digest's workflow summary instead.
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.strict }}" = "true" ]; then
+            ARGS="$ARGS --strict"
+          fi
+          # BRO-2423 (port of BRO-545's guard-escalation auto-recovery):
+          # scheduled runs always pass --strict above, so a breach hard-exits
+          # 2 and a "cannot run" precondition failure hard-exits 1 — both with
+          # no continue-on-error, and this step's own "Notify on failure" is
+          # severity: 'warning' (digest-only, not real-time). A block that
+          # keeps recurring used to fail this daily job loud forever with
+          # nobody paged until the next digest — see
+          # scripts/check-review-count-drift-guard.js header. Fails loud on
+          # the first occurrence exactly like a bare check-review-count-drift.js
+          # call would; only auto-recovers after 2+ consecutive blocks past a
+          # 24h floor. opening-night-broadcast.yml's separate per-show gate
+          # calls check-review-count-drift.js directly and is untouched.
+          node scripts/check-review-count-drift-guard.js $ARGS
+
+      - name: Check for changes
+        id: changes
+        # BRO-2423: must run even when "Run drift check" failed loud (the
+        # guard's first-or-below-threshold block, unchanged pre-port
+        # behavior) — without always() here, GitHub Actions' default
+        # success()-gating skips this step (and the commit step after it)
+        # whenever the guard blocks, so the consecutiveBlocks streak it just
+        # wrote to guard-escalation-state.json is NEVER committed. The next
+        # scheduled run starts from a fresh checkout with no memory of the
+        # block, resets to consecutiveBlocks=1, and can never reach the
+        # auto-recovery threshold — exactly the check-corpus-drift.yml
+        # reference's "Check for changes" step (also always()) exists to
+        # avoid.
+        if: always()
+        run: |
+          DRIFT_CHANGED=false
+          if git diff --quiet data/audit/review-count-drift.json 2>/dev/null; then
+            if [ -f data/audit/review-count-drift.json ] && ! git ls-files --error-unmatch data/audit/review-count-drift.json 2>/dev/null; then
+              DRIFT_CHANGED=true
+            fi
+          else
+            DRIFT_CHANGED=true
+          fi
+          # BRO-2423 guard-escalation streak state must ride this commit even
+          # when the drift audit content itself doesn't change this run — same
+          # class of bug BRO-545's own adversarial review caught for
+          # rebuild-reviews.yml's "Check for changes" step: without this, a
+          # run where the strict-breach guard blocks (or auto-recovers) but
+          # the audit JSON happens not to differ from HEAD never persists its
+          # streak, so the next fresh checkout restarts the count at 0 and
+          # escalation can never fire.
+          GUARD_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/guard-escalation-state.json 2>/dev/null)" ]; then
+            GUARD_STATE_CHANGED=true
+            echo "Changes detected in data/audit/guard-escalation-state.json (guard-escalation state)"
+          fi
+          # BRO-3671: check-review-count-drift-guard.js calls routeAlert()/
+          # resolveCondition() — without this, a run where ONLY the alert
+          # cooldown ledger or dispatch-attempts log changed (no drift/guard-
+          # escalation state change) would skip the commit step entirely,
+          # same has_changes-gating class as audit-aggregator-gap.yml's
+          # digest-queue comment above.
+          ALERT_STATE_CHANGED=false
+          if [ -n "$(git status --porcelain data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null)" ]; then
+            ALERT_STATE_CHANGED=true
+            echo "Changes detected in alert-ledger.json / alert-router-attempts.jsonl (alert cooldown state)"
+          fi
+          if [ "$DRIFT_CHANGED" = "true" ] || [ "$GUARD_STATE_CHANGED" = "true" ] || [ "$ALERT_STATE_CHANGED" = "true" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push audit
+        if: always() && steps.changes.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          # Glob: --show dispatches write review-count-drift-{show}.json
+          git add data/audit/review-count-drift*.json
+          # BRO-2423: guard-escalation streak state must ride this commit too
+          # (see "Check for changes" above). Safe when the file doesn't exist
+          # yet (no guard has ever blocked).
+          # BRO-3671/BRO-3662: alert-ledger.json (routeAlert()'s cooldown) and
+          # alert-router-attempts.jsonl (logDispatchAttempt()'s rewritten-
+          # every-attempt tracked file — unstaged, it makes a rebase refuse
+          # pre-flight and forces push-with-retry.sh onto its clobber-prone
+          # merge path) must ride this commit too.
+          bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+
+          SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, ' + (s.newOffenders ?? 0) + ' older show(s) hiding scored reviews, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
+
+          if [ -n "${{ inputs.show }}" ]; then
+            MSG="audit: Review-count drift for ${{ inputs.show }} ($SUMMARY)"
+          else
+            MSG="audit: Daily review-count drift check ($SUMMARY)"
+          fi
+
+          git commit -m "$MSG [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f data/audit/review-count-drift.json ]; then
+            echo "## Review-Count Drift" >> $GITHUB_STEP_SUMMARY
+            node -e "
+              const d = require('./data/audit/review-count-drift.json');
+              const s = d.summary;
+              console.log('**reviews.json:** ' + (s.reviewsJsonLastUpdated || 'no _meta.lastUpdated') + ' (' + (s.reviewsJsonAgeHours ?? '?') + 'h old, max ' + d.thresholds.maxAgeHours + 'h' + (s.freshnessBreach ? ' — **STALE**' : '') + ')');
+              console.log('**Shows scanned (opening window ±' + d.thresholds.windowDays + 'd):** ' + s.showsScanned + ' (all shows: ' + (s.allShowsScanned ?? '?') + ')');
+              console.log('**Shows over suppression threshold:** ' + s.showsOverThreshold + ' (suppressed > ' + d.thresholds.suppressedPerShow + ')');
+              console.log('**Orphan showIds in reviews.json:** ' + s.orphanReviews);
+              if (d.showsOverThreshold.length > 0) {
+                console.log('');
+                console.log('| Show | Suppressed | In reviews.json |');
+                console.log('|------|------------|-----------------|');
+                for (const r of d.showsOverThreshold.slice(0, 25)) {
+                  console.log('| ' + r.showDir + ' | ' + r.suppressed + ' | ' + r.actual + ' |');
+                }
+                if (d.showsOverThreshold.length > 25) {
+                  console.log('_…and ' + (d.showsOverThreshold.length - 25) + ' more_');
+                }
+              }
+            " >> $GITHUB_STEP_SUMMARY
+            # BRO-4767: older shows hiding scored reviews (table + how to resolve), rendered by the script
+            node scripts/check-review-count-drift.js --render-offenders-summary >> $GITHUB_STEP_SUMMARY || true
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Review-Count Drift Check Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

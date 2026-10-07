@@ -1,0 +1,303 @@
+// Talkin' Broadway direct-URL helper.
+// SERP returns the All That Chat forum instead of the review, so we construct the review URL
+// directly. BUT: TB 404s return an old-production review for revivals, or a soft-404 page that
+// passes naive byte-length gates. This helper verifies the fetched page before storing.
+//
+// Usage:
+//   const { tryTbDirectUrl, buildTbCandidateUrls, verifyTbPage } = require('./scripts/lib/tb-direct-url');
+//   const result = await tryTbDirectUrl({
+//     show,            // { id, title, openingDate, tbReviewUrl? }
+//     year,            // show year (number, e.g. 2026)
+//     overrideUrl,     // optional CLI override
+//     fetchPage,       // from scripts/lib/scraper
+//     isRevival,       // bool — if true, date gate is tighter (openingDate - 1d)
+//   });
+//   // → { found: true, url, source, reason? } | { found: false, reason }
+
+const ARTICLES = new Set(['a', 'an', 'the', 'of', 'in', 'on', 'at', 'to', 'for']);
+const ROMAN_NUMERAL_RE = /^(?:I{1,3}|IV|VI{0,3}|IX|XI{0,3}|XIV|XV|XVI{0,3}|XIX|XX)$/i;
+const TB_HOST = 'https://www.talkinbroadway.com';
+const MIN_CONTENT_BYTES = 800; // TB 404 pages are <500 bytes; real reviews are >3KB
+
+const { foldDiacritics } = require('./title-match');
+const { shortTitleCandidate } = require('./title-normalization');
+
+// Same floor used by verifyTbPage's short-title fallback below — short titles under this
+// length (e.g. "Oh, Mary!" → "Oh") are too generic to build a reliable URL slug from.
+const MIN_SHORT_VARIANT_CHARS = 4;
+
+function toCamelSlug(title) {
+  return foldDiacritics(title)
+    .replace(/[^a-zA-Z0-9\s]/g, '')
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((w, i) => {
+      if (ROMAN_NUMERAL_RE.test(w)) return w.toUpperCase();
+      const lower = w.toLowerCase();
+      if (i > 0 && ARTICLES.has(lower)) return lower;
+      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
+    })
+    .join('');
+}
+
+function toLowerSlug(title) {
+  return foldDiacritics(title).toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function buildTbCandidateUrls(title, year) {
+  const camel = toCamelSlug(title);
+  const lower = toLowerSlug(title);
+  const y4 = String(year);
+  const y2 = y4.slice(-2);
+  const urls = [
+    `${TB_HOST}/page/world/${camel}${y4}.html`,
+    `${TB_HOST}/page/world/${camel}${y2}.html`,
+    `${TB_HOST}/page/world/${camel}.html`,
+    `${TB_HOST}/page/world/${lower}${y4}.html`,
+  ];
+  // Comma-subtitled shows ("Beaches, A New Musical") get indexed by TB under the
+  // short title only ("Beaches.html"). See verifyTbPage's short-title fallback for
+  // the same guard rationale (Beaches 2026-04-22 opening night).
+  //
+  // Length check uses normalizeText (strips punctuation) to match the floor verifyTbPage
+  // applies to the same short title — a raw-character check would disagree with it (e.g.
+  // "Oh!!" is 4 raw chars but normalizes to "oh", 2 chars).
+  //
+  // Dated variants are tried before the bare short-title page: an undated short-title URL
+  // has no publish-date signal, so for a revival it could match an old production's page
+  // before a same-titled dated page is ever tried (verifyTbPage's date-window gate only
+  // rejects it if a date happens to be extractable from the page).
+  // Short-title variants. Two sources, most specific first:
+  //   1. the title cut at its first ';' or ':' — TB files subtitled shows under the main
+  //      title only ("School Girls; Or, The African Mean Girls Play" → SchoolGirls.html,
+  //      School Girls opening night 2026-09-28; shortTitleCandidate only knows commas,
+  //      which gave "School Girls; Or" → SchoolGirlsOr*.html, never tried the real page);
+  //   2. shortTitleCandidate's comma cut ("Beaches, A New Musical" → Beaches.html).
+  const shortTitles = [];
+  const punctCut = (typeof title === 'string' ? title : '').split(/[;:]/)[0].trim();
+  if (punctCut && punctCut !== title) shortTitles.push(punctCut);
+  const commaShort = shortTitleCandidate(title);
+  if (commaShort && !shortTitles.includes(commaShort)) shortTitles.push(commaShort);
+  const seen = new Set(urls);
+  for (const shortTitle of shortTitles) {
+    if (normalizeText(shortTitle).length < MIN_SHORT_VARIANT_CHARS) continue;
+    const camelShort = toCamelSlug(shortTitle);
+    const lowerShort = toLowerSlug(shortTitle);
+    if (!camelShort || camelShort === camel) continue;
+    // All dated variants (camel + lowercase) before the bare undated one, so a
+    // revival can't match an old production's page before any dated page is tried.
+    for (const u of [
+      `${TB_HOST}/page/world/${camelShort}${y4}.html`,
+      `${TB_HOST}/page/world/${camelShort}${y2}.html`,
+      `${TB_HOST}/page/world/${lowerShort}${y4}.html`,
+      `${TB_HOST}/page/world/${camelShort}.html`,
+    ]) {
+      if (!seen.has(u)) { seen.add(u); urls.push(u); }
+    }
+  }
+  return urls;
+}
+
+function normalizeText(s) {
+  return (s || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function extractTitle(html) {
+  const m = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(html || '');
+  return m ? m[1].trim() : '';
+}
+
+function hasBylineSignal(html) {
+  // Real TB reviews credit: "reviewed by Matthew Murray" or "by Matthew Murray"
+  return /(?:reviewed\s+)?by\s+[A-Z][a-z]+\s+[A-Z][a-z]+/.test(html || '');
+}
+
+function hasStarRatingSignal(html) {
+  // TB doesn't use a formal star widget, but review pages commonly include
+  // explicit verdict tokens that pure 404 / index pages don't carry.
+  return /verdict|recommended|rave|must[-\s]see|four\s+stars|three\s+stars|five\s+stars/i.test(html || '');
+}
+
+function extractPublishDateCandidate(html) {
+  // TB format: "April 19, 2026" appears near the byline.
+  // Return the first Date-parseable match near the top of the page.
+  const head = (html || '').slice(0, 4000);
+  const m = /([A-Z][a-z]+\s+\d{1,2},\s+\d{4})/.exec(head);
+  if (!m) return null;
+  const d = new Date(m[1]);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function withinDateWindow(publishDate, openingDate, { isRevival = false } = {}) {
+  if (!openingDate) return true; // No opening date to gate against
+  if (!publishDate) return null; // unknown — caller decides
+  const opening = new Date(openingDate);
+  if (isNaN(opening.getTime())) return true;
+  const msPerDay = 86400000;
+  // Revival: tight lower bound to reject old-production reviews.
+  const lowerDays = isRevival ? 1 : 7;
+  const upperDays = 30;
+  const lower = opening.getTime() - lowerDays * msPerDay;
+  const upper = opening.getTime() + upperDays * msPerDay;
+  const t = publishDate.getTime();
+  return t >= lower && t <= upper;
+}
+
+function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) {
+  if (!html || html.length < MIN_CONTENT_BYTES) {
+    return { ok: false, reason: `content too short (${(html || '').length} bytes, need ${MIN_CONTENT_BYTES})` };
+  }
+  const pageTitle = extractTitle(html);
+  const normPage = normalizeText(pageTitle);
+  // Short-title fallback for comma-subtitled shows: TB page titles carry the short title only
+  // ("Beaches" not "Beaches, A New Musical"). Beaches 2026-04-22 opening night.
+  //
+  // Guard: normalized short title must be ≥4 chars. Without this, "Oh, Mary!" → short "Oh"
+  // → normalizeText="oh" → normPage.includes("oh") matches "Wholesome", "Mother", "though",
+  // etc. 2-char substrings are too short to be a reliable title match. Affects
+  // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
+  // 4 chars is safe for known cases: "Beaches" (7), "Grey" (4 — would work if subtitled).
+  const titleVariants = [showTitle];
+  // Same two short forms buildTbCandidateUrls() tries: the main title before a ';' or ':'
+  // and the comma cut. A candidate URL the builder reaches must not then be rejected
+  // here because TB's page title carries only that main title.
+  const punctCut = (typeof showTitle === 'string' ? showTitle : '').split(/[;:]/)[0].trim();
+  for (const shortTitle of [punctCut !== showTitle ? punctCut : '', shortTitleCandidate(showTitle)]) {
+    if (shortTitle && !titleVariants.includes(shortTitle) && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
+      titleVariants.push(shortTitle);
+    }
+  }
+  const titleMatched = titleVariants.some(variant => {
+    const normVariant = normalizeText(variant);
+    return normVariant && normPage.includes(normVariant);
+  });
+  if (!titleMatched) {
+    return { ok: false, reason: `title mismatch (page="${pageTitle.slice(0, 80)}", show="${showTitle}")` };
+  }
+  const byline = hasBylineSignal(html);
+  const stars = hasStarRatingSignal(html);
+  if (!byline && !stars) {
+    return { ok: false, reason: 'no review signal (byline or verdict keyword)' };
+  }
+  const publishDate = extractPublishDateCandidate(html);
+  const inWindow = withinDateWindow(publishDate, openingDate, { isRevival });
+  if (inWindow === false) {
+    return {
+      ok: false,
+      reason: `publishDate ${publishDate.toISOString().slice(0, 10)} outside window for opening ${openingDate}${isRevival ? ' (revival — strict)' : ''}`,
+    };
+  }
+  return { ok: true, publishDate };
+}
+
+// Total wall-clock budget for one tryTbDirectUrl() call. Each candidate that fails at the
+// scraper layer can cost 60-90 s (provider chain: Scrapingdog 400 → stealth 500 → Bright
+// Data timeout → Playwright timeout); on 2026-09-28 the loop ate 9 of the poller's 10
+// per-show minutes and the pass was killed before any review file was written (BRO-4217).
+// The budget bounds that pathological case; when TB answers fast every candidate still fits.
+const DEFAULT_TB_BUDGET_MS = 240000;
+function tbBudgetMs(explicit) {
+  if (Number.isFinite(explicit) && explicit >= 0) return explicit;
+  // An unset workflow var arrives as '' (env: X: ${{ vars.X }}) and Number('') is 0,
+  // which would silently mean "one candidate, no index fallback". Blank means unset.
+  const raw = String(process.env.TB_DIRECT_URL_BUDGET_MS || '').trim();
+  const env = raw ? Number(raw) : NaN;
+  return Number.isFinite(env) && env >= 0 ? env : DEFAULT_TB_BUDGET_MS;
+}
+
+async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, logger = console, budgetMs, now = Date.now }) {
+  if (!show || !show.title) return { found: false, reason: 'no show title' };
+  const candidates = overrideUrl
+    ? [overrideUrl]
+    : buildTbCandidateUrls(show.title, year);
+  const deadline = now() + tbBudgetMs(budgetMs);
+  let tried = 0;
+  const overBudget = () => tried > 0 && now() > deadline;
+  for (const url of candidates) {
+    if (overBudget()) {
+      logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — stopping so the poll cycle can finish`);
+      return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates` };
+    }
+    tried++;
+    logger.log(`  Checking Talkin' Broadway: ${url}`);
+    let page;
+    try {
+      page = await fetchPage(url, { renderJs: false });
+    } catch (e) {
+      logger.log(`    fetch error: ${e.message}`);
+      continue;
+    }
+    if (!page || !page.content) {
+      continue;
+    }
+    const v = verifyTbPage(page.content, {
+      showTitle: show.title,
+      openingDate: show.openingDate,
+      isRevival,
+    });
+    if (v.ok) {
+      logger.log(`  Talkin' Broadway: verified — ${url}`);
+      return {
+        found: true,
+        url,
+        source: overrideUrl ? 'direct-url-override' : 'direct-url-construction',
+        publishDate: v.publishDate ? v.publishDate.toISOString() : null,
+      };
+    }
+    logger.log(`    rejected: ${v.reason}`);
+  }
+
+  // Fallback: TB always shows the latest review at /page/world/index.html.
+  // Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`.
+  // Verify the quoted title matches the show before accepting.
+  if (!overrideUrl && overBudget()) {
+    logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — skipping the index.html fallback`);
+    return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates (index fallback skipped)` };
+  }
+  if (!overrideUrl) {
+    const indexUrl = `${TB_HOST}/page/world/index.html`;
+    logger.log(`  Talkin' Broadway: trying index.html fallback...`);
+    try {
+      const page = await fetchPage(indexUrl, { renderJs: false });
+      if (page && page.content && page.content.length >= MIN_CONTENT_BYTES) {
+        const pageTitle = extractTitle(page.content);
+        const quotedMatch = pageTitle.match(/"([^"]+)"/);
+        const indexShowTitle = quotedMatch ? quotedMatch[1].trim() : '';
+        const normIndex = normalizeText(indexShowTitle);
+        const normShow = normalizeText(show.title);
+        const titleMatches = normIndex && normShow && (normIndex === normShow || normIndex.includes(normShow) || normShow.includes(normIndex));
+        if (titleMatches) {
+          // Run the same byline/date verification we run on the candidate URLs.
+          const v = verifyTbPage(page.content, {
+            showTitle: indexShowTitle, // Use the index's title since we already matched
+            openingDate: show.openingDate,
+            isRevival,
+          });
+          if (v.ok) {
+            logger.log(`  Talkin' Broadway: index.html matched — "${indexShowTitle}"`);
+            return {
+              found: true,
+              url: indexUrl,
+              source: 'direct-url-index-fallback',
+              publishDate: v.publishDate ? v.publishDate.toISOString() : null,
+            };
+          }
+          logger.log(`    index rejected: ${v.reason}`);
+        } else {
+          logger.log(`  Talkin' Broadway index: title "${indexShowTitle}" does not match show "${show.title}"`);
+        }
+      }
+    } catch (e) {
+      logger.log(`    index fetch error: ${e.message}`);
+    }
+  }
+
+  return { found: false, reason: `all ${candidates.length} candidates${overrideUrl ? '' : ' + index fallback'} failed verification` };
+}
+
+module.exports = {
+  buildTbCandidateUrls,
+  verifyTbPage,
+  tryTbDirectUrl,
+  _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow, tbBudgetMs, DEFAULT_TB_BUDGET_MS },
+};

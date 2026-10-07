@@ -1,0 +1,813 @@
+{
+  "timestamp": "2026-01-28T23:26:40.482Z",
+  "summary": {
+    "shows_checked": 69,
+    "shows_with_indicators": 10,
+    "files_scanned": 2176,
+    "files_flagged": 13,
+    "baseline_pending": 3,
+    "false_positive_mitigated": 0,
+    "likely_wrong_production": 0,
+    "comparison_mentions": 9,
+    "needs_review": 4
+  },
+  "flagged": [
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "broadwaynews--brittani-samuel.json",
+      "outlet": "Broadway News",
+      "critic": "Brittani Samuel",
+      "url": "https://www.broadwaynews.com/purlie-victorious-delivers-a-masterful-sermon-on-satire/",
+      "publishDate": "September 28, 2023",
+      "indicators_found": [
+        "1961",
+        "Ossie Davis"
+      ],
+      "expected_found": [
+        "Kara Young"
+      ],
+      "confidence": "medium",
+      "classification": "needs_review",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "al of Ossie Davis’ killingly funny and perceptive 1961 play is as close to Biblical scripture as Black t",
+        " masterful sermon on satire\n\n      The revival of Ossie Davis’ killingly funny and perceptive 1961 play is as c"
+      ]
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "talkinbroadway--howard-miller.json",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "url": "https://www.talkinbroadway.com/page/world/index.html",
+      "publishDate": null,
+      "indicators_found": [
+        "1961",
+        "Ossie Davis"
+      ],
+      "expected_found": [
+        "Music Box Theatre"
+      ],
+      "confidence": "medium",
+      "classification": "needs_review",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "rate Romp Through the Cotton Patch, Ossie Davis's 1961 satirical play about Jim Crow racism, opens tonig",
+        " A Non-Confederate Romp Through the Cotton Patch, Ossie Davis's 1961 satirical play about Jim Crow racism, open"
+      ]
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "washpost--peter-marks.json",
+      "outlet": "The Washington Post",
+      "critic": "Peter Marks",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2023/09/27/purlie-victorious-leslie-odom-broadway/",
+      "publishDate": null,
+      "indicators_found": [
+        "1961",
+        "Ossie Davis"
+      ],
+      "expected_found": [
+        "Leslie Odom Jr."
+      ],
+      "confidence": "medium",
+      "classification": "needs_review",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "y absorbed in the mechanics of Ossie Davis’s wise 1961 comedy.",
+        " seems rhapsodically absorbed in the mechanics of Ossie Davis’s wise 1961 comedy."
+      ]
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "nytg--amelia-merrill.json",
+      "outlet": "New York Theatre Guide",
+      "critic": "Amelia Merrill",
+      "url": "https://www.newyorktheatreguide.com/reviews/suffs-broadway-review",
+      "publishDate": null,
+      "indicators_found": [
+        "2022",
+        "Public Theater"
+      ],
+      "expected_found": [
+        "Broadway"
+      ],
+      "confidence": "medium",
+      "classification": "needs_review",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "Suffs, now reworked for Broadway after a 2022 run at The Public Theater, features a cast full o",
+        "now reworked for Broadway after a 2022 run at The Public Theater, features a cast full of newcomers all playing fi"
+      ]
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "forward--pj-grisar.json",
+      "outlet": "Forward",
+      "critic": "PJ Grisar",
+      "url": "https://forward.com/culture/theater/604684/cabaret-broadway-eddie-redmayne-gayle-rankin-review/",
+      "publishDate": "2024-04-21T21:27:37-04:00",
+      "indicators_found": [
+        "Alan Cumming",
+        "Sam Mendes",
+        "1966"
+      ],
+      "expected_found": [
+        "2024",
+        "August Wilson Theatre",
+        "Eddie Redmayne",
+        "Gayle Rankin",
+        "Kit Kat Club",
+        "Rebecca Frecknall"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "ke-makeup rictus could not be more different than Alan Cumming’s gaunt, garter-wearing compere who, in Sam Mende",
+        "n Cumming’s gaunt, garter-wearing compere who, in Sam Mendes’ revival, was hinted to be a victim of the Holoca",
+        "it table with built-in telephone. If the original 1966 production held a literal mirror to its audience,"
+      ]
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "nydailynews--chris.json",
+      "outlet": "New York Daily News",
+      "critic": "Chris",
+      "url": "https://www.nydailynews.com/2024/04/21/broadway-review-interactive-cabaret-revival-is-a-money-grabbing-misfire/",
+      "publishDate": "April 21, 2024",
+      "indicators_found": [
+        "1998",
+        "Alan Cumming",
+        "Natasha Richardson"
+      ],
+      "expected_found": [
+        "August Wilson Theatre",
+        "Eddie Redmayne",
+        "Gayle Rankin",
+        "Kit Kat Club"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "hrined on Broadway in a searing and unforgettable 1998 revival starring Natasha Richardson and Alan Cumm",
+        "able 1998 revival starring Natasha Richardson and Alan Cumming, is entirely another. “Cabaret” is not a high-pri",
+        "a searing and unforgettable 1998 revival starring Natasha Richardson and Alan Cumming, is entirely another. “Cabaret” "
+      ]
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "nypost--johnny-oleksinski.json",
+      "outlet": "New York Post",
+      "critic": "Johnny Oleksinski",
+      "url": "https://nypost.com/2024/04/21/entertainment/cabaret-broadway-review-revival-with-eddie-redmayne-is-luxe-and-bleak/",
+      "publishDate": "April 21, 2024",
+      "indicators_found": [
+        "Alan Cumming",
+        "Sam Mendes"
+      ],
+      "expected_found": [
+        "August Wilson Theatre",
+        "Eddie Redmayne",
+        "Gayle Rankin",
+        "Kit Kat Club",
+        "Rebecca Frecknall"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "ay for years, so too will they struggle to forget Alan Cumming in the role. Not to mention Joel Grey in the film",
+        "audiences will have trouble shaking their love of Sam Mendes’ ingenious revival that ran on Broadway for years"
+      ]
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "nysr--frank-scheck.json",
+      "outlet": "New York Stage Review",
+      "critic": "Frank Scheck",
+      "url": "https://nystagereview.com/2024/04/21/cabaret-come-for-the-pre-show-and-oh-theres-also-the-musical/",
+      "publishDate": "April 21, 2024",
+      "indicators_found": [
+        "Alan Cumming",
+        "Sam Mendes"
+      ],
+      "expected_found": [
+        "2024",
+        "August Wilson Theatre",
+        "Eddie Redmayne",
+        "Gayle Rankin",
+        "Kit Kat Club",
+        "Rebecca Frecknall"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        " the leering Emcee. He’s not quite as menacing as Alan Cumming in the Mendes production, at times seeming fragil",
+        " not your parents’ Cabaret, but it is akin to the Sam Mendes production that took London and Broadway by storm"
+      ]
+    },
+    {
+      "showId": "cabaret-2024",
+      "file": "theatermania--zachary-stewart.json",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "url": "https://www.theatermania.com/news/review-cabaret-returns-to-broadway-in-an-incoherent-revival_1737827/",
+      "publishDate": "April 21, 2024",
+      "indicators_found": [
+        "1998",
+        "Alan Cumming",
+        "1966"
+      ],
+      "expected_found": [
+        "2024",
+        "August Wilson Theatre",
+        "Eddie Redmayne",
+        "Gayle Rankin",
+        "Kit Kat Club",
+        "Rebecca Frecknall"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "that feels a lot closer to 2024 than it did 2014, 1998, 1987, or 1966. This is a story that speaks to no",
+        "enkirche. A sweaty, twitchy animatronic, he makes Alan Cumming look subtle. Where previous Emcees seduced you in",
+        "t closer to 2024 than it did 2014, 1998, 1987, or 1966. This is a story that speaks to now, and I really"
+      ]
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "dailybeast--tim-teeman.json",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "url": "https://www.thedailybeast.com/review-purlie-victorious-skewers-racism-with-passionand-laughter",
+      "publishDate": "September 27, 2023",
+      "indicators_found": [
+        "1961",
+        "Ossie Davis",
+        "Ruby Dee"
+      ],
+      "expected_found": [
+        "2023",
+        "Music Box Theatre",
+        "Leslie Odom Jr.",
+        "Kara Young"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        " modern audience, a 2023 audience, must travel to 1961—and to Davis’ very deliberate narrative balancing",
+        "Ossie Davis’ Purlie Victorious (A Non-Confederate Romp Throug",
+        "o played Purlie in the production, with his wife, Ruby Dee, as Lutibelle—recalled that Dr. W.E.B. DuBois was"
+      ]
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "file": "theatermania--kenji-fujishima.json",
+      "outlet": "TheaterMania",
+      "critic": "Kenji Fujishima",
+      "url": "https://www.theatermania.com/news/review-purlie-victorious-makes-a-triumphant-return-to-the-broadway-stage_1716129/",
+      "publishDate": "September 27, 2023",
+      "indicators_found": [
+        "1961",
+        "Ossie Davis"
+      ],
+      "expected_found": [
+        "Leslie Odom Jr.",
+        "Kara Young"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "217;s invigorating revival of Ossie Davis&#8217;s 1961 satire.\n\nMost people will know Ossie Davis primar",
+        "tar in Kenny Leon&#8217;s invigorating revival of Ossie Davis&#8217;s 1961 satire.\n\nMost people will know Ossie"
+      ]
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "unknown--unknown.json",
+      "outlet": "unknown",
+      "critic": "Unknown",
+      "url": "https://culturesauce.com/2024/04/18/suffs-broadway-review/",
+      "publishDate": null,
+      "indicators_found": [
+        "2022",
+        "Public Theater",
+        "off-Broadway",
+        "Off-Broadway",
+        "off Broadway",
+        "downtown"
+      ],
+      "expected_found": [
+        "2024",
+        "Broadway",
+        "Shaina Taub",
+        "Nikki M. James",
+        "Jenn Colella"
+      ],
+      "confidence": "medium",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "omen’s suffrage musical after the Roe leakMay 15, 2022In \"feminist\"\n\nThe Woman’s Party Review:  Women’s ",
+        " of seats as the show’s Off Broadway venue at the Public Theater. It was also built by Irving Berlin and has house",
+        "York Theater Weekly Summary\n\tNightlife\n\tObituary\n\tOff-Broadway\n\tOff-Off Broadway\n\topera\n\tOut of town\n\toutdoor th",
+        "York Theater Weekly Summary\n\tNightlife\n\tObituary\n\tOff-Broadway\n\tOff-Off Broadway\n\topera\n\tOut of town\n\toutdoor th",
+        "olella and Nikki M. James, both of whom were also Off Broadway, stand out as two outliers in the suffrage moveme",
+        "xpectations for a show than what “Suffs” provided downtown. Broadway’s Music Box Theater has more than three"
+      ]
+    },
+    {
+      "showId": "our-town-2024",
+      "file": "unknown--unknown.json",
+      "outlet": "unknown",
+      "critic": "Unknown",
+      "url": "https://culturesauce.com/2024/10/10/our-town-broadway-review-2024-jim-parsons/",
+      "publishDate": null,
+      "indicators_found": [
+        "Lincoln Center"
+      ],
+      "expected_found": [
+        "2024",
+        "Jim Parsons",
+        "Zoey Deutch",
+        "Kenny Leon",
+        "Katie Holmes"
+      ],
+      "confidence": "low",
+      "classification": "comparison_mentions",
+      "isGenericIndicators": false,
+      "isDateMismatch": false,
+      "contexts": [
+        "Scene\nKen Davenport blog\nLibrary of Congress blog\nLincoln Center Theater blog\nOn Stage\nPataphysicalSci, Linda Buch"
+      ]
+    }
+  ],
+  "baseline_pending": [
+    {
+      "showId": "all-out-2025",
+      "reason": "Insufficient reviews (<5)",
+      "reviewCount": 1
+    },
+    {
+      "showId": "bug-2026",
+      "reason": "Show opened <30 days ago",
+      "reviewCount": 27
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "reason": "Insufficient reviews (<5)",
+      "reviewCount": 1
+    }
+  ],
+  "shows_audited": [
+    {
+      "showId": "aladdin-2014",
+      "reviewCount": 52,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "reviewCount": 42,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "and-juliet-2022",
+      "reviewCount": 31,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "appropriate-2023",
+      "reviewCount": 29,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "reviewCount": 30,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "book-of-mormon-2011",
+      "reviewCount": 36,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "boop-2025",
+      "reviewCount": 29,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "reviewCount": 23,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "cabaret-2024",
+      "reviewCount": 33,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "chess-2025",
+      "reviewCount": 19,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "chicago-1996",
+      "reviewCount": 10,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "days-of-wine-and-roses-2024",
+      "reviewCount": 31,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "death-becomes-her-2024",
+      "reviewCount": 21,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "doubt-2024",
+      "reviewCount": 31,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "grey-house-2023",
+      "reviewCount": 30,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "gutenberg-2023",
+      "reviewCount": 27,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "hadestown-2019",
+      "reviewCount": 61,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "hamilton-2015",
+      "reviewCount": 59,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "harmony-2023",
+      "reviewCount": 43,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "harry-potter-2021",
+      "reviewCount": 72,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "heart-of-rock-and-roll-2024",
+      "reviewCount": 23,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "reviewCount": 51,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "reviewCount": 35,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "how-to-dance-in-ohio-2023",
+      "reviewCount": 28,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "i-need-that-2023",
+      "reviewCount": 27,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "illinoise-2024",
+      "reviewCount": 43,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "jajas-african-hair-braiding-2023",
+      "reviewCount": 22,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "just-for-us-2023",
+      "reviewCount": 21,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "just-in-time-2025",
+      "reviewCount": 24,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "lempicka-2024",
+      "reviewCount": 31,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "liberation-2025",
+      "reviewCount": 23,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "mamma-mia-2025",
+      "reviewCount": 19,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "marjorie-prime-2025",
+      "reviewCount": 20,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "mary-jane-2024",
+      "reviewCount": 26,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "reviewCount": 23,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "merrily-we-roll-along-2023",
+      "reviewCount": 32,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "mj-2022",
+      "reviewCount": 42,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "mother-play-2024",
+      "reviewCount": 26,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "moulin-rouge-2019",
+      "reviewCount": 33,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "oedipus-2025",
+      "reviewCount": 23,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "oh-mary-2024",
+      "reviewCount": 38,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "once-upon-a-one-more-time-2023",
+      "reviewCount": 30,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "operation-mincemeat-2025",
+      "reviewCount": 27,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "our-town-2024",
+      "reviewCount": 29,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "patriots-2024",
+      "reviewCount": 35,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "prayer-for-the-french-republic-2024",
+      "reviewCount": 32,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "purlie-victorious-2023",
+      "reviewCount": 23,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "queen-versailles-2025",
+      "reviewCount": 35,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "ragtime-2025",
+      "reviewCount": 28,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "real-women-have-curves-2025",
+      "reviewCount": 25,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "redwood-2025",
+      "reviewCount": 34,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "six-2021",
+      "reviewCount": 33,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "spamalot-2023",
+      "reviewCount": 31,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "stereophonic-2024",
+      "reviewCount": 53,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "stranger-things-2024",
+      "reviewCount": 28,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "suffs-2024",
+      "reviewCount": 26,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "the-cottage-2023",
+      "reviewCount": 23,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-great-gatsby-2024",
+      "reviewCount": 32,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-lion-king-1997",
+      "reviewCount": 26,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-notebook-2024",
+      "reviewCount": 43,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "reviewCount": 33,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-roommate-2024",
+      "reviewCount": 39,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "reviewCount": 30,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "the-whos-tommy-2024",
+      "reviewCount": 31,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "the-wiz-2024",
+      "reviewCount": 28,
+      "hasManualIndicators": true,
+      "hasGenericIndicators": false,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "two-strangers-bway-2025",
+      "reviewCount": 19,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "reviewCount": 24,
+      "hasManualIndicators": false,
+      "hasGenericIndicators": true,
+      "isIdentifiedRevival": true
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "reviewCount": 33,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    },
+    {
+      "showId": "wicked-2003",
+      "reviewCount": 27,
+      "hasManualIndicators": false,
+      "isIdentifiedRevival": false
+    }
+  ]
+}

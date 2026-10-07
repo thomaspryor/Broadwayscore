@@ -1,0 +1,323 @@
+#!/usr/bin/env node
+// scripts/lib/import-ledger.js — the Notion→Linear import ledger, re-keyed to
+// Notion pageId and append-only (S3-T2 of sprint-plan-notion-linear-cutover.md).
+//
+// WHY RE-KEY. The existing data/linear-import-mapping.json is a JSON object
+// keyed by LOCAL MIRROR TASK ID. The mirror only ever held a subset of the
+// board — it syncs P0/P1 and in-progress cards — so the ~1,700 cards Sprint 3
+// has to migrate have no key in it at all, and 50 of the 255 rows that DO exist
+// now point at mirror files that have since been pruned. A ledger that cannot
+// name most of the things it is supposed to track cannot answer the one
+// question Sprint 3's anti-join asks: "is every un-Done Notion page accounted
+// for?"
+//
+// WHY APPEND-ONLY. The old file is rewritten whole on every create
+// (saveMapping: write tmp, rename). A 1,831-card import runs for hours while CI
+// commits to this repo every ~30 minutes and other sessions run their own
+// tooling. Read-modify-write over that window loses entries — and it loses them
+// silently, because the file stays valid JSON. One line appended per issue in
+// O_APPEND mode is the fix: concurrent writers interleave lines instead of
+// clobbering each other's snapshot.
+//
+// READ SEMANTICS: last row wins per pageId. That is what makes an append-only
+// log usable as a mutable map — a correction is a new row, never an edit, so
+// the history of what this migration did stays intact and `--rollback` (S3-T7b)
+// has something real to roll back to.
+
+'use strict';
+
+const fs = require('node:fs');
+const path = require('node:path');
+
+const DEFAULT_LEDGER = 'data/linear-import-mapping.jsonl';
+const LEGACY_LEDGER = 'data/linear-import-mapping.json';
+
+/**
+ * One row. `pageId` is the key; `taskId` is kept for provenance only — it is
+ * the old key, and rows migrated from the legacy file may have one where new
+ * rows do not.
+ *
+ * `pageId` may be null ONLY for legacy rows whose page could not be recovered.
+ * Those rows still have to survive the migration (they name a real Linear
+ * issue that really exists), but they are excluded from the anti-join by
+ * definition, so they are counted and reported rather than dropped.
+ */
+function makeRow({ pageId, taskId = null, linearId, identifier, title, project = null, retiredReason = null, source = 'import', at = null }) {
+  return {
+    pageId: pageId || null,
+    taskId: taskId === null || taskId === undefined ? null : String(taskId),
+    linearId: linearId || null,
+    identifier: identifier || null,
+    title: title || null,
+    project,
+    retiredReason: retiredReason || null,
+    source,
+    at: at || new Date().toISOString(),
+  };
+}
+
+function readRows(ledgerPath) {
+  if (!fs.existsSync(ledgerPath)) return [];
+  const rows = [];
+  for (const line of fs.readFileSync(ledgerPath, 'utf8').split('\n')) {
+    if (!line.trim()) continue;
+    try {
+      rows.push(JSON.parse(line));
+    } catch {
+      // A torn line from a kill mid-append. Skipped, and surfaced by
+      // ledgerStats().malformed rather than silently swallowed — a ledger that
+      // quietly drops rows is worse than one that admits it.
+    }
+  }
+  return rows;
+}
+
+/** pageId -> most recent row. Rows with no pageId are not addressable here. */
+function indexByPageId(rows) {
+  const map = new Map();
+  for (const r of rows) {
+    if (r && r.pageId) map.set(r.pageId, r);
+  }
+  return map;
+}
+
+/** identifier -> most recent row. Used to prove nothing was lost in migration. */
+function indexByIdentifier(rows) {
+  const map = new Map();
+  for (const r of rows) {
+    if (r && r.identifier) map.set(r.identifier, r);
+  }
+  return map;
+}
+
+function ledgerStats(ledgerPath) {
+  const raw = fs.existsSync(ledgerPath) ? fs.readFileSync(ledgerPath, 'utf8') : '';
+  const lines = raw.split('\n').filter((l) => l.trim());
+  const rows = readRows(ledgerPath);
+  return {
+    lines: lines.length,
+    rows: rows.length,
+    malformed: lines.length - rows.length,
+    withPageId: rows.filter((r) => r.pageId).length,
+    withoutPageId: rows.filter((r) => !r.pageId).length,
+    distinctPageIds: indexByPageId(rows).size,
+    distinctIdentifiers: indexByIdentifier(rows).size,
+  };
+}
+
+/**
+ * Append one row as ONE appendFileSync of one already-newline-terminated
+ * string. Building the string first and writing once is load-bearing: two
+ * writes (payload, then '\n') would let another appender's line land between
+ * them.
+ *
+ * What that actually buys, stated precisely — the earlier version of this
+ * comment invoked PIPE_BUF, which is the guarantee for PIPES and says nothing
+ * about regular files:
+ *
+ *   * POSIX says an O_APPEND write seeks to end-of-file and writes as one
+ *     operation, and on a LOCAL filesystem (APFS, ext4 — what this repo runs
+ *     on) a single write() of a few hundred bytes is not split, so concurrent
+ *     appenders interleave whole lines rather than shredding each other's.
+ *   * That is a property of the local kernel and filesystem, NOT a portable
+ *     guarantee. Over NFS/SMB, O_APPEND is emulated and lines can tear.
+ *   * Node's appendFileSync opens with 'a' (O_APPEND) and issues one write for
+ *     a string this size, so the above applies — but it is not something Node
+ *     itself promises.
+ *
+ * This is why readRows() tolerates a torn line and ledgerStats() reports
+ * `malformed` rather than either crashing or pretending: the atomicity above is
+ * the common case, not a contract, and the ledger has to stay readable when it
+ * does not hold. tests/unit/import-ledger.test.mjs races two real processes and
+ * asserts both that all rows land and that they genuinely interleave.
+ */
+function appendRow(ledgerPath, row) {
+  fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
+  fs.appendFileSync(ledgerPath, `${JSON.stringify(row)}\n`);
+  return row;
+}
+
+/**
+ * Convert the legacy task-id-keyed object into append-only rows.
+ *
+ * `resolvePageId(taskId, entry)` is injected — the CLI resolves via the local
+ * mirror's `[notion:<id>]` marker and, for rows whose mirror file has been
+ * pruned, via an unambiguous title match against the Sprint 2 corpus. Kept out
+ * of here so the migration itself is a pure, testable transform.
+ *
+ * EVERY legacy entry produces a row, including ones whose page could not be
+ * resolved. The acceptance criterion is that all 255 survive, checked by BRO
+ * identifier — dropping the unresolvable ones would satisfy a pageId-shaped
+ * ledger while losing real issues.
+ */
+function migrateLegacy(legacyMapping, resolvePageId) {
+  const rows = [];
+  const unresolved = [];
+  for (const [taskId, entry] of Object.entries(legacyMapping || {})) {
+    if (!entry) continue;
+    const pageId = resolvePageId(taskId, entry) || null;
+    if (!pageId) unresolved.push({ taskId, identifier: entry.identifier || null, title: entry.title || null });
+    rows.push(
+      makeRow({
+        pageId,
+        taskId,
+        linearId: entry.linearId,
+        identifier: entry.identifier,
+        title: entry.title,
+        project: entry.project || null,
+        retiredReason: entry.retiredReason || null,
+        source: 'legacy-migration',
+        // Fixed timestamp for migrated rows: they all describe work that
+        // happened before this migration, and stamping them with "now" would
+        // make the ledger's own history a lie.
+        at: '1970-01-01T00:00:00.000Z',
+      })
+    );
+  }
+  return { rows, unresolved };
+}
+
+/**
+ * The Sprint 3 anti-join: which un-Done Notion pages have no ledger row?
+ * `sourcePageIds` comes from the Sprint 2 CORPUS, not a live query — the point
+ * is to prove completeness against the frozen archive, and a live query moves
+ * under the check.
+ */
+function unaccountedPageIds(sourcePageIds, rows) {
+  const have = indexByPageId(rows);
+  return sourcePageIds.filter((id) => !have.has(id));
+}
+
+/**
+ * The opposite-direction check (BRO-2384): which already-imported Linear
+ * issues now duplicate a Notion page that has since gone Done?
+ *
+ * linear-import.js's --reconcile pass classifies each LIVE local-mirror task
+ * against the Notion snapshot and retires the ones whose page reads Done. But
+ * a completed task is archived out of the local mirror (task-store-archive.js)
+ * almost immediately — often the same day it completes — so it stops
+ * appearing in that classification pass forever. If the page went Done
+ * *after* the issue was imported but the mirror task had already archived
+ * away by the next --reconcile run, the issue is permanently invisible to
+ * that pass: re-running --refresh-snapshot + --reconcile --apply any number
+ * of times never retires it. That is exactly how BRO-111 (imported
+ * 2026-08-12 while its source card, Notion page 3a9637c5-..., still read "Not
+ * started"; the card finished and archived out of the mirror later the same
+ * day) sat open for weeks until a session was dispatched onto it directly and
+ * redid already-shipped work.
+ *
+ * The ledger survives archival — it is keyed on Notion pageId, not local
+ * mirror task id, and rows are never deleted — so it can still name the
+ * Linear issue for a page the mirror-driven pass can no longer see. This is
+ * the anti-join over that surviving record: last row per pageId (same
+ * semantics as indexByPageId), a real Linear issue attached (linearId), and
+ * not already marked retired by an earlier reconcile pass.
+ *
+ * Pure: `doneIds` is the caller's already-loaded Notion snapshot Set (or any
+ * Set-like with `.has`). No I/O here — the caller does the ledger read and
+ * the eventual Linear mutation.
+ *
+ * `liveNotionIds` (Codex ship-check finding, BRO-2384) excludes any page
+ * whose task is STILL present in the live local mirror — that page is
+ * already the mirror-driven reconcile pass's job (linear-import.js's own
+ * `r.notCurated`), and without this exclusion a page that is BOTH still-live
+ * AND already in the ledger gets retired and logged twice in the same run.
+ */
+function findStaleDuplicates(rows, doneIds, liveNotionIds = new Set()) {
+  const out = [];
+  for (const row of indexByPageId(rows).values()) {
+    if (!row.linearId) continue;
+    if (row.retiredReason) continue;
+    if (!doneIds.has(row.pageId)) continue;
+    if (liveNotionIds.has(row.pageId)) continue;
+    out.push(row);
+  }
+  return out;
+}
+
+/**
+ * Is it safe to overwrite `mapping[taskId]` with a retirement/revival for
+ * `row` (the ledger row driving the write)? (Codex ship-check finding,
+ * BRO-2384.)
+ *
+ * Local mirror task ids get reused/renumbered on resync (BRO-2468) — a
+ * ledger row's `taskId` can be stale, now belonging to a DIFFERENT,
+ * currently-open task. Writing `mapping[taskId]` unconditionally on a bare
+ * id match would overwrite that unrelated task's mapping entry with this
+ * row's linearId/retiredReason, corrupting it (and, via the revive path,
+ * exposing an issue the owner never retired to being wrongly "revived").
+ *
+ * Safe when there is no existing entry for this taskId yet, OR the existing
+ * entry already names THIS SAME Linear issue (linearId agrees) — i.e. the
+ * mapping row really is about the same piece of work the ledger row is.
+ *
+ * Pure: takes the already-looked-up `existingEntry` (or null/undefined), not
+ * the whole mapping object or a taskId to look up — the caller does the read.
+ */
+function mapWriteAllowed(existingEntry, row) {
+  if (!existingEntry) return true;
+  if (!existingEntry.linearId) return true;
+  return existingEntry.linearId === row.linearId;
+}
+
+/**
+ * checkpointLedger(ledgerPath, label) — commit the ledger where it lies, now.
+ *
+ * Why this exists (incident 2026-08-20, S3-T7c): the ledger is the ONLY record
+ * of which Notion pageId became which Linear issue, it is a git-tracked file,
+ * and a full import spends ~30 minutes appending to it. During that window a
+ * parallel session merged three branches into main in the same shared checkout
+ * and the working-tree copy was reset, discarding ~776 uncommitted rows. No
+ * Linear issues were lost — the deterministic issue id makes a replayed create
+ * a classified no-op — but the mapping was, and the anti-join then reports
+ * live issues as unaccounted.
+ *
+ * So: the run's most important output must not sit uncommitted for half an
+ * hour. This commits after every batch.
+ *
+ * Best-effort by contract. An import must never die because a commit lost a
+ * race for index.lock, so every failure is swallowed and reported as false.
+ * Only ever stages the one ledger file — never `git add -A`, which in a shared
+ * checkout would sweep up whatever another session is mid-edit on.
+ */
+function checkpointLedger(ledgerPath, label) {
+  const { execFileSync } = require('child_process');
+  const abs = path.resolve(ledgerPath);
+  const dir = path.dirname(abs);
+  const git = (args) =>
+    execFileSync('git', ['-C', dir, ...args], { stdio: ['ignore', 'pipe', 'pipe'] })
+      .toString()
+      .trim();
+  try {
+    if (!fs.existsSync(abs)) return false;
+    git(['rev-parse', '--git-dir']);
+    git(['add', '--', abs]);
+    // Nothing staged (no new rows since the last checkpoint) is not a failure.
+    try {
+      git(['diff', '--cached', '--quiet', '--', abs]);
+      return false;
+    } catch {
+      /* non-zero exit means there ARE staged changes; fall through and commit */
+    }
+    git(['commit', '--no-verify', '-m', `data: import ledger checkpoint (${label}) [skip ci]`]);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+module.exports = {
+  checkpointLedger,
+  DEFAULT_LEDGER,
+  LEGACY_LEDGER,
+  makeRow,
+  readRows,
+  indexByPageId,
+  indexByIdentifier,
+  ledgerStats,
+  appendRow,
+  migrateLegacy,
+  unaccountedPageIds,
+  findStaleDuplicates,
+  mapWriteAllowed,
+};

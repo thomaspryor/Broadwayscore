@@ -1,0 +1,788 @@
+#!/usr/bin/env node
+/**
+ * Batch Commercial Research Script
+ *
+ * Researches commercial/financial data for Broadway shows not yet in commercial.json.
+ * Writes results to commercial-pending-review.json for human review before merging.
+ *
+ * Data sources:
+ *   - SEC EDGAR Form D filings (capitalization)
+ *   - Google Search via ScrapingBee/Bright Data (recoupment, capitalization articles)
+ *   - Trade press articles (Deadline, Variety, Playbill, etc.)
+ *   - Claude Sonnet AI analysis of gathered evidence
+ *
+ * Usage:
+ *   node scripts/batch-commercial-research.js [options]
+ *
+ * Default scope: Broadway shows in previews/open status, or closed within the
+ * last 180 days. Historical or off-Broadway/West End shows are NOT researched
+ * by default — use --top-historical=N or --shows= to opt in explicitly.
+ *
+ * Options:
+ *   --dry-run              Preview without writing
+ *   --shows=SLUG,SLUG      Specific shows by slug (bypasses default scope filter)
+ *   --top-historical=N     Top N historical shows by all-time gross
+ *   --max-per-run=N        Cap new shows researched per invocation (default 30)
+ *   --time-budget-min=N    Wall-clock budget in minutes (0 = unlimited, default).
+ *                          The per-show research loop (SEC + Google + Claude,
+ *                          each with rate-limit sleeps) can run well past
+ *                          60-90s/show; --max-per-run=30 alone is a COUNT cap,
+ *                          not a wall-clock one, and does not stop the job's
+ *                          `timeout-minutes: 60` from SIGKILLing the run
+ *                          mid-item (BRO-2285: this was hitting the workflow
+ *                          timeout weekly, and a timeout-killed job reports
+ *                          `cancelled`, not `failure` — notify-failure's
+ *                          `if: failure()` never sees it). Progress is saved
+ *                          after every completed show, so stopping early
+ *                          loses at most the show in flight when the budget
+ *                          hit; the remainder resumes next run.
+ *   --skip-sec             Skip SEC EDGAR lookups
+ *   --apply                Apply pending review file to commercial.json
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const { serpQuery } = require('./lib/url-discovery');
+const { normalizeSources } = require('./lib/commercial-sources');
+const { CLAUDE_SONNET } = require('./lib/models');
+const { isCommercialScope, DESIGNATION_CRITERIA, resolveScopeShow } = require('./lib/commercial-scope');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { sanitizeForPublicRecord } = require('./lib/commercial-record-checks');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `batch-commercial-research.js — Batch Commercial Research Script.
+
+Usage:
+  node scripts/batch-commercial-research.js [options]
+  node scripts/batch-commercial-research.js --help, -h    print this usage and exit
+`;
+// ---------------------------------------------------------------------------
+// Paths
+// ---------------------------------------------------------------------------
+const DATA_DIR = path.join(__dirname, '..', 'data');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
+const GROSSES_PATH = path.join(DATA_DIR, 'grosses.json');
+const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
+const PROGRESS_PATH = path.join(DATA_DIR, 'commercial-batch-progress.json');
+
+// ---------------------------------------------------------------------------
+// CLI Arguments
+// ---------------------------------------------------------------------------
+const args = process.argv.slice(2);
+const flags = {};
+for (const arg of args) {
+  if (arg.startsWith('--')) {
+    const [key, val] = arg.slice(2).split('=');
+    flags[key] = val || true;
+  }
+}
+
+const DRY_RUN = flags['dry-run'] === true;
+const SHOW_LIST = flags['shows'] ? flags['shows'].split(',') : null;
+const TOP_HISTORICAL = parseInt(flags['top-historical']) || 0;
+// Preserve `0` as "cap at zero" — a literal "process no new shows" option is
+// useful for validating the cap gate. `parseInt(x) || 30` would silently
+// coerce 0 to 30 since 0 is falsy. Only fall back to 30 when the flag is
+// absent or a NaN-producing value.
+const MAX_PER_RUN_RAW = flags['max-per-run'];
+const MAX_PER_RUN = MAX_PER_RUN_RAW !== undefined && MAX_PER_RUN_RAW !== true && !isNaN(parseInt(MAX_PER_RUN_RAW, 10))
+  ? parseInt(MAX_PER_RUN_RAW, 10)
+  : 30;
+const SKIP_SEC = flags['skip-sec'] === true;
+const APPLY_MODE = flags['apply'] === true;
+const TIME_BUDGET_MIN = parseTimeBudgetMin(args);
+const timeBudget = createRunBudget(TIME_BUDGET_MIN);
+// Conservative per-show worst case: SEC EDGAR (up to 3 filings x 1s) + 2
+// Google queries x (3 verifySourceUrl fetches + 2s) + 2s, plus Claude
+// analysis + per-source re-verification, none of which have their own
+// timeout — a single hung fetch can overrun this by minutes. Mirrors
+// deep-research-commercial.js's MIN_REMAINING_MS_TO_START guard — don't
+// start a show unlikely to finish. 5min (not deep-research's 10min) because
+// this job's timeout headroom is tighter — see --time-budget-min sizing note
+// on the workflow's call site.
+const MIN_REMAINING_MS_TO_START = 5 * 60_000;
+
+// ---------------------------------------------------------------------------
+// Environment
+// ---------------------------------------------------------------------------
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+
+// ---------------------------------------------------------------------------
+// Optional modules
+// ---------------------------------------------------------------------------
+let secEdgarScraper;
+try {
+  secEdgarScraper = require('./lib/sec-edgar-scraper');
+} catch (e) {
+  // SEC EDGAR module not available
+}
+
+let universalScraper;
+try {
+  universalScraper = require('./lib/scraper');
+} catch (e) {
+  // Scraper module not available
+}
+const { runMain } = require('./lib/run-main');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
+
+// ---------------------------------------------------------------------------
+// Utility
+// ---------------------------------------------------------------------------
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+/**
+ * Fetch a URL's HTML via the shared fetchPage() fallback chain (Scrapingdog →
+ * Bright Data → ScrapingBee → Playwright). Previously hit ScrapingBee directly
+ * with premium_proxy=true ($2.48/1k) on every citation-verification fetch —
+ * these are arbitrary news/financial-press URLs, not sites that need premium
+ * anti-bot bypass, so the plain fetchPage() chain (which tries much cheaper
+ * tiers first) covers it (task #5).
+ */
+async function fetchViaScrapingBee(url) {
+  if (!universalScraper) throw new Error('scraper module not available');
+  const result = await universalScraper.fetchPage(url);
+  return result.content;
+}
+
+/**
+ * Google search via ScrapingBee's Google Search API.
+ * Returns array of {title, url, snippet}.
+ */
+async function googleSearch(query) {
+  try {
+    const results = await serpQuery(query, { nbResults: 8 });
+    if (!results) return [];
+    return results.slice(0, 5).map(r => ({
+      title: r.title || '',
+      url: r.url || '',
+      snippet: r.snippet || '',
+    }));
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Verify a URL actually resolves and contains relevant content.
+ * Returns { valid: true, snippet } or { valid: false }.
+ */
+async function verifySourceUrl(url, showTitle) {
+  try {
+    const content = await fetchViaScrapingBee(url);
+    // Strip HTML but preserve original case for Claude
+    const text = content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const lowerText = text.toLowerCase();
+    const titleWords = showTitle.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    const hasTitle = titleWords.some(w => lowerText.includes(w));
+    const hasFinancial = /capital|invest|recoup|gross|budget|cost|million|\$\d/i.test(text);
+
+    if (hasTitle && hasFinancial) {
+      // Find the most relevant section — center around the show title mention
+      const titleIdx = lowerText.indexOf(titleWords.find(w => lowerText.includes(w)) || '');
+      const start = Math.max(0, titleIdx - 200);
+      const snippet = text.slice(start, start + 3000).trim();
+      return { valid: true, snippet };
+    }
+    return { valid: false };
+  } catch {
+    return { valid: false };
+  }
+}
+
+/**
+ * Plausibility checks for commercial data.
+ * Returns { plausible: true } or { plausible: false, reason }.
+ */
+function checkPlausibility(data, grossesData) {
+  const issues = [];
+
+  if (data.capitalization != null) {
+    if (data.capitalization < 500000 || data.capitalization > 100000000) {
+      issues.push(`Capitalization $${(data.capitalization / 1e6).toFixed(1)}M outside plausible range ($0.5M-$100M)`);
+    }
+  }
+
+  if (data.weeklyRunningCost != null) {
+    if (data.weeklyRunningCost < 100000 || data.weeklyRunningCost > 3000000) {
+      issues.push(`Weekly running cost $${(data.weeklyRunningCost / 1000).toFixed(0)}K outside plausible range ($100K-$3M)`);
+    }
+  }
+
+  // Cross-check: if recouped, capitalization should be < all-time gross
+  if (data.recouped && data.capitalization && grossesData) {
+    const allTimeGross = grossesData.allTime?.gross || 0;
+    if (allTimeGross > 0 && data.capitalization > allTimeGross * 0.6) {
+      issues.push(`Capitalization ($${(data.capitalization / 1e6).toFixed(1)}M) > 60% of all-time gross ($${(allTimeGross / 1e6).toFixed(1)}M) for recouped show`);
+    }
+  }
+
+  return issues.length > 0
+    ? { plausible: false, reason: issues.join('; ') }
+    : { plausible: true };
+}
+
+/**
+ * Call Claude Sonnet to analyze gathered evidence for a show.
+ */
+async function analyzeShowWithClaude(show, evidence) {
+  if (!ANTHROPIC_KEY) {
+    throw new Error('ANTHROPIC_API_KEY required for analysis');
+  }
+
+  const openingYear = show.openingDate ? show.openingDate.split('-')[0] : 'unknown';
+  const isHistorical = show.openingDate && parseInt(show.openingDate.split('-')[0]) < 2005;
+
+  const systemPrompt = `You are a Broadway financial analyst. Given evidence about a Broadway show, extract structured commercial data.
+
+Rules:
+1. Only extract data that is EXPLICITLY stated in the evidence. Do NOT guess, estimate, or infer.
+2. If evidence is thin or contradictory, return null for fields you cannot confirm.
+3. For capitalization, look for "capitalized at", "budget of", "investment of", "$X million to produce", or SEC Form D offering amounts.
+4. For weekly running costs, look for "running costs of", "weekly nut", "costs $X per week to operate".
+5. For recoupment, look for "recouped", "paid back", "returned investment", "broke even".
+6. Recoupment dates should be in YYYY-MM format if month is known, YYYY if only year.
+7. ${DESIGNATION_CRITERIA}
+8. ALWAYS include source URLs for every claim. If you cannot cite a specific URL from the evidence, say null.
+9. costMethodology should be: "sec-filing" if from SEC, "trade-reported" if from Deadline/Variety/Playbill, "industry-estimate" if uncertain.
+${isHistorical ? '10. This is a historical show — data may be sparse. Be EXTRA conservative. Use industry-estimate methodology if sources are not definitive.' : ''}
+
+Respond with ONLY a JSON object (no markdown fences):
+{
+  "capitalization": <number or null>,
+  "capitalizationSource": "<description of source>" or null,
+  "weeklyRunningCost": <number or null>,
+  "costMethodology": "<methodology>",
+  "recouped": <boolean or null>,
+  "recoupedDate": "<YYYY-MM or YYYY>" or null,
+  "recoupedSource": "<description>" or null,
+  "designation": "<designation>",
+  "notes": "<brief summary of financial situation>",
+  "sources": [{"type": "trade"|"sec"|"reddit"|"manual", "url": "<url>", "date": "<YYYY-MM-DD or null>"}],
+  "confidence": "high"|"medium"|"low"
+}`;
+
+  const userContent = `Show: "${show.title}" (${openingYear})
+Venue: ${show.venue || 'unknown'}
+Status: ${show.status}
+Opening: ${show.openingDate || 'unknown'}
+Closing: ${show.closingDate || 'unknown'}
+
+Evidence gathered:
+${evidence}`;
+
+  // Truncate evidence to avoid hitting token limits
+  const truncatedContent = userContent.length > 30000
+    ? userContent.slice(0, 30000) + '\n\n[Evidence truncated]'
+    : userContent;
+
+  // Clean non-UTF8 / control characters that break JSON
+  const cleanContent = truncatedContent.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ' ');
+
+  const body = JSON.stringify({
+    model: CLAUDE_SONNET,
+    max_tokens: 2000,
+    messages: [
+      { role: 'user', content: cleanContent },
+    ],
+    system: systemPrompt,
+  });
+
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'api.anthropic.com',
+      path: '/v1/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      timeout: 60000,
+    }, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const response = JSON.parse(data);
+          if (response.error) {
+            reject(new Error(`Claude API error: ${response.error.message || JSON.stringify(response.error)}`));
+            return;
+          }
+          const text = response.content?.[0]?.text || '';
+          // Strip markdown fences
+          let jsonStr = text;
+          const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+          if (fenceMatch) jsonStr = fenceMatch[1];
+          const objMatch = jsonStr.match(/\{[\s\S]*\}/);
+          if (objMatch) jsonStr = objMatch[0];
+          resolve(JSON.parse(jsonStr));
+        } catch (err) {
+          reject(new Error(`Failed to parse Claude response: ${err.message}\nRaw: ${data.slice(0, 300)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    // BRO-3838: `timeout: 60000` alone does nothing — Node just emits
+    // 'timeout' and leaves the socket open unless something destroys it.
+    // This exact gap (BRO-3832) hung the whole 60min job on one stuck
+    // request to api.anthropic.com.
+    req.on('timeout', () => { req.destroy(new Error('Claude API request timed out after 60s')); });
+    req.write(body);
+    req.end();
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Research pipeline for a single show
+// ---------------------------------------------------------------------------
+async function researchShow(show, grossesData) {
+  const evidence = [];
+  const verifiedUrls = new Set(); // Track URLs we've already verified
+  const openingYear = show.openingDate ? parseInt(show.openingDate.split('-')[0]) : null;
+  const isPreModern = openingYear && openingYear < 2005;
+
+  console.log(`\n  🔍 Researching "${show.title}" (${show.openingDate || 'unknown date'})...`);
+
+  // --- SEC EDGAR ---
+  if (!SKIP_SEC && !isPreModern && secEdgarScraper && secEdgarScraper.isAvailable()) {
+    try {
+      console.log(`    SEC EDGAR...`);
+      const filings = await secEdgarScraper.searchFormDFilings({ showName: show.title });
+      if (filings && filings.length > 0) {
+        for (const filing of filings.slice(0, 3)) {
+          try {
+            const parsed = await secEdgarScraper.parseFormDFiling(filing.filingUrl);
+            if (parsed && parsed.totalOfferingAmount) {
+              evidence.push(`[SEC EDGAR Form D] ${filing.entityName}: Total offering amount $${parsed.totalOfferingAmount.toLocaleString()}. Filed ${filing.dateFiled || 'unknown date'}. CIK: ${filing.cik || 'unknown'}.`);
+              console.log(`    ✅ SEC: Found Form D - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
+            }
+          } catch (err) {
+            // Individual filing parse failure
+          }
+          await sleep(1000); // SEC rate limit
+        }
+      } else {
+        console.log(`    ⏭️  SEC: No filings found`);
+      }
+    } catch (err) {
+      console.log(`    ⚠️  SEC error: ${err.message}`);
+    }
+  } else if (isPreModern) {
+    console.log(`    ⏭️  SEC: Skipped (pre-2005 show)`);
+  }
+
+  // --- Google Search ---
+  if (SCRAPINGBEE_KEY) {
+    const queries = [
+      `"${show.title}" broadway capitalization budget investment million`,
+      `"${show.title}" broadway recouped "paid back" "broke even"`,
+    ];
+
+    for (const query of queries) {
+      console.log(`    Google: "${query.slice(0, 60)}..."`);
+      const results = await googleSearch(query);
+
+      for (const result of results.slice(0, 3)) {
+        // Skip non-relevant domains
+        if (/wikipedia|imdb|ibdb|playbill\.com\/person/.test(result.url)) continue;
+
+        // Verify the URL has relevant content
+        const verification = await verifySourceUrl(result.url, show.title);
+        if (verification.valid) {
+          verifiedUrls.add(result.url);
+          evidence.push(`[Web: ${result.url}]\n${verification.snippet.slice(0, 2000)}`);
+          console.log(`    ✅ Verified: ${result.url.slice(0, 60)}...`);
+        }
+        await sleep(2000); // Rate limit
+      }
+      await sleep(2000);
+    }
+  }
+
+  if (evidence.length === 0) {
+    console.log(`    ❌ No evidence found`);
+    return null;
+  }
+
+  console.log(`    📊 Analyzing ${evidence.length} pieces of evidence with Claude...`);
+
+  // --- Claude Analysis ---
+  try {
+    const analysis = await analyzeShowWithClaude(show, evidence.join('\n\n---\n\n'));
+
+    if (!analysis) {
+      console.log(`    ❌ Claude returned no data`);
+      return null;
+    }
+
+    // Normalize capitalization — AI sometimes returns in millions (e.g., 13.5 for $13.5M)
+    if (analysis.capitalization != null && analysis.capitalization > 0 && analysis.capitalization < 5000) {
+      console.log(`    ℹ️  Normalizing capitalization: ${analysis.capitalization} -> ${analysis.capitalization * 1e6} (assumed millions)`);
+      analysis.capitalization = analysis.capitalization * 1e6;
+    }
+    if (analysis.weeklyRunningCost != null && analysis.weeklyRunningCost > 0 && analysis.weeklyRunningCost < 10000) {
+      analysis.weeklyRunningCost = analysis.weeklyRunningCost * 1000;
+    }
+
+    // Plausibility check
+    const showGrosses = grossesData?.shows?.[show.slug];
+    const plausibility = checkPlausibility(analysis, showGrosses);
+    if (!plausibility.plausible) {
+      console.log(`    ⚠️  Plausibility check failed: ${plausibility.reason}`);
+      analysis.notes = `[PLAUSIBILITY WARNING: ${plausibility.reason}] ${analysis.notes || ''}`;
+      analysis.confidence = 'low';
+    }
+
+    // Verify source URLs from Claude — accept if already verified in evidence phase
+    if (analysis.sources && Array.isArray(analysis.sources)) {
+      const verifiedSources = [];
+      for (const source of analysis.sources) {
+        if (source.url && source.url.startsWith('http')) {
+          if (verifiedUrls.has(source.url)) {
+            verifiedSources.push(source); // Already verified during evidence gathering
+          } else {
+            // New URL from Claude — verify it
+            const check = await verifySourceUrl(source.url, show.title);
+            if (check.valid) {
+              verifiedSources.push(source);
+            } else {
+              console.log(`    ⚠️  Unverified source URL removed: ${source.url}`);
+            }
+          }
+        } else {
+          verifiedSources.push(source); // Keep non-URL sources
+        }
+      }
+      analysis.sources = verifiedSources;
+    }
+
+    // If no verified sources remain, downgrade confidence
+    const hasVerifiedUrl = analysis.sources?.some(s => s.url && s.url.startsWith('http'));
+    if (!hasVerifiedUrl) {
+      analysis.costMethodology = 'industry-estimate';
+      analysis.confidence = 'low';
+    }
+
+    // Historical shows default to industry-estimate
+    if (isPreModern && analysis.costMethodology !== 'sec-filing') {
+      analysis.costMethodology = 'industry-estimate';
+    }
+
+    return analysis;
+  } catch (err) {
+    console.log(`    ❌ Claude analysis failed: ${err.message}`);
+    return null;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Apply mode: merge pending into commercial.json
+// ---------------------------------------------------------------------------
+function applyPending() {
+  if (!fs.existsSync(PENDING_PATH)) {
+    console.log('❌ No pending file found at', PENDING_PATH);
+    process.exit(1);
+  }
+
+  const pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
+  const commercial = loadCommercial();
+
+  // Scope lookup — Off-Broadway / West End entries must never be applied.
+  let showsBySlug = {};
+  let showKeyIndex = buildShowKeyIndex([]);
+  try {
+    const allShows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
+    for (const s of allShows) {
+      if (s.slug) showsBySlug[s.slug] = s;
+      if (s.id) showsBySlug[s.id] = s;
+    }
+    showKeyIndex = buildShowKeyIndex(allShows);
+  } catch {
+    // shows.json unavailable — guard degrades to no-op.
+  }
+
+  let applied = 0;
+  let skipped = 0;
+
+  for (const [showId, entry] of Object.entries(pending.shows || {})) {
+    // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys).
+    // Writing (and existence-checking) by showId created ID-keyed duplicates
+    // next to the slug-keyed entries — this script's new Date() firstAdded
+    // stamps match the 13 hand-merged duplicates of 2026-07-19.
+    // BRO-4623: entry.slug is a candidate, not an answer (deep-research
+    // wrote show IDs into it); the shared resolver maps IDs to slugs.
+    const { slug: commercialKey, resolved } = resolveCommercialSlug(showId, entry, showKeyIndex);
+    if (!resolved) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by "${commercialKey}" (validate-data will flag)`);
+    }
+    if (commercial.shows[commercialKey]) {
+      console.log(`  ⏭️  "${showId}" already in commercial.json as "${commercialKey}" — skipping`);
+      skipped++;
+      continue;
+    }
+
+    const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
+    if (scopeShow && !isCommercialScope(scopeShow)) {
+      console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
+      skipped++;
+      continue;
+    }
+
+    // Build the commercial entry (strip research metadata). The sanitizer drops
+    // research wording from the page-visible text and holds a loss label until
+    // the show has closed, so validate-data's matching rules cannot reject it.
+    // Status comes from the show whose slug IS the key (validate-data's lookup).
+    const keyShow = showsBySlug[commercialKey];
+    // This path has no source verifier, so every figure lands as an estimate with no AI-written source text
+    // (the same rule apply-commercial-pending uses; BRO-4758). It never prints an unconfirmed number as fact.
+    const builtForApply = {
+      designation: entry.designation || 'TBD',
+      capitalization: entry.capitalization || null,
+      capitalizationSource: entry.capitalizationSource || null,
+      weeklyRunningCost: entry.weeklyRunningCost || null,
+      costMethodology: entry.costMethodology || 'industry-estimate',
+      recouped: entry.recouped != null ? entry.recouped : null,
+      recoupedDate: entry.recoupedDate || null,
+      recoupedSource: entry.recoupedSource || null,
+      notes: entry.notes || '',
+      sources: normalizeSources(entry.sources || []),
+      lastUpdated: new Date().toISOString(),
+      firstAdded: new Date().toISOString(),
+    };
+    require('./lib/commercial-apply-gate').applyFigureEvidence(builtForApply, entry, {});
+    const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord(
+      builtForApply, keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined);
+    if (holdReason) {
+      console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
+      skipped++;
+      continue;
+    }
+    if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
+
+    commercial.shows[commercialKey] = commercialEntry;
+    console.log(`  ✅ Applied "${showId}" → commercial.shows["${commercialKey}"] (${commercialEntry.designation})`);
+    applied++;
+  }
+
+  if (applied > 0) {
+    // Bump the top-level freshness field so the daily digest stops flagging
+    // commercial.json as stale when partial progress IS being made. Without
+    // this, _meta.lastUpdated stayed frozen at the date of the last
+    // full-catchup run even though daily increments were merging cleanly.
+    commercial._meta = commercial._meta || {};
+    commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
+    saveCommercial(commercial);
+    console.log(`\n✅ Applied ${applied} shows to commercial.json (${skipped} skipped)`);
+  } else {
+    console.log('\nNo new shows to apply.');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Target selection
+// ---------------------------------------------------------------------------
+function selectTargets(shows, commercial, grosses) {
+  const existingIds = new Set(Object.keys(commercial.shows || {}));
+
+  if (SHOW_LIST) {
+    return shows.filter(s => SHOW_LIST.includes(s.slug) || SHOW_LIST.includes(s.id))
+      .filter(s => !existingIds.has(s.id))
+      .filter(isCommercialScope);
+  }
+
+  if (TOP_HISTORICAL) {
+    // Rank by all-time gross, filter to shows not in commercial.json
+    return shows
+      .filter(isCommercialScope)
+      .filter(s => !existingIds.has(s.id))
+      .filter(s => s.status === 'closed' || s.status === 'open')
+      .map(s => {
+        const grossData = grosses.shows?.[s.slug];
+        const allTimeGross = grossData?.allTime?.gross || 0;
+        return { ...s, allTimeGross };
+      })
+      .sort((a, b) => b.allTimeGross - a.allTimeGross)
+      .slice(0, TOP_HISTORICAL);
+  }
+
+  // Default: Broadway shows that are current (open, previews, or recently closed).
+  // Capitalization/recoupment data for historical shows doesn't change, so once
+  // the backlog is seeded there's nothing to re-research. The weekly orchestrator
+  // is about keeping current productions up to date — not grinding through a
+  // 1,800-show historical tail. Use --top-historical=N for deliberate backfill.
+  const RECENT_CLOSE_WINDOW_DAYS = 180;
+  const cutoff = new Date(Date.now() - RECENT_CLOSE_WINDOW_DAYS * 86400 * 1000)
+    .toISOString().slice(0, 10);
+  // Broadway detection via the canonical scope predicate (category-based,
+  // NEVER `market` — see scripts/lib/commercial-scope.js for the trap).
+  return shows
+    .filter(isCommercialScope)
+    .filter(s => !existingIds.has(s.id))
+    .filter(s => {
+      if (s.status === 'open' || s.status === 'previews') return true;
+      if (s.status === 'closed' && s.closingDate && s.closingDate >= cutoff) return true;
+      return false;
+    });
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  console.log('💰 Broadway Commercial Data Batch Research');
+  console.log(`  Mode: ${DRY_RUN ? 'DRY RUN' : APPLY_MODE ? 'APPLY' : 'LIVE'}`);
+
+  // Apply mode
+  if (APPLY_MODE) {
+    applyPending();
+    return;
+  }
+
+  // Load data
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+  const shows = showsData.shows || showsData;
+  const commercial = loadCommercial();
+  const grosses = fs.existsSync(GROSSES_PATH)
+    ? JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'))
+    : { shows: {} };
+
+  // Select targets
+  const targets = selectTargets(shows, commercial, grosses);
+
+  if (targets.length === 0) {
+    console.log('  No target shows to research.');
+    return;
+  }
+
+  console.log(`  Targets: ${targets.length} shows`);
+  if (SHOW_LIST) console.log(`  Shows: ${SHOW_LIST.join(', ')}`);
+  if (TOP_HISTORICAL) console.log(`  Top ${TOP_HISTORICAL} by all-time gross`);
+  if (SKIP_SEC) console.log(`  SEC EDGAR: SKIPPED`);
+  console.log('');
+
+  // Load or create progress file
+  let pending = { generatedAt: new Date().toISOString(), shows: {} };
+  if (fs.existsSync(PROGRESS_PATH)) {
+    try {
+      pending = JSON.parse(fs.readFileSync(PROGRESS_PATH, 'utf8'));
+      console.log(`  📂 Resuming from progress file (${Object.keys(pending.shows).length} shows done)`);
+    } catch {
+      // Start fresh
+    }
+  }
+
+  // Research each show
+  let researched = 0;
+  let succeeded = 0;
+  let failed = 0;
+
+  for (const show of targets) {
+    // Skip if already in progress file
+    if (pending.shows[show.id]) {
+      console.log(`  ⏭️  "${show.title}" already researched — skipping`);
+      succeeded++;
+      continue;
+    }
+
+    // Per-run cap. Prior behaviour researched all 1,800+ pending shows in one
+    // invocation, which hit the 60-min job timeout daily and marked the whole
+    // workflow as cancelled. The progress file persists across runs so
+    // capping here just spreads catch-up over multiple days.
+    if (researched >= MAX_PER_RUN) {
+      console.log(`  ⏹️  Reached per-run cap (${MAX_PER_RUN}) — resuming tomorrow`);
+      break;
+    }
+
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
+      const remaining = targets.length - researched;
+      console.log(`\n⏱ Time budget (${TIME_BUDGET_MIN} min) reached after ${timeBudget.elapsedMin()} min — stopping cleanly. ${remaining} targets deferred to next run.`);
+      break;
+    }
+
+    researched++;
+    const result = await researchShow(show, grosses);
+
+    if (result) {
+      pending.shows[show.id] = {
+        title: show.title,
+        slug: show.slug,
+        openingDate: show.openingDate,
+        status: show.status,
+        ...result,
+        researchedAt: new Date().toISOString(),
+      };
+      succeeded++;
+
+      // Log result
+      const cap = result.capitalization ? `$${(result.capitalization / 1e6).toFixed(1)}M` : '?';
+      const rec = result.recouped != null ? (result.recouped ? 'Yes' : 'No') : '?';
+      console.log(`  ✅ ${show.title}: Cap ${cap}, Recouped: ${rec}, ${result.designation} [${result.confidence}]`);
+    } else {
+      failed++;
+      console.log(`  ❌ ${show.title}: No usable data found`);
+    }
+
+    // Save progress after every show
+    if (!DRY_RUN) {
+      fs.writeFileSync(PROGRESS_PATH, JSON.stringify(pending, null, 2) + '\n');
+    }
+
+    // Rate limit between shows
+    await sleep(3000);
+  }
+
+  // --- Summary ---
+  console.log('\n--- Summary ---');
+  console.log(`  Researched: ${researched}`);
+  console.log(`  Succeeded:  ${succeeded}`);
+  console.log(`  Failed:     ${failed}`);
+  console.log(`  Success rate: ${targets.length > 0 ? Math.round(succeeded / targets.length * 100) : 0}%`);
+
+  // Confidence breakdown
+  const highConf = Object.values(pending.shows).filter(s => s.confidence === 'high').length;
+  const medConf = Object.values(pending.shows).filter(s => s.confidence === 'medium').length;
+  const lowConf = Object.values(pending.shows).filter(s => s.confidence === 'low').length;
+  console.log(`  Confidence: ${highConf} high, ${medConf} medium, ${lowConf} low`);
+
+  // Write pending file
+  if (!DRY_RUN && Object.keys(pending.shows).length > 0) {
+    fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
+    console.log(`\n📋 Pending review file written to ${PENDING_PATH}`);
+    console.log(`   Review the data, then run: node scripts/batch-commercial-research.js --apply`);
+
+    // Clean up progress file
+    if (fs.existsSync(PROGRESS_PATH)) {
+      fs.unlinkSync(PROGRESS_PATH);
+    }
+  } else if (DRY_RUN) {
+    console.log('\n🏁 Dry run complete — no files written');
+
+    // Print preview
+    for (const [id, data] of Object.entries(pending.shows)) {
+      console.log(`\n  ${data.title} (${id}):`);
+      console.log(`    Designation: ${data.designation}`);
+      console.log(`    Capitalization: ${data.capitalization ? '$' + (data.capitalization / 1e6).toFixed(1) + 'M' : 'null'}`);
+      console.log(`    Weekly Cost: ${data.weeklyRunningCost ? '$' + (data.weeklyRunningCost / 1000).toFixed(0) + 'K' : 'null'}`);
+      console.log(`    Recouped: ${data.recouped}`);
+      console.log(`    Confidence: ${data.confidence}`);
+      console.log(`    Sources: ${(data.sources || []).length}`);
+    }
+  }
+}
+
+// BRO-4623: every commercial-weekly batch-research job since 2026-08-26 sat
+// idle after "Pending review file written" until the 60-min job timeout
+// (run 37151980535: done 21:03, cancelled 21:33, orphan chrome-headless-
+// shell): a successful Playwright fetch left Chromium holding the event loop
+// open. runMain awaits the scraper's cleanup() and then exits explicitly.
+runMain(main, { teardown: [() => (universalScraper ? universalScraper.cleanup() : undefined)] });

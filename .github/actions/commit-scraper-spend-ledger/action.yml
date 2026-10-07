@@ -1,0 +1,35 @@
+name: 'Commit scraper-spend ledger'
+description: >-
+  Stages and commits data/audit/scraper-spend-ledger.jsonl (root-repo public
+  checkout, not core-data) if it changed, and pushes. Telemetry-only — the
+  calling step must set `if: always()` and `continue-on-error: true` so a
+  push race under a concurrent scheduled run never fails an otherwise-
+  successful job. Extracted in BRO-163 from the pattern shipped in
+  audit-closing-dates.yml (card 3b1637c5) once ~50 workflows needed it.
+
+inputs:
+  workflow-name:
+    description: 'Name to include in the commit message, e.g. "gather-reviews"'
+    required: true
+  push-retry-args:
+    description: 'Extra args forwarded to push-with-retry.sh, e.g. "8 main"'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Commit scraper-spend ledger
+      shell: bash
+      env:
+        PUSH_RECONCILE_MERGED_JSON: '1'
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+        if git diff --staged --quiet; then
+          echo "No ledger changes to commit"
+        else
+          git commit -m "chore: Record scraper-spend ledger (${{ inputs.workflow-name }})"
+          bash scripts/lib/push-with-retry.sh ${{ inputs.push-retry-args }}
+        fi

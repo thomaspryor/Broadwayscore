@@ -1,0 +1,613 @@
+name: Process Feedback Submissions
+
+on:
+  schedule:
+    # Every 10 min — feedback is triaged + (auto-fixed | flagged) within minutes,
+    # not the next day. Cheap: repo is public (free Actions minutes) and the
+    # Anthropic calls only fire when there are NEW, un-deduped submissions.
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Manual trigger
+
+concurrency:
+  group: process-feedback
+  cancel-in-progress: false
+
+jobs:
+  process-feedback:
+    runs-on: ubuntu-latest
+    # 30 min, not 15: the tracking-file push (push-with-retry, 7 attempts with
+    # backoff) can alone eat ~15 min under main-branch contention. On 2026-07-07
+    # (run 28876301784) that timed the job out as "cancelled" before issue
+    # creation ran, silently swallowing a diagnosed bug report.
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch, categorize, and diagnose feedback
+        id: process
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FORMSPREE_TOKEN: ${{ secrets.FORMSPREE_TOKEN }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: |
+          node scripts/process-feedback.js
+
+      # BRO-4453: reader name/email/message now live ONLY in the private
+      # core-data repo (data/feedback-submitters.json, keyed by submission id),
+      # never in the public issues this job opens. Push the store BEFORE the
+      # issue step below dispatches auto-fix: auto-fix-feedback-bug.yml and
+      # execute-approved-fix.yml read it from their own core-data checkout at
+      # job start, so it has to be on the private repo first. A second push
+      # near the end of the job retries if this one fails. Both run only when
+      # process-feedback.js actually added a reader to the store.
+      - name: Push reader details to private core data
+        id: store_push
+        if: always() && steps.process.outputs.submitter_store_changed == 'true'
+        # A failure here must not stop issue creation; the retry push below
+        # and the loud check after it cover it.
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: feedback submitter store (process-feedback)'
+
+      # Step order is deliberate: issue creation (cheap API calls) runs BEFORE the
+      # tracking commit (push-with-retry can burn 15 min under contention). The old
+      # order lost a diagnosed bug when the job timed out mid-push (2026-07-07,
+      # run 28876301784): tracking had already marked the submission processed via
+      # if: always(), but the success()-gated issue step never ran. Diagnoses are
+      # also persisted in data/audit/pending-bug-diagnoses.json (drained here,
+      # committed below) so even a cancellation during THIS step is recoverable
+      # on the next run via has_pending_diagnoses.
+      # !cancelled() rather than success(): a failed store push above must not
+      # skip issue creation (the reader's report would otherwise sit unissued).
+      - name: Create Bug Diagnosis Issues
+        if: ${{ !cancelled() && steps.process.outcome == 'success' && (steps.process.outputs.has_submissions == 'true' || steps.process.outputs.has_pending_diagnoses == 'true') }}
+        uses: actions/github-script@v7
+        env:
+          STORE_PUSH_OUTCOME: ${{ steps.store_push.outcome }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const PENDING_PATH = 'data/audit/pending-bug-diagnoses.json';
+            if (process.env.STORE_PUSH_OUTCOME === 'failure') {
+              core.warning('Reader store push failed; auto-fix runs dispatched now will not find reader details until the retry push lands (thank-you emails may be skipped).');
+            }
+            const RUN_REPORT_PATH = 'data/audit/feedback-run-report.json';
+
+            // --- Owner run-report enrichment (2026-08-05, GH #543) ---------
+            // process-feedback.js writes what it knows before dispatch; only
+            // THIS step knows the issue numbers and whether each dispatch
+            // actually landed. scripts/notify-feedback-outcomes.js emails the
+            // merged result, so the owner sees "auto-dispatched" vs "dispatch
+            // failed" vs "parked" rather than nothing at all — which is what
+            // they got for #505 and #543.
+            //
+            // Every write is best-effort and individually guarded: enriching a
+            // report must never be able to sink issue creation. A report that
+            // fails to update degrades to a less specific email, not a lost
+            // submission.
+            // Matching + enrichment live in a unit-tested module: an entry that
+            // fails to match would email the owner "no action taken" for work
+            // that actually ran — a quieter replay of the bug this report exists
+            // to end. See scripts/lib/feedback-run-report.js.
+            const runReportLib = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-run-report.js`);
+            // BRO-4453: this repo is PUBLIC. Issue titles, bodies and comments
+            // are built by the lib (no reader name, email or message, plus a
+            // scrub of LLM text); the reader's details come from the private
+            // store only for dedup and scrubbing.
+            const issueText = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-issue-body.js`);
+            const submitterStore = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-submitter-store.js`);
+            const readerStore = submitterStore.loadStore();
+            const readerFor = (submission) => submitterStore.lookupSubmitter(readerStore, submitterStore.submissionKey(submission)) || {};
+
+            let runReport = null;
+            try {
+              runReport = JSON.parse(fs.readFileSync(RUN_REPORT_PATH, 'utf8'));
+            } catch { /* no report (e.g. resumed pending-only run) — email step handles absence */ }
+
+            const recordIssue = (submission, issueNumber) =>
+              runReportLib.recordIssue(runReport, submission, issueNumber);
+            const recordDispatch = (submission, action, ok, error) =>
+              runReportLib.recordDispatch(runReport, submission, action, ok, error);
+
+            function saveRunReport() {
+              if (!runReport) return;
+              try {
+                fs.writeFileSync(RUN_REPORT_PATH, JSON.stringify(runReport, null, 2) + '\n');
+              } catch (err) {
+                console.log(`Could not persist run report: ${err.message}`);
+              }
+            }
+
+            // The request ledger is written by process-feedback.js BEFORE any
+            // issue exists, so the issue number can only be backfilled here.
+            // Without it the "now live" email cannot link to (or close) the
+            // tracking issue.
+            const LEDGER_PATH = 'data/audit/feedback-request-ledger.json';
+            let requestLedger = null;
+            try {
+              requestLedger = JSON.parse(fs.readFileSync(LEDGER_PATH, 'utf8'));
+            } catch { /* no tracked requests this run */ }
+
+            function recordLedgerIssue(submission, issueNumber) {
+              if (!requestLedger || !Array.isArray(requestLedger.entries)) return;
+              const id = runReportLib.submissionId(submission);
+              if (!id) return;
+              for (const e of requestLedger.entries) {
+                if (e && e.submissionId === id && !e.issueNumber) e.issueNumber = issueNumber;
+              }
+            }
+
+            function saveLedger() {
+              if (!requestLedger) return;
+              try {
+                fs.writeFileSync(LEDGER_PATH, JSON.stringify(requestLedger, null, 2) + '\n');
+              } catch (err) {
+                console.log(`Could not persist request ledger: ${err.message}`);
+              }
+            }
+
+            let diagnoses = [];
+            try {
+              diagnoses = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
+            } catch {
+              console.log('No pending diagnoses file found');
+              return;
+            }
+            if (!Array.isArray(diagnoses)) diagnoses = [];
+
+            // Partition entries. Malformed rows (no submission/item — e.g. a
+            // hand-edited or corrupted pending file) are dropped with a log:
+            // keeping them would crash the drain loop on submission.show and,
+            // because the finally block writes leftovers back, turn one bad row
+            // into a permanent failure loop. Entries with a submission but a
+            // null diagnosis (LLM call failed) get a minimal needs-review issue
+            // below instead of vanishing — a failed diagnosis must not silently
+            // eat the user's report.
+            const wellFormed = diagnoses.filter(d => d && d.submission && d.item);
+            const malformed = diagnoses.length - wellFormed.length;
+            if (malformed > 0) console.log(`Dropping ${malformed} malformed pending entr(ies) with no submission/item`);
+            const diagnosed = wellFormed.filter(d => d.diagnosis);
+            const undiagnosed = wellFormed.filter(d => !d.diagnosis);
+
+            // Undiagnosed entries whose issue creation fails must survive to
+            // the next run — since content requests always take this path, a
+            // transient GitHub API error would otherwise permanently lose the
+            // user's request (both exit paths below rewrite the pending file).
+            const failedUndiagnosed = [];
+            for (const entry of undiagnosed) {
+              const { item, submission } = entry;
+              try {
+                // Content-addition requests (missing show/reviews) deliberately
+                // skip diagnosis — they're data work, not code bugs.
+                const isContentRequest = item.contentRequest === true;
+                // contentActions is the planner's output (scripts/lib/content-request-routing.js):
+                // an array of {kind, workflow?, inputs?, reason?}. Dispatchable
+                // actions carry a `workflow` — unroutable ones don't and still
+                // park below exactly as before task #722.
+                // Reads the ENTRY, not `item`. This used to be an inline
+                // `item.contentActions` read, which is always undefined — so
+                // from the day routing shipped (2026-08-04) nothing was ever
+                // dispatched and every content request parked exactly as it had
+                // before the routing layer existed. GH #542 died that way; so
+                // did #546, a verbatim resubmission, while the planner logged
+                // "2 action(s) will be dispatched". The shape now lives in one
+                // unit-tested function instead of being restated in YAML where
+                // no test can reach it.
+                const contentActions = runReportLib.readContentActions(entry);
+                const dispatchable = contentActions.filter((a) => a && a.workflow);
+                const willAutoDispatch = isContentRequest && dispatchable.length > 0;
+
+                const reader = readerFor(submission);
+                const issue = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: issueText.buildIssueTitle(
+                    willAutoDispatch
+                      ? 'Content request auto-dispatched: '
+                      : isContentRequest
+                      ? 'Content request needs review: '
+                      : 'Bug report needs manual review (auto-diagnosis failed): ',
+                    item.summary,
+                    reader
+                  ),
+                  body: issueText.buildNeedsReviewBody({
+                    item, submission, contentActions, dispatchableCount: dispatchable.length, isContentRequest, reader,
+                  }),
+                  labels: willAutoDispatch ? ['feedback-digest', 'auto-dispatched'] : ['feedback-digest', 'needs-review'],
+                });
+                console.log(
+                  willAutoDispatch
+                    ? `Created auto-dispatched issue #${issue.data.number}`
+                    : `Created needs-review issue #${issue.data.number} for undiagnosed report`
+                );
+                recordIssue(submission, issue.data.number);
+                recordLedgerIssue(submission, issue.data.number);
+
+                // Dispatch each routable action. One failed dispatch must not
+                // sink the others or the issue itself — the issue (with its
+                // routing table) is the audit trail either way.
+                for (const action of dispatchable) {
+                  try {
+                    await github.rest.actions.createWorkflowDispatch({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      workflow_id: action.workflow,
+                      ref: 'main',
+                      inputs: action.inputs || {},
+                    });
+                    console.log(`  Dispatched ${action.workflow} for #${issue.data.number} (${action.kind})`);
+                    recordDispatch(submission, action, true, null);
+                  } catch (err) {
+                    console.log(`  Failed to dispatch ${action.workflow} for #${issue.data.number}: ${err.message}`);
+                    recordDispatch(submission, action, false, err.message);
+                    try {
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: issue.data.number,
+                        body: `Dispatch of \`${action.workflow}\` failed: ${err.message}. Needs a manual \`gh workflow run\` or investigation.`,
+                      });
+                    } catch (_) { /* comment is best-effort; the console log above is the record of truth */ }
+                  }
+                  // 10s spacing between dispatches — same rationale as the
+                  // bug-diagnosis auto-fix dispatch loop below.
+                  await new Promise((r) => setTimeout(r, 10000));
+                }
+              } catch (err) {
+                console.log(`Failed to create needs-review issue for undiagnosed report: ${err.message}`);
+                failedUndiagnosed.push(entry);
+              }
+            }
+
+            if (diagnosed.length === 0) {
+              console.log('No bugs diagnosed');
+              saveRunReport();
+              saveLedger();
+              fs.writeFileSync(PENDING_PATH, JSON.stringify(failedUndiagnosed, null, 2) + '\n');
+              if (failedUndiagnosed.length > 0) {
+                console.log(`${failedUndiagnosed.length} undiagnosed entr(ies) NOT issued — left for the next run`);
+              }
+              return;
+            }
+
+            console.log(`Diagnosed ${diagnosed.length} bug(s); checking against open issues for duplicates`);
+
+            // Topic-level dedup: a repeat report of an already-open bug must NOT
+            // create a new issue or re-ping the owner. See scripts/lib/feedback-dedup.js.
+            const { findDuplicateOpenBug } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-dedup.js`);
+
+            // Fetch all OPEN bug-diagnosis issues and extract their embedded diagnosis.
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'bug-diagnosis',
+              per_page: 100,
+            });
+            const openBugs = openIssues
+              // Hydrated from the private store so dedup still compares the
+              // readers' original messages.
+              .map(iss => ({ number: iss.number, diagnosis: submitterStore.loadIssueDiagnosis(iss.body, { store: readerStore }) }))
+              .filter(b => b.diagnosis);
+            console.log(`Found ${openBugs.length} open bug-diagnosis issue(s) to dedup against`);
+
+            // Load shows.json for resolving show IDs. Ranked matching via the
+            // shared resolver — the old inline exact-match returned null for
+            // "MISTERMAN" vs stored title "Misterman (Theatre Row)" (GH #393),
+            // zeroing showId/showSlug in the diagnosis payload.
+            const showsRaw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+            const allShows = showsRaw.shows || showsRaw;
+            const { resolveShow: resolveShowRanked } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/resolve-show.js`);
+            function resolveShow(name) {
+              return resolveShowRanked(name, allShows);
+            }
+            const { normalizeDiagnosisShowIds } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-multishow.js`);
+
+            // Drain as we go: entries are removed from `remaining` once handled,
+            // and whatever is left (mid-loop crash/cancel) is written back in
+            // finally so the next run picks it up instead of losing it.
+            const remaining = new Set(diagnosed);
+            try {
+              for (const entry of diagnosed) {
+                const { item, submission, diagnosis } = entry;
+                const resolvedShow = resolveShow(submission.show);
+                // showIds is the canonical multi-show field: every show this
+                // report references, not just the form's `show` field. Union
+                // of diagnoseBug's deterministic resolvedShowIds (matched
+                // against the message text too) with the form-field show —
+                // the form field is authoritative when present, so it's
+                // guaranteed to be included even if resolvedShowIds missed it.
+                const showIdSet = new Set(normalizeDiagnosisShowIds(diagnosis));
+                if (resolvedShow?.id) showIdSet.add(resolvedShow.id);
+                const showIds = [...showIdSet];
+                // Public payload: submissionId instead of the reader's details.
+                const diagPayload = issueText.buildPublicDiagnosisPayload({ diagnosis, submission, resolvedShow, showIds });
+                const reader = readerFor(submission);
+                // Dedup-only copy with the reader's message (never published).
+                const dedupDiag = submitterStore.hydrateDiagnosis(diagPayload, readerStore);
+
+                // Skip if this bug duplicates an already-open issue — comment on
+                // the existing one (no new issue, no new auto-fix dispatch, no
+                // new owner email).
+                const dup = findDuplicateOpenBug(dedupDiag, openBugs);
+                if (dup) {
+                  console.log(`Duplicate of open issue #${dup.number} (${dup.reason}) — commenting, not creating new`);
+                  let commented = false;
+                  try {
+                    await github.rest.issues.createComment({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      issue_number: dup.number,
+                      body: issueText.buildDuplicateComment({ submission, reason: dup.reason }),
+                    });
+                    commented = true;
+                  } catch (err) {
+                    console.log(`  Failed to comment on #${dup.number}: ${err.message}`);
+                  }
+                  // Only suppress the new issue if the dedup comment actually
+                  // landed. The submission is already marked processed upstream,
+                  // so a failed comment with `continue` would silently lose the
+                  // report — fall through to normal issue creation instead.
+                  if (commented) { remaining.delete(entry); continue; }
+                  console.log('  Comment failed — creating a normal issue so the report is not lost');
+                }
+
+                const body = issueText.buildBugDiagnosisBody({ item, submission, diagnosis, payload: diagPayload, showIds, reader });
+
+                const title = issueText.buildIssueTitle('Bug Diagnosis: ', item.summary, reader);
+                const labels = ['bug-diagnosis'];
+                if (item.priority) labels.push(`${item.priority.toLowerCase()}-priority`);
+
+                const issue = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title,
+                  body,
+                  labels
+                });
+
+                console.log(`Created issue #${issue.data.number}: ${title}`);
+                recordIssue(submission, issue.data.number);
+                recordLedgerIssue(submission, issue.data.number);
+                remaining.delete(entry);
+
+                // Make this new issue dedup-able for the rest of this run (two
+                // near-identical reports in one batch should collapse too).
+                openBugs.push({ number: issue.data.number, diagnosis: dedupDiag });
+
+                // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
+                try {
+                  await github.rest.actions.createWorkflowDispatch({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    workflow_id: 'auto-fix-feedback-bug.yml',
+                    ref: 'main',
+                    inputs: { issue_number: String(issue.data.number) }
+                  });
+                  console.log(`  Dispatched auto-fix for #${issue.data.number}`);
+                  recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'auto-fix', inputs: { issue_number: String(issue.data.number) } }, true, null);
+                } catch (err) {
+                  console.log(`  Failed to dispatch auto-fix: ${err.message}`);
+                  recordDispatch(submission, { workflow: 'auto-fix-feedback-bug.yml', kind: 'auto-fix', inputs: { issue_number: String(issue.data.number) } }, false, err.message);
+                }
+
+                // 10s spacing between dispatches
+                await new Promise(r => setTimeout(r, 10000));
+              }
+            } finally {
+              saveRunReport();
+              saveLedger();
+              const leftover = [...remaining, ...failedUndiagnosed];
+              fs.writeFileSync(PENDING_PATH, JSON.stringify(leftover, null, 2) + '\n');
+              if (leftover.length > 0) {
+                console.log(`${leftover.length} diagnosis(es) NOT issued — left in ${PENDING_PATH} for the next run`);
+              }
+            }
+
+      # Only fires when there is a Formshield spam-flagged item needing a manual
+      # "Not Spam" rescue. Routine feedback no longer creates a digest issue:
+      # bugs become deduped bug-diagnosis issues, praise/features get submitter
+      # thank-yous. This kills the daily "Feedback Digest" notification noise.
+      - name: Create Needs-Review Issue (spam-flagged only)
+        if: success() && steps.process.outputs.has_spam_flagged == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            let summary = '';
+            try {
+              summary = fs.readFileSync('.feedback-summary.md', 'utf8');
+            } catch (error) {
+              return; // No summary = no issue
+            }
+
+            if (!summary || summary.trim().length === 0) return;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Feedback Needs Review (spam-flagged) - ${new Date().toISOString().split('T')[0]}`,
+              body: summary,
+              labels: ['feedback-digest', 'needs-review']
+            });
+
+      # THE visibility guarantee (2026-08-05, GH #543). Runs on success AND on
+      # failure/cancellation, deliberately: the owner's complaint was not "the
+      # pipeline broke", it was "something happened and nobody told me". A run
+      # that crashes mid-way must still say which submissions it saw and what
+      # state it left them in.
+      #
+      # Placed BEFORE the tracking commit for the same reason issue creation is:
+      # push-with-retry can burn ~15 min under main-branch contention and has
+      # timed this job out before (run 28876301784). Notification must not sit
+      # behind a git push.
+      #
+      # No-op when there is no run report (the common "no new feedback" case) —
+      # exits 0 without sending, so this does not become its own noise source.
+      - name: Email feedback outcomes to owner
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          PIPELINE_STATUS: ${{ job.status }}
+          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: node scripts/notify-feedback-outcomes.js
+
+      # "Auto-dispatched" is not "fixed". This checks every open request against
+      # what broadwayscorecard.com actually serves and emails the owner when the
+      # show/reviews/image are genuinely live — and separately when a request has
+      # been stuck for days, which is how a silently-failed workflow surfaces
+      # instead of the request just never happening.
+      #
+      # Runs every cycle, not only when there is new feedback: a request lands
+      # one day and goes live hours later, so the check has to keep running long
+      # after the submission that created it. Cheap — a handful of HTTPS GETs,
+      # and it exits immediately when no requests are open.
+      - name: Verify user requests are live on the site
+        if: always()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/verify-feedback-requests-live.js
+
+      # Both notification steps above call routeAlert() (via
+      # scripts/notify-feedback-outcomes.js and
+      # scripts/verify-feedback-requests-live.js), so the alert ledger and the
+      # digest queue they write only exist on THIS job's runner disk. Staging
+      # them here is what keeps the cooldown/dedup state — without it every run
+      # looks like a brand-new incident. Enforced by
+      # scripts/lib/alert-ledger-commit-check.js — which, since BRO-3051 taught
+      # it to skip COMMENT lines during call detection, can no longer see this
+      # job from a mention in a comment. The claim that it could was stale and
+      # this job had silently dropped out of coverage; the echoed breadcrumb in
+      # the step below is a real (non-comment, non-`name:`) line, which is what
+      # the checker actually matches on. Don't replace it with a comment.
+      # PUSH_DEADLINE_SEC='600' + MAX_RETRIES=20 (card #1910 audit, 2026-08-26):
+      # was on the bare shared default (7 retries/240s, backoffSum 77s) —
+      # this job runs every 10 minutes and hard-fails on push (if: always(),
+      # no soft-fail wrapper), and a dropped push here breaks the alert
+      # ledger/digest-queue cooldown state (see the routeAlert() comment
+      # above — "without it every run looks like a brand-new incident").
+      # Job's 30min timeout has ample headroom for 600s (no other named
+      # step budgets in this job), so no timeout-minutes change needed.
+      # Retry of the reader-store push above (BRO-4453). A no-op when that one
+      # landed (push-core-data finds nothing new to commit); when it failed,
+      # this is the last chance before the submissions are marked processed
+      # below, after which the reader's details would exist nowhere.
+      - name: Push reader details to private core data (retry)
+        id: store_push_retry
+        if: always() && steps.process.outputs.submitter_store_changed == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: feedback submitter store (process-feedback retry)'
+
+      # Both pushes failed: the reader's name/email/message exist only on this
+      # runner, and the public files below are redacted. Fail the job (the
+      # failure notification emails the owner) instead of losing them quietly.
+      # The store file is printed nowhere: Actions logs are public.
+      - name: Fail loudly if reader details never reached the private repo
+        if: always() && steps.store_push_retry.outcome == 'failure'
+        run: |
+          echo "::error::Reader contact details for this run's feedback could not be pushed to the private core-data repo (both attempts failed). Thank-you and owner reader-fix emails for these reports will have no reader details."
+          exit 1
+
+      - name: Commit tracking file
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — a pre-transfer connection stall burns the
+          # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
+          # inside the 600s deadline above. Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+          # BRO-3358: this step is this workflow's own push-retry hot spot
+          # (600s deadline, lowered 30s per-attempt cap — the two symptoms of
+          # a chronically-hard-killed push) and this workflow's 10-minute
+          # cadence gives the fastest possible shot at capturing a REAL CI
+          # trace2 failure to test the credential-helper hypothesis against.
+          # Default-off elsewhere (see push-with-retry.sh's PUSH_TRACE2_
+          # DIAGNOSTICS comment) — enabled here ONLY, not repo-wide, so a bug
+          # in this new diagnostic path can only ever affect this one step
+          # while a real failure is captured. Remove once BRO-3358 either
+          # confirms or rules out the credential-helper hypothesis.
+          PUSH_TRACE2_DIAGNOSTICS: '1'
+        run: |
+          echo "Staging state written by routeAlert() (notify-feedback-outcomes.js, verify-feedback-requests-live.js)"
+          git add data/audit/processed-feedback.json
+          git add data/audit/pending-bug-diagnoses.json 2>/dev/null || true
+          git add data/audit/feedback-request-ledger.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on every
+          # dispatch attempt. Left unstaged it survives the commit as a dirty
+          # tracked modification, which makes every rebase in push-with-retry.sh
+          # refuse pre-flight and silently forces the clobber-prone merge path.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No tracking changes"
+          else
+            git commit -m "chore: Update feedback tracking
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh 20 main
+          fi
+
+      - name: Ensure owner is not watching repo (prevents GitHub notification emails)
+        env:
+          GH_TOKEN: ${{ secrets.GH_DISPATCH_TOKEN }}
+        run: |
+          # "Not watching" — owner only gets @mentions, not every bot-created
+          # issue/comment. All pipeline notifications go via Resend, not GitHub.
+          # NOTE: unwatching requires DELETE on the subscription. The old code
+          # used PUT {"subscribed":false}, which GitHub rejects (422) and which
+          # left the owner subscribed — the root cause of the per-issue email
+          # noise. DELETE removes the subscription (idempotent: 404 = already
+          # unwatched). Needs the token's "notifications" (or repo) scope.
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X DELETE \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/subscription")
+          echo "Unwatch DELETE returned HTTP $code (204=unwatched, 404=already not watching)"
+          if [ "$code" != "204" ] && [ "$code" != "404" ]; then
+            echo "::warning::Could not unwatch repo (HTTP $code) — GH_DISPATCH_TOKEN may lack 'notifications' scope; owner may keep getting issue emails."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Process Feedback Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

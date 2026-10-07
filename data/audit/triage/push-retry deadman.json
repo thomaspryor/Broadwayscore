@@ -1,0 +1,15 @@
+{
+  "system": "push-retry deadman",
+  "status": "error",
+  "lastChecked": "2026-10-05T11:14:04.822Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Push-retry deadman",
+      "status": "error",
+      "message": "32 push-retry failure(s) in the last 7d across Broadwayscore:main, broadway-scorecard-data:main, Broadwayscore:refs/heads/land/bro-4523 [Rebuild Reviews (Fast) x12, Rebuild Reviews Data x7, Promote Off-West End Venue Candidates x4, Scrape New Aggregators x2, Card Verifiability Audit x2, unknown x1, Opening Night Express x1, Opening Night Poller x1, Execute Approved Fix x1, Weekly Video Reviews x1]. Most recent reason: retries-exhausted."
+    }
+  ]
+}

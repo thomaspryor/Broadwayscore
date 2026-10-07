@@ -1,0 +1,35 @@
+{
+  "issueNumber": "bro-4431-f",
+  "planId": "8a1e3ede-6964-4c98-b8a5-27e379fffc18",
+  "status": "applied",
+  "createdAt": "2026-10-01T00:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4431: the Cleansed Reviews Hub review is filed under the site's house byline; its page sub-title reads 'Reviewer: Scott Matthewman' (verified from the page HTML on 2026-09-30).",
+    "steps": [
+      "Set the Cleansed Reviews Hub byline to Scott Matthewman"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cleansed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+        "field": "criticName",
+        "oldValue": "The Reviews Hub - London",
+        "newValue": "Scott Matthewman",
+        "description": "Page sub-title: Reviewer: Scott Matthewman"
+      }
+    ]
+  },
+  "executedAt": "2026-10-01T00:36:02.308Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json criticName: \"The Reviews Hub - London\" -> \"Scott Matthewman\""
+    }
+  ]
+}

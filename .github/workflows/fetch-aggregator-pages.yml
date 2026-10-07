@@ -1,0 +1,92 @@
+name: Fetch Aggregator Pages
+
+on:
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      aggregator:
+        description: 'Aggregator to fetch from'
+        required: true
+        default: 'show-score'
+        type: choice
+        options:
+          - show-score
+          - dtli
+          - bww-rr
+          - all
+      shows:
+        description: 'Show IDs (comma-separated, "all", or "missing")'
+        required: true
+        default: 'missing'
+        type: string
+      force:
+        description: 'Re-fetch even if file exists'
+        required: false
+        default: false
+        type: boolean
+
+# BRO-934: per-workflow group: stops overlapping runs of the same job racing on the private-repo push. Not a shared class group (GH pending-queue depth is 1; see rebuild-fast.yml).
+concurrency:
+  group: fetch-aggregator-pages
+  cancel-in-progress: false
+
+jobs:
+  fetch-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - uses: ./.github/actions/setup-node
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Fetch aggregator pages
+        run: |
+          ARGS="--aggregator ${{ github.event.inputs.aggregator }} --shows ${{ github.event.inputs.shows }}"
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          npx tsx scripts/fetch-aggregator-pages.ts $ARGS
+        env:
+          NODE_ENV: production
+
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch ${{ github.event.inputs.aggregator }} aggregator pages"
+
+      - name: Summary
+        run: |
+          echo "## Fetch Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Aggregator:** ${{ github.event.inputs.aggregator }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Shows:** ${{ github.event.inputs.shows }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Force:** ${{ github.event.inputs.force }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          AA_COUNT=$(find data/aggregator-archive -type f 2>/dev/null | wc -l | tr -d ' ')
+          echo "**Aggregator archive files:** $AA_COUNT" >> $GITHUB_STEP_SUMMARY
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fetch Aggregator Pages Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

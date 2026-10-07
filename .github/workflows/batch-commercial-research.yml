@@ -1,0 +1,211 @@
+name: Batch Commercial Research
+
+on:
+  workflow_call:
+    inputs:
+      shows:
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        required: false
+        type: boolean
+        default: false
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show slugs, "top-historical-30", or empty for auto-discover'
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        description: 'Dry run (no files written)'
+        required: false
+        type: boolean
+        default: false
+      skip_sec:
+        description: 'Skip SEC EDGAR lookups'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 60-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Run batch commercial research
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          ARGS=""
+
+          # Parse shows input (empty = auto-discover uncovered shows)
+          INPUT_SHOWS="${{ github.event.inputs.shows }}"
+          if [ -z "$INPUT_SHOWS" ]; then
+            echo "No shows specified — script will auto-discover uncovered shows"
+          elif [ "$INPUT_SHOWS" = "top-historical-30" ]; then
+            ARGS="$ARGS --top-historical=30"
+          else
+            ARGS="$ARGS --shows=$INPUT_SHOWS"
+          fi
+
+          # Optional flags
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ github.event.inputs.skip_sec }}" = "true" ]; then
+            ARGS="$ARGS --skip-sec"
+          fi
+
+          # BRO-3832: this workflow was registered with zero lifetime runs.
+          # The first-ever dispatch (--shows=hamilton --dry-run, a SINGLE
+          # show) rode the job's own timeout-minutes: 60 to a `cancelled`
+          # conclusion — analyzeShowWithClaude() had no request timeout, so
+          # one stuck show hung forever with nothing to checkpoint between
+          # (--time-budget-min only checks BETWEEN shows in the loop). Fixed
+          # at the source in batch-commercial-research.js (explicit 45s
+          # timeout on that request). --time-budget-min=30 here is
+          # cooperative checkpointing for the multi-show auto-discover path;
+          # it does not by itself bound a single-show run, which is why the
+          # `timeout` wrap below is the real backstop.
+          ARGS="$ARGS --time-budget-min=30"
+
+          echo "Running: node scripts/batch-commercial-research.js $ARGS"
+          # Inline `timeout` + explicit exit, NOT step-level `timeout-minutes`
+          # — a step-level timeout (or riding this job's own timeout-minutes)
+          # reports conclusion `cancelled`, which the `if: failure()` "Notify
+          # on failure" step below silently skips (documented failure mode,
+          # see .github/workflows/CLAUDE.md's Actionlint section / card #90).
+          # 1800s leaves headroom under this job's 60min ceiling for
+          # checkout/setup (~2min) + the push/ledger steps after this one.
+          # `|| status=$?` (not a bare `status=$?` on its own line) — GHA's
+          # default shell runs `-eo pipefail`, so a nonzero `timeout` exit as
+          # a standalone statement would abort the script right there and
+          # skip every line after it (ship-check/Codex finding, BRO-3832).
+          # The `||` puts the assignment on the branch `-e` treats as already
+          # handled, letting `status` actually get read below.
+          status=0
+          timeout 1800 node scripts/batch-commercial-research.js $ARGS || status=$?
+          if [ "$status" -ne 0 ]; then
+            if [ "$status" -eq 124 ]; then
+              echo "::error::batch commercial research timed out after 30m (BRO-3832)"
+            else
+              echo "::error::batch commercial research failed (exit $status)"
+            fi
+            exit 1
+          fi
+
+      - name: Commit pending results
+        if: always() && github.event.inputs.dry_run != 'true'
+        # Task #574: this step commits commercial-pending-review.json, one of
+        # the union-merged managed files — see push-with-retry.sh's
+        # reconcile_merged_json() for why the flag is needed on the common
+        # (non-conflicting) rebase path.
+        #
+        # BRO-3832: also stages commercial-batch-progress.json (per-show
+        # checkpoint, matches commercial-weekly.yml's sibling job) — the
+        # research step only writes the final commercial-pending-review.json
+        # AFTER its whole loop finishes; a run killed by the `timeout` wrap
+        # above mid-loop has completed shows sitting only in the progress
+        # checkpoint (ship-check/Codex finding). Uses git-add-existing.sh
+        # since a killed run, or a run where 0 shows succeeded, may leave
+        # commercial-pending-review.json never written at all — a plain
+        # `git add` on a missing path fails the whole step (#458-class bug).
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/commercial-batch-progress.json
+
+          if git diff --staged --quiet; then
+            echo "No pending results to commit"
+          else
+            git commit -m "data: Batch commercial research results (pending review)
+
+          Results written to commercial-pending-review.json for human review.
+          Run 'node scripts/apply-commercial-pending.js --all' to apply.
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Batch Commercial Research Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f data/commercial-pending-review.json ]; then
+            node -e "
+              const pending = require('./data/commercial-pending-review.json');
+              const shows = Object.entries(pending.shows || {});
+              console.log('- **Shows researched:** ' + shows.length);
+              const high = shows.filter(([,s]) => s.confidence === 'high').length;
+              const med = shows.filter(([,s]) => s.confidence === 'medium').length;
+              const low = shows.filter(([,s]) => s.confidence === 'low').length;
+              console.log('- **Confidence:** ' + high + ' high, ' + med + ' medium, ' + low + ' low');
+              console.log('');
+              console.log('### Results');
+              console.log('| Show | Designation | Cap | Recouped | Confidence |');
+              console.log('|------|------------|-----|----------|-----------|');
+              for (const [id, s] of shows) {
+                const cap = s.capitalization ? '\$' + (s.capitalization/1e6).toFixed(1) + 'M' : '?';
+                const rec = s.recouped != null ? (s.recouped ? 'Yes' : 'No') : '?';
+                console.log('| ' + (s.title || id) + ' | ' + (s.designation || 'TBD') + ' | ' + cap + ' | ' + rec + ' | ' + (s.confidence || '?') + ' |');
+              }
+              console.log('');
+              console.log('> Review the pending file, then apply with: node scripts/apply-commercial-pending.js --all');
+            " >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "Could not generate summary" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No pending results file generated." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: batch-commercial-research
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Batch Commercial Research Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

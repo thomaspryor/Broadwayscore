@@ -1,0 +1,2789 @@
+#!/usr/bin/env node
+
+/**
+ * Automated Commercial Data Updater for Broadway Scorecard
+ *
+ * Gathers financial/commercial data from multiple sources:
+ *   - Reddit r/Broadway Grosses Analysis posts (u/Boring_Waltz_9545)
+ *   - Reddit r/Broadway financial discussion threads
+ *   - Trade press articles (Deadline, Variety, Playbill, etc.)
+ *
+ * Then uses Claude AI to propose changes to data/commercial.json,
+ * applies them with confidence filtering, and creates a GitHub issue
+ * summarizing the changes.
+ *
+ * Environment variables:
+ *   SCRAPINGBEE_API_KEY  - For web scraping (optional, has fallbacks)
+ *   ANTHROPIC_API_KEY    - For AI analysis (not required if --gather-only)
+ *   GITHUB_TOKEN         - For creating issues (optional)
+ *
+ * Usage:
+ *   node scripts/update-commercial-data.js [options]
+ *
+ * Options:
+ *   --dry-run       Preview mode, don't write files
+ *   --gather-reddit Only gather Reddit data
+ *   --gather-trade  Only gather trade press data
+ *   --gather-all    Gather all sources (default if no specific gather flag)
+ *   --gather-only   Stop after gathering, don't run AI analysis
+ */
+
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const { isRelevantPost } = require('./lib/reddit-grosses');
+const {
+  isReportedWeeklyCost, citedSections, costSourceBasis, methodologyForCostSource, isReportedSource,
+  isPrintableReportedCitation, isPlausibleWeeklyCost,
+} = require('./lib/waltz-cost-gap-fill');
+const { sanitizeForPublicRecord, internalWordingIn, PUBLIC_TEXT_FIELDS } = require('./lib/commercial-record-checks');
+const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
+
+const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
+const { CLAUDE_SONNET } = require('./lib/models');
+const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
+
+// Universal scraper with Bright Data → ScrapingBee → Playwright fallback
+let universalScraper;
+try {
+  universalScraper = require('./lib/scraper');
+} catch (e) {
+  console.warn('Warning: scraper module not available');
+}
+
+// Sprint 4: Import new modules
+let tradePressScraper;
+try {
+  tradePressScraper = require('./lib/trade-press-scraper');
+} catch (e) {
+  console.warn('Warning: trade-press-scraper module not available');
+}
+
+let sourceValidator;
+try {
+  sourceValidator = require('./lib/source-validator');
+} catch (e) {
+  console.warn('Warning: source-validator module not available');
+}
+
+// Sprint 3: Deep Research Guardian module
+let deepResearchGuardian;
+try {
+  deepResearchGuardian = require('./lib/deep-research-guardian');
+} catch (e) {
+  console.warn('Warning: deep-research-guardian module not available');
+}
+
+// ---------------------------------------------------------------------------
+// CLI Arguments
+// ---------------------------------------------------------------------------
+const args = process.argv.slice(2);
+const DRY_RUN = args.includes('--dry-run');
+const GATHER_REDDIT = args.includes('--gather-reddit');
+const GATHER_TRADE = args.includes('--gather-trade');
+const GATHER_ALL = args.includes('--gather-all') || (!GATHER_REDDIT && !GATHER_TRADE);
+const GATHER_ONLY = args.includes('--gather-only');
+
+// Sprint 4 new flags
+const GATHER_SEC = args.includes('--gather-sec');           // Enable SEC EDGAR gathering
+const GATHER_TRADE_FULL = args.includes('--gather-trade-full'); // Use enhanced trade press scraper
+const SKIP_VALIDATION = args.includes('--skip-validation');  // Bypass source validation
+
+// Feature flag for SEC EDGAR (gracefully disabled if module not available)
+let SEC_EDGAR_ENABLED = false;
+try {
+  require('./lib/sec-edgar-scraper');
+  SEC_EDGAR_ENABLED = true;
+} catch (e) {
+  // SEC EDGAR module not available
+}
+
+// ---------------------------------------------------------------------------
+// Environment Variables
+// ---------------------------------------------------------------------------
+const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
+const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+
+// ---------------------------------------------------------------------------
+// Data Paths
+// ---------------------------------------------------------------------------
+const DATA_DIR = path.join(__dirname, '..', 'data');
+const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
+const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
+const GROSSES_PATH = path.join(DATA_DIR, 'grosses.json');
+const CHANGELOG_PATH = path.join(DATA_DIR, 'commercial-changelog.json');
+const DEBUG_DIR = path.join(DATA_DIR, 'debug');
+
+// ---------------------------------------------------------------------------
+// Sprint 4.12: Claude API Usage Tracking
+// ---------------------------------------------------------------------------
+const claudeApiUsage = {
+  inputTokens: 0,
+  outputTokens: 0,
+  calls: 0
+};
+
+// ---------------------------------------------------------------------------
+// Known Aliases: Import shared aliases + commercial/Reddit-specific overrides
+// ---------------------------------------------------------------------------
+const { KNOWN_ALIASES: SHARED_ALIASES } = require('./lib/show-matching');
+
+// Commercial-specific aliases: Reddit slang, abbreviations, and production-year
+// overrides that differ from the shared base-slug mapping.
+// These are merged ON TOP of shared aliases, so they win on conflict.
+const COMMERCIAL_ALIASES = {
+  // Reddit abbreviations & slang
+  'hp cursed child': 'harry-potter',
+  'hpatcc': 'harry-potter',
+  'tlk': 'the-lion-king-1997',
+  'bom': 'book-of-mormon',
+  'dbh': 'death-becomes-her',
+  'bvsc': 'buena-vista-social-club',
+  'bttf': 'back-to-the-future',
+  'wfe': 'water-for-elephants',
+  'qov': 'queen-of-versailles',
+  'poto': 'the-phantom-of-the-opera-1988',
+  'deh': 'dear-evan-hansen-2016',
+  'cfa': 'come-from-away-2017',
+
+  // Informal names
+  'neil diamond musical': 'a-beautiful-noise-2022',
+  'michael jackson musical': 'mj',
+  'six on broadway': 'six',
+  'st: the first shadow': 'stranger-things',
+  'op mincemeat': 'operation-mincemeat',
+  'betty boop musical': 'boop',
+  'suffragettes': 'suffs',
+  'alicia keys musical': 'hells-kitchen',
+  'kit kat club': 'cabaret-2024',
+  'ragtime revival': 'ragtime',
+  'all out comedy': 'all-out',
+  'mama mia': 'mamma-mia',
+  'avett brothers musical': 'swept-away',
+  'sufjan stevens musical': 'illinoise',
+  'britney spears musical': 'once-upon-a-one-more-time',
+  'huey lewis musical': 'heart-of-rock-and-roll',
+  'monty python spamalot': 'spamalot',
+
+  // Production-year overrides (commercial data needs specific productions)
+  'cabaret': 'cabaret-2024',
+  'cabaret revival': 'cabaret-2024',
+  'gypsy': 'gypsy-2024',
+  'gypsy 2024': 'gypsy-2024',
+  'beautiful': 'beautiful-the-carole-king-musical-2014',
+  'beautiful the carole king musical': 'beautiful-the-carole-king-musical-2014',
+  'sunset boulevard revival': 'sunset-blvd-2024',
+  'tammy faye musical': 'tammy-faye',
+
+  // Short forms
+  'mattress': 'once-upon-a-mattress-2024',
+  'real friends': 'real-friends-of-claridge-county',
+  'salesman': 'death-of-a-salesman',
+  'balusters': 'the-balusters',
+  'jellicle ball': 'cats-the-jellicle-ball',
+  'giant musical': 'giant',
+  'wine and roses': 'days-of-wine-and-roses',
+  'dance in ohio': 'how-to-dance-in-ohio',
+  'cottage': 'the-cottage',
+  'shark is broken': 'the-shark-is-broken',
+  'french republic': 'prayer-for-the-french-republic',
+  'purlie': 'purlie-victorious',
+  'vanya': 'uncle-vanya',
+  'wiz': 'the-wiz',
+
+  // Historical mega-hits (year-specific slugs)
+  'the phantom of the opera': 'the-phantom-of-the-opera-1988',
+  'phantom of the opera': 'the-phantom-of-the-opera-1988',
+  'phantom': 'the-phantom-of-the-opera-1988',
+  'jersey boys': 'jersey-boys-2005',
+  'kinky boots': 'kinky-boots-2013',
+  'kinky boots the musical': 'kinky-boots-2013',
+  'carole king musical': 'beautiful-the-carole-king-musical-2014',
+  'dear evan hansen': 'dear-evan-hansen-2016',
+  'evan hansen': 'dear-evan-hansen-2016',
+  'hairspray': 'hairspray-2002',
+  'hairspray the musical': 'hairspray-2002',
+  'come from away': 'come-from-away-2017',
+  'matilda': 'matilda-the-musical-2013',
+  'matilda the musical': 'matilda-the-musical-2013',
+  'billy elliot': 'billy-elliot-the-musical-2008',
+  'billy elliot the musical': 'billy-elliot-the-musical-2008',
+  'beaches a new musical': 'beaches',
+  'death becomes her the musical': 'death-becomes-her',
+  'back to the future the musical': 'back-to-the-future',
+  'rocky horror show': 'the-rocky-horror-show',
+  'gutenberg the musical': 'gutenberg',
+  'doubt a parable': 'doubt',
+  'jajas african hair braiding': 'jajas-african-hair-braiding',
+  'cats': 'cats-the-jellicle-ball',
+};
+
+// Merge: shared base aliases + commercial overrides (commercial wins on conflict)
+const KNOWN_ALIASES = { ...SHARED_ALIASES, ...COMMERCIAL_ALIASES };
+
+// ---------------------------------------------------------------------------
+// Utility Functions
+// ---------------------------------------------------------------------------
+
+/**
+ * Simple promise-based delay.
+ * @param {number} ms - Milliseconds to wait
+ */
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+/**
+ * Fetch a Reddit .json endpoint directly (no proxy needed).
+ * Uses www.reddit.com — old.reddit.com serves HTML where JSON is expected
+ * as of 2026-07 (the old host was the "reliable" one historically; inverted).
+ *
+ * @param {string} url - Reddit URL (old.reddit.com is rewritten to www)
+ * @returns {Promise<Object|null>} Parsed JSON or null on failure
+ */
+async function fetchRedditJsonDirect(url, retries = 2) {
+  const normalizedUrl = url.replace('old.reddit.com', 'www.reddit.com');
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const resp = await fetch(normalizedUrl, {
+        headers: {
+          'User-Agent': 'BroadwayScorecard/1.0 (commercial-data-updater)',
+          'Accept': 'application/json'
+        },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!resp.ok) {
+        if (attempt < retries) {
+          await new Promise(r => setTimeout(r, 2000 * (attempt + 1)));
+          continue;
+        }
+        return null;
+      }
+      return await resp.json();
+    } catch (e) {
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 2000 * (attempt + 1)));
+        continue;
+      }
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * Fetch a URL with automatic fallback chain.
+ *
+ * For Reddit .json URLs: direct fetch -> shared fetchPage() chain
+ * For other URLs: shared fetchPage() chain (Scrapingdog premium -> Bright
+ * Data -> ScrapingBee -> Playwright)
+ *
+ * Previously hit ScrapingBee directly with premium_proxy=true by default
+ * ($2.48/1k) before ever trying Bright Data ($1.50/1k) — fetchPage() tries
+ * the cheaper premium tiers first (task #5).
+ *
+ * @param {string} url - URL to fetch
+ * @param {Object} options
+ * @param {boolean} [options.renderJs=false] - Whether to render JavaScript
+ * @returns {Promise<string|Object>} Response body (parsed JSON if possible, otherwise string)
+ */
+async function fetchViaScrapingBee(url, options = {}) {
+  const isRedditJson = url.includes('reddit.com') && url.includes('.json');
+
+  // For Reddit JSON endpoints, try direct fetch first (free, no credits needed)
+  if (isRedditJson) {
+    const direct = await fetchRedditJsonDirect(url);
+    if (direct) {
+      return direct;
+    }
+    console.log('  Direct Reddit JSON fetch failed, trying proxied fallbacks...');
+  }
+
+  if (universalScraper) {
+    try {
+      const result = await universalScraper.fetchPage(url, { renderJs: options.renderJs, premium: true });
+      if (result && result.content) {
+        try {
+          return JSON.parse(result.content);
+        } catch (e) {
+          if (isRedditJson) {
+            // HTML response from Reddit -- not useful for JSON endpoints
+            console.log('  fetchPage returned HTML for Reddit JSON endpoint, skipping');
+          } else {
+            return result.content;
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`  fetchPage failed: ${e.message}`);
+    }
+  }
+
+  throw new Error(`All fetch methods failed for ${url}`);
+}
+
+/**
+ * Make an HTTPS request (POST/GET) with full control.
+ * Used for Claude API and GitHub API calls.
+ *
+ * @param {Object} reqOptions - Node https.request options
+ * @param {string|null} body - Request body (JSON string)
+ * @returns {Promise<Object>} Parsed JSON response
+ */
+function httpsRequest(reqOptions, body) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(reqOptions, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            resolve(data);
+          }
+        } else {
+          reject(new Error(`HTTP ${res.statusCode}: ${data.slice(0, 500)}`));
+        }
+      });
+    });
+    req.on('error', reject);
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 3 & 4: Reddit Grosses Analysis
+// ---------------------------------------------------------------------------
+
+/**
+ * Fetch the latest Grosses Analysis post from u/Boring_Waltz_9545.
+ *
+ * Tries the search endpoint first, then falls back to the user submissions
+ * endpoint if the search returns nothing.
+ *
+ * @returns {Promise<Object|null>} Post data or null
+ */
+async function fetchGrossesAnalysisPost() {
+  console.log('Fetching latest Grosses Analysis post...');
+
+  // Tier 1: author-scoped search on r/Broadway
+  const searchUrl = 'https://www.reddit.com/r/Broadway/search.json?q=author:Boring_Waltz_9545+Grosses+Analysis&sort=new&restrict_sr=1&limit=1&t=month';
+
+  try {
+    const response = await fetchViaScrapingBee(searchUrl);
+
+    if (response?.data?.children?.length > 0) {
+      const post = response.data.children[0].data;
+      console.log(`  Found: "${post.title || ''}"`);
+      return buildGrossesPostResult(post, 1);
+    }
+  } catch (e) {
+    console.error(`  Search endpoint failed: ${e.message}`);
+  }
+
+  // Tier 2: the author's own profile/submissions feed
+  console.log('  Falling back to user submissions endpoint...');
+  await sleep(2000);
+
+  try {
+    const userUrl = 'https://www.reddit.com/user/Boring_Waltz_9545/submitted.json?sort=new&limit=5&t=month';
+    const response = await fetchViaScrapingBee(userUrl);
+
+    if (response?.data?.children) {
+      for (const child of response.data.children) {
+        const post = child.data;
+        if (/grosses\s*analysis/i.test(post.title || '')) {
+          console.log(`  Found via user profile: "${post.title || ''}"`);
+          return buildGrossesPostResult(post, 2);
+        }
+      }
+    }
+  } catch (e) {
+    console.error(`  User submissions endpoint failed: ${e.message}`);
+  }
+
+  // Tier 3 (2026-07-19, plan-review finding): both author-scoped tiers
+  // return nothing on any week u/Boring_Waltz_9545 doesn't post — a generic
+  // subreddit search, no author filter, catches a substitute poster's
+  // thread that week. Tagged sourceConfidence:'unverified-fallback' by
+  // buildGrossesPostResult (tier 3) since the poster isn't verified — the
+  // caller (applyGrossesAnalysisResults) must route this through
+  // commercial-pending-review.json rather than writing it directly.
+  console.log('  Falling back to generic r/Broadway search (no author filter)...');
+  await sleep(2000);
+
+  try {
+    const genericUrl = 'https://www.reddit.com/r/Broadway/search.json?q=Grosses+Analysis&sort=new&restrict_sr=1&limit=5&t=week';
+    const response = await fetchViaScrapingBee(genericUrl);
+
+    if (response?.data?.children) {
+      for (const child of response.data.children) {
+        const post = child.data;
+        if (isRelevantPost(post)) {
+          console.log(`  Found via generic search (unverified author "${post.author}"): "${post.title || ''}"`);
+          return buildGrossesPostResult(post, 3);
+        }
+      }
+    }
+  } catch (e) {
+    console.error(`  Generic search fallback failed: ${e.message}`);
+  }
+
+  console.log('  No Grosses Analysis post found');
+  return null;
+}
+
+/**
+ * Parse the Grosses Analysis post using regex first, falling back to
+ * Claude Sonnet if regex extraction finds fewer than 10 shows.
+ *
+ * @param {string} selftext - Post body
+ * @returns {Promise<Object[]>} Parsed show data
+ */
+async function parseGrossesPost(selftext) {
+  // First try: regex parser from lib/parse-grosses.js
+  const regexResults = parseGrossesAnalysisPost(selftext);
+  console.log(`  Regex parser found ${regexResults.length} shows`);
+
+  if (regexResults.length >= 10) {
+    return regexResults;
+  }
+
+  // Fallback: Claude Sonnet extraction (if API key available)
+  if (!ANTHROPIC_KEY) {
+    console.log('  ANTHROPIC_API_KEY not set, skipping LLM fallback');
+    return regexResults;
+  }
+
+  console.log('  Fewer than 10 shows found, trying Claude Sonnet extraction...');
+
+  try {
+    const body = JSON.stringify({
+      model: CLAUDE_SONNET,
+      max_tokens: 4000,
+      messages: [{
+        role: 'user',
+        content: `Extract structured financial data from this Reddit grosses analysis post. For EACH show mentioned, extract:
+
+- showName (string)
+- weeklyGross (number or null, in dollars e.g. 1300000)
+- capacity (number or null, percentage e.g. 81.5)
+- atp (number or null, average ticket price in dollars)
+- grossLessFees (number or null, in dollars)
+- estimatedWeeklyCost (number or null, in dollars)
+- estimatedProfitLoss (number or null, in dollars, negative for losses)
+- estimatedRecoupmentPct (array of two numbers [low, high] or null)
+- commentary (string, any additional notes about the show)
+
+Return a JSON array of objects. Only return the JSON array, no other text.
+
+Post text:
+${selftext.slice(0, 12000)}`
+      }]
+    });
+
+    const response = await httpsRequest({
+      hostname: 'api.anthropic.com',
+      path: '/v1/messages',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01'
+      }
+    }, body);
+
+    // Sprint 4.12: Track Claude API usage
+    claudeApiUsage.calls++;
+    if (response.usage) {
+      claudeApiUsage.inputTokens += response.usage.input_tokens || 0;
+      claudeApiUsage.outputTokens += response.usage.output_tokens || 0;
+    }
+
+    const text = response.content?.[0]?.text || '';
+    const jsonMatch = text.match(/\[[\s\S]*\]/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (Array.isArray(parsed) && parsed.length > regexResults.length) {
+        console.log(`  Claude found ${parsed.length} shows (vs ${regexResults.length} from regex)`);
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.error(`  Claude extraction failed: ${e.message}`);
+  }
+
+  return regexResults;
+}
+
+/**
+ * Fetch top-level comments from a Reddit post.
+ *
+ * @param {string} permalink - Reddit permalink (e.g. /r/Broadway/comments/abc123/...)
+ * @returns {Promise<Object[]>} Top 20 comments sorted by score desc
+ */
+async function fetchPostComments(permalink) {
+  if (!permalink) return [];
+
+  const url = `https://www.reddit.com${permalink}.json`;
+
+  try {
+    const response = await fetchViaScrapingBee(url);
+
+    // Reddit returns [post, comments] array
+    if (!Array.isArray(response) || response.length < 2) {
+      return [];
+    }
+
+    const commentData = response[1]?.data?.children || [];
+    const comments = commentData
+      .filter(c => c.kind === 't1' && c.data?.body && c.data.body !== '[deleted]' && c.data.body !== '[removed]')
+      .map(c => ({
+        author: c.data.author || '[unknown]',
+        body: c.data.body,
+        score: c.data.score || 0,
+        createdUtc: c.data.created_utc
+      }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 20);
+
+    console.log(`  Fetched ${comments.length} comments from post`);
+    return comments;
+  } catch (e) {
+    console.error(`  Failed to fetch post comments: ${e.message}`);
+    return [];
+  }
+}
+
+/**
+ * Match a show name (from Reddit) to a slug in our data.
+ *
+ * Matching order:
+ *   1. Exact slug match
+ *   2. Known aliases map
+ *   3. Normalized match (strip articles, "The Musical", etc.)
+ *   4. Title containment
+ *   5. null with console.warn
+ *
+ * @param {string} showName - Show name from Reddit
+ * @param {string[]} allSlugs - All slugs in commercial.json
+ * @param {Object[]} allShows - All shows from shows.json
+ * @returns {{ slug: string, confidence: 'high' | 'medium' } | null}
+ */
+function matchShowToSlug(showName, allSlugs, allShows) {
+  if (!showName) return null;
+
+  const lowerName = showName.toLowerCase().trim();
+
+  // 1. Exact slug match: "Hamilton" -> "hamilton"
+  const directSlug = lowerName.replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+  if (allSlugs.includes(directSlug)) {
+    return { slug: directSlug, confidence: 'high' };
+  }
+
+  // 2. Known aliases
+  if (KNOWN_ALIASES[lowerName]) {
+    return { slug: KNOWN_ALIASES[lowerName], confidence: 'high' };
+  }
+
+  // 3. Normalized match: strip leading "The ", "A ", trailing ": The Musical", etc.
+  const normalized = lowerName
+    .replace(/^(the|a|an)\s+/i, '')
+    .replace(/:\s*(the\s*)?musical$/i, '')
+    .replace(/\s+the\s+musical$/i, '')
+    .replace(/\s+on\s+broadway$/i, '')
+    .replace(/[!?.,'"]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+
+  for (const slug of allSlugs) {
+    const normalizedSlug = slug
+      .replace(/^(the-|a-|an-)/i, '')
+      .replace(/-\d{4}$/, '');  // Strip year suffix
+    if (normalized === normalizedSlug) {
+      return { slug, confidence: 'high' };
+    }
+  }
+
+  // 4. Title containment: check shows.json titles
+  for (const show of allShows) {
+    const showTitle = (show.title || '').toLowerCase();
+    const showSlug = show.slug || show.id;
+
+    if (showTitle === lowerName || lowerName === showTitle) {
+      if (allSlugs.includes(showSlug)) {
+        return { slug: showSlug, confidence: 'high' };
+      }
+    }
+
+    // Partial containment
+    if (showTitle.includes(lowerName) || lowerName.includes(showTitle)) {
+      if (allSlugs.includes(showSlug)) {
+        return { slug: showSlug, confidence: 'medium' };
+      }
+    }
+  }
+
+  console.warn(`  [WARN] Could not match show name: "${showName}"`);
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 5: Reddit Financial Threads + Trade Press
+// ---------------------------------------------------------------------------
+
+/**
+ * Search r/Broadway and r/musicals for financial discussion threads (past 7 days).
+ *
+ * Runs 8+ search queries with 2s delay between each, deduplicates,
+ * and fetches top 5 comments per unique post.
+ *
+ * Sprint 4.6: Expanded to include r/musicals subreddit
+ *
+ * @param {string|null} grossesPostPermalink - Permalink to exclude (the main GA post)
+ * @returns {Promise<Object[]>} Financial discussion posts
+ */
+async function searchRedditFinancial(grossesPostPermalink) {
+  console.log('Searching r/Broadway and r/musicals for financial discussion threads...');
+
+  const queries = [
+    // Original queries
+    'recouped OR recoupment',
+    'capitalization OR investment Broadway',
+    'closing OR "final performance"',
+    '"running costs" OR "weekly nut"',
+    // Sprint 4.6: New financial-specific queries
+    '"break even" OR "breaking even"',
+    '"SEC filing" OR "Form D"',
+    'flair:News recoup',
+    'investors profit Broadway'
+  ];
+
+  // Sprint 4.6: Search both r/Broadway and r/musicals
+  const subreddits = ['Broadway', 'musicals'];
+
+  const seenIds = new Set();
+  const posts = [];
+
+  for (const subreddit of subreddits) {
+    for (const query of queries) {
+      const encoded = encodeURIComponent(query);
+      const url = `https://www.reddit.com/r/${subreddit}/search.json?q=${encoded}&restrict_sr=1&sort=new&t=week&limit=10`;
+
+      try {
+        const response = await fetchViaScrapingBee(url);
+        if (response?.data?.children) {
+          for (const child of response.data.children) {
+            const post = child.data;
+
+            // Skip duplicates and the Grosses Analysis post
+            if (seenIds.has(post.id)) continue;
+            if (grossesPostPermalink && post.permalink === grossesPostPermalink) continue;
+
+            seenIds.add(post.id);
+            posts.push({
+              title: post.title || '',
+              selftext: (post.selftext || '').slice(0, 2000),
+              score: post.score || 0,
+              url: `https://www.reddit.com${post.permalink}`,
+              permalink: post.permalink,
+              subreddit: subreddit,  // Track source subreddit
+              createdUtc: post.created_utc,
+              comments: []
+            });
+          }
+        }
+      } catch (e) {
+        console.error(`  Search query "${query}" in r/${subreddit} failed: ${e.message}`);
+      }
+
+      await sleep(2000);
+    }
+  }
+
+  console.log(`  Found ${posts.length} unique financial threads`);
+
+  // Fetch top 5 comments per post
+  for (const post of posts.slice(0, 10)) {
+    try {
+      const url = `https://www.reddit.com${post.permalink}.json`;
+      const response = await fetchViaScrapingBee(url);
+
+      if (Array.isArray(response) && response[1]?.data?.children) {
+        post.comments = response[1].data.children
+          .filter(c => c.kind === 't1' && c.data?.body && c.data.body !== '[deleted]')
+          .map(c => ({
+            author: c.data.author || '[unknown]',
+            body: (c.data.body || '').slice(0, 1000),
+            score: c.data.score || 0
+          }))
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 5);
+      }
+    } catch (e) {
+      // Non-fatal
+    }
+
+    await sleep(2000);
+  }
+
+  return posts;
+}
+
+/**
+ * Search trade press for Broadway financial news using ScrapingBee Google search.
+ *
+ * @returns {Promise<Object[]>} Array of { title, url, snippet, source }
+ */
+async function searchTradePress() {
+  console.log('Searching trade press for Broadway financial news...');
+
+  // Direct RSS feeds and section URLs for Broadway/theater news
+  // This approach is more reliable than Google Search APIs
+  const TRADE_SOURCES = [
+    {
+      name: 'Deadline',
+      rssUrl: 'https://deadline.com/tag/broadway/feed/',
+      sectionUrl: 'https://deadline.com/tag/broadway/',
+      source: 'Deadline'
+    },
+    {
+      name: 'Variety',
+      rssUrl: 'https://variety.com/t/broadway/feed/',
+      sectionUrl: 'https://variety.com/t/broadway/',
+      source: 'Variety'
+    },
+    {
+      name: 'Playbill',
+      rssUrl: 'https://www.playbill.com/rss/news',
+      sectionUrl: 'https://www.playbill.com/news',
+      source: 'Playbill'
+    },
+    {
+      name: 'Broadway Journal',
+      rssUrl: null,
+      sectionUrl: 'https://broadwayjournal.com/category/news/',
+      source: 'Broadway Journal'
+    }
+  ];
+
+  // Financial keywords to filter for
+  const FINANCIAL_KEYWORDS = [
+    'recoup', 'recouped', 'recoupment',
+    'capitalization', 'capitalized', 'capital',
+    'investment', 'investor', 'investors',
+    'profit', 'profitable', 'profitability',
+    'break even', 'break-even', 'breakeven',
+    'budget', 'cost', 'costs',
+    'gross', 'grosses', 'grossing',
+    'closing', 'close', 'closes',
+    'SEC', 'Form D', 'filing',
+    'million', '$', 'financial'
+  ];
+
+  const results = [];
+  const seenUrls = new Set();
+
+  // Helper to check if text contains financial keywords
+  const hasFinancialKeywords = (text) => {
+    if (!text) return false;
+    const lower = text.toLowerCase();
+    return FINANCIAL_KEYWORDS.some(kw => lower.includes(kw.toLowerCase()));
+  };
+
+  // Helper to parse RSS XML
+  const parseRSS = (xml) => {
+    const items = [];
+    const itemMatches = xml.match(/<item>([\s\S]*?)<\/item>/gi) || [];
+    for (const item of itemMatches) {
+      const title = item.match(/<title>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/title>/i)?.[1] || '';
+      const link = item.match(/<link>(?:<!\[CDATA\[)?(.*?)(?:\]\]>)?<\/link>/i)?.[1] || '';
+      const desc = item.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/i)?.[1] || '';
+      if (link) {
+        items.push({ title: title.trim(), url: link.trim(), snippet: desc.replace(/<[^>]+>/g, '').trim() });
+      }
+    }
+    return items;
+  };
+
+  // Helper to parse HTML section page for article links
+  const parseHTMLSection = (html, baseUrl) => {
+    const items = [];
+    // Look for article links with titles
+    const linkMatches = html.match(/<a[^>]+href=["']([^"']+)["'][^>]*>([^<]+)<\/a>/gi) || [];
+    for (const match of linkMatches) {
+      try {
+        const urlMatch = match.match(/href=["']([^"']+)["']/i);
+        const titleMatch = match.match(/>([^<]+)</);
+        if (urlMatch && titleMatch) {
+          let url = urlMatch[1];
+          // Skip javascript: and mailto: links
+          if (url.startsWith('javascript:') || url.startsWith('mailto:')) continue;
+          // Convert relative to absolute URL
+          if (url.startsWith('/')) {
+            try {
+              url = new URL(url, baseUrl).href;
+            } catch (e) {
+              continue;
+            }
+          }
+          if (url.includes('/202') && !url.includes('/tag/') && !url.includes('/category/')) {
+            items.push({ title: titleMatch[1].trim(), url, snippet: '' });
+          }
+        }
+      } catch (e) {
+        // Skip malformed links
+        continue;
+      }
+    }
+    return items;
+  };
+
+  for (const source of TRADE_SOURCES) {
+    console.log(`  Checking ${source.name}...`);
+
+    // Try RSS first (faster, less bandwidth)
+    if (source.rssUrl) {
+      try {
+        const rssContent = await fetchPageSimple(source.rssUrl);
+        if (rssContent) {
+          const items = parseRSS(rssContent);
+          for (const item of items.slice(0, 20)) { // Last 20 articles
+            if (seenUrls.has(item.url)) continue;
+            if (hasFinancialKeywords(item.title) || hasFinancialKeywords(item.snippet)) {
+              seenUrls.add(item.url);
+              results.push({ ...item, source: source.source });
+            }
+          }
+          console.log(`    RSS: found ${items.length} articles, ${results.filter(r => r.source === source.source).length} with financial keywords`);
+          continue; // Skip section scraping if RSS worked
+        }
+      } catch (e) {
+        console.log(`    RSS failed: ${e.message}, trying section page...`);
+      }
+    }
+
+    // Fall back to section page scraping (uses universal scraper with fallback)
+    if (source.sectionUrl) {
+      try {
+        const html = await fetchWithFallback(source.sectionUrl, 20000);
+        if (html) {
+          const items = parseHTMLSection(html, source.sectionUrl);
+          for (const item of items.slice(0, 30)) {
+            if (seenUrls.has(item.url)) continue;
+            // For section pages, we need to fetch each article to check keywords
+            // But to avoid too many requests, just add articles with promising titles
+            if (hasFinancialKeywords(item.title)) {
+              seenUrls.add(item.url);
+              results.push({ ...item, source: source.source });
+            }
+          }
+          console.log(`    Section: found ${items.length} links, ${results.filter(r => r.source === source.source).length} with financial titles`);
+        }
+      } catch (e) {
+        console.log(`    Section scrape failed: ${e.message}`);
+      }
+    }
+
+    await sleep(500);
+  }
+
+  console.log(`  Found ${results.length} trade press articles with financial keywords`);
+  return results;
+}
+
+/**
+ * Simple fetch without proxies - for RSS feeds and basic HTML
+ * Includes timeout to prevent hanging
+ */
+async function fetchPageSimple(url, timeoutMs = 15000) {
+  const https = require('https');
+  const http = require('http');
+  const { URL } = require('url');
+
+  return new Promise((resolve) => {
+    // Validate URL first
+    let parsedUrl;
+    try {
+      parsedUrl = new URL(url);
+    } catch (e) {
+      console.log(`    Invalid URL: ${url}`);
+      resolve(null);
+      return;
+    }
+
+    const protocol = parsedUrl.protocol === 'https:' ? https : http;
+
+    // Overall timeout
+    const timeoutId = setTimeout(() => {
+      resolve(null);
+    }, timeoutMs);
+
+    const req = protocol.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+      },
+      timeout: 10000
+    }, (res) => {
+      // Follow redirects
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        clearTimeout(timeoutId);
+        // Convert relative redirect URLs to absolute
+        let redirectUrl = res.headers.location;
+        if (!redirectUrl.startsWith('http')) {
+          try {
+            redirectUrl = new URL(redirectUrl, url).href;
+          } catch (e) {
+            resolve(null);
+            return;
+          }
+        }
+        fetchPageSimple(redirectUrl, timeoutMs - 5000).then(resolve);
+        return;
+      }
+      if (res.statusCode !== 200) {
+        clearTimeout(timeoutId);
+        resolve(null);
+        return;
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => { clearTimeout(timeoutId); resolve(data); });
+    });
+    req.on('error', () => { clearTimeout(timeoutId); resolve(null); });
+    req.on('timeout', () => { clearTimeout(timeoutId); req.destroy(); resolve(null); });
+  });
+}
+
+/**
+ * Fetch with universal scraper fallback (Bright Data → ScrapingBee → Playwright)
+ * Used when simple fetch fails for section pages
+ */
+async function fetchWithFallback(url, timeoutMs = 30000) {
+  // First try simple fetch
+  const simple = await fetchPageSimple(url, 10000);
+  if (simple) return simple;
+
+  // Fall back to universal scraper if available
+  if (universalScraper) {
+    try {
+      const result = await Promise.race([
+        universalScraper.fetchPage(url),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeoutMs))
+      ]);
+      if (result && result.content) {
+        return result.content;
+      }
+    } catch (e) {
+      console.log(`    Universal scraper failed: ${e.message}`);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Scrape the text of a trade press article with fallback.
+ * Uses trade-press-scraper module if available (GATHER_TRADE_FULL flag),
+ * otherwise falls back to simple ScrapingBee fetch.
+ *
+ * @param {string} url - Article URL
+ * @param {string} fallbackSnippet - Snippet to return if scraping fails
+ * @returns {Promise<string>} Article text (no longer truncated when using enhanced scraper)
+ */
+async function scrapeArticle(url, fallbackSnippet) {
+  // Use enhanced trade press scraper if available and flag is set
+  if (GATHER_TRADE_FULL && tradePressScraper) {
+    try {
+      const result = await tradePressScraper.scrapeTradeArticle(url, {
+        snippet: fallbackSnippet,
+        skipAuth: false  // Use credentials if available
+      });
+
+      if (result.fullText && result.fullText.length > 200) {
+        // Enhanced scraper returns more complete text - don't truncate
+        return result.fullText;
+      }
+
+      // Fall through to legacy method if enhanced scraper didn't get enough text
+      console.log(`  Enhanced scraper returned ${result.fullText?.length || 0} chars, trying legacy method`);
+    } catch (e) {
+      console.log(`  Enhanced trade scraper failed: ${e.message}, trying legacy method`);
+    }
+  }
+
+  // Legacy method: Try ScrapingBee with JS rendering, then universal scraper fallback
+  const htmlToText = (html) => {
+    if (typeof html !== 'string') return '';
+    return html
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  };
+
+  // Shared fetchPage() chain (Scrapingdog premium -> Bright Data ->
+  // ScrapingBee -> Playwright). Previously called ScrapingBee directly with
+  // premium_proxy=true ($2.48/1k) before Bright Data ($1.50/1k) — fetchPage()
+  // tries the cheaper premium tiers first (task #5).
+  if (universalScraper) {
+    try {
+      const result = await universalScraper.fetchPage(url, { renderJs: true, premium: true });
+      if (result && result.content && result.content.length > 200) {
+        const text = htmlToText(result.content);
+        if (text.length > 200) {
+          return text.slice(0, 3000);
+        }
+      }
+    } catch (e) {
+      console.log(`  fetchPage article scrape failed: ${e.message}`);
+    }
+  }
+
+  return (fallbackSnippet || '').slice(0, 3000);
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 4.5: SEC EDGAR Filing Gathering (Optional)
+// ---------------------------------------------------------------------------
+
+/**
+ * Gather SEC Form D filings for Broadway shows (if module available).
+ *
+ * Feature-flagged: Only runs if SEC_EDGAR_ENABLED and --gather-sec flag is set.
+ * Searches for theatrical LLCs and extracts capitalization data.
+ *
+ * @param {Object[]} shows - Shows from shows.json
+ * @param {Object} commercial - commercial.json data (to skip shows with existing SEC data)
+ * @returns {Promise<Object[]>} Array of { showSlug, capitalization, source, filingUrl, confidence }
+ */
+async function gatherSECFilings(shows, commercial) {
+  // Feature flag check
+  if (!SEC_EDGAR_ENABLED) {
+    console.log('SEC EDGAR scraping is disabled (module not available)');
+    return [];
+  }
+
+  if (!GATHER_SEC) {
+    console.log('Skipping SEC gathering (--gather-sec flag not set)');
+    return [];
+  }
+
+  console.log('Gathering SEC Form D filings for Broadway shows...');
+
+  let secScraper;
+  try {
+    secScraper = require('./lib/sec-edgar-scraper');
+  } catch (e) {
+    console.error('  Failed to load sec-edgar-scraper:', e.message);
+    return [];
+  }
+
+  // Check if module is available
+  if (typeof secScraper.isAvailable === 'function' && !secScraper.isAvailable()) {
+    console.log('  SEC EDGAR API is not available');
+    return [];
+  }
+
+  const results = [];
+
+  // Focus on shows without SEC-sourced capitalization
+  const showsToSearch = (shows || []).filter(show => {
+    const slug = show.slug || show.id;
+    const existing = commercial?.shows?.[slug];
+    // Skip if already has SEC-sourced capitalization
+    return costSourceBasis(existing?.capitalizationSource) !== 'sec';
+  });
+
+  console.log(`  Searching ${showsToSearch.length} shows for SEC filings...`);
+
+  for (const show of showsToSearch.slice(0, 20)) { // Limit to 20 shows per run
+    const slug = show.slug || show.id;
+    const title = show.title;
+
+    try {
+      // S3-T3 fix (2026-07-19, ship-check finding — Codex + independent QA
+      // subagent both caught this): this loop used to pre-expand `title`
+      // through BROADWAY_LLC_PATTERNS itself (e.g. "KPOP Broadway LLC"),
+      // THEN pass that already-expanded term as showName to
+      // searchFormDFilings(), which internally calls
+      // searchCompanyByShowName() and re-applies the FULL pattern list
+      // again — producing double-expanded garbage queries like "KPOP
+      // Broadway LLC Broadway LLC". searchCompanyByShowName() already
+      // tries all patterns against the bare title; call it once with the
+      // bare title instead of pre-expanding.
+      const filings = await secScraper.searchFormDFilings({ showName: title });
+
+      if (filings && filings.length > 0) {
+        // Most recent filing
+        const latestFiling = filings[0];
+        const parsed = await secScraper.parseFormDFiling(latestFiling.url || latestFiling.filingUrl);
+
+        if (parsed?.totalOfferingAmount) {
+          results.push({
+            showSlug: slug,
+            capitalization: parsed.totalOfferingAmount,
+            source: `SEC Form D: ${parsed.companyName || title}`,
+            filingUrl: latestFiling.url || latestFiling.filingUrl,
+            filingDate: parsed.filingDate,
+            confidence: 'high' // SEC data is always high confidence
+          });
+
+          console.log(`    Found: ${title} - $${(parsed.totalOfferingAmount / 1e6).toFixed(1)}M`);
+        }
+      }
+
+      // Rate limiting
+      await sleep(1000);
+    } catch (e) {
+      console.error(`    Error searching for ${title}: ${e.message}`);
+    }
+  }
+
+  console.log(`  Found ${results.length} SEC filings`);
+  return results;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 5: Build Analysis Context
+// ---------------------------------------------------------------------------
+
+/**
+ * Build a structured text document with all gathered data for Claude analysis.
+ *
+ * @param {Object} data - All gathered data
+ * @param {Object} data.commercial - Current commercial.json data
+ * @param {Object} data.grosses - Current grosses.json data
+ * @param {Object[]} data.shows - Shows from shows.json
+ * @param {Object|null} data.grossesPost - Parsed grosses analysis post
+ * @param {Object[]} data.grossesPostParsed - Parsed show data from grosses post
+ * @param {Object[]} data.grossesComments - Comments on grosses post
+ * @param {Object[]} data.redditFinancial - Reddit financial threads
+ * @param {Object[]} data.tradeArticles - Trade press articles with text
+ * @param {Object[]} data.secFilings - SEC Form D filings (Sprint 4.5)
+ * @returns {string} Context document
+ */
+function buildAnalysisContext(data) {
+  const sections = [];
+
+  // Section A: Current Commercial Data
+  sections.push('=== SECTION A: CURRENT COMMERCIAL DATA (commercial.json) ===');
+  const commercial = data.commercial;
+  for (const [slug, entry] of Object.entries(commercial.shows || {})) {
+    const parts = [`${slug}: designation=${entry.designation}`];
+    if (entry.capitalization) parts.push(`cap=$${(entry.capitalization / 1e6).toFixed(1)}M`);
+    if (entry.weeklyRunningCost) parts.push(`weeklyCost=$${(entry.weeklyRunningCost / 1e3).toFixed(0)}k`);
+    if (entry.recouped != null) parts.push(`recouped=${entry.recouped}`);
+    if (entry.recoupedDate) parts.push(`recoupedDate=${entry.recoupedDate}`);
+    if (entry.estimatedRecoupmentPct) parts.push(`estRecoup=${entry.estimatedRecoupmentPct.join('-')}%`);
+    if (entry.notes) parts.push(`notes="${entry.notes.slice(0, 150)}"`);
+    sections.push(parts.join(', '));
+  }
+
+  // Section B: Box Office Math
+  sections.push('\n=== SECTION B: BOX OFFICE MATH (grosses.json) ===');
+  sections.push(`Week ending: ${data.grosses?.weekEnding || 'unknown'}`);
+  for (const [slug, g] of Object.entries(data.grosses?.shows || {})) {
+    if (!g.thisWeek) continue;
+    const tw = g.thisWeek;
+    const cap = commercial.shows?.[slug]?.capitalization;
+    const allTimeGross = g.allTime?.gross;
+    let ratioStr = '';
+    if (cap && allTimeGross) {
+      const ratio = (allTimeGross / cap).toFixed(1);
+      ratioStr = ` grossToCapRatio=${ratio}x`;
+    }
+    sections.push(`${slug}: gross=$${tw.gross}, cap=${tw.capacity}%, atp=$${tw.atp}${ratioStr}`);
+  }
+
+  // Section C: Grosses Analysis Post Data
+  if (data.grossesPost) {
+    sections.push('\n=== SECTION C: GROSSES ANALYSIS POST ===');
+    sections.push(`Title: ${data.grossesPost.title}`);
+    sections.push(`Week: ${data.grossesPost.weekEnding || 'unknown'}`);
+    sections.push(`Permalink: https://www.reddit.com${data.grossesPost.permalink}`);
+    sections.push('');
+
+    for (const show of (data.grossesPostParsed || [])) {
+      const parts = [`${show.showName}:`];
+      if (show.weeklyGross) parts.push(`gross=$${show.weeklyGross}`);
+      if (show.capacity) parts.push(`cap=${show.capacity}%`);
+      if (show.atp) parts.push(`atp=$${show.atp}`);
+      if (show.grossLessFees) parts.push(`gLessFees=$${show.grossLessFees}`);
+      if (show.estimatedWeeklyCost) parts.push(`weeklyCost=$${show.estimatedWeeklyCost}`);
+      if (show.estimatedProfitLoss != null) parts.push(`profitLoss=$${show.estimatedProfitLoss}`);
+      if (show.estimatedRecoupmentPct) parts.push(`recoup=${show.estimatedRecoupmentPct.join('-')}%`);
+      if (show.commentary) parts.push(`commentary="${show.commentary.slice(0, 200)}"`);
+      sections.push(parts.join(', '));
+    }
+  }
+
+  // Section D: Grosses Analysis Comments
+  if (data.grossesComments && data.grossesComments.length > 0) {
+    sections.push('\n=== SECTION D: GROSSES ANALYSIS POST COMMENTS ===');
+    for (const c of data.grossesComments.slice(0, 15)) {
+      sections.push(`[score:${c.score}] u/${c.author}: ${c.body.slice(0, 500)}`);
+      sections.push('---');
+    }
+  }
+
+  // Section E: Reddit Financial Threads
+  if (data.redditFinancial && data.redditFinancial.length > 0) {
+    sections.push('\n=== SECTION E: REDDIT FINANCIAL DISCUSSION THREADS ===');
+    for (const post of data.redditFinancial.slice(0, 10)) {
+      sections.push(`[score:${post.score}] ${post.title}`);
+      if (post.selftext) sections.push(post.selftext.slice(0, 500));
+      if (post.comments.length > 0) {
+        sections.push('  Top comments:');
+        for (const c of post.comments) {
+          sections.push(`    [score:${c.score}] u/${c.author}: ${c.body.slice(0, 300)}`);
+        }
+      }
+      sections.push('---');
+    }
+  }
+
+  // Section F: Trade Press Articles
+  if (data.tradeArticles && data.tradeArticles.length > 0) {
+    sections.push('\n=== SECTION F: TRADE PRESS ARTICLES ===');
+    for (const article of data.tradeArticles.slice(0, 10)) {
+      sections.push(`[${article.source}] ${article.title}`);
+      sections.push(`URL: ${article.url}`);
+      if (article.text) {
+        sections.push(article.text.slice(0, 1500));
+      } else if (article.snippet) {
+        sections.push(article.snippet);
+      }
+      sections.push('---');
+    }
+  }
+
+  // Section G: Shows Without Commercial Data
+  sections.push('\n=== SECTION G: SHOWS WITHOUT COMMERCIAL DATA ===');
+  const commercialSlugs = new Set(Object.keys(commercial.shows || {}));
+  const openShows = (data.shows || []).filter(s => s.status === 'open' || s.status === 'previews');
+  for (const show of openShows) {
+    const slug = show.slug || show.id;
+    if (!commercialSlugs.has(slug)) {
+      sections.push(`${slug} (${show.title}) - status: ${show.status}, venue: ${show.venue}`);
+    }
+  }
+
+  // Section H: SEC EDGAR Filings (Sprint 4.7)
+  if (data.secFilings && data.secFilings.length > 0) {
+    sections.push('\n=== SECTION H: SEC EDGAR FORM D FILINGS (HIGHEST AUTHORITY) ===');
+    sections.push('NOTE: SEC filings are official government documents. Use these values with HIGH confidence.');
+    sections.push('');
+    for (const filing of data.secFilings) {
+      sections.push(`${filing.showSlug}:`);
+      sections.push(`  Capitalization: $${(filing.capitalization / 1e6).toFixed(2)}M`);
+      sections.push(`  Source: ${filing.source}`);
+      sections.push(`  Filing URL: ${filing.filingUrl}`);
+      if (filing.filingDate) {
+        sections.push(`  Filing Date: ${filing.filingDate}`);
+      }
+      sections.push('---');
+    }
+  }
+
+  return sections.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 6: Claude Analysis + Confidence Filtering
+// ---------------------------------------------------------------------------
+
+/**
+ * Send the analysis context to Claude Sonnet and get proposed changes.
+ *
+ * @param {string} contextDocument - The full context from buildAnalysisContext
+ * @returns {Promise<Object>} { proposedChanges, newShowEntries, shadowClassifierNotes }
+ */
+async function analyzeWithClaude(contextDocument) {
+  console.log('Sending context to Claude for analysis...');
+
+  if (!ANTHROPIC_KEY) {
+    throw new Error('ANTHROPIC_API_KEY must be set for AI analysis');
+  }
+
+  const systemPrompt = `You are a Broadway financial analyst maintaining the commercial.json database for Broadway Scorecard.
+
+Your task: Review the gathered data and propose SPECIFIC, SOURCED changes to commercial.json.
+
+RULES:
+1. Every proposed change must cite a specific source (section + detail).
+2. Confidence levels:
+   - "high": Directly stated in a credible source (trade press, SEC filing, official announcement)
+   - "medium": Strongly implied by multiple data points or the Reddit Grosses Analysis post
+   - "low": Inferred from a single Reddit comment, speculation, or unclear data
+3. NEVER auto-upgrade a designation to "Miracle" -- that requires extraordinary long-term proof.
+4. You MAY upgrade TBD -> Windfall if the show has CONFIRMED recoupment (high or medium confidence).
+5. You MAY upgrade TBD -> Fizzle or Flop if the show has CONFIRMED closing without recouping.
+6. Designation changes between non-TBD categories (e.g., Fizzle -> Windfall) should be flagged, not auto-applied.
+7. productionType changes should be flagged, not auto-applied.
+8. For estimatedRecoupmentPct: use [low, high] ranges. Cite source.
+9. For weeklyRunningCost and capitalization: cite the section and the outlet in "source". When the figure comes from trade press (Section F) or an SEC filing (Section H), also propose weeklyRunningCostSource or capitalizationSource for the same show: the outlet and date as a reader would see them (e.g. "Deadline (Oct 3, 2026)"), with no section letter. Never propose isEstimate or costMethodology; they are set from the figure's source.
+10. For capitalization: prefer SEC filings > trade press > Reddit estimates.
+
+SPRINT 4 SEC PRIORITY RULES:
+11. SEC Form D data is ALWAYS high confidence - it is an official government filing.
+12. For capitalization amounts, source hierarchy (highest to lowest):
+    - SEC Form D filings (totalOfferingAmount) - MOST authoritative
+    - Trade press articles (Deadline, Variety, NYT) - reliable
+    - Reddit Grosses Analysis estimates - use with caution
+    - Single Reddit comments - low confidence only
+13. If SEC data contradicts other sources, PREFER the SEC data and note the discrepancy.
+14. When SEC Form D shows totalOfferingAmount, use it as capitalization with high confidence.
+
+INVESTOR RETURN FIELDS:
+15. profitMargin: Actual investor return % (e.g., 6 means investors got 6% total return). Only propose when a source states a specific investor return figure.
+16. investorMultiple: Total returned / capitalization (e.g., 1.06 = investors got back 106% of their investment). Only propose when calculable from specific numbers.
+17. insiderProfitSharePct: Insider net profit participation % (producer fees, royalty pools, etc. as % of net profits). Only propose when explicitly stated in sources.
+18. sources: Array of source objects with type ("trade"|"reddit"|"sec"|"manual"), url, date (YYYY-MM-DD), and optional excerpt. Propose when you have specific URLs for financial claims.
+19. IMPORTANT: Gross revenue does NOT equal investor returns. A show can gross $456M and still return only 6% to investors (e.g., Harry Potter). Always distinguish between box office performance and investor returns.
+
+Respond with ONLY valid JSON (no markdown code fences):
+{
+  "proposedChanges": [
+    {
+      "slug": "show-slug",
+      "field": "fieldName",
+      "oldValue": <current value or null>,
+      "newValue": <proposed value>,
+      "confidence": "high|medium|low",
+      "source": "Section X: description of evidence",
+      "reason": "Brief explanation"
+    }
+  ],
+  "newShowEntries": [
+    {
+      "slug": "show-slug",
+      "data": {
+        "designation": "TBD",
+        "capitalization": null,
+        "capitalizationSource": null,
+        "weeklyRunningCost": null,
+        "weeklyRunningCostSource": null,
+        "recouped": false,
+        "recoupedDate": null,
+        "recoupedWeeks": null,
+        "recoupedSource": null,
+        "notes": "..."
+      },
+      "confidence": "high|medium|low",
+      "source": "where this info came from"
+    }
+  ],
+  "shadowClassifierNotes": "Any observations about designation accuracy"
+}`;
+
+  const body = JSON.stringify({
+    model: CLAUDE_SONNET,
+    max_tokens: 8000,
+    system: systemPrompt,
+    messages: [{
+      role: 'user',
+      content: `Here is all the gathered data. Please analyze and propose changes.\n\n${contextDocument.slice(0, 100000)}`
+    }]
+  });
+
+  const response = await httpsRequest({
+    hostname: 'api.anthropic.com',
+    path: '/v1/messages',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_KEY,
+      'anthropic-version': '2023-06-01'
+    }
+  }, body);
+
+  // Sprint 4.12: Track Claude API usage
+  claudeApiUsage.calls++;
+  if (response.usage) {
+    claudeApiUsage.inputTokens += response.usage.input_tokens || 0;
+    claudeApiUsage.outputTokens += response.usage.output_tokens || 0;
+    console.log(`  Claude API usage: ${response.usage.input_tokens} input, ${response.usage.output_tokens} output tokens`);
+  }
+
+  const text = response.content?.[0]?.text || '';
+
+  // Parse JSON (strip markdown fences if present)
+  let jsonStr = text;
+  const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenceMatch) {
+    jsonStr = fenceMatch[1];
+  }
+
+  // Also try extracting raw JSON object
+  const objMatch = jsonStr.match(/\{[\s\S]*\}/);
+  if (objMatch) {
+    jsonStr = objMatch[0];
+  }
+
+  try {
+    const parsed = JSON.parse(jsonStr);
+    console.log(`  Claude proposed ${(parsed.proposedChanges || []).length} changes and ${(parsed.newShowEntries || []).length} new entries`);
+    return parsed;
+  } catch (e) {
+    console.error(`  Failed to parse Claude response: ${e.message}`);
+    console.error(`  Response text (first 500): ${text.slice(0, 500)}`);
+    return { proposedChanges: [], newShowEntries: [], shadowClassifierNotes: '' };
+  }
+}
+
+// A figure's citation and labels follow the figure and its source (BRO-4666).
+// The model used to propose them directly: a "reported" label on a Reddit
+// number, or a citation left beside a figure it never described.
+const CITATION_FIELD = { weeklyRunningCost: 'weeklyRunningCostSource', capitalization: 'capitalizationSource' };
+// Each derived field, and the figures it describes.
+const DERIVED_FIELD_FIGURES = {
+  weeklyRunningCostSource: ['weeklyRunningCost'],
+  capitalizationSource: ['capitalization'],
+  costMethodology: ['weeklyRunningCost'],
+  isEstimate: ['weeklyRunningCost', 'capitalization'],
+};
+
+/**
+ * True when the record's figure is reported: only trade or SEC evidence may
+ * replace it. Any capitalization not flagged as an estimate counts (producer
+ * announcements and press releases are reported too). That is deliberately
+ * wider than /biz, which also marks an uncited one "~": a Reddit figure never
+ * overwrites a capitalization someone entered, cited or not.
+ */
+function holdsReportedFigure(rec, field) {
+  if (field === 'weeklyRunningCost') return isReportedWeeklyCost(rec);
+  return rec?.capitalization != null && rec.isEstimate?.capitalization !== true;
+}
+
+/** The Deep Research guardian's blocking conflict for a change, else null. */
+function deepResearchBlock(change, commercialData) {
+  if (!deepResearchGuardian || !commercialData) return null;
+  const conflict = deepResearchGuardian.detectConflict(change, commercialData.shows?.[change.slug]);
+  return conflict && deepResearchGuardian.shouldBlockChange(conflict) ? conflict : null;
+}
+
+/** A proposed figure as a number, or null when it is not one ("$650K", null). */
+function figureValue(value) {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  if (typeof value === 'string' && /^\s*\d+(?:\.\d+)?\s*$/.test(value)) return Number(value);
+  return null;
+}
+
+/**
+ * The printable trade or SEC citation the batch proposes beside this figure
+ * change, else null. The citation must pass the same confidence and Deep
+ * Research checks it would face on its own.
+ */
+function pairedCitation(change, proposedChanges, commercialData) {
+  const citeField = CITATION_FIELD[change.field];
+  if (!citeField || !isReportedSource(change.source)) return null;
+  const cite = proposedChanges.find((c) => c.slug === change.slug && c.field === citeField);
+  if (!cite || !isPrintableReportedCitation(cite.newValue)) return null;
+  const confidence = cite.validatedConfidence || cite.confidence;
+  if (confidence !== 'high' && confidence !== 'medium') return null;
+  return deepResearchBlock(cite, commercialData) ? null : cite.newValue.trim();
+}
+
+/**
+ * Label a figure the weekly update writes. It is reported, with its citation,
+ * only when a trade or SEC source comes with a printable citation, and its
+ * methodology then names what that citation is; otherwise it is an estimate
+ * with no citation, which /biz prints with "~".
+ */
+function labelFigure(rec, field, source, citation) {
+  const reported = Boolean(citation) && isReportedSource(source);
+  rec[CITATION_FIELD[field]] = reported ? citation : null;
+  rec.isEstimate = { ...(rec.isEstimate || {}), [field]: !reported };
+  if (field === 'weeklyRunningCost') {
+    if (reported) rec.costMethodology = methodologyForCostSource(citation);
+    else rec.costMethodology = costSourceBasis(source) === 'reddit' ? methodologyForCostSource(source) : 'industry-estimate';
+  }
+}
+
+/**
+ * Filter proposed changes by confidence and safety rules.
+ *
+ * - high/medium confidence -> applied
+ * - low confidence -> skipped
+ * - flagged confidence (Sprint 4.10) -> flagged with sources disagree reason
+ * - Designation changes to/from Miracle/Nonprofit/Tour Stop -> skipped
+ * - Designation upgrades (non-TBD to non-TBD) -> flagged
+ * - TBD -> Windfall/Fizzle/Flop with high/medium -> applied
+ * - productionType changes -> flagged
+ * - Sprint 3: Deep Research conflicts -> blocked
+ *
+ * @param {Object[]} proposedChanges - From Claude analysis (with validatedConfidence from Sprint 4.9)
+ * @param {Object} commercialData - commercial.json data (for Deep Research protection check)
+ * @returns {{ applied: Object[], flagged: Object[], skipped: Object[], deepResearchConflicts: Object[] }}
+ */
+function filterByConfidence(proposedChanges, commercialData) {
+  const applied = [];
+  const flagged = [];
+  const skipped = [];
+  const deepResearchConflicts = [];  // Sprint 3: Track Deep Research conflicts
+
+  const protectedDesignations = new Set(['Miracle', 'Nonprofit', 'Tour Stop']);
+
+  for (const change of (proposedChanges || [])) {
+    const { slug, field, oldValue, newValue, confidence } = change;
+
+    // Sprint 3: Check for Deep Research conflicts FIRST
+    const conflict = deepResearchBlock(change, commercialData);
+    if (conflict) {
+      const discrepancy = deepResearchGuardian.calculateDiscrepancy
+        ? deepResearchGuardian.calculateDiscrepancy(conflict.field, conflict.verifiedValue, conflict.proposedValue)
+        : `verified ${JSON.stringify(conflict.verifiedValue)}, proposed ${JSON.stringify(conflict.proposedValue)}`;
+
+      deepResearchConflicts.push({
+        ...change,
+        conflict: {
+          ...conflict,
+          discrepancy
+        }
+      });
+      console.log(`    [BLOCKED - Deep Research] ${slug}.${field}: ${discrepancy}`);
+      continue;  // Skip this change
+    }
+
+    // Only a trade or SEC source replaces a reported figure (BRO-4666).
+    // Reddit estimates used to, and kept the "trade-reported" label.
+    if (CITATION_FIELD[field] && !isReportedSource(change.source) && holdsReportedFigure(commercialData?.shows?.[slug], field)) {
+      const what = field === 'weeklyRunningCost' ? `weekly cost (${commercialData.shows[slug].costMethodology})` : 'capitalization';
+      skipped.push({ ...change, skipReason: `Only a trade or SEC source may replace a reported ${what}` });
+      continue;
+    }
+
+    // Sprint 4.10: Use validatedConfidence if available (from source validation)
+    const effectiveConfidence = change.validatedConfidence || confidence;
+
+    // Low confidence -> always skip
+    if (effectiveConfidence === 'low') {
+      skipped.push({ ...change, skipReason: 'Low confidence' });
+      continue;
+    }
+
+    // Sprint 4.10: Flagged confidence (sources disagree) -> flag for manual review
+    if (effectiveConfidence === 'flagged') {
+      flagged.push({
+        ...change,
+        flagReason: 'Sources disagree',
+        validationDetails: change.validationNotes || 'Contradicting sources found'
+      });
+      continue;
+    }
+
+    // A citation or label rides with its figure: proposed beside one, it is
+    // applied from the figure's source; alone, a person sets it (BRO-4666).
+    if (DERIVED_FIELD_FIGURES[field]) {
+      const figures = DERIVED_FIELD_FIGURES[field];
+      if (proposedChanges.some((c) => c.slug === slug && figures.includes(c.field))) {
+        skipped.push({ ...change, skipReason: `${field} is set from the source of the figure proposed with it` });
+      } else {
+        flagged.push({ ...change, flagReason: `${field} follows the cited source of its figure; set it by hand with that source` });
+      }
+      continue;
+    }
+
+    // /biz prints these verbatim, so research wording or a "Section C:"
+    // context reference goes to a person instead of the page.
+    if (PUBLIC_TEXT_FIELDS.includes(field) && internalWordingIn(newValue)) {
+      flagged.push({ ...change, flagReason: `${field} reads as research notes ("${internalWordingIn(newValue)}"); /biz prints it verbatim` });
+      continue;
+    }
+
+    // productionType changes -> flag
+    if (field === 'productionType') {
+      flagged.push({ ...change, flagReason: 'productionType changes require manual review' });
+      continue;
+    }
+
+    // Designation changes
+    if (field === 'designation') {
+      // Changes to/from protected designations -> skip
+      if (protectedDesignations.has(newValue) || protectedDesignations.has(oldValue)) {
+        skipped.push({ ...change, skipReason: `Cannot auto-change designation to/from ${protectedDesignations.has(newValue) ? newValue : oldValue}` });
+        continue;
+      }
+
+      // TBD -> something with high/medium -> apply
+      if (oldValue === 'TBD') {
+        applied.push(change);
+        continue;
+      }
+
+      // Non-TBD to non-TBD -> flag for manual review
+      flagged.push({ ...change, flagReason: 'Designation upgrade between non-TBD categories requires manual review' });
+      continue;
+    }
+
+    // A dollar figure carries the citation proposed beside it (BRO-4666).
+    if (CITATION_FIELD[field]) {
+      const value = figureValue(newValue);
+      if (value == null) {
+        flagged.push({ ...change, flagReason: `${field} must be a dollar amount, got ${JSON.stringify(newValue)}` });
+        continue;
+      }
+      if (field === 'weeklyRunningCost' && !isPlausibleWeeklyCost(value)) {
+        skipped.push({ ...change, skipReason: `Implausible weekly cost $${value.toLocaleString()}` });
+        continue;
+      }
+      const citation = pairedCitation(change, proposedChanges, commercialData);
+      const current = commercialData?.shows?.[slug]?.[field];
+      if (!citation && current != null && Number(current) === value) {
+        skipped.push({ ...change, skipReason: `Restates the current ${field}` });
+        continue;
+      }
+      if (!citation && holdsReportedFigure(commercialData?.shows?.[slug], field)) {
+        flagged.push({ ...change, flagReason: `Replacing a reported ${field} needs a printable trade or SEC citation (${CITATION_FIELD[field]})` });
+        continue;
+      }
+      applied.push({ ...change, newValue: value, citation });
+      continue;
+    }
+
+    // Everything else with high/medium -> apply
+    applied.push(change);
+  }
+
+  return { applied, flagged, skipped, deepResearchConflicts };
+}
+
+/**
+ * Apply approved changes to the commercial data object.
+ * Updates _meta.lastUpdated. If DRY_RUN, prints but doesn't write.
+ *
+ * @param {Object[]} applied - Changes to apply
+ * @param {Object[]} newEntries - New show entries to add
+ * @param {Object} commercial - commercial.json data (mutated in place)
+ * @param {Object} [showKeyIndex] - buildShowKeyIndex(shows); new entries are
+ *   only added under a slug that resolves through it
+ */
+function applyChanges(applied, newEntries, commercial, showKeyIndex) {
+  let changeCount = 0;
+
+  // Circuit breaker: count designation changes
+  const DESIGNATION_CHANGE_THRESHOLD = 3;
+  const designationChanges = applied.filter(c => c.field === 'designation' && commercial.shows[c.slug]);
+  if (designationChanges.length > DESIGNATION_CHANGE_THRESHOLD) {
+    console.log(`\n  ⚠️  CIRCUIT BREAKER TRIGGERED: ${designationChanges.length} designation changes proposed (threshold: ${DESIGNATION_CHANGE_THRESHOLD})`);
+    console.log('  Designation changes NOT applied. Manual review required.');
+    console.log('  Proposed designation changes:');
+    for (const dc of designationChanges) {
+      const current = commercial.shows[dc.slug]?.designation;
+      console.log(`    - ${dc.slug}: ${current} -> ${dc.newValue} (${dc.confidence}, source: ${dc.source})`);
+    }
+    // Filter out designation changes but keep all other changes
+    applied = applied.filter(c => c.field !== 'designation');
+    // Set flag for GitHub issue warning
+    applyChanges._circuitBreakerTriggered = {
+      count: designationChanges.length,
+      changes: designationChanges.map(dc => ({
+        slug: dc.slug,
+        from: commercial.shows[dc.slug]?.designation,
+        to: dc.newValue,
+        confidence: dc.confidence,
+        source: dc.source
+      }))
+    };
+  } else {
+    applyChanges._circuitBreakerTriggered = null;
+  }
+
+  for (const change of applied) {
+    const { slug, field, newValue } = change;
+
+    if (!commercial.shows[slug]) {
+      console.log(`  [SKIP] Show "${slug}" not in commercial.json`);
+      continue;
+    }
+
+    // 14-day cooling period: skip shows recently added by batch research
+    const showData = commercial.shows[slug];
+    if (showData.firstAdded) {
+      const addedDate = new Date(showData.firstAdded);
+      const daysSinceAdded = (Date.now() - addedDate.getTime()) / (1000 * 60 * 60 * 24);
+      if (daysSinceAdded < 14) {
+        console.log(`  [COOLING] ${slug}.${field}: Skipping — added ${Math.round(daysSinceAdded)}d ago (14d cooling period)`);
+        continue;
+      }
+    }
+
+    const current = commercial.shows[slug][field];
+    // A figure restated without a new citation changes nothing; relabeling it
+    // would drop the citation it already has.
+    if (CITATION_FIELD[field] && current != null && Number(newValue) === Number(current) && !change.citation) {
+      console.log(`  [SAME] ${slug}.${field}: ${JSON.stringify(current)} restated, label kept`);
+      continue;
+    }
+    commercial.shows[slug][field] = newValue;
+    changeCount++;
+    console.log(`  [APPLY] ${slug}.${field}: ${JSON.stringify(current)} -> ${JSON.stringify(newValue)}`);
+
+    // A new figure carries its own label and citation (BRO-4666); the
+    // record's old citation described the old figure.
+    if (CITATION_FIELD[field]) labelFigure(commercial.shows[slug], field, change.source, change.citation || null);
+
+    // For estimatedRecoupmentPct, add source + date
+    if (field === 'estimatedRecoupmentPct') {
+      commercial.shows[slug].estimatedRecoupmentSource = change.source || 'Automated update';
+      commercial.shows[slug].estimatedRecoupmentDate = new Date().toISOString().split('T')[0];
+    }
+
+    // Sprint 3: a capitalization change names costMethodology only for a
+    // record with neither a methodology nor a weekly cost, so it never labels
+    // a weekly cost it says nothing about. (Its "sec" substring test once
+    // matched every "Section X:" source.)
+    if (field === 'capitalization') {
+      const showData = commercial.shows[slug];
+      if (!showData.costMethodology && showData.weeklyRunningCost == null && costSourceBasis(change.source)) {
+        showData.costMethodology = methodologyForCostSource(change.source);
+      }
+    }
+  }
+
+  // Add new show entries. The model's slug can be a show id or made up: key
+  // by the slug it resolves to and skip what doesn't resolve. The write
+  // guard's re-key can't fix an id key whose slug record already exists, so
+  // checking the id key alone added a duplicate the strict gate rejects.
+  for (const entry of (newEntries || [])) {
+    if (entry.confidence === 'low') continue;
+    if (!entry.slug) continue;
+    const { slug: key, resolved, show } = resolveCommercialSlug(entry.slug, null, showKeyIndex || buildShowKeyIndex([]));
+    if (!resolved) {
+      console.log(`  [SKIP] New entry "${entry.slug}" doesn't match a show in shows.json`);
+      continue;
+    }
+    if (commercial.shows[key]) continue;
+
+    // The entry's figures are labeled from its source like any other change
+    // (BRO-4666), and its text cleaned like the other model-fed writers'.
+    const data = { ...(entry.data || {}) };
+    for (const field of Object.keys(CITATION_FIELD)) {
+      const value = figureValue(data[field]);
+      const keep = value != null && (field !== 'weeklyRunningCost' || isPlausibleWeeklyCost(value));
+      data[field] = keep ? value : null;
+      if (!keep) {
+        data[CITATION_FIELD[field]] = null;
+        continue;
+      }
+      const cite = isPrintableReportedCitation(data[CITATION_FIELD[field]]) ? data[CITATION_FIELD[field]].trim() : null;
+      labelFigure(data, field, entry.source, cite);
+    }
+    const { entry: record, changed, holdReason } = sanitizeForPublicRecord(data, show && show.status);
+    if (holdReason) {
+      console.log(`  [HOLD] New entry ${key}: ${holdReason}`);
+      continue;
+    }
+    if (changed.length) console.log(`  [CLEAN] New entry ${key}: cleared research wording in ${changed.join(', ')}`);
+
+    commercial.shows[key] = record;
+    changeCount++;
+    console.log(`  [NEW] Added ${key} (${record.designation})`);
+  }
+
+  // Update metadata
+  commercial._meta.lastUpdated = new Date().toISOString();
+
+  if (DRY_RUN) {
+    console.log(`\n  [DRY RUN] Would apply ${changeCount} changes (not writing)`);
+  } else if (changeCount > 0) {
+    saveCommercial(commercial);
+    console.log(`\n  Wrote ${changeCount} changes to commercial.json`);
+  } else {
+    console.log('\n  No changes to apply');
+  }
+
+  return changeCount;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 6: Shadow Classifier
+// ---------------------------------------------------------------------------
+
+/**
+ * Heuristic designation validator.
+ *
+ * For each show (skip Nonprofit, Tour Stop):
+ *   - Calculate all-time gross / capitalization ratio
+ *   - Apply heuristic rules to predict a designation
+ *   - Compare with actual designation
+ *   - Report disagreements
+ *
+ * Rules:
+ *   - recouped && ratio >= 20x = Miracle
+ *   - recouped && ratio >= 5x = Windfall
+ *   - recouped && ratio >= 2x = Windfall
+ *   - recouped && ratio >= 1x = Trickle or Easy Winner
+ *   - closed && not recouped && recoupmentPct < 30% = Flop
+ *   - closed && not recouped && recoupmentPct >= 30% = Fizzle
+ *   - still running && not recouped = TBD
+ *
+ * @param {Object} commercial - commercial.json data
+ * @param {Object} grosses - grosses.json data
+ * @param {Object[]} shows - shows.json shows array
+ * @returns {Object[]} Disagreements: { slug, current, predicted, reason }
+ */
+function shadowClassifier(commercial, grosses, shows) {
+  const disagreements = [];
+  const skipDesignations = new Set(['Nonprofit', 'Tour Stop']);
+
+  const showStatusMap = {};
+  for (const s of shows) {
+    showStatusMap[s.slug || s.id] = s.status;
+  }
+
+  for (const [slug, entry] of Object.entries(commercial.shows || {})) {
+    if (skipDesignations.has(entry.designation)) continue;
+
+    const cap = entry.capitalization;
+    const recouped = entry.recouped;
+    const status = showStatusMap[slug] || 'unknown';
+    const allTimeGross = grosses?.shows?.[slug]?.allTime?.gross;
+
+    // Calculate gross-to-cap ratio
+    let ratio = null;
+    if (cap && cap > 0 && allTimeGross) {
+      ratio = allTimeGross / cap;
+    }
+
+    // Predict designation
+    let predicted = null;
+    let reason = '';
+
+    if (recouped === true) {
+      if (ratio !== null) {
+        if (ratio >= 20) {
+          predicted = 'Miracle';
+          reason = `Recouped + ${ratio.toFixed(1)}x gross-to-cap ratio (>= 20x)`;
+        } else if (ratio >= 5) {
+          predicted = 'Windfall';
+          reason = `Recouped + ${ratio.toFixed(1)}x gross-to-cap ratio (>= 5x)`;
+        } else if (ratio >= 2) {
+          predicted = 'Windfall';
+          reason = `Recouped + ${ratio.toFixed(1)}x gross-to-cap ratio (>= 2x)`;
+        } else {
+          predicted = 'Trickle';
+          reason = `Recouped but only ${ratio.toFixed(1)}x gross-to-cap ratio`;
+        }
+      } else {
+        predicted = 'Windfall';
+        reason = 'Recouped (no cap data for ratio)';
+      }
+    } else if (recouped === false && status === 'closed') {
+      // Closed without recouping
+      const recoupPct = entry.estimatedRecoupmentPct;
+      if (recoupPct) {
+        const midpoint = (recoupPct[0] + recoupPct[1]) / 2;
+        if (midpoint < 30) {
+          predicted = 'Flop';
+          reason = `Closed, est. ${recoupPct.join('-')}% recouped (< 30%)`;
+        } else {
+          predicted = 'Fizzle';
+          reason = `Closed, est. ${recoupPct.join('-')}% recouped (>= 30%)`;
+        }
+      } else if (ratio !== null) {
+        if (ratio < 0.3) {
+          predicted = 'Flop';
+          reason = `Closed, ratio ${ratio.toFixed(2)}x (< 0.3x)`;
+        } else {
+          predicted = 'Fizzle';
+          reason = `Closed, ratio ${ratio.toFixed(2)}x (>= 0.3x)`;
+        }
+      } else {
+        predicted = 'Fizzle';
+        reason = 'Closed without recouping (insufficient data for Flop/Fizzle)';
+      }
+    } else if (recouped === false && (status === 'open' || status === 'previews')) {
+      predicted = 'TBD';
+      reason = 'Still running, not yet recouped';
+    } else {
+      // recouped === null or unknown status
+      predicted = 'TBD';
+      reason = 'Insufficient data';
+    }
+
+    // Compare with actual
+    if (predicted && predicted !== entry.designation) {
+      // Don't flag Easy Winner since it's hard to predict heuristically
+      if (entry.designation === 'Easy Winner') continue;
+      // Don't flag Trickle vs Windfall -- close enough
+      if ((entry.designation === 'Trickle' && predicted === 'Windfall') ||
+          (entry.designation === 'Windfall' && predicted === 'Trickle')) continue;
+
+      disagreements.push({
+        slug,
+        current: entry.designation,
+        predicted,
+        reason
+      });
+    }
+  }
+
+  return disagreements;
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 6: Changelog
+// ---------------------------------------------------------------------------
+
+/**
+ * Append an entry to commercial-changelog.json.
+ *
+ * @param {Object} entry - Changelog entry
+ */
+function writeChangelog(entry) {
+  let changelog = [];
+  if (fs.existsSync(CHANGELOG_PATH)) {
+    try {
+      changelog = JSON.parse(fs.readFileSync(CHANGELOG_PATH, 'utf8'));
+    } catch (e) {
+      changelog = [];
+    }
+  }
+
+  if (!Array.isArray(changelog)) {
+    changelog = [];
+  }
+
+  changelog.unshift(entry); // Newest first
+
+  // Keep last 100 entries
+  if (changelog.length > 100) {
+    changelog = changelog.slice(0, 100);
+  }
+
+  if (!DRY_RUN) {
+    fs.writeFileSync(CHANGELOG_PATH, JSON.stringify(changelog, null, 2));
+    console.log('  Wrote changelog entry');
+  } else {
+    console.log('  [DRY RUN] Would write changelog entry');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 7: GitHub Issue
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a GitHub issue summarizing the update.
+ *
+ * @param {Object} summary - { applied, flagged, skipped, disagreements, newEntries, dateStr }
+ */
+async function createGitHubIssue(summary) {
+  if (!GITHUB_TOKEN) {
+    console.log('  GITHUB_TOKEN not set, skipping issue creation');
+    return;
+  }
+
+  const { applied, flagged, skipped, disagreements, newEntries, dateStr } = summary;
+
+  let body = `## Commercial Data Auto-Update: ${dateStr}\n\n`;
+
+  // Circuit breaker warning (if triggered)
+  if (applyChanges._circuitBreakerTriggered) {
+    const cb = applyChanges._circuitBreakerTriggered;
+    body += `> **⚠️ CIRCUIT BREAKER: ${cb.count} designation changes proposed (threshold: 3). Designation changes NOT applied. Manual review required.**\n\n`;
+    body += '| Show | From | To | Confidence | Source |\n';
+    body += '|------|------|----|------------|--------|\n';
+    for (const dc of cb.changes) {
+      body += `| ${dc.slug} | ${dc.from} | ${dc.to} | ${dc.confidence} | ${dc.source} |\n`;
+    }
+    body += '\n';
+  }
+
+  // Applied changes table (Sprint 4.11: Enhanced with validation details)
+  if (applied.length > 0) {
+    body += `### Applied Changes (${applied.length})\n\n`;
+    body += '| Show | Field | Old | New | Confidence | Validated | Supporting | Contradicting |\n';
+    body += '|------|-------|-----|-----|------------|-----------|------------|---------------|\n';
+    for (const c of applied) {
+      const old = JSON.stringify(c.oldValue) || 'null';
+      const val = JSON.stringify(c.newValue) || 'null';
+      const validated = c.validatedConfidence || c.confidence;
+      const supporting = c.supportingSourcesCount != null ? c.supportingSourcesCount : '-';
+      const contradicting = c.contradictingSourcesCount != null ? c.contradictingSourcesCount : '-';
+      body += `| ${c.slug} | ${c.field} | ${old} | ${val} | ${c.confidence} | ${validated} | ${supporting} | ${contradicting} |\n`;
+    }
+    body += '\n';
+
+    // Add validation notes if any changes had them
+    const changesWithNotes = applied.filter(c => c.validationNotes && c.validationNotes !== 'No corroborating sources found');
+    if (changesWithNotes.length > 0) {
+      body += '<details><summary>Validation Notes</summary>\n\n';
+      for (const c of changesWithNotes) {
+        body += `- **${c.slug}.${c.field}**: ${c.validationNotes}\n`;
+      }
+      body += '\n</details>\n\n';
+    }
+  } else {
+    body += '### No Changes Applied\n\n';
+  }
+
+  // New entries
+  if (newEntries && newEntries.length > 0) {
+    body += `### New Show Entries (${newEntries.length})\n\n`;
+    for (const e of newEntries) {
+      body += `- **${e.slug}**: ${e.data?.designation || 'TBD'} (${e.confidence})\n`;
+    }
+    body += '\n';
+  }
+
+  // Flagged changes (Sprint 4.11: Enhanced with validation details)
+  if (flagged.length > 0) {
+    body += `### Flagged for Manual Review (${flagged.length})\n\n`;
+    body += '| Show | Field | Old | New | Reason | Supporting | Contradicting |\n';
+    body += '|------|-------|-----|-----|--------|------------|---------------|\n';
+    for (const c of flagged) {
+      const supporting = c.supportingSourcesCount != null ? c.supportingSourcesCount : '-';
+      const contradicting = c.contradictingSourcesCount != null ? c.contradictingSourcesCount : '-';
+      body += `| ${c.slug} | ${c.field} | ${JSON.stringify(c.oldValue)} | ${JSON.stringify(c.newValue)} | ${c.flagReason || ''} | ${supporting} | ${contradicting} |\n`;
+    }
+    body += '\n';
+
+    // Add validation details for source disagreements
+    const sourceDisagreements = flagged.filter(c => c.flagReason === 'Sources disagree' && c.validationDetails);
+    if (sourceDisagreements.length > 0) {
+      body += '#### Source Disagreement Details\n\n';
+      for (const c of sourceDisagreements) {
+        body += `- **${c.slug}.${c.field}**: ${c.validationDetails}\n`;
+      }
+      body += '\n';
+    }
+  }
+
+  // Skipped
+  if (skipped.length > 0) {
+    body += `<details><summary>Skipped Changes (${skipped.length})</summary>\n\n`;
+    for (const c of skipped) {
+      body += `- ${c.slug}.${c.field}: ${c.skipReason}\n`;
+    }
+    body += '\n</details>\n\n';
+  }
+
+  // Shadow classifier disagreements
+  if (disagreements.length > 0) {
+    body += `### Shadow Classifier Disagreements (${disagreements.length})\n\n`;
+    body += '| Show | Current | Predicted | Reason |\n';
+    body += '|------|---------|-----------|--------|\n';
+    for (const d of disagreements) {
+      body += `| ${d.slug} | ${d.current} | ${d.predicted} | ${d.reason} |\n`;
+    }
+    body += '\n';
+  }
+
+  body += '\n---\n*Generated by `scripts/update-commercial-data.js`*\n';
+
+  const issueData = JSON.stringify({
+    title: `Commercial Data Update: ${dateStr}`,
+    body,
+    labels: ['automation', 'commercial-data']
+  });
+
+  try {
+    await httpsRequest({
+      hostname: 'api.github.com',
+      path: '/repos/thomaspryor/Broadwayscore/issues',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GITHUB_TOKEN}`,
+        'User-Agent': 'BroadwayScorecard-Bot',
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    }, issueData);
+
+    console.log('  Created GitHub issue');
+  } catch (e) {
+    console.error(`  Failed to create GitHub issue: ${e.message}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 3: Deep Research Conflict Issue
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a GitHub issue for Deep Research conflicts (if running in CI).
+ *
+ * @param {Object[]} conflicts - Array of conflict objects from filterByConfidence
+ */
+async function createDeepResearchConflictIssue(conflicts) {
+  if (!conflicts || conflicts.length === 0) return;
+
+  // Only create issues in CI with GitHub token
+  const token = GITHUB_TOKEN;
+  if (!token) {
+    console.log('\n  [Note] GITHUB_TOKEN not set - skipping Deep Research conflict issue creation');
+    return;
+  }
+
+  // BRO-532: dedup against already-open conflict issues. Without this check,
+  // every run re-detects the same still-unresolved conflict (the guardian
+  // blocks it again, by design, until a human updates verifiedFields) and
+  // files a brand-new issue — 8 duplicates piled up between 2026-02-03 and
+  // 2026-03-25 (#37,#41,#47,#60,#145,#159,#207,#217) all flagging the same
+  // chess/death-becomes-her disagreement. One open tracking issue is enough;
+  // append a comment with the latest snapshot instead of opening another.
+  try {
+    const openIssues = await httpsRequest({
+      hostname: 'api.github.com',
+      path: '/repos/thomaspryor/Broadwayscore/issues?labels=deep-research-conflict&state=open',
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'User-Agent': 'BroadwayScorecard-Bot',
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    }, null);
+
+    if (Array.isArray(openIssues) && openIssues.length > 0) {
+      const existing = openIssues[0];
+      console.log(`\n  [Note] Open Deep Research conflict issue already exists (#${existing.number}) - adding comment instead of creating a duplicate`);
+
+      const commentBody = `## New conflict snapshot (${new Date().toISOString().slice(0, 10)})\n\n${conflicts.length} change(s) still blocked:\n\n| Show | Field | Verified Value | Proposed Value | Severity |\n|------|-------|----------------|----------------|----------|\n` +
+        conflicts.map(c => `| ${c.slug} | ${c.field} | ${JSON.stringify(c.conflict.verifiedValue)} | ${JSON.stringify(c.conflict.proposedValue)} | ${c.conflict.severity} |`).join('\n');
+
+      await httpsRequest({
+        hostname: 'api.github.com',
+        path: `/repos/thomaspryor/Broadwayscore/issues/${existing.number}/comments`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'User-Agent': 'BroadwayScorecard-Bot',
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }, JSON.stringify({ body: commentBody }));
+
+      return;
+    }
+  } catch (e) {
+    console.error(`  Failed to check for existing Deep Research conflict issues: ${e.message}`);
+    // Fall through to creating a new issue - better a possible duplicate than a silently dropped alert
+  }
+
+  const title = `[Deep Research Conflict] ${conflicts.length} automated change(s) blocked`;
+
+  let body = `## Deep Research Conflict Alert
+
+Automated commercial data update detected ${conflicts.length} change(s) that conflict with manually-verified Deep Research data.
+
+### Blocked Changes
+
+| Show | Field | Verified Value | Proposed Value | Severity |
+|------|-------|----------------|----------------|----------|
+`;
+
+  for (const c of conflicts) {
+    const conflict = c.conflict;
+    body += `| ${c.slug} | ${c.field} | ${JSON.stringify(conflict.verifiedValue)} | ${JSON.stringify(conflict.proposedValue)} | ${conflict.severity} |\n`;
+  }
+
+  body += `
+### Action Required
+
+Please review these conflicts manually. Options:
+1. **Keep verified data** - No action needed (automated change was correctly blocked)
+2. **Update verified data** - If the new data is more accurate, update the Deep Research verification
+3. **Remove protection** - If this field no longer needs Deep Research protection, remove it from verifiedFields
+
+### Context
+
+Each of these fields was previously verified through Deep Research and should not be automatically overwritten.
+Check the show's \`deepResearch.notes\` field in commercial.json for verification context.
+
+---
+*This issue was automatically created by \`scripts/update-commercial-data.js\`*
+`;
+
+  console.log('\n  Creating GitHub issue for Deep Research conflicts...');
+  console.log(`  Title: ${title}`);
+
+  // Use GitHub API
+  const issueData = JSON.stringify({
+    title,
+    body,
+    labels: ['automation', 'deep-research-conflict']
+  });
+
+  try {
+    await httpsRequest({
+      hostname: 'api.github.com',
+      path: '/repos/thomaspryor/Broadwayscore/issues',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'User-Agent': 'BroadwayScorecard-Bot',
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    }, issueData);
+
+    console.log('  Created Deep Research conflict issue');
+  } catch (e) {
+    console.error(`  Failed to create Deep Research conflict issue: ${e.message}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 4.9: Source Validation Helper
+// ---------------------------------------------------------------------------
+
+/**
+ * Build an array of sources for validation from gathered data.
+ * Converts Reddit posts, trade articles, and parsed data into the format
+ * expected by source-validator.
+ *
+ * @param {Object} gathered - Gathered data object
+ * @returns {Object[]} Array of source objects for validation
+ */
+function buildValidationSources(gathered) {
+  const sources = [];
+
+  // Add Grosses Analysis post parsed data
+  if (gathered.grossesPostParsed && gathered.grossesPostParsed.length > 0) {
+    // S1-T7 (2026-07-19, plan-review finding): a tier-3 fallback match
+    // (generic subreddit search, no author filter — see
+    // fetchGrossesAnalysisPost) has an unverified poster and must not
+    // silently corroborate a proposed change the same way a trusted
+    // author-scoped match does. Route it through the SAME "lower
+    // confidence, non-corroborating" shape already used below for
+    // gathered.redditFinancial, instead of building a second gating
+    // mechanism — a change resting solely on this data keeps whatever
+    // base confidence the initial extraction assigned rather than being
+    // boosted toward 'high' by a fabricated extra "supporting source".
+    const isUnverifiedFallback = gathered.grossesPost?.sourceConfidence === 'unverified-fallback';
+
+    for (const show of gathered.grossesPostParsed) {
+      if (!show.matchedSlug) continue;
+
+      if (isUnverifiedFallback) {
+        sources.push({
+          showSlug: null,
+          field: null,
+          value: null,
+          sourceType: 'Reddit Grosses Analysis (unverified fallback author)',
+          url: gathered.grossesPost?.permalink ? `https://www.reddit.com${gathered.grossesPost.permalink}` : null,
+          rawText: `${show.showName || show.matchedSlug}: weeklyCost=${show.estimatedWeeklyCost ?? 'n/a'}, recoupmentPct=${show.estimatedRecoupmentPct ?? 'n/a'}`
+        });
+        continue;
+      }
+
+      // Add each field as a separate source entry
+      if (show.estimatedWeeklyCost) {
+        sources.push({
+          showSlug: show.matchedSlug,
+          field: 'weeklyRunningCost',
+          value: show.estimatedWeeklyCost,
+          sourceType: 'Reddit Grosses Analysis',
+          url: gathered.grossesPost?.permalink ? `https://www.reddit.com${gathered.grossesPost.permalink}` : null
+        });
+      }
+
+      if (show.estimatedRecoupmentPct) {
+        sources.push({
+          showSlug: show.matchedSlug,
+          field: 'estimatedRecoupmentPct',
+          value: show.estimatedRecoupmentPct,
+          sourceType: 'Reddit Grosses Analysis',
+          url: gathered.grossesPost?.permalink ? `https://www.reddit.com${gathered.grossesPost.permalink}` : null
+        });
+      }
+    }
+  }
+
+  // Add Reddit financial thread mentions (lower confidence)
+  if (gathered.redditFinancial && gathered.redditFinancial.length > 0) {
+    for (const post of gathered.redditFinancial) {
+      // Parse the post content for financial mentions
+      // These would need NLP/regex parsing - for now just track as general sources
+      sources.push({
+        showSlug: null, // Unknown - would need parsing
+        field: null,
+        value: null,
+        sourceType: 'Reddit comment',
+        url: post.url,
+        rawText: post.selftext
+      });
+    }
+  }
+
+  // Add trade press articles (higher confidence)
+  if (gathered.tradeArticles && gathered.tradeArticles.length > 0) {
+    for (const article of gathered.tradeArticles) {
+      sources.push({
+        showSlug: null, // Would need parsing to extract show
+        field: null,
+        value: null,
+        sourceType: article.source, // e.g., 'Deadline', 'Variety'
+        url: article.url,
+        rawText: article.text || article.snippet
+      });
+    }
+  }
+
+  // Add SEC filings (highest confidence - Sprint 4.5)
+  if (gathered.secFilings && gathered.secFilings.length > 0) {
+    for (const filing of gathered.secFilings) {
+      sources.push({
+        showSlug: filing.showSlug,
+        field: 'capitalization',
+        value: filing.capitalization,
+        sourceType: 'SEC Form D',
+        url: filing.filingUrl
+      });
+    }
+  }
+
+  return sources;
+}
+
+/**
+ * Validate proposed changes using source-validator module.
+ * Returns changes with validatedConfidence added.
+ *
+ * @param {Object[]} proposedChanges - Changes from Claude analysis
+ * @param {Object[]} allSources - Sources for validation
+ * @returns {Object[]} Validated changes with validatedConfidence
+ */
+function validateProposedChanges(proposedChanges, allSources, opts = {}) {
+  if (!sourceValidator || SKIP_VALIDATION) {
+    console.log('  Skipping validation (module not available or --skip-validation flag)');
+    return proposedChanges.map(c => ({ ...c, validatedConfidence: c.confidence }));
+  }
+
+  console.log('  Validating proposed changes against gathered sources...');
+
+  const validated = [];
+  for (const change of proposedChanges) {
+    // Adapt change format for validator
+    const changeForValidator = {
+      showSlug: change.slug,
+      field: change.field,
+      newValue: change.newValue,
+      oldValue: change.oldValue,
+      confidence: change.confidence,
+      sourceType: extractSourceType(change.source),
+      sourceUrl: extractSourceUrl(change.source)
+    };
+
+    const result = sourceValidator.validateChange(changeForValidator, allSources);
+    let validatedConfidence = result.validatedConfidence;
+    let validationNotes = result.validationNotes;
+    const supportingCount = result.supportingSources?.length || 0;
+
+    // S1-T7 fix (2026-07-19, ship-check finding): calculateConfidence's
+    // "no corroboration" rule PRESERVES the original confidence — it never
+    // downgrades. buildValidationSources() only omits the tier-3 fallback
+    // post as a corroborating source; it never touches validatedConfidence.
+    // Without this, Claude can self-assign 'high'/'medium' to a change
+    // sourced solely from an unverified-fallback Reddit post and it sails
+    // straight through filterByConfidence unchanged. Force 'low' whenever
+    // the fallback was active AND no independent source corroborated it —
+    // legitimate multi-source corroboration (SEC filing, trade press) still
+    // overrides this, since that raises supportingCount above 0.
+    if (opts.unverifiedFallbackActive && supportingCount === 0 &&
+        costSourceBasis(change.source) === 'reddit') {
+      validatedConfidence = 'low';
+      validationNotes = `${validationNotes || 'No corroborating sources found'}; forced low — unverified-fallback Reddit source with no independent corroboration`;
+    }
+
+    validated.push({
+      ...change,
+      validatedConfidence,
+      supportingSourcesCount: supportingCount,
+      contradictingSourcesCount: result.contradictingSources?.length || 0,
+      validationNotes
+    });
+
+    // Log if confidence was adjusted
+    if (validatedConfidence !== change.confidence) {
+      console.log(`    ${change.slug}.${change.field}: ${change.confidence} -> ${validatedConfidence}`);
+    }
+  }
+
+  return validated;
+}
+
+/**
+ * Extract source type from Claude's source string.
+ * @param {string} source - Source citation from Claude
+ * @returns {string} Source type for validator
+ */
+function extractSourceType(source) {
+  if (!source) return 'unknown';
+  const sourceLower = source.toLowerCase();
+
+  // Sources read "Section X: ...", so Reddit (Sections C-E) and SEC (Section H)
+  // come from costSourceBasis; a bare "sec" substring rated every one an SEC filing.
+  const basis = costSourceBasis(source);
+  if (basis === 'reddit') return /grosses\s+analysis/i.test(source) || citedSections(source).has('C') ? 'Reddit Grosses Analysis' : 'Reddit comment';
+  if (basis === 'sec') return 'SEC Form D';
+  if (sourceLower.includes('deadline')) return 'Deadline';
+  if (sourceLower.includes('variety')) return 'Variety';
+  if (sourceLower.includes('nyt') || sourceLower.includes('new york times')) return 'New York Times';
+  if (sourceLower.includes('broadway journal')) return 'Broadway Journal';
+  if (sourceLower.includes('playbill')) return 'Playbill';
+
+  return 'estimate';
+}
+
+/**
+ * Extract URL from Claude's source string if present.
+ * @param {string} source - Source citation from Claude
+ * @returns {string|null} URL or null
+ */
+function extractSourceUrl(source) {
+  if (!source) return null;
+  const urlMatch = source.match(/https?:\/\/[^\s]+/);
+  return urlMatch ? urlMatch[0] : null;
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
+async function main() {
+  console.log('=== Broadway Scorecard: Commercial Data Updater ===');
+  console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'}`);
+  console.log(`Gather: ${GATHER_ALL ? 'ALL' : (GATHER_REDDIT ? 'REDDIT' : 'TRADE')}`);
+  if (GATHER_ONLY) console.log('Stopping after gather (--gather-only)');
+  console.log('');
+
+  // Validate environment
+  if (!SCRAPINGBEE_KEY) {
+    const hasBrightData = !!process.env.BRIGHTDATA_TOKEN;
+    if (!hasBrightData) {
+      console.warn('WARNING: No SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN set.');
+      console.warn('  Reddit data will use direct JSON API (may be rate-limited).');
+      console.warn('  Trade press scraping will use Playwright as last resort.');
+    } else {
+      console.warn('WARNING: No SCRAPINGBEE_API_KEY set. Using BrightData + Playwright fallbacks.');
+    }
+  }
+  if (!GATHER_ONLY && !ANTHROPIC_KEY) {
+    console.error('ERROR: ANTHROPIC_API_KEY must be set (or use --gather-only)');
+    process.exit(1);
+  }
+
+  // Load data files
+  let commercial, shows, grosses;
+  try {
+    commercial = loadCommercial();
+    shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    grosses = JSON.parse(fs.readFileSync(GROSSES_PATH, 'utf8'));
+  } catch (e) {
+    console.error(`ERROR: Failed to load data files: ${e.message}`);
+    process.exit(1);
+  }
+
+  const allSlugs = Object.keys(commercial.shows || {});
+  const allShows = shows.shows || [];
+
+  // Gathered data accumulator
+  const gathered = {
+    commercial,
+    grosses,
+    shows: allShows,
+    grossesPost: null,
+    grossesPostParsed: [],
+    grossesComments: [],
+    redditFinancial: [],
+    tradeArticles: [],
+    secFilings: []  // Sprint 4.5: SEC Form D filings
+  };
+
+  // Total gather timeout: 5 minutes
+  const gatherStart = Date.now();
+  const GATHER_TIMEOUT_MS = 5 * 60 * 1000;
+
+  function isTimedOut() {
+    return (Date.now() - gatherStart) > GATHER_TIMEOUT_MS;
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 3: Gather Reddit data
+  // -----------------------------------------------------------------------
+  if (GATHER_REDDIT || GATHER_ALL) {
+    // Fetch Grosses Analysis post
+    try {
+      if (!isTimedOut()) {
+        gathered.grossesPost = await fetchGrossesAnalysisPost();
+        await sleep(2000);
+      }
+    } catch (e) {
+      console.error(`Grosses Analysis fetch failed: ${e.message}`);
+    }
+
+    // Parse it
+    if (gathered.grossesPost?.selftext) {
+      try {
+        gathered.grossesPostParsed = await parseGrossesPost(gathered.grossesPost.selftext);
+
+        // Match show names to slugs
+        for (const show of gathered.grossesPostParsed) {
+          const match = matchShowToSlug(show.showName, allSlugs, allShows);
+          if (match) {
+            show.matchedSlug = match.slug;
+            show.matchConfidence = match.confidence;
+          }
+        }
+
+        const matched = gathered.grossesPostParsed.filter(s => s.matchedSlug).length;
+        console.log(`  Matched ${matched}/${gathered.grossesPostParsed.length} shows to slugs`);
+      } catch (e) {
+        console.error(`Grosses Analysis parse failed: ${e.message}`);
+      }
+    }
+
+    // Fetch post comments
+    if (gathered.grossesPost?.permalink && !isTimedOut()) {
+      try {
+        await sleep(2000);
+        gathered.grossesComments = await fetchPostComments(gathered.grossesPost.permalink);
+      } catch (e) {
+        console.error(`Grosses comments fetch failed: ${e.message}`);
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 4: Gather trade press data
+  // -----------------------------------------------------------------------
+  if (GATHER_TRADE || GATHER_ALL) {
+    // Reddit financial threads
+    if (!isTimedOut()) {
+      try {
+        gathered.redditFinancial = await searchRedditFinancial(
+          gathered.grossesPost?.permalink || null
+        );
+      } catch (e) {
+        console.error(`Reddit financial search failed: ${e.message}`);
+      }
+    }
+
+    // Trade press search
+    if (!isTimedOut()) {
+      try {
+        const tradeResults = await searchTradePress();
+        gathered.tradeArticles = tradeResults;
+
+        // Scrape article text (max 10 articles, 1s between)
+        let scraped = 0;
+        for (const article of gathered.tradeArticles.slice(0, 10)) {
+          if (isTimedOut()) break;
+          try {
+            article.text = await scrapeArticle(article.url, article.snippet);
+            scraped++;
+          } catch (e) {
+            article.text = article.snippet || '';
+          }
+          await sleep(1000);
+        }
+        console.log(`  Scraped ${scraped} article texts`);
+      } catch (e) {
+        console.error(`Trade press search failed: ${e.message}`);
+      }
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 4.5: Gather SEC filings (Sprint 4.5 - optional)
+  // -----------------------------------------------------------------------
+  if (!isTimedOut() && GATHER_SEC) {
+    try {
+      gathered.secFilings = await gatherSECFilings(allShows, commercial);
+    } catch (e) {
+      console.error(`SEC filing search failed: ${e.message}`);
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 5: Build context
+  // -----------------------------------------------------------------------
+  const contextDocument = buildAnalysisContext(gathered);
+  console.log(`\nBuilt analysis context: ${contextDocument.length} chars`);
+
+  // -----------------------------------------------------------------------
+  // Step 6: If gather-only, write debug output and exit
+  // -----------------------------------------------------------------------
+  if (GATHER_ONLY) {
+    if (!fs.existsSync(DEBUG_DIR)) {
+      fs.mkdirSync(DEBUG_DIR, { recursive: true });
+    }
+    const debugPath = path.join(DEBUG_DIR, `commercial-context-${new Date().toISOString().split('T')[0]}.txt`);
+    if (!DRY_RUN) {
+      fs.writeFileSync(debugPath, contextDocument);
+      console.log(`Wrote debug context to ${debugPath}`);
+    }
+    console.log('\n--gather-only: stopping before AI analysis');
+    return;
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 7: Claude analysis
+  // -----------------------------------------------------------------------
+  let analysisResult;
+  try {
+    analysisResult = await analyzeWithClaude(contextDocument);
+  } catch (e) {
+    console.error(`Claude analysis failed: ${e.message}`);
+    process.exit(1);
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 7.5 (Sprint 4.9): Source validation pipeline
+  // -----------------------------------------------------------------------
+  console.log('\nRunning source validation...');
+  const validationSources = buildValidationSources(gathered);
+  console.log(`  Built ${validationSources.length} validation sources from gathered data`);
+
+  const validatedChanges = validateProposedChanges(
+    analysisResult.proposedChanges || [],
+    validationSources,
+    { unverifiedFallbackActive: gathered.grossesPost?.sourceConfidence === 'unverified-fallback' }
+  );
+
+  // Replace proposed changes with validated versions
+  analysisResult.proposedChanges = validatedChanges;
+
+  // -----------------------------------------------------------------------
+  // Step 8: Filter by confidence (now uses validatedConfidence and Deep Research protection)
+  // -----------------------------------------------------------------------
+  const { applied, flagged, skipped, deepResearchConflicts } = filterByConfidence(analysisResult.proposedChanges || [], commercial);
+  console.log(`\nFiltered: ${applied.length} applied, ${flagged.length} flagged, ${skipped.length} skipped`);
+
+  // Sprint 3: Report and handle Deep Research conflicts
+  if (deepResearchConflicts.length > 0) {
+    console.log(`\n[Deep Research] ${deepResearchConflicts.length} change(s) blocked by Deep Research protection`);
+    await createDeepResearchConflictIssue(deepResearchConflicts);
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 9: Apply changes
+  // -----------------------------------------------------------------------
+  const changeCount = applyChanges(applied, analysisResult.newShowEntries, commercial, buildShowKeyIndex(allShows));
+
+  // -----------------------------------------------------------------------
+  // Step 10: Shadow classifier
+  // -----------------------------------------------------------------------
+  const disagreements = shadowClassifier(commercial, grosses, allShows);
+  if (disagreements.length > 0) {
+    console.log(`\nShadow Classifier Disagreements (${disagreements.length}):`);
+    for (const d of disagreements) {
+      console.log(`  ${d.slug}: current=${d.current}, predicted=${d.predicted} -- ${d.reason}`);
+    }
+  } else {
+    console.log('\nShadow Classifier: No disagreements');
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 11: Write changelog
+  // -----------------------------------------------------------------------
+  const dateStr = new Date().toISOString().split('T')[0];
+  if (applied.length > 0 || (analysisResult.newShowEntries || []).length > 0 || deepResearchConflicts.length > 0) {
+    writeChangelog({
+      date: dateStr,
+      timestamp: new Date().toISOString(),
+      changesApplied: applied.length,
+      changesFlagged: flagged.length,
+      changesSkipped: skipped.length,
+      deepResearchConflicts: deepResearchConflicts.length,  // Sprint 3: Track blocked changes
+      newEntries: (analysisResult.newShowEntries || []).filter(e => e.confidence !== 'low').length,
+      shadowDisagreements: disagreements.length,
+      applied: applied.map(c => ({
+        slug: c.slug,
+        field: c.field,
+        oldValue: c.oldValue,
+        newValue: c.newValue,
+        confidence: c.confidence,
+        source: c.source
+      })),
+      flagged: flagged.map(c => ({
+        slug: c.slug,
+        field: c.field,
+        newValue: c.newValue,
+        flagReason: c.flagReason
+      })),
+      blocked: deepResearchConflicts.map(c => ({  // Sprint 3: Include blocked changes details
+        slug: c.slug,
+        field: c.field,
+        verifiedValue: c.conflict?.verifiedValue,
+        proposedValue: c.conflict?.proposedValue,
+        severity: c.conflict?.severity,
+        discrepancy: c.conflict?.discrepancy
+      }))
+    });
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 12: Create GitHub issue
+  // -----------------------------------------------------------------------
+  if (GITHUB_TOKEN && !DRY_RUN && (applied.length > 0 || flagged.length > 0 || disagreements.length > 0)) {
+    try {
+      await createGitHubIssue({
+        applied,
+        flagged,
+        skipped,
+        disagreements,
+        newEntries: (analysisResult.newShowEntries || []).filter(e => e.confidence !== 'low'),
+        dateStr
+      });
+    } catch (e) {
+      console.error(`GitHub issue creation failed: ${e.message}`);
+    }
+  }
+
+  // -----------------------------------------------------------------------
+  // Step 13: Summary
+  // -----------------------------------------------------------------------
+  console.log('\n=== Summary ===');
+  console.log(`Date: ${dateStr}`);
+  console.log(`Grosses Analysis Post: ${gathered.grossesPost ? 'Found' : 'Not found'}`);
+  console.log(`Shows parsed from GA: ${gathered.grossesPostParsed.length}`);
+  console.log(`Reddit financial threads: ${gathered.redditFinancial.length}`);
+  console.log(`Trade press articles: ${gathered.tradeArticles.length}`);
+  console.log(`SEC Form D filings: ${gathered.secFilings.length}`);
+  console.log(`Changes applied: ${applied.length}`);
+  console.log(`Changes flagged: ${flagged.length}`);
+  console.log(`Changes skipped: ${skipped.length}`);
+  console.log(`Shadow disagreements: ${disagreements.length}`);
+
+  // Sprint 4.12: Display Claude API usage summary
+  if (claudeApiUsage.calls > 0) {
+    console.log('');
+    console.log('=== Claude API Usage ===');
+    console.log(`API Calls: ${claudeApiUsage.calls}`);
+    console.log(`Input Tokens: ${claudeApiUsage.inputTokens.toLocaleString()}`);
+    console.log(`Output Tokens: ${claudeApiUsage.outputTokens.toLocaleString()}`);
+    console.log(`Total Tokens: ${(claudeApiUsage.inputTokens + claudeApiUsage.outputTokens).toLocaleString()}`);
+
+    // Estimate cost (Claude Sonnet pricing as of Jan 2026: ~$3/MTok input, ~$15/MTok output)
+    const inputCost = (claudeApiUsage.inputTokens / 1000000) * 3;
+    const outputCost = (claudeApiUsage.outputTokens / 1000000) * 15;
+    console.log(`Estimated Cost: $${(inputCost + outputCost).toFixed(4)}`);
+  }
+
+  if (DRY_RUN) console.log('\n(DRY RUN -- no files modified)');
+  console.log('');
+}
+
+// Exports for unit testing
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue, applyChanges, extractSourceType };
+
+// Run only when executed directly (not when require()'d for testing)
+if (require.main === module) {
+  main().catch(e => {
+    console.error('Fatal error:', e.message);
+    process.exit(1);
+  });
+}

@@ -1,0 +1,85 @@
+{
+  "generatedAt": "2026-08-12",
+  "files": {
+    "scripts/backfill-cast-web.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/collect-review-texts.js": {
+      "providers": [
+        "scrapingbee",
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/fetch-all-image-formats.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
+    "scripts/fetch-square-images.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    },
+    "scripts/gather-reviews.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/recollect-for-scores.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-bww-reviews.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-lbo-audience.js": {
+      "providers": [
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-lottery-rush.js": {
+      "providers": [
+        "brightdata",
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-ltd-audience.js": {
+      "providers": [
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-nyc-theatre-roundups.js": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": true
+    },
+    "scripts/scrape-seatplan-audience.js": {
+      "providers": [
+        "brightdata"
+      ],
+      "cronReachable": true
+    },
+    "scripts/verify-reviews.ts": {
+      "providers": [
+        "scrapingbee"
+      ],
+      "cronReachable": false
+    }
+  }
+}

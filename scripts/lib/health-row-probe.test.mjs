@@ -1,0 +1,293 @@
+import { test, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+
+// task #1662: check-health-row-absent.js's non-live path used to be tested
+// by backing up, mutating, and restoring the real, tracked
+// data/audit/health-digest-snapshot.json in place — racing ~20 parallel
+// sessions + CI that write it on their own cadence (same anti-pattern fixed
+// for shows.json/diary-shows.json in b4d6c619317/8bf5f00eb08). Point it at a
+// throwaway mkdtemp path via HEALTH_SNAPSHOT_OVERRIDE instead, set BEFORE the
+// require() below so the module's top-level SNAPSHOT const picks it up. Only
+// one test in this file (line ~135, non-live) ever reads/writes this path —
+// every other checkMain() call here passes --live and never touches it.
+const SNAPSHOT_FIXTURE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'health-row-probe-test-'));
+process.env.HEALTH_SNAPSHOT_OVERRIDE = path.join(SNAPSHOT_FIXTURE_DIR, 'health-digest-snapshot.json');
+process.on('exit', () => { try { fs.rmSync(SNAPSHOT_FIXTURE_DIR, { recursive: true, force: true }); } catch (_) { /* best-effort */ } });
+
+const { probeHealthRowLive } = require('./health-row-probe.js');
+const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+const { main: checkMain } = require('../check-health-row-absent.js');
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const HEALTH_CHECK_PATH = require.resolve('../health-check.js');
+const SNAPSHOT_PATH = path.join(SNAPSHOT_FIXTURE_DIR, 'health-digest-snapshot.json');
+const DISPATCH_STATE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'dispatch-outcome-digest-state.json');
+
+function b64url(s) {
+  return Buffer.from(s, 'utf8').toString('base64url');
+}
+
+// probeHealthRowLive requires('../health-check.js') fresh on every call (not
+// cached at health-row-probe.js's own module load), so installing a fake
+// module in require.cache under health-check.js's resolved path reliably
+// intercepts it — a deterministic, hermetic way to control what "live"
+// results look like without depending on this machine's real credentials,
+// local data files, or network access.
+async function withStubbedCoreResults(results, fn) {
+  const original = require.cache[HEALTH_CHECK_PATH];
+  require.cache[HEALTH_CHECK_PATH] = {
+    id: HEALTH_CHECK_PATH,
+    filename: HEALTH_CHECK_PATH,
+    loaded: true,
+    exports: { computeCoreHealthResults: async () => results },
+  };
+  try {
+    return await fn();
+  } finally {
+    if (original) require.cache[HEALTH_CHECK_PATH] = original;
+    else delete require.cache[HEALTH_CHECK_PATH];
+  }
+}
+
+// BRO-4654: the two tests below run the REAL computeCoreHealthResults, whose
+// cron/secrets/push-verify/main-red-streak checks shell out to `gh api` ~30
+// times whenever GH_TOKEN is set. The land gauntlet runs unit tests twice per
+// land run with GH_TOKEN=GITHUB_TOKEN, so this file alone spent ~60 calls of
+// the shared 1,000/hour quota per land. Stub the gh transport (cachedShell)
+// and report low headroom so the optional fan-outs skip; the checks still run
+// their real parse and fs code paths against the empty payloads.
+const ghApiCache = require('./gh-api-cache.js');
+async function withOfflineGh(fn) {
+  const shellCalls = [];
+  const shell = mock.method(ghApiCache, 'cachedShell', (key) => { shellCalls.push(key); return '[]'; });
+  const headroom = mock.method(ghApiCache, 'hasLowHeadroom', () => true);
+  // health-check.js destructures these at load, so load it fresh under the mocks.
+  delete require.cache[HEALTH_CHECK_PATH];
+  try {
+    return { result: await fn(), shellCalls };
+  } finally {
+    shell.mock.restore();
+    headroom.mock.restore();
+    delete require.cache[HEALTH_CHECK_PATH];
+  }
+}
+
+test('probeHealthRowLive: row present with status pass -> verdict absent (fixed)', async () => {
+  const out = await withStubbedCoreResults(
+    [{ name: 'Probe test: fixture row', status: 'pass', message: 'ok now' }],
+    () => probeHealthRowLive('Probe test: fixture row'),
+  );
+  assert.equal(out.verdict, 'absent');
+  assert.equal(out.matched.status, 'pass');
+});
+
+test('probeHealthRowLive: row present with status error/warn and a real message -> verdict present (still broken)', async () => {
+  const out = await withStubbedCoreResults(
+    [{ name: 'Probe test: fixture row', status: 'error', message: 'still broken' }],
+    () => probeHealthRowLive('Probe test: fixture row'),
+  );
+  assert.equal(out.verdict, 'present');
+});
+
+test('probeHealthRowLive: row absent from every status -> verdict unknown, never a silent pass', async () => {
+  const out = await withStubbedCoreResults(
+    [{ name: 'Some other row', status: 'pass', message: 'unrelated' }],
+    () => probeHealthRowLive('Probe test: never-computed row'),
+  );
+  assert.equal(out.verdict, 'unknown');
+});
+
+test('probeHealthRowLive: row only appears as a warn-status credential-skip placeholder -> verdict unknown, not present or absent', async () => {
+  // Real shape checkCronHealth()/checkSecretsHealth()/etc. emit when a
+  // required token is missing (see module header) — the single placeholder
+  // row name can collide with a real check's own success-path name.
+  const out = await withStubbedCoreResults(
+    [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }],
+    () => probeHealthRowLive('Cron: health'),
+  );
+  assert.equal(out.verdict, 'unknown');
+});
+
+test('probeHealthRowLive: row only appears as a PASS-status checkout-skip placeholder -> verdict unknown, not a false pass (ship-check finding)', async () => {
+  // Real shape checkSync()'s "Sync: review-texts vs reviews.json" row when
+  // the private review-texts repo isn't checked out — status 'pass', not
+  // 'warn'. A card targeting this exact row must not exit 0 just because
+  // this sandbox never actually re-ran the real check.
+  const out = await withStubbedCoreResults(
+    [{ name: 'Sync: review-texts vs reviews.json', status: 'pass', message: 'Skipped — review-texts not checked out (private repo)' }],
+    () => probeHealthRowLive('Sync: review-texts vs reviews.json'),
+  );
+  assert.equal(out.verdict, 'unknown');
+});
+
+test('probeHealthRowLive: row only appears as a parenthetical PASS-status skip placeholder -> verdict unknown', async () => {
+  // Real shape checkQuality()'s star-vs-score / missing-contentTier / etc.
+  // rows use "Skipped (...)" (parentheses, no em dash) at status 'pass'.
+  const out = await withStubbedCoreResults(
+    [{ name: 'Quality: star-vs-score mismatch', status: 'pass', message: 'Skipped (review-texts not checked out)' }],
+    () => probeHealthRowLive('Quality: star-vs-score mismatch'),
+  );
+  assert.equal(out.verdict, 'unknown');
+});
+
+test('probeHealthRowLive: name matching truncates at the same 120-char bound check-health-row-absent.js encodes with', async () => {
+  const longName = 'Z'.repeat(300);
+  const out = await withStubbedCoreResults(
+    [{ name: longName.slice(0, 120), status: 'pass', message: 'ok' }],
+    () => probeHealthRowLive(longName),
+  );
+  assert.equal(out.verdict, 'absent');
+});
+
+test('isSafeCheckCommand accepts the --row-b64 ... --live form used to invoke this probe', () => {
+  const token = b64url('Probe test: fixture row');
+  assert.equal(isSafeCheckCommand(`node scripts/check-health-row-absent.js --row-b64 ${token} --live`), true);
+});
+
+test('check-health-row-absent.js --live: exit code follows the probe verdict (0 absent, 1 present, 3 unknown)', async () => {
+  const row = 'Probe test: fixture row';
+  const token = b64url(row);
+  const argv = ['node', 'check-health-row-absent.js', '--row-b64', token, '--live'];
+
+  assert.equal(
+    await withStubbedCoreResults([{ name: row, status: 'pass', message: 'ok' }], () => checkMain(argv)),
+    0,
+  );
+  assert.equal(
+    await withStubbedCoreResults([{ name: row, status: 'error', message: 'broken' }], () => checkMain(argv)),
+    1,
+  );
+  assert.equal(
+    await withStubbedCoreResults([], () => checkMain(argv)),
+    3,
+  );
+});
+
+test('check-health-row-absent.js: --live reports fixed even while a stale/fake snapshot still lists the row as present (acceptance criterion)', async () => {
+  const row = `Probe test: acceptance fixture ${process.pid}`;
+  const token = b64url(row);
+
+  // SNAPSHOT_PATH lives entirely inside SNAPSHOT_FIXTURE_DIR (a throwaway
+  // mkdtemp dir wired in via HEALTH_SNAPSHOT_OVERRIDE at file load time) —
+  // no backup/restore needed, nothing here ever touches the real file.
+  fs.mkdirSync(path.dirname(SNAPSHOT_PATH), { recursive: true });
+  fs.writeFileSync(SNAPSHOT_PATH, JSON.stringify({
+    generatedAt: new Date().toISOString(),
+    errors: [],
+    warns: [{ name: row, status: 'warn', message: 'still broken (fixture)' }],
+  }, null, 2));
+
+  // Non-live: reads the (fixture) snapshot, which still lists the row -> FAIL.
+  const staleCode = await checkMain(['node', 'check-health-row-absent.js', '--row-b64', token]);
+  assert.equal(staleCode, 1, 'non-live path should still see the fixture snapshot as present');
+
+  // Live: the fix already landed (stubbed as status pass) -> PASS, despite
+  // the snapshot file on disk not having caught up yet.
+  const liveCode = await withStubbedCoreResults(
+    [{ name: row, status: 'pass', message: 'fixed' }],
+    () => checkMain(['node', 'check-health-row-absent.js', '--row-b64', token, '--live']),
+  );
+  assert.equal(liveCode, 0, '--live should report the row fixed despite the stale snapshot');
+});
+
+test('a probe run performs zero real fs writes (spy on the REAL, unpatched fs)', async () => {
+  const realFs = require('node:fs');
+  let realWriteCalls = 0;
+  const originalWrite = realFs.writeFileSync;
+  const originalAppend = realFs.appendFileSync;
+  realFs.writeFileSync = (...args) => { realWriteCalls++; return originalWrite(...args); };
+  realFs.appendFileSync = (...args) => { realWriteCalls++; return originalAppend(...args); };
+  try {
+    // Real (unstubbed) computeCoreHealthResults — exercises the actual
+    // checkDispatchOutcomes dryRun path and the fs monkey-patch backstop
+    // together, against this machine's real local data.
+    await withOfflineGh(() => probeHealthRowLive('__health-row-probe-test-zero-writes__'));
+  } finally {
+    realFs.writeFileSync = originalWrite;
+    realFs.appendFileSync = originalAppend;
+  }
+  assert.equal(realWriteCalls, 0, `probeHealthRowLive performed ${realWriteCalls} real fs write(s)`);
+});
+
+// Card #794 adversarial ship-check finding: checkStuckPipelineItems() calls
+// overnight-digest.js's gatherDigest(), which by default runs a real
+// `git fetch` — a subprocess write to FETCH_HEAD/remote-tracking refs the
+// fs-write monkey-patch above cannot see or block, since it's a child
+// process, not a Node fs call. checkStuckPipelineItems() passes
+// `skipFetch: true` specifically to avoid adding this to the probe's side
+// effects. NOTE: this only pins checkStuckPipelineItems()'s OWN
+// contribution — scripts/lib/autofix-canary.js's checkAutofixCanary()/
+// checkAutofixThroughput() (pre-existing, unrelated to this fix) already run
+// their own unconditional `git fetch` on every core-results computation, so
+// a whole-probe "FETCH_HEAD never changes" assertion would fail for a
+// reason this diff didn't cause and can't fix.
+test('checkStuckPipelineItems calls gatherDigest with skipFetch (no added git-fetch side effect)', () => {
+  const overnightDigestPath = require.resolve('./overnight-digest.js');
+  const original = require.cache[overnightDigestPath];
+  let capturedOpts = null;
+  require.cache[overnightDigestPath] = {
+    id: overnightDigestPath,
+    filename: overnightDigestPath,
+    loaded: true,
+    exports: {
+      gatherDigest: (opts) => { capturedOpts = opts; return { stuck: {}, errors: [] }; },
+      stuckSignals: () => [],
+    },
+  };
+  try {
+    delete require.cache[HEALTH_CHECK_PATH];
+    const { checkStuckPipelineItems } = require('../health-check.js');
+    checkStuckPipelineItems();
+  } finally {
+    if (original) require.cache[overnightDigestPath] = original;
+    else delete require.cache[overnightDigestPath];
+    delete require.cache[HEALTH_CHECK_PATH];
+  }
+  assert.equal(capturedOpts?.skipFetch, true, 'checkStuckPipelineItems() must call gatherDigest with skipFetch: true');
+});
+
+test('a probe run never touches the dispatch-outcome-digest-state.json trend cache (regression pin on the one known writer among the core checks)', async () => {
+  const before = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;
+  await withOfflineGh(() => probeHealthRowLive('__health-row-probe-test-no-state-write__'));
+  const after = fs.existsSync(DISPATCH_STATE_PATH) ? fs.statSync(DISPATCH_STATE_PATH).mtimeMs : null;
+  assert.equal(after, before, 'dispatch-outcome-digest-state.json mtime changed across a probe run');
+});
+
+test('two concurrent in-process probe calls stay side-effect-free (reentrancy — ship-check finding, task #1224)', async () => {
+  // The original write-disable window was not reentrant: the first of two
+  // overlapping calls to finish would restore the REAL fs.writeFileSync
+  // while the second call was still mid-flight, un-protecting it. Real
+  // usage always runs --live as a fresh CLI process (never overlapping
+  // in-process calls), but Promise.all-ing two probes in the same process
+  // must still never leak a real write.
+  const realFs = require('node:fs');
+  let realWriteCalls = 0;
+  const originalWrite = realFs.writeFileSync;
+  realFs.writeFileSync = (...args) => { realWriteCalls++; return originalWrite(...args); };
+  try {
+    // One shared stub (not two nested withStubbedCoreResults calls) — the
+    // require.cache-swap trick this test file uses for stubbing is itself
+    // not reentrant, so overlapping it would test the test harness's race,
+    // not health-row-probe.js's. The fs-write-disable reentrancy under test
+    // lives entirely inside health-row-probe.js's own withWritesDisabled.
+    const [a, b] = await withStubbedCoreResults(
+      [
+        { name: 'Row A', status: 'pass', message: 'ok' },
+        { name: 'Row B', status: 'error', message: 'broken' },
+      ],
+      () => Promise.all([probeHealthRowLive('Row A'), probeHealthRowLive('Row B')]),
+    );
+    assert.equal(a.verdict, 'absent');
+    assert.equal(b.verdict, 'present');
+  } finally {
+    realFs.writeFileSync = originalWrite;
+  }
+  assert.equal(realWriteCalls, 0, `overlapping probes performed ${realWriteCalls} real fs write(s)`);
+});

@@ -1,0 +1,436 @@
+{
+  "_meta": {
+    "snapshotAt": "2026-04-29T04:00:35.454Z",
+    "snapshotTag": "as-of-2026-04-29",
+    "tonySeason": "2021-22",
+    "sourceLastUpdated": "2026-04-29T00:26:22.829Z",
+    "nomineeCount": 19,
+    "eligibleShowCount": 0,
+    "totalShows": 19,
+    "note": "Audience grades captured at this point in time. Tony Predictions backtest evaluation should read THIS snapshot rather than live audience-buzz.json (which accumulates post-Tony halo ratings). Re-running on the same day overwrites; tag distinct snapshots with --tag."
+  },
+  "shows": {
+    "six-2021": {
+      "title": "SIX",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 84.8,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 3721
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 5923
+        },
+        "theatr": {
+          "score": 84,
+          "reviewCount": 3350
+        },
+        "broadwayCom": {
+          "score": 90,
+          "reviewCount": 335
+        },
+        "reddit": {
+          "score": 78,
+          "reviewCount": 207
+        }
+      }
+    },
+    "mj-2022": {
+      "title": "MJ The Musical",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 86.39,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 2970
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 1869
+        },
+        "theatr": {
+          "score": 80,
+          "reviewCount": 1534
+        },
+        "broadwayCom": {
+          "score": 96,
+          "reviewCount": 1012
+        },
+        "reddit": {
+          "score": 74,
+          "reviewCount": 121
+        }
+      }
+    },
+    "the-lehman-trilogy-2021": {
+      "title": "The Lehman Trilogy",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 88.57,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 306
+        },
+        "mezzanine": {
+          "score": 88,
+          "reviewCount": 205
+        },
+        "theatr": {
+          "score": 88,
+          "reviewCount": 25
+        }
+      }
+    },
+    "clydes-2021": {
+      "title": "Clyde's",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 80.76,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 386
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 174
+        },
+        "reddit": {
+          "score": 67,
+          "reviewCount": 904
+        }
+      }
+    },
+    "hangmen-2022": {
+      "title": "Hangmen",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 77.35,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 286
+        },
+        "mezzanine": {
+          "score": 72,
+          "reviewCount": 249
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 3
+        }
+      }
+    },
+    "skeleton-crew-2022": {
+      "title": "Skeleton Crew",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 83.25,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 147
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 77
+        }
+      }
+    },
+    "the-minutes-2022": {
+      "title": "The Minutes",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 74.7,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 78,
+          "reviewCount": 474
+        },
+        "mezzanine": {
+          "score": 72,
+          "reviewCount": 470
+        },
+        "theatr": {
+          "score": 50,
+          "reviewCount": 12
+        }
+      }
+    },
+    "a-strange-loop-2022": {
+      "title": "A Strange Loop",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 80.01,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 84,
+          "reviewCount": 934
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 1623
+        },
+        "theatr": {
+          "score": 75,
+          "reviewCount": 95
+        },
+        "reddit": {
+          "score": 67,
+          "reviewCount": 106
+        }
+      }
+    },
+    "girl-from-the-north-country-2022": {
+      "title": "Girl From The North Country",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 68.87,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 76,
+          "reviewCount": 701
+        },
+        "mezzanine": {
+          "score": 61,
+          "reviewCount": 525
+        },
+        "theatr": {
+          "score": 37,
+          "reviewCount": 27
+        }
+      }
+    },
+    "mr-saturday-night-2022": {
+      "title": "Mr. Saturday Night",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 68.27,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 77,
+          "reviewCount": 351
+        },
+        "mezzanine": {
+          "score": 61,
+          "reviewCount": 422
+        }
+      }
+    },
+    "paradise-square-2022": {
+      "title": "Paradise Square",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 76.22,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 80,
+          "reviewCount": 585
+        },
+        "mezzanine": {
+          "score": 73,
+          "reviewCount": 686
+        }
+      }
+    },
+    "take-me-out-2022": {
+      "title": "Take Me Out",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 84.03,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 688
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 940
+        },
+        "theatr": {
+          "score": 79,
+          "reviewCount": 76
+        }
+      }
+    },
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022": {
+      "title": "for colored girls who have considered suicide / when the rainbow is enuf",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 81,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 291
+        },
+        "mezzanine": {
+          "score": 81,
+          "reviewCount": 178
+        }
+      }
+    },
+    "how-i-learned-to-drive-2022": {
+      "title": "How I Learned to Drive",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 81.04,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 388
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 251
+        }
+      }
+    },
+    "trouble-in-mind-2021": {
+      "title": "Trouble in Mind",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 79.17,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 297
+        },
+        "mezzanine": {
+          "score": 76,
+          "reviewCount": 172
+        }
+      }
+    },
+    "company-2021": {
+      "title": "Company",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 85.71,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 86,
+          "reviewCount": 1098
+        },
+        "mezzanine": {
+          "score": 86,
+          "reviewCount": 2552
+        },
+        "theatr": {
+          "score": 74,
+          "reviewCount": 91
+        },
+        "reddit": {
+          "score": 77,
+          "reviewCount": 348
+        }
+      }
+    },
+    "caroline-or-change-2021": {
+      "title": "Caroline, or Change",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 80.48,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 406
+        },
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 546
+        },
+        "theatr": {
+          "score": 90,
+          "reviewCount": 77
+        },
+        "reddit": {
+          "score": 72,
+          "reviewCount": 97
+        }
+      }
+    },
+    "the-music-man-2022": {
+      "title": "The Music Man",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 82.33,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 87,
+          "reviewCount": 824
+        },
+        "mezzanine": {
+          "score": 80,
+          "reviewCount": 1391
+        },
+        "theatr": {
+          "score": 76,
+          "reviewCount": 96
+        }
+      }
+    },
+    "american-buffalo-2022": {
+      "title": "American Buffalo",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 73.04,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 79,
+          "reviewCount": 362
+        },
+        "mezzanine": {
+          "score": 67,
+          "reviewCount": 357
+        },
+        "reddit": {
+          "score": 66,
+          "reviewCount": 523
+        }
+      }
+    }
+  }
+}

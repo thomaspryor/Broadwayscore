@@ -1,0 +1,103 @@
+'use client';
+
+import { useState, useCallback, useEffect } from 'react';
+import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
+import { Modal, ModalCloseButton } from '@/components/show-cards';
+
+export default function HeaderSubscribeButton() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
+    userGroup: 'main-site-subscriber',
+    source: 'header',
+  });
+  const marketLabel = market === 'west-end' ? 'West End' : 'Broadway';
+
+  // Auto-close on success
+  useEffect(() => {
+    if (status === 'success' || status === 'already_subscribed') {
+      const timer = setTimeout(() => setIsOpen(false), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault();
+    const ok = await submit(email);
+    if (ok) setEmail('');
+  }, [email, submit]);
+
+  // Already subscribed — show checkmark button
+  if (isSubscribed && !isOpen) {
+    return (
+      <button
+        className="ml-1 px-3 py-1.5 text-sm font-semibold text-emerald-400 bg-emerald-400/10 rounded-lg cursor-default flex items-center gap-1.5"
+        aria-label="Subscribed"
+      >
+        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+        Subscribed
+      </button>
+    );
+  }
+
+  return (
+    <>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors whitespace-nowrap"
+      >
+        Get the Scorecard
+      </button>
+
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} zIndex={70} maxWidth="sm" ariaLabel={`Subscribe to ${marketLabel} Scorecard`}>
+        <div className="p-6">
+          <ModalCloseButton onClick={() => setIsOpen(false)} className="absolute top-4 right-4" />
+
+          {status === 'success' || status === 'already_subscribed' ? (
+              <div className="text-center py-4">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-emerald-400/10 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="text-white font-semibold">You&apos;re in!</p>
+                <p className="text-sm text-gray-400 mt-1">We&apos;ll email you whenever a new show opens on {marketLabel} with its CriticScore.</p>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-lg font-bold text-white">Never Miss a New {marketLabel} Show</h2>
+                <p className="text-sm text-gray-400 mt-1 mb-4">No spam, no schedule &mdash; just opening night scores. Unsubscribe anytime.</p>
+
+                <form onSubmit={handleSubmit}>
+                  <label htmlFor="header-modal-email" className="sr-only">Email address</label>
+                  <input
+                    id="header-modal-email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="email@example.com"
+                    required
+                    autoFocus
+                    className="w-full px-3 py-2.5 bg-surface border border-white/10 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
+                  />
+                  <button
+                    type="submit"
+                    disabled={status === 'submitting'}
+                    className="w-full mt-3 px-4 py-2.5 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors"
+                  >
+                    {status === 'submitting' ? 'Subscribing...' : 'Subscribe'}
+                  </button>
+                </form>
+
+                {status === 'error' && errorMessage && (
+                  <p className="mt-2 text-xs text-red-400 text-center">{errorMessage}</p>
+                )}
+              </>
+            )}
+        </div>
+      </Modal>
+    </>
+  );
+}

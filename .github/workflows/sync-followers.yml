@@ -1,0 +1,64 @@
+name: Sync Followers & Subscribers
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Daily at noon UTC (7 AM ET)
+  workflow_dispatch:
+    inputs:
+      full_resync:
+        description: 'Re-pull ALL Formspree submissions (ignore lastSynced) to recover historical/stranded subscribers'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-followers
+  # concurrency-cancel-ok: idempotent refresh, latest run wins (BRO-934 audit)
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Sync from Formspree → local JSON + Resend segments
+        env:
+          FORMSPREE_FOLLOW_API_KEY: ${{ secrets.FORMSPREE_FOLLOW_API_KEY }}
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_FOLLOW_FORM_ID: ${{ secrets.FORMSPREE_FOLLOW_FORM_ID }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID }}
+          FORMSPREE_WESTEND_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_WESTEND_SUBSCRIBER_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/sync-followers.js ${{ (github.event_name == 'workflow_dispatch' && inputs.full_resync) && '--full' || '' }}
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Sync followers & subscribers'
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Sync Followers Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

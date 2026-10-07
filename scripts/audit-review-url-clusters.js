@@ -1,0 +1,416 @@
+#!/usr/bin/env node
+/**
+ * audit-review-url-clusters.js
+ *
+ * Detects AND remediates byline-explosion clusters (see
+ * scripts/lib/review-url-clusters.js): one review URL scraped into 5+ files under
+ * different critic names. These slip past criticName-keyed dup audits and usually
+ * leave the real review unscored (invalid tier + circular duplicateOf).
+ *
+ * Report (default): raw clusters, split into RESOLVED (already collapsed to one
+ * primary) vs UNRESOLVED (still harmful). --gate exits 1 only on UNRESOLVED.
+ *
+ * --fix: for each cluster, decide (scripts/lib/cluster-canonical.js) whether a
+ * real review can be recovered. RECOVER → clear the canonical's suppression with
+ * the manual-protection field set (buildManualReviewFields, incl protectedFields
+ * so push-review-texts won't revert it) and point every sibling's duplicateOf at
+ * it. SKIP → collapse siblings onto a tombstone and report the URL for manual
+ * re-gather (empty extractions of the right URL) or leave-as-wrong (tour/roundup/
+ * wrong-show). Non-destructive: no file deletion, fully git reversible. Reuses
+ * contentMatchesFiledUnderVenue + verifyAggregatorUrl for the per-file venue/
+ * show-match signals (never a date window — see Notion 394637c5).
+ *
+ * Usage:
+ *   node scripts/audit-review-url-clusters.js                 # report
+ *   node scripts/audit-review-url-clusters.js --gate          # exit 1 on unresolved
+ *   node scripts/audit-review-url-clusters.js --fix --dry-run # show planned changes
+ *   node scripts/audit-review-url-clusters.js --fix           # apply
+ *   node scripts/audit-review-url-clusters.js --fix --show=ID # scope to one show
+ */
+const fs = require('fs');
+const path = require('path');
+const os = require('os');
+const { findUrlClusters } = require('./lib/review-url-clusters');
+const { decideClusterAction } = require('./lib/cluster-canonical');
+const { contentMatchesFiledUnderVenue } = require('./lib/cross-production-guards');
+const { verifyAggregatorUrl } = require('./lib/show-match-verifier');
+const { venueSlug } = require('./lib/venue-classification');
+const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const {
+  planCanonicalPointerClear,
+  applyCanonicalPointerClear,
+} = require('./lib/canonical-duplicate-pointers');
+let isIncludableForRebuild = () => false;
+try { ({ isIncludableForRebuild } = require('./lib/review-guards')); } catch { /* optional */ }
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+
+const args = process.argv.slice(2);
+const gate = args.includes('--gate');
+const doFix = args.includes('--fix');
+const dryRun = args.includes('--dry-run');
+const showFilter = (args.find((a) => a.startsWith('--show=')) || '').split('=')[1] || null;
+const threshold = Number((args.find((a) => a.startsWith('--threshold=')) || '').split('=')[1]) || 5;
+const maxRecover = Number((args.find((a) => a.startsWith('--max-recover=')) || '').split('=')[1]) || 8;
+
+// This script WRITES (--fix rewrites review JSON via writePlain). See
+// scripts/lib/review-texts-dir.js — the legacy ~/broadway-review-texts clone
+// was 143+ commits stale as of 2026-08-17; a write pointed there silently
+// corrupts the wrong copy while reporting success.
+const RT = resolveReviewTextsDir();
+const SHOWS_JSON = process.env.SHOWS_JSON
+  || path.join(os.homedir(), 'broadway-scorecard-data', 'shows.json');
+
+// verifyAggregatorUrl rejectReasons that mean the URL belongs to a DIFFERENT
+// show/production (recovery is impossible). url-token-mismatch is deliberately
+// NOT here — it soft-fails on apostrophe/hash URLs ("Ain't No Mo'") that ARE the
+// right show, and cluster-canonical treats those as recoverable.
+const HARD_REJECT = new Set(['date-out-of-window', 'page-title-mismatch']);
+
+// One-time, driver-owned canonical overrides for clusters whose identical bodies
+// carry invented bylines and the genuine critic is externally known. Keyed
+// `${showId}|${canonicalUrl}`. Kept out of the pure lib (design review 2026-07-05).
+const PREFERRED_CANONICAL = {
+  'aint-no-mo-2022|https://variety.com/2022/legit/reviews/aint-no-mo-review-broadway-1235448778':
+    'variety--aramide-tinubu.json',
+  // NYT ran this as a genuine joint byline ("We sent both of our chief
+  // critics to King Kong") — not a byline explosion. The default longest-
+  // text tiebreak would collapse onto the single-name "Ben Brantley" file
+  // and drop Jesse Green's credit; force the properly formatted joint file.
+  'king-kong-2018|https://www.nytimes.com/2018/11/08/theater/king-kong-review.html':
+    'nytimes--jesse-green-and-ben-brantley.json',
+  // "Lovia Gayarkye" is a scraper typo of the real THR critic Lovia Gyarkye
+  // (confirmed in CRITIC_ALIASES, review-normalization.js) — the misspelled
+  // copy is longer so the default tiebreak would pick it.
+  'mj-2022|https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage-1235085086':
+    'hollywood-reporter--lovia-gyarkye.json',
+  // "Sarah Holdren" is a scraper typo of Vulture critic Sara Holdren
+  // (confirmed in CRITIC_ALIASES) — same longest-text tiebreak issue.
+  'moulin-rouge-2019|https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html':
+    'vulture--sara-holdren.json',
+  // "Asserts Dominic Cavendish" is a scraper artifact (sentence fragment
+  // captured as byline) tied in length with the clean "Dominic Cavendish"
+  // copy — force the clean name.
+  'broken-glass-west-end-2026|https://www.telegraph.co.uk/theatre/what-to-see/broken-glass-young-vic-anti-semitism':
+    'telegraph--dominic-cavendish.json',
+  // wsj--charles-isherwood.json is already the correct, complete-tier,
+  // correctly-named copy with an operator's wrongProductionManualClear
+  // already on file (2026-08-15 spot-check: body is venue-matched to Hudson
+  // Theatre and self-identifies "Mr. Isherwood is the Journal's theater
+  // critic") — it's just invisible to the DEFAULT ranking because
+  // isCandidate() used to exclude any wrongProduction:true file outright.
+  // Do NOT route this through the --unknown-byline sibling instead: renaming
+  // its criticName away from "unknown" would trip rebuild-all-reviews.js's
+  // stale-filename cleanup (merge-into-named-file-then-delete), which
+  // silently re-excludes the review on the next full rebuild (task #1627
+  // ship-check finding).
+  'death-of-a-salesman-2022|https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pierce-sharon-d-clarke-khris-davis-mckinley-belcher-iii-andre-de-shields-delaney-williams-stephen-stocking-blake-delong-lynn-hawley-charles-s-dutton-miranda-cromwell-11665172217':
+    'wsj--charles-isherwood.json',
+};
+
+// Clusters where every byline is an invented WhatsOnStage-staff name (the true
+// author is unrecoverable): credit the outlet, not a hallucinated critic.
+const NEUTRALIZE_CRITIC = {
+  'a-midsummer-nights-dream-west-end-2026|https://www.whatsonstage.com/news/a-midsummer-nights-dream-at-regents-park-open-air-theatre-review_1726521':
+    'WhatsOnStage',
+};
+
+const STAMP = process.env.FIX_STAMP || 'byline-cluster-cleanup';
+
+function loadShows() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
+    const list = Array.isArray(raw) ? raw : raw.shows;
+    const map = new Map();
+    for (const s of list) map.set(s.id, s);
+    return map;
+  } catch {
+    return new Map();
+  }
+}
+
+function writePlain(p, json) {
+  // Plain write — NOT safeWriteReview: its URL-collision detector would re-set
+  // duplicateOf on the canonical we are deliberately clearing (the very bug that
+  // created these clusters). Matches cascade-clear-duplicate-refs's rationale.
+  fs.writeFileSync(p, JSON.stringify(json, null, 2) + '\n');
+}
+
+if (!fs.existsSync(RT)) {
+  console.error(`review-texts dir not found: ${RT}`);
+  // exit(1), not exit(0): a missing corpus is "the audit couldn't run", not
+  // "the audit ran and found 0 clusters" — those are different outcomes and
+  // must not share an exit code, or --fix can silently no-op and report clean.
+  process.exit(1);
+}
+console.log(`[audit-review-url-clusters] review-texts: ${RT}`);
+
+const showDirs = listShowDirs(RT).filter((d) => {
+  return !d.startsWith('_') && !d.startsWith('.');
+}).filter((d) => !showFilter || d === showFilter);
+
+const shows = loadShows();
+
+// ---- Gather clusters + per-file signals ------------------------------------
+function gatherClusters() {
+  const out = [];
+  for (const show of showDirs) {
+    const dir = path.join(RT, show);
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json'));
+    const parsed = {};
+    const reviews = [];
+    for (const f of files) {
+      try {
+        const r = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+        parsed[f] = r;
+        reviews.push({
+          file: f, url: r.url, outlet: r.outlet, criticName: r.criticName || r.critic,
+          contentTier: r.contentTier, duplicateOf: r.duplicateOf,
+        });
+      } catch { /* skip unreadable */ }
+    }
+    const clusters = findUrlClusters(reviews, threshold);
+    if (clusters.length) out.push({ show, dir, parsed, clusters });
+  }
+  return out;
+}
+
+/** Build the ClusterFileSignal[] cluster-canonical.js consumes, from parsed files. */
+function signalsFor(cluster, dir, parsed, show) {
+  const vSlug = show ? venueSlug(show.venue) : null;
+  return cluster.files.map((f) => {
+    const r = parsed[f] || {};
+    const body = r.fullText || '';
+    let includable = false;
+    try { includable = isIncludableForRebuild(r, show, path.join(dir, f)); } catch { includable = false; }
+    return {
+      file: f,
+      contentTier: r.contentTier,
+      fullTextLen: body.length,
+      fullTextHead: body.slice(0, 400),
+      wrongProduction: r.wrongProduction === true,
+      wrongProductionManualClear: r.wrongProductionManualClear === true,
+      wrongShow: r.wrongShow === true,
+      aggregatorStars: r.aggregatorStars,
+      originalScore: r.originalScore,
+      venueMatch: vSlug ? contentMatchesFiledUnderVenue({ fullText: body }, vSlug) : false,
+      includable,
+      humanReviewScore: r.humanReviewScore,
+      criticName: r.criticName || r.critic,
+      outlet: r.outlet,
+      duplicateOf: r.duplicateOf,
+    };
+  });
+}
+
+function decideFor(clusterCtx) {
+  const { show: showId, dir, parsed, cluster } = clusterCtx;
+  const show = shows.get(showId);
+  const files = signalsFor(cluster, dir, parsed, show);
+  const rawUrl = (parsed[cluster.files[0]] || {}).url || cluster.url;
+  let hardReject = false;
+  if (show) {
+    const v = verifyAggregatorUrl({
+      url: rawUrl,
+      show: { id: show.id, title: show.title, venue: show.venue, openingDate: show.openingDate },
+    });
+    hardReject = !v.isValid && HARD_REJECT.has(v.rejectReason);
+  }
+  const key = `${showId}|${cluster.url}`;
+  const preferredCanonical = PREFERRED_CANONICAL[key] || null;
+  // A show missing from shows.json gives us NO venue/URL validation (venueMatch
+  // and hardReject both default false) — never recover blind; only collapse.
+  if (!show) return { decision: { action: 'skip', reason: 'show-not-in-catalog', canonical: null }, hardReject: false };
+  const decision = decideClusterAction(files, { hardReject, preferredCanonical });
+  return { decision, hardReject };
+}
+
+// ---- Apply -----------------------------------------------------------------
+function applyRecover(clusterCtx, decision) {
+  const { show: showId, dir, parsed, cluster } = clusterCtx;
+  const canonical = decision.canonical;
+  const canonData = parsed[canonical];
+  const key = `${showId}|${cluster.url}`;
+  const show = shows.get(showId);
+  const vSlug = show ? venueSlug(show.venue) : null;
+  const venueMatch = !!(vSlug && contentMatchesFiledUnderVenue({ fullText: canonData.fullText || '' }, vSlug));
+
+  // NARROW recovery — assert ONLY what un-suppresses this specific byline
+  // explosion. Deliberately NOT buildManualReviewFields({operatorTrust:true}):
+  // that stamps allowCrossMarket / allowTourSignal / allowFilmSignal /
+  // wrongProductionOverride — the blanket immunity manual-review-fields.js:57-62
+  // warns automated callers must never grant (it re-admitted prior-production /
+  // cross-market contamination, 2026-06-21, 335 reviews). A machine-picked
+  // canonical must stay subject to every production guard except the ones this
+  // review demonstrably clears (a venue-body-matched stale wrongShow).
+  const merged = {
+    ...canonData,
+    duplicateOf: null,
+    duplicateReason: null,
+    duplicateClearReason: `byline-explosion-canonical (${STAMP})`,
+  };
+  // A canonical must not point back at a file it is the canonical FOR. Clearing
+  // only duplicateOf (as this did until 2026-08-17) leaves duplicateTextOf as a
+  // mutual cycle, and review-guards.js keeps BOTH sides of a circular pair whose
+  // fullText fingerprints differ — so one scrape artifact re-admits the collapsed
+  // byline under the same URL and validate-data.js fails the trunk.
+  applyCanonicalPointerClear(
+    merged,
+    planCanonicalPointerClear(canonData, { self: canonical, clusterFiles: cluster.files, siblings: parsed }),
+  );
+  const prot = new Set(canonData.protectedFields || []);
+  // Clear a stale wrongShow ONLY when the body named the venue (decideClusterAction
+  // already required venueMatch to keep a wrongShow file as a candidate).
+  if (canonData.wrongShow === true) {
+    clearWrongProductionFlags(merged, {
+      source: 'audit-review-url-clusters.js',
+      reason: `byline-explosion-canonical, venue-body-matched (${STAMP})`,
+      wrongShowOnly: true,
+    });
+    merged.wrongShowManualClear = true;
+    prot.add('wrongShow'); prot.add('wrongShowManualClear');
+  }
+  // Rescue scoreability of a real body the classifier marked invalid. The
+  // invalid-tier guard (review-guards.js:2433) only defers to a wrongProduction
+  // clear, so a venue-body-matched review needs wrongProductionManualClear to
+  // pass — this asserts ONLY "not wrong production" (which the venue-body match
+  // proves), NOT the tour/film/cross-market immunity operatorTrust would grant.
+  // Require positive venue evidence so a machine pick can't self-exempt blindly.
+  if (canonData.contentTier === 'invalid') {
+    merged.manualContentTier = 'complete';
+    prot.add('manualContentTier');
+    if (venueMatch) {
+      merged.wrongProductionManualClear = true;
+      prot.add('wrongProductionManualClear');
+    }
+  }
+  merged.protectedFields = [...prot];
+  if (NEUTRALIZE_CRITIC[key]) merged.criticName = NEUTRALIZE_CRITIC[key];
+  writePlain(path.join(dir, canonical), merged);
+
+  for (const f of cluster.files) {
+    if (f === canonical) continue;
+    const d = parsed[f];
+    // Never bury a human-vouched review under a machine canonical.
+    if (d.humanReviewScore != null) continue;
+    d.duplicateOf = canonical;
+    d.duplicateReason = 'byline-explosion-collapse';
+    d.duplicateClearReason = null;
+    d.contentTier = 'invalid';
+    writePlain(path.join(dir, f), d);
+  }
+}
+
+function applySkip(clusterCtx) {
+  const { dir, parsed, cluster } = clusterCtx;
+  // Tombstone = a member kept as the sole primary. Prefer one already flagged
+  // wrongProduction (a genuine wrong-production marker) so nothing new scores;
+  // else the first file. Its OWN duplicateOf must be cleared — these clusters
+  // often contain a circular duplicateOf pair (arifa<->chris), which would leave
+  // primaryCount=0 and the cluster "unresolved" (2026-07-05).
+  // Never tombstone under, or collapse away, a human-vouched review.
+  const tombstone = cluster.files.find((f) => (parsed[f] || {}).wrongProduction === true
+      && (parsed[f] || {}).humanReviewScore == null)
+    || cluster.files.find((f) => (parsed[f] || {}).humanReviewScore == null)
+    || cluster.files[0];
+  const t = parsed[tombstone];
+  // Same invariant as applyRecover: clear EVERY duplicate pointer aimed back into
+  // the cluster, not just duplicateOf — a surviving duplicateTextOf leaves the
+  // tombstone in a mutual cycle that re-admits a collapsed member.
+  const tombPlan = planCanonicalPointerClear(t, { self: tombstone, clusterFiles: cluster.files, siblings: parsed });
+  if (t.duplicateOf || tombPlan.drop.length) {
+    t.duplicateOf = null;
+    t.duplicateReason = null;
+    t.duplicateClearReason = `byline-explosion-tombstone (${STAMP})`;
+    applyCanonicalPointerClear(t, tombPlan);
+    writePlain(path.join(dir, tombstone), t);
+  }
+  for (const f of cluster.files) {
+    if (f === tombstone) continue;
+    const d = parsed[f];
+    if (d.humanReviewScore != null) continue; // preserve human work as its own primary
+    d.duplicateOf = tombstone;
+    d.duplicateReason = 'byline-explosion-collapse';
+    d.duplicateClearReason = null;
+    writePlain(path.join(dir, f), d);
+  }
+  return tombstone;
+}
+
+// ---- Main ------------------------------------------------------------------
+const groups = gatherClusters();
+
+if (doFix) {
+  const plans = [];
+  let skippedResolved = 0;
+  for (const g of groups) {
+    for (const cluster of g.clusters) {
+      // Idempotency + scoping: a cluster already collapsed to a single primary is
+      // resolved — do not re-tombstone/re-recover it (a rerun would otherwise
+      // churn tombstone choice on already-fixed data). Force reprocessing with
+      // --force if a canonical genuinely needs re-selecting.
+      if (cluster.primaryCount === 1 && !args.includes('--force')) { skippedResolved++; continue; }
+      const ctx = { show: g.show, dir: g.dir, parsed: g.parsed, cluster };
+      const { decision, hardReject } = decideFor(ctx);
+      plans.push({ ctx, decision, hardReject });
+    }
+  }
+  if (skippedResolved) console.log(`[audit-review-url-clusters] ${skippedResolved} already-resolved cluster(s) skipped (use --force to reprocess)\n`);
+  const recovers = plans.filter((p) => p.decision.action === 'recover');
+  if (recovers.length > maxRecover) {
+    console.error(`::error:: refusing --fix: ${recovers.length} recover actions exceed --max-recover=${maxRecover}. ` +
+      `The audited set was ~4; a larger number means the corpus drifted — re-review before applying (raise with --max-recover=N).`);
+    process.exit(1);
+  }
+
+  console.log(`[audit-review-url-clusters] --fix ${dryRun ? '(dry-run)' : ''} — ${plans.length} cluster(s), ${recovers.length} recover / ${plans.length - recovers.length} skip\n`);
+  for (const { ctx, decision, hardReject } of plans) {
+    const tag = decision.action === 'recover' ? 'RECOVER' : 'SKIP';
+    console.log(`  [${tag}] ${ctx.show}`);
+    console.log(`    url: ${ctx.cluster.url}`);
+    console.log(`    reason: ${decision.reason}${hardReject ? ' (hardReject)' : ''}`);
+    if (decision.action === 'recover') {
+      console.log(`    canonical: ${decision.canonical}`);
+      if (!dryRun) applyRecover(ctx, decision);
+    } else {
+      const empty = ctx.cluster.files.every((f) => !((ctx.parsed[f] || {}).fullText || '').length);
+      console.log(`    disposition: ${decision.reason === 'no-recoverable-review' && empty ? 'EMPTY — needs manual re-gather of this URL' : 'wrong-production/roundup/wrong-show — leave suppressed'}`);
+      if (!dryRun) { const tomb = applySkip(ctx); console.log(`    tombstone: ${tomb}`); }
+    }
+    console.log('');
+  }
+  if (dryRun) console.log('(dry-run — no files written)');
+  else console.log('Applied. Re-run without --fix to confirm 0 unresolved clusters, then rebuild + scoring-delta.');
+  process.exit(0);
+}
+
+// ---- Report (default) ------------------------------------------------------
+const resolved = [];
+const unresolved = [];
+for (const g of groups) {
+  for (const c of g.clusters) {
+    (c.primaryCount === 1 ? resolved : unresolved).push({ show: g.show, c });
+  }
+}
+
+if (unresolved.length === 0 && resolved.length === 0) {
+  console.log(`[audit-review-url-clusters] OK — no URL clusters >= ${threshold} across ${showDirs.length} shows.`);
+  process.exit(0);
+}
+
+if (unresolved.length === 0) {
+  console.log(`[audit-review-url-clusters] OK — ${resolved.length} cluster(s) all RESOLVED (1 primary each); 0 unresolved.`);
+  process.exit(0);
+}
+
+console.log(`[audit-review-url-clusters] ${unresolved.length} UNRESOLVED byline-explosion cluster(s) (threshold ${threshold}; ${resolved.length} resolved):\n`);
+let lastShow = null;
+for (const { show, c } of unresolved) {
+  if (show !== lastShow) { console.log(`  ${show}`); lastShow = show; }
+  console.log(`    ${c.count}x same URL (${c.invalidCount} invalid, ${c.primaryCount} primary): ${c.url}`);
+  console.log(`      bylines: ${c.bylines.join(', ')}`);
+}
+console.log(`\nFix: node scripts/audit-review-url-clusters.js --fix --dry-run  (then --fix). ` +
+  `RECOVER collapses to the venue/body-validated canonical; SKIP tombstones wrong-production/empty clusters.`);
+
+process.exit(gate ? 1 : 0);

@@ -1,0 +1,115 @@
+name: Commercial Stale Closures Classifier
+
+# Daily 8 AM UTC scan of closed Broadway shows. Any show that has been closed
+# 30+ days with no recoupment news in trade press gets auto-classified as
+# 'Fizzle' (softer than Flop — modest loss, inferred from absent evidence).
+# Writes DIRECTLY to commercial.json; doesn't route through pending-review.
+#
+# Carve-outs (in classify-stale-closure.js):
+#   - tour-stop / return-engagement / international-transfer productionTypes
+#   - Nonprofit designation (unless enhancement)
+#   - Enhancement deals → human-review escalation, never auto-Fizzle
+#   - humanReviewedDesignation:true → never auto-classify
+#   - Late recoupment signal in pending/archive (last 30d) → human-review
+#
+# Concurrency group commercial-data-write — queues with Friday, Saturday,
+# (future) RSS poller.
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 8 AM UTC daily
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (no commercial.json writes)'
+        required: false
+        type: boolean
+        default: false
+      show:
+        description: 'Single show slug to classify (skips bulk scan)'
+        required: false
+        type: string
+      grace_days:
+        description: 'Days closed before classification (default 30)'
+        required: false
+        type: number
+        default: 30
+      max_shows:
+        description: 'Max shows to classify per run (default 50)'
+        required: false
+        type: number
+        default: 50
+
+concurrency:
+  group: commercial-data-write
+  cancel-in-progress: false
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Classify stale closures
+        run: |
+          ARGS="--grace-days=${{ inputs.grace_days || '30' }}"
+          ARGS="$ARGS --max-shows=${{ inputs.max_shows || '50' }}"
+          if [ -n "${{ inputs.show }}" ]; then
+            ARGS="$ARGS --show=${{ inputs.show }}"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          node scripts/classify-stale-closures.js $ARGS
+
+      - name: Validate post-classification
+        # No continue-on-error: ship-check CDX-P0-4. If validate-data rejects
+        # the new Fizzle entries, abort before any push/deploy.
+        if: inputs.dry_run != true
+        run: node scripts/validate-data.js
+
+      - name: Deletion guard for commercial.json
+        if: always() && inputs.dry_run != true
+        run: |
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('./data/commercial.json')) process.exit(0);
+            const c = JSON.parse(fs.readFileSync('./data/commercial.json','utf8'));
+            const count = Object.keys(c.shows || {}).length;
+            console.log('commercial show count: ' + count);
+            if (count < 120) {
+              console.error('::error::commercial show count dropped below 120 (' + count + ')');
+              process.exit(1);
+            }
+          "
+
+      - name: Push core data to private repo
+        if: inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Stale-closure Fizzle classifications'
+
+      - name: Dispatch deploy
+        if: inputs.dry_run != true
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Commercial Stale Closures Classifier Failed'
+          severity: 'warning'

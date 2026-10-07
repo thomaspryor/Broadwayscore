@@ -1,0 +1,1053 @@
+#!/usr/bin/env node
+/**
+ * audit-cross-show-url-collisions.js — Find URLs that appear in multiple shows' review-texts.
+ *
+ * Phase B of the source cleanup plan. Generates a collision report with confidence levels,
+ * and can auto-apply high-confidence fixes.
+ *
+ * Usage:
+ *   node scripts/audit-cross-show-url-collisions.js                  # Report only
+ *   node scripts/audit-cross-show-url-collisions.js --apply          # Apply high-confidence fixes
+ *   node scripts/audit-cross-show-url-collisions.js --verbose        # Show details
+ */
+
+const fs = require('fs');
+const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
+const path = require('path');
+const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
+
+// Overridable via env so tests can point at a temp fixture dir/file instead
+// of real data (same pattern as scripts/flag-wrong-production-by-date.js).
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR
+  || path.join(__dirname, '..', 'data', 'review-texts');
+const SHOWS_PATH = process.env.SHOWS_PATH
+  || path.join(__dirname, '..', 'data', 'shows.json');
+const REPORT_PATH = process.env.REPORT_PATH
+  || path.join(__dirname, '..', 'data', 'audit', 'url-collision-report.json');
+
+const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
+const { parseDate } = require('./lib/date-utils');
+const { WRONG_SHOW_ORPHAN_DIR_PREFIX } = require('./lib/wrong-production-autoclear');
+const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, wrongShowCleared } = require('./lib/review-guards');
+const { shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
+const { validateShowMentioned } = require('./lib/content-quality');
+
+const args = process.argv.slice(2);
+const APPLY = args.includes('--apply');
+const VERBOSE = args.includes('--verbose');
+
+function log(msg) { if (VERBOSE) console.log(msg); }
+
+function normalizeUrl(url) {
+  if (!url) return null;
+  try {
+    let u = url.trim().toLowerCase();
+    // Strip trailing slash, hash, query params for comparison
+    u = u.replace(/[#?].*$/, '').replace(/\/+$/, '');
+    // Normalize http → https
+    u = u.replace(/^http:\/\//, 'https://');
+    // Strip www.
+    u = u.replace(/^https:\/\/www\./, 'https://');
+    return u || null;
+  } catch { return null; }
+}
+
+// #483 invariant, enforced at this script's single write helper because its 15
+// flag-setting sites share no other gate (only one of them consults
+// shouldSkipCrossShowUrlFlag). A record mid-URL-correction — breadcrumb
+// present, body not yet refetched — has nothing on it that describes its
+// CURRENT url, so a cross-show collision verdict derived from its date or
+// score signal is stale by construction, and re-creates the state
+// audit-stale-flag-after-url-correction.js --gate fails on.
+//
+// Deliberately narrow, unlike the reverted safeWriteReview attempt
+// (507cf8bc75f / 7a8f8d4d3f3): it only withholds a flag this run is ADDING,
+// by comparing against the on-disk record. It never clears an existing flag,
+// never writes `wrongProduction: false`, and never deletes a note — the three
+// behaviours that made the chokepoint version unsafe.
+let staleFlagWritesWithheld = 0;
+function atomicWriteJSON(filePath, data) {
+  if (shouldWithholdStaleExclusionFlag(data)) {
+    // Fail SAFE, not open: if the on-disk record is unreadable we cannot tell a
+    // flag this run is ADDING from one that was already there, and the
+    // fail-open version treated every true flag as new and stripped it —
+    // turning an unrelated URL-null write into the loss of a real exclusion
+    // verdict and its provenance (ship-check finding, 2026-08-14). No prior
+    // read means no withholding.
+    let prior = null;
+    let priorReadOk = false;
+    try {
+      prior = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      priorReadOk = true;
+    } catch {
+      priorReadOk = fs.existsSync(filePath) ? false : true; // brand-new file: nothing to preserve
+    }
+    for (const f of priorReadOk ? ['wrongProduction', 'wrongShow'] : []) {
+      if (data[f] === true && !(prior && prior[f] === true)) {
+        delete data[f];
+        delete data[`${f}Note`];
+        delete data[`${f}Reason`];
+        staleFlagWritesWithheld++;
+      }
+    }
+  }
+  // BRO-3225: centralized here (rather than at each of this file's ~13
+  // wrongShow=true assignment sites) so it covers all of them at once and
+  // survives the withholding pass above — checked against data.wrongShow's
+  // FINAL state, so a flag this run withheld does NOT wrongly invalidate a
+  // stamp for a flag that never actually gets written.
+  if (data.wrongShow === true) invalidateWrongShowAutoClear(data);
+  // BRO-3908: same centralization for wrongProduction, same reason — an
+  // earlier pass of this fix called invalidateWrongProductionAutoClear
+  // inline right after each `data.wrongProduction = true` site, which ran
+  // BEFORE the withholding pass above could decide. If withholding then
+  // deleted the flag, the inline call had already deleted this record's
+  // legitimate wrongProductionAutoCleared breadcrumb for a flag that never
+  // actually got written (ship-check/Codex adversarial finding) — stripping
+  // real clearance evidence from a record that ends up unflagged. Checking
+  // FINAL state here avoids the race.
+  if (data.wrongProduction === true) invalidateWrongProductionAutoClear(data);
+  const tmp = filePath + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(data, null, 2) + '\n');
+  fs.renameSync(tmp, filePath);
+}
+
+// Load show data for opening dates
+const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+const showDateMap = {};
+for (const s of showsData.shows) {
+  showDateMap[s.id] = {
+    openingDate: s.openingDate ? new Date(s.openingDate) : null,
+    previewsStartDate: s.previewsStartDate ? new Date(s.previewsStartDate) : null,
+    title: s.title,
+    category: s.category,
+  };
+}
+
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
+
+// --- Pre-pass: showId-vs-directory mismatch detection ---
+// BWW scraper placed files in wrong directories but set correct showId internally.
+// Flag any file where file.showId !== directory name (excluding OB/WE ID migrations).
+console.log('Pre-pass: checking showId-vs-directory mismatches...');
+let showIdMismatchFlagged = 0;
+let showIdMismatchSkipped = 0;
+
+function isIdMigration(dirId, fileId) {
+  // OB/WE ID migrations: directory was renamed but file showId wasn't updated
+  // e.g., dir="foo-off-broadway-2026" vs file="foo-2026"
+  const dirBase = dirId.replace(/-off-broadway(-\d{4})?$/, '$1').replace(/-west-end(-\d{4})?$/, '$1');
+  const fileBase = fileId.replace(/-off-broadway(-\d{4})?$/, '$1').replace(/-west-end(-\d{4})?$/, '$1');
+  return dirBase === fileBase;
+}
+
+for (const showId of showDirs) {
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+
+    if (!data.showId || data.showId === showId) continue;
+    if (data.wrongProduction || data.wrongShow) continue;
+    if (shouldSkipWrongProductionAudit(data) || laneBypasses(data, 'tourCrossMarket')) continue; // BRO-4807: lane reviews are never flagged
+    if (isIdMigration(showId, data.showId)) { showIdMismatchSkipped++; continue; }
+
+    if (APPLY) {
+      data.wrongProduction = true;
+      data.wrongProductionNote = `File showId "${data.showId}" doesn't match directory "${showId}" — placed in wrong production directory`;
+      atomicWriteJSON(filePath, data);
+      showIdMismatchFlagged++;
+      log(`  [SHOWID MISMATCH] ${showId}/${file}: showId=${data.showId}`);
+    } else {
+      showIdMismatchFlagged++;
+      log(`  [SHOWID MISMATCH] ${showId}/${file}: showId=${data.showId} (would flag)`);
+    }
+  }
+}
+console.log(`ShowId mismatches: ${showIdMismatchFlagged} flagged, ${showIdMismatchSkipped} ID-migration skipped\n`);
+
+// --- Pre-pass 2: Orphaned generic directory detection ---
+// Directories like "aladdin/" that aren't in shows.json but have year-suffixed siblings
+// (e.g., "aladdin-2014/") are collision traps. Flag all unflagged files in them.
+console.log('Pre-pass 2: checking orphaned generic directories...');
+const showIdSet = new Set(showsData.shows.map(s => s.id));
+let orphanedDirFlagged = 0;
+let orphanedDirSkipped = 0;
+
+for (const dirId of showDirs) {
+  // Skip dirs that are in shows.json (they're real shows)
+  if (showIdSet.has(dirId)) continue;
+  // Skip year-suffixed, OB, WE dirs (they're specific productions, not generic)
+  if (dirId.match(/-\d{4}$/) || dirId.match(/-off-broadway/) || dirId.match(/-west-end/) || dirId.match(/-off-west-end/) || dirId.match(/-bway-/)) continue;
+  // Check if a year-suffixed sibling exists
+  const hasYearSibling = showDirs.some(d => d.startsWith(dirId + '-') && d.match(/-\d{4}$/));
+  if (!hasYearSibling) continue;
+
+  const showDir = path.join(REVIEW_TEXTS_DIR, dirId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    const filePath = path.join(showDir, file);
+    let data;
+    try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
+    if (data.wrongShow || data.wrongProduction || data.duplicateOf || wrongShowCleared(data) || laneBypasses(data, 'tourCrossMarket')) { orphanedDirSkipped++; continue; }
+
+    if (APPLY) {
+      data.wrongShow = true;
+      data.wrongShowReason = `${WRONG_SHOW_ORPHAN_DIR_PREFIX}"${dirId}" is not in shows.json — year-suffixed siblings exist`;
+      atomicWriteJSON(filePath, data);
+      orphanedDirFlagged++;
+      log(`  [ORPHANED DIR] ${dirId}/${file}`);
+    } else {
+      orphanedDirFlagged++;
+      log(`  [ORPHANED DIR] ${dirId}/${file} (would flag)`);
+    }
+  }
+}
+console.log(`Orphaned generic dirs: ${orphanedDirFlagged} flagged, ${orphanedDirSkipped} already flagged\n`);
+
+// Build global URL → file map
+console.log('Scanning review-texts for cross-show URL collisions...\n');
+
+const urlMap = new Map(); // normalizedUrl → [{showId, file, filePath, publishDate, hasScore, hasFullText, ...}]
+let totalFiles = 0;
+let skippedFlagged = 0;
+
+for (const showId of showDirs) {
+  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+
+  for (const file of files) {
+    totalFiles++;
+    const filePath = path.join(showDir, file);
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    } catch { continue; }
+
+    // Skip already-flagged files
+    // multiShowSplit*: sections of one multi-show article split per show by
+    // multi-show-review-fanout.js (BRO-4431) share its URL by design, like a
+    // combined review.
+    if (laneBypasses(data, 'tourCrossMarket') || data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf
+      || data.multiShowSplitChild === true || data.multiShowSplitParent === true) {
+      skippedFlagged++;
+      continue;
+    }
+
+    const url = normalizeUrl(data.url);
+    if (!url) continue;
+
+    const entry = {
+      showId,
+      file,
+      filePath,
+      url: data.url, // original URL
+      publishDate: data.publishDate || null,
+      openingDate: showDateMap[showId]?.openingDate?.toISOString()?.substring(0, 10) || null,
+      hasScore: !!(data.assignedScore || data.humanReviewScore),
+      hasFullText: !!(data.fullText && data.fullText.length > 100),
+      outletId: data.outletId,
+      criticName: data.criticName,
+      source: data.source,
+    };
+
+    if (!urlMap.has(url)) {
+      urlMap.set(url, []);
+    }
+    urlMap.get(url).push(entry);
+  }
+}
+
+// Find collisions (URLs in 2+ different shows)
+const collisions = [];
+for (const [url, entries] of urlMap) {
+  const uniqueShows = new Set(entries.map(e => e.showId));
+  if (uniqueShows.size < 2) continue;
+
+  collisions.push({ url, candidates: entries });
+}
+
+console.log(`Files scanned:     ${totalFiles}`);
+console.log(`Skipped (flagged): ${skippedFlagged}`);
+console.log(`Unique URLs:       ${urlMap.size}`);
+console.log(`Cross-show collisions: ${collisions.length}\n`);
+
+// Analyze each collision
+const results = [];
+let highCount = 0, mediumCount = 0, lowCount = 0;
+
+for (const collision of collisions) {
+  const { url, candidates } = collision;
+
+  // Determine confidence and suggested winner
+  let suggestedWinner = null;
+  let reason = '';
+  let confidence = 'low';
+
+  // Check publish date proximity to opening dates
+  const withDates = candidates.filter(c => c.publishDate && c.openingDate);
+
+  if (withDates.length > 0) {
+    // Calculate days between publish and opening for each candidate
+    const scored = withDates.map(c => {
+      const pubDate = parseDate(c.publishDate);
+      const openDate = new Date(c.openingDate);
+      const daysDiff = pubDate ? Math.abs((pubDate - openDate) / (1000 * 60 * 60 * 24)) : Infinity;
+      return { ...c, daysDiff };
+    });
+
+    // Sort by proximity
+    scored.sort((a, b) => a.daysDiff - b.daysDiff);
+
+    const closest = scored[0];
+    const secondClosest = scored.length > 1 ? scored[1] : null;
+
+    if (closest.daysDiff <= 60) {
+      if (!secondClosest || secondClosest.daysDiff > 60) {
+        // Only one candidate within 60 days
+        confidence = 'high';
+        suggestedWinner = closest.showId;
+        reason = `publishDate ${closest.publishDate} is ${Math.round(closest.daysDiff)} days from ${closest.showId} opening (${closest.openingDate})`;
+        if (secondClosest) {
+          reason += `; next closest is ${Math.round(secondClosest.daysDiff)} days from ${secondClosest.showId}`;
+        }
+      } else {
+        // Multiple candidates within 60 days
+        confidence = 'medium';
+        suggestedWinner = closest.showId;
+        reason = `publishDate ${closest.publishDate} is ${Math.round(closest.daysDiff)} days from ${closest.showId} but also ${Math.round(secondClosest.daysDiff)} days from ${secondClosest.showId}`;
+      }
+    } else {
+      // Publish date not close to any opening
+      confidence = 'low';
+      reason = `publishDate ${closest.publishDate} is ${Math.round(closest.daysDiff)}+ days from all openings`;
+    }
+  } else {
+    // No publish dates at all — check if one candidate has score/fullText and others don't
+    const withContent = candidates.filter(c => c.hasScore || c.hasFullText);
+    if (withContent.length === 1) {
+      confidence = 'medium';
+      suggestedWinner = withContent[0].showId;
+      reason = 'Only one candidate has score/fullText';
+    } else {
+      confidence = 'low';
+      reason = 'No publish dates available, cannot determine correct show';
+    }
+  }
+
+  // Secondary heuristic: if no publish date match, check which show has the review data
+  if (confidence === 'low' && !suggestedWinner) {
+    // Pick the candidate whose opening date is most recent (most likely to be the actual reviewed production)
+    const withOpening = candidates.filter(c => c.openingDate);
+    if (withOpening.length > 0) {
+      withOpening.sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+      suggestedWinner = withOpening[0].showId;
+      reason += '; defaulting to most recent production';
+    }
+  }
+
+  const result = {
+    url: candidates[0].url, // original URL
+    normalizedUrl: url,
+    candidates: candidates.map(c => ({
+      showId: c.showId,
+      file: c.file,
+      publishDate: c.publishDate,
+      openingDate: c.openingDate,
+      hasScore: c.hasScore,
+      hasFullText: c.hasFullText,
+      outletId: c.outletId,
+    })),
+    suggestedWinner,
+    reason,
+    confidence,
+  };
+
+  results.push(result);
+
+  if (confidence === 'high') highCount++;
+  else if (confidence === 'medium') mediumCount++;
+  else lowCount++;
+
+  log(`[${confidence}] ${url}`);
+  log(`  Winner: ${suggestedWinner} — ${reason}`);
+  candidates.forEach(c => log(`    ${c.showId}/${c.file} (pub:${c.publishDate || 'null'} open:${c.openingDate || 'null'} score:${c.hasScore} text:${c.hasFullText})`));
+}
+
+console.log('=== COLLISION ANALYSIS ===');
+console.log(`High confidence:   ${highCount} (auto-fixable)`);
+console.log(`Medium confidence:  ${mediumCount} (needs review)`);
+console.log(`Low confidence:     ${lowCount} (report only)\n`);
+
+// Write report
+fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
+fs.writeFileSync(REPORT_PATH, JSON.stringify({
+  generatedAt: new Date().toISOString(),
+  summary: { total: results.length, high: highCount, medium: mediumCount, low: lowCount },
+  collisions: results,
+}, null, 2) + '\n');
+console.log(`Report written to: ${REPORT_PATH}`);
+
+// Apply fixes
+if (APPLY) {
+  let genericUrlsNulled = 0;
+  let highConfFlagged = 0;
+  let revivalScoreFlagged = 0;
+  let londonMarketSkipped = 0;
+  let urlMarketMatchSkipped = 0;
+
+  // Guard: skip wrongShow when the URL's market signal matches the show's market.
+  // Prevents: NYT "cats-jellicle-ball-review-broadway.html" being flagged as wrongShow
+  // on the Broadway production just because cats-west-end-2026 has a more recent opening.
+  function urlMatchesShowMarket(showId, data) {
+    if (!data.url) return false;
+    const showInfo = showDateMap[showId];
+    const isWE = showId.includes('-west-end-') || (showInfo && isLondonMarket(showInfo.category));
+    const isBway = !isWE && !showId.includes('-off-broadway-') && !showId.includes('-off-west-end-');
+
+    // URL says "broadway" and show IS Broadway → match
+    if (isBway && isBroadwayUrl(data.url, data.outletId)) return true;
+    // URL says UK/London and show IS West End → match
+    if (isWE && isUkOutletUrl(data.url)) return true;
+
+    return false;
+  }
+
+  // Guard: skip wrongShow for manually-cleared files, London-market shows reviewed by UK outlets,
+  // URL market signal match, null publish date, or when fullText confirms the filed show.
+  function shouldSkipWrongShow(showId, data) {
+    if (wrongShowCleared(data)) return true;
+    // Guard A: null publishDate means no date signal — date-proximity logic is unreliable
+    if (!data.publishDate) {
+      log(`  SKIPPED (null publishDate — no date signal): ${showId}/${data.outletId || 'unknown'}`);
+      return true;
+    }
+    const showInfo = showDateMap[showId];
+    if (showInfo && isLondonMarket(showInfo.category) && isUkOutletUrl(data.url)) {
+      londonMarketSkipped++;
+      log(`  SKIPPED (London market + UK outlet): ${showId}/${data.outletId || 'unknown'}`);
+      return true;
+    }
+    if (urlMatchesShowMarket(showId, data)) {
+      urlMarketMatchSkipped++;
+      log(`  SKIPPED (URL market signal matches show): ${showId}/${data.outletId || 'unknown'} — ${data.url}`);
+      return true;
+    }
+    // Guard B: fullText confirms the filed show — text evidence overrides date heuristic
+    if (showInfo && data.fullText && data.fullText.length >= 200) {
+      const textCheck = validateShowMentioned(data.fullText, showInfo.title, showId);
+      if (textCheck.valid) {
+        log(`  SKIPPED (fullText confirms filed show): ${showId}/${data.outletId || 'unknown'}`);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // --- Tier 0: Generic/homepage URLs (5+ shows sharing same URL → null URL on all) ---
+  console.log('\n=== TIER 0: GENERIC/HOMEPAGE URLs ===');
+  const GENERIC_THRESHOLD = 5; // URLs in 5+ shows are almost certainly generic
+  for (const result of results) {
+    if (result.candidates.length < GENERIC_THRESHOLD) continue;
+
+    for (const candidate of result.candidates) {
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (!data.url) continue;
+        data.url = null;
+        atomicWriteJSON(filePath, data);
+        genericUrlsNulled++;
+        log(`  Nulled URL: ${candidate.showId}/${candidate.file}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Nulled ${genericUrlsNulled} generic/homepage URLs`);
+
+  // --- Tier 1: High-confidence date-based fixes ---
+  console.log('\n=== TIER 1: HIGH-CONFIDENCE DATE FIXES ===');
+  for (const result of results) {
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue; // already handled
+    if (result.confidence !== 'high' || !result.suggestedWinner) continue;
+
+    for (const candidate of result.candidates) {
+      if (candidate.showId === result.suggestedWinner) continue;
+
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
+
+        data.wrongShow = true;
+        data.wrongShowReason = `Cross-show URL collision: review belongs to ${result.suggestedWinner} (${result.reason})`;
+        atomicWriteJSON(filePath, data);
+        highConfFlagged++;
+        log(`  Flagged: ${candidate.showId}/${candidate.file} → belongs to ${result.suggestedWinner}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${highConfFlagged} files as wrongShow (high-confidence)`);
+
+  // --- Tier 2: Revival collisions where exactly 1 candidate has a score ---
+  console.log('\n=== TIER 2: REVIVAL SCORE-BASED FIXES ===');
+  for (const result of results) {
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue; // already handled
+    if (result.confidence === 'high') continue; // already handled
+    if (result.candidates.length !== 2) continue; // only handle 2-way collisions
+
+    // Check if these are revival pairs (same base show name, different years)
+    const shows = result.candidates.map(c => c.showId);
+    const bases = shows.map(s => s.replace(/-\d{4}$/, ''));
+    if (bases[0] !== bases[1]) continue; // not a revival pair
+
+    const withScore = result.candidates.filter(c => c.hasScore);
+    if (withScore.length !== 1) continue; // need exactly 1 with score
+
+    const winner = withScore[0];
+    const loser = result.candidates.find(c => c.showId !== winner.showId);
+
+    const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
+
+      data.wrongShow = true;
+      data.wrongShowReason = `Cross-show URL collision (revival): review likely belongs to ${winner.showId} (has score, this file does not)`;
+      atomicWriteJSON(filePath, data);
+      revivalScoreFlagged++;
+      log(`  Flagged: ${loser.showId}/${loser.file} → likely belongs to ${winner.showId}`);
+    } catch (e) {
+      console.error(`  Error: ${filePath}: ${e.message}`);
+    }
+  }
+  console.log(`Flagged ${revivalScoreFlagged} files as wrongShow (revival score-based)`);
+
+  // --- Tier 3: Revival pairs where exactly 1 candidate has fullText ---
+  console.log('\n=== TIER 3: REVIVAL FULLTEXT-BASED FIXES ===');
+  let revivalFullTextFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+    if (result.confidence === 'high') continue;
+    if (result.candidates.length < 2) continue;
+
+    const shows = result.candidates.map(c => c.showId);
+    const bases = shows.map(s => s.replace(/-\d{4}$/, ''));
+    // Check all candidates share the same base (revival group)
+    if (!bases.every(b => b === bases[0])) continue;
+
+    const withText = result.candidates.filter(c => c.hasFullText);
+    if (withText.length !== 1) continue; // need exactly 1 with fullText
+    // Skip if already handled by Tier 2 (score-based)
+    const withScore = result.candidates.filter(c => c.hasScore);
+    if (withScore.length === 1) continue;
+
+    const winner = withText[0];
+    for (const candidate of result.candidates) {
+      if (candidate.showId === winner.showId) continue;
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
+        data.wrongShow = true;
+        data.wrongShowReason = `Cross-show URL collision (revival): review has fullText in ${winner.showId}, not here`;
+        atomicWriteJSON(filePath, data);
+        revivalFullTextFlagged++;
+        log(`  Flagged: ${candidate.showId}/${candidate.file} → fullText in ${winner.showId}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${revivalFullTextFlagged} files (revival fullText-based)`);
+
+  // --- Tier 4: Revival pairs, no signal at all → flag older production ---
+  console.log('\n=== TIER 4: REVIVAL NO-SIGNAL (FLAG OLDER) ===');
+  let revivalNoSignalFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+    if (result.confidence === 'high') continue;
+
+    const shows = result.candidates.map(c => c.showId);
+    const bases = shows.map(s => s.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue;
+
+    // All candidates must lack both score and fullText
+    if (result.candidates.some(c => c.hasScore || c.hasFullText)) continue;
+
+    // Sort by opening date descending (most recent first = winner)
+    const sorted = [...result.candidates]
+      .filter(c => c.openingDate)
+      .sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+    if (sorted.length < 2) continue;
+
+    const winner = sorted[0]; // most recent production
+    for (const candidate of result.candidates) {
+      if (candidate.showId === winner.showId) continue;
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
+        data.wrongShow = true;
+        data.wrongShowReason = `Cross-show URL collision (revival, no signal): defaulting to most recent production ${winner.showId}`;
+        atomicWriteJSON(filePath, data);
+        revivalNoSignalFlagged++;
+        log(`  Flagged: ${candidate.showId}/${candidate.file} → defaulting to ${winner.showId}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${revivalNoSignalFlagged} files (revival no-signal, older prod)`);
+
+  // --- Tier 5: Non-revival 3+ candidate collisions → null URLs (generic pages) ---
+  console.log('\n=== TIER 5: NON-REVIVAL 3+ CANDIDATES (NULL URLs) ===');
+  let multiCandidateNulled = 0;
+  for (const result of results) {
+    if (result.candidates.length < 3) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue; // already handled by Tier 0
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (bases.every(b => b === bases[0])) continue; // revival, handled above
+
+    // 3+ different shows sharing a URL = generic page
+    for (const candidate of result.candidates) {
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (!data.url) continue;
+        data.url = null;
+        atomicWriteJSON(filePath, data);
+        multiCandidateNulled++;
+        log(`  Nulled URL: ${candidate.showId}/${candidate.file}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Nulled ${multiCandidateNulled} URLs (non-revival 3+ candidates)`);
+
+  // --- Tier 6: Near-revival pairs (base name substring match) ---
+  console.log('\n=== TIER 6: NEAR-REVIVAL MISATTRIBUTIONS ===');
+  let nearRevivalFlagged = 0;
+  // Known near-revival mappings where one is clearly wrong
+  const NEAR_REVIVAL_WINNERS = {
+    'a-bronx-tale-the-musical-2016': 'a-bronx-tale-2007',    // musical reviews misattributed to the play
+    'summer-1976-2023': 'summer-2018',                         // Summer 1976 reviews misattributed to Donna Summer musical
+    'jajas-african-hair-braiding-2023': 'hair-2011',           // Jaja's reviews misattributed to Hair
+  };
+  for (const result of results) {
+    if (result.candidates.length !== 2) continue;
+    const shows = result.candidates.map(c => c.showId);
+    const bases = shows.map(s => s.replace(/-\d{4}$/, ''));
+    if (bases[0] === bases[1]) continue; // exact revival, handled above
+
+    // Check known near-revival mappings
+    let loserShowId = null;
+    for (const [winner, loser] of Object.entries(NEAR_REVIVAL_WINNERS)) {
+      if (shows.includes(winner) && shows.includes(loser)) {
+        loserShowId = loser;
+        break;
+      }
+    }
+    if (!loserShowId) continue;
+
+    const loser = result.candidates.find(c => c.showId === loserShowId);
+    const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
+      data.wrongShow = true;
+      data.wrongShowReason = `Cross-show URL collision (near-revival): URL belongs to different production`;
+      atomicWriteJSON(filePath, data);
+      nearRevivalFlagged++;
+      log(`  Flagged: ${loser.showId}/${loser.file}`);
+    } catch (e) {
+      console.error(`  Error: ${filePath}: ${e.message}`);
+    }
+  }
+  console.log(`Flagged ${nearRevivalFlagged} files (near-revival misattributions)`);
+
+  // --- Tier 7: 3+ candidate revival groups, flag zero-signal productions ---
+  console.log('\n=== TIER 7: MULTI-REVIVAL ZERO-SIGNAL PRODUCTIONS ===');
+  let multiRevivalFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length < 3) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue; // not all same base
+
+    // Group candidates by whether they have any signal
+    const withSignal = result.candidates.filter(c => c.hasScore || c.hasFullText);
+    if (withSignal.length === 0) {
+      // All dead — flag all except most recent
+      const sorted = [...result.candidates]
+        .filter(c => c.openingDate)
+        .sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+      if (sorted.length < 2) continue;
+      const winner = sorted[0];
+      for (const candidate of result.candidates) {
+        if (candidate.showId === winner.showId) continue;
+        const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+        try {
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+          if (shouldSkipWrongShow(candidate.showId, data)) continue;
+          data.wrongShow = true;
+          data.wrongShowReason = `Cross-show URL collision (multi-revival, no signal): defaulting to ${winner.showId}`;
+          atomicWriteJSON(filePath, data);
+          multiRevivalFlagged++;
+        } catch (e) {}
+      }
+    } else if (withSignal.length === 1) {
+      // One has signal — flag the rest
+      const winner = withSignal[0];
+      for (const candidate of result.candidates) {
+        if (candidate.showId === winner.showId) continue;
+        const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+        try {
+          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+          if (shouldSkipWrongShow(candidate.showId, data)) continue;
+          data.wrongShow = true;
+          data.wrongShowReason = `Cross-show URL collision (multi-revival): signal only in ${winner.showId}`;
+          atomicWriteJSON(filePath, data);
+          multiRevivalFlagged++;
+        } catch (e) {}
+      }
+    }
+    // If multiple have signal, skip (too ambiguous) — handled by Tier 14
+  }
+  console.log(`Flagged ${multiRevivalFlagged} files (multi-revival zero-signal)`);
+
+  // Helper: detect same-opening-date double-bill pairs (Richard III/Twelfth Night, etc.)
+  function isSameDateDoubleBill(result) {
+    if (result.candidates.length !== 2) return false;
+    const dates = result.candidates.map(c => c.openingDate).filter(Boolean);
+    if (dates.length !== 2) return false;
+    const d1 = new Date(dates[0]), d2 = new Date(dates[1]);
+    const daysDiff = Math.abs((d1 - d2) / (1000 * 60 * 60 * 24));
+    if (daysDiff > 14) return false;
+    // Must be non-revival (different base names) to be a double-bill
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    return bases[0] !== bases[1];
+  }
+
+  // --- Tier 8: Both-scored revival pairs → flag older production ---
+  console.log('\n=== TIER 8: BOTH-SCORED REVIVAL (FLAG OLDER) ===');
+  let bothScoredRevivalFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length < 2) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+    if (result.confidence === 'high') continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue; // revival only
+
+    const scored = result.candidates.filter(c => c.hasScore);
+    if (scored.length < 2) continue; // need 2+ scored (both-scored)
+
+    // Sort by opening date descending, keep most recent as winner
+    const sorted = [...result.candidates]
+      .filter(c => c.openingDate)
+      .sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+    if (sorted.length < 2) continue;
+    const winner = sorted[0];
+
+    for (const candidate of result.candidates) {
+      if (candidate.showId === winner.showId && candidate.file === winner.file) continue;
+      // Don't flag if candidate is ALSO the most recent production (multiple files for same show)
+      if (candidate.showId === winner.showId) continue;
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
+        data.wrongShow = true;
+        data.wrongShowReason = `Cross-show URL collision (revival, both scored): review likely belongs to ${winner.showId} (most recent production)`;
+        atomicWriteJSON(filePath, data);
+        bothScoredRevivalFlagged++;
+        log(`  Flagged: ${candidate.showId}/${candidate.file} → belongs to ${winner.showId}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${bothScoredRevivalFlagged} files (both-scored revival, older prod)`);
+
+  // --- Tier 9: Non-revival one-scored pairs → flag no-score candidate ---
+  console.log('\n=== TIER 9: NON-REVIVAL ONE-SCORED (FLAG NO-SCORE) ===');
+  let nonRevivalOneScoredFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length !== 2) continue;
+    if (isSameDateDoubleBill(result)) continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (bases[0] === bases[1]) continue; // skip revivals
+
+    const scored = result.candidates.filter(c => c.hasScore || c.hasFullText);
+    if (scored.length !== 1) continue;
+
+    const loser = result.candidates.find(c => !c.hasScore && !c.hasFullText);
+    if (!loser) continue;
+    const winner = scored[0];
+
+    const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
+      data.wrongShow = true;
+      data.wrongShowReason = `Cross-show URL collision: review has score/text in ${winner.showId}, not here`;
+      atomicWriteJSON(filePath, data);
+      nonRevivalOneScoredFlagged++;
+      log(`  Flagged: ${loser.showId}/${loser.file} → signal in ${winner.showId}`);
+    } catch (e) {
+      console.error(`  Error: ${filePath}: ${e.message}`);
+    }
+  }
+  console.log(`Flagged ${nonRevivalOneScoredFlagged} files (non-revival one-scored)`);
+
+  // --- Tier 10: Non-revival both-scored pairs → flag older ---
+  console.log('\n=== TIER 10: NON-REVIVAL BOTH-SCORED (FLAG OLDER) ===');
+  let nonRevivalBothScoredFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length !== 2) continue;
+    if (isSameDateDoubleBill(result)) continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (bases[0] === bases[1]) continue; // skip revivals
+
+    const scored = result.candidates.filter(c => c.hasScore);
+    if (scored.length < 2) continue; // need both scored
+
+    const sorted = [...result.candidates]
+      .filter(c => c.openingDate)
+      .sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+    if (sorted.length < 2) continue;
+    const winner = sorted[0];
+    const loser = sorted[1];
+
+    const filePath = path.join(REVIEW_TEXTS_DIR, loser.showId, loser.file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+      if (shouldSkipWrongShow(loser.showId, data)) continue;
+      data.wrongShow = true;
+      data.wrongShowReason = `Cross-show URL collision (both scored): review likely belongs to ${winner.showId} (more recent opening)`;
+      atomicWriteJSON(filePath, data);
+      nonRevivalBothScoredFlagged++;
+      log(`  Flagged: ${loser.showId}/${loser.file} → belongs to ${winner.showId}`);
+    } catch (e) {
+      console.error(`  Error: ${filePath}: ${e.message}`);
+    }
+  }
+  console.log(`Flagged ${nonRevivalBothScoredFlagged} files (non-revival both-scored, older)`);
+
+  // --- Tier 11: No-signal non-revival pairs → null URLs ---
+  console.log('\n=== TIER 11: NO-SIGNAL NON-REVIVAL (NULL URLs) ===');
+  let noSignalNonRevivalNulled = 0;
+  for (const result of results) {
+    if (result.candidates.length !== 2) continue;
+    if (isSameDateDoubleBill(result)) continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (bases[0] === bases[1]) continue; // skip revivals
+
+    if (result.candidates.some(c => c.hasScore || c.hasFullText)) continue; // need no signal
+
+    for (const candidate of result.candidates) {
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (!data.url) continue;
+        data.url = null;
+        atomicWriteJSON(filePath, data);
+        noSignalNonRevivalNulled++;
+        log(`  Nulled URL: ${candidate.showId}/${candidate.file}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Nulled ${noSignalNonRevivalNulled} URLs (no-signal non-revival)`);
+
+  // --- Tier 12: No-signal revival with null dates → null URLs ---
+  console.log('\n=== TIER 12: NO-SIGNAL REVIVAL NULL-DATE (NULL URLs) ===');
+  let noSignalRevivalNulled = 0;
+  for (const result of results) {
+    if (result.candidates.length < 2) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue; // revival only
+    if (result.candidates.some(c => c.hasScore || c.hasFullText)) continue;
+
+    // This catches cases Tier 4 missed (null opening dates)
+    const withDates = result.candidates.filter(c => c.openingDate);
+    if (withDates.length >= 2) continue; // Tier 4 should handle, but just in case
+
+    for (const candidate of result.candidates) {
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (!data.url) continue;
+        data.url = null;
+        atomicWriteJSON(filePath, data);
+        noSignalRevivalNulled++;
+        log(`  Nulled URL: ${candidate.showId}/${candidate.file}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Nulled ${noSignalRevivalNulled} URLs (no-signal revival, null dates)`);
+
+  // --- Tier 13: 3+ revival with multi-signal → flag no-signal candidates ---
+  console.log('\n=== TIER 13: MULTI-REVIVAL FLAG NO-SIGNAL CANDIDATES ===');
+  let multiRevivalNoSignalFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length < 3) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue;
+
+    const withSignal = result.candidates.filter(c => c.hasScore || c.hasFullText);
+    const withoutSignal = result.candidates.filter(c => !c.hasScore && !c.hasFullText);
+    if (withSignal.length < 2 || withoutSignal.length === 0) continue;
+
+    for (const candidate of withoutSignal) {
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+        if (shouldSkipWrongShow(candidate.showId, data)) continue;
+        data.wrongShow = true;
+        data.wrongShowReason = `Cross-show URL collision (multi-revival): no score/text here, signal in other productions`;
+        atomicWriteJSON(filePath, data);
+        multiRevivalNoSignalFlagged++;
+        log(`  Flagged: ${candidate.showId}/${candidate.file}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${multiRevivalNoSignalFlagged} files (multi-revival, no-signal candidates)`);
+
+  // --- Tier 14: Profile URL rejection ---
+  // URLs that are critic profile pages (ShowScore /people/, BWW /people/) rather than actual reviews.
+  // These appear in collisions because the same profile page is scraped for multiple shows.
+  console.log('\n=== TIER 14: PROFILE URL REJECTION ===');
+  const { isProfileUrl } = require('./lib/review-normalization');
+  let profileUrlFlagged = 0;
+  // Scan ALL entries in urlMap, not just collisions — profile URLs are wrong even in single shows
+  for (const [normUrl, entries] of urlMap) {
+    const originalUrl = entries[0]?.url;
+    if (!originalUrl || !isProfileUrl(originalUrl)) continue;
+    for (const entry of entries) {
+      try {
+        const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket') || !data.url) continue;
+        if (shouldSkipWrongShow(entry.showId, data)) continue;
+        data.wrongShow = true;
+        data.wrongShowReason = 'URL is a critic/author profile page, not a review';
+        data.url = null;
+        atomicWriteJSON(entry.filePath, data);
+        profileUrlFlagged++;
+        log(`  Profile URL flagged: ${entry.showId}/${entry.file}`);
+      } catch (e) {
+        console.error(`  Error: ${entry.filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${profileUrlFlagged} profile URL files as wrongShow`);
+
+  // --- Tier 15: Catch-all — remaining revival collisions, most recent production wins ---
+  // For revival pairs (same base slug) that fell through all prior tiers.
+  // Restricted to revivals only to avoid misattributing cross-show roundups.
+  console.log('\n=== TIER 15: CATCH-ALL REVIVAL (MOST RECENT WINS) ===');
+  let catchAllFlagged = 0;
+  for (const result of results) {
+    if (result.candidates.length < 2) continue;
+    if (result.candidates.length >= GENERIC_THRESHOLD) continue;
+    if (isSameDateDoubleBill(result)) continue;
+
+    // Only apply to revival groups (same base slug)
+    const bases = result.candidates.map(c => c.showId.replace(/-\d{4}$/, ''));
+    if (!bases.every(b => b === bases[0])) continue;
+
+    // Find most recent production with opening date
+    const sorted = [...result.candidates]
+      .filter(c => c.openingDate)
+      .sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
+    if (sorted.length < 2) continue;
+
+    const winner = sorted[0];
+    for (const candidate of result.candidates) {
+      if (candidate.showId === winner.showId) continue;
+      const filePath = path.join(REVIEW_TEXTS_DIR, candidate.showId, candidate.file);
+      try {
+        const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (data.wrongShow || data.wrongProduction || laneBypasses(data, 'tourCrossMarket')) continue;
+        if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
+        data.wrongProduction = true;
+        data.wrongProductionNote = `Cross-show URL collision (catch-all revival): no date/signal available, defaulting to most recent production ${winner.showId}`;
+        atomicWriteJSON(filePath, data);
+        catchAllFlagged++;
+        log(`  Catch-all flagged: ${candidate.showId}/${candidate.file} → ${winner.showId}`);
+      } catch (e) {
+        console.error(`  Error: ${filePath}: ${e.message}`);
+      }
+    }
+  }
+  console.log(`Flagged ${catchAllFlagged} files (catch-all revival, most recent wins)`);
+
+  const totalFixed = genericUrlsNulled + highConfFlagged + revivalScoreFlagged +
+    revivalFullTextFlagged + revivalNoSignalFlagged + multiCandidateNulled +
+    nearRevivalFlagged + multiRevivalFlagged +
+    bothScoredRevivalFlagged + nonRevivalOneScoredFlagged + nonRevivalBothScoredFlagged +
+    noSignalNonRevivalNulled + noSignalRevivalNulled + multiRevivalNoSignalFlagged +
+    profileUrlFlagged + catchAllFlagged;
+
+  console.log(`\n=== APPLY SUMMARY ===`);
+  console.log(`Pre-pass - ShowId mismatch:            ${showIdMismatchFlagged}`);
+  console.log(`Tier 0 - Generic URLs nulled:         ${genericUrlsNulled}`);
+  console.log(`Tier 1 - High-confidence wrongShow:   ${highConfFlagged}`);
+  console.log(`Tier 2 - Revival score-based:         ${revivalScoreFlagged}`);
+  console.log(`Tier 3 - Revival fullText-based:      ${revivalFullTextFlagged}`);
+  console.log(`Tier 4 - Revival no-signal (older):   ${revivalNoSignalFlagged}`);
+  console.log(`Tier 5 - Non-revival 3+ (null URLs):  ${multiCandidateNulled}`);
+  console.log(`Tier 6 - Near-revival misattrib:      ${nearRevivalFlagged}`);
+  console.log(`Tier 7 - Multi-revival zero-signal:   ${multiRevivalFlagged}`);
+  console.log(`Tier 8 - Both-scored revival (older):  ${bothScoredRevivalFlagged}`);
+  console.log(`Tier 9 - Non-revival one-scored:       ${nonRevivalOneScoredFlagged}`);
+  console.log(`Tier 10 - Non-revival both-scored:     ${nonRevivalBothScoredFlagged}`);
+  console.log(`Tier 11 - No-signal non-revival null:  ${noSignalNonRevivalNulled}`);
+  console.log(`Tier 12 - No-signal revival null-date: ${noSignalRevivalNulled}`);
+  console.log(`Tier 13 - Multi-revival no-signal:     ${multiRevivalNoSignalFlagged}`);
+  console.log(`Tier 14 - Profile URL rejection:       ${profileUrlFlagged}`);
+  console.log(`Tier 15 - Catch-all revival:           ${catchAllFlagged}`);
+  console.log(`London market skipped:                ${londonMarketSkipped}`);
+  console.log(`URL market match skipped:             ${urlMarketMatchSkipped}`);
+  console.log(`Total files modified:                  ${totalFixed + showIdMismatchFlagged}`);
+  if (staleFlagWritesWithheld > 0) {
+    console.log(`#483 invariant: withheld ${staleFlagWritesWithheld} new exclusion flag(s) on records awaiting URL-correction refetch`);
+  }
+} else {
+  console.log(`\nRun with --apply to auto-fix collisions.`);
+}

@@ -1,0 +1,34 @@
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5668610Z # Subtest: every live/upcoming show Ticketmaster link points at ticketmaster.com or ticketmaster.co.uk
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5694153Z ok 1 - every live/upcoming show Ticketmaster link points at ticketmaster.com or ticketmaster.co.uk
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5722548Z   ---
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5724150Z   duration_ms: 1.579471
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5725150Z   ...
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5726017Z # Subtest: verified TodayTix-gap shows carry a real Ticketmaster link
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5727182Z not ok 2 - verified TodayTix-gap shows carry a real Ticketmaster link
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5727942Z   ---
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5728631Z   duration_ms: 1.27344
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5729679Z   location: '/home/runner/work/Broadwayscore/Broadwayscore/scripts/tests/tm-gap-links.test.mjs:55:1'
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5730691Z   failureType: 'testCodeFailure'
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5732096Z   error: 'a-christmas-carol-west-end-2026 TM url should be on ticketmaster.co.uk, got https://www.ticketmaster.com/a-christmas-carol-ny-tickets/artist/2923062'
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5733393Z   code: 'ERR_ASSERTION'
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5734165Z   name: 'AssertionError'
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5734692Z   expected: true
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5735175Z   actual: false
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5735660Z   operator: '=='
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5736135Z   stack: |-
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5737235Z     TestContext.<anonymous> (file:///home/runner/work/Broadwayscore/Broadwayscore/scripts/tests/tm-gap-links.test.mjs:67:12)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5738498Z     Test.runInAsyncScope (node:async_hooks:206:9)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5739279Z     Test.run (node:internal/test_runner/test:796:25)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5740212Z     Test.processPendingSubtests (node:internal/test_runner/test:526:18)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5741150Z     Test.postRun (node:internal/test_runner/test:889:19)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5741946Z     Test.run (node:internal/test_runner/test:835:12)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5742882Z     async Test.processPendingSubtests (node:internal/test_runner/test:526:7)
+Unit Tests	Run unit tests (no-data-dependency)	2026-08-04T03:54:50.5743885Z   ...
+Data Validation	Audit stale duplicateOf flags	2026-08-04T03:55:15.7353006Z ❌ GATE: 32 auto-healable duplicateOf URL mismatch(es) > floor 25. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4290948Z ❌ 1 orphan test file(s) — not referenced in any .github/workflows/*.yml:
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4294235Z   scripts/audit-cross-outlet-attributions.test.mjs
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4294833Z 
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4295375Z Fix: add the file to the appropriate `node --test ...` line in .github/workflows/test.yml.
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4296788Z Opt-out (known-broken): add to EXEMPT_KNOWN_BROKEN in scripts/audit-orphan-tests.js with a Notion card.
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4297859Z Opt-out (intentional): rename to `_skip-${name}.test.mjs`.
+Lint Workflows	Audit — no orphan unit tests	2026-08-04T03:51:48.4331401Z ##[error]Process completed with exit code 1.

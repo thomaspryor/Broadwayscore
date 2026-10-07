@@ -1,0 +1,438 @@
+# hygiene-push-ok: git push inside if-then-break retry loops (two jobs, push-with-retry.sh not applicable to per-job checkpointing pattern)
+name: Scrape DTLI & Show Score Pages
+
+on:
+  schedule:
+    - cron: '0 15 * * 0'  # Weekly Sundays 3 PM UTC (after BWW at 1 PM)
+  workflow_dispatch:
+    inputs:
+      aggregator:
+        description: 'Which aggregator to scrape'
+        required: true
+        type: choice
+        options:
+          - all
+          - dtli
+          - show-score
+        default: all
+      shows:
+        description: 'Comma-separated show IDs, "all", or "missing" (default)'
+        required: false
+        type: string
+        default: 'missing'
+      force:
+        description: 'Re-fetch even if archive exists'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+# Shared group across the whole workflow run (not per-job): the 4 jobs
+# (discover-dtli-slugs -> fetch-dtli / fetch-show-score -> extract-and-rebuild)
+# are a sequential/fan-in DAG via needs:, not a parallel matrix, so a
+# top-level group only ever queues a second full workflow invocation behind
+# the first — it doesn't affect the internal job graph.
+concurrency:
+  group: scrape-dtli-show-score
+  cancel-in-progress: false
+
+jobs:
+  discover-dtli-slugs:
+    if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Discover DTLI slugs from sitemaps
+        run: node scripts/discover-dtli-slugs.js
+
+      - name: Commit slug map
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/dtli-slug-map.json
+          git diff --staged --quiet && echo "No slug map changes" && exit 0
+
+          git commit -m "data: Update DTLI slug map from sitemaps"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+  fetch-dtli:
+    needs: [discover-dtli-slugs]
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'dtli') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Fetch DTLI pages
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          SHOWS_ARG="${{ inputs.shows || 'missing' }}"
+          FORCE_FLAG=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          npx tsx scripts/fetch-aggregator-pages.ts --aggregator dtli --shows "$SHOWS_ARG" $FORCE_FLAG
+
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch DTLI aggregator pages"
+
+  fetch-show-score:
+    if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'show-score' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Fetch Show Score pages
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          SHOWS_ARG="${{ inputs.shows || 'missing' }}"
+          FORCE_FLAG=""
+          if [ "${{ inputs.force }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          npx tsx scripts/fetch-aggregator-pages.ts --aggregator show-score --shows "$SHOWS_ARG" $FORCE_FLAG
+
+      - name: Push aggregator-archive to private repo
+        if: always()
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Fetch Show Score aggregator pages"
+
+      - name: Commit show-score-urls.json
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/show-score-urls.json
+          git diff --staged --quiet && echo "No show-score-urls changes" && exit 0
+          git commit -m "data: Update show-score-urls.json"
+          bash scripts/lib/push-with-retry.sh
+
+  extract-and-rebuild:
+    needs: [fetch-dtli, fetch-show-score]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract DTLI reviews from archives
+        id: extract-dtli
+        env:
+          NODE_OPTIONS: '--max-old-space-size=7168'
+        run: node scripts/extract-dtli-reviews.js
+
+      - name: Extract Show Score reviews from archives
+        id: extract-ss
+        run: |
+          if [ -f scripts/extract-show-score-reviews.js ]; then
+            node scripts/extract-show-score-reviews.js
+          else
+            echo "Show Score extraction script not found, skipping"
+          fi
+
+      - name: Convert Show Score data to review-text stubs
+        if: always() && steps.extract-ss.outcome == 'success'
+        run: node scripts/convert-show-score-to-review-texts.js
+
+      - name: Rebuild reviews.json
+        if: always() && (steps.extract-dtli.outcome == 'success' || steps.extract-ss.outcome == 'success')
+        env:
+          NODE_OPTIONS: '--max-old-space-size=7168'
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          if node scripts/rebuild-all-reviews.js; then
+            echo "Rebuild succeeded on first attempt"
+            exit 0
+          fi
+
+          echo ""
+          echo "⚠️  Rebuild failed — re-cloning review-texts and retrying..."
+          echo ""
+
+          rm -rf data/review-texts
+          git clone --depth 1 "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts
+
+          node scripts/rebuild-all-reviews.js
+
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Scrape DTLI & Show Score Pages — Commit and push"
+      - name: Commit and push
+        if: always()
+        run: |
+          git add data/audit/
+          git diff --staged --quiet && echo "No changes to commit" && exit 0
+
+          git commit -m "data: Extract + rebuild after DTLI/Show Score scrape"
+
+          MAX_RETRIES=5
+          RETRY_COUNT=0
+          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+            echo "Push attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
+            git checkout -- . 2>/dev/null || true
+            git clean -fd 2>/dev/null || true
+            if git pull --rebase -X theirs origin main; then
+              if git push origin main; then
+                echo "Successfully pushed changes"
+                exit 0
+              fi
+            else
+              echo "Rebase failed, aborting and retrying..."
+              git rebase --abort 2>/dev/null || true
+            fi
+            RETRY_COUNT=$((RETRY_COUNT + 1))
+            if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
+              WAIT_TIME=$((10 + RANDOM % 20))
+              echo "Waiting $WAIT_TIME seconds before retry..."
+              sleep $WAIT_TIME
+              git fetch origin main
+            fi
+          done
+          echo "Failed to push after $MAX_RETRIES attempts"
+          exit 1
+
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from scrape-dtli-show-score'
+      - name: Auto-trigger text collection if needed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEEDS_COLLECTION=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const base = "data/review-texts";
+            let n = 0;
+            const dirs = fs.readdirSync(base).filter(d => {
+              try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
+            });
+            dirs.forEach(d => {
+              fs.readdirSync(path.join(base, d)).filter(f => f.endsWith(".json") && f !== "failed-fetches.json").forEach(f => {
+                try {
+                  const r = JSON.parse(fs.readFileSync(path.join(base, d, f), "utf8"));
+                  if (r.wrongProduction || r.wrongShow || r.wrongAttribution) return;
+                  if (r.url && (!r.fullText || r.fullText.length < 50)) n++;
+                } catch {}
+              });
+            });
+            console.log(n);
+          ')
+
+          echo "Reviews needing text collection: $NEEDS_COLLECTION"
+
+          THRESHOLD=20
+          if [ "$NEEDS_COLLECTION" -lt "$THRESHOLD" ]; then
+            echo "Below threshold ($THRESHOLD). Skipping."
+            exit 0
+          fi
+
+          # Jitter (#312 cousin fix): spreads out this check-then-dispatch guard
+          # so overlapping triggers don't all read RUNNING=0 before any of them
+          # start. See gather-reviews.yml for the incident this was copied from.
+          sleep $((RANDOM % 20 + 1))
+
+          RUNNING=$(gh run list --workflow=collect-review-texts.yml --status=in_progress --json databaseId --jq 'length' 2>/dev/null || echo "0")
+          if [ "$RUNNING" -gt 0 ]; then
+            echo "Text collection already running. Skipping."
+            exit 0
+          fi
+
+          # Pass show_filter for targeted collection (skip "missing"/"all" defaults)
+          SHOWS="${{ inputs.shows }}"
+          if [ -n "$SHOWS" ] && [ "$SHOWS" != "missing" ] && [ "$SHOWS" != "all" ]; then
+            echo "Triggering targeted text collection for shows: $SHOWS ($NEEDS_COLLECTION reviews)..."
+            gh workflow run collect-review-texts.yml \
+              -f show_filter="$SHOWS" \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true
+          else
+            echo "Triggering text collection for $NEEDS_COLLECTION reviews..."
+            gh workflow run collect-review-texts.yml \
+              -f max_reviews=300 \
+              -f browserbase_enabled=true \
+              -f retry_failed=true \
+              -f archive_first=true
+          fi
+
+          echo "Text collection auto-triggered."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'DTLI/Show Score Scraper Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

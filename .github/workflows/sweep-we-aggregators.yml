@@ -1,0 +1,247 @@
+name: Sweep WE Aggregators
+
+on:
+  schedule:
+    # Weekly on Tuesdays at 8 AM UTC (3 AM EST), after individual scrapers
+    - cron: '0 8 * * 2'
+  workflow_dispatch:
+    inputs:
+      shows:
+        description: 'Comma-separated show IDs (default: all open WE/OWE)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run (no writes)'
+        required: false
+        type: boolean
+        default: false
+      force:
+        description: 'Re-fetch shows with existing data'
+        required: false
+        type: boolean
+        default: false
+      aggregator:
+        description: 'Aggregators to sweep (comma-separated: wet,theatre-reviews,sd,ts)'
+        required: false
+        type: string
+        default: 'wet,theatre-reviews,sd,ts'
+      mode:
+        description: 'Show status filter (open is the default cron behaviour)'
+        required: false
+        type: choice
+        options:
+          - open
+          - closed
+        default: open
+
+concurrency:
+  group: sweep-we-aggregators
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          # fetch-depth: 0 (task #1813 — same class as task #1810's
+          # update-show-status.yml fix): observed runs go as long as
+          # 27-35 min before this job's push-with-retry.sh step, well
+          # into the window where a shallow (fetch-depth 1, the default)
+          # local history makes git's push-pack build against a
+          # since-drifted origin/main pathologically slow (silent 90s+
+          # local-compute hang, no network activity, until
+          # GIT_NET_TIMEOUT_SEC kills it — see #1810's GIT_TRACE_CURL
+          # trace). fetch-depth: 0 removes the shallow ambiguity.
+          #
+          # Headroom note (corrected 2026-08-19, same day): a full
+          # checkout of this repo's ~2GB packed object DB was directly
+          # measured at ~22-23 min TWICE in real dispatches today (runs
+          # 32226129384, 32226160620) — not the near-instant checkout the
+          # old "55+ min headroom" claim assumed. 27-35min historical max
+          # + ~23min checkout ≈ 50-58min, still comfortable under this
+          # job's 90-min timeout (~32+ min real headroom), so no
+          # timeout-minutes change here — unlike update-social-pulse.yml
+          # and update-cast-changes.yml, whose thinner original margins
+          # needed raising (task #1813 follow-up).
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Checkout aggregator archives (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Refresh Stagedoor archives (BrowserBase)
+        if: contains(inputs.aggregator || 'wet,theatre-reviews,sd,ts', 'sd') && inputs.shows == ''
+        continue-on-error: true
+        timeout-minutes: 30
+        env:
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+        run: node scripts/scrape-stagedoor-critics.js
+
+      - name: Fix existing aggregator contamination (idempotent cleanup)
+        if: inputs.dry_run != true
+        run: node scripts/fix-contaminated-reviews.js
+        continue-on-error: true
+
+      - name: Run WE aggregator sweep
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          BROWSERBASE_KILL_SWITCH: ${{ vars.BROWSERBASE_KILL_SWITCH }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+        run: |
+          ARGS=""
+          if [ -n "${{ inputs.shows }}" ]; then
+            ARGS="$ARGS --shows=${{ inputs.shows }}"
+          fi
+          if [ "${{ inputs.force }}" = "true" ]; then
+            ARGS="$ARGS --force"
+          fi
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          if [ -n "${{ inputs.aggregator }}" ]; then
+            ARGS="$ARGS --aggregator=${{ inputs.aggregator }}"
+          fi
+          if [ -n "${{ inputs.mode }}" ]; then
+            ARGS="$ARGS --mode=${{ inputs.mode }}"
+          fi
+          # shellcheck disable=SC2086
+          node scripts/sweep-we-aggregators.js $ARGS
+
+      - name: Validate data (aggregator contamination guard)
+        if: always() && inputs.dry_run != true
+        run: node scripts/validate-data.js
+        continue-on-error: true
+
+      - name: Commit archives
+        if: always() && inputs.dry_run != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Aggregator archives are pushed to private repo via push-review-texts (below).
+          # Do NOT commit them to the public repo — they contain copyrighted content.
+          echo "Aggregator archives will be pushed to private repo only"
+
+      # scrape-stagedoor-critics.js AND sweep-we-aggregators.js both create Browserbase
+      # sessions via scripts/lib/browserbase-session.js (task #752), which writes
+      # attribution rows to data/audit/scraper-spend-ledger.jsonl on the runner's local
+      # disk. Without this step those rows never reach the public repo and are lost when
+      # the runner is torn down — attributedPct silently reads low for this workflow's
+      # traffic even though every session WAS attributed at the source.
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.dry_run != true
+        env:
+          # Task #784: concurrent shows/runs can each append to this ledger.
+          # `git rebase -X theirs` resolves a conflicting hunk in favour of the
+          # replayed local commit WITHOUT reporting a conflict (#420/#698
+          # class), so a losing run's appended row(s) can be silently dropped
+          # instead of unioned. Opts into the same post-rebase reconcile pass
+          # #698 built for bww-roundup-miss-ledger.jsonl.
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git add data/audit/scraper-spend-ledger.jsonl || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (sweep-we-aggregators)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Push review-texts to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from sweep-we-aggregators'
+
+      - name: Push aggregator archives to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Archive from sweep-we-aggregators'
+
+      - name: Trigger rebuild
+        if: always() && inputs.dry_run != true
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post WE aggregator sweep" || echo "Rebuild dispatch failed"
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Sweep WE Aggregators Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

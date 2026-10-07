@@ -1,0 +1,1115 @@
+#!/usr/bin/env node
+/**
+ * Promote venue-discovered OB candidates from staging → shows.json.
+ *
+ * Pipeline:
+ *   1. Load data/audit/ob-venue-candidates.json (written by discover-new-shows.js)
+ *   2. For each candidate: cross-validate against Playbill OB + Lortel +
+ *      TheaterMania OB (isCandidateConfirmed from scripts/lib/ob-cross-validation.js);
+ *      a venue-page candidate with no match can still confirm off the
+ *      venue's own dated listing (decideVenueListingPromotion, BRO-4396)
+ *   3. Confirmed candidates → build a shows.json entry. Undated ones keep the
+ *      safe defaults (status:'announced', all dates null); TheaterMania or
+ *      venue-listing confirmations carry their dates and the status those
+ *      dates imply (statusFromDates)
+ *   4. De-dupe against existing shows.json by id/slug — skip if already present
+ *   5. Atomic-write shows.json (via scripts/lib/atomic-shows-write.js)
+ *   6. Append promotion log to data/audit/ob-promotion-log.jsonl
+ *
+ * Modes:
+ *   default                — strict cross-validation for most candidates;
+ *                            regional/off-broadway-roundup candidates skip
+ *                            it in every mode (see the two decide* functions
+ *                            below) — safe for cron
+ *   --regional-only        — daily CI path: auto-promotes regional AND
+ *                            off-broadway candidates sourced directly from a
+ *                            PV/BWW roundup page (no extra fetches needed —
+ *                            the roundup itself is the confirmation), AND
+ *                            venue-page OB candidates confirmed by TheaterMania
+ *                            or their own dated listing (BRO-4396; one free
+ *                            TheaterMania API read, no Playbill/Lortel).
+ *                            Leaves every other staged candidate untouched.
+ *   --admin-promote-all    — bypass cross-validation, promote ALL staged
+ *                            candidates. ONE-TIME launch use only.
+ *   --admin-force=<title>  — promote a specific title without confirmation
+ *   --dry-run              — show what would be promoted; don't write
+ *
+ * Safety:
+ *   - Atomic write with 5% shrink gate prevents truncation
+ *   - status:'announced' + openingDate:null ensures orchestrator skips
+ *     these until they're enriched by a real opening date (V-T9 audit)
+ *   - Promotion log is JSONL append-only for audit trail
+ */
+
+const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
+const fs = require('fs');
+const path = require('path');
+const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
+const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle, decideVenueListingPromotion, venuesCompatible, discoveryGateReason } = require('./lib/ob-cross-validation');
+const { fetchTmOffBroadway, parseTmOffBroadwayRow } = require('./lib/theatermania-ob');
+const { cleanListingTitle } = require('./lib/ob-listing-platforms');
+const { foldDiacritics } = require('./lib/title-match');
+const { isKnownOffBroadwayVenue, isNonNycVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
+const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
+const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
+const { withMarketSuffix } = require('./lib/market-slug');
+const { scrapeLortel } = require('./enrich-off-broadway-dates');
+const { recordParseResult } = require('./lib/source-last-success');
+const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
+const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { productionIdYear } = require('./lib/todaytix-dates');
+const { venuesMatch } = require('./lib/deduplication');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+// Cross-source dedup — extracted to lib/candidate-dedup.js (task #1466) so
+// promote-we-aggregator-candidates.js reuses the exact same venue+title
+// matching (including the typo-distance and jaccard-threshold fixes below)
+// instead of re-deriving it. Re-exported below unchanged so existing callers
+// (tests, this file's own module.exports) keep working.
+const { findExistingMatch } = require('./lib/candidate-dedup');
+
+const USAGE = `promote-ob-venue-candidates.js — Promote venue-discovered OB candidates from staging → shows.json.
+
+Usage:
+  node scripts/promote-ob-venue-candidates.js [options]
+  node scripts/promote-ob-venue-candidates.js --help, -h    print this usage and exit
+`;
+const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'ob-promotion-log.jsonl');
+// Machine-readable output for the CI workflow: which ids were promoted THIS
+// run (always rewritten, empty array when none) so the workflow can trigger a
+// same-run targeted review scrape without parsing stdout.
+const LAST_PROMOTION_FILE = path.join(__dirname, '..', 'data', 'audit', 'last-promotion-ids.json');
+
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const adminPromoteAll = args.includes('--admin-promote-all');
+// --regional-only: the DAILY CI path (scrape-new-aggregators.yml). Considers
+// category:'regional' candidates AND off-broadway candidates sourced directly
+// from a PV/BWW roundup page (owner rule 2026-08-13) — no Playbill-OB/Lortel
+// fetches for either, no venue-page-sourced OB promotions (those keep the
+// operator-run path via health-check). Both classes validate off the
+// aggregator roundup page itself (user rule 2026-07-08: a PV Verdict / BWW
+// Review Roundup page IS the go-live signal) — for the regional class, the
+// roundup must ALSO name 3+ distinct review outlets (owner rule 2026-07-30,
+// BRO-125: see decideRegionalPromotion / scripts/lib/review-threshold.js).
+// Name kept for backward compat with existing CI invocations even though it
+// now covers a second class.
+const regionalOnly = args.includes('--regional-only');
+// --email: send the owner a "went live" notification for promoted regional /
+// off-broadway-via-roundup shows (best-effort — the promotion does NOT depend
+// on delivery).
+const emailAlerts = args.includes('--email');
+const adminForceArgs = args
+  .filter(a => a.startsWith('--admin-force='))
+  .map(a => a.split('=').slice(1).join('=').toLowerCase());
+// --only-hash=<candidateHash>: scope this run to ONE staged candidate.
+// add-requested-show.js (task #722) stages exactly one candidate per
+// dispatch and must promote only that one — without this, a single
+// feedback-driven request would sweep and promote every OTHER already-staged
+// regional candidate too (ship-check adversarial review caught this: the
+// default --regional-only loop below iterates the whole staging file).
+const onlyHash = args.find(a => a.startsWith('--only-hash='))?.split('=')[1] || null;
+
+function logEntry(entry) {
+  // A --dry-run must not append to the tracked promotion log (BRO-4396: every
+  // dry run left data/audit/*promotion-log.jsonl modified in the checkout).
+  if (process.argv.includes('--dry-run')) return;
+  try {
+    fs.mkdirSync(path.dirname(PROMOTION_LOG), { recursive: true });
+    fs.appendFileSync(PROMOTION_LOG, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
+  } catch (e) {
+    console.warn(`Failed to append promotion log: ${e.message}`);
+  }
+}
+
+/**
+ * Resolve the category for a generic (non-regional, non-aggregator-roundup)
+ * candidate. This promoter is OB-ONLY: it must never return anything but
+ * 'off-broadway' or null. A codebase-aware adversarial review (Codex,
+ * BRO-160) caught the first cut of this function trusting a candidate.category
+ * of 'west-end'/'off-west-end'/'broadway' verbatim — combined with
+ * --admin-promote-all bypassing confirmation, that would have turned this
+ * OB-scoped pipeline into an unvalidated cross-market writer: its dedup pool
+ * only preloads existing off-broadway/regional shows (main()'s
+ * `existingCandidates` filter), so a West End candidate could promote as a
+ * duplicate the dedicated, correctly-scoped promoter
+ * (scripts/promote-we-aggregator-candidates.js) would have caught. A venue
+ * that classifies as West End is therefore a MISROUTE, not a value to trust
+ * — returns null so the caller rejects the candidate outright rather than
+ * promoting it mislabeled. The venue check runs BEFORE trusting an explicit
+ * 'off-broadway' category: a candidate that mislabels itself off-broadway at
+ * a genuinely West End venue must still be rejected, not waved through on
+ * its own say-so.
+ * @param {object} candidate
+ * @returns {'off-broadway'|null}
+ */
+function resolveCandidateCategory(candidate) {
+  if (isWestEndVenue(candidate.venue)) return null;
+  if (candidate.category === 'off-broadway') return 'off-broadway';
+  // Any other category value (missing, a routing bug like a stray
+  // 'regional'/'broadway', or a bogus string) plus every venue the West End
+  // list doesn't recognize default to off-broadway — matches every current
+  // producer of this staging file (venue-listing-discover.js's
+  // OB_VENUE_CONFIGS, aggregator-candidate-extract.js's classifyVenueMarket,
+  // decideCriticListingPromotion) and preserves promotion coverage for a
+  // genuine new Off-Broadway house not yet in data/off-broadway-venues.json.
+  return 'off-broadway';
+}
+
+// Loose YYYY-MM-DD check — candidate.openingDate/previewsStartDate/
+// closingDate are trusted input from a hand-edited staging entry or a
+// future producer (no current producer of this file sets them), never a
+// value this script itself derives, so a malformed string must fail closed
+// to null rather than write straight through (Codex ship-check finding,
+// BRO-160) — matches the validated-shape discipline buildRegionalShowEntry/
+// buildOffBroadwayAggregatorShowEntry already apply to articlePublishedAt.
+function validDateOrNull(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+}
+
+/**
+ * Status implied by a new entry's dates (BRO-4396). Mirrors
+ * discover-new-shows.js: an opening date on or before today is 'open'; a
+ * first performance on or before today is 'previews', a later one
+ * 'upcoming'; no dates at all is 'announced'.
+ * @param {{openingDate: string|null, previewsStartDate: string|null}} dates
+ * @param {string} [todayIso]
+ */
+function statusFromDates({ openingDate, previewsStartDate, runningNow = false }, todayIso = new Date().toISOString().slice(0, 10)) {
+  if (runningNow && !openingDate && !previewsStartDate) return 'previews';
+  if (openingDate) {
+    if (openingDate <= todayIso) return 'open';
+    if (previewsStartDate && previewsStartDate <= todayIso) return 'previews';
+    return 'upcoming';
+  }
+  if (previewsStartDate) return previewsStartDate <= todayIso ? 'previews' : 'upcoming';
+  return 'announced';
+}
+
+/**
+ * Apply the dates a confirmation carried onto the candidate before its show
+ * entry is built (BRO-4396). TheaterMania's dates win over the venue
+ * listing's: TM separates first preview from press night, a box-office
+ * listing only knows the first and last performance.
+ */
+function applyConfirmationDates(candidate, { matchedDates, source }, todayIso = new Date().toISOString().slice(0, 10)) {
+  if (matchedDates && (matchedDates.previewsStartDate || matchedDates.openingDate)) {
+    candidate.previewsStartDate = matchedDates.previewsStartDate || null;
+    candidate.openingDate = matchedDates.openingDate || null;
+    candidate.openingDateSource = matchedDates.openingDate ? (matchedDates.openingDateSource || 'theatermania') : null;
+    candidate.closingDate = matchedDates.closingDate || (candidate.listingLastDateIsHorizon ? null : candidate.listingLastDate) || null;
+    return;
+  }
+  if (source === 'venue-listing' || (candidate.listingFirstDate && !candidate.previewsStartDate && !candidate.openingDate)) {
+    candidate.previewsStartDate = candidate.listingFirstDate || null;
+    // An editorial listing's last date can be a booking horizon, not a
+    // closing: never write it as closingDate (status automation would close
+    // an open-ended run on that day).
+    candidate.closingDate = candidate.listingLastDateIsHorizon ? null : (candidate.listingLastDate || null);
+    // An on-sale-only listing (OvationTix) whose next performance is within
+    // two days may well be mid-run: its real first performance is unknown,
+    // so leave previewsStartDate empty and mark it running rather than
+    // stamping a first-preview date that moves every day.
+    if (candidate.listingFirstDateIsNext && candidate.previewsStartDate) {
+      const soon = new Date(`${todayIso}T00:00:00Z`);
+      soon.setUTCDate(soon.getUTCDate() + 2);
+      if (candidate.previewsStartDate <= soon.toISOString().slice(0, 10)) {
+        candidate.previewsStartDate = null;
+        candidate.runningNow = true;
+      }
+    }
+  }
+}
+
+/**
+ * Duplicate check for a staged candidate: findExistingMatch's strict venue
+ * pass, then a second pass that also treats a room of the same house as the
+ * same venue (BRO-4396: "Mark Simmons: Jest to Impress" at "Soho Playhouse"
+ * is the catalog's "Jest to Impress" at "Soho Playhouse Main Stage").
+ */
+function findExistingOB(candidate, pool) {
+  return findExistingMatch(candidate, pool)
+    || findExistingMatch(candidate, pool, { venuePredicate: venuesCompatible, londonPoolFallback: false })
+    // Readers stage the house ("92NY", "The Public Theater"); the catalog
+    // stores the room ("92NY Buttenwieser Hall", "The Public Theater/
+    // Barbaralee Theater"). Same house = both strings map to one reader.
+    || findSameTitleSameHouse(candidate, pool)
+    || findSameTitleNearby(candidate, pool);
+}
+
+/**
+ * Exact loose-title match in another room of the same house (a reader-level
+ * house: "92NY" vs "92NY Buttenwieser Hall"). Exact title only: a fuzzy
+ * match across rooms (Daryl Roth vs DR2) would skip a different show.
+ */
+// venue-write-guard-ok: existingCandidates / logEntry carry venue strings for
+// duplicate matching and the promotion log; the shows.json write is
+// buildShowEntry, which sanitizes.
+function findSameTitleSameHouse(candidate, pool) {
+  const key = titleKeyLoose(candidate.title);
+  if (!key) return null;
+  for (const e of pool) {
+    if (e && titleKeyLoose(e.title) === key && sameReaderHouse(candidate.venue, e.venue)) {
+      return { match: e, reason: `same title at the same house ("${e.venue}")` };
+    }
+  }
+  return null;
+}
+
+let houseKeys = null;
+function sameReaderHouse(a, b) {
+  if (!houseKeys) {
+    const { readerKeys } = require('./lib/ob-venue-reader-coverage');
+    const { OB_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+    houseKeys = readerKeys(OB_VENUE_CONFIGS);
+  }
+  const { findReaderFor } = require('./lib/ob-venue-reader-coverage');
+  const ra = findReaderFor(a, houseKeys);
+  return ra !== null && ra === findReaderFor(b, houseKeys);
+}
+
+/**
+ * Same title (case, punctuation and articles ignored) anywhere in the pool
+ * with a date within a year, or no date at all: a co-production two venues
+ * both list (NYTW and Roundabout), or a catalog row under another venue
+ * string. Mirrors discovery's TheaterMania same-title fallback.
+ */
+// Same run, not a revival or transfer: both start within this many days.
+const SAME_RUN_WINDOW_DAYS = 45;
+
+function findSameTitleNearby(candidate, pool) {
+  // Venue-page Off-Broadway candidates only: regional tour stops share
+  // titles across cities by design.
+  if (candidate.category !== 'off-broadway' || !String(candidate.source || '').startsWith('venue-page:')) return null;
+  const key = titleKeyLoose(candidate.title);
+  if (!key || key.split(' ').length < 2) return null; // one-word titles collide ("Hamlet")
+  const candDate = candidate.listingFirstDate || candidate.previewsStartDate || candidate.openingDate || null;
+  if (!candDate) return null;
+  for (const e of pool) {
+    if (!e || e.category !== 'off-broadway' || !e.date || titleKeyLoose(e.title) !== key) continue;
+    if (Math.abs(Date.parse(candDate) - Date.parse(e.date)) <= SAME_RUN_WINDOW_DAYS * 86400000) {
+      return { match: e, reason: `same title "${e.title}" at "${e.venue}", starting within ${SAME_RUN_WINDOW_DAYS}d` };
+    }
+  }
+  return null;
+}
+
+function titleKeyLoose(title) {
+  return foldDiacritics(String(title || '').toLowerCase())
+    .replace(/[‘’'™®©]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b(?:the|a|an)\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function slugifyTitle(title) {
+  return foldDiacritics(String(title || '')).toLowerCase().replace(/['‘’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function buildShowEntry(candidate) {
+  // openingDate/previewsStartDate/closingDate default to null so the
+  // opening-night orchestrator doesn't fire on a venue-only stub (see V-T9
+  // — orchestrator must skip null-openingDate) — but a candidate that DOES
+  // carry a well-formed date (--admin-force on a hand-verified entry, or a
+  // future producer) has it preserved rather than discarded (BRO-160).
+  // Id year follows the run (a January 2027 run staged in 2026 is a -2027
+  // id; validate-data's id-year drift check reads it that way).
+  const firstDated = validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
+  // BRO-2026: productionIdYear (opening → previews, the discover-new-shows
+  // precedence) instead of a bare current-year fallback; a dateless stub that
+  // must still get SOME id is stamped idYearProvisional so the id-year-drift
+  // WARN / rename tool can find it once dates arrive.
+  const datedYear = productionIdYear({
+    openingDate: validDateOrNull(candidate.openingDate),
+    previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+  });
+  const year = datedYear || String(new Date().getFullYear());
+  const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const category = resolveCandidateCategory(candidate);
+  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
+  // class as BRO-3237 if slugBase already carries "-off-broadway".
+  const id = `${withMarketSuffix(slugBase, 'off-broadway')}-${year}`;
+  return {
+    id,
+    ...(datedYear ? {} : { idYearProvisional: true }),
+    title: candidate.title,
+    slug: slugBase,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // every other venue-write site in scripts/ routes through this; this
+    // builder was the one write site BRO-160 found skipping it. Returns
+    // null on a placeholder venue; the caller below refuses to promote
+    // rather than write a garbage venue string. Also null when `category`
+    // above is null (West End misroute) — same refusal path, one check.
+    venue: category ? sanitizeVenueForWrite(candidate.venue) : null,
+    openingDate: validDateOrNull(candidate.openingDate),
+    previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+    closingDate: validDateOrNull(candidate.closingDate),
+    ...(validDateOrNull(candidate.openingDate) && candidate.openingDateSource ? { openingDateSource: candidate.openingDateSource } : {}),
+    // An undated venue stub stays 'announced'; a dated one (TheaterMania or
+    // the venue's own listing, BRO-4396) gets the status its dates imply,
+    // the same rule discover-new-shows.js applies to a dated discovery.
+    status: statusFromDates({
+      openingDate: validDateOrNull(candidate.openingDate),
+      previewsStartDate: validDateOrNull(candidate.previewsStartDate),
+      runningNow: candidate.runningNow === true,
+    }),
+    category: category || 'off-broadway',
+    market: marketForCategory(category || 'off-broadway'),
+    // The venue's own genre label or a title that says "musical"; empty when
+    // neither says what the show is (lib/title-says-musical.js).
+    type: knownShowType(candidate.title, candidate.listingGenre),
+    discoverySource: candidate.source,
+    discoveredAt: candidate.discoveredAt,
+    // Provisional — opening-night orchestrator + Lortel/IBDB enrichment
+    // will fill in dates, cast, runtime once they appear in those sources.
+    provisional: true,
+  };
+}
+
+// Sources whose staged candidates were minted from an aggregator ROUNDUP page
+// (extract-aggregator-candidates.js). For regional feeder venues that page is
+// the validation: it only exists once professional reviews are out.
+const AGGREGATOR_ROUNDUP_SOURCES = new Set(['bww-roundup', 'playbill-verdict']);
+
+/**
+ * Pure promotion rule for regional candidates (testable, CLAUDE.md §15).
+ *
+ * BRO-125 (owner rule 2026-07-30): "roundup exists" alone is no longer
+ * sufficient — a roundup naming only 1-2 critics carries "very little
+ * critical or audience signal to be useful." The roundup-source + feeder-
+ * venue checks below stay (they establish this candidate is a real,
+ * in-scope regional production at all); decideReviewThresholdPromotion adds
+ * the actual signal check on top, using candidate.reviewCount — the count of
+ * distinct registered outlets aggregator-candidate-extract.js's
+ * countDistinctReviewOutlets() found in that same roundup article.
+ */
+function decideRegionalPromotion(candidate) {
+  if (!candidate || candidate.category !== 'regional') {
+    return { confirmed: false, reason: 'not a regional candidate' };
+  }
+  if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
+    return { confirmed: false, reason: `regional candidate from non-roundup source "${candidate.source}" — needs a PV/BWW roundup page to go live` };
+  }
+  if (!feederVenueCity(candidate.venue)) {
+    // classifyVenueMarket and this check share REGIONAL_FEEDER_VENUES, so this
+    // only fires on stale staged entries written before the venue table existed.
+    return { confirmed: false, reason: `venue "${candidate.venue}" not in the feeder-venue table` };
+  }
+  const reviewThreshold = decideReviewThresholdPromotion(candidate);
+  if (!reviewThreshold.confirmed) {
+    return { confirmed: false, reason: `roundup exists but ${reviewThreshold.reason}` };
+  }
+  return { confirmed: true, reason: `aggregator roundup page exists (regional feeder venue) — ${reviewThreshold.reason}`, source: 'aggregator-roundup' };
+}
+
+/**
+ * Pure promotion rule for off-broadway candidates sourced DIRECTLY from a
+ * Playbill Verdict article or a BWW Review Roundup (owner rule 2026-08-13,
+ * extending the regional rule above to off-Broadway: "every single Verdict
+ * or Review Roundup article should automatically trigger that show to be on
+ * the site if it isn't already"). Same reasoning as decideRegionalPromotion:
+ * a published roundup means professional critics already reviewed a real
+ * production — a STRONGER signal than the Playbill-OB-schedule / Lortel
+ * cross-validation isCandidateConfirmed() normally requires, so this bypasses
+ * that gate entirely for this narrow source class.
+ *
+ * Deliberately does NOT cover venue-page-sourced off-broadway candidates
+ * (the bulk of ob-venue-candidates.json, e.g. `venue-page:atlantic-theater`)
+ * — those carry no independent confirmation that reviews exist and still
+ * need isCandidateConfirmed's Playbill-OB/Lortel check (or an operator's
+ * --admin-force). Scoping to AGGREGATOR_ROUNDUP_SOURCES is what keeps this
+ * safe to run unattended in CI, same as the regional rule.
+ */
+// Same threshold decideCriticListingPromotion uses (scripts/lib/
+// ob-cross-validation.js) for the same reason: distinguishes a near-real-time
+// roundup discovery from a resurfaced/backfilled old archive URL. Kept as a
+// local constant (not exported by that module) rather than duplicating its
+// full staleness-check block — see below.
+const OB_AGGREGATOR_MAX_STALENESS_DAYS = 400;
+const OB_AGGREGATOR_DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * Ship-check adversarial review (2026-08-14, Codex) found two real gaps in
+ * the first cut of this gate: (1) it trusted `articlePublishedAt` verbatim
+ * with no staleness check, so a resurfaced old roundup URL would silently
+ * mint a show marked "open" forever with nothing to correct it; (2)
+ * `classifyVenueMarket()` labels ANY venue "off-broadway" that merely isn't
+ * in the regional feeder table — prose-extracted venue text was trusted
+ * with no plausibility check, unlike the regional branch (which rechecks its
+ * own feeder allowlist) and the sibling nyt-theater path
+ * (decideCriticListingPromotion, which requires a canonical Off-Broadway
+ * venue). Both checks below close those gaps by mirroring
+ * decideCriticListingPromotion's approach exactly, rather than inventing a
+ * separate scheme for what is the same problem.
+ */
+function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
+  const {
+    isKnownVenue = isKnownOffBroadwayVenue,
+    venueDirectoryAvailable = () => OFF_BROADWAY_VENUES.size > 0,
+  } = options;
+
+  // Null guard first: every gate below dereferences `candidate`, so it has to
+  // precede them all. The BRO-3211 non-NYC check was inserted above this and
+  // read `candidate.venue`, turning `decideOffBroadwayAggregatorPromotion(null)`
+  // — a documented, tested contract — into a TypeError instead of a refusal,
+  // and leaving main red.
+  if (!candidate) {
+    return { confirmed: false, reason: 'not an off-broadway candidate' };
+  }
+
+  // Non-NYC touring house: refuse unconditionally (BRO-3211). Every other
+  // rejection below is an "unless --admin-force" judgement call, because a
+  // human can legitimately know better about a new or unlisted NYC venue.
+  // This one is not: Off-Broadway is a New York City designation, so a venue
+  // in another state is never a genuine Off-Broadway house and there is
+  // nothing for an operator to override. Placed ahead of the admin escape
+  // hatches on purpose — the loop this guards (a mis-categorised row teaching
+  // build-ob-venues.js a touring venue, which then admits more rows) is
+  // exactly as damaging when a human starts it with a flag.
+  if (isNonNycVenue(candidate.venue)) {
+    return { confirmed: false, reason: `venue "${candidate.venue}" is a non-NYC touring house — Off-Broadway is a New York City designation, so this cannot be promoted (not overridable with --admin-force)` };
+  }
+
+  if (candidate.category !== 'off-broadway') {
+    return { confirmed: false, reason: 'not an off-broadway candidate' };
+  }
+  if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
+    return { confirmed: false, reason: `off-broadway candidate from non-roundup source "${candidate.source}" — needs Playbill-OB/Lortel cross-validation (isCandidateConfirmed) or --admin-force` };
+  }
+  if (!candidate.venue) {
+    return { confirmed: false, reason: 'null venue' };
+  }
+
+  let directoryAvailable;
+  try { directoryAvailable = venueDirectoryAvailable(); } catch { directoryAvailable = false; }
+  if (!directoryAvailable) {
+    return { confirmed: false, reason: 'canonical Off-Broadway venue directory unavailable — refusing to confirm (not a venue rejection)' };
+  }
+  // aggregator-candidate-extract.js's cleanVenue() unconditionally strips a
+  // leading "the " off every extracted venue (headline/body prose match),
+  // but data/off-broadway-venues.json stores several canonical names WITH
+  // it ("the shed", "the duke on 42nd street", "the new group", ...) and
+  // normalizeVenueName() never restores it. A candidate at any of those
+  // real venues would otherwise systematically fail this gate (codebase-aware
+  // review finding, 2026-08-14: verified isKnownOffBroadwayVenue('Shed') is
+  // false while isKnownOffBroadwayVenue('The Shed') is true). Try the
+  // "The "-restored form as a fallback before rejecting.
+  let venueKnown;
+  try {
+    venueKnown = isKnownVenue(candidate.venue) || isKnownVenue(`The ${candidate.venue}`);
+  } catch { venueKnown = false; }
+  if (!venueKnown) {
+    return { confirmed: false, reason: `venue "${candidate.venue}" not in canonical Off-Broadway venue list — use --admin-force if this is a genuine new venue` };
+  }
+
+  const published = candidate.articlePublishedAt ? new Date(candidate.articlePublishedAt) : null;
+  const discovered = candidate.discoveredAt ? new Date(candidate.discoveredAt) : null;
+  if (!published || Number.isNaN(published.getTime()) || !discovered || Number.isNaN(discovered.getTime())) {
+    return { confirmed: false, reason: 'missing or unparseable articlePublishedAt/discoveredAt' };
+  }
+  // discoveredAt must land at/after the article's own publish date — staging
+  // always records discovery AFTER the page existed, so a published date
+  // AFTER discoveredAt is bogus/unparsed data, not a fresh roundup (dropped
+  // from the first cut of this check, codebase-aware review finding
+  // 2026-08-14: decideCriticListingPromotion, which this mirrors, rejects
+  // this case too — scripts/lib/ob-cross-validation.js:191-196).
+  if (discovered.getTime() < published.getTime() - OB_AGGREGATOR_DAY_MS) {
+    return { confirmed: false, reason: `date mismatch: discoveredAt (${candidate.discoveredAt}) precedes articlePublishedAt (${candidate.articlePublishedAt})` };
+  }
+  const stalenessDays = (discovered.getTime() - published.getTime()) / OB_AGGREGATOR_DAY_MS;
+  if (stalenessDays > OB_AGGREGATOR_MAX_STALENESS_DAYS) {
+    return { confirmed: false, reason: `articlePublishedAt is ${Math.round(stalenessDays)}d stale relative to discoveredAt — refusing to auto-promote as currently open` };
+  }
+
+  return { confirmed: true, reason: `aggregator roundup page exists + canonical venue "${candidate.venue}" + compatible dates (off-broadway)`, source: 'aggregator-roundup' };
+}
+
+/**
+ * Show entry for an off-broadway candidate confirmed via
+ * decideOffBroadwayAggregatorPromotion — NOT the generic buildShowEntry.
+ *
+ * Second-opinion review (2026-08-13) caught that buildShowEntry's safe
+ * defaults (status:'announced', openingDate:null) are a dead end for this
+ * class: engine.ts:710 hides reviews/score whenever status==='announced',
+ * and the only code that ever promotes 'announced' forward — either
+ * decideAnnouncedPromotion (requires an openingDate/previewsStartDate to
+ * already exist) or opening-signal.js's review-driven catch-up (at the time,
+ * scoped to PRE_OPEN_STATUSES = {'previews','upcoming'}, which excluded
+ * 'announced'; BRO-3091 has since added it, but that route only fires once
+ * a scored review with a reached press night exists, which is strictly later
+ * than promotion time)
+ * — needs a date this class has no other way to acquire (it deliberately
+ * skips the Playbill-OB/Lortel cross-validation that would normally supply
+ * one). Promoted via buildShowEntry, these shows would have their reviews
+ * scraped and scored in the same CI run and then stayed permanently
+ * invisible — the opposite of the goal. Mirrors buildRegionalShowEntry's
+ * fix for the identical problem, minus the regional-only city suffix/tags
+ * and the ageDays>90→'closed' guess: off-broadway runs (unlike regional's
+ * known-short tryout engagements) range from a few weeks to open-ended
+ * commercial runs, so there's no safe staleness-based status to infer here.
+ * Status always starts 'open' and existing closing-date automation (which
+ * already covers off-broadway shows generically, regardless of how they
+ * were added) corrects it once the run actually ends.
+ */
+function buildOffBroadwayAggregatorShowEntry(candidate) {
+  // Take the DATE PART of the publish timestamp verbatim (see
+  // buildRegionalShowEntry for why: UTC conversion can roll an ET
+  // late-evening publish into the next calendar day).
+  const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
+  const datedYear = productionIdYear({ openingDate });
+  const year = datedYear || String(new Date().getFullYear());
+  const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
+  // class as BRO-3237 if slugBase already carries "-off-broadway".
+  const id = `${withMarketSuffix(slugBase, 'off-broadway')}-${year}`;
+  return {
+    id,
+    ...(datedYear ? {} : { idYearProvisional: true }),
+    title: candidate.title,
+    slug: slugBase,
+    // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+    // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
+    // placeholder venue; the caller's `if (!entry.venue)` check refuses to
+    // promote rather than write a garbage venue string.
+    venue: sanitizeVenueForWrite(candidate.venue),
+    openingDate,
+    openingDateSource: openingDate ? 'aggregator-roundup' : null,
+    previewsStartDate: null,
+    closingDate: null,
+    status: 'open',
+    category: 'off-broadway',
+    market: 'broadway',
+    // 'play' (not null) when the title doesn't say "musical" — status is
+    // 'open' here, and validate-market-expansion.js's required-fields check
+    // only exempts type when status==='announced'. A null type on a
+    // status='open' show fails CI (BRO-3716 was this exact bug, hit first
+    // via the west-end sibling of this function).
+    type: showTypeFor(candidate.title, candidate.listingGenre),
+    discoverySource: `aggregator-roundup:${candidate.source}`,
+    discoveredAt: candidate.discoveredAt,
+    // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
+    // show exists; images/cast/exact dates arrive via later enrichment.
+    provisional: true,
+  };
+}
+
+/** Show entry for an auto-promoted REGIONAL production. Differs from the OB
+ *  stub: -regional- id/slug (useCurrentMarket detection requires it), market
+ *  'regional' (fail-closed: every `.market !== 'broadway'` gate — broadcasts,
+ *  recoupment/closure pollers, orchestrator — excludes it), status 'open'
+ *  (a roundup only exists after press night), openingDate ≈ the roundup's
+ *  publish date (roundups land on/within a day of opening). */
+function buildRegionalShowEntry(candidate) {
+  // Take the DATE PART of the publish timestamp verbatim — it's already in the
+  // publisher's local zone. UTC conversion would roll an ET Dec-31 evening
+  // publish into Jan 1 and mint a wrong-year id (QA 2026-07-08).
+  const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
+  const datedYear = productionIdYear({ openingDate });
+  const year = datedYear || String(new Date().getFullYear());
+  const slugBase = candidate.slug || candidate.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const id = `${slugBase}-regional-${year}`;
+  // City lookup stays on the raw candidate venue — feederVenueCity keys off
+  // the feeder-venue table's own spelling, unaffected by sanitization.
+  const city = feederVenueCity(candidate.venue);
+  // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
+  // cousin of BRO-160's buildShowEntry fix (card #1921). Sanitize BEFORE the
+  // city-suffix concatenation so a placeholder venue can't smuggle itself
+  // through as "Spring Gala 2026, Chicago, IL" — returns null on a
+  // placeholder venue; the caller's `if (!entry.venue)` check refuses to
+  // promote rather than write a garbage venue string.
+  const sanitizedVenue = sanitizeVenueForWrite(candidate.venue);
+  // Regional runs are limited engagements (6-10 weeks). A fresh roundup ⇒ the
+  // show just opened ⇒ 'open'. A roundup older than ~90 days reaching this
+  // code is a backfill/seed — the run is almost certainly over, and 'open'
+  // would show a closed production as running (Millions @ Alliance test seed,
+  // 2026-07-09). closingDate stays null either way (unknown).
+  const ageDays = openingDate ? (Date.now() - new Date(openingDate).getTime()) / 86400000 : 0;
+  return {
+    id,
+    title: candidate.title,
+    slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
+    venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,
+    openingDate,
+    openingDateSource: 'aggregator-roundup',
+    previewsStartDate: null,
+    closingDate: null,
+    status: ageDays > 90 ? 'closed' : 'open',
+    category: 'regional',
+    market: 'regional',
+    tags: ['regional'],
+    // Same 'play'-not-null default as the west-end/off-broadway builders
+    // above (BRO-3716) — regional isn't in validate-market-expansion.js's
+    // gated markets today, but there's no reason to leave a known-bad
+    // pattern in a third copy of it.
+    type: showTypeFor(candidate.title, candidate.listingGenre),
+    discoverySource: `aggregator-roundup:${candidate.source}`,
+    discoveredAt: candidate.discoveredAt,
+    // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
+    // show exists; images/cast/exact dates arrive via the enrichment email.
+    provisional: true,
+  };
+}
+
+function writeLastPromotionFile(promoted) {
+  const out = {
+    generatedAt: new Date().toISOString(),
+    promoted: promoted.map(p => ({ id: p.entry.id, source: p.candidate.source, sourceUrl: p.candidate.sourceUrl || null })),
+  };
+  const tmp = LAST_PROMOTION_FILE + '.tmp.' + process.pid;
+  fs.writeFileSync(tmp, JSON.stringify(out, null, 2) + '\n');
+  fs.renameSync(tmp, LAST_PROMOTION_FILE);
+}
+
+async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const staged = loadStaging();
+  // Reset the promotion record up front so a crash mid-run can never leave a
+  // STALE file claiming yesterday's promotions happened again (the workflow
+  // reads it to decide targeted scrapes and commits it).
+  if (!dryRun) writeLastPromotionFile([]);
+  if (staged.length === 0) {
+    console.log('No staged candidates to promote.');
+    return;
+  }
+  console.log(`Loaded ${staged.length} staged candidates from staging file.`);
+
+  // Load existing shows.json for dedupe + atomic write base
+  let showsData;
+  try {
+    showsData = loadShows();
+  } catch (e) {
+    console.error(`Failed to load ${SHOWS_FILE}: ${e.message}`);
+    process.exit(1);
+  }
+  const existingIds = new Set(showsData.shows.map(s => s.id));
+  const existingSlugs = new Set(showsData.shows.map(s => s.slug).filter(Boolean));
+  // Existing OB/regional shows, as findExistingMatch() expects. Include
+  // 'regional' alongside 'off-broadway': regional candidates are added to
+  // shows.json manually (runbook), and without them here a staged regional
+  // entry never matches → never drops → re-hits validation weekly forever
+  // (Black Swan sat staged 3 weeks after shipping, 2026-07-08).
+  //
+  // Word-order variants ("Heated Rivalry: The Unauthorized Musical Parody"
+  // vs "...PARODY MUSICAL") shipped a duplicate to production on 2026-05-27;
+  // subtitle-stripped variants ("Ectoplasm" vs "Ectoplasm: Spit and Vigor")
+  // shipped two more duplicates and blocked a Vercel deploy until merged by
+  // hand (task #1011, 2026-08-04). findExistingMatch()'s jaccard/subtitle/
+  // typo-distance checks are the fix for the class.
+  const existingCandidates = showsData.shows
+    .filter(s => s.category === 'off-broadway' || s.category === 'regional')
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, date: s.previewsStartDate || s.openingDate || s.unconfirmedStartDate || null }));
+
+  // Fetch cross-validation sources unless --admin-promote-all or
+  // --regional-only (regional candidates never use Playbill-OB/Lortel; the
+  // daily CI path must not spend those fetches).
+  let playbillEntries = [];
+  let lortelEntries = [];
+  if (!adminPromoteAll && !regionalOnly) {
+    console.log('Fetching Playbill OB for cross-validation...');
+    const pb = await scrapePlaybillOBData();
+    playbillEntries = pb.entries;
+    console.log(`  Playbill OB: ${playbillEntries.length} entries.`);
+    console.log('Fetching Lortel currently-playing for cross-validation...');
+    try {
+      lortelEntries = await scrapeLortel();
+      console.log(`  Lortel: ${lortelEntries.length} entries.`);
+    } catch (e) {
+      console.warn(`  Lortel scrape failed (${e.message}); proceeding with Playbill only.`);
+    }
+    // S4-T5 (2026 data audit, BRO-4204): data/audit/lortel-last-success.json.
+    // A failed fetch and an empty parse both count as empty — the page has
+    // been a 404 since 2026-07-22, and three empties in a row now log the
+    // soft-404 warning instead of "Lortel: 0 entries." scrolling past unread.
+    recordParseResult('lortel', lortelEntries.length);
+  }
+
+  // TheaterMania OB listing (BRO-4396): a free public REST API, fetched only
+  // when a venue-page candidate is staged. Corroborates a candidate on title
+  // AND venue (findTheaterManiaCorroboration). Fetched on the daily
+  // --regional-only path too, which is where venue-page candidates now get
+  // promoted without an operator.
+  // Kill switch: OB_VENUE_AUTO_PROMOTE_DISABLED=1 takes venue-page candidates
+  // back out of the unattended daily path (they wait for an operator run, as
+  // before BRO-4396) without a code revert.
+  const venueAutoOff = regionalOnly && process.env.OB_VENUE_AUTO_PROMOTE_DISABLED === '1';
+  if (venueAutoOff) console.log('  OB_VENUE_AUTO_PROMOTE_DISABLED=1: venue-page candidates stay staged this run.');
+  const isVenuePageOB = c => !venueAutoOff && c && c.category === 'off-broadway' && String(c.source || '').startsWith('venue-page:');
+  let theatermaniaEntries = [];
+  if (!adminPromoteAll && staged.some(isVenuePageOB)) {
+    try {
+      const tm = await fetchTmOffBroadway();
+      for (const row of tm.rows) {
+        const r = parseTmOffBroadwayRow(row, { venuesById: tm.venuesById, genresById: tm.genresById });
+        if (!r.skip) theatermaniaEntries.push(r.candidate);
+      }
+      console.log(`  TheaterMania OB: ${theatermaniaEntries.length} current dated entries.`);
+    } catch (e) {
+      console.warn(`  TheaterMania OB fetch failed (${e.message}); venue-page candidates fall back to their own dated listings.`);
+    }
+  }
+  // Discovery's own non-theatre / one-night gates, reused for the venue's own
+  // dated listing (loaded lazily: discover-new-shows.js is a large module).
+  let discoveryGates = null;
+  const getDiscoveryGates = () => {
+    if (!discoveryGates) {
+      const { isNonTheaterContent, isOneNightShow } = require('./discover-new-shows');
+      discoveryGates = { isNonTheaterContent, isOneNightShow };
+    }
+    return discoveryGates;
+  };
+
+  const promoted = [];
+  const skipped = [];
+  const remainingStaged = [];
+  for (const c of staged) {
+    const titleLower = (c.title || '').toLowerCase();
+
+    // --only-hash: everything except the targeted candidate is untouched
+    // (stays staged for its normal path — nightly cron or a later dispatch).
+    if (onlyHash && c.candidateHash !== onlyHash) {
+      remainingStaged.push(c);
+      continue;
+    }
+
+    // --regional-only: non-regional candidates are untouched EXCEPT
+    // off-broadway candidates sourced directly from a PV/BWW roundup page
+    // (owner rule 2026-08-13 — see decideOffBroadwayAggregatorPromotion).
+    // Both classes need zero extra fetches to confirm, so both stay cheap
+    // enough for the daily CI path. Venue-page-sourced OB candidates (the
+    // bulk of staging) still wait for the operator-run OB promotion path.
+    const isOBAggregatorRoundup = c.category === 'off-broadway' && AGGREGATOR_ROUNDUP_SOURCES.has(c.source);
+    // BRO-4396: venue-page OB candidates join the daily path too, but only
+    // through the two routes that need no Playbill/Lortel fetch: a
+    // TheaterMania match or the venue's own dated listing.
+    if (regionalOnly && c.category !== 'regional' && !isOBAggregatorRoundup && !isVenuePageOB(c)) {
+      remainingStaged.push(c);
+      continue;
+    }
+
+    // Dedupe via per-venue jaccard match. Catches: cross-year duplicates,
+    // venue-string variants ("Atlantic Theater Company - Linda Gross" vs
+    // "Atlantic Theater"), cross-source same-venue (TNG → Signature Center),
+    // AND word-order variants ("Musical Parody" vs "Parody Musical").
+    const existingMatch = findExistingOB(c, existingCandidates);
+    if (existingMatch) {
+      skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
+      logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
+      continue;
+    }
+
+    let confirmed = false;
+    let reason = '';
+    let source = null;
+    if (c.category === 'regional') {
+      // Regional feeder-venue candidates auto-promote off the roundup page
+      // itself (user rule 2026-07-08) — Playbill-OB/Lortel can never confirm
+      // a DC/Chicago production, and admin flags are ignored for this class
+      // (the OB buildShowEntry would mint a mislabeled entry).
+      const r = decideRegionalPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source || null;
+    } else if (adminPromoteAll) {
+      confirmed = true; reason = '--admin-promote-all'; source = 'admin';
+    } else if (adminForceArgs.includes(titleLower)) {
+      confirmed = true; reason = `--admin-force="${c.title}"`; source = 'admin-force';
+    } else if (isOBAggregatorRoundup) {
+      // Off-broadway candidates sourced directly from a PV/BWW roundup page
+      // auto-promote the same way (owner rule 2026-08-13) — but UNLIKE the
+      // regional branch above, checked AFTER adminPromoteAll/adminForce.
+      // decideOffBroadwayAggregatorPromotion requires a canonical Off-Broadway
+      // venue, which — unlike regional's small curated feeder table — a
+      // genuine new-but-not-yet-catalogued venue can legitimately fail; an
+      // operator needs --admin-force to still promote that case by hand
+      // (ship-check adversarial review, 2026-08-14).
+      const r = decideOffBroadwayAggregatorPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source || null;
+    } else if (c.source === 'nyt-theater') {
+      // Critic-listing candidates (newyorktheater.me — Sprint 1, task #997)
+      // can never be corroborated by isCandidateConfirmed's Playbill/Lortel
+      // check (Lortel is dead; Playbill's OB schedule carries none of these
+      // shows — task #987). decideCriticListingPromotion is self-sufficient
+      // instead; see scripts/lib/ob-cross-validation.js header (task #995).
+      const r = decideCriticListingPromotion(c);
+      confirmed = r.confirmed; reason = r.reason; source = r.source;
+    } else {
+      let r = isCandidateConfirmed(c, { playbillEntries, lortelEntries, theatermaniaEntries });
+      // BRO-4396: no listing elsewhere, but the venue's own box office lists
+      // a dated run of it.
+      if (!r.confirmed && isVenuePageOB(c)) {
+        const v = decideVenueListingPromotion(c, { gates: getDiscoveryGates() });
+        if (v.confirmed) r = v;
+        else if (v.reason !== r.reason) r = { ...r, reason: `${r.reason}; ${v.reason}` };
+      }
+      confirmed = r.confirmed; reason = r.reason; source = r.source;
+      // TheaterMania's title replaces a slug-derived one ("Diana Untold" →
+      // "Diana: The Untold and Untrue Story"): only exact/subset matches at a
+      // compatible venue carry matchedTitle (see isCandidateConfirmed).
+      // TheaterMania rows skip discovery's non-theatre / one-night gates here
+      // unless applied: discovery's own TM path applies them (ship-check).
+      if (confirmed && source === 'theatermania') {
+        const gate = discoveryGateReason({ ...c, ...(r.matchedDates || {}) }, getDiscoveryGates());
+        if (gate) { confirmed = false; reason = `${reason}; ${gate}`; source = null; }
+      }
+      if (confirmed && source === 'theatermania' && r.matchedTitle) {
+        const tmTitle = cleanListingTitle(r.matchedTitle);
+        if (tmTitle && tmTitle !== c.title) {
+          logEntry({ kind: 'title-source-preferred', title: tmTitle, venue: c.venue, from: c.title, source });
+          c.title = tmTitle;
+          c.slug = slugifyTitle(tmTitle);
+        }
+      }
+      if (confirmed) applyConfirmationDates(c, r);
+      // BRO-3920: the venue's own page is a scrape-artifact risk (rendered
+      // heading, CSS caps, inconsistent CMS input — Signature Theatre's own
+      // WordPress data is shouted at every tier, not just on render). Prefer
+      // the corroborating Playbill/Lortel entry's title when it disagrees on
+      // casing and looks more trustworthy (see preferCorroboratingTitle).
+      if (confirmed && r.matchedTitle) {
+        const pick = preferCorroboratingTitle(c.title, r.matchedTitle);
+        if (pick.swapped) {
+          logEntry({ kind: 'title-source-preferred', title: pick.title, venue: c.venue, from: c.title, source });
+          c.title = pick.title;
+        }
+      }
+    }
+
+    // A confirmation can rename the candidate (TheaterMania's full title,
+    // Playbill's casing): the first duplicate check ran on the old title, so
+    // check again before minting an entry (BRO-4377 hand-added shows under
+    // their full titles; the staged slug titles did not match them).
+    if (confirmed) {
+      const renamedMatch = findExistingOB(c, existingCandidates);
+      if (renamedMatch) {
+        skipped.push({ candidate: c, reason: `already in shows.json as ${renamedMatch.match.id} (${renamedMatch.reason}, after ${source} rename)` });
+        logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, matchedTo: renamedMatch.match.id, matchReason: renamedMatch.reason });
+        continue;
+      }
+    }
+
+    if (!confirmed) {
+      skipped.push({ candidate: c, reason });
+      remainingStaged.push(c); // keep in staging for next run
+      logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, reason });
+      continue;
+    }
+
+    // Build show entry + dedupe by ID
+    // isOBAggregatorRoundup gets its own builder (status:'open' + a real
+    // openingDate) — buildShowEntry's null-openingDate/'announced' defaults
+    // would leave these shows permanently invisible (engine.ts:710), since
+    // this class deliberately skips the Playbill-OB/Lortel enrichment path
+    // that would otherwise supply a date later (second-opinion review finding).
+    const entry = c.category === 'regional' ? buildRegionalShowEntry(c)
+      : isOBAggregatorRoundup ? buildOffBroadwayAggregatorShowEntry(c)
+      : buildShowEntry(c);
+    // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
+    // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
+    // string rather than silently promoting it (BRO-160). Stays in staging:
+    // a later scrape of the same venue page may resolve a real venue string.
+    if (!entry.venue) {
+      const misroute = !isOBAggregatorRoundup && c.category !== 'regional' && isWestEndVenue(c.venue);
+      const reason = misroute
+        ? `venue "${c.venue}" classifies as West End — use scripts/promote-we-aggregator-candidates.js instead`
+        : `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
+      skipped.push({ candidate: c, reason });
+      remainingStaged.push(c);
+      logEntry({ kind: misroute ? 'skip-west-end-misroute' : 'skip-invalid-venue', title: c.title, venue: c.venue });
+      continue;
+    }
+    if (existingIds.has(entry.id)) {
+      skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
+      logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
+      continue;
+    }
+    // BRO-2026: a bare title slug fits one production per title; a later
+    // production of the same title keeps its candidate instead of being a
+    // duplicate-slug row — the NEW row takes its year-scoped id as slug
+    // (mirrors discover-new-shows.js), the existing row keeps its live URL.
+    if (existingSlugs.has(entry.slug) && entry.slug !== entry.id) entry.slug = entry.id;
+    existingSlugs.add(entry.slug);
+    promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
+    existingIds.add(entry.id);
+    // Feed the promotion back into the dedup pool under BOTH venue spellings
+    // (candidate's bare venue and the entry's city-suffixed venue) so a
+    // second candidate for the same show in the SAME run — PV + BWW both
+    // roundup one opening, with slight title variants → different slugified
+    // ids — hits findExistingMatch instead of minting a duplicate show. Two
+    // entries (one per venue spelling) is fine — findExistingMatch matches on
+    // venuesMatch(candidate.venue, entry.venue) (BRO-243 — not the raw
+    // canonicalVenue() equality this used before, which could silently skip
+    // pushing the second spelling on a false first-word collision), and
+    // duplicate rows never change the outcome, only which one is returned.
+    existingCandidates.push({ id: entry.id, title: entry.title, venue: c.venue, category: entry.category, date: entry.previewsStartDate || entry.openingDate || null });
+    if (!venuesMatch(entry.venue, c.venue)) {
+      existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue, category: entry.category, date: entry.previewsStartDate || entry.openingDate || null });
+    }
+    // reviewCount recorded for regional promotions only — it's the actual
+    // number decideReviewThresholdPromotion gated on (BRO-125); other
+    // sources don't compute it, so a bare `undefined` there just means N/A.
+    logEntry({ kind: 'promote', title: c.title, venue: c.venue, id: entry.id, confirmationSource: source, reviewCount: c.category === 'regional' ? c.reviewCount : undefined });
+  }
+
+  console.log('');
+  console.log(`Promotion summary: ${promoted.length} promote / ${skipped.length} skip (of ${staged.length} staged).`);
+  // Tag each line with the candidate's discovery source (venue-page:* vs
+  // playbill-verdict / bww-roundup) so the operator knows whether a row came
+  // from a direct venue scrape or an aggregator-article extraction (the latter
+  // warrants extra scrutiny — venue was parsed from prose). See plan-review.
+  if (promoted.length > 0) {
+    console.log('Promoting:');
+    for (const p of promoted) console.log(`  + [${p.candidate.source || 'unknown'}] ${p.entry.id} (via ${p.confirmationSource}: ${p.confirmationReason})`);
+  }
+  if (skipped.length > 0) {
+    console.log('Skipping:');
+    for (const s of (dryRun ? skipped : skipped.slice(0, 20))) console.log(`  - [${s.candidate.source || 'unknown'}] ${s.candidate.title} (${s.candidate.venue}): ${s.reason}`);
+    if (!dryRun && skipped.length > 20) console.log(`  ... +${skipped.length - 20} more`);
+  }
+
+  if (dryRun) {
+    console.log('');
+    console.log('(dry-run: no writes)');
+    return;
+  }
+
+  // Staging rewrite must NOT be gated on promotions: dedup-matched entries
+  // (candidate's show since added to shows.json by hand — the regional flow)
+  // leave staging via remainingStaged, and that cleanup has to land even on a
+  // zero-promotion run or stale entries linger forever (QA 2026-07-08).
+  // BRO-158 (the #788 class): `staged` was read at the very start of main(),
+  // before the Playbill/Lortel fetches above — a run that takes a while can
+  // easily overlap another producer staging fresh candidates. Writing
+  // `remainingStaged` directly used to overwrite the whole file with that
+  // stale snapshot, silently dropping anything staged concurrently. Instead,
+  // express this run's outcome as a removal set (the hashes promoted or
+  // dedupe-skipped out of `staged`) and apply it through updateStaging(),
+  // which re-reads the file fresh under an exclusive lock — so concurrent
+  // additions survive and only the hashes this run actually resolved are
+  // removed.
+  const rewriteStaging = () => {
+    const remainingHashes = new Set(remainingStaged.map((c) => c.candidateHash));
+    const removedHashes = new Set(
+      staged.filter((c) => !remainingHashes.has(c.candidateHash)).map((c) => c.candidateHash)
+    );
+    const next = updateStaging((current) => current.filter((c) => !removedHashes.has(c.candidateHash)));
+    console.log(`Staging file: ${next.length} unpromoted candidates remain.`);
+  };
+
+  if (promoted.length === 0) {
+    console.log('Nothing to promote; shows.json unchanged.');
+    if (remainingStaged.length !== staged.length) rewriteStaging();
+    return;
+  }
+
+  // Append to shows.json and atomic-write
+  for (const p of promoted) showsData.shows.push(p.entry);
+  try {
+    const r = saveShows(showsData);
+    console.log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
+  } catch (e) {
+    if (e instanceof AtomicWriteShrinkError) {
+      console.error(`::error::${e.message}`);
+      process.exit(1);
+    }
+    throw e;
+  }
+
+  // Record promotions ONLY after the shows.json write landed — written before,
+  // a shrink-gate abort would leave a file claiming promotions that never
+  // happened, and the workflow would targeted-scrape ghosts (QA 2026-07-08).
+  writeLastPromotionFile(promoted);
+
+  // Rewrite staging file with only the unpromoted candidates.
+  rewriteStaging();
+
+  // "Went live" notification for regional promotions. The show is already
+  // written — notification failure only logs (the site does not depend on it,
+  // and the promotion-log JSONL is the durable record).
+  //
+  // Routed to the morning digest, NOT a standalone email (owner decision
+  // 2026-07-26). This used to call sendEmailAlert({severity:'info'}), which the
+  // actionable-only policy in discord-notify.js silently suppresses — so the
+  // owner was never told a regional show went live and polled the URL by hand.
+  // A regional go-live is real news but never same-hour urgent, so it belongs
+  // in the digest rather than carving an exception into the email policy.
+  //
+  // conditionKey is PER SHOW: routeAlert dedups on conditionKey with a 7-day
+  // default cooldown, so a shared key would swallow the second go-live in any
+  // week that promotes two shows.
+  // Both classes confirmed via 'aggregator-roundup' (regional feeder-venue OR
+  // off-broadway sourced directly from a PV/BWW roundup, 2026-08-13) — same
+  // digest treatment, since the go-live signal and the "reviews ingest
+  // automatically" follow-up are identical for both.
+  const aggregatorRoundupPromoted = promoted.filter(p => p.confirmationSource === 'aggregator-roundup');
+  // BRO-4396: venue-page shows promoted off TheaterMania or the venue's own
+  // dated listing get the same digest line, so an unexpected promotion is
+  // visible the next morning.
+  const venueListingPromoted = promoted.filter(p => p.confirmationSource === 'venue-listing' || p.confirmationSource === 'theatermania');
+  if (emailAlerts && venueListingPromoted.length > 0) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    for (const p of venueListingPromoted) {
+      try {
+        await routeAlert({
+          conditionKey: `ob-venue-go-live:${p.entry.id}`,
+          title: `${p.entry.title} @ ${p.entry.venue} — off-Broadway show added`,
+          severity: 'info',
+          disposition: 'digest',
+          url: `https://broadwayscorecard.com/show/${p.entry.id}`,
+          description: `Auto-promoted via ${p.confirmationSource === 'theatermania' ? 'a TheaterMania Off-Broadway listing' : 'the venue listing'} (${p.confirmationReason}). Reviews ingest automatically once critics publish.`,
+        });
+      } catch (e) {
+        console.warn(`::warning::go-live digest queue failed for ${p.entry.id}: ${e.message} (promotion unaffected)`);
+      }
+    }
+  }
+  if (emailAlerts && aggregatorRoundupPromoted.length > 0) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    for (const p of aggregatorRoundupPromoted) {
+      const kind = p.entry.category === 'regional' ? 'regional tryout' : 'off-Broadway show';
+      try {
+        await routeAlert({
+          conditionKey: `regional-go-live:${p.entry.id}`,
+          title: `${p.entry.title} @ ${p.entry.venue} — ${kind} live and scoring`,
+          severity: 'info',
+          disposition: 'digest',
+          url: `https://broadwayscorecard.com/show/${p.entry.id}`,
+          description:
+            `Auto-promoted from an aggregator roundup (${p.candidate.sourceUrl || 'source n/a'}). ` +
+            'Reviews ingest automatically via the daily aggregator scrape. Cosmetic enrichment still manual: ' +
+            'images (poster/hero), cast + creative team, exact previews/opening/closing dates, audience scrapers ' +
+            '(scrape-reddit-sentiment.js / scrape-mezzanine-audience.js). See memory/project_regional_expansion_watchlist.md.',
+        });
+        console.log(`Queued go-live digest line for ${p.entry.id}.`);
+      } catch (e) {
+        console.warn(`::warning::go-live digest queue failed for ${p.entry.id}: ${e.message} (promotion unaffected)`);
+      }
+    }
+  }
+}
+
+if (require.main === module) {
+  main().catch(async err => {
+    console.error('Fatal error:', err);
+    // Self-monitoring: a silently-failing daily promotion means shows never go
+    // live and nobody notices (the CI step is continue-on-error). Email the
+    // failure when --email is on; best-effort.
+    if (emailAlerts) {
+      try {
+        const { sendEmailAlert } = require('./lib/discord-notify');
+        await sendEmailAlert({
+          title: 'Regional auto-promotion FAILED',
+          severity: 'error',
+          description: `promote-ob-venue-candidates.js crashed: ${err.message}. Staged candidates are untouched and will retry next run, but investigate — repeated failures strand regional shows.`,
+        });
+      } catch { /* best-effort */ }
+    }
+    process.exit(1);
+  });
+}
+
+module.exports = { buildShowEntry, statusFromDates, findExistingOB, applyConfirmationDates, resolveCandidateCategory, buildRegionalShowEntry, decideRegionalPromotion, decideOffBroadwayAggregatorPromotion, buildOffBroadwayAggregatorShowEntry, findExistingMatch };

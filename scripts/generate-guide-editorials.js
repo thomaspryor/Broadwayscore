@@ -1,0 +1,371 @@
+#!/usr/bin/env node
+
+/**
+ * Generate editorial introductions for guide pages using Claude API.
+ * Runs weekly (Monday 3 AM UTC) to create fresh, dated content for SEO guides.
+ *
+ * Safety guards:
+ * - Output file size assertion (max 500KB)
+ * - Schema validation on each editorial entry
+ * - 3 retries with exponential backoff on API failures
+ * - Atomic write: only overwrites output file after ALL editorials succeed
+ * - Batch-parallel API calls (5 concurrent) for speed
+ */
+
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { isBroadwayCategory } = require('./lib/venue-classification');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const ROOT = path.resolve(__dirname, '..');
+
+const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
+const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
+const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
+const OUTPUT_FILE = path.join(ROOT, 'data', 'guide-editorials.json');
+const SLIM_DIR = path.join(ROOT, 'public', 'data', 'shows');
+
+// Canonical Critic Score, straight from the show's slim public file — the
+// same source scripts/lib/canonical-critic-scores.ts wraps (CLAUDE.md §3).
+// Do NOT raw-mean data/reviews.json here: it diverges from what the site
+// actually shows and is far more volatile than the tier-weighted composite —
+// this ranks/filters "Best Broadway Shows" and "Highest Rated" guide pages,
+// so a wrong number here is a wrong ranking, not just a stray notification.
+function getCriticScore(showId) {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(SLIM_DIR, `${showId}.json`), 'utf-8'));
+    return typeof j.cs === 'number' ? j.cs : null;
+  } catch {
+    return null;
+  }
+}
+
+const MAX_FILE_SIZE = 500 * 1024; // 500KB
+const MAX_RETRIES = 3;
+
+// Broadway-only filter. Deliberately permissive (null category counts as
+// Broadway) — NOT the same as src/lib/data-core.ts's isBroadwayShow(), which
+// was made strict in #1428 for UI symmetry with getOffBroadwayShows(). This
+// script delegates to the scripts/-side canonical predicate instead of
+// reimplementing it; see #1471 and scripts/lib/venue-classification.js.
+const isBroadway = isBroadwayCategory;
+
+// Guide definitions (mirrors src/config/guide-pages.ts)
+const GUIDE_DEFS = [
+  { slug: 'best-broadway-shows', title: 'Best Broadway Shows', filter: (s) => isBroadway(s) && s.status === 'open' && (s.criticScore?.score ?? 0) > 0 && (s.criticScore?.reviewCount ?? 0) >= 5, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-musicals', title: 'Best Broadway Musicals', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'musical' && (s.criticScore?.score ?? 0) > 0 && (s.criticScore?.reviewCount ?? 0) >= 5, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-plays', title: 'Best Broadway Plays', filter: (s) => isBroadway(s) && s.status === 'open' && s.type === 'play' && (s.criticScore?.score ?? 0) > 0 && (s.criticScore?.reviewCount ?? 0) >= 5, yearPages: [2020, 2021, 2022, 2023, 2024, 2025, 2026] },
+  { slug: 'best-broadway-shows-for-kids', title: 'Best Broadway Shows for Kids', filter: (s) => {
+    if (!isBroadway(s) || s.status !== 'open') return false;
+    if ((s.criticScore?.score ?? 0) <= 0 || (s.criticScore?.reviewCount ?? 0) < 3) return false;
+    const tags = (s.tags || []).map(t => t.toLowerCase());
+    const ageRec = (s.ageRecommendation || '').toLowerCase();
+    return tags.includes('family') || tags.includes('accessible') || ageRec.includes('ages 6') || ageRec.includes('ages 8') || ageRec.includes('all ages');
+  }},
+  { slug: 'best-new-broadway-shows', title: 'Best New Broadway Shows', filter: (s) => {
+    if (!isBroadway(s) || s.status !== 'open') return false;
+    const now = new Date();
+    const seasonStartYear = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+    return new Date(s.openingDate) >= new Date(`${seasonStartYear}-09-01`);
+  }},
+  { slug: 'cheap-broadway-tickets', title: 'Cheap Broadway Tickets', filter: (s) => {
+    if (!isBroadway(s) || s.status !== 'open') return false;
+    const tags = (s.tags || []).map(t => t.toLowerCase());
+    return tags.includes('lottery') || tags.includes('rush');
+  }},
+  { slug: 'broadway-shows-closing-soon', title: 'Broadway Shows Closing Soon', filter: (s) => {
+    if (!isBroadway(s) || s.status !== 'open' || !s.closingDate) return false;
+    const diffDays = Math.ceil((new Date(s.closingDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+    return diffDays > 0 && diffDays <= 60;
+  }},
+  { slug: 'highest-rated-broadway-shows', title: 'Highest Rated Broadway Shows of All Time', filter: (s) => isBroadway(s) && (s.criticScore?.score ?? 0) >= 70 },
+];
+
+function getCurrentMonthYear() {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const now = new Date();
+  return `${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+function getCurrentSeason() {
+  const now = new Date();
+  const year = now.getFullYear();
+  if (now.getMonth() >= 8) return `${year}-${year + 1}`;
+  return `${year - 1}-${year}`;
+}
+
+function getShowsForGuide(guideDef, shows, consensus, year) {
+  let filtered = shows.filter(guideDef.filter);
+
+  if (year) {
+    filtered = filtered.filter(s => new Date(s.openingDate).getFullYear() === year);
+    // For year pages, include all statuses (not just open)
+    if (year < new Date().getFullYear()) {
+      const baseFilter = guideDef.filter;
+      filtered = shows.filter(s => {
+        const openDate = new Date(s.openingDate);
+        return openDate.getFullYear() === year && (s.criticScore?.score ?? 0) > 0;
+      });
+    }
+  }
+
+  filtered.sort((a, b) => (b.criticScore?.score ?? 0) - (a.criticScore?.score ?? 0));
+
+  return filtered.slice(0, 10).map(s => ({
+    title: s.title,
+    score: s.criticScore?.score ? Math.round(s.criticScore.score) : null,
+    reviewCount: s.criticScore?.reviewCount || 0,
+    type: s.type,
+    venue: s.venue,
+    consensus: consensus.shows?.[s.id]?.text || null,
+  }));
+}
+
+async function callClaudeWithRetry(prompt) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-5-20250929',
+          max_tokens: 500,
+          temperature: 0.7,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(`API ${res.status}: ${err.slice(0, 200)}`);
+      }
+
+      const data = await res.json();
+      return data.content[0].text.trim();
+    } catch (err) {
+      console.error(`  Attempt ${attempt}/${MAX_RETRIES} failed: ${err.message}`);
+      if (attempt === MAX_RETRIES) throw err;
+      const delay = Math.pow(2, attempt) * 1000; // 2s, 4s, 8s
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
+}
+
+function validateEditorialEntry(entry) {
+  if (typeof entry.intro !== 'string' || entry.intro.length < 50) return false;
+  if (typeof entry.lastUpdated !== 'string') return false;
+  if (typeof entry.showCount !== 'number') return false;
+  // No nested objects allowed
+  for (const val of Object.values(entry)) {
+    if (val !== null && typeof val === 'object') return false;
+  }
+  return true;
+}
+
+async function generateEditorial(guideDef, shows, monthYear, year) {
+  const showSummaries = shows
+    .map((s, i) => {
+      const consensus = s.consensus ? ` — ${s.consensus.slice(0, 120)}` : '';
+      return `${i + 1}. ${s.title} (${s.score ?? 'N/A'}/100, ${s.reviewCount} reviews)${consensus}`;
+    })
+    .join('\n');
+
+  const avgScore = shows.length > 0
+    ? Math.round(shows.reduce((sum, s) => sum + (s.score ?? 0), 0) / shows.length)
+    : 0;
+
+  const yearContext = year ? ` (specifically shows that opened in ${year})` : '';
+
+  const prompt = `You are writing the editorial introduction for a Broadway guide page titled "${guideDef.title}" for ${monthYear}${yearContext}.
+
+TOP SHOWS (ranked by critic score):
+${showSummaries}
+
+CONTEXT:
+- Average critic score: ${avgScore}/100
+- Current: ${monthYear}
+
+Write a 150-300 word editorial introduction that:
+- Opens with the current time context
+- Highlights 2-3 standout shows by name
+- Is objective and informative (not promotional)
+- Uses present tense
+- Ends with a forward-looking or actionable sentence
+- NEVER mention a specific number of shows (e.g., "these 10 shows" or "the 21 productions"). The show count changes frequently and will become stale. Use phrases like "the top-rated shows" or "the highest-rated musicals" instead.
+
+Write only the editorial text. No markdown headings. Maximum 300 words.`;
+
+  return callClaudeWithRetry(prompt);
+}
+
+async function main() {
+  console.log('Generating guide page editorials...\n');
+
+  const showsData = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8'));
+  const shows = showsData.shows;
+
+  // Load reviews to get scores (shows.json may not have them)
+  let reviewsData = { reviews: [] };
+  try { reviewsData = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8')); } catch {}
+
+  let consensus = { shows: {} };
+  try { consensus = JSON.parse(fs.readFileSync(CONSENSUS_FILE, 'utf-8')); } catch {}
+
+  // Merge review scores into shows
+  const reviewsByShow = {};
+  for (const r of reviewsData.reviews) {
+    if (!reviewsByShow[r.showId]) reviewsByShow[r.showId] = [];
+    reviewsByShow[r.showId].push(r);
+  }
+  for (const show of shows) {
+    const showReviews = reviewsByShow[show.id] || [];
+    if (showReviews.length > 0 && !show.criticScore) {
+      const canonicalScore = getCriticScore(show.id);
+      if (canonicalScore != null) {
+        const scoredReviewCount = showReviews.filter(r => r.assignedScore).length;
+        show.criticScore = {
+          score: canonicalScore,
+          reviewCount: scoredReviewCount,
+        };
+      }
+      // No canonical score yet (show not in public/data/shows/ or below the
+      // site's own review-count threshold) — leave criticScore unset rather
+      // than fabricate one from a raw mean. Every ranking filter below
+      // already treats `criticScore?.score ?? 0` as "not ranked", so this
+      // show is correctly excluded instead of ranked off a number the site
+      // doesn't even display.
+    }
+  }
+
+  // Load existing editorials (preserve on partial failure)
+  let editorials = { _meta: {}, guides: {} };
+  try {
+    if (fs.existsSync(OUTPUT_FILE)) {
+      editorials = JSON.parse(fs.readFileSync(OUTPUT_FILE, 'utf-8'));
+    }
+  } catch {}
+
+  const monthYear = getCurrentMonthYear();
+  const BATCH_SIZE = 5;
+  const BATCH_DELAY_MS = 2000; // 2s between batches to stay well within rate limits
+
+  // Collect all work items (base guides + year variants)
+  const workItems = [];
+
+  for (const def of GUIDE_DEFS) {
+    const guideShows = getShowsForGuide(def, shows, consensus, null);
+    if (guideShows.length === 0) {
+      console.log(`${def.slug}: No matching shows — clearing stale editorial`);
+      delete editorials.guides[def.slug];
+      continue;
+    }
+    workItems.push({ slug: def.slug, def, year: null, guideShows });
+
+    if (def.yearPages) {
+      for (const year of def.yearPages) {
+        const yearShows = getShowsForGuide(def, shows, consensus, year);
+        if (yearShows.length === 0) continue;
+        workItems.push({ slug: `${def.slug}-${year}`, def, year, guideShows: yearShows });
+      }
+    }
+  }
+
+  console.log(`\n${workItems.length} editorials to generate (batch size: ${BATCH_SIZE})\n`);
+
+  // Process in batches — atomic: all must succeed before writing
+  const results = new Map(); // slug → entry
+  let errors = 0;
+
+  for (let i = 0; i < workItems.length; i += BATCH_SIZE) {
+    const batch = workItems.slice(i, i + BATCH_SIZE);
+    const batchNum = Math.floor(i / BATCH_SIZE) + 1;
+    const totalBatches = Math.ceil(workItems.length / BATCH_SIZE);
+    console.log(`Batch ${batchNum}/${totalBatches}: ${batch.map(w => w.slug).join(', ')}`);
+
+    const batchResults = await Promise.all(
+      batch.map(async ({ slug, def, year, guideShows }) => {
+        try {
+          const intro = await generateEditorial(def, guideShows, monthYear, year);
+          const entry = {
+            intro,
+            ...(year ? { year } : { monthYear }),
+            lastUpdated: new Date().toISOString(),
+            showCount: guideShows.length,
+          };
+
+          if (validateEditorialEntry(entry)) {
+            console.log(`  ✓ ${slug}`);
+            return { slug, entry, ok: true };
+          } else {
+            console.error(`  ✗ ${slug}: INVALID entry`);
+            return { slug, ok: false };
+          }
+        } catch (err) {
+          console.error(`  ✗ ${slug}: ${err.message}`);
+          return { slug, ok: false };
+        }
+      })
+    );
+
+    for (const r of batchResults) {
+      if (r.ok) {
+        results.set(r.slug, r.entry);
+      } else {
+        errors++;
+      }
+    }
+
+    // Delay between batches (skip after last batch)
+    if (i + BATCH_SIZE < workItems.length) {
+      await new Promise(r => setTimeout(r, BATCH_DELAY_MS));
+    }
+  }
+
+  // Atomic write guard: only overwrite file if ALL editorials succeeded
+  if (errors > 0) {
+    console.error(`\n${errors} editorial(s) failed. Preserving existing file — no partial writes.`);
+    process.exit(1);
+  }
+
+  // Apply all results to editorials object
+  for (const [slug, entry] of results) {
+    editorials.guides[slug] = entry;
+  }
+
+  // Update metadata
+  editorials._meta = {
+    lastGenerated: new Date().toISOString(),
+    updatePolicy: 'Weekly (Monday 3 AM UTC)',
+  };
+
+  // Save with size check — write to temp file first, then atomic rename
+  const output = JSON.stringify(editorials, null, 2);
+  if (Buffer.byteLength(output) > MAX_FILE_SIZE) {
+    console.error(`\nFATAL: Output file exceeds ${MAX_FILE_SIZE / 1024}KB limit (${Buffer.byteLength(output)} bytes). Not saving.`);
+    process.exit(1);
+  }
+
+  const tmpFile = OUTPUT_FILE + '.tmp';
+  fs.writeFileSync(tmpFile, output);
+  fs.renameSync(tmpFile, OUTPUT_FILE);
+
+  console.log(`\nDone! Generated: ${results.size}, Errors: ${errors}`);
+  console.log(`Saved to: data/guide-editorials.json (${Buffer.byteLength(output)} bytes)`);
+}
+
+main().catch(err => {
+  console.error('Fatal error:', err);
+  process.exit(1);
+});

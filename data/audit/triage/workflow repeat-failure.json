@@ -1,0 +1,20 @@
+{
+  "system": "workflow repeat-failure",
+  "status": "warn",
+  "lastChecked": "2026-10-05T11:14:04.824Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "monitoring",
+  "details": [
+    {
+      "name": "Workflow repeat-failure: Rebuild Reviews Data",
+      "status": "warn",
+      "message": "Rebuild Reviews Data failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Land",
+      "status": "warn",
+      "message": "Land failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    }
+  ]
+}

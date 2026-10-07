@@ -1,0 +1,411 @@
+name: Opening Night Checklist
+
+on:
+  schedule:
+    # Fires hourly at :17 — evaluates checklist + SLA for shows opening within ±2 days
+    - cron: '17 * * * *'
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Specific show ID to check (optional — defaults to all shows near opening)'
+        required: false
+        type: string
+      dry_run:
+        description: 'Dry run — evaluate SLA but skip Discord/email dispatch'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  # actions: write — the checklist now dispatches the workflows that fix what
+  # it finds (task #389: update-critic-consensus.yml for a missing Critics
+  # Take, recover-explicit-ratings.yml for unparsed star ratings) instead of
+  # printing the command for the owner to run by hand. Same mechanism
+  # recover-explicit-ratings.yml already uses to dispatch rebuild-reviews.yml.
+  actions: write
+
+# BRO-2670: moved from a job-level per-run-id group (`opening-night-checklist-
+# ${{ github.run_id }}`) to a fixed, WORKFLOW-level group. The old group was a
+# documented, deliberate no-op — "does NOT serialize" — so overlapping
+# invocations (hourly cron vs. workflow_dispatch, or a stuck run) could race
+# each other into the "Commit opening night state" step below. A real
+# serializing group is a hard prerequisite for that step's apiFallbackSafe
+# registry entries (scripts/lib/core-data-merge-registry.js's header comment:
+# the ONE workflow that writes an apiFallbackSafe file must declare "a
+# concurrency group that serializes overlapping runs of ITSELF" — without it,
+# push-with-retry.sh's fail-closed "ours wins outright" compare-and-swap could
+# let a stale concurrent run of this SAME workflow clobber a fresher one with
+# no error). Same shape as data-health-check.yml (group: data-health-check)
+# and opening-night-broadcast.yml (group: broadcast-send); also required
+# because scripts/lib/api-fallback-writer-drift.js's extractConcurrencyGroup()
+# — the tool that independently re-verifies apiFallbackSafe claims — only
+# recognizes a WORKFLOW-level `^concurrency:` block, not a job-level one.
+#
+# TRADEOFF, accepted deliberately (same as those two precedents): with
+# cancel-in-progress:false, TWO overlapping invocations queue safely, but a
+# THIRD (e.g. workflow_dispatch firing while a cron run is in-progress and
+# another is already queued) gets its queued predecessor CANCELLED at
+# GitHub's queue-depth-1 limit — a full missed hourly check, worse than
+# today's per-push data loss for that one cycle. Given this job's 10-minute
+# timeout and hourly cadence, 3-deep overlap should be rare.
+#
+# BONUS (not the primary motivation): this also closes the SCOPE CORRECTION
+# gap task #389 previously left open on purpose — an overlapping cron +
+# workflow_dispatch run racing into data/audit/remediation-log.jsonl's
+# cooldown ledger and double-dispatching the same remediation. Real
+# serialization (queue, not cancel) removes that race as a side effect.
+#
+# ROLLBACK IS COUPLED (Codex adversarial review, BRO-2670; extended BRO-3071
+# 2026-09-14 when audit/remediation-log.jsonl became the 3rd entry riding
+# this same group): this group and the 3 apiFallbackSafe entries it licenses
+# in scripts/lib/core-data-merge-registry.js (audit/opening-night-
+# history.json, audit/opening-night-sla-state.json, audit/remediation-
+# log.jsonl) must be rolled back TOGETHER, not independently. Reverting
+# only this concurrency change while leaving those registry entries active
+# would let overlapping runs race into the Git Data API fallback's
+# fail-closed "ours wins outright" compare-and-swap with no serialization —
+# the exact hazard concurrencyGroup exists to prevent. Reverting only the
+# registry entries while leaving this group in place is safe on its own
+# (just reintroduces the slow local push path for those 3 files) but
+# forfeits the fix. tests/unit/opening-night-checklist-push.test.mjs
+# cross-checks the group here against all three entries' concurrencyGroup
+# value, so a rollback that touches only one side fails that test loudly.
+concurrency:
+  group: opening-night-checklist
+  cancel-in-progress: false
+
+jobs:
+  checklist:
+    runs-on: ubuntu-latest
+    # BRO-369: raised from 10 (2026-09-08) to fix 3 real conclusion=failure
+    # runs in 24h (33925219166, 33934756338, 33992585696), all the same
+    # shape: the "Commit opening night state" step's local push exhausted
+    # the shared 240s PUSH_DEADLINE_SEC default after ~2 real
+    # fetch-rebase-merge cycles, then the Git Data API fallback ALSO timed
+    # out on both of its auto-scaled attempts (90s cap each).
+    #
+    # Codex adversarial review (same session) flagged that PUSH_DEADLINE_SEC
+    # alone doesn't bound a step's total wall time — the Git Data API
+    # fallback's own retries run OUTSIDE that budget (push-with-retry.sh's
+    # own comment above its push-via-git-api.sh call) — so an estimate built
+    # only from PUSH_DEADLINE_SEC + assumed fallback cost isn't a real
+    # ceiling. Both commit steps below now wrap their push-with-retry.sh
+    # call in an explicit `timeout -k 10 N` (the same hang-guard pattern
+    # push-with-retry.sh's own _timeout() uses internally), which IS a real,
+    # OS-enforced ceiling regardless of how the script's internal budget
+    # math composes: 480s for the apiFallbackSafe state commit (the ledger
+    # that must not be lost — see that step's own comment), 180s for the
+    # best-effort/recoverable telemetry commit.
+    #
+    # Worst case is now provable, not estimated: ~5min baseline (checkouts +
+    # npm ci + checklist run + latency + SLA dispatch, measured from these
+    # same 3 failing runs) + 480s (8min) + 180s (3min) = ~16min. 20min gives
+    # real margin over that without the earlier estimate's unverified
+    # padding. A genuine worst case now exits each push step cleanly
+    # (failure + retry next hour) well inside the job timeout, instead of
+    # being hard-killed by it — a job-timeout kill reports
+    # conclusion=cancelled, which repeatFailureResults() in
+    # scripts/health-check.js does NOT count, would starve the if:always()
+    # telemetry/notify-failure steps of time, and is the failure mode this
+    # fix must not silently trade into. 20min is negligible against this
+    # workflow's 3h CRITICAL_CRONS staleness band in check-cron-health.yml,
+    # and keeps this workflow's typical (uncontended) runtime — and thus its
+    # exposure to the documented 3-deep concurrency-queue cancellation
+    # tradeoff above — close to what it was before this fix: these are hard
+    # ceilings on the RARE contended case, not the normal-case runtime.
+    #
+    # Rollback: revert this commit as a whole, including
+    # tests/unit/opening-night-checklist-failure.test.mjs — the test pins
+    # this exact operational contract (deadline/retries/timeout values) on
+    # purpose, so it and the workflow change are meant to move together.
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-234: 8 checks in scripts/lib/opening-night-checks/ read
+      # context.reviewTextsRoot (data/review-texts/), and without this step
+      # the directory never existed in this job's checkout. Most of them
+      # (fs.existsSync guard) treat a missing directory as a silent PASS —
+      # blind in CI, always green regardless of actual review-text state.
+      # Two (bww-rr-count-mismatch, dtli-count-mismatch) go the other way:
+      # dirExists gates findExistingReviewFile(), so with no directory every
+      # aggregator-listed review reads as "missing" and gets queued for stub
+      # remediation — a false-positive flood, not a silent pass.
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # W2.1 (task #1073): this used to be raw actions/setup-node@v5 with no
+      # install step at all — node_modules never existed on this job's runner,
+      # so any script this workflow runs that transitively requires a
+      # third-party package (e.g. opening-night-checklist.js's check plugins
+      # requiring 'cheerio' via gather-reviews.js/page-validator.js) crashed
+      # with MODULE_NOT_FOUND on every single run. That crash is the actual
+      # root cause of opening-night-history.json going silent from 2026-04-26
+      # onward — see the diagnosis comment above appendToHistory() in
+      # scripts/opening-night-checklist.js. Switching to the shared composite
+      # (used by every other workflow in this repo) runs `npm ci` so the
+      # require chain actually resolves.
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Run opening night checklist
+        id: checklist
+        # W2.1: continue-on-error + `|| true` used to swallow EVERY exit code
+        # this script could produce — including genuine crashes — as "expected,
+        # a show has errors". Explicit rc handling below distinguishes the two
+        # DESIGNED exit codes (0 = clean, 1 = shows have gaps — both fine, both
+        # produce a real JSON payload downstream steps consume) from anything
+        # else (crash, or exit 3 = the history-ledger append itself failed —
+        # see opening-night-checklist.js), which now fails this step loudly.
+        env:
+          # Arms the self-declared remediation layer (task #389). Without a
+          # token, dispatchWorkflow() returns {ok:false,error:'no-token'} and
+          # every remediation lands in the ledger as 'failed' — detection still
+          # runs, nothing crashes, but nothing self-heals either.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Kill switch. Set to 'true' (repo variable or here) to make the
+          # checklist detect-and-log only, dispatching nothing.
+          OPENING_NIGHT_REMEDIATION_DISABLED: ${{ vars.OPENING_NIGHT_REMEDIATION_DISABLED || 'false' }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          # BRO-67: bww-rr-count-mismatch / dtli-count-mismatch checks now run
+          # the same LLM partial-extraction fallback as gather-reviews.js
+          # (llmFallbackExtractIfNeeded). Without this, callClaude rejects
+          # immediately with "ANTHROPIC_API_KEY not set" and the fallback is a
+          # silent no-op — the parity checks stay blind to the exact
+          # format-change misses they exist to catch.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          SHOW_ARG=""
+          if [ -n "${{ inputs.show_id }}" ]; then
+            SHOW_ARG="--show=${{ inputs.show_id }}"
+          fi
+          # --out writes the JSON to its own file: BOTH stdout (scraper '[SB
+          # Call]' telemetry from the remediation step) and stderr used to
+          # merge into checklist.json, making it unparseable — which silently
+          # un-scoped the SLA dispatcher on every real run since it shipped.
+          rc=0
+          node scripts/opening-night-checklist.js --json --out=/tmp/checklist.json $SHOW_ARG || rc=$?
+          if [ -s /tmp/checklist.json ]; then
+            echo "Checklist output written ($(wc -c < /tmp/checklist.json) bytes)"
+          else
+            echo '{"generatedAt":"'"$(date -u +%Y-%m-%dT%H:%M:%SZ)"'","shows":[]}' > /tmp/checklist.json
+            echo "Warning: checklist produced no output — wrote empty JSON"
+          fi
+          echo "opening-night-checklist.js exit code: $rc"
+          if [ "$rc" -eq 0 ] || [ "$rc" -eq 1 ]; then
+            echo "Exit $rc is within the designed range (0=clean, 1=shows have gaps) — continuing."
+          else
+            echo "::error::opening-night-checklist.js exited $rc — NOT the designed 0/1 path (likely a crash, or exit 3 = history-ledger append failure). See the log above for the real error. Failing this step instead of silently continuing."
+            exit 1
+          fi
+
+      - name: Run latency report
+        # lint-allow-swallow: out of scope for task #1073's W2.1 fix — this
+        # step is secondary/best-effort (per-stage SLA latency reporting, not
+        # the checklist result or the history ledger appendToHistory() writes
+        # W2.1 was scoped to). "Dispatch SLA alerts" already tolerates a
+        # missing $LATENCY_OUT (empty string interpolates fine into the CLI
+        # arg), and "Commit audit data" runs unconditionally either way. A
+        # dedicated fix for THIS step's swallowed failures is real follow-up
+        # work, not bundled into this incident's fix.
+        continue-on-error: true
+        run: |
+          LATENCY_OUT="data/audit/opening-night-latency-$(date -u +%F).json"
+          node scripts/opening-night-latency-report.js \
+            --log data/audit/stage-latency.jsonl \
+            --output "$LATENCY_OUT" 2>&1 || true
+          echo "LATENCY_OUT=$LATENCY_OUT" >> $GITHUB_ENV
+
+      - name: Dispatch SLA alerts
+        # W2.1 (task #1073): this owner-paging step was fully swallowed by
+        # continue-on-error: true — a real failure here (Discord/email dispatch
+        # broken) produced a green workflow with no alert ever sent. Letting it
+        # fail the job now means "Notify on failure" below actually fires, and
+        # "Commit audit data" (if: always()) still persists whatever ledger
+        # state exists so a crash here doesn't also strand the audit trail.
+        env:
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          STAGE_LATENCY_LOG: data/audit/stage-latency.jsonl
+          SLA_DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          node scripts/opening-night-sla-dispatch.js /tmp/checklist.json "$LATENCY_OUT"
+
+      # BRO-2670: split from a single 7-file "Commit audit data" step. That
+      # bundled commit mixed data/audit/opening-night-history.json (single
+      # writer: this workflow) with data/audit/alert-digest-queue.json (8+
+      # writers, no merge function registered — see core-data-merge-
+      # registry.js's "NOT added, deliberately" note) and other multi-writer
+      # files. push-with-retry.sh's Git Data API fallback disqualifies a
+      # WHOLE commit if ANY changed data/audit/ path is neither MANAGED nor
+      # apiFallbackSafe — so this workflow's actual single-writer state (the
+      # ledger causing "resets hourly, re-dispatches forever" when lost) never
+      # got a shot at the fallback, and was stuck on the slow local
+      # fetch+rebase+push race, which is what was failing 6 of 8 runs (run
+      # 33434353698 et al). Isolating it into its own commit, FIRST, lets
+      # push-with-retry.sh's fallback engage for THIS commit even when the
+      # bulk telemetry commit below is still contending.
+      - name: Commit opening night state (apiFallbackSafe)
+        # W2.1 (task #1073): must run even when an earlier step now fails hard
+        # — see the sibling step's comment below for the full if:always()
+        # rationale (unchanged from the original single-step version).
+        if: always()
+        env:
+          # BRO-369: this step had NO override before — it ran on
+          # push-with-retry.sh's shared 240s default, which task #458's own
+          # sizing comment says fits only ~1.3 real fetch-rebase-merge
+          # cycles under this repo's high main-branch churn. All 3 real
+          # failures in 24h (33925219166, 33934756338, 33992585696) hit
+          # exactly that: local push bailed after ~2 attempts, then the Git
+          # Data API fallback ALSO timed out on both of its auto-scaled 2
+          # attempts. 360s (vs 240s) buys a meaningfully better shot at
+          # succeeding locally without ever reaching that flaky fallback
+          # (which is real git push/fetch plumbing against the same remote,
+          # not an independent transport — a genuine remote-side outage
+          # defeats both paths, this only helps with ordinary contention).
+          # Do NOT raise the shared push-with-retry.sh default instead — its
+          # own comment explicitly says not to, since ~15 other callers with
+          # 5-10min job timeouts rely on the tight default to fail fast.
+          PUSH_DEADLINE_SEC: '360'
+          # Explicit bound (not left to push-with-retry.sh's auto-scaling)
+          # so the worst case here is calculable rather than assumed —
+          # same reasoning opening-night-completeness-check.yml's "Commit
+          # state file" step used for its own PUSH_API_MAX_RETRIES=1, sized
+          # up to 2 here because this ledger is NOT self-healing on the next
+          # tick the way that workflow's snapshot is (losing it re-dispatches
+          # remediation forever per the appendToHistory() comment below).
+          PUSH_API_MAX_RETRIES: '2'
+        run: |
+          # opening-night-history.json is the attempt-history ledger this
+          # incident is actually about: if it is not committed, every hourly
+          # run starts with an empty history and re-dispatches the same
+          # workflow forever (see scripts/opening-night-checklist.js's
+          # appendToHistory() comment). opening-night-sla-state.json is
+          # routeAlert()'s per-condition cooldown state — without it the SLA
+          # alert router re-opens + re-emails every run. remediation-log.jsonl
+          # is the cooldown store for self-declared remediations (task #389) —
+          # decideRequeueAction reads prior attempts out of it, same
+          # forever-redispatch failure mode as the history ledger if lost.
+          # ALL THREE are registered apiFallbackSafe:true in scripts/lib/
+          # core-data-merge-registry.js (concurrencyGroup: opening-night-
+          # checklist — see this workflow's own concurrency: block above),
+          # verified sole writer via grep across every .github/workflows/*.yml
+          # for the literal filename (opening-night-orchestrator.yml also
+          # invokes the same underlying script but never stages/commits/
+          # pushes any of the three paths). remediation-log.jsonl moved here
+          # from the sibling "Commit shared audit telemetry" step (BRO-3071,
+          # 2026-09-14) — BRO-2670 left it there only because it was "not yet
+          # registered" at the time (see that step's own comment), not
+          # because it is genuinely multi-writer.
+          git add data/audit/opening-night-history.json 2>/dev/null || true
+          git add data/audit/opening-night-sla-state.json 2>/dev/null || true
+          git add data/audit/remediation-log.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No opening night state changes to commit"
+          else
+            git commit -m "audit: opening-night checklist state [skip ci]"
+            # BRO-369 (Codex adversarial review finding): PUSH_DEADLINE_SEC
+            # above only bounds push-with-retry.sh's LOCAL retry loop — the
+            # Git Data API fallback's own retries run OUTSIDE that budget
+            # (see push-with-retry.sh's comment above its push-via-git-api.sh
+            # call), so the two env vars alone don't give a provable ceiling
+            # on this step's total wall time. Wrap the whole call in the
+            # repo's own hang-guard pattern (matches _timeout()'s `-k 10`
+            # convention inside push-with-retry.sh itself, and the workflow-
+            # authoring guidance in .github/workflows/CLAUDE.md for bounding
+            # a step so a hang produces a real failure — reachable by
+            # if:failure() below — instead of a job-timeout cancellation):
+            # SIGTERM at 480s, SIGKILL 10s later if the process (or a child
+            # git/curl call) ignores it. push-with-retry.sh's EXIT trap
+            # (push_mutex_release) still runs on SIGTERM, so a kill here
+            # doesn't strand next run's mutex.
+            timeout -k 10 480 bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Commit shared audit telemetry
+        # W2.1 (task #1073): must run even when an earlier step now fails hard
+        # (checklist crash, or SLA dispatch no longer has continue-on-error) —
+        # otherwise a mid-run failure strands whatever ledger/history state was
+        # already written on the ephemeral runner instead of persisting it
+        # (this repo's §8 batch-script checkpoint rule: if: always() on
+        # commit/push). git identity is already configured by the
+        # ./.github/actions/setup-node step above (configure-git: true).
+        if: always()
+        env:
+          # BRO-369 (Codex adversarial review finding): before this fix, this
+          # step ran on push-with-retry.sh's unbounded-relative-to-the-job
+          # defaults (240s local + auto-scaled fallback up to 6 attempts) —
+          # invisible in the 3 real failures only because it happened to find
+          # nothing staged every time (the first step's own rebase/merge had
+          # already pulled in anything pending). That's a latent risk, not a
+          # guarantee: under the SAME high-churn window that broke the first
+          # step, this one could too, and stacked after that step's own new
+          # 480s worst case it could blow well past the job's timeout-minutes.
+          # This data is recoverable (next hour's run re-commits current
+          # state; unlike the sibling step's ledger, losing one run's update
+          # here is noisy — a re-opened alert, a skipped cooldown check — not
+          # a forever-loop), so bias toward failing fast rather than
+          # burning budget chasing a push that self-heals next tick, the same
+          # tradeoff opening-night-completeness-check.yml's "Commit state
+          # file" step made for its own low-stakes snapshot.
+          PUSH_DEADLINE_SEC: '120'
+          PUSH_API_MAX_RETRIES: '1'
+        run: |
+          # alert-ledger + digest-queue MUST be committed here or the SLA
+          # alert router incident state never persists across the hourly runs
+          # — routeAlert would re-open + re-email every run, reintroducing the
+          # storm this migration fixes (#406).
+          # opening-night-latency-*.json is dated (opening-night-latency-
+          # YYYY-MM-DD.json) — NOT apiFallbackSafe (the registry's matcher is
+          # exact-suffix only, no glob support) so it stays here rather than
+          # in the isolated commit above; it's best-effort telemetry (the
+          # "Run latency report" step above is continue-on-error), not gating
+          # state, so riding the slower path with the other multi-writer
+          # files here is an accepted, deliberate choice (BRO-2670).
+          # remediation-log.jsonl MOVED to the sibling "Commit opening night
+          # state (apiFallbackSafe)" step above (BRO-3071, 2026-09-14) — it
+          # was single-writer all along, just not yet registered when BRO-2670
+          # split this commit.
+          # The two files left here (alert-ledger.json, alert-digest-
+          # queue.json) are genuinely multi-writer — no apiFallbackSafe path
+          # available for them, same as before this split.
+          git add data/audit/opening-night-latency-*.json 2>/dev/null || true
+          git add data/audit/stage-latency.jsonl 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()
+          # rewrites this TRACKED file on every dispatch attempt; unstaged, it
+          # makes a rebase refuse pre-flight and forces the clobber-prone merge
+          # path in push-with-retry.sh. Also multi-writer, same as the two above.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No shared audit telemetry changes to commit"
+          else
+            git commit -m "audit: opening-night checklist telemetry [skip ci]"
+            # See the sibling apiFallbackSafe step above for why an outer
+            # hard timeout (not just PUSH_DEADLINE_SEC) is needed to get a
+            # provable ceiling on this step's wall time.
+            timeout -k 10 180 bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Checklist Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

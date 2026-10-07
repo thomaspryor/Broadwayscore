@@ -1,0 +1,1813 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-23T20:47:31.139Z",
+    "source": "goldderby-rest-api",
+    "endpoint": "/wp-json/gameplay/v1/latest-odds-v3/",
+    "cyclesAnalyzed": [
+      "2012-13",
+      "2014-15",
+      "2015-16",
+      "2016-17",
+      "2017-18",
+      "2018-19",
+      "2019-20",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      "2024-25"
+    ],
+    "discrepancyCount": 2
+  },
+  "summary": {
+    "Best Play": {
+      "cycles": 11,
+      "hitRate": 0.8181818181818182,
+      "hitCount": 9,
+      "biggestUpset": {
+        "cycle": "2024-25",
+        "winner": "Purpose",
+        "pct": 10.4,
+        "favorite": "Oh, Mary!",
+        "favoritePct": 83.2
+      },
+      "biggestBlowout": {
+        "cycle": "2017-18",
+        "winner": "Harry Potter and the Cursed Child",
+        "pct": 96.3
+      },
+      "calibration": {
+        "<50%": {
+          "winners": 0,
+          "total": 0
+        },
+        "50-75%": {
+          "winners": 1,
+          "total": 1
+        },
+        "75-90%": {
+          "winners": 3,
+          "total": 5
+        },
+        "≥90%": {
+          "winners": 5,
+          "total": 5
+        }
+      }
+    },
+    "Best Musical": {
+      "cycles": 11,
+      "hitRate": 0.8181818181818182,
+      "hitCount": 9,
+      "biggestUpset": {
+        "cycle": "2023-24",
+        "winner": "The Outsiders",
+        "pct": 21.7,
+        "favorite": "Hell's Kitchen ",
+        "favoritePct": 36.6
+      },
+      "biggestBlowout": {
+        "cycle": "2015-16",
+        "winner": "Hamilton",
+        "pct": 98.7
+      },
+      "calibration": {
+        "<50%": {
+          "winners": 0,
+          "total": 1
+        },
+        "50-75%": {
+          "winners": 1,
+          "total": 2
+        },
+        "75-90%": {
+          "winners": 6,
+          "total": 6
+        },
+        "≥90%": {
+          "winners": 2,
+          "total": 2
+        }
+      }
+    },
+    "Best Revival of a Play": {
+      "cycles": 10,
+      "hitRate": 0.8,
+      "hitCount": 8,
+      "biggestUpset": {
+        "cycle": "2018-19",
+        "winner": "The Boys in the Band",
+        "pct": 21.2,
+        "favorite": "All My Sons",
+        "favoritePct": 44.4
+      },
+      "biggestBlowout": {
+        "cycle": "2017-18",
+        "winner": "Angels in America",
+        "pct": 95.2
+      },
+      "calibration": {
+        "<50%": {
+          "winners": 1,
+          "total": 2
+        },
+        "50-75%": {
+          "winners": 4,
+          "total": 5
+        },
+        "75-90%": {
+          "winners": 2,
+          "total": 2
+        },
+        "≥90%": {
+          "winners": 1,
+          "total": 1
+        }
+      }
+    },
+    "Best Revival of a Musical": {
+      "cycles": 9,
+      "hitRate": 0.8888888888888888,
+      "hitCount": 8,
+      "biggestUpset": {
+        "cycle": "2017-18",
+        "winner": "Once on This Island",
+        "pct": 11.7,
+        "favorite": "My Fair Lady",
+        "favoritePct": 79.6
+      },
+      "biggestBlowout": {
+        "cycle": "2023-24",
+        "winner": "Merrily We Roll Along",
+        "pct": 93.8
+      },
+      "calibration": {
+        "<50%": {
+          "winners": 0,
+          "total": 0
+        },
+        "50-75%": {
+          "winners": 2,
+          "total": 2
+        },
+        "75-90%": {
+          "winners": 2,
+          "total": 3
+        },
+        "≥90%": {
+          "winners": 4,
+          "total": 4
+        }
+      }
+    }
+  },
+  "perCategory": {
+    "Best Play": [
+      {
+        "cycle": "2012-13",
+        "ceremonyYear": 2013,
+        "leagueId": 1201883675,
+        "category": "Best Play",
+        "nominees": 4,
+        "favoriteTitle": "Vanya and Sonia and Masha and Spike",
+        "favoritePct": 87.2,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Vanya and Sonia and Masha and Spike",
+        "winnerPct": 87.2,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "vanya-and-sonia-and-masha-and-spike-2013",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Vanya and Sonia and Masha and Spike",
+            "pct": 87.2,
+            "isWinner": true
+          },
+          {
+            "title": "Lucky Guy",
+            "pct": 11.4,
+            "isWinner": false
+          },
+          {
+            "title": "The Assembled Parties",
+            "pct": 0.7,
+            "isWinner": false
+          },
+          {
+            "title": "The Testament of Mary",
+            "pct": 0.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2014-15",
+        "ceremonyYear": 2015,
+        "leagueId": 1201883816,
+        "category": "Best Play",
+        "nominees": 4,
+        "favoriteTitle": "Curious Incident of the Dog in the Night-Time",
+        "favoritePct": 92,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Curious Incident of the Dog in the Night-Time",
+        "winnerPct": 92,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Curious Incident of the Dog in the Night-Time",
+            "pct": 92,
+            "isWinner": true
+          },
+          {
+            "title": "Wolf Hall Parts 1 and 2",
+            "pct": 5.1,
+            "isWinner": false
+          },
+          {
+            "title": "Hand to God",
+            "pct": 2.5,
+            "isWinner": false
+          },
+          {
+            "title": "Disgraced",
+            "pct": 0.4,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2015-16",
+        "ceremonyYear": 2016,
+        "leagueId": 1201901668,
+        "category": "Best Play",
+        "nominees": 4,
+        "favoriteTitle": "The Humans",
+        "favoritePct": 84.7,
+        "favoriteIsWinner": true,
+        "winnerTitle": "The Humans",
+        "winnerPct": 84.7,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-humans-2016",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "The Humans",
+            "pct": 84.7,
+            "isWinner": true
+          },
+          {
+            "title": "Eclipsed",
+            "pct": 8.8,
+            "isWinner": false
+          },
+          {
+            "title": "King Charles III",
+            "pct": 3.3,
+            "isWinner": false
+          },
+          {
+            "title": "The Father",
+            "pct": 2.3,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2016-17",
+        "ceremonyYear": 2017,
+        "leagueId": 1202082621,
+        "category": "Best Play",
+        "nominees": 4,
+        "favoriteTitle": "Oslo",
+        "favoritePct": 73,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Oslo",
+        "winnerPct": 73,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "oslo-2017",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Oslo",
+            "pct": 73,
+            "isWinner": true
+          },
+          {
+            "title": "A Doll's House Part 2",
+            "pct": 19.3,
+            "isWinner": false
+          },
+          {
+            "title": "Sweat",
+            "pct": 6,
+            "isWinner": false
+          },
+          {
+            "title": "Indecent",
+            "pct": 1.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2017-18",
+        "ceremonyYear": 2018,
+        "leagueId": 1202538339,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "Harry Potter and the Cursed Child",
+        "favoritePct": 96.3,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Harry Potter and the Cursed Child",
+        "winnerPct": 96.3,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "harry-potter-2021",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Harry Potter and the Cursed Child",
+            "pct": 96.3,
+            "isWinner": true
+          },
+          {
+            "title": "The Children",
+            "pct": 2.5,
+            "isWinner": false
+          },
+          {
+            "title": "Farinelli and the King",
+            "pct": 0.8,
+            "isWinner": false
+          },
+          {
+            "title": "Junk",
+            "pct": 0.2,
+            "isWinner": false
+          },
+          {
+            "title": "Latin History for Morons",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2018-19",
+        "ceremonyYear": 2019,
+        "leagueId": 1202873958,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "The Ferryman",
+        "favoritePct": 85.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "The Ferryman",
+        "winnerPct": 85.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-ferryman-2018",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "The Ferryman",
+            "pct": 85.4,
+            "isWinner": true
+          },
+          {
+            "title": "What the Constitution Means to Me",
+            "pct": 10.7,
+            "isWinner": false
+          },
+          {
+            "title": "Choir Boy",
+            "pct": 2.2,
+            "isWinner": false
+          },
+          {
+            "title": "Ink",
+            "pct": 0.8,
+            "isWinner": false
+          },
+          {
+            "title": "Gary: A Sequel to Titus Andronicus",
+            "pct": 0.8,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2019-20",
+        "ceremonyYear": 2020,
+        "leagueId": 1203776444,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "Slave Play",
+        "favoritePct": 87.1,
+        "favoriteIsWinner": false,
+        "winnerTitle": "The Inheritance",
+        "winnerPct": 12.2,
+        "winnerRankOneIndexed": 2,
+        "expectedWinnerShowId": "the-inheritance-2019",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Slave Play",
+            "pct": 87.1,
+            "isWinner": false
+          },
+          {
+            "title": "The Inheritance",
+            "pct": 12.2,
+            "isWinner": true
+          },
+          {
+            "title": "The Sound Inside",
+            "pct": 0.4,
+            "isWinner": false
+          },
+          {
+            "title": "Sea Wall/A Life",
+            "pct": 0.4,
+            "isWinner": false
+          },
+          {
+            "title": "Grand Horizons",
+            "pct": 0,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2021-22",
+        "ceremonyYear": 2022,
+        "leagueId": 1204947034,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "The Lehman Trilogy",
+        "favoritePct": 94,
+        "favoriteIsWinner": true,
+        "winnerTitle": "The Lehman Trilogy",
+        "winnerPct": 94,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-lehman-trilogy-2021",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "The Lehman Trilogy",
+            "pct": 94,
+            "isWinner": true
+          },
+          {
+            "title": "Hangmen",
+            "pct": 3.7,
+            "isWinner": false
+          },
+          {
+            "title": "The Minutes",
+            "pct": 1.5,
+            "isWinner": false
+          },
+          {
+            "title": "Skeleton Crew",
+            "pct": 0.6,
+            "isWinner": false
+          },
+          {
+            "title": "Clyde's",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2022-23",
+        "ceremonyYear": 2023,
+        "leagueId": 1205418859,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "Leopoldstadt",
+        "favoritePct": 92.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Leopoldstadt",
+        "winnerPct": 92.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "leopoldstadt-2022",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Leopoldstadt",
+            "pct": 92.4,
+            "isWinner": true
+          },
+          {
+            "title": "Fat Ham",
+            "pct": 5.6,
+            "isWinner": false
+          },
+          {
+            "title": "Ain't No Mo'",
+            "pct": 1.2,
+            "isWinner": false
+          },
+          {
+            "title": "Cost of Living",
+            "pct": 0.5,
+            "isWinner": false
+          },
+          {
+            "title": "Between Riverside and Crazy",
+            "pct": 0.3,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2023-24",
+        "ceremonyYear": 2024,
+        "leagueId": 1205819228,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "Stereophonic",
+        "favoritePct": 95.5,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Stereophonic",
+        "winnerPct": 95.5,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "stereophonic-2024",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Stereophonic",
+            "pct": 95.5,
+            "isWinner": true
+          },
+          {
+            "title": "Mary Jane",
+            "pct": 1.7,
+            "isWinner": false
+          },
+          {
+            "title": "Mother Play",
+            "pct": 1.2,
+            "isWinner": false
+          },
+          {
+            "title": "Jaja's African Hair Braiding",
+            "pct": 1,
+            "isWinner": false
+          },
+          {
+            "title": "Prayer for the French Republic",
+            "pct": 0.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2024-25",
+        "ceremonyYear": 2025,
+        "leagueId": 1206218980,
+        "category": "Best Play",
+        "nominees": 5,
+        "favoriteTitle": "Oh, Mary!",
+        "favoritePct": 83.2,
+        "favoriteIsWinner": false,
+        "winnerTitle": "Purpose",
+        "winnerPct": 10.4,
+        "winnerRankOneIndexed": 2,
+        "expectedWinnerShowId": "purpose-2025",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Oh, Mary!",
+            "pct": 83.2,
+            "isWinner": false
+          },
+          {
+            "title": "Purpose",
+            "pct": 10.4,
+            "isWinner": true
+          },
+          {
+            "title": "John Proctor is the Villain",
+            "pct": 5.6,
+            "isWinner": false
+          },
+          {
+            "title": "The Hills of California",
+            "pct": 0.4,
+            "isWinner": false
+          },
+          {
+            "title": "English",
+            "pct": 0.3,
+            "isWinner": false
+          }
+        ]
+      }
+    ],
+    "Best Musical": [
+      {
+        "cycle": "2012-13",
+        "ceremonyYear": 2013,
+        "leagueId": 1201883675,
+        "category": "Best Musical",
+        "nominees": 4,
+        "favoriteTitle": "Matilda",
+        "favoritePct": 60.1,
+        "favoriteIsWinner": false,
+        "winnerTitle": "Kinky Boots",
+        "winnerPct": 39.2,
+        "winnerRankOneIndexed": 2,
+        "expectedWinnerShowId": "kinky-boots-2013",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Matilda",
+            "pct": 60.1,
+            "isWinner": false
+          },
+          {
+            "title": "Kinky Boots",
+            "pct": 39.2,
+            "isWinner": true
+          },
+          {
+            "title": "Bring It On",
+            "pct": 0.6,
+            "isWinner": false
+          },
+          {
+            "title": "A Christmas Story",
+            "pct": 0,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2014-15",
+        "ceremonyYear": 2015,
+        "leagueId": 1201883816,
+        "category": "Best Musical",
+        "nominees": 4,
+        "favoriteTitle": "Fun Home",
+        "favoritePct": 54.7,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Fun Home",
+        "winnerPct": 54.7,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "fun-home-2015",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Fun Home",
+            "pct": 54.7,
+            "isWinner": true
+          },
+          {
+            "title": "An American in Paris",
+            "pct": 41.6,
+            "isWinner": false
+          },
+          {
+            "title": "Something Rotten",
+            "pct": 2.9,
+            "isWinner": false
+          },
+          {
+            "title": "The Visit",
+            "pct": 0.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2015-16",
+        "ceremonyYear": 2016,
+        "leagueId": 1201901668,
+        "category": "Best Musical",
+        "nominees": 5,
+        "favoriteTitle": "Hamilton",
+        "favoritePct": 98.7,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Hamilton",
+        "winnerPct": 98.7,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "hamilton-2015",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Hamilton",
+            "pct": 98.7,
+            "isWinner": true
+          },
+          {
+            "title": "Waitress",
+            "pct": 0.4,
+            "isWinner": false
+          },
+          {
+            "title": "Shuffle Along",
+            "pct": 0.2,
+            "isWinner": false
+          },
+          {
+            "title": "Bright Star",
+            "pct": 0.2,
+            "isWinner": false
+          },
+          {
+            "title": "School of Rock",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2016-17",
+        "ceremonyYear": 2017,
+        "leagueId": 1202082621,
+        "category": "Best Musical",
+        "nominees": 4,
+        "favoriteTitle": "Dear Evan Hansen",
+        "favoritePct": 77.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Dear Evan Hansen",
+        "winnerPct": 77.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "dear-evan-hansen-2016",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Dear Evan Hansen",
+            "pct": 77.4,
+            "isWinner": true
+          },
+          {
+            "title": "Come From Away",
+            "pct": 12.5,
+            "isWinner": false
+          },
+          {
+            "title": "Natasha, Pierre and the Great Comet of 1812",
+            "pct": 8.5,
+            "isWinner": false
+          },
+          {
+            "title": "Groundhog Day",
+            "pct": 1.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2017-18",
+        "ceremonyYear": 2018,
+        "leagueId": 1202538339,
+        "category": "Best Musical",
+        "nominees": 4,
+        "favoriteTitle": "The Band's Visit",
+        "favoritePct": 82.5,
+        "favoriteIsWinner": true,
+        "winnerTitle": "The Band's Visit",
+        "winnerPct": 82.5,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-bands-visit-2017",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "The Band's Visit",
+            "pct": 82.5,
+            "isWinner": true
+          },
+          {
+            "title": "Mean Girls",
+            "pct": 10.2,
+            "isWinner": false
+          },
+          {
+            "title": "SpongeBob SquarePants",
+            "pct": 5.6,
+            "isWinner": false
+          },
+          {
+            "title": "Frozen",
+            "pct": 1.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2018-19",
+        "ceremonyYear": 2019,
+        "leagueId": 1202873958,
+        "category": "Best Musical",
+        "nominees": 5,
+        "favoriteTitle": "Hadestown",
+        "favoritePct": 88.3,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Hadestown",
+        "winnerPct": 88.3,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "hadestown-2019",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Hadestown",
+            "pct": 88.3,
+            "isWinner": true
+          },
+          {
+            "title": "The Prom",
+            "pct": 5.3,
+            "isWinner": false
+          },
+          {
+            "title": "Tootsie",
+            "pct": 4.3,
+            "isWinner": false
+          },
+          {
+            "title": "Ain't Too Proud",
+            "pct": 1.1,
+            "isWinner": false
+          },
+          {
+            "title": "Beetlejuice",
+            "pct": 1,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2019-20",
+        "ceremonyYear": 2020,
+        "leagueId": 1203776444,
+        "category": "Best Musical",
+        "nominees": 3,
+        "favoriteTitle": "Moulin Rouge! The Musical",
+        "favoritePct": 85.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Moulin Rouge! The Musical",
+        "winnerPct": 85.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "moulin-rouge-2019",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Moulin Rouge! The Musical",
+            "pct": 85.4,
+            "isWinner": true
+          },
+          {
+            "title": "Jagged Little Pill",
+            "pct": 13.5,
+            "isWinner": false
+          },
+          {
+            "title": "Tina: The Tina Turner Musical",
+            "pct": 1.1,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2021-22",
+        "ceremonyYear": 2022,
+        "leagueId": 1204947034,
+        "category": "Best Musical",
+        "nominees": 6,
+        "favoriteTitle": "A Strange Loop",
+        "favoritePct": 89.9,
+        "favoriteIsWinner": true,
+        "winnerTitle": "A Strange Loop",
+        "winnerPct": 89.9,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "a-strange-loop-2022",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "A Strange Loop",
+            "pct": 89.9,
+            "isWinner": true
+          },
+          {
+            "title": "SIX",
+            "pct": 7.6,
+            "isWinner": false
+          },
+          {
+            "title": "MJ the Musical",
+            "pct": 1.1,
+            "isWinner": false
+          },
+          {
+            "title": "Girl From the North Country",
+            "pct": 0.9,
+            "isWinner": false
+          },
+          {
+            "title": "Paradise Square",
+            "pct": 0.4,
+            "isWinner": false
+          },
+          {
+            "title": "Mr. Saturday Night",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2022-23",
+        "ceremonyYear": 2023,
+        "leagueId": 1205418859,
+        "category": "Best Musical",
+        "nominees": 5,
+        "favoriteTitle": "Kimberly Akimbo",
+        "favoritePct": 78.6,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Kimberly Akimbo",
+        "winnerPct": 78.6,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "kimberly-akimbo-2022",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Kimberly Akimbo",
+            "pct": 78.6,
+            "isWinner": true
+          },
+          {
+            "title": "Some Like it Hot",
+            "pct": 18,
+            "isWinner": false
+          },
+          {
+            "title": "Shucked",
+            "pct": 2.2,
+            "isWinner": false
+          },
+          {
+            "title": "New York, New York",
+            "pct": 0.7,
+            "isWinner": false
+          },
+          {
+            "title": "& Juliet",
+            "pct": 0.5,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2023-24",
+        "ceremonyYear": 2024,
+        "leagueId": 1205819228,
+        "category": "Best Musical",
+        "nominees": 5,
+        "favoriteTitle": "Hell's Kitchen ",
+        "favoritePct": 36.6,
+        "favoriteIsWinner": false,
+        "winnerTitle": "The Outsiders",
+        "winnerPct": 21.7,
+        "winnerRankOneIndexed": 3,
+        "expectedWinnerShowId": "the-outsiders-2024",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Hell's Kitchen ",
+            "pct": 36.6,
+            "isWinner": false
+          },
+          {
+            "title": "Suffs",
+            "pct": 35.1,
+            "isWinner": false
+          },
+          {
+            "title": "The Outsiders",
+            "pct": 21.7,
+            "isWinner": true
+          },
+          {
+            "title": "Illinoise",
+            "pct": 5.8,
+            "isWinner": false
+          },
+          {
+            "title": "Water for Elephants",
+            "pct": 0.8,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2024-25",
+        "ceremonyYear": 2025,
+        "leagueId": 1206218980,
+        "category": "Best Musical",
+        "nominees": 5,
+        "favoriteTitle": "Maybe Happy Ending",
+        "favoritePct": 90.2,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Maybe Happy Ending",
+        "winnerPct": 90.2,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "maybe-happy-ending-2024",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Maybe Happy Ending",
+            "pct": 90.2,
+            "isWinner": true
+          },
+          {
+            "title": "Death Becomes Her",
+            "pct": 7.3,
+            "isWinner": false
+          },
+          {
+            "title": "Buena Vista Social Club",
+            "pct": 1.4,
+            "isWinner": false
+          },
+          {
+            "title": "Operation Mincemeat",
+            "pct": 0.9,
+            "isWinner": false
+          },
+          {
+            "title": "Dead Outlaw",
+            "pct": 0.1,
+            "isWinner": false
+          }
+        ]
+      }
+    ],
+    "Best Revival of a Play": [
+      {
+        "cycle": "2012-13",
+        "ceremonyYear": 2013,
+        "leagueId": 1201883675,
+        "category": "Best Revival of a Play",
+        "nominees": 4,
+        "favoriteTitle": "Whos Afraid of Virginia Woolf",
+        "favoritePct": 84.9,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Whos Afraid of Virginia Woolf",
+        "winnerPct": 84.9,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "whos-afraid-of-virginia-woolf-2012",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Whos Afraid of Virginia Woolf",
+            "pct": 84.9,
+            "isWinner": true
+          },
+          {
+            "title": "The Trip to Bountiful",
+            "pct": 12.9,
+            "isWinner": false
+          },
+          {
+            "title": "Golden Boy ",
+            "pct": 2.2,
+            "isWinner": false
+          },
+          {
+            "title": "Orphans",
+            "pct": 0,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2014-15",
+        "ceremonyYear": 2015,
+        "leagueId": 1201883816,
+        "category": "Best Revival of a Play",
+        "nominees": 4,
+        "favoriteTitle": "Skylight",
+        "favoritePct": 46.6,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Skylight",
+        "winnerPct": 46.6,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "skylight-2015",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Skylight",
+            "pct": 46.6,
+            "isWinner": true
+          },
+          {
+            "title": "The Elephant Man",
+            "pct": 42.4,
+            "isWinner": false
+          },
+          {
+            "title": "You Cant Take It With You",
+            "pct": 10.2,
+            "isWinner": false
+          },
+          {
+            "title": "This Is Our Youth",
+            "pct": 0.8,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2015-16",
+        "ceremonyYear": 2016,
+        "leagueId": 1201901668,
+        "category": "Best Revival of a Play",
+        "nominees": 5,
+        "favoriteTitle": "A View from the Bridge",
+        "favoritePct": 51,
+        "favoriteIsWinner": true,
+        "winnerTitle": "A View from the Bridge",
+        "winnerPct": 51,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "a-view-from-the-bridge-2015",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "A View from the Bridge",
+            "pct": 51,
+            "isWinner": true
+          },
+          {
+            "title": "Long Day's Journey Into Night",
+            "pct": 29.4,
+            "isWinner": false
+          },
+          {
+            "title": "The Crucible",
+            "pct": 10.1,
+            "isWinner": false
+          },
+          {
+            "title": "Blackbird",
+            "pct": 5.8,
+            "isWinner": false
+          },
+          {
+            "title": "Noises Off",
+            "pct": 3,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2016-17",
+        "ceremonyYear": 2017,
+        "leagueId": 1202082621,
+        "category": "Best Revival of a Play",
+        "nominees": 4,
+        "favoriteTitle": "Jitney",
+        "favoritePct": 73,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Jitney",
+        "winnerPct": 73,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "jitney-2017",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Jitney",
+            "pct": 73,
+            "isWinner": true
+          },
+          {
+            "title": "The Little Foxes",
+            "pct": 18.1,
+            "isWinner": false
+          },
+          {
+            "title": "Six Degrees of Separation",
+            "pct": 6.1,
+            "isWinner": false
+          },
+          {
+            "title": "Present Laughter",
+            "pct": 2.8,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2017-18",
+        "ceremonyYear": 2018,
+        "leagueId": 1202538339,
+        "category": "Best Revival of a Play",
+        "nominees": 5,
+        "favoriteTitle": "Angels in America",
+        "favoritePct": 95.2,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Angels in America",
+        "winnerPct": 95.2,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "angels-in-america-2018",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Angels in America",
+            "pct": 95.2,
+            "isWinner": true
+          },
+          {
+            "title": "Three Tall Women",
+            "pct": 2.7,
+            "isWinner": false
+          },
+          {
+            "title": "The Iceman Cometh",
+            "pct": 1.2,
+            "isWinner": false
+          },
+          {
+            "title": "Travesties",
+            "pct": 0.8,
+            "isWinner": false
+          },
+          {
+            "title": "Lobby Hero",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2018-19",
+        "ceremonyYear": 2019,
+        "leagueId": 1202873958,
+        "category": "Best Revival of a Play",
+        "nominees": 5,
+        "favoriteTitle": "All My Sons",
+        "favoritePct": 44.4,
+        "favoriteIsWinner": false,
+        "winnerTitle": "The Boys in the Band",
+        "winnerPct": 21.2,
+        "winnerRankOneIndexed": 3,
+        "expectedWinnerShowId": "the-boys-in-the-band-2018",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "All My Sons",
+            "pct": 44.4,
+            "isWinner": false
+          },
+          {
+            "title": "The Waverly Gallery",
+            "pct": 31.8,
+            "isWinner": false
+          },
+          {
+            "title": "The Boys in the Band",
+            "pct": 21.2,
+            "isWinner": true
+          },
+          {
+            "title": "Torch Song",
+            "pct": 1.4,
+            "isWinner": false
+          },
+          {
+            "title": "Burn This",
+            "pct": 1.1,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2019-20",
+        "ceremonyYear": 2020,
+        "leagueId": 1203776444,
+        "category": "Best Revival of a Play",
+        "nominees": 3,
+        "favoriteTitle": "A Soldier's Play",
+        "favoritePct": 69.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "A Soldier's Play",
+        "winnerPct": 69.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "a-soldiers-play-2020",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "A Soldier's Play",
+            "pct": 69.4,
+            "isWinner": true
+          },
+          {
+            "title": "Betrayal",
+            "pct": 27.6,
+            "isWinner": false
+          },
+          {
+            "title": "Frankie and Johnny in the Clair de Lune",
+            "pct": 3,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2021-22",
+        "ceremonyYear": 2022,
+        "leagueId": 1204947034,
+        "category": "Best Revival of a Play",
+        "nominees": 5,
+        "favoriteTitle": "Take Me Out",
+        "favoritePct": 70.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Take Me Out",
+        "winnerPct": 70.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "take-me-out-2022",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Take Me Out",
+            "pct": 70.4,
+            "isWinner": true
+          },
+          {
+            "title": "for colored girls",
+            "pct": 18.3,
+            "isWinner": false
+          },
+          {
+            "title": "How I Learned to Drive",
+            "pct": 8.6,
+            "isWinner": false
+          },
+          {
+            "title": "American Buffalo",
+            "pct": 1.4,
+            "isWinner": false
+          },
+          {
+            "title": "Trouble in Mind",
+            "pct": 1.3,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2022-23",
+        "ceremonyYear": 2023,
+        "leagueId": 1205418859,
+        "category": "Best Revival of a Play",
+        "nominees": 4,
+        "favoriteTitle": "A Doll's House",
+        "favoritePct": 70,
+        "favoriteIsWinner": false,
+        "winnerTitle": "Topdog/Underdog",
+        "winnerPct": 21.4,
+        "winnerRankOneIndexed": 2,
+        "expectedWinnerShowId": "topdog-underdog-2022",
+        "winnerTitleMatches": false,
+        "allRows": [
+          {
+            "title": "A Doll's House",
+            "pct": 70,
+            "isWinner": false
+          },
+          {
+            "title": "Topdog/Underdog",
+            "pct": 21.4,
+            "isWinner": true
+          },
+          {
+            "title": "The Piano Lesson",
+            "pct": 6.8,
+            "isWinner": false
+          },
+          {
+            "title": "The Sign in Sidney Brustein's Window",
+            "pct": 1.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2023-24",
+        "ceremonyYear": 2024,
+        "leagueId": 1205819228,
+        "category": "Best Revival of a Play",
+        "nominees": 3,
+        "favoriteTitle": "Appropriate",
+        "favoritePct": 89.7,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Appropriate",
+        "winnerPct": 89.7,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "appropriate-2023",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Appropriate",
+            "pct": 89.7,
+            "isWinner": true
+          },
+          {
+            "title": "Purlie Victorious",
+            "pct": 6.8,
+            "isWinner": false
+          },
+          {
+            "title": "An Enemy of the People",
+            "pct": 3.5,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2024-25",
+        "ceremonyYear": 2025,
+        "leagueId": 1206218980,
+        "category": "Best Revival of a Play",
+        "nominees": 4,
+        "favoriteTitle": "Yellow Face",
+        "favoritePct": 64.8,
+        "favoriteIsWinner": false,
+        "winnerTitle": "Eureka Day",
+        "winnerPct": 32.8,
+        "winnerRankOneIndexed": 2,
+        "expectedWinnerShowId": "eureka-day-2024",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Yellow Face",
+            "pct": 64.8,
+            "isWinner": false
+          },
+          {
+            "title": "Eureka Day",
+            "pct": 32.8,
+            "isWinner": true
+          },
+          {
+            "title": "Romeo + Juliet",
+            "pct": 1.7,
+            "isWinner": false
+          },
+          {
+            "title": "Our Town",
+            "pct": 0.7,
+            "isWinner": false
+          }
+        ]
+      }
+    ],
+    "Best Revival of a Musical": [
+      {
+        "cycle": "2012-13",
+        "ceremonyYear": 2013,
+        "leagueId": 1201883675,
+        "category": "Best Revival of a Musical",
+        "nominees": 2,
+        "favoriteTitle": "Pippin",
+        "favoritePct": 89.5,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Pippin",
+        "winnerPct": 89.5,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "pippin-2013",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Pippin",
+            "pct": 89.5,
+            "isWinner": true
+          },
+          {
+            "title": "The Mystery of Edwin Drood",
+            "pct": 0.8,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2014-15",
+        "ceremonyYear": 2015,
+        "leagueId": 1201883816,
+        "category": "Best Revival of a Musical",
+        "nominees": 3,
+        "favoriteTitle": "The King and I",
+        "favoritePct": 89.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "The King and I",
+        "winnerPct": 89.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-king-and-i-2015",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "The King and I",
+            "pct": 89.4,
+            "isWinner": true
+          },
+          {
+            "title": "On the Twentieth Century",
+            "pct": 8.5,
+            "isWinner": false
+          },
+          {
+            "title": "On the Town",
+            "pct": 2.1,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2015-16",
+        "ceremonyYear": 2016,
+        "leagueId": 1201901668,
+        "category": "Best Revival of a Musical",
+        "nominees": 4,
+        "favoriteTitle": "The Color Purple",
+        "favoritePct": 74.6,
+        "favoriteIsWinner": true,
+        "winnerTitle": "The Color Purple",
+        "winnerPct": 74.6,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "the-color-purple-2015",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "The Color Purple",
+            "pct": 74.6,
+            "isWinner": true
+          },
+          {
+            "title": "She Loves Me",
+            "pct": 14.3,
+            "isWinner": false
+          },
+          {
+            "title": "Fiddler on the Roof",
+            "pct": 4.5,
+            "isWinner": false
+          },
+          {
+            "title": "Spring Awakening",
+            "pct": 4.3,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2016-17",
+        "ceremonyYear": 2017,
+        "leagueId": 1202082621,
+        "category": "Best Revival of a Musical",
+        "nominees": 3,
+        "favoriteTitle": "Hello, Dolly!",
+        "favoritePct": 90.5,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Hello, Dolly!",
+        "winnerPct": 90.5,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "hello-dolly-2017",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Hello, Dolly!",
+            "pct": 90.5,
+            "isWinner": true
+          },
+          {
+            "title": "Falsettos",
+            "pct": 6.8,
+            "isWinner": false
+          },
+          {
+            "title": "Miss Saigon",
+            "pct": 2.6,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2017-18",
+        "ceremonyYear": 2018,
+        "leagueId": 1202538339,
+        "category": "Best Revival of a Musical",
+        "nominees": 3,
+        "favoriteTitle": "My Fair Lady",
+        "favoritePct": 79.6,
+        "favoriteIsWinner": false,
+        "winnerTitle": "Once on This Island",
+        "winnerPct": 11.7,
+        "winnerRankOneIndexed": 2,
+        "expectedWinnerShowId": "once-on-this-island-2017",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "My Fair Lady",
+            "pct": 79.6,
+            "isWinner": false
+          },
+          {
+            "title": "Once on This Island",
+            "pct": 11.7,
+            "isWinner": true
+          },
+          {
+            "title": "Carousel",
+            "pct": 8.7,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2018-19",
+        "ceremonyYear": 2019,
+        "leagueId": 1202873958,
+        "category": "Best Revival of a Musical",
+        "nominees": 2,
+        "favoriteTitle": "Oklahoma!",
+        "favoritePct": 91.1,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Oklahoma!",
+        "winnerPct": 91.1,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "oklahoma-2019",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Oklahoma!",
+            "pct": 91.1,
+            "isWinner": true
+          },
+          {
+            "title": "Kiss Me, Kate",
+            "pct": 8.9,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2021-22",
+        "ceremonyYear": 2022,
+        "leagueId": 1204947034,
+        "category": "Best Revival of a Musical",
+        "nominees": 3,
+        "favoriteTitle": "Company",
+        "favoritePct": 91.8,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Company",
+        "winnerPct": 91.8,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "company-2021",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Company",
+            "pct": 91.8,
+            "isWinner": true
+          },
+          {
+            "title": "Caroline, or Change",
+            "pct": 4.2,
+            "isWinner": false
+          },
+          {
+            "title": "The Music Man",
+            "pct": 4,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2022-23",
+        "ceremonyYear": 2023,
+        "leagueId": 1205418859,
+        "category": "Best Revival of a Musical",
+        "nominees": 4,
+        "favoriteTitle": "Parade",
+        "favoritePct": 67.3,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Parade",
+        "winnerPct": 67.3,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "parade-2023",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Parade",
+            "pct": 67.3,
+            "isWinner": true
+          },
+          {
+            "title": "Sweeney Todd",
+            "pct": 21.7,
+            "isWinner": false
+          },
+          {
+            "title": "Into the Woods",
+            "pct": 10.9,
+            "isWinner": false
+          },
+          {
+            "title": "Camelot",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2023-24",
+        "ceremonyYear": 2024,
+        "leagueId": 1205819228,
+        "category": "Best Revival of a Musical",
+        "nominees": 4,
+        "favoriteTitle": "Merrily We Roll Along",
+        "favoritePct": 93.8,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Merrily We Roll Along",
+        "winnerPct": 93.8,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "merrily-we-roll-along-2023",
+        "winnerTitleMatches": true,
+        "allRows": [
+          {
+            "title": "Merrily We Roll Along",
+            "pct": 93.8,
+            "isWinner": true
+          },
+          {
+            "title": "Cabaret",
+            "pct": 5.7,
+            "isWinner": false
+          },
+          {
+            "title": "The Who's Tommy",
+            "pct": 0.3,
+            "isWinner": false
+          },
+          {
+            "title": "Gutenberg! The Musical!",
+            "pct": 0.2,
+            "isWinner": false
+          }
+        ]
+      },
+      {
+        "cycle": "2024-25",
+        "ceremonyYear": 2025,
+        "leagueId": 1206218980,
+        "category": "Best Revival of a Musical",
+        "nominees": 4,
+        "favoriteTitle": "Sunset Blvd.",
+        "favoritePct": 91.4,
+        "favoriteIsWinner": true,
+        "winnerTitle": "Sunset Blvd.",
+        "winnerPct": 91.4,
+        "winnerRankOneIndexed": 1,
+        "expectedWinnerShowId": "sunset-boulevard-2024",
+        "winnerTitleMatches": false,
+        "allRows": [
+          {
+            "title": "Sunset Blvd.",
+            "pct": 91.4,
+            "isWinner": true
+          },
+          {
+            "title": "Gypsy",
+            "pct": 7.3,
+            "isWinner": false
+          },
+          {
+            "title": "Floyd Collins",
+            "pct": 0.9,
+            "isWinner": false
+          },
+          {
+            "title": "Pirates! The Penzance Musical",
+            "pct": 0.4,
+            "isWinner": false
+          }
+        ]
+      }
+    ]
+  },
+  "discrepancies": [
+    {
+      "cycle": "2022-23",
+      "category": "Best Revival of a Play",
+      "expected": "topdog underdog",
+      "gdWinner": "Topdog/Underdog"
+    },
+    {
+      "cycle": "2024-25",
+      "category": "Best Revival of a Musical",
+      "expected": "sunset boulevard",
+      "gdWinner": "Sunset Blvd."
+    }
+  ]
+}
