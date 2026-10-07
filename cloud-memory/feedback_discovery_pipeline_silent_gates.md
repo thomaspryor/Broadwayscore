@@ -1157,3 +1157,5 @@ Concurrency group `ingest-urls-<show_id>` with cancel-in-progress:false still ke
 
 ## TR wrong-show attach via title-stem collision (2026-10-07, The Hungry Ghost)
 CI gather attached The Hunger Games On Stage's theatre.reviews excerpts (source=theatre-reviews, url null, publishDate 2025-11-13) to the-hungry-ghost-off-west-end-2026. Date guard caught it (wrongProduction), but triage-review-gap.js then reports those outlets as true-missed-discovery citing the other-production file. Monitor: read the excerpt before chasing; if it is another show, it's a verified exclusion, not a gap. Systemic fix carded (Linear: "theatre.reviews source attaches Hunger Games On Stage excerpts to The Hungry Ghost").
+
+- **BWW West End review never discovered for off-West-End show (2026-10-07, BRO-4850):** Hungry Ghost (Bush) BWW /westend/article/Review-* went unseen ~40h. Found via bestoftheatre.co.uk "review-roundup" page, which the SERP pass ingests then discards as isRoundupArticle; its outbound links are a free census source. Fix tonight: ingest-review-from-url.js.
