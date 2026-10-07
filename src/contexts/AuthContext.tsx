@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction } from '@/lib/deferred-auth';
+import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
@@ -232,7 +233,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { error } = await client.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: oauthRedirectUrl(window.location.origin),
       },
     });
     if (error) {
@@ -248,7 +249,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!client) return;
 
     trackUgc('sign_out');
-    await client.auth.signOut();
+    // This device only. The default ('global') revokes every session the
+    // account has, so signing out of the iOS app or another browser silently
+    // signed the owner's phone out too (BRO-4822).
+    await client.auth.signOut({ scope: 'local' });
     // A draft rating left by a signed-out visitor must not open for whoever signs in next on this device.
     clearPendingAction();
     setAnalyticsUser(null);

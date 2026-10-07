@@ -1,3 +1,5 @@
+import { AUTH_RETURN_PATHS } from '../auth-redirect';
+
 /**
  * Keep private share-link tokens (BRO-4481 plans, BRO-4566 diary) and OAuth
  * tokens (BRO-4525) out of every analytics tool.
@@ -32,7 +34,7 @@ const PRIVATE_SHARE_SEGMENT = new RegExp(PRIVATE_SHARE_SEGMENT_SOURCE, 'g');
 // The same path percent-encoded, e.g. inside ?next= or a mailto:/sms: body.
 const PRIVATE_SHARE_SEGMENT_ENCODED = new RegExp(`%2F(${PREFIX_ALT})%2F(?:(?!%2F|%3F|%23)[^/?#&\\s"'<>])+`, 'gi');
 
-// Supabase's implicit OAuth flow lands on /auth/callback#access_token=…&refresh_token=….
+// Supabase's implicit OAuth flow lands on /auth/complete (or /auth/callback)#access_token=…&refresh_token=….
 // auth-js only clears the hash after its follow-up user fetch succeeds, so a stalled
 // sign-in leaves live tokens in the URL that Sentry / PostHog record (BRO-4525).
 const AUTH_TOKEN_PARAM = /\b(access_token|refresh_token|provider_token|provider_refresh_token)=[^&#\s"'<>]+/gi;
@@ -49,9 +51,9 @@ export function isPrivateSharePath(pathname: string): boolean {
   return PRIVATE_SHARE_PREFIXES.some(p => pathname === `/${p}` || pathname.startsWith(`/${p}/`));
 }
 
-/** The OAuth return page carries live tokens in its hash; session replay stays off there (BRO-4525). */
+/** The OAuth return pages carry live tokens in their hash; session replay stays off there (BRO-4525, BRO-4822). */
 export function isAuthCallbackPath(pathname: string): boolean {
-  return pathname === '/auth/callback' || pathname.startsWith('/auth/callback/');
+  return AUTH_RETURN_PATHS.some(p => pathname === p || pathname.startsWith(`${p}/`));
 }
 
 /**
