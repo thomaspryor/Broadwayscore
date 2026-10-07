@@ -88,6 +88,24 @@ describe('BRO-4838 star groups', () => {
     assert.strictEqual(extractScore('', t, 'guardian', 'Cats'), null);
   });
 
+  // Second-opinion findings on the first cut of this change.
+  test('a lone ☆ is not a 0-star rating', () => {
+    assert.strictEqual(extractScore('', `${BODY} ☆ Save to favourites`, 'guardian', 'Cats'), null);
+  });
+
+  test('a half before the empty stars keeps the half', () => {
+    assert.strictEqual(extractScore('', `${BODY} ★★★½☆`, 'guardian', 'Cats').originalScore, '3.5/5 stars');
+  });
+
+  test('a rating and a decoration on the next line do not merge', () => {
+    const r = extractScore('', `${BODY} Verdict ★★★★\n\n★ Recommended`, 'guardian', 'Cats');
+    assert.notStrictEqual(r && r.originalScore, '5/5 stars');
+  });
+
+  test('a sole ★ badge with no rating context is not a 1-star verdict', () => {
+    assert.strictEqual(extractScore('', `${BODY} ★ Top pick this week`, 'guardian', 'Cats'), null);
+  });
+
   test('more than five glyphs is not a 5-star rating', () => {
     assert.strictEqual(extractScore('', `${BODY} ★★★★★★★`, 'guardian', 'Cats'), null);
   });

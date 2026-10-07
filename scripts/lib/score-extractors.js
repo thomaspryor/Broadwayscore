@@ -1386,6 +1386,59 @@ const OUTLET_EXTRACTORS = {
   'slant-magazine': noScoreExtractor,
 };
 
+// One printed rating: 1-5 star glyphs, contiguous or separated by spaces on the
+// same line ("★★★☆☆", "★ ★ ★ ★ ☆", "★★ ★★★" from a wrapped run), with an
+// optional half ("½" or "(★)") that may sit before the empty stars
+// ("★★★½☆"). The old /[★☆]{3,5}/ missed every 1★/2★ verdict and every spaced
+// run, so the harshest ratings were exactly the ones never stored (BRO-4838:
+// Affluenza, Theatre and Tonic "★" scored 42). Separators stop at a line break
+// so a rating and a decoration on the next line never merge. U+200D (ZWJ)
+// pads some spaced runs in the corpus.
+const STAR_GAP = '[ \\t\\u00a0\\u200d]*';
+const STAR_GROUP_RE = new RegExp(
+  `(?<![★☆])[★☆](?:${STAR_GAP}[★☆])*(?:${STAR_GAP}(?:½|\\(★\\))(?:${STAR_GAP}☆)*)?(?![★☆])`, 'g');
+// The critic's own sign-off right after the stars marks the verdict line.
+const SIGN_OFF_AFTER_STARS = /^\s*(?:written|reviewed)\s+by\b/i;
+// "star rating: ★★", "Rating: ★", "Stars: ★★": a label right before the stars.
+const RATING_LABEL_BEFORE_STARS = /\b(?:star\s+)?rating\s*:?\s*$|\bstars?\s*:\s*$/i;
+
+/**
+ * Every printed star rating in `text`, in order.
+ * @param {string} text
+ * @returns {Array<{index:number, raw:string, filled:number, total:number, isShortBareRun:boolean}>}
+ *   filled may be fractional (3.5); total is 5 unless empty stars spell it out.
+ *   Groups with no filled star or more than five glyphs are not ratings and are
+ *   skipped. isShortBareRun marks a lone ★/★★ with no ☆ or half, which is also
+ *   what a bullet or badge looks like.
+ */
+function findStarGroups(text) {
+  const groups = [];
+  for (const m of (text || '').matchAll(STAR_GROUP_RE)) {
+    const raw = m[0];
+    const half = /½|\(★\)/.test(raw) ? 0.5 : 0;
+    const core = raw.replace(/½|\(★\)/, '');
+    const full = (core.match(/★/g) || []).length;
+    const empty = (core.match(/☆/g) || []).length;
+    const glyphs = full + empty + (half ? 1 : 0);
+    if (full === 0 || glyphs > 5) continue;
+    groups.push({
+      index: m.index,
+      raw,
+      filled: full + half,
+      total: empty ? glyphs : 5,
+      isShortBareRun: !empty && !half && full <= 2,
+    });
+  }
+  return groups;
+}
+
+/** A group whose surrounding text says it is the critic's verdict. */
+function hasRatingContext(text, g) {
+  const after = text.slice(g.index + g.raw.length, g.index + g.raw.length + 40);
+  const before = text.slice(Math.max(0, g.index - 30), g.index);
+  return SIGN_OFF_AFTER_STARS.test(after) || RATING_LABEL_BEFORE_STARS.test(before);
+}
+
 /**
  * Main extraction function - tries outlet-specific extractor first,
  * then falls back to generic extractors
@@ -1397,40 +1450,6 @@ const OUTLET_EXTRACTORS = {
  *   combined multi-show roundup columns (see KNOWN_STAR_OUTLETS branch below)
  * @returns {object|null} - { originalScore, normalizedScore, source } or null
  */
-// One printed rating: 1-5 star glyphs, contiguous or separated by spaces/line
-// breaks ("★★★☆☆", "★ ★ ★ ★ ☆", "★★ ★★★" from a wrapped line), with an
-// optional trailing half ("½" or "(★)"). The old /[★☆]{3,5}/ missed every
-// 1★/2★ verdict and every spaced run, so the harshest ratings were exactly the
-// ones never stored (BRO-4838: Affluenza, Theatre and Tonic "★" scored 42).
-const STAR_GROUP_RE = /(?<![★☆])[★☆](?:\s*[★☆])*(?:\s*(?:½|\(★\)))?(?![★☆])/g;
-const SIGN_OFF_AFTER_STARS = /^\s*(?:written|reviewed|review)\s+by\b/i;
-
-/**
- * @param {string} text
- * @returns {Array<RegExpMatchArray & {filled:number,total:number,isShortBareRun:boolean}>}
- *   match arrays ([0] and [1] = the group, .index) with the parsed rating; groups
- *   of more than five glyphs are not a 5-star rating and are skipped.
- */
-function findStarGroups(text) {
-  const groups = [];
-  for (const m of (text || '').matchAll(STAR_GROUP_RE)) {
-    const s = m[0];
-    const half = /½|\(★\)$/.test(s) ? 0.5 : 0;
-    const core = half ? s.replace(/\s*(?:½|\(★\))$/, '') : s;
-    const full = (core.match(/★/g) || []).length;
-    const empty = (core.match(/☆/g) || []).length;
-    if (full + empty > 5 || full + empty + (half ? 1 : 0) > 5) continue;
-    const filled = full + half;
-    const total = empty ? full + empty + (half ? 1 : 0) : 5;
-    m[1] = s;
-    m.filled = filled;
-    m.total = total;
-    m.isShortBareRun = !empty && !half && full <= 2;
-    groups.push(m);
-  }
-  return groups;
-}
-
 function extractScore(html, text, outletId, showTitle) {
   html = html || '';
   text = text || '';
@@ -1474,14 +1493,16 @@ function extractScore(html, text, outletId, showTitle) {
         // verdict line out of the last 15% (Affluenza, Theatre and Tonic:
         // "★ Written by Bronagh" sat at 65%). A group immediately followed by
         // the review's own sign-off is the verdict wherever it falls.
-        return SIGN_OFF_AFTER_STARS.test(text.slice(m.index + m[0].length, m.index + m[0].length + 40));
+        return SIGN_OFF_AFTER_STARS.test(text.slice(m.index + m.raw.length, m.index + m.raw.length + 40));
       });
-      // A lone ★ or ★★ with no ☆ is also a bullet/decoration glyph. On its own
-      // it counts only when it is the text's only star group; among other
-      // groups it needs the show's name in front of it, like a roundup entry
-      // (The Homecoming 2007: "Infinite Life ★★★★★ The Homecoming ★★ ...").
+      // A lone ★ or ★★ with no ☆ is also a bullet or badge ("★ Top pick"). On
+      // its own it counts only with rating context (a "star rating:" label or
+      // the critic's sign-off) and only as the text's sole star group; among
+      // other groups it needs the show's name in front of it, like a roundup
+      // entry (The Homecoming 2007: "Infinite Life ★★★★★ The Homecoming ★★").
       const soleTrusted = anchoredMatches.length === 1
-        && (!anchoredMatches[0].isShortBareRun || matches.length === 1);
+        && (!anchoredMatches[0].isShortBareRun
+          || (matches.length === 1 && hasRatingContext(text, anchoredMatches[0])));
       // 2+ anchored star groups = a combined multi-show roundup column with a
       // per-show rating list (e.g. Guardian "Star ratings (out of five):
       // Phaedra ***** Sylvia *** Standing at the Sky's Edge ****"). Blindly
@@ -1504,7 +1525,7 @@ function extractScore(html, text, outletId, showTitle) {
           // Sylvia's AND Phaedra's groups look "named" for Sylvia.
           const named = anchoredMatches.filter(m => {
             const idx = matches.indexOf(m);
-            const segStart = idx > 0 ? matches[idx - 1].index + matches[idx - 1][0].length : Math.max(0, m.index - 80);
+            const segStart = idx > 0 ? matches[idx - 1].index + matches[idx - 1].raw.length : Math.max(0, m.index - 80);
             const before = text.slice(segStart, m.index);
             return normalizeTitle(before).includes(wantedTitle);
           });

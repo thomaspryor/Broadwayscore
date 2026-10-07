@@ -174,6 +174,19 @@ describe('needsLateStarReanchor — anchored to a stale band', () => {
     assert.equal(needsLateStarReanchor(stale({ originalScore: null, originalScoreSource: null, aggregatorStars: '2/5 stars' })), null);
   });
 
+  test('marks the verdict as a stale-band re-anchor', () => {
+    assert.equal(needsLateStarReanchor(stale()).staleBand, true);
+  });
+
+  test('one try per stored rating: a re-score that did not rewrite the band is not re-queued', () => {
+    assert.equal(needsLateStarReanchor(stale({ staleBandReanchoredFor: '2/5 stars' })), null);
+    assert.ok(needsLateStarReanchor(stale({ staleBandReanchoredFor: '4/5 stars' })), 'a new rating gets its own try');
+  });
+
+  test('a low-reliability extraction never re-anchors an anchored file', () => {
+    assert.equal(needsLateStarReanchor(stale({ originalScoreSource: 'numeric-stars' })), null);
+  });
+
   test('human override still wins', () => {
     assert.equal(needsLateStarReanchor(stale({ humanReviewScore: 90 })), null);
   });

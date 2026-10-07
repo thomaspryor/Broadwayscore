@@ -43,7 +43,8 @@ const { isScoreable } = require('./is-scoreable');
  *   (enables its wrongShow stale-flag override). Falls back safely when omitted.
  * @param {string} [ctx.filePath] - review file path; forwarded to isIncludableForRebuild
  *   for its path-based cross-show checks. Optional.
- * @returns {{ band: object, starsRaw: string } | null} the band to anchor to, or null
+ * @returns {{ band: object, starsRaw: string, staleBand?: true } | null} the band to anchor to
+ *   (staleBand: the file was already anchored to a different band), or null
  */
 /**
  * True when the band a file was anchored to differs from the band its own
@@ -52,6 +53,13 @@ const { isScoreable } = require('./is-scoreable');
  */
 function anchoredToStaleBand(data, priorBand) {
   if (!priorBand || typeof data.originalScore !== 'string' || !data.originalScore) return false;
+  // One re-anchor per stored rating: if that re-score did not rewrite the band
+  // (all models failed, a clobber), re-queueing every 6h would spend forever.
+  // Same one-shot idea as star-band-regression.js's starBandFlaggedAt.
+  if (data.staleBandReanchoredFor === data.originalScore) return false;
+  // On an anchored-v6 file det.highReliability keys off scoreSource, so judge
+  // the extraction itself, as the llm-v6 path below does.
+  if (LOW_RELIABILITY_EXTRACTION.has(data.originalScoreSource)) return false;
   const det = detectBandFromReviewFile(data);
   if (!det || !det.band || !det.highReliability || det.starsRaw !== data.originalScore) return false;
   return det.band.floor !== priorBand.floor || det.band.ceiling !== priorBand.ceiling;
@@ -111,7 +119,7 @@ function needsLateStarReanchor(data, ctx = {}) {
     // det.highReliability (isHighReliabilityStar on scoreSource) is the
     // correct gate — never re-anchor onto an FP-prone extraction.
     if (!isV6Unanchored && !det.highReliability) return null;
-    return { band: det.band, starsRaw: det.starsRaw };
+    return { band: det.band, starsRaw: det.starsRaw, ...(priorBand ? { staleBand: true } : {}) };
   }
   return null;
 }
