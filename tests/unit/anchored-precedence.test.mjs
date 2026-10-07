@@ -338,13 +338,22 @@ describe('detectBandFromReviewFile (star-reliability helper)', () => {
   // BRO-4838: a rating already on the 0-100 scale got no band, so the review
   // was never scored within it and the site served the flat rating (Affluenza,
   // The Reviews Hub "80%" served as 80; 246 reviews in all).
-  it('percentage rating "80%" → band [71,90] high-rel', () => {
+  // Owner decision 2026-10-07: a printed percentage is honored, the prose may
+  // move it at most 5 either way (not a star-sized band).
+  it('percentage rating "80%" → band [75,85] high-rel', () => {
     const result = detectBandFromReviewFile({
       originalScore: '80%', originalScoreSource: 'reviewshub-percentage',
       outletId: 'thereviewshub', scoreSource: 'llm-v6',
     });
-    assert.deepStrictEqual(result.band, { fraction: 0.8, floor: 71, ceiling: 90 });
+    assert.deepStrictEqual(result.band, { fraction: 0.8, floor: 75, ceiling: 85 });
     assert.strictEqual(result.highReliability, true);
+  });
+
+  it('a percentage band always contains the printed number, clamped to 0-100', () => {
+    const band = (p) => detectBandFromReviewFile({ originalScore: p, originalScoreSource: 'reviewshub-percentage', outletId: 'thereviewshub', scoreSource: 'llm-v6' }).band;
+    assert.deepStrictEqual([band('70%').floor, band('70%').ceiling], [65, 75]);
+    assert.deepStrictEqual([band('100%').floor, band('100%').ceiling], [95, 100]);
+    assert.deepStrictEqual([band('0%').floor, band('0%').ceiling], [0, 5]);
   });
 
   it('a 0-100 number in originalScore (older extractors) gets its band', () => {
@@ -367,13 +376,6 @@ describe('detectBandFromReviewFile (star-reliability helper)', () => {
     const a = detectBandFromReviewFile({ originalScore: 90, outletId: 'ew', scoreSource: 'letter-grade' });
     assert.deepStrictEqual(a.band, { fraction: -1, floor: 89, ceiling: 94 });
     assert.strictEqual(a.kind, 'letter-grade');
-  });
-
-  it('a percentage on a band edge follows the half-star rule (70% = 3.5/5 → 71-90)', () => {
-    const r = detectBandFromReviewFile({ originalScore: '70%', originalScoreSource: 'reviewshub-percentage', outletId: 'thereviewshub', scoreSource: 'llm-v6' });
-    assert.deepStrictEqual(r.band, { fraction: 0.7, floor: 71, ceiling: 90 });
-    const half = detectBandFromReviewFile({ originalScore: '3.5/5 stars', outletId: 'guardian', scoreSource: 'json-ld' });
-    assert.deepStrictEqual({ floor: half.band.floor, ceiling: half.band.ceiling }, { floor: 71, ceiling: 90 });
   });
 
   it('a bare number in a relay field is not read as a percentage', () => {
