@@ -20,7 +20,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { adjudicationExpectation } = require('./lib/adjudication-expectation');
-const { autoAcceptVerdict } = require('./lib/published-score-star-band');
+const { autoAcceptOutcome } = require('./lib/published-score-star-band');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -446,15 +446,25 @@ Respond with ONLY this JSON (no markdown fences):
     // NOTE: Do NOT use humanReviewScore here — that's reserved for actual human overrides.
     // Using it makes the LLM score permanent and blocks future rescoring.
     if (attempts >= MAX_ADJUDICATION_ATTEMPTS) {
-      const llmScore = review.llmScore || (sourceData.llmScore && sourceData.llmScore.score) || 65;
+      // The file's own score first: a queue entry left over from before a rescore can be stale (BRO-4839 review).
+      const llmScore = (sourceData.llmScore && sourceData.llmScore.score) || review.llmScore || 65;
       // BRO-4839: never auto-accept a score outside the critic's own star/grade band (a printed 2/5 published as 91).
       // Send it back for a band-anchored rescore instead of leaving an override that beats the star at rebuild.
-      const verdict = autoAcceptVerdict(sourceData, llmScore);
-      if (!verdict.accept) {
-        console.log(`  🛑 Max attempts reached (${attempts}) but LLM score ${llmScore} is outside the critic's rating (${verdict.violation.detail}) — queueing a band-anchored rescore, not auto-accepting`);
+      const outcome = autoAcceptOutcome(sourceData, llmScore);
+      if (outcome.action !== 'accept') {
+        // adjudicationAttempts survives a rescore, so a file the scorer keeps placing outside its band would come back
+        // here daily and be re-queued (and re-paid for) forever: autoAcceptOutcome blocks it after a few refusals.
+        const giveUp = outcome.action === 'block';
+        console.log(`  🛑 Max attempts reached (${attempts}) but LLM score ${llmScore} is outside the critic's rating (${outcome.violation.detail}) — ${giveUp ? `refused ${outcome.refusals - 1}x already, leaving it for a human (the star may be wrong)` : 'queueing a band-anchored rescore, not auto-accepting'}`);
         if (!DRY_RUN) {
-          sourceData.needsRescore = true;
-          sourceData.rescoreReason = 'auto-accept-outside-star-band';
+          sourceData.autoAcceptRefusals = outcome.refusals;
+          if (giveUp) {
+            sourceData.needsRescore = false;
+            sourceData.autoAcceptBlocked = `LLM score ${llmScore} stays outside the critic's rating (${outcome.violation.detail}) after ${outcome.refusals - 1} band-anchored rescores; check the extracted rating`;
+          } else {
+            sourceData.needsRescore = true;
+            sourceData.rescoreReason = 'auto-accept-outside-star-band';
+          }
           sourceData.adjudicationAttempts = attempts;
           fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
           changedFiles.push(filePath);

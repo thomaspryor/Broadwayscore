@@ -21,7 +21,7 @@
  *   --strict   exit 1 when any publishedOutOfBand row exists (CI/health use once the backlog is triaged)
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
-if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH]\n  --help, -h   print this usage and exit'); process.exit(0); }
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH] [--strict]\n  --strict     exit 1 when a published score is out of band, or when no published score could be joined\n  --help, -h   print this usage and exit'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -81,4 +81,4 @@ for (const r of out.publishedOutOfBand) bySource[r.source] = (bySource[r.source]
 console.log(`scanned=${out.scanned} alreadyQueued=${out.alreadyQueued} unanchored=${out.unanchored.length} outOfBand=${out.outOfBand.length}`);
 console.log(`published: joined=${out.publishedJoined} outOfBand=${out.publishedOutOfBand.length} bySource=${JSON.stringify(bySource)}`);
 if (jsonArg) fs.writeFileSync(jsonArg.split('=')[1], JSON.stringify(out, null, 2));
-if (process.argv.includes('--strict') && out.publishedOutOfBand.length) process.exit(1);
+if (process.argv.includes('--strict') && (out.publishedOutOfBand.length || out.publishedJoined === 0)) process.exit(1);

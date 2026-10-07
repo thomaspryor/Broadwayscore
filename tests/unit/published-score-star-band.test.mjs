@@ -54,6 +54,25 @@ test('publishedScoreViolation: every model agreeing on a bucket the published sc
   assert.equal(sb.unanimousBucket({ ensembleData: { modelAgreement: 'All 3 models agree: Splendid' } }), null);
 });
 
+test('hasPrimaryRating: the outlet\'s own fields count, a relay-only record does not', () => {
+  assert.equal(sb.hasPrimaryRating({ originalScore: '4/5' }), true);
+  assert.equal(sb.hasPrimaryRating({ starRating: 4 }), true);
+  assert.equal(sb.hasPrimaryRating({ originalScore: 82 }), false, 'a numeric originalScore is the post-extraction 0-100 value');
+  assert.equal(sb.hasPrimaryRating({ aggregatorStars: '3/5 stars', wetStars: '3/5' }), false);
+  assert.equal(sb.publishedScoreViolation({ aggregatorStars: '3/5 stars' }, 90), null);
+});
+
+test('autoAcceptOutcome: accept in band; rescore when outside; block after the refusal cap so a daily drain cannot loop forever', () => {
+  assert.equal(sb.autoAcceptOutcome(twoStar, 45).action, 'accept');
+  const first = sb.autoAcceptOutcome(twoStar, 91);
+  assert.deepEqual([first.action, first.refusals], ['rescore', 1]);
+  assert.equal(sb.autoAcceptOutcome({ ...twoStar, autoAcceptRefusals: 1 }, 91).action, 'rescore');
+  const capped = sb.autoAcceptOutcome({ ...twoStar, autoAcceptRefusals: 2 }, 91);
+  assert.deepEqual([capped.action, capped.refusals], ['block', 3]);
+  assert.equal(sb.autoAcceptOutcome({ ...twoStar, autoAcceptRefusals: 5 }, 45).action, 'accept', 'an in-band score is accepted whatever the history');
+  assert.equal(sb.autoAcceptOutcome({ ...twoStar, autoAcceptRefusals: 2 }, 91, { maxRefusals: 5 }).action, 'rescore');
+});
+
 test('autoAcceptVerdict: an adjudication queue auto-accept never lands outside a high-reliability star band', () => {
   assert.equal(sb.autoAcceptVerdict(twoStar, 91).accept, false);
   assert.equal(sb.autoAcceptVerdict(twoStar, 91).violation.floor, 31);
@@ -95,6 +114,27 @@ function getBestScoreCases() {
     assert.equal(result && result.source, 'adjudicated');
   });
 
+  test('rebuild: "sided with LLM" in any case is a reasoned dispute and stands (fiddler nytg: 72 notes use capitals)', () => {
+    const d = prada();
+    d.adjudicationNote = 'Auto-adjudicated (high confidence, sided with LLM): The review is clearly positive';
+    assert.equal(run(d).result.source, 'adjudicated');
+  });
+
+  test('rebuild: only self-contradicting adjudications are skipped; a text dispute of a rating (thumbs / neither) stands', () => {
+    for (const note of ['Auto-adjudicated (medium confidence, sided with thumbs): the printed grade is not in the text', 'Auto-adjudicated (high confidence, sided with neither): a pan whatever the grade says']) {
+      const d = prada(); d.adjudicationNote = note;
+      assert.equal(run(d).result.source, 'adjudicated', note);
+    }
+    const stars = prada(); stars.adjudicationNote = 'Auto-adjudicated (high confidence, sided with originalScore): the star is right';
+    assert.notEqual(run(stars).result.source, 'adjudicated', 'a verdict that says it sided with the star but landed outside it contradicts itself');
+  });
+
+  test('rebuild: a rating that exists only as an aggregator relay does not bind (Oliver! on the Guardian two-show page)', () => {
+    const d = prada(); delete d.originalScore; delete d.originalScoreSource;
+    d.aggregatorStars = '3/5 stars'; d.adjudicatedScore = 81; d.adjudicationNote = 'Auto-accepted after 3 uncertain adjudications - LLM original score retained';
+    assert.equal(run(d).result.source, 'adjudicated');
+  });
+
   test('rebuild: no star at all, an adjudication is untouched', () => {
     const d = prada(); delete d.originalScore; delete d.originalScoreSource;
     const { result } = run(d);
@@ -125,6 +165,8 @@ test('audit-star-band-drift reports published out-of-band scores joined from rev
     assert.equal(rows[0].kind, 'star-band');
     assert.equal(rows[0].score, 91);
     assert.equal(run(['--strict']).code, 1);
+    fs.writeFileSync(path.join(root, 'data', 'reviews.json'), JSON.stringify({ reviews: [] }));
+    assert.equal(run(['--strict']).code, 1, '--strict fails when nothing could be joined (a missing reviews.json must not read as clean)');
     fs.writeFileSync(path.join(root, 'data', 'reviews.json'), JSON.stringify({ reviews: [{ showId: 'show-a', url, assignedScore: 45, scoreSource: 'llm-v6' }] }));
     const clean = run(['--strict']);
     assert.equal(clean.code, 0);

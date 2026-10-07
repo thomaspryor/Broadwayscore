@@ -22,6 +22,12 @@ const DEFAULT_UNANIMOUS_TOL = 15;
 // scoreToBucket's thresholds as ranges: Rave >=83, Positive 70-82, Mixed 55-69, Negative 35-54, Pan <35.
 const BUCKET_RANGES = { Rave: [83, 100], Positive: [70, 82], Mixed: [55, 69], Negative: [35, 54], Pan: [0, 34] };
 
+/** The outlet's own rating fields (starRating, originalRating, a string originalScore), as detectBandFromReviewFile reads them. */
+function hasPrimaryRating(data) {
+  const has = (v) => v !== null && v !== undefined && v !== '';
+  return has(data.starRating) || has(data.originalRating) || (typeof data.originalScore === 'string' && has(data.originalScore));
+}
+
 /** The bucket every model agreed on, from ensembleData.modelAgreement ("All 3 models agree: Rave"), or null. */
 function unanimousBucket(data) {
   const text = data && data.ensembleData && data.ensembleData.modelAgreement;
@@ -36,7 +42,10 @@ function unanimousBucket(data) {
  */
 function publishedScoreViolation(data, score, { tol = DEFAULT_TOL, unanimousTol = DEFAULT_UNANIMOUS_TOL } = {}) {
   if (!data || typeof score !== 'number' || !Number.isFinite(score)) return null;
-  const band = humanScoreOutsideStarBand(data, score);
+  // A rating that exists ONLY as an aggregator relay (aggregatorStars / wetStars) does not bind: the Guardian's
+  // two-show page relayed the other show's 3/5 onto Oliver!, a 4-star review (human-score-star-guard.js: relays
+  // must not block a correct score).
+  const band = hasPrimaryRating(data) ? humanScoreOutsideStarBand(data, score) : null;
   if (band && (score < band.floor - tol || score > band.ceiling + tol)) {
     return { kind: 'star-band', score, floor: band.floor, ceiling: band.ceiling, detail: `star ${band.starsRaw} band ${band.floor}-${band.ceiling}` };
   }
@@ -61,4 +70,21 @@ function autoAcceptVerdict(data, llmScore) {
   return violation ? { accept: false, violation } : { accept: true };
 }
 
-module.exports = { autoAcceptVerdict, DEFAULT_TOL, DEFAULT_UNANIMOUS_TOL, BUCKET_RANGES, unanimousBucket, publishedScoreViolation };
+const MAX_AUTO_ACCEPT_REFUSALS = 2;
+
+/**
+ * What the adjudication queue does once an item's attempts run out. `accept` keeps the LLM score; `rescore` sends it
+ * back for a band-anchored rescore; `block` stops after MAX_AUTO_ACCEPT_REFUSALS refusals (adjudicationAttempts
+ * survives a rescore, so a file the scorer keeps placing outside its band would otherwise be re-queued and re-paid
+ * for every day) and waits for a human to check the extracted rating.
+ * @returns {{action: 'accept'|'rescore'|'block', refusals: number, violation?: object}}
+ */
+function autoAcceptOutcome(data, llmScore, { maxRefusals = MAX_AUTO_ACCEPT_REFUSALS } = {}) {
+  const verdict = autoAcceptVerdict(data, llmScore);
+  const prior = (data && data.autoAcceptRefusals) || 0;
+  if (verdict.accept) return { action: 'accept', refusals: prior };
+  const refusals = prior + 1;
+  return { action: refusals > maxRefusals ? 'block' : 'rescore', refusals, violation: verdict.violation };
+}
+
+module.exports = { MAX_AUTO_ACCEPT_REFUSALS, autoAcceptOutcome, hasPrimaryRating, autoAcceptVerdict, DEFAULT_TOL, DEFAULT_UNANIMOUS_TOL, BUCKET_RANGES, unanimousBucket, publishedScoreViolation };
