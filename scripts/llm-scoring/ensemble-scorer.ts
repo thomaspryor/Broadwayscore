@@ -587,6 +587,14 @@ export class EnsembleReviewScorer {
       // Third instance of the allowlist-omission class (category/venue
       // 2026-04-23, type 2026-05-17) — the parity unit test now guards it.
       priorRuns: (reviewFile as any).priorRuns,
+      // contentTier must be propagated so getBestTextForScoring can pass
+      // trustedComplete to assessFullText. Without it a complete review whose
+      // page footer ("Share:", "Leave a comment") fails the ending check is
+      // told its verdict may be missing (BRO-4804: ~7.8k files; the earlier
+      // text-quality fix was a silent no-op on this path). Fourth instance of
+      // the allowlist-omission class; parity test in
+      // tests/unit/ensemble-scorer-content-tier-forward.test.ts.
+      contentTier: (reviewFile as any).contentTier,
       fullText: reviewFile.fullText,
       ...excerptData,
       bwwThumb: reviewFile.bwwThumb,
