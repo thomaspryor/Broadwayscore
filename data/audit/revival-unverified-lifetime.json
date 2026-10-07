@@ -1,15 +1,14 @@
 {
-  "updatedAt": "2026-10-06T14:00:07.001Z",
-  "scanned": 2297,
-  "showsWithViolations": 57,
-  "totalViolations": 57,
-  "newSinceLastRun": 5,
+  "updatedAt": "2026-10-07T09:04:27.682Z",
+  "scanned": 2302,
+  "showsWithViolations": 61,
+  "totalViolations": 61,
+  "newSinceLastRun": 4,
   "newViolationKeys": [
-    "the-mousetrap-west-end-2021",
-    "water-for-elephants-tour-2025",
-    "gang-of-three-off-west-end-2026",
-    "spamalot-tour-2025",
-    "the-music-man-tour-2026"
+    "affluenza-off-west-end-2026",
+    "an-evening-with-an-immigrant-off-west-end-2026",
+    "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+    "shucked-tour-2027"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -56,10 +55,12 @@
     "darkling-off-west-end-2026",
     "christmas-carol-goes-wrong-west-end-2026",
     "pre-existing-condition-off-broadway-2026",
+    "affluenza-off-west-end-2026",
     "tru-off-west-end-2026",
     "degenerates-off-broadway-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "school-pictures-off-broadway-2026",
+    "an-evening-with-an-immigrant-off-west-end-2026",
     "lost-in-del-valle-return-off-broadway-2026",
     "beetlejuice-tour-2026",
     "the-outsiders-tour-2025",
@@ -68,7 +69,9 @@
     "elektra-off-broadway-2026",
     "gang-of-three-off-west-end-2026",
     "spamalot-tour-2025",
-    "the-music-man-tour-2026"
+    "the-music-man-tour-2026",
+    "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+    "shucked-tour-2027"
   ],
   "hits": [
     {
@@ -468,6 +471,15 @@
       ]
     },
     {
+      "showId": "affluenza-off-west-end-2026",
+      "title": "Affluenza",
+      "openingDate": "2026-10-05",
+      "message": "affluenza-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "tru-off-west-end-2026",
       "title": "Tru",
       "openingDate": "2026-09-27",
@@ -499,6 +511,15 @@
       "title": "School Pictures",
       "openingDate": "2026-10-18",
       "message": "school-pictures-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+      "title": "An Evening With An Immigrant",
+      "openingDate": null,
+      "message": "an-evening-with-an-immigrant-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -570,7 +591,7 @@
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 17x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 18x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -580,6 +601,24 @@
       "title": "The Music Man",
       "openingDate": "2026-01-12",
       "message": "the-music-man-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "openingDate": "2026-10-30",
+      "message": "a-beautiful-noise-the-neil-diamond-musical-tour-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "shucked-tour-2027",
+      "title": "Shucked",
+      "openingDate": "2027-01-12",
+      "message": "shucked-tour-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
