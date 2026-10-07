@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-06T22:22:39.525Z",
+  "timestamp": "2026-10-07T00:41:05.365Z",
   "stats": {
-    "totalReviews": 46672,
-    "alreadyFlagged": 18698,
+    "totalReviews": 46673,
+    "alreadyFlagged": 18701,
     "dateGuardCatches": 271,
-    "directorMismatch": 1326,
+    "directorMismatch": 1327,
     "tvFilmSignals": 1360,
     "londonSignals": 1296,
     "offBroadwaySignals": 510,
     "yearMismatch": 115,
-    "noPublishDate": 4310
+    "noPublishDate": 4309
   },
   "findings": [
     {
@@ -26384,7 +26384,7 @@
     {
       "showId": "school-pictures-off-broadway-2026",
       "file": "theatermania--zachary-stewart.json",
-      "score": null,
+      "score": 79,
       "publishDate": "November 22nd, 2023",
       "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/",
       "findings": [
@@ -26392,6 +26392,11 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1050d before show (November 22nd, 2023 vs 2026-10-07)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"morgan green\" from school-pictures-off-broadway-2023"
         }
       ]
     },
@@ -37382,7 +37387,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-09-28",
       "url": "https://www.standard.co.uk/culture/theatre/tru-at-menier-chocolate-factory-review-b1298631.html",
       "findings": [
@@ -37509,7 +37514,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 63,
+      "score": 66,
       "publishDate": "2026-09-28",
       "url": "https://www.timeout.com/london/theatre/tru-review",
       "findings": [
@@ -37533,7 +37538,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 59,
+      "score": 64,
       "publishDate": "2026-09-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
       "findings": [
@@ -47930,7 +47935,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "everything-theatre--owen-thomas-james.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2026-10-04",
       "url": "https://everything-theatre.co.uk/2026/10/review-hay-fever-wyndhams-theatre/",
       "findings": [
@@ -47944,7 +47949,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2026-10-02",
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -48110,7 +48115,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 60,
+      "score": 62,
       "publishDate": "2026-10-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "findings": [
@@ -59114,6 +59119,7 @@
     {
       "showId": "the-hungry-ghost-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 93,
       "publishDate": "2026-10-06",
       "url": "https://theatreandtonic.co.uk/blog/the-hungry-ghost-bush-theatre-london-review",
       "findings": [
