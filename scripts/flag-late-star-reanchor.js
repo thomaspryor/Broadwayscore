@@ -72,7 +72,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     d.rescoreReason = 'late-star-anchor';
     d.lateStarAnchorBand = `${verdict.band.floor}-${verdict.band.ceiling} (${verdict.starsRaw})`;
     // BRO-4838 one-shot: a stale-band re-anchor is tried once per stored rating.
-    if (verdict.staleBand) d.staleBandReanchoredFor = d.originalScore;
+    if (verdict.staleBand) d.staleBandReanchoredFor = String(d.originalScore);
     // A file rescored once before carries rescoreCompletedAt — the workflow's
     // backlog counters skip any flagged file that still has it, so a re-queue
     // without clearing it is invisible to the drain. Same pattern as

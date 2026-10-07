@@ -192,6 +192,14 @@ function invalidateStarSidedAdjudication(data, reason) {
  *
  * @param {object} data - review-text JSON contents
  */
+const LETTER_GRADE_BANDS = {
+  'A+': [95, 100], 'A':  [89, 94], 'A-': [83, 88],
+  'B+': [77, 82],  'B':  [71, 76], 'B-': [65, 70],
+  'C+': [59, 64],  'C':  [53, 58], 'C-': [47, 52],
+  'D+': [41, 46],  'D':  [35, 40], 'D-': [29, 34],
+  'F':  [0,  28],
+};
+
 function detectBandFromReviewFile(data) {
   if (!data) return null;
 
@@ -245,6 +253,18 @@ function detectBandFromReviewFile(data) {
       const { publishedRatingEvidence } = require('./rebuild-helpers');
       if (!publishedRatingEvidence(data.originalScore, data)) pct = null;
     }
+    // A letter grade an older extractor stored as its 0-100 value (EW "A" as
+    // 90) keeps the grade's own band, not a star band (90 would be 91-100).
+    if (pct && source === 'originalScore'
+      && (data.scoreSource === 'letter-grade' || data.originalScoreSource === 'letter-grade')) {
+      const v = parseFloat(pct[1]);
+      const grade = Object.keys(LETTER_GRADE_BANDS).find(g => v >= LETTER_GRADE_BANDS[g][0] && v <= LETTER_GRADE_BANDS[g][1]);
+      if (grade) {
+        const [floor, ceiling] = LETTER_GRADE_BANDS[grade];
+        return { band: { fraction: -1, floor, ceiling }, starsRaw: raw, kind: 'letter-grade', highReliability: isHighReliabilityStar(data) };
+      }
+      pct = null;
+    }
     if (num || pct) {
       const stars = parseFloat(num ? num[1] : pct[1]);
       const max = num ? parseFloat(num[2]) : 100;
@@ -272,14 +292,7 @@ function detectBandFromReviewFile(data) {
     const lg = raw.match(/(A\+|A-|B\+|B-|C\+|C-|D\+|D-|A|B|C|D|F)(?:\b|$)/);
     if (lg) {
       const grade = lg[1].toUpperCase();
-      const table = {
-        'A+': [95, 100], 'A':  [89, 94], 'A-': [83, 88],
-        'B+': [77, 82],  'B':  [71, 76], 'B-': [65, 70],
-        'C+': [59, 64],  'C':  [53, 58], 'C-': [47, 52],
-        'D+': [41, 46],  'D':  [35, 40], 'D-': [29, 34],
-        'F':  [0,  28],
-      };
-      const range = table[grade];
+      const range = LETTER_GRADE_BANDS[grade];
       if (range) {
         // fraction:-1 is a sentinel meaning "letter grade, no percentage available".
         // buildAnchoredBandBlock in config.ts handles this by omitting the percentage clause.

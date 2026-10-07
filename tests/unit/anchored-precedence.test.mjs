@@ -363,6 +363,19 @@ describe('detectBandFromReviewFile (star-reliability helper)', () => {
     assert.strictEqual(detectBandFromReviewFile({ originalScore: '4 stars', outletId: 'nypost' }), null);
   });
 
+  it('a letter grade stored as its 0-100 value keeps the grade band', () => {
+    const a = detectBandFromReviewFile({ originalScore: 90, outletId: 'ew', scoreSource: 'letter-grade' });
+    assert.deepStrictEqual(a.band, { fraction: -1, floor: 89, ceiling: 94 });
+    assert.strictEqual(a.kind, 'letter-grade');
+  });
+
+  it('a percentage on a band edge follows the half-star rule (70% = 3.5/5 → 71-90)', () => {
+    const r = detectBandFromReviewFile({ originalScore: '70%', originalScoreSource: 'reviewshub-percentage', outletId: 'thereviewshub', scoreSource: 'llm-v6' });
+    assert.deepStrictEqual(r.band, { fraction: 0.7, floor: 71, ceiling: 90 });
+    const half = detectBandFromReviewFile({ originalScore: '3.5/5 stars', outletId: 'guardian', scoreSource: 'json-ld' });
+    assert.deepStrictEqual({ floor: half.band.floor, ceiling: half.band.ceiling }, { floor: 71, ceiling: 90 });
+  });
+
   it('a bare number in a relay field is not read as a percentage', () => {
     assert.strictEqual(detectBandFromReviewFile({ aggregatorStars: '80', outletId: 'london-box-office' }), null);
   });
