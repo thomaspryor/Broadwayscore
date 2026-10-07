@@ -196,3 +196,34 @@ test('BRO-4830: decideRefresh policy table', () => {
   assert.equal(decideRefresh({ behind: true, headInOrigin: true, originInHead: false, dirty: true }), 'unsafe');
   assert.equal(decideRefresh({ behind: true, headInOrigin: false, originInHead: false, dirty: false }), 'unsafe');
 });
+
+// BRO-4830 prevention: runVerify defaults prepared=true, so a caller that
+// takes a makeFreshCheckout() result but omits `prepared` silently grades an
+// unprepared (stale-data / no node_modules) checkout as pass/fail. Every
+// script that uses both must reference the checkout's `prepared` flag.
+test('BRO-4830: every script combining makeFreshCheckout + runVerify passes/gates on prepared', () => {
+  const dir = path.dirname(path.dirname(new URL(import.meta.url).pathname));
+  const offenders = [];
+  for (const name of fs.readdirSync(dir)) {
+    if (!name.endsWith('.js')) continue;
+    const src = fs.readFileSync(path.join(dir, name), 'utf8');
+    if (!/\bmakeFreshCheckout\b|\bfreshCheckout\b/.test(src) || !/\brunVerify\(/.test(src)) continue;
+    if (!/\.prepared\b|\bprepared[:,]/.test(src)) offenders.push(name);
+  }
+  assert.deepEqual(offenders, []);
+});
+
+test('BRO-4830: ff-only merge failure on a known-behind clone is unsafe, unknown is not memoized', () => {
+  const f = fixture();
+  try {
+    f.advance(2);
+    // an untracked file that the incoming commit would create blocks the ff merge
+    fs.writeFileSync(path.join(f.dataClone, 'new.json'), 'local');
+    const seed = path.join(f.root, 'seed');
+    fs.writeFileSync(path.join(seed, 'new.json'), 'remote');
+    sh(seed, 'add', '.'); sh(seed, ...GIT_ID, 'commit', '-m', 'add new'); sh(seed, 'push', path.join(f.root, 'origin.git'), 'main');
+    const r = refreshDataClone(f.repo, { memoize: false });
+    assert.equal(r.status, 'unsafe');
+    assert.match(r.detail, /ff-only merge failed/);
+  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+});

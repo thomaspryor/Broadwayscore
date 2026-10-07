@@ -495,7 +495,7 @@ async function main(argv = process.argv.slice(2)) {
       // logged as a recheck-false-positive, which permanently blocks shadow
       // exit (maxFalsePositives: 0). Absorbing a flake is worth more than the
       // extra wall-clock.
-      else r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)) }) };
+      else r = { ...t, ...runVerify(checkout.wt, t.verifyCmd, { timeoutMs: Math.min(CHECK_TIMEOUT_MS, Math.floor(remainingMs / 2)), prepared: checkout.prepared }) };
       results.push(r);
       ledger.appendEntry({
         event: 'recheck', runId, cardId: t.cardId, name: t.name,

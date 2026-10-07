@@ -29,7 +29,7 @@ function git(cwd, args, timeout = GIT_TIMEOUT_MS) {
 
 /**
  * The clone the repo's core data actually comes from: the git toplevel of
- * wherever data/shows.json really lives, falling back to BSC_DATA_REPO when set. null when that is the repo itself (data not
+ * wherever data/shows.json really lives, null when it cannot be resolved. null when that is the repo itself (data not
  * symlinked: nothing separate to refresh).
  */
 function resolveDataClone(repo) {
@@ -37,8 +37,7 @@ function resolveDataClone(repo) {
   try {
     clone = git(path.dirname(fs.realpathSync(path.join(repo, 'data', 'shows.json'))), ['rev-parse', '--show-toplevel']);
   } catch { /* fall through to the default location */ }
-  // No default-location guess: a clone the copy doesn't read from is irrelevant.
-  if (!clone) clone = process.env.BSC_DATA_REPO || null;
+  // No env/default-location fallback: a clone the copy doesn't read from is irrelevant.
   if (!clone) return null;
   try {
     clone = fs.realpathSync(clone);
@@ -59,7 +58,8 @@ function refreshDataClone(repo, { dataRepo = null, memoize = true } = {}) {
   const clone = dataRepo || resolveDataClone(repo);
   if (!clone) return { status: 'skipped', detail: 'no separate data clone' };
   if (memoize && memo.has(clone)) return memo.get(clone);
-  const done = (r) => { r.clone = clone; if (memoize) memo.set(clone, r); return r; };
+  // `unknown` (transient lock/offline) is never memoized: a later card retries.
+  const done = (r) => { r.clone = clone; if (memoize && r.status !== 'unknown') memo.set(clone, r); return r; };
 
   try { git(clone, ['fetch', '--quiet', 'origin', 'main'], FETCH_TIMEOUT_MS); }
   catch (e) { return done({ status: 'unknown', detail: `fetch failed: ${String(e.message).split('\n')[0]}` }); }
@@ -79,7 +79,12 @@ function refreshDataClone(repo, { dataRepo = null, memoize = true } = {}) {
       return done({ status: 'unsafe', detail: `data clone is behind origin/main but ${dirty ? 'has uncommitted changes' : 'has diverged'}; left untouched` });
     }
     if (verdict === 'fast-forward') {
-      git(clone, ['merge', '--ff-only', 'origin/main'], 60000);
+      try { git(clone, ['merge', '--ff-only', 'origin/main'], 60000); }
+      catch (e) {
+        // Known behind and could not advance (lock, untracked file in the way):
+        // copying would reproduce the stale-data failure, so do not grade it.
+        return done({ status: 'unsafe', detail: `known behind origin/main but ff-only merge failed: ${String(e.message).split('\n')[0]}` });
+      }
       return done({ status: 'fast-forwarded', detail: `data clone advanced to ${git(clone, ['rev-parse', '--short', 'HEAD'])}` });
     }
   } catch (e) {
