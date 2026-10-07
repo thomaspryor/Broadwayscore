@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-07T00:41:05.365Z",
+  "timestamp": "2026-10-07T02:04:01.246Z",
   "stats": {
-    "totalReviews": 46673,
-    "alreadyFlagged": 18701,
+    "totalReviews": 46725,
+    "alreadyFlagged": 18706,
     "dateGuardCatches": 271,
-    "directorMismatch": 1327,
-    "tvFilmSignals": 1360,
+    "directorMismatch": 1339,
+    "tvFilmSignals": 1362,
     "londonSignals": 1296,
     "offBroadwaySignals": 510,
-    "yearMismatch": 115,
-    "noPublishDate": 4309
+    "yearMismatch": 117,
+    "noPublishDate": 4307
   },
   "findings": [
     {
@@ -126,6 +126,24 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--andrew-burrill.json",
+      "publishDate": "2026-07-12",
+      "url": "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "broadwayworld--jared-fessler.json",
       "score": 79,
       "publishDate": null,
@@ -149,6 +167,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--rich-mehrenberg.json",
+      "publishDate": "2026-06-25",
+      "url": "https://www.broadwayworld.com/central-pa/article/Interview-Robert-Westenberg-of-A-BEAUTIFUL-NOISE-at-Hershey-Theater-20260625",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -2834,6 +2865,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "file": "san-diego-union-tribune--tribune-news-service.json",
+      "publishDate": "2026-07-03",
+      "url": "https://www.sandiegouniontribune.com/2026/07/03/a-new-beauty-and-the-beast-tour-honors-the-original-but-adds-a-fresh-vision/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert jess roth\" from beauty-and-the-beast-1994"
         }
       ]
     },
@@ -16688,7 +16732,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 95,
-      "publishDate": null,
+      "publishDate": "2025-12-12",
       "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
       "findings": [
         {
@@ -21458,10 +21502,49 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2025",
+      "file": "broadwayworld--stephi-wild.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/austin/article/MRS-DOUBTFIRE-to-Play-Bass-Concert-Hall-in-Austin-20260715",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
+      "file": "movieweb--manuel-demegillo.json",
+      "publishDate": "2026-08-29",
+      "url": "https://movieweb.com/mrs-doubtfire-robin-williams-4k-blu-ray/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
       "file": "shepherd-express--anne-siegel.json",
       "score": 78,
       "publishDate": "2025-10-02",
       "url": "https://shepherdexpress.com/culture/theater/beloved-mrs-doubtfire-returns-this-time-as-a-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
+      "file": "telegram--unknown.json",
+      "publishDate": "2026-06-19",
+      "url": "https://www.telegram.com/story/entertainment/arts/2026/06/19/national-tour-of-mrs-doubtfire-coming-to-the-hanover-theatre/90497838007/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28753,6 +28836,19 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2026-07-10",
+      "url": "https://www.chicagotribune.com/2026/07/10/review-suffs-musical-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "cleveland-plain-dealer--joey-morona.json",
       "score": 61,
       "publishDate": "2026-02-05",
@@ -32461,6 +32557,19 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-07-09",
+      "url": "https://www.bostonglobe.com/2026/07/10/arts/the-great-gatsby-opera-house/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "broadwayworld--david-friscic.json",
       "score": 74,
       "publishDate": "2026-05-19",
@@ -32475,6 +32584,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-07-13",
+      "url": "https://www.broadwayworld.com/boston/article/Review-THE-GREAT-GATSBY-Could-be-Even-Better-with-Less-Pop-More-Punch-20260713",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
         }
       ]
     },
@@ -32550,10 +32672,36 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "next-magazine--neel-modi.json",
+      "publishDate": "2026-08-13",
+      "url": "https://nextmag.ca/review-glamorous-glitz-distracts-from-class-critique-in-the-great-gatsby/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "revue--josh.json",
       "score": 68,
       "publishDate": "2026-07-22",
       "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "the-globe-and-mail--aisling-murphy.json",
+      "publishDate": "2026-08-10",
+      "url": "https://www.theglobeandmail.com/culture/stage/article-the-great-gatsby-toronto-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34842,6 +34990,19 @@
       "score": 80,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-PHANTOM-OF-THE-OPERA-at-the-Eccles-Theater-is-Refreshed-with-Reverence-20260411",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "latimes--sarah-mosqueda.json",
+      "publishDate": "2026-08-12",
+      "url": "https://www.latimes.com/socal/daily-pilot/entertainment/story/2026-08-12/phantom-of-opera-will-haunt-segerstrom-center-in-three-week-run",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -38333,6 +38494,19 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-08-20",
+      "url": "https://www.sandiegouniontribune.com/2026/08/20/review-water-for-elephants-musical-delivers-on-spectacle/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "south-florida-sun-sentinel--rod-stafford-hagwood.json",
       "score": 80,
       "publishDate": null,
@@ -39624,6 +39798,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "playoffthepage--mary-aalgaard.json",
+      "publishDate": "2026-07-11",
+      "url": "https://playoffthepage.com/2026/07/review-of-wicked-on-tour-at-the-orpheum-in-mpls-2026/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
