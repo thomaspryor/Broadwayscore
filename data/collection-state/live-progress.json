@@ -1,130 +1,66 @@
 {
-  "updatedAt": "2026-10-07T13:20:59.106Z",
-  "processed": 233,
-  "failed": 167,
-  "successRate": "58.3%",
+  "updatedAt": "2026-10-07T13:27:06.692Z",
+  "processed": 15,
+  "failed": 6,
+  "successRate": "71.4%",
   "tierBreakdown": {
-    "playwright": 119,
-    "amp": 1,
-    "browserbase": 16,
+    "playwright": 8,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 36,
-    "scrapingbee": 26,
-    "brightdata": 8,
+    "scrapingdog": 4,
+    "scrapingbee": 2,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 48
+    "archive": 1
   },
-  "browserbaseSessions": 24,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-10-07T12:29:04.421Z",
+      "t": "2026-10-07T13:19:34.911Z",
       "event": "bb-session",
-      "session": "fd8c6670",
-      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+      "session": "3374eb4e",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     },
     {
-      "t": "2026-10-07T12:29:05.146Z",
+      "t": "2026-10-07T13:19:42.691Z",
+      "event": "bb-session",
+      "session": "fa4dd1d7",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-07T13:23:00.603Z",
+      "event": "bb-session",
+      "session": "bc242e16",
+      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
+    },
+    {
+      "t": "2026-10-07T13:23:20.171Z",
+      "event": "bb-session",
+      "session": "e84da900",
+      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
+    },
+    {
+      "t": "2026-10-07T13:23:20.998Z",
+      "event": "bb-session",
+      "session": "8d7860c1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-07T13:23:21.625Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-07T12:31:57.273Z",
+      "t": "2026-10-07T13:23:40.686Z",
       "event": "bb-session",
-      "session": "cc4565f4",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
+      "session": "4cad6170",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
     },
     {
-      "t": "2026-10-07T12:31:57.945Z",
+      "t": "2026-10-07T13:23:41.328Z",
       "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-07T12:32:08.394Z",
-      "event": "bb-session",
-      "session": "cf3a4bea",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
-    },
-    {
-      "t": "2026-10-07T12:32:09.053Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-07T12:33:29.818Z",
-      "event": "bb-session",
-      "session": "bddcb647",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-07T12:33:30.467Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-07T12:33:38.563Z",
-      "event": "bb-session",
-      "session": "30772f57",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-07T12:33:39.230Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-07T12:46:21.799Z",
-      "event": "bb-session",
-      "session": "7f702fde",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-07T12:46:22.519Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-07T12:46:31.366Z",
-      "event": "bb-session",
-      "session": "11b11476",
-      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
-    },
-    {
-      "t": "2026-10-07T12:46:32.047Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-07T12:47:41.962Z",
-      "event": "bb-session",
-      "session": "243f3fae",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-10-07T12:47:46.304Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-10-07T12:48:12.093Z",
-      "event": "bb-session",
-      "session": "3cd181b5",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-10-07T12:48:16.360Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-10-07T13:18:46.010Z",
-      "event": "bb-session",
-      "session": "e6a6efb2",
-      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
-    },
-    {
-      "t": "2026-10-07T13:18:46.746Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "talkinbroadway.com"
     }
   ]
 }
