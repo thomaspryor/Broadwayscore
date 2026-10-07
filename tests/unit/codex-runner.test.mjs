@@ -196,3 +196,21 @@ test('lockMessage/lockCards: a released lock still names its unfinished cards', 
   assert.ok(!msg.startsWith('locked'), 'takeLock treats only "locked" stamps as held');
   assert.deepEqual(r.lockCards('locked 2026-10-07T03:13:00Z cards=BRO-7 '), ['BRO-7']);
 });
+
+test('parseCheckOutput: JSON result + cost, budget error, plain text fallback', () => {
+  const ok = r.parseCheckOutput(JSON.stringify({ type: 'result', subtype: 'success', is_error: false, result: 'fine\nVERDICT: SHIP', total_cost_usd: 1.234 }));
+  assert.deepEqual(ok, { text: 'fine\nVERDICT: SHIP', costUsd: 1.234, error: null });
+  assert.equal(r.parseVerdict(ok.text), 'SHIP');
+  const capped = r.parseCheckOutput(JSON.stringify({ subtype: 'error_max_budget_usd', is_error: true, total_cost_usd: 4.01 }));
+  assert.equal(capped.error, 'error_max_budget_usd');
+  assert.equal(capped.costUsd, 4.01);
+  assert.deepEqual(r.parseCheckOutput('Error: not logged in'), { text: 'Error: not logged in', costUsd: 0, error: null });
+  assert.deepEqual(r.parseCheckOutput(''), { text: '', costUsd: 0, error: null });
+});
+
+test('stopReason: Claude check run budget', () => {
+  const base = { startedMs: 0, nowMs: 1, maxMinutes: 300, weeklyPct: 10, maxWeeklyPct: 60, rejectStreak: 0, doneRefusals: 0 };
+  assert.equal(r.stopReason({ ...base, checkSpentUsd: 29.9, checkBudgetUsd: 30 }), null);
+  assert.match(r.stopReason({ ...base, checkSpentUsd: 30.5, checkBudgetUsd: 30 }), /Claude check spend \$30\.50/);
+  assert.equal(r.stopReason({ ...base, checkSpentUsd: 99 }), null);
+});
