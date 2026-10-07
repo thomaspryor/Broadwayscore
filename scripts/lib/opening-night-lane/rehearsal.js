@@ -7,10 +7,11 @@
  * verdict is ledger.rehearsalVerdict, plus the checks only the rehearsal can make: nothing unexpected was published,
  * no decoy leaked, and rows of other shows survived the merge.
  *
- * What is real here: discovery, canonical keys, trust-model rows, merge-by-key, the static-server deploy and the
- * cache-busted live poll. What is stood in: the page fetches (the fixture), the inline scorer (`scoreReview`, default
- * the fixture's own score: the real one is BRO-4784) and the public JSON regeneration (a projection of reviews.json;
- * CI can pass `regenShow: regenShowViaScript()` to run the real generator).
+ * What is real here: the lane driver (lane-runner.js, shared with production), discovery, canonical keys, trust-model
+ * rows, merge-by-key, the static-server deploy and the cache-busted live poll. What is stood in: the page fetches (the
+ * fixture), the inline scorer (`scoreReview`, default the fixture's own score: the real one is BRO-4784), the public
+ * JSON regeneration (a projection of reviews.json, which skips the generator's per-critic dedupe), and all LATENCY,
+ * which is modelled (DEFAULT_LATENCY), so a time-to-live here is a budget check on assumptions, not a measurement.
  *
  * The arm gate: the lane arms for a real opening only if the last rehearsal passed and is recent. Otherwise it does
  * not arm and the old pipeline runs unchanged (design doc section 6).
@@ -18,29 +19,43 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const crypto = require('crypto');
 const ledger = require('./ledger');
 const discovery = require('./discovery');
-const trust = require('./trust-model');
 const publish = require('./publish');
+const { runLaneNight } = require('./lane-runner');
+const { resolveOutletFromUrl } = require('../review-normalization');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_ARM_MAX_AGE_MS = 8 * DAY_MS; // weekly CI plus a day of slack
-const MAX_PASSES = 4;
+
+// Modelled per-stage costs, in virtual milliseconds. They are ASSUMPTIONS about production, so they live in one place:
+// CI can replace them with observed numbers. The real deploy lags 20-30 minutes in bursts (root CLAUDE.md section 2);
+// pass `latency: { deployMs: 25 * 60000 }` to see the lane fail the 20-minute bar, as it would on such a night.
+const DEFAULT_LATENCY = { passIntervalMs: 2 * 60 * 1000, fetchMs: 3000, scoreMs: 5000, regenMs: 30 * 1000, deployMs: 8 * 60 * 1000, cdnMs: 2 * 60 * 1000, pollMs: 15 * 1000 };
 
 function buildAdapters(fixture) {
   const { feeds = [], outlets = [] } = fixture.adapters || {};
   return [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds }), discovery.sectionIndexAdapter({ outlets })];
 }
 
+/** Hash of the lane's code, so a rehearsal record can only arm the code that passed it. */
+function laneCodeHash(dir = __dirname) {
+  const h = crypto.createHash('sha256');
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.js')).sort()) { h.update(f); h.update(fs.readFileSync(path.join(dir, f))); }
+  return h.digest('hex').slice(0, 16);
+}
+
 /**
  * @param {object} args
- *   fixture {show:{id,title}, night, openingDate?, pages, reviews[], expectedKeys[], adapters, decoys[]}
+ *   fixture {show:{id,title}, night, openingDate?, pages, waves?, flaky?, reviews[], expectedKeys[], adapters, decoys[]}
  *   workDir? (a temp dir by default; removed unless keep), keep?, scoreReview?(row, entry), regenShow?(showId),
- *   startAt? ISO (virtual clock start; default 22:00 ET on the night), stepMs (virtual ms per clock read), maxMs
+ *   startAt? ISO (virtual clock start; default 22:00 ET on the night), latency? (overrides DEFAULT_LATENCY), maxMs
  * @returns {Promise<{pass, verdict, checks, summary, workDir?}>}
  */
-async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regenShow, startAt, stepMs = 1000, maxMs = ledger.DEFAULT_MAX_MS } = {}) {
+async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regenShow, startAt, latency = {}, maxMs = ledger.DEFAULT_MAX_MS } = {}) {
   if (!fixture || !fixture.show || !fixture.pages || !Array.isArray(fixture.reviews) || !Array.isArray(fixture.expectedKeys)) throw new Error('rehearsal: fixture needs show, pages, reviews and expectedKeys');
+  const lat = { ...DEFAULT_LATENCY, ...latency };
   const { show, night } = fixture;
   const dir = workDir || fs.mkdtempSync(path.join(os.tmpdir(), 'lane-rehearsal-'));
   const ledgerDir = path.join(dir, 'ledger');
@@ -56,70 +71,61 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
   ];
   fs.writeFileSync(reviewsFile, JSON.stringify({ _meta: { lastUpdated: 'rehearsal' }, reviews: bystanders }, null, 2));
 
-  let t = Date.parse(startAt || `${night}T22:00:00-04:00`);
-  const now = () => (t += stepMs);
-  const iso = () => new Date(now()).toISOString();
-  const startedAt = iso();
+  // Virtual clock: reading it never advances it. Only modelled work (wait) does.
+  const startMs = Date.parse(startAt || `${night}T22:00:00-04:00`);
+  let t = startMs;
+  const now = () => t;
+  const wait = async (ms) => { t += ms; };
   const server = await publish.startStaticServer(liveDir);
   try {
-    // 1. Discovery passes until a pass finds nothing new (what the 2-minute loop does, without the waiting).
-    const seen = new Set();
-    const memo = { rejected: {} };
-    const adapters = buildAdapters(fixture);
-    const fetchText = async (url) => { if (!(url in fixture.pages)) throw new Error(`404 ${url}`); return fixture.pages[url]; };
+    // Pages as a function of virtual time (late additions) with transient failures.
+    const failuresLeft = { ...(fixture.flaky || {}) };
+    const fetchText = async (url) => {
+      if (failuresLeft[url] > 0) { failuresLeft[url] -= 1; throw new Error(`503 ${url}`); }
+      let page = fixture.pages[url];
+      for (const w of fixture.waves || []) if (t - startMs >= w.afterMs && url in w.pages) page = w.pages[url];
+      if (page === undefined) throw new Error(`404 ${url}`);
+      return page;
+    };
     const byKey = new Map(fixture.reviews.map((r) => [discovery.canonicalUrl(r.url), r]));
-    const admitted = [];
-    const errors = [];
-    for (let pass = 0; pass < MAX_PASSES; pass++) {
-      const r = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt, adapters, fetchText, seen, memo, timeZone: fixture.timeZone });
-      errors.push(...r.errors);
-      discovery.recordDiscovered(ledgerDir, { show: show.id, night, admitted: r.admitted, now: now() });
-      for (const a of r.admitted) { seen.add(a.key); admitted.push(a); }
-      if (!r.admitted.length) break;
-    }
+    const unexpected = new Set();
+    const fetchReview = async (cand) => {
+      const entry = byKey.get(cand.key);
+      if (!entry) { unexpected.add(cand.key); throw new Error('not in fixture'); }
+      const reg = resolveOutletFromUrl(cand.url);
+      return { outletId: entry.outletId, outlet: (reg && reg.displayName) || entry.outletId, criticName: entry.criticName, fullText: entry.text, aggregator: entry.aggregator || {}, publishDate: entry.publishDate, score: entry.score };
+    };
 
-    // 2. fetched + scored, then the lane rows.
-    const unexpected = [];
-    const rows = [];
-    for (const a of admitted) {
-      const entry = byKey.get(a.key);
-      if (!entry) { unexpected.push(a.key); continue; }
-      ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'fetched', at: now() });
-      const row = trust.buildLaneReview({
-        showId: show.id, night, source: a.source, seenAt: iso(), outletId: entry.outletId, outlet: entry.outletId,
-        criticName: entry.criticName, url: a.url, publishDate: a.publishDate || entry.publishDate, fullText: entry.text, aggregator: entry.aggregator || {},
-      });
-      if (row.assignedScore == null) row.assignedScore = scoreReview ? scoreReview(row, entry) : entry.score;
-      row.contentTier = row.isFullReview ? 'complete' : 'stub';
-      ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
-      rows.push({ key: a.key, row });
-    }
-
-    // 3. Publish, dry-run, against the local static server.
     const projectShow = async (id) => {
       const doc = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
       fs.writeFileSync(path.join(publicDir, 'data', 'shows', `${id}.json`), JSON.stringify({ id, rv: doc.reviews.filter((r) => r.showId === id).map((r) => ({ o: r.outlet, cn: r.criticName, s: r.assignedScore, u: r.url })) }));
     };
-    const ports = {
+    const copyLive = publish.dryRunDeploy({ publicDir, liveDir, showId: show.id });
+    let visibleAt = Infinity;
+    const liveFetch = publish.fetchLiveShowFrom(server.baseUrl);
+    const publishPorts = {
       ...publish.createReviewsFilePort(reviewsFile),
-      regenShow: regenShow || projectShow,
-      deploy: publish.dryRunDeploy({ publicDir, liveDir, showId: show.id }),
-      fetchLiveShow: publish.fetchLiveShowFrom(server.baseUrl),
+      regenShow: async (id) => { await wait(lat.regenMs); return (regenShow || projectShow)(id); },
+      deploy: async () => { await wait(lat.deployMs); await copyLive(); visibleAt = t + lat.cdnMs; }, // the deploy finishes, then the CDN catches up
+      fetchLiveShow: async (id) => (t >= visibleAt ? liveFetch(id) : { rv: [] }),
     };
-    const published = rows.length
-      ? await publish.publishLaneReviews({ show: show.id, night, rows, ledgerDir, ports, now, pollMs: 5, timeoutMs: 60 * 1000, sleep: (ms) => new Promise((r) => setTimeout(r, ms)), openingDate: fixture.openingDate, dryRun: true })
-      : { merge: null, verified: [], missing: [], timedOut: false };
 
-    // 4. Verdict and the rehearsal-only checks.
+    const run = await runLaneNight({
+      show, night, openingDate: fixture.openingDate, timeZone: fixture.timeZone, adapters: buildAdapters(fixture), fetchText, ledgerDir,
+      fetchReview, scoreReview: scoreReview || ((row, fetched) => fetched.score), publishPorts, dryRun: true,
+      now, wait, latency: lat, passIntervalMs: lat.passIntervalMs, windowMs: Math.max(45 * 60 * 1000, ...(fixture.waves || []).map((w) => w.afterMs + 15 * 60 * 1000)), startedAt: startMs, pollMs: lat.pollMs, publishTimeoutMs: maxMs,
+    });
+
     const read = ledger.readLedger(ledgerDir, show.id, night);
     const verdict = ledger.rehearsalVerdict(read.events, { expectedKeys: fixture.expectedKeys, maxMs, corrupt: read.corrupt });
     const finalDoc = JSON.parse(fs.readFileSync(reviewsFile, 'utf8'));
     const ledgerKeys = new Set(read.events.map((e) => e.reviewKey));
     const decoyLeaks = (fixture.decoys || []).filter((u) => ledgerKeys.has(discovery.canonicalUrl(u) || u) || finalDoc.reviews.some((r) => r.url === u));
     const bystandersSurvived = bystanders.every((b) => finalDoc.reviews.some((r) => r.showId === b.showId && r.url === b.url));
-    const checks = { unexpected, decoyLeaks, bystandersSurvived, errors, timedOut: published.timedOut };
-    const pass = verdict.pass && unexpected.length === 0 && decoyLeaks.length === 0 && bystandersSurvived && !published.timedOut;
-    return { pass, verdict, checks, summary: ledger.summarize(read.events), published, workDir: keep ? dir : null };
+    const timedOut = run.published.some((p) => p.timedOut);
+    const checks = { unexpected: [...unexpected], decoyLeaks, bystandersSurvived, errors: run.errors, timedOut, passes: run.passes, modelled: lat };
+    const pass = verdict.pass && unexpected.size === 0 && decoyLeaks.length === 0 && bystandersSurvived && !timedOut;
+    return { pass, verdict, checks, summary: ledger.summarize(read.events), run, workDir: keep ? dir : null };
   } finally {
     await server.close();
     if (!keep && !workDir) fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 });
@@ -127,8 +133,8 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
 }
 
 /** Persist the outcome the arm gate reads. Failures are trimmed: the record is small and safe to commit. */
-function recordRehearsal(file, result, { at = Date.now(), kind = 'synthetic' } = {}) {
-  const rec = { at: new Date(at).toISOString(), pass: result.pass === true, kind, checked: result.verdict && result.verdict.checked, failures: ((result.verdict && result.verdict.failures) || []).slice(0, 10), checks: result.checks ? { unexpected: result.checks.unexpected.length, decoyLeaks: result.checks.decoyLeaks.length, bystandersSurvived: result.checks.bystandersSurvived, timedOut: result.checks.timedOut } : null };
+function recordRehearsal(file, result, { at = Date.now(), kind = 'synthetic', laneHash = null, error = null } = {}) {
+  const rec = { at: new Date(at).toISOString(), pass: result.pass === true, kind, laneHash, ...(error ? { error: String(error).slice(0, 300) } : {}), checked: result.verdict && result.verdict.checked, failures: ((result.verdict && result.verdict.failures) || []).slice(0, 10), checks: result.checks ? { unexpected: result.checks.unexpected.length, decoyLeaks: result.checks.decoyLeaks.length, bystandersSurvived: result.checks.bystandersSurvived, timedOut: result.checks.timedOut } : null };
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(`${file}.tmp`, `${JSON.stringify(rec, null, 2)}\n`);
   fs.renameSync(`${file}.tmp`, file);
@@ -144,14 +150,18 @@ function readRehearsalRecord(file) {
  * maxAgeMs all mean "do not arm": the old pipeline runs unchanged. Pure.
  * @returns {{arm: boolean, reason: string}}
  */
-function armDecision(record, { now = Date.now(), maxAgeMs = DEFAULT_ARM_MAX_AGE_MS } = {}) {
+function armDecision(record, { now = Date.now(), maxAgeMs = DEFAULT_ARM_MAX_AGE_MS, laneHash } = {}) {
   if (!record || typeof record !== 'object') return { arm: false, reason: 'no-rehearsal-record' };
   if (record.pass !== true) return { arm: false, reason: 'last-rehearsal-failed' };
+  if (!(Number.isFinite(record.checked) && record.checked > 0)) return { arm: false, reason: 'rehearsal-checked-nothing' };
+  if (!(Number.isFinite(maxAgeMs) && maxAgeMs > 0)) return { arm: false, reason: 'bad-max-age' }; // fail closed: NaN would make every record fresh
   const at = Date.parse(record.at);
   if (!Number.isFinite(at)) return { arm: false, reason: 'rehearsal-date-unreadable' };
   if (at > now + 5 * 60 * 1000) return { arm: false, reason: 'rehearsal-dated-in-the-future' };
   if (now - at > maxAgeMs) return { arm: false, reason: 'rehearsal-stale' };
+  // The record only vouches for the code that passed it: a lane change since then means rehearse again.
+  if (laneHash !== undefined && record.laneHash !== laneHash) return { arm: false, reason: 'lane-changed-since-rehearsal' };
   return { arm: true, reason: 'last-rehearsal-passed' };
 }
 
-module.exports = { DEFAULT_ARM_MAX_AGE_MS, runRehearsal, recordRehearsal, readRehearsalRecord, armDecision, buildAdapters };
+module.exports = { DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, armDecision, buildAdapters };

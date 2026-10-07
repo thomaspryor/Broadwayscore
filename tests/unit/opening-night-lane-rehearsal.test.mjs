@@ -13,6 +13,7 @@ const { buildSyntheticFixture } = require('../../scripts/lib/opening-night-lane/
 const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization.js');
 const discovery = require('../../scripts/lib/opening-night-lane/discovery.js');
 const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
+const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
 
 const CLI = new URL('../../scripts/opening-night-lane-rehearse.js', import.meta.url).pathname;
 const DAY = 24 * 60 * 60 * 1000;
@@ -68,10 +69,34 @@ test('a broken lane fails the rehearsal: a source page that goes missing leaves 
   assert.ok(res.verdict.failures.length >= 3, 'the three DTLI-only reviews');
 });
 
-test('a slow lane fails the rehearsal: time-to-live over the bar is too-slow', async () => {
-  const res = await rh.runRehearsal({ fixture: buildSyntheticFixture(), stepMs: 60 * 1000 });
+test('a slow lane fails the rehearsal: a 25-minute deploy (a real burst night) breaks the 20-minute bar', async () => {
+  const res = await rh.runRehearsal({ fixture: buildSyntheticFixture(), latency: { deployMs: 25 * 60 * 1000 } });
   assert.equal(res.pass, false);
-  assert.ok(res.verdict.failures.some((f) => f.reason === 'too-slow'));
+  assert.ok(res.verdict.failures.some((f) => f.reason === 'too-slow' || f.reason === 'not-live'));
+});
+
+test('time is modelled, not counted: reading the clock does not advance it, and the modelled stages add up', async () => {
+  const res = await rh.runRehearsal({ fixture: buildSyntheticFixture(), latency: { fetchMs: 0, scoreMs: 0, regenMs: 0, deployMs: 0, cdnMs: 0, pollMs: 1000 } });
+  assert.equal(res.pass, true);
+  assert.ok(res.summary.maxMs <= 5000, `with every modelled cost at zero the lane is near-instant, got ${res.summary.maxMs}ms`);
+  const slow = await rh.runRehearsal({ fixture: buildSyntheticFixture() });
+  assert.ok(slow.summary.maxMs > 10 * 60 * 1000, 'the default model (8 min deploy + 2 min CDN + work) costs real minutes');
+  assert.ok(slow.summary.maxMs < ledger.DEFAULT_MAX_MS);
+});
+
+test('late reviews and a transient failure: reviews added 30 minutes in are caught, and a failed date check is retried on a later pass', async () => {
+  const fixture = buildSyntheticFixture();
+  const res = await rh.runRehearsal({ fixture, keep: true });
+  try {
+    assert.equal(res.pass, true);
+    assert.ok(res.checks.passes > 2, 'more than one pass ran');
+    assert.ok(res.checks.errors.some((e) => /503/.test(e.error)), 'the transient 503 was recorded');
+    const events = ledger.readLedger(path.join(res.workDir, 'ledger'), fixture.show.id, fixture.night).events;
+    const firstSeen = (key) => Date.parse(events.find((e) => e.reviewKey === key && e.stage === 'discovered').at);
+    const late = fixture.reviews.filter((r) => r.via === 'bww-roundup').slice(-3).map((r) => discovery.canonicalUrl(r.url));
+    const early = discovery.canonicalUrl(fixture.reviews[1].url);
+    for (const k of late) assert.ok(firstSeen(k) - firstSeen(early) >= 29 * 60 * 1000, 'a late review is discovered after the wave, not at the start');
+  } finally { fs.rmSync(res.workDir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
 test('a review the fixture does not expect is a failure, not a bonus', async () => {
@@ -90,7 +115,7 @@ test('runRehearsal refuses a malformed fixture', async () => {
 
 test('armDecision: only a recent, passing rehearsal arms the lane', () => {
   const now = Date.parse('2026-10-14T12:00:00Z');
-  const rec = (over = {}) => ({ at: '2026-10-12T12:00:00Z', pass: true, ...over });
+  const rec = (over = {}) => ({ at: '2026-10-12T12:00:00Z', pass: true, checked: 35, laneHash: 'abc', ...over });
   assert.deepEqual(rh.armDecision(rec(), { now }), { arm: true, reason: 'last-rehearsal-passed' });
   assert.equal(rh.armDecision(null, { now }).reason, 'no-rehearsal-record');
   assert.equal(rh.armDecision('x', { now }).reason, 'no-rehearsal-record');
@@ -101,6 +126,51 @@ test('armDecision: only a recent, passing rehearsal arms the lane', () => {
   assert.equal(rh.armDecision(rec({ at: new Date(now - 8 * DAY).toISOString() }), { now }).arm, true, 'exactly at the limit still arms');
   assert.equal(rh.armDecision(rec({ at: '2026-10-20T00:00:00Z' }), { now }).reason, 'rehearsal-dated-in-the-future');
   assert.equal(rh.armDecision(rec({ at: new Date(now - 2 * DAY).toISOString() }), { now, maxAgeMs: DAY }).reason, 'rehearsal-stale');
+  assert.equal(rh.armDecision(rec({ at: '2026-09-01T00:00:00Z' }), { now, maxAgeMs: NaN }).reason, 'bad-max-age', 'a NaN limit must not make every record fresh');
+  assert.equal(rh.armDecision(rec(), { now, maxAgeMs: 0 }).reason, 'bad-max-age');
+  assert.equal(rh.armDecision(rec({ checked: 0 }), { now }).reason, 'rehearsal-checked-nothing');
+  assert.equal(rh.armDecision(rec({ checked: undefined }), { now }).reason, 'rehearsal-checked-nothing');
+  assert.equal(rh.armDecision(rec(), { now, laneHash: 'abc' }).arm, true);
+  assert.equal(rh.armDecision(rec(), { now, laneHash: 'different' }).reason, 'lane-changed-since-rehearsal', 'a pass vouches only for the code that passed');
+  assert.equal(rh.armDecision(rec({ laneHash: undefined }), { now, laneHash: 'abc' }).reason, 'lane-changed-since-rehearsal');
+});
+
+test('laneCodeHash changes when any lane file changes', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4787h-'));
+  try {
+    fs.writeFileSync(path.join(dir, 'a.js'), 'one');
+    const h1 = rh.laneCodeHash(dir);
+    assert.equal(rh.laneCodeHash(dir), h1);
+    fs.writeFileSync(path.join(dir, 'a.js'), 'two');
+    assert.notEqual(rh.laneCodeHash(dir), h1);
+    fs.writeFileSync(path.join(dir, 'b.js'), 'x');
+    assert.notEqual(rh.laneCodeHash(dir), rh.laneCodeHash(dir) + 'x');
+    assert.match(rh.laneCodeHash(), /^[0-9a-f]{16}$/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('lane-runner: refuses missing ports; a fetch that throws is retried on the next pass instead of being lost', async () => {
+  await assert.rejects(runLaneNight({ show: { id: 'x', title: 'X' } }), /is required/);
+  const fixture = buildSyntheticFixture();
+  const pages = { ...fixture.pages };
+  let calls = 0;
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4787r-'));
+  try {
+    let t = Date.parse('2026-10-18T22:00:00-04:00');
+    const reviewsFile = path.join(dir, 'reviews.json');
+    fs.writeFileSync(reviewsFile, JSON.stringify({ reviews: [] }));
+    const publishPorts = { ...require('../../scripts/lib/opening-night-lane/publish.js').createReviewsFilePort(reviewsFile), regenShow: async () => {}, deploy: async () => {}, fetchLiveShow: async () => ({ rv: JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews.map((r) => ({ u: r.url })) }) };
+    const byKey = new Map(fixture.reviews.map((r) => [discovery.canonicalUrl(r.url), r]));
+    const res = await runLaneNight({
+      show: fixture.show, night: fixture.night, openingDate: fixture.openingDate, adapters: [discovery.bwwRoundupAdapter()], fetchText: async (u) => { if (!(u in pages)) throw new Error('404'); return pages[u]; },
+      ledgerDir: path.join(dir, 'ledger'), publishPorts, dryRun: true, now: () => t, wait: async (ms) => { t += ms; },
+      fetchReview: async (c) => { calls++; if (calls === 1) throw new Error('timeout'); const e = byKey.get(c.key); return { outletId: e.outletId, outlet: e.outletId, criticName: e.criticName, fullText: e.text, aggregator: e.aggregator, score: e.score }; },
+      scoreReview: (row, f) => f.score,
+    });
+    assert.equal(res.errors.filter((e) => /timeout/.test(e.error)).length, 1);
+    assert.equal(res.admitted.length, 19, 'the 19 reviews on the roundup page: the one that failed once came back on the next pass');
+    assert.deepEqual(res.unpublished, []);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
 test('recordRehearsal / readRehearsalRecord round trip; a missing or corrupt record reads as null', () => {

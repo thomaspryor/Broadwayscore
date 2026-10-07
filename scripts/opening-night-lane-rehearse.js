@@ -17,15 +17,25 @@ const arg = (name, dflt) => { const i = process.argv.indexOf(name); return i >= 
 async function main() {
   if (process.argv.includes('--arm-check')) {
     const days = Number(arg('--max-age-days', '8'));
-    const decision = rehearsal.armDecision(rehearsal.readRehearsalRecord(arg('--record', DEFAULT_RECORD)), { maxAgeMs: days * 24 * 60 * 60 * 1000 });
+    const decision = rehearsal.armDecision(rehearsal.readRehearsalRecord(arg('--record', DEFAULT_RECORD)), { maxAgeMs: days * 24 * 60 * 60 * 1000, laneHash: rehearsal.laneCodeHash() });
     console.log(JSON.stringify(decision));
     process.exit(decision.arm ? 0 : 3);
   }
   if (process.argv.includes('--rehearse')) {
     if (arg('--fixture', 'synthetic') !== 'synthetic') { console.error('only the synthetic fixture exists until a real opening is recorded (BRO-4787 follow-up)'); process.exit(2); }
-    const result = await rehearsal.runRehearsal({ fixture: buildSyntheticFixture() });
-    const rec = rehearsal.recordRehearsal(arg('--out', DEFAULT_RECORD), result, { kind: 'synthetic' });
-    console.log(JSON.stringify({ pass: rec.pass, checked: rec.checked, failures: rec.failures, checks: rec.checks, medianMs: result.summary.medianMs, maxMs: result.summary.maxMs }));
+    const out = arg('--out', DEFAULT_RECORD);
+    const laneHash = rehearsal.laneCodeHash();
+    let result;
+    try {
+      result = await rehearsal.runRehearsal({ fixture: buildSyntheticFixture() });
+    } catch (e) {
+      // A crash must disarm: leave a FAILED record rather than the previous pass standing for another week.
+      rehearsal.recordRehearsal(out, { pass: false }, { kind: 'synthetic', laneHash, error: e && e.message });
+      console.error(e && e.stack || e);
+      process.exit(2);
+    }
+    const rec = rehearsal.recordRehearsal(out, result, { kind: 'synthetic', laneHash });
+    console.log(JSON.stringify({ pass: rec.pass, checked: rec.checked, failures: rec.failures, checks: rec.checks, modelledMedianMs: result.summary.medianMs, modelledMaxMs: result.summary.maxMs }));
     process.exit(result.pass ? 0 : 1);
   }
   console.error('usage: opening-night-lane-rehearse.js --rehearse | --arm-check');

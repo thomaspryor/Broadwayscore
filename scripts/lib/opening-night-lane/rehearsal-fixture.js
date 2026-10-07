@@ -52,12 +52,17 @@ function buildSyntheticFixture() {
 
   // BWW roundup: the first 22 outlets; the NYT one is paywalled.
   const roundupUrl = `https://www.broadwayworld.com/article/Review-Roundup-${SLUG.toUpperCase()}-Opens-On-Broadway-20261018`;
-  const bwwLinks = BWW_OUTLETS.map(([id, host, critic]) => {
+  // The last three roundup entries are added to the page half an hour later (a late review the lane must still catch).
+  const LATE_FROM = BWW_OUTLETS.length - 3;
+  const LATE_AFTER_MS = 30 * 60 * 1000;
+  const bwwLinks = BWW_OUTLETS.map(([id, host, critic], i) => {
     const url = add(id, host, critic, 'bww-roundup', id === 'nytimes' ? { paywalled: true } : {});
     return `<a href="${url}?utm_source=bww&partner=rss">${critic}, ${id}</a>`;
   });
+  const roundupPage = (links) => `<html><body><nav><a href="https://www.nytimes.com/section/theater">Theater</a></nav><article>${links.join('')}<a href="https://rehearsal-blog.substack.com/p/the-rehearsal-play-review">A Substack critic nobody registered</a><a href="https://www.nytimes.com/2026/10/18/theater/${SLUG}-interview-1">Interview with the cast</a></article><footer><a href="https://www.washingtonpost.com/about/">about</a></footer></body></html>`;
   pages['https://www.broadwayworld.com/'] = `<html><body><a href="${roundupUrl}">Review Roundup: THE REHEARSAL PLAY</a><a href="https://www.broadwayworld.com/article/Review-Roundup-ANOTHER-SHOW-20261010">other</a></body></html>`;
-  pages[roundupUrl] = `<html><body><nav><a href="https://www.nytimes.com/section/theater">Theater</a></nav><article>${bwwLinks.join('')}<a href="https://rehearsal-blog.substack.com/p/the-rehearsal-play-review">A Substack critic nobody registered</a><a href="https://www.nytimes.com/2026/10/18/theater/${SLUG}-interview-1">Interview with the cast</a></article><footer><a href="https://www.washingtonpost.com/about/">about</a></footer></body></html>`;
+  pages[roundupUrl] = roundupPage(bwwLinks.slice(0, LATE_FROM));
+  const waves = [{ afterMs: LATE_AFTER_MS, pages: { [roundupUrl]: roundupPage(bwwLinks) } }];
 
   // DTLI: re-cites two BWW reviews (dedupe) plus three of its own.
   const dtliPage = 'https://didtheylikeit.com/shows/the-rehearsal-play/';
@@ -90,9 +95,11 @@ function buildSyntheticFixture() {
     pages[`https://${host}/stage/${SLUG}-previews-review`] = `<html><head><meta property="article:published_time" content="2026-10-11T09:00:00+01:00"></head><body>early</body></html>`;
   }
 
+  // One section-index article date check fails once (a transient 503) and must succeed on a later pass.
+  const flakyUrl = reviews.find((r) => r.via === 'section-index').url;
   const expectedKeys = reviews.map((r) => canonicalUrl(r.url));
   return {
-    kind: 'synthetic', show: SHOW, night: NIGHT, openingDate: NIGHT, pages, reviews, expectedKeys,
+    kind: 'synthetic', show: SHOW, night: NIGHT, openingDate: NIGHT, pages, waves, flaky: { [flakyUrl]: 1 }, reviews, expectedKeys,
     adapters: { feeds, outlets },
     // Candidates the lane must NOT publish; the runner checks none reaches the ledger.
     decoys: ['https://rehearsal-blog.substack.com/p/the-rehearsal-play-review', `https://www.nytimes.com/2026/10/18/theater/${SLUG}-interview-1`],

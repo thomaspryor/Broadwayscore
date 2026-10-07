@@ -275,6 +275,10 @@ jobs:
             # invisibility this list exists to catch. 36h = daily cadence +
             # 12h cron-lag cushion, matching check-arm-yield.yml above.
             "card-verifiability-audit.yml|36|Card Verifiability Audit (undispatchable-backlog drain)"
+            # BRO-4787: Monday 06:10 UTC weekly opening-night lane rehearsal. The lane only arms for a real opening
+            # when the last rehearsal passed, so a rehearsal that silently stops leaves the lane disarmed with no
+            # alert. 184h = weekly cadence + 16h cron-lag cushion.
+            "lane-rehearsal.yml|184|Opening-night lane rehearsal"
           )
 
           FAILURES=""
