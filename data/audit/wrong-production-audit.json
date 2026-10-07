@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-07T06:11:40.466Z",
+  "timestamp": "2026-10-07T09:43:49.982Z",
   "stats": {
-    "totalReviews": 46735,
-    "alreadyFlagged": 18719,
-    "dateGuardCatches": 273,
+    "totalReviews": 46819,
+    "alreadyFlagged": 18723,
+    "dateGuardCatches": 274,
     "directorMismatch": 1341,
-    "tvFilmSignals": 1364,
-    "londonSignals": 1297,
-    "offBroadwaySignals": 511,
+    "tvFilmSignals": 1365,
+    "londonSignals": 1298,
+    "offBroadwaySignals": 510,
     "yearMismatch": 117,
-    "noPublishDate": 4300
+    "noPublishDate": 4396
   },
   "findings": [
     {
@@ -12796,6 +12796,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 78,
+      "publishDate": "2024-10-02",
+      "url": "https://www.islingtontribune.co.uk/article/review-golden-boy-at-almeida-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 707d before show (2024-10-02 vs 2026-09-09)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -39500,6 +39519,19 @@
       ]
     },
     {
+      "showId": "what-the-animals-say-off-west-end-2026",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "publishDate": "2026-10-06",
+      "url": "https://theartsdispatch.substack.com/p/what-the-animals-say-review-finborough",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "what-the-constitution-means-to-me-2019",
       "file": "njcom--christopher-kelly.json",
       "score": 89,
@@ -61177,20 +61209,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-snow-geese-2013",
-      "file": "bloomberg--jeremy-gerard.json",
-      "score": 80,
-      "publishDate": "2013-10-25",
-      "url": "https://www.bloomberg.com/news/2013-10-25/hyde-pierce-charms-in-landing-parker-s-snow-stage.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
         }
       ]
     },
