@@ -1,22 +1,6 @@
 {
   "entries": [
     {
-      "showId": "red-riding-hood-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-03T13:29:09.711Z",
-      "dueAt": "2026-10-04T05:29:09.711Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-04T08:52:08.940Z"
-    },
-    {
-      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-04T14:02:07.596Z",
-      "dueAt": "2026-10-05T06:02:07.596Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-05T07:44:16.473Z"
-    },
-    {
       "showId": "soon-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-05T17:22:03.176Z",
@@ -36,6 +20,42 @@
       "market": "west-end",
       "queuedAt": "2026-10-07T14:22:37.397Z",
       "dueAt": "2026-10-08T06:22:37.397Z",
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-07T14:47:46.322Z",
+      "dueAt": "2026-10-07T15:47:46.322Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "guardian"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-07T14:47:46.322Z",
+      "dueAt": "2026-10-07T17:47:46.322Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "guardian"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-07T14:47:46.322Z",
+      "dueAt": "2026-10-08T02:47:46.322Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "guardian"
+      ],
       "attempted": false
     }
   ]
