@@ -1,12 +1,17 @@
 {
   "issueNumber": "bro-4262",
   "planId": "7c1e5a52-3b0e-4c53-9a0a-6a3f2d9e4b71",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-07T14:30:00.000Z",
-  "submitter": { "name": null, "email": null },
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "Retire liberation-tour-2026, auto-created 2026-10-06: its Tours To You schedule is three nonprofit regional engagements, not a national tour.",
-    "steps": ["Retire liberation-tour-2026 (provisional auto-created row), id only"],
+    "steps": [
+      "Retire liberation-tour-2026 (provisional auto-created row), id only"
+    ],
     "riskLevel": "Low",
     "actions": [
       {
@@ -17,5 +22,13 @@
         "description": "Retire regional co-production mis-created as a tour"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-07T17:14:08.863Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired liberation-tour-2026 (\"Liberation\" @ North American Tour)"
+    }
+  ]
 }
