@@ -1,26 +1,31 @@
 {
-  "updatedAt": "2026-10-07T16:10:58.204Z",
-  "processed": 213,
-  "failed": 116,
-  "successRate": "64.7%",
+  "updatedAt": "2026-10-07T16:35:18.086Z",
+  "processed": 55,
+  "failed": 25,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 129,
+    "playwright": 35,
     "amp": 1,
-    "browserbase": 4,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 29,
-    "scrapingbee": 18,
+    "scrapingdog": 10,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 34
+    "archive": 5
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-07T15:47:11.201Z",
+      "t": "2026-10-07T16:34:59.935Z",
       "event": "bb-session",
-      "session": "a1b7f570",
-      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+      "session": "82e07caf",
+      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-"
+    },
+    {
+      "t": "2026-10-07T16:35:00.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
