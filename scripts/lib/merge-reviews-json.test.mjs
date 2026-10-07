@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline, isMergeFossilAnchor } from './merge-reviews-json.js';
+import { mergeReviewsJson, keyOf, outletKey, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank, isUnknownByline, isMergeFossilAnchor } from './merge-reviews-json.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -27,9 +27,24 @@ function review(overrides = {}) {
   };
 }
 
-test('keyOf: showId + outlet(lower/trim) + criticKey(criticName)', () => {
+test('keyOf: showId + outlet slug + criticKey(criticName)', () => {
   const r = review({ outlet: '  The Stage  ', criticName: 'A CRITIC ' });
-  assert.equal(keyOf(r), 'anansi-the-spider-west-end-2026|the stage|a critic');
+  assert.equal(keyOf(r), 'anansi-the-spider-west-end-2026|the-stage|a critic');
+});
+
+test('keyOf: outlet display name and its slug are one outlet (BRO-4829 Manic Mumdays duplicate)', () => {
+  assert.equal(keyOf(review({ outlet: 'Manic Mumdays' })), keyOf(review({ outlet: 'manic-mumdays' })));
+  assert.notEqual(keyOf(review({ outlet: 'The Stage' })), keyOf(review({ outlet: 'The Standard' })));
+  assert.equal(outletKey(''), 'unknown');
+  assert.equal(outletKey('Théâtre Café'), 'theatre-cafe');
+});
+
+test('mergeReviewsJson: concurrent writers stamping display name vs slug merge to ONE row (BRO-4829)', () => {
+  const ours = { _meta: { lastUpdated: '2026-10-07T02:34:00Z' }, reviews: [review({ outlet: 'Manic Mumdays', outletId: undefined, criticName: 'Cassie' })] };
+  const remote = { _meta: { lastUpdated: '2026-10-07T02:30:00Z' }, reviews: [review({ outlet: 'manic-mumdays', outletId: 'suntimes-style-drift', criticName: 'Cassie' })] };
+  const { merged } = mergeReviewsJson(ours, remote);
+  assert.equal(merged.reviews.length, 1);
+  assert.equal(merged.reviews[0].outlet, 'Manic Mumdays');
 });
 
 test('keyOf: punctuation/diacritic drift in criticName collapses to the same key (manual-entry-merge.js criticKey semantics)', () => {
