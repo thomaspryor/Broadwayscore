@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-07T16:15:15.778Z",
+  "timestamp": "2026-10-07T17:28:41.085Z",
   "stats": {
-    "totalReviews": 46829,
-    "alreadyFlagged": 18729,
+    "totalReviews": 46851,
+    "alreadyFlagged": 18735,
     "dateGuardCatches": 277,
-    "directorMismatch": 1342,
+    "directorMismatch": 1343,
     "tvFilmSignals": 1369,
-    "londonSignals": 1302,
+    "londonSignals": 1304,
     "offBroadwaySignals": 510,
     "yearMismatch": 117,
-    "noPublishDate": 4388
+    "noPublishDate": 4386
   },
   "findings": [
     {
@@ -1176,7 +1176,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "standard--unknown.json",
-      "score": 35,
+      "score": 37,
       "publishDate": "2026-10-07",
       "url": "https://www.standard.co.uk/culture/theatre/affluenza-review-b1299859.html",
       "findings": [
@@ -1237,7 +1237,7 @@
     {
       "showId": "affluenza-off-west-end-2026",
       "file": "thestage--holly-omahony.json",
-      "score": 38,
+      "score": 42,
       "publishDate": "2026-10-06",
       "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
       "findings": [
@@ -20627,6 +20627,19 @@
       ]
     },
     {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.theatermania.com/news/jazz-vocalist-stella-cole-to-join-cast-of-maybe-happy-ending-on-broadway_1855818/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
+        }
+      ]
+    },
+    {
       "showId": "mcneal-2024",
       "file": "thewrap--robert-hofler.json",
       "score": 36,
@@ -30800,7 +30813,7 @@
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "standard--allis-brennan.json",
       "score": 98,
-      "publishDate": null,
+      "publishDate": "November 20th, 2017",
       "url": "https://www.standard.co.uk/go/london/theatre/the-book-of-mormon-musical-theatre-tickets-in-london-a3706421.html",
       "findings": [
         {
@@ -30880,7 +30893,7 @@
       "showId": "the-book-of-mormon-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "March 23rd, 2013",
       "url": "https://www.timeout.com/london/theatre/the-book-of-mormon-review",
       "findings": [
         {
@@ -42796,6 +42809,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/blood-of-my-blood/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.timeout.com/london/theatre/blood-of-my-blood",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
