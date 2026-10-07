@@ -60,9 +60,12 @@ async function writeStored(stored, plain) {
   }
 }
 
+// The login is encrypted with the cloud env's OPENAI_API_KEY. GitHub's
+// OPENAI_API_KEY secret is a different key, so codex-runner.yml passes the
+// cloud value as the CODEX_AUTH_KEY secret (BRO-4745).
 function keyMaterial() {
-  const k = process.env.OPENAI_API_KEY;
-  if (!k) throw new Error('OPENAI_API_KEY is not set, so the stored Codex login cannot be opened');
+  const k = process.env.CODEX_AUTH_KEY || process.env.OPENAI_API_KEY;
+  if (!k) throw new Error('neither CODEX_AUTH_KEY nor OPENAI_API_KEY is set, so the stored Codex login cannot be opened');
   return k;
 }
 

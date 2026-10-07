@@ -2,7 +2,7 @@
 'use strict';
 /**
  * daily-runner.js — the unattended Codex card worker (BRO-4745). The
- * codex-runner.yml workflow runs it three times a day; no Claude session
+ * codex-runner.yml workflow runs it five times a day; no Claude session
  * supervises the work itself.
  *
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
