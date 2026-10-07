@@ -131,19 +131,24 @@ function resetWorktree(branch) {
 
 function weeklyPct() {
   const dir = path.join(CODEX_HOME, 'sessions');
-  let newest = null;
+  const files = [];
   const walk = (d) => {
     let ents = [];
     try { ents = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
     for (const e of ents) {
       const p = path.join(d, e.name);
       if (e.isDirectory()) walk(p);
-      else if (e.name.endsWith('.jsonl')) { const m = fs.statSync(p).mtimeMs; if (!newest || m > newest.m) newest = { p, m }; }
+      else if (e.name.endsWith('.jsonl')) { try { files.push({ p, m: fs.statSync(p).mtimeMs }); } catch { /* vanished */ } }
     }
   };
   walk(dir);
-  if (!newest) return null;
-  try { return R.latestWeeklyPercent(fs.readFileSync(newest.p, 'utf8')); } catch { return null; }
+  // The newest rollout can be one that has not logged a rate-limit reading yet
+  // (just started, or aborted early), so fall back through the next few.
+  files.sort((a, b) => b.m - a.m);
+  for (const f of files.slice(0, 8)) {
+    try { const pct = R.latestWeeklyPercent(fs.readFileSync(f.p, 'utf8')); if (pct != null) return pct; } catch { /* unreadable */ }
+  }
+  return null;
 }
 
 function saveLogin() {
@@ -308,6 +313,8 @@ async function workCard(pick, stats, inFlight) {
   if (claim.code !== 0 || !action || action === 'noop') { log(`${id}: claim ${action || 'failed'}, skipped`); return 'skip'; }
   stats.claimed.push(id);
   current = id;
+  openCards.add(id);
+  refreshLock(); // record the claim, so a run that dies here leaves its card named in the lock
 
   let disposed = false;
   try {
@@ -380,7 +387,7 @@ async function workCard(pick, stats, inFlight) {
         }
         log(`${id}: pushed ${ref}`);
         const entry = { ref, card, summary };
-        entry.promise = finishLanding(entry, stats);
+        entry.promise = finishLanding(entry, stats).finally(() => openCards.delete(id));
         inFlight.push(entry);
         disposed = true;
         return 'done';
@@ -397,6 +404,7 @@ async function workCard(pick, stats, inFlight) {
     return 'done';
   } finally {
     current = null;
+    if (!inFlight.some((e) => e.card.identifier === id)) openCards.delete(id);
     if (!disposed) {
       stats.crashed.push(id);
       await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n\nThe runner hit an error on this card and changed nothing on main. Back to Todo for the Claude worker.`).catch(() => {});
@@ -413,6 +421,11 @@ const LOCK_REF = 'refs/heads/codex-runner-lock';
 // run only until it goes stale. One card is well under 5h even at every timeout.
 const LOCK_STALE_MS = 5 * 3600_000;
 let lockSha = null;
+// Cards this run claimed and has not finished (working or waiting on a landing); written
+// into every lock stamp. orphanCards: the ones a dead run left in the stale lock we took over.
+const openCards = new Set();
+let orphanCards = [];
+const lockStamp = () => R.lockMessage(new Date().toISOString(), [...openCards]);
 function lockCommit(msg) {
   const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
   return git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg], ROOT);
@@ -426,21 +439,24 @@ function takeLock() {
   const ls = sh('git', ['ls-remote', 'origin', LOCK_REF]);
   if (ls.code !== 0) return `lock unreadable: ${tail(ls.out, 200)}`;
   const cur = ls.stdout.split(/\s/)[0] || '';
+  let stale = [];
   if (cur) {
     git(['fetch', '-q', 'origin', LOCK_REF], ROOT);
     const [ct, ...msg] = git(['log', '-1', '--format=%ct %s', 'FETCH_HEAD'], ROOT).split(' ');
     const age = Date.now() - Number(ct) * 1000;
     if (msg.join(' ').startsWith('locked') && age < LOCK_STALE_MS) return `another run holds the lock (${msg.join(' ')}, ${Math.round(age / 60_000)} min old)`;
+    stale = R.lockCards(msg.join(' '));
   }
-  const sha = lockCommit(`locked ${new Date().toISOString()}`);
+  const sha = lockCommit(lockStamp());
   if (!lockPush(sha, cur)) return 'another run took the lock first';
   lockSha = sha;
+  orphanCards = stale;
   return null;
 }
 /** Re-stamp the lock so a long healthy run never looks stale. -> false if another run took it. */
 function refreshLock() {
   if (!lockSha) return true;
-  const sha = lockCommit(`locked ${new Date().toISOString()}`);
+  const sha = lockCommit(lockStamp());
   if (!lockPush(sha, lockSha)) return false;
   lockSha = sha;
   return true;
@@ -498,6 +514,29 @@ async function reconcileLanded(stats) {
   }
 }
 
+/** Cards a dead run left claimed (named in the stale lock we took over): close, park for the land resume, or hand back. */
+async function recoverOrphans(stats) {
+  for (const id of orphanCards) {
+    const card = await linear.getIssue(id).catch(() => null);
+    if (!card || !card.state || card.state.type !== 'started') continue;
+    log(`${id}: left claimed by a run that stopped`);
+    if (landedOnMain(id)) {
+      const r = await moveCard(id, 'Done', '## Codex runner: landed\n\nAn earlier run stopped before closing this card; its commit is on main.');
+      if (r.code === 0) stats.landed.push(id);
+      continue;
+    }
+    const ref = `land/codex-${id.toLowerCase()}`;
+    let landing = false;
+    try { landing = git(['ls-remote', 'origin', `refs/heads/${ref}`]) !== ''; } catch { /* treat as not landing */ }
+    if (landing) {
+      await linearBrain(['update', id, '--comment', `## Codex runner: landing did not finish (an earlier run stopped)\n\nThe land ref \`${ref}\` is left for the cloud worker's resume step.`]);
+      continue;
+    }
+    stats.crashed.push(id);
+    await moveCard(id, 'Todo', '## Codex runner: stopped mid-card\n\nAn earlier run ended (its session stopped) before finishing this card, and nothing reached main. Back to Todo.');
+  }
+}
+
 async function runLocked(startedMs) {
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
@@ -511,7 +550,7 @@ async function runLocked(startedMs) {
   setupWorktree();
 
   const stats = { claimed: [], landed: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
-  if (!OPTS.dryRun) await reconcileLanded(stats);
+  if (!OPTS.dryRun) { await reconcileLanded(stats); await recoverOrphans(stats); }
   const inFlight = [];
   let worked = 0;
   let stop = null;
@@ -549,5 +588,5 @@ async function runLocked(startedMs) {
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
 }
 
-module.exports = { newUnitFailures, takeLock, releaseLock };
+module.exports = { newUnitFailures, takeLock, releaseLock, weeklyPct, recoverOrphans };
 if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });

@@ -161,3 +161,13 @@ test('cardBody: comments reach the prompt oldest first, newest kept when over bu
   assert.ok(tight.includes('newest: VERIFY') && !tight.includes('oldest note') && tight.includes('1 older omitted'));
   assert.equal(r.cardBody('x'.repeat(40000), []).length, 30000);
 });
+
+test('lockMessage/lockCards: the run lock names unfinished cards for the next run', () => {
+  assert.equal(r.lockMessage('2026-10-07T03:13:00Z'), 'locked 2026-10-07T03:13:00Z');
+  const msg = r.lockMessage('2026-10-07T03:13:00Z', ['BRO-4784', 'BRO-12', 'BRO-4784', null, 'x; rm']);
+  assert.equal(msg, 'locked 2026-10-07T03:13:00Z cards=BRO-4784,BRO-12');
+  assert.deepEqual(r.lockCards(msg), ['BRO-4784', 'BRO-12']);
+  assert.deepEqual(r.lockCards('locked 2026-10-06T21:00:00.000Z'), []);
+  assert.deepEqual(r.lockCards('unlocked'), []);
+  assert.deepEqual(r.lockCards(''), []);
+});
