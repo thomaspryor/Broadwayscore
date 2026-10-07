@@ -1544,12 +1544,13 @@
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
       "incidentOpenedAt": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-10-06T17:46:21.356Z",
+      "lastSeen": "2026-10-07T18:18:22.649Z",
       "lastNotifiedAt": "2026-10-06T17:46:21.356Z",
       "lastSurfacedAt": null,
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": "BRO-2285"
+      "linearIdentifier": "BRO-2285",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1847,13 +1848,13 @@
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
       "incidentOpenedAt": "2026-10-02T17:13:10.248Z",
-      "lastSeen": "2026-10-06T17:46:26.426Z",
+      "lastSeen": "2026-10-07T18:18:22.654Z",
       "lastNotifiedAt": "2026-10-02T17:13:10.248Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": "BRO-4521",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "cron-health-chronic:Opening Night Checklist": {
       "status": "resolved",
@@ -2694,7 +2695,7 @@
       "silentRefires": 14
     },
     "cron-health:Audit Aggregator Review Gap": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Audit Aggregator Review Gap",
@@ -2705,7 +2706,8 @@
       "lastSurfacedAt": "2026-10-06T17:46:21.242Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-07T18:18:22.733Z"
     },
     "opening-night-cv-wrongproduction-unhandled-jane-eyre-off-west-end-2026": {
       "status": "open",
@@ -3281,18 +3283,17 @@
       "silentRefires": 2
     },
     "cron-health-chronic:Check Opening Night Drift": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Check Opening Night Drift",
       "firstSeen": "2026-09-16T15:54:29.513Z",
-      "lastSeen": "2026-09-19T15:09:21.612Z",
-      "lastNotifiedAt": "2026-09-16T15:54:29.513Z",
+      "incidentOpenedAt": "2026-10-07T18:18:18.022Z",
+      "lastSeen": "2026-10-07T18:18:18.022Z",
+      "lastNotifiedAt": "2026-10-07T18:18:18.022Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-3655",
-      "silentRefires": 3,
-      "resolvedAt": "2026-09-20T15:13:43.619Z"
+      "linearIdentifier": "BRO-3889"
     },
     "opening-night-cv-wrongproduction-unhandled-my-sons-a-queer-but-what-can-you-do-west-end-2026": {
       "status": "open",
@@ -11617,6 +11618,20 @@
       "cardId": null,
       "linearIdentifier": "BRO-4844",
       "silentRefires": 1
+    },
+    "cron-health:Weekly A/B Monitors": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Weekly A/B Monitors",
+      "firstSeen": "2026-10-07T18:18:17.939Z",
+      "incidentOpenedAt": "2026-10-07T18:18:17.939Z",
+      "lastSeen": "2026-10-07T18:18:17.939Z",
+      "lastNotifiedAt": "2026-10-07T18:18:17.939Z",
+      "lastSurfacedAt": "2026-10-07T18:18:17.939Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
