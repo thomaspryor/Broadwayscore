@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T15:49:05.946Z",
+  "generatedAt": "2026-10-07T17:45:40.617Z",
   "summary": {
     "total": 7,
     "high": 2,
@@ -7,6 +7,42 @@
     "low": 2
   },
   "collisions": [
+    {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29281",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "affluenza-off-west-end-2026",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-10-05",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "franz-and-marie-west-end-2026",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-10-05",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "paranormal-activity-west-end-2025",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-12-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-theatre-reviews"
+        }
+      ],
+      "suggestedWinner": "affluenza-off-west-end-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
       "normalizedUrl": "https://timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
@@ -60,33 +96,6 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
-    },
-    {
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PA484",
-      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
-      "candidates": [
-        {
-          "showId": "delirium-off-broadway-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": null,
-          "openingDate": "2026-09-24",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        },
-        {
-          "showId": "soon-off-broadway-2026",
-          "file": "lighting-and-sound-america--david-barbour.json",
-          "publishDate": null,
-          "openingDate": "2026-10-05",
-          "hasScore": false,
-          "hasFullText": true,
-          "outletId": "lighting-and-sound-america"
-        }
-      ],
-      "suggestedWinner": "soon-off-broadway-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
