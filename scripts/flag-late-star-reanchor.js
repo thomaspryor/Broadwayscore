@@ -76,6 +76,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     // without clearing it is invisible to the drain. Same pattern as
     // flag-combined-reviews.js.
     delete d.rescoreCompletedAt;
+    d.rescoreFlaggedAt = new Date().toISOString();
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

@@ -90,6 +90,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
     d.needsRescore = true;
     d.rescoreReason = 'bw-v6-decompression';
     delete d.rescoreCompletedAt;
+    d.rescoreFlaggedAt = new Date().toISOString();
     safeWriteReview(f, d, { force: true });
   }
   if (LIMIT && flagged >= LIMIT) break;

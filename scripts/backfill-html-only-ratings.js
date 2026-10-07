@@ -96,6 +96,7 @@ function isCandidate(d, show, f) {
       d.needsRescore = true;
       d.rescoreReason = 'late-star-anchor';
       delete d.rescoreCompletedAt;
+      d.rescoreFlaggedAt = new Date().toISOString();
     }
     safeWriteReview(f, d, { force: true });
     stats.written++;

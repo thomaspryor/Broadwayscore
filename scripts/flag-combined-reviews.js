@@ -178,6 +178,7 @@ function main() {
           data.rejectionReasoning = null;
           data.rescoreCompletedAt = null;
           data.needsRescore = true;
+          data.rescoreFlaggedAt = new Date().toISOString();
         }
         safeWriteReview(entry.filePath, data);
       }

@@ -161,6 +161,7 @@ if (APPLY) {
     d.needsRescore = true;
     d.rescoreReason = f.kind === 'false-truncation' ? 'false-truncation-warning' : f.kind === 'unanchored' ? 'late-star-anchor' : `late-star-anchor:${f.kind}`;
     delete d.rescoreCompletedAt;
+    d.rescoreFlaggedAt = new Date().toISOString();
     if (f.kind === 'out-of-band') d.starBandFlaggedAt = new Date().toISOString();
     safeWriteReview(f.abs, d, { force: true });
     flagged++;
