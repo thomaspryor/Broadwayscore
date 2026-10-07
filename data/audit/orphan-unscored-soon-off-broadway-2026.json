@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "soon-off-broadway-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-07T15:51:02.138Z",
+  "detectedAt": "2026-10-07T16:03:25.276Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "outletId": "lighting-and-sound-america",
-      "criticName": "David Barbour",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=DL1DON",
-      "fullTextLen": 4811,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "nick-blaemire--unknown.json",
       "outletId": "nick-blaemire",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-07T15:51:02.138Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }

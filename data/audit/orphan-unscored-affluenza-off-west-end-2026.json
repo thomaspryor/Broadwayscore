@@ -2,43 +2,9 @@
   "version": 1,
   "showId": "affluenza-off-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-07T15:51:02.138Z",
+  "detectedAt": "2026-10-07T16:03:25.276Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "london-unattached--jeanne-horak.json",
-      "outletId": "london-unattached",
-      "criticName": "Jeanne Horak",
-      "url": "https://www.london-unattached.com/affluenza-riverside-studios/",
-      "fullTextLen": 10808,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "thelivereview--tanya-howard.json",
-      "outletId": "thelivereview",
-      "criticName": "Tanya Howard",
-      "url": "https://thelivereview.co.uk/affluenza-review-riverside-studios/",
-      "fullTextLen": 6274,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -74,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 4,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-07T15:51:02.138Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
