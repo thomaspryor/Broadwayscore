@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-07T12:53:13.957Z",
-  "processed": 4,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-07T13:20:59.106Z",
+  "processed": 233,
+  "failed": 167,
+  "successRate": "58.3%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 119,
+    "amp": 1,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 36,
+    "scrapingbee": 26,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 48
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 24,
+  "recentActivity": [
+    {
+      "t": "2026-10-07T12:29:04.421Z",
+      "event": "bb-session",
+      "session": "fd8c6670",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-10-07T12:29:05.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-07T12:31:57.273Z",
+      "event": "bb-session",
+      "session": "cc4565f4",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
+    },
+    {
+      "t": "2026-10-07T12:31:57.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:32:08.394Z",
+      "event": "bb-session",
+      "session": "cf3a4bea",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
+    },
+    {
+      "t": "2026-10-07T12:32:09.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:33:29.818Z",
+      "event": "bb-session",
+      "session": "bddcb647",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-07T12:33:30.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:33:38.563Z",
+      "event": "bb-session",
+      "session": "30772f57",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-07T12:33:39.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:46:21.799Z",
+      "event": "bb-session",
+      "session": "7f702fde",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-07T12:46:22.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-07T12:46:31.366Z",
+      "event": "bb-session",
+      "session": "11b11476",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-07T12:46:32.047Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-07T12:47:41.962Z",
+      "event": "bb-session",
+      "session": "243f3fae",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-07T12:47:46.304Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-07T12:48:12.093Z",
+      "event": "bb-session",
+      "session": "3cd181b5",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-07T12:48:16.360Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-07T13:18:46.010Z",
+      "event": "bb-session",
+      "session": "e6a6efb2",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-10-07T13:18:46.746Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
