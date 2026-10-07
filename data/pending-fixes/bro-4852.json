@@ -1,0 +1,116 @@
+{
+  "issueNumber": "bro-4852",
+  "planId": "e1ca6d3c-654c-4a9c-843a-2290be038256",
+  "status": "pending",
+  "createdAt": "2026-10-07T22:57:52.515Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4852: Two Girls (off-Broadway, opens 2026-10-18) shows four School Girls reviews (Guardian, NYT, Theatrely, Vulture) taken from the wrong newyorkcitytheatre.com roundup. Mark them wrongShow so the rebuild drops them; the show has no real reviews yet.",
+    "steps": [
+      "Mark guardian/nytimes/theatrely/vulture --unknown files in two-girls-off-broadway-2026 wrongShow with rejectionReason wrong_show",
+      "Rebuild drops them; Two Girls shows 0 reviews until its own reviews land after 2026-10-18"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/guardian--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/guardian--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "wrong_show",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/guardian--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "School Girls; Or, The African Mean Girls Play excerpt (NYC Theatre roundup title mismatch, BRO-4852)",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytimes--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytimes--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "wrong_show",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytimes--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "School Girls; Or, The African Mean Girls Play excerpt (NYC Theatre roundup title mismatch, BRO-4852)",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/theatrely--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/theatrely--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "wrong_show",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/theatrely--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "School Girls; Or, The African Mean Girls Play excerpt (NYC Theatre roundup title mismatch, BRO-4852)",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/vulture--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/vulture--unknown.json",
+        "field": "rejectionReason",
+        "oldValue": null,
+        "newValue": "wrong_show",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/vulture--unknown.json",
+        "field": "rejectionReasoning",
+        "oldValue": null,
+        "newValue": "School Girls; Or, The African Mean Girls Play excerpt (NYC Theatre roundup title mismatch, BRO-4852)",
+        "description": "BRO-4852: newyorkcitytheatre.com excerpt from the School Girls; Or, The African Mean Girls Play (Broadway, Samuel J. Friedman) roundup, filed under Two Girls (Cherry Lane, opens 2026-10-18) by a one-word title match accepted without an LLM"
+      }
+    ]
+  }
+}

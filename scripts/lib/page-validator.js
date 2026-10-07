@@ -10,6 +10,13 @@
  * Fallback chain: Gemini → OpenAI → accept-with-warning
  * (Safe direction: when uncertain, ACCEPT rather than reject valid reviews)
  *
+ * audit-secret-scan-always-trace: required by 8+ scrapers (over the secret
+ * scan's shared-module threshold). Every gather/aggregator workflow step ran
+ * without GEMINI_API_KEY/OPENAI_API_KEY, so the tiebreaker never ran in CI and
+ * every borderline page was accepted ("Two Girls" took School Girls' NYC
+ * Theatre roundup, BRO-4852). The marker lets audit-workflow-secret-gaps see
+ * these reads; tests/unit/page-validator-workflow-keys.test.mjs blocks a gap.
+ *
  * Usage:
  *   const { validatePageMatchesShow } = require('./lib/page-validator');
  *   const result = await validatePageMatchesShow(html, 'Romeo + Juliet');
@@ -354,6 +361,11 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
   // Safe direction: accept borderline matches rather than dropping valid reviews
   if (match.matched) {
     console.log(`  [WARN] Low-confidence match accepted without LLM: "${showTitle}" (confidence: ${match.confidence})`);
+    // Surface it on the run summary: in CI this should only happen during an
+    // LLM outage, never because a workflow step forgot the keys (BRO-4852).
+    if (process.env.GITHUB_ACTIONS && !options.skipLlm) {
+      console.log(`::warning::page-validator accepted "${showTitle}" on a ${match.confidence} word match with no LLM verdict (keys missing or providers down)`);
+    }
     return { valid: true, confidence: match.confidence, reason: 'low-confidence match accepted (no LLM available)' };
   }
 
