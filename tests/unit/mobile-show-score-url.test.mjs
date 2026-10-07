@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural consistency of generated per-show JSON against its inputs; pins no facts
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
