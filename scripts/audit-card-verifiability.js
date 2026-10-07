@@ -343,8 +343,10 @@ async function runLinearAudit(limit, opts = {}) {
     console.error(`[audit-card-verifiability] linear: re-checking ${flaggedCount} flagged card(s) against their own comments (BRO-2796 correction path; ${initial.missing.length} missing-path, ${initial.vacuous.length} vacuous)`);
   }
   const reconciled = await reconcileCheckDefectsBothBuckets(initial, { log: console.error });
-  report.missingCheckPaths = reconciled.missing;
-  report.vacuousChecks = reconciled.vacuous;
+  // Names redacted like `refused` above: this report is committed to the PUBLIC repo, now on a daily schedule.
+  const redactName = (c) => ({ ...c, name: redactEmails(c.name || '') });
+  report.missingCheckPaths = reconciled.missing.map(redactName);
+  report.vacuousChecks = reconciled.vacuous.map(redactName);
   writeReport(report, LINEAR_REPORT_PATH);
   return report;
 }
