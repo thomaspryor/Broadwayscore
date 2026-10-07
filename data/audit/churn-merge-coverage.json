@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-07T14:14:21.138Z",
+    "generatedAt": "2026-10-07T16:14:25.405Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,60 +9,60 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 7,
-    "exemptCount": 30,
+    "exemptCount": 34,
     "coveredCount": 36,
-    "highChurnTracked": 73
+    "highChurnTracked": 77
   },
   "flagged": [
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 293
+      "churn": 292
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 166
+      "churn": 185
     },
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 144
+      "churn": 142
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 100
+      "churn": 96
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 100
+      "churn": 96
     },
     {
       "path": ".github/workflows/test.yml",
       "churn": 69
     },
     {
-      "path": "data/audit/validation-baseline.json",
+      "path": "data/show-score-candidates.json",
       "churn": 30
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 507
+      "churn": 522
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 349
+      "churn": 348
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 198
+      "churn": 196
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 198
+      "churn": 196
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 198
+      "churn": 196
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -70,42 +70,46 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 142
+      "churn": 143
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 100
+      "churn": 96
     },
     {
       "path": "public/data/shows/slam-frank-off-broadway-2026.json",
-      "churn": 90
-    },
-    {
-      "path": "public/data/shows/hay-fever-west-end-2026.json",
-      "churn": 66
+      "churn": 95
     },
     {
       "path": "public/data/shows/affluenza-off-west-end-2026.json",
-      "churn": 62
+      "churn": 70
     },
     {
       "path": "public/data/shows/into-the-woods-noel-coward-west-end-2026.json",
+      "churn": 64
+    },
+    {
+      "path": "public/data/shows/hay-fever-west-end-2026.json",
       "churn": 61
+    },
+    {
+      "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
+      "churn": 60
     },
     {
       "path": "public/data/shows/kramerfauci-st-anns-off-broadway-2026.json",
       "churn": 58
     },
     {
-      "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 53
-    },
-    {
       "path": "public/data/shows/soon-off-broadway-2026.json",
-      "churn": 53
+      "churn": 56
     },
     {
       "path": "public/data/shows/the-hairy-ape-irish-repertory-theatre-off-broadway-2026.json",
+      "churn": 50
+    },
+    {
+      "path": "public/data/shows/the-hungry-ghost-off-west-end-2026.json",
       "churn": 45
     },
     {
@@ -113,15 +117,15 @@
       "churn": 44
     },
     {
+      "path": "public/data/shows/tru-off-west-end-2026.json",
+      "churn": 44
+    },
+    {
       "path": "public/data/shows/purpose-regional-2026.json",
       "churn": 42
     },
     {
-      "path": "public/data/shows/the-hungry-ghost-off-west-end-2026.json",
-      "churn": 40
-    },
-    {
-      "path": "public/data/shows/tru-off-west-end-2026.json",
+      "path": "public/data/shows/what-the-animals-say-off-west-end-2026.json",
       "churn": 40
     },
     {
@@ -129,52 +133,69 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/franz-and-marie-west-end-2026.json",
+      "path": "public/data/shows/water-for-elephants-tour-2025.json",
       "churn": 38
     },
     {
-      "path": "public/data/shows/what-the-animals-say-off-west-end-2026.json",
+      "path": "public/data/shows/whos-afraid-of-virginia-woolf-west-end-2026.json",
       "churn": 37
     },
     {
-      "path": "public/data/shows/whos-afraid-of-virginia-woolf-west-end-2026.json",
+      "path": "public/data/shows/franz-and-marie-west-end-2026.json",
       "churn": 36
     },
     {
-      "path": "public/data/shows/water-for-elephants-tour-2025.json",
-      "churn": 34
-    },
-    {
-      "path": "public/data/shows/torera-off-broadway-2026.json",
-      "churn": 33
-    },
-    {
-      "path": "public/data/shows/a-small-and-quiet-light-off-west-end-2026.json",
-      "churn": 32
-    },
-    {
       "path": "public/data/shows/thelma-and-louise-a-new-musical-off-west-end-2026.json",
-      "churn": 31
+      "churn": 36
     },
     {
       "path": "public/data/shows/the-lion-king-tour-2021.json",
-      "churn": 30
+      "churn": 34
     },
     {
       "path": "public/data/shows/the-phantom-of-the-opera-tour-2025.json",
+      "churn": 34
+    },
+    {
+      "path": "public/data/shows/the-great-gatsby-tour-2026.json",
+      "churn": 33
+    },
+    {
+      "path": "public/data/shows/spamalot-tour-2025.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/the-notebook-tour-2025.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/torera-off-broadway-2026.json",
+      "churn": 31
+    },
+    {
+      "path": "public/data/shows/a-small-and-quiet-light-off-west-end-2026.json",
+      "churn": 30
+    },
+    {
+      "path": "public/data/shows/maybe-happy-ending-2024.json",
       "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 476,
+      "churn": 482,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 389,
+      "churn": 388,
       "mergeAttr": "union"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 384,
+      "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
@@ -182,13 +203,8 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 370,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/landings.jsonl",
-      "churn": 357,
+      "churn": 362,
       "mergeAttr": "union"
     },
     {
@@ -208,17 +224,17 @@
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 238,
+      "churn": 237,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-what-the-animals-say-off-west-end-2026.json",
-      "churn": 198,
+      "churn": 196,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 198,
+      "churn": 196,
       "mergeAttr": "ours"
     },
     {
@@ -228,7 +244,7 @@
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 150,
+      "churn": 151,
       "mergeAttr": "ours"
     },
     {
@@ -237,58 +253,63 @@
       "mergeAttr": "union"
     },
     {
+      "path": "data/audit/orphan-unscored-affluenza-off-west-end-2026.json",
+      "churn": 109,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-franz-and-marie-west-end-2026.json",
+      "churn": 109,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/collection-state/browserbase-usage.json",
       "churn": 105,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 100,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/syndicated-duplicates.json",
-      "churn": 100,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/wrong-production-audit.json",
-      "churn": 100,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-affluenza-off-west-end-2026.json",
-      "churn": 97,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-franz-and-marie-west-end-2026.json",
-      "churn": 97,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 93,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/orphan-unscored-boop-tour-2026.json",
-      "churn": 88,
+      "churn": 100,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-slam-frank-off-broadway-2026.json",
-      "churn": 84,
+      "churn": 96,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pre2005-wrong-production.json",
+      "churn": 96,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/syndicated-duplicates.json",
+      "churn": 96,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/wrong-production-audit.json",
+      "churn": 96,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
+      "churn": 88,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-hairy-ape-irish-repertory-theatre-off-broadway-2026.json",
-      "churn": 50,
+      "churn": 56,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
       "churn": 40,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/school-girls-or-the-african-mean-girls-play-2026.json",
+      "churn": 33,
       "mergeAttr": "ours"
     },
     {
@@ -312,12 +333,12 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 32,
+      "path": "data/audit/churn-merge-coverage.json",
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/poller-backoff/ectoplasm-off-broadway-2026.json",
+      "path": "data/audit/corpus-drift.json",
       "churn": 31,
       "mergeAttr": "ours"
     },
@@ -332,12 +353,7 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/churn-merge-coverage.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/corpus-drift.json",
+      "path": "data/audit/poller-backoff/ectoplasm-off-broadway-2026.json",
       "churn": 30,
       "mergeAttr": "ours"
     },
