@@ -74,6 +74,9 @@ const EXEMPT_FILES = new Set([
   'fetch-bww-roundups.js',
   'download-aggregator-pages.js',
   'test-bww-title-validation.js',
+  // BRO-4787: a SYNTHETIC rehearsal fixture for a fictional show; it builds fake aggregator pages for a replay and
+  // never fetches or guesses a URL anywhere.
+  'rehearsal-fixture.js',
   'no-url-guess-loops.test.mjs',
 ]);
 
