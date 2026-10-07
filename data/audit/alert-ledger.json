@@ -11093,7 +11093,8 @@
       "linearIdentifier": "BRO-4811",
       "silentRefires": 1,
       "absentRunIds": [
-        "37560581822"
+        "37560581822",
+        "37567164165"
       ]
     },
     "scheduled-email-count:2026-10-04": {
@@ -11385,6 +11386,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:b2f9629f": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"once generated per-show JSON carries au.sources.ss.u, every tile with a known URL has it\"",
+      "firstSeen": "2026-10-07T03:47:32.578Z",
+      "incidentOpenedAt": "2026-10-07T03:47:32.578Z",
+      "lastSeen": "2026-10-07T03:47:32.578Z",
+      "lastNotifiedAt": "2026-10-07T03:47:32.578Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4827",
+      "dispatch": {
+        "requestedAt": "2026-10-07T03:47:32.578Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37567164165",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37567164165"
+      }
     }
   }
 }
