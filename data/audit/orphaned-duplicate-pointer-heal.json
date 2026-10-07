@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-07T02:30:48.142Z",
+  "generated": "2026-10-07T03:51:05.305Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 22,
+  "count": 21,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -85,13 +85,6 @@
       "loserFile": "variety--frank-rizzo.json",
       "targetFile": "variety--maya-phillips.json",
       "reason": "orphaned-duplicate-heal: variety--maya-phillips.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "my-neighbour-totoro-west-end-2025",
-      "loserFile": "the-morning-star--unknown.json",
-      "targetFile": "the-morning-star--will-stone.json",
-      "reason": "orphaned-duplicate-heal: the-morning-star--will-stone.json was flagged invalid after the-morning-star--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
