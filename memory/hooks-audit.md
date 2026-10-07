@@ -1,6 +1,6 @@
 # Hooks audit (BRO-383, Phase 3)
 
-Source of truth for the hook migration. Every hook is either **KEEP** (with a stated reason) or **DELETE** (with the replacement named). No hook is left undecided. Audit date 2026-09-29.
+Source of truth for the hook migration. Every hook is either **KEEP** (with a stated reason) or **DELETE** (with the replacement named). No hook is left undecided. Audit date 2026-09-29; refreshed 2026-10-07 for two project hooks added since (pre-push-land-preflight, compact-state). `tests/unit/hooks-audit-coverage.test.mjs` fails when a hook under `.claude/hooks/` or `scripts/hooks/` is missing from this document or left undecided, so it cannot go stale silently.
 
 Rule used: a hook is kept only if it blocks an irreversible or costly action *before* it happens and nothing downstream can catch it (shared-state races, spend, outbound email, main-branch writes, secret leaks), or it is pure session plumbing. Anything that only nags, duplicates CI or the Linear board, or polices a retired system is deleted.
 
@@ -78,10 +78,12 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 | block-prompting-remote-tools.sh | PreToolUse remote MCP | KEEP | Those tools prompt the owner's phone in every mode. |
 | enterworktree-guard.sh | PreToolUse EnterWorktree | KEEP | Same-name resume of a locked/dirty worktree caused a real cross-session clobber (2026-07-26). |
 | check-skill-redaction.sh | PreToolUse Bash | KEEP | Repo is public; blocks pushes that reintroduce a redacted sensitive string. |
+| pre-push-land-preflight.sh | PreToolUse Bash | KEEP | Blocks a `land/*` push that land.yml would refuse anyway (rebase conflict, unregistered test file). Each refusal costs a ~30-minute land cycle; the check takes a second. Fails open. No master exists, so the project copy runs everywhere (BRO-4593). |
+| compact-state.sh | PreCompact + SessionStart(compact) | KEEP | Writes a checkpoint before compaction and prints it back after, so a long session keeps its state (spend review 2026-10-01). Fail-open, no master exists, logic is unit-tested in `scripts/lib/compact-state.js`. |
 | verify-edits.sh | Stop | KEEP | Cloud copy of the master Stop gate. |
 | session-start.sh | SessionStart | KEEP | Cloud copy of the master. |
 | notion-create-block.sh | (not wired) | DELETE | Notion retired. Replacement: none needed, `.claude/settings.json` does not register it; delete the file. |
-| whitespace-nowrap-lint.sh | PostToolUse Edit/Write | DELETE | Same as the user-level entry: ESLint rule plus `/visual-qa`. |
+| whitespace-nowrap-lint.sh | PostToolUse Edit/Write | DELETE | Replaced by the same ESLint rule set plus the `/visual-qa` overflow probe, as in the user-level entry. |
 
 ## Git hooks (`scripts/hooks/`)
 
@@ -93,7 +95,7 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 
 ## Totals
 
-- Kept: 28 user-level + 14 project (mostly cloud copies of user-level masters) + 3 git.
+- Kept: 28 user-level + 16 project (mostly cloud copies of user-level masters) + 3 git.
 - Deleted: 15 user-level scripts (commit-check, script-edit-check, design-system-lint, whitespace-nowrap-lint, design-system-mockup-check, gh-zombie-reap, config-change-notify, watched-file-changed, context-budget-nudge, session-stop, and the five notion-* hooks) plus 2 project scripts (notion-create-block, whitespace-nowrap-lint).
 - The named handful of *gates* that remain, by purpose: worktree, push/merge review, visual, email, infra review, API-poll, cmux safety, model spend, memory races, and the three Stop gates (exit-status, finish-line, verify-edits) plus Linear.
 
