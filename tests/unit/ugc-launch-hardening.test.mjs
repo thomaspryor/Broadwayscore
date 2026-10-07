@@ -22,3 +22,11 @@ test('public list metadata reads bypass the Next data cache', () => {
   const s = read('src/app/list/[slug]/page.tsx');
   assert.match(s, /getServerSupabaseClient\(\{ fetch: noStoreFetch \}\)/);
 });
+
+test('no web sign-out revokes the account\'s other devices (BRO-4822)', () => {
+  // supabase-js signOut() defaults to scope 'global': one sign-out anywhere
+  // would sign the visitor's phone and other browsers out with no trace.
+  const calls = [...read('src/contexts/AuthContext.tsx').matchAll(/auth\.signOut\(([^)]*)\)/g)];
+  assert.ok(calls.length >= 2, 'expected the sign-out and delete-account calls');
+  for (const [call, args] of calls) assert.match(args, /scope: 'local'/, `${call} must pass { scope: 'local' }`);
+});

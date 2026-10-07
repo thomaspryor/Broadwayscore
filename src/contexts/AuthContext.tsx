@@ -249,7 +249,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!client) return;
 
     trackUgc('sign_out');
-    await client.auth.signOut();
+    // This device only. The default ('global') revokes every session the
+    // account has, so signing out of the iOS app or another browser silently
+    // signed the owner's phone out too (BRO-4822).
+    await client.auth.signOut({ scope: 'local' });
     // A draft rating left by a signed-out visitor must not open for whoever signs in next on this device.
     clearPendingAction();
     setAnalyticsUser(null);
