@@ -1314,10 +1314,9 @@ export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow
       .filter((s): s is ComputedShow => s != null && (s.status === 'open' || s.status === 'previews' || s.status === 'upcoming') && !isSameShow(s, show) && getCity(s.category) === showCity)
       .slice(0, limit);
   }
-  // Fallback: filter algorithmic results to open/previews/upcoming
-  return getRelatedShowsAlgorithmic(show, limit * 3)
-    .filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming')
-    .slice(0, limit);
+  // Fallback: rank within the open pool (status filter runs BEFORE the top-N cut,
+  // otherwise closed shows crowd the cut and the pool comes back near-empty)
+  return getRelatedShowsAlgorithmic(show, limit, 'open');
 }
 
 export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedShow[] {
@@ -1332,10 +1331,11 @@ export function getRelatedShowsClosed(show: ComputedShow, limit = 6): ComputedSh
       .filter((s): s is ComputedShow => s != null && s.status === 'closed' && !isSameShow(s, show) && getCity(s.category) === showCity)
       .slice(0, limit);
   }
-  // Fallback: filter algorithmic results to closed
-  return getRelatedShowsAlgorithmic(show, limit * 3)
-    .filter(s => s.status === 'closed')
-    .slice(0, limit);
+  // Fallback: rank within the closed pool. Filtering AFTER a global top-N cut gave
+  // an unreviewed show (previews, no tags) ONE closed rec: open shows carry a +3
+  // boost and old closed ones lose on year proximity, so they never made the cut
+  // (Other Desert Cities 2026 showed only Plaza Suite).
+  return getRelatedShowsAlgorithmic(show, limit, 'closed');
 }
 
 /**
@@ -1362,7 +1362,11 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
 /**
  * Algorithmic fallback for shows not in the LLM-generated JSON
  */
-function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow[] {
+// Closed pool floor: the closed inventory is large, so only recommend shows critics
+// actually liked. (Unscored candidates stay eligible, they are rare in this pool.)
+const RELATED_CLOSED_MIN_SCORE = 60;
+
+export function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6, statusFilter?: 'open' | 'closed'): ComputedShow[] {
   const allShows = getAllShows();
 
   // Precompute creative team lookup (name → role)
@@ -1400,7 +1404,17 @@ function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow
 
   const showCity = getCity(show.category);
   const scored = allShows
-    .filter(s => !isSameShow(s, show) && (s.criticScore?.reviewCount ?? 0) >= 5 && getCity(s.category) === showCity)
+    .filter(s => {
+      if (isSameShow(s, show) || (s.criticScore?.reviewCount ?? 0) < 5 || getCity(s.category) !== showCity) return false;
+      const isActive = s.status === 'open' || s.status === 'previews' || s.status === 'upcoming';
+      if (statusFilter === 'open' && !isActive) return false;
+      if (statusFilter === 'closed') {
+        if (s.status !== 'closed') return false;
+        const sc = s.criticScore?.score;
+        if (sc != null && sc < RELATED_CLOSED_MIN_SCORE) return false;
+      }
+      return true;
+    })
     .map(candidate => {
       let score = 0;
 
@@ -1437,6 +1451,10 @@ function getRelatedShowsAlgorithmic(show: ComputedShow, limit = 6): ComputedShow
 
       // Currently open/previews boost
       if (candidate.status === 'open' || candidate.status === 'previews' || candidate.status === 'upcoming') score += 3;
+
+      // Quality: well-reviewed shows win ties (0-5 pts) so an unscored/untagged source
+      // show still gets good recs instead of whatever sorts first
+      score += Math.max(0, Math.min(5, (candidate.criticScore?.score ?? 0) / 20));
 
       return { show: candidate, score };
     })
