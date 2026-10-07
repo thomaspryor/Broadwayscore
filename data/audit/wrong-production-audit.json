@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-07T02:20:05.534Z",
+  "timestamp": "2026-10-07T02:34:54.902Z",
   "stats": {
     "totalReviews": 46735,
-    "alreadyFlagged": 18711,
+    "alreadyFlagged": 18713,
     "dateGuardCatches": 271,
     "directorMismatch": 1341,
-    "tvFilmSignals": 1363,
+    "tvFilmSignals": 1364,
     "londonSignals": 1297,
     "offBroadwaySignals": 511,
     "yearMismatch": 117,
@@ -3913,32 +3913,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "file": "maryandblake--blake.json",
-      "publishDate": "2026-10-03",
-      "url": "https://maryandblake.com/why-does-henry-forget-claire-blood-of-my-blood/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "file": "showsnob--matthew-fox.json",
-      "publishDate": "2026-10-02",
-      "url": "https://showsnob.com/outlander-blood-of-my-blood-season-2-episode-3-recap",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -8851,6 +8825,20 @@
     },
     {
       "showId": "diana-the-musical-2021",
+      "file": "independent--louis-chilton.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/films/news/diana-musical-netflix-bad-reaction-b1931748.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "diana-the-musical-2021",
       "file": "mashable--erin-strecker.json",
       "score": 36,
       "publishDate": null,
@@ -8977,6 +8965,20 @@
     },
     {
       "showId": "diana-the-musical-2021",
+      "file": "slate--madison-malone-kircher.json",
+      "score": 13,
+      "publishDate": null,
+      "url": "https://slate.com/culture/2021/10/diana-musical-netflix-broadway-hate-watch.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "diana-the-musical-2021",
       "file": "theater-life--david-sheward.json",
       "score": 39,
       "publishDate": "2021-10-07T00:21:31",
@@ -9023,6 +9025,20 @@
       "score": 80,
       "publishDate": "November 17, 2021",
       "url": "https://www.theatrely.com/post/diana-wears-a-delightful-crown-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "diana-the-musical-2021",
+      "file": "times-uk--unknown.json",
+      "score": 13,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/diana-the-musical-review-kitschy-broadway-show-is-a-right-royal-disaster-d28sbrvzf",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -16641,6 +16657,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "manic-mumdays--cassie.json",
+      "score": 95,
       "publishDate": "2026-10-03",
       "url": "https://www.manic-mumdays.co.uk/2026/10/03/into-the-woods-noel-coward-theatre-london/",
       "findings": [
@@ -16846,6 +16863,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "liamodell--unknown.json",
+      "score": 41,
       "publishDate": "2026-01-08",
       "url": "https://liamodell.com/2026/01/08/into-the-woods-review-bridge-theatre-james-lapine-jamie-parker-gracie-mcgonigal-katie-brayben-chumisa-dornford-may-characters-story/",
       "findings": [
