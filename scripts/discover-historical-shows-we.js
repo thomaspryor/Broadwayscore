@@ -2,30 +2,30 @@
 /**
  * discover-historical-shows-we.js
  *
- * WE historical pilot S1 (plan v2.2): enumerate West End productions for a
- * given season that are NOT already in shows.json. Follows the OB historical
- * pattern (discover-ob-historical.js / promote-ob-historical.js) — this
- * script is DISCOVERY ONLY, it never writes shows.json. It writes candidates
- * to data/audit/we-historical-candidates.json for human review, then
- * promote-historical-we.js writes the reviewed subset into shows.json.
+ * WE historical backfill, season discovery (BRO-4851, plan v3.1:
+ * docs/specs/west-end-historical-backfill-v3.md). DISCOVERY ONLY — never
+ * writes shows.json. Writes data/audit/we-historical-candidates-<season>.json;
+ * promote-historical-we.js writes the promotable subset.
  *
- * Theatre Record's production index would be the ideal primary discovery
- * source (comprehensive, cheap), but its extraction requires an authenticated
- * Playwright session (see scripts/extract-theatre-record.js) that only runs
- * in CI with the TR_EMAIL/TR_PASSWORD secrets — this script can't drive that
- * itself. Wikipedia's per-season "YYYY–YY West End theatre season" articles
- * are a real, freely-fetchable source (verified live 2026-08-11) and are
- * wired here as SOURCES.wikipedia. Additional sources (Olivier eligibility
- * lists, OLT) are stubbed — see SOURCES below — so the corroboration bar
- * (scripts/lib/we-historical-corroboration.js, ≥2 independent sources) is
- * honest about what's actually wired: with one live source, nothing
- * auto-corroborates, and every candidate needs human review before
- * promote-historical-we.js can accept it (plan's "hand-check the first 10
- * candidates" probe gate).
+ * Sources (all free JSON APIs, runnable locally, no credentials):
+ *   - WhatsOnStage London listings (lib/wos-rest-listings.js), filtered to
+ *     isWestEndVenue(): the dated primary listing — venue, previews,
+ *     opening, closing.
+ *   - WhatsOnStage review posts in the season window: review signal.
+ *   - Olivier ceremony nominees for the two ceremonies a season can fall in
+ *     (lib/olivier-ceremony-wikipedia.js): independent review signal.
+ * Each listing gets a decision from decideWeHistoricalPromotion()
+ * (lib/we-historical-corroboration.js).
+ *
+ * v2.2 read a "YYYY–YY West End theatre season" Wikipedia article; no such
+ * article exists for any season (404, verified 2026-10-07), so it always
+ * found 0 candidates.
+ *
+ * Known limit: WOS listings are thin before 2018-19 (1 row for 2016-17, 22
+ * for 2017-18). Those seasons need review-post-led discovery (plan Phase C).
  *
  * Usage:
- *   node scripts/discover-historical-shows-we.js --season=2024-2025
- *   node scripts/discover-historical-shows-we.js --season=2024-2025 --verbose
+ *   node scripts/discover-historical-shows-we.js --season=2024-2025 [--verbose]
  */
 
 'use strict';
@@ -33,42 +33,31 @@
 const fs = require('fs');
 const path = require('path');
 
-const { fetchPage } = require('./lib/scraper');
+const { validateSeason, getSeasonDates, isDateInSeason } = require('./lib/we-seasons');
 const { normalizeTitle } = require('./lib/title-match');
 const { venuesMatch } = require('./lib/deduplication');
-const { validateSeason, getSeasonDates, isDateInSeason } = require('./lib/we-seasons');
-const { isCorroborated } = require('./lib/we-historical-corroboration');
+const { isWestEndVenue } = require('./lib/venue-classification');
+const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
+const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion } = require('./lib/we-historical-corroboration');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = `discover-historical-shows-we.js — Enumerate WE productions for a season not already in shows.json. Writes candidates only.
+const USAGE = `discover-historical-shows-we.js — List West End productions for a season that are not in shows.json. Writes candidates only.
 
 Usage:
   node scripts/discover-historical-shows-we.js --season=YYYY-YYYY [options]
 
 Options:
-  --verbose     Print per-candidate parse detail
+  --verbose     Print every candidate, not just promotable ones
   --help, -h    print this usage and exit
 `;
 
-if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
-
-const args = process.argv.slice(2);
-const seasonArg = args.find(a => a.startsWith('--season='))?.split('=')[1];
-const verbose = args.includes('--verbose');
-
-if (!seasonArg) {
-  console.error('Usage: node scripts/discover-historical-shows-we.js --season=YYYY-YYYY');
-  process.exit(2);
-}
-const seasonCheck = validateSeason(seasonArg);
-if (!seasonCheck.isValid) {
-  console.error(`Invalid --season: ${seasonCheck.reason}`);
-  process.exit(2);
-}
-
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
-const OUT_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-candidates.json');
+const DAY_MS = 86400000;
+
+function candidatesPath(season) {
+  return path.join(ROOT, 'data', 'audit', `we-historical-candidates-${season}.json`);
+}
 
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
@@ -76,181 +65,158 @@ function loadShows() {
   return Array.isArray(shows) ? shows : Object.values(shows);
 }
 
-function wikipediaSeasonUrl(season) {
-  const [startYear, endYear] = season.split('-');
-  const shortEnd = endYear.slice(2);
-  // en dash between the two year halves, URL-encoded.
-  return `https://en.wikipedia.org/wiki/${startYear}%E2%80%93${shortEnd}_West_End_theatre_season`;
+const isoDay = d => d.toISOString().slice(0, 10);
+const addDays = (iso, n) => isoDay(new Date(Date.parse(iso) + n * DAY_MS));
+
+/** Venue equality for matching against shows.json rows: venuesMatch plus NT/Royal Court/@sohoplace naming variants. */
+function sameVenue(a, b) {
+  return venuesMatch(a, b) || venueFamily(a) === venueFamily(b);
 }
 
 /**
- * Best-effort extraction of {title, venue, openingDate} triples from a WE
- * season Wikipedia article. These articles are hand-edited prose/lists with
- * no consistent machine-readable structure across years, so this looks for
- * the most durable signal: an internal wiki link (the production's own
- * article, or a redirect) followed within the same list item / paragraph by
- * "at the X Theatre" and a date. Entries where a venue can't be found are
- * kept with venue:null (dedup/corroboration will naturally fail closed on
- * those rather than guessing).
+ * WOS sometimes lists one production twice (a "West End" suffixed duplicate,
+ * a re-listed run). Collapse rows with the same title + venue family whose
+ * start dates are within 30 days, keeping the one with an opening date.
  */
-function parseWikipediaSeasonPage(html) {
-  const results = [];
-  // Wikipedia list items and short paragraphs containing a wikilink + "at the ... Theatre"
-  const blockRe = /<(?:li|p)[^>]*>([\s\S]{1,600}?)<\/(?:li|p)>/g;
-  let block;
-  while ((block = blockRe.exec(html))) {
-    const chunk = block[1];
-    const linkMatch = chunk.match(/<a\s+href="\/wiki\/[^"]+"\s+title="([^"]+)">([^<]+)<\/a>/);
-    if (!linkMatch) continue;
-    const linkText = linkMatch[2].replace(/&amp;/g, '&').trim();
-    // Skip obvious non-title links (venues, people, months) — real production
-    // titles are the FIRST wikilink in the block in these articles' convention.
-    if (/^(?:January|February|March|April|May|June|July|August|September|October|November|December)$/.test(linkText)) continue;
+function collapseDuplicateListings(rows) {
+  const out = [];
+  for (const r of rows) {
+    const start = Date.parse(r.openingDate || r.previewsStartDate);
+    const twin = out.find(o => normalizeTitle(o.title) === normalizeTitle(r.title)
+      && venueFamily(o.venue) === venueFamily(r.venue)
+      && Math.abs(Date.parse(o.openingDate || o.previewsStartDate) - start) <= 30 * DAY_MS);
+    if (!twin) { out.push(r); continue; }
+    if (!twin.openingDate && r.openingDate) Object.assign(twin, r);
+  }
+  return out;
+}
 
-    const venueMatch = chunk.match(/at the ([A-Z][A-Za-z0-9''\s&.-]{2,50}?(?:Theatre|Theater))/);
-    const dateMatch = chunk.match(/(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})/);
-
-    let openingDate = null;
-    if (dateMatch) {
-      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-      const mm = String(months.indexOf(dateMatch[2]) + 1).padStart(2, '0');
-      const dd = dateMatch[1].padStart(2, '0');
-      openingDate = `${dateMatch[3]}-${mm}-${dd}`;
+/**
+ * Pure: listings + signals + shows.json → candidate rows with decisions.
+ * @param {{season: string, listings: Array, reviews: Array, oliviers: Array, shows: Array, today?: string}} input
+ */
+function buildCandidates({ season, listings, reviews, oliviers, shows, today }) {
+  const inSeason = listings.filter(l => {
+    const start = l.openingDate || l.previewsStartDate;
+    return start && l.venue && isWestEndVenue(l.venue) && isDateInSeason(start, season);
+  });
+  const pool = buildVenueTitlePool(shows);
+  const candidates = [];
+  for (const l of collapseDuplicateListings(inSeason)) {
+    const signals = [];
+    const review = reviews.find(r => signalMatchesListing(r, l));
+    if (review) signals.push('wos-review');
+    for (const o of oliviers) {
+      if (signalMatchesListing(o, l) && !signals.includes(`olivier-${o.year}`)) signals.push(`olivier-${o.year}`);
     }
-
-    results.push({
-      title: linkText,
-      venue: venueMatch ? venueMatch[1].trim() : null,
-      openingDate,
-    });
+    const startDate = l.openingDate || l.previewsStartDate;
+    const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenue };
+    const existing = findExactDuplicate(pool, l.title, l.venue, dupOpts)
+      // Same title + start within a week at a DIFFERENT venue: the same
+      // production with a wrong venue on one side (burlesque-west-end-2026
+      // says "The Arts at Marble Arch"; WOS says Savoy, same 2025-07-22
+      // start). Treat as present rather than mint a second row.
+      || pool.find(s => s.startDate && normalizeTitle(s.title) === normalizeTitle(l.title)
+        && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS);
+    const subtitleOf = !existing && findSubtitleDuplicateTitle(pool, l.title, l.venue, dupOpts);
+    const candidate = {
+      title: l.title,
+      venue: l.venue,
+      previewsStartDate: l.previewsStartDate,
+      openingDate: l.openingDate,
+      closingDate: l.closingDate,
+      genres: l.genres || [],
+      season,
+      signals,
+      sourceUrls: { wos: l.url, ...(review ? { wosReview: review.url } : {}) },
+      inShowsJson: existing ? (existing.id || existing.title) : (subtitleOf || null),
+    };
+    candidate.decision = candidate.inShowsJson
+      ? { promotable: false, persistent: true, reason: `already in shows.json: ${candidate.inShowsJson}` }
+      : decideWeHistoricalPromotion(candidate, { today });
+    candidates.push(candidate);
   }
-  return results;
-}
+  candidates.sort((a, b) => String(a.openingDate || a.previewsStartDate).localeCompare(String(b.openingDate || b.previewsStartDate)));
 
-async function fetchWikipediaSource(season) {
-  const url = wikipediaSeasonUrl(season);
-  let html;
-  try {
-    const r = await fetchPage(url, { timeout: 20000 });
-    html = r.html || r.content || '';
-  } catch (e) {
-    console.log(`  Wikipedia fetch failed: ${e.message}`);
-    return [];
-  }
-  if (!html || html.length < 2000) {
-    console.log(`  Wikipedia page short/missing (${html.length} bytes) — season page may not exist yet`);
-    return [];
-  }
-  const parsed = parseWikipediaSeasonPage(html);
-  return parsed
-    .filter(p => p.venue) // no corroboration value without a venue to match on
-    .map(p => ({ source: 'wikipedia', ...p }));
-}
+  // Reviews of West End-venue productions that matched no listing: surfaced
+  // for a human, never promoted (they carry no dates to build a row from).
+  const unlistedReviews = reviews.filter(r => r.venue && isWestEndVenue(r.venue)
+    && isDateInSeason(r.date, season)
+    && !inSeason.some(l => signalMatchesListing(r, l)));
 
-// Additional independent validation sources per plan v2.2 S1. Not yet wired —
-// each returns [] with a one-time warning so isCorroborated's ≥2-source bar
-// stays honest (nothing auto-corroborates on Wikipedia alone).
-async function fetchOlivierEligibilitySource(_season) {
-  console.log('  [olivier-eligibility] not yet implemented — 0 rows (see plan v2.2 S1)');
-  return [];
-}
-async function fetchOltSource(_season) {
-  console.log('  [olt] not yet implemented — 0 rows (see plan v2.2 S1)');
-  return [];
-}
-
-const SOURCES = {
-  wikipedia: fetchWikipediaSource,
-  'olivier-eligibility': fetchOlivierEligibilitySource,
-  olt: fetchOltSource,
-};
-
-// {title, venue} match via venuesMatch(), not title-match.js's canonicalVenue()
-// equality — canonicalVenue's fallback for a venue outside VENUE_ALIASES is
-// just the lowercased FIRST WORD, so two unrelated venues sharing a leading
-// word ("The X") would collapse and silently drop a genuinely new candidate
-// before any human ever sees it (BRO-243).
-function buildExistingList(shows) {
-  return shows.filter(s => s.title && s.venue).map(s => ({ title: s.title, venue: s.venue }));
-}
-
-function findMatch(list, title, venue) {
-  const norm = normalizeTitle(title);
-  return list.find(s => normalizeTitle(s.title) === norm && venuesMatch(s.venue, venue)) || null;
+  return { candidates, unlistedReviews };
 }
 
 async function main() {
-  const shows = loadShows();
-  const existingList = buildExistingList(shows);
-  const { start, end } = getSeasonDates(seasonArg);
+  const args = process.argv.slice(2);
+  const season = args.find(a => a.startsWith('--season='))?.split('=')[1];
+  const verbose = args.includes('--verbose');
+  if (!season) { console.error('Usage: node scripts/discover-historical-shows-we.js --season=YYYY-YYYY'); process.exit(2); }
+  const check = validateSeason(season);
+  if (!check.isValid) { console.error(`Invalid --season: ${check.reason}`); process.exit(2); }
 
-  console.log(`Discovering WE productions for season ${seasonArg} (${start.toISOString().slice(0,10)} → ${end.toISOString().slice(0,10)})`);
-  console.log(`Sources: ${Object.keys(SOURCES).join(', ')}`);
+  // Lazy: keeps `require()` of this module (tests) free of network libs.
+  const { fetchWosLondonListings, fetchWosReviews } = require('./lib/wos-rest-listings');
+  const { fetchOlivierCeremonyNominees } = require('./lib/olivier-ceremony-wikipedia');
 
-  const allRecords = [];
-  for (const [name, fetcher] of Object.entries(SOURCES)) {
-    console.log(`\n=== ${name} ===`);
-    const rows = await fetcher(seasonArg);
-    console.log(`  ${rows.length} row(s)`);
-    allRecords.push(...rows);
+  const { start, end } = getSeasonDates(season);
+  const startIso = isoDay(start);
+  const endIso = isoDay(end);
+  console.log(`Discovering West End productions for ${season} (${startIso} → ${endIso})`);
+
+  const listings = await fetchWosLondonListings();
+  console.log(`  WOS London listings (all years): ${listings.length}`);
+  // Reviews can land a few weeks before opening (previews) and up to ~4
+  // months after (a show opening in late August); signalMatchesListing
+  // bounds each to its own production's run.
+  const reviews = await fetchWosReviews({ after: addDays(startIso, -30), before: addDays(endIso, 120) });
+  console.log(`  WOS review posts in window: ${reviews.length}`);
+  const endYear = Number(season.split('-')[1]);
+  const oliviers = [
+    ...(await fetchOlivierCeremonyNominees(endYear)),
+    ...(await fetchOlivierCeremonyNominees(endYear + 1)),
+  ];
+  console.log(`  Olivier nominee lines (${endYear}, ${endYear + 1}): ${oliviers.length}`);
+  if (listings.length === 0) {
+    console.error('::error::WOS returned 0 listings — API shape or market id changed? Refusing to write an empty candidates file.');
+    process.exit(1);
   }
 
-  // Build one candidate per distinct title+venue across all sources. A flat
-  // array + findMatch() scan (not a canonicalVenue-keyed Map) for the same
-  // reason as buildExistingList/findMatch above.
-  const byKey = [];
-  for (const r of allRecords) {
-    if (!findMatch(byKey, r.title, r.venue)) {
-      byKey.push({ title: r.title, venue: r.venue, openingDate: r.openingDate });
-    }
-  }
+  const { candidates, unlistedReviews } = buildCandidates({ season, listings, reviews, oliviers, shows: loadShows() });
 
-  const candidates = [];
-  for (const base of byKey) {
-    if (findMatch(existingList, base.title, base.venue)) {
-      if (verbose) console.log(`  [in shows.json] ${base.title}`);
-      continue;
-    }
-    // A parsed date outside the requested season window means either a
-    // parser mismatch or a boundary-adjacent transfer from an adjacent
-    // season — don't silently tag it with the wrong season (promote-
-    // historical-we.js trusts `candidate.season` verbatim to build the
-    // show id). A missing date can't be checked either way and is left to
-    // isCorroborated (which now fails closed on missing dates too).
-    if (base.openingDate && !isDateInSeason(base.openingDate, seasonArg)) {
-      console.log(`  ✗ ${base.title} | ${base.venue} | ${base.openingDate} — outside ${seasonArg} window, skipped`);
-      continue;
-    }
-    const corroboration = isCorroborated(
-      { ...base, discoverySource: null },
-      allRecords,
-    );
-    const candidate = {
-      title: base.title,
-      venue: base.venue,
-      openingDate: base.openingDate,
-      season: seasonArg,
-      corroborated: corroboration.corroborated,
-      agreeingSources: corroboration.agreeingSources,
-    };
-    const status = corroboration.corroborated ? '✓' : '·';
-    console.log(`  ${status} ${base.title} | ${base.venue} | ${base.openingDate || '?'} | sources: ${corroboration.agreeingSources.join(',') || 'none'}`);
-    candidates.push(candidate);
-  }
-
+  const promotable = candidates.filter(c => c.decision.promotable);
   console.log('');
-  const corroboratedCount = candidates.filter(c => c.corroborated).length;
-  console.log(`Total candidates: ${candidates.length}; corroborated (≥2 independent sources): ${corroboratedCount}`);
+  for (const c of candidates) {
+    if (!verbose && !c.decision.promotable) continue;
+    const mark = c.decision.promotable ? '✓' : '·';
+    console.log(`  ${mark} ${c.title} | ${c.venue} | ${c.openingDate || c.previewsStartDate} → ${c.closingDate || '?'} | ${c.decision.reason}`);
+  }
+  const byReason = {};
+  for (const c of candidates.filter(x => !x.decision.promotable)) {
+    const key = c.decision.reason.replace(/:.*$/, '').replace(/\(.*$/, '').trim();
+    byReason[key] = (byReason[key] || 0) + 1;
+  }
+  console.log('');
+  console.log(`Listings in season at West End venues: ${candidates.length}; promotable: ${promotable.length}`);
+  console.log(`Not promotable: ${JSON.stringify(byReason)}`);
+  console.log(`WE-venue reviews with no listing (human check): ${unlistedReviews.length}`);
 
-  fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
-  fs.writeFileSync(OUT_PATH, JSON.stringify({
+  const out = candidatesPath(season);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.writeFileSync(out, JSON.stringify({
     generatedAt: new Date().toISOString(),
-    season: seasonArg,
-    sources: Object.keys(SOURCES),
-    counts: { total: candidates.length, corroborated: corroboratedCount },
+    season,
+    sources: ['wos-listing', 'wos-review', `olivier-${endYear}`, `olivier-${endYear + 1}`],
+    counts: { listings: candidates.length, promotable: promotable.length, notPromotable: byReason, unlistedReviews: unlistedReviews.length },
     candidates,
-  }, null, 2));
-  console.log(`Wrote ${OUT_PATH}`);
+    unlistedReviews,
+  }, null, 2) + '\n');
+  console.log(`Wrote ${path.relative(ROOT, out)}`);
 }
 
-main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+  main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+}
+
+module.exports = { buildCandidates, collapseDuplicateListings, candidatesPath };
