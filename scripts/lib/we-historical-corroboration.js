@@ -56,7 +56,9 @@ function venueFamily(venue) {
   const nt = /\bnational theatre\b|\blyttelton\b|\bdorfman\b|^olivier\b|\bolivier \(|\bolivier theatre\b/;
   if (nt.test(raw) || nt.test(v) || v === 'national') return 'national-theatre';
   if (/\broyal court\b|\bjerwood\b/.test(raw)) return 'royal-court';
-  return v.replace(/^the\s+/, '').replace(/\s+theatre$/, '').replace(/[^a-z0-9]/g, '');
+  // Fold accents first: "Noël Coward" and "Noel Coward" are one building.
+  return v.normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/^the\s+/, '').replace(/\s+theatre$/, '').replace(/[^a-z0-9]/g, '');
 }
 
 function signalVenueAgrees(a, b) {
