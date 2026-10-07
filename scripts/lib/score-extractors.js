@@ -1397,6 +1397,40 @@ const OUTLET_EXTRACTORS = {
  *   combined multi-show roundup columns (see KNOWN_STAR_OUTLETS branch below)
  * @returns {object|null} - { originalScore, normalizedScore, source } or null
  */
+// One printed rating: 1-5 star glyphs, contiguous or separated by spaces/line
+// breaks ("★★★☆☆", "★ ★ ★ ★ ☆", "★★ ★★★" from a wrapped line), with an
+// optional trailing half ("½" or "(★)"). The old /[★☆]{3,5}/ missed every
+// 1★/2★ verdict and every spaced run, so the harshest ratings were exactly the
+// ones never stored (BRO-4838: Affluenza, Theatre and Tonic "★" scored 42).
+const STAR_GROUP_RE = /(?<![★☆])[★☆](?:\s*[★☆])*(?:\s*(?:½|\(★\)))?(?![★☆])/g;
+const SIGN_OFF_AFTER_STARS = /^\s*(?:written|reviewed|review)\s+by\b/i;
+
+/**
+ * @param {string} text
+ * @returns {Array<RegExpMatchArray & {filled:number,total:number,isShortBareRun:boolean}>}
+ *   match arrays ([0] and [1] = the group, .index) with the parsed rating; groups
+ *   of more than five glyphs are not a 5-star rating and are skipped.
+ */
+function findStarGroups(text) {
+  const groups = [];
+  for (const m of (text || '').matchAll(STAR_GROUP_RE)) {
+    const s = m[0];
+    const half = /½|\(★\)$/.test(s) ? 0.5 : 0;
+    const core = half ? s.replace(/\s*(?:½|\(★\))$/, '') : s;
+    const full = (core.match(/★/g) || []).length;
+    const empty = (core.match(/☆/g) || []).length;
+    if (full + empty > 5 || full + empty + (half ? 1 : 0) > 5) continue;
+    const filled = full + half;
+    const total = empty ? full + empty + (half ? 1 : 0) : 5;
+    m[1] = s;
+    m.filled = filled;
+    m.total = total;
+    m.isShortBareRun = !empty && !half && full <= 2;
+    groups.push(m);
+  }
+  return groups;
+}
+
 function extractScore(html, text, outletId, showTitle) {
   html = html || '';
   text = text || '';
@@ -1430,13 +1464,24 @@ function extractScore(html, text, outletId, showTitle) {
   // or decorative separators. Only trust stars in the first or last 15% of the text.
   // Pre-mortem (2026-04-22) flagged this as a P0 landmine for false positives.
   if (KNOWN_STAR_OUTLETS.has(outletId)) {
-    const matches = [...text.matchAll(/([★☆]{3,5})/g)];
+    const matches = findStarGroups(text);
     if (matches.length > 0) {
       const len = text.length;
       const anchoredMatches = matches.filter(m => {
         const pos = m.index;
-        return pos <= len * 0.15 || pos >= len * 0.85;
+        if (pos <= len * 0.15 || pos >= len * 0.85) return true;
+        // Trailing page chrome ("The Latest", related-post lists) can push the
+        // verdict line out of the last 15% (Affluenza, Theatre and Tonic:
+        // "★ Written by Bronagh" sat at 65%). A group immediately followed by
+        // the review's own sign-off is the verdict wherever it falls.
+        return SIGN_OFF_AFTER_STARS.test(text.slice(m.index + m[0].length, m.index + m[0].length + 40));
       });
+      // A lone ★ or ★★ with no ☆ is also a bullet/decoration glyph. On its own
+      // it counts only when it is the text's only star group; among other
+      // groups it needs the show's name in front of it, like a roundup entry
+      // (The Homecoming 2007: "Infinite Life ★★★★★ The Homecoming ★★ ...").
+      const soleTrusted = anchoredMatches.length === 1
+        && (!anchoredMatches[0].isShortBareRun || matches.length === 1);
       // 2+ anchored star groups = a combined multi-show roundup column with a
       // per-show rating list (e.g. Guardian "Star ratings (out of five):
       // Phaedra ***** Sylvia *** Standing at the Sky's Edge ****"). Blindly
@@ -1446,9 +1491,9 @@ function extractScore(html, text, outletId, showTitle) {
       // Only trust a group whose immediately preceding text names THIS show;
       // otherwise abstain rather than guess.
       let anchoredMatch = null;
-      if (anchoredMatches.length === 1) {
+      if (soleTrusted) {
         anchoredMatch = anchoredMatches[0];
-      } else if (anchoredMatches.length > 1 && showTitle) {
+      } else if (anchoredMatches.length > 0 && showTitle) {
         const { normalizeTitle } = require('./title-match');
         const wantedTitle = normalizeTitle(showTitle);
         if (wantedTitle) {
@@ -1467,9 +1512,7 @@ function extractScore(html, text, outletId, showTitle) {
         }
       }
       if (anchoredMatch) {
-        const filled = (anchoredMatch[1].match(/★/g) || []).length;
-        const hasEmpty = anchoredMatch[1].includes('☆');
-        const total = hasEmpty ? anchoredMatch[1].length : 5;
+        const { filled, total } = anchoredMatch;
         return {
           originalScore: `${filled}/${total} stars`,
           normalizedScore: starsToNumeric(filled, total),
@@ -1753,6 +1796,7 @@ module.exports = {
   scoreToThumb,
   OUTLET_VERIFIED_SOURCES,
   KNOWN_STAR_OUTLETS,
+  findStarGroups,
   OUTLET_STAR_AUTHORITATIVE,
   OUTLET_EXTRACTORS,
   EXTRACTOR_VERSION

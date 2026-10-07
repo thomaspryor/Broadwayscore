@@ -150,3 +150,31 @@ describe('needsLateStarReanchor agrees with the consumer (isScoreable)', () => {
     if (v) assert.equal(isScoreable(d), true);
   });
 });
+
+// BRO-4838: City AM Teeth 'N' Smiles printed "★★" but was anchored to a relayed
+// "4/4" (band 91-100) and shown at 92. Once the outlet's own rating is stored,
+// the stale band must be re-anchored once, and only for the outlet's rating.
+describe('needsLateStarReanchor — anchored to a stale band', () => {
+  const stale = (over = {}) => weStar({
+    scoreSource: 'anchored-v6', originalScore: '2/5 stars', originalScoreSource: 'unicode-stars-fallthrough',
+    aggregatorStars: '4/4 stars', ensembleData: {}, llmScore: { score: 92, band: { floor: 91, ceiling: 100 } }, ...over,
+  });
+
+  test('re-anchors when the outlet rating gives a different band', () => {
+    const r = needsLateStarReanchor(stale());
+    assert.ok(r && r.band);
+    assert.equal(r.band.floor, 31); assert.equal(r.band.ceiling, 50);
+  });
+
+  test('does not re-anchor once the band matches (no loop)', () => {
+    assert.equal(needsLateStarReanchor(stale({ llmScore: { score: 40, band: { floor: 31, ceiling: 50 } } })), null);
+  });
+
+  test('a disagreeing relay alone never re-anchors', () => {
+    assert.equal(needsLateStarReanchor(stale({ originalScore: null, originalScoreSource: null, aggregatorStars: '2/5 stars' })), null);
+  });
+
+  test('human override still wins', () => {
+    assert.equal(needsLateStarReanchor(stale({ humanReviewScore: 90 })), null);
+  });
+});

@@ -45,14 +45,31 @@ const { isScoreable } = require('./is-scoreable');
  *   for its path-based cross-show checks. Optional.
  * @returns {{ band: object, starsRaw: string } | null} the band to anchor to, or null
  */
+/**
+ * True when the band a file was anchored to differs from the band its own
+ * stored rating (originalScore) now gives, judged by the scorer's detector.
+ * Only the outlet's own rating counts: a disagreeing relay never re-anchors.
+ */
+function anchoredToStaleBand(data, priorBand) {
+  if (!priorBand || typeof data.originalScore !== 'string' || !data.originalScore) return false;
+  const det = detectBandFromReviewFile(data);
+  if (!det || !det.band || !det.highReliability || det.starsRaw !== data.originalScore) return false;
+  return det.band.floor !== priorBand.floor || det.band.ceiling !== priorBand.ceiling;
+}
+
 function needsLateStarReanchor(data, ctx = {}) {
   if (!data) return null;
   // Already anchored. Check llmScore.band, NOT scoreSource — later star
   // extraction overwrites scoreSource with the extraction label (e.g.
   // 'telegraph-svg-stars'), but llmScore.band is only ever written by the
   // anchored scorer, so it survives and prevents a re-flag/re-score loop.
-  if (data.scoreSource === 'anchored-v6') return null;
-  if (data.llmScore && data.llmScore.band) return null;
+  // Exception (BRO-4838): a file anchored to a relayed band (aggregatorStars)
+  // before the outlet's own rating was stored — City AM Teeth 'N' Smiles printed
+  // "★★" but was anchored to a relayed "4/4" and shown at 92. The scorer now
+  // derives a different band from originalScore, so re-anchor once; the
+  // re-score writes the new band, which ends the mismatch (no loop).
+  const priorBand = data.llmScore && data.llmScore.band;
+  if ((data.scoreSource === 'anchored-v6' || priorBand) && !anchoredToStaleBand(data, priorBand)) return null;
   const isV6Unanchored = data.scoreSource === 'llm-v6';
   // Non-v6 stamps (2026-07-11 extension): a file whose scoreSource is an
   // extraction label (unicode-stars, json-ld, guardian-api, …) but which
