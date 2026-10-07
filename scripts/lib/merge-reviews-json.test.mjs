@@ -17,7 +17,9 @@ function review(overrides = {}) {
   return {
     showId: 'anansi-the-spider-west-end-2026',
     outlet: 'The Stage',
-    outletId: 'the-stage',
+    // Real rows always carry an outletId matching their outlet (keyOf keys on
+    // it), so an overridden outlet gets its own id unless the test sets one.
+    outletId: overrides.outlet ? String(overrides.outlet).toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'the-stage',
     criticName: 'A Critic',
     assignedScore: 70,
     contentTier: 'complete',
@@ -28,7 +30,7 @@ function review(overrides = {}) {
 }
 
 test('keyOf: showId + outlet slug + criticKey(criticName)', () => {
-  const r = review({ outlet: '  The Stage  ', criticName: 'A CRITIC ' });
+  const r = review({ outlet: '  The Stage  ', outletId: undefined, criticName: 'A CRITIC ' });
   assert.equal(keyOf(r), 'anansi-the-spider-west-end-2026|the-stage|a critic');
 });
 
@@ -36,6 +38,11 @@ test('keyOf: outlet display name and its slug are one outlet (BRO-4829 Manic Mum
   assert.equal(keyOf(review({ outlet: 'Manic Mumdays' })), keyOf(review({ outlet: 'manic-mumdays' })));
   assert.notEqual(keyOf(review({ outlet: 'The Stage' })), keyOf(review({ outlet: 'The Standard' })));
   assert.equal(outletKey(''), 'unknown');
+});
+
+test('keyOf: outletId wins over display-name alias drift (NJArts vs njarts.net share outletId njarts)', () => {
+  assert.equal(keyOf(review({ outlet: 'NJArts', outletId: 'njarts' })), keyOf(review({ outlet: 'njarts.net', outletId: 'njarts' })));
+  assert.notEqual(keyOf(review({ outlet: 'NJArts', outletId: 'njarts' })), keyOf(review({ outlet: 'NJArts', outletId: 'other' })));
 });
 
 test('mergeReviewsJson: concurrent writers stamping display name vs slug merge to ONE row (BRO-4829)', () => {

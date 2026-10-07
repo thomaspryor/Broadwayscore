@@ -45,7 +45,7 @@
 //
 // Merge rules:
 //   * shape: { _meta, reviews: [...] }
-//   * identity: showId + outlet(lower/trim) + criticKey(criticName) — reuses
+//   * identity: showId + outletIdentity (outletId, else outlet slug) + criticKey(criticName) — reuses
 //     manual-entry-merge.js's criticKey() (punctuation/diacritic-insensitive)
 //     rather than a plain lower/trim key (rebuild's own pass-2 dedup key),
 //     because manual-entry-merge.js exists specifically to bridge byline
@@ -139,9 +139,16 @@ function outletKey(outlet) {
   return slug || 'unknown';
 }
 
+/** A record's outlet identity: its registry outletId when it has one (every
+ * live row does; it also absorbs alias drift such as "NJArts" vs "njarts.net"
+ * under one id), else the slug of the display name. */
+function outletIdentity(review) {
+  return outletKey(review.outletId || review.outlet);
+}
+
 function keyOf(review) {
   if (!review || typeof review !== 'object' || !review.showId) return null;
-  return `${review.showId}|${outletKey(review.outlet)}|${criticKey(review.criticName)}`;
+  return `${review.showId}|${outletIdentity(review)}|${criticKey(review.criticName)}`;
 }
 
 /** showId + canonicalized-URL identity — the fallback match manual-entry-merge.js
@@ -529,10 +536,10 @@ function mergeReviewsJson(ours, remote) {
       // (adversarial-review finding, Codex). Scoping to one outlet also makes
       // this pass exactly as wide as the defect it exists for: validate-data.js
       // reports "duplicate URL(s) within same show+outlet", not across outlets.
-      const myOutlet = outletKey(r.outlet);
+      const myOutlet = outletIdentity(r);
       const winner = myPath && candidates.find(
         (c) => rawPathOf(c.url) === myPath
-          && outletKey(c.outlet) === myOutlet
+          && outletIdentity(c) === myOutlet
           && tierRank(c) >= tierRank(r),
       );
       if (!winner) continue; // different outlet or raw path, or no candidate at least as rich — not safe to delete
