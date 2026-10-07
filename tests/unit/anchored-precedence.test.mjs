@@ -334,4 +334,49 @@ describe('detectBandFromReviewFile (star-reliability helper)', () => {
     assert.strictEqual(detectBandFromReviewFile(null), null);
     assert.strictEqual(detectBandFromReviewFile({}), null);
   });
+
+  // BRO-4838: a rating already on the 0-100 scale got no band, so the review
+  // was never scored within it and the site served the flat rating (Affluenza,
+  // The Reviews Hub "80%" served as 80; 246 reviews in all).
+  it('percentage rating "80%" → band [71,90] high-rel', () => {
+    const result = detectBandFromReviewFile({
+      originalScore: '80%', originalScoreSource: 'reviewshub-percentage',
+      outletId: 'thereviewshub', scoreSource: 'llm-v6',
+    });
+    assert.deepStrictEqual(result.band, { fraction: 0.8, floor: 71, ceiling: 90 });
+    assert.strictEqual(result.highReliability, true);
+  });
+
+  it('a 0-100 number in originalScore (older extractors) gets its band', () => {
+    const result = detectBandFromReviewFile({ originalScore: 60, outletId: 'thestage', scoreSource: 'stage-star-svg' });
+    assert.deepStrictEqual(result.band, { fraction: 0.6, floor: 51, ceiling: 70 });
+    const str = detectBandFromReviewFile({ originalScore: '60', outletId: 'thestage', scoreSource: 'stage-star-svg' });
+    assert.deepStrictEqual(str.band, result.band);
+  });
+
+  it('a bare one-digit originalScore has no known scale and gets no band', () => {
+    assert.strictEqual(detectBandFromReviewFile({ originalScore: '4', outletId: 'nypost' }), null);
+    assert.strictEqual(detectBandFromReviewFile({ originalScore: 4, outletId: 'nypost' }), null);
+  });
+
+  it('"N stars" with no denominator stays unbanded (scale unknown: NY Post 4 stars is 4/4)', () => {
+    assert.strictEqual(detectBandFromReviewFile({ originalScore: '4 stars', outletId: 'nypost' }), null);
+  });
+
+  it('a letter grade stored as its 0-100 value keeps the grade band', () => {
+    const a = detectBandFromReviewFile({ originalScore: 90, outletId: 'ew', scoreSource: 'letter-grade' });
+    assert.deepStrictEqual(a.band, { fraction: -1, floor: 89, ceiling: 94 });
+    assert.strictEqual(a.kind, 'letter-grade');
+  });
+
+  it('a percentage on a band edge follows the half-star rule (70% = 3.5/5 → 71-90)', () => {
+    const r = detectBandFromReviewFile({ originalScore: '70%', originalScoreSource: 'reviewshub-percentage', outletId: 'thereviewshub', scoreSource: 'llm-v6' });
+    assert.deepStrictEqual(r.band, { fraction: 0.7, floor: 71, ceiling: 90 });
+    const half = detectBandFromReviewFile({ originalScore: '3.5/5 stars', outletId: 'guardian', scoreSource: 'json-ld' });
+    assert.deepStrictEqual({ floor: half.band.floor, ceiling: half.band.ceiling }, { floor: 71, ceiling: 90 });
+  });
+
+  it('a bare number in a relay field is not read as a percentage', () => {
+    assert.strictEqual(detectBandFromReviewFile({ aggregatorStars: '80', outletId: 'london-box-office' }), null);
+  });
 });

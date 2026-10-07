@@ -52,16 +52,16 @@ const { isScoreable } = require('./is-scoreable');
  * Only the outlet's own rating counts: a disagreeing relay never re-anchors.
  */
 function anchoredToStaleBand(data, priorBand) {
-  if (!priorBand || typeof data.originalScore !== 'string' || !data.originalScore) return false;
+  if (!priorBand || data.originalScore == null || data.originalScore === '') return false;
   // One re-anchor per stored rating: if that re-score did not rewrite the band
   // (all models failed, a clobber), re-queueing every 6h would spend forever.
   // Same one-shot idea as star-band-regression.js's starBandFlaggedAt.
-  if (data.staleBandReanchoredFor === data.originalScore) return false;
+  if (data.staleBandReanchoredFor === String(data.originalScore)) return false;
   // On an anchored-v6 file det.highReliability keys off scoreSource, so judge
   // the extraction itself, as the llm-v6 path below does.
   if (LOW_RELIABILITY_EXTRACTION.has(data.originalScoreSource)) return false;
   const det = detectBandFromReviewFile(data);
-  if (!det || !det.band || !det.highReliability || det.starsRaw !== data.originalScore) return false;
+  if (!det || !det.band || !det.highReliability || det.starsRaw !== String(data.originalScore)) return false;
   return det.band.floor !== priorBand.floor || det.band.ceiling !== priorBand.ceiling;
 }
 

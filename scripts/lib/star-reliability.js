@@ -192,6 +192,14 @@ function invalidateStarSidedAdjudication(data, reason) {
  *
  * @param {object} data - review-text JSON contents
  */
+const LETTER_GRADE_BANDS = {
+  'A+': [95, 100], 'A':  [89, 94], 'A-': [83, 88],
+  'B+': [77, 82],  'B':  [71, 76], 'B-': [65, 70],
+  'C+': [59, 64],  'C':  [53, 58], 'C-': [47, 52],
+  'D+': [41, 46],  'D':  [35, 40], 'D-': [29, 34],
+  'F':  [0,  28],
+};
+
 function detectBandFromReviewFile(data) {
   if (!data) return null;
 
@@ -205,27 +213,61 @@ function detectBandFromReviewFile(data) {
   const candidates = [
     { value: data.starRating, source: 'starRating' },
     { value: data.originalRating, source: 'originalRating' },
-    // Only treat originalScore as a candidate when it's a STRING — numeric
-    // originalScore is the post-extraction 0-100 value, not the raw rating.
+    // originalScore as a STRING is the raw rating ("3/5 stars", "C-", "80%").
+    // As a NUMBER it is that rating already converted to 0-100 (older
+    // extractors stored Guardian/Stage/WhatsOnStage/Time Out stars this way);
+    // it is still the outlet's rating, and getBestScore serves it, so it
+    // needs a band too (BRO-4838: 103 such reviews were served flat).
     // Checked BEFORE aggregatorStars: this is the outlet's own extraction
     // (dedicated extractor, json-ld, unicode-stars, …) — aggregatorStars is
     // a third-party relay (BRO-866: NYSR "Data" review had originalScore
     // "5/5 stars" from unicode-stars but aggregatorStars "4/5 stars" from
     // Show Score, and the old order let the relay win the anchoring band).
-    { value: typeof data.originalScore === 'string' ? data.originalScore : null,
+    { value: typeof data.originalScore === 'string' ? data.originalScore
+      : (typeof data.originalScore === 'number' && Number.isFinite(data.originalScore) ? String(data.originalScore) : null),
       source: 'originalScore' },
     { value: data.aggregatorStars, source: 'aggregatorStars' },
   ];
 
-  for (const { value } of candidates) {
+  for (const { value, source } of candidates) {
     if (value === null || value === undefined || value === '') continue;
     const raw = String(value);
 
     // Numeric star pattern: "4/5", "3.5/4", "4 out of 5"
     const num = raw.match(/(\d+(?:\.\d+)?)\s*(?:\/|out of)\s*(\d+)/i);
-    if (num) {
-      const stars = parseFloat(num[1]);
-      const max = parseFloat(num[2]);
+    // A rating already on the 0-100 scale: "80%" (The Reviews Hub prints its
+    // rating as a percentage) or, in originalScore only, a bare "60" left by
+    // older normalizers. Without this none of them got a band, so 246 reviews
+    // were never scored within their rating's band and the site served the
+    // flat rating instead (BRO-4838: Affluenza, The Reviews Hub "80%").
+    // A bare one-digit value is skipped: "4" may mean 4 of 5.
+    // Only when getBestScore's own published-rating test accepts the value: a
+    // bare number can also be a relayed Show-Score value or a stray normalized
+    // field (an NYT review carries originalScore 82; the Times prints no
+    // rating), and those must not pin a band.
+    let pct = num ? null
+      : (raw.match(/^\s*(\d{1,3}(?:\.\d+)?)\s*%\s*$/)
+        || (source === 'originalScore' ? raw.match(/^\s*(\d{2,3}(?:\.\d+)?)\s*$/) : null));
+    if (pct && source === 'originalScore') {
+      // Lazy: rebuild-helpers requires this module at load time.
+      const { publishedRatingEvidence } = require('./rebuild-helpers');
+      if (!publishedRatingEvidence(data.originalScore, data)) pct = null;
+    }
+    // A letter grade an older extractor stored as its 0-100 value (EW "A" as
+    // 90) keeps the grade's own band, not a star band (90 would be 91-100).
+    if (pct && source === 'originalScore'
+      && (data.scoreSource === 'letter-grade' || data.originalScoreSource === 'letter-grade')) {
+      const v = parseFloat(pct[1]);
+      const grade = Object.keys(LETTER_GRADE_BANDS).find(g => v >= LETTER_GRADE_BANDS[g][0] && v <= LETTER_GRADE_BANDS[g][1]);
+      if (grade) {
+        const [floor, ceiling] = LETTER_GRADE_BANDS[grade];
+        return { band: { fraction: -1, floor, ceiling }, starsRaw: raw, kind: 'letter-grade', highReliability: isHighReliabilityStar(data) };
+      }
+      pct = null;
+    }
+    if (num || pct) {
+      const stars = parseFloat(num ? num[1] : pct[1]);
+      const max = num ? parseFloat(num[2]) : 100;
       if (Number.isFinite(stars) && Number.isFinite(max) && stars >= 0 && max > 0 && stars <= max) {
         const fraction = stars / max;
         let band;
@@ -250,14 +292,7 @@ function detectBandFromReviewFile(data) {
     const lg = raw.match(/(A\+|A-|B\+|B-|C\+|C-|D\+|D-|A|B|C|D|F)(?:\b|$)/);
     if (lg) {
       const grade = lg[1].toUpperCase();
-      const table = {
-        'A+': [95, 100], 'A':  [89, 94], 'A-': [83, 88],
-        'B+': [77, 82],  'B':  [71, 76], 'B-': [65, 70],
-        'C+': [59, 64],  'C':  [53, 58], 'C-': [47, 52],
-        'D+': [41, 46],  'D':  [35, 40], 'D-': [29, 34],
-        'F':  [0,  28],
-      };
-      const range = table[grade];
+      const range = LETTER_GRADE_BANDS[grade];
       if (range) {
         // fraction:-1 is a sentinel meaning "letter grade, no percentage available".
         // buildAnchoredBandBlock in config.ts handles this by omitting the percentage clause.
