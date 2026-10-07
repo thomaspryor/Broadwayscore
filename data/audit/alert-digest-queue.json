@@ -1192,5 +1192,41 @@
       }
     ],
     "queuedAt": "2026-10-07T07:21:08.284Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-hungry-ghost-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-hungry-ghost-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-hungry-ghost-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T08:46:15.126Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-hungry-ghost-off-west-end-2026",
+    "title": "Shipped review missing publishDate on The Hungry Ghost",
+    "description": "voice-magazine/Moni Fernandez SHIPPED with no publishDate — cannot confirm post-opening: https://www.voicemag.uk/review/16940/the-hungry-ghost-at-bush-theatre",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T08:46:15.132Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-bettys-summer-vacation-the-heights-players-off-broadway-2026",
+    "title": "Placeholder synopsis on Betty's Summer Vacation (The Heights Players)",
+    "description": "synopsis for bettys-summer-vacation-the-heights-players-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T08:46:25.853Z"
   }
 ]
