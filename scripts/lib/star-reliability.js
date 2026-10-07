@@ -192,6 +192,9 @@ function invalidateStarSidedAdjudication(data, reason) {
  *
  * @param {object} data - review-text JSON contents
  */
+// How far the prose may move a printed percentage rating (80% -> 75-85).
+const PERCENT_BAND_HALF_WIDTH = 5;
+
 const LETTER_GRADE_BANDS = {
   'A+': [95, 100], 'A':  [89, 94], 'A-': [83, 88],
   'B+': [77, 82],  'B':  [71, 76], 'B-': [65, 70],
@@ -271,7 +274,12 @@ function detectBandFromReviewFile(data) {
       if (Number.isFinite(stars) && Number.isFinite(max) && stars >= 0 && max > 0 && stars <= max) {
         const fraction = stars / max;
         let band;
-        if (fraction >= 0.9) band = { floor: 91, ceiling: 100 };
+        // A printed percentage is already a score: honor it, letting the prose
+        // move it at most PERCENT_BAND_HALF_WIDTH either way (owner decision
+        // 2026-10-07). A star-sized band would throw that precision away (an
+        // 80% could land anywhere in 71-90; a 70% could not land at 70).
+        if (pct && /%/.test(raw)) band = { floor: Math.max(0, Math.round(stars) - PERCENT_BAND_HALF_WIDTH), ceiling: Math.min(100, Math.round(stars) + PERCENT_BAND_HALF_WIDTH) };
+        else if (fraction >= 0.9) band = { floor: 91, ceiling: 100 };
         else if (fraction >= 0.7) band = { floor: 71, ceiling: 90 };
         else if (fraction >= 0.5) band = { floor: 51, ceiling: 70 };
         else if (fraction >= 0.3) band = { floor: 31, ceiling: 50 };
