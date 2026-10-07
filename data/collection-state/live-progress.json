@@ -1,134 +1,131 @@
 {
-  "updatedAt": "2026-10-07T12:20:34.818Z",
-  "processed": 163,
-  "failed": 97,
-  "successRate": "62.7%",
+  "updatedAt": "2026-10-07T12:52:28.477Z",
+  "processed": 194,
+  "failed": 146,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 79,
+    "playwright": 99,
     "amp": 0,
-    "browserbase": 12,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 21,
-    "scrapingbee": 16,
-    "brightdata": 7,
+    "scrapingdog": 25,
+    "scrapingbee": 21,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 40
+    "archive": 43
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 22,
   "recentActivity": [
     {
-      "t": "2026-10-07T10:15:28.939Z",
+      "t": "2026-10-07T12:26:09.543Z",
       "event": "bb-session",
-      "session": "a1c511f4",
-      "url": "https://www.wsj.com/articles/trouble-in-mind-review-alice-childress-roundabout-t"
+      "session": "2b3fd392",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     },
     {
-      "t": "2026-10-07T10:15:29.578Z",
+      "t": "2026-10-07T12:26:18.431Z",
+      "event": "bb-session",
+      "session": "3cae695f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-07T12:29:04.421Z",
+      "event": "bb-session",
+      "session": "fd8c6670",
+      "url": "https://www.wsj.com/articles/the-outsiders-review-the-greasers-go-to-broadway-da"
+    },
+    {
+      "t": "2026-10-07T12:29:05.146Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-07T10:18:52.298Z",
+      "t": "2026-10-07T12:31:57.273Z",
       "event": "bb-session",
-      "session": "9f93248b",
-      "url": "https://www.wsj.com/articles/caroline-or-change-review-tony-kushner-and-jeanine-"
+      "session": "cc4565f4",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
     },
     {
-      "t": "2026-10-07T10:18:52.977Z",
+      "t": "2026-10-07T12:31:57.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:32:08.394Z",
+      "event": "bb-session",
+      "session": "cf3a4bea",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
+    },
+    {
+      "t": "2026-10-07T12:32:09.053Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:33:29.818Z",
+      "event": "bb-session",
+      "session": "bddcb647",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-07T12:33:30.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:33:38.563Z",
+      "event": "bb-session",
+      "session": "30772f57",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-07T12:33:39.230Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-07T12:46:21.799Z",
+      "event": "bb-session",
+      "session": "7f702fde",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-07T12:46:22.519Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-07T10:19:03.957Z",
+      "t": "2026-10-07T12:46:31.366Z",
       "event": "bb-session",
-      "session": "3531d50e",
-      "url": "https://www.wsj.com/articles/caroline-or-change-review-tony-kushner-and-jeanine-"
+      "session": "11b11476",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
     },
     {
-      "t": "2026-10-07T10:19:04.572Z",
+      "t": "2026-10-07T12:46:32.047Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-07T10:20:15.086Z",
+      "t": "2026-10-07T12:47:41.962Z",
       "event": "bb-session",
-      "session": "556bef76",
-      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metca"
+      "session": "243f3fae",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
     },
     {
-      "t": "2026-10-07T10:26:04.288Z",
+      "t": "2026-10-07T12:47:46.304Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-07T12:48:12.093Z",
       "event": "bb-session",
-      "session": "e0b3053e",
-      "url": "https://www.talkinbroadway.com/page/world/ASoldiersPlay.html"
+      "session": "3cd181b5",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
     },
     {
-      "t": "2026-10-07T10:26:04.867Z",
-      "event": "bb-session",
-      "session": "97deaa4d",
-      "url": "http://broadway.news/2018/08/13/review-the-same-old-story-at-gettin-the-band-bac"
-    },
-    {
-      "t": "2026-10-07T10:26:05.045Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-07T10:26:16.243Z",
-      "event": "bb-session",
-      "session": "9fae146c",
-      "url": "https://www.talkinbroadway.com/page/world/ASoldiersPlay.html"
-    },
-    {
-      "t": "2026-10-07T10:26:16.802Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-07T11:22:39.619Z",
-      "event": "bb-session",
-      "session": "631feebb",
-      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
-    },
-    {
-      "t": "2026-10-07T11:22:59.587Z",
-      "event": "bb-session",
-      "session": "84a92669",
-      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
-    },
-    {
-      "t": "2026-10-07T11:37:02.874Z",
-      "event": "bb-session",
-      "session": "332a8240",
-      "url": "https://deadline.com/2026/10/anthony-mackie-macbeth-broadway-avengers-star-12371"
-    },
-    {
-      "t": "2026-10-07T11:56:21.067Z",
-      "event": "bb-session",
-      "session": "a3c540ce",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-10-07T11:56:32.106Z",
-      "event": "bb-session",
-      "session": "06c5926f",
-      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
-    },
-    {
-      "t": "2026-10-07T12:05:41.999Z",
-      "event": "bb-session",
-      "session": "1cb45eaa",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-07T12:05:42.682Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-07T12:19:15.654Z",
-      "event": "bb-session",
-      "session": "f50aae2d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sarah-hyland-broadway-cast-of-j"
+      "t": "2026-10-07T12:48:16.360Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
