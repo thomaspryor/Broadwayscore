@@ -1047,5 +1047,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-07T01:51:51.677Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4804-ab-report",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4804-ab-report",
+    "description": "land.yml did not land land/bro-4804-ab-report: the unit-tests-node gate went red at 2746141329. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37564564400",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4804-ab-report"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2746141329ac725db7563c039baa2e3fa623af49"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37564564400"
+      }
+    ],
+    "queuedAt": "2026-10-07T03:25:23.382Z"
   }
 ]
