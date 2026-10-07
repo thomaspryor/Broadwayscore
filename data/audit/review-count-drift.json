@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-06T12:23:20.569Z",
+  "generatedAt": "2026-10-07T12:14:18.358Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-06T11:36:41.336Z",
-    "reviewsJsonAgeHours": 0.8,
+    "reviewsJsonLastUpdated": "2026-10-07T11:22:22.684Z",
+    "reviewsJsonAgeHours": 0.9,
     "freshnessBreach": false,
-    "showsScanned": 21,
-    "allShowsScanned": 2295,
-    "filesScanned": 46981,
+    "showsScanned": 22,
+    "allShowsScanned": 2300,
+    "filesScanned": 47209,
     "showsOverThreshold": 0,
     "newOffenders": 0,
     "blindShows": 144,
-    "orphanReviews": 7
+    "orphanReviews": 6
   },
   "thresholds": {
     "suppressedPerShow": 3,
@@ -28,10 +28,6 @@
     {
       "showId": "pride-bridge-theatre-off-west-end-2026",
       "count": 21
-    },
-    {
-      "showId": "school-pictures-off-broadway-2026",
-      "count": 6
     },
     {
       "showId": "the-apple-boys-regional-2025",
@@ -53,8 +49,8 @@
   "perShow": [
     {
       "showDir": "affluenza-off-west-end-2026",
-      "actual": 7,
-      "scanned": 13,
+      "actual": 15,
+      "scanned": 24,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -69,8 +65,8 @@
     },
     {
       "showDir": "bull-off-west-end-2026",
-      "actual": 9,
-      "scanned": 23,
+      "actual": 10,
+      "scanned": 24,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -93,8 +89,8 @@
     },
     {
       "showDir": "franz-and-marie-west-end-2026",
-      "actual": 1,
-      "scanned": 11,
+      "actual": 5,
+      "scanned": 17,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -109,16 +105,16 @@
     },
     {
       "showDir": "into-the-woods-noel-coward-west-end-2026",
-      "actual": 31,
-      "scanned": 7,
+      "actual": 33,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "kramerfauci-st-anns-off-broadway-2026",
-      "actual": 16,
-      "scanned": 15,
+      "actual": 17,
+      "scanned": 16,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -133,50 +129,42 @@
     },
     {
       "showDir": "slam-frank-off-broadway-2026",
-      "actual": 11,
-      "scanned": 23,
+      "actual": 14,
+      "scanned": 26,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "soon-off-broadway-2026",
-      "actual": 4,
-      "scanned": 6,
+      "actual": 7,
+      "scanned": 11,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "actual": 11,
-      "scanned": 18,
+      "actual": 12,
+      "scanned": 20,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-hungry-ghost-off-west-end-2026",
+      "actual": 10,
+      "scanned": 19,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "what-the-animals-say-off-west-end-2026",
-      "actual": 12,
-      "scanned": 22,
+      "actual": 13,
+      "scanned": 23,
       "suppressedCount": 0,
       "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "actual": 29,
-      "scanned": 55,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "outinjersey--allen-neuner.json",
-          "outletId": "outinjersey",
-          "criticName": "Allen Neuner",
-          "publishDate": "2026-09-19",
-          "url": "https://outinjersey.net/whos-afraid-of-virginia-woolf-fun-and-games-at-george-and-marthas/"
-        }
-      ],
       "overThreshold": false
     }
   ]
