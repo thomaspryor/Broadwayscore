@@ -290,3 +290,15 @@ test('weeklySummaryLines leaves welcome-screen events out of "most common this w
   ] } });
   assert.ok(m.weeklySummaryLines(d).includes('Most common this week: added to watchlist (4).'));
 });
+
+test('classifyAccount and slimUsers treat every listed owner address as the owner', () => {
+  assert.equal(m.classifyAccount('pat@work.example.org', ['jane.doe@gmail.com', 'Pat@Work.example.org']), 'owner');
+  assert.equal(m.classifyAccount('pat@company.com', ['jane.doe@gmail.com']), 'person');
+  assert.equal(m.classifyAccount('pat+x@company.com', ['pat@company.com']), 'owner');
+  const users = m.slimUsers([
+    { id: 'a', email: 'janedoe@gmail.com', created_at: iso(1) },
+    { id: 'b', email: 'pat@company.com', created_at: iso(1) },
+    { id: 'c', email: 'fan@yahoo.com', created_at: iso(1) },
+  ], { ownerEmail: 'jane.doe@gmail.com', ownerEmails: ['pat@company.com'] });
+  assert.deepEqual(users.map((u) => u.kind), ['owner', 'owner', 'person']);
+});
