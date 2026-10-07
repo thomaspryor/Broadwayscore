@@ -163,6 +163,13 @@ EXISTING pipeline, and lets the audit decide which other fixes are needed.
    - `review-refresh.yml` `tr_show_filter`
    - `merge-wet-stars-urls.js`
    - scoring and rebuild on their crons
+   - `fetch-all-image-formats.yml` with `show_id=<comma list>` and
+     `include_closed=true`. The scheduled image run skips closed shows, so
+     promoted rows otherwise stay imageless. Broadway's
+     `discover-historical-shows.yml` dispatches this per batch; the WE
+     promote step must too.
+   - `backfill-historical-metadata.yml` for synopsis and creative team.
+     It has no cron.
 6. Run the season audit (below) on the 5. Build TR production-by-date picking,
    the TR `evaluateDateGuard` routing and the WET date bounds only if the
    audit shows wrong-production or missing reviews.
@@ -215,6 +222,25 @@ which removes rows listed in the promotion log that have no review texts yet.
 - **All-time rank:** "#N all-time" on current London shows will move as each
   season lands. That is the backfill making it more true, since today
   "all-time" means "since 2024". No change.
+
+## Known gaps found in Phase A (2026-10-07)
+
+- **Productions WOS never listed.** About 10 per season have a WOS review at
+  a West End venue but no listing, so there are no dates: Coriolanus (NT,
+  2024), The Importance of Being Earnest (NT, 2024), The Real Thing (Old Vic,
+  2024), Elektra (Duke of York's, 2025). They are in each candidates file
+  under `unlistedReviews`. Phase B needs a dated source for them: Theatre
+  Record production pages carry dates. Do not guess dates from the review
+  date.
+- **No review signal, but famous.** Example: Macbeth (Harold Pinter, 2024,
+  Tennant). These go through the approvals file after a human check.
+  WOS's opening date for that run (12-08) was also wrong, and discovery now
+  drops implausible opening dates (more than 6 weeks after the first
+  preview, or equal to it).
+- **Opening date often unknown.** 21 of 39 promotable 2024-25 rows carry
+  previews only. TR or the reviews' publish dates can fill press night
+  later; the date guards key off the earliest date, so inclusion is
+  unaffected.
 
 ## Side benefit (separate card)
 
