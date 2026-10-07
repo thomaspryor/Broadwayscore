@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T15:48:37.661Z",
+  "generatedAt": "2026-10-07T16:05:49.165Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -241,9 +241,9 @@
       "status": "open",
       "slug": "the-hungry-ghost-off-west-end",
       "thumbnail": "/images/shows/the-hungry-ghost-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 84.84,
+      "siteScore": 84.63,
       "liveScore": 85,
-      "scoreDrift": 0.1599999999999966,
+      "scoreDrift": 0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -420,6 +420,18 @@
           "t": "2026-10-07T14:03:00.467Z",
           "rc": 10,
           "s": 84.84,
+          "t1": 1,
+          "t2": 4,
+          "t3": 5,
+          "p": 9,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T16:05:49.165Z",
+          "rc": 10,
+          "s": 84.63,
           "t1": 1,
           "t2": 4,
           "t3": 5,
@@ -820,25 +832,23 @@
       "status": "open",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.webp",
-      "siteScore": 31.94,
-      "liveScore": 32,
-      "scoreDrift": 0.05999999999999872,
+      "siteScore": 34.73,
+      "liveScore": 35,
+      "scoreDrift": 0.2700000000000031,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 15,
-      "t1": 3,
-      "t2": 6,
-      "t3": 6,
+      "total": 19,
+      "t1": 4,
+      "t2": 7,
+      "t3": 8,
       "positive": 1,
-      "mixed": 3,
-      "negative": 11,
+      "mixed": 5,
+      "negative": 13,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "T1:2/3"
-        ],
-        "highConfidence": 13,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -848,7 +858,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1042,6 +1052,18 @@
           "m": 3,
           "n": 11,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T16:05:49.165Z",
+          "rc": 19,
+          "s": 34.73,
+          "t1": 4,
+          "t2": 7,
+          "t3": 8,
+          "p": 1,
+          "m": 5,
+          "n": 13,
+          "bc": "waiting"
         }
       ]
     },
@@ -1225,27 +1247,27 @@
       "status": "open",
       "slug": "soon-off-broadway",
       "thumbnail": "/images/shows/soon-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 59.78,
-      "liveScore": 60,
-      "scoreDrift": 0.21999999999999886,
+      "siteScore": 56.84,
+      "liveScore": 57,
+      "scoreDrift": 0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 1,
-      "t2": 2,
+      "t2": 3,
       "t3": 4,
       "positive": 2,
       "mixed": 2,
-      "negative": 3,
+      "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
+          "8/12 total",
           "T1:0/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1648,6 +1670,18 @@
           "p": 2,
           "m": 2,
           "n": 3,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T16:05:49.165Z",
+          "rc": 8,
+          "s": 56.84,
+          "t1": 1,
+          "t2": 3,
+          "t3": 4,
+          "p": 2,
+          "m": 2,
+          "n": 4,
           "bc": "waiting"
         }
       ]
@@ -2215,17 +2249,17 @@
       "status": "open",
       "slug": "slam-frank-off-broadway",
       "thumbnail": "/images/shows/slam-frank-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 65.23,
-      "liveScore": 65,
-      "scoreDrift": -0.23000000000000398,
+      "siteScore": 65.81,
+      "liveScore": 66,
+      "scoreDrift": 0.18999999999999773,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 1,
       "t2": 6,
-      "t3": 7,
-      "positive": 5,
+      "t3": 8,
+      "positive": 6,
       "mixed": 6,
       "negative": 3,
       "readiness": {
@@ -2233,7 +2267,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2785,6 +2819,18 @@
           "m": 6,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T16:05:49.165Z",
+          "rc": 15,
+          "s": 65.81,
+          "t1": 1,
+          "t2": 6,
+          "t3": 8,
+          "p": 6,
+          "m": 6,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -2798,25 +2844,25 @@
       "status": "open",
       "slug": "the-hairy-ape-irish-repertory-theatre-off-broadway",
       "thumbnail": "/images/shows/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 73.71,
-      "liveScore": 74,
-      "scoreDrift": 0.29000000000000625,
+      "siteScore": 73.01,
+      "liveScore": 73,
+      "scoreDrift": -0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 13,
       "t1": 2,
-      "t2": 6,
+      "t2": 7,
       "t3": 4,
       "positive": 8,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 12,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3234,6 +3280,18 @@
           "t3": 4,
           "p": 8,
           "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T16:05:49.165Z",
+          "rc": 13,
+          "s": 73.01,
+          "t1": 2,
+          "t2": 7,
+          "t3": 4,
+          "p": 8,
+          "m": 4,
           "n": 1,
           "bc": "waiting"
         }
