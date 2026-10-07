@@ -10,6 +10,7 @@ const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
 const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar, adjudicationStarBasisGone } = require('./star-reliability');
+const { publishedScoreViolation } = require('./published-score-star-band');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
 // that often read the wrong element (pagination, dates, sidebars). The LLM may
@@ -706,7 +707,7 @@ function getBestScore(data, opts = {}) {
     // Auto-accepts carry a stale LLM score and "sided with stars" verdicts that
     // land outside the star band contradict themselves; neither stands.
     const anchoredBand = data.scoreSource === 'anchored-v6' && data.llmScore && data.llmScore.band;
-    const disputesStar = /^Auto-adjudicated \([^)]*sided with llm\)/.test(data.adjudicationNote || '');
+    const disputesStar = /^Auto-adjudicated \([^)]*sided with llm\)/i.test(data.adjudicationNote || '');
     const outsideAnchoredBand = !!(anchoredBand && typeof anchoredBand.floor === 'number' && !disputesStar
       && (data.adjudicatedScore < anchoredBand.floor - 2 || data.adjudicatedScore > anchoredBand.ceiling + 2));
     // BRO-4499: an adjudication that sided with the star is only as good as the
@@ -720,10 +721,19 @@ function getBestScore(data, opts = {}) {
     // that claims to follow it.
     const staleStarBasis = uncorroboratedStarBasis || adjudicationContradictsRecordStar(data)
       || adjudicationStarBasisGone(data);
-    if (!hasVerifiedStarScore && !outsideAnchoredBand && !staleStarBasis) {
+    // BRO-4839: the guard above only covers files stamped anchored-v6. An adjudication that auto-accepted a stale LLM
+    // score (or an invented basis) also landed outside the critic's band on llm-v6 / relabelled files: 39 published
+    // reviews, a printed 2/5 shown as 91. The same star-band test, from the record's own HIGH-reliability rating.
+    // Only the SELF-CONTRADICTING adjudications: an "Auto-accepted ..." that kept a stale LLM score, or a verdict that
+    // says it sided with the star yet landed outside it. A reasoned text dispute of a rating (thumbs, "neither", an LLM
+    // read of a pan whose "grade" the text never prints) is a different thing and stands.
+    const selfContradicting = /^Auto-accepted/i.test(data.adjudicationNote || '') || adjudicationSidedWithStars(data);
+    const outsideStarBand = !outsideAnchoredBand && !disputesStar && selfContradicting
+      && !!publishedScoreViolation(data, data.adjudicatedScore, { unanimousTol: Infinity });
+    if (!hasVerifiedStarScore && !outsideAnchoredBand && !outsideStarBand && !staleStarBasis) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }
-    inc(outsideAnchoredBand ? 'adjudicationSkippedOutsideStarBand'
+    inc(outsideAnchoredBand || outsideStarBand ? 'adjudicationSkippedOutsideStarBand'
       : staleStarBasis ? 'adjudicationSkippedUncorroboratedStar'
         : 'adjudicationSkippedExplicitStars');
   }
