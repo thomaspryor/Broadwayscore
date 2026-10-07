@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-07T10:37:12.698Z",
+    "generatedAt": "2026-10-07T16:06:49.753Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 361,
+  "totalGaps": 364,
   "errorSeverity": 264,
-  "warningSeverity": 97,
+  "warningSeverity": 100,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1032,6 +1032,15 @@
       "gap": 43,
       "ratio": 0.16,
       "severity": "error"
+    },
+    {
+      "showId": "hadestown-west-end-2024",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
     },
     {
       "showId": "hallelujah-baby-off-broadway-2026",
@@ -2348,6 +2357,15 @@
       "severity": "error"
     },
     {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "category": "west-end",
+      "expected": 15,
+      "extracted": 8,
+      "gap": 7,
+      "ratio": 0.53,
+      "severity": "warning"
+    },
+    {
       "showId": "suffs-2024",
       "category": "broadway",
       "expected": 13,
@@ -2445,6 +2463,15 @@
       "gap": 25,
       "ratio": 0.24,
       "severity": "error"
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "category": "west-end",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "the-cher-show-2018",
