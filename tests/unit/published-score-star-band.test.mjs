@@ -57,7 +57,12 @@ test('publishedScoreViolation: every model agreeing on a bucket the published sc
 test('hasPrimaryRating: the outlet\'s own fields count, a relay-only record does not', () => {
   assert.equal(sb.hasPrimaryRating({ originalScore: '4/5' }), true);
   assert.equal(sb.hasPrimaryRating({ starRating: 4 }), true);
-  assert.equal(sb.hasPrimaryRating({ originalScore: 82 }), false, 'a numeric originalScore is the post-extraction 0-100 value');
+  // BRO-4838: a numeric originalScore is an outlet rating stored on 0-100
+  // (Guardian/Stage/Time Out svg stars). It binds only when the published-
+  // rating test accepts it, which detectBandFromReviewFile applies.
+  assert.equal(sb.hasPrimaryRating({ originalScore: 82 }), true);
+  assert.equal(sb.publishedScoreViolation({ originalScore: 60, outletId: 'thestage', scoreSource: 'stage-star-svg' }, 90).kind, 'star-band');
+  assert.equal(sb.publishedScoreViolation({ originalScore: 82, outletId: 'nytimes' }, 30), null, 'a stray number at an outlet with no ratings never binds');
   assert.equal(sb.hasPrimaryRating({ aggregatorStars: '3/5 stars', wetStars: '3/5' }), false);
   assert.equal(sb.publishedScoreViolation({ aggregatorStars: '3/5 stars' }, 90), null);
 });
