@@ -155,12 +155,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-06T20:21:52.640Z",
-      "lastSeen": "2026-10-06T20:21:52.640Z",
+      "lastSeen": "2026-10-07T04:05:03.137Z",
       "lastNotifiedAt": "2026-10-06T20:21:52.640Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 124,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -11080,7 +11081,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:2764c97b": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"DEPENDENCIES.md covers the current graph (edges + cross-repo writers): run scripts/generate-workflow-dependencies.js\"",
       "firstSeen": "2026-10-06T20:42:26.009Z",
@@ -11094,8 +11095,11 @@
       "silentRefires": 1,
       "absentRunIds": [
         "37560581822",
-        "37568060979"
-      ]
+        "37567164165",
+        "37568588036"
+      ],
+      "resolvedAt": "2026-10-07T04:05:03.117Z",
+      "resolveReason": "stale-signature"
     },
     "scheduled-email-count:2026-10-04": {
       "status": "open",
@@ -11391,14 +11395,21 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"once generated per-show JSON carries au.sources.ss.u, every tile with a known URL has it\"",
-      "firstSeen": "2026-10-07T03:52:42.899Z",
-      "incidentOpenedAt": "2026-10-07T03:52:42.899Z",
-      "lastSeen": "2026-10-07T03:52:42.899Z",
-      "lastNotifiedAt": "2026-10-07T03:52:42.899Z",
+      "firstSeen": "2026-10-07T03:47:32.578Z",
+      "incidentOpenedAt": "2026-10-07T03:47:32.578Z",
+      "lastSeen": "2026-10-07T04:05:03.131Z",
+      "lastNotifiedAt": "2026-10-07T03:47:32.578Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4827"
+      "linearIdentifier": "BRO-4827",
+      "dispatch": {
+        "requestedAt": "2026-10-07T03:47:32.578Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37567164165",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37567164165"
+      },
+      "silentRefires": 1
     }
   }
 }
