@@ -69,7 +69,9 @@ function findPublishedStarInText(data, ctx = {}) {
   if (text.length < MIN_TEXT_LENGTH) return null;
   let found;
   try {
-    found = extractScore('', text, outletId, data.showTitle);
+    // The show record's title, not data.showTitle: older files have none, and
+    // a roundup's per-show star list needs it to pick this show's group.
+    found = extractScore('', text, outletId, (show && show.title) || data.showTitle);
   } catch {
     return null;
   }
