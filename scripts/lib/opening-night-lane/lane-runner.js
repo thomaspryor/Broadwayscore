@@ -15,7 +15,10 @@
  * Time is injected. Production passes real `now`/`wait`, no `forkClock`: a batch publishes in the background and the
  * loop never waits for it. The rehearsal passes a virtual clock plus `forkClock(startMs)`, which gives each publish its
  * own virtual timeline (the single shared clock cannot run two things at once), still one batch at a time.
- * A candidate whose fetch or score throws is not marked seen, so the next pass retries it. A publish that throws, or
+
+ * A candidate whose fetch or score throws is not marked seen, so the next pass retries it, unless the error says
+ * `permanent` (inline-score.js after its bounded retries): then it is marked done and reported in `failed`, with the
+ * reason already in the lane's failure record. Nothing is dropped without a trace. A publish that throws, or
  * a row that never went live, goes back on the queue for the next batch (merge-by-key makes the repeat harmless).
  */
 const ledger = require('./ledger');
@@ -39,7 +42,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
  *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
- * @returns {Promise<{passes, admitted, published, errors, unpublished}>}
+ * @returns {Promise<{passes, admitted, published, errors, failed, unpublished}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
@@ -56,6 +59,7 @@ async function runLaneNight({
   const errors = [];
   const admitted = [];
   const published = [];
+  const failed = [];
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
   const busyUntil = []; // virtual mode: end of each batch's timeline
@@ -106,14 +110,15 @@ async function runLaneNight({
           outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {},
         });
-        if (row.assignedScore == null) { await wait(latency.scoreMs || 0); row.assignedScore = scoreReview(row, fetched); }
+        if (row.assignedScore == null) { await wait(latency.scoreMs || 0); row.assignedScore = await scoreReview(row, fetched); }
         row.contentTier = row.isFullReview ? 'complete' : 'stub';
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
         pending.push({ key: a.key, row });
         seen.add(a.key);
         admitted.push(a);
       } catch (e) {
-        errors.push({ adapter: a.adapter, error: `${a.key}: ${String((e && e.message) || e).slice(0, 150)}` }); // retried next pass
+        errors.push({ adapter: a.adapter, error: `${a.key}: ${String((e && e.message) || e).slice(0, 150)}` });
+        if (e && e.permanent) { seen.add(a.key); failed.push({ key: a.key, reason: String(e.message).slice(0, 200) }); } // else: retried next pass
       }
     }
     await maybePublish();
@@ -135,7 +140,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, unpublished: pending.map((r) => r.key) };
+  return { passes, admitted, published, errors, failed, unpublished: pending.map((r) => r.key) };
 }
 
 module.exports = { runLaneNight, loadDone };
