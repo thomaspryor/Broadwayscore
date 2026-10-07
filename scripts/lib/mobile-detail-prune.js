@@ -23,12 +23,15 @@ function loadPriorIndexIds(indexPath) {
   }
 }
 
-// ids: orphan candidates (invisible now). Returns { toPrune, nextCandidates, skipped, ceiling }.
-function planPrune({ orphanIds, previousCandidates = {}, priorIndexIds = null, showCount }) {
+// orphanIds: orphan candidates (invisible now). Returns { toPrune, nextCandidates, skipped, ceiling }.
+// indexCovers(id): true when the index generator WOULD have listed this id had it
+// been visible. Categories hidden from the app feed (tours) are never in the index,
+// so their absence proves nothing and they must wait for a cache candidate.
+function planPrune({ orphanIds, previousCandidates = {}, priorIndexIds = null, indexCovers = () => true, showCount }) {
   const toPrune = [];
   const nextCandidates = {};
   for (const id of orphanIds) {
-    const graceSatisfied = !!previousCandidates[id] || (priorIndexIds !== null && !priorIndexIds.has(id));
+    const graceSatisfied = !!previousCandidates[id] || (priorIndexIds !== null && indexCovers(id) && !priorIndexIds.has(id));
     if (graceSatisfied) toPrune.push(id);
     else nextCandidates[id] = true;
   }
@@ -36,7 +39,7 @@ function planPrune({ orphanIds, previousCandidates = {}, priorIndexIds = null, s
   if (toPrune.length > ceiling) {
     // Not consumed: stay armed so a genuine batch prunes once the anomaly clears.
     for (const id of toPrune) nextCandidates[id] = true;
-    return { toPrune: [], nextCandidates, skipped: true, ceiling };
+    return { toPrune: [], nextCandidates, skipped: true, skippedCount: toPrune.length, ceiling };
   }
   return { toPrune, nextCandidates, skipped: false, ceiling };
 }

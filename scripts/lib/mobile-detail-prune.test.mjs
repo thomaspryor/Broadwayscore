@@ -47,3 +47,14 @@ test('loadPriorIndexIds: reads ids; unreadable/empty index returns null', () => 
   assert.equal(loadPriorIndexIds(path.join(d, 'e.json')), null);
   assert.equal(loadPriorIndexIds(path.join(d, 'nope.json')), null);
 });
+
+test('hidden-category (tour) absent from index is NOT grace evidence', () => {
+  const r = planPrune({ orphanIds: ['tour', 'gone'], previousCandidates: {}, priorIndexIds: new Set(), indexCovers: id => id !== 'tour', showCount: 1000 });
+  assert.deepEqual(r.toPrune, ['gone']);
+  assert.deepEqual(r.nextCandidates, { tour: true });
+});
+
+test('skipped result reports the real count', () => {
+  const ids = Array.from({ length: 51 }, (_, i) => `x${i}`);
+  assert.equal(planPrune({ orphanIds: ids, priorIndexIds: new Set(), showCount: 100 }).skippedCount, 51);
+});
