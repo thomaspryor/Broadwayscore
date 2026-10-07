@@ -728,6 +728,32 @@ test('selectTestFiles: a test-only edit selects that test (and nothing for missi
   assert.deepEqual(selectTestFiles(dir, ['scripts/foo.test.mjs', 'scripts/gone.test.mjs', 'scripts/pre-push.test.mjs']), [path.join('scripts', 'foo.test.mjs')]);
 });
 
+test('selectTestFiles: skips tsx-manifest tests, whether changed or reached by name, and keeps plain ones (BRO-4842)', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'scripts', 'tests'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'tests'), { recursive: true });
+  for (const rel of ['scripts/tests/tm-gap.test.mjs', 'scripts/tests/fix-links.test.mjs', 'scripts/tests/plain.test.mjs']) fs.writeFileSync(path.join(dir, rel), '');
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest-tsx.txt'), '# tsx batch\nscripts/tests/tm-gap.test.mjs\nscripts/tests/fix-links.test.mjs\n');
+  assert.deepEqual(
+    selectTestFiles(dir, ['scripts/tests/tm-gap.test.mjs', 'scripts/fix-links.js', 'scripts/tests/plain.test.mjs']),
+    [path.join('scripts', 'tests', 'plain.test.mjs')],
+  );
+  // With no tsx manifest the same changed test is selected as before.
+  fs.rmSync(path.join(dir, 'tests', 'unit-test-manifest-tsx.txt'));
+  assert.deepEqual(selectTestFiles(dir, ['scripts/tests/tm-gap.test.mjs']), [path.join('scripts', 'tests', 'tm-gap.test.mjs')]);
+});
+
+test('every top-level sibling require() of the gate is copied into the bash harness scratch repo (BRO-4842)', () => {
+  // The harness builds a minimal scripts/lib/ by cp; a sibling it misses makes
+  // the gate die MODULE_NOT_FOUND there, which only surfaced in land.yml.
+  const lib = path.join(REPO_ROOT, 'scripts', 'lib');
+  const gateSrc = fs.readFileSync(path.join(lib, 'merge-post-merge-test-gate.js'), 'utf8');
+  const harness = fs.readFileSync(path.join(lib, 'merge-worktree-to-main.post-merge-test-gate.test.sh'), 'utf8');
+  const siblings = [...gateSrc.matchAll(/^const [^=]+= require\('\.\/([^']+)'\);/gm)].map((m) => m[1]);
+  assert.ok(siblings.length >= 3, `expected top-level sibling requires, got ${siblings.join(', ')}`);
+  assert.deepEqual(siblings.filter((f) => !harness.includes(`cp "$REPO_ROOT/scripts/lib/${f}"`)), []);
+});
+
 test('REQUIRED_WORKFLOW_GUARDS: the dependency validator is selected even with no manifest (BRO-4812)', () => {
   const dir = makeScratchRepo();
   fs.writeFileSync(path.join(dir, 'scripts', 'validate-workflow-dependencies.test.mjs'), '');

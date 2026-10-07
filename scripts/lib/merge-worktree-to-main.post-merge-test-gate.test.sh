@@ -89,6 +89,8 @@ setup() {
   # assumed — a review predicted it would still score GREEN and that was wrong).
   # Any future sibling require() of the gate needs its own cp line here.
   cp "$REPO_ROOT/scripts/lib/exec-error-detail.js" "$d/main/scripts/lib/"
+  # readTsxManifest() for the tsx-manifest skip in selectTestFiles (BRO-4842).
+  cp "$REPO_ROOT/scripts/lib/autonomous-checks.js" "$d/main/scripts/lib/"
   cp "$REPO_ROOT/scripts/lib/push-mutex.sh" "$d/main/scripts/lib/"
   # Stub the unrelated range-scoped push-audit gate (own coverage elsewhere;
   # a real run here would abort before reaching the check this test targets).

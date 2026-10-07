@@ -13,9 +13,10 @@
 // One additional US "hit" (La Jolla's The Family Album) was excluded: its TM
 // page is resale-marketplace-only with zero primary inventory ("Tickets for
 // this event are not currently available on Ticketmaster"), the same dead-end
-// pattern that got StubHub hidden. This test asserts the REAL, verified
-// count rather than the originally-hoped-for 15 — see the session's Notion
-// outcome for the full research trail.
+// pattern that got StubHub hidden. This test checks the verified shows
+// (VERIFIED_TM_GAP below) rather than the originally-hoped-for 15. It
+// asserts no count of live gap shows, because shows leave the gap as they
+// close or gain TodayTix. See the session's Notion outcome for the research.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
@@ -72,36 +73,46 @@ test('no live/upcoming show links to a ticket storefront that cannot sell its ma
   assert.deepEqual(bad, [], `ticket links on the wrong regional storefront:\n${bad.join('\n')}`);
 });
 
-test('verified TodayTix-gap shows carry a real Ticketmaster link', () => {
-  // 2026-09-29: The Gruffalo (Lyric) closed on 2026-09-08; its Ticketmaster
-  // event page went dead and the link was pruned, so it leaves this list and
-  // the floor below drops to 2. Re-verify and re-add when a new gap show gets
-  // a live TM page — never lower the floor for any other reason.
-  const EXPECTED = {
-    'a-christmas-carol-west-end-2026': 'ticketmaster.co.uk',
-    'derren-brown-only-human-west-end-2026': 'ticketmaster.co.uk',
-  };
+// Verified gap shows and their Ticketmaster host. The Gruffalo (Lyric) left
+// on 2026-09-08 when it closed and its TM page went dead. Re-verify and add
+// when a new gap show gets a live TM page.
+const VERIFIED_TM_GAP = {
+  'a-christmas-carol-west-end-2026': 'ticketmaster.co.uk',
+  'derren-brown-only-human-west-end-2026': 'ticketmaster.co.uk',
+};
 
-  for (const [id, expectedHost] of Object.entries(EXPECTED)) {
-    const show = shows.find(s => s.id === id);
-    assert.ok(show, `show ${id} should exist in shows.json`);
-    const tm = (show.ticketLinks || []).find(l => l.platform === 'Ticketmaster');
-    assert.ok(tm, `show ${id} should carry a Ticketmaster link`);
-    assert.ok(tm.url.includes(expectedHost), `${id} TM url should be on ${expectedHost}, got ${tm.url}`);
+// These assertions follow the live data, so they must only fail on a real
+// loss. A verified show that closes, or that gains TodayTix (Derren Brown did
+// on 2026-10-07 and turned main red under the old ">= 2 gap shows" count,
+// BRO-4842), has left the gap; that is not a regression. A past closingDate
+// counts as closed even while the status flip lags, since TM pages die then.
+const today = new Date().toISOString().slice(0, 10);
+const stillInGap = Object.keys(VERIFIED_TM_GAP)
+  .map(id => liveShows.find(s => s.id === id))
+  .filter(s => s && !(s.closingDate && s.closingDate < today))
+  .filter(s => !(s.ticketLinks || []).some(l => l.platform === 'TodayTix'));
+
+test('every verified gap id still exists in shows.json (a rename would silently empty the checks below)', () => {
+  for (const id of Object.keys(VERIFIED_TM_GAP)) {
+    assert.ok(shows.some(s => s.id === id), `show ${id} should exist in shows.json; update VERIFIED_TM_GAP if it was renamed`);
   }
 });
 
-test('TodayTix-gap shows without TodayTix have at least 2 real Ticketmaster links (documented ceiling — see file header; 3 until The Gruffalo closed 2026-09-08)', () => {
-  const gapWithTm = liveShows.filter(s => {
-    const links = s.ticketLinks || [];
-    const hasTodayTix = links.some(l => l.platform === 'TodayTix');
-    const hasTm = links.some(l => l.platform === 'Ticketmaster');
-    return !hasTodayTix && hasTm;
-  });
-  assert.ok(
-    gapWithTm.length >= 2,
-    `expected at least 2 TodayTix-gap shows with a Ticketmaster link, got ${gapWithTm.length}`
-  );
+test('verified TodayTix-gap shows still live and still without TodayTix carry their Ticketmaster link', (t) => {
+  if (stillInGap.length === 0) t.diagnostic('no verified gap show is still live without TodayTix; only the fixture tests below guard the rendering rule');
+  for (const show of stillInGap) {
+    const expectedHost = VERIFIED_TM_GAP[show.id];
+    const tm = (show.ticketLinks || []).find(l => l.platform === 'Ticketmaster');
+    assert.ok(tm, `show ${show.id} should carry a Ticketmaster link`);
+    assert.ok(tm.url.includes(expectedHost), `${show.id} TM url should be on ${expectedHost}, got ${tm.url}`);
+  }
+});
+
+test('verified gap shows still in the gap render their Ticketmaster link', () => {
+  for (const show of stillInGap) {
+    const visible = getVisibleTicketLinks(show.ticketLinks || []);
+    assert.ok(visible.some(l => l.platform === 'Ticketmaster'), `${show.id} hides its only Ticketmaster link`);
+  }
 });
 
 test('getVisibleTicketLinks renders Ticketmaster for a gap show even with a non-TodayTix sibling link', () => {
