@@ -15,11 +15,13 @@ const SHOW = 'other-desert-cities-2026';
 const OTHER = 'some-other-show-2026';
 const NIGHT = '2026-10-18';
 
+const lane = (showId) => ({ productionVerified: 'aggregator', openingNightLane: { show: showId, night: NIGHT, source: 'aggregator', seenAt: '2026-10-19T00:30:00.000Z' } });
 const row = (showId, outlet, critic, url, extra = {}) => ({ showId, outlet, criticName: critic, url, assignedScore: 80, contentTier: 'complete', ...extra });
+const laneRow = (...a) => { const r = row(...a); return { ...r, ...lane(r.showId) }; };
 const FIXTURE = [
-  { key: 'https://nytimes.com/2026/10/19/theater/odc-review.html', row: row(SHOW, 'The New York Times', 'Jesse Green', 'https://www.nytimes.com/2026/10/19/theater/odc-review.html?partner=rss') },
-  { key: 'https://vulture.com/article/odc-review.html', row: row(SHOW, 'Vulture', 'Jackson McHenry', 'https://www.vulture.com/article/odc-review.html') },
-  { key: 'https://variety.com/2026/legit/reviews/odc-1236', row: row(SHOW, 'Variety', 'Frank Rizzo', 'https://variety.com/2026/legit/reviews/odc-1236/') },
+  { key: 'https://nytimes.com/2026/10/19/theater/odc-review.html', row: laneRow(SHOW, 'The New York Times', 'Jesse Green', 'https://www.nytimes.com/2026/10/19/theater/odc-review.html?partner=rss') },
+  { key: 'https://vulture.com/article/odc-review.html', row: laneRow(SHOW, 'Vulture', 'Jackson McHenry', 'https://www.vulture.com/article/odc-review.html') },
+  { key: 'https://variety.com/2026/legit/reviews/odc-1236', row: laneRow(SHOW, 'Variety', 'Frank Rizzo', 'https://variety.com/2026/legit/reviews/odc-1236/') },
 ];
 
 function sandbox() {
@@ -95,7 +97,7 @@ test('dry-run publish against a local static server reaches verified-live for ev
   try {
     fs.mkdirSync(s.liveDir, { recursive: true });
     const ports = { ...pub.createReviewsFilePort(s.reviewsFile), regenShow: s.regenShow, deploy: pub.dryRunDeploy({ publicDir: s.publicDir, liveDir: s.liveDir, showId: SHOW, delayMs: 60 }), fetchLiveShow: pub.fetchLiveShowFrom(server.baseUrl) };
-    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports, pollMs: 15, timeoutMs: 5000 });
+    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports, pollMs: 15, timeoutMs: 5000, dryRun: true });
     assert.equal(res.timedOut, false);
     assert.deepEqual(res.missing, []);
     assert.deepEqual(res.verified.sort(), FIXTURE.map((f) => f.key).sort());
@@ -116,7 +118,7 @@ test('verification waits for the live copy: a review is not verified before it i
     let polls = 0;
     const ports = { ...pub.createReviewsFilePort(s.reviewsFile), regenShow: s.regenShow, deploy: async () => {},
       fetchLiveShow: async () => { polls++; return polls < 3 ? { rv: [] } : { rv: [{ u: FIXTURE[0].row.url }] }; } };
-    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: [FIXTURE[0]], ledgerDir: s.ledgerDir, ports, pollMs: 1, timeoutMs: 5000, sleep: async () => {} });
+    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: [FIXTURE[0]], ledgerDir: s.ledgerDir, ports, pollMs: 1, timeoutMs: 5000, sleep: async () => {}, dryRun: true });
     assert.equal(polls, 3);
     assert.deepEqual(res.verified, [FIXTURE[0].key], 'a tracking-param spelling of the same URL counts as live');
   } finally { s.cleanup(); }
@@ -127,7 +129,7 @@ test('a review that never goes live is reported missing after the timeout, with 
   try {
     let t = 0;
     const ports = { ...pub.createReviewsFilePort(s.reviewsFile), regenShow: s.regenShow, deploy: async () => {}, fetchLiveShow: async () => { throw new Error('503'); } };
-    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE.slice(0, 2), ledgerDir: s.ledgerDir, ports, pollMs: 1, timeoutMs: 100, now: () => (t += 40), sleep: async () => {} });
+    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE.slice(0, 2), ledgerDir: s.ledgerDir, ports, pollMs: 1, timeoutMs: 100, now: () => (t += 40), sleep: async () => {}, dryRun: true });
     assert.equal(res.timedOut, true);
     assert.equal(res.missing.length, 2);
     const { events } = ledger.readLedger(s.ledgerDir, SHOW, NIGHT);
@@ -141,7 +143,7 @@ test('a failed core-data push stops the publish before regenerate and deploy', a
   try {
     const calls = [];
     const ports = { ...pub.createReviewsFilePort(s.reviewsFile), pushData: async () => ({ ok: false, stderr: 'rejected' }), regenShow: async () => calls.push('regen'), deploy: async () => calls.push('deploy'), fetchLiveShow: async () => ({}) };
-    await assert.rejects(pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports }), /pushing core data failed/);
+    await assert.rejects(pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports: { ...ports, isLeased: async () => true } }), /pushing core data failed/);
     assert.deepEqual(calls, []);
     assert.equal(ledger.readLedger(s.ledgerDir, SHOW, NIGHT).events.length, 0, 'no rebuilt event for a publish that did not happen');
   } finally { s.cleanup(); }
@@ -172,4 +174,63 @@ test('fetchLiveShowFrom busts caches: every poll has a distinct query and no-cac
   assert.match(seen[0][0], /^https:\/\/example\.com\/data\/shows\/other-desert-cities-2026\.json\?cb=\d+$/);
   assert.notEqual(seen[0][0], seen[1][0]);
   assert.equal(seen[0][1], 'no-cache');
+});
+
+test('tie and manual rules: a same-tier lane rescore takes the incoming row; a kept manual row is not awaited at verification', async () => {
+  const same = { reviews: [row(SHOW, 'Vulture', 'Jackson McHenry', 'https://www.vulture.com/article/odc-review.html', { assignedScore: 60 })] };
+  const out = pub.mergeShowRows(same, SHOW, [FIXTURE[1].row]);
+  assert.equal(out.replaced, 1);
+  assert.equal(out.doc.reviews[0].assignedScore, 80);
+  const s = sandbox();
+  try {
+    const doc = JSON.parse(fs.readFileSync(s.reviewsFile, 'utf8'));
+    doc.reviews.push(row(SHOW, 'Variety', 'Frank Rizzo', 'https://variety.com/manual', { manualEntry: true }));
+    fs.writeFileSync(s.reviewsFile, JSON.stringify(doc));
+    const ports = { ...pub.createReviewsFilePort(s.reviewsFile), regenShow: s.regenShow, deploy: async () => {}, fetchLiveShow: async () => ({ rv: [{ u: FIXTURE[0].row.url }, { u: FIXTURE[1].row.url }] }) };
+    const res = await pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports, pollMs: 1, timeoutMs: 50, sleep: async () => {}, dryRun: true });
+    assert.equal(res.timedOut, false, 'the kept Variety row is never waited for');
+    assert.deepEqual(res.missing, []);
+    assert.equal(res.merge.kept, 1);
+  } finally { s.cleanup(); }
+});
+
+test('rows that are not lane reviews, have no score, or have no canonical URL are refused before anything is written', () => {
+  const ok = FIXTURE[0].row;
+  const { productionVerified, ...noStamp } = ok;
+  assert.throws(() => pub.mergeShowRows({ reviews: [] }, SHOW, [noStamp]), /not a lane review/);
+  assert.throws(() => pub.mergeShowRows({ reviews: [] }, SHOW, [{ ...ok, assignedScore: null }]), /no score/);
+  assert.throws(() => pub.mergeShowRows({ reviews: [] }, SHOW, [{ ...ok, url: 'https://feedproxy.google.com/~r/x/1' }]), /canonical/);
+  assert.throws(() => pub.mergeShowRows({ reviews: [] }, SHOW, [ok], { openingDate: '2026-10-20' }), /not a lane review/, 'stamped night must be the opening night');
+});
+
+test('a real publish needs pushData and a lease; dry-run rehearsal needs neither', async () => {
+  const s = sandbox();
+  try {
+    const base = { ...pub.createReviewsFilePort(s.reviewsFile), regenShow: async () => {}, deploy: async () => {}, fetchLiveShow: async () => ({}) };
+    await assert.rejects(pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports: base }), /pushData/);
+    await assert.rejects(pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports: { ...base, pushData: async () => ({ ok: true }) } }), /isLeased/);
+    await assert.rejects(pub.publishLaneReviews({ show: SHOW, night: NIGHT, rows: FIXTURE, ledgerDir: s.ledgerDir, ports: { ...base, pushData: async () => ({ ok: true }), isLeased: async () => false } }), /not leased/);
+    assert.ok(!JSON.parse(fs.readFileSync(s.reviewsFile, 'utf8')).reviews.some((r) => r.showId === SHOW), 'nothing written by a refused publish');
+  } finally { s.cleanup(); }
+});
+
+test('reviews file port: writes through a symlink (the link survives), keeps the 2-space layout, and a writer landing after the temp write is not lost', async () => {
+  const s = sandbox();
+  try {
+    const link = path.join(s.dir, 'link-reviews.json');
+    fs.symlinkSync(s.reviewsFile, link);
+    let hit = false;
+    const port = pub.createReviewsFilePort(link, { beforeRename: () => {
+      if (hit) return; hit = true;
+      const d = JSON.parse(fs.readFileSync(s.reviewsFile, 'utf8')); d.reviews.push(row('late-2026', 'O', 'C', 'https://late.com/x')); fs.writeFileSync(s.reviewsFile, JSON.stringify(d));
+    } });
+    await port.updateReviews((doc) => pub.mergeShowRows(doc, SHOW, FIXTURE.map((f) => f.row)));
+    assert.ok(fs.lstatSync(link).isSymbolicLink(), 'the symlink was not replaced');
+    const text = fs.readFileSync(s.reviewsFile, 'utf8');
+    assert.match(text, /^\{\n  "_meta"/, 'pretty-printed like the rebuild output');
+    const final = JSON.parse(text).reviews;
+    assert.ok(final.some((r) => r.showId === 'late-2026'), 'the writer that landed between temp write and rename survived');
+    assert.equal(final.filter((r) => r.showId === SHOW).length, 3);
+    assert.deepEqual(fs.readdirSync(s.dir).filter((f) => f.endsWith('.tmp')), []);
+  } finally { s.cleanup(); }
 });

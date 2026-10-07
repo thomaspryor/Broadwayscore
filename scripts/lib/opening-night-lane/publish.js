@@ -22,6 +22,7 @@ const { execFileSync } = require('child_process');
 const ledger = require('./ledger');
 const { canonicalUrl } = require('./discovery');
 const { keyOf, urlKeyOf, resolveConflict } = require('../merge-reviews-json');
+const { isLaneReview } = require('./trust-model');
 
 const DEFAULT_POLL_MS = 15 * 1000;
 const DEFAULT_TIMEOUT_MS = 20 * 60 * 1000; // matches the ledger's first acceptance bar
@@ -30,13 +31,16 @@ const DEFAULT_TIMEOUT_MS = 20 * 60 * 1000; // matches the ledger's first accepta
  * Merge incoming rows for ONE show into a reviews.json document. Pure. Rows of every other show are returned
  * untouched (same objects, same order). A same-identity row is resolved with the shared merge rules (a manual
  * correction beats a pipeline row; otherwise the richer content tier wins; a tie takes the incoming row).
- * @returns {{doc, added, replaced, kept}}
+ * Every row must be a well-formed lane review (provenance + aggregator stamp, for this show), carry a score, and have a
+ * URL that canonicalises: rows the generator would drop or verification could never see are refused up front.
+ * @returns {{doc, added, replaced, kept, applied}} applied = the rows that actually landed (added or replaced)
  */
-function mergeShowRows(doc, showId, incoming) {
+function mergeShowRows(doc, showId, incoming, { openingDate } = {}) {
   if (!showId) throw new Error('publish: showId is required');
   const base = doc && typeof doc === 'object' ? doc : {};
   const reviews = Array.isArray(base.reviews) ? base.reviews.slice() : [];
   let added = 0; let replaced = 0; let kept = 0;
+  const applied = [];
   const byPrimary = new Map();
   const byUrl = new Map();
   reviews.forEach((r, i) => {
@@ -46,17 +50,20 @@ function mergeShowRows(doc, showId, incoming) {
   });
   for (const row of incoming || []) {
     if (!row || row.showId !== showId) throw new Error(`publish: row for "${row && row.showId}" in a "${showId}" publish`);
+    if (!isLaneReview(row, { openingDate })) throw new Error(`publish: row for ${row.url} is not a lane review (missing provenance or aggregator stamp)`);
+    if (row.assignedScore == null) throw new Error(`publish: row for ${row.url} has no score; the public JSON would drop it`);
+    if (!canonicalUrl(row.url)) throw new Error(`publish: row URL "${row.url}" has no canonical form; it could never be verified live`);
     const k = keyOf(row); const u = urlKeyOf(row);
     const at = byPrimary.has(k) ? byPrimary.get(k) : (u && byUrl.has(u) ? byUrl.get(u) : -1);
     if (at < 0) {
-      reviews.push(row); added++;
+      reviews.push(row); added++; applied.push(row);
       const i = reviews.length - 1;
       if (k) byPrimary.set(k, i); if (u) byUrl.set(u, i);
-    } else if (resolveConflict(reviews[at], row) === 'remote') {
-      reviews[at] = row; replaced++;
+    } else if (resolveConflict(row, reviews[at]) === 'ours') { // incoming first, so a same-tier rescore takes the incoming row
+      reviews[at] = row; replaced++; applied.push(row);
     } else kept++;
   }
-  return { doc: { ...base, reviews }, added, replaced, kept };
+  return { doc: { ...base, reviews }, added, replaced, kept, applied };
 }
 
 const sha = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
@@ -66,20 +73,25 @@ const sha = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
  * file between our read and our write, start over from the fresh bytes instead of overwriting them.
  * `beforeWrite` is a test seam for simulating that concurrent writer.
  */
-function createReviewsFilePort(file, { attempts = 5, beforeWrite = null } = {}) {
+function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeRename = null } = {}) {
+  // data/reviews.json is a symlink into the private data checkout: write through to the real file, never replace the link.
+  const real = fs.realpathSync(file);
   return {
     async updateReviews(fn) {
       for (let i = 0; i < attempts; i++) {
-        const raw = fs.readFileSync(file);
+        const raw = fs.readFileSync(real);
         const out = fn(JSON.parse(raw.toString('utf8')));
         if (beforeWrite) beforeWrite(i);
-        if (sha(fs.readFileSync(file)) !== sha(raw)) continue; // someone else wrote: redo on top of their version
-        const tmp = `${file}.lane-${process.pid}-${Date.now()}.tmp`;
-        fs.writeFileSync(tmp, `${JSON.stringify(out.doc)}\n`);
-        fs.renameSync(tmp, file);
+        // Write the temp file FIRST (it is the slow step on a 19 MB file), then compare bytes, then rename: the unguarded
+        // window is one rename wide. Same 2-space layout as the rebuild writes, so the private repo diff stays row-sized.
+        const tmp = `${real}.lane-${process.pid}-${Date.now()}.tmp`;
+        fs.writeFileSync(tmp, `${JSON.stringify(out.doc, null, 2)}\n`);
+        if (beforeRename) beforeRename(i);
+        if (sha(fs.readFileSync(real)) !== sha(raw)) { fs.rmSync(tmp, { force: true }); continue; } // someone else wrote: redo on their version
+        fs.renameSync(tmp, real);
         return out;
       }
-      throw new Error(`publish: ${file} kept changing under us (${attempts} attempts); nothing was written`);
+      throw new Error(`publish: ${real} kept changing under us (${attempts} attempts); nothing was written`);
     },
   };
 }
@@ -91,24 +103,33 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null } = {}) 
  *   now?(), sleep?(ms), pollMs, timeoutMs
  * @returns {{merge, verified, missing, timedOut, ms}}
  */
-async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS } = {}) {
+async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false } = {}) {
   if (!show || !night || !ledgerDir || !ports) throw new Error('publish: show, night, ledgerDir and ports are required');
   if (!Array.isArray(rows) || !rows.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], timedOut: false, ms: 0 };
   for (const p of ['updateReviews', 'regenShow', 'deploy', 'fetchLiveShow']) if (typeof ports[p] !== 'function') throw new Error(`publish: port "${p}" is required`);
+  // A real publish must push the data and must be for a show the lane holds the lease on (a full rebuild only carries
+  // over leased shows, so an unleased publish would be dropped by the next rebuild). Dry-run (rehearsal) skips both.
+  if (!dryRun) {
+    if (typeof ports.pushData !== 'function') throw new Error('publish: port "pushData" is required unless dryRun is true');
+    if (typeof ports.isLeased !== 'function') throw new Error('publish: port "isLeased" is required unless dryRun is true');
+    if (!(await ports.isLeased(show))) throw new Error(`publish: ${show} is not leased to the lane; refusing to publish`);
+  }
   const t0 = now();
   const log = (key, stage, meta) => ledger.appendEvent(ledgerDir, { show, night, reviewKey: key, stage, at: now(), ...(meta ? { meta } : {}) });
 
-  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row)));
+  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row), { openingDate }));
+  const landed = new Set(merge.applied);
   if (ports.pushData) {
     const pushed = await ports.pushData();
     if (pushed && pushed.ok === false) throw new Error(`publish: pushing core data failed: ${String(pushed.stderr || '').slice(0, 200)}`);
   }
   await ports.regenShow(show);
-  for (const r of rows) log(r.key, 'rebuilt');
-  await ports.deploy();
-  for (const r of rows) log(r.key, 'deployed');
+  for (const r of rows) if (landed.has(r.row)) log(r.key, 'rebuilt');
+  await ports.deploy(); // the deploy port must also commit the regenerated public/data/shows/{id}.json (tracked in git)
+  for (const r of rows) if (landed.has(r.row)) log(r.key, 'deployed');
 
-  const pending = new Map(rows.map((r) => [canonicalUrl(r.row.url) || r.key, r.key]));
+  // Only rows that actually landed are awaited: a row the merge kept out (a manual correction won) will never show up.
+  const pending = new Map(rows.filter((r) => landed.has(r.row)).map((r) => [canonicalUrl(r.row.url), r.key]));
   const verified = [];
   let timedOut = false;
   for (;;) {
