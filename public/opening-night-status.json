@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T13:04:17.363Z",
+  "generatedAt": "2026-10-07T13:30:53.902Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -108,9 +108,9 @@
       "status": "open",
       "slug": "into-the-woods-noel-coward-west-end",
       "thumbnail": "/images/shows/into-the-woods-noel-coward-west-end-2026/thumbnail.webp",
-      "siteScore": 84.07,
+      "siteScore": 83.93,
       "liveScore": 84,
-      "scoreDrift": -0.06999999999999318,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -124,7 +124,7 @@
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 23,
+        "highConfidence": 24,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -216,6 +216,18 @@
           "m": 3,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:30:53.902Z",
+          "rc": 33,
+          "s": 83.93,
+          "t1": 11,
+          "t2": 6,
+          "t3": 16,
+          "p": 28,
+          "m": 3,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -229,9 +241,9 @@
       "status": "open",
       "slug": "the-hungry-ghost-off-west-end",
       "thumbnail": "/images/shows/the-hungry-ghost-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 84.44,
-      "liveScore": 84,
-      "scoreDrift": -0.4399999999999977,
+      "siteScore": 84.78,
+      "liveScore": 85,
+      "scoreDrift": 0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -245,10 +257,9 @@
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3",
-          "hi-conf:3/6"
+          "T1:1/3"
         ],
-        "highConfidence": 3,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -385,6 +396,18 @@
           "t": "2026-10-07T13:04:17.363Z",
           "rc": 10,
           "s": 84.44,
+          "t1": 1,
+          "t2": 4,
+          "t3": 5,
+          "p": 9,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:30:53.902Z",
+          "rc": 10,
+          "s": 84.78,
           "t1": 1,
           "t2": 4,
           "t3": 5,
@@ -785,9 +808,9 @@
       "status": "open",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.webp",
-      "siteScore": 33.6,
-      "liveScore": 34,
-      "scoreDrift": 0.3999999999999986,
+      "siteScore": 31.94,
+      "liveScore": 32,
+      "scoreDrift": 0.05999999999999872,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -803,7 +826,7 @@
         "reasons": [
           "T1:2/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -983,6 +1006,30 @@
           "m": 3,
           "n": 11,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:16:12.126Z",
+          "rc": 15,
+          "s": 31.96,
+          "t1": 3,
+          "t2": 6,
+          "t3": 6,
+          "p": 1,
+          "m": 3,
+          "n": 11,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:30:53.902Z",
+          "rc": 15,
+          "s": 31.94,
+          "t1": 3,
+          "t2": 6,
+          "t3": 6,
+          "p": 1,
+          "m": 3,
+          "n": 11,
+          "bc": "waiting"
         }
       ]
     },
@@ -1015,9 +1062,9 @@
           "5/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:3/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1327,10 +1374,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
