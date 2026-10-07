@@ -45,7 +45,7 @@ const { toursOfTitle } = require('./lib/tour-family');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { openTourCandidates, recordTourCandidates, roundupDateFromSlug } = require('./lib/tour-roundup-candidate');
-const { decideTourDates, duplicateScheduleOf } = require('./lib/tour-schedule');
+const { decideTourDates, duplicateScheduleOf, tooFewStops } = require('./lib/tour-schedule');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
@@ -167,6 +167,7 @@ async function main() {
     // engagements are another tour's.
     const copyOf = !decision.problem && duplicateScheduleOf(decision.segmentRows, tourSchedules);
     if (copyOf) decision.problem = `schedule duplicates ${copyOf}'s engagements (wrong table on the Tours To You page?)`;
+    if (!decision.problem && tooFewStops(decision.segmentRows)) decision.problem = `only ${decision.segmentRows.length} engagements: a regional co-production or a limited run, not a national tour`;
     const knownEnds = found ? (c.predecessorEnds || null) : null;
     const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds, knownEnds });
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
