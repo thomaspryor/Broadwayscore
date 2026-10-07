@@ -171,3 +171,28 @@ test('lockMessage/lockCards: the run lock names unfinished cards for the next ru
   assert.deepEqual(r.lockCards('unlocked'), []);
   assert.deepEqual(r.lockCards(''), []);
 });
+
+test('orphanAction: only the dead run\'s own In Progress cards are touched', () => {
+  const lockMs = Date.parse('2026-10-07T03:00:00Z');
+  const base = { stateName: 'In Progress', startedAtMs: lockMs - 3600_000, lockMs, onMain: false, landRefMs: NaN };
+  assert.equal(r.orphanAction(base), 'todo');
+  assert.equal(r.orphanAction({ ...base, onMain: true }), 'done');
+  assert.equal(r.orphanAction({ ...base, landRefMs: lockMs - 600_000 }), 'park');
+  // a refused ref from an earlier attempt, older than this claim
+  assert.equal(r.orphanAction({ ...base, landRefMs: lockMs - 86400_000 }), 'todo');
+  // re-claimed by someone else after the dead run's last stamp
+  assert.equal(r.orphanAction({ ...base, startedAtMs: lockMs + 10 * 60_000 }), 'skip');
+  // clock skew: Linear's startedAt a few seconds after the container-clock stamp is still ours
+  assert.equal(r.orphanAction({ ...base, startedAtMs: lockMs + 5_000 }), 'todo');
+  assert.equal(r.orphanAction({ ...base, startedAtMs: NaN }), 'skip');
+  assert.equal(r.orphanAction({ ...base, stateName: 'In Review', onMain: true }), 'skip');
+  assert.equal(r.orphanAction({ ...base, stateName: 'Todo' }), 'skip');
+});
+
+test('lockMessage/lockCards: a released lock still names its unfinished cards', () => {
+  const msg = r.lockMessage('2026-10-07T03:13:00Z', ['BRO-7'], 'released');
+  assert.equal(msg, 'released 2026-10-07T03:13:00Z cards=BRO-7');
+  assert.deepEqual(r.lockCards(msg), ['BRO-7']);
+  assert.ok(!msg.startsWith('locked'), 'takeLock treats only "locked" stamps as held');
+  assert.deepEqual(r.lockCards('locked 2026-10-07T03:13:00Z cards=BRO-7 '), ['BRO-7']);
+});

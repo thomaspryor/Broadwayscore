@@ -229,14 +229,38 @@ function codexBouncedRecently(comments, nowMs) {
  * Run-lock commit message. It names the cards the run has claimed but not finished, so a
  * run that takes over a dead run's stale lock knows which cards to land or hand back.
  */
-function lockMessage(iso, cardIds = []) {
+function lockMessage(iso, cardIds = [], verb = 'locked') {
   const ids = [...new Set(cardIds)].filter((id) => /^BRO-\d+$/.test(id));
-  return `locked ${iso}${ids.length ? ` cards=${ids.join(',')}` : ''}`;
+  return `${verb} ${iso}${ids.length ? ` cards=${ids.join(',')}` : ''}`;
 }
-/** -> card ids named by a lock message ([] for "unlocked" or an older message without them). */
+/**
+ * -> card ids named by a lock message ([] for "unlocked" or an older message without them).
+ * "released <iso> cards=..." is a free lock left by a run that stopped with landings
+ * unfinished: the next run takes it at once and adopts those cards.
+ */
 function lockCards(message) {
-  const m = String(message || '').match(/^locked \S+ cards=([A-Z0-9,-]+)\s*$/);
+  const m = String(message || '').match(/^(?:locked|released) \S+ cards=([A-Z0-9,-]+)\s*$/);
   return m ? m[1].split(',').filter((id) => /^BRO-\d+$/.test(id)) : [];
+}
+
+/**
+ * What to do with a card a dead run's stale lock names. Only a card still In Progress from
+ * a start no later than that lock stamp is the dead run's (Linear clears startedAt when a
+ * card goes back to Todo, so a later re-claim by anyone moves startedAt past the stamp).
+ * A land ref counts as that run's landing only if it was committed after that start;
+ * an older one is a refused ref from an earlier attempt.
+ * -> 'skip' | 'done' (fix on main) | 'park' (landing pending) | 'todo' (hand back)
+ */
+// Linear's clock vs the container's (lock commit time, whole seconds): a claim stamped
+// right after the claim can read a few seconds "earlier" than startedAt.
+const ORPHAN_CLOCK_SKEW_MS = 120_000;
+
+function orphanAction({ stateName, startedAtMs, lockMs, onMain, landRefMs }) {
+  if (stateName !== 'In Progress') return 'skip';
+  if (!Number.isFinite(startedAtMs) || !Number.isFinite(lockMs) || startedAtMs > lockMs + ORPHAN_CLOCK_SKEW_MS) return 'skip';
+  if (onMain) return 'done';
+  if (Number.isFinite(landRefMs) && landRefMs >= startedAtMs) return 'park';
+  return 'todo';
 }
 
 /** Stop the run early (like close-stuck-verified-cards' closeRunStopReason). */
@@ -251,6 +275,7 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
 module.exports = {
   lockMessage,
   lockCards,
+  orphanAction,
   keepEnvVar,
   scrubEnv,
   redactSecrets,
