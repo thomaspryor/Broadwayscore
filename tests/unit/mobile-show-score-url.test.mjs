@@ -7,6 +7,8 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { sanitizeShowScoreUrl } = require('../../scripts/lib/show-score-link.js');
+const { scoredShowIds, isDetailVisible } = require('../../scripts/lib/mobile-detail-visibility.js');
+const { loadReviewsWithBlog } = require('../../scripts/lib/load-reviews-with-blog.js');
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
@@ -53,17 +55,18 @@ test('every URL in data/show-score-urls.json is shippable to the app', (t) => {
 // hand, so right after this change lands the committed files lack `u`. Once the
 // first regeneration has put it on any show, every show with a tile and a known
 // URL must carry it (and a valid one), so a partial or broken regenerate fails.
-// Only live shows count: the directory also holds orphaned files for shows the
-// generator stopped writing (closed, no score) until its prune removes them, and
-// those never get `u` (BRO-4825). The mobile index lists the live shows and is
-// regenerated in lockstep with the detail files.
+// Only files the generator still writes count: the directory also holds orphans
+// for shows it stopped writing (closed, no score) until its prune removes them,
+// and those never get `u` (BRO-4825). Same visibility rule as the generator.
 test('once generated per-show JSON carries au.sources.ss.u, every tile with a known URL has it', (t) => {
   const dir = path.join(root, 'public/data/shows');
   const urlsFile = path.join(root, 'data/show-score-urls.json');
-  const indexFile = path.join(root, 'public/data/mobile-shows.json');
-  if (!fs.existsSync(dir) || !fs.existsSync(urlsFile) || !fs.existsSync(indexFile)) return t.skip('generated data not present');
+  const showsFile = path.join(root, 'data/shows.json');
+  if (!fs.existsSync(dir) || !fs.existsSync(urlsFile) || !fs.existsSync(showsFile)) return t.skip('generated data not present');
   const urls = JSON.parse(fs.readFileSync(urlsFile, 'utf-8')).shows || {};
-  const live = new Set((JSON.parse(fs.readFileSync(indexFile, 'utf-8')).shows || []).map(s => s.id));
+  const scored = scoredShowIds(loadReviewsWithBlog());
+  const live = new Set((JSON.parse(fs.readFileSync(showsFile, 'utf-8')).shows || [])
+    .filter(s => isDetailVisible(s, scored)).map(s => s.id));
   const withTile = [];
   for (const f of fs.readdirSync(dir).filter(n => /^[a-z0-9-]+\.json$/.test(n) && live.has(n.slice(0, -5)))) {
     const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));

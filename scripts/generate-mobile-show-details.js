@@ -23,11 +23,11 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
-const { isPublishedShowFile } = require('./lib/markets');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { sanitizeShowScoreUrl } = require('./lib/show-score-link');
+const { scoredShowIds, isDetailVisible } = require('./lib/mobile-detail-visibility');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -436,14 +436,8 @@ function getOutletDisplayName(outletId, fallback) {
 // My Shows, getCriticScore), so a launched category (tour, BRO-4211) needs them.
 // The app only reaches a show through mobile-shows.json, which still withholds
 // tours (isHiddenFromAppFeed there), so this does not put tours in the app.
-const showsWithScores = new Set();
-for (const review of reviews) {
-  if (review.assignedScore != null) showsWithScores.add(review.showId);
-}
-let visibleShows = shows.filter(show =>
-  isPublishedShowFile(show.category) &&
-  (showsWithScores.has(show.id) || show.status !== 'closed')
-);
+const showsWithScores = scoredShowIds(reviews);
+let visibleShows = shows.filter(show => isDetailVisible(show, showsWithScores));
 if (SHOW_ARG) {
   visibleShows = shows.filter((show) => show.id === SHOW_ARG);
   if (visibleShows.length === 0) {
