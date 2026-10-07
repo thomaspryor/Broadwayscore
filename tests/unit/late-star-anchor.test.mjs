@@ -187,6 +187,14 @@ describe('needsLateStarReanchor — anchored to a stale band', () => {
     assert.equal(needsLateStarReanchor(stale({ originalScoreSource: 'numeric-stars' })), null);
   });
 
+  test('a percentage rating anchored to a stale band is re-anchored, once', () => {
+    const pct = stale({ originalScore: '60%', originalScoreSource: 'reviewshub-percentage', outletId: 'thereviewshub' });
+    const r = needsLateStarReanchor(pct);
+    assert.ok(r && r.staleBand);
+    assert.equal(r.band.floor, 51);
+    assert.equal(needsLateStarReanchor({ ...pct, staleBandReanchoredFor: '60%' }), null);
+  });
+
   test('human override still wins', () => {
     assert.equal(needsLateStarReanchor(stale({ humanReviewScore: 90 })), null);
   });

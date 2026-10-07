@@ -22,10 +22,12 @@ const DEFAULT_UNANIMOUS_TOL = 15;
 // scoreToBucket's thresholds as ranges: Rave >=83, Positive 70-82, Mixed 55-69, Negative 35-54, Pan <35.
 const BUCKET_RANGES = { Rave: [83, 100], Positive: [70, 82], Mixed: [55, 69], Negative: [35, 54], Pan: [0, 34] };
 
-/** The outlet's own rating fields (starRating, originalRating, a string originalScore), as detectBandFromReviewFile reads them. */
+/** The outlet's own rating fields (starRating, originalRating, originalScore as a raw string or a 0-100 number), as detectBandFromReviewFile reads them. */
 function hasPrimaryRating(data) {
   const has = (v) => v !== null && v !== undefined && v !== '';
-  return has(data.starRating) || has(data.originalRating) || (typeof data.originalScore === 'string' && has(data.originalScore));
+  return has(data.starRating) || has(data.originalRating)
+    || (typeof data.originalScore === 'string' && has(data.originalScore))
+    || (typeof data.originalScore === 'number' && Number.isFinite(data.originalScore));
 }
 
 /** The bucket every model agreed on, from ensembleData.modelAgreement ("All 3 models agree: Rave"), or null. */
