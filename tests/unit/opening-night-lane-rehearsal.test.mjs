@@ -13,7 +13,8 @@ const { buildSyntheticFixture } = require('../../scripts/lib/opening-night-lane/
 const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization.js');
 const discovery = require('../../scripts/lib/opening-night-lane/discovery.js');
 const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
-const { runLaneNight } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+const { runLaneNight, loadDone } = require('../../scripts/lib/opening-night-lane/lane-runner.js');
+const publishMod = require('../../scripts/lib/opening-night-lane/publish.js');
 
 const CLI = new URL('../../scripts/opening-night-lane-rehearse.js', import.meta.url).pathname;
 const DAY = 24 * 60 * 60 * 1000;
@@ -204,4 +205,94 @@ test('CLI: --rehearse writes a passing record and --arm-check arms on it; tamper
     assert.equal(spawnSync('node', [CLI], { encoding: 'utf8' }).status, 2, 'no mode is a usage error');
     assert.equal(spawnSync('node', [CLI, '--rehearse', '--fixture', 'paranormal-activity'], { encoding: 'utf8' }).status, 2, 'an unrecorded fixture is refused, not faked');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('strictly one publish at a time cannot meet the 20-minute bar for a straggler (the rehearsal finding); overlap does', async () => {
+  const one = await rh.runRehearsal({ fixture: buildSyntheticFixture(), maxInflight: 1 });
+  assert.equal(one.pass, false);
+  assert.ok(one.verdict.failures.some((f) => f.reason === 'too-slow'), 'the retried review waits out two publish cycles');
+  const two = await rh.runRehearsal({ fixture: buildSyntheticFixture() });
+  assert.equal(two.pass, true);
+});
+
+test('the bar counts from when the page showed the review, not from when the lane noticed it', async () => {
+  const fixture = buildSyntheticFixture();
+  // Pretend a review's page showed it 10 minutes before the lane's first pass: page-to-live is then over the bar.
+  fixture.reviews[1].appearsAfterMs = -(10 * 60 * 1000);
+  const res = await rh.runRehearsal({ fixture });
+  assert.equal(res.pass, false);
+  assert.equal(res.checks.pageToLiveSlow.length >= 1, true);
+  assert.equal(res.verdict.pass, true, 'discovery-to-live alone would have passed it');
+});
+
+test('laneCodeHash follows the require graph: a dependency outside the lane folder changes it', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4787g-'));
+  try {
+    const lane = path.join(root, 'scripts', 'lib', 'lane');
+    fs.mkdirSync(lane, { recursive: true });
+    fs.writeFileSync(path.join(lane, 'a.js'), "const d = require('../dep');\nconst e = require('./inner'); module.exports = d;\n");
+    fs.writeFileSync(path.join(lane, 'inner.js'), "module.exports = require('../deeper/x.js');\n");
+    fs.mkdirSync(path.join(root, 'scripts', 'lib', 'deeper'));
+    fs.writeFileSync(path.join(root, 'scripts', 'lib', 'dep.js'), 'module.exports = 1;');
+    fs.writeFileSync(path.join(root, 'scripts', 'lib', 'deeper', 'x.js'), 'module.exports = 2;');
+    fs.writeFileSync(path.join(root, 'scripts', 'lib', 'unrelated.js'), 'module.exports = 3;');
+    const files = rh.laneCodeFiles(lane).map((f) => path.relative(root, f));
+    assert.deepEqual(files, ['scripts/lib/dep.js', 'scripts/lib/deeper/x.js', 'scripts/lib/lane/a.js', 'scripts/lib/lane/inner.js'].sort());
+    const h = rh.laneCodeHash(lane);
+    fs.writeFileSync(path.join(root, 'scripts', 'lib', 'dep.js'), 'module.exports = 99;');
+    assert.notEqual(rh.laneCodeHash(lane), h, 'a changed dependency disarms');
+    const h2 = rh.laneCodeHash(lane);
+    fs.writeFileSync(path.join(root, 'scripts', 'lib', 'unrelated.js'), 'module.exports = 4;');
+    assert.equal(rh.laneCodeHash(lane), h2, 'a file the lane never requires does not');
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('laneCodeHash on the real lane covers merge-reviews-json and review-normalization', () => {
+  const rel = rh.laneCodeFiles().map((f) => path.relative(path.join(import.meta.dirname, '..', '..'), f));
+  for (const must of ['scripts/lib/merge-reviews-json.js', 'scripts/lib/review-normalization.js', 'scripts/lib/rss-discovery.js', 'scripts/lib/opening-night-lane/publish.js']) assert.ok(rel.includes(must), must);
+});
+
+function runnerSandbox(extra = {}) {
+  const fixture = buildSyntheticFixture();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4787q-'));
+  let t = Date.parse('2026-10-18T22:00:00-04:00');
+  const reviewsFile = path.join(dir, 'reviews.json');
+  fs.writeFileSync(reviewsFile, JSON.stringify({ reviews: [] }));
+  const byKey = new Map(fixture.reviews.map((r) => [discovery.canonicalUrl(r.url), r]));
+  const base = {
+    show: fixture.show, night: fixture.night, openingDate: fixture.openingDate, adapters: [discovery.bwwRoundupAdapter()],
+    fetchText: async (u) => { if (!(u in fixture.pages)) throw new Error('404'); return fixture.pages[u]; },
+    ledgerDir: path.join(dir, 'ledger'), dryRun: true, now: () => t, wait: async (ms) => { t += ms; }, windowMs: 20 * 60 * 1000,
+    fetchReview: async (c) => { const e = byKey.get(c.key); return { outletId: e.outletId, outlet: e.outletId, criticName: e.criticName, fullText: e.text, aggregator: e.aggregator, score: e.score }; },
+    scoreReview: (row, f) => f.score,
+    publishPorts: { ...publishMod.createReviewsFilePort(reviewsFile), regenShow: async () => {}, deploy: async () => {}, fetchLiveShow: async () => ({ rv: JSON.parse(fs.readFileSync(reviewsFile, 'utf8')).reviews.map((r) => ({ u: r.url })) }) },
+    ...extra,
+  };
+  return { base, dir, fixture, reviewsFile, cleanup: () => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }) };
+}
+
+test('lane-runner: a publish that throws puts its rows back for the next batch; nothing scored is lost', async () => {
+  const s = runnerSandbox();
+  try {
+    let n = 0;
+    const flaky = { ...s.base.publishPorts, pushData: async () => (++n === 1 ? { ok: false, stderr: 'rejected' } : { ok: true }), isLeased: async () => true };
+    const res = await runLaneNight({ ...s.base, publishPorts: flaky, dryRun: false });
+    assert.ok(res.errors.some((e) => e.adapter === 'publish' && /pushing core data failed/.test(e.error)));
+    assert.deepEqual(res.unpublished, []);
+    const doc = JSON.parse(fs.readFileSync(s.reviewsFile, 'utf8'));
+    assert.equal(doc.reviews.filter((r) => r.showId === s.fixture.show.id).length, 19, 'every roundup review landed after the retry');
+  } finally { s.cleanup(); }
+});
+
+test('lane-runner: a restarted lane skips what already reached scored (ledger) or is on disk, and redoes what only reached discovered', async () => {
+  const s = runnerSandbox();
+  try {
+    const first = await runLaneNight(s.base);
+    assert.equal(first.admitted.length, 19);
+    const again = await runLaneNight({ ...s.base, now: () => Date.parse('2026-10-18T23:00:00-04:00') + 1, windowMs: 6 * 60 * 1000 });
+    assert.equal(again.admitted.length, 0, 'a restart does not redo scored reviews');
+    const keys = [...loadDone(s.base.ledgerDir, s.fixture.show.id, s.fixture.night, ['https://www.example.com/on-disk?utm_source=x'])];
+    assert.ok(keys.includes('https://example.com/on-disk'), 'on-disk URLs are canonicalised into the done set');
+    assert.ok(keys.length >= 20);
+  } finally { s.cleanup(); }
 });

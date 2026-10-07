@@ -34,15 +34,40 @@ const DEFAULT_ARM_MAX_AGE_MS = 8 * DAY_MS; // weekly CI plus a day of slack
 // pass `latency: { deployMs: 25 * 60000 }` to see the lane fail the 20-minute bar, as it would on such a night.
 const DEFAULT_LATENCY = { passIntervalMs: 2 * 60 * 1000, fetchMs: 3000, scoreMs: 5000, regenMs: 30 * 1000, deployMs: 8 * 60 * 1000, cdnMs: 2 * 60 * 1000, pollMs: 15 * 1000 };
 
+function summaryReviews(events) {
+  return ledger.reviewStates(events).map((r) => ({ reviewKey: r.reviewKey, live: r.firstAt['verified-live'] || null }));
+}
+
 function buildAdapters(fixture) {
   const { feeds = [], outlets = [] } = fixture.adapters || {};
   return [discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.rssAdapter({ feeds }), discovery.sectionIndexAdapter({ outlets })];
 }
 
-/** Hash of the lane's code, so a rehearsal record can only arm the code that passed it. */
+/**
+ * The lane's code: every .js file in its folder plus everything they require, transitively, through relative paths
+ * (merge-reviews-json, review-normalization, the feed parsers...). A change to ANY of them changes the hash, so the
+ * record only arms the code that passed it. Walking the require graph keeps this honest as the lane grows new deps.
+ */
+function laneCodeFiles(dir = __dirname) {
+  const seen = new Set();
+  const walk = (file) => {
+    if (seen.has(file) || !fs.existsSync(file)) return;
+    seen.add(file);
+    const src = fs.readFileSync(file, 'utf8');
+    for (const m of src.matchAll(/require\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*\)/g)) {
+      const base = path.resolve(path.dirname(file), m[1]);
+      const hit = [base, `${base}.js`, path.join(base, 'index.js')].find((f) => fs.existsSync(f) && fs.statSync(f).isFile());
+      if (hit && hit.endsWith('.js')) walk(hit);
+    }
+  };
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.js'))) walk(path.join(dir, f));
+  return [...seen].sort();
+}
+
 function laneCodeHash(dir = __dirname) {
   const h = crypto.createHash('sha256');
-  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.js')).sort()) { h.update(f); h.update(fs.readFileSync(path.join(dir, f))); }
+  const root = path.resolve(dir, '..', '..', '..');
+  for (const f of laneCodeFiles(dir)) { h.update(path.relative(root, f)); h.update(fs.readFileSync(f)); }
   return h.digest('hex').slice(0, 16);
 }
 
@@ -53,7 +78,7 @@ function laneCodeHash(dir = __dirname) {
  *   startAt? ISO (virtual clock start; default 22:00 ET on the night), latency? (overrides DEFAULT_LATENCY), maxMs
  * @returns {Promise<{pass, verdict, checks, summary, workDir?}>}
  */
-async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regenShow, startAt, latency = {}, maxMs = ledger.DEFAULT_MAX_MS } = {}) {
+async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regenShow, startAt, latency = {}, maxInflight, maxMs = ledger.DEFAULT_MAX_MS } = {}) {
   if (!fixture || !fixture.show || !fixture.pages || !Array.isArray(fixture.reviews) || !Array.isArray(fixture.expectedKeys)) throw new Error('rehearsal: fixture needs show, pages, reviews and expectedKeys');
   const lat = { ...DEFAULT_LATENCY, ...latency };
   const { show, night } = fixture;
@@ -101,18 +126,22 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
       fs.writeFileSync(path.join(publicDir, 'data', 'shows', `${id}.json`), JSON.stringify({ id, rv: doc.reviews.filter((r) => r.showId === id).map((r) => ({ o: r.outlet, cn: r.criticName, s: r.assignedScore, u: r.url })) }));
     };
     const copyLive = publish.dryRunDeploy({ publicDir, liveDir, showId: show.id });
-    let visibleAt = Infinity;
     const liveFetch = publish.fetchLiveShowFrom(server.baseUrl);
-    const publishPorts = {
-      ...publish.createReviewsFilePort(reviewsFile),
-      regenShow: async (id) => { await wait(lat.regenMs); return (regenShow || projectShow)(id); },
-      deploy: async () => { await wait(lat.deployMs); await copyLive(); visibleAt = t + lat.cdnMs; }, // the deploy finishes, then the CDN catches up
-      fetchLiveShow: async (id) => (t >= visibleAt ? liveFetch(id) : { rv: [] }),
+    // Each publish batch runs on its own forked virtual timeline, so discovery keeps its cadence while a deploy lags.
+    const forkClock = (startMs) => { let c = startMs; return { now: () => c, wait: async (ms) => { c += ms; } }; };
+    const makePublishPorts = (clock) => {
+      let visibleAt = Infinity;
+      return {
+        ...publish.createReviewsFilePort(reviewsFile),
+        regenShow: async (id) => { await clock.wait(lat.regenMs); return (regenShow || projectShow)(id); },
+        deploy: async () => { await clock.wait(lat.deployMs); await copyLive(); visibleAt = clock.now() + lat.cdnMs; }, // the deploy finishes, then the CDN catches up
+        fetchLiveShow: async (id) => (clock.now() >= visibleAt ? liveFetch(id) : { rv: [] }),
+      };
     };
 
     const run = await runLaneNight({
       show, night, openingDate: fixture.openingDate, timeZone: fixture.timeZone, adapters: buildAdapters(fixture), fetchText, ledgerDir,
-      fetchReview, scoreReview: scoreReview || ((row, fetched) => fetched.score), publishPorts, dryRun: true,
+      fetchReview, scoreReview: scoreReview || ((row, fetched) => fetched.score), makePublishPorts, forkClock, maxInflight, dryRun: true,
       now, wait, latency: lat, passIntervalMs: lat.passIntervalMs, windowMs: Math.max(45 * 60 * 1000, ...(fixture.waves || []).map((w) => w.afterMs + 15 * 60 * 1000)), startedAt: startMs, pollMs: lat.pollMs, publishTimeoutMs: maxMs,
     });
 
@@ -123,8 +152,12 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     const decoyLeaks = (fixture.decoys || []).filter((u) => ledgerKeys.has(discovery.canonicalUrl(u) || u) || finalDoc.reviews.some((r) => r.url === u));
     const bystandersSurvived = bystanders.every((b) => finalDoc.reviews.some((r) => r.showId === b.showId && r.url === b.url));
     const timedOut = run.published.some((p) => p.timedOut);
-    const checks = { unexpected: [...unexpected], decoyLeaks, bystandersSurvived, errors: run.errors, timedOut, passes: run.passes, modelled: lat };
-    const pass = verdict.pass && unexpected.size === 0 && decoyLeaks.length === 0 && bystandersSurvived && !timedOut;
+    // The bar the owner cares about is page-to-live, not discovery-to-live: a review that sat on its page while the lane
+    // was busy still counts. Each fixture review knows when its page showed it.
+    const appears = new Map(fixture.reviews.map((r) => [discovery.canonicalUrl(r.url), (r.appearsAfterMs || 0)]));
+    const pageToLiveSlow = summaryReviews(read.events).filter((r) => r.live && appears.has(r.reviewKey) && Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) > maxMs).map((r) => ({ reviewKey: r.reviewKey, ms: Date.parse(r.live) - (startMs + appears.get(r.reviewKey)) }));
+    const checks = { unexpected: [...unexpected], decoyLeaks, bystandersSurvived, errors: run.errors, timedOut, passes: run.passes, pageToLiveSlow, modelled: lat };
+    const pass = verdict.pass && unexpected.size === 0 && decoyLeaks.length === 0 && bystandersSurvived && !timedOut && pageToLiveSlow.length === 0;
     return { pass, verdict, checks, summary: ledger.summarize(read.events), run, workDir: keep ? dir : null };
   } finally {
     await server.close();
@@ -164,4 +197,4 @@ function armDecision(record, { now = Date.now(), maxAgeMs = DEFAULT_ARM_MAX_AGE_
   return { arm: true, reason: 'last-rehearsal-passed' };
 }
 
-module.exports = { DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, armDecision, buildAdapters };
+module.exports = { DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeFiles, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, armDecision, buildAdapters };

@@ -5,42 +5,89 @@
  * real lane:
  *
  *   discovery pass -> for each new candidate: fetch (ledger `fetched`) -> lane row -> score (ledger `scored`)
- *   -> publish the batch (ledger `rebuilt`, `deployed`, `verified-live`) -> wait -> next pass.
+ *   -> queue for publish -> wait -> next pass
+ *   publish (ledger `rebuilt`, `deployed`, `verified-live`) runs ALONGSIDE the passes: a deploy lags 20+ minutes on a
+ *   burst night, and discovery must keep its 2-minute cadence meanwhile. Up to `maxInflight` batches overlap (default 2):
+ *   the rehearsal showed that strictly one-at-a-time makes a straggler wait out TWO publish cycles, which breaks the
+ *   20-minute bar when one cycle is already ~10 minutes. Overlap is safe: merge-by-key, and the later deploy carries
+ *   every earlier row anyway.
  *
- * Time is injected (`now`, `wait`): production passes real time and a real sleep, the rehearsal passes a virtual clock
- * whose `wait` advances it, so modelled latencies (fetch, score, deploy, CDN lag) count against the 20-minute bar.
- * A candidate whose fetch or score throws is not marked seen, so the next pass retries it.
+ * Time is injected. Production passes real `now`/`wait`, no `forkClock`: a batch publishes in the background and the
+ * loop never waits for it. The rehearsal passes a virtual clock plus `forkClock(startMs)`, which gives each publish its
+ * own virtual timeline (the single shared clock cannot run two things at once), still one batch at a time.
+ * A candidate whose fetch or score throws is not marked seen, so the next pass retries it. A publish that throws, or
+ * a row that never went live, goes back on the queue for the next batch (merge-by-key makes the repeat harmless).
  */
 const ledger = require('./ledger');
 const discovery = require('./discovery');
 const trust = require('./trust-model');
 const publish = require('./publish');
 
+/** Review keys a restarted lane must not redo: those that already reached `scored`, plus URLs already on disk. */
+function loadDone(ledgerDir, show, night, onDiskUrls = []) {
+  const done = new Set();
+  for (const u of onDiskUrls) { const k = discovery.canonicalUrl(u); if (k) done.add(k); }
+  for (const r of ledger.reviewStates(ledger.readLedger(ledgerDir, show, night).events)) if ('scored' in r.firstAt) done.add(r.reviewKey);
+  return done;
+}
+
 /**
  * @param {object} args
  *   show {id,title}, night, openingDate, timeZone?, adapters[], fetchText(url), ledgerDir,
  *   fetchReview(candidate) -> {outletId?, outlet, criticName, fullText, aggregator?, publishDate?}   (throws to retry)
  *   scoreReview(row, fetched) -> number   (called only for rows without a fallback score)
- *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?}, dryRun?
- *   now() -> ms, wait(ms) -> Promise, latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs),
- *   startedAt? (ms), publishTimeoutMs, pollMs
+ *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
+ *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
+ *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
  * @returns {Promise<{passes, admitted, published, errors, unpublished}>}
  */
 async function runLaneNight({
-  show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, dryRun = false,
-  now, wait, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000, startedAt, publishTimeoutMs, pollMs,
+  show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
+  onDiskUrls = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
+  startedAt, publishTimeoutMs, pollMs,
 } = {}) {
-  for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, now, wait })) {
+  for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
   }
+  if (!publishPorts && !makePublishPorts) throw new Error('lane-runner: publishPorts or makePublishPorts is required');
   const t0 = startedAt === undefined ? now() : startedAt;
-  const seen = new Set();
+  const seen = loadDone(ledgerDir, show.id, night, onDiskUrls);
   const memo = { rejected: {} };
   const errors = [];
   const admitted = [];
   const published = [];
-  let passes = 0;
+  const pending = []; // rows scored but not yet published (or sent back by a failed batch)
+  const inflight = new Set(); // real mode: batches publishing now
+  const busyUntil = []; // virtual mode: end of each batch's timeline
 
+  const publishBatch = async (batch, clock) => {
+    try {
+      const res = await publish.publishLaneReviews({
+        show: show.id, night, rows: batch, ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
+        openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
+      });
+      published.push(res);
+      const missing = new Set(res.missing);
+      pending.push(...batch.filter((r) => missing.has(r.key))); // never went live: try again with the next batch
+    } catch (e) {
+      errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
+      pending.unshift(...batch); // the rows are scored; losing them to a failed push would drop reviews silently
+    }
+  };
+  const maybePublish = async () => {
+    if (!pending.length) return;
+    if (forkClock) {
+      if (busyUntil.filter((e) => e > now()).length >= maxInflight) return; // every slot is still busy on its own timeline
+      const clock = forkClock(now());
+      await publishBatch(pending.splice(0), clock);
+      busyUntil.push(clock.now());
+    } else if (inflight.size < maxInflight) {
+      const p = publishBatch(pending.splice(0), { now, wait }).finally(() => inflight.delete(p));
+      inflight.add(p);
+    }
+  };
+
+  let passes = 0;
   // The lane runs for its whole window, not until a pass finds nothing: reviews keep arriving for hours (late roundup
   // entries, slow outlets), and an idle-stop would walk away from them.
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
@@ -49,7 +96,6 @@ async function runLaneNight({
     const stamp = now();
     discovery.recordDiscovered(ledgerDir, { show: show.id, night, admitted: pass.admitted, now: stamp });
 
-    const rows = [];
     for (const a of pass.admitted) {
       try {
         await wait(latency.fetchMs || 0);
@@ -63,25 +109,33 @@ async function runLaneNight({
         if (row.assignedScore == null) { await wait(latency.scoreMs || 0); row.assignedScore = scoreReview(row, fetched); }
         row.contentTier = row.isFullReview ? 'complete' : 'stub';
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
-        rows.push({ key: a.key, row });
+        pending.push({ key: a.key, row });
         seen.add(a.key);
         admitted.push(a);
       } catch (e) {
         errors.push({ adapter: a.adapter, error: `${a.key}: ${String((e && e.message) || e).slice(0, 150)}` }); // retried next pass
       }
     }
-
-    if (rows.length) {
-      const res = await publish.publishLaneReviews({
-        show: show.id, night, rows, ledgerDir, ports: publishPorts, now, sleep: wait, openingDate, dryRun,
-        ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
-      });
-      published.push(res);
-    }
+    await maybePublish();
     await wait(passIntervalMs);
   }
-  const unpublished = published.flatMap((p) => p.missing);
-  return { passes, admitted, published, errors, unpublished };
+
+  // Window over: flush what is queued and let the in-flight batch finish, so nothing scored is left unpublished.
+  if (forkClock) {
+    let guard = 0;
+    while (pending.length && guard++ < 20) {
+      const clock = forkClock(now());
+      await publishBatch(pending.splice(0), clock);
+      busyUntil.push(clock.now());
+    }
+  } else {
+    let guard = 0;
+    while ((inflight.size || pending.length) && guard++ < 40) {
+      if (pending.length && inflight.size < maxInflight) await maybePublish();
+      else await Promise.race(inflight);
+    }
+  }
+  return { passes, admitted, published, errors, unpublished: pending.map((r) => r.key) };
 }
 
-module.exports = { runLaneNight };
+module.exports = { runLaneNight, loadDone };

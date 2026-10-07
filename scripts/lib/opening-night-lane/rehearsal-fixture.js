@@ -97,6 +97,8 @@ function buildSyntheticFixture() {
 
   // One section-index article date check fails once (a transient 503) and must succeed on a later pass.
   const flakyUrl = reviews.find((r) => r.via === 'section-index').url;
+  // When each review's page first showed it (virtual ms after the lane starts): the page-to-live bar counts from here.
+  reviews.forEach((r, i) => { r.appearsAfterMs = (r.via === 'bww-roundup' && BWW_OUTLETS.findIndex(([id]) => id === r.outletId) >= LATE_FROM) ? LATE_AFTER_MS : 0; });
   const expectedKeys = reviews.map((r) => canonicalUrl(r.url));
   return {
     kind: 'synthetic', show: SHOW, night: NIGHT, openingDate: NIGHT, pages, waves, flaky: { [flakyUrl]: 1 }, reviews, expectedKeys,
