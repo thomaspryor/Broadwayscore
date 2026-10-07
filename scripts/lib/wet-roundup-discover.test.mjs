@@ -111,6 +111,17 @@ test("parseWetRenderedBlocks: a block without byline/link does not borrow the ne
   ]);
 });
 
+test('parseWetRenderedBlocks: a link cited inside the quote is not the review URL', () => {
+  const rows = parseWetRenderedBlocks(`<div>
+    <p class="reviewnewpubhead">The Telegraph</p>
+    <p class="reviewnewstars">★★★</p>
+    <p class="reviewnewquote">"Echoes <a href="https://en.wikipedia.org/wiki/Oedipus">the myth</a> well"</p>
+    <p class="reviewnewauthor">Claire Allfree</p>
+    <a href="https://www.telegraph.co.uk/theatre/oedipus-review/">read</a>
+  </div>`);
+  assert.equal(rows[0].url, 'https://www.telegraph.co.uk/theatre/oedipus-review/');
+});
+
 test('extractSectionReviews (scrape-westendtheatre-roundups): same block scoping for critic, quote and URL', () => {
   const rows = extractSectionReviews(BLEED_HTML);
   const ft = rows.find(r => r.outlet === 'Financial Times');

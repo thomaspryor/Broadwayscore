@@ -109,7 +109,9 @@ function planWetMerge(data, wetRow, outletId) {
     patch.aggregatorStars = newRating;
     changes.push(`aggregatorStars=${newRating}`);
   }
-  if (wetRow.url && !data.url) {
+  // matchWetRow returns a lone row for the outlet without checking the
+  // critic; a different critic's URL must not land on this review.
+  if (wetRow.url && !data.url && criticsMatch(wetRow.critic, data.criticName)) {
     patch.url = wetRow.url;
     changes.push(`url=${wetRow.url}`);
   }

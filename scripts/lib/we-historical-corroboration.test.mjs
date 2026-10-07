@@ -83,6 +83,11 @@ test('decide: a run shorter than 14 days is out (one-night specials, short visit
   assert.deepEqual([d.promotable, d.persistent], [false, true]);
 });
 
+test('decide: a late press night does not make a long run "short" (run measured from first preview)', () => {
+  const macbeth = { ...KYOTO, title: 'Macbeth', venue: 'Harold Pinter Theatre', previewsStartDate: '2024-10-01', openingDate: '2024-12-08', closingDate: '2024-12-14' };
+  assert.equal(decideWeHistoricalPromotion(macbeth, { today: TODAY }).promotable, true);
+});
+
 test('decide: not closed yet, or no closing date, is a NON-persistent no', () => {
   const open = decideWeHistoricalPromotion({ ...KYOTO, closingDate: '2027-01-01' }, { today: TODAY });
   const none = decideWeHistoricalPromotion({ ...KYOTO, closingDate: null }, { today: TODAY });

@@ -91,6 +91,16 @@ function collapseDuplicateListings(rows) {
   return out;
 }
 
+const MAX_PREVIEW_DAYS = 42;
+
+/** WOS opening_date, or null when it is a placeholder (= first preview) or implausibly late. */
+function plausibleOpeningDate(l) {
+  if (!l.openingDate) return null;
+  if (!l.previewsStartDate) return l.openingDate;
+  const gapDays = (Date.parse(l.openingDate) - Date.parse(l.previewsStartDate)) / DAY_MS;
+  return gapDays > 0 && gapDays <= MAX_PREVIEW_DAYS ? l.openingDate : null;
+}
+
 /**
  * Pure: listings + signals + shows.json → candidate rows with decisions.
  * @param {{season: string, listings: Array, reviews: Array, oliviers: Array, shows: Array, today?: string}} input
@@ -101,6 +111,7 @@ function buildCandidates({ season, listings, reviews, oliviers, shows, today }) 
     return start && l.venue && isWestEndVenue(l.venue) && isDateInSeason(start, season);
   });
   const pool = buildVenueTitlePool(shows);
+  const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
   const candidates = [];
   for (const l of collapseDuplicateListings(inSeason)) {
     const signals = [];
@@ -116,14 +127,21 @@ function buildCandidates({ season, listings, reviews, oliviers, shows, today }) 
       // production with a wrong venue on one side (burlesque-west-end-2026
       // says "The Arts at Marble Arch"; WOS says Savoy, same 2025-07-22
       // start). Treat as present rather than mint a second row.
-      || pool.find(s => s.startDate && normalizeTitle(s.title) === normalizeTitle(l.title)
+      || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(l.title)
         && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS);
     const subtitleOf = !existing && findSubtitleDuplicateTitle(pool, l.title, l.venue, dupOpts);
     const candidate = {
       title: l.title,
       venue: l.venue,
       previewsStartDate: l.previewsStartDate,
-      openingDate: l.openingDate,
+      // WOS fills opening_date with the first preview for many listings (26
+      // of 144 in 2024-25). A press night on the first performance is rare
+      // in the West End, so treat equal dates as "opening unknown" rather
+      // than write a placeholder as the opening night.
+      // Likewise an "opening" more than 6 weeks after the first preview is
+      // not a press night (Macbeth, Harold Pinter 2024: WOS says 12-08 for a
+      // run that opened in October and closed 12-14).
+      openingDate: plausibleOpeningDate(l),
       closingDate: l.closingDate,
       genres: l.genres || [],
       season,
@@ -219,4 +237,4 @@ if (require.main === module) {
   main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
 }
 
-module.exports = { buildCandidates, collapseDuplicateListings, candidatesPath };
+module.exports = { buildCandidates, collapseDuplicateListings, candidatesPath, plausibleOpeningDate };

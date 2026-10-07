@@ -118,8 +118,10 @@ function parseWosShow(raw, venueById, genreById) {
 function parseWosReviewTitle(rawTitle, rawTeaser) {
   const t = decodeEntities(rawTitle);
   const teaser = decodeEntities(rawTeaser);
-  let m = t.match(/^(?:review:\s*)?(.+?) at (?:the )?(.+?)\s*[–—-]\s*review\b/i)
-    || t.match(/^(?:review:\s*)?(.+?) at (?:the )?(.+?)\s+review\b/i);
+  // Greedy title: the venue follows the LAST " at " ("Breakfast at
+  // Tiffany's at the Theatre Royal Haymarket – review").
+  let m = t.match(/^(?:review:\s*)?(.+) at (?:the )?(.+?)\s*[–—-]\s*review\b/i)
+    || t.match(/^(?:review:\s*)?(.+) at (?:the )?(.+?)\s+review\b/i);
   if (m) return { title: cleanReviewedTitle(m[1]), venue: m[2].trim() };
   m = t.match(/^(?:review:\s*)?(.+?)\s+review\b/i);
   if (!m) return null;
@@ -143,7 +145,8 @@ function cleanReviewedTitle(s) {
       .replace(/\s*[–—-]\s*$/, '')
       .replace(/\s+(?:in\s+the\s+)?West\s+End$/i, '')
       .replace(/\s+starring\s+.+$/i, '')
-      .replace(/\s+with\s+(?:[A-Z][\w'’.-]+\s+){1,3}?[A-Z][\w'’.-]+(?:\s+and\s+.+)?$/, '')
+      // "An Evening with Gary Lineker" keeps its name.
+      .replace(/^(?!(?:an?\s+evening|a\s+night|in\s+conversation)\s+with\b)(.+?)\s+with\s+(?:[A-Z][\w'’.-]+\s+){1,3}?[A-Z][\w'’.-]+(?:\s+and\s+.+)?$/i, '$1')
       .replace(/\s+(?:musical|pantomime|panto)$/, '')
       .trim();
   } while (t !== prev);

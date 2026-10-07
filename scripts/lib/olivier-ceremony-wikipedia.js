@@ -41,10 +41,14 @@ function parseOlivierCeremonyNominees(wikitext) {
     const m = line.match(ITALIC_LINKED_TITLE) || line.match(ITALIC_PLAIN_TITLE);
     if (!m) continue;
     const title = stripWikiLinks(m[1]).replace(/'{2,}/g, '').trim();
-    // Venue text follows the LAST en/em dash on the line.
-    const dashAt = Math.max(line.lastIndexOf('–'), line.lastIndexOf('—'), line.lastIndexOf(' - '));
-    if (dashAt < 0) continue;
-    const tail = line.slice(dashAt + 1).replace(/'{2,}/g, '');
+    // Venue text follows the LAST spaced dash on the line; drop templates
+    // like {{double dagger|alt=Winner}}.
+    const dashes = [...line.matchAll(/\s[–—-]\s/g)];
+    if (!dashes.length) continue;
+    const last = dashes[dashes.length - 1];
+    const tail = line.slice(last.index + last[0].length)
+      .replace(/\{\{[^{}]*\}\}/g, '')
+      .replace(/'{2,}/g, '');
     const venues = stripWikiLinks(tail)
       .split(/\s+and\s+|,\s*(?=[A-Z@])/)
       .map(v => v.replace(/<[^>]+>/g, '').trim())

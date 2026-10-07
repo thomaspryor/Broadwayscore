@@ -95,7 +95,7 @@ function slugify(s) {
  * Approvals file → effective decision for one candidate.
  * @returns {{promotable: boolean, reason: string}}
  */
-function effectiveDecision(candidate, approvals) {
+function effectiveDecision(candidate, approvals, today = new Date().toISOString().slice(0, 10)) {
   const override = approvals?.[candidate.season]?.[candidate.title];
   const base = candidate.decision || decideWeHistoricalPromotion(candidate);
   if (!override) return base;
@@ -103,12 +103,35 @@ function effectiveDecision(candidate, approvals) {
   if (override.decision === 'approve') {
     if (!candidate.venue || !isWestEndVenue(candidate.venue)) return { promotable: false, reason: 'approved, but no West End venue' };
     if (!(candidate.openingDate || candidate.previewsStartDate) || !candidate.closingDate) return { promotable: false, reason: 'approved, but start or closing date missing' };
+    // Rows are written status:'closed'; an approval can't close a running show.
+    if (candidate.closingDate >= today) return { promotable: false, reason: `approved, but not closed yet (closes ${candidate.closingDate})` };
     return { promotable: true, reason: `approved: ${override.reason || 'no reason given'}` };
   }
   return base;
 }
 
-function buildShowEntry(candidate, venueVocabulary) {
+/**
+ * Most common existing West End spelling per venue family, so promoted rows
+ * say "The Old Vic" / "Royal Court" like the rows already on the site rather
+ * than WOS's "Old Vic Theatre" / "Royal Court Theatre". National Theatre
+ * stages are left alone (one family, several distinct stages).
+ */
+function buildVenueSpellings(shows) {
+  const counts = new Map();
+  for (const s of shows) {
+    if (s.market !== 'west-end' || !s.venue) continue;
+    const fam = venueFamily(s.venue);
+    if (fam === 'national-theatre') continue;
+    if (!counts.has(fam)) counts.set(fam, new Map());
+    const m = counts.get(fam);
+    m.set(s.venue, (m.get(s.venue) || 0) + 1);
+  }
+  const best = new Map();
+  for (const [fam, m] of counts) best.set(fam, [...m.entries()].sort((a, b) => b[1] - a[1])[0][0]);
+  return best;
+}
+
+function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map()) {
   // BRO-3863 — normalise BEFORE the slug/id are derived from the title, with
   // the same normaliser the validate-data.js gate uses.
   // Straight apostrophes, matching shows.json ("Mrs Warren's Profession").
@@ -124,7 +147,7 @@ function buildShowEntry(candidate, venueVocabulary) {
     id,
     title: normalizedTitle,
     slug: id,
-    venue: sanitizeVenueForWrite(candidate.venue),
+    venue: sanitizeVenueForWrite(venueSpellings.get(venueFamily(candidate.venue)) || candidate.venue),
     previewsStartDate: candidate.previewsStartDate || null,
     openingDate: candidate.openingDate || null,
     closingDate: candidate.closingDate,
@@ -153,23 +176,25 @@ function sameVenue(a, b) {
  * Re-checks duplicates against the CURRENT shows.json (the candidates file
  * may be days old) with the same date-aware rules discovery used.
  */
-function planPromotions({ candidates, shows, approvals, only }) {
+function planPromotions({ candidates, shows, approvals, only, today }) {
   const existingIds = new Set(shows.map(s => s.id));
   const pool = buildVenueTitlePool(shows);
+  const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
   const venueVocabulary = buildVenueVocabulary(shows);
+  const venueSpellings = buildVenueSpellings(shows);
   const toPromote = [];
   const skipped = [];
   for (const c of candidates) {
     if (only && only.size && !only.has(c.title)) continue;
-    const decision = effectiveDecision(c, approvals);
+    const decision = effectiveDecision(c, approvals, today);
     if (!decision.promotable) { skipped.push({ title: c.title, reason: decision.reason }); continue; }
-    const entry = buildShowEntry(c, venueVocabulary);
+    const entry = buildShowEntry(c, venueVocabulary, venueSpellings);
     if (!entry) { skipped.push({ title: c.title, reason: 'no usable date for the id year' }); continue; }
     if (!entry.venue) { skipped.push({ title: c.title, reason: `venue "${c.venue}" failed sanitizeVenueForWrite` }); continue; }
     const startDate = entry.openingDate || entry.previewsStartDate;
     const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenue };
     const dup = findExactDuplicate(pool, entry.title, entry.venue, dupOpts)
-      || pool.find(s => s.startDate && normalizeTitle(s.title) === normalizeTitle(entry.title)
+      || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(entry.title)
         && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS);
     if (dup) { skipped.push({ title: c.title, reason: `duplicate of ${dup.id || dup.title}` }); continue; }
     const subtitleDup = findSubtitleDuplicateTitle(pool, entry.title, entry.venue, dupOpts);
@@ -281,4 +306,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildShowEntry, planPromotions, effectiveDecision, fixAllCapsTitle };
+module.exports = { buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle };

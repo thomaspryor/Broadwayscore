@@ -76,6 +76,12 @@ test('parseWosReviewTitle: "X review – subhead" form takes the venue from the 
   assert.equal(r.venue, 'Donmar Warehouse');
 });
 
+test('parseWosReviewTitle: the venue follows the LAST " at " (titles containing "at")', () => {
+  assert.deepEqual(
+    parseWosReviewTitle("Breakfast at Tiffany's at the Theatre Royal Haymarket – review", ''),
+    { title: "Breakfast at Tiffany's", venue: 'Theatre Royal Haymarket' });
+});
+
 test('parseWosReviewTitle returns null for non-review posts', () => {
   assert.equal(parseWosReviewTitle('Casting announced for Kyoto transfer', ''), null);
 });
@@ -89,5 +95,6 @@ test('cleanReviewedTitle strips WOS decorations but keeps real "with" titles', (
   assert.equal(cleanReviewedTitle('The Devil Wears Prada musical'), 'The Devil Wears Prada');
   assert.equal(cleanReviewedTitle('Robin Hood pantomime'), 'Robin Hood');
   assert.equal(cleanReviewedTitle('A Room with a View'), 'A Room with a View');
+  assert.equal(cleanReviewedTitle('An Evening with Gary Lineker'), 'An Evening with Gary Lineker');
   assert.equal(cleanReviewedTitle('Burlesque the Musical'), 'Burlesque the Musical');
 });

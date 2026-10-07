@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T23:26:15.851Z",
+  "generatedAt": "2026-10-07T23:46:47.441Z",
   "season": "2024-2025",
   "sources": [
     "wos-listing",
@@ -11,16 +11,14 @@
     "listings": 144,
     "promotable": 39,
     "notPromotable": {
-      "no review signal": 19,
+      "no review signal": 21,
       "already in shows.json": 13,
       "run of 0 days < 14": 3,
       "non-theatre genre": 63,
-      "run of 6 days < 14": 1,
       "run of 7 days < 14": 1,
       "run of 5 days < 14": 1,
       "run of 4 days < 14": 1,
       "run of 2 days < 14": 1,
-      "run of 9 days < 14": 1,
       "run of 8 days < 14": 1
     },
     "unlistedReviews": 10
@@ -179,6 +177,27 @@
         "promotable": false,
         "persistent": true,
         "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Macbeth",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2024-10-01",
+      "openingDate": null,
+      "closingDate": "2024-12-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/macbeth_114415091/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
@@ -837,27 +856,6 @@
       }
     },
     {
-      "title": "Macbeth",
-      "venue": "The Harold Pinter Theatre",
-      "previewsStartDate": "2024-10-01",
-      "openingDate": "2024-12-08",
-      "closingDate": "2024-12-14",
-      "genres": [
-        "play"
-      ],
-      "season": "2024-2025",
-      "signals": [],
-      "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/macbeth_114415091/"
-      },
-      "inShowsJson": null,
-      "decision": {
-        "promotable": false,
-        "persistent": true,
-        "reason": "run of 6 days < 14"
-      }
-    },
-    {
       "title": "Nutcracker",
       "venue": "London Coliseum",
       "previewsStartDate": "2024-12-12",
@@ -1333,7 +1331,7 @@
       "title": "Eva Noblezada and Reeve Carney – Live in London",
       "venue": "His Majesty's Theatre",
       "previewsStartDate": "2025-02-09",
-      "openingDate": "2025-02-09",
+      "openingDate": null,
       "closingDate": "2025-02-09",
       "genres": [
         "event"
@@ -1442,7 +1440,7 @@
       "title": "Clueless",
       "venue": "Trafalgar Theatre",
       "previewsStartDate": "2025-02-15",
-      "openingDate": "2025-02-15",
+      "openingDate": null,
       "closingDate": "2025-08-23",
       "genres": [
         "musical"
@@ -1703,7 +1701,7 @@
       "title": "The Choir of Man",
       "venue": "Arts Theatre",
       "previewsStartDate": "2025-03-12",
-      "openingDate": "2025-03-12",
+      "openingDate": null,
       "closingDate": "2026-01-04",
       "genres": [
         "musical"
@@ -1835,7 +1833,7 @@
       "title": "Westend Unscripted!",
       "venue": "Theatre Royal Drury Lane",
       "previewsStartDate": "2025-03-23",
-      "openingDate": "2025-03-23",
+      "openingDate": null,
       "closingDate": "2025-03-23",
       "genres": [
         "event"
@@ -1943,7 +1941,7 @@
       "title": "Samantha Barks",
       "venue": "The London Palladium",
       "previewsStartDate": "2025-04-05",
-      "openingDate": "2025-04-05",
+      "openingDate": null,
       "closingDate": "2025-04-05",
       "genres": [
         "event"
@@ -1964,7 +1962,7 @@
       "title": "Hold On To Your Butts",
       "venue": "Arts Theatre",
       "previewsStartDate": "2025-04-07",
-      "openingDate": "2025-04-07",
+      "openingDate": null,
       "closingDate": "2025-04-12",
       "genres": [
         "play"
@@ -2226,7 +2224,7 @@
       "title": "Nina Conti: Whose Face Is It Anyway?",
       "venue": "Duke of York's Theatre",
       "previewsStartDate": "2025-04-29",
-      "openingDate": "2025-04-29",
+      "openingDate": null,
       "closingDate": "2025-05-03",
       "genres": [
         "comedy"
@@ -2271,7 +2269,7 @@
       "title": "Katherine Ryan: Battleaxe",
       "venue": "The London Palladium",
       "previewsStartDate": "2025-05-01",
-      "openingDate": "2025-05-01",
+      "openingDate": null,
       "closingDate": "2025-05-03",
       "genres": [
         "comedy"
@@ -2389,7 +2387,7 @@
       "title": "West End Unscripted! Sir Derek Jacobi & Special Guests",
       "venue": "Gillian Lynne Theatre",
       "previewsStartDate": "2025-05-12",
-      "openingDate": "2025-05-12",
+      "openingDate": null,
       "closingDate": "2025-05-12",
       "genres": [
         "event"
@@ -2455,7 +2453,7 @@
       "title": "The Music of Coldplay by Candlelight",
       "venue": "Adelphi Theatre",
       "previewsStartDate": "2025-05-20",
-      "openingDate": "2025-05-20",
+      "openingDate": null,
       "closingDate": "2025-05-20",
       "genres": [
         "event"
@@ -2524,7 +2522,7 @@
       "title": "The Rock’n’Roll Alien",
       "venue": "Adelphi Theatre",
       "previewsStartDate": "2025-05-27",
-      "openingDate": "2025-05-27",
+      "openingDate": null,
       "closingDate": "2025-05-27",
       "genres": [
         "event"
@@ -2567,7 +2565,7 @@
       "title": "Bettie Page, Queen of Pin-Ups – The Musical",
       "venue": "Lyric Theatre",
       "previewsStartDate": "2025-06-09",
-      "openingDate": "2025-06-09",
+      "openingDate": null,
       "closingDate": "2025-06-09",
       "genres": [
         "event"
@@ -2626,15 +2624,15 @@
       "inShowsJson": null,
       "decision": {
         "promotable": false,
-        "persistent": true,
-        "reason": "run of 9 days < 14"
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
       }
     },
     {
       "title": "Dad’s Army Radio Show",
       "venue": "Duchess Theatre",
       "previewsStartDate": "2025-06-16",
-      "openingDate": "2025-06-16",
+      "openingDate": null,
       "closingDate": "2025-06-16",
       "genres": [
         "play"
@@ -2655,7 +2653,7 @@
       "title": "Girl from the North Country",
       "venue": "Old Vic Theatre",
       "previewsStartDate": "2025-06-24",
-      "openingDate": "2025-06-24",
+      "openingDate": null,
       "closingDate": "2025-08-23",
       "genres": [
         "musical"
@@ -2700,7 +2698,7 @@
       "title": "ECHO",
       "venue": "Royal Court Theatre",
       "previewsStartDate": "2025-06-27",
-      "openingDate": "2025-06-27",
+      "openingDate": null,
       "closingDate": "2025-07-05",
       "genres": [
         "play"
@@ -2746,7 +2744,7 @@
       "title": "Tom’s Elton Tribute",
       "venue": "Adelphi Theatre",
       "previewsStartDate": "2025-07-01",
-      "openingDate": "2025-07-01",
+      "openingDate": null,
       "closingDate": "2025-07-01",
       "genres": [
         "event"
@@ -2788,7 +2786,7 @@
       "title": "Hold On To Your Butts",
       "venue": "Arts Theatre",
       "previewsStartDate": "2025-07-07",
-      "openingDate": "2025-07-07",
+      "openingDate": null,
       "closingDate": "2025-08-31",
       "genres": [
         "play"
@@ -2809,7 +2807,7 @@
       "title": "John Cameron Mitchell Live in London",
       "venue": "Adelphi Theatre",
       "previewsStartDate": "2025-07-08",
-      "openingDate": "2025-07-08",
+      "openingDate": null,
       "closingDate": "2025-07-08",
       "genres": [
         "event"
@@ -2900,7 +2898,7 @@
       "title": "Carly Paoli and Friends – Hollywood to Broadway",
       "venue": "Theatre Royal Drury Lane",
       "previewsStartDate": "2025-07-13",
-      "openingDate": "2025-07-13",
+      "openingDate": null,
       "closingDate": "2025-07-13",
       "genres": [
         "event"
@@ -2921,7 +2919,7 @@
       "title": "The Beatles by Candlelight",
       "venue": "Gillian Lynne Theatre",
       "previewsStartDate": "2025-07-14",
-      "openingDate": "2025-07-14",
+      "openingDate": null,
       "closingDate": "2025-07-14",
       "genres": [
         "event"
@@ -2942,7 +2940,7 @@
       "title": "The Tiger Who Came to Tea",
       "venue": "Theatre Royal Haymarket",
       "previewsStartDate": "2025-07-14",
-      "openingDate": "2025-07-14",
+      "openingDate": null,
       "closingDate": "2025-09-07",
       "genres": [
         "children"
@@ -3006,7 +3004,7 @@
       "title": "Anton & Giovanni – Together Again",
       "venue": "Theatre Royal Drury Lane",
       "previewsStartDate": "2025-07-20",
-      "openingDate": "2025-07-20",
+      "openingDate": null,
       "closingDate": "2025-07-20",
       "genres": [
         "dance"
@@ -3027,7 +3025,7 @@
       "title": "Murder, She Didn’t Write",
       "venue": "Duchess Theatre",
       "previewsStartDate": "2025-07-21",
-      "openingDate": "2025-07-21",
+      "openingDate": null,
       "closingDate": "2025-11-24",
       "genres": [
         "play"
@@ -3072,7 +3070,7 @@
       "title": "Little Dancer",
       "venue": "Theatre Royal Drury Lane",
       "previewsStartDate": "2025-07-27",
-      "openingDate": "2025-07-27",
+      "openingDate": null,
       "closingDate": "2025-07-27",
       "genres": [
         "event"
@@ -3160,7 +3158,7 @@
       "title": "A Man for All Seasons",
       "venue": "The Harold Pinter Theatre",
       "previewsStartDate": "2025-08-06",
-      "openingDate": "2025-08-06",
+      "openingDate": null,
       "closingDate": "2025-09-06",
       "genres": [
         "play"
@@ -3181,7 +3179,7 @@
       "title": "Gravity",
       "venue": "Theatre Royal Drury Lane",
       "previewsStartDate": "2025-08-31",
-      "openingDate": "2025-08-31",
+      "openingDate": null,
       "closingDate": "2025-08-31",
       "genres": [
         "event"
