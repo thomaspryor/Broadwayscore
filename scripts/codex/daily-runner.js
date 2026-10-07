@@ -263,28 +263,30 @@ async function moveCard(id, state, comment) {
 }
 
 /** The card's runner commit is on origin/main (a landing that outlived wait-for-land). */
-function landedOnMain(id) {
+function landedOnMain(id, sinceMs) {
   try {
     git(['fetch', 'origin', 'main']);
-    return git(['log', 'origin/main', '--since=2.days', '--format=%H', '-F', `--grep=fix(${id}):`]) !== '';
+    const since = Number.isFinite(sinceMs) ? new Date(sinceMs).toISOString() : '4.days';
+    return git(['log', 'origin/main', `--since=${since}`, '--author=Codex runner', '--format=%H', '-F', `--grep=fix(${id}):`]) !== '';
   } catch { return false; }
 }
 
 async function finishLanding(entry, stats) {
   const res = await waitForLand(entry.ref);
   const { card, summary } = entry;
-  if (res.code === 0 || landedOnMain(card.identifier)) {
+  if (res.code === 0 || landedOnMain(card.identifier, entry.claimedMs)) {
     const done = await moveCard(card.identifier, 'Done', `## Codex runner: landed\n\n${summary}\n\nLanded via \`${entry.ref}\`.`);
-    if (done.code === 0) { stats.landed.push(card.identifier); return; }
+    if (done.code === 0) { stats.landed.push(card.identifier); return true; }
     if (done.code === 5) stats.doneRefusals += 1;
     stats.inReview.push(card.identifier);
-    await moveCard(card.identifier, 'In Review', `## Codex runner: landed, but the Done gate refused\n\n${fence(tail(done.out, 1200))}\n\n${summary}`);
-    return;
+    const rev = await moveCard(card.identifier, 'In Review', `## Codex runner: landed, but the Done gate refused\n\n${fence(tail(done.out, 1200))}\n\n${summary}`);
+    return rev.code === 0;
   }
   stats.landFailed.push(card.identifier);
   // Left In Progress on purpose: the Claude cloud worker resumes refused land/ refs, and
   // main() re-checks main for these before it exits.
   if (!OPTS.dryRun) await linearBrain(['update', card.identifier, '--comment', `## Codex runner: landing did not finish (wait-for-land exit ${res.code})\n\nThe land ref \`${entry.ref}\` is left for the cloud worker's resume step.\n\n${fence(tail(res.out, 1200))}`]);
+  return true;
 }
 
 async function pickCards() {
@@ -307,6 +309,7 @@ async function workCard(pick, stats, inFlight) {
   const body = R.cardBody(card.description, comments);
   if (OPTS.dryRun) { log(`dry-run: would work ${id} "${card.title}" (${body.length} chars with comments)`); return 'skip'; }
 
+  const claimedMs = Date.now();
   const claim = sh('node', ['scripts/linear-session.js', 'claim', `--issue=${id}`], { timeoutMs: 900_000 });
   const claimJson = (claim.stdout.split('\n').reverse().find((l) => l.startsWith('{')) || '{}');
   let action = null; try { action = JSON.parse(claimJson).action; } catch { /* unparseable claim output */ }
@@ -314,10 +317,14 @@ async function workCard(pick, stats, inFlight) {
   stats.claimed.push(id);
   current = id;
   openCards.add(id);
-  refreshLock(); // record the claim, so a run that dies here leaves its card named in the lock
 
+  // disposed: this card's outcome is handled (no generic hand-back in finally).
+  // handedBack: its Linear move really succeeded, so it can leave the lock.
   let disposed = false;
+  let handedBack = false;
   try {
+    // Record the claim in the lock, so a run that dies from here on leaves this card named.
+    if (!refreshLock()) throw new Error('lost the run lock to another run');
     const branch = `codex/${id.toLowerCase()}`;
     resetWorktree(branch);
     const cmd = verifyCommand(card);
@@ -335,6 +342,7 @@ async function workCard(pick, stats, inFlight) {
     for (; attempt <= 2; attempt++) {
       const extra = attempt === 1 ? onMain
         : `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (the repo's unit tests, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
+      keepLock();
       const cx = runCodex(id, R.fillPrompt(tpl, { id, title: card.title, body, extra }), `codex${attempt}`);
       report = cx.report;
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
@@ -343,6 +351,7 @@ async function workCard(pick, stats, inFlight) {
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit-test failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back without spending a Claude check.
+      keepLock();
       const unitFails = c.hasDiff ? newUnitFailures() : null;
       if (unitFails) {
         check = { verdict: 'REJECT', text: `The repo's node unit batch (the one land.yml runs) has new failures on this branch that fresh main does not have:\n${unitFails}` };
@@ -351,6 +360,7 @@ async function workCard(pick, stats, inFlight) {
         if (step !== 'fix-round') break;
         continue;
       }
+      keepLock();
       check = runCheck(card, body, report, `check${attempt}`);
       log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
       // No verdict means the reviewer is broken (auth, crash), not that the work is bad.
@@ -361,7 +371,7 @@ async function workCard(pick, stats, inFlight) {
     if (abort) {
       stats.aborted = abort;
       stats.crashed.push(id);
-      await moveCard(id, 'Todo', `## Codex runner: stopped before finishing this card\n\n${abort}\n\nNothing was landed. The run stopped; the card is free for any worker.`);
+      handedBack = (await moveCard(id, 'Todo', `## Codex runner: stopped before finishing this card\n\n${abort}\n\nNothing was landed. The run stopped; the card is free for any worker.`)).code === 0;
       disposed = true;
       return 'done';
     }
@@ -369,7 +379,7 @@ async function workCard(pick, stats, inFlight) {
     const summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
 
     if (step === 'land') {
-      if (!OPTS.land) { stats.wouldLand.push(id); await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: passed the check, not landed (--no-land run)\n\n${summary}`); disposed = true; return 'done'; }
+      if (!OPTS.land) { stats.wouldLand.push(id); handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: passed the check, not landed (--no-land run)\n\n${summary}`)).code === 0; disposed = true; return 'done'; }
       const ref = `land/codex-${id.toLowerCase()}`;
       const pre = await landPreflight(ref);
       if (pre.decision === 'block') { step = 'bounce'; check.text = `Land preflight blocked it: ${pre.message}`; } else {
@@ -386,8 +396,9 @@ async function workCard(pick, stats, inFlight) {
           if (remote !== sha) throw e;
         }
         log(`${id}: pushed ${ref}`);
-        const entry = { ref, card, summary };
-        entry.promise = finishLanding(entry, stats).finally(() => openCards.delete(id));
+        const entry = { ref, card, summary, claimedMs };
+        // Unlist only once the card is settled; a failed move keeps it named for recoverOrphans.
+        entry.promise = finishLanding(entry, stats).then((settled) => { if (settled) { openCards.delete(id); try { refreshLock(); } catch { /* next stamp covers it */ } } });
         inFlight.push(entry);
         disposed = true;
         return 'done';
@@ -395,20 +406,23 @@ async function workCard(pick, stats, inFlight) {
     }
     if (step === 'close-already-fixed') {
       const r = await moveCard(id, 'Done', `## Codex runner: already fixed on main, no code change\n\nThe independent check confirmed nothing was needed.\n\n${summary}`);
-      if (r.code === 0) { stats.alreadyFixed.push(id); disposed = true; return 'done'; }
+      if (r.code === 0) { stats.alreadyFixed.push(id); handedBack = true; disposed = true; return 'done'; }
       if (r.code === 5) stats.doneRefusals += 1;
     }
     stats.bounced.push(id);
-    await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nTwo Codex attempts did not pass the independent check, so nothing was pushed. Findings for whoever takes it next:\n\n${summary}`);
+    handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nTwo Codex attempts did not pass the independent check, so nothing was pushed. Findings for whoever takes it next:\n\n${summary}`)).code === 0;
     disposed = true;
     return 'done';
   } finally {
-    current = null;
-    if (!inFlight.some((e) => e.card.identifier === id)) openCards.delete(id);
     if (!disposed) {
       stats.crashed.push(id);
-      await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n\nThe runner hit an error on this card and changed nothing on main. Back to Todo for the Claude worker.`).catch(() => {});
+      const back = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: stopped mid-card\n\nThe runner hit an error on this card and changed nothing on main. Back to Todo for the Claude worker.`).catch(() => ({ code: 1 }));
+      handedBack = back.code === 0;
     }
+    // Only once the card is really handed back: drop it from the lock. If the hand-back
+    // failed it stays named, and the next run's recoverOrphans retries it.
+    current = null;
+    if (handedBack && !inFlight.some((e) => e.card.identifier === id)) { openCards.delete(id); try { refreshLock(); } catch { /* next stamp covers it */ } }
   }
 }
 
@@ -416,22 +430,34 @@ async function workCard(pick, stats, inFlight) {
 // cards). The lock is a branch whose tip commit says "locked <iso>" or "unlocked"; it is
 // taken and released with --force-with-lease, so two runs cannot both win. The proxy
 // refuses ref deletes, hence the "unlocked" commit. No workflow triggers on this branch.
-const LOCK_REF = 'refs/heads/codex-runner-lock';
-// Refreshed before every card, so a killed run (SIGKILL skips the release) blocks the next
-// run only until it goes stale. One card is well under 5h even at every timeout.
+// CODEX_RUNNER_LOCK_REF: tests only (refs/heads/codex-runner-locktest).
+const LOCK_REF = process.env.CODEX_RUNNER_LOCK_REF || 'refs/heads/codex-runner-lock';
+// Refreshed before each blocking step of a card (Codex, unit batch, check; the longest is
+// Codex at 45 min) and every 30 min while landings wait, so a live run never looks stale.
+// A killed run (SIGKILL skips the release) blocks the next run only until it goes stale.
 const LOCK_STALE_MS = 5 * 3600_000;
 let lockSha = null;
 // Cards this run claimed and has not finished (working or waiting on a landing); written
 // into every lock stamp. orphanCards: the ones a dead run left in the stale lock we took over.
 const openCards = new Set();
 let orphanCards = [];
+let orphanLockMs = NaN;
 const lockStamp = () => R.lockMessage(new Date().toISOString(), [...openCards]);
 function lockCommit(msg) {
   const tree = git(['rev-parse', 'origin/main^{tree}'], ROOT);
   return git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit-tree', tree, '-m', msg], ROOT);
 }
 function lockPush(sha, expect) {
-  return sh('git', ['push', '-q', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`]).code === 0;
+  for (let i = 0; i < 3; i++) {
+    if (i) sh('sleep', [String(5 * i)]);
+    if (sh('git', ['push', '-q', `--force-with-lease=${LOCK_REF}:${expect}`, 'origin', `${sha}:${LOCK_REF}`]).code === 0) return true;
+    // A lease rejection means another run moved the lock; retrying cannot win, so stop.
+    const now = sh('git', ['ls-remote', 'origin', LOCK_REF]);
+    const tip = now.code === 0 ? (now.stdout.split(/\s/)[0] || '') : null;
+    if (tip === sha) return true; // the push landed but its reply was lost
+    if (tip !== null && tip !== expect) return false;
+  }
+  return false;
 }
 /** -> null when taken, else why not. */
 function takeLock() {
@@ -440,20 +466,32 @@ function takeLock() {
   if (ls.code !== 0) return `lock unreadable: ${tail(ls.out, 200)}`;
   const cur = ls.stdout.split(/\s/)[0] || '';
   let stale = [];
+  let staleMs = NaN;
   if (cur) {
     git(['fetch', '-q', 'origin', LOCK_REF], ROOT);
     const [ct, ...msg] = git(['log', '-1', '--format=%ct %s', 'FETCH_HEAD'], ROOT).split(' ');
     const age = Date.now() - Number(ct) * 1000;
     if (msg.join(' ').startsWith('locked') && age < LOCK_STALE_MS) return `another run holds the lock (${msg.join(' ')}, ${Math.round(age / 60_000)} min old)`;
     stale = R.lockCards(msg.join(' '));
+    staleMs = Number(ct) * 1000;
   }
+  // Adopted orphans stay named in our stamps until handled, so dying again does not lose them.
+  for (const id of stale) openCards.add(id);
   const sha = lockCommit(lockStamp());
   if (!lockPush(sha, cur)) return 'another run took the lock first';
   lockSha = sha;
   orphanCards = stale;
+  orphanLockMs = staleMs;
   return null;
 }
 /** Re-stamp the lock so a long healthy run never looks stale. -> false if another run took it. */
+/** Re-stamp between blocking steps; a lost lock stops this card (the finally hands it back). */
+function keepLock() {
+  let held = true;
+  try { held = refreshLock(); } catch { /* transient: the next stamp retries */ }
+  if (!held) throw new Error('lost the run lock to another run');
+}
+
 function refreshLock() {
   if (!lockSha) return true;
   const sha = lockCommit(lockStamp());
@@ -463,6 +501,12 @@ function refreshLock() {
 }
 function releaseLock() {
   if (!lockSha) return;
+  // Unfinished cards (landing still pending): keep the lock stamped with them, so the run
+  // that takes it over once stale lands or hands them back (recoverOrphans).
+  if (openCards.size) {
+    try { if (lockPush(lockCommit(R.lockMessage(new Date().toISOString(), [...openCards], 'released')), lockSha)) lockSha = null; } catch { /* stale stamp still names them */ }
+    return;
+  }
   try { if (lockPush(lockCommit('unlocked'), lockSha)) lockSha = null; } catch { /* stale after 11h anyway */ }
 }
 
@@ -471,8 +515,9 @@ let current = null;
 for (const sig of ['SIGTERM', 'SIGINT', 'SIGHUP']) {
   process.on(sig, () => {
     if (current && !OPTS.dryRun) {
-      sh('node', ['scripts/linear-brain.js', 'update', current, '--state', 'Todo', '--comment',
+      const back = sh('node', ['scripts/linear-brain.js', 'update', current, '--state', 'Todo', '--comment',
         `## Codex runner: stopped (${sig}) mid-card\n\nNothing was landed for this card. Back to Todo.`], { timeoutMs: 600_000 });
+      if (back.code === 0) openCards.delete(current); // else it stays named in the released lock
     }
     log(`killed by ${sig}${current ? `; ${current} returned to Todo` : ''}`);
     releaseLock();
@@ -494,7 +539,10 @@ async function main() {
     const held = takeLock();
     if (held) { log(`not starting: ${held}`); return; }
   }
-  try { await runLocked(startedMs); } finally { releaseLock(); }
+  // Re-stamp while waiting on slow steps (landings, in-flight slots), so a long healthy run
+  // never looks stale to the next one.
+  const keepAlive = OPTS.dryRun ? null : setInterval(() => { try { refreshLock(); } catch { /* next tick */ } }, 30 * 60_000);
+  try { await runLocked(startedMs); } finally { if (keepAlive) clearInterval(keepAlive); releaseLock(); }
 }
 
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
@@ -517,27 +565,43 @@ async function reconcileLanded(stats) {
 /** Cards a dead run left claimed (named in the stale lock we took over): close, park for the land resume, or hand back. */
 async function recoverOrphans(stats) {
   for (const id of orphanCards) {
-    const card = await linear.getIssue(id).catch(() => null);
-    if (!card || !card.state || card.state.type !== 'started') continue;
-    log(`${id}: left claimed by a run that stopped`);
-    if (landedOnMain(id)) {
+    let issue = null;
+    try { issue = (await linear.graphql('query($id: String!) { issue(id: $id) { startedAt state { name } } }', { id })).issue; } catch { /* unreadable: leave it named */ continue; }
+    const ref = `land/codex-${id.toLowerCase()}`;
+    let landRefMs = NaN;
+    try {
+      if (git(['ls-remote', 'origin', `refs/heads/${ref}`]) !== '') {
+        git(['fetch', '-q', 'origin', `refs/heads/${ref}`]);
+        landRefMs = Number(git(['log', '-1', '--format=%ct', 'FETCH_HEAD'])) * 1000;
+      }
+    } catch { /* treat as no landing */ }
+    const action = R.orphanAction({
+      stateName: issue && issue.state && issue.state.name,
+      startedAtMs: issue && issue.startedAt ? Date.parse(issue.startedAt) : NaN,
+      lockMs: orphanLockMs, onMain: issue && issue.startedAt ? landedOnMain(id, Date.parse(issue.startedAt)) : false, landRefMs,
+    });
+    log(`${id}: named in a stopped run's lock -> ${action}`);
+    let handled = true;
+    if (action === 'done') {
       const r = await moveCard(id, 'Done', '## Codex runner: landed\n\nAn earlier run stopped before closing this card; its commit is on main.');
       if (r.code === 0) stats.landed.push(id);
-      continue;
+      else if (r.code === 5) { stats.inReview.push(id); handled = (await moveCard(id, 'In Review', '## Codex runner: landed, but the Done gate refused\n\nAn earlier run stopped before closing this card; its commit is on main.')).code === 0; }
+      else handled = false;
+    } else if (action === 'park') {
+      handled = (await linearBrain(['update', id, '--comment', `## Codex runner: landing did not finish (an earlier run stopped)\n\nThe land ref \`${ref}\` is left for the cloud worker's resume step.`])).code === 0;
+    } else if (action === 'todo') {
+      stats.crashed.push(id);
+      handled = (await moveCard(id, 'Todo', '## Codex runner: stopped mid-card\n\nAn earlier run ended (its session stopped) before finishing this card, and nothing reached main. Back to Todo.')).code === 0;
     }
-    const ref = `land/codex-${id.toLowerCase()}`;
-    let landing = false;
-    try { landing = git(['ls-remote', 'origin', `refs/heads/${ref}`]) !== ''; } catch { /* treat as not landing */ }
-    if (landing) {
-      await linearBrain(['update', id, '--comment', `## Codex runner: landing did not finish (an earlier run stopped)\n\nThe land ref \`${ref}\` is left for the cloud worker's resume step.`]);
-      continue;
-    }
-    stats.crashed.push(id);
-    await moveCard(id, 'Todo', '## Codex runner: stopped mid-card\n\nAn earlier run ended (its session stopped) before finishing this card, and nothing reached main. Back to Todo.');
+    if (handled) openCards.delete(id);
   }
+  try { refreshLock(); } catch { /* next stamp covers it */ }
 }
 
 async function runLocked(startedMs) {
+  const stats = { claimed: [], landed: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
+  // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
+  if (!OPTS.dryRun) { await reconcileLanded(stats); await recoverOrphans(stats); }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   if (restore.code !== 0) {
@@ -549,8 +613,6 @@ async function runLocked(startedMs) {
   if (install.code !== 0) log(`codex install warning: ${tail(install.out, 300)}`);
   setupWorktree();
 
-  const stats = { claimed: [], landed: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
-  if (!OPTS.dryRun) { await reconcileLanded(stats); await recoverOrphans(stats); }
   const inFlight = [];
   let worked = 0;
   let stop = null;
@@ -558,7 +620,9 @@ async function runLocked(startedMs) {
     if (worked >= OPTS.limit) break;
     stop = R.stopReason({ startedMs, nowMs: Date.now(), maxMinutes: OPTS.maxMinutes, weeklyPct: weeklyPct(), maxWeeklyPct: OPTS.maxWeeklyPct, rejectStreak: stats.rejectStreak, doneRefusals: stats.doneRefusals });
     if (!stop && stats.aborted) stop = stats.aborted;
-    if (!stop && !OPTS.dryRun && !refreshLock()) stop = 'another run took the lock';
+    let held = true;
+    try { held = refreshLock(); } catch { /* transient git error: the keep-alive retries */ }
+    if (!stop && !OPTS.dryRun && !held) stop = 'another run took the lock';
     if (stop) { log(`stopping: ${stop}`); break; }
     try {
       if (await workCard(pick, stats, inFlight) === 'done') worked += 1;
