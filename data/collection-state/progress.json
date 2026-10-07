@@ -357,7 +357,9 @@
     "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
     "tammy-faye-2024/culturesauce--thom-geier.json",
     "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
-    "left-on-tenth-2024/broadwaynews--brittani-samuel.json"
+    "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json"
   ],
   "failed": [
     "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
@@ -376,7 +378,6 @@
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/viptickets--unknown.json",
-    "tru-off-west-end-2026/guardian--mark-lawson.json",
     "a-small-and-quiet-light-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
@@ -596,7 +597,12 @@
     "death-becomes-her-2024/chicago-reader--kerry-reid.json",
     "elf-2024/amny--matt-windman.json",
     "romeo-juliet-2024/variety--charles-isherwood.json",
-    "left-on-tenth-2024/variety--aramide-tinubu.json"
+    "left-on-tenth-2024/variety--aramide-tinubu.json",
+    "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
+    "hay-fever-west-end-2026/thestage--the-stage.json",
+    "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
+    "a-small-and-quiet-light-off-west-end-2026/timeout-london--unknown.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -817,7 +823,8 @@
       "grangeville-off-broadway-2026/timeout--adam-feldman.json",
       "life-of-pi-tour-2024/dallasvoice--david-taffet.json",
       "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
-      "tammy-faye-2024/culturesauce--thom-geier.json"
+      "tammy-faye-2024/culturesauce--thom-geier.json",
+      "tru-off-west-end-2026/guardian--mark-lawson.json"
     ],
     "amp": [
       "data/review-texts/just-in-time-2025/hollywood-reporter--caitlin-huston.json",
@@ -922,7 +929,8 @@
       "elf-2024/broadwaynews--brittani-samuel.json",
       "tammy-faye-2024/broadwaynews--brittani-samuel.json",
       "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
-      "left-on-tenth-2024/broadwaynews--brittani-samuel.json"
+      "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/broadwayworld--persson-alexander-cohen.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
@@ -999,7 +1007,7 @@
     ]
   },
   "startTime": "2026-10-06T18:54:31.017Z",
-  "lastProcessed": "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
+  "lastProcessed": "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
   "log": [
     {
       "t": "2026-10-06T19:13:52.778Z",
@@ -1248,10 +1256,59 @@
       "t": "2026-10-07T02:03:25.446Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-07T03:59:18.619Z",
+      "event": "bb-session",
+      "session": "daa2f5ce",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-07T03:59:31.472Z",
+      "event": "bb-session",
+      "session": "293f0068",
+      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
+    },
+    {
+      "t": "2026-10-07T04:00:41.288Z",
+      "event": "bb-session",
+      "session": "dc7a5b6a",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    },
+    {
+      "t": "2026-10-07T04:01:51.426Z",
+      "event": "bb-session",
+      "session": "61962616",
+      "url": "https://whatnightout.uk/london/events/franz-marie-8871320"
+    },
+    {
+      "t": "2026-10-07T04:03:25.102Z",
+      "event": "bb-session",
+      "session": "e68d7a23",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-07T04:03:49.020Z",
+      "event": "bb-session",
+      "session": "5f71bfe1",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-07T04:07:09.592Z",
+      "event": "bb-session",
+      "session": "ec29f30f",
+      "url": "https://www.londonlivinglarge.com/2026/09/a-small-and-quiet-light-orange-tree.ht"
+    },
+    {
+      "t": "2026-10-07T04:07:16.986Z",
+      "event": "bb-session",
+      "session": "9caf2885",
+      "url": "https://www.londonlivinglarge.com/2026/09/a-small-and-quiet-light-orange-tree.ht"
     }
   ],
   "recoveredAfterFailure": [
     "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-    "paranormal-activity-2026/nytimes--helen-shaw.json"
+    "paranormal-activity-2026/nytimes--helen-shaw.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json"
   ]
 }
