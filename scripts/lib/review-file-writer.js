@@ -995,13 +995,49 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 
   // --- Try to find existing file ---
   // Use the (possibly URL-refined) outletId for the filename, not the raw input.outletId
-  const filename = generateReviewFilename(outletId, criticName);
-  const filepath = path.join(showDir, filename);
+  let filename = generateReviewFilename(outletId, criticName);
+  let filepath = path.join(showDir, filename);
 
   // Cross-scraper dedup: find by outlet+critic regardless of filename format.
   // Use the refined outletId (not input.outlet) so URL-based disambiguation is respected —
   // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
-  const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
+  let existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
+
+  // --- Slot collision for a LANE review (BRO-4805, BRO-4782 wiring A) ---
+  // The slot (outlet + critic) already holds a DIFFERENT review that the corpus flagged (wrongProduction, rejected,
+  // duplicateOf...). Merging the lane review into it would inherit the flag and hide a review an aggregator already
+  // verified for tonight; refusing would drop it. It gets its OWN file named by outlet + critic + night instead, and a
+  // re-run finds that file again (idempotent). Only a lane review is redirected, and only off a flagged file (or another
+  // lane file) with a different URL: the same URL is the same review and merges as always, an unflagged ordinary slot
+  // merges as always.
+  let laneRedirected = false;
+  if (laneHolds('wrongProduction')) {
+    const night = ((input.openingNightLane || fields.openingNightLane) || {}).night;
+    let slot = existing && existing.data ? existing : null;
+    if (!slot && fs.existsSync(filepath)) {
+      try { slot = { path: filepath, data: JSON.parse(fs.readFileSync(filepath, 'utf8')) }; } catch { /* unreadable: the normal path decides */ }
+    }
+    const { normalizeReviewUrl } = require('./ingest-collision');
+    // A flagged file is walked around; so is another LANE file for a different review (two reviews by the same critic on
+    // one night must not overwrite each other: laneReviewFilename adds a URL hash for exactly that).
+    if (night && slot && slot.data && (isFlaggedMergeTarget(slot.data) || slot.data.openingNightLane) && input.url
+        && normalizeReviewUrl(slot.data.url || '') !== normalizeReviewUrl(input.url)) {
+      const sameOutlet = new Map();
+      for (const f of fs.readdirSync(showDir)) {
+        if (!f.startsWith(`${outletId}--`) || !f.endsWith('.json')) continue;
+        try { sameOutlet.set(f, JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')).url || ''); } catch { /* skip unreadable */ }
+      }
+      const picked = require('./opening-night-lane/trust-model').laneReviewFilename({ outletId, criticName, night, url: input.url, existing: sameOutlet });
+      filename = picked.filename;
+      filepath = path.join(showDir, filename);
+      console.warn(`  ↪ Lane review: ${path.basename(slot.path)} holds a different, flagged review; writing ${filename} instead of merging`);
+      if (picked.reuse) {
+        return _mergeIntoExisting(filepath, JSON.parse(fs.readFileSync(filepath, 'utf8')), { showId, outletId, input, fields, criticName, dryRun, onMerge });
+      }
+      laneRedirected = true;
+      existing = null; // the redirected create is judged as a create: the junk-outlet and listing guards below apply to it
+    }
+  }
 
   // --- Guard: unregistered outlet on a non-review URL (BRO-2717) ---
   // An UNREGISTERED outlet on a blocked/listing/ticketing/venue/PR-shaped URL is
@@ -1036,12 +1072,12 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
-  if (existing && existing.data) {
+  if (!laneRedirected && existing && existing.data) {
     return _mergeIntoExisting(existing.path, existing.data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
   }
 
   // Belt-and-suspenders: exact filename fallback
-  if (fs.existsSync(filepath)) {
+  if (!laneRedirected && fs.existsSync(filepath)) {
     try {
       const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
       // BRO-3182 (Codex ship-check finding): an UNRESOLVED incoming critic

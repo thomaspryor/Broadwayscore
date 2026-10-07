@@ -1667,5 +1667,34 @@
       }
     ],
     "queuedAt": "2026-10-07T15:40:19.659Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4838-affluenza-coverage",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4838-affluenza-coverage",
+    "description": "land.yml did not land land/bro-4838-affluenza-coverage: the scripts-lib-tests gate went red at edcc59ca5c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37646062540",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4838-affluenza-coverage"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "edcc59ca5c8572e7a5d6df3a696c06356529d039"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37646062540"
+      }
+    ],
+    "queuedAt": "2026-10-07T16:14:36.796Z"
   }
 ]
