@@ -148,7 +148,7 @@ function recordProviderCall(opts) {
       status: opts.status ?? null,
       credits: opts.credits ?? null,
       fallback_from: opts.fallbackFrom || null,
-      purpose: opts.purpose || null,
+      purpose: opts.purpose || process.env.SCRAPER_SPEND_PURPOSE || null, // env: per-show tag, see spend-purpose.js
       category: opts.category || null,
     };
     console.log(`[${tag} Call] ${JSON.stringify(record)}`);

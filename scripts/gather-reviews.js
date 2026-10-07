@@ -172,6 +172,17 @@ try {
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+const { gatherPurposeForShow } = require('./lib/spend-purpose');
+let _showsByIdCache = null;
+function _showsById() {
+  if (!_showsByIdCache) {
+    try {
+      const d = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+      _showsByIdCache = new Map((d.shows || d).map((s) => [s.id, s]));
+    } catch { _showsByIdCache = new Map(); }
+  }
+  return _showsByIdCache;
+}
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const GATHER_COLLISIONS_PATH = path.join(__dirname, '..', 'data', 'audit', 'gather-collisions.json');
@@ -5828,7 +5839,7 @@ async function main() {
   const args = process.argv.slice(2);
 
   const flags = parseGatherReviewsFlags(args);
-  // Multi-show batches (opening-night dispatch) were hitting the 55-min GHA
+  // Multi-show batches (opening-night dispatch) were hitting the GHA
   // job timeout mid-script — a SIGKILL that skips the if: always() push
   // steps and discards every review this run found (BRO-3388). A wall-clock
   // budget lets the loop below stop starting NEW shows and exit 0 cleanly
@@ -5907,6 +5918,9 @@ async function main() {
       break;
     }
     const showId = showIds[i];
+    // BRO-4146: tag this show's provider-ledger rows when it is a historical
+    // backfill (closed >90d) so the daily-credit probe can exclude them.
+    process.env.SCRAPER_SPEND_PURPOSE = gatherPurposeForShow(_showsById().get(showId));
     let result;
     try {
       result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });

@@ -49,6 +49,9 @@ function creditsByDay(script) {
       continue; // a partially-flushed final line is normal for a JSONL ledger
     }
     if (r.script !== script) continue;
+    // BRO-4146: the owner keeps a daily historical backfill (closed shows); its
+    // first-time SERP spend is intended and uncacheable, so it is excluded here.
+    if (r.purpose === 'historical-backfill') continue;
     const day = String(r.ts || '').slice(0, 10);
     if (!day) continue;
     out.set(day, (out.get(day) || 0) + (Number(r.credits) || 0));

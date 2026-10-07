@@ -85,6 +85,17 @@ jobs:
           TOTAL=${#SHOW_ARRAY[@]}
 
           # Don't use more jobs than shows
+          # BRO-4146: cap shows per shard. The daily historical backfill sends ~25
+          # closed shows with parallel_jobs=3 (8-9 per shard); at ~10 min per old
+          # show the shards ran past the job timeout and were cancelled on 10-05
+          # and 10-06. Raise the shard count so no shard gets more than
+          # MAX_PER_SHARD shows, up to the existing 10-job ceiling.
+          MAX_PER_SHARD=4
+          NEEDED=$(( (TOTAL + MAX_PER_SHARD - 1) / MAX_PER_SHARD ))
+          if [ "$NEEDED" -gt "$JOBS" ]; then
+            JOBS=$(( NEEDED > 10 ? 10 : NEEDED ))
+          fi
+
           if [ "$JOBS" -gt "$TOTAL" ]; then
             JOBS=$TOTAL
           fi
@@ -235,7 +246,11 @@ jobs:
     # 55 not 30: multi-show batches hit the 30m ceiling and GitHub cancels the
     # job at timeout, dropping un-pushed progress (3 of 5 runs on 2026-07-13
     # ended cancelled; if: always() steps do NOT run on timeout-cancel).
-    timeout-minutes: 55
+    # 75 not 55 (BRO-4146): --time-budget-min=35 is only checked between shows
+    # and one historical show takes ~10-15 min, so the gather step ran 39-46 min
+    # and jobs ended at 52 of 55 on 2026-10-07. Shard cap (prepare) is the main
+    # fix; this is the margin for a slow last show plus setup and push.
+    timeout-minutes: 75
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
       fail-fast: false  # Don't cancel other batches if one fails
@@ -250,7 +265,7 @@ jobs:
         with:
           ref: main
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
-          # of main for this 55-min job's final ledger commit; depth-1 aborted when churn outran it.
+          # of main for this 75-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
 
@@ -364,7 +379,7 @@ jobs:
           fi
           if [ -f scripts/gather-reviews.js ]; then
             # BRO-3388: stop starting new shows at 35min so the script exits 0
-            # well inside the 55min job timeout below — a graceful exit lets
+            # well inside the 75min job timeout above — a graceful exit lets
             # the if: always() push steps run, instead of a timeout SIGKILL
             # skipping them and discarding this run's SERP discovery. 20min
             # margin (not just setup+push overhead) because gather-reviews.js
@@ -464,7 +479,7 @@ jobs:
           overwrite: true
 
       - name: Notify on gather failure
-        # BRO-3707: a hang hitting the job's own timeout-minutes: 55 reports
+        # BRO-3707: a hang hitting the job's own timeout-minutes (75) reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert.
         if: failure() || cancelled()
@@ -535,7 +550,7 @@ jobs:
   # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
   scrape-aggregators:
     needs: [prepare, gather-reviews]
-    if: always() && needs.gather-reviews.result != 'cancelled'
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}  # BRO-4146: one shard timing out (needs.result 'cancelled') must not skip rebuilding the other shards' results; a run-level cancel still skips
     continue-on-error: true
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -644,7 +659,7 @@ jobs:
   # Step 4: Rebuild reviews.json after all batches and aggregators complete
   rebuild:
     needs: [prepare, gather-reviews, scrape-aggregators]
-    if: always() && needs.gather-reviews.result != 'cancelled'
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}  # BRO-4146: one shard timing out (needs.result 'cancelled') must not skip rebuilding the other shards' results; a run-level cancel still skips
     runs-on: ubuntu-latest
     concurrency:
       group: rebuild-reviews
