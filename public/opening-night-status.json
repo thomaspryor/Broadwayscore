@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T11:23:25.288Z",
+  "generatedAt": "2026-10-07T13:04:17.363Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -229,9 +229,9 @@
       "status": "open",
       "slug": "the-hungry-ghost-off-west-end",
       "thumbnail": "/images/shows/the-hungry-ghost-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 83.93,
+      "siteScore": 84.44,
       "liveScore": 84,
-      "scoreDrift": 0.06999999999999318,
+      "scoreDrift": -0.4399999999999977,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -373,6 +373,18 @@
           "t": "2026-10-07T11:23:25.288Z",
           "rc": 10,
           "s": 83.93,
+          "t1": 1,
+          "t2": 4,
+          "t3": 5,
+          "p": 9,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:04:17.363Z",
+          "rc": 10,
+          "s": 84.44,
           "t1": 1,
           "t2": 4,
           "t3": 5,
@@ -773,9 +785,9 @@
       "status": "open",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.webp",
-      "siteScore": 34.33,
+      "siteScore": 33.6,
       "liveScore": 34,
-      "scoreDrift": -0.3299999999999983,
+      "scoreDrift": 0.3999999999999986,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -952,6 +964,18 @@
           "t": "2026-10-06T22:22:48.344Z",
           "rc": 15,
           "s": 34.33,
+          "t1": 3,
+          "t2": 6,
+          "t3": 6,
+          "p": 1,
+          "m": 3,
+          "n": 11,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:04:17.363Z",
+          "rc": 15,
+          "s": 33.6,
           "t1": 3,
           "t2": 6,
           "t3": 6,
@@ -1142,9 +1166,9 @@
       "status": "open",
       "slug": "soon-off-broadway",
       "thumbnail": "/images/shows/soon-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 58.9,
-      "liveScore": 59,
-      "scoreDrift": 0.10000000000000142,
+      "siteScore": 59.78,
+      "liveScore": 60,
+      "scoreDrift": 0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1160,9 +1184,9 @@
         "reasons": [
           "7/12 total",
           "T1:0/3",
-          "hi-conf:4/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1558,6 +1582,18 @@
           "m": 2,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:04:17.363Z",
+          "rc": 7,
+          "s": 59.78,
+          "t1": 1,
+          "t2": 2,
+          "t3": 4,
+          "p": 2,
+          "m": 2,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -1571,9 +1607,9 @@
       "status": "open",
       "slug": "kramerfauci-st-anns",
       "thumbnail": "/images/shows/kramerfauci-off-broadway-2026/thumbnail.webp",
-      "siteScore": 78.37,
+      "siteScore": 78.39,
       "liveScore": 78,
-      "scoreDrift": -0.37000000000000455,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1585,11 +1621,9 @@
       "mixed": 4,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:3/8"
-        ],
-        "highConfidence": 3,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1599,7 +1633,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -2101,6 +2135,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:04:17.363Z",
+          "rc": 17,
+          "s": 78.39,
+          "t1": 4,
+          "t2": 7,
+          "t3": 6,
+          "p": 12,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -2114,9 +2160,9 @@
       "status": "open",
       "slug": "slam-frank-off-broadway",
       "thumbnail": "/images/shows/slam-frank-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 66.29,
-      "liveScore": 66,
-      "scoreDrift": -0.29000000000000625,
+      "siteScore": 65.23,
+      "liveScore": 65,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2132,7 +2178,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 11,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2672,6 +2718,18 @@
           "m": 6,
           "n": 3,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:04:17.363Z",
+          "rc": 14,
+          "s": 65.23,
+          "t1": 1,
+          "t2": 6,
+          "t3": 7,
+          "p": 5,
+          "m": 6,
+          "n": 3,
+          "bc": "waiting"
         }
       ]
     },
@@ -2685,9 +2743,9 @@
       "status": "open",
       "slug": "the-hairy-ape-irish-repertory-theatre-off-broadway",
       "thumbnail": "/images/shows/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 73.62,
+      "siteScore": 73.71,
       "liveScore": 74,
-      "scoreDrift": 0.37999999999999545,
+      "scoreDrift": 0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2701,10 +2759,9 @@
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:2/3",
-          "hi-conf:5/8"
+          "T1:2/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2780,10 +2837,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -2806,10 +2859,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -3109,6 +3158,18 @@
           "t": "2026-10-06T18:16:53.048Z",
           "rc": 12,
           "s": 73.62,
+          "t1": 2,
+          "t2": 6,
+          "t3": 4,
+          "p": 8,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-07T13:04:17.363Z",
+          "rc": 12,
+          "s": 73.71,
           "t1": 2,
           "t2": 6,
           "t3": 4,
