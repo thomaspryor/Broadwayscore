@@ -225,6 +225,20 @@ function codexBouncedRecently(comments, nowMs) {
     && Number.isFinite(Date.parse(c.createdAt)) && nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
 }
 
+/**
+ * Run-lock commit message. It names the cards the run has claimed but not finished, so a
+ * run that takes over a dead run's stale lock knows which cards to land or hand back.
+ */
+function lockMessage(iso, cardIds = []) {
+  const ids = [...new Set(cardIds)].filter((id) => /^BRO-\d+$/.test(id));
+  return `locked ${iso}${ids.length ? ` cards=${ids.join(',')}` : ''}`;
+}
+/** -> card ids named by a lock message ([] for "unlocked" or an older message without them). */
+function lockCards(message) {
+  const m = String(message || '').match(/^locked \S+ cards=([A-Z0-9,-]+)\s*$/);
+  return m ? m[1].split(',').filter((id) => /^BRO-\d+$/.test(id)) : [];
+}
+
 /** Stop the run early (like close-stuck-verified-cards' closeRunStopReason). */
 function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rejectStreak, doneRefusals }) {
   if (maxMinutes && nowMs - startedMs > maxMinutes * 60_000) return `time budget of ${maxMinutes} min used`;
@@ -235,6 +249,8 @@ function stopReason({ startedMs, nowMs, maxMinutes, weeklyPct, maxWeeklyPct, rej
 }
 
 module.exports = {
+  lockMessage,
+  lockCards,
   keepEnvVar,
   scrubEnv,
   redactSecrets,
