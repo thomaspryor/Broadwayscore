@@ -230,6 +230,7 @@ function selectSample(targetN: number, daysWindow: number): SampleReview[] {
         publishDate: publishDate,
         category: data.category || showInfo?.category,
         venue: data.venue || showInfo?.venue || undefined,
+        contentTier: data.manualContentTier || data.contentTier,
         fullText: data.fullText,
         ...excerptData,
         bwwThumb: data.bwwThumb,
