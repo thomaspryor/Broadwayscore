@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-10-05T11:05:03.183Z",
+  "generatedAt": "2026-10-07T09:03:56.367Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3306,
-  "flaggedShows": 62,
-  "flaggedFiles": 222,
+  "scannedShows": 3323,
+  "flaggedShows": 66,
+  "flaggedFiles": 229,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 32,
-    "needs-human-review": 29,
-    "likely-single-prior-run": 1
+    "likely-contamination": 33,
+    "needs-human-review": 31,
+    "likely-single-prior-run": 2
   },
   "shows": [
     {
@@ -281,7 +281,7 @@
       "previewsStartDate": "2026-11-12",
       "openingDate": "2026-11-24",
       "verdict": "likely-contamination",
-      "reasoning": "15/16 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "16/16 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 16,
         "distinctYears": [
@@ -294,7 +294,7 @@
           2025
         ],
         "spanDays": 3651,
-        "flaggedCount": 15,
+        "flaggedCount": 16,
         "venueMentionCount": 6
       },
       "suggestedPriorRun": null,
@@ -470,14 +470,14 @@
         },
         {
           "file": "thestage--tom-wicker.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "thestage",
           "criticName": "Tom Wicker",
           "publishDate": "2023-11-23",
           "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-london-starring-christopher-eccleston",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -1494,7 +1494,7 @@
       "previewsStartDate": "2026-12-05",
       "openingDate": "2026-12-17",
       "verdict": "likely-contamination",
-      "reasoning": "6/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 7,
         "distinctYears": [
@@ -1504,7 +1504,7 @@
           2023
         ],
         "spanDays": 1204,
-        "flaggedCount": 6,
+        "flaggedCount": 7,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
@@ -1563,14 +1563,14 @@
         },
         {
           "file": "thestage--tim-bano.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "thestage",
           "criticName": "Tim Bano",
           "publishDate": "2021-08-19",
           "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -1758,7 +1758,7 @@
           "file": "london-box-office--emmie-newitt.json",
           "readmissionRisk": "still-excluded-after-open",
           "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "nonReview",
+          "afterReason": "bodylessAggregatorScoreUncorroborated",
           "outletId": "london-box-office",
           "criticName": "Emmie Newitt",
           "publishDate": "2024-03-06",
@@ -2380,6 +2380,81 @@
       ]
     },
     {
+      "showId": "hallelujah-baby-off-broadway-2026",
+      "title": "Hallelujah, Baby!",
+      "market": "broadway",
+      "status": "announced",
+      "venue": "New York City Center",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 4,
+        "distinctYears": [
+          2018
+        ],
+        "spanDays": 2,
+        "flaggedCount": 4,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "broadway-blog--matthew-wexler.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "broadway-blog",
+          "criticName": "Matthew Wexler",
+          "publishDate": "January 31st, 2018",
+          "url": "http://thebroadwayblog.com/hallelujah-baby-york-theatre/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "front-row-center--sarah-downs.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "front-row-center",
+          "criticName": "Sarah Downs",
+          "publishDate": "January 31st, 2018",
+          "url": "http://thefrontrowcenter.com/2018/01/hallelujah-baby/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "talkinbroadway--howard-miller.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "talkinbroadway",
+          "criticName": "Howard Miller",
+          "publishDate": "January 29th, 2018",
+          "url": "https://www.talkinbroadway.com/page/ob/01_29_18.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "theater-pizzazz--linda-amiel-burns.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "theater-pizzazz",
+          "criticName": "Linda Amiel Burns",
+          "publishDate": "January 30th, 2018",
+          "url": "http://theaterpizzazz.com/hallelujah-baby-opening-nite-photos-review/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "jack-and-the-beanstalk-off-west-end-2026",
       "title": "Jack and The Beanstalk",
       "market": "west-end",
@@ -2388,7 +2463,7 @@
       "previewsStartDate": "2026-11-21",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "3/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
@@ -2398,7 +2473,7 @@
           2025
         ],
         "spanDays": 3648,
-        "flaggedCount": 3,
+        "flaggedCount": 4,
         "venueMentionCount": 1
       },
       "suggestedPriorRun": null,
@@ -2431,14 +2506,14 @@
         },
         {
           "file": "thestage--paul-vale.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "thestage",
           "criticName": "Paul Vale",
           "publishDate": "2025-11-24",
           "url": "https://www.thestage.co.uk/reviews/jack-and-the-beanstalk-review-lyric-hammersmith-london-sonia-jalaly-nicholai-la-barrie",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -3720,6 +3795,42 @@
       ]
     },
     {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center",
+      "previewsStartDate": "2026-10-21",
+      "openingDate": "2026-11-09",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2026
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "pages-on-stages--mason-pilevsky.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "pages-on-stages",
+          "criticName": "Mason Pilevsky",
+          "publishDate": "January 23rd, 2026",
+          "url": "https://pagesonstages.com/2026/01/23/the-visitors/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "one-day-the-musical-west-end-2026",
       "title": "One Day – The Musical",
       "market": "west-end",
@@ -3744,7 +3855,7 @@
           "file": "london-box-office--shehrazade-zafar-arif.json",
           "readmissionRisk": "still-excluded-after-open",
           "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "nonReview",
+          "afterReason": "bodylessAggregatorScoreUncorroborated",
           "outletId": "london-box-office",
           "criticName": "Shehrazade Zafar-Arif",
           "publishDate": "2026-06-18",
@@ -3780,7 +3891,7 @@
           "file": "the-suburban--alexandra-cohen.json",
           "readmissionRisk": "still-excluded-after-open",
           "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "afterReason": "contentTierInvalid",
           "outletId": "the-suburban",
           "criticName": "Alexandra Cohen",
           "publishDate": "2025-11-30",
@@ -4152,6 +4263,83 @@
       ]
     },
     {
+      "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+      "title": "An Evening With An Immigrant",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "The Maria Theatre",
+      "previewsStartDate": "2026-10-06",
+      "openingDate": null,
+      "verdict": "likely-single-prior-run",
+      "reasoning": "1 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"The Maria Theatre\") — supports same-venue return.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2020
+        ],
+        "spanDays": 0,
+        "flaggedCount": 0,
+        "venueMentionCount": 1
+      },
+      "suggestedPriorRun": {
+        "venue": "The Maria Theatre",
+        "reviewDateRangeStart": "2020-09-25",
+        "reviewDateRangeEnd": "2020-09-25",
+        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
+      },
+      "reviews": [
+        {
+          "file": "artsdesk--unknown.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "artsdesk",
+          "criticName": "Unknown",
+          "publishDate": "2020-09-25",
+          "url": "https://theartsdesk.com/theatre/evening-immigrant-bridge-theatre-review-poetic-and-engaging",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "cinderella-lyric-hammersmith-off-west-end-2026",
+      "title": "Cinderella",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Lyric Hammersmith Theatre",
+      "previewsStartDate": "2026-11-14",
+      "openingDate": "2026-11-21",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Lyric Hammersmith Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2023
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "ew--emlyn-travis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "ew",
+          "criticName": "Emlyn Travis",
+          "publishDate": "2023-03-24",
+          "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "king-lear-2-off-west-end-2026",
       "title": "King Lear 2",
       "market": "west-end",
@@ -4335,7 +4523,7 @@
       "showId": "hound-of-the-baskervilles-off-west-end-2026",
       "title": "Hound of the Baskervilles",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "King's Head Theatre",
       "previewsStartDate": "2026-10-06",
       "openingDate": null,
