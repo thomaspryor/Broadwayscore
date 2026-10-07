@@ -27,6 +27,7 @@ const { isPublishedShowFile } = require('./lib/markets');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { sanitizeShowScoreUrl } = require('./lib/show-score-link');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data/shows');
@@ -116,6 +117,7 @@ function computePerShowHash(show, globalHash, ctx) {
   hash.update(JSON.stringify(show ?? null));
   hash.update(JSON.stringify(ctx.reviewsByShow[show.id] ?? null));
   hash.update(JSON.stringify(ctx.audienceBuzz[show.id] ?? null));
+  hash.update(JSON.stringify(ctx.showScoreUrls[show.id] ?? null));
   hash.update(JSON.stringify(ctx.tonyByShow[show.id] ?? null));
   hash.update(JSON.stringify(ctx.awardsShows[show.id] ?? null));
   hash.update(JSON.stringify(ctx.criticConsensus[show.id] ?? null));
@@ -199,6 +201,7 @@ let shows = [];
 let reviews = [];
 let outletRegistry = {};
 let audienceBuzz = {};
+let showScoreUrls = {};
 
 try {
   shows = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8')).shows || [];
@@ -231,6 +234,14 @@ try {
   audienceBuzz = JSON.parse(fs.readFileSync(path.join(dataDir, 'audience-buzz.json'), 'utf-8')).shows || {};
 } catch (err) {
   console.warn('⚠ audience-buzz.json not found');
+}
+
+// Show Score page URLs, shipped as au.sources.ss.u so the app links the real
+// page instead of guessing one (BRO-4821).
+try {
+  showScoreUrls = JSON.parse(fs.readFileSync(path.join(dataDir, 'show-score-urls.json'), 'utf-8')).shows || {};
+} catch (err) {
+  console.warn('⚠ show-score-urls.json not found');
 }
 
 // Tony Award nominations — keyed by showId
@@ -445,7 +456,7 @@ if (SHOW_ARG) {
 // them into a context object so the helper doesn't depend on hoisted
 // globals (and is unit-testable later if we want).
 const HASH_CTX = {
-  reviewsByShow, audienceBuzz, tonyByShow, awardsShows, criticConsensus,
+  reviewsByShow, audienceBuzz, showScoreUrls, tonyByShow, awardsShows, criticConsensus,
   showSchedules, grossesData, lotteryRush, theaterMeta, videoReviewsByShow,
   coverageVerdictByShow,
 };
@@ -590,6 +601,10 @@ for (const show of visibleShows) {
         if (data.starRating) entry.sr = data.starRating;
         if (data.totalPosts) entry.tp = data.totalPosts;
         if (data.sentiment) entry.sent = data.sentiment;
+        if (key === 'showScore') {
+          const u = sanitizeShowScoreUrl(showScoreUrls[show.id]);
+          if (u) entry.u = u;
+        }
         sources[minKey] = entry;
       }
       if (Object.keys(sources).length > 0) {
