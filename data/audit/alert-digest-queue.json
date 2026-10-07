@@ -1766,5 +1766,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-07T23:22:53.178Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4854-related-closed-shows",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4854-related-closed-shows",
+    "description": "land.yml did not land land/bro-4854-related-closed-shows: the scripts-lib-tests gate went red at b774ba55ad. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37700380013",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4854-related-closed-shows"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b774ba55ad949a7106af1f8df92bb9669e9b248b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37700380013"
+      }
+    ],
+    "queuedAt": "2026-10-07T23:41:03.314Z"
   }
 ]
