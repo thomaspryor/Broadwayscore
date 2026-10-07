@@ -73,12 +73,22 @@ async function supabaseGet(urlPath, { range } = {}) {
 async function fetchAllUsers() {
   const all = [];
   const OWNER_EMAILS = loadOwnerEmails();
+  // Counts only (no addresses) so a missing match shows in the run log.
+  const ownerList = [process.env.OWNER_EMAIL, ...OWNER_EMAILS].filter(Boolean).map(m.inboxKey);
+  const matches = ownerList.map(() => 0);
   // Stop on an empty page: if GoTrue caps per_page below what we ask for,
   // a short page is not the last page.
   for (let page = 1; page <= 1000; page++) {
     const r = await supabaseGet(`/auth/v1/admin/users?page=${page}&per_page=200`);
     const users = Array.isArray(r) ? r : (r.users || []);
-    if (users.length === 0) return all;
+    if (users.length === 0) {
+      console.log(`owner addresses: ${OWNER_EMAILS.length} from the private list${process.env.OWNER_EMAIL ? ' + OWNER_EMAIL' : ''}; accounts matched per address: [${matches.join(', ')}]`);
+      return all;
+    }
+    for (const u of users) {
+      const i = ownerList.indexOf(m.inboxKey(u && u.email));
+      if (i >= 0) matches[i]++;
+    }
     all.push(...m.slimUsers(users, { ownerEmail: process.env.OWNER_EMAIL, ownerEmails: OWNER_EMAILS }));
   }
   throw new Error('more than 100k users: raise the page cap');
