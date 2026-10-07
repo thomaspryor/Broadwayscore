@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-10-04",
+  "asOf": "2026-10-05",
   "shadow": false,
   "checks": [
     {
@@ -30,39 +30,39 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "22 conversions in trailing 7d"
+      "reason": "25 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "676/676 = 100% of peak, above the 20% floor"
+      "reason": "663/676 = 98% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "508/741 = 69% of peak, above the 20% floor"
+      "reason": "507/741 = 68% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
       "label": "Click → Impact handoff",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 64% over 3d"
+      "reason": "Impact/PostHog click ratio 74% over 3d"
     },
     {
       "key": "affiliate:bot-divergence",
       "label": "Bot click divergence",
       "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 0.6x over 3d"
+      "reason": "Impact/PostHog click ratio 0.7x over 3d"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "warn",
-      "reason": "6 conversions with a real sale amount but $0.00 payout in 7d (allowed 1)"
+      "reason": "9 conversions with a real sale amount but $0.00 payout in 7d (allowed 1)"
     }
   ],
   "failingCount": 1,
-  "updatedAt": "2026-10-06T13:39:59.804Z"
+  "updatedAt": "2026-10-07T08:45:36.744Z"
 }
