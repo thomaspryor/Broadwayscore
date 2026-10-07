@@ -57,6 +57,14 @@ function carryNewerScoring(winner, other) {
   const a = scoringStamp(winner);
   const b = scoringStamp(other);
   if (!(b > a)) return { changed: false, from: a, to: b };
+  // A requeue raised AFTER the other side's last score is deliberate, not a stale
+  // revert: flaggers delete rescoreCompletedAt so the drain sees the file, which
+  // drops the winner's stamp below HEAD's and would carry HEAD's group back over
+  // the flag at push time (BRO-4804). A stale snapshot's flag predates HEAD's
+  // rescore stamp, so it still loses; flags without rescoreFlaggedAt keep the old rule.
+  if (winner.needsRescore === true && ms(winner.rescoreFlaggedAt) > b) {
+    return { changed: false, from: a, to: b };
+  }
   // Deliberate clears (strip-stale-single-model-scores, stale-text parks,
   // _urlChangedClear, flag-combined-reviews) null llmScore/llmMetadata and leave
   // no stamp: never resurrect those.

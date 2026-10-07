@@ -44,6 +44,10 @@ export interface ReviewInputData {
                        // reviews as wrong_production (The Car Man, 2026-08-02:
                        // 5 legit tour reviews rejected against Sadler's Wells).
 
+  // Content tier ('complete' | 'truncated' | ...). getBestTextForScoring trusts a
+  // 'complete' tier over the missing final punctuation a page footer causes (BRO-4804).
+  contentTier?: string;
+
   // Text sources
   fullText?: string | null;
   bwwExcerpt?: string | null;

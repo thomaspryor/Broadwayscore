@@ -53,6 +53,32 @@ describe('carryNewerScoring', () => {
     assert.equal(winner.originalScoreNormalized, 80);
   });
 
+  test('a flag raised after HEAD\'s rescore survives the push-time carry (BRO-4804)', () => {
+    // flaggers delete rescoreCompletedAt, so the staged copy's stamp (scoredAt) is
+    // older than HEAD's rescoreCompletedAt even though the flag is newer than both
+    const head = { ...fresh(), fullText: BODY };
+    const staged = { ...fresh(), fullText: BODY };
+    delete staged.rescoreCompletedAt;
+    staged.needsRescore = true;
+    staged.rescoreReason = 'false-truncation-warning';
+    staged.rescoreFlaggedAt = '2026-10-07T05:40:00.000Z';
+    const r = carryNewerScoring(staged, head);
+    assert.equal(r.changed, false);
+    assert.equal(staged.needsRescore, true);
+    assert.equal(staged.rescoreReason, 'false-truncation-warning');
+    assert.equal(staged.rescoreCompletedAt, undefined);
+  });
+
+  test('a flag older than HEAD\'s rescore still loses to it', () => {
+    const head = { ...fresh(), fullText: BODY + 'x' };
+    const staged = { ...stale(), fullText: BODY + 'x' };
+    staged.rescoreFlaggedAt = '2026-10-05T18:00:00.000Z';
+    const r = carryNewerScoring(staged, head);
+    assert.equal(r.changed, true);
+    assert.equal(staged.needsRescore, undefined);
+    assert.ok(staged.rescoreCompletedAt);
+  });
+
   test('older other side never overwrites a newer winner', () => {
     const winner = fresh();
     assert.equal(carryNewerScoring(winner, stale()).changed, false);
