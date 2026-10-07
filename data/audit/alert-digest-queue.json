@@ -1105,5 +1105,34 @@
       }
     ],
     "queuedAt": "2026-10-07T04:21:52.123Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-bro-4829-merge-key",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-bro-4829-merge-key",
+    "description": "land.yml did not land land/worktree-bro-4829-merge-key: the unit-tests-node gate went red at 049834bc47. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37573730145",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-bro-4829-merge-key"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "049834bc47cd06115c0252639bc5b1b054ace7e1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37573730145"
+      }
+    ],
+    "queuedAt": "2026-10-07T05:26:30.824Z"
   }
 ]
