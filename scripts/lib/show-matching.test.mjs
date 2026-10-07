@@ -410,6 +410,13 @@ test('single-word reduction of a multi-word title needs the full phrase (BRO-485
     ['Amélie, A New Musical', 'Amelie reviews'],
     ['Boop! The Musical', 'BOOP! Review roundup'],
     ['Dana H.', 'Dana H. reviews'],
+    // Billing words and numerals are not part of the phrase a page must carry.
+    ['Copperfield! The New Musical', 'COPPERFIELD! Off-Broadway Reviews | Show Score'],
+    ['Giant The Play', 'Giant | Show Score'],
+    ['Oh, Hello on Broadway', 'Oh, Hello! review'],
+    ['Riverdance - On Broadway', 'Riverdance reviews'],
+    ['Two Girls', '2 Girls review'],
+    ['Act One', 'Act 1 Broadway reviews'],
   ];
   for (const [title, cand] of accepts) {
     assert.equal(titleWordsMatch(title, cand), true, `${title} vs ${cand}`);

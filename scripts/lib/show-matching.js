@@ -779,16 +779,20 @@ function _missingShortTitleToken(shortWords, longWords, candidateLower) {
 // newyorkcitytheatre.com roundup for "School Girls; Or, The African Mean Girls
 // Play" and four of its reviews went live on a show that had not started
 // previews (BRO-4852). When the single word came from a multi-word title, the
-// whole title must appear as a phrase. A trailing "the musical" / "a new
-// musical" and a leading "a"/"an" are billing, not title, and are dropped first.
+// whole title must appear as a phrase. Billing ("The New Musical", "The Play",
+// "on Broadway", a " - " / ";" subtitle, a leading "A"/"An") is dropped first,
+// and number words read as digits ("Two Girls" = "2 Girls").
+const _NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
 function _titlePhrase(s) {
   return foldAmpersand(normalizeForMatching(String(s || '').toLowerCase()))
-    .replace(/'/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    .replace(/'/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
+    .split(' ').map(w => { const n = _NUMBER_WORDS.indexOf(w); return n >= 0 ? String(n) : w; }).join(' ');
 }
 function _missingTitlePhrase(showTitle, candidateText) {
-  const pre = String(showTitle || '').replace(/^\s*the\s+/i, '').replace(/\s*[:(].*$/, '');
+  const pre = String(showTitle || '').replace(/^\s*the\s+/i, '').replace(/\s*(?:[:(;]|\s[-\u2013\u2014]\s).*$/, '');
   const phrase = _titlePhrase(pre)
-    .replace(/\s+(?:the|a new|a)\s+musical$/, '').replace(/\s+musical$/, '')
+    .replace(/\s+on broadway$/, '')
+    .replace(/\s+(?:(?:the|a)\s+)?(?:new\s+)?(?:musical|play)$/, '')
     .replace(/^(?:a|an)\s+/, '');
   if (phrase.split(' ').length < 2) return false;
   return !(` ${_titlePhrase(candidateText)} `).includes(` ${phrase} `);
