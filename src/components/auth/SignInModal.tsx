@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
+import { prepareAppleSignIn } from '@/lib/apple-auth';
 
 type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
 
@@ -28,6 +30,12 @@ const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, context = 'generic', loading = false }: SignInModalProps) {
+  // Set Apple up while the box is open, so the tap opens its popup directly
+  // (Safari blocks a popup that opens after any waiting).
+  useEffect(() => {
+    if (isOpen) prepareAppleSignIn().catch(() => {});
+  }, [isOpen]);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} zIndex={80} maxWidth="sm" ariaLabel="Sign in">
       <div className="p-6">

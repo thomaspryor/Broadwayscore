@@ -88,35 +88,58 @@ export interface AppleAuthResult {
 }
 
 /**
+ * Load the SDK and set up a fresh nonce BEFORE the click (call when the sign-in
+ * box opens). Safari, iOS above all, blocks a popup that opens after an await,
+ * because the tap no longer counts as the cause: every Apple attempt on the web
+ * failed with popup_blocked_by_browser until the setup moved here.
+ */
+let prepared: { rawNonce: string } | null = null;
+let preparing: Promise<void> | null = null;
+
+export function prepareAppleSignIn(): Promise<void> {
+  if (prepared) return Promise.resolve();
+  if (preparing) return preparing;
+  preparing = (async () => {
+    await loadAppleSDK();
+    if (!window.AppleID) throw new Error('Apple JS SDK not available');
+    // Raw nonce for Supabase, hashed nonce for Apple.
+    const rawNonce = generateNonce();
+    const hashedNonce = await sha256(rawNonce);
+    // redirectURI origin MUST match the calling page origin for web_message to work.
+    // The domain + return URL must be registered in Apple Developer Console.
+    // With usePopup:true, Apple uses response_mode=web_message (postMessage),
+    // NOT form_post — the redirectURI page doesn't actually receive a request.
+    window.AppleID.auth.init({
+      clientId: 'com.broadwayscorecard.web',
+      scope: 'name email',
+      redirectURI: `${window.location.origin}/auth/apple-callback`,
+      usePopup: true,
+      nonce: hashedNonce,
+    });
+    prepared = { rawNonce };
+  })().finally(() => {
+    preparing = null;
+  });
+  return preparing;
+}
+
+/**
  * Initiate Apple Sign-In via the JS SDK popup flow.
  * Returns the id_token and nonce needed for signInWithIdToken.
+ * When prepareAppleSignIn() already ran, the popup opens with no await before
+ * it, inside the tap.
  */
 export async function signInWithAppleSDK(): Promise<AppleAuthResult> {
-  await loadAppleSDK();
-
-  if (!window.AppleID) {
+  if (!prepared) await prepareAppleSignIn(); // late: the browser may block this popup
+  if (!prepared || !window.AppleID) {
     throw new Error('Apple JS SDK not available');
   }
-
-  // Generate nonce: raw nonce for Supabase, hashed nonce for Apple
-  const rawNonce = generateNonce();
-  const hashedNonce = await sha256(rawNonce);
-
-  // redirectURI origin MUST match the calling page origin for web_message to work.
-  // The domain + return URL must be registered in Apple Developer Console.
-  // With usePopup:true, Apple uses response_mode=web_message (postMessage),
-  // NOT form_post — the redirectURI page doesn't actually receive a request.
-  const redirectURI = `${window.location.origin}/auth/apple-callback`;
-
-  window.AppleID.auth.init({
-    clientId: 'com.broadwayscorecard.web',
-    scope: 'name email',
-    redirectURI,
-    usePopup: true,
-    nonce: hashedNonce,
-  });
-
-  const response = await window.AppleID.auth.signIn();
+  const { rawNonce } = prepared;
+  prepared = null; // a nonce is single-use
+  const pending = window.AppleID.auth.signIn();
+  // Ready for a retry once this attempt settles.
+  pending.then(() => {}, () => {}).finally(() => { prepareAppleSignIn().catch(() => {}); });
+  const response = await pending;
 
   return {
     idToken: response.authorization.id_token,
