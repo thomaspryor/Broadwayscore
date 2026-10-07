@@ -1076,5 +1076,34 @@
       }
     ],
     "queuedAt": "2026-10-07T03:25:23.382Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4826-muxjod5d",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4826-muxjod5d",
+    "description": "land.yml did not land land/job/linear-BRO-4826-muxjod5d: the rebase gate went red at 231aae7db1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4826-muxjod5d @ 231aae7db1 (origin/land/job/linear-BRO-4826-muxjod5d) → origin/main @ a1eec9fa4c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ a1eec9fa4c: Rebasing (1/2) Rebasing (2/2) error: could not apply 231aae7db18... fix(mobile): tours never get index-absence grace; accurate skip count; ordering comment (BRO-4826 ship-check) hint: Resolve all  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37568099810",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4826-muxjod5d"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "231aae7db1830364849a4c58b094c8a74c56367c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37568099810"
+      }
+    ],
+    "queuedAt": "2026-10-07T04:21:52.123Z"
   }
 ]
