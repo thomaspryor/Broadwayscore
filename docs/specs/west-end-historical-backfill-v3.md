@@ -244,5 +244,8 @@ which removes rows listed in the promotion log that have no review texts yet.
 
 ## Side benefit (separate card)
 
-319 West End-market rows have no `openingDate`. The WOS adapter can fill
-them. It is separate work and must not be bundled into the backfill writes.
+321 London-market rows have no `openingDate`, but 275 of them are
+announced, upcoming or in previews, where that is expected. Only about 46
+closed or open rows (3 West End, 43 Off-West End) could use a WOS-sourced
+date. That is small, separate work and must not be bundled into the
+backfill writes.
