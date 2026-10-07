@@ -59,7 +59,43 @@ test('no hook is listed twice within one table, and every DELETE names what repl
   for (const r of all.filter((x) => x.cells.includes('DELETE'))) {
     const reason = r.cells[r.cells.length - 1];
     assert.match(reason, /[Rr]eplace|[Rr]eplacement|none needed|nothing left/, `${r.name}: a DELETE must name its replacement`);
+    // "none needed" is only honest for a hook that is not wired anywhere: say so in the Event column.
+    if (/none needed|nothing left/.test(reason) && !/[Rr]eplace/.test(reason)) assert.match(r.cells[1], /not wired/i, `${r.name}: "none needed" requires an Event of (not wired)`);
   }
+});
+
+test('the inventory counts the .claude/hooks scripts that exist', () => {
+  const m = /`\.claude\/hooks\/\*\.sh` \((\d+) scripts\)/.exec(doc);
+  assert.ok(m, 'the inventory states how many .claude/hooks scripts there are');
+  assert.equal(Number(m[1]), hookFiles('.claude/hooks', (f) => f.endsWith('.sh')).length, 'update the inventory count');
+  assert.match(doc, /NOT verifiable from this repo/, 'user-level counts must say they cannot be checked here');
+});
+
+test('the audit and .claude/settings.json agree: every registered hook is listed, and a DELETE that is still wired says so', () => {
+  const settings = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude/settings.json'), 'utf8'));
+  const registered = new Set();
+  const walk = (v) => {
+    if (Array.isArray(v)) v.forEach(walk);
+    else if (v && typeof v === 'object') { if (typeof v.command === 'string') for (const m of v.command.matchAll(/\.claude\/hooks\/([\w.-]+\.sh)/g)) registered.add(m[1]); Object.values(v).forEach(walk); }
+  };
+  walk(settings.hooks || settings);
+  assert.ok(registered.size > 5, `expected the registered hooks, found ${registered.size}`);
+  const project = section('## Project hooks');
+  const byName = new Map(project.map((r) => [r.name, r]));
+  for (const name of registered) assert.ok(byName.has(name), `${name} is registered in .claude/settings.json but missing from the audit`);
+  const stillWired = [...registered].filter((n) => byName.get(n) && byName.get(n).cells.includes('DELETE'));
+  const line = /## Still registered until their migration step[\s\S]*?\n\n([^\n]+)/.exec(doc);
+  assert.ok(line, 'the "Still registered" section exists');
+  for (const n of stillWired) assert.ok(line[1].includes(n), `${n} is DELETE but still registered: list it under "Still registered"`);
+  for (const r of project.filter((x) => x.cells.includes('DELETE') && !registered.has(x.name))) {
+    assert.ok(!line[1].includes(r.name), `${r.name} is no longer registered; drop it from "Still registered"`);
+  }
+});
+
+test('the Codex adapter and its installer are covered', () => {
+  for (const f of ['.codex/hooks.json', 'scripts/codex/hook-adapter.js', 'scripts/codex/install.js']) assert.ok(fs.existsSync(path.join(ROOT, f)), `${f} exists`);
+  const codex = section('## Codex layer');
+  assert.ok(codex.some((r) => /hook-adapter\.js/.test(r.name) && r.cells.includes('KEEP')), 'the adapter has a KEEP row');
 });
 
 test('the totals line matches the tables', () => {

@@ -6,9 +6,11 @@ Rule used: a hook is kept only if it blocks an irreversible or costly action *be
 
 ## Inventory (where hooks live)
 
-- User level: `~/.claude/hooks/*.sh` (44 scripts) wired in `~/.claude/settings.json` (41 registrations across PreToolUse, PostToolUse, SessionStart, Stop, ConfigChange, FileChanged, Notification, UserPromptSubmit). Library code in `~/.claude/hooks/lib/`, tests in `~/.claude/hooks/tests/`.
-- Project level: `.claude/hooks/*.sh` (16 scripts) wired in `.claude/settings.json`. Most are cloud-only copies that self-skip when the user-level master exists.
+- User level: `~/.claude/hooks/*.sh` (44 scripts; the counts in this bullet and in the User-level table are NOT verifiable from this repo, `~/.claude` is a separate private repo) wired in `~/.claude/settings.json` (41 registrations across PreToolUse, PostToolUse, SessionStart, Stop, ConfigChange, FileChanged, Notification, UserPromptSubmit). Library code in `~/.claude/hooks/lib/`, tests in `~/.claude/hooks/tests/`.
+- Project level: `.claude/hooks/*.sh` (18 scripts) wired in `.claude/settings.json`. Most are cloud-only copies that self-skip when the user-level master exists.
 - Git hooks: `scripts/hooks/{pre-commit,commit-msg,pre-push}` via `core.hooksPath=scripts/hooks`.
+- Codex: `.codex/hooks.json` points every event at `scripts/codex/hook-adapter.js`, which runs the Claude hooks above (see the Codex section).
+- Not hooks, so not in the tables: `.claude/hooks/lib/strip-git-commit-noise.js` (helper for block-resend-broadcasts.sh), `scripts/setup-git-hooks.sh` (installs the git hooks), `~/.claude/hooks/lib/` and `~/.claude/hooks/tests/`.
 
 Status key: KEEP / DELETE. "Replacement" is required for every DELETE.
 
@@ -93,9 +95,21 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 | commit-msg | KEEP | Requires the VISUAL-OK-1440 prefix when UI files are staged. |
 | pre-push | KEEP | Protects CLAUDE.md critical sections from concurrent-session reverts and runs the CI lint audits locally before a push burns a CI cycle. |
 
+## Codex layer
+
+Codex sessions run the same guards through one adapter; there is no second copy of any guard, so every decision above applies to Codex too.
+
+| Hook | Event | Status | Reason (KEEP) / Replacement (DELETE) |
+|---|---|---|---|
+| scripts/codex/hook-adapter.js (registered by `.codex/hooks.json`, installed by `scripts/codex/install.js`) | all events | KEEP | Pass-through: reads `.claude/settings.json` at run time and runs every matching Claude hook unchanged (BRO-4745), so a Codex worker follows the same guards and nothing can drift. It shrinks automatically as hooks above are deleted. |
+
+## Still registered until their migration step
+
+A DELETE decision is taken, but the hook keeps running until its step in the migration order below. Today, in `.claude/settings.json`: whitespace-nowrap-lint.sh (step 1). `tests/unit/hooks-audit-coverage.test.mjs` fails if this line and the settings file disagree.
+
 ## Totals
 
-- Kept: 28 user-level + 16 project (mostly cloud copies of user-level masters) + 3 git.
+- Kept: 28 user-level rows (27 hooks plus the git-pre-push-hook-tests.sh test helper; unverifiable from the repo) + 16 project (mostly cloud copies of user-level masters) + 3 git.
 - Deleted: 15 user-level scripts (commit-check, script-edit-check, design-system-lint, whitespace-nowrap-lint, design-system-mockup-check, gh-zombie-reap, config-change-notify, watched-file-changed, context-budget-nudge, session-stop, and the five notion-* hooks) plus 2 project scripts (notion-create-block, whitespace-nowrap-lint).
 - The named handful of *gates* that remain, by purpose: worktree, push/merge review, visual, email, infra review, API-poll, cmux safety, model spend, memory races, and the three Stop gates (exit-status, finish-line, verify-edits) plus Linear.
 
