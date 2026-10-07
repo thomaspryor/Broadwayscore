@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-10-07T04:08:56.121Z",
+  "timestamp": "2026-10-07T04:26:36.902Z",
   "stats": {
     "totalReviews": 46735,
-    "alreadyFlagged": 18715,
+    "alreadyFlagged": 18718,
     "dateGuardCatches": 273,
     "directorMismatch": 1341,
     "tvFilmSignals": 1364,
@@ -2429,7 +2429,7 @@
     {
       "showId": "appropriate-2023",
       "file": "guardian--adrian-horton.json",
-      "score": 87,
+      "score": 86,
       "publishDate": "December 19, 2023",
       "url": "https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins",
       "findings": [
@@ -9531,7 +9531,7 @@
     {
       "showId": "elf-2024",
       "file": "culturesauce--thom-geier.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "November 17th, 2024",
       "url": "https://culturesauce.com/2024/11/17/elf-broadway-review-grey-henson/",
       "findings": [
@@ -18247,7 +18247,7 @@
     {
       "showId": "just-for-us-2023",
       "file": "cititour--brian-scott-lipton.json",
-      "score": 90,
+      "score": 89,
       "publishDate": null,
       "url": "https://cititour.com/NYC_Broadway/Just-for-Us/1155",
       "findings": [
@@ -19938,7 +19938,7 @@
     {
       "showId": "living-on-love-2015",
       "file": "deadline--jeremy-gerard.json",
-      "score": 39,
+      "score": 44,
       "publishDate": "April 20th, 2015",
       "url": "https://deadline.com/2015/04/renee-fleming-broadway-debut-living-on-love-review-1201413258/",
       "findings": [
@@ -28632,7 +28632,7 @@
     {
       "showId": "stereophonic-off-broadway-2023",
       "file": "nytimes--jesse-green.json",
-      "score": 92,
+      "score": 91,
       "publishDate": "October 29th, 2023",
       "url": "https://www.nytimes.com/2023/10/29/theater/stereophonic-review-david-adjmi-will-butler.html",
       "findings": [
@@ -30910,7 +30910,7 @@
     {
       "showId": "the-cher-show-2018",
       "file": "theater-scene--joel-benjamin.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2018-12-17",
       "url": "https://www.theaterscene.net/musicals/broadway/the-cher-show/joel-benjamin/",
       "findings": [
@@ -32756,6 +32756,19 @@
       "score": 68,
       "publishDate": "2026-07-22",
       "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "the-cap-times--lindsay-christians.json",
+      "publishDate": "2026-07-29",
+      "url": "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35078,19 +35091,6 @@
     },
     {
       "showId": "the-phantom-of-the-opera-tour-2025",
-      "file": "latimes--sarah-mosqueda.json",
-      "publishDate": "2026-08-12",
-      "url": "https://www.latimes.com/socal/daily-pilot/entertainment/story/2026-08-12/phantom-of-opera-will-haunt-segerstrom-center-in-three-week-run",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
-        }
-      ]
-    },
-    {
-      "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "minneapolis-star-tribune--rohan-preston.json",
       "score": 82,
       "publishDate": "2025-11-26",
@@ -35326,7 +35326,7 @@
     {
       "showId": "the-price-2017",
       "file": "showbiz411--roger-friedman.json",
-      "score": 89,
+      "score": 88,
       "publishDate": "2017-03-16",
       "url": "https://www.showbiz411.com/2017/03/16/broadway-an-eclectic-quartet-ruffalo-devito-shalhoub-hecht-bring-arthur-millers-agony-to-life",
       "findings": [
@@ -39766,7 +39766,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-2020",
       "file": "nytg--unknown.json",
-      "score": 87,
+      "score": 86,
       "publishDate": null,
       "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
       "findings": [
@@ -44340,7 +44340,7 @@
     {
       "showId": "collected-stories-2010",
       "file": "variety--charles-isherwood.json",
-      "score": 46,
+      "score": 60,
       "publishDate": "March 2, 2010",
       "url": "https://variety.com/2010/legit/reviews/collected-stories-1117942647/",
       "findings": [
@@ -52258,7 +52258,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -52272,7 +52272,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -57901,7 +57901,7 @@
     {
       "showId": "the-bands-visit-2017",
       "file": "village-voice--michael-feingold.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2017-11-14",
       "url": "https://www.villagevoice.com/the-unimportance-of-the-broadway-musical-the-bands-visit-is-downright-inspiring/",
       "findings": [
@@ -60006,7 +60006,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-06-28",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-misanthrope-lyttelton-theatre",
       "findings": [
@@ -60374,7 +60374,7 @@
     {
       "showId": "the-oresteia-west-end-2026",
       "file": "plays-international--neil-dowden.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "2026-07-17",
       "url": "https://playsinternational.org.uk/the-oresteia-bridge-theatre/",
       "findings": [
@@ -62361,7 +62361,7 @@
     {
       "showId": "titanique-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2025-01-10",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14268825/PATRICK-MARMION-reviews-Titanique-Criterion-Theatre-London-Titanic-fun-Celines-doppelganger.html",
       "findings": [
@@ -62696,7 +62696,7 @@
     {
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-06-10",
       "url": "https://www.ft.com/content/20b6f229-e7f1-4c28-982c-4fe2ee842947",
       "findings": [
@@ -62724,7 +62724,7 @@
     {
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-06-11",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-under-the-shadow-almeida",
       "findings": [
