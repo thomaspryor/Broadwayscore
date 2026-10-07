@@ -42,17 +42,6 @@ Options:
   --help, -h    print this usage and exit
 `;
 
-if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
-
-const args = process.argv.slice(2);
-const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
-const apply = args.includes('--apply');
-const verbose = args.includes('--verbose');
-
-if (!showFilter) {
-  console.error('Usage: node scripts/merge-wet-stars-urls.js --show=ID [--apply]');
-  process.exit(2);
-}
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
@@ -102,7 +91,41 @@ function matchWetRow(rowsByOutletId, outletId, criticName) {
   return { row: null, ambiguous: true };
 }
 
+/**
+ * Pure merge decision for one review-text file against its matched WET row.
+ * Stars only for outlets that print stars (KNOWN_STAR_OUTLETS) — a WET row
+ * can carry WET's own summary stars for a no-star outlet. The URL for EVERY
+ * matched outlet: TR texts have no URL at all, and gating the URL on star
+ * outlets left non-star reviews URL-less (BRO-4851: 13 of 41 pilot reviews).
+ * Never overwrites an existing rating or URL.
+ * @returns {{patch: object, changes: string[]}}
+ */
+function planWetMerge(data, wetRow, outletId) {
+  const isStarOutlet = KNOWN_STAR_OUTLETS.has(outletId);
+  const newRating = isStarOutlet ? starsToRating(wetRow.stars) : null;
+  const patch = {};
+  const changes = [];
+  if (newRating && !data.aggregatorStars && !data.originalRating && !data.originalScore) {
+    patch.aggregatorStars = newRating;
+    changes.push(`aggregatorStars=${newRating}`);
+  }
+  if (wetRow.url && !data.url) {
+    patch.url = wetRow.url;
+    changes.push(`url=${wetRow.url}`);
+  }
+  return { patch, changes };
+}
+
 async function main() {
+  const args = process.argv.slice(2);
+  const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+  const apply = args.includes('--apply');
+  const verbose = args.includes('--verbose');
+  if (!showFilter) {
+    console.error('Usage: node scripts/merge-wet-stars-urls.js --show=ID [--apply]');
+    process.exit(2);
+  }
+
   const shows = loadShows();
   const show = shows.find(s => s.id === showFilter || s.slug === showFilter);
   if (!show) {
@@ -170,26 +193,12 @@ async function main() {
     }
     const wetRow = match.row;
 
-    if (!KNOWN_STAR_OUTLETS.has(outletId)) {
-      if (verbose) console.log(`  ${filename}: outlet "${outletId}" not a known star outlet — skipping star merge`);
+    const { patch, changes } = planWetMerge(data, wetRow, outletId);
+    if (!changes.length) {
+      if (verbose) console.log(`  ${filename}: already has rating/url (or no-star outlet with no URL) — nothing to add`);
       skipped++;
       continue;
     }
-
-    const newRating = starsToRating(wetRow.stars);
-    const wantsStarWrite = newRating && !data.aggregatorStars && !data.originalRating && !data.originalScore;
-    const wantsUrlWrite = wetRow.url && !data.url;
-
-    if (!wantsStarWrite && !wantsUrlWrite) {
-      if (verbose) console.log(`  ${filename}: already has rating/url — nothing to add`);
-      skipped++;
-      continue;
-    }
-
-    const changes = [];
-    const patch = {};
-    if (wantsStarWrite) { patch.aggregatorStars = newRating; changes.push(`aggregatorStars=${newRating}`); }
-    if (wantsUrlWrite) { patch.url = wetRow.url; changes.push(`url=${wetRow.url}`); }
 
     console.log(`  ${filename}: ${apply ? 'MERGED' : 'would merge'} ${changes.join(', ')}`);
     merged++;
@@ -204,4 +213,9 @@ async function main() {
   if (!apply) console.log('(dry run — pass --apply to write changes)');
 }
 
-main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
+  main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
+}
+
+module.exports = { planWetMerge, matchWetRow, starsToRating };
