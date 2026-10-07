@@ -120,12 +120,22 @@ jobs:
           node scripts/enrich-card-acceptance.js --source linear --recheck-markers --limit 10
           node scripts/audit-card-verifiability.js --source notion
 
+      # BRO-3619: the Linear report (health-check's vacuous/refused/stale rows read it) was never refreshed on a
+      # schedule. Its own step: the audit re-fetches every flagged issue (~475 round trips), so it gets its own
+      # timeout and cannot fail the job or skip the commit step if it hangs.
+      - name: Audit Linear cards
+        timeout-minutes: 15
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-card-verifiability.js --source linear
+
       - name: Commit refreshed report
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/card-verifiability.json
+          git add data/audit/card-verifiability.json data/audit/card-verifiability-linear.json
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
@@ -141,7 +151,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Card Verifiability Audit Failed'
-          description: 'The audit/enrich/re-audit cycle for undispatchable backlog cards crashed — data/audit/card-verifiability.json may now be stale again, which is exactly the failure mode this workflow exists to prevent (card #796).'
+          description: 'The audit/enrich/re-audit cycle for undispatchable backlog cards crashed — data/audit/card-verifiability.json (or the Linear twin) may now be stale again, which is exactly the failure mode this workflow exists to prevent (card #796).'
           # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
           # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
           severity: 'warning'
