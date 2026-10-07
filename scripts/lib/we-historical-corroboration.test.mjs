@@ -108,6 +108,7 @@ test('venueFamily: National Theatre stage names collapse; unrelated venues do no
   assert.equal(venueFamily('Royal Court'), 'royal-court');
   assert.equal(venueFamily('@sohoplace'), venueFamily('sohoplace'));
   assert.notEqual(venueFamily('Prince Edward Theatre'), venueFamily('Prince of Wales Theatre'));
+  assert.equal(venueFamily('Noel Coward Theatre'), venueFamily('Noël Coward Theatre'));
 });
 
 test('signalMatchesListing: WOS review dated inside the run, same venue family', () => {
