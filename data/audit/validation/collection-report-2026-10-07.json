@@ -1,62 +1,67 @@
 {
-  "runDate": "2026-10-07T18:11:46.492Z",
+  "runDate": "2026-10-07T19:05:54.205Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-hungry-ghost-off-west-end-2026",
+    "showFilter": "kramerfauci-st-anns-off-broadway-2026,slam-frank-off-broadway-2026,the-hungry-ghost-off-west-end-2026,affluenza-off-west-end-2026,the-hairy-ape-irish-repertory-theatre-off-broadway-2026,franz-and-marie-west-end-2026,soon-off-broadway-2026,the-whos-tommy-tour-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 11,
+    "failed": 9,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "55.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 10,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 19,
+    "tier1Success": 13,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 1,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 9,
     "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 9,
+    "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 11,
+    "failed": 9,
     "shows": [
+      "affluenza-off-west-end-2026",
+      "franz-and-marie-west-end-2026",
+      "slam-frank-off-broadway-2026",
+      "soon-off-broadway-2026",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
       "the-hungry-ghost-off-west-end-2026"
     ],
     "outOfScopeShows": [],
@@ -66,36 +71,76 @@
     }
   },
   "processed": [
-    "the-hungry-ghost-off-west-end-2026/thereviewshub--susan-elkin.json",
-    "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--unknown.json",
-    "the-hungry-ghost-off-west-end-2026/readaboutstuff--unknown.json",
-    "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json"
+    "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json",
+    "affluenza-off-west-end-2026/timeout-london--unknown.json",
+    "franz-and-marie-west-end-2026/musical-theatre-review--unknown.json",
+    "affluenza-off-west-end-2026/adventuresintheatreland--unknown.json",
+    "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+    "franz-and-marie-west-end-2026/north-west-end--unknown.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "slam-frank-off-broadway-2026/timeout--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/front-row-center--unknown.json"
   ],
   "failed": [
-    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
+    "affluenza-off-west-end-2026/artsdesk--unknown.json",
+    "affluenza-off-west-end-2026/theupcoming--unknown.json",
+    "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+    "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
+    "franz-and-marie-west-end-2026/stagetopage--unknown.json",
+    "franz-and-marie-west-end-2026/whatnightout--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-hungry-ghost-off-west-end-2026/thereviewshub--susan-elkin.json",
-      "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--unknown.json",
-      "the-hungry-ghost-off-west-end-2026/readaboutstuff--unknown.json",
-      "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json"
+      "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json",
+      "affluenza-off-west-end-2026/timeout-london--unknown.json",
+      "franz-and-marie-west-end-2026/musical-theatre-review--unknown.json",
+      "affluenza-off-west-end-2026/adventuresintheatreland--unknown.json",
+      "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+      "franz-and-marie-west-end-2026/north-west-end--unknown.json",
+      "soon-off-broadway-2026/nick-blaemire--unknown.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/front-row-center--unknown.json"
     ],
     "failed": [
-      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
+      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
+      "affluenza-off-west-end-2026/artsdesk--unknown.json",
+      "affluenza-off-west-end-2026/theupcoming--unknown.json",
+      "affluenza-off-west-end-2026/trustpilot--john-taggart.json",
+      "franz-and-marie-west-end-2026/firstnightmagazine--unknown.json",
+      "franz-and-marie-west-end-2026/stagetopage--unknown.json",
+      "franz-and-marie-west-end-2026/whatnightout--unknown.json",
+      "soon-off-broadway-2026/thestage--matt-barton.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "the-hungry-ghost-off-west-end-2026/thereviewshub--susan-elkin.json",
-      "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--unknown.json",
-      "the-hungry-ghost-off-west-end-2026/readaboutstuff--unknown.json",
-      "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json"
+      "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json",
+      "affluenza-off-west-end-2026/timeout-london--unknown.json",
+      "affluenza-off-west-end-2026/adventuresintheatreland--unknown.json",
+      "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+      "franz-and-marie-west-end-2026/north-west-end--unknown.json",
+      "soon-off-broadway-2026/nick-blaemire--unknown.json",
+      "soon-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "slam-frank-off-broadway-2026/timeout--unknown.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/front-row-center--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/affluenza-off-west-end-2026/trustpilot--john-taggart.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "franz-and-marie-west-end-2026/musical-theatre-review--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
@@ -105,6 +150,34 @@
     "The Guardian": {
       "count": 1,
       "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "First Night Magazine": {
+      "count": 1,
+      "domain": "firstnightmagazine.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Stage to Page": {
+      "count": 1,
+      "domain": "stagetopage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "whatnightout": {
+      "count": 1,
+      "domain": "whatnightout.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Theatre Reviews Limited": {
+      "count": 1,
+      "domain": "theatrereviews.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
