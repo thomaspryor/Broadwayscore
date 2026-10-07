@@ -883,18 +883,6 @@
     "queuedAt": "2026-10-06T22:14:07.219Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:kramerfauci-st-anns-off-broadway-2026",
-    "title": "Review gap — \"Kramer/Fauci\" missing 1 cited review(s)",
-    "description": "Kramer/Fauci (kramerfauci-st-anns-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kramerfauci-st-anns-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-06T22:14:07.249Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:slam-frank-off-broadway-2026",
     "title": "Review gap — \"Slam Frank\" missing 1 cited review(s)",
     "description": "Slam Frank (slam-frank-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=slam-frank-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1011,6 +999,42 @@
       }
     ],
     "queuedAt": "2026-10-06T23:56:13.346Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:blood-of-my-blood-west-end-2026",
+    "title": "Review gap — \"Blood of my Blood\" missing 19 cited review(s)",
+    "description": "Blood of my Blood (blood-of-my-blood-west-end-2026): 19 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=blood-of-my-blood-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T02:08:49.995Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:into-the-woods-noel-coward-west-end-2026",
+    "title": "Review gap — \"Into the Woods\" missing 12 cited review(s)",
+    "description": "Into the Woods (into-the-woods-noel-coward-west-end-2026): 12 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=into-the-woods-noel-coward-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T02:08:50.046Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-wiz-tour-2026",
+    "title": "Review gap — \"The Wiz\" missing 11 cited review(s)",
+    "description": "The Wiz (the-wiz-tour-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-wiz-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T02:08:50.194Z"
   },
   {
     "conditionKey": "corpus-drift:sibling-title-misroute",

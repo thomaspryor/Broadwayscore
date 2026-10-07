@@ -1,15 +1,13 @@
 {
-  "generatedAt": "2026-10-06T22:14:25.408Z",
+  "generatedAt": "2026-10-07T02:11:33.791Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 228,
-  "clean": 222,
-  "defective": 6,
+  "checked": 226,
+  "clean": 224,
+  "defective": 2,
   "byType": {
-    "score-drift": 4,
-    "unreachable": 2,
-    "missing-from-prod": 1
+    "unreachable": 2
   },
   "shows": [
     {
@@ -41,72 +39,6 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
-    },
-    {
-      "showId": "hells-kitchen-tour-2025",
-      "title": "Hell's Kitchen",
-      "openingDate": "2025-10-10",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: nowtoronto"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.13 vs local 76.01 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [
-        "nowtoronto"
-      ],
-      "localCount": 7,
-      "deployedCount": 6
-    },
-    {
-      "showId": "affluenza-off-west-end-2026",
-      "title": "Affluenza",
-      "openingDate": "2026-10-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 34.33 vs local 30.59 (Δ3.74)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15
-    },
-    {
-      "showId": "school-girls-or-the-african-mean-girls-play-2026",
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "openingDate": "2026-09-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.27 vs local 82.99 (Δ0.28)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 28
-    },
-    {
-      "showId": "three-men-in-a-boat-off-west-end-2026",
-      "title": "Three Men in a Boat",
-      "openingDate": "2026-09-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.58 vs local 73.69 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16
     }
   ]
 }
