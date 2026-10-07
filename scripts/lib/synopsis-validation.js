@@ -115,6 +115,11 @@ const STALE_COMING_TO_VENUE_RE = /\bis coming to (?:the )?(?:[A-Z][\w'’.&-]*\s
 // synopsis (found 2026-10-07, BRO-4853) because nothing here rejected it.
 const SCRAPED_PAGE_CHROME_RE = /\b(we use cookies|this (web)?site uses cookies|accept (all )?cookies|cookie (policy|settings|preferences|consent)|enable javascript|javascript is (disabled|required))\b/i;
 
+// Wikipedia scraps that are not prose: a leading "=" (heading/list remnant), infobox
+// "key = value" lines, and disambiguation pages ("Peter Pan commonly refers to:").
+// Sweep of 2,082 synopses on 2026-10-07 (BRO-4853) found each of these live on prod.
+const WIKI_ARTIFACT_RE = /^\s*=|\b(?:characters|genre|setting|composer|language|executive_producer|premiere|place premiered) = |\b(?:most commonly|commonly|usually|may|can) refers? to\b/i;
+
 const LIVE_STATUSES = new Set(['open', 'now-playing', 'closed']);
 
 /**
@@ -218,6 +223,9 @@ function isValidSynopsis(text) {
   // Reject scraped page chrome (cookie banners, JS-required notices)
   if (SCRAPED_PAGE_CHROME_RE.test(trimmed)) return false;
 
+  // Reject Wikipedia markup / disambiguation scraps
+  if (WIKI_ARTIFACT_RE.test(trimmed.slice(0, 300))) return false;
+
   // Reject marketing openers
   if (/^(See |Get tickets|Don't miss|Experience the|Come discover)/i.test(trimmed)) return false;
 
@@ -235,6 +243,7 @@ module.exports = {
   STALE_FUTURE_RE,
   STALE_COMING_TO_VENUE_RE,
   SCRAPED_PAGE_CHROME_RE,
+  WIKI_ARTIFACT_RE,
   detectRefusalPattern,
   isLlmRefusal,
   isPlaceholderSynopsis,

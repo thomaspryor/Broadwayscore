@@ -1,20 +1,30 @@
 {
   "issueNumber": "bro-4853",
-  "planId": "a62e9b40-1bec-43af-85e9-5a19832407ba",
+  "planId": "8125c8c9-c281-479f-bc71-35811e217aea",
   "status": "pending",
-  "createdAt": "2026-10-07T23:09:16.797Z",
+  "createdAt": "2026-10-07T23:30:14.277Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit found 7 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), and 5 cookie-banner records.",
+    "summary": "Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit (regex detectors plus a whole-corpus model sweep, every hit read by hand) found 70 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), 5 cookie-banner records, and 63 records holding another work's Wikipedia article, a person's biography, a disambiguation page, a song list or wiki markup.",
     "steps": [
       "Rewrite the Other Desert Cities (2026), Fela! and The Great Society synopses from sourced facts",
-      "Clear the 5 cookie-banner synopses"
+      "Clear the 5 cookie-banner synopses",
+      "Clear the 63 wrong-article synopses so the production-verified enricher can refill them"
     ],
     "riskLevel": "Low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amys-view-1999",
+        "field": "synopsis",
+        "oldValue": "= Amy's View is a four-act play set over the course of sixteen years. Act One begins in 1979, in the living-room of Amy's mother's home, which is decorated with paintings done by her late father, an obscure artist. Amy and her then-boyfriend, Dominic, are waiting for Amy's mother, Esme, to return from her theater performance in London.",
+        "newValue": "Amy's View is a four-act play set over the course of sixteen years. Act One begins in 1979, in the living-room of Amy's mother's home, which is decorated with paintings done by her late father, an obscure artist. Amy and her then-boyfriend, Dominic, are waiting for Amy's mother, Esme, to return from her theater performance in London.",
+        "description": "Synopsis is correct but begins with a stray wiki-markup '= '; removed the marker only."
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -86,6 +96,609 @@
         "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
         "newValue": null,
         "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "linda-vista-2019",
+        "field": "synopsis",
+        "oldValue": "Buena Vista Social Club is a 2023 stage musical, with a book by Marco Ramirez and featuring the music recorded by the ensemble musician group Buena Vista Social Club.\nThe musical is set in Havana, Cuba and spans time from the 1950s to the 1990s, following the lives of four prominent musicians, the effect communism and the rise of Fidel Castro had on musicians at the time, and their eventual collaboration in 1997 on the landmark album Buena Vista Social Club.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Buena Vista Social Club (2023 musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-new-one-2018",
+        "field": "synopsis",
+        "oldValue": "Four Plays, or Moral Representations, in One is a Jacobean era stage play, one of the dramatic works in the canon of John Fletcher and his collaborators. Initially published in the first Beaumont and Fletcher folio of 1647, the play is notable both for its unusual form and for the question of its authorship.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Four Plays, or Moral Representations, in One (Jacobean play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-nap-2018",
+        "field": "synopsis",
+        "oldValue": "Bianca Leigh is an American actress. She appeared as Mary Ellen in the 2005 film Transamerica, and Karma Johnstone in the 2016 film Hurricane Bianca and the sequel Hurricane Bianca: From Russia with Hate.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Bianca Leigh (actress biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bernhardthamlet-2018",
+        "field": "synopsis",
+        "oldValue": "The Tragedy of Hamlet, Prince of Denmark, often shortened to Hamlet (), is a tragedy written by William Shakespeare sometime between 1599 and 1601. It is Shakespeare's longest play.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Hamlet (Shakespeare). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-terms-of-my-surrender-2017",
+        "field": "synopsis",
+        "oldValue": "Michael Francis Moore (born April 23, 1954) is an American film director, producer, screenwriter, and author. Moore's work frequently addresses various social, political, and economic topics. He first became publicly known for his award-winning debut documentary Roger & Me, a scathing look at the downfall of the automotive industry in 1980s Flint and Detroit.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Michael Moore (biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fully-committed-2016",
+        "field": "synopsis",
+        "oldValue": "Becky Mode is an American playwright, actress and television producer based in New York City. Raised in Washington D. , she studied theater and American history at Wesleyan University, graduating Phi Beta Kappa. Her major accomplishments include the play Fully Committed co-created with Mark Setlock which achieved a number four listing on Time magazine's \"Top Ten Plays of 2000\".",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Becky Mode (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-mothers-brief-affair-2016",
+        "field": "synopsis",
+        "oldValue": "Richard Greenberg (February 22, 1958 – July 4, 2025) was an American playwright and television writer known for his subversively humorous depictions of middle-class American life. He had more than 25 plays premiere on Broadway, off-Broadway, and off-off-Broadway in New York City and eight at the South Coast Repertory Theatre in Costa Mesa, California, including The Violet Hour, Everett Beekin, and Hurrah at Last.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Richard Greenberg (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-ship-2014",
+        "field": "synopsis",
+        "oldValue": "= The following is the list of musical numbers in the Broadway production. The musical uses a twelve-member orchestra consisting of keyboard, piano, guitar, bass, drums, Northumbrian smallpipe, flute, whistle, melodeon, fiddle, cello and percussion. Dees' Rant\" – Mrs. Dees' Rant\" – Mrs.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is list of musical numbers, not a synopsis. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-country-house-2014",
+        "field": "synopsis",
+        "oldValue": "Donald Margulies (born September 2, 1954) is an American playwright and academic. In 2000, he won the Pulitzer Prize for Drama for his play Dinner with Friends.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Donald Margulies (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-snow-geese-2013",
+        "field": "synopsis",
+        "oldValue": "Sharr White is an American playwright and screenwriter. He's known for his Broadway plays The Other Place (2011), The Snow Geese (2013), and Pictures From Home (2023).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Sharr White (playwright biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-hotel-on-the-side-1992",
+        "field": "synopsis",
+        "oldValue": "Maryann Plunkett is an American actress and singer.\nPlunkett made her Broadway debut playing Sister Agnes in Agnes of God. In 1987, she won the Tony Award for Best Leading Actress in a Musical for her performance as Sally Smith in Me and My Girl.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Maryann Plunkett (actress biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-cemetery-club-1990",
+        "field": "synopsis",
+        "oldValue": "Death Becomes Her is a musical, with a book by Marco Pennette and music and lyrics by Julia Mattison and Noel Carey. It is based on the 1992 film of the same name directed and produced by Robert Zemeckis.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Death Becomes Her (2024 musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-november-people-1978",
+        "field": "synopsis",
+        "oldValue": "Good People is a 2011 play by David Lindsay-Abaire. The world premiere was staged by the Manhattan Theatre Club in New York City. At the 65th Tony Awards, the production was nominated for Best Play and Best Lead Actress (Frances McDormand), with the latter winning.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Good People (2011 play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-the-american-film-1978",
+        "field": "synopsis",
+        "oldValue": "American Idiot is a sung-through rock musical based on the 2004 concept album  of the same name by rock band Green Day. After a run at the Berkeley Repertory Theatre in 2009, the show moved to the St.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is American Idiot (musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-supporting-cast-1981",
+        "field": "synopsis",
+        "oldValue": "Sam Rockwell (born November 5, 1968) is an American actor known for his quirky and charismatic character roles in independent films. He won the Academy Award for Best Supporting Actor for playing a troubled police officer in Three Billboards Outside Ebbing, Missouri (2017).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Sam Rockwell (actor biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-2024",
+        "field": "synopsis",
+        "oldValue": "PlayStation Home was a virtual 3D social gaming platform developed by Sony Computer Entertainment's London Studio for the PlayStation 3 (PS3) on the PlayStation Network (PSN). It was accessible from the PS3's XrossMediaBar (XMB).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is PlayStation Home (Sony virtual platform). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "synopsis",
+        "oldValue": "Mike Birbiglia (; born June 20, 1978) is an American comedian, actor, director, producer and Emmy-nominated writer. He has written and performed a series of award-winning solo shows worldwide.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Mike Birbiglia (comedian biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "walking-with-ghosts-2022",
+        "field": "synopsis",
+        "oldValue": "The White Stripes were an American rock duo formed in Detroit, Michigan, in 1997. The group consisted of Jack White (guitar, keyboards, piano, vocals) and Meg White (drums, percussion, vocals).",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is The White Stripes (band article). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-this-a-room-2021",
+        "field": "synopsis",
+        "oldValue": "The Room is Harold Pinter's first play, written and first produced in 1957.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Harold Pinter's The Room (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-present-2017",
+        "field": "synopsis",
+        "oldValue": "Present Arms is a Broadway musical comedy that opened April 26, 1928, with music by Richard Rodgers, lyrics by Lorenz Hart, and book by Herbert Fields.  It was produced by Lew Fields with musical numbers stage by Busby Berkeley.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Present Arms (1928 musical). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tuck-everlasting-2016",
+        "field": "synopsis",
+        "oldValue": "The use of cameras, cell phones, and other recording devices during the show is strictly prohibited by law, except when used for accessibility services. No weapons permitted on the premises.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a theatre recording-device notice. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-father-2016",
+        "field": "synopsis",
+        "oldValue": "The Father (Swedish: Fadren) is a naturalistic tragedy by  Swedish playwright August Strindberg, written in 1887. It is about the struggle between parents over the future of their child; resulting in the mother, using her cunning manipulative skills, subduing and finally destroying the father.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Strindberg's The Father (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lady-day-at-emersons-bar-and-grill-2014",
+        "field": "synopsis",
+        "oldValue": "MCC Theater’s annual Miscast gala is one of the most exciting and unique theater events in town. Broadway’s hottest stars perform songs from roles in which they would not traditionally be cast. And the results are thrilling!",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is MCC Theater's Miscast gala promo. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rocky-2014",
+        "field": "synopsis",
+        "oldValue": "= ; Act I \"Ain't Down Yet\" - Company \"My Nose Ain't Broken\" - Rocky \"Raining\" - Adrian \"Patriotic\" - Apollo Creed, Miles Jergens, Apollo Girls \"My Nose Ain't Broken (Reprise)\" - Rocky \"The Flip Side\" - Rocky, Adrian \"Adrian\" - Rocky \"Wanna Know Why\" - Gazzo, Buddy, Rocky, Mickey \"Fight From the Heart\" - Rocky \"One of Us\" - Company ; Act II \"Training Montage #1\" - Company \"In the Ring\" - Mickey \"Training Montage #2\" - Company \"Happiness\" - Rocky, Adrian \"I'm Done\" - Adrian \"Southside Celebrity\" -",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of musical numbers. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scandalous-2012",
+        "field": "synopsis",
+        "oldValue": "The musical numbers from the 2012 Broadway production are: ; Act I \"Stand Up\" – Aimee & Ensemble \"Minnie's Prayer\" – Minnie \"Why Can't I? \" – Aimee \"He Will Be My Home\" – Robert & Aimee \"Come Whatever May\" – Robert & Aimee \"He Will Be My Home\" (Reprise) – Robert, Aimee, James & Minnie \"That Sweet Lass From Cork\" – Ensemble \"Come Whatever May\" (Reprise) – Robert, Aimee & Ensemble \"How Could You?",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of musical numbers. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gershwins-porgy-and-bess-2012",
+        "field": "synopsis",
+        "oldValue": "Porgy and Bess (2006), first studio cast recording directly based on the original 1935 production of George Gershwin's opera Porgy and Bess. The music used for this was compiled through research by John Mauceri who also conducted the musical forces for the recording. The Nashville Symphony Orchestra was conducted by Mauceri.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 2006 studio recording of Porgy and Bess. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "memphis-2009",
+        "field": "synopsis",
+        "oldValue": "Memphis most commonly refers to: Memphis, Egypt, a former capital of ancient Egypt Memphis, Tennessee, a major American city Memphis may also refer to:",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "company-2006",
+        "field": "synopsis",
+        "oldValue": "Trade in the dull gray of the concrete jungle for the glamour of 19th-century Paris. Be immersed in a world inspired by the Belle Époque, a period in which the arts flourished and spirits were high.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Parisian glamour show unrelated to Company. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "martin-short-fame-becomes-me-2006",
+        "field": "synopsis",
+        "oldValue": "Martin Hayter Short (born March 26, 1950) is a Canadian comedian, actor, and writer. Short is known as an energetic comedian who gained prominence for his roles in sketch comedy. He has also acted in numerous films and television shows. His awards include two Primetime Emmy Awards, two Actor Awards, and a Tony Award.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Martin Short (comedian biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "by-jeeves-2001",
+        "field": "synopsis",
+        "oldValue": "= The following songs were performed in the 1975 musical in London. The songs \"Food of Love\", sung by Aunt Dahlia, and \"Song of Spode\", sung first by Spode and again in a reprise by Aunt Dahlia, were cut before the London production and not recorded. In the song \"Eulalie\", Jeeves advises Bertie to use the word Eulalie to subdue the villainous Spode.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is songs from the 1975 London musical. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "triumph-of-love-1997",
+        "field": "synopsis",
+        "oldValue": "The triumph of love has been a popular allegory in art since at least the Italian Renaissance. It is especially popular in domestic items such as desci da parto and cassoni.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the Triumph of Love art allegory. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "redwood-curtain-1993",
+        "field": "synopsis",
+        "oldValue": "composer = Lawrence Shragge country = United States language = English executive_producer = Richard Welsh producer = cinematography = Ronnie Taylor editor = Scott Vickrey runtime = 100 minutes company = network = ABC released = Redwood Curtain is an American drama television film that premiered on ABC on April 23, 1995, as part of the Hallmark Hall of Fame anthology series.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is wiki infobox markup for a film. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1991",
+        "field": "synopsis",
+        "oldValue": "Peter Pan commonly refers to: *Peter Pan (character), a fictional boy who refuses to grow up, created by Scottish author J.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1998",
+        "field": "synopsis",
+        "oldValue": "Peter Pan commonly refers to: *Peter Pan (character), a fictional boy who refuses to grow up, created by Scottish author J.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-pan-1999",
+        "field": "synopsis",
+        "oldValue": "Peter Pan commonly refers to: *Peter Pan (character), a fictional boy who refuses to grow up, created by Scottish author J.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a Wikipedia disambiguation page. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broadway-1987",
+        "field": "synopsis",
+        "oldValue": "characters = genre = Drama setting = The private party room of the Paradise Night Club, New York City premiere = place = Broadhurst Theatre, New York City, New York orig_lang = English subject = web = Broadway is a 1926 Broadway play produced by Jed Harris and written and directed by George Abbott and Philip Dunning.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is wiki infobox markup for the 1926 play. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "quick-change-1980",
+        "field": "synopsis",
+        "oldValue": "Grimm is a burned out New Yorker who's down on his luck. He longs to escape his miserable life in New York City - and the country - but is lacking the means to do so. Desperate, he dresses up as a clown and robs a bank in midtown Manhattan. He sets up a daring hostage situation tying fake dynamite all over his waist and successfully steals $1 million along with his accomplices: girlfriend Phyllis and best friend Loomis.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the 1990 film Quick Change. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-grandmothers-house-we-go-1981",
+        "field": "synopsis",
+        "oldValue": "5-year-old twins Sarah and Julie (Mary-Kate Olsen and Ashley Olsen) are sweet but naughty, to the frustration of their single mother, Rhonda (Cynthia Geary). After overhearing her say she needs a break from them, they decide to run away to great-grandmother's house in Edgemont for Christmas. The girls sneak onto a city bus, but learn that it only goes downtown, and that Edgemont is three hours away.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is an Olsen twins TV film. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "home-1980",
+        "field": "synopsis",
+        "oldValue": "A home, or domicile, is a space used as a permanent or semi-permanent residence for one or more human occupants, and sometimes various companion animals. Homes provide sheltered spaces, for instance rooms, where domestic activity can be performed such as sleeping, preparing food, eating and hygiene as well as providing spaces for work and leisure such as remote working, studying and playing.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the dictionary definition of 'home'. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "players-1978",
+        "field": "synopsis",
+        "oldValue": "A massively multiplayer online role-playing game (MMORPG) is a video game that combines aspects of a role-playing video game and a massively multiplayer online game.\nAs in role-playing games (RPGs), the player assumes the role of a character (often in a fantasy world or science-fiction world) and takes control over many of that character's actions.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is MMORPG video games. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wings-1979",
+        "field": "synopsis",
+        "oldValue": "Wings is a musical with music by Jeffrey Lunden and book and lyrics by Arthur Perlman adapted from Arthur Kopit's play of the same name. The one-act musical concerns an older female stroke victim who was an aviatrix and wing-walker. The original production premiered at Chicago's Goodman Theatre in October 1992 and opened at the New York Shakespeare Festival Joseph Papp Public Theater in February 1993.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the later musical adaptation, not the play. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "legend-1976",
+        "field": "synopsis",
+        "oldValue": "John Roger Stephens (born December 28, 1978), known professionally as John Legend, is an American singer, songwriter, pianist, and record producer. He began his musical career working behind the scenes for other artists, playing piano on Lauryn Hill's \"Everything Is Everything\", and performing as an uncredited backing vocalist on Jay-Z's \"Encore\" and Alicia Keys' \"You Don't Know My Name\".",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is John Legend (singer biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fame-1974",
+        "field": "synopsis",
+        "oldValue": "Fame usually refers to the state of notability or celebrity.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the dictionary definition of 'fame'. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doctor-jazz-1975",
+        "field": "synopsis",
+        "oldValue": "\"Doctor Jazz\" is a popular tune and song written by Joe \"King\" Oliver in 1926. Publisher Walter Melrose got his name on it as co-composer, as was often his practice. It enjoyed its initial popularity in the 1920s. It continues to be played by Dixieland jazz groups. It has been performed by many notable acts, such as Jelly Roll Morton, Chris Barber, Harry Connick Jr.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 1926 jazz song. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pacific-paradise-1972",
+        "field": "synopsis",
+        "oldValue": "Pacific Paradise is a 1955 Australian play by Dymphna Cusack. It was adapted on ABC radio in 1955, 1956 and 1957. By 1962 the play had been produced in New Zealand, the UK, Japan. Latin America, the USSR, Czechoslovakia, Poland, Hungary, Germany, China, India, Albania, North Korea, Rumania, Bulgaria, Cuba, Iceland.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 1955 Australian play. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "don-juan-1972",
+        "field": "synopsis",
+        "oldValue": "= Songs not appearing in the show marked by *; songs not found in the soundtrack marked by ** ;Disc 1 (Act I) Ouverture. (Aren't you ashamed? The songs were composed by Félix Gray and the orchestra was conducted by Guy St-Onge. Singers included Guy St-Onge, Antoine Cortes, Chico Castillo, Dominique Faure, Jorge Heredia and released on Cloutier.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a soundtrack track listing. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-enemy-is-dead-1973",
+        "field": "synopsis",
+        "oldValue": "Killer Is Dead is a hack and slash video game developed by Grasshopper Manufacture. It was released for PlayStation 3 and Xbox 360 in August 2013 and for Windows in May 2014.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the video game Killer Is Dead. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-swingers-1971",
+        "field": "synopsis",
+        "oldValue": "The Swingers were a New Zealand rock band who were together from 1979 to 1982 and whose biggest single was the song \"Counting the Beat\".",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a New Zealand rock band. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frozen-2004",
+        "field": "synopsis",
+        "oldValue": "A Greek chorus introduces Princess Elsa of Arendelle, and her playful younger sister, Princess Anna (\"Vuelie\", \"Let the Sun Shine On\"). While the family knows about Elsa's magic, it is kept a secret from the people of Arendelle. One night at bedtime, Elsa and Anna build a magical snowman and name it Olaf (\"A Little Bit of You\"); Elsa creates snow in their room.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Disney's Frozen (not Bryony Lavery's play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "contact-2000",
+        "field": "synopsis",
+        "oldValue": "com; Internet Broadway Database ;Act I ;Swinging My Heart Stood Still (Richard Rodgers and Lorenz Hart) – Stéphane Grappelli ;Did You Move? Anitra's Dance (Edvard Grieg) – New York Philharmonic Orchestra, cond. Leonard Bernstein Waltz from Eugene Onegin, Op. 24 (Pyotr Ilyich Tchaikovsky) – New York Philharmonic Orchestra, cond.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of songs. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jerome-robbins-broadway-1989",
+        "field": "synopsis",
+        "oldValue": "Sources: Internet Broadway Data Base; MasterWorks Broadway ;Act I Gotta Dance (from Look, Ma, I'm Dancin'! ) Papa, Won't You Dance With Me? (from High Button Shoes) Shall We Dance?",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a list of songs. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-de-bergerac-1984",
+        "field": "synopsis",
+        "oldValue": "Savinien de Cyrano de Bergerac ( , ; 6 March 1619 – 28 July 1655) was a French novelist, playwright, epistolarian, and duelist. A bold and innovative author, his work was part of the libertine literature of the first half of the 17th century. Today, he is best known as the inspiration for Edmond Rostand's most noted drama, Cyrano de Bergerac (1897), which, although it includes elements of his life, also contains invention and myth.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Cyrano de Bergerac (biography of the historical man). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doubles-1985",
+        "field": "synopsis",
+        "oldValue": "Men's doubles, Women's doubles or Mixed doubles are sports having two players per side, including; * Beach volleyball * Doubles badminton * Doubles curling * Footvolley * Doubles pickleball * Doubles squash * Doubles table tennis * Doubles tennis Doubles may also refer to:",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is doubles in sports. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "edmund-kean-1983",
+        "field": "synopsis",
+        "oldValue": "Edmund Kean (4 November 178715 May 1833) was a British Shakespearean actor, who performed, among other places, in London, Belfast, New York, Quebec, and Paris. He was known for his short stature, tumultuous personal life, and controversial divorce.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Edmund Kean (actor biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "end-of-the-world-1984",
+        "field": "synopsis",
+        "oldValue": "It's Only the End of the World (French: Juste la fin du monde) is a 1990 French play by Jean-Luc Lagarce. It is about a character named Louis who returns to his family to announce his terminal illness.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is It's Only the End of the World (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-queen-and-the-rebels-1982",
+        "field": "synopsis",
+        "oldValue": "The Queen, or The Excellency of Her Sex is a Caroline era tragicomedy. Though published anonymously in 1653, The play is now generally attributed to John Ford – making it a significant addition to the very limited canon of Ford's works.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is The Queen, a 1653 tragicomedy (different play). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "passion-1983",
+        "field": "synopsis",
+        "oldValue": "The musical is usually presented in one act. An intermission was added only for the London production. In Milan in 1863, two lovers are at the height of ecstasy (\"Happiness\"). The handsome captain, Giorgio, breaks their reverie by telling Clara that he is being transferred to a provincial military outpost.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Sondheim's musical Passion (different show). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-have-a-dream-1976",
+        "field": "synopsis",
+        "oldValue": "Mamma Mia! I Have a Dream is a British reality talent competition that began airing on 22 October 2023 on ITV. The show documented the search for two new, unknown musical theatre performers to play the roles of Sophie Sheridan and Sky Ramand in the West End production of the musical Mamma Mia!.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the TV competition Mamma Mia! I Have a Dream. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-girls-came-out-to-play-1972",
+        "field": "synopsis",
+        "oldValue": "The Sun Came Out is a charity studio album released on 31 August 2009 by 7 Worlds Collide, a musical project of New Zealand singer/songwriter Neil Finn for the benefit of Oxfam.  The album was recorded at Finn's Roundhead Studios and is a follow-up to the 7 Worlds Collide live album of 2001.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a 2009 charity album. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ulysses-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "Ulysses is a 1705 tragedy by the British writer Nicholas Rowe. Rowe turned back to writing tragedies following his unsuccessful comedy The Biter of the previous year. The cast included Thomas Betterton as Ulysses, Barton Booth as Telemachus, Elizabeth Barry as Penelope and Anne Bracegirdle as Semanthe.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Nicholas Rowe's 1705 tragedy Ulysses. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "music-city-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "John Thomas Harding is an American country music songwriter. He has written songs for Uncle Kracker, Kenny Chesney, Keith Urban, Blake Shelton, Dierks Bentley, and Darius Rucker.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is songwriter John Thomas Harding (biography). Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-llamada-off-broadway-2024",
+        "field": "synopsis",
+        "oldValue": "\"La Llamada\" () is a song recorded by American recording artist Selena for her first live album Live! It was composed by Selena y Los Dinos backup singer Pete Astudillo and Selena's brother and principal record producer A. Quintanilla III and produced by Quintanilla III and Argentine music producer Bebu Silvetti.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is Selena's song La Llamada. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-tour-2025",
+        "field": "synopsis",
+        "oldValue": "\"Beauty and the Beast\" is a fairy tale written by the French novelist Gabrielle-Suzanne Barbot de Villeneuve and published anonymously in 1740 in La Jeune Américaine et les contes marins (The Young American and Marine Tales).\nVilleneuve's original story was abridged, revised, and published by French novelist Jeanne-Marie Leprince de Beaumont in 1756 in Magasin des enfants (Children's Collection) which became the most commonly retold version.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is the Beauty and the Beast fairy tale article. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "starlight-express-west-end-2024",
+        "field": "synopsis",
+        "oldValue": "Starlight Express has been revised many times since it was first produced. These revisions range from tweaks to lyrics to adding or removing entire songs, characters and subplots. The fundamental story, however, has stayed the same. This synopsis reflects the show as it was first produced, in the West End in 1984.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is notes on Starlight Express revisions, not a synopsis. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chess-1988",
+        "field": "synopsis",
+        "oldValue": "= The musical's American incarnation has noticeably different settings, lyrics, song orders, and a completely different Act 2 from the British version. In particular, in the American Chess the entire show is about one chess match, not two. Act 1 involves the first part of the match, which is held in Bangkok, Thailand, while Act 2 handles the conclusion, and is set in Budapest, Hungary.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a fragment about the musical's American settings, led by wiki markup. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chess-2003",
+        "field": "synopsis",
+        "oldValue": "= The musical's American incarnation has noticeably different settings, lyrics, song orders, and a completely different Act 2 from the British version. In particular, in the American Chess the entire show is about one chess match, not two. Act 1 involves the first part of the match, which is held in Bangkok, Thailand, while Act 2 handles the conclusion, and is set in Budapest, Hungary.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is a fragment about the musical's American settings, led by wiki markup. Cleared so the production-verified Wikipedia enricher can refill it."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-and-day-1979",
+        "field": "synopsis",
+        "oldValue": "mute = setting = The living room of a large colonial house in an African nation premiere = place = Phoenix Theatre, London orig_lang = English series = subject = Colonialism, the media genre = Drama web = Night and Day is a 1978 play by Tom Stoppard. The sets and costumes were designed by Carl Toms and it ran for two years at the Phoenix Theatre in central London, UK.",
+        "newValue": null,
+        "description": "Synopsis is not about this show: it is wiki infobox markup. Cleared so the production-verified Wikipedia enricher can refill it."
       }
     ]
   }

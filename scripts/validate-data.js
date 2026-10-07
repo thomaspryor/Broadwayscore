@@ -64,7 +64,7 @@ const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis-validation');
-const { checkAwardClaims, findSharedSentences, loadAwardsByShow } = require('./lib/synopsis-fact-check');
+const { checkAwardClaims, findSharedSentences, loadAwardsByShow, ledeTitleMismatch } = require('./lib/synopsis-fact-check');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
@@ -1581,6 +1581,14 @@ function validateSynopsisQuality(shows) {
     // Scraped page chrome (cookie banner) saved as the synopsis — BRO-4853.
     if (SCRAPED_PAGE_CHROME_RE.test(show.synopsis)) {
       warn(`Show "${show.title}" (${show.id}) synopsis is scraped page chrome (cookie banner / JS notice)`);
+      issues++;
+    }
+
+    // Wikipedia lede about a different work or a person's biography saved as the
+    // synopsis (Linda Vista -> Buena Vista Social Club) — BRO-4853.
+    const ledeSubject = ledeTitleMismatch(show);
+    if (ledeSubject) {
+      warn(`Show "${show.title}" (${show.id}) synopsis is about "${ledeSubject.slice(0, 60)}", not this show`);
       issues++;
     }
 

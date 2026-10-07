@@ -18,6 +18,7 @@ const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
+const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
 const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-verify');
@@ -362,6 +363,12 @@ async function fixSynopsis(show, todayTixIds) {
   const verifier = ANTHROPIC_API_KEY ? (p => callClaudeAPI(p, 200, CLAUDE_OPUS)) : null;
   const accept = async (text, source) => {
     if (!text || !isValidSynopsis(text)) return false;
+    // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
+    const factGate = gateScrapedSynopsis(show, text, { showsById: {} });
+    if (!factGate.ok) {
+      console.log(`    ✗ rejected ${source} synopsis (${factGate.reason})`);
+      return false;
+    }
     if (!verifier) {
       console.log(`    ✗ skipped ${source} synopsis — no verifier (ANTHROPIC_API_KEY) to confirm right show`);
       return false;

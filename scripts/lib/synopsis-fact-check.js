@@ -224,6 +224,41 @@ function findSharedSentences(shows, opts = {}) {
   return out;
 }
 
+// Wikipedia ledes: "<Subject> is a 2023 stage musical ...", "<Subject> is a
+// tragedy written by ...". Only a work-noun right after "is a/an/the" counts, so
+// character openers ("Lydia Deetz is a ...") never match.
+// People count too: "Richard Greenberg (1958-2025) was an American playwright"
+// is a biography that landed in the synopsis field, not a synopsis.
+const WIKI_LEDE_RE =
+  /^\*?([^.!?]{2,90}?)\*?\s+(?:is|was)\s+(?:an?|the)\s+(?:[\w'’,-]+\s+){0,5}?(?:musical|play|stage play|tragedy|comedy|drama|film|novel|opera|operetta|ballet|revue|monologue|television|series|book|playwright|actor|actress|director|screenwriter|composer|lyricist|filmmaker|author|comedian|singer)\b/i;
+
+// Lede subjects that name the right work under a different spelling.
+const LEDE_MISMATCH_ALLOW = new Set([
+  'king-richard-iii-1979', // "The Tragedy of Richard the Third": the right play, other spelling
+  'long-days-journey-into-night-2016', // opens on stage directions, still the right play
+]);
+
+/**
+ * A synopsis written as a Wikipedia lede about a DIFFERENT work than the show
+ * ("Linda Vista" carrying Buena Vista Social Club's lede) is the wrong-article
+ * signature of the legacy Wikipedia fetcher (BRO-4853). Returns the lede subject
+ * when it shares no title with the show, else null.
+ * @param {{ title?: string, synopsis?: string }} show
+ * @returns {string | null}
+ */
+function ledeTitleMismatch(show) {
+  if (show && LEDE_MISMATCH_ALLOW.has(show.id)) return null;
+  const m = show && show.synopsis && show.synopsis.match(WIKI_LEDE_RE);
+  if (!m) return null;
+  const key = (t) => String(t || '').toLowerCase().replace(/&/g, 'and').replace(/^(the|a|an)\s+/, '').replace(/[^a-z0-9]/g, '');
+  const subject = key(m[1].replace(/\([^)]*\)/g, ''));
+  const title = key(show.title);
+  if (!subject || !title) return null;
+  if (subject.includes(title) || title.includes(subject)) return null;
+  if (subject.slice(0, 6) === title.slice(0, 6)) return null;
+  return m[1].trim();
+}
+
 /**
  * awards.json `shows` map, or {} when the file is absent (a stub-data cloud
  * session). With no awards data every claim is "unverifiable" and passes.
@@ -258,6 +293,8 @@ function gateScrapedSynopsis(show, candidate, ctx) {
   const shape = classifyBadSynopsis({ synopsis: candidate, status: show && show.status });
   if (shape.bad) return { ok: false, reason: shape.reason };
   const probe = { ...show, synopsis: candidate };
+  const lede = ledeTitleMismatch(probe);
+  if (lede) return { ok: false, reason: `text is about "${lede.slice(0, 50)}", not this show` };
   const awardsByShow = (ctx && ctx.awardsByShow) || loadAwardsByShow();
   const claims = checkAwardClaims(probe, { awardsByShow, showsById: (ctx && ctx.showsById) || {} });
   if (claims.unsupported.length > 0) {
@@ -271,6 +308,7 @@ module.exports = {
   loadAwardsByShow,
   splitSentences,
   truncateAtSentence,
+  ledeTitleMismatch,
   extractTonyCategoryClaims,
   lineageIds,
   checkAwardClaims,

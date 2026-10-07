@@ -159,6 +159,31 @@ test('gateScrapedSynopsis rejects the Other Desert Cities blurb and accepts a cl
   assert.deepEqual(gateScrapedSynopsis(show, good, { awardsByShow, showsById }), { ok: true, reason: null });
 });
 
+const { ledeTitleMismatch } = pkg;
+test('ledeTitleMismatch flags another work\'s Wikipedia lede (Linda Vista / Buena Vista Social Club)', () => {
+  const show = { id: 'lv', title: 'Linda Vista', synopsis: 'Buena Vista Social Club is a 2023 stage musical, with a book by Marco Ramirez.' };
+  assert.equal(ledeTitleMismatch(show), 'Buena Vista Social Club');
+});
+
+test('ledeTitleMismatch flags a person biography in the synopsis field', () => {
+  const show = { id: 'oma', title: 'Our Mother\'s Brief Affair', synopsis: 'Richard Greenberg (February 22, 1958 – July 4, 2025) was an American playwright and television writer.' };
+  assert.match(ledeTitleMismatch(show), /^Richard Greenberg/);
+});
+
+test('ledeTitleMismatch leaves the right lede, spelling variants and character openers alone', () => {
+  assert.equal(ledeTitleMismatch({ id: 'a', title: 'Hadestown', synopsis: 'Hadestown is a musical with music, lyrics and book by Anaïs Mitchell.' }), null);
+  assert.equal(ledeTitleMismatch({ id: 'b', title: 'SIX the Musical', synopsis: 'Six (stylised SIX in all caps) is a musical with music and lyrics by Toby Marlow.' }), null);
+  assert.equal(ledeTitleMismatch({ id: 'c', title: 'Beetlejuice', synopsis: 'Lydia Deetz is a goth teenager who can see ghosts.' }), null);
+  assert.equal(ledeTitleMismatch({ id: 'd', title: 'No synopsis' }), null);
+});
+
+test('wiki markup and disambiguation scraps are not valid synopses', () => {
+  assert.equal(isValidSynopsis('Peter Pan commonly refers to: Peter Pan (character), a fictional boy who refuses to grow up, created by J. M. Barrie.'), false);
+  assert.equal(isValidSynopsis('composer = Lawrence Shragge country = United States language = English executive_producer = Richard Welsh'), false);
+  assert.equal(isValidSynopsis('= The following is the list of musical numbers in the Broadway production of the show.'), false);
+  assert.equal(isValidSynopsis('A young boy who refuses to grow up whisks three children away to Neverland, where they meet pirates and fairies.'), true);
+});
+
 test('gateScrapedSynopsis rejects a cookie banner', () => {
   assert.equal(gateScrapedSynopsis({ id: 'x', status: 'open' }, COOKIE_BANNER, { awardsByShow, showsById }).ok, false);
 });
