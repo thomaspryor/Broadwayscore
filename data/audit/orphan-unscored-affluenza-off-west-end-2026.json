@@ -2,9 +2,43 @@
   "version": 1,
   "showId": "affluenza-off-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-07T21:36:54.576Z",
+  "detectedAt": "2026-10-07T22:47:53.013Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "theatre-south-east--helena-featherstone.json",
+      "outletId": "theatre-south-east",
+      "criticName": "Helena Featherstone",
+      "url": "https://theatresoutheast.com/affluenza-riverside-studios-review/",
+      "fullTextLen": 4076,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "theupcoming--sunny-morgan.json",
+      "outletId": "theupcoming",
+      "criticName": "Sunny Morgan",
+      "url": "https://www.theupcoming.co.uk/2026/10/06/affluenza-at-riverside-studios-theatre-review/",
+      "fullTextLen": 4324,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -23,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-07T22:47:53.013Z"
 }
