@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildCandidates, collapseDuplicateListings } = require('../discover-historical-shows-we.js');
+const { buildCandidates, collapseDuplicateListings, plausibleOpeningDate } = require('../discover-historical-shows-we.js');
 const { planPromotions, effectiveDecision, fixAllCapsTitle, buildShowEntry } = require('../promote-historical-we.js');
 const { planWetMerge, matchWetRow } = require('../merge-wet-stars-urls.js');
 
@@ -65,7 +65,7 @@ test('buildCandidates marks rows already in shows.json and never promotes them',
 });
 
 test('buildCandidates catches the same production listed at a different venue (same title, start within a week)', () => {
-  const shows = [{ id: 'burlesque-west-end-2026', title: 'Kyoto', venue: 'The Arts at Marble Arch', previewsStartDate: '2025-01-10' }];
+  const shows = [{ id: 'burlesque-west-end-2026', title: 'Kyoto', venue: 'The Arts at Marble Arch', market: 'west-end', previewsStartDate: '2025-01-10' }];
   const { candidates } = buildCandidates({ season: SEASON, listings: LISTINGS, reviews: REVIEWS, oliviers: OLIVIERS, shows, today: TODAY });
   assert.equal(candidates.find(c => c.title === 'Kyoto').inShowsJson, 'burlesque-west-end-2026');
 });
@@ -136,6 +136,50 @@ test('matchWetRow: two critics on one outlet need the critic name to pick a row'
   const rows = new Map([['times-uk', [{ critic: 'Clive Davis', url: 'a' }, { critic: 'Dominic Maxwell', url: 'b' }]]]);
   assert.equal(matchWetRow(rows, 'times-uk', 'Dominic Maxwell').row.url, 'b');
   assert.equal(matchWetRow(rows, 'times-uk', 'Someone Else').ambiguous, true);
+});
+
+test('planWetMerge: a lone WET row by a DIFFERENT critic does not give its URL to this review', () => {
+  const row = { outlet: 'The Spectator', critic: 'Someone Else', url: 'https://spec/other' };
+  assert.deepEqual(planWetMerge({ criticName: 'Lloyd Evans' }, row, 'spectator-uk').patch, {});
+  // An unnamed (table-format) row still merges.
+  assert.deepEqual(planWetMerge({ criticName: 'Lloyd Evans' }, { ...row, critic: 'Unknown' }, 'spectator-uk').patch, { url: 'https://spec/other' });
+});
+
+test('buildCandidates: WOS opening date equal to the first preview is treated as unknown', () => {
+  const { candidates } = buildCandidates({
+    season: SEASON, reviews: [], oliviers: [], shows: [], today: TODAY,
+    listings: [listing({ title: 'Clueless', venue: 'Trafalgar Theatre', previewsStartDate: '2025-02-15', openingDate: '2025-02-15', closingDate: '2025-08-23' })],
+  });
+  assert.equal(candidates[0].openingDate, null);
+  assert.equal(candidates[0].previewsStartDate, '2025-02-15');
+});
+
+test('plausibleOpeningDate: rejects placeholder and implausibly late press nights', () => {
+  assert.equal(plausibleOpeningDate({ previewsStartDate: '2024-10-01', openingDate: '2024-12-08' }), null);
+  assert.equal(plausibleOpeningDate({ previewsStartDate: '2025-02-15', openingDate: '2025-02-15' }), null);
+  assert.equal(plausibleOpeningDate({ previewsStartDate: '2024-10-04', openingDate: '2024-10-15' }), '2024-10-15');
+  assert.equal(plausibleOpeningDate({ previewsStartDate: null, openingDate: '2024-10-15' }), '2024-10-15');
+});
+
+test('buildCandidates: a same-title BROADWAY show starting the same week is not a West End duplicate', () => {
+  const shows = [{ id: 'kyoto-2025', title: 'Kyoto', venue: 'Some Broadway Theatre', market: 'broadway', previewsStartDate: '2025-01-10' }];
+  const { candidates } = buildCandidates({ season: SEASON, listings: LISTINGS, reviews: REVIEWS, oliviers: OLIVIERS, shows, today: TODAY });
+  assert.equal(candidates.find(c => c.title === 'Kyoto').inShowsJson, null);
+});
+
+test('planPromotions writes the venue spelling already used on the site', () => {
+  const shows = [
+    ...SHOWS,
+    { id: 'a-west-end-2026', title: 'A', venue: 'The Old Vic', market: 'west-end' },
+    { id: 'b-west-end-2026', title: 'B', venue: 'The Old Vic', market: 'west-end' },
+  ];
+  const { toPromote } = planPromotions({ candidates: run().candidates, shows, approvals: {} });
+  assert.equal(toPromote.find(e => e.id === 'oedipus-west-end-2025').venue, 'The Old Vic');
+});
+
+test('effectiveDecision: an approval cannot mark a show that has not closed as closed', () => {
+  const c = { title: 'X', venue: 'Gielgud Theatre', previewsStartDate: '2026-01-01', closingDate: '2027-01-01', season: '2025-2026', decision: { promotable: false, reason: 'not closed yet' } };
+  assert.equal(effectiveDecision(c, { '2025-2026': { X: { decision: 'approve' } } }, TODAY).promotable, false);
 });
 
 test('fixAllCapsTitle and straight apostrophes in written titles', () => {

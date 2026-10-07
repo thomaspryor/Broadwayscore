@@ -51,6 +51,15 @@ test('the winner line (bold-italic wrapper) parses like a nominee', () => {
   assert.deepEqual(rows.find(r => r.title === 'Giant').venues, ['Jerwood Downstairs', 'Royal Court']);
 });
 
+test('hyphen separator and {{double dagger}} templates leave clean venue names', () => {
+  const rows = parseOlivierCeremonyNominees([
+    "**''[[The Great Gatsby]]'' - [[London Coliseum]]",
+    "*'''''[[Inter Alia]]'' – [[Royal National Theatre|National Theatre Lyttelton]]{{double dagger|alt=Winner}}'''",
+  ].join('\n'));
+  assert.deepEqual(rows.find(r => r.title === 'The Great Gatsby').venues, ['London Coliseum']);
+  assert.deepEqual(rows.find(r => r.title === 'Inter Alia').venues, ['National Theatre Lyttelton']);
+});
+
 test('ignores non-list lines and empty input', () => {
   assert.deepEqual(parseOlivierCeremonyNominees(''), []);
   assert.deepEqual(parseOlivierCeremonyNominees('|valign="top" |\n!Header'), []);

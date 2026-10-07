@@ -127,7 +127,11 @@ function decideWeHistoricalPromotion(candidate, opts = {}) {
   if (offGenre) return no(`non-theatre genre: ${offGenre}`, true);
   if (!candidate.closingDate) return no('no closing date', false);
   if (candidate.closingDate >= today) return no(`not closed yet (closes ${candidate.closingDate})`, false);
-  const runDays = (Date.parse(candidate.closingDate) - Date.parse(start)) / 86400000;
+  // Measure the run from the FIRST performance: a late press night (Macbeth,
+  // Harold Pinter 2024: previews 10-01, opening 12-08, closing 12-14) is a
+  // ten-week run, not a six-day one.
+  const runStart = candidate.previewsStartDate || start;
+  const runDays = (Date.parse(candidate.closingDate) - Date.parse(runStart)) / 86400000;
   if (!(runDays >= MIN_RUN_DAYS)) return no(`run of ${Math.round(runDays)} days < ${MIN_RUN_DAYS}`, true);
   if (!(candidate.signals || []).length) return no('no review signal (WOS review, Olivier nomination)', false);
   return { promotable: true, persistent: true, reason: `signals: ${candidate.signals.join(', ')}` };

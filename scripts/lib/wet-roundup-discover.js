@@ -226,7 +226,9 @@ function parseWetRenderedBlocks(pageHtml) {
     const stars = (block.filter('.reviewnewstars').first().text().match(/★/g) || []).length;
     const authorText = block.filter('.reviewnewauthor').first().text().trim();
     const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
-    const links = block.filter('a[href]').add(block.find('a[href]'));
+    // The outlet's own link is a sibling or sits in the byline; a link inside
+    // the quote is cited text, not this review.
+    const links = block.filter('a[href]').add(block.filter('.reviewnewauthor').find('a[href]'));
     let url = '';
     links.each((__, a) => {
       const href = $w(a).attr('href') || '';
