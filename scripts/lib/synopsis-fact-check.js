@@ -133,7 +133,11 @@ function related(a, b) {
   if (a.tourOf === b.id || b.tourOf === a.id) return true;
   const ta = titleKey(a.title);
   const tb = titleKey(b.title);
-  return ta === tb || ta.includes(tb) || tb.includes(ta);
+  if (ta === tb) return true;
+  // Containment ("Both Parts" vs the base title) only counts for titles long
+  // enough that a short name like "Six" cannot swallow unrelated ones.
+  const [short, long] = ta.length <= tb.length ? [ta, tb] : [tb, ta];
+  return short.length >= 8 && long.includes(short);
 }
 
 /**
