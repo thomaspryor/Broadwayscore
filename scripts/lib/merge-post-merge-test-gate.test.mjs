@@ -728,6 +728,21 @@ test('selectTestFiles: a test-only edit selects that test (and nothing for missi
   assert.deepEqual(selectTestFiles(dir, ['scripts/foo.test.mjs', 'scripts/gone.test.mjs', 'scripts/pre-push.test.mjs']), [path.join('scripts', 'foo.test.mjs')]);
 });
 
+test('selectTestFiles: skips tsx-manifest tests, whether changed or reached by name, and keeps plain ones (BRO-4842)', () => {
+  const dir = makeScratchRepo();
+  fs.mkdirSync(path.join(dir, 'scripts', 'tests'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'tests'), { recursive: true });
+  for (const rel of ['scripts/tests/tm-gap.test.mjs', 'scripts/tests/fix-links.test.mjs', 'scripts/tests/plain.test.mjs']) fs.writeFileSync(path.join(dir, rel), '');
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest-tsx.txt'), '# tsx batch\nscripts/tests/tm-gap.test.mjs\nscripts/tests/fix-links.test.mjs\n');
+  assert.deepEqual(
+    selectTestFiles(dir, ['scripts/tests/tm-gap.test.mjs', 'scripts/fix-links.js', 'scripts/tests/plain.test.mjs']),
+    [path.join('scripts', 'tests', 'plain.test.mjs')],
+  );
+  // With no tsx manifest the same changed test is selected as before.
+  fs.rmSync(path.join(dir, 'tests', 'unit-test-manifest-tsx.txt'));
+  assert.deepEqual(selectTestFiles(dir, ['scripts/tests/tm-gap.test.mjs']), [path.join('scripts', 'tests', 'tm-gap.test.mjs')]);
+});
+
 test('REQUIRED_WORKFLOW_GUARDS: the dependency validator is selected even with no manifest (BRO-4812)', () => {
   const dir = makeScratchRepo();
   fs.writeFileSync(path.join(dir, 'scripts', 'validate-workflow-dependencies.test.mjs'), '');
