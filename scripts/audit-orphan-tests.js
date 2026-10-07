@@ -154,6 +154,10 @@ const EXEMPT_NEVER_CI = {
   // You page within the stale window, from live data/audit/tour-autocreate.json.
   // Needs scheduled runs after the fix, so it is a RECHECK-AFTER probe.
   'verify-tours-to-you-coverage.test.mjs': 'BRO-4725',
+  // BRO-4724: asserts the first tour auto-create write run and the next day's
+  // schedule fetch acted, from live data. Date-gated RECHECK-AFTER probe; it
+  // sat in the CI unit manifest and redded main (BRO-4837).
+  'verify-bro-4724-recheck.test.mjs': 'BRO-4724',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
