@@ -11381,7 +11381,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:b2f9629f": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"once generated per-show JSON carries au.sources.ss.u, every tile with a known URL has it\"",
       "firstSeen": "2026-10-07T03:47:32.578Z",
@@ -11401,8 +11401,11 @@
       "silentRefires": 1,
       "absentRunIds": [
         "37607772352",
-        "37638550754"
-      ]
+        "37638550754",
+        "37644239790"
+      ],
+      "resolvedAt": "2026-10-07T15:49:01.354Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/job/linear-BRO-4826-muxjod5d": {
       "status": "open",
