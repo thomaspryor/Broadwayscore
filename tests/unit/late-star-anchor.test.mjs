@@ -191,7 +191,7 @@ describe('needsLateStarReanchor — anchored to a stale band', () => {
     const pct = stale({ originalScore: '60%', originalScoreSource: 'reviewshub-percentage', outletId: 'thereviewshub' });
     const r = needsLateStarReanchor(pct);
     assert.ok(r && r.staleBand);
-    assert.equal(r.band.floor, 51);
+    assert.equal(r.band.floor, 55); assert.equal(r.band.ceiling, 65);
     assert.equal(needsLateStarReanchor({ ...pct, staleBandReanchoredFor: '60%' }), null);
   });
 
