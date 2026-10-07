@@ -189,13 +189,134 @@ test('a paywalled page: aggregator thumb gives the low-confidence fallback; with
   } finally { noAgg.cleanup(); }
 });
 
-test('createInlineScoring refuses missing dependencies; ensembleScoreText adapts the real scorer shape', async () => {
+test('createInlineScoring refuses missing dependencies', () => {
   assert.throws(() => inl.createInlineScoring({ show: { id: 'x' } }), /is required/);
-  const ok = await inl.ensembleScoreText({ scoreReview: async (text, ctx) => ({ score: 77, ctx }) })('text', { outlet: 'Variety', criticName: 'F. Rizzo' });
-  assert.equal(ok.score, 77);
-  const bad = await inl.ensembleScoreText({ scoreReview: async () => ({ score: 50, allModelsFailed: true }) })('text', {});
-  assert.equal(bad.allModelsFailed, true);
   assert.equal(typeof inl.realFetchPorts, 'function');
+});
+
+test('ensembleScoreText goes through the production scoreReviewFile path and treats each outcome correctly', async () => {
+  const seenFiles = [];
+  const mk = (res) => ({ scoreReviewFile: async (file) => { seenFiles.push(file); return typeof res === 'function' ? res(file) : res; } });
+  const ctx = { showId: 's', showTitle: 'The Rehearsal Play', outletId: 'variety', outlet: 'Variety', criticName: 'F. Rizzo', url: 'https://variety.com/x' };
+  const scoredFile = { assignedScore: 77, llmScore: { score: 77 }, llmMetadata: { model: 'm' }, ensembleData: { ensembleSource: 'ensemble-unanimous' } };
+  const ok = await inl.ensembleScoreText(mk({ success: true, scoredFile, ensembleResult: { score: 77 } }))('text', ctx);
+  assert.equal(ok.score, 77);
+  assert.deepEqual(Object.keys(ok.extra), ['llmScore', 'llmMetadata', 'ensembleData']);
+  assert.equal(seenFiles[0].showTitle, 'The Rehearsal Play', 'the show title reaches the input validator and the models');
+  assert.equal(seenFiles[0].fullText, 'text');
+  const rej = await inl.ensembleScoreText(mk({ success: true, rejected: true, rejection: 'wrong_show' }))('t', ctx);
+  assert.deepEqual(rej, { rejected: true, rejection: 'wrong_show' });
+  const inv = await inl.ensembleScoreText(mk({ success: false, inputValidationFailed: true, error: 'input_validation_failed:nav_chrome' }))('t', ctx);
+  assert.equal(inv.rejected, true);
+  assert.match(inv.rejection, /nav_chrome/);
+  await assert.rejects(inl.ensembleScoreText(mk({ success: false, error: 'All ensemble models failed' }))('t', ctx), /All ensemble models failed/);
+  await assert.rejects(inl.ensembleScoreText(mk({ success: true, scoredFile, ensembleResult: { singleModelEmergency: true } }))('t', ctx), /single-model emergency/);
+  await assert.rejects(inl.ensembleScoreText(mk(undefined))('t', ctx), /ensemble scoring failed/);
+});
+
+test('score extras (llmScore, ensembleData) are merged into the published row', async () => {
+  const s = sandbox({ scorer: async (t, ctx) => ({ score: 71, extra: { ensembleData: { ensembleSource: 'ensemble-majority' }, llmScore: { score: 71 } } }) });
+  try {
+    await s.run();
+    const doc = JSON.parse(fs.readFileSync(path.join(s.dir, 'reviews.json'), 'utf8'));
+    const withText = doc.reviews.filter((r) => r.fullText);
+    assert.ok(withText.length > 10);
+    assert.ok(withText.every((r) => r.assignedScore === 71 && r.ensembleData.ensembleSource === 'ensemble-majority' && r.llmScore.score === 71));
+  } finally { s.cleanup(); }
+});
+
+test('the scorer is told the show title and market context', async () => {
+  const ctxs = [];
+  const s = sandbox({ scorer: async (t, ctx) => { ctxs.push(ctx); return { score: 70 }; } });
+  try {
+    await s.run();
+    assert.ok(ctxs.length > 10);
+    assert.ok(ctxs.every((c) => c.showTitle === s.fixture.show.title && c.showId === s.fixture.show.id && c.url));
+  } finally { s.cleanup(); }
+});
+
+test('a hard paywall (403) with an aggregator thumb takes the fallback score at once; exhausted fetch retries with a thumb fall back too, with the failures on record', async () => {
+  const probe = sandbox();
+  const nytKey = discovery.canonicalUrl(probe.fixture.reviews.find((r) => r.outletId === 'nytimes').url);
+  probe.cleanup();
+  {
+    // 403 on the NYT page: the fixture's NYT review carries a thumb.
+    const s403 = sandbox();
+    try {
+      const sc = inl.createInlineScoring({
+        show: s403.fixture.show, night: s403.fixture.night, ledgerDir: s403.ledgerDir, now: s403.now,
+        fetchPage: async () => { const e = new Error('HTTP 403 Forbidden'); e.status = 403; throw e; },
+        extractArticle: () => null, aggregatorFor: () => ({ thumb: 'Up' }), scoreText: async () => ({ score: 70 }),
+      });
+      const out = await sc.fetchReview({ key: nytKey, url: 'https://www.nytimes.com/x' });
+      assert.equal(out.fullText, '');
+      assert.equal(out.fallbackReason, 'paywall');
+      const f = lf.readFailures(s403.ledgerDir, s403.fixture.show.id, s403.fixture.night).failures;
+      assert.equal(f.length, 1);
+      assert.match(f[0].reason, /paywall: using the aggregator score/);
+      assert.equal(f[0].terminal, false);
+    } finally { s403.cleanup(); }
+    // Retries exhausted on a 503: fallback again, never a rejection.
+    const s503 = sandbox();
+    try {
+      const clock = { v: s503.now() };
+      const sc = inl.createInlineScoring({
+        show: s503.fixture.show, night: s503.fixture.night, ledgerDir: s503.ledgerDir, now: () => clock.v,
+        fetchPage: async () => { throw new Error('503'); }, extractArticle: () => null, aggregatorFor: () => ({ stars: 4 }), scoreText: async () => ({ score: 70 }),
+        retryMs: [10, 10],
+      });
+      const cand = { key: nytKey, url: 'https://www.nytimes.com/x' };
+      let out = null;
+      for (let i = 0; i < 6 && !out; i++) { clock.v += 1000; try { out = await sc.fetchReview(cand); } catch (e) { assert.ok(e instanceof inl.LaneRetryError, e.message); } }
+      assert.equal(out.fallbackReason, 'fetch-exhausted');
+      assert.equal(lf.readFailures(s503.ledgerDir, s503.fixture.show.id, s503.fixture.night).failures.filter((x) => x.reviewKey === nytKey).length, 3);
+    } finally { s503.cleanup(); }
+  }
+});
+
+test('a score retry never fetches the page again, and a backed-off score is not re-fetched before its time', async () => {
+  const probe = sandbox();
+  const key = roundupKeys(probe.fixture)[8];
+  probe.cleanup();
+  const s = sandbox({ failScore: { [key]: 2 } });
+  try {
+    const res = await s.run();
+    assert.deepEqual(res.failed, []);
+    assert.equal(s.calls.fetch.filter((c) => c.k === key).length, 1, 'one fetch for three scoring attempts');
+    assert.equal(s.calls.score.filter((c) => c.k === key).length, 3);
+  } finally { s.cleanup(); }
+});
+
+test('one transient failure still gets the review scored within 5 minutes of being seen', async () => {
+  const probe = sandbox();
+  const key = roundupKeys(probe.fixture)[3];
+  probe.cleanup();
+  const s = sandbox({ failFetch: { [key]: 1 } });
+  try {
+    await s.run();
+    const events = ledger.readLedger(s.ledgerDir, s.fixture.show.id, s.fixture.night).events;
+    const st = ledger.reviewStates(events).find((r) => r.reviewKey === key);
+    assert.ok(Date.parse(st.firstAt.scored) - Date.parse(st.firstAt.discovered) < 5 * 60 * 1000);
+  } finally { s.cleanup(); }
+});
+
+test('a restarted lane keeps its retry state: attempts carry over and a terminal verdict stays terminal', async () => {
+  const probe = sandbox();
+  const key = roundupKeys(probe.fixture)[6];
+  probe.cleanup();
+  const s = sandbox({ failFetch: { [key]: 99 } });
+  try {
+    const first = await s.run();
+    assert.equal(first.failed.length, 1);
+    const before = s.calls.fetch.filter((c) => c.k === key).length;
+    // "Restart": a brand-new scoring object over the same ledger dir.
+    const again = inl.createInlineScoring({
+      show: s.fixture.show, night: s.fixture.night, ledgerDir: s.ledgerDir, now: s.now, fetchPage: async () => { throw new Error('should not be called'); },
+      extractArticle: () => null, scoreText: async () => ({ score: 1 }),
+    });
+    await assert.rejects(again.fetchReview({ key, url: 'https://example.com/x' }), (e) => e.permanent === true && /failed for good earlier/.test(e.message));
+    assert.equal(s.calls.fetch.filter((c) => c.k === key).length, before, 'no further fetches for a terminal review');
+  } finally { s.cleanup(); }
 });
 
 test('lane-failures: strict about its input, tolerant of a torn last line, and unresolved() keeps terminal and unscored', () => {

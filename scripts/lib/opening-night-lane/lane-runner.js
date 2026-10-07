@@ -38,7 +38,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  * @param {object} args
  *   show {id,title}, night, openingDate, timeZone?, adapters[], fetchText(url), ledgerDir,
  *   fetchReview(candidate) -> {outletId?, outlet, criticName, fullText, aggregator?, publishDate?}   (throws to retry)
- *   scoreReview(row, fetched) -> number   (called only for rows without a fallback score)
+ *   scoreReview(row, fetched) -> number | {score, extra}   (called only for rows without a fallback score; `extra` fields are merged into the row)
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
  *   dryRun?, onDiskUrls?, now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs
@@ -110,7 +110,9 @@ async function runLaneNight({
           outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {},
         });
-        if (row.assignedScore == null) { await wait(latency.scoreMs || 0); row.assignedScore = await scoreReview(row, fetched); }
+        if (row.assignedScore == null) { await wait(latency.scoreMs || 0); const scored = await scoreReview(row, fetched);
+          if (scored && typeof scored === 'object') { Object.assign(row, scored.extra || {}); row.assignedScore = scored.score; } else row.assignedScore = scored;
+        }
         row.contentTier = row.isFullReview ? 'complete' : 'stub';
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
         pending.push({ key: a.key, row });
