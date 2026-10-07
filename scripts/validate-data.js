@@ -63,7 +63,8 @@ const { isBroadwayCategory, isMisCategorisedNonNycRow, isUnreviewedNonTheatreRow
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { detectRefusalPattern } = require('./lib/synopsis-validation');
+const { detectRefusalPattern, SCRAPED_PAGE_CHROME_RE } = require('./lib/synopsis-validation');
+const { checkAwardClaims, findSharedSentences, loadAwardsByShow } = require('./lib/synopsis-fact-check');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { isNonTheatricalGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { looksLikeUrlCriticName } = require('./lib/byline-normalization');
@@ -1519,6 +1520,8 @@ function validateShowTypes(shows) {
 function validateSynopsisQuality(shows) {
   info('Checking synopsis quality...');
   let issues = 0;
+  const awardsByShow = loadAwardsByShow();
+  const showsById = Object.fromEntries(shows.map(s => [s.id, s]));
 
   const accessibilityPattern = /\bwheelchair\b|\bhearing assist\b|\belevator access\b|\baccessible seating\b|\bada seating\b|\brestrooms\b|\bclosed captioning\b|\bassistive listening\b/i;
 
@@ -1574,6 +1577,26 @@ function validateSynopsisQuality(shows) {
       warn(`Show "${show.title}" (${show.id}) synopsis is a song list, not a plot summary`);
       issues++;
     }
+
+    // Scraped page chrome (cookie banner) saved as the synopsis — BRO-4853.
+    if (SCRAPED_PAGE_CHROME_RE.test(show.synopsis)) {
+      warn(`Show "${show.title}" (${show.id}) synopsis is scraped page chrome (cookie banner / JS notice)`);
+      issues++;
+    }
+
+    // Tony category claim ("won Best Play revival") not backed by awards.json for
+    // the show or its lineage — BRO-4853 (Other Desert Cities, Fela!). Advisory
+    // until the sweep is clean (CLAUDE.md §19), then promote to error().
+    for (const claim of checkAwardClaims(show, { awardsByShow, showsById }).unsupported) {
+      warn(`Show "${show.title}" (${show.id}) synopsis claims a Tony win for Best ${claim.category} that awards.json does not show: "${claim.sentence.slice(0, 90)}"`);
+      issues++;
+    }
+  }
+
+  // One long sentence on unrelated titles = a synopsis landed on the wrong show.
+  for (const hit of findSharedSentences(shows)) {
+    warn(`Synopsis sentence shared by unrelated shows (${hit.ids.join(', ')}): "${hit.sentence.slice(0, 80)}"`);
+    issues++;
   }
 
   if (issues === 0) {

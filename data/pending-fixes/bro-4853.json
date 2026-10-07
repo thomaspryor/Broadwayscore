@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-4853",
+  "planId": "a62e9b40-1bec-43af-85e9-5a19832407ba",
+  "status": "pending",
+  "createdAt": "2026-10-07T23:09:16.797Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Synopsis sweep (BRO-4853, owner request 2026-10-07). Other Desert Cities carried a false Tony claim copied from Show Score; a site-wide audit found 7 more bad synopses: Fela! (1776 text), The Great Society (Great Comet text), and 5 cookie-banner records.",
+    "steps": [
+      "Rewrite the Other Desert Cities (2026), Fela! and The Great Society synopses from sourced facts",
+      "Clear the 5 cookie-banner synopses"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "other-desert-cities-2026",
+        "field": "synopsis",
+        "oldValue": "A Tony Award-winning family drama revival about memory, loyalty, and a memoir that threatens to expose the past. Other Desert Cities is set on Christmas Eve in a Palm Springs home, where the Wyeth family—politically connected and outwardly composed—is upended when a daughter returns with a memoir threatening to bring long-buried secrets into the open. What follows is a confrontation between memory, loyalty, and legacy, as old wounds resurface and the family is forced to reckon with competing claims over their shared history and who has the right to tell it. Written by Jon Robin Baitz, the play originally won the Tony Award for Best Play revival and returns to Broadway in a new production directed by John Benjamin Hickey. The cast is led by Julia Louis-Dreyfus (Veep, Seinfeld), Ed Harris...",
+        "newValue": "Jon Robin Baitz's family drama is set on Christmas Eve 2004 in the Palm Springs home of Polly and Lyman Wyeth, a politically connected couple. When their daughter Brooke returns after years away with a memoir that revisits a family tragedy, the Wyeths are forced to reckon with competing versions of their shared past. The 2011 Broadway production was a finalist for the Pulitzer Prize for Drama, earned five Tony nominations including Best Play, and won the Tony for Best Featured Actress in a Play. John Benjamin Hickey directs this revival at the Hudson Theatre.",
+        "description": "Show Score blurb said the play 'originally won the Tony Award for Best Play revival'. The 2011 production was a new play: 5 Tony nominations incl. Best Play, 1 win (Featured Actress), Pulitzer finalist (awards.json; Wikipedia 'Other Desert Cities')."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fela-2009",
+        "field": "synopsis",
+        "oldValue": "What will it take to get two dozen powerfully passionate, exceedingly complicated, and all-too-human individuals to settle their differences, while they hold the very future of a nation in their hands? This Tony Award-winning Best Musical is tuneful, witty, and constantly surprising, especially in this revolutionary new production from directors Jeffrey L. Page and Diane Paulus. You may never think about our country—who we are and why—the same way again.",
+        "newValue": "Fela! is a musical based on the life of Nigerian composer and activist Fela Anikulapo Kuti, with a book by Bill T. Jones and Jim Lewis. It portrays Kuti at his Lagos nightclub, The Shrine, as government soldiers move to end his public performances, and it is built on his Afrobeat music. The Broadway production at the Eugene O'Neill Theatre received eleven Tony nominations in 2010 and won for Best Choreography, Best Costume Design of a Musical and Best Sound Design of a Musical.",
+        "description": "Record held the 1776 revival's text ('two dozen ... individuals', 'Jeffrey L. Page and Diane Paulus') and called Fela! a 'Tony Award-winning Best Musical'. Replaced from Wikipedia 'Fela!' (Tonys: Choreography, Costume Design, Sound Design; no Best Musical win)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-society-2019",
+        "field": "synopsis",
+        "oldValue": "Natasha, Pierre & The Great Comet of 1812 (or simply The Great Comet) is a sung-through musical adaptation of a 70-page segment from Leo Tolstoy's 1869 novel War and Peace. The show was written by composer, lyricist, playwright, orchestrator Dave Malloy and originally directed by Rachel Chavkin.",
+        "newValue": "Robert Schenkkan's sequel to All the Way follows President Lyndon Baines Johnson through the years after his landslide election, as he drives the Great Society programs and the Voting Rights Act while the Vietnam War and the civil rights movement pull his presidency apart. Brian Cox stars as Johnson in Bill Rauch's production at Lincoln Center's Vivian Beaumont Theater.",
+        "description": "Record held the Wikipedia lede for Natasha, Pierre & The Great Comet of 1812 (wrong-article match). Replaced using Wikipedia (Schenkkan, Rauch: 'Schenkkan's All The Way sequel The Great Society') and the record's own cast/director/venue."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "magic-mike-live-west-end-2021",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wicked-west-end-2021",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alice-in-wonderland-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unfortunate-the-untold-story-of-ursula-the-sea-witch-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jasmines-demo-show-4-the-end-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "We use cookies to personalise your experience, including improving the quality of your show recommendations. By clicking \"accept all\", you consent to our cookie policy.",
+        "newValue": null,
+        "description": "Synopsis was a cookie-consent banner scraped from a ticketing page. Cleared so a validated source can refill it (scrapers now reject page chrome)."
+      }
+    ]
+  }
+}
