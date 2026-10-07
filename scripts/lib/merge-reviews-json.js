@@ -45,7 +45,7 @@
 //
 // Merge rules:
 //   * shape: { _meta, reviews: [...] }
-//   * identity: showId + outlet(lower/trim) + criticKey(criticName) — reuses
+//   * identity: showId + outletKey(outlet) slug + criticKey(criticName) — reuses
 //     manual-entry-merge.js's criticKey() (punctuation/diacritic-insensitive)
 //     rather than a plain lower/trim key (rebuild's own pass-2 dedup key),
 //     because manual-entry-merge.js exists specifically to bridge byline
@@ -133,7 +133,9 @@ function tierRank(review) {
 /** Outlet identity for matching: a slug, so the display name and the slug a
  * different writer stamped ("Manic Mumdays" vs "manic-mumdays") are the same
  * outlet. Lower/trim alone kept both rows on a concurrent push and the
- * duplicate redded main's getReviewKey collision test (BRO-4829). */
+ * duplicate redded main's getReviewKey collision test (BRO-4829). Keyed on the
+ * NAME, not outletId: manual-entry-merge.js documents outletId drift for one
+ * outlet (suntimes vs chicago-sun-times) that a name key still unifies. */
 function outletKey(outlet) {
   const slug = String(outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   return slug || 'unknown';

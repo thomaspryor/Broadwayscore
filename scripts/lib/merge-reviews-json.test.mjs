@@ -39,8 +39,8 @@ test('keyOf: outlet display name and its slug are one outlet (BRO-4829 Manic Mum
 });
 
 test('mergeReviewsJson: concurrent writers stamping display name vs slug merge to ONE row (BRO-4829)', () => {
-  const ours = { _meta: { lastUpdated: '2026-10-07T02:34:00Z' }, reviews: [review({ outlet: 'Manic Mumdays', criticName: 'Cassie' })] };
-  const remote = { _meta: { lastUpdated: '2026-10-07T02:30:00Z' }, reviews: [review({ outlet: 'manic-mumdays', criticName: 'Cassie' })] };
+  const ours = { _meta: { lastUpdated: '2026-10-07T02:34:00Z' }, reviews: [review({ outlet: 'Manic Mumdays', outletId: undefined, criticName: 'Cassie' })] };
+  const remote = { _meta: { lastUpdated: '2026-10-07T02:30:00Z' }, reviews: [review({ outlet: 'manic-mumdays', outletId: 'suntimes-style-drift', criticName: 'Cassie' })] };
   const { merged } = mergeReviewsJson(ours, remote);
   assert.equal(merged.reviews.length, 1);
   assert.equal(merged.reviews[0].outlet, 'Manic Mumdays');
