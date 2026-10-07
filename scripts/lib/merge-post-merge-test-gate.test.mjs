@@ -751,7 +751,7 @@ test('every top-level sibling require() of the gate is copied into the bash harn
   const harness = fs.readFileSync(path.join(lib, 'merge-worktree-to-main.post-merge-test-gate.test.sh'), 'utf8');
   const siblings = [...gateSrc.matchAll(/^const [^=]+= require\('\.\/([^']+)'\);/gm)].map((m) => m[1]);
   assert.ok(siblings.length >= 3, `expected top-level sibling requires, got ${siblings.join(', ')}`);
-  assert.deepEqual(siblings.filter((f) => !harness.includes(`scripts/lib/${f}`)), []);
+  assert.deepEqual(siblings.filter((f) => !harness.includes(`cp "$REPO_ROOT/scripts/lib/${f}"`)), []);
 });
 
 test('REQUIRED_WORKFLOW_GUARDS: the dependency validator is selected even with no manifest (BRO-4812)', () => {
