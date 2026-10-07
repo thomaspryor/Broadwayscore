@@ -1,35 +1,22 @@
 {
-  "generatedAt": "2026-10-06T14:00:15.645Z",
+  "generatedAt": "2026-10-07T09:04:33.461Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "02d36671078d25c239b5c9474b949bf693c0bc4f",
-  "state": "RED",
-  "consecutiveFailures": 55,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "2abf680148b8a6e83bde0c8a9997e811554610a7",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 9,
+  "greenSince": "2026-10-07T04:15:06Z",
+  "greenForHours": 4.8242947222222226,
   "greenDurationIsFloor": false,
-  "redSince": "2026-02-04T18:18:21Z",
-  "redForHours": 5851.6985125,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-02-04T15:43:51Z",
-  "latestFailedRunId": "21754493761",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/21754493761",
-  "decidedRuns": 69,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": []
-    },
-    {
-      "name": "E2E Tests",
-      "steps": []
-    },
-    {
-      "name": "Test Summary",
-      "steps": []
-    }
-  ],
+  "lastSuccessAt": "2026-10-07T07:58:15Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 99,
+  "failingJobs": [],
   "failingPaths": [],
-  "topFailingJob": "E2E Tests"
+  "topFailingJob": null
 }
