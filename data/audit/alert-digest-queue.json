@@ -1638,5 +1638,34 @@
       }
     ],
     "queuedAt": "2026-10-07T15:46:21.299Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-bro-4842-tm-gap",
+    "title": "Landing blocked: merged-tree-tests red on land/worktree-bro-4842-tm-gap",
+    "description": "land.yml did not land land/worktree-bro-4842-tm-gap: the merged-tree-tests gate went red at 029618775b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-bro-4842-tm-gap @ 029618775b (origin/land/worktree-bro-4842-tm-gap) → origin/main @ 8a57654f60 [land] attempt 1/3: rebased onto 8a57654f60, 1 file(s) changed — running checks [land] verified-base: main moved bd3a08836e → 8a57654f60 across 75 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] ch Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37641528220",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-bro-4842-tm-gap"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "029618775b70bc800ee43b430c51d2622567a501"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37641528220"
+      }
+    ],
+    "queuedAt": "2026-10-07T15:40:19.659Z"
   }
 ]
