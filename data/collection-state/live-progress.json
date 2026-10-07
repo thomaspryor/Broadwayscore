@@ -1,31 +1,43 @@
 {
-  "updatedAt": "2026-10-07T16:35:18.086Z",
-  "processed": 55,
-  "failed": 25,
-  "successRate": "68.8%",
+  "updatedAt": "2026-10-07T16:47:39.527Z",
+  "processed": 258,
+  "failed": 147,
+  "successRate": "63.7%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 151,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 5,
-    "brightdata": 0,
+    "scrapingdog": 33,
+    "scrapingbee": 23,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 46
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-07T16:34:59.935Z",
+      "t": "2026-10-07T15:09:20.485Z",
       "event": "bb-session",
-      "session": "82e07caf",
-      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-"
+      "session": "f1fd4309",
+      "url": "https://deadline.com/2026/10/anthony-mackie-macbeth-broadway-avengers-star-12371"
     },
     {
-      "t": "2026-10-07T16:35:00.525Z",
+      "t": "2026-10-07T15:25:44.572Z",
+      "event": "bb-session",
+      "session": "2d649c5c",
+      "url": "https://www.wsj.com/articles/the-winters-tale-review-a-hungry-bear-and-free-shak"
+    },
+    {
+      "t": "2026-10-07T15:25:45.105Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-07T15:27:12.546Z",
+      "event": "bb-session",
+      "session": "0e33e3eb",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
