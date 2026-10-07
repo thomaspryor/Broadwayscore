@@ -53,18 +53,6 @@
     "queuedAt": "2026-10-06T13:58:04.327Z"
   },
   {
-    "conditionKey": "star-band:regressions",
-    "title": "Star-band detector: 18 review(s) flagged for anchored re-score",
-    "description": "{\"out-of-band\":18} across the whole corpus, by market {\"broadway\":4,\"west-end\":14}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [out-of-band] topdog-underdog-2022/nysr--melissa-rose-bernardo.json 4/5 stars band 71-90 score 96\n- [out-of-band] a-dolls-house-part-2-2017/ew--maya-stanton.json A- band 83-88 score 91\n- [out-of-band] book-of-mormon-2011/ew--lisa-schwarzbaum.json A band 89-94 score 75\n- [out-of-band] magic-mike-live-west-end-2021/i-paper--fiona-mountford.json 2/5 band 31-50 score 17\n- [out-of-band] the-producers-west-end-2025/artsdesk--unknown.json 5/5 stars band 91-100 score 70\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json 2/5 band 31-50 score 91\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/i-paper--fiona-mountford.json 4/5 band 71-90 score 64\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json 4/5 stars band 71-90 score 96\n- [out-of-band] stranger-things-the-first-shadow-west-end-2023/broadwayworld--aa-cristi.json 7.8/10 stars band 71-90 score 95\n- [out-of-band] the-phantom-of-the-opera-west-end-1986/london-theatre--julia-rank.json 3/5 band 51-70 score 87",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-06T14:36:11.815Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-4786-muwt2lon",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4786-muwt2lon",
     "description": "land.yml did not land land/job/linear-BRO-4786-muwt2lon: the unit-tests-node gate went red at 5f70d48aec. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37487992073",
@@ -1206,27 +1194,6 @@
     "queuedAt": "2026-10-07T13:16:30.397Z"
   },
   {
-    "conditionKey": "mezzanine:session-token-expired",
-    "title": "Mezzanine Scraper Failed — Session Token Expired",
-    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37631418132",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Action Required",
-        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37631418132)"
-      }
-    ],
-    "queuedAt": "2026-10-07T13:48:53.395Z"
-  },
-  {
     "conditionKey": "corpus-drift:duplicate-shows",
     "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
     "description": "check-corpus-drift.js audit \"duplicate-shows\" (node scripts/audit-duplicate-shows.js --strict) has been drifting. Latest output:\n\nFound 3 duplicate-show cluster(s), 3 pair(s) (baselined: 0, new: 3):\n\n  [incomplete-stub] jane eyre|2026\n    jane-eyre-off-west-end-2026  (Southwark Playhouse Elephant, 48 review files)\n    jane-eyre-rose-kingston-off-west-end-2026  (Rose Theatre Kingston, 0 review files)\n  [incomplete-stub] fly you fools|2026\n    fly-you-fools-off-broadway-2026  (SoHo Playhouse, 1 review files)\n    fly-you-fools-off-west-end-2026  (Southwark Playhouse, 0 review files)\n  [incomplete-stub] triumph|2026\n    triumph-off-west-end-2026  (Almeida Theatre, 0 review files)\n    triumph-off-broadway-2026  (The Public Theater, 0 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [incomplete-stub] jane eyre|2026: jane-eyre-off-west-end-2026 <-> jane-eyre-rose-kingston-off-west-end-2026\n  [incomplete-stub] fly you fools|2026: fly-you-fools-off-broadway-2026 <-> fly-you-fools-off-west-end-2026\n  [incomplete-stub] triumph|2026: triumph-off-west-end-2026 <-> triumph-off-broadway-2026\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
@@ -1766,5 +1733,38 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-07T22:35:00.974Z"
+  },
+  {
+    "conditionKey": "mezzanine:session-token-expired",
+    "title": "Mezzanine Scraper Failed — Session Token Expired",
+    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37699361914",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Action Required",
+        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37699361914)"
+      }
+    ],
+    "queuedAt": "2026-10-07T22:57:44.632Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 14 review(s) flagged for anchored re-score",
+    "description": "{\"false-truncation\":6,\"clobbered\":8} across the whole corpus, by market {\"broadway\":5,\"west-end\":9}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [false-truncation] the-mystery-of-edwin-drood-1985/amny--matt-windman.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] magic-mike-live-west-end-2021/the-sun--lyndsey-clarke.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] magic-mike-live-west-end-2021/guardian--tanya-gold.json score 47 scored with a truncation warning on a complete-tier text\n- [false-truncation] six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json score 96 scored with a truncation warning on a complete-tier text\n- [false-truncation] inter-alia-west-end-2026/london-box-office--stuart-king.json score 82 scored with a truncation warning on a complete-tier text\n- [false-truncation] the-price-off-west-end-2026/london-box-office--stuart-king.json score 76 scored with a truncation warning on a complete-tier text\n- [clobbered] equus-west-end-2026/thereviewshub--the-reviews-hub-london.json commit c863fe428 scoring stamp 2026-10-07T17:06:50.488Z -> 2026-10-07T17:06:50.487Z\n- [clobbered] soldiers-of-tomorrow-off-west-end-2026/thereviewshub--john-cutler.json commit c863fe428 scoring stamp 2026-10-07T16:55:22.846Z -> 2026-10-07T16:55:22.845Z\n- [clobbered] cleansed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json commit f1c12a2b8 scoring stamp 2026-10-07T15:39:41.858Z -> 2026-10-07T15:39:41.857Z\n- [clobbered] cost-of-living-2022/timeout--adam-feldman.json commit f1c12a2b8 scoring stamp 2026-07-21T16:24:58.048Z -> 2026-07-21T16:24:58.047Z",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T23:22:53.178Z"
   }
 ]
