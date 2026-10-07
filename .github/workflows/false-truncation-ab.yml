@@ -1,0 +1,101 @@
+name: False-truncation A/B (BRO-4804)
+
+# Manual only. llm-scoring/index.ts skips its A/B gate for --needs-rescore runs, so this
+# measures the section-13 gate (bucket share move under 5 points, mean drift under 5 points)
+# for the BRO-4804 rescore from the files themselves.
+#   snapshot  record score/bucket/confidence of every file flagged false-truncation-warning
+#             (run after the flag run, BEFORE the drain); uploads artifact ab-before
+#   compare   compare the same files now against the snapshot of run before_run_id
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'snapshot | compare'
+        required: true
+        default: 'snapshot'
+        type: string
+      before_run_id:
+        description: 'compare only: run id of the snapshot run'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: false-truncation-ab
+  cancel-in-progress: false
+
+jobs:
+  ab:
+    name: False-truncation A/B
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Validate inputs
+        env:
+          MODE: ${{ inputs.mode }}
+          BEFORE: ${{ inputs.before_run_id }}
+        run: |
+          case "$MODE" in snapshot|compare) ;; *) echo "::error::mode must be snapshot|compare"; exit 1 ;; esac
+          if [ "$MODE" = "compare" ]; then
+            case "$BEFORE" in ''|*[!0-9]*) echo "::error::compare needs a numeric before_run_id"; exit 1 ;; esac
+          fi
+
+      - name: Download snapshot
+        if: inputs.mode == 'compare'
+        uses: actions/download-artifact@v5
+        with:
+          name: ab-before
+          path: ab
+          run-id: ${{ inputs.before_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Snapshot
+        if: inputs.mode == 'snapshot'
+        run: |
+          mkdir -p ab
+          node scripts/report-false-truncation-ab.js --snapshot=ab/before.json | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload snapshot
+        if: inputs.mode == 'snapshot'
+        uses: actions/upload-artifact@v5
+        with:
+          name: ab-before
+          path: ab/before.json
+          retention-days: 30
+
+      - name: Compare
+        if: inputs.mode == 'compare'
+        run: |
+          status=0
+          node scripts/report-false-truncation-ab.js --before=ab/before.json --json=ab/result.json | tee -a "$GITHUB_STEP_SUMMARY" || status=$?
+          exit "$status"
+
+      - name: Notify on failure
+        if: failure() && inputs.mode == 'snapshot'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'False-truncation A/B snapshot failed'
+          severity: 'warning'
