@@ -1730,6 +1730,8 @@ on:
       # one candidate state. It never fails a job itself, so its own test is the
       # only thing that can catch it regressing into silence.
       - 'scripts/report-stateless-candidates.js'
+      # BRO-4804: false-truncation A/B report, covered by tests/unit/report-false-truncation-ab.test.mjs
+      - 'scripts/report-false-truncation-ab.js'
       - 'tests/unit/stateless-candidates.test.mjs'
       # Canonical "does this show have a usable image?" predicate. A phantom
       # /images/ path (in shows.json with no file behind it) is truthy, which is
