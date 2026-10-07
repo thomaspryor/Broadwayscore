@@ -21,6 +21,8 @@
  * goes through fetchPage, root CLAUDE.md "Web Scraping") and the article extractors lazily, so requiring this module
  * never loads a scraper.
  */
+// venue-write-guard-ok: `venue` here is read-only scoring context copied from the show record to the scorer's input;
+// nothing in this file writes a venue to a data file.
 const failures = require('./lane-failures');
 const trust = require('./trust-model');
 const { canonicalUrl } = require('./discovery');
