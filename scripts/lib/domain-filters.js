@@ -276,6 +276,9 @@ const PR_FIRM_DOMAINS = new Set([
 // whatever the SERP will give it, so this set should be expected to grow.
 const UGC_PLATFORM_DOMAINS = new Set([
   'vocal.media',
+  // Customer-review platforms: a Trustpilot review of a ticket seller was
+  // submitted as an Affluenza "review" (BRO-4838, 2026-10-07).
+  'trustpilot.com', 'reviews.io', 'feefo.com', 'sitejabber.com',
 ]);
 
 // Content-farm look-alikes (BRO-4419): hosts whose name imitates a real outlet
