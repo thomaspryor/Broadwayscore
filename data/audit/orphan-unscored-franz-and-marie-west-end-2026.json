@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "franz-and-marie-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-07T02:19:51.886Z",
+  "detectedAt": "2026-10-07T02:30:10.013Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -23,23 +23,6 @@
       "eligibilityReason": null
     },
     {
-      "file": "rhombus-rota--gonzalo.json",
-      "outletId": "rhombus-rota",
-      "criticName": "Gonzalo",
-      "url": "https://rhombusrota.co.uk/2026/10/06/franz-marie-at-charing-cross-theatre-review/",
-      "fullTextLen": 3181,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
       "file": "whatnightout--unknown.json",
       "outletId": "whatnightout",
       "criticName": "Unknown",
@@ -57,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
