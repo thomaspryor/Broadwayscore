@@ -2,18 +2,18 @@
   "version": 1,
   "showId": "boop-tour-2026",
   "openingDate": "2026-10-03",
-  "detectedAt": "2026-10-07T19:48:47.265Z",
+  "detectedAt": "2026-10-07T21:17:04.271Z",
   "windowDays": 7,
   "orphans": [
     {
-      "file": "yahoo--wroc-rochester.json",
-      "outletId": "yahoo",
-      "criticName": "Wroc Rochester",
-      "url": "https://www.yahoo.com/news/videos/boop-musical-launches-national-tour-225924439.html",
-      "fullTextLen": 568,
-      "dispatchActionable": false,
-      "skipReason": "terminal_text_gate_block",
-      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "file": "rochesterfirst--sarah-zimmerman.json",
+      "outletId": "rochesterfirst",
+      "criticName": "Sarah Zimmerman",
+      "url": "https://www.rochesterfirst.com/arts/boop-the-musical-launches-national-tour-in-rochester/",
+      "fullTextLen": 1141,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-07T21:17:04.271Z"
 }
