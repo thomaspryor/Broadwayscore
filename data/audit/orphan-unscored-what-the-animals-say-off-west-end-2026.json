@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "what-the-animals-say-off-west-end-2026",
   "openingDate": "2026-10-02",
-  "detectedAt": "2026-10-07T09:43:36.850Z",
+  "detectedAt": "2026-10-07T09:58:02.766Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "theartsdispatch--the-arts-dispatch.json",
-      "outletId": "theartsdispatch",
-      "criticName": "The Arts Dispatch",
-      "url": "https://theartsdispatch.substack.com/p/what-the-animals-say-review-finborough",
-      "fullTextLen": 2324,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-07T09:43:36.850Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
