@@ -14,7 +14,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { wetPostTitleMatchesShow } = require('./wet-roundup-discover.js');
+const { wetPostTitleMatchesShow, parseWetRenderedBlocks } = require('./wet-roundup-discover.js');
+const { extractSectionReviews } = require('../scrape-westendtheatre-roundups.js');
 
 test('substring collisions no longer match (the Man to Man incident)', () => {
   assert.equal(wetPostTitleMatchesShow(
@@ -85,4 +86,39 @@ test('an "&"-led title does not match inside another title', () => {
   assert.equal(wetPostTitleMatchesShow('Romeo and Juliet reviews at the Harold Pinter', '& Juliet'), false);
   assert.equal(wetPostTitleMatchesShow('& Juliet reviews round-up at the Shaftesbury Theatre in London', '& Juliet'), true);
   assert.equal(wetPostTitleMatchesShow('Review: & Juliet at the Shaftesbury', '& Juliet'), true);
+});
+
+// --- Rendered-page block scoping (BRO-4851) ---------------------------------
+// The FT block has no byline and no link. Before the fix, unbounded nextAll()
+// gave it the Guardian's critic and the Guardian's URL.
+const BLEED_HTML = `
+  <div>
+    <p class="reviewnewpubhead">Financial Times</p>
+    <p class="reviewnewstars">★★★</p>
+    <p class="reviewnewquote">"A handsome but chilly revival"</p>
+    <p class="reviewnewpubhead">The Guardian</p>
+    <p class="reviewnewstars">★★★★</p>
+    <p class="reviewnewquote">"Mark Rylance is magnificent"</p>
+    <p class="reviewnewauthor">Arifa Akbar</p>
+    <a href="https://www.theguardian.com/stage/2024/oct/07/juno-and-the-paycock-review">read</a>
+  </div>`;
+
+test("parseWetRenderedBlocks: a block without byline/link does not borrow the next outlet's", () => {
+  const rows = parseWetRenderedBlocks(BLEED_HTML);
+  assert.deepEqual(rows, [
+    { outlet: 'Financial Times', stars: 3, critic: 'Unknown', url: '' },
+    { outlet: 'The Guardian', stars: 4, critic: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2024/oct/07/juno-and-the-paycock-review' },
+  ]);
+});
+
+test('extractSectionReviews (scrape-westendtheatre-roundups): same block scoping for critic, quote and URL', () => {
+  const rows = extractSectionReviews(BLEED_HTML);
+  const ft = rows.find(r => r.outlet === 'Financial Times');
+  const g = rows.find(r => r.outlet === 'The Guardian');
+  assert.equal(ft.critic, null);
+  assert.equal(ft.reviewUrl, null);
+  assert.match(ft.excerpt, /chilly/);
+  assert.equal(g.critic, 'Arifa Akbar');
+  assert.equal(g.reviewUrl, 'https://www.theguardian.com/stage/2024/oct/07/juno-and-the-paycock-review');
+  assert.match(g.excerpt, /Rylance/);
 });
