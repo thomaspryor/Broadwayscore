@@ -76,8 +76,10 @@ function compare(before, current) {
   const sa = share(done.map(p => p.a));
   const shifts = Object.fromEntries(BUCKETS.map(b => [b, sa[b] - sb[b]]));
   const maxShift = Math.max(...BUCKETS.map(b => Math.abs(shifts[b])));
+  // llmScore.confidence is 'high' | 'medium' | 'low' in real files; plain numbers pass through.
+  const CONF = { high: 3, medium: 2, low: 1 };
   const conf = (rows) => {
-    const v = rows.map(r => r.confidence).filter(x => typeof x === 'number');
+    const v = rows.map(r => (typeof r.confidence === 'number' ? r.confidence : CONF[r.confidence])).filter(x => typeof x === 'number');
     return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null;
   };
   const stillTruncated = (rows) => rows.filter(r => r.textStatus === 'truncated').length;
@@ -90,7 +92,11 @@ function compare(before, current) {
     confBefore: conf(done.map(p => p.b)), confAfter: conf(done.map(p => p.a)),
     truncatedBefore: stillTruncated(done.map(p => p.b)), truncatedAfter: stillTruncated(done.map(p => p.a)),
     bigMoves: big,
-    pass: done.length > 0 && maxShift < SHIFT_LIMIT && Math.abs(meanSigned) < DRIFT_LIMIT,
+    // The rescore must also have cleared the "truncated" text status on at least half of the
+    // files it touched, otherwise the fix did not take effect and stable scores prove nothing.
+    fixTookEffect: done.length > 0 && stillTruncated(done.map(p => p.a)) < stillTruncated(done.map(p => p.b)) * 0.5,
+    pass: done.length > 0 && maxShift < SHIFT_LIMIT && Math.abs(meanSigned) < DRIFT_LIMIT
+      && stillTruncated(done.map(p => p.a)) < stillTruncated(done.map(p => p.b)) * 0.5,
   };
 }
 
@@ -125,6 +131,7 @@ function main() {
   console.log(`Largest bucket share move ${f1(r.maxShift)} pts, limit ${SHIFT_LIMIT}: ${BUCKETS.map(b => `${b} ${r.shifts[b] >= 0 ? '+' : ''}${f1(r.shifts[b])}`).join(', ')}`);
   console.log(`Bucket changed on ${r.changedBucket}; moves of 10+ pts: ${r.bigMoves.length}`);
   console.log(`Mean confidence ${f1(r.confBefore)} -> ${f1(r.confAfter)}; text status truncated ${r.truncatedBefore} -> ${r.truncatedAfter}`);
+  if (r.rescored > 0 && !r.fixTookEffect) console.log('FIX DID NOT TAKE EFFECT: text status is still truncated on most rescored files (is contentTier reaching the scorer?)');
   console.log(r.rescored === 0 ? 'VERDICT: NOT MEASURED (nothing rescored yet)' : r.pass ? 'VERDICT: PASS' : 'VERDICT: FAIL (stop, do not run the bulk wave)');
   if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify(r, null, 1));
   process.exit(r.rescored === 0 ? 1 : r.pass ? 0 : 3);
