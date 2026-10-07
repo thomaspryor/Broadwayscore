@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "slam-frank-off-broadway-2026",
   "openingDate": "2026-10-04",
-  "detectedAt": "2026-10-07T14:39:49.999Z",
+  "detectedAt": "2026-10-07T15:48:13.271Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "theater-mirror--mike-hoban.json",
+      "outletId": "theater-mirror",
+      "criticName": "Mike Hoban",
+      "url": "https://www.theatermirror.net/slam-frank-a-wild-ride-through-identity-politics/",
+      "fullTextLen": 3791,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "timeout--unknown.json",
       "outletId": "timeout",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-07T15:48:13.271Z"
 }
