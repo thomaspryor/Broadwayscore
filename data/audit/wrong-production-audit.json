@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-07T02:04:01.246Z",
+  "timestamp": "2026-10-07T02:20:05.534Z",
   "stats": {
-    "totalReviews": 46725,
-    "alreadyFlagged": 18706,
+    "totalReviews": 46735,
+    "alreadyFlagged": 18711,
     "dateGuardCatches": 271,
-    "directorMismatch": 1339,
-    "tvFilmSignals": 1362,
-    "londonSignals": 1296,
-    "offBroadwaySignals": 510,
+    "directorMismatch": 1341,
+    "tvFilmSignals": 1363,
+    "londonSignals": 1297,
+    "offBroadwaySignals": 511,
     "yearMismatch": 117,
     "noPublishDate": 4307
   },
@@ -127,6 +127,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "broadwayworld--andrew-burrill.json",
+      "score": 89,
       "publishDate": "2026-07-12",
       "url": "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
       "findings": [
@@ -3912,6 +3913,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "maryandblake--blake.json",
+      "publishDate": "2026-10-03",
+      "url": "https://maryandblake.com/why-does-henry-forget-claire-blood-of-my-blood/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "showsnob--matthew-fox.json",
+      "publishDate": "2026-10-02",
+      "url": "https://showsnob.com/outlander-blood-of-my-blood-season-2-episode-3-recap",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -9604,7 +9631,7 @@
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
-      "file": "jacktheladmag--unknown.json",
+      "file": "jacktheladmag--simon-webb.json",
       "score": 81,
       "publishDate": "2026-05-22",
       "url": "https://www.jacktheladmag.com/theatre-reviews/end-of-the-rainbow",
@@ -9745,7 +9772,7 @@
     },
     {
       "showId": "escape-to-margaritaville-2018",
-      "file": "rollingstone--unknown.json",
+      "file": "rollingstone--david-browne.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.rollingstone.com/music/music-features/escape-to-margaritaville-inside-jimmy-buffetts-big-broadway-debut-119100/",
@@ -16612,6 +16639,24 @@
       ]
     },
     {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "manic-mumdays--cassie.json",
+      "publishDate": "2026-10-03",
+      "url": "https://www.manic-mumdays.co.uk/2026/10/03/into-the-woods-noel-coward-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
       "score": 94,
@@ -16790,6 +16835,19 @@
       "score": 83,
       "publishDate": "2025-12-12",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "liamodell--unknown.json",
+      "publishDate": "2026-01-08",
+      "url": "https://liamodell.com/2026/01/08/into-the-woods-review-bridge-theatre-james-lapine-jamie-parker-gracie-mcgonigal-katie-brayben-chumisa-dornford-may-characters-story/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21510,19 +21568,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
-        }
-      ]
-    },
-    {
-      "showId": "mrs-doubtfire-tour-2025",
-      "file": "movieweb--manuel-demegillo.json",
-      "publishDate": "2026-08-29",
-      "url": "https://movieweb.com/mrs-doubtfire-robin-williams-4k-blu-ray/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -28837,6 +28882,7 @@
     {
       "showId": "suffs-tour-2025",
       "file": "chicagotribune--emily-mcclanathan.json",
+      "score": 78,
       "publishDate": "2026-07-10",
       "url": "https://www.chicagotribune.com/2026/07/10/review-suffs-musical-chicago/",
       "findings": [
@@ -32558,6 +32604,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "boston-globe--unknown.json",
+      "score": 37,
       "publishDate": "2026-07-09",
       "url": "https://www.bostonglobe.com/2026/07/10/arts/the-great-gatsby-opera-house/",
       "findings": [
@@ -32590,6 +32637,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "broadwayworld--r-scott-reedy.json",
+      "score": 63,
       "publishDate": "2026-07-13",
       "url": "https://www.broadwayworld.com/boston/article/Review-THE-GREAT-GATSBY-Could-be-Even-Better-with-Less-Pop-More-Punch-20260713",
       "findings": [
@@ -32673,6 +32721,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "next-magazine--neel-modi.json",
+      "score": 62,
       "publishDate": "2026-08-13",
       "url": "https://nextmag.ca/review-glamorous-glitz-distracts-from-class-critique-in-the-great-gatsby/",
       "findings": [
@@ -32700,6 +32749,7 @@
     {
       "showId": "the-great-gatsby-tour-2026",
       "file": "the-globe-and-mail--aisling-murphy.json",
+      "score": 19,
       "publishDate": "2026-08-10",
       "url": "https://www.theglobeandmail.com/culture/stage/article-the-great-gatsby-toronto-review/",
       "findings": [
@@ -38495,6 +38545,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 74,
       "publishDate": "2026-08-20",
       "url": "https://www.sandiegouniontribune.com/2026/08/20/review-water-for-elephants-musical-delivers-on-spectacle/",
       "findings": [
@@ -39804,6 +39855,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "playoffthepage--mary-aalgaard.json",
+      "score": 90,
       "publishDate": "2026-07-11",
       "url": "https://playoffthepage.com/2026/07/review-of-wicked-on-tour-at-the-orpheum-in-mpls-2026/",
       "findings": [
@@ -55840,6 +55892,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "soon-off-broadway-2026",
+      "file": "nick-blaemire--unknown.json",
+      "publishDate": null,
+      "url": "https://www.nick-blaemire.com/soon",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
