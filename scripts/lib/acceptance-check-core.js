@@ -40,6 +40,7 @@ const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 // than a second regex over the command string).
 const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
 const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { refreshDataClone } = require('./data-clone-refresh.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
 // Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
@@ -116,8 +117,11 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   const sha = pinnedSha || execFileSync('git', ['rev-parse', 'origin/main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, encoding: 'utf8' }).trim();
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
+  let dataClone = { status: 'skipped' };
   try {
     execFileSync('git', ['worktree', 'add', '--detach', wt, sha], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    // BRO-4830: refresh the data clone BEFORE it is copied (once per process).
+    dataClone = refreshDataClone(repo);
     // prepareCheckWorkdir resolves the real install root itself now (BRO-3907)
     // — `repo` may be a node_modules-less worktree, same gap this file's
     // resolveInstallRoot() originally closed only for its own caller.
@@ -141,8 +145,10 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // ITS failures, so a checkout can be prepared:true and still be missing a
   // data file a command needs — that residual case still reads as FAIL
   // (Codex, second pass). node_modules is the one that breaks EVERY command.
-  const prepared = fs.existsSync(path.join(wt, 'node_modules'));
-  return { dir, wt, repo, sha, prepared };
+  // BRO-4830: a stale-but-dirty/diverged data clone was copied above; its
+  // results would measure old data, not the card, so report unprepared.
+  const prepared = fs.existsSync(path.join(wt, 'node_modules')) && dataClone.status !== 'unsafe';
+  return { dir, wt, repo, sha, prepared, dataClone };
 }
 
 /**
@@ -170,16 +176,18 @@ function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-chec
   const url = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
   const wt = path.join(dir, 'main');
+  let dataClone = { status: 'skipped' };
   try {
     execFileSync('git', ['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    dataClone = refreshDataClone(repo);
     prepareCheckWorkdir(wt, repo);
   } catch (err) {
     try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
     throw err;
   }
   const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: wt, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
-  const prepared = fs.existsSync(path.join(wt, 'node_modules'));
-  return { dir, wt, repo, sha, prepared, standalone: true };
+  const prepared = fs.existsSync(path.join(wt, 'node_modules')) && dataClone.status !== 'unsafe';
+  return { dir, wt, repo, sha, prepared, dataClone, standalone: true };
 }
 
 /** Best effort: a leftover worktree is picked up by `git worktree prune`. */
@@ -215,7 +223,7 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   const argv = cardCheckArgv(cmd, isSafeCheckCommand);
   if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
   if (!prepared) {
-    return { status: 'unverifiable', detail: 'checkout has no node_modules — any result would measure the environment, not the card' };
+    return { status: 'unverifiable', detail: 'checkout not prepared (no node_modules, or the local data clone is stale and dirty/diverged) — any result would measure the environment, not the card' };
   }
   // BRO-3446: a card's acceptance command can name a path that was never
   // created — a --allow-phantom-path dispatch guess, or a stale reference to

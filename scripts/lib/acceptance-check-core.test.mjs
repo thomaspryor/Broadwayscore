@@ -99,3 +99,100 @@ test('shouldCloneAfterFetchFailure: only the unshallow failure, never pinned or 
   assert.equal(shouldCloneAfterFetchFailure(lock, null), false);
   assert.equal(shouldCloneAfterFetchFailure(null, null), false);
 });
+
+// BRO-4830: the Done gate copies core data out of the local data clone; a
+// stale clone made correct cards fail on old data. Fixture: bare origin +
+// data clone (symlinked into a code repo's data/) so the real helpers run.
+const { makeFreshCheckout, removeCheckout } = require('./acceptance-check-core.js');
+const { refreshDataClone, decideRefresh } = require('./data-clone-refresh.js');
+import { execFileSync } from 'node:child_process';
+
+const sh = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
+const GIT_ID = ['-c', 'user.email=t@t', '-c', 'user.name=t'];
+
+function fixture() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4830-'));
+  const origin = path.join(root, 'origin.git');
+  const seed = path.join(root, 'seed');
+  const dataClone = path.join(root, 'data-clone');
+  const codeOrigin = path.join(root, 'code-origin.git');
+  const repo = path.join(root, 'repo');
+  sh(root, 'init', '--bare', '-b', 'main', origin);
+  sh(root, 'init', '-b', 'main', seed);
+  fs.writeFileSync(path.join(seed, 'shows.json'), '{"v":1}');
+  sh(seed, 'add', '.'); sh(seed, ...GIT_ID, 'commit', '-m', 'v1');
+  sh(seed, 'push', origin, 'main');
+  sh(root, 'clone', origin, dataClone);
+  // code repo whose data/shows.json symlinks into the data clone
+  sh(root, 'init', '--bare', '-b', 'main', codeOrigin);
+  sh(root, 'init', '-b', 'main', repo);
+  fs.writeFileSync(path.join(repo, 'README'), 'x');
+  fs.writeFileSync(path.join(repo, '.gitignore'), 'data/\nnode_modules\n');
+  sh(repo, 'add', '.'); sh(repo, ...GIT_ID, 'commit', '-m', 'init');
+  sh(repo, 'remote', 'add', 'origin', codeOrigin); sh(repo, 'push', 'origin', 'main');
+  fs.mkdirSync(path.join(repo, 'data'));
+  fs.symlinkSync(path.join(dataClone, 'shows.json'), path.join(repo, 'data', 'shows.json'));
+  fs.mkdirSync(path.join(repo, 'node_modules'));
+  const advance = (v) => {
+    fs.writeFileSync(path.join(seed, 'shows.json'), `{"v":${v}}`);
+    sh(seed, ...GIT_ID, 'commit', '-am', `v${v}`); sh(seed, 'push', origin, 'main');
+  };
+  return { root, repo, dataClone, advance };
+}
+
+function copiedShows(co) { return fs.readFileSync(path.join(co.wt, 'data', 'shows.json'), 'utf8'); }
+
+test('BRO-4830: stale-but-clean data clone is fast-forwarded BEFORE the copy', () => {
+  const f = fixture();
+  try {
+    f.advance(2);
+    const co = makeFreshCheckout({ repo: f.repo, prefix: 'bro4830-co-' });
+    try {
+      assert.equal(copiedShows(co), '{"v":2}');
+      assert.equal(co.dataClone.status, 'fast-forwarded');
+      assert.equal(co.prepared, true);
+    } finally { removeCheckout(co); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+});
+
+test('BRO-4830: a stale DIRTY data clone is untouched and the checkout is unverifiable, never fail', () => {
+  const f = fixture();
+  try {
+    f.advance(2);
+    fs.writeFileSync(path.join(f.dataClone, 'shows.json'), '{"v":"local-edit"}');
+    const co = makeFreshCheckout({ repo: f.repo, prefix: 'bro4830-co-' });
+    try {
+      assert.equal(co.dataClone.status, 'unsafe');
+      assert.equal(co.prepared, false);
+      assert.equal(fs.readFileSync(path.join(f.dataClone, 'shows.json'), 'utf8'), '{"v":"local-edit"}');
+      const out = runVerify(co.wt, 'node --test tests/unit/x.test.mjs', { attempts: 1, prepared: co.prepared });
+      assert.equal(out.status, 'unverifiable');
+    } finally { removeCheckout(co); }
+  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+});
+
+test('BRO-4830: refreshDataClone states: current, diverged=unsafe, missing=skipped, once per process', () => {
+  const f = fixture();
+  try {
+    assert.equal(refreshDataClone(f.repo, { memoize: false }).status, 'current');
+    f.advance(2);
+    // local commit makes the clone ahead AND behind
+    fs.writeFileSync(path.join(f.dataClone, 'local.txt'), 'x');
+    sh(f.dataClone, 'add', '.'); sh(f.dataClone, ...GIT_ID, 'commit', '-m', 'local');
+    assert.equal(refreshDataClone(f.repo, { memoize: false }).status, 'unsafe');
+    const bare = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4830-nodata-'));
+    const savedEnv = process.env.BSC_DATA_REPO; delete process.env.BSC_DATA_REPO;
+    try { assert.equal(refreshDataClone(bare).status, 'skipped'); } finally { if (savedEnv !== undefined) process.env.BSC_DATA_REPO = savedEnv; }
+    fs.rmSync(bare, { recursive: true, force: true });
+    // memoized: a second call returns the same object without re-fetching
+    const a = refreshDataClone(f.repo); const b = refreshDataClone(f.repo);
+    assert.equal(a, b);
+  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+});
+
+test('BRO-4830: decideRefresh policy table', () => {
+  assert.equal(decideRefresh({ behind: false, headInOrigin: true, originInHead: true, dirty: true }), 'current');
+  assert.equal(decideRefresh({ behind: true, headInOrigin: true, originInHead: false, dirty: false }), 'fast-forward');
+  assert.equal(decideRefresh({ behind: true, headInOrigin: true, originInHead: false, dirty: true }), 'unsafe');
+  assert.equal(decideRefresh({ behind: true, headInOrigin: false, originInHead: false, dirty: false }), 'unsafe');
+});
