@@ -84,12 +84,22 @@ const VERIFIED_TM_GAP = {
 // These assertions follow the live data, so they must only fail on a real
 // loss. A verified show that closes, or that gains TodayTix (Derren Brown did
 // on 2026-10-07 and turned main red under the old ">= 2 gap shows" count,
-// BRO-4842), has left the gap; that is not a regression.
+// BRO-4842), has left the gap; that is not a regression. A past closingDate
+// counts as closed even while the status flip lags, since TM pages die then.
+const today = new Date().toISOString().slice(0, 10);
 const stillInGap = Object.keys(VERIFIED_TM_GAP)
   .map(id => liveShows.find(s => s.id === id))
-  .filter(s => s && !(s.ticketLinks || []).some(l => l.platform === 'TodayTix'));
+  .filter(s => s && !(s.closingDate && s.closingDate < today))
+  .filter(s => !(s.ticketLinks || []).some(l => l.platform === 'TodayTix'));
 
-test('verified TodayTix-gap shows still live and still without TodayTix carry their Ticketmaster link', () => {
+test('every verified gap id still exists in shows.json (a rename would silently empty the checks below)', () => {
+  for (const id of Object.keys(VERIFIED_TM_GAP)) {
+    assert.ok(shows.some(s => s.id === id), `show ${id} should exist in shows.json; update VERIFIED_TM_GAP if it was renamed`);
+  }
+});
+
+test('verified TodayTix-gap shows still live and still without TodayTix carry their Ticketmaster link', (t) => {
+  if (stillInGap.length === 0) t.diagnostic('no verified gap show is still live without TodayTix; only the fixture tests below guard the rendering rule');
   for (const show of stillInGap) {
     const expectedHost = VERIFIED_TM_GAP[show.id];
     const tm = (show.ticketLinks || []).find(l => l.platform === 'Ticketmaster');
