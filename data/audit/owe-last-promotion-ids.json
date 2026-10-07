@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T20:24:55.745Z",
+  "generatedAt": "2026-10-07T20:42:14.926Z",
   "promoted": [],
   "rejected": [
     {
@@ -347,20 +347,20 @@
       "reason": "already in shows.json as twenty-thousand-streets-off-west-end-2026 (same house, title words contained, overlapping run (\"Twenty Thousand Streets\" vs \"Twenty Thousand Streets Under the Sky\"))"
     },
     {
-      "title": "Deep Heat Rivalry",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as deep-heat-rivalry-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "An Oak Tree",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
+    },
+    {
+      "title": "Deep Heat Rivalry",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as deep-heat-rivalry-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Big Man Little Man",
@@ -795,12 +795,20 @@
       "reason": "already in shows.json as the-reckoning-off-west-end-2027 (normalized-equal)"
     },
     {
-      "title": "Dick Whittington",
+      "title": "Dick Whittington and His Cat",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as dick-whittington-adults-only-off-west-end-2026 (subtitle-variant-of: \"Dick Whittington: Adults Only\")"
+      "reason": "already in shows.json as dick-whittington-and-his-cat-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Dick Whittington: ADULTS ONLY",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as dick-whittington-adults-only-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Double Bill: Tell Me Straight & Aggy",
@@ -859,7 +867,7 @@
       "reason": "already in shows.json as a-hunger-artist-off-west-end-2027 (normalized-equal)"
     },
     {
-      "title": "dissent",
+      "title": "DISSENT",
       "venue": "Young Vic",
       "source": "venue-page:young-vic",
       "sourceUrl": null,
@@ -867,7 +875,7 @@
       "reason": "already in shows.json as dissent-off-west-end-2027 (normalized-equal)"
     },
     {
-      "title": "Eulogy",
+      "title": "EULOGY",
       "venue": "Young Vic",
       "source": "venue-page:young-vic",
       "sourceUrl": null,
@@ -931,7 +939,7 @@
       "reason": "already in shows.json as thelma-and-louise-a-new-musical-off-west-end-2026 (subtitle-variant-of: \"Thelma & Louise: A New Musical\")"
     },
     {
-      "title": "What's the F**king Point?",
+      "title": "What's the F**King Point?",
       "venue": "Young Vic",
       "source": "venue-page:young-vic",
       "sourceUrl": null,
@@ -1200,7 +1208,7 @@
       "source": "venue-page:wilton-s-music-hall",
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2027-01-21))"
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-22))"
     },
     {
       "title": "Stoker Wilde",
@@ -1273,6 +1281,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as jerker-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Suicidal",
+      "venue": "Waterloo East Theatre",
+      "source": "venue-page:waterloo-east-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 3 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "High School Musical",
