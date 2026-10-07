@@ -130,10 +130,18 @@ function tierRank(review) {
   return TIER_RANK[review && review.contentTier] || 0;
 }
 
+/** Outlet identity for matching: a slug, so the display name and the slug a
+ * different writer stamped ("Manic Mumdays" vs "manic-mumdays") are the same
+ * outlet. Lower/trim alone kept both rows on a concurrent push and the
+ * duplicate redded main's getReviewKey collision test (BRO-4829). */
+function outletKey(outlet) {
+  const slug = String(outlet || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return slug || 'unknown';
+}
+
 function keyOf(review) {
   if (!review || typeof review !== 'object' || !review.showId) return null;
-  const outlet = String(review.outlet || 'unknown').toLowerCase().trim();
-  return `${review.showId}|${outlet}|${criticKey(review.criticName)}`;
+  return `${review.showId}|${outletKey(review.outlet)}|${criticKey(review.criticName)}`;
 }
 
 /** showId + canonicalized-URL identity — the fallback match manual-entry-merge.js
@@ -521,10 +529,10 @@ function mergeReviewsJson(ours, remote) {
       // (adversarial-review finding, Codex). Scoping to one outlet also makes
       // this pass exactly as wide as the defect it exists for: validate-data.js
       // reports "duplicate URL(s) within same show+outlet", not across outlets.
-      const myOutlet = String(r.outlet || '').toLowerCase().trim();
+      const myOutlet = outletKey(r.outlet);
       const winner = myPath && candidates.find(
         (c) => rawPathOf(c.url) === myPath
-          && String(c.outlet || '').toLowerCase().trim() === myOutlet
+          && outletKey(c.outlet) === myOutlet
           && tierRank(c) >= tierRank(r),
       );
       if (!winner) continue; // different outlet or raw path, or no candidate at least as rich — not safe to delete
@@ -576,6 +584,6 @@ function mergeReviewsJson(ours, remote) {
 }
 
 module.exports = {
-  mergeReviewsJson, keyOf, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank,
+  mergeReviewsJson, keyOf, outletKey, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank,
   isUnknownByline, isMergeFossilAnchor,
 };
