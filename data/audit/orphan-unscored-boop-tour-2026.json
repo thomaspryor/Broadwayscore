@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "boop-tour-2026",
   "openingDate": "2026-10-03",
-  "detectedAt": "2026-10-07T17:28:27.965Z",
+  "detectedAt": "2026-10-07T17:36:32.128Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "rochesterfirst--sarah-zimmerman.json",
-      "outletId": "rochesterfirst",
-      "criticName": "Sarah Zimmerman",
-      "url": "https://www.rochesterfirst.com/arts/boop-the-musical-launches-national-tour-in-rochester/",
-      "fullTextLen": 1141,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "yahoo--wroc-rochester.json",
       "outletId": "yahoo",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-07T17:28:27.965Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
