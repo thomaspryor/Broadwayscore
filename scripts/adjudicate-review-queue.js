@@ -20,6 +20,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { adjudicationExpectation } = require('./lib/adjudication-expectation');
+const { autoAcceptVerdict } = require('./lib/published-score-star-band');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -240,6 +241,7 @@ async function main() {
     resolved: 0,
     skipped: 0,
     autoAccepted: 0,
+    autoAcceptRefused: 0,
     errors: 0,
     missingFile: 0,
   };
@@ -445,6 +447,21 @@ Respond with ONLY this JSON (no markdown fences):
     // Using it makes the LLM score permanent and blocks future rescoring.
     if (attempts >= MAX_ADJUDICATION_ATTEMPTS) {
       const llmScore = review.llmScore || (sourceData.llmScore && sourceData.llmScore.score) || 65;
+      // BRO-4839: never auto-accept a score outside the critic's own star/grade band (a printed 2/5 published as 91).
+      // Send it back for a band-anchored rescore instead of leaving an override that beats the star at rebuild.
+      const verdict = autoAcceptVerdict(sourceData, llmScore);
+      if (!verdict.accept) {
+        console.log(`  🛑 Max attempts reached (${attempts}) but LLM score ${llmScore} is outside the critic's rating (${verdict.violation.detail}) — queueing a band-anchored rescore, not auto-accepting`);
+        if (!DRY_RUN) {
+          sourceData.needsRescore = true;
+          sourceData.rescoreReason = 'auto-accept-outside-star-band';
+          sourceData.adjudicationAttempts = attempts;
+          fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
+          changedFiles.push(filePath);
+        }
+        results.autoAcceptRefused++;
+        continue;
+      }
       console.log(`  🔄 Max attempts reached (${attempts}) — auto-accepting LLM score: ${llmScore}`);
 
       if (!DRY_RUN) {
@@ -543,6 +560,7 @@ Respond with ONLY this JSON (no markdown fences):
   console.log(`  Resolved (confident):  ${results.resolved}`);
   console.log(`  Skipped (low conf):    ${results.skipped}`);
   console.log(`  Auto-accepted (max):   ${results.autoAccepted}`);
+  console.log(`  Auto-accept refused (outside star band, sent to rescore): ${results.autoAcceptRefused}`);
   console.log(`  Missing source file:   ${results.missingFile}`);
   console.log(`  Errors:                ${results.errors}`);
   console.log(`  Files changed:         ${changedFiles.length}`);
@@ -561,6 +579,7 @@ Respond with ONLY this JSON (no markdown fences):
       `| Resolved (confident) | ${results.resolved} |`,
       `| Skipped (low confidence) | ${results.skipped} |`,
       `| Auto-accepted (max attempts) | ${results.autoAccepted} |`,
+      `| Auto-accept refused (outside star band) | ${results.autoAcceptRefused} |`,
       `| Missing source file | ${results.missingFile} |`,
       `| Errors | ${results.errors} |`,
       `| Files changed | ${changedFiles.length} |`,
