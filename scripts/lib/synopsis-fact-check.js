@@ -36,6 +36,40 @@ const WINNING_CLAIM_RE = new RegExp(
   'ig'
 );
 
+const BEST_CATEGORY_RE = new RegExp('\\bBest ' + CATEGORY_SRC + '\\b', 'ig');
+const OTHER_BODY_OR_NOMINATION_RE =
+  /nominat|\b(?:Olivier|Grammy|Drama Desk|Obie|Pulitzer|Lortel|Emmy|Oscar|Academy Award)/i;
+
+/**
+ * Sentence split that does not break on initials or common abbreviations
+ * ("Jeffrey L. Page", "St. James Theatre", "Mr. Wilde").
+ * @param {string} text
+ * @returns {string[]}
+ */
+function splitSentences(text) {
+  return String(text || '').split(/(?<=[.!?])(?<!\b[A-Z]\.)(?<!\b(?:St|Mr|Mrs|Ms|Dr|Jr|Sr|vs)\.)\s+/);
+}
+
+/**
+ * Cut `text` to at most `max` characters at the last sentence end, so the
+ * result still passes isValidSynopsis (a hard cut ends mid-word and is
+ * rejected as truncated). Falls back to a word boundary plus an ellipsis.
+ * @param {string} text
+ * @param {number} max
+ * @returns {string}
+ */
+function truncateAtSentence(text, max) {
+  const t = String(text || '').trim();
+  if (t.length <= max) return t;
+  const window = t.slice(0, max);
+  const ends = [...window.matchAll(/[.!?]["”')\]]?(?=\s|$)/g)].filter(
+    (e) => !/\b(?:[A-Z]|St|Mr|Mrs|Ms|Dr|Jr|Sr)$/.test(window.slice(0, e.index))
+  );
+  const last = ends.length ? ends[ends.length - 1] : null;
+  if (last && last.index + last[0].length >= max * 0.4) return window.slice(0, last.index + last[0].length);
+  return window.replace(/\s+\S*$/, '').replace(/[,;:\s]+$/, '') + '...';
+}
+
 function normalizeCategory(raw) {
   const c = String(raw || '')
     .toLowerCase()
@@ -59,13 +93,27 @@ function normalizeCategory(raw) {
 function extractTonyCategoryClaims(text) {
   if (!text || typeof text !== 'string') return [];
   const out = [];
-  for (const sentence of text.split(/(?<=[.!?])\s+/)) {
+  for (const sentence of splitSentences(text)) {
     if (!/\bTony/i.test(sentence)) continue;
     let m;
     WON_CLAIM_RE.lastIndex = 0;
     while ((m = WON_CLAIM_RE.exec(sentence))) {
-      if (/nominat/i.test(m[1])) continue;
-      out.push({ category: normalizeCategory(m[2]), sentence: sentence.trim() });
+      // The win must be a Tony one: "won the Grammy for Best Musical Theater
+      // Album ... 12 Tony nominations" has Tony in the sentence but not here.
+      if (!/\bTony/i.test(m[1]) || /nominat/i.test(m[1])) continue;
+      // Every "Best X" after the verb, until the sentence turns to nominations
+      // or another award body ("won Tony Awards for Best Play and Best
+      // Revival of a Musical" is two claims).
+      const tail = sentence.slice(m.index).split(OTHER_BODY_OR_NOMINATION_RE)[0];
+      const seen = new Set();
+      let c;
+      BEST_CATEGORY_RE.lastIndex = 0;
+      while ((c = BEST_CATEGORY_RE.exec(tail))) {
+        const category = normalizeCategory(c[1]);
+        if (seen.has(category)) continue;
+        seen.add(category);
+        out.push({ category, sentence: sentence.trim() });
+      }
     }
     WINNING_CLAIM_RE.lastIndex = 0;
     while ((m = WINNING_CLAIM_RE.exec(sentence))) {
@@ -113,6 +161,11 @@ function checkAwardClaims(show, ctx) {
     .map((id) => ctx.awardsByShow && ctx.awardsByShow[id] && ctx.awardsByShow[id].tony)
     .filter(Boolean);
   const wins = new Set(tonyEntries.flatMap((t) => (t.wins || []).map(normalizeCategory)));
+  // Pre-1994 the single "Best Revival" award covered plays and musicals.
+  if (wins.has('revival')) {
+    wins.add('revival of a play');
+    wins.add('revival of a musical');
+  }
   for (const claim of claims) {
     if (tonyEntries.length === 0) {
       result.unverifiable.push(claim);
@@ -154,7 +207,7 @@ function findSharedSentences(shows, opts = {}) {
   for (const s of shows) {
     if (!s.synopsis) continue;
     const seen = new Set();
-    for (const raw of s.synopsis.split(/(?<=[.!?])\s+/)) {
+    for (const raw of splitSentences(s.synopsis)) {
       const key = raw.trim().toLowerCase().replace(/\s+/g, ' ');
       if (key.length < minLen || seen.has(key) || SCRAPED_PAGE_CHROME_RE.test(key)) continue;
       seen.add(key);
@@ -176,13 +229,17 @@ function findSharedSentences(shows, opts = {}) {
  * session). With no awards data every claim is "unverifiable" and passes.
  * @returns {Record<string, any>}
  */
+let awardsCache = null;
 function loadAwardsByShow() {
+  // Memoised: the gate runs once per show and awards.json is ~1.4 MB.
+  if (awardsCache) return awardsCache;
   try {
     const p = require('path').join(__dirname, '../../data/awards.json');
-    return JSON.parse(require('fs').readFileSync(p, 'utf8')).shows || {};
+    awardsCache = JSON.parse(require('fs').readFileSync(p, 'utf8')).shows || {};
   } catch {
     return {};
   }
+  return awardsCache;
 }
 
 /**
@@ -212,6 +269,8 @@ function gateScrapedSynopsis(show, candidate, ctx) {
 module.exports = {
   gateScrapedSynopsis,
   loadAwardsByShow,
+  splitSentences,
+  truncateAtSentence,
   extractTonyCategoryClaims,
   lineageIds,
   checkAwardClaims,

@@ -19,7 +19,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl } = require('./lib/url-utils');
 const { classifyTodayTixStartDate, unconfirmedStartFlags } = require('./lib/todaytix-dates');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
+const { gateScrapedSynopsis, truncateAtSentence } = require('./lib/synopsis-fact-check');
 
 const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
 
@@ -278,7 +278,9 @@ async function main() {
     }
 
     if ((!show.synopsis || show.synopsis === '') && tt.description) {
-      const synopsis = stripHtml(tt.description).substring(0, 500);
+      // Cut at a sentence end: a hard 500-char cut ends mid-word and the gate
+      // below would reject every long description as truncated.
+      const synopsis = truncateAtSentence(stripHtml(tt.description), 500);
       if (synopsis.length > 20) {
         // TodayTix descriptions are producer marketing copy: gate them (BRO-4853).
         const gate = gateScrapedSynopsis(show, synopsis, { showsById: showsByIdForGate });

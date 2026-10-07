@@ -110,3 +110,55 @@ test('a real synopsis that mentions "cookies" in plot is still valid', () => {
   const t = 'A baker in 1950s Ohio hides a family secret inside her award-winning cookies while her daughter plans to leave town.';
   assert.equal(isValidSynopsis(t), true);
 });
+
+// --- ship-check findings (BRO-4853) ---
+const { truncateAtSentence, splitSentences, gateScrapedSynopsis } = pkg;
+
+test('a Grammy or Olivier win for Best Musical is not a Tony claim', () => {
+  const g = 'It won the Grammy Award for Best Musical Theater Album and earned 12 Tony nominations.';
+  assert.deepEqual(extractTonyCategoryClaims(g), []);
+  const o = 'It won the Olivier Award for Best New Musical before it won four Tony Awards.';
+  assert.deepEqual(extractTonyCategoryClaims(o), []);
+});
+
+test('captures every category in "won Tony Awards for Best Play and Best Revival of a Musical"', () => {
+  const cats = extractTonyCategoryClaims('The team won Tony Awards for Best Play and Best Revival of a Musical.').map((c) => c.category);
+  assert.deepEqual(cats, ['play', 'revival of a musical']);
+});
+
+test('a pre-1994 plain "Best Revival" win backs a revival-of-a-musical claim', () => {
+  const s = { id: 'old', synopsis: 'It won the Tony Award for Best Revival of a Musical.' };
+  const r = checkAwardClaims(s, { awardsByShow: { old: { tony: { wins: ['Best Revival'] } } }, showsById: { old: s } });
+  assert.deepEqual(r.unsupported, []);
+});
+
+test('sentence splitter keeps initials and abbreviations intact', () => {
+  assert.equal(splitSentences('Directed by Jeffrey L. Page at St. James Theatre. A second sentence follows here.').length, 2);
+});
+
+test('truncateAtSentence returns text that still passes isValidSynopsis', () => {
+  const sentence = 'A family gathers on Christmas Eve and old wounds reopen as secrets surface. ';
+  const long = sentence.repeat(12).trim();
+  const cut = truncateAtSentence(long, 500);
+  assert.ok(cut.length <= 500);
+  assert.equal(isValidSynopsis(cut), true);
+  assert.equal(isValidSynopsis(long.slice(0, 500)), false, 'precondition: a hard cut is rejected');
+});
+
+test('short text is returned unchanged', () => {
+  assert.equal(truncateAtSentence('Short and sweet.', 500), 'Short and sweet.');
+});
+
+test('gateScrapedSynopsis rejects the Other Desert Cities blurb and accepts a clean one', () => {
+  const show = { id: 'odc-2026', status: 'previews', originalProductionId: 'odc-2011' };
+  const bad = 'A family drama set in Palm Springs on Christmas Eve, where a daughter returns with a memoir. ' + ODC_CLAIM;
+  const g = gateScrapedSynopsis(show, bad, { awardsByShow, showsById });
+  assert.equal(g.ok, false);
+  assert.match(g.reason, /unsupported award claim/);
+  const good = 'A family drama set in Palm Springs on Christmas Eve, where a daughter returns with a memoir that threatens to expose the past.';
+  assert.deepEqual(gateScrapedSynopsis(show, good, { awardsByShow, showsById }), { ok: true, reason: null });
+});
+
+test('gateScrapedSynopsis rejects a cookie banner', () => {
+  assert.equal(gateScrapedSynopsis({ id: 'x', status: 'open' }, COOKIE_BANNER, { awardsByShow, showsById }).ok, false);
+});
