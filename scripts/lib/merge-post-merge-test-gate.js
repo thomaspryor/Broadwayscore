@@ -135,6 +135,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 const { execErrorDetail } = require('./exec-error-detail.js');
+const { readTsxManifest } = require('./autonomous-checks.js');
 
 // Matches acceptance-check-core.js's own CHECK_TIMEOUT_MS convention — "a
 // hang is worse than a failure" applies equally to this gate's two spawns.
@@ -437,7 +438,16 @@ function selectTestFiles(cwd, changedFiles) {
     const rel = path.normalize(f);
     if (isRunnableTestFile(f) && !EXCLUDED_WORKFLOW_GUARDS.has(rel) && fs.existsSync(path.join(cwd, rel))) files.push(rel);
   }
-  return [...new Set(files)].sort();
+  // BRO-4842: a .test.mjs listed in tests/unit-test-manifest-tsx.txt imports
+  // TS (often via the @/ path alias) and dies under this gate's plain
+  // `node --test` with ERR_MODULE_NOT_FOUND. A changed one was absent from
+  // the baseline run, so it read as NEW and no edit to it could land. Skip
+  // them: test.yml's tsx batch runs them all, and land's Checks job runs a
+  // changed one as colocated-tests-tsx. A tsx test reached here only by name
+  // (correspondingTestPaths) dies under node in both trees anyway, so
+  // skipping it loses nothing. Each tree reads its own manifest.
+  const tsxManifest = new Set([...readTsxManifest(cwd)].map((p) => path.normalize(p)));
+  return [...new Set(files)].filter((rel) => !tsxManifest.has(rel)).sort();
 }
 
 function defaultExec(cwd, testFiles) {

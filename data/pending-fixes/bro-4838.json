@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4838",
   "planId": "bcc16c31-2397-4f4a-8a6d-f02087fbe4b0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-07T15:45:00.000Z",
   "submitter": {
     "name": null,
@@ -56,5 +56,33 @@
         "description": "Exclude from scoring and the site"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-07T17:06:57.203Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/londontheatre1--chris-omaweng.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/trustpilot--john-taggart.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/trustpilot--john-taggart.json rejectionReason: null -> \"not_a_review\""
+    }
+  ]
 }
