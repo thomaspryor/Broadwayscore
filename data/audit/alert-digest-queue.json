@@ -1228,5 +1228,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-07T08:46:25.853Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): blood-of-my-blood-west-end-2026 (2026-10-07), into-the-woods-noel-coward-west-end-2026 (2026-10-07)\n0 review(s) still in flight.\nStage log currently starts at 2026-09-29T18:41:56.321Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-07T09:04:37.321Z"
   }
 ]
