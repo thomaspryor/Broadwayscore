@@ -206,7 +206,9 @@ async function main() {
   // allowlist (or Google/Apple aren't enabled), the sign-in popup fails silently.
   // Informational (doesn't fail the run) — surfaces config gaps the round-trip
   // otherwise can't see.
-  const SIGN_IN_CALLBACKS = ['https://broadwayscorecard.com/auth/callback', 'https://demo.broadwayscorecard.com/auth/callback'];
+  // Mirrors oauthRedirectUrl() in src/lib/auth-redirect.ts: prod returns to
+  // /auth/complete (BRO-4822), every other host to /auth/callback.
+  const SIGN_IN_CALLBACKS = ['https://broadwayscorecard.com/auth/complete', 'https://demo.broadwayscorecard.com/auth/callback'];
   const projectRef = process.env.SUPABASE_PROJECT_REF || (URL ? new global.URL(URL).hostname.split('.')[0] : '');
   if (process.env.SUPABASE_ACCESS_TOKEN && projectRef) {
     try {
@@ -218,7 +220,7 @@ async function main() {
       const providers = ['google', 'apple'].filter(p => cfg[`external_${p}_enabled`]);
       console.log(`auth config: site_url=${cfg.site_url} | providers=[${providers.join(',') || 'NONE'}]`);
       console.log(`auth redirect allowlist: ${allow || '(empty)'}`);
-      // The app sends `${window.location.origin}/auth/callback` (AuthContext).
+      // The site sends oauthRedirectUrl(window.location.origin) (AuthContext).
       for (const callback of SIGN_IN_CALLBACKS) {
         const r = checkRedirect(callback, { siteUrl: cfg.site_url, allowList: allow });
         const how = r.via === 'site_url' ? 'same host as site_url' : r.entry;
