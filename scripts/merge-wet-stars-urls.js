@@ -118,6 +118,21 @@ function planWetMerge(data, wetRow, outletId) {
   return { patch, changes };
 }
 
+/**
+ * WET roundup publish window for this production: from 30 days before the
+ * first performance to 120 days after closing (or a year after the start
+ * when there is no closing date). {} when the show has no usable dates.
+ */
+function roundupWindow(show) {
+  const DAY = 86400000;
+  const start = Date.parse(show.previewsStartDate || show.openingDate || '');
+  if (Number.isNaN(start)) return {};
+  const close = Date.parse(show.closingDate || '');
+  const end = Number.isNaN(close) ? start + 365 * DAY : close + 120 * DAY;
+  const iso = t => new Date(t).toISOString().slice(0, 10);
+  return { after: iso(start - 30 * DAY), before: iso(end) };
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
@@ -138,7 +153,7 @@ async function main() {
   console.log(`Fetching WET roundup rows for ${show.title} (${show.id})...`);
   let wetResult;
   try {
-    wetResult = await discoverWetRoundupRows(show);
+    wetResult = await discoverWetRoundupRows(show, roundupWindow(show));
   } catch (e) {
     console.error(`WET fetch failed: ${e.message}`);
     process.exit(1);
@@ -220,4 +235,4 @@ if (require.main === module) {
   main().catch(e => { console.error('Fatal:', e.stack || e.message); process.exit(2); });
 }
 
-module.exports = { planWetMerge, matchWetRow, starsToRating };
+module.exports = { planWetMerge, matchWetRow, starsToRating, roundupWindow };

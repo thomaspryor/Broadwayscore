@@ -141,7 +141,12 @@ async function discoverWetRoundupRows(show, opts = {}) {
   stats.fetchErrors = 0;
 
   const searchTitle = cleanSearchTitle(show.title);
-  const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}`;
+  // Optional publish window (YYYY-MM-DD), for callers that know the run's
+  // dates. Without it a same-title production from another year can win: the
+  // 2025 Shaftesbury "Just For One Day" matched the 2023 Old Vic roundup
+  // (BRO-4851). Live opening-night callers leave it unset.
+  const window = (opts.after ? `&after=${opts.after}T00:00:00` : '') + (opts.before ? `&before=${opts.before}T00:00:00` : '');
+  const apiUrl = `https://www.westendtheatre.com/wp-json/wp/v2/posts?categories=10&per_page=20&search=${encodeURIComponent(searchTitle)}${window}`;
 
   // fetchJSON for proxy-routed WP API call (avoids TLS blocking in CI)
   let posts = [];
