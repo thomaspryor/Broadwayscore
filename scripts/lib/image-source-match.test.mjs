@@ -138,16 +138,30 @@ test('Mezzanine: a same-house candidate from another decade is not this producti
   // The 1996 revival at the same house still gets its own art.
   const c96 = { id: 'chicago-1996', title: 'Chicago', category: 'broadway', venue: 'Richard Rodgers Theatre', openingDate: '1996-11-14' };
   assert.equal(pickMezzanineCandidate(c96, MEZZ_CHICAGO).candidate.artUrl, 'https://x/chicago.jpg');
+  // A run that reopened at its own house after the pandemic is the same production.
+  const north = { title: 'Girl from the North Country', category: 'broadway', venue: 'Belasco Theatre', openingDate: '2022-04-29' };
+  const northCands = [{ artUrl: 'https://x/gftnc.jpg', theater: 'Belasco Theatre', isBroadway: true, openedAt: at('2020-02-07T05:00:00.000Z') }];
+  assert.equal(pickMezzanineCandidate(north, northCands).candidate.artUrl, 'https://x/gftnc.jpg');
 });
 
-test('Mezzanine: a dated show never takes an undated candidate on the tie-break', () => {
-  const row = { title: 'Chicago', category: 'broadway', venue: 'Somewhere Else', openingDate: '2010-01-01' };
-  const r = pickMezzanineCandidate(row, MEZZ_CHICAGO.filter((c) => !c.openedAt));
+test('Mezzanine: a closed show over 2 years old takes an undated candidate only at its own venue', () => {
+  const now = { nowMs: Date.parse('2026-10-08') };
+  const row = { title: 'Chicago', category: 'broadway', status: 'closed', venue: 'Somewhere Else', openingDate: '2010-01-01' };
+  const undatedOnly = MEZZ_CHICAGO.filter((c) => !c.openedAt);
+  const r = pickMezzanineCandidate(row, undatedOnly, undefined, now);
   assert.equal(r.candidate, null);
   assert.match(r.reason, /undated/);
-  // An undated candidate at the show's own venue is still taken.
+  // A long run still playing (Perfect Crime, 1987-) keeps its current art.
+  assert.ok(pickMezzanineCandidate({ ...row, status: 'open' }, undatedOnly, undefined, now).candidate);
+  // At its own venue an undated record is usually the long run itself
+  // (chicago-1996 at the Ambassador, The Lion King at the Minskoff).
   const atAmbassador = { ...row, venue: 'Ambassador Theatre' };
-  assert.equal(pickMezzanineCandidate(atAmbassador, MEZZ_CHICAGO).candidate.artUrl, 'https://x/chicago 2023.jpg');
+  assert.equal(pickMezzanineCandidate(atAmbassador, MEZZ_CHICAGO, undefined, now).candidate.artUrl, 'https://x/chicago 2023.jpg');
+  // A current show keeps undated candidates anywhere: Mezzanine's newest
+  // listings carry no date, and their venue names often differ from ours.
+  const offBway = { title: 'Isla', category: 'off-broadway', venue: 'WP Theater', openingDate: '2026-08-08' };
+  const isla = [{ artUrl: 'https://x/isla.jpg', theater: 'WP Theater (McGinn/Cazale Theatre)', isBroadway: false, openedAt: null }];
+  assert.equal(pickMezzanineCandidate(offBway, isla, undefined, now).candidate.artUrl, 'https://x/isla.jpg');
 });
 
 test('archive: an existing file is reused only when it came from the same source URL', () => {

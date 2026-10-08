@@ -19,6 +19,7 @@ const { findOtherSameTitleProduction } = require('./canon-poster-art');
 
 const DAY = 86400000;
 const MAX_DATE_GAP_DAYS = 730;
+const AT_VENUE_MAX_GAP_DAYS = 1095;
 
 /**
  * Venue name reduced to comparable tokens: accents folded, case dropped,
@@ -81,17 +82,17 @@ function buildVenueCityIndex(shows) {
 /**
  * Pick the Mezzanine production that is THIS show, or null.
  *  1. A candidate at the show's own venue (nearest date among them), unless
- *     its date is more than 2 years from the show's.
+ *     its date is more than 3 years from the show's.
  *  2. Otherwise by city (venueCity, from buildVenueCityIndex): a row never
  *     takes a candidate at a venue known to be in the other city. A London row
  *     also drops isBroadway and undated candidates.
  *  3. Nearest full date; ties prefer Broadway only for NYC rows, then ratings.
- *  4. Rejected when more than 2 years from the show, when the show has a date
- *     but every remaining candidate is undated, or when the show has no date
- *     and several candidates remain.
+ *  4. Rejected when more than 2 years from the show, when only undated
+ *     candidates remain for a closed show that opened more than 2 years before
+ *     nowMs, or when the show has no date and several candidates remain.
  * @returns {{candidate: object|null, reason: string}}
  */
-function pickMezzanineCandidate(show, candidates, venueCity) {
+function pickMezzanineCandidate(show, candidates, venueCity, { nowMs = Date.now() } = {}) {
   const list = (candidates || []).filter((c) => c && c.artUrl);
   if (list.length === 0) return { candidate: null, reason: 'no candidates with art' };
   const showMs = showDateMs(show);
@@ -107,9 +108,11 @@ function pickMezzanineCandidate(show, candidates, venueCity) {
 
   // A house plays many productions of one title (Chicago opened at the 46th
   // Street, now the Richard Rodgers, in 1975 and again in 1996), so a venue
-  // match still has to be near the show's own date.
+  // match still has to be near the show's own date. The window is wider than
+  // MAX_DATE_GAP_DAYS: Girl from the North Country's 2020 Belasco run reopened
+  // there as the 2022 row after the pandemic shutdown.
   const atVenue = list.filter((c) => venuesMatch(c.theater, show && show.venue)
-    && !(gap(c) !== Infinity && gap(c) > MAX_DATE_GAP_DAYS));
+    && !(gap(c) !== Infinity && gap(c) > AT_VENUE_MAX_GAP_DAYS));
   if (atVenue.length > 0) {
     return { candidate: nearest(atVenue, false), reason: `venue match (${atVenue[0].theater})` };
   }
@@ -127,11 +130,13 @@ function pickMezzanineCandidate(show, candidates, venueCity) {
   if (g !== Infinity && g > MAX_DATE_GAP_DAYS) {
     return { candidate: null, reason: `best candidate is ${Math.round(g)} days off` };
   }
-  // A dated show with only undated candidates left has no evidence any of them
-  // is this production: the undated tie-break gave chicago-1975 the 2023
-  // Ambassador poster once its 1996 same-house candidate was ruled out.
-  if (g === Infinity && showMs != null) {
-    return { candidate: null, reason: 'only undated candidates for a dated show' };
+  // Away from the show's venue, an undated candidate is no evidence for a
+  // closed production that opened years ago: the tie-break gave chicago-1975
+  // the 2023 Ambassador poster. Running shows and recent ones keep it, since
+  // Mezzanine's current listings (diary-shows.json) carry no date.
+  if (g === Infinity && show.status === 'closed' && showMs != null
+    && nowMs - showMs > MAX_DATE_GAP_DAYS * DAY) {
+    return { candidate: null, reason: 'only undated candidates elsewhere for a closed show over 2 years old' };
   }
   return { candidate: best, reason: g === Infinity ? 'undated' : `date gap ${Math.round(g)}d` };
 }
