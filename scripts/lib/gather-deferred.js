@@ -30,7 +30,13 @@ const SHOW_ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 function recordDeferredShows(ids, file = process.env.GATHER_DEFERRED_FILE) {
   if (!file) return false;
   const list = (Array.isArray(ids) ? ids : []).map((s) => String(s).trim()).filter(Boolean);
-  fs.writeFileSync(file, list.length ? list.join('\n') + '\n' : '');
+  try {
+    fs.writeFileSync(file, list.length ? list.join('\n') + '\n' : '');
+  } catch (e) {
+    // Best effort: a failed write must not stop the gather itself.
+    console.warn(`⚠️  could not record deferred shows to ${file}: ${e.message}`);
+    return false;
+  }
   return list.length > 0;
 }
 
