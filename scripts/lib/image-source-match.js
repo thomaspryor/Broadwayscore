@@ -80,13 +80,15 @@ function buildVenueCityIndex(shows) {
 
 /**
  * Pick the Mezzanine production that is THIS show, or null.
- *  1. A candidate at the show's own venue (nearest date among them).
+ *  1. A candidate at the show's own venue (nearest date among them), unless
+ *     its date is more than 2 years from the show's.
  *  2. Otherwise by city (venueCity, from buildVenueCityIndex): a row never
  *     takes a candidate at a venue known to be in the other city. A London row
  *     also drops isBroadway and undated candidates.
  *  3. Nearest full date; ties prefer Broadway only for NYC rows, then ratings.
- *  4. Rejected when more than 2 years from the show, or when the show has no
- *     date and several candidates remain.
+ *  4. Rejected when more than 2 years from the show, when the show has a date
+ *     but every remaining candidate is undated, or when the show has no date
+ *     and several candidates remain.
  * @returns {{candidate: object|null, reason: string}}
  */
 function pickMezzanineCandidate(show, candidates, venueCity) {
@@ -103,7 +105,11 @@ function pickMezzanineCandidate(show, candidates, venueCity) {
     || (preferBroadway ? (b.isBroadway === true) - (a.isBroadway === true) : 0)
     || ((b.ratingsCount || 0) - (a.ratingsCount || 0)))[0];
 
-  const atVenue = list.filter((c) => venuesMatch(c.theater, show && show.venue));
+  // A house plays many productions of one title (Chicago opened at the 46th
+  // Street, now the Richard Rodgers, in 1975 and again in 1996), so a venue
+  // match still has to be near the show's own date.
+  const atVenue = list.filter((c) => venuesMatch(c.theater, show && show.venue)
+    && !(gap(c) !== Infinity && gap(c) > MAX_DATE_GAP_DAYS));
   if (atVenue.length > 0) {
     return { candidate: nearest(atVenue, false), reason: `venue match (${atVenue[0].theater})` };
   }
@@ -120,6 +126,12 @@ function pickMezzanineCandidate(show, candidates, venueCity) {
   const g = gap(best);
   if (g !== Infinity && g > MAX_DATE_GAP_DAYS) {
     return { candidate: null, reason: `best candidate is ${Math.round(g)} days off` };
+  }
+  // A dated show with only undated candidates left has no evidence any of them
+  // is this production: the undated tie-break gave chicago-1975 the 2023
+  // Ambassador poster once its 1996 same-house candidate was ruled out.
+  if (g === Infinity && showMs != null) {
+    return { candidate: null, reason: 'only undated candidates for a dated show' };
   }
   return { candidate: best, reason: g === Infinity ? 'undated' : `date gap ${Math.round(g)}d` };
 }
@@ -140,13 +152,29 @@ function theatrEligible(show, candidate, allShows) {
   return true;
 }
 
+/** A source URL without its query string, for comparing two image URLs. */
+const sourceBase = (u) => String(u || '').split('?')[0];
+
 /** Image source URLs a person rejected for this show (show.rejectedImageUrls). */
 function isRejectedImage(images, show) {
   const rejected = show && Array.isArray(show.rejectedImageUrls) ? show.rejectedImageUrls : [];
   if (rejected.length === 0 || !images) return false;
-  const base = (u) => String(u || '').split('?')[0];
-  const set = new Set(rejected.map(base));
-  return ['thumbnail', 'poster', 'hero'].some((k) => images[k] && set.has(base(images[k])));
+  const set = new Set(rejected.map(sourceBase));
+  return ['thumbnail', 'poster', 'hero'].some((k) => images[k] && set.has(sourceBase(images[k])));
+}
+
+/**
+ * May archive-show-images.js keep the file already on disk instead of
+ * downloading the CDN URL a fetch just put in shows.json? Only when that file
+ * was downloaded from this same URL (recordedSource, from image-sources.json).
+ * A fetch that picks new art for a row whose file name is unchanged (a .jpg
+ * replacing a .jpg) otherwise left the old art on the site while
+ * image-sources.json named the new source: the 2026-10-08 re-fetch did this to
+ * 20+ historical Broadway rows (BRO-2242).
+ */
+function canReuseArchivedFile({ recordedSource, incomingUrl, fileExists, force }) {
+  if (force || !fileExists) return false;
+  return !!recordedSource && sourceBase(recordedSource) === sourceBase(incomingUrl);
 }
 
 /** IBDB is a Broadway database: any hit for a London row is another production. */
@@ -161,5 +189,6 @@ module.exports = {
   pickMezzanineCandidate,
   theatrEligible,
   isRejectedImage,
+  canReuseArchivedFile,
   ibdbEligible,
 };

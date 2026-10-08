@@ -69,6 +69,7 @@ async function checkAspect(filePath, role) {
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
+const { canReuseArchivedFile } = require('./lib/image-source-match');
 
 const SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
 
@@ -232,11 +233,13 @@ async function main() {
         }
       }
 
-      // If URL is already local and we're not forcing, skip
-      if (url.startsWith('/images/') && !force) {
+      // Local path: keep the file unless forcing. --force re-downloads it from
+      // its recorded source below (fetching the /images/ path itself always
+      // failed, so --force was a silent no-op for archived rows).
+      if (url.startsWith('/images/')) {
         // Check that the local file actually exists
         const localPath = path.join(__dirname, '..', 'public', url);
-        if (fs.existsSync(localPath)) {
+        if (fs.existsSync(localPath) && !force) {
           // --check-aspect: verify shape; if wrong, null + delete + re-source from imageSources
           if (checkAspectFlag) {
             const aspect = await checkAspect(localPath, format);
@@ -255,10 +258,10 @@ async function main() {
             continue;
           }
         }
-        // Local path in shows.json but file is missing - try to re-download from source
+        // Local path in shows.json but file is missing (or --force) - re-download from source
         const sourceUrl = imageSources[show.id]?.[format];
         if (!sourceUrl) {
-          console.warn(`  ⚠ ${show.title} ${format}: Local file missing and no source URL`);
+          console.warn(`  ⚠ ${show.title} ${format}: ${force ? 'No source URL to re-download from' : 'Local file missing and no source URL'}`);
           totalFailed++;
           continue;
         }
@@ -293,16 +296,14 @@ async function main() {
         continue;
       }
 
-      // Save original URL before overwriting
-      if (!url.startsWith('/images/')) {
-        imageSources[show.id][format] = url;
-      }
-
       const ext = getLocalExtension(url);
       const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
 
-      // Skip if already downloaded (unless forcing)
-      if (fs.existsSync(filepath) && !force) {
+      // Keep the file on disk only when it was downloaded from this same URL.
+      // A fetch that picks new art with an unchanged file name (.jpg for .jpg)
+      // must replace it (BRO-2242). The source is recorded only after a good
+      // download, so a failed one is retried rather than marked done.
+      if (canReuseArchivedFile({ recordedSource: imageSources[show.id][format], incomingUrl: url, fileExists: fs.existsSync(filepath), force })) {
         // File exists - just update shows.json to use local path
         const localPath = `/images/shows/${show.id}/${format}.${ext}`;
         if (show.images[format] !== localPath) {
@@ -339,6 +340,7 @@ async function main() {
         }
 
         show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
+        imageSources[show.id][format] = url;
         showDownloaded++;
         totalDownloaded++;
         totalBytes += size;
