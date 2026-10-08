@@ -79,6 +79,12 @@
 //     missing from one side is virtually always that side's rebuild
 //     predating the other writer's newly-collected review, not an
 //     intentional drop.
+//     BASE-AWARE since BRO-4852: when the caller passes this job's pre-run
+//     snapshot as `base`, a remote-only row that base holds unchanged is
+//     treated as excluded by our rebuild and dropped (see the three-way rule
+//     in mergeReviewsJson). The limitation below now applies only when no
+//     base is available, plus the mirror case: a row ours still has that
+//     remote's rebuild removed comes back until the next rebuild.
 //     KNOWN LIMITATION (mirrors mergeDiaryShows' field-update limitation):
 //     if a review was excluded from ours' rebuild by a flag applied to its
 //     review-texts file moments before this run (wrongProduction, etc.), or
@@ -244,7 +250,7 @@ function resolveConflict(ours, remote, oursSnapshotNewer = null) {
   return 'ours';
 }
 
-function mergeReviewsJson(ours, remote) {
+function mergeReviewsJson(ours, remote, base) {
   ours = ours && typeof ours === 'object' ? ours : { reviews: [] };
   remote = remote && typeof remote === 'object' ? remote : { reviews: [] };
   const oursReviews = Array.isArray(ours.reviews) ? ours.reviews : [];
@@ -322,9 +328,33 @@ function mergeReviewsJson(ours, remote) {
     }
   }
 
+  // Three-way rule (BRO-4852): a remote-only row that the base (this job's
+  // pre-run snapshot) already held, unchanged, is a row OUR full rebuild
+  // excluded, not one the other writer added. Unioning it back resurrected
+  // seven wrongShow-flagged reviews on 2026-10-08 (run 37705532802,
+  // "added":8). Same rule as mergeCommercialJson: a row the other side
+  // edited since base is kept (a delete racing an edit keeps the edit), and
+  // a manualEntry row is never dropped here. No base = legacy union.
+  const baseByKey = new Map();
+  if (base && typeof base === 'object' && Array.isArray(base.reviews)) {
+    for (const r of base.reviews) {
+      const k = keyOf(r);
+      if (k && !baseByKey.has(k)) baseByKey.set(k, r);
+    }
+  }
+  let droppedByOurs = 0;
+  const droppedByOursKeys = [];
+
   let added = 0;
   for (const r of remoteDeduped.canonical) {
     if (consumedRemote.has(r)) continue; // already handled above (kept or conflict-resolved)
+    const bk = keyOf(r);
+    const baseTwin = bk ? baseByKey.get(bk) : undefined;
+    if (baseTwin && !(r && r.manualEntry === true) && JSON.stringify(baseTwin) === JSON.stringify(r)) {
+      droppedByOurs++;
+      droppedByOursKeys.push({ showId: r.showId, outlet: r.outlet, criticName: r.criticName || null, url: r.url || null });
+      continue;
+    }
     // Remote-only entry — union it in so the race doesn't drop the other
     // writer's addition. See KNOWN LIMITATION in the module comment above.
     mergedReviews.push(r);
@@ -581,10 +611,17 @@ function mergeReviewsJson(ours, remote) {
       urlRescueConflicts,
       unknownBylineFossilsDropped,
       unknownBylineFossilsDroppedKeys,
+      droppedByOurs,
+      droppedByOursKeys,
       totalReviews: mergedReviews.length,
     },
   };
 }
+
+// Only a true pre-run snapshot is a valid base. reconcile-merged-json.js's
+// merge-base fallback resolves to remote after the rebase, which would read
+// every concurrent addition as "ours removed it".
+mergeReviewsJson.requiresTrueBase = true;
 
 module.exports = {
   mergeReviewsJson, keyOf, outletKey, urlKeyOf, resolveConflict, snapshotIsNewer, tierRank,
