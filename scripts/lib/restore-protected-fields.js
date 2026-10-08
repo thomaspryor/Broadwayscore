@@ -27,7 +27,7 @@ const { execSync } = require('child_process');
 // LOCAL record deliberately cleared a field (durable breadcrumb present), we
 // must NOT restore the remote value, or a CI rebase silently re-flags a
 // human-verified review. See review-write-guard.js. (2026-06-05)
-const { isIntentionalClear } = require(path.join(__dirname, 'review-write-guard.js'));
+const { isIntentionalClear, CLEARABLE_VERDICT_FLAGS } = require(path.join(__dirname, 'review-write-guard.js'));
 const { carryNewerScoring } = require(path.join(__dirname, 'scoring-recency.js'));
 
 // Fields that must be preserved across rebases. Two categories:
@@ -289,6 +289,28 @@ function reconcileProtectedFields(local, remote, ours, opts = {}) {
     local[field] = source[field];
     modified = true;
     notes.push(`Restored ${field}${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
+  }
+
+  // A live flag's reason/note travel with it. The loop above restores
+  // wrongProduction/wrongShow but not their reasons, so a rebase that dropped
+  // a manual flag brought it back reason-less, and the rebuild's UK-URL
+  // auto-clear (which only spares flags carrying a reason) stripped it
+  // (BRO-4851: oedipus-west-end-2024 Independent review). Only filled while
+  // the local flag is true and the source's own flag is true, so a cleared
+  // flag never gets a dangling reason back. The *ReasonAt stamp rides along.
+  for (const [flag, companions] of Object.entries(CLEARABLE_VERDICT_FLAGS)) {
+    if (local[flag] !== true || companions.length === 0) continue;
+    for (const field of companions) {
+      if (local[field] !== undefined && local[field] !== null) continue;
+      const source = [remote, ours].find(s => s && s[flag] === true
+        && s[field] !== undefined && s[field] !== null);
+      if (!source || isIntentionalClear(field, local, source)) continue;
+      local[field] = source[field];
+      const at = `${field}At`;
+      if (field.endsWith('Reason') && source[at] != null && local[at] == null) local[at] = source[at];
+      modified = true;
+      notes.push(`Restored ${field} (companion of ${flag})${source === ours ? ' (from pre-rebase HEAD)' : ''}`);
+    }
   }
 
   // Restore richer content from OURS (pre-rebase HEAD). Titanique postmortem:
