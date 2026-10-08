@@ -23,6 +23,7 @@ const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-au
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
+const { pickTrProduction } = require('./lib/tr-production-pick');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
@@ -1084,27 +1085,15 @@ async function main() {
       return null;
     }
 
-    // Pick best result — use hint venue from listing if available
-    let bestResult = null;
-    if (hintVenue) {
-      const hintName = hintVenue.replace(/,\s*London$/i, '').trim().toLowerCase();
-      bestResult = titleMatches.find(r => {
-        const rv = r.venue.toLowerCase().replace(/,.*/, '').trim();
-        return rv.includes(hintName) || hintName.includes(rv) ||
-               normalizeTitle(rv) === normalizeTitle(hintName);
-      });
-    }
-    if (!bestResult) bestResult = titleMatches.find(r => isLondonVenue(r.venue));
+    // Pick THIS production: press-night window from the archive link's
+    // month, then hint venue > own venue > any London venue (BRO-4851 — the
+    // old "first London title match" took the newer Old Vic Oedipus for the
+    // 2024 Wyndham's row).
+    const bestResult = pickTrProduction(titleMatches, show, { hintVenue, isLondonVenue });
     if (!bestResult) {
-      const showVenue = show.venue?.toLowerCase() || '';
-      if (showVenue) {
-        bestResult = titleMatches.find(r =>
-          r.venue.toLowerCase().includes(showVenue) ||
-          showVenue.includes(r.venue.toLowerCase().replace(/,.*/, '').trim())
-        );
-      }
+      console.log(`  No TR production in this show's press-night window. Title matches: ${titleMatches.map(r => `"${r.title}" @ ${r.venue} (${r.link})`).join('; ')}`);
+      return null;
     }
-    if (!bestResult) bestResult = titleMatches[0];
 
     console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
     console.log(`  Link: ${bestResult.link}`);

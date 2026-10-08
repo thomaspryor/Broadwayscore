@@ -10,7 +10,9 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { buildCandidates, collapseDuplicateListings, plausibleOpeningDate } = require('../discover-historical-shows-we.js');
 const { planPromotions, effectiveDecision, fixAllCapsTitle, buildShowEntry } = require('../promote-historical-we.js');
-const { planWetMerge, matchWetRow } = require('../merge-wet-stars-urls.js');
+const { planWetMerge, matchWetRow, roundupWindow } = require('../merge-wet-stars-urls.js');
+const { discoverWetRoundupRows } = require('./wet-roundup-discover.js');
+const { auditSeason } = require('../audit-we-historical-season.js');
 
 const SEASON = '2024-2025';
 const TODAY = '2026-10-07';
@@ -180,6 +182,46 @@ test('planPromotions writes the venue spelling already used on the site', () => 
 test('effectiveDecision: an approval cannot mark a show that has not closed as closed', () => {
   const c = { title: 'X', venue: 'Gielgud Theatre', previewsStartDate: '2026-01-01', closingDate: '2027-01-01', season: '2025-2026', decision: { promotable: false, reason: 'not closed yet' } };
   assert.equal(effectiveDecision(c, { '2025-2026': { X: { decision: 'approve' } } }, TODAY).promotable, false);
+});
+
+test('auditSeason: flags a review of the OTHER same-title production and duplicate critics', () => {
+  const show = (id, venue, previews, close) => ({ id, title: 'Oedipus', venue, previewsStartDate: previews, closingDate: close, status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' });
+  const shows = [show('oedipus-west-end-2024', "Wyndham's Theatre", '2024-10-04', '2025-01-04'), show('oedipus-west-end-2025', 'The Old Vic', '2025-01-21', '2025-03-29')];
+  const rev = (showId, outletId, critic, date, score = 60) => ({ showId, outletId, outlet: outletId, criticName: critic, publishDate: date, assignedScore: score, url: 'https://x' });
+  const reviews = [
+    ...['guardian', 'telegraph', 'times-uk', 'standard', 'financialtimes'].map(o => rev('oedipus-west-end-2024', o, `${o} critic`, '2024-10-16')),
+    rev('oedipus-west-end-2025', 'guardian', 'A', '2025-02-05'),
+    rev('oedipus-west-end-2025', 'guardian', 'A', '2025-02-06'),
+    // Wyndham's review (Oct 2024) attached to the Old Vic production:
+    rev('oedipus-west-end-2025', 'telegraph', 'B', '2024-10-16'),
+  ];
+  const r = auditSeason({ shows, reviews, season: SEASON });
+  assert.equal(r.checks.inWindow.value, 1);
+  assert.equal(r.checks.inWindow.rows[0].showId, 'oedipus-west-end-2025');
+  assert.equal(r.checks.duplicates.value, 1);
+  assert.equal(r.checks.displayable.value, 0.5);
+  assert.equal(r.pass, false);
+});
+
+test('auditSeason: a clean season passes; --ids limits the audit to a batch', () => {
+  const s = { id: 'kyoto-west-end-2025', title: 'Kyoto', venue: '@sohoplace', previewsStartDate: '2025-01-09', closingDate: '2025-05-03', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
+  const other = { ...s, id: 'unscored-west-end-2025' };
+  const reviews = ['guardian', 'telegraph', 'times-uk', 'standard', 'thestage'].map(o => ({ showId: s.id, outletId: o, outlet: o, criticName: o, publishDate: '2025-01-20', assignedScore: 70 }));
+  assert.equal(auditSeason({ shows: [s, other], reviews, season: SEASON }).pass, false);
+  assert.equal(auditSeason({ shows: [s, other], reviews, season: SEASON, ids: new Set([s.id]) }).pass, true);
+});
+
+test('roundupWindow + discoverWetRoundupRows: historical merge searches only the run\'s own window', async () => {
+  const show = { id: 'just-for-one-day-the-live-aid-musical-west-end-2025', title: 'Just For One Day', previewsStartDate: '2025-05-15', closingDate: '2026-02-07' };
+  const w = roundupWindow(show);
+  assert.deepEqual(w, { after: '2025-04-15', before: '2026-06-07' });
+  let url = '';
+  await discoverWetRoundupRows(show, { ...w, fetchJSON: async (u) => { url = u; return []; }, fetchPage: async () => null, log: () => {} });
+  assert.match(url, /&after=2025-04-15T00:00:00&before=2026-06-07T00:00:00$/);
+  // Live callers pass no window: URL unchanged.
+  await discoverWetRoundupRows(show, { fetchJSON: async (u) => { url = u; return []; }, fetchPage: async () => null, log: () => {} });
+  assert.doesNotMatch(url, /after=/);
+  assert.deepEqual(roundupWindow({ title: 'X' }), {});
 });
 
 test('fixAllCapsTitle and straight apostrophes in written titles', () => {

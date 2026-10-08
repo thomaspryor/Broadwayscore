@@ -329,6 +329,7 @@ on:
       # scripts/lib/we-historical-pipeline.test.mjs (BRO-4851)
       - 'scripts/discover-historical-shows-we.js'
       - 'scripts/merge-wet-stars-urls.js'
+      - 'scripts/audit-we-historical-season.js'
       # tests/unit/landed-but-open-merge-direction.test.mjs
       - 'scripts/reconcile-landed-but-open.js'
       # tests/unit/recoupment-reconcile-gate.test.mjs
