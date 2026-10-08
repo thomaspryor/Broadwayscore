@@ -477,10 +477,12 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
           {showTiers && (
             <Link
               href="/methodology#critic-score"
-              className="ml-auto inline-flex items-center gap-1.5 text-gray-500 hover:text-brand transition-colors"
+              className="ml-auto inline-flex items-center gap-1.5 whitespace-nowrap text-gray-500 hover:text-brand transition-colors"
+              aria-label="Weighted by outlet tier, T1 to T4. How we weight critics"
             >
               <span className="hidden sm:inline">Weighted by outlet tier</span>
-              <span className="sm:hidden">Weighted by tier</span>
+              {/* Below 380px the label wrapped the sort buttons; the chip alone links there. */}
+              <span className="hidden min-[380px]:inline sm:hidden">Weighted by tier</span>
               <span className="px-1 rounded border border-white/[0.12] text-[10px] font-semibold leading-[16px] tabular-nums">T1–T4</span>
             </Link>
           )}
