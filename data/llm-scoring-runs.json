@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-07T00:50:33.988Z",
-    "completedAt": "2026-10-07T00:50:36.282Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37553753484",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-07T00:54:18.660Z",
-    "completedAt": "2026-10-07T00:54:20.944Z",
-    "totalReviews": 47111,
-    "processed": 0,
-    "skipped": 47109,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3638,
-      "output": 113,
-      "total": 11019
-    },
-    "costUsd": 0.012978100000000001,
-    "runId": "37554137093",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-07T00:54:22.220Z",
     "completedAt": "2026-10-07T00:54:23.718Z",
     "totalReviews": 0,
@@ -303330,6 +303292,38 @@
     },
     "costUsd": 0,
     "runId": "37706055613",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-07T23:16:14.024Z",
+    "completedAt": "2026-10-08T00:52:40.406Z",
+    "totalReviews": 47327,
+    "processed": 789,
+    "skipped": 44724,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4813803,
+      "output": 255101,
+      "total": 11931956
+    },
+    "costUsd": 19.27134835,
+    "runId": "37700481373",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T00:52:42.713Z",
+    "completedAt": "2026-10-08T00:57:39.804Z",
+    "totalReviews": 135,
+    "processed": 135,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 363593,
+      "output": 31417,
+      "total": 395010
+    },
+    "costUsd": 1.0117231,
+    "runId": "37700481373",
     "errorDetails": []
   }
 ]
