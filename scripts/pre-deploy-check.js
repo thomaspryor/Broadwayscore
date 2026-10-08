@@ -248,7 +248,7 @@ try {
   if (refusalStripped > 0) ok(`Auto-stripped ${refusalStripped} bad synopsis(es)`);
 
   // Write shows.json if any fixes were applied
-  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0 || statusDateHealed > 0) {
+  if (orphansFixed > 0 || jpgUpgraded > 0 || danglingRefsFixed > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0 || statusDateHealed > 0) {
     saveShows(showsData);
   }
 

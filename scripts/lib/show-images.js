@@ -88,9 +88,11 @@ function imageOnDisk(imgPath, opts = {}) {
  */
 function isPhantomImagePath(imgPath, opts = {}) {
   if (typeof imgPath !== 'string') return false;
-  const trimmed = imgPath.trim();
-  if (!trimmed.startsWith('/') || trimmed.startsWith('//')) return false;
-  return !fs.existsSync(path.join(opts.publicDir || PUBLIC_DIR, trimmed));
+  // Only the show image tree: any other local path (/og/..., generated later
+  // in the build) is not ours to judge. Query/hash never reach the filesystem.
+  const local = imgPath.trim().split(/[?#]/)[0];
+  if (!local.startsWith('/images/shows/') || local.includes('..')) return false;
+  return !fs.existsSync(path.join(opts.publicDir || PUBLIC_DIR, local));
 }
 
 /**

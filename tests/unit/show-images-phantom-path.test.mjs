@@ -126,4 +126,9 @@ test('isPhantomImagePath: only a local path with no file (pre-deploy-check clear
   assert.equal(isPhantomImagePath('//cdn.example.com/x.jpg', opts), false);
   assert.equal(isPhantomImagePath(null, opts), false);
   assert.equal(isPhantomImagePath('', opts), false);
+  // A cache-buster on a real file is still the real file.
+  assert.equal(isPhantomImagePath('/images/shows/real-show/poster.webp?v=2', opts), false);
+  // Outside the show image tree (built later, or escaping it): never cleared.
+  assert.equal(isPhantomImagePath('/og/shows/x.png', opts), false);
+  assert.equal(isPhantomImagePath('/images/shows/../../etc/x.png', opts), false);
 });
