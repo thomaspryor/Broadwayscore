@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-08T04:34:54.125Z",
+    "generatedAt": "2026-10-08T10:58:01.842Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 364,
+  "totalGaps": 365,
   "errorSeverity": 264,
-  "warningSeverity": 100,
+  "warningSeverity": 101,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1608,6 +1608,15 @@
       "gap": 17,
       "ratio": 0.32,
       "severity": "error"
+    },
+    {
+      "showId": "mamma-mia-2001",
+      "category": "broadway",
+      "expected": 18,
+      "extracted": 17,
+      "gap": 1,
+      "ratio": 0.94,
+      "severity": "warning"
     },
     {
       "showId": "mamma-mia-2025",
