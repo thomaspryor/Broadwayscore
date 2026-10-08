@@ -190,7 +190,16 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     if (only && only.size && !only.has(c.title)) continue;
     const decision = effectiveDecision(c, approvals, today);
     if (!decision.promotable) { skipped.push({ title: c.title, reason: decision.reason }); continue; }
-    const entry = buildShowEntry(c, venueVocabulary, venueSpellings);
+    // WOS censors some titles ("P*rn Play" is "Porn Play" everywhere else), so
+    // review search matches nothing. A censored title needs the real one set as
+    // approvals[season][title].title before promotion (BRO-4851).
+    const titleOverride = approvals?.[c.season]?.[c.title]?.title;
+    const cand = titleOverride ? { ...c, title: titleOverride } : c;
+    if (/[a-z]\*+[a-z]/i.test(cand.title)) {
+      skipped.push({ title: c.title, reason: 'censored title; set the real title as approvals[season][title].title' });
+      continue;
+    }
+    const entry = buildShowEntry(cand, venueVocabulary, venueSpellings);
     if (!entry) { skipped.push({ title: c.title, reason: 'no usable date for the id year' }); continue; }
     if (!entry.venue) { skipped.push({ title: c.title, reason: `venue "${c.venue}" failed sanitizeVenueForWrite` }); continue; }
     const startDate = entry.openingDate || entry.previewsStartDate;

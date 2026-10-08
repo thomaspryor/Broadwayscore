@@ -289,6 +289,40 @@ only if needed):
 Then run `audit-we-historical-season.js --season=2024-2025` once scoring
 drains.
 
+## Phase B results (2026-10-08)
+
+Owner approved the spend. Promoted 33 more 2024-25 shows and 15 from 2025-26
+that closed before the London launch (core data 54adba9). Gathered, ran
+Theatre Record and the WET merge per show, plus posters and synopses.
+
+- **Reviews:** 1,113 usable review texts across the 54 shows; 53 of 54 have
+  at least 5. P*rn Play had none (see below). 746 scored on day one; the rest
+  drain through the scoring crons.
+- **Pre-launch gaps:** 27 thin London shows from Sept 2025 to Mar 2026 that
+  were already on the site got about 100 more reviews from Theatre Record.
+
+Lessons, each fixed in code:
+- **Gather dropped half the list.** The per-job 35-minute budget deferred
+  24 of 48 shows "to next run" with nothing scheduled. Fixed under BRO-4859
+  (deferred ids are uploaded and re-dispatched), with the queue-eviction fix.
+  Dispatch about 4 shows per job.
+- **Posters from the wrong production.** Theatr (NYC-only) and Mezzanine's
+  Broadway tie-break gave London rows Broadway art (Othello, Godot) and old
+  Broadway rows a later revival's art. scripts/lib/image-source-match.js picks
+  by venue, then city, then nearest date; show.rejectedImageUrls makes a
+  rejection stick. Old Broadway rows continue under BRO-2242.
+- **Synopses.** The metadata workflow could not target shows (now `shows`),
+  had no Playwright, and gave preview-only rows no year. The wrong-show
+  verifier rejects any record too sparse to confirm, so TodayTix pages whose
+  own product record matches are trusted, using only the cleaned
+  product.about story sentences (scripts/lib/todaytix-page-identity.js).
+- **Censored titles.** WOS lists "Porn Play" as "P*rn Play", so search found
+  nothing. promote-historical-we.js now holds a censored title until
+  approvals[season][title].title gives the real one.
+- **Opening dates from an older production.** update-show-status flipped rows
+  open on an earlier production's reviews (BRO-4857); review dates before
+  previews no longer count.
+
 ## Side benefit (separate card)
 
 321 London-market rows have no `openingDate`, but 275 of them are
