@@ -323,6 +323,24 @@ Lessons, each fixed in code:
   open on an earlier production's reviews (BRO-4857); review dates before
   previews no longer count.
 
+## Phase C (BRO-4884, from 2026-10-08)
+
+2023-24: promoted 68 rows (60 promotable plus 8 approved in
+data/audit/we-historical-approvals.json: famous runs WOS gave no genre or
+review link, e.g. Hamnet, Old Friends, Why Am I So Single?). All 68 posters
+checked by contact sheet, all correct.
+
+Lessons, each fixed in code:
+- **Producer copy saved as synopses.** 12 of 51 new synopses were pitch:
+  "currently playing at Wyndham's ... rave reviews" with a Times pull quote,
+  "one of nine shows in the theatre's 2024 season", a meta tag cut off at
+  "Jeremy Herrin (". The TodayTix meta/JSON-LD fallback skipped the
+  story-sentence filter, and the filter missed billing lines ("X stars in",
+  "returns to the West End", "premiered", "Book <title>", "cast also
+  includes"). Both paths now share cleanTodaytixAbout
+  (scripts/lib/todaytix-page-identity.js, tests in its .test.mjs); text with
+  no story left falls back to the LLM writer and its wrong-show check.
+
 ## Side benefit (separate card)
 
 321 London-market rows have no `openingDate`, but 275 of them are
