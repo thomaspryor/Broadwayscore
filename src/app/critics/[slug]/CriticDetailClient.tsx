@@ -8,6 +8,7 @@ import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/l
 import { ToggleBar, StatGrid } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../scripts/lib/review-list-key';
+import { nestQuotes } from '@/lib/nest-quotes';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
@@ -86,7 +87,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
         {/* Excerpt */}
         {review.quote && (
           <p className="text-gray-500 text-sm mt-2 line-clamp-2 italic leading-relaxed">
-            &ldquo;{review.quote}&rdquo;
+            &ldquo;{nestQuotes(review.quote)}&rdquo;
           </p>
         )}
       </div>
