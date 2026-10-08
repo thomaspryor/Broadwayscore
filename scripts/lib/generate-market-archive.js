@@ -8,6 +8,7 @@
  * Used by:
  *   - scripts/generate-off-broadway-archive.js
  *   - scripts/generate-off-west-end-archive.js
+ *   - scripts/generate-west-end-archive.js (homepage search, BRO-4872)
  */
 
 const fs = require('fs');
@@ -50,18 +51,24 @@ function getReviewYearNote(show, showReviews) {
 /**
  * @param {object} opts
  * @param {string} opts.outputFilename - e.g. 'off-broadway-archive.json'
- * @param {string} opts.entryCategory - category stamped on every entry + passed
- *   to computeCriticScore for tier/region lookup (e.g. 'off-broadway',
- *   'off-west-end'). Off-West End theatrical shows routed here by genre still
- *   score correctly since compute-critic-score.js treats west-end/off-west-end
- *   as the same 'london' scoring region.
+ * @param {string | ((show: object) => string)} opts.entryCategory - category
+ *   stamped on every entry + passed to computeCriticScore for tier/region
+ *   lookup (e.g. 'off-broadway', 'off-west-end'). Off-West End theatrical shows
+ *   routed here by genre still score correctly since compute-critic-score.js
+ *   treats west-end/off-west-end as the same 'london' scoring region. A
+ *   function resolves it per show, for an archive spanning two categories (the
+ *   homepage West End search archive holds west-end + theatrical off-west-end).
  * @param {(show: object) => boolean} opts.belongsToMarket - market membership
  *   predicate (mirrors the getXShows() filter in data-core.ts).
  * @param {string} opts.label - human label for log output, e.g. 'Off-Broadway'
  * @param {Set<string>} [opts.excludeIds] - show ids to always exclude, mirroring
  *   HIDDEN_LONDON_IDS-style hub exclusions in data-core.ts.
+ * @param {number | ((show: object) => number)} [opts.minReviews=5] - minimum
+ *   reviews for a closed show to be archived; a function resolves it per show.
  */
-function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket, label, excludeIds }) {
+function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket, label, excludeIds, minReviews = 5 }) {
+  const categoryOf = typeof entryCategory === 'function' ? entryCategory : () => entryCategory;
+  const minReviewsOf = typeof minReviews === 'function' ? minReviews : () => minReviews;
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
   }
@@ -103,19 +110,22 @@ function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket,
     reviewsByShow[review.showId].push(review);
   }
 
-  function computeCriticScore(showReviews) {
-    const result = _computeRaw(showReviews, outletRegistry, entryCategory);
+  function computeCriticScore(showReviews, category) {
+    const result = _computeRaw(showReviews, outletRegistry, category);
     if (!result) return null;
     return { score: result.s, reviewCount: result.rc, tier1Count: result.t1, tier2Count: result.t2 };
   }
 
-  // Closed shows in this market with 5+ scored reviews
+  // Closed shows in this market with enough scored reviews (5 by default)
   const archiveShows = shows.filter(show => {
     if (show.status !== 'closed') return false;
+    // getAllShows() drops _devOnly rows, so the site never lists them; an
+    // archive that kept them made them findable in search (BRO-4872).
+    if (show._devOnly) return false;
     if (excludeIds && excludeIds.has(show.id)) return false;
     if (!belongsToMarket(show)) return false;
     const showReviews = reviewsByShow[show.id] || [];
-    return showReviews.length >= 5;
+    return showReviews.length >= minReviewsOf(show);
   });
 
   const archiveData = archiveShows.map(show => {
@@ -123,7 +133,8 @@ function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket,
 
     const openingYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 9999;
     const hideReviews = openingYear < SCORE_DISPLAY_YEAR_CUTOFF;
-    const criticScore = hideReviews ? null : computeCriticScore(showReviews);
+    const category = categoryOf(show);
+    const criticScore = hideReviews ? null : computeCriticScore(showReviews, category);
 
     const buzz = audienceBuzz[show.id];
     let audienceCombinedScore = null;
@@ -149,7 +160,7 @@ function generateMarketArchive({ outputFilename, entryCategory, belongsToMarket,
       // ShowListCard defaults an unset category to 'broadway' — always set it
       // explicitly here, mirroring serializeShow's category override for the
       // page's active shows.
-      category: entryCategory,
+      category,
       audienceCombinedScore,
       audienceGrade,
     };

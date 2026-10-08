@@ -77,14 +77,23 @@ export default function HomePage() {
   const notableOffBroadway = getNotableOffBroadwayShows()
     .filter(s => s.status !== 'closed' && !broadwayIds.has(s.id));
   const activeShows = [...broadwayActive, ...notableOffBroadway];
-  const archiveFile = fs.readFileSync(process.cwd() + '/public/data/homepage-archive.json');
-  const archiveHash = crypto.createHash('md5').update(archiveFile).digest('hex').slice(0, 8);
+  // One hash covers both lazy-loaded archives (Broadway closed shows + closed
+  // West End search entries), so either regenerating busts the client cache.
+  const archiveHash = crypto.createHash('md5')
+    .update(fs.readFileSync(process.cwd() + '/public/data/homepage-archive.json'))
+    .update(fs.readFileSync(process.cwd() + '/public/data/west-end-archive.json'))
+    .digest('hex').slice(0, 8);
   const obShows = getOffBroadwayShows().filter(s =>
     (s.status === 'open' || s.status === 'previews') &&
     s.type !== 'opera' && // opera gets its own "At the Met" shelf
     s.criticScore && s.criticScore.reviewCount !== undefined && s.criticScore.reviewCount >= 5
   );
+  // Active West End shows only. These feed homepage search alone, and closed
+  // ones come from the lazy public/data/west-end-archive.json
+  // (scripts/generate-west-end-archive.js). Inlining closed shows let the West
+  // End historical backfill grow this page by ~2.7KB per show (BRO-4872).
   const weShows = getWestEndShows().filter(s =>
+    s.status !== 'closed' &&
     s.criticScore?.score != null && hasEnoughReviews(
       s.criticScore.reviewCount ?? 0, s.category,
       (s.criticScore.tier1Count ?? 0) + (s.criticScore.tier2Count ?? 0),
