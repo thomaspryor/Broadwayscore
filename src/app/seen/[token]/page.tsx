@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { cache } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { SHARE_TOKEN_RE, shareTokenFromParam } from '@/lib/share-links/load';
 import { privateShareMetadata } from '@/components/PrivateShareLayout';
 import { loadSharedDiaryView } from '@/lib/shared-diary/load-view';
 import { diarySummary, diaryTitle } from '@/lib/shared-diary/view-model';
@@ -38,6 +39,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function SharedDiaryPage({ params }: PageProps) {
+  // A share sheet glued its message onto the link: send the friend to the
+  // clean URL so the address bar (and anything copied from it) is the real link.
+  const clean = shareTokenFromParam(params.token);
+  if (clean !== params.token && SHARE_TOKEN_RE.test(clean)) redirect(`/seen/${clean}`);
   const data = await load(params.token);
   if (data.status === 'not-shared') notFound();
   // Database or config failure: the error boundary shows "try again" rather

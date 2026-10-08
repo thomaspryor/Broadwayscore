@@ -187,7 +187,7 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
             if (url) {
               const note = madePublic ? ' This list is now public and shows your name.' : '';
               // Native share sheet on phones, clipboard on desktop.
-              const outcome = await shareOrCopy({ title: activeList.name, text: activeList.name, url });
+              const outcome = await shareOrCopy({ title: activeList.name, url });
               if (outcome === 'copied') showToast?.(`Link copied!${note}`, 'success');
               else if (outcome === 'failed') showToast?.(`${url}${note}`, 'info');
               else if (outcome === 'shared' && note) showToast?.(note.trim(), 'info');
