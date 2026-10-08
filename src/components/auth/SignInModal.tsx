@@ -19,7 +19,9 @@ const CONTEXT_HEADLINES: Record<SignInContext, string> = {
   rating: 'Sign in to save your rating',
   watchlist: 'Sign in to save your watchlist',
   watchlist_local: 'Saved. Keep your list with a free account',
-  generic: 'Sign in to Broadway Scorecard',
+  // "Sign in" alone read as "for people who already have an account", and
+  // email-list members assumed they did (BRO-4893).
+  generic: 'Sign in or create a free account',
 };
 
 const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
@@ -37,7 +39,7 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} zIndex={80} maxWidth="sm" ariaLabel="Sign in">
+    <Modal isOpen={isOpen} onClose={onClose} zIndex={80} maxWidth="sm" ariaLabel="Sign in or create a free account">
       <div className="p-6">
         <ModalCloseButton onClick={onClose} className="absolute top-4 right-4" />
 
@@ -88,7 +90,7 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
 
         {/* Footer */}
         <p className="mt-5 text-center text-xs text-gray-400 leading-relaxed">
-          You&apos;ll also get occasional show alert emails; unsubscribe anytime. By signing in, you agree to our{' '}
+          New here? This creates your free account. You&apos;ll also get our Broadway opening night emails; unsubscribe anytime. By continuing, you agree to our{' '}
           <Link href="/terms" target="_blank" className="underline hover:text-gray-200">Terms</Link> and{' '}
           <Link href="/privacy" target="_blank" className="underline hover:text-gray-200">Privacy Policy</Link>.
         </p>

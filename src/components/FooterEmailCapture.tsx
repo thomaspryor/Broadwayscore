@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
+import CreateAccountNudge from '@/components/CreateAccountNudge';
+import { EMAIL_LIST_COPY } from '@/config/email-list-copy';
 
 export default function FooterEmailCapture({ inputId = 'footer-email' }: { inputId?: string }) {
   const [email, setEmail] = useState('');
@@ -9,7 +11,6 @@ export default function FooterEmailCapture({ inputId = 'footer-email' }: { input
     userGroup: 'main-site-subscriber',
     source: 'footer',
   });
-  const marketLabel = market === 'west-end' ? 'West End' : 'Broadway';
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,16 +25,18 @@ export default function FooterEmailCapture({ inputId = 'footer-email' }: { input
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <span>Subscribed &mdash; we&apos;ll email you when new {marketLabel} shows open</span>
+          <span>{EMAIL_LIST_COPY.joined(market)}</span>
         </div>
+        {/* List members are not account holders; say so and offer one (BRO-4893). */}
+        <CreateAccountNudge source="footer_bridge" className="mt-4" />
       </div>
     );
   }
 
   return (
     <div className="py-4">
-      <p className="text-sm font-semibold text-white mb-1">Never Miss a New {marketLabel} Show</p>
-      <p className="text-xs text-gray-500 mb-3">No spam, no schedule &mdash; just opening night scores. Unsubscribe anytime.</p>
+      <p className="text-sm font-semibold text-white mb-1">{EMAIL_LIST_COPY.heading(market)}</p>
+      <p className="text-xs text-gray-500 mb-3">{EMAIL_LIST_COPY.promise(market)}</p>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <label htmlFor={inputId} className="sr-only">Email address</label>
         <input
@@ -50,7 +53,7 @@ export default function FooterEmailCapture({ inputId = 'footer-email' }: { input
           disabled={status === 'submitting'}
           className="px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
         >
-          {status === 'submitting' ? 'Sending...' : 'Subscribe'}
+          {status === 'submitting' ? 'Sending...' : 'Get emails'}
         </button>
       </form>
       {status === 'error' && errorMessage && (
