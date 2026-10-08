@@ -1001,6 +1001,11 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   const isStructuralFlag = wpNote.includes('Same URL exists') || wpNote.includes('Pre-opening guard')
     || wpNote.includes('days before show opened') || wpNote.includes('URL contains year');
   if (isStructuralFlag) return false;
+  // flag-wrong-production-by-date's AFTER-close note is a date fact, not a
+  // cross-market guess: a UK outlet reviewing a LATER London production of
+  // the same title still has a UK URL. Clearing it put the 2025 Old Vic
+  // Oedipus reviews back on the 2024 Wyndham's row (BRO-4851).
+  if (/^Date guard: .* after .*\(close\+/.test(wpNote)) return false;
   // BRO-2841: backward-compat half of the fix — see hasAdjudicatedNote's
   // docstring. Forward-looking protection now comes from the
   // wrongProductionReason check a few lines below, which adjudicate-

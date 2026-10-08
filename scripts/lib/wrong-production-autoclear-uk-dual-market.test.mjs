@@ -430,3 +430,25 @@ describe('outletIsUkMarketRegion (the reverse guard call site)', () => {
     assert.strictEqual(outletIsUkMarketRegion({ variety: 'us' }, 'variety', 'variety'), false);
   });
 });
+
+describe('date-guard AFTER-close flags are not auto-cleared (BRO-4851)', () => {
+  const note = 'Date guard: review 2025-02-05 is 25d after 2025-01-04 (close+7d) — likely different production';
+  it('keeps the flag on a UK-URL review of a later same-title production', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        { wrongProduction: true, wrongProductionNote: note, url: 'https://www.thetimes.com/culture/theatre-dance/article/oedipus-review', publishDate: '2025-02-05' },
+        baseCtx
+      ),
+      false
+    );
+  });
+  it('still clears a cross-market false positive on the same outlet', () => {
+    assert.strictEqual(
+      shouldAutoClearWrongProductionUkDualMarket(
+        { wrongProduction: true, wrongProductionNote: 'US outlet reviewing London show', url: 'https://www.thetimes.com/x', publishDate: '2025-02-05' },
+        baseCtx
+      ),
+      true
+    );
+  });
+});
