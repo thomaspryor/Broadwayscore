@@ -7,6 +7,12 @@
 const fs = require('fs');
 const path = require('path');
 const { buildMobileRelated } = require('./lib/related-shows-mobile');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/generate-related-shows-mobile.js\nWrites public/data/related-shows-mobile.json from data/related-shows.json + data/shows.json (no flags).');
+  process.exit(0);
+}
 
 const ROOT = path.resolve(__dirname, '..');
 const related = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'related-shows.json'), 'utf8'));

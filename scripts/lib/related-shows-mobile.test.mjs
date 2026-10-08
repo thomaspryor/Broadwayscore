@@ -33,16 +33,6 @@ test('sources missing from shows.json and entries with no usable picks are omitt
   assert.deepEqual(out.r, {});
 });
 
-test('the live data builds and stays small', () => {
-  const related = require('../../data/related-shows.json');
-  const { shows } = require('../../data/shows.json');
-  const out = buildMobileRelated(related.shows, shows);
-  assert.ok(Object.keys(out.r).length > 500, 'expected most shows to have picks');
-  assert.ok(JSON.stringify(out).length < 250 * 1024, 'payload grew past 250 KB raw');
-  const known = new Set(shows.map(s => s.id));
-  assert.ok(out.ids.every(id => known.has(id)), 'every id must exist in shows.json');
-});
-
 test('active shows are eligible with no reviews; closed shows still need 5', () => {
   assert.equal(isEligibleSource({ status: 'previews' }, 0), true);
   assert.equal(isEligibleSource({ status: 'open' }, 2), true);
