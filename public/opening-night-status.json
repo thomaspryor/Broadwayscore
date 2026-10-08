@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T23:41:38.284Z",
+  "generatedAt": "2026-10-08T23:53:09.399Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,25 +392,24 @@
       "status": "open",
       "slug": "rent-west-end",
       "thumbnail": "/images/shows/rent-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 79,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "siteScore": 70.49,
+      "liveScore": 70,
+      "scoreDrift": -0.4899999999999949,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
+      "total": 5,
+      "t1": 4,
       "t2": 0,
       "t3": 1,
-      "positive": 1,
-      "mixed": 0,
+      "positive": 3,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
-          "T2:0/2",
+          "5/8 total",
+          "T1:2/3",
           "hi-conf:0/6"
         ],
         "highConfidence": 0,
@@ -427,10 +426,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -439,23 +434,11 @@
           "isDualMarket": true
         },
         {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
           "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -515,6 +498,18 @@
           "t3": 1,
           "p": 1,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-08T23:53:09.399Z",
+          "rc": 5,
+          "s": 70.49,
+          "t1": 4,
+          "t2": 0,
+          "t3": 1,
+          "p": 3,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -1063,9 +1058,9 @@
       "status": "open",
       "slug": "into-the-woods-noel-coward-west-end",
       "thumbnail": "/images/shows/into-the-woods-noel-coward-west-end-2026/thumbnail.webp",
-      "siteScore": 85.67,
+      "siteScore": 85.62,
       "liveScore": 86,
-      "scoreDrift": 0.3299999999999983,
+      "scoreDrift": 0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1304,6 +1299,18 @@
           "t": "2026-10-08T23:23:50.592Z",
           "rc": 61,
           "s": 85.67,
+          "t1": 14,
+          "t2": 14,
+          "t3": 33,
+          "p": 55,
+          "m": 4,
+          "n": 2,
+          "bc": "preview-sent"
+        },
+        {
+          "t": "2026-10-08T23:53:09.399Z",
+          "rc": 61,
+          "s": 85.62,
           "t1": 14,
           "t2": 14,
           "t3": 33,
