@@ -1,74 +1,31 @@
 {
-  "updatedAt": "2026-10-08T20:18:27.742Z",
-  "processed": 28,
-  "failed": 15,
-  "successRate": "65.1%",
+  "updatedAt": "2026-10-08T20:25:00.234Z",
+  "processed": 72,
+  "failed": 18,
+  "successRate": "80.0%",
   "tierBreakdown": {
-    "playwright": 21,
+    "playwright": 61,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingdog": 5,
+    "scrapingbee": 5,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 1
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-08T18:55:57.529Z",
+      "t": "2026-10-08T19:53:56.738Z",
       "event": "bb-session",
-      "session": "6ea1af57",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+      "session": "b3a42f99",
+      "url": "https://www.nytimes.com/2025/10/28/arts/music/lily-allen-west-end-girl.html"
     },
     {
-      "t": "2026-10-08T18:56:06.538Z",
-      "event": "bb-session",
-      "session": "e8f611c8",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
-    },
-    {
-      "t": "2026-10-08T18:58:12.599Z",
-      "event": "bb-session",
-      "session": "d4fbd909",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-10-08T18:58:32.317Z",
-      "event": "bb-session",
-      "session": "4b4c7318",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-10-08T19:02:51.826Z",
-      "event": "bb-session",
-      "session": "dc162c61",
-      "url": "https://bachtrack.com/review-turn-of-the-screw-maunder-kildea-durkin-breen-victo"
-    },
-    {
-      "t": "2026-10-08T19:03:15.056Z",
-      "event": "bb-session",
-      "session": "7b3a251f",
-      "url": "https://bachtrack.com/review-turn-of-the-screw-maunder-kildea-durkin-breen-victo"
-    },
-    {
-      "t": "2026-10-08T20:09:48.710Z",
-      "event": "bb-session",
-      "session": "701893d1",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
-    },
-    {
-      "t": "2026-10-08T20:10:04.620Z",
-      "event": "bb-session",
-      "session": "9b4c3b1d",
-      "url": "https://www.broadwayworld.com/shows/Blood-of-My-Blood-336245/photos"
-    },
-    {
-      "t": "2026-10-08T20:15:15.516Z",
-      "event": "bb-session",
-      "session": "1d88f5b0",
-      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+      "t": "2026-10-08T19:53:57.437Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
