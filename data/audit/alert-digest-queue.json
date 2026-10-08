@@ -2369,5 +2369,63 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-08T23:37:29.498Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4875-roundup-hosts",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4875-roundup-hosts",
+    "description": "land.yml did not land land/bro-4875-roundup-hosts: the scripts-lib-tests gate went red at 1c3fc31791. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37858402536",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4875-roundup-hosts"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "1c3fc31791a0bd48e52d7872bbde2255c2ada76f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37858402536"
+      }
+    ],
+    "queuedAt": "2026-10-08T23:47:55.472Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4893-email-vs-account",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4893-email-vs-account",
+    "description": "land.yml did not land land/bro-4893-email-vs-account: the unit-tests-node gate went red at ad8d371643. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37858861933",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4893-email-vs-account"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ad8d3716433204f453714fbdbfb73eda8c1eaab8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37858861933"
+      }
+    ],
+    "queuedAt": "2026-10-08T23:52:01.545Z"
   }
 ]

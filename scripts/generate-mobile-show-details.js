@@ -424,10 +424,13 @@ const TOP_CRITICS = new Set([
   'Johnny Oleksinski', 'Chris Jones',
 ]);
 
-function getOutletTier(outletId) {
+// showCategory picks the regional tier (outlet-tiers.json `tiers: {nyc, london}`),
+// matching engine.ts resolveTier. Without it West End reviews carried NYC tiers,
+// which the app's tier chips would show (BRO-4881).
+function getOutletTier(outletId, showCategory) {
   if (!outletId) return 3;
   // Use authoritative tier from outlet-tiers.js (outlet-tiers.json overrides → outlet-registry.json fallback)
-  return getAuthoritativeTier(outletId);
+  return getAuthoritativeTier(outletId, { showCategory });
 }
 
 function getOutletDisplayName(outletId, fallback) {
@@ -540,14 +543,14 @@ for (const show of visibleShows) {
     .filter(r => r.assignedScore != null)
     .map(r => {
       const isTopCritic = !!(r.criticName && TOP_CRITICS.has(r.criticName));
-      const tier = isTopCritic ? 1 : getOutletTier(r.outletId);
+      const tier = isTopCritic ? 1 : getOutletTier(r.outletId, show.category);
 
       const entry = {
         cn: r.criticName || null,           // criticName — emitted unchanged: reviews.json already carries the display name or null (S7-T2)
         o: getOutletDisplayName(r.outletId, r.outlet), // outlet display name
         s: r.assignedScore,                 // score (0-100)
         b: r.bucket,                        // bucket (Positive/Mixed/Negative)
-        t: tier,                            // tier (1/2/3)
+        t: tier,                            // tier (1-4, regional)
       };
 
       // Optional fields — omit if null/empty to save bytes
@@ -555,6 +558,8 @@ for (const show of visibleShows) {
       if (r.publishDate) entry.d = r.publishDate;
       if (r.pullQuote) entry.q = r.pullQuote;
       if (r.designation) entry.dg = r.designation;
+      // Top critic promoted to T1: the app's tier sheet says why (BRO-4881).
+      if (isTopCritic) entry.tc = 1;
 
       return entry;
     })

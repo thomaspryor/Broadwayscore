@@ -7,6 +7,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreTextColor, ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid, ScoreBadge } from '@/components/show-cards';
 import Breadcrumb from '@/components/Breadcrumb';
+import { nestQuotes } from '@/lib/nest-quotes';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 
@@ -137,7 +138,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
 
         {review.keyQuote && (
           <p className="text-gray-500 text-sm mt-2 line-clamp-2 italic leading-relaxed">
-            &ldquo;{review.keyQuote}&rdquo;
+            &ldquo;{nestQuotes(review.keyQuote)}&rdquo;
           </p>
         )}
       </div>
