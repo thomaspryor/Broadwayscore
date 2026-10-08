@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T14:03:46.465Z",
+  "generatedAt": "2026-10-08T15:16:30.920Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -507,27 +507,26 @@
       "slug": "blood-of-my-blood-west-end",
       "thumbnail": "/images/shows/blood-of-my-blood-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 78,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 0,
-      "t1": 0,
-      "t2": 0,
+      "total": 2,
+      "t1": 1,
+      "t2": 1,
       "t3": 0,
-      "positive": 0,
+      "positive": 2,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -590,6 +589,20 @@
           "name": "WhatsOnStage",
           "isDualMarket": true
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-08T15:16:30.920Z",
+          "rc": 2,
+          "s": 78,
+          "t1": 1,
+          "t2": 1,
+          "t3": 0,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -602,23 +615,23 @@
       "status": "open",
       "slug": "into-the-woods-noel-coward-west-end",
       "thumbnail": "/images/shows/into-the-woods-noel-coward-west-end-2026/thumbnail.webp",
-      "siteScore": 83.95,
-      "liveScore": 84,
-      "scoreDrift": 0.04999999999999716,
+      "siteScore": 84.69,
+      "liveScore": 85,
+      "scoreDrift": 0.3100000000000023,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 41,
-      "t1": 11,
+      "total": 44,
+      "t1": 12,
       "t2": 9,
-      "t3": 21,
-      "positive": 36,
+      "t3": 23,
+      "positive": 39,
       "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 38,
+        "highConfidence": 41,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -627,8 +640,8 @@
         }
       },
       "broadcast": {
-        "state": "overdue",
-        "detail": "Overdue alert sent"
+        "state": "preview-sent",
+        "detail": "Preview sent (41 reviews)"
       },
       "missingT1": [
         {
@@ -754,6 +767,18 @@
           "m": 3,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-08T15:16:30.920Z",
+          "rc": 44,
+          "s": 84.69,
+          "t1": 12,
+          "t2": 9,
+          "t3": 23,
+          "p": 39,
+          "m": 3,
+          "n": 2,
+          "bc": "preview-sent"
         }
       ]
     },
