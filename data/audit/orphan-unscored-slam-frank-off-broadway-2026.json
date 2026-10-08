@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "slam-frank-off-broadway-2026",
   "openingDate": "2026-10-04",
-  "detectedAt": "2026-10-08T22:52:49.535Z",
+  "detectedAt": "2026-10-08T23:02:51.565Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "stageandcinema--gregory-fletcher.json",
-      "outletId": "stageandcinema",
-      "criticName": "Gregory Fletcher",
-      "url": "https://stageandcinema.com/2026/10/04/slam-frank-orpheum-theatre-review/",
-      "fullTextLen": 6787,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "timeout--unknown.json",
       "outletId": "timeout",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-08T22:52:49.535Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
