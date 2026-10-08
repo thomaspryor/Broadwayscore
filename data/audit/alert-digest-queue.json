@@ -1178,18 +1178,6 @@
     "queuedAt": "2026-10-07T22:09:53.933Z"
   },
   {
-    "conditionKey": "star-band:regressions",
-    "title": "Star-band detector: 14 review(s) flagged for anchored re-score",
-    "description": "{\"false-truncation\":6,\"clobbered\":8} across the whole corpus, by market {\"broadway\":5,\"west-end\":9}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [false-truncation] the-mystery-of-edwin-drood-1985/amny--matt-windman.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] magic-mike-live-west-end-2021/the-sun--lyndsey-clarke.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] magic-mike-live-west-end-2021/guardian--tanya-gold.json score 47 scored with a truncation warning on a complete-tier text\n- [false-truncation] six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json score 96 scored with a truncation warning on a complete-tier text\n- [false-truncation] inter-alia-west-end-2026/london-box-office--stuart-king.json score 82 scored with a truncation warning on a complete-tier text\n- [false-truncation] the-price-off-west-end-2026/london-box-office--stuart-king.json score 76 scored with a truncation warning on a complete-tier text\n- [clobbered] equus-west-end-2026/thereviewshub--the-reviews-hub-london.json commit c863fe428 scoring stamp 2026-10-07T17:06:50.488Z -> 2026-10-07T17:06:50.487Z\n- [clobbered] soldiers-of-tomorrow-off-west-end-2026/thereviewshub--john-cutler.json commit c863fe428 scoring stamp 2026-10-07T16:55:22.846Z -> 2026-10-07T16:55:22.845Z\n- [clobbered] cleansed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json commit f1c12a2b8 scoring stamp 2026-10-07T15:39:41.858Z -> 2026-10-07T15:39:41.857Z\n- [clobbered] cost-of-living-2022/timeout--adam-feldman.json commit f1c12a2b8 scoring stamp 2026-07-21T16:24:58.048Z -> 2026-07-21T16:24:58.047Z",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-07T23:22:53.178Z"
-  },
-  {
     "conditionKey": "land:land/bro-4854-related-closed-shows",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-4854-related-closed-shows",
     "description": "land.yml did not land land/bro-4854-related-closed-shows: the scripts-lib-tests gate went red at b774ba55ad. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37700380013",
@@ -2369,5 +2357,17 @@
       }
     ],
     "queuedAt": "2026-10-08T23:03:29.571Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 5 review(s) flagged for anchored re-score",
+    "description": "{\"unanchored\":3,\"false-truncation\":2} across the whole corpus, by market {\"west-end\":5}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] into-the-woods-west-end-2025/financialtimes--tim-bano.json 5/5 stars band 91-100\n- [unanchored] just-for-one-day-west-end-2024/telegraph--dominic-cavendish.json 4/5 stars band 71-90\n- [unanchored] next-to-normal-west-end-2024/london-box-office--stuart-king.json 5/5 band 91-100\n- [false-truncation] into-the-woods-west-end-2025/telegraph--dominic-cavendish.json score 82 scored with a truncation warning on a complete-tier text\n- [false-truncation] clarkston-west-end-2025/theatre-weekly--greg-stewart.json score 93 scored with a truncation warning on a complete-tier text",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T23:37:29.498Z"
   }
 ]
