@@ -1,31 +1,32 @@
 {
-  "updatedAt": "2026-10-08T20:27:48.607Z",
-  "processed": 82,
-  "failed": 18,
-  "successRate": "82.0%",
+  "updatedAt": "2026-10-08T20:55:19.614Z",
+  "processed": 5,
+  "failed": 5,
+  "successRate": "50.0%",
   "tierBreakdown": {
-    "playwright": 70,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 5,
-    "brightdata": 4,
+    "scrapingdog": 2,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-08T19:53:56.738Z",
+      "t": "2026-10-08T20:51:41.952Z",
       "event": "bb-session",
-      "session": "b3a42f99",
-      "url": "https://www.nytimes.com/2025/10/28/arts/music/lily-allen-west-end-girl.html"
+      "session": "6f56984f",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
     },
     {
-      "t": "2026-10-08T19:53:57.437Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "t": "2026-10-08T20:52:01.644Z",
+      "event": "bb-session",
+      "session": "63ce5cc0",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
     }
   ]
 }
