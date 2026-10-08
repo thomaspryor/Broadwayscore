@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T19:16:00.150Z",
+  "timestamp": "2026-10-08T19:34:05.023Z",
   "stats": {
-    "totalReviews": 48456,
+    "totalReviews": 48496,
     "alreadyFlagged": 18968,
-    "dateGuardCatches": 274,
-    "directorMismatch": 1467,
+    "dateGuardCatches": 275,
+    "directorMismatch": 1468,
     "tvFilmSignals": 1419,
     "londonSignals": 1419,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4728
+    "noPublishDate": 4765
   },
   "findings": [
     {
@@ -10025,6 +10025,7 @@
     {
       "showId": "end-west-end-2025",
       "file": "standard--nick-curtis.json",
+      "score": 61,
       "publishDate": "2025-11-21",
       "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
       "findings": [
@@ -24241,6 +24242,25 @@
       ]
     },
     {
+      "showId": "oedipus-west-end-2024",
+      "file": "plays-international--maryam-philpott.json",
+      "score": 89,
+      "publishDate": "2024-10-20",
+      "url": "https://playsinternational.org.uk/oedipus-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from oedipus-west-end-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "oedipus-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
       "score": 72,
@@ -25326,6 +25346,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 59,
       "publishDate": "2025-11-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/othello-david-harewood-theatre-royal-haymarket-review-khwbzf7r5",
       "findings": [
@@ -38538,6 +38559,20 @@
     },
     {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 62,
+      "publishDate": "2021-09-24",
+      "url": "https://www.islingtontribune.co.uk/article/review-the-turn-of-the-screw-at-arcola-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1813d before show (2021-09-24 vs 2026-09-11)"
+        }
+      ]
+    },
+    {
+      "showId": "the-turn-of-the-screw-off-west-end-2026",
       "file": "thereviewshub--scott-matthewman.json",
       "score": 76,
       "publishDate": "2026-09-20",
@@ -48907,6 +48942,7 @@
     {
       "showId": "end-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 75,
       "publishDate": "2025-11-20",
       "url": "https://www.timeout.com/london/theatre/end-review",
       "findings": [
@@ -51029,6 +51065,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 57,
       "publishDate": "2025-10-10",
       "url": null,
       "findings": [
@@ -51042,6 +51079,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 63,
       "publishDate": "2025-10-03",
       "url": null,
       "findings": [
@@ -51055,6 +51093,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "independent--alice-saville.json",
+      "score": 77,
       "publishDate": "2025-10-03",
       "url": null,
       "findings": [
@@ -51068,6 +51107,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
+      "score": 64,
       "publishDate": "2025-10-03",
       "url": null,
       "findings": [
@@ -51081,6 +51121,7 @@
     {
       "showId": "hamlet-west-end-2025",
       "file": "thereviewshub--scott-matthewman.json",
+      "score": 78,
       "publishDate": "2025-10-03",
       "url": null,
       "findings": [
@@ -55476,6 +55517,7 @@
     {
       "showId": "mary-page-marlowe-west-end-2025",
       "file": "artsdesk--matt-wolf.json",
+      "score": 89,
       "publishDate": "2025-10-24",
       "url": null,
       "findings": [
@@ -55489,6 +55531,7 @@
     {
       "showId": "mary-page-marlowe-west-end-2025",
       "file": "broadwayworld--laura-jones.json",
+      "score": 77,
       "publishDate": "2025-10-09",
       "url": null,
       "findings": [
@@ -55502,6 +55545,7 @@
     {
       "showId": "mary-page-marlowe-west-end-2025",
       "file": "observer--susannah-clapp.json",
+      "score": 63,
       "publishDate": "2025-10-17",
       "url": null,
       "findings": [
@@ -56707,20 +56751,6 @@
     },
     {
       "showId": "oedipus-west-end-2024",
-      "file": "plays-international--maryam-philpott.json",
-      "score": 89,
-      "publishDate": "2024-10-20",
-      "url": "https://playsinternational.org.uk/oedipus-wyndhams-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "oedipus-west-end-2024",
       "file": "standard--nick-curtis.json",
       "score": 82,
       "publishDate": "October 17th, 2024",
@@ -57529,6 +57559,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "everything-theatre--sheilina-somani.json",
+      "score": 89,
       "publishDate": "2025-11-05",
       "url": "https://everything-theatre.co.uk/2025/11/review-othello-theatre-royal-haymarket/",
       "findings": [
@@ -57542,6 +57573,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "financialtimes--tim-bano.json",
+      "score": 62,
       "publishDate": "2025-11-05",
       "url": "https://www.ft.com/content/acafbefa-0ba2-4913-8e2c-ad709a0958cc",
       "findings": [
@@ -57555,6 +57587,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 60,
       "publishDate": "2025-11-05",
       "url": "https://www.timeout.com/london/theatre/othello-23-review",
       "findings": [
@@ -65461,6 +65494,7 @@
     {
       "showId": "the-unbelievers-west-end-2025",
       "file": "times-uk--clive-davis.json",
+      "score": 38,
       "publishDate": "2025-10-20",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-unbelievers-review-nicola-walker-royal-court-k9lfbsj67",
       "findings": [
