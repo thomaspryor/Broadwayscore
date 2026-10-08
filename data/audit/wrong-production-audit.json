@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T19:34:05.023Z",
+  "timestamp": "2026-10-08T20:09:16.102Z",
   "stats": {
-    "totalReviews": 48496,
-    "alreadyFlagged": 18968,
-    "dateGuardCatches": 275,
-    "directorMismatch": 1468,
+    "totalReviews": 48538,
+    "alreadyFlagged": 18966,
+    "dateGuardCatches": 277,
+    "directorMismatch": 1471,
     "tvFilmSignals": 1419,
-    "londonSignals": 1419,
+    "londonSignals": 1420,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4765
+    "noPublishDate": 4804
   },
   "findings": [
     {
@@ -16528,7 +16528,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 80,
+      "score": 77,
       "publishDate": "2025-07-23",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-14934517/PATRICK-MARMION-Inter-Alia-Lyttelton-National-Theatre.html",
       "findings": [
@@ -16580,7 +16580,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "i-paper--anya-ryan.json",
-      "score": 86,
+      "score": 85,
       "publishDate": "2025-07-24",
       "url": "https://inews.co.uk/culture/arts/rosamund-pike-force-of-nature-prima-facie-follow-up-inter-alia-3822802?srsltid=AfmBOopoZuga5SGvUHqQ1S6VZicjdP-xb1RxQqF1Ck9UeMizA03Pfznr",
       "findings": [
@@ -16599,7 +16599,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "independent--alice-saville.json",
-      "score": 89,
+      "score": 87,
       "publishDate": "2025-07-24",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/inter-alia-rosamund-pike-review-theatre-b2794460.html",
       "findings": [
@@ -16651,7 +16651,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 86,
+      "score": 83,
       "publishDate": "2025-07-24",
       "url": "https://www.standard.co.uk/culture/theatre/rosamund-pike-inter-alia-review-national-theatre-lyttelton-b1239772.html",
       "findings": [
@@ -16665,7 +16665,7 @@
     {
       "showId": "inter-alia-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2025-07-24",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/inter-alia-national-theatre-review/",
       "findings": [
@@ -17609,6 +17609,25 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "plays-international--maryam-philpott.json",
+      "score": 81,
+      "publishDate": "2025-12-15",
+      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 281d before show (2025-12-15 vs 2026-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "south-london--michael-holland.json",
       "score": 79,
       "publishDate": null,
@@ -17623,6 +17642,30 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 92,
+      "publishDate": "2026-01-06",
+      "url": "https://www.thejc.com/life/theatre/into-the-woods-review-goyishe-brothers-grimm-gloriously-reinvented-by-a-jewish-creative-team-lq75z9fy",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 259d before show (2026-01-06 vs 2026-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -17703,8 +17746,22 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "thestage--tom-wicker.json",
+      "score": 97,
+      "publishDate": "2026-10-08",
+      "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-noel-coward-theatre-london-stephen-sondheim-jordan-fein",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2026-10-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-woods-review-noel-coward-theatre-jordan-fein-stephen-sondheim-6r2kfzqln",
       "findings": [
