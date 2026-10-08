@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T22:53:02.023Z",
+  "timestamp": "2026-10-08T23:13:59.875Z",
   "stats": {
-    "totalReviews": 49360,
-    "alreadyFlagged": 19070,
-    "dateGuardCatches": 278,
+    "totalReviews": 49455,
+    "alreadyFlagged": 19074,
+    "dateGuardCatches": 277,
     "directorMismatch": 1493,
     "tvFilmSignals": 1422,
     "londonSignals": 1450,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 5436
+    "noPublishDate": 5512
   },
   "findings": [
     {
@@ -17610,7 +17610,7 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "artsdesk--unknown.json",
+      "file": "artsdesk--david-nice.json",
       "score": 90,
       "publishDate": "2026-10-08",
       "url": "https://theartsdesk.com/theatre/woods-noel-coward-theatre-review-honouring-masterpiece",
@@ -17704,6 +17704,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "lovelondonloveculture--unknown.json",
+      "score": 94,
       "publishDate": "2026-10-08",
       "url": "https://lovelondonloveculture.com/2026/10/08/review-into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -17741,6 +17742,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "matineemouse--matinee-mouse.json",
+      "score": 79,
       "publishDate": "2026-10-08",
       "url": "https://matineemouse.substack.com/p/into-the-woods-west-end-review",
       "findings": [
@@ -17999,14 +18001,9 @@
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "west-end-best-friend--chris-abbott.json",
       "score": 93,
-      "publishDate": "2025-10-08",
+      "publishDate": "2026-10-08",
       "url": "https://www.westendbestfriend.co.uk/news/review-into-the-woods-noel-coward-theatre",
       "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 349d before show (2025-10-08 vs 2026-09-22)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -18065,7 +18062,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2025-12-13",
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
         {
@@ -18164,7 +18161,7 @@
       "file": "financialtimes--tim-bano.json",
       "score": 89,
       "publishDate": "2025-12-12",
-      "url": null,
+      "url": "https://www.ft.com/content/9da2a948-bb09-4c48-9cf3-969d00f35e62",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18307,7 +18304,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "musical-theatre-review--ian-bowkett.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "2025-12-12",
       "url": "https://musicaltheatrereview.com/into-the-woods-bridge-theatre/",
       "findings": [
         {
@@ -18443,7 +18440,7 @@
       "showId": "into-the-woods-west-end-2025",
       "file": "the-recs--the-recs-it.json",
       "score": 98,
-      "publishDate": null,
+      "publishDate": "2025-12-11",
       "url": "https://therecs.co.uk/into-the-woods-bridge-theatre/",
       "findings": [
         {
@@ -45881,6 +45878,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "west-end-best-friend--beatriz-ferreira.json",
+      "score": 79,
       "publishDate": "2026-10-08",
       "url": "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
       "findings": [
