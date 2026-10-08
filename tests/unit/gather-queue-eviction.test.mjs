@@ -4,13 +4,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { slotDecision, olderActiveRuns } = require(join(root, 'scripts/lib/gather-slot.js'));
+const { recordDeferredShows, collectDeferredShows, redispatchPlan } = require(join(root, 'scripts/lib/gather-deferred.js'));
 const {
   parseWorkflow,
   loadWorkflows,
@@ -103,4 +105,37 @@ test('repo: gather-reviews.yml is per-run and not flagged; no unbaselined offend
   const risks = queueEvictionRisks(loadWorkflows(wfDir), raw);
   assert.ok(!risks.some((r) => r.file === 'gather-reviews.yml'));
   assert.deepEqual(risks.filter((r) => !QUEUE_EVICTION_BASELINE.includes(r.file)), []);
+});
+
+test('deferred shows: the remainder replaces the file; merged in order, de-duplicated, junk dropped', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'deferred-'));
+  try {
+    const f = join(dir, 'deferred-shows.txt');
+    assert.equal(recordDeferredShows(['a-2026'], undefined), false);
+    assert.equal(recordDeferredShows(['a-2026', ' b-2026 ', 'c-2026'], f), true);
+    assert.equal(recordDeferredShows(['b-2026', 'c-2026'], f), true); // a-2026 is done
+    const merged = collectDeferredShows([readFileSync(f, 'utf8'), 'b-2026,d-2026\n', '$(rm -rf /)\nBad Id\n']);
+    assert.deepEqual(merged, ['b-2026', 'c-2026', 'd-2026']);
+    assert.equal(recordDeferredShows([], f), false); // all done: file emptied
+    assert.equal(readFileSync(f, 'utf8'), '');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('repo: gather-reviews.js records deferred shows and the workflow re-dispatches them', () => {
+  const js = readFileSync(join(root, 'scripts/gather-reviews.js'), 'utf8');
+  assert.match(js, /recordDeferredShows\(showIds\);\s*for \(let i = 0; i < showIds\.length/);
+  assert.match(js, /recordDeferredShows\(showIds\.slice\(i \+ 1\)\)/);
+  const y = readFileSync(join(wfDir, 'gather-reviews.yml'), 'utf8');
+  assert.match(y, /GATHER_DEFERRED_FILE: \$\{\{ runner\.temp \}\}\/deferred-shows\.txt/);
+  assert.match(y, /name: gather-deferred-\$\{\{ github\.run_id \}\}/);
+  assert.match(y, /pattern: gather-deferred-\$\{\{ github\.run_id \}\}/);
+  assert.match(y, /collectDeferredShows[\s\S]{0,800}gh workflow run gather-reviews\.yml/);
+});
+
+test('deferred shows: a run that deferred everything is not re-dispatched (no loop)', () => {
+  assert.deepEqual(redispatchPlan(['b', 'c'], 'a,b,c'), { shows: ['b', 'c'], stalled: false });
+  assert.deepEqual(redispatchPlan(['a', 'b'], 'a, b'), { shows: [], stalled: true });
+  assert.deepEqual(redispatchPlan([], 'a'), { shows: [], stalled: false });
 });
