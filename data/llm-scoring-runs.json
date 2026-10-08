@@ -1,65 +1,5 @@
 [
   {
-    "startedAt": "2026-10-07T11:27:25.035Z",
-    "completedAt": "2026-10-07T11:27:40.157Z",
-    "totalReviews": 47258,
-    "processed": 0,
-    "skipped": 47252,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 22485,
-      "output": 770,
-      "total": 62151
-    },
-    "costUsd": 0.09336349999999999,
-    "runId": "37613875224",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-07T11:27:41.416Z",
-    "completedAt": "2026-10-07T11:27:42.872Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37613875224",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-07T11:32:12.796Z",
-    "completedAt": "2026-10-07T11:32:13.104Z",
-    "totalReviews": 47258,
-    "processed": 0,
-    "skipped": 47257,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37614292307",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-07T11:32:15.196Z",
     "completedAt": "2026-10-07T11:32:17.554Z",
     "totalReviews": 0,
@@ -228496,6 +228436,60 @@
     },
     "costUsd": 0,
     "runId": "37768762456",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T11:35:11.459Z",
+    "completedAt": "2026-10-08T11:35:11.759Z",
+    "totalReviews": 47761,
+    "processed": 0,
+    "skipped": 47760,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37770607419",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-08T11:35:57.809Z",
+    "completedAt": "2026-10-08T11:40:05.118Z",
+    "totalReviews": 47761,
+    "processed": 46,
+    "skipped": 47186,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 262278,
+      "output": 14390,
+      "total": 682144
+    },
+    "costUsd": 1.16963045,
+    "runId": "37770607419",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T11:40:07.174Z",
+    "completedAt": "2026-10-08T11:40:59.267Z",
+    "totalReviews": 24,
+    "processed": 24,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 63715,
+      "output": 5300,
+      "total": 69015
+    },
+    "costUsd": 0.17448,
+    "runId": "37770607419",
     "errorDetails": []
   }
 ]
