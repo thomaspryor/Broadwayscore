@@ -173,6 +173,8 @@ try {
 // Paths
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const { gatherPurposeForShow } = require('./lib/spend-purpose');
+// A dispatch-level tag (gather-reviews.yml spend_purpose input) wins over the per-show one.
+const _DISPATCH_SPEND_PURPOSE = process.env.SCRAPER_SPEND_PURPOSE || '';
 let _showsByIdCache = null;
 function _showsById() {
   if (!_showsByIdCache) {
@@ -5920,7 +5922,7 @@ async function main() {
     const showId = showIds[i];
     // BRO-4146: tag this show's provider-ledger rows when it is a historical
     // backfill (closed >90d) so the daily-credit probe can exclude them.
-    process.env.SCRAPER_SPEND_PURPOSE = gatherPurposeForShow(_showsById().get(showId));
+    process.env.SCRAPER_SPEND_PURPOSE = _DISPATCH_SPEND_PURPOSE || gatherPurposeForShow(_showsById().get(showId));
     let result;
     try {
       result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });

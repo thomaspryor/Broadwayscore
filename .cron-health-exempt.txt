@@ -275,3 +275,6 @@ detect-star-band-regressions.yml
 automation-freeze.yml
 # BRO-4745: Codex card runner. Not user-facing; each run posts a summary on BRO-4745, failures reach the digest via notify-failure.
 codex-runner.yml
+# Daily historical review backfill (BRO-4146): low-stakes, re-sends the same
+# slice the next day if a run fails (cursor advances only once its gather run starts).
+historical-backfill.yml

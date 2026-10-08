@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T11:11:58.043Z",
+  "generatedAt": "2026-10-08T14:03:46.465Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -627,8 +627,8 @@
         }
       },
       "broadcast": {
-        "state": "waiting",
-        "detail": "Ready — awaiting send"
+        "state": "overdue",
+        "detail": "Overdue alert sent"
       },
       "missingT1": [
         {
@@ -653,10 +653,6 @@
         },
         {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -2121,10 +2117,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",

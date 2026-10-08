@@ -42,6 +42,11 @@ on:
         required: false
         type: boolean
         default: false
+      spend_purpose:
+        description: "Tag for this run's scraper-spend ledger rows (e.g. historical-backfill); excluded from the daily gather-reviews credit probe"
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -56,6 +61,9 @@ env:
   # workflow-name exemption has already been lost. The explicit flag is what
   # survives a dispatch hop — see scripts/lib/brightdata-caps.js isExemptCaller.
   BD_OPENING_NIGHT: ${{ inputs.opening_night && '1' || '' }}
+  # BRO-4146: dispatch-level spend tag (historical-backfill.yml sets it), so the
+  # whole run's ledger rows are excluded from the gather-reviews credit probe.
+  SCRAPER_SPEND_PURPOSE: ${{ inputs.spend_purpose }}
 
 concurrency:
   group: review-texts-backfill-write

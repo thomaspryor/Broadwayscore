@@ -8,6 +8,16 @@
 
 set -euo pipefail
 
+# BRO-4146 (2026-10-08): retired. The daily backfill now runs in CI
+# (.github/workflows/historical-backfill.yml, 06:37 UTC) with a durable cursor
+# in data/audit/historical-backfill-cursor.json. This launchd copy kept its
+# cursor in /tmp (reset on reboot), dispatched 100 shows/day when a run
+# finishes ~25, and collided with the 08:00 UTC opening-night pass. The next
+# time launchd runs it, it unloads its own job and exits without dispatching.
+echo "$(date): backfill moved to CI (historical-backfill.yml); unloading com.broadwayscore.backfill-gather"
+launchctl bootout gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.backfill-gather.plist 2>/dev/null || true
+exit 0
+
 REPO="thomaspryor/Broadwayscore"
 STATE_FILE="/tmp/backfill-gather-state.txt"
 BATCHES_FILE="/Users/tompryor/Broadwayscore/scripts/backfill-batches.json"
