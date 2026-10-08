@@ -182,6 +182,17 @@ function canReuseArchivedFile({ recordedSource, incomingUrl, fileExists, force }
   return !!recordedSource && sourceBase(recordedSource) === sourceBase(incomingUrl);
 }
 
+/**
+ * May a file found on disk fill a null shows.json image (page builder's hero
+ * fallback, pre-deploy-check's orphan fix)? Not when the file's recorded
+ * source (image-sources.json) is one a person rejected for this show: the
+ * rejection nulls shows.json, and the disk fallback put 53 historical rows'
+ * other-production banners straight back (BRO-2242).
+ */
+function mayServeDiskImage(show, recordedSource) {
+  return !isRejectedImage({ hero: recordedSource }, show);
+}
+
 /** IBDB is a Broadway database: any hit for a London row is another production. */
 function ibdbEligible(show) {
   return todaytixMarket(show) !== 'london';
@@ -195,5 +206,6 @@ module.exports = {
   theatrEligible,
   isRejectedImage,
   canReuseArchivedFile,
+  mayServeDiskImage,
   ibdbEligible,
 };

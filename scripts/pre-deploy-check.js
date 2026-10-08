@@ -14,6 +14,7 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { mayServeDiskImage } = require('./lib/image-source-match');
 
 const USAGE = `pre-deploy-check.js — Pre-deploy data integrity check that runs before every Vercel build.
 
@@ -121,13 +122,17 @@ try {
   // This catches data/file mismatches from the dedup logic or private repo staleness.
   // Also upgrades .jpg → .webp when a .webp file exists on disk (legacy backfill cleanup).
   const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images', 'shows');
+  let imageSources = {};
+  try { imageSources = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'image-sources.json'), 'utf8')); } catch {}
   let orphansFixed = 0;
   let jpgUpgraded = 0;
   for (const show of shows) {
     if (!show || !show.id) continue;
     const dir = path.join(IMAGES_DIR, show.id);
     // Check for image files in any format (webp preferred, then jpg, png)
+    // A file whose recorded source a person rejected stays off the site.
     const findImage = (name) => {
+      if (!mayServeDiskImage(show, imageSources[show.id]?.[name])) return null;
       for (const ext of ['webp', 'jpg', 'png']) {
         if (fs.existsSync(path.join(dir, `${name}.${ext}`))) return `${name}.${ext}`;
       }
