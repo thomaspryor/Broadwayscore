@@ -2152,5 +2152,34 @@
       }
     ],
     "queuedAt": "2026-10-08T13:38:39.788Z"
+  },
+  {
+    "conditionKey": "land:land/celebrity-autobiography-broadcast-draft",
+    "title": "Landing blocked: rebase red on land/celebrity-autobiography-broadcast-draft",
+    "description": "land.yml did not land land/celebrity-autobiography-broadcast-draft: the rebase gate went red at d31c636c32. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36541497320",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/celebrity-autobiography-broadcast-draft"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "d31c636c324a5dab77718e725bc893d1d4f1c6d5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36541497320"
+      }
+    ],
+    "queuedAt": "2026-10-08T13:44:11.909Z"
   }
 ]
