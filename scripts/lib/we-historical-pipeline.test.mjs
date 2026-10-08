@@ -214,14 +214,31 @@ test('auditSeason: a clean season passes; --ids limits the audit to a batch', ()
 test('roundupWindow + discoverWetRoundupRows: historical merge searches only the run\'s own window', async () => {
   const show = { id: 'just-for-one-day-the-live-aid-musical-west-end-2025', title: 'Just For One Day', previewsStartDate: '2025-05-15', closingDate: '2026-02-07' };
   const w = roundupWindow(show);
-  assert.deepEqual(w, { after: '2025-04-15', before: '2026-06-07' });
+  assert.deepEqual(w, { after: '2025-04-15', before: '2025-07-14' });
   let url = '';
   await discoverWetRoundupRows(show, { ...w, fetchJSON: async (u) => { url = u; return []; }, fetchPage: async () => null, log: () => {} });
-  assert.match(url, /&after=2025-04-15T00:00:00&before=2026-06-07T00:00:00$/);
+  assert.match(url, /&after=2025-04-15T00:00:00&before=2025-07-14T00:00:00$/);
   // Live callers pass no window: URL unchanged.
   await discoverWetRoundupRows(show, { fetchJSON: async (u) => { url = u; return []; }, fetchPage: async () => null, log: () => {} });
   assert.doesNotMatch(url, /after=/);
   assert.deepEqual(roundupWindow({ title: 'X' }), {});
+});
+
+test('WET roundup window excludes a same-title successor and an earlier run, even if the API ignores the dates', async () => {
+  // Pilot run 37722682420: the 2024 Wyndham's Oedipus picked the Feb 2025 Old Vic roundup.
+  const wyndhams = { id: 'oedipus-west-end-2024', title: 'Oedipus', previewsStartDate: '2024-10-04', openingDate: '2024-10-15', closingDate: '2025-01-04' };
+  const w = roundupWindow(wyndhams);
+  assert.deepEqual(w, { after: '2024-09-04', before: '2024-12-14' });
+  const html = '<table><tr><td>The Guardian</td><td>★★★★</td></tr></table>';
+  const posts = [
+    { id: 273849, date: '2025-02-05T10:00:00', link: 'https://wet/oldvic', title: { rendered: 'Oedipus reviews round-up at the Old Vic' }, content: { rendered: html } },
+    { id: 260001, date: '2024-10-16T10:00:00', link: 'https://wet/wyndhams', title: { rendered: 'Oedipus reviews round-up at Wyndham’s' }, content: { rendered: html } },
+  ];
+  const r = await discoverWetRoundupRows(wyndhams, { ...w, fetchJSON: async () => posts, fetchPage: async () => null, log: () => {} });
+  assert.equal(r.post.link, 'https://wet/wyndhams');
+  const jfod = { title: 'Just For One Day', previewsStartDate: '2025-05-15', closingDate: '2026-02-07' };
+  const none = await discoverWetRoundupRows(jfod, { ...roundupWindow(jfod), fetchJSON: async () => [{ ...posts[0], date: '2023-02-10T10:00:00', title: { rendered: 'Just For One Day reviews round-up' } }], fetchPage: async () => null, log: () => {} });
+  assert.equal(none, null);
 });
 
 test('fixAllCapsTitle and straight apostrophes in written titles', () => {
