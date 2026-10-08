@@ -22,7 +22,9 @@
 function buildVerificationPrompt(show, synopsis) {
   const cast = (show.cast || []).map(c => c.name).filter(Boolean).join(', ');
   const team = (show.creativeTeam || []).map(c => `${c.name} (${c.role})`).join(', ');
-  const year = (show.openingDate || '').slice(0, 4) || '?';
+  // First preview stands in for a missing opening date (half the West End
+  // historical rows have only previewsStartDate), as in the generator prompts.
+  const year = (show.openingDate || show.previewsStartDate || '').slice(0, 4) || '?';
   return `You are verifying whether a synopsis describes a SPECIFIC theatrical production. Many shows share a title, so be strict.
 
 PRODUCTION RECORD (the ground truth):

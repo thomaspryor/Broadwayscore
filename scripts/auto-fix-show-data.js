@@ -229,7 +229,7 @@ async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
 async function generateSynopsisWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
-  const year = show.openingDate?.slice(0, 4) || '';
+  const year = (show.openingDate || show.previewsStartDate)?.slice(0, 4) || '';
   const castInfo = show.cast && show.cast.length > 0
     ? `Cast: ${show.cast.map(c => c.name).join(', ')}.` : '';
   const creativeInfo = show.creativeTeam && show.creativeTeam.length > 0
@@ -261,7 +261,7 @@ Return only the synopsis text (or exactly UNKNOWN), nothing else.`;
 async function generateCreativeTeamWithLLM(show) {
   if (!ANTHROPIC_API_KEY) return null;
 
-  const year = show.openingDate?.slice(0, 4) || 'upcoming';
+  const year = (show.openingDate || show.previewsStartDate)?.slice(0, 4) || 'upcoming';
   const synopsis = (show.synopsis || '').slice(0, 500);
   const venueLine = show.venue ? `\nVenue: ${show.venue}` : '';
   const contextLine = synopsis ? `\nSynopsis: ${synopsis}` : '';
@@ -404,7 +404,7 @@ async function fixSynopsis(show, todayTixIds) {
 // Step 2: For each proposed member, verify via SERP before accepting
 // Only accepts a member if a SERP snippet confirms "directed by [name]" or equivalent.
 async function generateCreativeTeamWithSerpVerification(show) {
-  const year = show.openingDate?.slice(0, 4) || 'upcoming';
+  const year = (show.openingDate || show.previewsStartDate)?.slice(0, 4) || 'upcoming';
   const synopsis = (show.synopsis || '').slice(0, 500);
   const marketHint = show.ibdbUrl ? '' : (show.slug?.includes('west-end') || show.venue?.toLowerCase().includes('london') ? 'West End' : 'off-Broadway');
 
