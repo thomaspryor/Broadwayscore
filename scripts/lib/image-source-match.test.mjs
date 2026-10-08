@@ -7,6 +7,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
+  canReuseArchivedFile,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -115,4 +116,63 @@ test('Mezzanine: venue city from shows.json keeps each row in its own city', () 
   ];
   const m02 = { title: 'Man of La Mancha', category: 'broadway', venue: 'Al Hirschfeld Theatre', openingDate: '2002-12-05', previewsStartDate: '2002-11-23' };
   assert.equal(pickMezzanineCandidate(m02, mancha, index).candidate.theater, 'Martin Beck Theatre');
+});
+
+// The real Mezzanine cache entries for "Chicago" (2026-10-08). The 1975 row
+// opened at the 46th Street Theatre, now the Richard Rodgers, where the 1996
+// revival also opened; every other entry is undated.
+const MEZZ_CHICAGO = [
+  { artUrl: 'https://x/chicago red cambridge.jpg', theater: 'Cambridge Theatre', isBroadway: false, openedAt: null },
+  { artUrl: 'https://x/chicago red garrick.jpg', theater: 'Garrick Theatre', isBroadway: false, openedAt: null },
+  { artUrl: 'https://x/chicago.jpg', theater: 'Richard Rodgers Theatre', isBroadway: true, openedAt: at('1996-10-23T05:00:00.000Z') },
+  { artUrl: 'https://x/chicago red phoenix.jpg', theater: 'Phoenix Theatre', isBroadway: false, openedAt: null },
+  { artUrl: 'https://x/chicago white.jpg', theater: 'Sam S. Shubert Theatre', isBroadway: true, openedAt: null },
+  { artUrl: 'https://x/chicago red adelphi.jpg', theater: 'Adelphi Theatre', isBroadway: false, openedAt: at('1997-10-28T00:00:00.000Z') },
+  { artUrl: 'https://x/chicago 2023.jpg', theater: 'Ambassador Theatre', isBroadway: true, openedAt: null },
+];
+
+test('Mezzanine: a same-house candidate from another decade is not this production', () => {
+  const c75 = { id: 'chicago-1975', title: 'Chicago', category: 'broadway', venue: 'Richard Rodgers Theatre', openingDate: '1975-06-03' };
+  const r75 = pickMezzanineCandidate(c75, MEZZ_CHICAGO);
+  assert.equal(r75.candidate, null, r75.reason);
+  // The 1996 revival at the same house still gets its own art.
+  const c96 = { id: 'chicago-1996', title: 'Chicago', category: 'broadway', venue: 'Richard Rodgers Theatre', openingDate: '1996-11-14' };
+  assert.equal(pickMezzanineCandidate(c96, MEZZ_CHICAGO).candidate.artUrl, 'https://x/chicago.jpg');
+  // A run that reopened at its own house after the pandemic is the same production.
+  const north = { title: 'Girl from the North Country', category: 'broadway', venue: 'Belasco Theatre', openingDate: '2022-04-29' };
+  const northCands = [{ artUrl: 'https://x/gftnc.jpg', theater: 'Belasco Theatre', isBroadway: true, openedAt: at('2020-02-07T05:00:00.000Z') }];
+  assert.equal(pickMezzanineCandidate(north, northCands).candidate.artUrl, 'https://x/gftnc.jpg');
+});
+
+test('Mezzanine: a closed show over 2 years old takes an undated candidate only at its own venue', () => {
+  const now = { nowMs: Date.parse('2026-10-08') };
+  const row = { title: 'Chicago', category: 'broadway', status: 'closed', venue: 'Somewhere Else', openingDate: '2010-01-01' };
+  const undatedOnly = MEZZ_CHICAGO.filter((c) => !c.openedAt);
+  const r = pickMezzanineCandidate(row, undatedOnly, undefined, now);
+  assert.equal(r.candidate, null);
+  assert.match(r.reason, /undated/);
+  // A long run still playing (Perfect Crime, 1987-) keeps its current art.
+  assert.ok(pickMezzanineCandidate({ ...row, status: 'open' }, undatedOnly, undefined, now).candidate);
+  // At its own venue an undated record is usually the long run itself
+  // (chicago-1996 at the Ambassador, The Lion King at the Minskoff).
+  const atAmbassador = { ...row, venue: 'Ambassador Theatre' };
+  assert.equal(pickMezzanineCandidate(atAmbassador, MEZZ_CHICAGO, undefined, now).candidate.artUrl, 'https://x/chicago 2023.jpg');
+  // A current show keeps undated candidates anywhere: Mezzanine's newest
+  // listings carry no date, and their venue names often differ from ours.
+  const offBway = { title: 'Isla', category: 'off-broadway', venue: 'WP Theater', openingDate: '2026-08-08' };
+  const isla = [{ artUrl: 'https://x/isla.jpg', theater: 'WP Theater (McGinn/Cazale Theatre)', isBroadway: false, openedAt: null }];
+  assert.equal(pickMezzanineCandidate(offBway, isla, undefined, now).candidate.artUrl, 'https://x/isla.jpg');
+});
+
+test('archive: an existing file is reused only when it came from the same source URL', () => {
+  const art = 'https://www.theaterdiary.com/parse/files/x/chicago.jpg';
+  const old = 'https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6/medium_WHITNEY.jpg';
+  // The 2026-10-08 bug: new art picked, same file name on disk, old art kept.
+  assert.equal(canReuseArchivedFile({ recordedSource: old, incomingUrl: art, fileExists: true, force: false }), false);
+  assert.equal(canReuseArchivedFile({ recordedSource: art, incomingUrl: art, fileExists: true, force: false }), true);
+  assert.equal(canReuseArchivedFile({ recordedSource: art, incomingUrl: `${art}?fm=webp&q=90`, fileExists: true, force: false }), true);
+  // No record of where the file came from: download rather than trust it.
+  assert.equal(canReuseArchivedFile({ recordedSource: undefined, incomingUrl: art, fileExists: true, force: false }), false);
+  assert.equal(canReuseArchivedFile({ recordedSource: art, incomingUrl: art, fileExists: false, force: false }), false);
+  assert.equal(canReuseArchivedFile({ recordedSource: art, incomingUrl: art, fileExists: true, force: true }), false);
 });

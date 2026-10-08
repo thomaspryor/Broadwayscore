@@ -69,6 +69,7 @@ async function checkAspect(filePath, role) {
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
+const { canReuseArchivedFile } = require('./lib/image-source-match');
 
 const SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
 
@@ -293,16 +294,14 @@ async function main() {
         continue;
       }
 
-      // Save original URL before overwriting
-      if (!url.startsWith('/images/')) {
-        imageSources[show.id][format] = url;
-      }
-
       const ext = getLocalExtension(url);
       const filepath = path.join(OUTPUT_DIR, show.id, `${format}.${ext}`);
 
-      // Skip if already downloaded (unless forcing)
-      if (fs.existsSync(filepath) && !force) {
+      // Keep the file on disk only when it was downloaded from this same URL.
+      // A fetch that picks new art with an unchanged file name (.jpg for .jpg)
+      // must replace it (BRO-2242). The source is recorded only after a good
+      // download, so a failed one is retried rather than marked done.
+      if (canReuseArchivedFile({ recordedSource: imageSources[show.id][format], incomingUrl: url, fileExists: fs.existsSync(filepath), force })) {
         // File exists - just update shows.json to use local path
         const localPath = `/images/shows/${show.id}/${format}.${ext}`;
         if (show.images[format] !== localPath) {
@@ -317,28 +316,34 @@ async function main() {
       const dlUrl = getDownloadUrl(url, format);
       if (!dlUrl) continue;
 
+      // Download beside the current file and replace it only once the checks
+      // pass: now that new art for an existing file name is downloaded, a
+      // rejected download must not delete the art already on disk.
+      const tmpPath = `${filepath}.incoming`;
       try {
-        const size = await downloadImage(dlUrl, filepath);
+        const size = await downloadImage(dlUrl, tmpPath);
 
         // Reject known placeholder images — don't let them overwrite real art
-        if (isPlaceholderFile(filepath)) {
+        if (isPlaceholderFile(tmpPath)) {
           console.warn(`  ⚠ ${show.title} ${format}: Downloaded image is a "Coming Soon" placeholder — rejecting`);
-          fs.unlinkSync(filepath);
+          fs.unlinkSync(tmpPath);
           totalFailed++;
           continue;
         }
 
         // Reject wrong-aspect downloads — wide poster, portrait hero, etc.
         // (evita-west-end-2025 commit a71c3defe4 class).
-        const aspect = await checkAspect(filepath, format);
+        const aspect = await checkAspect(tmpPath, format);
         if (!aspect.ok) {
           console.warn(`  ⚠ ${show.title} ${format}: Downloaded image has wrong aspect (${aspect.reason}) — rejecting`);
-          fs.unlinkSync(filepath);
+          fs.unlinkSync(tmpPath);
           totalFailed++;
           continue;
         }
+        fs.renameSync(tmpPath, filepath);
 
         show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
+        imageSources[show.id][format] = url;
         showDownloaded++;
         totalDownloaded++;
         totalBytes += size;
@@ -354,6 +359,7 @@ async function main() {
           }
         }
       } catch (e) {
+        try { fs.unlinkSync(tmpPath); } catch {}
         console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
         totalFailed++;
       }
