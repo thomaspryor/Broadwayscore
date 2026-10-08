@@ -28,7 +28,8 @@ function weShowsFilter(src) {
 }
 
 test('page.tsx inlines only non-closed West End shows', () => {
-  assert.match(weShowsFilter(read('src/app/page.tsx')), /s\.status !== 'closed'/);
+  // Must be the first conjunct of the filter (an `||` alternative would not exclude closed rows).
+  assert.match(weShowsFilter(read('src/app/page.tsx')), /\.filter\(s =>\s*s\.status !== 'closed' &&/);
 });
 
 test('page.tsx cache-busts on the West End archive too', () => {
@@ -37,9 +38,9 @@ test('page.tsx cache-busts on the West End archive too', () => {
 
 test('HomePageClient fetches the West End archive and searches it', () => {
   const src = read('src/components/HomePageClient.tsx');
-  assert.match(src, /\/data\/west-end-archive\.json/);
+  assert.match(src, /['`/]west-end-archive\.json/);
   const search = src.slice(src.indexOf('const allShowsForSearch'), src.indexOf('const fuseDataRef'));
-  assert.match(search, /\.\.\.westEndArchiveShows\b/, 'allShowsForSearch must spread the lazy West End archive into the searched list');
+  assert.match(search, /\.\.\.\(?westEndArchiveShows\b/, 'allShowsForSearch must spread the lazy West End archive into the searched list');
 });
 
 test('prebuild regenerates the West End archive', () => {
@@ -49,6 +50,9 @@ test('prebuild regenerates the West End archive', () => {
 test('west-end-archive.json holds closed London shows only, no duplicates', () => {
   const rows = JSON.parse(read('public/data/west-end-archive.json'));
   assert.ok(Array.isArray(rows));
+  // An empty archive would pass the checks below vacuously and silently drop
+  // every closed London show from homepage search.
+  assert.ok(rows.length > 0, 'west-end-archive.json is empty');
   const bad = rows.filter((r) => r.status !== 'closed' || !['west-end', 'off-west-end'].includes(r.category));
   assert.deepEqual(bad.map((r) => `${r.id} ${r.status} ${r.category}`), []);
   assert.equal(new Set(rows.map((r) => r.id)).size, rows.length);
