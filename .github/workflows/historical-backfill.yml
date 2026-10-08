@@ -8,8 +8,8 @@
 #
 # 06:37 UTC: after the 05:00 and before the 08:00 opening-night-reviews passes,
 # before review-refresh (09:00) and outside opening-night-broadcast's hourly
-# 13:41-23:41 window, so the backfill rarely shares the review-texts-backfill-write
-# queue with time-sensitive opening-night gathers.
+# 13:41-23:41 window, so the backfill rarely competes with time-sensitive
+# opening-night gathers for gather-reviews' run slots (BRO-4859 FIFO gate).
 name: Historical Review Backfill
 
 on:
@@ -62,10 +62,11 @@ jobs:
             -f no_sb_serp=true \
             -f spend_purpose=historical-backfill
 
-      # gather-reviews shares the review-texts-backfill-write concurrency group,
-      # where a newer queued run replaces an older pending one. Advance the cursor
-      # only once our run has actually started; if it is cancelled while queued,
-      # leave the cursor so tomorrow re-sends the same slice.
+      # Advance the cursor only once our run has actually started; if it is
+      # cancelled before starting, leave the cursor so tomorrow re-sends the same
+      # slice. (Since BRO-4859 gather-reviews uses a per-run group and waits for a
+      # FIFO slot inside its prepare job, so a queued run is no longer evicted and
+      # shows in_progress while it waits.)
       - name: Wait for the gather run to start
         id: started
         if: steps.pick.outputs.shows != ''

@@ -177,7 +177,96 @@ function writersWithoutConcurrency(workflows) {
   return workflows.filter((w) => w.pushesCrossRepo && w.concurrency.length === 0).map((w) => w.file);
 }
 
+// BRO-4859: a dispatch target whose top-level group is a static string with
+// cancel-in-progress: false keeps ONE pending run, so a dispatch arriving while a run
+// is busy evicts the previous pending one ('cancelled', never started, no alert).
+// gather-reviews.yml lost 43 of 225 dispatches that way in two weeks. Fine for a
+// debounce (a full rebuild), wrong when each dispatch carries its own work list.
+// Opt out with `# concurrency-queue-ok: <reason>` inside the concurrency block.
+const QUEUE_OK_ANNOTATION = 'concurrency-queue-ok';
+
+// Workflows a script or workflow text dispatches: gh CLI (string or argv-array form,
+// flags before the target, by file or by display name), REST path, octokit. Display
+// names come back as `name:<Name>` for queueEvictionRisks to resolve. A dispatch with
+// --repo/-R naming another repo is skipped.
+function dispatchTargetsIn(text) {
+  const out = new Set();
+  const otherRepo = (args) => {
+    const repo = args.match(/(?:--repo|-R)['",\s=]+(?:thomaspryor\/)?([\w.-]+)/);
+    return Boolean(repo && repo[1].toLowerCase() !== 'broadwayscore');
+  };
+  const addTarget = (args) => {
+    const file = args.match(/([\w.-]+\.ya?ml)\b/);
+    if (file) return out.add(file[1]);
+    const name = args.match(/^[\s,]*['"]([A-Z][^'"\n]*)['"]/);
+    if (name) out.add(`name:${name[1]}`);
+  };
+  for (const m of text.matchAll(/gh workflow run\b([^\n]*)/g)) if (!otherRepo(m[1])) addTarget(m[1].replace(/(?:^|\s)--?[\w-]+(?:[ =](?!['"][A-Z])\S+)?/g, ' '));
+  for (const m of text.matchAll(/['"]workflow['"]\s*,\s*['"]run['"]\s*,([^\]\n]*)/g)) if (!otherRepo(m[1])) addTarget(m[1]);
+  for (const m of text.matchAll(/workflow_id\s*:\s*['"]([\w.-]+\.ya?ml)['"]/g)) out.add(m[1]);
+  for (const m of text.matchAll(/actions\/workflows\/([\w.-]+\.ya?ml)\/dispatches/g)) out.add(m[1]);
+  return out;
+}
+
+// workflows: loadWorkflows() output. rawByFile: file -> YAML text. scriptTexts: texts of
+// non-workflow dispatchers (scripts/). Returns [{ file, group, dispatchers }].
+function queueEvictionRisks(workflows, rawByFile, scriptTexts = []) {
+  const dispatchers = new Map();
+  const add = (to, from) => {
+    if (!dispatchers.has(to)) dispatchers.set(to, new Set());
+    dispatchers.get(to).add(from);
+  };
+  const byName = new Map(workflows.map((w) => [w.name, w.file]));
+  const resolve = (d) => (d.startsWith('name:') ? byName.get(d.slice(5)) : d);
+  for (const w of workflows) {
+    for (const d of w.dispatches) add(d, w.file);
+    for (const d of dispatchTargetsIn(rawByFile[w.file] || '')) if (resolve(d) && resolve(d) !== w.file) add(resolve(d), w.file);
+  }
+  for (const { file, text } of scriptTexts) for (const d of dispatchTargetsIn(text)) if (resolve(d)) add(resolve(d), file);
+  const risks = [];
+  for (const w of workflows) {
+    if (!dispatchers.has(w.file) || !w.triggers.dispatch) continue;
+    const c = readConcurrency(rawByFile[w.file] || '');
+    if (!c || c.cancelRaw !== 'false') continue;
+    if (!c.group || c.group.includes('${{')) continue; // per-run or partitioned key
+    if (c.blockText.includes(QUEUE_OK_ANNOTATION)) continue;
+    risks.push({ file: w.file, group: c.group, dispatchers: [...dispatchers.get(w.file)].sort() });
+  }
+  return risks;
+}
+
+// Known offenders when the check landed (BRO-4859); triage tracked on Linear. The
+// check fails only on workflows NOT listed here, so the set can only shrink.
+const QUEUE_EVICTION_BASELINE = [
+  'apply-migration.yml',
+  'audit-aggregator-gap.yml',
+  'audit-census-recall.yml',
+  'audit-reverse-discovery.yml',
+  'autonomous-merge.yml',
+  'backfill-cast.yml',
+  'coverage-adversarial-probe.yml',
+  'deep-research-commercial.yml',
+  'extract-pull-quotes.yml',
+  'fetch-aggregator-pages.yml',
+  'newsletter-draft.yml',
+  'opening-digest.yml',
+  'opening-night-broadcast.yml',
+  'outlet-listing-poller.yml',
+  'rebuild-reviews.yml',
+  'review-refresh.yml',
+  'scrape-dtli-show-score.yml',
+  'sweep-we-aggregators.yml',
+  'update-critic-consensus.yml',
+  'update-ltd.yml',
+  'update-theatr.yml',
+  'weekly-grosses.yml',
+];
+
 module.exports = {
+  QUEUE_OK_ANNOTATION,
+  QUEUE_EVICTION_BASELINE,
+  dispatchTargetsIn,
+  queueEvictionRisks,
   REPO_ACTIONS,
   CLASS_RULES,
   classify,

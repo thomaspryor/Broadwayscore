@@ -14,11 +14,11 @@
  *
  * Why this exists: opening-night-reviews.yml's old guard skipped dispatch
  * whenever ANY gather run was in_progress (a blanket global lock). Because
- * gather-reviews serializes on concurrency group `review-texts-backfill-write`
- * (cancel-in-progress:false) it is almost always busy, so opening-night shows
- * were starved of their gather pass entirely (Sinatra 2026-06-25: the guard
- * fired on every run). Per-show dedup lets each opening show queue exactly one
- * gather while the concurrency group handles serialization.
+ * gather-reviews was serialized (shared concurrency group until BRO-4859; now a
+ * FIFO slot gate, scripts/lib/gather-slot.js) it is almost always busy, so
+ * opening-night shows were starved of their gather pass entirely (Sinatra
+ * 2026-06-25: the guard fired on every run). Per-show dedup lets each opening
+ * show queue exactly one gather while the slot gate handles throttling.
  *
  * Pure logic here so it can be unit-tested; the thin gh-CLI wrapper lives in
  * opening-night-reviews.yml.
