@@ -26,9 +26,14 @@ const { PLOT_SIGNAL_RE } = require('./synopsis-validation');
 // Sentences in product.about that are not story: selling, star quotes, age /
 // running-time / content notes, cast and team lists (the junk class that run
 // 37818726628 saved from the scraped-paragraph path).
-const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(include|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
+const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(includes?|including|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
+// Production news and billing, not story (WE historical 2023-24, BRO-4884:
+// "currently playing at Wyndham's ... has just won rave reviews", "Sheridan
+// Smith stars in ...", "one of nine shows in the theatre's 2024 season",
+// "returns to the West End this May", "Hamnet premiered in April at the Swan").
+const PRODUCTION_NEWS_RE = /\b(currently|now) (playing|performing|running)\b|\bis (playing|performing) at\b|\brave reviews\b|\b(award|olivier|tony|bafta)[- ]win|\bstar(s|ring)? (in|as)\b|\b(will be|is) directed\b|\bdirected by\b|\bartistic director\b|\breturns? to (london|the west end)\b|\b(transfers?|promoted) to the west end\b|\bwest end (debut|transfer|premiere)\b|\b(strictly )?limited (run|season|time|engagement)\b|\b\d+-week (run|season)\b|\bpremiered\b|\bgraced the stage\b|\bsold-out\b/i;
 // isValidSynopsis rejects text opening this way; such sentences are pitch, not plot.
-const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come discover|Catch )/i;
+const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come discover|Catch |Book |Have you ever|Immerse yourself|Audiences will|Fly to |Attend the )/i;
 const MAX_ABOUT_CHARS = 700;
 
 /**
@@ -45,6 +50,7 @@ function cleanTodaytixAbout(text) {
     .replace(/[*_]+/g, '')
     .replace(/[\u2018\u2019]/g, "'")
     .replace(/[\u201C\u201D]/g, '"')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
   const sentences = plain.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [];
@@ -54,7 +60,7 @@ function cleanTodaytixAbout(text) {
     const sentence = raw.trim().replace(/^["'\s]+/, '');
     // A sentence holding a quotation is a pull quote or a cast/creative
     // soundbite, not plot (Unicorn: "...very, very funny," Nicola Walker said).
-    if (!sentence || /"/.test(sentence) || NON_STORY_SENTENCE_RE.test(sentence) || MARKETING_OPENER_RE.test(sentence)) continue;
+    if (!sentence || /"/.test(sentence) || NON_STORY_SENTENCE_RE.test(sentence) || PRODUCTION_NEWS_RE.test(sentence) || MARKETING_OPENER_RE.test(sentence)) continue;
     if (len + sentence.length + 1 > MAX_ABOUT_CHARS) break;
     kept.push(sentence);
     len += sentence.length + 1;
