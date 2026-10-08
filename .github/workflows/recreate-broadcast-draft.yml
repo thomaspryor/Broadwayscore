@@ -8,6 +8,10 @@
 # draft plus the usual "[Action Required] draft ready" email to the owner.
 # Nothing here ever calls /send: the owner still presses Send in Resend.
 #
+# Owner-triggered repair: it skips opening-night-broadcast.yml's QA checklist
+# and send-window time gates (the script's own data checks still run), so
+# only dispatch it after the show's data has been checked by hand.
+#
 # dry_run defaults to true: the rehearsal still checks the live draft status
 # and prints what would be deleted, but deletes and writes nothing.
 name: Recreate Broadcast Draft
@@ -98,7 +102,8 @@ jobs:
           echo "LOOKBACK=$LOOKBACK" >> "$GITHUB_ENV"
 
       - name: Generate consensus
-        if: inputs.dry_run != true
+        # Runs on dry_run too so the rehearsal sees what the real run will
+        # (a missing consensus refuses the draft); dry_run pushes nothing.
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         # Same as opening-night-broadcast.yml: a consensus failure must not block
@@ -154,7 +159,7 @@ jobs:
           message: 'data: Recreate opening-night broadcast draft'
 
       - name: Notify on failure
-        if: failure()
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Recreate Broadcast Draft Failed'

@@ -20,10 +20,22 @@ test('collect: broadcastKey + per-show mirror share one draftId, both cleared', 
   assert.deepEqual(r.keys.sort(), [KEY, SHOW].sort());
 });
 
-test('collect: old combo draft naming the show is found too (different broadcastKey)', () => {
-  const combo = { ...draftRec, draftId: 'd2', broadcastKey: `west-end:a-show+${SHOW}` };
-  const r = collectRecreateDraftIds({ [`west-end:a-show+${SHOW}`]: combo }, KEY, [SHOW]);
+test('collect: old combo draft is found when every show in it is recreated', () => {
+  const comboKey = `west-end:a-show+${SHOW}`;
+  const combo = { ...draftRec, draftId: 'd2', broadcastKey: comboKey };
+  const r = collectRecreateDraftIds({ [comboKey]: combo, [SHOW]: combo, 'a-show': combo }, comboKey, ['a-show', SHOW]);
+  assert.equal(r.blockReason, null);
   assert.deepEqual(r.draftIds, ['d2']);
+  assert.equal(r.keys.length, 3);
+});
+
+test('collect: refuses to delete a combo draft when a show in it is left out', () => {
+  const comboKey = `west-end:a-show+${SHOW}`;
+  const combo = { ...draftRec, draftId: 'd2', broadcastKey: comboKey };
+  // via the combo key itself
+  assert.match(collectRecreateDraftIds({ [comboKey]: combo }, KEY, [SHOW]).blockReason, /also covers a-show/);
+  // via a per-show mirror whose broadcastKey names the combo
+  assert.match(collectRecreateDraftIds({ [SHOW]: combo }, KEY, [SHOW]).blockReason, /also covers a-show/);
 });
 
 test('collect: previews, overdue alerts and unrelated shows are ignored', () => {

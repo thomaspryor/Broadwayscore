@@ -22,12 +22,18 @@ const { classifyBroadcastState } = require('./missed-broadcasts');
 
 const SAFE_LIVE_STATUSES = new Set(['draft', 'cancelled']);
 
+/** Show ids named by a `market:a+b` broadcast key, or null for any other key shape. */
+function showsInBroadcastKey(key) {
+  if (!key || key.startsWith('preview:') || key.startsWith('overdue-alert:')) return null;
+  const m = /^[a-z-]+:([^:]+)$/.exec(key);
+  return m ? m[1].split('+') : null;
+}
+
 /** True when tracker key `key` is a draft record covering `showId`. */
 function recordCoversShow(key, showId) {
   if (key === showId) return true;
-  if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) return false;
-  const m = /^[a-z-]+:([^:]+)$/.exec(key);
-  return Boolean(m && m[1].split('+').includes(showId));
+  const shows = showsInBroadcastKey(key);
+  return Boolean(shows && shows.includes(showId));
 }
 
 /**
@@ -46,6 +52,13 @@ function collectRecreateDraftIds(sentShows, broadcastKey, showIds) {
     if (key !== broadcastKey && !showIds.some(id => recordCoversShow(key, id))) continue;
     if (classifyBroadcastState(rec) === 'sent') {
       return { keys: [], draftIds: [], blockReason: `tracker record "${key}" says this broadcast was already sent` };
+    }
+    // An old multi-show draft also carries shows this run would leave out:
+    // deleting it would drop their email with nothing to replace it.
+    const covered = [...(showsInBroadcastKey(key) || []), ...(showsInBroadcastKey(rec.broadcastKey) || [])];
+    const missing = covered.filter(id => !showIds.includes(id));
+    if (missing.length) {
+      return { keys: [], draftIds: [], blockReason: `old draft "${key}" also covers ${[...new Set(missing)].join(', ')}; include every show from that draft` };
     }
     keys.push(key);
     if (rec.draftId) draftIds.add(rec.draftId);
