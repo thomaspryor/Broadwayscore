@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "franz-and-marie-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-08T17:31:13.939Z",
+  "detectedAt": "2026-10-08T17:38:31.049Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "a-youngish-perspective--unknown.json",
-      "outletId": "a-youngish-perspective",
-      "criticName": "Unknown",
-      "url": "https://ayoungishperspective.co.uk/2026/10/07/review-franz-marie/",
-      "fullTextLen": 5063,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "firstnightmagazine--unknown.json",
       "outletId": "firstnightmagazine",
@@ -37,23 +20,6 @@
       "originalScoreNormalized": null,
       "llmScore": null,
       "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
-      "file": "onin--caitlin-neal.json",
-      "outletId": "onin",
-      "criticName": "Caitlin Neal",
-      "url": "https://onin.london/franz-and-marie-at-charing-cross-theatre-review/",
-      "fullTextLen": 4353,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
       "eligibilityReason": null
     },
     {
@@ -74,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 4,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-08T17:31:13.939Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
