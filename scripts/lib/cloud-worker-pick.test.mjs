@@ -391,6 +391,8 @@ test('BRO-2204: a card carrying the NO-DISPATCH marker is never picked or resume
   const { pick, skipped } = pickCloudCard([marked], { nowMs: NOW });
   assert.equal(pick, null);
   assert.equal(skipped['no-dispatch-marker'], 1);
+  // Checked before VERIFY parsing: a marked card with no VERIFY still reports the marker.
+  assert.equal(skipReason(issue({ description: 'NO-DISPATCH: owner first\n\n## Problem\nX.' }), NOW), 'no-dispatch-marker');
   // The same card without the marker is still picked.
   assert.equal(skipReason(issue({ identifier: 'BRO-2204' }), NOW), null);
   // A stranded land ref for a marked card is not resumed either.
