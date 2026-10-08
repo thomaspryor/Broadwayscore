@@ -1,32 +1,59 @@
 {
-  "updatedAt": "2026-10-08T21:39:13.179Z",
-  "processed": 55,
-  "failed": 9,
-  "successRate": "85.9%",
+  "updatedAt": "2026-10-08T23:25:56.649Z",
+  "processed": 66,
+  "failed": 24,
+  "successRate": "73.3%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 53,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 4,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-08T21:36:56.826Z",
+      "t": "2026-10-08T22:58:24.454Z",
       "event": "bb-session",
-      "session": "b8d0e806",
-      "url": "https://1883magazine.com/great-gatsby-musical-review-london/"
+      "session": "63679d12",
+      "url": "https://www.nytimes.com/2024/02/09/theater/hills-of-california-review-jez-butter"
     },
     {
-      "t": "2026-10-08T21:37:09.086Z",
+      "t": "2026-10-08T22:58:24.951Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-08T23:07:41.511Z",
       "event": "bb-session",
-      "session": "9930797b",
-      "url": "https://1883magazine.com/great-gatsby-musical-review-london/"
+      "session": "738426c2",
+      "url": "http://www.hollywoodreporter.com/review/king-i-theater-review-789315"
+    },
+    {
+      "t": "2026-10-08T23:17:11.266Z",
+      "event": "bb-session",
+      "session": "607a8433",
+      "url": "https://www.nytimes.com/2023/11/29/arts/review-national-theatre-bernarda-alba.ht"
+    },
+    {
+      "t": "2026-10-08T23:17:11.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-08T23:24:10.018Z",
+      "event": "bb-session",
+      "session": "a8934c07",
+      "url": "https://www.ft.com/content/c0dcef42-4684-4106-a22d-da34414e5021"
+    },
+    {
+      "t": "2026-10-08T23:24:10.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "ft.com"
     }
   ]
 }
