@@ -64,6 +64,8 @@ Options:
   --help, -h        print this usage and exit
 `;
 
+// venue-write-guard-ok: the shows.json venue is written through sanitizeVenueForWrite in buildShowEntry; other venue uses are title-normaliser input, the in-memory dedup pool and the audit log.
+
 const ROOT = path.join(__dirname, '..');
 const APPROVALS_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-approvals.json');
 const LOG_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-promotion-log.jsonl');
