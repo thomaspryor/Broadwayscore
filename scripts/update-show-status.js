@@ -21,7 +21,7 @@ const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasBookableEvidence } = require('./lib/todaytix-reopen-guard');
-const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
+const { countByShow, isStuckInPreviews, reviewsPredateRun, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
@@ -848,7 +848,8 @@ async function updateShowStatuses() {
       //    through its own opening night inside that loop on 2026-08-12 with a
       //    dated NYT review already sitting on disk, uncollected. Knowing a
       //    critic published is proof enough, and we know it a stage earlier.
-      const scoreThreshold = isStuckInPreviews(show, entry);
+      // Not when the reviews belong to an earlier production (BRO-4857).
+      const scoreThreshold = !reviewsPredateRun(show, entry, isDateReached) && isStuckInPreviews(show, entry);
       const openSignal = scoreThreshold ? null : openSignalFromReviews(show, entry, isDateReached);
       const discoverySignal = (scoreThreshold || openSignal)
         ? null

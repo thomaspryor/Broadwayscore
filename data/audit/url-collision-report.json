@@ -1,120 +1,12 @@
 {
-  "generatedAt": "2026-10-08T10:42:29.969Z",
+  "generatedAt": "2026-10-08T13:47:32.355Z",
   "summary": {
-    "total": 13,
+    "total": 7,
     "high": 3,
     "medium": 3,
-    "low": 7
+    "low": 1
   },
   "collisions": [
-    {
-      "url": "/people/David-Rooney/",
-      "normalizedUrl": "/people/david-rooney",
-      "candidates": [
-        {
-          "showId": "ann-2013",
-          "file": "hollywood-reporter--david-rooney.json",
-          "publishDate": null,
-          "openingDate": "2013-03-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "hollywood-reporter"
-        },
-        {
-          "showId": "the-robber-bridegroom-1976",
-          "file": "hollywood-reporter--david-rooney.json",
-          "publishDate": null,
-          "openingDate": "1976-10-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "hollywood-reporter"
-        }
-      ],
-      "suggestedWinner": "ann-2013",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "/people/Robert-Kahn/",
-      "normalizedUrl": "/people/robert-kahn",
-      "candidates": [
-        {
-          "showId": "ann-2013",
-          "file": "nbcny--robert-kahn.json",
-          "publishDate": null,
-          "openingDate": "2013-03-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nbcny"
-        },
-        {
-          "showId": "twelfth-night-2013",
-          "file": "nbcny--robert-kahn.json",
-          "publishDate": null,
-          "openingDate": "2013-11-10",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nbcny"
-        }
-      ],
-      "suggestedWinner": "twelfth-night-2013",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "/people/Elisabeth-Vincentelli/",
-      "normalizedUrl": "/people/elisabeth-vincentelli",
-      "candidates": [
-        {
-          "showId": "ann-2013",
-          "file": "nypost--elisabeth-vincentelli.json",
-          "publishDate": null,
-          "openingDate": "2013-03-07",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nypost"
-        },
-        {
-          "showId": "misery-2015",
-          "file": "nypost--elisabeth-vincentelli.json",
-          "publishDate": null,
-          "openingDate": "2015-11-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nypost"
-        }
-      ],
-      "suggestedWinner": "misery-2015",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "/people/Don-Grigware/",
-      "normalizedUrl": "/people/don-grigware",
-      "candidates": [
-        {
-          "showId": "beauty-and-the-beast-1994",
-          "file": "broadwayworld--don-grigware.json",
-          "publishDate": null,
-          "openingDate": "1994-04-18",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "broadwayworld"
-        },
-        {
-          "showId": "next-to-normal-2009",
-          "file": "broadwayworld--don-grigware.json",
-          "publishDate": null,
-          "openingDate": "2009-04-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "broadwayworld"
-        }
-      ],
-      "suggestedWinner": "next-to-normal-2009",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
       "normalizedUrl": "https://timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
@@ -224,33 +116,6 @@
       "confidence": "medium"
     },
     {
-      "url": "/people/Linda-Winer/",
-      "normalizedUrl": "/people/linda-winer",
-      "candidates": [
-        {
-          "showId": "les-liaisons-dangereuses-2008",
-          "file": "newsday--linda-winer.json",
-          "publishDate": null,
-          "openingDate": "2008-05-01",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "newsday"
-        },
-        {
-          "showId": "the-robber-bridegroom-1976",
-          "file": "newsday--linda-winer.json",
-          "publishDate": null,
-          "openingDate": "1976-10-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "newsday"
-        }
-      ],
-      "suggestedWinner": "les-liaisons-dangereuses-2008",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -330,33 +195,6 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
-    },
-    {
-      "url": "/people/Jesse-Oxfeld/",
-      "normalizedUrl": "/people/jesse-oxfeld",
-      "candidates": [
-        {
-          "showId": "the-robber-bridegroom-1976",
-          "file": "ew--jesse-oxfeld.json",
-          "publishDate": null,
-          "openingDate": "1976-10-09",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "ew"
-        },
-        {
-          "showId": "titus-andronicus-off-broadway-2026",
-          "file": "nysr--jesse-oxfeld.json",
-          "publishDate": null,
-          "openingDate": "2026-03-29",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        }
-      ],
-      "suggestedWinner": "titus-andronicus-off-broadway-2026",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     }
   ]
 }

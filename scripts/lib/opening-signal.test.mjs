@@ -27,6 +27,8 @@ const {
   isStuckPreviewsPollCandidate,
   openSignalFromDiscovery,
   PRE_OPEN_STATUSES,
+  runDates,
+  reviewsPredateRun,
 } = require('./opening-signal.js');
 
 // Deterministic clock for backfill tests: "today" is 2026-06-03.
@@ -378,3 +380,26 @@ test('isStuckInPreviews counts an announced show against the score gate', () => 
     assert.equal(shouldSkipPreviewsShow({ status: 'open', openingDate: '2026-09-15' }, today), false);
   });
 }
+
+// BRO-4857: rows carrying an earlier production's reviews flipped open with
+// that production's press night (Cursed Child one-part got 2016-07-30).
+const reached = (today) => (d) => d <= today;
+test('reviewsPredateRun blocks the count flip before previews or on old-run reviews only', () => {
+  const show = { status: 'upcoming', previewsStartDate: '2026-10-09' };
+  const old = { count: 12, tier1And2: 6, dates: Array(12).fill('2016-07-31') };
+  assert.equal(reviewsPredateRun(show, old, reached('2026-10-06')), true); // previews not started
+  assert.equal(reviewsPredateRun({ ...show, status: 'previews' }, old, reached('2026-10-20')), true); // all old
+  const mixed = { count: 15, tier1And2: 8, dates: [...Array(12).fill('2016-07-31'), '2026-10-15', '2026-10-15', '2026-10-15'] };
+  assert.equal(reviewsPredateRun({ ...show, status: 'previews' }, mixed, reached('2026-10-20')), false);
+  assert.equal(reviewsPredateRun({ status: 'previews' }, old, reached('2026-10-20')), false); // no previews date: unchanged
+  assert.equal(reviewsPredateRun({ ...show, status: 'previews' }, { count: 6, dates: [] }, reached('2026-10-20')), false); // dateless: unchanged
+});
+
+test('press night ignores reviews dated before previews (mixed old + new run)', () => {
+  const show = { status: 'previews', previewsStartDate: '2026-10-09' };
+  const dates = [...Array(5).fill('2016-07-31'), '2026-10-15', '2026-10-15', '2026-10-15'];
+  assert.deepEqual(runDates(show, dates), ['2026-10-15', '2026-10-15', '2026-10-15']);
+  assert.deepEqual(chooseOpeningDateBackfill(show, dates, reached('2026-10-20')), { date: '2026-10-15', source: 'review-derived-press-night' });
+  assert.equal(chooseOpeningDateBackfill(show, Array(5).fill('2016-07-31'), reached('2026-10-20')), null);
+  assert.deepEqual(openSignalFromReviews(show, { count: 8, dates }, reached('2026-10-20')), { date: '2026-10-15', source: 'review-open-signal' });
+});
