@@ -267,10 +267,19 @@ Do NOT open with production history ("X is a play written by Y", "had its world 
 No generic descriptions, marketing language, or ticket information.
 Return only the synopsis text (or exactly UNKNOWN), nothing else.`;
 
-  const usable = (t) => t && !/^\s*UNKNOWN\s*$/i.test(t.trim()) && isValidSynopsis(t) ? t : null;
-  const haiku = usable(await callClaudeAPI(prompt, 200, CLAUDE_HAIKU));
+  // Say why a candidate is dropped: run 37857317226 left 20 of 27 rows empty
+  // after a bare "Generating via Claude..." with no reason (BRO-4884).
+  const usable = (t, model) => {
+    let why = null;
+    if (!t) why = 'no text returned';
+    else if (/^\s*UNKNOWN\s*$/i.test(t.trim())) why = 'replied UNKNOWN';
+    else if (!isValidSynopsis(t)) why = `fails isValidSynopsis: "${t.trim().slice(0, 120)}"`;
+    if (why) console.log(`    · ${model}: ${why}`);
+    return why ? null : t;
+  };
+  const haiku = usable(await callClaudeAPI(prompt, 200, CLAUDE_HAIKU), CLAUDE_HAIKU);
   if (haiku) return haiku;
-  return usable(await callClaudeAPI(prompt, 200, CLAUDE_OPUS));
+  return usable(await callClaudeAPI(prompt, 200, CLAUDE_OPUS), CLAUDE_OPUS);
 }
 
 // Generate creative team via Claude API (fallback)
@@ -344,14 +353,16 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_HAIKU) {
         try {
           const response = JSON.parse(data);
           const text = response.content?.[0]?.text;
+          if (!text) console.log(`    · Claude API ${model} HTTP ${res.statusCode}: ${response.error ? `${response.error.type}: ${String(response.error.message).slice(0, 160)}` : `stop_reason=${response.stop_reason}`}`);
           resolve(text || null);
         } catch {
+          console.log(`    · Claude API ${model} HTTP ${res.statusCode}: unparseable body`);
           resolve(null);
         }
       });
     });
 
-    req.on('error', () => resolve(null));
+    req.on('error', (e) => { console.log(`    · Claude API ${model} request error: ${e.message}`); resolve(null); });
     req.write(postData);
     req.end();
   });
@@ -863,4 +874,5 @@ module.exports = {
   generateCreativeTeamWithSerpVerification,
   fetchSynopsisFromTodayTix,
   extractSynopsisFromHtml,
+  generateSynopsisWithLLM,
 };
