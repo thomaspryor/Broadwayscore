@@ -185,6 +185,27 @@ test('refreshTodayTixDates: does NOT reopen a human-corrected closing date, even
   assert.equal(show.closingDate, '2026-04-05', 'closingDate must be preserved');
 });
 
+// BRO-4883: stale-open auto-close has no closingDate to write. For West End
+// that produced a closed row with a null closingDate, which validate-data.js
+// rejects and the BRO-3792 unit test fails on main. West End stays open;
+// Off-Broadway keeps the existing behaviour.
+test('refreshTodayTixDates: stale-open detection never closes a West End show (no closingDate to write), still closes Off-Broadway', async () => {
+  const longAgo = '2026-01-01';
+  const data = {
+    shows: [
+      { id: 'stale-we-west-end-2026', title: 'Stale WE', category: 'west-end', status: 'open', todaytixId: 77001, _staleMissingSince: longAgo },
+      { id: 'stale-ob-off-broadway-2026', title: 'Stale OB', category: 'off-broadway', status: 'open', todaytixId: 77002, _staleMissingSince: longAgo },
+    ],
+  };
+  const updates = [];
+  await refreshTodayTixDates(data, updates, { fetchShows: async () => [] });
+  const [we, ob] = data.shows;
+  assert.equal(we.status, 'open', 'West End must not be closed without a closingDate');
+  assert.equal(we.closingDate, undefined);
+  assert.equal(updates.some(u => u.id === we.id && u.changes.status), false);
+  assert.equal(ob.status, 'closed', 'Off-Broadway stale-open close is unchanged');
+});
+
 test('refreshTodayTixDates: an open show whose TT listing has no bookable evidence is NOT treated as confirmed-active', async () => {
   const data = {
     shows: [
