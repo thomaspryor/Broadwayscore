@@ -266,6 +266,15 @@ only if needed):
   been clearing, which 5 of those 14 had relied on.
 - **WET roundup date window.** "Just For One Day" (2025) matched the 2023
   Old Vic roundup.
+  - The first window ran to closing + 120 days. That still let the 2024
+    Wyndham's Oedipus take the Feb 2025 Old Vic roundup and write its
+    stars and URLs onto 15 files (reverted, review-texts 99f4825b8).
+  - The window is now [first preview − 30 days, press night + 60 days].
+    Each post's own date is enforced, because the API date filter did not
+    survive the fetchJSON proxy path.
+  - Lesson for Phase B: every same-title pair (revivals, NT-to-West End
+    transfers) is the risk case. Run the season audit and spot-check
+    those pairs first.
 
 **Fixed in the data:**
 - The 14 misfiled reviews were removed (review-texts db8e50881).
