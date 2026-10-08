@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T17:17:17.550Z",
+  "timestamp": "2026-10-08T17:35:29.000Z",
   "stats": {
-    "totalReviews": 47933,
+    "totalReviews": 47939,
     "alreadyFlagged": 18936,
     "dateGuardCatches": 276,
     "directorMismatch": 1395,
-    "tvFilmSignals": 1382,
-    "londonSignals": 1357,
+    "tvFilmSignals": 1383,
+    "londonSignals": 1360,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4676
+    "noPublishDate": 4674
   },
   "findings": [
     {
@@ -11377,6 +11377,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "franz-and-marie-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "publishDate": "2026-10-07",
+      "url": "https://ayoungishperspective.co.uk/2026/10/07/review-franz-marie/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -32075,7 +32088,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "partially-obstructed-view--view-my-complete.json",
-      "score": null,
+      "score": 78,
       "publishDate": null,
       "url": "http://partially-obstructed-view.blogspot.com/2025/06/theatre-review-comedy-about-spies.html",
       "findings": [
@@ -32089,7 +32102,7 @@
     {
       "showId": "the-comedy-about-spies-west-end-2025",
       "file": "stagetopage--unknown.json",
-      "score": null,
+      "score": 98,
       "publishDate": null,
       "url": "http://www.stagetopage.co.uk/2025/05/the-comedy-about-spies-review.html",
       "findings": [
@@ -33071,7 +33084,7 @@
     {
       "showId": "the-fifth-step-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2025-05-20",
       "url": "https://www.dailymail.com/tvshowbiz/article-14730277/PATRICK-MARMION-reviews-Fifth-Step-Soho-Place-Jack-Lowden-Martin-Freeman.html",
       "findings": [
@@ -42527,6 +42540,19 @@
       "file": "theatreticketsdirect--theatre-tickets-direct-limited.json",
       "publishDate": null,
       "url": "https://www.theatreticketsdirect.co.uk/shows/7465/an-evening-with-an-immigrant-tickets",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "an-evening-with-an-immigrant-off-west-end-2026",
+      "file": "tixculture--unknown.json",
+      "publishDate": null,
+      "url": "https://hitthetheatre.tixculture.com/london/shows/48138-an-evening-with-an-immigrant",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56294,6 +56320,19 @@
       ]
     },
     {
+      "showId": "rent-west-end-2026",
+      "file": "british-theatre--ray-rackham.json",
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/shows/rent",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "rheology-off-broadway-2026",
       "file": "exeunt-magazine--loren-noveck.json",
       "score": 89,
@@ -59250,6 +59289,19 @@
       ]
     },
     {
+      "showId": "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026",
+      "file": "eventslist--unknown.json",
+      "publishDate": null,
+      "url": "https://eventslist.co.uk/london/events/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre-london-2026-10-07",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-bands-visit-2017",
       "file": "curtainup--elyse-sommer.json",
       "score": 89,
@@ -62046,6 +62098,7 @@
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
       "file": "telegraph--serena-davies.json",
+      "score": 78,
       "publishDate": "2021-08-11",
       "url": null,
       "findings": [
