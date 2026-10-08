@@ -1,21 +1,49 @@
 {
-  "updatedAt": "2026-10-08T14:56:07.873Z",
-  "processed": 298,
-  "failed": 185,
-  "successRate": "61.7%",
+  "updatedAt": "2026-10-08T15:32:48.545Z",
+  "processed": 353,
+  "failed": 240,
+  "successRate": "59.5%",
   "tierBreakdown": {
-    "playwright": 185,
+    "playwright": 214,
     "amp": 1,
-    "browserbase": 10,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 39,
-    "scrapingbee": 27,
+    "scrapingdog": 41,
+    "scrapingbee": 31,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 49
+    "archive": 69
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 10,
   "recentActivity": [
+    {
+      "t": "2026-10-08T13:09:36.514Z",
+      "event": "bb-session",
+      "session": "1b15245f",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-08T13:09:37.257Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-08T13:10:14.555Z",
+      "event": "bb-session",
+      "session": "42cffeca",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-08T13:10:15.238Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-08T13:10:45.453Z",
+      "event": "bb-session",
+      "session": "9ce18f49",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
     {
       "t": "2026-10-08T13:10:49.798Z",
       "event": "bb-login-uncertain",
@@ -100,35 +128,6 @@
       "event": "bb-session",
       "session": "089ece99",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-10-08T14:47:36.781Z",
-      "event": "bb-session",
-      "session": "94f93baf",
-      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
-    },
-    {
-      "t": "2026-10-08T14:47:53.086Z",
-      "event": "bb-session",
-      "session": "40e66ac7",
-      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
-    },
-    {
-      "t": "2026-10-08T14:49:32.755Z",
-      "event": "bb-session",
-      "session": "5310a0ec",
-      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
-    },
-    {
-      "t": "2026-10-08T14:51:47.888Z",
-      "event": "bb-session",
-      "session": "6bee1d07",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-08T14:51:48.796Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
