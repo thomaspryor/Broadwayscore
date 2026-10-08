@@ -258,6 +258,10 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
 
   // Archive shows — lazy-loaded on demand when user filters to all/closed or searches
   const [archiveShows, setArchiveShows] = useState<HomepageShow[] | null>(null);
+  // Closed West End shows — search-only, never merged into the grid (which is
+  // Broadway + notable OB). Kept off the inline payload because the West End
+  // historical backfill grows it by a season at a time (BRO-4872).
+  const [westEndArchiveShows, setWestEndArchiveShows] = useState<HomepageShow[]>([]);
   const archiveFetchedRef = useRef(false);
 
   const fetchArchive = useCallback(async () => {
@@ -265,8 +269,18 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     archiveFetchedRef.current = true;
     try {
       const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
-      const res = await fetch(`/data/homepage-archive.json${cacheBust}`);
+      const [res, weData] = await Promise.all([
+        fetch(`/data/homepage-archive.json${cacheBust}`),
+        // A failed West End fetch only drops closed London shows from search;
+        // it must not keep the Broadway archive (closed grid) from loading.
+        fetch(`/data/west-end-archive.json${cacheBust}`)
+          .then(r => (r.ok ? r.json() as Promise<HomepageShow[]> : []))
+          .catch((e) => { console.error('Failed to load West End archive:', e); return [] as HomepageShow[]; }),
+      ]);
       const data: HomepageShow[] = await res.json();
+      // Set together (batched) so the Fuse index rebuild keyed on archiveShows
+      // already sees the West End entries.
+      setWestEndArchiveShows(weData);
       setArchiveShows(data);
     } catch (e) {
       console.error('Failed to load archive shows:', e);
@@ -359,9 +373,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const allShowsForSearch = useMemo(() => {
     const base = archiveShows ? [...shows, ...archiveShows] : shows;
     const ids = new Set(base.map(s => s.id));
-    const extra = [...offBroadwayShows, ...westEndShows].filter(s => !ids.has(s.id));
+    const seen = new Set<string>();
+    const extra = [...offBroadwayShows, ...westEndShows, ...westEndArchiveShows]
+      .filter(s => !ids.has(s.id) && !seen.has(s.id) && seen.add(s.id));
     return extra.length > 0 ? [...base, ...extra] : base;
-  }, [shows, offBroadwayShows, westEndShows, archiveShows]);
+  }, [shows, offBroadwayShows, westEndShows, westEndArchiveShows, archiveShows]);
 
   // Trigger archive fetch when user needs closed shows or searches
   useEffect(() => {
