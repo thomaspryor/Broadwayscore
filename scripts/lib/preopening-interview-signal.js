@@ -23,6 +23,8 @@
  * floor); every other hit was already a not_a_review rejection.
  */
 
+const { isLaneReview } = require('./opening-night-lane/trust-model');
+
 const MIN_BODY_CHARS = 1500;
 const MIN_ATTRIBUTIONS = 7;
 const MIN_PER_1000_WORDS = 3;
@@ -44,11 +46,16 @@ function detectPreOpeningInterviewFeature(data, show) {
   if (!data || typeof data.fullText !== 'string') return none('no_fulltext');
   if (data.fullText.length < MIN_BODY_CHARS) return none('too_short');
   // A human decision (manual clear / human score) always wins over a heuristic.
-  if (data.humanReviewScore != null || data.manuallyCleared || data.wrongShowManualClear || data.wrongProductionManualClear) {
+  if (data.humanReviewScore != null || data.manuallyCleared || data.wrongShowManualClear || data.wrongProductionManualClear
+      || data.manualContentTier || data._locked || data.isNonReview === false) {
     return none('human_override');
   }
   const opening = show && show.openingDate;
   if (!opening || !data.publishDate) return none('no_dates');
+  // Plain string compare is only valid for ISO dates; anything else is inert.
+  if (!/^\d{4}-\d{2}-\d{2}/.test(String(data.publishDate)) || !/^\d{4}-\d{2}-\d{2}/.test(String(opening))) return none('non_iso_date');
+  // Opening-night lane reviews are aggregator-verified: heuristics stand down.
+  if (isLaneReview(data, { openingDate: opening })) return none('lane_review');
   if (String(data.publishDate).slice(0, 10) > String(opening).slice(0, 10)) return none('published_after_opening');
 
   const n = countNamedAttributions(data.fullText);

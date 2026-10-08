@@ -71,3 +71,13 @@ test('every workflow that runs the scorer passes --ensemble (express omitted it:
   }
   assert.deepEqual(offenders, []);
 });
+
+test('non-ISO dates and manual content tiers are inert', () => {
+  assert.equal(detect(mk({ publishDate: '10/08/2026' }), SHOW).suspect, false);
+  assert.equal(detect(mk({ manualContentTier: 'complete' }), SHOW).suspect, false);
+});
+
+test('stale-verdict heal knows the new rejecter', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/lib/stale-automated-text-verdict.js'), 'utf-8');
+  assert.match(src, /'preopening-interview-signal'/);
+});
