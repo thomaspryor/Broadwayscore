@@ -186,4 +186,6 @@ test('app show-detail tiers resolve per market, like the website', () => {
     .filter(c => c !== 'getOutletTier(outletId, showCategory)');
   assert.ok(outletCalls.length > 0, 'expected a getOutletTier call site in the generator');
   for (const call of outletCalls) assert.match(call, /,\s*show\.category\)$/, `${call} must pass show.category`);
+  // The app's tier sheet explains a promoted T1 from this flag.
+  assert.match(src, /if \(isTopCritic\) entry\.tc = 1;/, 'generator must flag top critics (rv[].tc)');
 });

@@ -558,6 +558,8 @@ for (const show of visibleShows) {
       if (r.publishDate) entry.d = r.publishDate;
       if (r.pullQuote) entry.q = r.pullQuote;
       if (r.designation) entry.dg = r.designation;
+      // Top critic promoted to T1: the app's tier sheet says why (BRO-4881).
+      if (isTopCritic) entry.tc = 1;
 
       return entry;
     })
