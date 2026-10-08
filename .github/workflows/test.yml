@@ -96,6 +96,8 @@ on:
       # orchestrator itself — e.g. the classify-action switch statement — would
       # otherwise trigger ZERO CI, the same gap task #1745 documents.
       - 'scripts/audit-we-closing-dates.js'
+      # scripts/audit-coverage-holes.js (BRO-4849) is the CLI over scripts/lib/coverage-holes.js; its test runs the CLI.
+      - 'scripts/audit-coverage-holes.js'
       # scripts/audit-score-vs-models.js (BRO-4596) is the CLI that
       # scripts/lib/score-vs-models.test.mjs spawns (corrupt-baseline exit code).
       - 'scripts/audit-score-vs-models.js'
