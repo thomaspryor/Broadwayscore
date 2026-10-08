@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T11:11:48.834Z",
+  "timestamp": "2026-10-08T14:03:36.998Z",
   "stats": {
-    "totalReviews": 47323,
-    "alreadyFlagged": 18865,
+    "totalReviews": 47341,
+    "alreadyFlagged": 18871,
     "dateGuardCatches": 279,
     "directorMismatch": 1402,
-    "tvFilmSignals": 1375,
-    "londonSignals": 1330,
+    "tvFilmSignals": 1376,
+    "londonSignals": 1331,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4490
+    "noPublishDate": 4487
   },
   "findings": [
     {
@@ -3421,7 +3421,7 @@
     {
       "showId": "beetlejuice-west-end-2026",
       "file": "thereviewshub--john-cutler.json",
-      "score": 76,
+      "score": 58,
       "publishDate": "2026-05-29",
       "url": "https://www.thereviewshub.com/beetlejuice-prince-edward-theatre-london/",
       "findings": [
@@ -8302,6 +8302,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-note-the-musical-west-end-2026",
+      "file": "wheeliegoodshow--wheelie-good-show.json",
+      "score": 91,
+      "publishDate": "2026-09-11",
+      "url": "https://www.wheeliegoodshow.com/post/death-note-the-musical-barbican-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -14206,7 +14225,7 @@
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 91,
       "publishDate": "2016-08-02",
-      "url": null,
+      "url": "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -39508,7 +39527,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--scott-rawson.json",
-      "score": 80,
+      "score": 76,
       "publishDate": "2026-06-17",
       "url": "https://www.broadwayworld.com/madison/article/Review-WATER-FOR-ELEPHANTS-at-The-Overture-Center-20260617",
       "findings": [
@@ -48232,7 +48251,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 88,
+      "score": 87,
       "publishDate": "2026-09-16",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/golden-boy-josh-o-connor-review-almeida-b3051019.html",
       "findings": [
@@ -48246,7 +48265,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -48260,7 +48279,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 76,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -48371,7 +48390,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 89,
+      "score": 86,
       "publishDate": "2026-09-17",
       "url": "https://theatreandtonic.co.uk/blog/golden-boy-at-almeida-theatre-review",
       "findings": [
@@ -49033,7 +49052,7 @@
     {
       "showId": "hamilton-west-end-2021",
       "file": "london-theatre--mark-shenton.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2022-01-25",
       "url": "https://www.londontheatre.co.uk/reviews/review-hamilton-is-here-to-stay-at-the-victoria-palace-theatre",
       "findings": [
@@ -51284,7 +51303,7 @@
     {
       "showId": "jane-eyre-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-09-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
       "findings": [
@@ -51312,7 +51331,7 @@
     {
       "showId": "jane-eyre-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 76,
+      "score": 80,
       "publishDate": "2026-09-10",
       "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
       "findings": [
@@ -53341,7 +53360,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "thereviewshub--unknown.json",
-      "score": 88,
+      "score": 91,
       "publishDate": "2026-09-20",
       "url": "https://www.thereviewshub.com/man-to-man-royal-court-theatre-london/",
       "findings": [
@@ -58537,7 +58556,7 @@
     {
       "showId": "tao-of-glass-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
-      "score": 88,
+      "score": 91,
       "publishDate": "2026-07-31",
       "url": "https://www.thereviewshub.com/tao-of-glass-sohoplace-london/",
       "findings": [
