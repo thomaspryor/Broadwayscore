@@ -301,7 +301,9 @@
     "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
     "franz-and-marie-west-end-2026/london-box-office--unknown.json",
     "deep-heat-rivalry-off-west-end-2026/londontheatredirect--neil-r-harris.json",
-    "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
+    "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
@@ -475,7 +477,19 @@
     "youre-so-special-off-west-end-2026/guardian--unknown.json",
     "palesteenian-off-west-end-2026/guardian--unknown.json",
     "a-world-elsewhere-off-west-end-2026/thestage--oliver-jones.json",
-    "the-world-is-full-of-married-men-off-west-end-2026/thestage--dave-fargnoli.json"
+    "the-world-is-full-of-married-men-off-west-end-2026/thestage--dave-fargnoli.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -672,14 +686,17 @@
       "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
       "franz-and-marie-west-end-2026/london-box-office--unknown.json",
       "deep-heat-rivalry-off-west-end-2026/londontheatredirect--neil-r-harris.json",
-      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
     "browserbase": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
-      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json"
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -793,7 +810,7 @@
     ]
   },
   "startTime": "2026-10-07T20:51:07.380Z",
-  "lastProcessed": "othello-off-broadway-2026/thestage--fergus-morgan.json",
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
   "log": [
     {
       "t": "2026-10-08T01:03:29.752Z",
@@ -864,6 +881,40 @@
       "event": "bb-session",
       "session": "5cfffe47",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-08T01:43:05.544Z",
+      "event": "bb-session",
+      "session": "07a1f654",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-08T01:44:48.075Z",
+      "event": "bb-session",
+      "session": "a4174ac4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T01:44:48.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:45:06.412Z",
+      "event": "bb-session",
+      "session": "c9e20dd1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T01:45:07.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:47:38.851Z",
+      "event": "bb-session",
+      "session": "393b8c25",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
     }
   ]
 }
