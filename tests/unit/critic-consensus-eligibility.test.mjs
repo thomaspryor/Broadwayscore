@@ -163,3 +163,22 @@ it('audit-critic-consensus-contamination reads the score reviews.json actually c
   assert.equal(reviewScore({ compositeScore: 70 }), 70);
   assert.equal(reviewScore({ assignedScore: null }), undefined);
 });
+
+// The generator now summarises only review texts whose outlet has a live row
+// for the show; 858 inputs came from outlets the site excludes (BRO-4852).
+it('liveOutletKeys lists show|outlet pairs the site shows, skipping flagged and unscored rows', () => {
+  const { liveOutletKeys } = require('../../scripts/lib/critic-consensus-eligibility.js');
+  const keys = liveOutletKeys({ reviews: [
+    { showId: 's', outletId: 'nytimes', assignedScore: 80 },
+    { showId: 's', outletId: 'vulture', assignedScore: null },
+    { showId: 's', outletId: 'guardian', assignedScore: 70, wrongShow: true },
+    { showId: 't', outletId: 'nytimes', compositeScore: 60 },
+  ] });
+  assert.deepEqual([...keys].sort(), ['s|nytimes', 't|nytimes']);
+});
+
+it('generate-critic-consensus filters texts to live outlets and parses replies through finalResponseText', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'generate-critic-consensus.js'), 'utf8');
+  assert.match(src, /liveOutlets\.has\(`\$\{showId\}\|\$\{data\.outletId\}`\)/);
+  assert.doesNotMatch(src, /content\[0\]\.text\.trim\(\)/);
+});

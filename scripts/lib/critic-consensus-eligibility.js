@@ -97,4 +97,18 @@ function staleConsensusIds(consensusShows, counts) {
   return Object.keys(consensusShows || {}).filter((id) => !isConsensusEligible(counts.get(id) || 0));
 }
 
-module.exports = { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds };
+/**
+ * `${showId}|${outletId}` for every live scored row: the outlets the site shows
+ * per show. The generator only summarises review texts from these.
+ */
+function liveOutletKeys(reviewsJson) {
+  const rows = Array.isArray(reviewsJson) ? reviewsJson : (reviewsJson && reviewsJson.reviews) || [];
+  const keys = new Set();
+  for (const r of rows) {
+    if (!r || !r.showId || r.wrongShow || r.wrongProduction) continue;
+    if (r.assignedScore != null || r.compositeScore != null) keys.add(`${r.showId}|${r.outletId}`);
+  }
+  return keys;
+}
+
+module.exports = { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, liveOutletKeys };
