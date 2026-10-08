@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-07T21:23:48.613Z",
-    "completedAt": "2026-10-07T21:23:53.223Z",
-    "totalReviews": 44,
-    "processed": 1,
-    "skipped": 43,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5346,
-      "output": 312,
-      "total": 13900
-    },
-    "costUsd": 0.0208268,
-    "runId": "37688293577",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-07T21:23:55.166Z",
-    "completedAt": "2026-10-07T21:23:55.197Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37688293577",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-07T20:55:32.965Z",
     "completedAt": "2026-10-07T23:02:08.819Z",
     "totalReviews": 47323,
@@ -331667,6 +331635,49 @@
     },
     "costUsd": 0.3887106000000001,
     "runId": "37821510485",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T18:25:57.437Z",
+    "completedAt": "2026-10-08T18:26:41.999Z",
+    "totalReviews": 48584,
+    "processed": 2,
+    "skipped": 48570,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 56811,
+      "output": 2282,
+      "total": 158964
+    },
+    "costUsd": 0.2712925,
+    "runId": "37823866503",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+        "outletId": "london-box-office",
+        "error": "Cannot read properties of undefined (reading 'rejection')"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-08T18:26:43.286Z",
+    "completedAt": "2026-10-08T18:26:56.489Z",
+    "totalReviews": 2,
+    "processed": 2,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6157,
+      "output": 448,
+      "total": 6605
+    },
+    "costUsd": 0.0165185,
+    "runId": "37823866503",
     "errorDetails": []
   }
 ]
