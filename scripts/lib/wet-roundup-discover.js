@@ -191,26 +191,7 @@ async function discoverWetRoundupRows(show, opts = {}) {
         log(`    Fetching rendered page: ${post.link}`);
         const pageResult = await fetchPage(post.link, { renderJs: false });
         const pageHtml = pageResult?.content || null;
-        if (pageHtml) {
-          const $w = cheerio.load(pageHtml);
-          $w('.reviewnewpubhead').each((_, el) => {
-            const outlet = $w(el).text().trim();
-            const stars = ($w(el).next('.reviewnewstars').text().match(/★/g) || []).length;
-            const authorText = $w(el).nextAll('.reviewnewauthor').first().text().trim();
-            const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
-            // Extract individual review URL from the <a> after this review block
-            let reviewUrl = '';
-            $w(el).nextAll('a').each((_, a) => {
-              const href = $w(a).attr('href') || '';
-              if (!reviewUrl && href.startsWith('http') && !href.includes('westendtheatre.com')) {
-                reviewUrl = href;
-              }
-            });
-            if (outlet && stars > 0) {
-              wetReviews.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown', url: reviewUrl });
-            }
-          });
-        }
+        if (pageHtml) wetReviews.push(...parseWetRenderedBlocks(pageHtml));
       } catch (e) {
         stats.fetchErrors++;
         log(`    WET page fetch error: ${(e.message || '').substring(0, 60)}`);
@@ -228,4 +209,34 @@ async function discoverWetRoundupRows(show, opts = {}) {
   return null;
 }
 
-module.exports = { discoverWetRoundupRows, wetPostTitleMatchesShow, decodeWpTitle };
+/**
+ * Rendered WET roundup page → one row per outlet block. A block is a
+ * `.reviewnewpubhead` and its following siblings UP TO the next pubhead:
+ * stars, author and the outlet's own review link are read only from inside
+ * that block. The old unbounded `nextAll()` let a block with no byline or no
+ * link take the NEXT outlet's critic or URL (BRO-4851; 13 of 41 WE pilot
+ * reviews were left URL-less and some carried a neighbour's URL).
+ */
+function parseWetRenderedBlocks(pageHtml) {
+  const $w = cheerio.load(pageHtml);
+  const rows = [];
+  $w('.reviewnewpubhead').each((_, el) => {
+    const outlet = $w(el).text().trim();
+    const block = $w(el).nextUntil('.reviewnewpubhead');
+    const stars = (block.filter('.reviewnewstars').first().text().match(/★/g) || []).length;
+    const authorText = block.filter('.reviewnewauthor').first().text().trim();
+    const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
+    // The outlet's own link is a sibling or sits in the byline; a link inside
+    // the quote is cited text, not this review.
+    const links = block.filter('a[href]').add(block.filter('.reviewnewauthor').find('a[href]'));
+    let url = '';
+    links.each((__, a) => {
+      const href = $w(a).attr('href') || '';
+      if (!url && href.startsWith('http') && !href.includes('westendtheatre.com')) url = href;
+    });
+    if (outlet && stars > 0) rows.push({ outlet, stars, critic: cm ? cm[1] : 'Unknown', url });
+  });
+  return rows;
+}
+
+module.exports = { discoverWetRoundupRows, wetPostTitleMatchesShow, decodeWpTitle, parseWetRenderedBlocks };

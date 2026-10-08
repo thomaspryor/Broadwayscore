@@ -68,3 +68,31 @@ test('findExactDuplicate/findSubtitleDuplicateTitle see entries pushed into the 
   const dup = findExactDuplicate(pool, 'New Show', 'Some Theatre');
   assert.ok(dup);
 });
+
+// --- withinYears date-awareness (BRO-4851) ----------------------------------
+
+test('withinYears: a same-venue revival years apart is NOT a duplicate', () => {
+  const pool = buildVenueTitlePool([{ title: 'Cats', venue: 'London Palladium', openingDate: '2015-12-11' }]);
+  assert.equal(findExactDuplicate(pool, 'Cats', 'London Palladium', { withinYears: 1, startDate: '2024-06-01' }), null);
+  // Without withinYears the match stays date-blind (OB historical behaviour unchanged).
+  assert.ok(findExactDuplicate(pool, 'Cats', 'London Palladium'));
+});
+
+test('withinYears: same production within the window IS a duplicate', () => {
+  const pool = buildVenueTitlePool([{ title: 'Kyoto', venue: '@sohoplace', previewsStartDate: '2025-01-09' }]);
+  assert.ok(findExactDuplicate(pool, 'Kyoto', '@sohoplace', { withinYears: 1, startDate: '2025-01-20' }));
+});
+
+test('withinYears: an unknown date on either side fails safe as a duplicate', () => {
+  const pool = buildVenueTitlePool([{ title: 'Kyoto', venue: '@sohoplace' }]);
+  assert.ok(findExactDuplicate(pool, 'Kyoto', '@sohoplace', { withinYears: 1, startDate: '2025-01-20' }));
+  const dated = buildVenueTitlePool([{ title: 'Kyoto', venue: '@sohoplace', openingDate: '2025-01-09' }]);
+  assert.ok(findExactDuplicate(dated, 'Kyoto', '@sohoplace', { withinYears: 1, startDate: null }));
+});
+
+test('venueEquals overrides venuesMatch for known naming variants', () => {
+  const pool = buildVenueTitlePool([{ title: 'Here We Are', venue: 'National Theatre (Lyttelton)', openingDate: '2025-05-08' }]);
+  assert.equal(findExactDuplicate(pool, 'Here We Are', 'Lyttelton Theatre'), null);
+  const nt = (a, b) => /lyttelton/i.test(a) && /lyttelton/i.test(b);
+  assert.ok(findExactDuplicate(pool, 'Here We Are', 'Lyttelton Theatre', { venueEquals: nt }));
+});

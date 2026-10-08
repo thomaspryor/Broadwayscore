@@ -2,216 +2,310 @@
 /**
  * promote-historical-we.js
  *
- * WE historical pilot S1 (plan v2.2): promote reviewed candidates from
- * data/audit/we-historical-candidates.json into shows.json with closed-show
- * historical metadata. Mirrors promote-ob-historical.js's shape.
+ * WE historical backfill, promotion (BRO-4851, plan v3.1:
+ * docs/specs/west-end-historical-backfill-v3.md). Reads
+ * data/audit/we-historical-candidates-<season>.json (written by
+ * discover-historical-shows-we.js) and writes the promotable rows into
+ * shows.json as closed historical West End productions.
  *
- * Only candidates with corroborated:true are promotable by default — a
- * human who has hand-verified an uncorroborated candidate (the plan's "hand-
- * check the first 10 candidates" probe) can force one through with
- * --allow-uncorroborated=<title>, passed once per title to promote.
+ * Promotable = the candidate's decideWeHistoricalPromotion() verdict, unless
+ * data/audit/we-historical-approvals.json overrides it for that season+title:
+ *   { "2024-2025": { "Ballet Shoes": { "decision": "approve", "reason": "NT play WOS tagged as dance" } } }
+ * An "approve" still needs a West End venue and a start + closing date: an
+ * approval can overrule judgement calls (genre, missing review signal), not
+ * missing facts.
+ *
+ * Rows are written WITHOUT `provisional`: the dated WOS listing is the
+ * validation (same rule as "the roundup IS the validation" for roundup-
+ * promoted rows, validate-show-venue.js isExemptFromPlaybillCheck), and a
+ * provisional row would join the paid daily Playbill sweep, which has no
+ * pages for UK-only productions. No `todaytixId` is ever written, so
+ * update-show-status.js can never reopen an old production.
  *
  * Usage:
- *   node scripts/promote-historical-we.js --season=2024-2025 --dry-run   (default)
+ *   node scripts/promote-historical-we.js --season=2024-2025                 dry run (default)
  *   node scripts/promote-historical-we.js --season=2024-2025 --apply
+ *   node scripts/promote-historical-we.js --season=2024-2025 --only="Kyoto" --only="Unicorn" --apply
+ *   node scripts/promote-historical-we.js --season=2024-2025 --revert [--apply]
+ *     Removes rows this script promoted for the season that have no reviews
+ *     yet (no data/review-texts/<id>/ dir and no reviews.json rows). Undo for
+ *     a bad promotion caught before review gathering; after reviews land,
+ *     fix forward instead.
  */
 
 'use strict';
 
-const { titleSaysMusical } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
 
+const { titleSaysMusical } = require('./lib/title-says-musical');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
-const { foldDiacritics } = require('./lib/title-match');
-const { sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { foldDiacritics, normalizeTitle } = require('./lib/title-match');
+const { venuesMatch } = require('./lib/deduplication');
+const { sanitizeVenueForWrite, isWestEndVenue } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
+const { productionIdYear } = require('./lib/todaytix-dates');
+const { venueFamily, decideWeHistoricalPromotion } = require('./lib/we-historical-corroboration');
+const { candidatesPath } = require('./discover-historical-shows-we');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 
-const USAGE = `promote-historical-we.js — Promote corroborated WE historical candidates into shows.json.
+const USAGE = `promote-historical-we.js — Promote West End historical candidates into shows.json.
 
 Usage:
   node scripts/promote-historical-we.js --season=YYYY-YYYY [options]
 
 Options:
-  --apply                          Write changes (default: dry run)
-  --allow-uncorroborated=<title>   Promote this uncorroborated title anyway (repeatable)
-  --help, -h    print this usage and exit
+  --apply           Write changes (default: dry run)
+  --only=<title>    Promote only this candidate title (repeatable)
+  --revert          Remove this season's promoted rows that have no reviews yet
+  --help, -h        print this usage and exit
 `;
 
-if (require.main === module && hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
-
-const args = process.argv.slice(2);
-const seasonArg = args.find(a => a.startsWith('--season='))?.split('=')[1];
-const apply = args.includes('--apply');
-const allowUncorroborated = new Set(
-  args.filter(a => a.startsWith('--allow-uncorroborated=')).map(a => a.split('=').slice(1).join('='))
-);
-
-if (require.main === module && !seasonArg) {
-  console.error('Usage: node scripts/promote-historical-we.js --season=YYYY-YYYY [--apply]');
-  process.exit(2);
-}
+// venue-write-guard-ok: the shows.json venue is written through sanitizeVenueForWrite in buildShowEntry; other venue uses are title-normaliser input, the in-memory dedup pool and the audit log.
 
 const ROOT = path.join(__dirname, '..');
-const CANDIDATES_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-candidates.json');
+const APPROVALS_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-approvals.json');
 const LOG_PATH = path.join(ROOT, 'data', 'audit', 'we-historical-promotion-log.jsonl');
+const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
+const REVIEWS_PATH = path.join(ROOT, 'data', 'reviews.json');
+const DAY_MS = 86400000;
+const DISCOVERY_SOURCE = 'we-historical:wos';
+
+const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
+
+/** "BRACE BRACE" → "Brace Brace". Leaves mixed-case titles alone. */
+function fixAllCapsTitle(title) {
+  const letters = String(title).replace(/[^A-Za-z]/g, '');
+  if (letters.length < 4 || letters !== letters.toUpperCase()) return title;
+  return String(title).toLowerCase().split(/(\s+)/).map((w, i) =>
+    (i > 0 && SMALL_WORDS.has(w)) ? w : w.replace(/^([^a-z]*)([a-z])/, (_, p, c) => p + c.toUpperCase())
+  ).join('');
+}
 
 function slugify(s) {
   return foldDiacritics(String(s || '')).toLowerCase()
-    .replace(/[''""''""]/g, '')
+    .replace(/['‘’"“”]/g, '')
     .replace(/[&]/g, 'and')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 }
 
-function buildShowEntry(candidate, venueVocabulary) {
-  // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
-  // Aggregator listings disambiguate same-title productions by appending the
-  // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
-  // suffix reaches the reader AND the row's slug and id. Same canonical
-  // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
-  // written here can never fail the gate that guards it.
-  const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary }).title;
+/**
+ * Approvals file → effective decision for one candidate.
+ * @returns {{promotable: boolean, reason: string}}
+ */
+function effectiveDecision(candidate, approvals, today = new Date().toISOString().slice(0, 10)) {
+  const override = approvals?.[candidate.season]?.[candidate.title];
+  const base = candidate.decision || decideWeHistoricalPromotion(candidate);
+  if (!override) return base;
+  if (override.decision === 'reject') return { promotable: false, reason: `rejected in approvals file: ${override.reason || 'no reason given'}` };
+  if (override.decision === 'approve') {
+    if (!candidate.venue || !isWestEndVenue(candidate.venue)) return { promotable: false, reason: 'approved, but no West End venue' };
+    if (!(candidate.openingDate || candidate.previewsStartDate) || !candidate.closingDate) return { promotable: false, reason: 'approved, but start or closing date missing' };
+    // Rows are written status:'closed'; an approval can't close a running show.
+    if (candidate.closingDate >= today) return { promotable: false, reason: `approved, but not closed yet (closes ${candidate.closingDate})` };
+    return { promotable: true, reason: `approved: ${override.reason || 'no reason given'}` };
+  }
+  return base;
+}
 
-  const titleSlug = slugify(normalizedTitle);
-  const [seasonStartYear] = candidate.season.split('-');
-  // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
-  // class as BRO-3237 if titleSlug already carries "-west-end".
-  const id = `${withMarketSuffix(titleSlug, 'west-end')}-${seasonStartYear}`;
+/**
+ * Most common existing West End spelling per venue family, so promoted rows
+ * say "The Old Vic" / "Royal Court" like the rows already on the site rather
+ * than WOS's "Old Vic Theatre" / "Royal Court Theatre". National Theatre
+ * stages are left alone (one family, several distinct stages).
+ */
+function buildVenueSpellings(shows) {
+  const counts = new Map();
+  for (const s of shows) {
+    if (s.market !== 'west-end' || !s.venue) continue;
+    const fam = venueFamily(s.venue);
+    if (fam === 'national-theatre') continue;
+    if (!counts.has(fam)) counts.set(fam, new Map());
+    const m = counts.get(fam);
+    m.set(s.venue, (m.get(s.venue) || 0) + 1);
+  }
+  const best = new Map();
+  for (const [fam, m] of counts) best.set(fam, [...m.entries()].sort((a, b) => b[1] - a[1])[0][0]);
+  return best;
+}
+
+function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map()) {
+  // BRO-3863 — normalise BEFORE the slug/id are derived from the title, with
+  // the same normaliser the validate-data.js gate uses.
+  // Straight apostrophes, matching shows.json ("Mrs Warren's Profession").
+  const plainTitle = fixAllCapsTitle(candidate.title).replace(/[\u2018\u2019]/g, "'");
+  const normalizedTitle = normalizeShowTitle({ title: plainTitle, venue: candidate.venue }, { venueVocabulary }).title;
+  const year = productionIdYear({ openingDate: candidate.openingDate, previewsStartDate: candidate.previewsStartDate });
+  if (!year) return null;
+  // Historical rows use the full id as the slug (Broadway/OB historical
+  // precedent): same-title productions in different years stay distinct.
+  const id = `${withMarketSuffix(slugify(normalizedTitle), 'west-end')}-${year}`;
+  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.wosReview].filter(Boolean);
   return {
     id,
     title: normalizedTitle,
     slug: id,
-    // sanitizeVenueForWrite (card #994) refuses a placeholder/neighbourhood-
-    // blob venue string, returning null — main()'s promotion loop must skip
-    // a null-venue entry rather than write it (card #1922, cousin of #1921).
-    venue: sanitizeVenueForWrite(candidate.venue),
-    openingDate: candidate.openingDate,
-    previewsStartDate: null,
-    closingDate: null,
+    venue: sanitizeVenueForWrite(venueSpellings.get(venueFamily(candidate.venue)) || candidate.venue),
+    previewsStartDate: candidate.previewsStartDate || null,
+    openingDate: candidate.openingDate || null,
+    closingDate: candidate.closingDate,
     status: 'closed',
     category: 'west-end',
     market: 'west-end',
-    // 'play' (not null) when the title doesn't say "musical" — west-end is
-    // gated by validate-market-expansion.js's required-fields check, which
-    // only exempts type when status==='announced'; 'closed' is not exempt.
-    // Same fix, same reasoning, as the aggregator-roundup builders in
-    // promote-we-aggregator-candidates.js / promote-ob-venue-candidates.js
-    // (BRO-3716 — a null type here would reproduce that exact CI-red
-    // incident the next time this script runs).
-    type: titleSaysMusical(candidate.title) ? 'musical' : 'play',
+    // 'play' when the title doesn't say "musical": validate-market-expansion
+    // requires a type for non-announced west-end rows (BRO-3716).
+    type: (candidate.genres || []).includes('musical') || titleSaysMusical(candidate.title) ? 'musical' : 'play',
     tags: ['historical'],
     season: candidate.season,
-    discoverySource: 'historical-backfill',
+    discoverySource: DISCOVERY_SOURCE,
     discoveredAt: new Date().toISOString(),
+    ...(candidate.openingDate ? { openingDateSource: 'whatsonstage' } : {}),
+    closingDateSource: 'whatsonstage',
+    ...(evidenceUrls.length ? { evidenceUrls } : {}),
   };
 }
 
-function logEntry(entry) {
-  try {
-    fs.mkdirSync(path.dirname(LOG_PATH), { recursive: true });
-    fs.appendFileSync(LOG_PATH, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
-  } catch (e) {
-    console.warn(`Failed to append promotion log: ${e.message}`);
-  }
+function sameVenue(a, b) {
+  return venuesMatch(a, b) || venueFamily(a) === venueFamily(b);
 }
 
-function main() {
-  if (!fs.existsSync(CANDIDATES_PATH)) {
-    console.error(`No candidates file at ${CANDIDATES_PATH} — run discover-historical-shows-we.js first.`);
-    process.exit(1);
-  }
-  const audit = JSON.parse(fs.readFileSync(CANDIDATES_PATH, 'utf8'));
-  if (audit.season !== seasonArg) {
-    console.error(`Candidates file is for season ${audit.season}, not ${seasonArg}. Re-run discovery for the requested season.`);
-    process.exit(1);
-  }
-
-  const promotable = (audit.candidates || []).filter(
-    c => c.corroborated || allowUncorroborated.has(c.title)
-  );
-  console.log(`Candidates: ${audit.candidates?.length || 0}; promotable (corroborated or explicitly allowed): ${promotable.length}`);
-
-  const showsData = loadShows();
-  const existingIds = new Set(showsData.shows.map(s => s.id));
-  // Live pool of {title, venue} — see promote-ob-historical.js and
-  // venue-title-dedup-pool.js for the full rationale (BRO-243).
-  const knownShows = buildVenueTitlePool(showsData.shows);
-  // BRO-3863 — the gate (validate-data.js) builds the corpus venue vocabulary
-  // and this writer must too, or the two disagree: a "(Bridge)" suffix would
-  // survive promotion here and then fail validation because some OTHER show's
-  // venue is "Bridge". Writer/gate equivalence is the point of routing both
-  // through normalizeShowTitle (adversarial review finding).
-  const venueVocabulary = buildVenueVocabulary(showsData.shows);
-
+/**
+ * Pure planning step: candidates + shows.json → {toPromote, skipped}.
+ * Re-checks duplicates against the CURRENT shows.json (the candidates file
+ * may be days old) with the same date-aware rules discovery used.
+ */
+function planPromotions({ candidates, shows, approvals, only, today }) {
+  const existingIds = new Set(shows.map(s => s.id));
+  const pool = buildVenueTitlePool(shows);
+  const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
+  const venueVocabulary = buildVenueVocabulary(shows);
+  const venueSpellings = buildVenueSpellings(shows);
   const toPromote = [];
   const skipped = [];
-  for (const c of promotable) {
-    if (!c.venue) { skipped.push({ candidate: c, reason: 'no venue' }); continue; }
-    const entry = buildShowEntry(c, venueVocabulary);
-    // sanitizeVenueForWrite (card #994) returns null for a placeholder/
-    // neighbourhood-blob venue — refuse to write a garbage venue string
-    // rather than silently promoting it (card #1922, cousin of BRO-160/#1921).
-    if (!entry.venue) {
-      const reason = `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
-      skipped.push({ candidate: c, reason });
-      logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, reason, season: c.season });
-      continue;
-    }
-    const exactDup = findExactDuplicate(knownShows, entry.title, entry.venue);
-    const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
-    if (exactDup) { skipped.push({ candidate: c, reason: 'duplicate title+venue' }); continue; }
-    if (subtitleDup) { skipped.push({ candidate: c, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
-    if (existingIds.has(entry.id)) { skipped.push({ candidate: c, reason: 'duplicate id' }); continue; }
-    if (!entry.openingDate) { skipped.push({ candidate: c, reason: 'no opening date parsed' }); continue; }
+  for (const c of candidates) {
+    if (only && only.size && !only.has(c.title)) continue;
+    const decision = effectiveDecision(c, approvals, today);
+    if (!decision.promotable) { skipped.push({ title: c.title, reason: decision.reason }); continue; }
+    const entry = buildShowEntry(c, venueVocabulary, venueSpellings);
+    if (!entry) { skipped.push({ title: c.title, reason: 'no usable date for the id year' }); continue; }
+    if (!entry.venue) { skipped.push({ title: c.title, reason: `venue "${c.venue}" failed sanitizeVenueForWrite` }); continue; }
+    const startDate = entry.openingDate || entry.previewsStartDate;
+    const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenue };
+    const dup = findExactDuplicate(pool, entry.title, entry.venue, dupOpts)
+      || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(entry.title)
+        && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS);
+    if (dup) { skipped.push({ title: c.title, reason: `duplicate of ${dup.id || dup.title}` }); continue; }
+    const subtitleDup = findSubtitleDuplicateTitle(pool, entry.title, entry.venue, dupOpts);
+    if (subtitleDup) { skipped.push({ title: c.title, reason: `subtitle-variant duplicate of "${subtitleDup}"` }); continue; }
+    if (existingIds.has(entry.id)) { skipped.push({ title: c.title, reason: `id ${entry.id} already exists` }); continue; }
     toPromote.push(entry);
-    knownShows.push({ title: entry.title, venue: entry.venue });
+    pool.push({ title: entry.title, venue: entry.venue, startDate, id: entry.id });
     existingIds.add(entry.id);
   }
+  return { toPromote, skipped };
+}
 
-  console.log('');
-  console.log(`Will promote: ${toPromote.length}`);
-  for (const e of toPromote) {
-    console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.openingDate}`);
-  }
-  if (skipped.length) {
-    console.log(`Skipped: ${skipped.length}`);
-    for (const s of skipped) console.log(`  - ${s.candidate.title} (${s.reason})`);
-  }
+function readJson(p, fallback) {
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
+}
 
-  if (!apply) {
-    console.log('');
-    console.log('[DRY RUN — pass --apply to write shows.json]');
-    return;
-  }
+function logEntry(entry) {
+  fs.mkdirSync(path.dirname(LOG_PATH), { recursive: true });
+  fs.appendFileSync(LOG_PATH, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
+}
 
-  if (toPromote.length === 0) {
-    console.log('Nothing to promote.');
-    return;
+function promotedIdsForSeason(season) {
+  if (!fs.existsSync(LOG_PATH)) return new Set();
+  const ids = new Set();
+  for (const line of fs.readFileSync(LOG_PATH, 'utf8').split('\n')) {
+    if (!line.trim()) continue;
+    try {
+      const e = JSON.parse(line);
+      if (e.season !== season) continue;
+      if (e.kind === 'promote-historical-we') ids.add(e.id);
+      if (e.kind === 'revert-historical-we') ids.delete(e.id);
+    } catch { /* skip malformed line */ }
   }
+  return ids;
+}
 
-  for (const entry of toPromote) {
-    showsData.shows.push(entry);
-    logEntry({ kind: 'promote-historical-we', id: entry.id, title: entry.title, venue: entry.venue, season: entry.season });
-  }
+function hasAnyReviews(id, reviews) {
+  const dir = path.join(REVIEW_TEXTS_DIR, id);
+  if (fs.existsSync(dir) && fs.readdirSync(dir).some(f => f.endsWith('.json'))) return true;
+  return reviews.some(r => r.showId === id);
+}
+
+function save(showsData, apply) {
+  if (!apply) { console.log('\n[DRY RUN — pass --apply to write shows.json]'); return false; }
   try {
     const r = saveShows(showsData);
     console.log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
+    return true;
   } catch (e) {
-    if (e instanceof AtomicWriteShrinkError) {
-      console.error(`::error::${e.message}`);
-      process.exit(1);
-    }
+    if (e instanceof AtomicWriteShrinkError) { console.error(`::error::${e.message}`); process.exit(1); }
     throw e;
   }
 }
 
+function revert(season, apply) {
+  const ids = promotedIdsForSeason(season);
+  const showsData = loadShows();
+  const reviewsJson = readJson(REVIEWS_PATH, []);
+  const reviews = Array.isArray(reviewsJson) ? reviewsJson : (reviewsJson.reviews || []);
+  const removable = showsData.shows.filter(s => ids.has(s.id) && s.discoverySource === DISCOVERY_SOURCE && !hasAnyReviews(s.id, reviews));
+  const kept = [...ids].filter(id => !removable.some(s => s.id === id));
+  console.log(`Season ${season}: ${ids.size} promoted by this script; removable (no reviews yet): ${removable.length}`);
+  for (const s of removable) console.log(`  - ${s.id}`);
+  if (kept.length) console.log(`Kept (has reviews or no longer present): ${kept.join(', ')}`);
+  if (!removable.length) return;
+  const drop = new Set(removable.map(s => s.id));
+  showsData.shows = showsData.shows.filter(s => !drop.has(s.id));
+  if (save(showsData, apply)) for (const id of drop) logEntry({ kind: 'revert-historical-we', id, season });
+}
+
+function main() {
+  const args = process.argv.slice(2);
+  const season = args.find(a => a.startsWith('--season='))?.split('=')[1];
+  const apply = args.includes('--apply');
+  const only = new Set(args.filter(a => a.startsWith('--only=')).map(a => a.slice('--only='.length)));
+  if (!season) { console.error('Usage: node scripts/promote-historical-we.js --season=YYYY-YYYY [--apply]'); process.exit(2); }
+  if (args.includes('--revert')) return revert(season, apply);
+
+  const file = candidatesPath(season);
+  if (!fs.existsSync(file)) {
+    console.error(`No candidates file at ${path.relative(ROOT, file)} — run discover-historical-shows-we.js --season=${season} first.`);
+    process.exit(1);
+  }
+  const audit = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const approvals = readJson(APPROVALS_PATH, {});
+  const showsData = loadShows();
+  const { toPromote, skipped } = planPromotions({ candidates: audit.candidates || [], shows: showsData.shows, approvals, only });
+
+  const unknownOnly = [...only].filter(t => !(audit.candidates || []).some(c => c.title === t));
+  if (unknownOnly.length) console.log(`--only titles not in the candidates file: ${unknownOnly.join(' | ')}`);
+  console.log(`Candidates: ${audit.candidates?.length || 0} (file generated ${audit.generatedAt})`);
+  console.log(`Will promote: ${toPromote.length}`);
+  for (const e of toPromote) console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.previewsStartDate || '?'} / ${e.openingDate || '?'} → ${e.closingDate}`);
+  if (only.size || process.argv.includes('--verbose')) {
+    for (const s of skipped) console.log(`  - ${s.title}: ${s.reason}`);
+  } else {
+    console.log(`Skipped: ${skipped.length} (pass --verbose for reasons)`);
+  }
+  if (!toPromote.length) { console.log('Nothing to promote.'); return; }
+
+  showsData.shows.push(...toPromote);
+  if (save(showsData, apply)) {
+    for (const e of toPromote) logEntry({ kind: 'promote-historical-we', id: e.id, title: e.title, venue: e.venue, season });
+  }
+}
+
 if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
   main();
 }
 
-module.exports = { buildShowEntry };
+module.exports = { buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle };
