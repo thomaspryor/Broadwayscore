@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-07T03:24:08.313Z",
-    "completedAt": "2026-10-07T03:42:00.774Z",
-    "totalReviews": 47173,
-    "processed": 193,
-    "skipped": 46420,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 1149756,
-      "output": 61560,
-      "total": 2892338
-    },
-    "costUsd": 4.5966859,
-    "runId": "37566218196",
-    "errorDetails": [
-      {
-        "showId": "an-american-daughter-off-broadway-2026",
-        "outletId": "nyc-theatre-addict",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-        "outletId": "nyc-theatre-addict",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-07T03:42:02.764Z",
-    "completedAt": "2026-10-07T03:47:22.310Z",
-    "totalReviews": 147,
-    "processed": 147,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 391975,
-      "output": 34097,
-      "total": 426072
-    },
-    "costUsd": 1.0883395,
-    "runId": "37566218196",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-07T03:57:44.266Z",
     "completedAt": "2026-10-07T03:58:05.558Z",
     "totalReviews": 47173,
@@ -278143,6 +278100,38 @@
     },
     "costUsd": 0,
     "runId": "37737430745",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T06:42:47.423Z",
+    "completedAt": "2026-10-08T06:43:40.126Z",
+    "totalReviews": 47580,
+    "processed": 6,
+    "skipped": 47567,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 71490,
+      "output": 2602,
+      "total": 181836
+    },
+    "costUsd": 0.30700204999999997,
+    "runId": "37738845360",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T06:43:41.434Z",
+    "completedAt": "2026-10-08T06:43:54.381Z",
+    "totalReviews": 5,
+    "processed": 5,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11675,
+      "output": 1191,
+      "total": 12866
+    },
+    "costUsd": 0.0342058,
+    "runId": "37738845360",
     "errorDetails": []
   }
 ]
