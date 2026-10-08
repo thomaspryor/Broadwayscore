@@ -4832,13 +4832,13 @@
       "title": "Data audits failing (non-blocking): Run data validation, Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-08T14:55:12.467Z",
+      "lastSeen": "2026-10-08T15:45:56.832Z",
       "lastNotifiedAt": "2026-10-07T22:38:20.357Z",
       "lastSurfacedAt": "2026-10-07T22:38:20.357Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 27
+      "silentRefires": 28
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -11552,19 +11552,20 @@
       "silentRefires": 15
     },
     "mezzanine:session-token-expired": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Mezzanine Scraper Failed — Session Token Expired",
       "firstSeen": "2026-10-07T13:48:53.393Z",
       "incidentOpenedAt": "2026-10-07T22:57:44.630Z",
-      "lastSeen": "2026-10-08T11:52:38.307Z",
+      "lastSeen": "2026-10-08T15:35:39.066Z",
       "lastNotifiedAt": "2026-10-07T22:57:44.630Z",
       "lastSurfacedAt": "2026-10-07T22:57:44.630Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-08T15:46:32.209Z"
     },
     "gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json": {
       "status": "resolved",

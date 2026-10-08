@@ -66,3 +66,11 @@ test('prompt includes the identifying production facts + sparse-record rule', ()
   assert.match(p, /MATCH or MISMATCH/);
   assert.match(p, /too sparse/i); // sparse record → MISMATCH instruction present
 });
+
+// BRO-4851: half the West End historical rows have only previewsStartDate; the
+// verifier saw "Year: ?" and is told to answer MISMATCH on sparse records.
+test('verification prompt uses the first-preview year when openingDate is missing', () => {
+  const prompt = buildVerificationPrompt({ title: 'Kyoto', venue: 'Soho Place', previewsStartDate: '2025-01-09' }, 'A play about the 1997 climate talks.');
+  assert.match(prompt, /2025/);
+  assert.doesNotMatch(prompt, /Year: \?/);
+});
