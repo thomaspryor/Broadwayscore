@@ -66,17 +66,37 @@ env:
   SCRAPER_SPEND_PURPOSE: ${{ inputs.spend_purpose }}
 
 concurrency:
-  group: review-texts-backfill-write
+  # per-run group intended (BRO-4859): the old shared `review-texts-backfill-write`
+  # group kept ONE pending run, so each dispatch arriving while a gather ran evicted
+  # the previous pending one, which ended 'cancelled' without starting (43 of 225
+  # dispatches in the 14 days to 2026-10-08). Writes are already parallel-safe (one
+  # run pushes from up to 10 shards via push-review-texts / push-with-retry.sh). The
+  # throttle now lives in prepare's "Wait for a gather slot" step: FIFO, at most
+  # 2 runs at once; after 180 min of waiting a run starts anyway, so none is dropped.
+  group: gather-reviews-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
   # Step 1: Split shows into batches for parallel processing
   prepare:
     runs-on: ubuntu-latest
+    # The slot wait below gives up and starts anyway at 180 min.
+    timeout-minutes: 200
     outputs:
       matrix: ${{ steps.split.outputs.matrix }}
       job_count: ${{ steps.split.outputs.job_count }}
     steps:
+      - name: Checkout (slot helper only)
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: scripts
+      - name: Wait for a gather slot (BRO-4859)
+        # FIFO: proceed once fewer than 2 OLDER gather runs are active.
+        # Kill switch: repo variable GATHER_SLOT_GATE_DISABLED=true.
+        if: ${{ vars.GATHER_SLOT_GATE_DISABLED != 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/wait-for-gather-slot.js --run-id=${{ github.run_id }} --slots=2 --poll-sec=120 --max-wait-min=180
       - name: Split shows into parallel batches
         id: split
         run: |
@@ -811,6 +831,30 @@ jobs:
 
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+  # Per-run follow-ups (BRO-4859). These used to sit in the rebuild job, whose
+  # job-level `rebuild-reviews` group (shared with rebuild-reviews.yml and
+  # scoring-audit.yml) holds one pending job: an evicted rebuild is harmless (the
+  # surviving rebuild rebuilds everything from main) but it took this run's
+  # collection and scoring triggers with it. They read only data/review-texts,
+  # which the gather and aggregator jobs have already pushed.
+  follow-up:
+    needs: [prepare, gather-reviews, scrape-aggregators]
+    if: ${{ !cancelled() && needs.prepare.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Opening-night lease sync (BRO-4786)
+        uses: ./.github/actions/opening-night-lease-sync
+
       - name: Auto-trigger text collection if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -944,6 +988,13 @@ jobs:
             -f run_calibration=false
 
           echo "LLM scoring auto-triggered successfully."
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Gather Reviews follow-up triggers failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
   # Step 4: Update related issues
   update-issues:
