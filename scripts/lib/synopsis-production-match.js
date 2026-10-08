@@ -63,7 +63,11 @@ async function verifyProductionMatch(show, synopsis, callLLM) {
   const firstLine = (text.split('\n')[0] || '').trim();
   // Reject-on-doubt, fail-closed:
   // 1. ANY mention of MISMATCH anywhere wins (covers "MATCH... actually MISMATCH").
-  if (/\bMISMATCH\b/i.test(text)) return { match: false, reason: firstLine || 'mismatch' };
+  if (/\bMISMATCH\b/i.test(text)) {
+    // Line 2 is the prompted one-sentence reason; logs need it to see WHY.
+    const why = (text.split('\n')[1] || '').trim();
+    return { match: false, reason: why ? `${firstLine}: ${why}` : (firstLine || 'mismatch') };
+  }
   // 2. MATCH passes ONLY if the verdict stands ALONE on the first line. A line
   //    like "MATCH - but the venue doesn't line up" is a hedge → fail closed
   //    (it does not match the anchored pattern). Trailing period/punct allowed.
