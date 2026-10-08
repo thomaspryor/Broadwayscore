@@ -18,6 +18,7 @@
  * Pure, no I/O (CLAUDE.md §15); scripts/lib/todaytix-page-identity.test.mjs.
  */
 
+// venue-write-guard-ok: reads a TodayTix page's venue name for comparison only; nothing here writes shows.json.
 const { normalizeTitle } = require('./title-normalization');
 const { venuesMatch } = require('./image-source-match');
 
