@@ -28,12 +28,13 @@ export default function FooterEmailCapture({
   if (isSubscribed || status === 'success' || status === 'already_subscribed') {
     return (
       <div className="text-center py-4">
-        <div className="flex items-center justify-center gap-2 text-sm text-emerald-400">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        {/* Inline check so it stays next to the text when the line wraps on phones. */}
+        <p className="text-sm text-emerald-400">
+          <svg className="inline-block w-4 h-4 mr-1.5 -mt-0.5 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <span>{EMAIL_LIST_COPY.joined(market)}</span>
-        </div>
+          {EMAIL_LIST_COPY.joined(market)}
+        </p>
         {/* List members are not account holders; say so and offer one (BRO-4893). */}
         {showAccountNudge && <CreateAccountNudge source="footer_bridge" className="mt-4" />}
       </div>
