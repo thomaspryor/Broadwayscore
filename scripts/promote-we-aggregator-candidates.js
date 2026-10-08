@@ -83,6 +83,9 @@ const PROMOTION_LOG = path.join(__dirname, '..', 'data', 'audit', 'we-promotion-
 // this file in promote-we-aggregator.yml.
 const LAST_PROMOTION_FILE = path.join(__dirname, '..', 'data', 'audit', 'we-last-promotion-ids.json');
 const WE_AGGREGATOR_MAX_STALENESS_DAYS = 400; // mirrors OB_AGGREGATOR_MAX_STALENESS_DAYS
+// Roundups older than this are treated as closed runs and refused (BRO-4883);
+// see decideWestEndAggregatorPromotion.
+const WE_AGGREGATOR_OPEN_MAX_AGE_DAYS = 120;
 const DAY_MS = 24 * 60 * 60 * 1000;
 // Conservative first-run cap (smaller than OB's MAX_ACCEPT=50 — this path is
 // new and untested against a real production LBO/WET backlog; live-tested
@@ -159,6 +162,18 @@ function decideWestEndAggregatorPromotion(candidate, options = {}) {
   if (stalenessDays > WE_AGGREGATOR_MAX_STALENESS_DAYS) {
     return { confirmed: false, persistent: true, reason: `articlePublishedAt is ${Math.round(stalenessDays)}d stale relative to discoveredAt — refusing to auto-promote as currently open` };
   }
+  // BRO-4883: a roundup older than this is most likely a closed run, and this
+  // path has no closing date to write — a closed row with a null closingDate
+  // is never revisited (audit-we-closing-dates.js only scans open rows) and
+  // fails validate-data.js. Closed seasons belong to the WE historical
+  // pipeline (discover-historical-shows-we.js → promote-historical-we.js),
+  // which carries real run dates plus its own genre and duplicate checks. On
+  // 2026-10-08 this path wrote 10 closed dateless rows: 3 duplicates of
+  // existing shows under truncated LBO slugs, 6 operas/ballets/one-night
+  // concerts that pipeline had already rejected.
+  if (stalenessDays > WE_AGGREGATOR_OPEN_MAX_AGE_DAYS) {
+    return { confirmed: false, persistent: true, reason: `roundup is ${Math.round(stalenessDays)}d old (> ${WE_AGGREGATOR_OPEN_MAX_AGE_DAYS}d) — most likely a closed run with no known closing date; closed seasons are promoted by the WE historical pipeline` };
+  }
 
   return { confirmed: true, reason: `aggregator listing (${candidate.source}) + canonical West End venue "${candidate.venue}" + compatible dates`, source: 'aggregator-roundup' };
 }
@@ -179,16 +194,16 @@ function decideWestEndAggregatorPromotion(candidate, options = {}) {
 // roundups (Othello, Hamlet, Clarkston, ...) that are well within the
 // staleness gate's 400-day window but are, in the ordinary case, long since
 // closed — mirrors buildRegionalShowEntry's identical reasoning for
-// short-engagement regional tryouts. closingDate stays null either way
-// (genuinely unknown); existing closing-date automation corrects status
-// later regardless of how a show was added.
-const WE_AGGREGATOR_OPEN_MAX_AGE_DAYS = 120;
+// short-engagement regional tryouts. Those older roundups are refused in
+// decideWestEndAggregatorPromotion (BRO-4883: this builder used to write them
+// as status 'closed' with a null closingDate), so every row built here is a
+// current run and is written 'open'; audit-we-closing-dates.js then finds its
+// real closing date like any other open West End show.
 
 function buildWestEndAggregatorShowEntry(candidate, venueVocabulary) {
   const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
   const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
-  const ageDays = openingDate ? (Date.now() - new Date(openingDate).getTime()) / DAY_MS : 0;
   // withMarketSuffix() strips any pre-existing market suffix before re-appending —
   // idempotent. candidate.slug isn't guaranteed fresh from the raw title (it may
   // have round-tripped through another WE discovery path already carrying the
@@ -218,7 +233,7 @@ function buildWestEndAggregatorShowEntry(candidate, venueVocabulary) {
     openingDateSource: openingDate ? 'aggregator-roundup' : null,
     previewsStartDate: null,
     closingDate: null,
-    status: ageDays > WE_AGGREGATOR_OPEN_MAX_AGE_DAYS ? 'closed' : 'open',
+    status: 'open',
     category: 'west-end',
     market: 'west-end',
     // 'play' (not null) when the title doesn't say "musical" — status is
