@@ -26,13 +26,16 @@ function browserEnv(): ShareEnv {
   };
 }
 
+// No `text`: some share targets (macOS Copy, some chat apps) join text and
+// url into one string, and a friend who taps it lands on "<token> My theater
+// plans…" → the not-shared page. The link preview already carries the title.
 export async function shareOrCopy(
-  data: { title: string; text?: string; url: string },
+  data: { title: string; url: string },
   env: ShareEnv = browserEnv(),
 ): Promise<ShareOutcome> {
   if (env.share) {
     try {
-      await env.share(data);
+      await env.share({ title: data.title, url: data.url });
       return 'shared';
     } catch (e) {
       if ((e as { name?: string })?.name === 'AbortError') return 'cancelled';

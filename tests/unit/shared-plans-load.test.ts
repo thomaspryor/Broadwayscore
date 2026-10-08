@@ -27,13 +27,22 @@ test('ok: returns the payload and calls get_shared_plans with the token', async 
   assert.deepEqual(seen, [['get_shared_plans', { p_token: TOKEN }]]);
 });
 
+test('message text pasted after the token is dropped (share sheets that join text + url)', async () => {
+  for (const param of [`${TOKEN} My theater plans on Broadway Scorecard`, `${TOKEN}%20My%20theater%20plans%20on%20Broadway%20Scorec`, ` ${TOKEN}\n`]) {
+    const seen: unknown[] = [];
+    const r = await loadSharedPlansWith(param, client({ data: PAYLOAD, error: null }, seen));
+    assert.deepEqual(r, { status: 'ok', payload: PAYLOAD });
+    assert.deepEqual(seen, [['get_shared_plans', { p_token: TOKEN }]]);
+  }
+});
+
 test('null from the function means not shared (404), not an error', async () => {
   assert.deepEqual(await loadSharedPlansWith(TOKEN, client({ data: null, error: null })), { status: 'not-shared' });
 });
 
 test('malformed tokens never reach the database', async () => {
   const seen: unknown[] = [];
-  for (const bad of ['', 'abc', 'A'.repeat(32), `${'a'.repeat(31)}g`, `${'a'.repeat(32)}/../x`]) {
+  for (const bad of ['', 'abc', 'A'.repeat(32), `${'a'.repeat(31)}g`, `${'a'.repeat(32)}/../x`, `${'a'.repeat(32)}x more`, '%E0%A4%A']) {
     assert.deepEqual(await loadSharedPlansWith(bad, client({ data: PAYLOAD, error: null }, seen)), { status: 'not-shared' });
   }
   assert.equal(seen.length, 0);

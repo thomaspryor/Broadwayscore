@@ -76,7 +76,7 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
       const link = live && share?.display_name === name.trim() ? url : await ensure({ displayName: name, showBooked, showUnbooked });
       if (!link) { showToast?.('Couldn’t create your link. Try again.', 'error'); return; }
       if (!live) trackSharedPlans({ name: 'plans_share_enabled', props: { booked: showBooked, unbooked: showUnbooked } });
-      const outcome = await shareOrCopy({ title: 'My theater plans', text: 'My theater plans on Broadway Scorecard', url: link });
+      const outcome = await shareOrCopy({ title: 'My theater plans', url: link });
       if (outcome === 'shared') trackSharedPlans({ name: 'plans_shared', props: { method: 'native-sheet' } });
       if (outcome === 'copied') {
         trackSharedPlans({ name: 'plans_shared', props: { method: 'copy' } });
