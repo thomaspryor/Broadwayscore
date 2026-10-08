@@ -295,6 +295,7 @@ function collectCarriedFiles(show, shows, deps) {
 module.exports = {
   isReturnOfProduction,
   matchingPriorRunFor,
+  baseTitle,
   buildMultiProdDirectorGuard,
   findPriorRunSiblings,
   inheritPriorRunReviews,

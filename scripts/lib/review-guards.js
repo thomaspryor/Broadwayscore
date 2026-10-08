@@ -727,6 +727,20 @@ const PRE_OPENING_LEAD_DAYS = 120;
 const UNSCHEDULED_MAX_AGE_DAYS = 365;
 
 /**
+ * BRO-4886: a production cancelled before it opened has no reviews to count.
+ * Who's Afraid of Virginia Woolf 2020 (9 previews, then COVID) carried a score
+ * from a 2005 review. No escape hatch: there is no review of a show that never
+ * had a press night. One predicate for explainExclusion and the rebuild's
+ * inline loop, which does not delegate to it.
+ *
+ * @param {object|null|undefined} show - shows.json entry
+ * @returns {boolean}
+ */
+function isShowNeverOpened(show) {
+  return !!show && show.cancelledBeforeOpening === true;
+}
+
+/**
  * True when `data` is a review that cannot belong to this never-opened
  * production: published more than PRE_OPENING_LEAD_DAYS before the show's own
  * previews/opening date, or (for shows with no dates at all) more than
@@ -4113,11 +4127,7 @@ function isRejectedAtExclusion(data) {
 
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
-  // BRO-4886: a production cancelled before it opened has no reviews to count.
-  // Who's Afraid of Virginia Woolf 2020 (9 previews, then COVID) carried a score
-  // from a 2005 review. No escape hatch: there is no review of a show that
-  // never had a press night.
-  if (show && show.cancelledBeforeOpening === true) return 'showNeverOpened';
+  if (isShowNeverOpened(show)) return 'showNeverOpened';
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.
@@ -5351,6 +5361,7 @@ module.exports = {
   cvFlagVetoedInWindow,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
+  isShowNeverOpened,
   PRE_OPENING_LEAD_DAYS,
   UNSCHEDULED_MAX_AGE_DAYS,
   applyVenueClassificationCarveout,

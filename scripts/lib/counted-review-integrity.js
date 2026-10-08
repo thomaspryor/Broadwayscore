@@ -21,6 +21,10 @@
  * data. Every check returns plain objects so a test can pin the real shapes.
  */
 
+// The title grouping the rebuild's multi-production guards use, so "same production"
+// means the same thing here and there.
+const { baseTitle } = require('./prior-run-sibling');
+
 const DAY_MS = 86400000;
 
 // How long a run may be before its URL year stops being informative (a show
@@ -70,16 +74,6 @@ function urlYear(url) {
   const m = pathname.match(/(?:^|[/_-])((?:19|20)\d{2})[/_-](?:0?[1-9]|1[0-2])(?:[/_-]|$)/)
     || pathname.match(/(?:^|\/)((?:19|20)\d{2})(?:\/|$)/);
   return m ? Number(m[1]) : null;
-}
-
-function baseTitle(show) {
-  return String((show && show.title) || '')
-    .replace(/\s*\(.*?\)/g, '')
-    .toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .replace(/^the /, '')
-    .trim();
 }
 
 function normText(s) {
@@ -238,8 +232,8 @@ function checkUrlYearOutsideRun(shows, reviews) {
 
 // ── 4. Counted reviews on a show that never opened ───────────────────────────
 function checkUnopenedShowCounted(shows, reviews) {
-  const never = new Map(shows.filter((s) => s.cancelledBeforeOpening === true || s.status === 'cancelled')
-    .map((s) => [s.id, s]));
+  // Same field the rebuild's showNeverOpened exclusion reads (review-guards isShowNeverOpened).
+  const never = new Map(shows.filter((s) => s.cancelledBeforeOpening === true).map((s) => [s.id, s]));
   return reviews.filter((r) => never.has(r.showId))
     .map((r) => row('unopened-show-counted', never.get(r.showId), r, 'show was cancelled before opening'));
 }
@@ -323,7 +317,7 @@ function checkPriorRunLinks(shows) {
 // review-text files. A flagged file whose publishDate falls inside the run
 // window and whose URL year sits inside the run years is the signature of a
 // false positive: the 2022 Into the Woods Broadway opening-night reviews were
-// thrown out this way after a wrong openingDate, and 431 files across the
+// thrown out this way after a wrong openingDate, and 825 files across the
 // corpus match (2026-10-08). A candidate is a lead for a human or the recovery
 // scripts, never an automatic clear.
 function findFlaggedGenuineCandidates({ shows, files }) {
