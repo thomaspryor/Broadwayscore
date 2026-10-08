@@ -27,6 +27,7 @@ function buildTombstoneRows(sourceFile, stats, now = new Date()) {
     reason: k.reason,
     showId: k.showId,
     outlet: k.outlet,
+    criticName: k.criticName,
     url: k.url,
     supersededBy: k.supersededBy,
     // An attempted reconciliation, not proof the row is absent from the final
