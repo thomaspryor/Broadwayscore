@@ -7,6 +7,10 @@ on:
         description: 'Max shows to process (0 = all)'
         required: false
         default: '100'
+      shows:
+        description: 'Comma-separated show IDs to target (overrides limit)'
+        required: false
+        default: ''
       dry_run:
         description: 'Dry run (no commits)'
         required: false
@@ -54,13 +58,17 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHOWS: ${{ inputs.shows }}
         run: |
           ARGS="--backfill-historical"
           LIMIT="${{ inputs.limit || '100' }}"
           if [ "$LIMIT" != "0" ]; then
             ARGS="$ARGS --limit=$LIMIT"
           fi
-          node scripts/auto-fix-show-data.js $ARGS
+          # Targeted ids (e.g. newly promoted historical rows); quoted so a
+          # list with spaces stays one --show= argument.
+          SHOWS="${SHOWS// /}"
+          node scripts/auto-fix-show-data.js $ARGS ${SHOWS:+"--show=$SHOWS"}
 
       - name: Validate data
         run: node scripts/validate-data.js
