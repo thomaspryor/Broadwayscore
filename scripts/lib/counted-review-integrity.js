@@ -14,8 +14,8 @@
  * counted on four unrelated Private Lives pages, a 2016 London review on the
  * 1987 Into the Woods page, a 2008 National Theatre review on Osage County 2007,
  * a never-opened Who's Afraid 2020 page with a score, an "outlet" named after a
- * singer, one review counted twice under two critics, an openingDate four
- * weeks late, and a priorRuns link that could not resolve.
+ * singer, one review counted twice under two critics, and an openingDate four
+ * weeks late.
  *
  * Pure: no I/O. The CLI (scripts/audit-counted-review-integrity.js) loads the
  * data. Every check returns plain objects so a test can pin the real shapes.
@@ -31,8 +31,6 @@ const LONG_RUN_YEARS = 3;
 const CLUSTER_MIN_REVIEWS = 5;
 const CLUSTER_WINDOW_DAYS = 4;
 const CLUSTER_MIN_GAP_DAYS = 14;
-// priorRuns entry vs a sibling show: same venue and openings this close.
-const PRIOR_RUN_VENUE_GAP_DAYS = 45;
 // Quotes shorter than this are too generic to treat as identical content.
 const MIN_QUOTE_CHARS = 50;
 // Same title opening this close together is one production re-listed (a
@@ -72,15 +70,6 @@ function urlYear(url) {
   const m = pathname.match(/(?:^|[/_-])((?:19|20)\d{2})[/_-](?:0?[1-9]|1[0-2])(?:[/_-]|$)/)
     || pathname.match(/(?:^|\/)((?:19|20)\d{2})(?:\/|$)/);
   return m ? Number(m[1]) : null;
-}
-
-function canonVenue(venue) {
-  return String(venue || '')
-    .toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/\btheatre\b|\btheater\b|\bthe\b/g, ' ')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
 }
 
 function baseTitle(show) {
@@ -310,32 +299,19 @@ function checkOpeningDateCluster(shows, reviews) {
   return out;
 }
 
-// ── 7. priorRuns that cannot resolve to the older show's page ────────────────
+// ── 7. priorRuns that point at a show that does not exist ────────────────────
+// An id-less entry is NOT a defect. prior-run-sibling.js carries a prior run's
+// reviews only inside one category, on purpose: a Broadway page must never
+// inherit London reviews (owner, 2026-10-08, evita-2026 and the London Palladium
+// run). Only a link to a missing show is broken, because it carries nothing.
 function checkPriorRunLinks(shows) {
   const ids = new Set(shows.map((s) => s.id));
   const out = [];
   for (const show of shows) {
     for (const run of show.priorRuns || []) {
       const id = linkedId(run);
-      if (id) {
-        if (!ids.has(id)) {
-          out.push(row('prior-run-link', show, null, `priorRuns points at ${id}, which is not a show`, { missingId: id }));
-        }
-        continue;
-      }
-      if (!run || typeof run !== 'object') continue;
-      const venue = canonVenue(run.venue);
-      const runOpen = parseDay(run.openingDate);
-      if (!venue || runOpen === null) continue;
-      const match = shows.find((o) => o.id !== show.id
-        && baseTitle(o) === baseTitle(show)
-        && canonVenue(o.venue) === venue
-        && parseDay(o.openingDate) !== null
-        && Math.abs(parseDay(o.openingDate) - runOpen) <= PRIOR_RUN_VENUE_GAP_DAYS * DAY_MS);
-      if (match && match.category !== show.category) {
-        out.push(row('prior-run-link', show, null,
-          `priorRuns entry for ${run.venue} has no id and ${match.id} is in a different category, so its reviews will not carry over`,
-          { suggestedId: match.id }));
+      if (id && !ids.has(id)) {
+        out.push(row('prior-run-link', show, null, `priorRuns points at ${id}, which is not a show`, { missingId: id }));
       }
     }
   }

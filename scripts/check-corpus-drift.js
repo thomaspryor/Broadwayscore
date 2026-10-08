@@ -376,7 +376,7 @@ const AUDITS = [
   },
   {
     name: 'counted-review-integrity',
-    label: 'counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, unresolved priorRuns)',
+    label: 'counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, priorRuns pointing at a missing show)',
     script: 'audit-counted-review-integrity.js',
     // BRO-4886: monitor, not a gate (CLAUDE.md 19). Baseline 85 = the 83 found
     // on 2026-10-08, most of them untriaged cross-show quote repeats (some are a

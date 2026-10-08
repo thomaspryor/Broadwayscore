@@ -148,15 +148,14 @@ test('opening date cluster: correct dates, thin data and declared prior runs are
   assert.deepEqual(checkOpeningDateCluster([transfer], reviews.map((r) => ({ ...r, showId: 'xfer' }))), []);
 });
 
-test('prior run link: an id-less entry that matches a sibling in another category is flagged, an id resolves it', () => {
+test('prior run link: an id-less entry is fine (London reviews stay off the Broadway page), only a missing target is flagged', () => {
   const palladium = { id: 'evita-we-2025', title: 'Evita', category: 'west-end', venue: 'London Palladium', openingDate: '2025-07-01' };
   const broadway = { id: 'evita-2026', title: 'Evita', category: 'broadway', venue: 'Winter Garden Theatre', openingDate: '2027-03-25',
     priorRuns: [{ venue: 'London Palladium', openingDate: '2025-06-14', closingDate: '2025-09-06' }] };
-  const issues = checkPriorRunLinks([palladium, broadway]);
-  assert.equal(issues.length, 1);
-  assert.equal(issues[0].suggestedId, 'evita-we-2025');
-  const fixed = { ...broadway, priorRuns: [{ id: 'evita-we-2025', venue: 'London Palladium' }] };
-  assert.deepEqual(checkPriorRunLinks([palladium, fixed]), []);
+  // Owner decision 2026-10-08: Broadway Evita must NOT inherit the London Palladium reviews, so no finding.
+  assert.deepEqual(checkPriorRunLinks([palladium, broadway]), []);
+  const linked = { ...broadway, priorRuns: [{ id: 'evita-we-2025', venue: 'London Palladium' }] };
+  assert.deepEqual(checkPriorRunLinks([palladium, linked]), []);
   const dangling = { ...broadway, priorRuns: [{ id: 'nope' }] };
   assert.equal(checkPriorRunLinks([palladium, dangling])[0].missingId, 'nope');
 });
