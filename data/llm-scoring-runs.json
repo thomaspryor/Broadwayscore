@@ -1,69 +1,5 @@
 [
   {
-    "startedAt": "2026-10-07T17:38:21.194Z",
-    "completedAt": "2026-10-07T17:38:21.195Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37659337662",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-07T17:38:55.803Z",
-    "completedAt": "2026-10-07T17:38:55.806Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37658766888",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-07T16:04:12.450Z",
-    "completedAt": "2026-10-07T18:19:03.361Z",
-    "totalReviews": 47267,
-    "processed": 796,
-    "skipped": 42280,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4811591,
-      "output": 253946,
-      "total": 11942479
-    },
-    "costUsd": 19.170744900000003,
-    "runId": "37647292074",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-07T18:19:05.602Z",
-    "completedAt": "2026-10-07T18:24:36.493Z",
-    "totalReviews": 150,
-    "processed": 150,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 394248,
-      "output": 34822,
-      "total": 429070
-    },
-    "costUsd": 1.1025893999999998,
-    "runId": "37647292074",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-07T18:24:58.471Z",
     "completedAt": "2026-10-07T18:25:14.743Z",
     "totalReviews": 47315,
@@ -356348,6 +356284,60 @@
     },
     "costUsd": 0.0413376,
     "runId": "37813072389",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T17:12:06.788Z",
+    "completedAt": "2026-10-08T17:12:06.804Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37814245516",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-08T17:13:27.624Z",
+    "completedAt": "2026-10-08T17:15:07.456Z",
+    "totalReviews": 48361,
+    "processed": 12,
+    "skipped": 48335,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 116719,
+      "output": 5865,
+      "total": 319104
+    },
+    "costUsd": 0.5063319500000001,
+    "runId": "37814509909",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-08T17:15:08.623Z",
+    "completedAt": "2026-10-08T17:15:15.482Z",
+    "totalReviews": 3,
+    "processed": 3,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 4016,
+      "output": 636,
+      "total": 4652
+    },
+    "costUsd": 0.0134866,
+    "runId": "37814509909",
     "errorDetails": []
   }
 ]
