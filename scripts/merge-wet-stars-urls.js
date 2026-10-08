@@ -119,18 +119,19 @@ function planWetMerge(data, wetRow, outletId) {
 }
 
 /**
- * WET roundup publish window for this production: from 30 days before the
- * first performance to 120 days after closing (or a year after the start
- * when there is no closing date). {} when the show has no usable dates.
+ * WET roundup publish window for this production: 30 days before the first
+ * performance to 60 days after press night (opening, else first preview).
+ * Roundups appear within days of press night. Anchoring the end on CLOSING
+ * let the 2024 Wyndham's Oedipus (closed 2025-01-04) pick up the Old Vic
+ * Oedipus roundup posted in Feb 2025 (BRO-4851). {} when no usable dates.
  */
 function roundupWindow(show) {
   const DAY = 86400000;
-  const start = Date.parse(show.previewsStartDate || show.openingDate || '');
-  if (Number.isNaN(start)) return {};
-  const close = Date.parse(show.closingDate || '');
-  const end = Number.isNaN(close) ? start + 365 * DAY : close + 120 * DAY;
+  const first = Date.parse(show.previewsStartDate || show.openingDate || '');
+  if (Number.isNaN(first)) return {};
+  const pressNight = Date.parse(show.openingDate || show.previewsStartDate);
   const iso = t => new Date(t).toISOString().slice(0, 10);
-  return { after: iso(start - 30 * DAY), before: iso(end) };
+  return { after: iso(first - 30 * DAY), before: iso(pressNight + 60 * DAY) };
 }
 
 async function main() {
