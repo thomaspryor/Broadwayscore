@@ -21,6 +21,45 @@
 // venue-write-guard-ok: reads a TodayTix page's venue name for comparison only; nothing here writes shows.json.
 const { normalizeTitle } = require('./title-normalization');
 const { venuesMatch } = require('./image-source-match');
+const { PLOT_SIGNAL_RE } = require('./synopsis-validation');
+
+// Sentences in product.about that are not story: selling, star quotes, age /
+// running-time / content notes, cast and team lists (the junk class that run
+// 37818726628 saved from the scraped-paragraph path).
+const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|today|early)\b|★|☆|\bstars?\b.*(guardian|times|telegraph|stage|standard|whatsonstage)|age guidance|\bages? \d|running time|\bcontent warning|\bcast\b.*\b(include|are|is|features?)\b|\bcreative team\b|\bdirected by\b.*,.*,/i;
+// isValidSynopsis rejects text opening this way; such sentences are pitch, not plot.
+const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come discover|Catch )/i;
+const MAX_ABOUT_CHARS = 700;
+
+/**
+ * product.about reduced to its story sentences: markdown/HTML stripped,
+ * non-story sentences dropped, cut at a sentence end. '' when nothing is left
+ * or no sentence reads as plot (PLOT_SIGNAL_RE), so the caller falls back to
+ * the verified path.
+ */
+function cleanTodaytixAbout(text) {
+  const plain = String(text || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/^\s*(#+|[-*•])\s+/gm, '')
+    .replace(/[*_]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const sentences = plain.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [];
+  const kept = [];
+  let len = 0;
+  for (const raw of sentences) {
+    const sentence = raw.trim();
+    if (!sentence || NON_STORY_SENTENCE_RE.test(sentence) || MARKETING_OPENER_RE.test(sentence)) continue;
+    if (len + sentence.length + 1 > MAX_ABOUT_CHARS) break;
+    kept.push(sentence);
+    len += sentence.length + 1;
+    if (kept.length >= 4) break;
+  }
+  const out = kept.join(' ');
+  return out && PLOT_SIGNAL_RE.test(out) ? out : '';
+}
+
 
 /** @returns {{id: string, title: string, venue: string|null, start: string|null, end: string|null}|null} */
 function extractTodaytixPageIdentity(html) {
@@ -36,6 +75,7 @@ function extractTodaytixPageIdentity(html) {
     venue: (p.venue && p.venue.name) || null,
     start: p.startingDate || null,
     end: p.closingDate || null,
+    about: cleanTodaytixAbout(p.about || p.shortDescription || ''),
   };
 }
 
@@ -60,4 +100,4 @@ function todaytixPageMatchesShow(identity, show, expectedId) {
   return true;
 }
 
-module.exports = { extractTodaytixPageIdentity, todaytixPageMatchesShow };
+module.exports = { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout };

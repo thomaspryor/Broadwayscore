@@ -204,8 +204,13 @@ async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
 
   try {
     const html = await fetchUrl(url);
-    const trusted = todaytixPageMatchesShow(extractTodaytixPageIdentity(html), show, todayTixInfo.id);
-    return { text: extractSynopsisFromHtml(html), trusted };
+    // Trusted text comes ONLY from the page's own structured description; a
+    // scraped paragraph (quote, age note, cast list) still needs the verifier.
+    const identity = extractTodaytixPageIdentity(html);
+    if (identity && identity.about && todaytixPageMatchesShow(identity, show, todayTixInfo.id)) {
+      return { text: identity.about, trusted: true };
+    }
+    return { text: extractSynopsisFromHtml(html), trusted: false };
   } catch {
     return { text: null, trusted: false };
   }
@@ -374,6 +379,12 @@ async function fixSynopsis(show, todayTixIds) {
   const verifier = ANTHROPIC_API_KEY ? (p => callClaudeAPI(p, 200, CLAUDE_OPUS)) : null;
   const accept = async (text, source, { trusted = false } = {}) => {
     if (!text || !isValidSynopsis(text)) return false;
+    // Same badness test that selected this row (stale future tense etc.), so a
+    // saved candidate is not flagged bad again on the next run.
+    if (classifyBadSynopsis({ ...show, synopsis: text }).bad) {
+      console.log(`    ✗ rejected ${source} synopsis (fails classifyBadSynopsis)`);
+      return false;
+    }
     // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
     const factGate = gateScrapedSynopsis(show, text, { showsById: {} });
     if (!factGate.ok) {

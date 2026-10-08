@@ -237,6 +237,7 @@ function isValidSynopsis(text) {
 }
 
 module.exports = {
+  PLOT_SIGNAL_RE,
   REFUSAL_PATTERNS,
   PLACEHOLDER_OPENER_RE,
   PRODUCTION_HISTORY_RE,
