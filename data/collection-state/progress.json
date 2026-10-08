@@ -298,7 +298,10 @@
     "dear-jack-dear-louise-off-west-end-2026/londonpubtheatres--albertine-sins.json",
     "the-authenticator-west-end-2026/north-west-end--michelle-knight.json",
     "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+    "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+    "deep-heat-rivalry-off-west-end-2026/londontheatredirect--neil-r-harris.json",
+    "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
@@ -467,7 +470,12 @@
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ny1--unknown.json"
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json",
+    "youre-so-special-off-west-end-2026/guardian--unknown.json",
+    "palesteenian-off-west-end-2026/guardian--unknown.json",
+    "a-world-elsewhere-off-west-end-2026/thestage--oliver-jones.json",
+    "the-world-is-full-of-married-men-off-west-end-2026/thestage--dave-fargnoli.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -661,12 +669,18 @@
       "inter-alia-west-end-2026/lbc--johnny-jenkins.json",
       "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
       "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+      "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+      "deep-heat-rivalry-off-west-end-2026/londontheatredirect--neil-r-harris.json",
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
@@ -779,6 +793,77 @@
     ]
   },
   "startTime": "2026-10-07T20:51:07.380Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/ny1--unknown.json",
-  "log": []
+  "lastProcessed": "othello-off-broadway-2026/thestage--fergus-morgan.json",
+  "log": [
+    {
+      "t": "2026-10-08T01:03:29.752Z",
+      "event": "bb-session",
+      "session": "41c5a3fe",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-08T01:03:49.878Z",
+      "event": "bb-session",
+      "session": "07642785",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-08T01:04:20.517Z",
+      "event": "bb-session",
+      "session": "04ef8aa1",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-08T01:04:37.951Z",
+      "event": "bb-session",
+      "session": "7a32a016",
+      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-08T01:09:59.923Z",
+      "event": "bb-session",
+      "session": "07481444",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-08T01:10:00.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:10:20.834Z",
+      "event": "bb-session",
+      "session": "4b657a96",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-08T01:10:22.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:10:35.865Z",
+      "event": "bb-session",
+      "session": "39af0f98",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-08T01:10:45.295Z",
+      "event": "bb-session",
+      "session": "c9c86c70",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-08T01:11:51.119Z",
+      "event": "bb-session",
+      "session": "0ba2942a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-08T01:12:00.631Z",
+      "event": "bb-session",
+      "session": "5cfffe47",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    }
+  ]
 }
