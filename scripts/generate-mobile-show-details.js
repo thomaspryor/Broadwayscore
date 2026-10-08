@@ -24,6 +24,7 @@ const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
 const { isHiddenFromAppFeed } = require('./lib/markets');
+const { mayServeDiskImage } = require('./lib/image-source-match');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -77,6 +78,7 @@ const GLOBAL_INPUT_FILES = [
   'data/blog-reviews-for-scoring.json', // unioned with reviews.json via loadReviewsWithBlog
   'data/curated-historical-shows.json', // affects shouldHideReviews for every show
   'src/config/outlet-tiers.json',       // authoritative tier resolution for every outlet
+  'data/image-sources.json',            // recorded hero source, checked against rejectedImageUrls
 ];
 
 function hashFileIfExists(hash, relPath) {
@@ -204,6 +206,11 @@ let reviews = [];
 let outletRegistry = {};
 let audienceBuzz = {};
 let showScoreUrls = {};
+let imageSources = {};
+
+try {
+  imageSources = JSON.parse(fs.readFileSync(path.join(dataDir, 'image-sources.json'), 'utf-8'));
+} catch { /* no recorded sources: disk heroes are served as before */ }
 
 try {
   shows = JSON.parse(fs.readFileSync(path.join(dataDir, 'shows.json'), 'utf-8')).shows || [];
@@ -763,8 +770,11 @@ for (const show of visibleShows) {
   // Hero image (not in mobile-shows.json)
   // Reconcile: if shows.json says hero is null but hero.webp exists on disk, use it.
   // This prevents fetch-show-images-auto.js re-runs from wiping local hero paths.
+  // A hero file whose recorded source a person rejected stays off the page:
+  // the rejection nulls shows.json, so without this check the file on disk
+  // brought the wrong production's banner straight back (BRO-2242).
   let heroPath = show.images?.hero;
-  if (!heroPath && show.id) {
+  if (!heroPath && show.id && mayServeDiskImage(show, imageSources[show.id]?.hero)) {
     const showDir = path.join(__dirname, '..', 'public', 'images', 'shows', show.id);
     for (const ext of ['webp', 'jpg', 'png']) {
       const diskHero = path.join(showDir, `hero.${ext}`);
