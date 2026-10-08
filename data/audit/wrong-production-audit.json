@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T09:58:37.922Z",
+  "timestamp": "2026-10-08T10:48:58.011Z",
   "stats": {
     "totalReviews": 47316,
-    "alreadyFlagged": 18845,
+    "alreadyFlagged": 18865,
     "dateGuardCatches": 279,
     "directorMismatch": 1402,
-    "tvFilmSignals": 1373,
-    "londonSignals": 1329,
-    "offBroadwaySignals": 506,
+    "tvFilmSignals": 1375,
+    "londonSignals": 1330,
+    "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4533
+    "noPublishDate": 4494
   },
   "findings": [
     {
@@ -23635,6 +23635,20 @@
     },
     {
       "showId": "oh-hello-on-broadway-2016",
+      "file": "nypost--johnny-oleksinski.json",
+      "score": 87,
+      "publishDate": "2016-10-11",
+      "url": "http://nypost.com/2016/10/10/with-oh-hello-the-war-on-fun-is-finally-over/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-hello-on-broadway-2016",
       "file": "rollingstone--margaret-sutherlin.json",
       "score": 82,
       "publishDate": "October 11, 2016",
@@ -36301,6 +36315,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-present-2017",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": 67,
+      "publishDate": "2017-01-13",
+      "url": "http://t2conline.com/even-cate-blanchett-cant-save-the-present/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -61173,6 +61206,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-little-foxes-2017",
+      "file": "thestage--mark-shenton.json",
+      "score": 77,
+      "publishDate": "April 19, 2017",
+      "url": "https://www.thestage.co.uk/reviews/2017/little-foxes-starring-cynthia-nixon-laura-linney-review-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
