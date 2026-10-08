@@ -98,3 +98,44 @@ describe('the patterns stay host-scoped', () => {
     );
   });
 });
+
+// BRO-4875: London Theatre Direct, Independent and LA Times roundup articles,
+// each scored live as the host outlet's own review before this pattern + map
+// entry pair. Into the Woods (Bridge) LTD roundup was inherited onto the Noel
+// Coward transfer at 92 in its opening-broadcast week.
+const LTD = 'https://www.londontheatredirect.com/news/into-the-woods-review-roundup?srsltid=AfmBOoo3uCjbC4OrUceIBEpI4yJImH6VMVZahCJr43Z5Iequ3hBdGgv7';
+const LTD_HF = 'https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-hay-fever?srsltid=AU7gw4VOlJrOGX9wTTO9xfZllYsYMMpxz7gfJJRj2cqY3rzoWCVIfOgu';
+const IND = 'https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/harry-potter-and-the-cursed-child-reviews-roundup-theatre-critics-spellbound-by-new-jk-rowling-play-a7156061.html';
+const LAT = 'https://www.latimes.com/archives/blogs/culture-monster-blog/story/2009-12-14/catherine-zeta-jones-in-broadways-a-little-night-music-what-did-the-critics-think';
+
+describe('BRO-4875 London Theatre Direct / Independent / LA Times roundups', () => {
+  for (const [name, url, outletId] of [
+    ['LTD -review-roundup', LTD, 'londontheatredirect'],
+    ['LTD review-roundup-what-are-the-critics-saying', LTD_HF, 'londontheatredirect'],
+    ['Independent reviews-roundup', IND, 'independent'],
+    ['LA Times what-did-the-critics-think', LAT, 'latimes'],
+  ]) {
+    test(`${name}: recognised and excluded as page-as-review`, () => {
+      assert.equal(isRoundupUrl(url).isRoundup, true);
+      assert.equal(isRoundupPageAsReview({ url, outletId }), true);
+    });
+
+    test(`${name}: a different outlet sourced from it stays includable`, () => {
+      assert.equal(isRoundupPageAsReview({ url, outletId: 'guardian' }), false);
+    });
+  }
+
+  test("LTD's own reviews are untouched", () => {
+    for (const u of [
+      'https://www.londontheatredirect.com/news/evita-review',
+      'https://www.londontheatredirect.com/news/oh-mary-review',
+      'https://www.londontheatredirect.com/news/hercules-review-2025',
+      'https://www.londontheatredirect.com/news/finding-its-own-rhythm-trainspotting-the-musical-review',
+    ]) assert.equal(isRoundupUrl(u).isRoundup, false, u);
+  });
+
+  test('Independent and LA Times individual reviews are untouched', () => {
+    assert.equal(isRoundupUrl('https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-review-bridge-theatre-b2883000.html').isRoundup, false);
+    assert.equal(isRoundupUrl('https://www.latimes.com/entertainment-arts/story/2022-07-10/into-the-woods-broadway-review').isRoundup, false);
+  });
+});

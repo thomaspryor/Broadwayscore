@@ -44,7 +44,7 @@ const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
-const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
+const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isRoundupUrl, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
 const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
 const { capturePublishedStar } = require('./published-star-capture');
 const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
@@ -719,7 +719,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // (broke the Guard E unit test on main, 2026-07-19).
   if (!fields.isRoundupArticle && !laneHolds('roundupUrlSwap') && isRoundupPageAsReview({ url: input.url, outletId })) {
     fields.isRoundupArticle = true;
-    fields.roundupArticleReason = 'auto: URL matches BWW /reviews/ critics-aggregation page pattern';
+    fields.roundupArticleReason = `auto: roundup page ingested as review (${isRoundupUrl(input.url).reason})`;
   }
 
   // --- Guard E2: LBO Review-Round-Up page detection ---
