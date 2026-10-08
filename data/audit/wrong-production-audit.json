@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-08T23:23:41.914Z",
+  "timestamp": "2026-10-08T23:41:28.857Z",
   "stats": {
-    "totalReviews": 49462,
-    "alreadyFlagged": 19090,
+    "totalReviews": 49510,
+    "alreadyFlagged": 19122,
     "dateGuardCatches": 278,
-    "directorMismatch": 1501,
-    "tvFilmSignals": 1422,
-    "londonSignals": 1456,
+    "directorMismatch": 1502,
+    "tvFilmSignals": 1424,
+    "londonSignals": 1461,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
     "noPublishDate": 5484
@@ -26454,6 +26454,25 @@
     },
     {
       "showId": "peter-pan-goes-wrong-west-end-2023",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2023-11-30",
+      "url": "https://www.allthatdazzles.co.uk/post/review-peter-pan-goes-wrong-lyric-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-goes-wrong-west-end-2023",
       "file": "west-end-best-friend--jack-francis.json",
       "score": null,
       "publishDate": null,
@@ -35617,6 +35636,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-bernarda-alba-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2023-11-29",
+      "url": "https://www.ft.com/content/c0dcef42-4684-4106-a22d-da34414e5021",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -53591,6 +53628,20 @@
       ]
     },
     {
+      "showId": "infinite-life-west-end-2023",
+      "file": "londontheatre1--ben-ross.json",
+      "score": null,
+      "publishDate": "2023-12-01",
+      "url": "https://www.londontheatre1.com/reviews/infinite-life-a-new-play-by-annie-baker-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "ink-2019",
       "file": "broadwaynews--charles-isherwood.json",
       "score": 77,
@@ -63828,6 +63879,33 @@
       ]
     },
     {
+      "showId": "the-house-of-bernarda-alba-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": null,
+      "publishDate": "2023-11-29",
+      "url": "https://www.timeout.com/london/theatre/the-house-of-bernarda-alba-7-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-bernarda-alba-west-end-2023",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2023-11-29",
+      "url": "https://www.whatsonstage.com/news/the-house-of-bernarda-alba-at-the-national-theatre-review_1553845/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "the-house-of-blue-leaves-2011",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 36,
@@ -64831,6 +64909,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-motive-and-the-cue-west-end-2023",
+      "file": "london-theatre--julia-rank.json",
+      "score": 82,
+      "publishDate": "2023-12-19",
+      "url": "https://www.londontheatre.co.uk/reviews/the-motive-and-the-cue-review-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
