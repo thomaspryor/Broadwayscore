@@ -166,3 +166,24 @@ test('TIER_DISPLAY example outlets sit in that tier for their market', () => {
     }
   }
 });
+
+test('app show-detail tiers resolve per market, like the website', () => {
+  // The app's tier chips read rv[].t from generate-mobile-show-details.js.
+  // It once called getTier(outletId) with no category, so West End reviews
+  // carried NYC tiers (NYT/Variety/THR as T1 instead of London's T2) while
+  // the website showed the regional tier (BRO-4881).
+  assert.notEqual(
+    jsOutletTiers.getTier('nytimes', { showCategory: 'west-end' }),
+    jsOutletTiers.getTier('nytimes'),
+    'fixture: nytimes should differ by market, else this guard proves nothing',
+  );
+  const src: string = require('node:fs').readFileSync(
+    require('node:path').join(__dirname, '../../scripts/generate-mobile-show-details.js'), 'utf8');
+  const tierCalls = src.match(/getAuthoritativeTier\([^)]*\)/g) || [];
+  assert.ok(tierCalls.length > 0, 'expected a getAuthoritativeTier call in the generator');
+  for (const call of tierCalls) assert.match(call, /showCategory/, `${call} must pass showCategory`);
+  const outletCalls = (src.match(/getOutletTier\([^)]*\)/g) || [])
+    .filter(c => c !== 'getOutletTier(outletId, showCategory)');
+  assert.ok(outletCalls.length > 0, 'expected a getOutletTier call site in the generator');
+  for (const call of outletCalls) assert.match(call, /,\s*show\.category\)$/, `${call} must pass show.category`);
+});
