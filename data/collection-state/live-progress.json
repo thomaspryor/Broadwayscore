@@ -1,38 +1,21 @@
 {
-  "updatedAt": "2026-10-08T13:35:18.469Z",
-  "processed": 195,
-  "failed": 139,
-  "successRate": "58.4%",
+  "updatedAt": "2026-10-08T13:44:49.184Z",
+  "processed": 240,
+  "failed": 160,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 117,
-    "amp": 0,
-    "browserbase": 10,
+    "playwright": 143,
+    "amp": 1,
+    "browserbase": 9,
     "directCookies": 0,
-    "scrapingdog": 26,
-    "scrapingbee": 17,
+    "scrapingdog": 38,
+    "scrapingbee": 22,
     "brightdata": 6,
     "archiveToday": 0,
-    "archive": 36
+    "archive": 41
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 19,
   "recentActivity": [
-    {
-      "t": "2026-10-08T12:47:28.996Z",
-      "event": "bb-session",
-      "session": "0e12ab23",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
-    },
-    {
-      "t": "2026-10-08T12:47:29.709Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-08T12:48:38.452Z",
-      "event": "bb-session",
-      "session": "f9207421",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
     {
       "t": "2026-10-08T12:48:47.153Z",
       "event": "bb-session",
@@ -113,21 +96,37 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-08T13:31:19.192Z",
+      "t": "2026-10-08T13:10:14.555Z",
       "event": "bb-session",
-      "session": "15464dd3",
-      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+      "session": "42cffeca",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
     },
     {
-      "t": "2026-10-08T13:33:19.887Z",
-      "event": "bb-session",
-      "session": "d3091e14",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-08T13:33:20.756Z",
+      "t": "2026-10-08T13:10:15.238Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-08T13:10:45.453Z",
+      "event": "bb-session",
+      "session": "9ce18f49",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-08T13:10:49.798Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-08T13:11:16.014Z",
+      "event": "bb-session",
+      "session": "614eb2b7",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-08T13:11:20.371Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
