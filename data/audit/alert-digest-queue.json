@@ -1947,5 +1947,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-08T02:35:40.812Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4851-season-audit",
+    "title": "Landing blocked: race red on land/bro-4851-season-audit",
+    "description": "land.yml did not land land/bro-4851-season-audit: the race gate went red at 6b584a642c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4851-season-audit @ 6b584a642c (origin/land/bro-4851-season-audit) → origin/main @ 21ae780db9 [land] attempt 1/3: rebased onto 21ae780db9, 10 file(s) changed — running checks [land] verified-base: main moved ec5a72db0e → 21ae780db9 across 83 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] checks: Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37716698916",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4851-season-audit"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "6b584a642c1667a3d364b3e2ebf2fdd1a7ef888f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37716698916"
+      }
+    ],
+    "queuedAt": "2026-10-08T02:52:15.907Z"
   }
 ]
