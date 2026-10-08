@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07T23:46:47.441Z",
+  "generatedAt": "2026-10-08T13:01:10.266Z",
   "season": "2024-2025",
   "sources": [
     "wos-listing",
@@ -9,10 +9,10 @@
   ],
   "counts": {
     "listings": 144,
-    "promotable": 39,
+    "promotable": 33,
     "notPromotable": {
       "no review signal": 21,
-      "already in shows.json": 13,
+      "already in shows.json": 19,
       "run of 0 days < 14": 3,
       "non-theatre genre": 63,
       "run of 7 days < 14": 1,
@@ -307,11 +307,11 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oedipus_1438152182/",
         "wosReview": "https://www.whatsonstage.com/news/oedipus-west-end-review-mark-strong-and-lesley-manvilles-greek-tragedy-is-a-political-thriller_1640868/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "oedipus-west-end-2024",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review, olivier-2025"
+        "reason": "already in shows.json: oedipus-west-end-2024"
       }
     },
     {
@@ -396,11 +396,11 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dr-strangelove_234280604/",
         "wosReview": "https://www.whatsonstage.com/news/dr-strangelove-west-end-review-steve-coogan-delighting-in-the-war-room_1646916/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "dr-strangelove-west-end-2024",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review"
+        "reason": "already in shows.json: dr-strangelove-west-end-2024"
       }
     },
     {
@@ -781,11 +781,11 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-legends-of-them_157640998/",
         "wosReview": "https://www.whatsonstage.com/news/the-legends-of-them-at-the-royal-court-review_1657223/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "the-legends-of-them-west-end-2024",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review"
+        "reason": "already in shows.json: the-legends-of-them-west-end-2024"
       }
     },
     {
@@ -1251,11 +1251,11 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oedipus_2135672400/",
         "wosReview": "https://www.whatsonstage.com/news/oedipus-at-the-old-vic-review-rami-malek-and-indira-varma-start-strong-finish-stifled_1663421/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "oedipus-west-end-2025",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review, olivier-2025"
+        "reason": "already in shows.json: oedipus-west-end-2025"
       }
     },
     {
@@ -2297,7 +2297,8 @@
       ],
       "season": "2024-2025",
       "signals": [
-        "wos-review"
+        "wos-review",
+        "olivier-2026"
       ],
       "sourceUrls": {
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-comedy-about-spies_1194623117/",
@@ -2307,7 +2308,7 @@
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: wos-review"
+        "reason": "signals: wos-review, olivier-2026"
       }
     },
     {
@@ -2352,11 +2353,11 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/here-we-are_1052361659/",
         "wosReview": "https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "here-we-are-west-end-2025",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review, olivier-2026"
+        "reason": "already in shows.json: here-we-are-west-end-2025"
       }
     },
     {
@@ -2421,11 +2422,11 @@
         "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/just-for-one-day-the-live-aid-musical_1631133/",
         "wosReview": "https://www.whatsonstage.com/news/just-for-one-day-the-live-aid-musical-west-end-review_1682698/"
       },
-      "inShowsJson": null,
+      "inShowsJson": "just-for-one-day-the-live-aid-musical-west-end-2025",
       "decision": {
-        "promotable": true,
+        "promotable": false,
         "persistent": true,
-        "reason": "signals: wos-review"
+        "reason": "already in shows.json: just-for-one-day-the-live-aid-musical-west-end-2025"
       }
     },
     {
@@ -2684,7 +2685,7 @@
         "wos-review"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/disneys-hercules_1648136/",
+        "wos": "https://www.whatsonstage.com/shows/west-end-theatre-2/disneys-hercules_1648136/",
         "wosReview": "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/"
       },
       "inShowsJson": "Hercules",
