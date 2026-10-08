@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-10-08T00:18:58.778Z",
-  "processed": 239,
-  "failed": 117,
-  "successRate": "67.1%",
+  "updatedAt": "2026-10-08T00:35:56.456Z",
+  "processed": 241,
+  "failed": 129,
+  "successRate": "65.1%",
   "tierBreakdown": {
-    "playwright": 151,
+    "playwright": 153,
     "amp": 1,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 31,
     "scrapingbee": 6,
@@ -14,6 +14,53 @@
     "archiveToday": 0,
     "archive": 43
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 7,
+  "recentActivity": [
+    {
+      "t": "2026-10-08T00:29:26.616Z",
+      "event": "bb-session",
+      "session": "01188864",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-08T00:29:39.409Z",
+      "event": "bb-session",
+      "session": "ba00ab11",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-08T00:31:15.159Z",
+      "event": "bb-session",
+      "session": "bc896fae",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-08T00:33:49.303Z",
+      "event": "bb-session",
+      "session": "2cfce04d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T00:33:49.741Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T00:34:05.083Z",
+      "event": "bb-session",
+      "session": "4de847ff",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T00:34:05.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T00:35:51.432Z",
+      "event": "bb-session",
+      "session": "6235c3bd",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    }
+  ]
 }

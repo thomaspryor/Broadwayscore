@@ -238,7 +238,9 @@
     "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
     "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
     "midnight-at-the-never-get-west-end-2026/everything-theatre--irene-lloyd.json",
-    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+    "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
@@ -357,7 +359,19 @@
     "the-enormous-crocodile-west-end-2026/third-coast-review--unknown.json",
     "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "trainspotting-the-musical-west-end-2026/daily-mail--georgina-brown.json"
+    "trainspotting-the-musical-west-end-2026/daily-mail--georgina-brown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -512,12 +526,16 @@
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
       "midnight-at-the-never-get-west-end-2026/evening-chronicle--alec-forsdike.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
@@ -609,6 +627,53 @@
     ]
   },
   "startTime": "2026-10-07T20:51:07.380Z",
-  "lastProcessed": "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
-  "log": []
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-08T00:29:26.616Z",
+      "event": "bb-session",
+      "session": "01188864",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-08T00:29:39.409Z",
+      "event": "bb-session",
+      "session": "ba00ab11",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-08T00:31:15.159Z",
+      "event": "bb-session",
+      "session": "bc896fae",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-08T00:33:49.303Z",
+      "event": "bb-session",
+      "session": "2cfce04d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T00:33:49.741Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T00:34:05.083Z",
+      "event": "bb-session",
+      "session": "4de847ff",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T00:34:05.537Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T00:35:51.432Z",
+      "event": "bb-session",
+      "session": "6235c3bd",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    }
+  ]
 }
