@@ -19,7 +19,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { imageOnDisk, hasRealImage, PLACEHOLDER_FILE_HASHES } = require('../../scripts/lib/show-images.js');
+const { imageOnDisk, hasRealImage, isPhantomImagePath, PLACEHOLDER_FILE_HASHES } = require('../../scripts/lib/show-images.js');
 const { getMarketSearchKeyword } = require('../../scripts/lib/market-label.js');
 
 // Scratch public/ tree: images/shows/real-show/poster.webp exists, phantom does not.
@@ -116,4 +116,14 @@ test('unknown slug degrades to neutral "theater", never to Broadway', () => {
 test('absent category still means Broadway (the corpus default)', () => {
   assert.equal(getMarketSearchKeyword(undefined), 'Broadway');
   assert.equal(getMarketSearchKeyword(null), 'Broadway');
+});
+
+test('isPhantomImagePath: only a local path with no file (pre-deploy-check clears these)', () => {
+  // high-society-west-end-2026 shipped hero.webp with no file: a live broken image (BRO-2242).
+  assert.equal(isPhantomImagePath('/images/shows/high-society-west-end-2026/hero.webp', opts), true);
+  assert.equal(isPhantomImagePath('/images/shows/real-show/poster.webp', opts), false);
+  assert.equal(isPhantomImagePath('https://cdn.example.com/x.jpg', opts), false);
+  assert.equal(isPhantomImagePath('//cdn.example.com/x.jpg', opts), false);
+  assert.equal(isPhantomImagePath(null, opts), false);
+  assert.equal(isPhantomImagePath('', opts), false);
 });

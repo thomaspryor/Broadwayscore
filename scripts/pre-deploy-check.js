@@ -15,6 +15,7 @@ const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { mayServeDiskImage } = require('./lib/image-source-match');
+const { isPhantomImagePath } = require('./lib/show-images');
 
 const USAGE = `pre-deploy-check.js — Pre-deploy data integrity check that runs before every Vercel build.
 
@@ -126,9 +127,24 @@ try {
   try { imageSources = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'image-sources.json'), 'utf8')); } catch {}
   let orphansFixed = 0;
   let jpgUpgraded = 0;
+  let danglingRefsFixed = 0;
+  // A checkout without the image tree must not read as "every file missing".
+  const imagesPresent = fs.existsSync(IMAGES_DIR);
   for (const show of shows) {
     if (!show || !show.id) continue;
     const dir = path.join(IMAGES_DIR, show.id);
+    // A local path with no file behind it renders a broken image (high-society-
+    // west-end-2026's hero.webp, 2026-10-08). Clear it so the fill below can
+    // use a file that does exist, or the page falls back to the poster.
+    let danglingFixed = false;
+    for (const key of ['hero', 'poster', 'thumbnail']) {
+      const val = show.images && show.images[key];
+      if (imagesPresent && isPhantomImagePath(val)) {
+        show.images[key] = null;
+        danglingFixed = true;
+      }
+    }
+    if (danglingFixed) danglingRefsFixed++;
     // Check for image files in any format (webp preferred, then jpg, png)
     // A file whose recorded source a person rejected stays off the site.
     const findImage = (name) => {
@@ -166,6 +182,7 @@ try {
 
     if (fixed) orphansFixed++;
   }
+  if (danglingRefsFixed > 0) ok(`Cleared image paths with no file behind them on ${danglingRefsFixed} shows`);
   if (orphansFixed > 0 || jpgUpgraded > 0) {
     if (orphansFixed > 0) ok(`Auto-fixed ${orphansFixed} shows with orphan/outdated image refs`);
     if (jpgUpgraded > 0) ok(`Upgraded ${jpgUpgraded} image paths from .jpg → .webp`);

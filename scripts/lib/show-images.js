@@ -77,6 +77,23 @@ function imageOnDisk(imgPath, opts = {}) {
 }
 
 /**
+ * True when a shows.json image path is a local /images/ path with no file
+ * behind it. Narrower than !imageOnDisk: a placeholder file still renders, so
+ * it is not phantom. pre-deploy-check.js clears these before the build; on
+ * 2026-10-08 293 such fields were live as broken images (BRO-2242).
+ *
+ * @param {string|null|undefined} imgPath
+ * @param {{publicDir?: string}} [opts]
+ * @returns {boolean}
+ */
+function isPhantomImagePath(imgPath, opts = {}) {
+  if (typeof imgPath !== 'string') return false;
+  const trimmed = imgPath.trim();
+  if (!trimmed.startsWith('/') || trimmed.startsWith('//')) return false;
+  return !fs.existsSync(path.join(opts.publicDir || PUBLIC_DIR, trimmed));
+}
+
+/**
  * True when the show has at least one usable image in any role.
  *
  * @param {{images?: {poster?: string, thumbnail?: string, hero?: string}}} show
@@ -93,5 +110,6 @@ module.exports = {
   PLACEHOLDER_FILE_HASHES,
   isPlaceholderFile,
   imageOnDisk,
+  isPhantomImagePath,
   hasRealImage,
 };
