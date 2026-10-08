@@ -1853,5 +1853,34 @@
       }
     ],
     "queuedAt": "2026-10-08T00:15:59.584Z"
+  },
+  {
+    "conditionKey": "land:land/stale-excerpt-rescore",
+    "title": "Landing blocked: rebase red on land/stale-excerpt-rescore",
+    "description": "land.yml did not land land/stale-excerpt-rescore: the rebase gate went red at f86f97c66f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36526201518",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/stale-excerpt-rescore"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "f86f97c66fd1df15352c2413c088cbead620312a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36526201518"
+      }
+    ],
+    "queuedAt": "2026-10-08T00:18:37.501Z"
   }
 ]
