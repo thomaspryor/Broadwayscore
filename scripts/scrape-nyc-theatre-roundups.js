@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { matchTitleToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { checkArchiveCategory } = require('./lib/archive-cache-guard');
@@ -494,7 +495,15 @@ async function scrapeNYCTheatreRoundups() {
 
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);
 
-  for (const show of recentShows) {
+  // BRO-4146: a 22-show historical backfill spent 17 min here and pushed the
+  // gather-reviews scrape-aggregators job past its timeout before its pushes
+  // ran. Stop starting new shows once --time-budget-min is used up.
+  const timeBudget = createRunBudget(parseTimeBudgetMin(process.argv.slice(2)));
+  for (const [idx, show] of recentShows.entries()) {
+    if (timeBudget.exceeded()) {
+      console.log(`\n⏱ Time budget (${timeBudget.minutes}min) used after ${timeBudget.elapsedMin()}min — deferring ${recentShows.length - idx} show(s) to the next run`);
+      break;
+    }
     const showId = show.id;
     const archivePath = path.join(archiveDir, `${showId}.html`);
     // Also check slug-based archive from older runs
