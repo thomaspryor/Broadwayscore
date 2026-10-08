@@ -167,7 +167,9 @@ EXISTING pipeline, and lets the audit decide which other fixes are needed.
      `include_closed=true`. The scheduled image run skips closed shows, so
      promoted rows otherwise stay imageless. Broadway's
      `discover-historical-shows.yml` dispatches this per batch; the WE
-     promote step must too.
+     promote step must too. Until BRO-2242 (venue/date check in the image
+     matcher) lands, eyeball every same-title pair: the 2025 Old Vic Oedipus
+     got the 2024 Wyndham's poster in Phase A and had to be cleared.
    - `backfill-historical-metadata.yml` for synopsis and creative team.
      It has no cron.
 6. Run the season audit (below) on the 5. Build TR production-by-date picking,
