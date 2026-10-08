@@ -22,6 +22,7 @@ const https = require('https');
 const { GPT4O_MINI, GEMINI_FLASH } = require('./lib/models');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { buildScoreMap } = require('./lib/related-shows-scores');
+const { isEligibleSource, closedPoolAllows, qualityBonus } = require('./lib/related-shows-eligibility');
 
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
@@ -155,6 +156,7 @@ function algorithmicCandidates(show, limit = 15, statusFilter = null) {
       if (getMarket(s) !== currentMarket) return false; // Same market only (matches data-core.ts)
       if (statusFilter === 'open' && !isOpen(s)) return false;
       if (statusFilter === 'closed' && isOpen(s)) return false;
+      if (statusFilter === 'closed' && !closedPoolAllows(scoreMap.get(s.id) ?? null)) return false;
       return true;
     })
     .map(candidate => {
@@ -180,6 +182,7 @@ function algorithmicCandidates(show, limit = 15, statusFilter = null) {
       if (yearDiff <= 2) score += 3;
       else if (yearDiff <= 5) score += 1;
       if (isOpen(candidate)) score += 3;
+      score += qualityBonus(scoreMap.get(candidate.id) ?? null);
 
       return { show: candidate, score };
     })
@@ -419,9 +422,10 @@ async function main() {
     }
   }
 
-  // Filter to shows with enough data for LLM (>= 5 reviews)
-  const eligibleShows = shows.filter(s => (reviewCountMap.get(s.id) || 0) >= 5);
-  console.log(`Eligible shows (5+ reviews): ${eligibleShows.length}`);
+  // Shows with enough data for the LLM: 5+ reviews, or any open/previews/upcoming show
+  // (people look at those, and previews shows have no reviews yet).
+  const eligibleShows = shows.filter(s => isEligibleSource(s, reviewCountMap.get(s.id) || 0));
+  console.log(`Eligible shows (5+ reviews or active): ${eligibleShows.length}`);
 
   // Skip already-processed unless --force
   const today = new Date().toISOString().split('T')[0];
