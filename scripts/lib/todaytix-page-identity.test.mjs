@@ -65,3 +65,21 @@ test('curly-quote openers, pull quotes and stray leading quotes are removed', ()
   assert.equal(cleanTodaytixAbout(unicorn), 'The play follows a married couple whose life is upended when a younger woman enters it.');
   assert.equal(cleanTodaytixAbout('" Brace Brace is a play that explores how catastrophe impacts survivors.'), 'Brace Brace is a play that explores how catastrophe impacts survivors.');
 });
+
+// WE historical 2023-24 (BRO-4884): producer copy that passed as a synopsis.
+test('cleanTodaytixAbout drops production news, billing and star credits', () => {
+  // The meta-description path (no product record) saved this verbatim.
+  assert.equal(cleanTodaytixAbout('“Mike Birbiglia is a true star” (The Times) and his hit show The Old Man &amp; The Pool, currently playing at Wyndham’s Theatre, has just won rave reviews.'), '');
+  assert.equal(cleanTodaytixAbout("The play is performing at the Royal Court Theatre and is one of nine shows in the theatre's 2024 season under the new leadership of artistic director David Byrne."), '');
+  // Cut mid-sentence by the meta tag: no sentence end, nothing kept.
+  assert.equal(cleanTodaytixAbout('This landmark new production, often regarded as the greatest American play of the 20th Century, will be directed by the award-winning Jeremy Herrin ('), '');
+  assert.equal(cleanTodaytixAbout('Book Why Am I So Single? Two friends who are perpetually single musical theatre writers procrastinate by exploring their dating woes, which follows them through dating apps.'),
+    'Two friends who are perpetually single musical theatre writers procrastinate by exploring their dating woes, which follows them through dating apps.');
+  assert.equal(cleanTodaytixAbout("Denise Gough reprises her mesmerising Olivier Award-winning lead role in Duncan Macmillan's contemporary classic. The original production returns to the West End this May, playing a limited 14-week season at the Trafalgar Theatre. People, Places & Things tells the story of Emma, a struggling actress whose life is spiralling out of control."),
+    'People, Places & Things tells the story of Emma, a struggling actress whose life is spiralling out of control.');
+  assert.equal(cleanTodaytixAbout('Sheridan Smith stars in the new musical Opening Night. Opening Night is based on the 1971 film, following a theatre company gearing up for a Broadway production. Hamnet premiered in April at the Swan Theatre.'),
+    'Opening Night is based on the 1971 film, following a theatre company gearing up for a Broadway production.');
+  // Bacchae (Phase B): "includes" slipped past the cast-list rule.
+  assert.equal(cleanTodaytixAbout('The cast also includes Melanie-Joyce Bermudez, Ebony Clarke and Natasha Gooden. The play follows a god who returns to Thebes when the king denies him.'),
+    'The play follows a god who returns to Thebes when the king denies him.');
+});
