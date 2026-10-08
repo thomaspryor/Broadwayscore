@@ -1933,6 +1933,7 @@ on:
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'
       - 'scripts/backfill-cast-web.js'
+      - 'scripts/backfill-cast-web.test.mjs'
       - 'data/cast/**'
       # Wikipedia synopsis matcher (task #68: was 0/51 due to a silent 429
       # rate-limit failure mode, plus no wrong-show gate). Test registered in

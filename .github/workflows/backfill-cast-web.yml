@@ -13,7 +13,7 @@ on:
           - off-broadway
           - west-end
       show_filter:
-        description: 'Optional: specific show ID to process'
+        description: 'Optional: show ID to process, or several as a comma-separated list with NO spaces'
         required: false
         type: string
       limit:
