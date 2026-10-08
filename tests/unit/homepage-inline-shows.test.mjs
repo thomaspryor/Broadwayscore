@@ -39,7 +39,7 @@ test('HomePageClient fetches the West End archive and searches it', () => {
   const src = read('src/components/HomePageClient.tsx');
   assert.match(src, /\/data\/west-end-archive\.json/);
   const search = src.slice(src.indexOf('const allShowsForSearch'), src.indexOf('const fuseDataRef'));
-  assert.match(search, /westEndArchiveShows/, 'allShowsForSearch must merge the lazy West End archive');
+  assert.match(search, /\.\.\.westEndArchiveShows\b/, 'allShowsForSearch must spread the lazy West End archive into the searched list');
 });
 
 test('prebuild regenerates the West End archive', () => {
