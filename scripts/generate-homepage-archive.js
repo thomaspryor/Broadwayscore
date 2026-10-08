@@ -138,6 +138,8 @@ function getReviewYearNote(show, showReviews) {
 // Filter to closed Broadway shows with 5+ scored reviews
 const archiveShows = shows.filter(show => {
   if (show.status !== 'closed') return false;
+  // Same _devOnly drop as getAllShows() (BRO-4872).
+  if (show._devOnly) return false;
   if (show.category && show.category !== 'broadway') return false;
   const showReviews = reviewsByShow[show.id] || [];
   return showReviews.length >= 5;

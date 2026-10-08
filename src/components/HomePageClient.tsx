@@ -258,20 +258,42 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
 
   // Archive shows — lazy-loaded on demand when user filters to all/closed or searches
   const [archiveShows, setArchiveShows] = useState<HomepageShow[] | null>(null);
+  // Closed West End shows — search-only, never merged into the grid (which is
+  // Broadway + notable OB). Kept off the inline payload because the West End
+  // historical backfill grows it by a season at a time (BRO-4872).
+  const [westEndArchiveShows, setWestEndArchiveShows] = useState<HomepageShow[] | null>(null);
   const archiveFetchedRef = useRef(false);
+  const westEndArchiveFetchedRef = useRef(false);
 
+  // Each archive loads and retries on its own: a failed West End fetch only
+  // drops closed London shows from search and must not hold back the Broadway
+  // archive (closed grid), and vice versa. A failure clears its ref so the
+  // next trigger (keystroke / status change) retries just that file.
   const fetchArchive = useCallback(async () => {
-    if (archiveFetchedRef.current) return;
+    const needBroadway = !archiveFetchedRef.current;
+    const needWestEnd = !westEndArchiveFetchedRef.current;
+    if (!needBroadway && !needWestEnd) return;
     archiveFetchedRef.current = true;
-    try {
-      const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
-      const res = await fetch(`/data/homepage-archive.json${cacheBust}`);
-      const data: HomepageShow[] = await res.json();
-      setArchiveShows(data);
-    } catch (e) {
-      console.error('Failed to load archive shows:', e);
-      archiveFetchedRef.current = false; // allow retry
-    }
+    westEndArchiveFetchedRef.current = true;
+    const cacheBust = archiveHash ? `?v=${archiveHash}` : '';
+    const load = (file: string, ref: { current: boolean }) =>
+      fetch(`/data/${file}${cacheBust}`)
+        .then(r => {
+          if (!r.ok) throw new Error(`${file} HTTP ${r.status}`);
+          return r.json() as Promise<HomepageShow[]>;
+        })
+        .catch((e) => {
+          console.error(`Failed to load ${file}:`, e);
+          ref.current = false; // allow retry
+          return null;
+        });
+    const [data, weData] = await Promise.all([
+      needBroadway ? load('homepage-archive.json', archiveFetchedRef) : null,
+      needWestEnd ? load('west-end-archive.json', westEndArchiveFetchedRef) : null,
+    ]);
+    // Set together (batched) so one Fuse index rebuild sees both.
+    if (weData) setWestEndArchiveShows(weData);
+    if (data) setArchiveShows(data);
   }, [archiveHash]);
 
   const allShows = useMemo(() => {
@@ -359,9 +381,11 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const allShowsForSearch = useMemo(() => {
     const base = archiveShows ? [...shows, ...archiveShows] : shows;
     const ids = new Set(base.map(s => s.id));
-    const extra = [...offBroadwayShows, ...westEndShows].filter(s => !ids.has(s.id));
+    const seen = new Set<string>();
+    const extra = [...offBroadwayShows, ...westEndShows, ...(westEndArchiveShows ?? [])]
+      .filter(s => !ids.has(s.id) && !seen.has(s.id) && seen.add(s.id));
     return extra.length > 0 ? [...base, ...extra] : base;
-  }, [shows, offBroadwayShows, westEndShows, archiveShows]);
+  }, [shows, offBroadwayShows, westEndShows, westEndArchiveShows, archiveShows]);
 
   // Trigger archive fetch when user needs closed shows or searches
   useEffect(() => {
@@ -375,12 +399,12 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
   const fuseDataRef = useRef(allShowsForSearch);
   fuseDataRef.current = allShowsForSearch;
 
-  // Invalidate Fuse index when archive loads so search includes all shows
+  // Invalidate Fuse index when either archive loads so search includes all shows
   useEffect(() => {
-    if (archiveShows) {
+    if (archiveShows || westEndArchiveShows) {
       fuseRef.current = null;
     }
-  }, [archiveShows]);
+  }, [archiveShows, westEndArchiveShows]);
 
   const getFuse = useCallback(async () => {
     if (fuseRef.current) return fuseRef.current;
@@ -424,7 +448,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     // it, this effect's single initial run can search a Fuse index built
     // before the archive merged in, and nothing re-triggers it since fuseRef
     // invalidation alone doesn't change this effect's inputs.
-  }, [searchQuery, getFuse, archiveShows]);
+  }, [searchQuery, getFuse, archiveShows, westEndArchiveShows]);
 
   // Featured rows are pre-computed server-side — no client-side filtering/sorting needed
   // bestRecentShows is still needed for the inline shelf when skipFirstMusicals is false

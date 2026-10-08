@@ -31,11 +31,10 @@ function isLondonCategory(category) {
   return category === 'west-end' || category === 'off-west-end';
 }
 
-// Mirrors HIDDEN_LONDON_IDS in src/lib/data-core.ts — shows deliberately
-// excluded from the West End / Off-West End hubs. Kept in sync manually;
-// there is currently no cross-file parity test for this (unlike
-// NON_THEATRICAL_GENRES, which genre-policy-parity.test.mjs enforces).
-const HIDDEN_LONDON_IDS = new Set(['abba-voyage-off-west-end-2026']);
+// Shows deliberately excluded from the West End / Off-West End hubs. Same Set
+// src/lib/data-core.ts imports, so the archive cannot drift from the hub
+// (BRO-4872; this was a hand-kept copy before).
+const { HIDDEN_LONDON_IDS } = require('./lib/page-name-sources');
 
 generateMarketArchive({
   outputFilename: 'off-west-end-archive.json',
