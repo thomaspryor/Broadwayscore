@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T07:44:48.915Z",
+  "timestamp": "2026-10-08T09:58:37.922Z",
   "stats": {
-    "totalReviews": 47143,
-    "alreadyFlagged": 18843,
+    "totalReviews": 47316,
+    "alreadyFlagged": 18845,
     "dateGuardCatches": 279,
-    "directorMismatch": 1403,
+    "directorMismatch": 1402,
     "tvFilmSignals": 1373,
-    "londonSignals": 1330,
+    "londonSignals": 1329,
     "offBroadwaySignals": 506,
     "yearMismatch": 121,
-    "noPublishDate": 4374
+    "noPublishDate": 4533
   },
   "findings": [
     {
@@ -472,20 +472,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1813d before show (2021-11-25 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
-      "showId": "a-delicate-balance-2014",
-      "file": "nytimes--ben-brantley.json",
-      "score": 66,
-      "publishDate": "November 20, 2014",
-      "url": "http://www.nytimes.com/2014/11/21/theater/a-delicate-balance-revival-stars-john-lithgow-and-glenn-close.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"gerald gutierrez\" from a-delicate-balance-1996"
         }
       ]
     },
@@ -34448,7 +34434,7 @@
       "showId": "the-mystery-of-edwin-drood-2012",
       "file": "backstage--erik-haagensen.json",
       "score": 45,
-      "publishDate": null,
+      "publishDate": "2012-11-13T20:06:16-05:00",
       "url": "https://www.backstage.com/review/ny-theater/broadway/the-mystery-of-edwin-drood-roundabout-theatre-company-rupert-holmes-charles-dickens/",
       "findings": [
         {
@@ -61191,20 +61177,6 @@
       ]
     },
     {
-      "showId": "the-little-foxes-2017",
-      "file": "thestage--mark-shenton.json",
-      "score": 96,
-      "publishDate": "2017-04-20",
-      "url": "https://www.thestage.co.uk/reviews/the-little-foxes-starring-cynthia-nixon-and-laura-linney--review-at-samuel-j-friedman-theatre-new-york",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "the-little-mermaid-the-musical-off-broadway-2026",
       "file": "thestage--unknown.json",
       "publishDate": null,
@@ -62080,7 +62052,7 @@
       "showId": "the-present-2017",
       "file": "newsday--linda-winer.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "January 8, 2017",
       "url": "http://www.newsday.com/entertainment/theater/the-present-review-a-chekhovian-gift-from-cate-blanchett-1.12878376",
       "findings": [
         {
@@ -64083,7 +64055,7 @@
       "showId": "venus-in-fur-2011",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "2011-11-09T08:16:10-05:00",
       "url": "http://www.newjerseynewsroom.com/new-york-theater/review-venus-in-fur-gets-sexy-with-nina-arianda-and-hugh-dancy",
       "findings": [
         {
@@ -64097,7 +64069,7 @@
       "showId": "venus-in-fur-2011",
       "file": "timeout--david-cote.json",
       "score": 21,
-      "publishDate": null,
+      "publishDate": "2011-11-09T08:16:10-05:00",
       "url": "https://newyork.timeout.com/arts-culture/theater/2194233/review-venus-in-fur",
       "findings": [
         {
