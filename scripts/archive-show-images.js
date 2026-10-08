@@ -233,13 +233,11 @@ async function main() {
         }
       }
 
-      // Local path: keep the file unless forcing. --force re-downloads it from
-      // its recorded source below (fetching the /images/ path itself always
-      // failed, so --force was a silent no-op for archived rows).
-      if (url.startsWith('/images/')) {
+      // If URL is already local and we're not forcing, skip
+      if (url.startsWith('/images/') && !force) {
         // Check that the local file actually exists
         const localPath = path.join(__dirname, '..', 'public', url);
-        if (fs.existsSync(localPath) && !force) {
+        if (fs.existsSync(localPath)) {
           // --check-aspect: verify shape; if wrong, null + delete + re-source from imageSources
           if (checkAspectFlag) {
             const aspect = await checkAspect(localPath, format);
@@ -258,10 +256,10 @@ async function main() {
             continue;
           }
         }
-        // Local path in shows.json but file is missing (or --force) - re-download from source
+        // Local path in shows.json but file is missing - try to re-download from source
         const sourceUrl = imageSources[show.id]?.[format];
         if (!sourceUrl) {
-          console.warn(`  ⚠ ${show.title} ${format}: ${force ? 'No source URL to re-download from' : 'Local file missing and no source URL'}`);
+          console.warn(`  ⚠ ${show.title} ${format}: Local file missing and no source URL`);
           totalFailed++;
           continue;
         }
@@ -318,26 +316,31 @@ async function main() {
       const dlUrl = getDownloadUrl(url, format);
       if (!dlUrl) continue;
 
+      // Download beside the current file and replace it only once the checks
+      // pass: now that new art for an existing file name is downloaded, a
+      // rejected download must not delete the art already on disk.
+      const tmpPath = `${filepath}.incoming`;
       try {
-        const size = await downloadImage(dlUrl, filepath);
+        const size = await downloadImage(dlUrl, tmpPath);
 
         // Reject known placeholder images — don't let them overwrite real art
-        if (isPlaceholderFile(filepath)) {
+        if (isPlaceholderFile(tmpPath)) {
           console.warn(`  ⚠ ${show.title} ${format}: Downloaded image is a "Coming Soon" placeholder — rejecting`);
-          fs.unlinkSync(filepath);
+          fs.unlinkSync(tmpPath);
           totalFailed++;
           continue;
         }
 
         // Reject wrong-aspect downloads — wide poster, portrait hero, etc.
         // (evita-west-end-2025 commit a71c3defe4 class).
-        const aspect = await checkAspect(filepath, format);
+        const aspect = await checkAspect(tmpPath, format);
         if (!aspect.ok) {
           console.warn(`  ⚠ ${show.title} ${format}: Downloaded image has wrong aspect (${aspect.reason}) — rejecting`);
-          fs.unlinkSync(filepath);
+          fs.unlinkSync(tmpPath);
           totalFailed++;
           continue;
         }
+        fs.renameSync(tmpPath, filepath);
 
         show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
         imageSources[show.id][format] = url;
@@ -356,6 +359,7 @@ async function main() {
           }
         }
       } catch (e) {
+        try { fs.unlinkSync(tmpPath); } catch {}
         console.error(`  ✗ ${show.title} ${format}: ${e.message}`);
         totalFailed++;
       }
