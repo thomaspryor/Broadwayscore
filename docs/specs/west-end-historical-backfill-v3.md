@@ -244,6 +244,37 @@ which removes rows listed in the promotion log that have no review texts yet.
   later; the date guards key off the earliest date, so inclusion is
   unaffected.
 
+## Pilot results (6 shows, 2026-10-08)
+
+**What happened:**
+- **Gather.** gather-reviews run 37706111772 (re-queued once; BRO-4859)
+  collected 14-45 review files per show.
+- **Theatre Record.** TR via review-refresh run 37713373821 returned texts
+  for 5 of 6 shows. It found nothing for "Just For One Day – The Live Aid
+  Musical": TR search misses the en-dash subtitle.
+- **Star and link merge.** Full stars and URLs for Dr Strangelove (16 files).
+  No WET roundup was found for the two Oedipus productions, Here We Are or
+  The Legends of Them. That is expected for one-word titles, since
+  wetPostTitleMatchesShow needs "Oedipus reviews…" to lead the post title,
+  and WET's coverage of NT and Royal Court runs is thin.
+
+**Built because the pilot showed real harm** (the plan said to build these
+only if needed):
+- **TR production pick** (lib/tr-production-pick.js). The 2025 Old Vic
+  Oedipus' 14 reviews were filed under the 2024 Wyndham's row.
+- **UK auto-clear rule.** It left alone the "after close" date flags it had
+  been clearing, which 5 of those 14 had relied on.
+- **WET roundup date window.** "Just For One Day" (2025) matched the 2023
+  Old Vic roundup.
+
+**Fixed in the data:**
+- The 14 misfiled reviews were removed (review-texts db8e50881).
+- The 2024 poster wrongly given to the 2025 Old Vic Oedipus was cleared.
+
+**Before Phase B:** re-run TR for oedipus-west-end-2024 with the fixed pick.
+Then run `audit-we-historical-season.js --season=2024-2025` once scoring
+drains.
+
 ## Side benefit (separate card)
 
 321 London-market rows have no `openingDate`, but 275 of them are
