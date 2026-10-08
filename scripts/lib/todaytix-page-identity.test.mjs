@@ -57,3 +57,11 @@ test('markdown links, headings and HTML are stripped; output ends at a sentence'
   assert.match(out, /[.!?]$/);
   assert.ok(out.length <= 700);
 });
+
+// Run 37828755764: curly apostrophes let "Don’t miss" openers through, a
+// pull quote rode along (Unicorn) and a stray opening quote led (Brace Brace).
+test('curly-quote openers, pull quotes and stray leading quotes are removed', () => {
+  const unicorn = 'Don\u2019t miss the world premiere of Unicorn, the funny and provocative new play by Mike Bartlett. \u201CMike Bartlett\u2019s Unicorn is that rare beast, very, very funny,\u201D Nicola Walker said. The play follows a married couple whose life is upended when a younger woman enters it.';
+  assert.equal(cleanTodaytixAbout(unicorn), 'The play follows a married couple whose life is upended when a younger woman enters it.');
+  assert.equal(cleanTodaytixAbout('" Brace Brace is a play that explores how catastrophe impacts survivors.'), 'Brace Brace is a play that explores how catastrophe impacts survivors.');
+});
