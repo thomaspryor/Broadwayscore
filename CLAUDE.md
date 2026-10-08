@@ -90,7 +90,7 @@ Run `/verify-opening-night <show-id>` for the full 9-point checklist (covers orc
 **Scale:** 2,800+ shows, 19,000+ scored reviews, 490+ outlets, 1,350+ critics.
 
 ### Scoring
-Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (TheaterMania, NY Post): 0.75 | T3 (general coverage): 0.40 | T4 (unverified blogs): 0.20
+Composite = tier-weighted average. T1 (NYT, Vulture, Variety): 1.0 | T2 (TheaterMania, NY Post): 0.75 | T3 (general): 0.40 | T4 (blogs): 0.20
 **Score display:** `compositeScore` = critic-only (browse, homepage). `blendedScore` = 50/50 critic+audience (Tony predictions).
 
 ### Data Structure
