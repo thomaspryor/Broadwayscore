@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T15:16:21.322Z",
+  "timestamp": "2026-10-08T15:50:02.838Z",
   "stats": {
-    "totalReviews": 47695,
-    "alreadyFlagged": 18881,
+    "totalReviews": 47812,
+    "alreadyFlagged": 18897,
     "dateGuardCatches": 275,
-    "directorMismatch": 1382,
-    "tvFilmSignals": 1376,
-    "londonSignals": 1337,
+    "directorMismatch": 1383,
+    "tvFilmSignals": 1379,
+    "londonSignals": 1336,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4769
+    "noPublishDate": 4869
   },
   "findings": [
     {
@@ -1274,6 +1274,20 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
+      "file": "thestage--unknown.json",
+      "score": 44,
+      "publishDate": "2026-10-07",
+      "url": "https://www.thestage.co.uk/reviews/affluenza-review-riverside-studios-london-noah-schnapp",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
       "file": "theupcoming--sunny-morgan.json",
       "score": 66,
       "publishDate": "2026-10-06",
@@ -1305,6 +1319,20 @@
       "file": "whatsonstage--theo-bosanquet.json",
       "score": 15,
       "publishDate": "2026-10-06",
+      "url": "https://www.whatsonstage.com/news/affluenza-with-noah-schnapp-at-riverside-studios-review_1734391/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "whatsonstage--unknown.json",
+      "score": 56,
+      "publishDate": "2026-10-07",
       "url": "https://www.whatsonstage.com/news/affluenza-with-noah-schnapp-at-riverside-studios-review_1734391/",
       "findings": [
         {
@@ -20574,6 +20602,20 @@
       ]
     },
     {
+      "showId": "manhunt-west-end-2025",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/manhunt-review-robert-icke-royal-court-raoul-moat",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "marjorie-prime-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 56,
@@ -26099,6 +26141,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": null,
+      "url": "/people/Richard-A-Hodge/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
         }
       ]
     },
@@ -58773,20 +58828,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "the-authenticator-west-end-2026",
-      "file": "times-uk--clive-davis.json",
-      "score": 36,
-      "publishDate": "2026-04-03",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-authenticator-review-an-over-the-top-state-of-the-nation-farce-hchpx7736",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
