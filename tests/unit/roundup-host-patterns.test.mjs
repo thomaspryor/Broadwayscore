@@ -112,6 +112,7 @@ describe('BRO-4875 London Theatre Direct / Independent / LA Times roundups', () 
   for (const [name, url, outletId] of [
     ['LTD -review-roundup', LTD, 'londontheatredirect'],
     ['LTD review-roundup-what-are-the-critics-saying', LTD_HF, 'londontheatredirect'],
+    ['LTD locale /fr/ amp copy', 'https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-saying-about-hay-fever/amp?srsltid=AU7gw4WMDg1c', 'londontheatredirect'],
     ['Independent reviews-roundup', IND, 'independent'],
     ['LA Times what-did-the-critics-think', LAT, 'latimes'],
   ]) {

@@ -1599,7 +1599,8 @@ function isRoundupUrl(url) {
   //   latimes.com Culture Monster ...-what-did-the-critics-think: A Little Night
   //     Music 2009 at 60. A staff byline summarising other critics is still an
   //     aggregate (2026-07-11 policy, see ROUNDUP_HOST_OUTLETS).
-  if (/londontheatredirect\.com\/news\/[^?#]*(?:review-round-?up|what-are-the-critics-saying)/i.test(url)) {
+  // Optional locale segment: Hay Fever's roundup is also in the corpus at /fr/news/.../amp.
+  if (/londontheatredirect\.com\/(?:[a-z]{2}\/)?news\/[^?#]*(?:review-round-?up|what-are-the-critics-saying)/i.test(url)) {
     return { isRoundup: true, reason: 'London Theatre Direct review roundup article' };
   }
   if (/independent\.co\.uk\/[^?#]*-reviews?-round-?up-/i.test(url)) {
