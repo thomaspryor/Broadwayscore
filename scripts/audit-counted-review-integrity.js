@@ -62,7 +62,22 @@ function runFlagged(shows) {
     console.error(`audit-counted-review-integrity --flagged: ${root} is missing`);
     return 2;
   }
-  const hits = findFlaggedGenuineCandidates({ shows, files: iterateReviewFiles() });
+  let scanned = 0;
+  function* counted() {
+    for (const f of iterateReviewFiles()) { scanned += 1; yield f; }
+  }
+  let hits;
+  try {
+    hits = findFlaggedGenuineCandidates({ shows, files: counted() });
+  } catch (e) {
+    console.error(`audit-counted-review-integrity --flagged: detector failed (${e.stack || e.message})`);
+    return 2;
+  }
+  if (scanned === 0) {
+    // An empty folder is a failed checkout. 0 findings from 0 files must not read as a clean pass.
+    console.error(`audit-counted-review-integrity --flagged: no review files found under ${root}`);
+    return 2;
+  }
   console.log(`Excluded but dated and URL-dated inside the run: ${hits.length} file(s) across ${new Set(hits.map((h) => h.showId)).size} show(s)`);
   if (unreadableFiles > 0) {
     // A half-written file during a concurrent rebuild would otherwise just shrink the count.
@@ -96,10 +111,27 @@ function main() {
     console.error(`audit-counted-review-integrity: cannot read data/shows.json or data/reviews.json (${e.message})`);
     return 2;
   }
-  try { outletRegistry = readJson(path.join(DATA, 'outlet-registry.json')); } catch { /* junk-outlet check degrades to topic URLs */ }
+  if (!Array.isArray(shows) || !Array.isArray(reviews)) {
+    console.error('audit-counted-review-integrity: shows.json or reviews.json has an unexpected shape (no .shows / .reviews array)');
+    return 2;
+  }
+  try {
+    outletRegistry = readJson(path.join(DATA, 'outlet-registry.json'));
+  } catch (e) {
+    // A missing registry is a broken checkout, not 23,000 junk outlets: report a crash (exit 2), never drift.
+    console.error(`audit-counted-review-integrity: cannot read data/outlet-registry.json (${e.message})`);
+    return 2;
+  }
 
   if (process.argv.includes('--flagged')) return runFlagged(shows);
-  const result = detectCountedReviewIssues({ shows, reviews, outletRegistry });
+  let result;
+  try {
+    result = detectCountedReviewIssues({ shows, reviews, outletRegistry });
+  } catch (e) {
+    // A detector exception would exit 1 and read as drift in check-corpus-drift. It is a crash.
+    console.error(`audit-counted-review-integrity: detector failed (${e.stack || e.message})`);
+    return 2;
+  }
   const onlyCheck = argValue('check');
   const onlyShow = argValue('show');
   const shown = result.issues.filter((i) => (!onlyCheck || i.check === onlyCheck) && (!onlyShow || i.showId === onlyShow));

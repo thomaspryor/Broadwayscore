@@ -129,13 +129,33 @@ test('junk outlet: a topic index page, a domainless defunct outlet and an unregi
   assert.deepEqual(checkJunkOutlets([s], reviews, registry).map((i) => i.outlet), ['Ricky Martin', 'Vulture']);
 });
 
+test('junk outlet: a registry alias resolves, and a missing registry does not flag every review', () => {
+  const s = show('gatsby-tour-2026', { title: 'Gatsby' });
+  const registry = { outlets: { 'houston-chronicle': { displayName: 'Houston Chronicle', domain: 'houstonchronicle.com' } },
+    _aliasIndex: { houstonchronicle: 'houston-chronicle' } };
+  const reviews = [review('gatsby-tour-2026', { outletId: 'houstonchronicle', outlet: 'Houston Chronicle' })];
+  assert.deepEqual(checkJunkOutlets([s], reviews, registry), [], 'alias index resolves houstonchronicle');
+  const noIndex = { outlets: registry.outlets };
+  assert.deepEqual(checkJunkOutlets([s], reviews, noIndex), [], 'an id that differs only by punctuation is the same outlet');
+  assert.deepEqual(checkJunkOutlets([s], reviews, null), [], 'no registry: only the URL test can run');
+  const topic = [review('gatsby-tour-2026', { outletId: 'x', url: 'https://topics.nytimes.com/top/reference/timestopics/people/m/x/index.html' })];
+  assert.equal(checkJunkOutlets([s], topic, null).length, 1);
+});
+
+test('a hand-edited priorRuns that is not an array does not crash any check', () => {
+  const odd = show('odd', { priorRuns: { id: 'other' } });
+  const reviews = [review('odd', { url: 'https://x.com/2016/05/a' })];
+  assert.doesNotThrow(() => detectCountedReviewIssues({ shows: [odd, show('other')], reviews, outletRegistry: null }));
+});
+
 test('opening date cluster: opening-night reviews four weeks before openingDate flag the date', () => {
   const s = show('itw-2022', { title: 'Into the Woods', openingDate: '2022-08-06', closingDate: '2023-01-08' });
   const days = ['2022-07-10', '2022-07-10', '2022-07-10', '2022-07-11', '2022-07-11', '2022-07-12'];
   const reviews = days.map((d, i) => review('itw-2022', { criticName: `c${i}`, publishDate: d }));
   const issues = checkOpeningDateCluster([s], reviews);
   assert.equal(issues.length, 1);
-  assert.equal(issues[0].suggestedOpeningDate, '2022-07-10');
+  assert.equal(issues[0].clusterDate, '2022-07-10');
+  assert.equal(issues[0].suggestedOpeningDate, undefined, 'a late date and another run\'s reviews look the same, so no date is proposed');
 });
 
 test('opening date cluster: correct dates, thin data and declared prior runs are not flagged', () => {

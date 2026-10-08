@@ -378,13 +378,13 @@ const AUDITS = [
     name: 'counted-review-integrity',
     label: 'counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, priorRuns pointing at a missing show)',
     script: 'audit-counted-review-integrity.js',
-    // BRO-4886: monitor, not a gate (CLAUDE.md 19). Baseline 85 = the 83 found
+    // BRO-4886: monitor, not a gate (CLAUDE.md 19). Baseline 82 = the 80 found
     // on 2026-10-08, most of them untriaged cross-show quote repeats (some are a
     // multi-show column legitimately quoted on both shows). Drift fires when a
     // new bad row pushes the total above it; lower --max after a cleanup pass.
     // Per-check ceilings too, so growth in a quiet check is not hidden by a noisy one.
-    args: ['--max=85', '--max-cross-show-duplicate=70', '--max-same-show-multi-byline=6', '--max-url-year-outside-run=2',
-      '--max-unopened-show-counted=1', '--max-junk-outlet=4', '--max-opening-date-cluster=4', '--max-prior-run-link=0'],
+    args: ['--max=82', '--max-cross-show-duplicate=68', '--max-same-show-multi-byline=6', '--max-url-year-outside-run=2',
+      '--max-unopened-show-counted=1', '--max-junk-outlet=2', '--max-opening-date-cluster=4', '--max-prior-run-link=0'],
     crashCodes: [2],           // 0 at/under baseline / 1 grew above it / 2 = corpus missing
   },
   {

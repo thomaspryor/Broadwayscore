@@ -52,6 +52,11 @@ const CHECKS = [
   'prior-run-link',
 ];
 
+/** priorRuns is an array by contract; a hand-edited object must not crash the monitor. */
+function asArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
 function parseDay(value) {
   if (!value) return null;
   const s = String(value).trim();
@@ -105,7 +110,7 @@ function linkedId(run) {
 /** Are two shows the same production (declared prior run, or one live run listed twice)? */
 function isRelatedProduction(a, b) {
   for (const [x, y] of [[a, b], [b, a]]) {
-    for (const run of x.priorRuns || []) {
+    for (const run of asArray(x.priorRuns)) {
       if (linkedId(run) === y.id) return true;
     }
   }
@@ -217,7 +222,7 @@ function checkUrlYearOutsideRun(shows, reviews) {
     if (!openYear || !closeYear) continue; // open-ended or undated: nothing to compare against
     if (closeYear - openYear >= LONG_RUN_YEARS) continue;
     if (y >= openYear - 1 && y <= closeYear + 1) continue;
-    const covered = (show.priorRuns || []).some((run) => {
+    const covered = asArray(show.priorRuns).some((run) => {
       if (!run || typeof run !== 'object') return false;
       const a = yearOf(run.openingDate);
       const b = yearOf(run.closingDate) ?? a;
@@ -243,13 +248,23 @@ const TOPIC_URL = /(?:^|\.)topics\.[a-z.]+\/|\/timestopics\/|\/people\/[a-z]\/[a
 
 function checkJunkOutlets(shows, reviews, outletRegistry) {
   const byId = new Map(shows.map((s) => [s.id, s]));
-  const outlets = (outletRegistry && outletRegistry.outlets) || outletRegistry || {};
+  // Without a registry the registry-based tests have nothing to compare against, so only the
+  // URL test runs. (The CLI treats a missing registry as a crash, not as 23,000 findings.)
+  const outlets = outletRegistry ? (outletRegistry.outlets || outletRegistry) : null;
+  const aliasIndex = (outletRegistry && outletRegistry._aliasIndex) || {};
+  // An id that differs from a registered one only by punctuation ("houstonchronicle" for
+  // "houston-chronicle") is the same outlet, not an unregistered one.
+  const squash = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const bySquashed = new Map();
+  if (outlets) for (const id of Object.keys(outlets)) bySquashed.set(squash(id), id);
   const out = [];
   for (const r of reviews) {
-    const entry = outlets[r.outletId];
+    const entry = outlets
+      ? (outlets[r.outletId] || outlets[aliasIndex[r.outletId]] || outlets[bySquashed.get(squash(r.outletId))])
+      : null;
     const topicUrl = typeof r.url === 'string' && TOPIC_URL.test(r.url);
     const domainlessDefunct = entry && !entry.domain && entry.accessModel === 'defunct';
-    const unregistered = !entry;
+    const unregistered = !!outlets && !entry;
     if (!topicUrl && !domainlessDefunct && !unregistered) continue;
     const why = topicUrl ? 'URL is a topic/people index page, not a review'
       : domainlessDefunct ? 'outlet has no domain and is marked defunct in the registry'
@@ -274,7 +289,7 @@ function checkOpeningDateCluster(shows, reviews) {
     const days = byShow.get(show.id);
     if (open === null || !days || days.length < CLUSTER_MIN_REVIEWS) continue;
     // A declared prior run legitimately puts reviews before the new opening.
-    if ((show.priorRuns || []).length) continue;
+    if (asArray(show.priorRuns).length) continue;
     days.sort((a, b) => a - b);
     for (let i = 0; i + CLUSTER_MIN_REVIEWS <= days.length; i += 1) {
       const end = days[i + CLUSTER_MIN_REVIEWS - 1];
@@ -283,10 +298,13 @@ function checkOpeningDateCluster(shows, reviews) {
       const inWindow = days.filter((d) => d >= days[i] && d <= days[i] + CLUSTER_WINDOW_DAYS * DAY_MS);
       const modal = inWindow.slice().sort((a, b) =>
         inWindow.filter((d) => d === b).length - inWindow.filter((d) => d === a).length)[0];
-      const suggested = new Date(modal).toISOString().slice(0, 10);
+      const clusterDate = new Date(modal).toISOString().slice(0, 10);
+      // Two causes look the same from here: openingDate is late (Into the Woods 2022), or the cluster is
+      // another run's reviews filed on this show (An Enemy of the People 2024 holds London reviews).
+      // So this reports the date and never proposes one.
       out.push(row('opening-date-cluster', show, null,
-        `${inWindow.length} counted reviews cluster on ${suggested}, ${Math.round((open - modal) / DAY_MS)} days before openingDate ${show.openingDate}`,
-        { openingDate: show.openingDate, suggestedOpeningDate: suggested, reviewsInCluster: inWindow.length }));
+        `${inWindow.length} counted reviews cluster on ${clusterDate}, ${Math.round((open - modal) / DAY_MS)} days before openingDate ${show.openingDate}: either the date is late or these are another run's reviews`,
+        { openingDate: show.openingDate, clusterDate, reviewsInCluster: inWindow.length }));
       break;
     }
   }
@@ -302,7 +320,7 @@ function checkPriorRunLinks(shows) {
   const ids = new Set(shows.map((s) => s.id));
   const out = [];
   for (const show of shows) {
-    for (const run of show.priorRuns || []) {
+    for (const run of asArray(show.priorRuns)) {
       const id = linkedId(run);
       if (id && !ids.has(id)) {
         out.push(row('prior-run-link', show, null, `priorRuns points at ${id}, which is not a show`, { missingId: id }));
