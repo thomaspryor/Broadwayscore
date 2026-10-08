@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T17:08:39.505Z",
+  "timestamp": "2026-10-08T17:17:17.550Z",
   "stats": {
-    "totalReviews": 47916,
-    "alreadyFlagged": 18925,
-    "dateGuardCatches": 275,
-    "directorMismatch": 1393,
-    "tvFilmSignals": 1381,
-    "londonSignals": 1350,
+    "totalReviews": 47933,
+    "alreadyFlagged": 18936,
+    "dateGuardCatches": 276,
+    "directorMismatch": 1395,
+    "tvFilmSignals": 1382,
+    "londonSignals": 1357,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4689
+    "noPublishDate": 4676
   },
   "findings": [
     {
@@ -16818,6 +16818,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "all-that-dazzles-uk--seth-wilby.json",
+      "score": 96,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-into-the-woods-noel-coward-theatre",
       "findings": [
@@ -16831,7 +16832,8 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "publishDate": null,
+      "score": 90,
+      "publishDate": "2026-10-08",
       "url": "https://theartsdesk.com/theatre/woods-noel-coward-theatre-review-honouring-masterpiece",
       "findings": [
         {
@@ -16862,6 +16864,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "broadwayworld--cheryl-markosky.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Nol-Coward-Theatre-20261008",
       "findings": [
@@ -16908,7 +16911,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -16941,6 +16944,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -16987,6 +16991,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "south-london--michael-holland.json",
+      "score": 79,
       "publishDate": null,
       "url": "https://www.southlondon.co.uk/uncategorised/review-into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -17019,6 +17024,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 94,
       "publishDate": null,
       "url": "https://www.theatreweekly.com/review-into-the-woods-at-noel-coward-theatre/",
       "findings": [
@@ -17032,7 +17038,8 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
-      "publishDate": null,
+      "score": 97,
+      "publishDate": "2026-10-08",
       "url": "https://theatreandtonic.co.uk/blog/into-the-woods-at-noel-coward-theatre-review",
       "findings": [
         {
@@ -17050,6 +17057,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "thereviewshub--maryam-philpott.json",
+      "score": 95,
       "publishDate": null,
       "url": "https://www.thereviewshub.com/into-the-woods-noel-coward-theatre-london/",
       "findings": [
@@ -17063,7 +17071,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "thestage--the-stage.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2026-10-08",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-noel-coward-theatre-london-stephen-sondheim-jordan-fein",
       "findings": [
@@ -17077,9 +17085,15 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "west-end-best-friend--chris-abbott.json",
-      "publishDate": null,
+      "score": 93,
+      "publishDate": "2025-10-08",
       "url": "https://www.westendbestfriend.co.uk/news/review-into-the-woods-noel-coward-theatre",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 349d before show (2025-10-08 vs 2026-09-22)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -17090,7 +17104,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2026-10-07",
       "url": "https://www.whatsonstage.com/news/into-the-woods-moves-to-the-west-end-review_1734570/",
       "findings": [
@@ -20739,6 +20753,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -32054,6 +32073,34 @@
       ]
     },
     {
+      "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://partially-obstructed-view.blogspot.com/2025/06/theatre-review-comedy-about-spies.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-comedy-about-spies-west-end-2025",
+      "file": "stagetopage--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.stagetopage.co.uk/2025/05/the-comedy-about-spies-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"henry lewis\" from the-comedy-about-spies-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "the-comedy-about-spies-west-end-2026",
       "file": "1883magazine--nick-barr.json",
       "score": 90,
@@ -33018,6 +33065,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-fifth-step-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": null,
+      "publishDate": "2025-05-20",
+      "url": "https://www.dailymail.com/tvshowbiz/article-14730277/PATRICK-MARMION-reviews-Fifth-Step-Soho-Place-Jack-Lowden-Martin-Freeman.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -41940,6 +42006,20 @@
       "score": 66,
       "publishDate": "May 24th, 2025",
       "url": "https://everything-theatre.co.uk/2025/05/review-after-the-act-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "after-the-act-west-end-2025",
+      "file": "times-uk--clive-davis.json",
+      "score": 11,
+      "publishDate": "May 25th, 2025",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/after-the-act-review-the-worst-show-of-the-year-so-far-vf965zrxb",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -53416,6 +53496,34 @@
       ]
     },
     {
+      "showId": "manhunt-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 58,
+      "publishDate": "April 9th, 2025",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/manhunt-raoul-moat-robert-icke-b2730071.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "manhunt-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 65,
+      "publishDate": "April 9th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/manhunt-royal-court-review-raoul-moat-b1221446.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "whatsonstage--maygan-forbes.json",
       "score": 61,
@@ -60465,6 +60573,20 @@
       ]
     },
     {
+      "showId": "the-fifth-step-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 57,
+      "publishDate": "May 20th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-fifth-step-sohoplace-review-jack-lowden-martin-freeman/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-ford-hill-project-off-broadway-2026",
       "file": "nytimes--helen-shaw.json",
       "score": 75,
@@ -61913,6 +62035,19 @@
       "score": 78,
       "publishDate": "2021-08-11",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/phantom-opera-review-lloyd-webbers-epic-tearjerker-back-kitsch/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "file": "telegraph--serena-davies.json",
+      "publishDate": "2021-08-11",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
