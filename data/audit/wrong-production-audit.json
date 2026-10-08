@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T21:12:07.055Z",
+  "timestamp": "2026-10-08T21:47:58.261Z",
   "stats": {
-    "totalReviews": 48622,
-    "alreadyFlagged": 19012,
+    "totalReviews": 48642,
+    "alreadyFlagged": 19041,
     "dateGuardCatches": 278,
-    "directorMismatch": 1473,
+    "directorMismatch": 1475,
     "tvFilmSignals": 1422,
-    "londonSignals": 1436,
+    "londonSignals": 1448,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4804
+    "noPublishDate": 4772
   },
   "findings": [
     {
@@ -34776,6 +34776,20 @@
     },
     {
       "showId": "the-great-gatsby-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2025-04-24",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-great-gatsby-a-new-musical-london-coliseum",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-west-end-2025",
       "file": "artsdesk--rachel-halliburton.json",
       "score": 62,
       "publishDate": "2025-04-26",
@@ -34878,6 +34892,20 @@
       "score": 77,
       "publishDate": "2025-04-25",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -61801,6 +61829,89 @@
     },
     {
       "showId": "the-brightening-air-west-end-2025",
+      "file": "all-that-dazzles-uk--sam-admin.json",
+      "score": null,
+      "publishDate": "2025-04-25",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-brightening-air-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
+      "file": "artsdesk--matt-wolf.json",
+      "score": 55,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/brightening-air-old-vic-review-chekhov-jostles-conor-mcpherson-writer-directors-latest",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": null,
+      "publishDate": "2025-04-25",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-BRIGHTENING-AIR-starring-Chris-ODowd-The-Old-Vic-20250425",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
+      "file": "fringereview--simon-jenner.json",
+      "score": null,
+      "publishDate": "2025-04-25",
+      "url": "https://fringereview.co.uk/review/fringereview-uk/2025/the-brightening-air/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 69,
+      "publishDate": "2025-04-25",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-brightening-air-old-vic-chris-odowd-b2739382.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-04-25",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-brightening-air-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 88,
       "publishDate": "2025-04-24",
@@ -62774,6 +62885,19 @@
     },
     {
       "showId": "the-estate-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-07-18",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-estate-nt-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-estate-west-end-2025",
       "file": "londontheatre1--chris-omaweng.json",
       "score": 74,
       "publishDate": "2025-07-18",
@@ -62783,6 +62907,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-estate-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": "2025-07-19",
+      "url": "https://playsinternational.org.uk/the-estate-dorfman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -63374,6 +63512,20 @@
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2025",
+      "file": "jacktheladmag--simon-webb.json",
+      "score": 93,
+      "publishDate": "2025-10-19",
+      "url": "https://www.jacktheladmag.com/theatre-reviews/the-importance-of-being-earnest",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 60,
       "publishDate": "2025-10-06",
@@ -63402,6 +63554,48 @@
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2025",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "score": 99,
+      "publishDate": "2025-10-01",
+      "url": "https://www.londontheatredirect.com/news/the-importance-of-being-earnest-no-l-coward-theatre-review?srsltid=AU7gw4XYw27hjMzvM_yUCyEltx2aEQpua7cIUwGF7b0k0uOxHOtgadcL",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2025",
+      "file": "stagetopage--unknown.json",
+      "score": 97,
+      "publishDate": null,
+      "url": "http://www.stagetopage.co.uk/2025/10/the-importance-of-being-earnest-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2025",
+      "file": "sunday-express--neil-norman.json",
+      "score": 31,
+      "publishDate": "2025-10-07",
+      "url": "https://www.express.co.uk/entertainment/theatre/2118459/importance-being-earnest-review-oscar-wilde-stephen-fry",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 80,
       "publishDate": "2025-10-01",
@@ -63417,7 +63611,7 @@
     {
       "showId": "the-importance-of-being-earnest-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 38,
+      "score": 35,
       "publishDate": "2025-10-04",
       "url": "https://www.thetimes.com/article/7c1c01a8-52e4-473b-92a4-cd5deb3a126c",
       "findings": [
