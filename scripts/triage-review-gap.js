@@ -50,7 +50,7 @@ const { execFileSync } = require('child_process');
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
-const { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl } = require('./lib/review-gap-triage');
+const { classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--json]';
@@ -407,8 +407,11 @@ function checkLiveProd(json, outletId, url) {
   const otherProductionFiles = [];
   for (const f of reviewText.files) {
     const rule = f.data ? explainExclusion(f.data, showRecord, f.path) : null;
-    (isOtherProductionFile(f, showRecord, rule) ? otherProductionFiles : currentFiles).push(f);
+    (isOtherProductionFile(f, showRecord, rule) || isPreRunFile(f, showRecord) ? otherProductionFiles : currentFiles).push(f);
   }
+  // BRO-4899: report only the files that actually count as this outlet's coverage.
+  reviewText.files = currentFiles;
+  reviewText.anyPending = currentFiles.some((f) => f.pending);
   const exclusionRule = resolveExclusion(currentFiles, showRecord);
 
   const state = classifyGap({
