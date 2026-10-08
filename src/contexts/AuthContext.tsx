@@ -337,7 +337,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // `?signin=1` (the account line in our emails, BRO-4893) opens the sign-in
   // modal once auth has settled. Read window.location after mount, not
-  // useSearchParams (that bails the static export to client rendering,
+  // the Next search-params hook (it bails the static export to client rendering,
   // BRO-4597). Strip the param first: Google sign-in returns to the saved URL,
   // and a param left in place would reopen the modal after signing in.
   useEffect(() => {

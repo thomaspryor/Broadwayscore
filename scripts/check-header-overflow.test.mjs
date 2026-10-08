@@ -11,7 +11,7 @@ const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
 
 test('Subscribe button only shows from xl (no room for it below 1280)', () => {
   const src = read('src/app/layout.tsx');
-  assert.match(src, /<div className="hidden xl:block">\s*<HeaderSubscribeButton \/>/);
+  assert.match(src, /<div className="hidden xl:block(?: empty:hidden)?">\s*<HeaderSubscribeButton \/>/);
 });
 
 test('HeaderSearch: inline input from lg, icon + overlay below lg', () => {

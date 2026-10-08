@@ -11,9 +11,11 @@
  * The email footers mirror the account line in scripts/lib/email-templates.js.
  */
 
-export type ListMarket = 'broadway' | 'west-end';
+export type ListMarket = 'broadway' | 'west-end' | 'off-west-end';
 
-export const marketLabel = (market: ListMarket) => (market === 'west-end' ? 'West End' : 'Broadway');
+// Off-West End shares the West End list (useFormspreeCapture routes it there).
+export const marketLabel = (market: ListMarket) =>
+  (market === 'west-end' || market === 'off-west-end' ? 'West End' : 'Broadway');
 
 export const EMAIL_LIST_COPY = {
   /** Button that opens the signup form. */
