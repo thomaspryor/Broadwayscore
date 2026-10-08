@@ -43,14 +43,18 @@ function cleanTodaytixAbout(text) {
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/^\s*(#+|[-*•])\s+/gm, '')
     .replace(/[*_]+/g, '')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
     .replace(/\s+/g, ' ')
     .trim();
   const sentences = plain.match(/[^.!?]+[.!?]+(?=\s|$)/g) || [];
   const kept = [];
   let len = 0;
   for (const raw of sentences) {
-    const sentence = raw.trim();
-    if (!sentence || NON_STORY_SENTENCE_RE.test(sentence) || MARKETING_OPENER_RE.test(sentence)) continue;
+    const sentence = raw.trim().replace(/^["'\s]+/, '');
+    // A sentence holding a quotation is a pull quote or a cast/creative
+    // soundbite, not plot (Unicorn: "...very, very funny," Nicola Walker said).
+    if (!sentence || /"/.test(sentence) || NON_STORY_SENTENCE_RE.test(sentence) || MARKETING_OPENER_RE.test(sentence)) continue;
     if (len + sentence.length + 1 > MAX_ABOUT_CHARS) break;
     kept.push(sentence);
     len += sentence.length + 1;
