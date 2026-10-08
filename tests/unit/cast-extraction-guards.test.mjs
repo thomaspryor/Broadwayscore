@@ -502,3 +502,22 @@ test('scoreSerpResult rejects the RSC cast page for the Globe As You Like It', (
   const rsc = scoreSerpResult(hit, { title: 'As You Like It', year: 2026, category: 'off-west-end', venue: 'Royal Shakespeare Theatre' });
   assert.ok(rsc.score >= SERP_MIN_SCORE, `RSC's own show must still accept its page, got ${rsc.score}`);
 });
+
+// Edges from the second-opinion review of the venue guard.
+test('detectVenueMismatch: Stratford East is not the RSC; Old Globe / Bristol Old Vic are not the London venues', () => {
+  assert.equal(detectVenueMismatch('https://www.rsc.org.uk/x', 'Theatre Royal Stratford East'), 'rsc.org.uk');
+  assert.equal(detectVenueMismatch('https://www.shakespearesglobe.com/x', 'The Old Globe, San Diego, CA'), 'shakespearesglobe.com');
+  assert.equal(detectVenueMismatch('https://www.oldvictheatre.com/x', 'Bristol Old Vic'), 'oldvictheatre.com');
+  assert.equal(detectVenueMismatch('https://www.oldvictheatre.com/x', 'The Old Vic'), null);
+  assert.equal(detectVenueMismatch('https://www.shakespearesglobe.com/x', 'Globe Theatre'), null);
+});
+
+test('scoreSerpResult: a transfer page naming the show venue is not hard-rejected', () => {
+  const show = { title: 'Man and Boy', year: 2026, category: 'west-end', venue: "Wyndham's Theatre" };
+  const transfer = scoreSerpResult(
+    { url: 'https://www.nationaltheatre.org.uk/shows/man-and-boy/cast', title: "Man and Boy cast | Wyndham's Theatre" }, show);
+  assert.ok(transfer.score >= SERP_MIN_SCORE, `transfer page should pass, got ${transfer.score}`);
+  const other = scoreSerpResult(
+    { url: 'https://www.nationaltheatre.org.uk/shows/man-and-boy/cast', title: 'Man and Boy cast | National Theatre' }, show);
+  assert.ok(other.score < SERP_MIN_SCORE, `page naming another venue should fail, got ${other.score}`);
+});

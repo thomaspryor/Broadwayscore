@@ -248,7 +248,11 @@ function deriveVenueLabel(category, venue) {
   if (!category) return null;
   // Name the actual venue when known so the LLM can reject a same-titled
   // production at another theatre (Globe vs RSC Stratford, 2026-10-05).
-  if (venue && (category === 'west-end' || category === 'off-west-end')) return `${venue}, London (West End)`;
+  if (venue) {
+    if (category === 'west-end' || category === 'off-west-end') return `${venue}, London`;
+    if (category === 'broadway') return `${venue}, Broadway, New York`;
+    if (category === 'off-broadway') return `${venue}, Off-Broadway, New York`;
+  }
   if (category === 'broadway') return 'Broadway';
   if (category === 'off-broadway') return 'Off-Broadway, New York';
   if (category === 'west-end' || category === 'off-west-end') return 'West End, London';

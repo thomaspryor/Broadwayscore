@@ -123,14 +123,14 @@ function detectMarketMismatch(url, category) {
 // "West End, London". Unknown domains and unknown venues fail open.
 const VENUE_OWNED_DOMAINS = [
   { domain: 'rsc.org.uk', venue: /royal shakespeare|swan theatre|other place|stratford-upon-avon/i },
-  { domain: 'shakespearesglobe.com', venue: /globe|sam wanamaker/i },
+  { domain: 'shakespearesglobe.com', venue: /(?<!old )globe|sam wanamaker/i },
   { domain: 'nationaltheatre.org.uk', venue: /national theatre|olivier|lyttelton|dorfman/i },
   { domain: 'almeida.co.uk', venue: /almeida/i },
   { domain: 'donmarwarehouse.com', venue: /donmar/i },
   { domain: 'youngvic.org', venue: /young vic/i },
   { domain: 'royalcourttheatre.com', venue: /royal court/i },
   { domain: 'bridgetheatre.co.uk', venue: /bridge theatre/i },
-  { domain: 'oldvictheatre.com', venue: /old vic/i },
+  { domain: 'oldvictheatre.com', venue: /(?<!bristol )old vic/i },
   { domain: 'hampsteadtheatre.com', venue: /hampstead/i },
   { domain: 'barbican.org.uk', venue: /barbican/i },
 ];
@@ -147,6 +147,17 @@ function detectVenueMismatch(url, venue) {
     }
   }
   return null;
+}
+
+// Lowercase letters/digits/spaces only, with generic words dropped, so
+// "Shakespeare's Globe" and "shakespeares globe" compare equal.
+function normalizeVenueName(venue) {
+  return String(venue || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, '')
+    .replace(/\b(the|theatre|theater)\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 // Pure score for a single SERP result against a show. Higher = more
@@ -229,8 +240,14 @@ function scoreSerpResult(result, show) {
 
   // Venue-mismatch defense — a venue's own site describes that venue's
   // production. Heavy penalty so it drops below SERP_MIN_SCORE even with
-  // the cast-path and title bonuses.
-  if (showVenue && detectVenueMismatch(url, showVenue)) score -= 10;
+  // the cast-path and title bonuses. Exempt a hit whose SERP title names
+  // the show's own venue: that is a transfer page (e.g. an NT production at
+  // Wyndham's), not a different production.
+  if (showVenue && detectVenueMismatch(url, showVenue)) {
+    const venueName = normalizeVenueName(showVenue);
+    const namesVenue = venueName.length >= 4 && normalizeVenueName(t).includes(venueName);
+    if (!namesVenue) score -= 10;
+  }
 
   return { score, url: result.url || result.link || '', title: result.title || '' };
 }
