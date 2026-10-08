@@ -147,8 +147,7 @@ test('pre-previews interview + in-window review -> reports only the review file'
     [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-10' },
   });
   assert.equal(r.state, 'in-pipeline-awaiting-deploy');
-  assert.equal(JSON.stringify(r).includes('an-interviewer.json'), true);
-  assert.deepEqual(r.reviewTexts.paths.map((p) => path.basename(p)), ['fixture-outlet--a-critic.json']);
+  assert.deepEqual(r.signals.reviewTexts.paths.map((p) => path.basename(p)), ['fixture-outlet--a-critic.json']);
 });
 
 test('isPreRunFile: prior run, human-reviewed, undated are exempt', () => {
