@@ -115,11 +115,45 @@ function detectMarketMismatch(url, category) {
   return null;
 }
 
+// Venue-owned domains. A production's own cast page lives on its venue's
+// site, so a page on rsc.org.uk is evidence about an RSC production only.
+// Seen 2026-10-05: the Globe's As You Like It was filled with the RSC
+// Stratford cast (Groff, Akinade, McCabe) because the SERP returned
+// rsc.org.uk/as-you-like-it/cast-and-creatives and the LLM was only told
+// "West End, London". Unknown domains and unknown venues fail open.
+const VENUE_OWNED_DOMAINS = [
+  { domain: 'rsc.org.uk', venue: /royal shakespeare|swan theatre|other place|stratford-upon-avon/i },
+  { domain: 'shakespearesglobe.com', venue: /globe|sam wanamaker/i },
+  { domain: 'nationaltheatre.org.uk', venue: /national theatre|olivier|lyttelton|dorfman/i },
+  { domain: 'almeida.co.uk', venue: /almeida/i },
+  { domain: 'donmarwarehouse.com', venue: /donmar/i },
+  { domain: 'youngvic.org', venue: /young vic/i },
+  { domain: 'royalcourttheatre.com', venue: /royal court/i },
+  { domain: 'bridgetheatre.co.uk', venue: /bridge theatre/i },
+  { domain: 'oldvictheatre.com', venue: /old vic/i },
+  { domain: 'hampsteadtheatre.com', venue: /hampstead/i },
+  { domain: 'barbican.org.uk', venue: /barbican/i },
+];
+
+// Returns the offending domain when `url` is on a venue's own site and the
+// show's venue is a different one, else null.
+function detectVenueMismatch(url, venue) {
+  if (!url || !venue) return null;
+  let host;
+  try { host = new URL(String(url)).hostname.toLowerCase(); } catch { return null; }
+  for (const { domain, venue: venueRe } of VENUE_OWNED_DOMAINS) {
+    if (host === domain || host.endsWith('.' + domain)) {
+      return venueRe.test(String(venue)) ? null : domain;
+    }
+  }
+  return null;
+}
+
 // Pure score for a single SERP result against a show. Higher = more
 // likely the right show's cast page. Caller filters by SERP_MIN_SCORE.
 //
 // @param {{url?:string, link?:string, title?:string}} result - SERP hit
-// @param {string|{title:string, year?:number|string, category?:string}} show
+// @param {string|{title:string, year?:number|string, category?:string, venue?:string}} show
 //   Target show. Strings are accepted for backward compat (treated as title-
 //   only) but year / market signals require the object form.
 function scoreSerpResult(result, show) {
@@ -129,6 +163,7 @@ function scoreSerpResult(result, show) {
   const showTitle = showObj.title || '';
   const showYear = showObj.year ? Number(String(showObj.year).slice(0, 4)) : null;
   const showCategory = showObj.category || null;
+  const showVenue = showObj.venue || null;
 
   const url = (result.url || result.link || '').toLowerCase();
   const t = (result.title || '').toLowerCase();
@@ -191,6 +226,11 @@ function scoreSerpResult(result, show) {
   if (showCategory) {
     if (detectMarketMismatch(url, showCategory)) score -= 3;
   }
+
+  // Venue-mismatch defense — a venue's own site describes that venue's
+  // production. Heavy penalty so it drops below SERP_MIN_SCORE even with
+  // the cast-path and title bonuses.
+  if (showVenue && detectVenueMismatch(url, showVenue)) score -= 10;
 
   return { score, url: result.url || result.link || '', title: result.title || '' };
 }
@@ -278,6 +318,8 @@ module.exports = {
   isViableCastExtraction,
   MIN_CAST_SIZE,
   detectMarketMismatch,
+  detectVenueMismatch,
+  VENUE_OWNED_DOMAINS,
   SERP_MIN_SCORE,
   OPERA_TITLES,
   TV_PATTERNS,

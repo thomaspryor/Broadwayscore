@@ -15,6 +15,7 @@ const {
   meaningfulTitleTokens,
   parseYearFromUrl,
   detectMarketMismatch,
+  detectVenueMismatch,
   SERP_MIN_SCORE,
   isViableCastExtraction,
 } = require('../../scripts/lib/cast-extraction-guards.js');
@@ -475,4 +476,29 @@ test('isViableCastExtraction rejects an empty extraction', () => {
 test('isViableCastExtraction rejects non-array input', () => {
   assert.equal(isViableCastExtraction(null), false);
   assert.equal(isViableCastExtraction(undefined), false);
+});
+
+// 2026-10-05: the Globe's As You Like It got the RSC Stratford cast because
+// rsc.org.uk/as-you-like-it/cast-and-creatives scored as a good cast page.
+test('detectVenueMismatch flags rsc.org.uk for a Globe show', () => {
+  assert.equal(
+    detectVenueMismatch('https://www.rsc.org.uk/as-you-like-it/cast-and-creatives', "Shakespeare's Globe"),
+    'rsc.org.uk'
+  );
+});
+
+test('detectVenueMismatch accepts the venue\'s own site and fails open', () => {
+  assert.equal(detectVenueMismatch('https://www.rsc.org.uk/as-you-like-it/cast', 'Royal Shakespeare Theatre'), null);
+  assert.equal(detectVenueMismatch('https://www.shakespearesglobe.com/whats-on/as-you-like-it/', "Shakespeare's Globe"), null);
+  assert.equal(detectVenueMismatch('https://www.whatsonstage.com/x', "Shakespeare's Globe"), null);
+  assert.equal(detectVenueMismatch('https://www.rsc.org.uk/x', null), null);
+  assert.equal(detectVenueMismatch('not a url', "Shakespeare's Globe"), null);
+});
+
+test('scoreSerpResult rejects the RSC cast page for the Globe As You Like It', () => {
+  const hit = { url: 'https://www.rsc.org.uk/as-you-like-it/cast-and-creatives', title: 'As You Like It cast and creatives | RSC' };
+  const globe = scoreSerpResult(hit, { title: 'As You Like It', year: 2026, category: 'off-west-end', venue: "Shakespeare's Globe" });
+  assert.ok(globe.score < SERP_MIN_SCORE, `expected rejection, got ${globe.score}`);
+  const rsc = scoreSerpResult(hit, { title: 'As You Like It', year: 2026, category: 'off-west-end', venue: 'Royal Shakespeare Theatre' });
+  assert.ok(rsc.score >= SERP_MIN_SCORE, `RSC's own show must still accept its page, got ${rsc.score}`);
 });

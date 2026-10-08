@@ -37,6 +37,7 @@ const {
   COLUMN_HEADER_RE,
   KNOWN_SWAP_SURNAMES,
   isOperaSourceUrl,
+  detectVenueMismatch,
 } = require('./lib/cast-extraction-guards');
 const {
   shouldBlockCastContaminationGate,
@@ -55,6 +56,14 @@ function loadShowIds() {
   }
 }
 
+function loadShowVenues() {
+  try {
+    return new Map(JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8')).shows.map(s => [s.id, s.venue]));
+  } catch {
+    return new Map();
+  }
+}
+
 function titleTokensFromShowId(showId) {
   return showId
     .replace(/-(off-)?(broadway|west-end)-(20\d{2})$/, '')
@@ -65,6 +74,7 @@ function titleTokensFromShowId(showId) {
 
 function audit() {
   const showIds = loadShowIds();
+  const showVenues = loadShowVenues();
   const files = fs.readdirSync(CAST_DIR).filter(f => f.endsWith('.json'));
   const issues = [];
 
@@ -110,6 +120,10 @@ function audit() {
       // distinct signal lets future contamination be triaged faster.
       const showIsOpera = /\bopera\b|the met\b/.test(showId.toLowerCase());
       if (!showIsOpera && isOperaSourceUrl(d.sourceUrl)) flags.push('SRC_URL_OPERA_DOMAIN');
+
+      // Another venue's own site (e.g. rsc.org.uk for a Globe show). Soft
+      // signal: rides the digest, not the per-push gate (CLAUDE.md §19).
+      if (detectVenueMismatch(d.sourceUrl, showVenues.get(showId))) flags.push('SRC_URL_OTHER_VENUE');
     }
 
     if (showIds && !showIds.has(showId)) flags.push('SHOW_NOT_IN_DB');

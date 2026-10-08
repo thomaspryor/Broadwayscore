@@ -99,7 +99,7 @@ function httpRequest(url, options = {}) {
 // SERP search via ScrapingBee
 // ============================================================================
 
-async function searchCast(title, year, category) {
+async function searchCast(title, year, category, venue) {
   const isWestEnd = isLondonMarket(category);
   const location = isWestEnd ? 'west end london' : 'off-broadway new york';
 
@@ -113,7 +113,7 @@ async function searchCast(title, year, category) {
   // rejected (see tests/unit/cast-extraction-guards.test.mjs). Pass year +
   // category so the lib's year-mismatch and market-mismatch defenses can
   // fire (added 2026-05-24).
-  const scored = results.map(r => scoreSerpResult(r, { title, year, category }));
+  const scored = results.map(r => scoreSerpResult(r, { title, year, category, venue }));
 
   return scored
     .filter(r => r.score >= SERP_MIN_SCORE && r.url)
@@ -244,8 +244,11 @@ ${pageText}`;
   throw new Error('No LLM API key available (GEMINI_API_KEY or ANTHROPIC_API_KEY)');
 }
 
-function deriveVenueLabel(category) {
+function deriveVenueLabel(category, venue) {
   if (!category) return null;
+  // Name the actual venue when known so the LLM can reject a same-titled
+  // production at another theatre (Globe vs RSC Stratford, 2026-10-05).
+  if (venue && (category === 'west-end' || category === 'off-west-end')) return `${venue}, London (West End)`;
   if (category === 'broadway') return 'Broadway';
   if (category === 'off-broadway') return 'Off-Broadway, New York';
   if (category === 'west-end' || category === 'off-west-end') return 'West End, London';
@@ -329,7 +332,7 @@ async function processShow(show) {
   console.log(`  Searching for cast pages...`);
   let searchResults;
   try {
-    searchResults = await searchCast(show.title, year, show.category);
+    searchResults = await searchCast(show.title, year, show.category, show.venue);
   } catch (e) {
     console.log(`  SERP error: ${e.message}`);
     return { fetchFailed: true, cast: [] };
@@ -381,7 +384,7 @@ async function processShow(show) {
 
     let cast;
     try {
-      cast = await extractCastWithLLM(pageText, show.title, year, deriveVenueLabel(show.category));
+      cast = await extractCastWithLLM(pageText, show.title, year, deriveVenueLabel(show.category, show.venue));
     } catch (e) {
       console.log(`  LLM error: ${e.message}`);
       anyTransientFailure = true;
