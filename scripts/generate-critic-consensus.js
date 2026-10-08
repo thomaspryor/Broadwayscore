@@ -12,7 +12,7 @@ import Anthropic from '@anthropic-ai/sdk';
 // The scored-review floor below which a Critics' Take is not generated. Shared
 // with opening-night-checks/critics-take-present.check.js so the check cannot
 // demand a consensus this script is coded to refuse (task #389).
-import { MIN_SCORED_REVIEWS, isConsensusEligible, liveScoredCounts, staleConsensusIds } from './lib/critic-consensus-eligibility.js';
+import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds } from './lib/critic-consensus-eligibility.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
 // concurrency group keeps a single pending run, so per-show dispatches were
@@ -255,7 +255,11 @@ async function main() {
   // the page today (BRO-4852).
   if (liveCounts) {
     const stale = staleConsensusIds(consensusData.shows, liveCounts);
-    if (stale.length) {
+    if (stale.length > MAX_STALE_PRUNE) {
+      // A truncated reviews.json would otherwise wipe every Critics' Take.
+      console.warn(`::warning::consensus prune skipped: ${stale.length} entries look stale (cap ${MAX_STALE_PRUNE}), reviews.json is probably incomplete`);
+      liveCounts = null;
+    } else if (stale.length) {
       console.log(`🗑️  Removing ${stale.length} consensus entr${stale.length === 1 ? 'y' : 'ies'} with fewer than ${MIN_SCORED_REVIEWS} live reviews: ${stale.join(', ')}`);
       for (const id of stale) delete consensusData.shows[id];
     }

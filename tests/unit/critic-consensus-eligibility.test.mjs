@@ -145,4 +145,12 @@ it('staleConsensusIds: a blurb with fewer than MIN live reviews is stale, whatev
     a: { reviewCount: 2 }, b: { reviewCount: 1 }, midnight: { reviewCount: 3 },
   }, counts);
   assert.deepEqual(stale.sort(), ['b', 'midnight']);
+  // Flagged rows do not count (critics-take-present.check.js rule).
+  const flagged = liveScoredCounts({ reviews: [{ showId: 'c', assignedScore: 80, wrongShow: true }, { showId: 'c', compositeScore: 70 }] });
+  assert.equal(flagged.get('c'), 1);
+});
+
+it('generate-critic-consensus skips the prune when it would delete more than MAX_STALE_PRUNE entries', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'generate-critic-consensus.js'), 'utf8');
+  assert.match(src, /stale\.length > MAX_STALE_PRUNE/);
 });

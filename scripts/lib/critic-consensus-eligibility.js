@@ -78,14 +78,23 @@ function liveScoredCounts(reviewsJson) {
   const rows = Array.isArray(reviewsJson) ? reviewsJson : (reviewsJson && reviewsJson.reviews) || [];
   const counts = new Map();
   for (const r of rows) {
-    if (r && r.showId && r.assignedScore != null) counts.set(r.showId, (counts.get(r.showId) || 0) + 1);
+    // Same rule as critics-take-present.check.js's countScoredReviews.
+    if (!r || !r.showId || r.wrongShow || r.wrongProduction) continue;
+    if (r.assignedScore != null || r.compositeScore != null) counts.set(r.showId, (counts.get(r.showId) || 0) + 1);
   }
   return counts;
 }
+
+/**
+ * Most stale entries one run may prune. 25 existed when this landed; a much
+ * larger number means reviews.json is truncated or empty, not that hundreds of
+ * shows lost their reviews, so the caller skips the prune instead.
+ */
+const MAX_STALE_PRUNE = 100;
 
 /** Show ids holding a consensus while the site has too few live reviews for one. */
 function staleConsensusIds(consensusShows, counts) {
   return Object.keys(consensusShows || {}).filter((id) => !isConsensusEligible(counts.get(id) || 0));
 }
 
-module.exports = { MIN_SCORED_REVIEWS, isConsensusEligible, liveScoredCounts, staleConsensusIds };
+module.exports = { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds };
