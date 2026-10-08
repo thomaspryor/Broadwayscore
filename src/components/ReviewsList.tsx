@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, memo, Fragment } from 'react';
+import { useState, useMemo, memo, Fragment, useEffect, useId, useLayoutEffect, useRef } from 'react';
 import Link from 'next/link';
 import { getOutletLogoUrlById, getOutletConfigById } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
@@ -8,6 +8,9 @@ import { getScoreColorClass } from '@/components/show-cards';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { getReviewKey } from '../../scripts/lib/review-list-key';
 import { catchEarlyImgError } from '@/lib/img-early-error';
+import { isLondonMarket } from '@/lib/market-utils';
+import { TIER_DISPLAY, type OutletTier } from '@/config/tier-display';
+import { nestQuotes } from '@/lib/nest-quotes';
 
 interface Review {
   showId: string;
@@ -18,7 +21,10 @@ interface Review {
   criticSlug?: string | null;
   url: string | null;
   publishDate: string;
-  tier: 1 | 2 | 3 | 4;
+  tier: OutletTier;
+  // Set by the show page when the critic is on TOP_CRITICS, which promotes
+  // them to Tier 1 weight wherever they write (BRO-4881 tier chip copy).
+  isTopCritic?: boolean;
   reviewScore: number;
   designation?: string;
   quote?: string;
@@ -37,6 +43,9 @@ interface ReviewsListProps {
   reviews: Review[];
   initialCount?: number;
   category?: string;
+  // Opera shows weight every outlet equally (engine.ts flattens tiers), so a
+  // T1 chip on every row would say nothing. The show page passes false there.
+  showTiers?: boolean;
 }
 
 function ChevronDownIcon({ className }: { className?: string }) {
@@ -133,24 +142,110 @@ function CriticsPickBadge() {
   );
 }
 
-function TopCriticLabel() {
+// Subtle T1-T4 chip after the outlet name; hover, focus or tap opens a
+// popover saying what the tier means and how much the review counts
+// (BRO-4881). Replaced the blue "Top Critic" text, which said the same
+// thing as T1 and was hidden on mobile.
+function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier; isTopCritic?: boolean; criticName?: string; london: boolean }) {
+  const [open, setOpen] = useState(false);
+  const [shift, setShift] = useState(0);
+  const wrapRef = useRef<HTMLSpanElement>(null);
+  const popRef = useRef<HTMLSpanElement>(null);
+  const popId = useId();
+  const info = TIER_DISPLAY[tier];
+  const promoted = tier === 1 && isTopCritic;
+  const title = promoted ? 'Top critic' : info.title;
+  const detail = promoted
+    ? `${criticName || 'This critic'} is one of a small group of critics whose reviews count in full wherever they are published.`
+    : (london ? info.examplesLondon : info.examplesNyc);
+
+  // Keep the popover inside the viewport (it is anchored to the chip, which
+  // can sit near the right edge on phones).
+  useLayoutEffect(() => {
+    if (!open || !popRef.current) return;
+    const rect = popRef.current.getBoundingClientRect();
+    const maxRight = document.documentElement.clientWidth - 16;
+    const left = rect.left - shift;
+    const overRight = left + rect.width - maxRight;
+    setShift(overRight > 0 ? -overRight : 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: Event) => {
+      if (e instanceof KeyboardEvent && e.key !== 'Escape') return;
+      if (e.type === 'pointerdown' && wrapRef.current?.contains(e.target as Node)) return;
+      setOpen(false);
+    };
+    document.addEventListener('pointerdown', close);
+    document.addEventListener('keydown', close);
+    window.addEventListener('scroll', close, { passive: true });
+    return () => {
+      document.removeEventListener('pointerdown', close);
+      document.removeEventListener('keydown', close);
+      window.removeEventListener('scroll', close);
+    };
+  }, [open]);
+
   return (
     <span
-      className="hidden md:inline text-[10px] font-semibold uppercase tracking-wide text-blue-400"
-      title="Top Critic"
+      ref={wrapRef}
+      className="relative flex-shrink-0 inline-flex"
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setOpen(true); }}
+      onPointerLeave={(e) => { if (e.pointerType === 'mouse') setOpen(false); }}
+      onBlur={(e) => { if (!wrapRef.current?.contains(e.relatedTarget as Node)) setOpen(false); }}
     >
-      Top Critic
+      <button
+        type="button"
+        className={`tier-chip relative inline-flex items-center h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em] cursor-help transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
+          open
+            ? 'text-white border-brand/60 bg-brand/[0.08]'
+            : `${tier === 1 ? 'text-gray-400' : 'text-gray-500'} border-white/[0.12] hover:text-white hover:border-brand/60 hover:bg-brand/[0.08]`
+        }`}
+        aria-label={`Tier ${tier}: ${title}. ${info.relative}`}
+        aria-expanded={open}
+        aria-controls={open ? popId : undefined}
+        onClick={() => setOpen(o => !o)}
+        onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) setOpen(true); }}
+        data-testid="tier-chip"
+      >
+        T{tier}
+      </button>
+      {open && (
+        <span
+          ref={popRef}
+          id={popId}
+          role="tooltip"
+          className="absolute top-[calc(100%+8px)] -left-3 z-30 w-72 max-w-[calc(100vw-32px)] grid gap-2.5 p-3.5 pb-3 rounded-xl bg-surface-elevated border border-white/10 shadow-[0_16px_40px_-8px_rgba(0,0,0,0.7),0_2px_6px_rgba(0,0,0,0.4)] text-left whitespace-normal font-normal motion-safe:animate-fade-in"
+          style={{ transform: shift ? `translateX(${shift}px)` : undefined }}
+        >
+          <span
+            aria-hidden="true"
+            className="absolute -top-[6px] w-2.5 h-2.5 rotate-45 bg-surface-elevated border-l border-t border-white/10"
+            style={{ left: `${12 + 4 - shift}px` }}
+          />
+          <span className="flex items-baseline gap-2">
+            <span className="text-[11px] font-semibold tracking-[0.04em] text-brand">TIER {tier}</span>
+            <span className="text-sm font-bold text-white">{title}</span>
+          </span>
+          <span className="grid grid-cols-[1fr_auto] items-center gap-2">
+            <span className="h-1.5 rounded-full bg-white/[0.08] overflow-hidden">
+              <span className="block h-full rounded-full bg-brand" style={{ width: `${info.weight * 100}%` }} />
+            </span>
+            <span className="text-xs font-semibold text-white tabular-nums">{info.weight.toFixed(2)}×</span>
+          </span>
+          <span className="text-[13px] leading-snug text-gray-400">
+            <span className="font-semibold text-gray-300">{info.relative}</span> {detail}
+          </span>
+          <Link href="/methodology#critic-score" className="text-xs font-semibold text-brand hover:underline">
+            How we weight critics →
+          </Link>
+        </span>
+      )}
     </span>
   );
 }
-
-// Outlets that pick up tier=1 via the flat-tier opera methodology but are not
-// considered tier-1 critics of record by serious opera-goers. We still display
-// the review and count it in the composite — we just don't badge it as a Top
-// Critic. Maintain in lowercase. Notion 363637c5-416f-8112.
-const TOP_CRITIC_BADGE_SUPPRESS: ReadonlySet<string> = new Set([
-  'broadwayworld',
-]);
 
 function ExternalLinkIcon({ className }: { className?: string }) {
   return (
@@ -160,7 +255,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop }: { review: Review; isLast: boolean; category?: string; hideStop?: boolean }) {
+const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop, showTiers = true }: { review: Review; isLast: boolean; category?: string; hideStop?: boolean; showTiers?: boolean }) {
   const goldMin = getGoldThreshold(category);
   let scoreLabel: string;
   if (review.reviewScore >= goldMin) scoreLabel = 'Critical Gold';
@@ -168,6 +263,12 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
   else if (review.reviewScore >= 55) scoreLabel = 'Mixed';
   else scoreLabel = 'Critical Miss';
+
+  // Phones show the date in the byline instead of the header row, which
+  // otherwise squeezes the outlet name to a letter or two next to the tier
+  // chip and Critics Pick pill (BRO-4881).
+  const dateLabel = formatDate(review.publishDate);
+  const mobileDate = dateLabel ? <span className="sm:hidden block text-xs text-gray-500 mt-0.5">{dateLabel}</span> : null;
 
   return (
     <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
@@ -191,12 +292,19 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
           <span aria-hidden="true">{review.reviewScore}</span>
         </div>
         <OutletLogo outlet={review.outlet} outletId={review.outletId} />
-        <span style={{ flex: '1 1 auto', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base">
-          {featureFlags.criticPages && review.outletSlug ? (
-            <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
-          ) : review.outlet}
+        {/* Name + tier chip share the flex-1 slot so the chip hugs the name.
+            The wrapper is a <span> (see the comment above); the name span
+            keeps the ellipsis, and the chip never truncates. */}
+        <span style={{ flex: '1 1 auto', minWidth: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="font-bold text-white text-sm sm:text-base">
+            {featureFlags.criticPages && review.outletSlug ? (
+              <Link href={`/critics/outlets/${review.outletSlug}`} className="hover:text-brand transition-colors">{review.outlet}</Link>
+            ) : review.outlet}
+          </span>
+          {showTiers && review.tier && (
+            <TierChip tier={review.tier} isTopCritic={review.isTopCritic} criticName={review.criticName} london={isLondonMarket(category)} />
+          )}
         </span>
-        {review.tier === 1 && !TOP_CRITIC_BADGE_SUPPRESS.has((review.outlet || '').toLowerCase()) && <TopCriticLabel />}
         {review.designation === 'Critics_Pick' && <CriticsPickBadge />}
         {review.designation && review.designation !== 'Critics_Pick' && (
           <span className="text-xs text-score-high font-medium whitespace-nowrap hidden sm:inline">
@@ -204,7 +312,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
           </span>
         )}
         {formatDate(review.publishDate) && (
-          <span className="text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
+          <span className="hidden sm:inline text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
         )}
       </div>
 
@@ -228,7 +336,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {review.quote && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{review.quote}&rdquo;
+            &ldquo;{nestQuotes(review.quote)}&rdquo;
           </p>
         )}
         {review.summary && !review.quote && (
@@ -238,24 +346,24 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {review.pullQuote && !review.quote && !review.summary && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{review.pullQuote}{/[.!?''""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}&rdquo;
+            &ldquo;{nestQuotes(review.pullQuote)}{/[.!?''""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}&rdquo;
           </p>
         )}
 
-        <div className="flex items-center justify-between text-xs sm:text-sm leading-tight">
+        <div className="flex items-center justify-between gap-3 text-xs sm:text-sm leading-tight">
           {review.criticName && review.criticName !== 'Unknown' ? (
             <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
-            ) : review.criticName}</span>
+            ) : review.criticName}{mobileDate}</span>
           ) : (
-            <span className="text-sm text-gray-400">{review.outlet} Staff</span>
+            <span className="text-sm text-gray-400">{review.outlet} Staff{mobileDate}</span>
           )}
           {review.url && (
             <a
               href={review.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
+              className="inline-flex flex-shrink-0 whitespace-nowrap items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
               aria-label={`Read full review from ${review.outlet}${review.criticName && review.criticName !== 'Unknown' ? ` by ${review.criticName}` : ''} (opens in new tab)`}
             >
               Full Review
@@ -270,7 +378,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
 
 type SortMode = 'score' | 'date' | 'city';
 
-export default function ReviewsList({ reviews, initialCount = 5, category }: ReviewsListProps) {
+export default function ReviewsList({ reviews, initialCount = 5, category, showTiers = true }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('score');
 
@@ -326,6 +434,16 @@ export default function ReviewsList({ reviews, initialCount = 5, category }: Rev
               By City
             </button>
           )}
+          {showTiers && (
+            <Link
+              href="/methodology#critic-score"
+              className="ml-auto inline-flex items-center gap-1.5 text-gray-500 hover:text-brand transition-colors"
+            >
+              <span className="hidden sm:inline">Weighted by outlet tier</span>
+              <span className="sm:hidden">Weighted by tier</span>
+              <span className="px-1 rounded border border-white/[0.12] text-[10px] font-semibold leading-[16px] tabular-nums">T1–T4</span>
+            </Link>
+          )}
         </div>
       )}
       {displayedReviews.map((review, i) => (
@@ -340,6 +458,7 @@ export default function ReviewsList({ reviews, initialCount = 5, category }: Rev
             isLast={false}
             category={category}
             hideStop={sortMode === 'city'}
+            showTiers={showTiers}
           />
         </Fragment>
       ))}

@@ -15,6 +15,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { TIER_WEIGHTS, VALID_TIERS, DEFAULT_TIER } from '../../src/config/scoring';
+import { TIER_DISPLAY } from '../../src/config/tier-display';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsOutletTiers = require('../../scripts/lib/outlet-tiers');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -117,4 +118,20 @@ test('DEFAULT_TIER agrees across TS and JS canonicals', () => {
     jsOutletTiers.DEFAULT_TIER,
     'TS DEFAULT_TIER and JS DEFAULT_TIER must match'
   );
+});
+
+test('TIER_DISPLAY (Critic Scorecard tier chips) matches TIER_WEIGHTS', () => {
+  // The chip popover tells readers how much a review counts. It lives in a
+  // client-safe file with no imports, so it carries its own copy of the
+  // weights; this keeps that copy honest (BRO-4881).
+  const tsKeys = Object.keys(TIER_WEIGHTS).map(Number).sort((a, b) => a - b);
+  const displayKeys = Object.keys(TIER_DISPLAY).map(Number).sort((a, b) => a - b);
+  assert.deepEqual(displayKeys, tsKeys, 'TIER_DISPLAY must cover exactly the TIER_WEIGHTS tiers');
+  for (const tier of tsKeys) {
+    assert.equal(
+      (TIER_DISPLAY as Record<number, { weight: number }>)[tier].weight,
+      (TIER_WEIGHTS as Record<number, number>)[tier],
+      `TIER_DISPLAY[${tier}].weight must equal TIER_WEIGHTS[${tier}]`
+    );
+  }
 });

@@ -702,6 +702,19 @@ img {
     min-width: auto;
   }
 
+  /* Exception for the outlet tier chip on review rows (BRO-4881) — an 18px
+     "T1" inflated to a 44px square squeezed the outlet name to one letter.
+     The invisible ::before keeps a ~44px-tall tap area without the layout. */
+  .tier-chip {
+    min-height: auto;
+    min-width: auto;
+  }
+  .tier-chip::before {
+    content: "";
+    position: absolute;
+    inset: -13px -6px;
+  }
+
   /* Exception for the showtime picker's icon row (matinee/evening/custom/clear)
      — same "N adjacent icons must fit a ~100px card" problem as .star-compact
      above. (The Add-to-Calendar icon that also used it is now a labeled
