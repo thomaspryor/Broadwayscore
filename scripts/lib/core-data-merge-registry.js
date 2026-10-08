@@ -1932,7 +1932,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     // 'active'.
   },
   { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race' },
-  { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'only update-critic-consensus.yml writes it' },
+  { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'written by generate-critic-consensus.js only, run from update-critic-consensus.yml and opening-night-broadcast.yml (not concurrent in practice; every run rewrites _meta and, since BRO-4852, prunes stale takes globally, so a lost race self-heals on the next run)' },
   { file: 'audience-reviews-lbo.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, update-lbo.yml' },
   { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
