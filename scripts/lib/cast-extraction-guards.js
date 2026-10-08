@@ -121,6 +121,7 @@ function detectMarketMismatch(url, category) {
 // Stratford cast (Groff, Akinade, McCabe) because the SERP returned
 // rsc.org.uk/as-you-like-it/cast-and-creatives and the LLM was only told
 // "West End, London". Unknown domains and unknown venues fail open.
+// venue-write-guard-ok: read-only matching of a show's venue against a URL; nothing here writes a venue to shows.json
 const VENUE_OWNED_DOMAINS = [
   { domain: 'rsc.org.uk', venue: /royal shakespeare|swan theatre|other place|stratford-upon-avon/i },
   { domain: 'shakespearesglobe.com', venue: /(?<!old )globe|sam wanamaker/i },
