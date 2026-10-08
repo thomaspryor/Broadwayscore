@@ -113,3 +113,48 @@ test('does not resurrect a nested contentVerification field the LOCAL record del
   assert.equal(local.contentVerification, undefined);
   assert.equal(modified, false);
 });
+
+// BRO-4851: a rebase dropped a manual wrongProduction flag with its reason;
+// the MANUAL_FIELDS loop restored the bare flag, and the rebuild's UK-URL
+// auto-clear then stripped it because nothing marked it as human-set.
+const REASON = 'Manual (BRO-4851): different production';
+test('restores the reason/note alongside a restored wrongProduction flag (from remote)', () => {
+  const remote = { url: 'u', wrongProduction: true, wrongProductionNote: REASON, wrongProductionReason: REASON, wrongProductionReasonAt: '2026-10-08' };
+  const local = { url: 'u' };
+  const { modified } = reconcileProtectedFields(local, remote, null);
+  assert.equal(modified, true);
+  assert.equal(local.wrongProduction, true);
+  assert.equal(local.wrongProductionReason, REASON);
+  assert.equal(local.wrongProductionNote, REASON);
+  assert.equal(local.wrongProductionReasonAt, '2026-10-08');
+});
+
+test('restores the companions from ours when remote lost them', () => {
+  const remote = { url: 'u' };
+  const ours = { url: 'u', wrongShow: true, wrongShowReason: REASON };
+  const local = { url: 'u' };
+  reconcileProtectedFields(local, remote, ours);
+  assert.equal(local.wrongShow, true);
+  assert.equal(local.wrongShowReason, REASON);
+});
+
+test('no companion restore when the local flag is false (no dangling reason)', () => {
+  const remote = { url: 'u', wrongProduction: true, wrongProductionReason: REASON };
+  const local = { url: 'u', wrongProduction: false, wrongProductionManualClear: true };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.wrongProductionReason, undefined);
+});
+
+test('no companion restore from a source whose own flag is not live', () => {
+  const remote = { url: 'u', wrongProduction: false, wrongProductionReason: REASON };
+  const local = { url: 'u', wrongProduction: true, wrongProductionNote: 'Date guard: x' };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.wrongProductionReason, undefined);
+});
+
+test('an existing local reason is never overwritten', () => {
+  const remote = { url: 'u', wrongProduction: true, wrongProductionReason: 'old' };
+  const local = { url: 'u', wrongProduction: true, wrongProductionReason: 'new' };
+  reconcileProtectedFields(local, remote, null);
+  assert.equal(local.wrongProductionReason, 'new');
+});
