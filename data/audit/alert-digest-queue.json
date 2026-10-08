@@ -2210,5 +2210,29 @@
       }
     ],
     "queuedAt": "2026-10-08T16:06:08.001Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-blood-of-my-blood-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Blood of my Blood",
+    "description": "timeout-london/Caroline McGinn (timeout-london--caroline-mcginn.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The scraped review explicitly describes 'the Royal Co — https://www.timeout.com/london/theatre/blood-of-my-blood-review",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T16:34:52.677Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-triumph-off-broadway-2026",
+    "title": "Placeholder synopsis on Triumph",
+    "description": "synopsis for triumph-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T16:34:59.591Z"
   }
 ]

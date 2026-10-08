@@ -56,7 +56,7 @@ the same files.
 | `rebuild-reviews.yml` | ✅ (pre-rebuild flag-setters) | ✅ (primary) | `rebuild-reviews` |
 | `rebuild-fast.yml` | ❌ | ✅ (lightweight) | per-run (`rebuild-fast-${{ run_id }}` — intentionally parallel, see file comment) |
 | `enrich-reviews.yml` | ✅ | ❌ | per-run (intentionally parallel, see file comment) |
-| `gather-reviews.yml` | ✅ | ✅ | `review-texts-backfill-write` |
+| `gather-reviews.yml` | ✅ | ✅ | `gather-reviews-${{ github.run_id }}` (per-run + FIFO slot gate, BRO-4859) |
 | `collect-review-texts.yml` | ✅ | ✅ (inline) | per-filter-combo (parallel-safe by design — different `show_filter`/`content_tier`/`domain_filter` values are disjoint) |
 | `opening-night-poller.yml` | ✅ | ✅ (inline, fast_path) or dispatches `rebuild-reviews.yml` | per-show/market |
 | `opening-night-broadcast.yml` | ✅ | ✅ | `broadcast-send` |
