@@ -47,7 +47,9 @@ const GENERIC_TOKENS = new Set([
   // BRO-447 (2026-10-08): "players" is a troupe-name word, not a place. The
   // Brooklyn Gallery Players (Park Slope) false-positived against The Players
   // Theatre (Greenwich Village) on this token alone and turned the daily
-  // Check Corpus Drift run red.
+  // Check Corpus Drift run red. Known limit: a bare "Players Theatre Loft"
+  // variant is no longer flagged (its other tokens are generic too); if that
+  // spelling ever appears in shows.json, add it to subVenueSlugs by hand.
   'players',
 ]);
 
