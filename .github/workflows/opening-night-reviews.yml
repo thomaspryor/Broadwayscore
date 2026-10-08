@@ -149,7 +149,7 @@ jobs:
           fi
 
       # Per-show dispatch dedup (not a blanket "any gather running → skip").
-      # gather-reviews serializes on its own concurrency group, so the only thing
+      # gather-reviews queues runs FIFO itself (BRO-4859 slot gate), so the only thing
       # we must avoid is queuing a SECOND gather for a show that already has one
       # in-flight. scripts/lib/gather-idempotency.js matches the run-name suffix.
       # The old blanket guard starved opening shows entirely (it was always busy).
@@ -353,7 +353,7 @@ jobs:
           # Census-anchored: unions the WE roundup critic lists with the T1 floor.
           # --alert  → Discord on incomplete/floor-breach (lists census-missing outlets).
           # --dispatch → auto-fires FULL gather + collect (→rebuild→score) for gap shows,
-          #   serialized by gather-reviews concurrency + per-show gather-idempotency dedup.
+          #   throttled by gather-reviews' FIFO slot gate + per-show gather-idempotency dedup.
           # exit 1 on major/incomplete is the signal; continue-on-error keeps the job green
           # but yellow in the summary so gaps are visible.
           LOOKBACK=${{ inputs.lookback_days || 14 }}
