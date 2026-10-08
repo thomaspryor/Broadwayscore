@@ -13,7 +13,7 @@
  *
  * Usage:
  *   node scripts/audit-counted-review-integrity.js
- *   node scripts/audit-counted-review-integrity.js --max=250
+ *   node scripts/audit-counted-review-integrity.js --max=250 --max-junk-outlet=4
  *   node scripts/audit-counted-review-integrity.js --check=junk-outlet --verbose
  *   node scripts/audit-counted-review-integrity.js --show=private-lives-2002
  *   node scripts/audit-counted-review-integrity.js --json=/tmp/out.json
@@ -41,6 +41,8 @@ function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
+let unreadableFiles = 0;
+
 function* iterateReviewFiles() {
   const root = process.env.REVIEW_TEXTS_DIR || path.join(DATA, 'review-texts');
   for (const showId of listShowDirs(root)) {
@@ -48,7 +50,7 @@ function* iterateReviewFiles() {
     for (const file of fs.readdirSync(dir)) {
       if (!file.endsWith('.json')) continue;
       let data;
-      try { data = readJson(path.join(dir, file)); } catch { continue; }
+      try { data = readJson(path.join(dir, file)); } catch { unreadableFiles += 1; continue; }
       yield { showId, file, data };
     }
   }
@@ -62,6 +64,10 @@ function runFlagged(shows) {
   }
   const hits = findFlaggedGenuineCandidates({ shows, files: iterateReviewFiles() });
   console.log(`Excluded but dated and URL-dated inside the run: ${hits.length} file(s) across ${new Set(hits.map((h) => h.showId)).size} show(s)`);
+  if (unreadableFiles > 0) {
+    // A half-written file during a concurrent rebuild would otherwise just shrink the count.
+    console.log(`  note: ${unreadableFiles} review file(s) could not be parsed and were skipped`);
+  }
   if (process.argv.includes('--verbose')) {
     for (const h of hits) console.log(`  ${h.showId}/${h.file} | ${h.outlet || '-'} | ${h.reason || h.detail}`);
   }
@@ -108,9 +114,17 @@ function main() {
   const jsonOut = argValue('json');
   if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify(result, null, 2));
 
+  // One total baseline lets a noisy check hide growth in a quiet one, so each check can also
+  // carry its own: --max-junk-outlet=4. Any breach is drift.
+  const breaches = [];
   const max = argValue('max');
-  if (max !== null && result.total > Number(max)) {
-    console.error(`Over baseline: ${result.total} > ${max}. Triage the new rows with --verbose, fix the cause, or re-baseline after a cleanup pass.`);
+  if (max !== null && result.total > Number(max)) breaches.push(`total ${result.total} > ${max}`);
+  for (const c of CHECKS) {
+    const perCheck = argValue(`max-${c}`);
+    if (perCheck !== null && result.counts[c] > Number(perCheck)) breaches.push(`${c} ${result.counts[c]} > ${perCheck}`);
+  }
+  if (breaches.length) {
+    console.error(`Over baseline: ${breaches.join('; ')}. Triage the new rows with --check=<name> --verbose, fix the cause, or re-baseline after a cleanup pass.`);
     return 1;
   }
   return 0;

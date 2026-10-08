@@ -382,7 +382,9 @@ const AUDITS = [
     // on 2026-10-08, most of them untriaged cross-show quote repeats (some are a
     // multi-show column legitimately quoted on both shows). Drift fires when a
     // new bad row pushes the total above it; lower --max after a cleanup pass.
-    args: ['--max=85'],
+    // Per-check ceilings too, so growth in a quiet check is not hidden by a noisy one.
+    args: ['--max=85', '--max-cross-show-duplicate=70', '--max-same-show-multi-byline=6', '--max-url-year-outside-run=2',
+      '--max-unopened-show-counted=1', '--max-junk-outlet=4', '--max-opening-date-cluster=4', '--max-prior-run-link=0'],
     crashCodes: [2],           // 0 at/under baseline / 1 grew above it / 2 = corpus missing
   },
   {
