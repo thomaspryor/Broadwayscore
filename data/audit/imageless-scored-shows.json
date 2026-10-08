@@ -1,8 +1,23 @@
 {
-  "generatedAt": "2026-10-08T03:22:40.929Z",
+  "generatedAt": "2026-10-08T11:01:36.355Z",
   "thresholdHours": 24,
   "cooldownHours": 12,
   "escalateAfterAttempts": 3,
   "maxDispatchesPerRun": 5,
-  "flagged": []
+  "flagged": [
+    {
+      "firstFlaggedAt": "2026-10-08T11:01:36.355Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-10-08T11:01:36.355Z",
+      "id": "oedipus-west-end-2025",
+      "title": "Oedipus"
+    },
+    {
+      "firstFlaggedAt": "2026-10-08T11:01:36.355Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-10-08T11:01:36.355Z",
+      "id": "othello-1982",
+      "title": "Othello"
+    }
+  ]
 }

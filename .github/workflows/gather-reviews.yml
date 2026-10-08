@@ -555,7 +555,11 @@ jobs:
     if: ${{ !cancelled() && needs.prepare.result == 'success' }}  # BRO-4146: one shard timing out (needs.result 'cancelled') must not skip rebuilding the other shards' results; a run-level cancel still skips
     continue-on-error: true
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 50 not 30 (BRO-4146): a 22-show historical backfill (2026-10-08) spent
+    # 17 min in NYC Theatre roundups and was killed during the archive push,
+    # losing that run's archive HTML and spend-ledger commit. The roundup step
+    # now has its own --time-budget-min; this is margin for the pushes.
+    timeout-minutes: 50
 
     steps:
       - name: Checkout (latest, after gather pushes)
@@ -563,7 +567,7 @@ jobs:
         with:
           ref: main
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
-          # of main for this 30-min job's final ledger commit; depth-1 aborted when churn outran it.
+          # of main for this 50-min job's final ledger commit; depth-1 aborted when churn outran it.
           fetch-depth: 300
 
 
@@ -609,7 +613,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
-        run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }}
+        run: node scripts/scrape-nyc-theatre-roundups.js --shows=${{ inputs.shows }} --time-budget-min=20
 
       - name: Scrape BWW Review Roundups for target shows
         env:
