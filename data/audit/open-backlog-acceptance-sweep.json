@@ -1,18 +1,48 @@
 {
-  "generatedAt": "2026-10-07T08:52:55.346Z",
+  "generatedAt": "2026-10-08T09:12:30.580Z",
   "shadow": true,
-  "checkoutSha": "f1bb3cfae51b9dd58fdbd6d96b4de42082ceefcc",
-  "totalCandidates": 1352,
-  "eligibleCandidates": 80,
-  "checked": 8,
+  "checkoutSha": "36d975e1d03e8f102678ca87e3effa711aaccb3a",
+  "totalCandidates": 1368,
+  "eligibleCandidates": 84,
+  "checked": 25,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 4,
+    "pass": 15,
     "fail": 1,
-    "unverifiable": 3
+    "unverifiable": 9
   },
   "alreadyDone": [
+    {
+      "id": "BRO-4849",
+      "name": "P1: ~260 found reviews never reach the site (no text, wrongly rejected, never scored) across 394 current shows",
+      "verifyCmd": "node --test tests/unit/coverage-holes-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4839",
+      "name": "P1: 189 published reviews contradict the critic's own star rating or all 3 AI readers (adjudicated/human/relay overrides)",
+      "verifyCmd": "node --test tests/unit/published-score-star-band.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4831",
+      "name": "Lane rehearsal follow-ups: record a real-opening fixture (Paranormal Activity), wire arm-check into the real lane driver and a T-24h rehearsal, production lane driver on runLaneNight",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-rehearsal.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4823",
+      "name": "Lane publish: wire real ports in CI (pushData via push-with-retry, isLeased from lease-guard, deploy that commits public/data/shows/{id}.json, live base URL) and a 2-minute publish driver",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-publish.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4820",
+      "name": "Lane discovery follow-ups: Show Score, Playbill Verdict, Google News (redirect unwrap), Talkin' Broadway, SERP adapter, 2-min loop driver, feed date confirmation",
+      "verifyCmd": "node --test tests/unit/opening-night-lane-discovery.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-4814",
       "name": "stuck-card-closer closes too few In Review cards: 27 of 44 were verifiably done and sat up to 46 days",
@@ -36,6 +66,42 @@
       "name": "Commercial: AI-researched figures must be confirmed on the cited page before showing as fact",
       "verifyCmd": "node --test tests/unit/commercial-source-verify.test.mjs",
       "detail": null
+    },
+    {
+      "id": "BRO-4386",
+      "name": "Ticket-seller product pages (theatrebookings.com/play/*, bestoftheatre.co.uk/<slug>) ingested + scored as reviews",
+      "verifyCmd": "node --test scripts/lib/non-review-url-patterns.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4373",
+      "name": "P1: nothing tells the owner when the Mac is down/logged out — digest, opening-night monitor, Friday sync silently stopped 4.5 days",
+      "verifyCmd": "node --test scripts/lib/morning-digest-liveness.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4369",
+      "name": "Playbill Verdict filed another play's TheaterMania review on School Girls and it squatted the real critic's slot",
+      "verifyCmd": "node --test scripts/lib/review-guards-other-production.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4314",
+      "name": "Unit Tests job on main is red: missing cast-manifest.json generation + orphaned venue-complex slugs",
+      "verifyCmd": "node --test scripts/audit-venue-complex-slugs.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4295",
+      "name": "Unit Tests always fails on CI: bsc-next.js/linear-next.js hardcoded local path",
+      "verifyCmd": "node --test scripts/bsc-next.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4276",
+      "name": "main Data Validation red: critic-consensus.json orphan key sylvia-off-west-end-2026 (SHOW_NOT_IN_DB) fails audit-critic-consensus-contamination --gate",
+      "verifyCmd": "node scripts/audit-critic-consensus-contamination.js --gate",
+      "detail": null
     }
   ],
   "failing": [
@@ -48,22 +114,58 @@
   ],
   "unverifiable": [
     {
+      "id": "BRO-4844",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"TodayTix-gap shows without TodayTix have at least 2 real Ticketmaster links (documented ceiling — see file header; 3 until The Gruffalo closed 2026-09-08)\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 146471ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4835",
+      "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
+      "verifyCmd": "node --test scripts/lib/opening-night-lane-inline-score.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/opening-night-lane-inline-score.test.mjs"
+    },
+    {
       "id": "BRO-4827",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"once generated per-show JSON carries au.sources.ss.u, every tile with a known URL has it\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 139937ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 119858ms (timeout — no verdict)"
     },
     {
-      "id": "BRO-4748",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, branch stays single-commit\"",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 110259ms (timeout — no verdict)"
+      "id": "BRO-4638",
+      "name": "Mac-to-cloud step 1: retire Mac opening-night monitor after verifying cloud watch",
+      "verifyCmd": "node --test tests/unit/opening-night-monitor-retired.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-monitor-retired.test.mjs"
     },
     {
-      "id": "BRO-4716",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)\"",
+      "id": "BRO-4617",
+      "name": "P1: update-show-status closes a just-opened show via prior-production ShowScore URL + stale todaytixId",
+      "verifyCmd": "node --test scripts/lib/update-show-status.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/update-show-status.test.mjs"
+    },
+    {
+      "id": "BRO-4549",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 54413ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 84992ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4447",
+      "name": "Concurrent rebuild renamed a byline-corrected --unknown file from a stale checkout and deleted the newer copy with the fetched text (The Pass NYTG, 2026-09-30)",
+      "verifyCmd": "node --test scripts/lib/rename-race-keeps-newer-text.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/rename-race-keeps-newer-text.test.mjs"
+    },
+    {
+      "id": "BRO-4410",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 60547ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-4265",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"verified TodayTix-gap shows carry a real Ticketmaster link\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 33086ms (timeout — no verdict)"
     }
   ]
 }
