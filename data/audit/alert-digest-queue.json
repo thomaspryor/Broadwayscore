@@ -1521,18 +1521,6 @@
     "queuedAt": "2026-10-07T16:22:53.501Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:franz-and-marie-west-end-2026",
-    "title": "Review gap — \"Franz & Marie\" missing 2 cited review(s)",
-    "description": "Franz & Marie (franz-and-marie-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=franz-and-marie-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-07T17:15:35.967Z"
-  },
-  {
     "conditionKey": "cron-health:Weekly A/B Monitors",
     "title": "🚨 Critical cron stale, self-heal failed: Weekly A/B Monitors",
     "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
@@ -1935,5 +1923,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-08T02:01:10.428Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:magic-mike-live-new-york-off-broadway-2026",
+    "title": "Review gap — \"MAGIC MIKE LIVE New York\" missing 8 cited review(s)",
+    "description": "MAGIC MIKE LIVE New York (magic-mike-live-new-york-off-broadway-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=magic-mike-live-new-york-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T02:35:40.761Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:rent-west-end-2026",
+    "title": "Review gap — \"Rent\" missing 3 cited review(s)",
+    "description": "Rent (rent-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=rent-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T02:35:40.812Z"
   }
 ]
