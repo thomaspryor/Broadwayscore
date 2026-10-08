@@ -1882,5 +1882,34 @@
       }
     ],
     "queuedAt": "2026-10-08T00:18:37.501Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4849-coverage-holes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4849-coverage-holes",
+    "description": "land.yml did not land land/bro-4849-coverage-holes: the unit-tests-node gate went red at bf23ca21ea. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37708190876",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4849-coverage-holes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bf23ca21ea456c408c41c46d4b8eda314b06a784"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37708190876"
+      }
+    ],
+    "queuedAt": "2026-10-08T01:01:41.474Z"
   }
 ]
