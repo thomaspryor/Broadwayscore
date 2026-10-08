@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T21:58:25.787Z",
+  "timestamp": "2026-10-08T22:53:02.023Z",
   "stats": {
-    "totalReviews": 48649,
-    "alreadyFlagged": 19041,
+    "totalReviews": 49360,
+    "alreadyFlagged": 19070,
     "dateGuardCatches": 278,
-    "directorMismatch": 1475,
+    "directorMismatch": 1493,
     "tvFilmSignals": 1422,
-    "londonSignals": 1448,
+    "londonSignals": 1450,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4779
+    "noPublishDate": 5436
   },
   "findings": [
     {
@@ -2134,6 +2134,44 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"doug hughes\" from an-enemy-of-the-people-2012"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 34,
+      "publishDate": "2024-02-22",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13107921/Matt-Smiths-Enemy-People-panned-critics-praise-actors-passable-performance-condemn-clumsy-conservative-revival-Ibsens-classic-play-fine-supporting-cast-stop-falling-apart.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 57,
+      "publishDate": "2024-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -2148,6 +2186,53 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 79,
+      "publishDate": "2024-02-20",
+      "url": "https://www.ft.com/content/600cb796-8fe9-4821-beb8-2c26bd76c30c",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 77,
+      "publishDate": "2024-02-21",
+      "url": "https://www.theguardian.com/stage/2024/feb/20/an-enemy-of-the-people-review-matt-smith-ibsen-duke-of-yorks-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "independent--alice-saville.json",
+      "score": 57,
+      "publishDate": "2024-02-21",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/an-enemy-of-the-people-review-matt-smith-b2499298.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -2209,6 +2294,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 38,
+      "publishDate": "2024-02-21",
+      "url": "https://www.thetimes.co.uk/article/an-enemy-of-the-people-review-matt-smith-stumbles-in-agitprop-ibsen-jkxnnmvjc",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 78,
+      "publishDate": "2024-02-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/an-enemy-of-the-people-review-jeremy-strong-strikes-sparks-in-ibsen-rjqh0hdm3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas ostermeier\" from an-enemy-of-the-people-west-end-2024"
         }
       ]
     },
@@ -11775,7 +11888,7 @@
     },
     {
       "showId": "franz-and-marie-west-end-2026",
-      "file": "a-youngish-perspective--unknown.json",
+      "file": "a-youngish-perspective--lauren-aitken.json",
       "score": 43,
       "publishDate": "2026-10-07",
       "url": "https://ayoungishperspective.co.uk/2026/10/07/review-franz-marie/",
@@ -17590,6 +17703,24 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-10-08",
+      "url": "https://lovelondonloveculture.com/2026/10/08/review-into-the-woods-noel-coward-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "manic-mumdays--cassie.json",
       "score": 95,
       "publishDate": "2026-10-03",
@@ -17604,6 +17735,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "matineemouse--matinee-mouse.json",
+      "publishDate": "2026-10-08",
+      "url": "https://matineemouse.substack.com/p/into-the-woods-west-end-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
         }
       ]
     },
@@ -17742,6 +17886,19 @@
           "severity": "MEDIUM",
           "detail": "Published 240d before show (2026-01-25 vs 2026-09-22)"
         },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "theatre-tickets--unknown.json",
+      "publishDate": null,
+      "url": "https://noel-coward.theatre-tickets.com/into-the-woods",
+      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -26299,6 +26456,20 @@
       ]
     },
     {
+      "showId": "peter-pan-goes-wrong-west-end-2023",
+      "file": "west-end-best-friend--jack-francis.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.westendbestfriend.co.uk/news/review-peter-pan-goes-wrong-lyric-theatre-west-end",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        }
+      ]
+    },
+    {
       "showId": "pippin-2013",
       "file": "about-entertainment--ben-brantley.json",
       "score": 58,
@@ -31507,6 +31678,90 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from sunset-boulevard-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "bnn--sheena-oberoi.json",
+      "score": null,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "i-paper--fiona-mountford.json",
+      "score": null,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "independent--alice-saville.json",
+      "score": null,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "london-theatre--marianka-swain.json",
+      "score": null,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": null,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "west-end-best-friend--lisamarie-lamb.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.westendbestfriend.co.uk/news/review-sunset-boulevard-savoy-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
         }
       ]
     },
@@ -44223,34 +44478,6 @@
       ]
     },
     {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 34,
-      "publishDate": "2024-02-22",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-13107921/Matt-Smiths-Enemy-People-panned-critics-praise-actors-passable-performance-condemn-clumsy-conservative-revival-Ibsens-classic-play-fine-supporting-cast-stop-falling-apart.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2024",
-      "file": "guardian--arifa-akbar.json",
-      "score": 77,
-      "publishDate": "2024-02-21",
-      "url": "https://www.theguardian.com/stage/2024/feb/20/an-enemy-of-the-people-review-matt-smith-ibsen-duke-of-yorks-theatre-london",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
       "file": "theatreticketsdirect--theatre-tickets-direct-limited.json",
       "publishDate": null,
@@ -45648,6 +45875,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "west-end-best-friend--beatriz-ferreira.json",
+      "publishDate": "2026-10-08",
+      "url": "https://www.westendbestfriend.co.uk/news/review-blood-of-my-blood-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
