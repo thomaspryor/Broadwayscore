@@ -923,23 +923,6 @@
     "queuedAt": "2026-10-07T09:58:52.313Z"
   },
   {
-    "conditionKey": "broadcast-gate:checklist:into-the-woods-noel-coward-west-end-2026",
-    "title": "Opening Night Broadcast Blocked — Checklist Errors",
-    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Shows",
-        "value": "into-the-woods-noel-coward-west-end-2026"
-      }
-    ],
-    "queuedAt": "2026-10-07T11:03:24.270Z"
-  },
-  {
     "conditionKey": "llm-scoring:cost-breach",
     "title": "LLM scoring spend over budget",
     "description": "GitHub run 37618568768: cumulative LLM scoring cost $9.41 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
@@ -2111,5 +2094,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-08T11:25:20.265Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026",
+    "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"into-the-woods-noel-coward-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T11:44:34.013Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:into-the-woods-noel-coward-west-end-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "into-the-woods-noel-coward-west-end-2026"
+      }
+    ],
+    "queuedAt": "2026-10-08T11:44:34.180Z"
   }
 ]
