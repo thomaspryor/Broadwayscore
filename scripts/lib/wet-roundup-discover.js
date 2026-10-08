@@ -161,7 +161,15 @@ async function discoverWetRoundupRows(show, opts = {}) {
   if (!Array.isArray(posts) || posts.length === 0) return null;
   stats.apiPosts = posts.length;
 
-  for (const post of posts.slice(0, 3)) {
+  // Enforce the window on each post's own date too: in the pilot the API
+  // still returned the 2023 roundup for a 2025 window (the after/before
+  // params did not survive the fetchJSON proxy path).
+  const inWindow = post => {
+    const d = String(post.date || '').slice(0, 10);
+    if (!d) return !(opts.after || opts.before);
+    return (!opts.after || d >= opts.after) && (!opts.before || d <= opts.before);
+  };
+  for (const post of posts.filter(inWindow).slice(0, 3)) {
     // Validate post title matches our show (WP search can return wrong shows)
     const wpTitle = decodeWpTitle(post.title?.rendered);
     if (!wetPostTitleMatchesShow(wpTitle, searchTitle)) {
