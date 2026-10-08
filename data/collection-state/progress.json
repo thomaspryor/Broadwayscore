@@ -239,7 +239,16 @@
     "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
     "an-american-daughter-off-broadway-2026/playbill--unknown.json",
     "isla-off-broadway-2026/goseeashowpodcast--robby.json",
-    "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json"
+    "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json",
+    "blood-of-my-blood-west-end-2026/timeout-london--time-out.json",
+    "blood-of-my-blood-west-end-2026/london-theatre--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/jonathan-baz--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/the-spy-in-the-stalls--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/thestage--the-stage.json",
+    "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+    "three-men-in-a-boat-off-west-end-2026/londontheatredirect--mr-howard.json",
+    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+    "hadestown-2019/theater-life--isa-goldberg.json"
   ],
   "failed": [
     "pride-west-end-2026/nyt-theater--unknown.json",
@@ -349,8 +358,6 @@
     "six-2021/whatsonstage--alex-wood.json",
     "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
     "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
-    "hadestown-2019/theater-life--isa-goldberg.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
@@ -401,7 +408,10 @@
     "jeeves-takes-charge-west-end-2026/ground--unknown.json",
     "jeeves-takes-charge-west-end-2026/londontheatredirect--keith-taylor.json",
     "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
-    "cats-west-end-2026/thewrap--robert-hofler.json"
+    "cats-west-end-2026/thewrap--robert-hofler.json",
+    "into-the-woods-noel-coward-west-end-2026/theatreandtonic--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -548,7 +558,16 @@
       "the-winters-tale-off-broadway-2026/one-minute-critic--bobby-mcguire.json",
       "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "isla-off-broadway-2026/goseeashowpodcast--robby.json",
-      "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json"
+      "brooklyns-bridge-off-broadway-2026/nyt-theater--jonathan.json",
+      "blood-of-my-blood-west-end-2026/timeout-london--time-out.json",
+      "blood-of-my-blood-west-end-2026/london-theatre--unknown.json",
+      "into-the-woods-noel-coward-west-end-2026/jonathan-baz--unknown.json",
+      "into-the-woods-noel-coward-west-end-2026/the-spy-in-the-stalls--unknown.json",
+      "into-the-woods-noel-coward-west-end-2026/thestage--the-stage.json",
+      "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+      "three-men-in-a-boat-off-west-end-2026/londontheatredirect--mr-howard.json",
+      "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+      "hadestown-2019/theater-life--isa-goldberg.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -635,7 +654,8 @@
       "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016/talkinbroadway--unknown.json",
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "the-lost-boys-2026/the-knockturnal--paul-chi.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -683,7 +703,7 @@
     ]
   },
   "startTime": "2026-10-08T09:43:17.993Z",
-  "lastProcessed": "cats-west-end-2026/thewrap--robert-hofler.json",
+  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
   "log": [
     {
       "t": "2026-10-08T09:45:49.458Z",
@@ -961,6 +981,79 @@
       "t": "2026-10-08T13:11:20.371Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-08T13:58:24.920Z",
+      "event": "bb-session",
+      "session": "9bcff3db",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-08T13:58:25.929Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T13:58:44.672Z",
+      "event": "bb-session",
+      "session": "c1abad13",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-08T13:58:45.641Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T14:00:20.252Z",
+      "event": "bb-session",
+      "session": "5fe1a153",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-08T14:00:32.222Z",
+      "event": "bb-session",
+      "session": "c1e3807a",
+      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-08T14:06:42.639Z",
+      "event": "bb-session",
+      "session": "0d7f410e",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-10-08T14:06:56.903Z",
+      "event": "bb-session",
+      "session": "6fdd18fb",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-10-08T14:10:34.940Z",
+      "event": "bb-session",
+      "session": "d0855a6f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-08T14:10:37.527Z",
+      "event": "bb-session",
+      "session": "e0141b5c",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-08T14:10:38.508Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T14:10:44.757Z",
+      "event": "bb-session",
+      "session": "089ece99",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     }
+  ],
+  "recoveredAfterFailure": [
+    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+    "hadestown-2019/theater-life--isa-goldberg.json"
   ]
 }

@@ -3208,13 +3208,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-08T13:48:58.990Z",
+      "lastSeen": "2026-10-08T14:19:30.015Z",
       "lastNotifiedAt": "2026-10-08T11:25:20.258Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.138Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3222,13 +3222,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-08T13:48:59.007Z",
+      "lastSeen": "2026-10-08T14:19:30.031Z",
       "lastNotifiedAt": "2026-10-08T11:25:20.275Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 21,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3479,13 +3479,12 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-08T13:48:59.013Z",
-      "lastNotifiedAt": "2026-10-07T14:15:58.297Z",
-      "lastSurfacedAt": "2026-10-07T14:15:58.297Z",
-      "notifyCount": 12,
+      "lastSeen": "2026-10-08T14:19:30.037Z",
+      "lastNotifiedAt": "2026-10-08T14:19:30.037Z",
+      "lastSurfacedAt": "2026-10-08T14:19:30.037Z",
+      "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3899,12 +3898,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-08T13:48:58.976Z",
+      "lastSeen": "2026-10-08T14:19:29.999Z",
       "lastNotifiedAt": "2026-10-08T13:48:58.976Z",
       "lastSurfacedAt": "2026-10-06T13:33:30.414Z",
       "notifyCount": 17,
       "cardId": null,
-      "linearIdentifier": "BRO-4795"
+      "linearIdentifier": "BRO-4795",
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4832,13 +4832,13 @@
       "title": "Data audits failing (non-blocking): Run data validation, Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-08T13:55:38.593Z",
+      "lastSeen": "2026-10-08T14:22:36.639Z",
       "lastNotifiedAt": "2026-10-07T22:38:20.357Z",
       "lastSurfacedAt": "2026-10-07T22:38:20.357Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 25
+      "silentRefires": 26
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5843,13 +5843,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-07T01:51:51.676Z",
-      "lastSeen": "2026-10-08T13:48:58.943Z",
+      "lastSeen": "2026-10-08T14:19:29.964Z",
       "lastNotifiedAt": "2026-10-08T11:25:20.216Z",
       "lastSurfacedAt": "2026-10-08T11:25:20.216Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5908,13 +5908,12 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-08T13:48:58.956Z",
-      "lastNotifiedAt": "2026-10-07T14:15:58.257Z",
-      "lastSurfacedAt": "2026-10-07T14:15:58.257Z",
-      "notifyCount": 9,
+      "lastSeen": "2026-10-08T14:19:29.978Z",
+      "lastNotifiedAt": "2026-10-08T14:19:29.978Z",
+      "lastSurfacedAt": "2026-10-08T14:19:29.978Z",
+      "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9128,13 +9127,12 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-08T13:48:58.984Z",
-      "lastNotifiedAt": "2026-10-07T14:15:58.276Z",
-      "lastSurfacedAt": "2026-10-07T14:15:58.276Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-10-08T14:19:30.006Z",
+      "lastNotifiedAt": "2026-10-08T14:19:30.006Z",
+      "lastSurfacedAt": "2026-10-08T14:19:30.006Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 5
+      "linearIdentifier": null
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -10924,13 +10922,13 @@
       "title": "Content mismatch on Into the Woods",
       "firstSeen": "2026-10-06T10:26:09.742Z",
       "incidentOpenedAt": "2026-10-06T10:26:09.742Z",
-      "lastSeen": "2026-10-08T13:56:47.524Z",
+      "lastSeen": "2026-10-08T14:16:50.394Z",
       "lastNotifiedAt": "2026-10-06T10:26:09.742Z",
       "lastSurfacedAt": "2026-10-06T10:26:09.742Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 30
+      "silentRefires": 31
     },
     "gap:what-the-animals-say-off-west-end-2026/timeout-london--unknown.json": {
       "status": "open",
@@ -11752,13 +11750,13 @@
       "title": "Unhandled CV.wrongProduction on Into the Woods",
       "firstSeen": "2026-10-08T02:01:10.415Z",
       "incidentOpenedAt": "2026-10-08T02:01:10.415Z",
-      "lastSeen": "2026-10-08T13:56:47.518Z",
+      "lastSeen": "2026-10-08T14:16:50.389Z",
       "lastNotifiedAt": "2026-10-08T02:01:10.415Z",
       "lastSurfacedAt": "2026-10-08T02:01:10.415Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-publish-date-pre-opening:missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -11889,13 +11887,13 @@
       "title": "Pre-opening publishDate on Into the Woods",
       "firstSeen": "2026-10-08T09:04:59.304Z",
       "incidentOpenedAt": "2026-10-08T09:04:59.304Z",
-      "lastSeen": "2026-10-08T13:56:47.529Z",
+      "lastSeen": "2026-10-08T14:16:50.398Z",
       "lastNotifiedAt": "2026-10-08T09:04:59.304Z",
       "lastSurfacedAt": "2026-10-08T09:04:59.304Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "corpus-drift:autoclear-vs-ensemble": {
       "status": "open",
@@ -11903,13 +11901,13 @@
       "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
       "firstSeen": "2026-10-08T11:25:20.264Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.264Z",
-      "lastSeen": "2026-10-08T13:48:58.997Z",
+      "lastSeen": "2026-10-08T14:19:30.021Z",
       "lastNotifiedAt": "2026-10-08T11:25:20.264Z",
       "lastSurfacedAt": "2026-10-08T11:25:20.264Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-t1-missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -11917,13 +11915,13 @@
       "title": "Auto-remediation gave up on into-the-woods-noel-coward-west-end-2026",
       "firstSeen": "2026-10-08T11:44:34.012Z",
       "incidentOpenedAt": "2026-10-08T11:44:34.012Z",
-      "lastSeen": "2026-10-08T13:56:47.535Z",
+      "lastSeen": "2026-10-08T14:16:50.403Z",
       "lastNotifiedAt": "2026-10-08T11:44:34.012Z",
       "lastSurfacedAt": "2026-10-08T11:44:34.012Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast:overdue:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -11939,7 +11937,7 @@
       "linearIdentifier": null
     },
     "land:land/backfill-to-ci": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/backfill-to-ci",
       "firstSeen": "2026-10-08T13:38:39.787Z",
@@ -11949,7 +11947,8 @@
       "lastSurfacedAt": "2026-10-08T13:38:39.787Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-08T14:16:50.765Z"
     },
     "land:land/celebrity-autobiography-broadcast-draft": {
       "status": "open",
@@ -11960,6 +11959,19 @@
       "lastSeen": "2026-10-08T13:44:11.908Z",
       "lastNotifiedAt": "2026-10-08T13:44:11.908Z",
       "lastSurfacedAt": "2026-10-08T13:44:11.908Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast:deadline-draft:into-the-woods-noel-coward-west-end-2026": {
+      "status": "open",
+      "disposition": "human",
+      "title": "Opening-night draft created past deadline: check these before you press Send",
+      "firstSeen": "2026-10-08T14:17:30.021Z",
+      "incidentOpenedAt": "2026-10-08T14:17:30.021Z",
+      "lastSeen": "2026-10-08T14:17:30.021Z",
+      "lastNotifiedAt": "2026-10-08T14:17:30.021Z",
+      "lastSurfacedAt": "2026-10-08T14:17:30.021Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
