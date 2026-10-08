@@ -197,6 +197,11 @@ describe('phase 2/3/4 predicates', () => {
     assert.equal(isActionableRescore(f, {}), true);
   });
 
+  test('rescore: a _locked file never counts (push restores its old score, so the rescore cannot stick)', () => {
+    assert.equal(isActionableRescore(scoreableFile({ needsRescore: true }), {}), true);
+    assert.equal(isActionableRescore(scoreableFile({ needsRescore: true, _locked: true }), {}), false);
+  });
+
   test('rescore: a terminally-blocked file does not count', () => {
     const f = scoreableFile({ needsRescore: true, fullText: SHORT_BODY });
     stampTerminalScoringFailure(f, 'input_validation_failed:body_too_short', '2026-08-02T05:00:00.000Z');

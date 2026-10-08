@@ -127,6 +127,9 @@ function isActionableUnscored(data, ctx) {
  */
 function isActionableRescore(data, ctx) {
   if (data.needsRescore !== true) return false;
+  // push-review-texts restores every protected field on a _locked file, so a rescore is reverted at push
+  // and the file would be re-sent (and re-paid for) on every run, whichever flagger queued it (BRO-4804).
+  if (data._locked === true) return false;
   if (isBlockedFromRescore(data)) return false;
   // starRatingApplies:false — index.ts suppresses the star skip on rescore runs.
   return commonSelectionSkipReason(data, ctx, { starRatingApplies: false }) === null;
