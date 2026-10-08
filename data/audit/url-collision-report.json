@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-08T17:37:25.035Z",
+  "generatedAt": "2026-10-08T18:13:10.529Z",
   "summary": {
-    "total": 7,
+    "total": 8,
     "high": 3,
     "medium": 3,
-    "low": 1
+    "low": 2
   },
   "collisions": [
     {
@@ -195,6 +195,33 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",
+      "normalizedUrl": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",
+      "candidates": [
+        {
+          "showId": "the-score-regional-2026",
+          "file": "artsdesk--rachel-halliburton.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        },
+        {
+          "showId": "the-score-west-end-2025",
+          "file": "artsdesk--rachel-halliburton.json",
+          "publishDate": "2025-02-28",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        }
+      ],
+      "suggestedWinner": "the-score-regional-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     }
   ]
 }
