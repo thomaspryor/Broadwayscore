@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-08T19:08:00.871Z",
+  "generatedAt": "2026-10-08T20:30:02.756Z",
   "summary": {
-    "total": 8,
-    "high": 3,
-    "medium": 3,
+    "total": 10,
+    "high": 4,
+    "medium": 4,
     "low": 2
   },
   "collisions": [
@@ -116,6 +116,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
+      "normalizedUrl": "https://playsinternational.org.uk/into-the-woods-bridge-theatre",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "plays-international--maryam-philpott.json",
+          "publishDate": "2025-12-15",
+          "openingDate": "2026-10-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "plays-international"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "plays-international--jeremy-malies.json",
+          "publishDate": "2025-12-15",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "plays-international"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate 2025-12-15 is 4 days from into-the-woods-west-end-2025 opening (2025-12-11); next closest is 296 days from into-the-woods-noel-coward-west-end-2026",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -168,6 +195,33 @@
       "suggestedWinner": "mamma-mia-2025",
       "reason": "publishDate August 14, 2025 is 0 days from mamma-mia-2025 opening (2025-08-14)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
+      "normalizedUrl": "https://theatrely.com/post/punch-redemption-and-runarounds-review",
+      "candidates": [
+        {
+          "showId": "punch-2025",
+          "file": "theatrely--juan-a-ramirez.json",
+          "publishDate": "September 29, 2025",
+          "openingDate": "2025-09-29",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        },
+        {
+          "showId": "punch-west-end-2025",
+          "file": "theatrely--juan-a-ramirez.json",
+          "publishDate": "September 29, 2025",
+          "openingDate": "2025-09-26",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        }
+      ],
+      "suggestedWinner": "punch-2025",
+      "reason": "publishDate September 29, 2025 is 0 days from punch-2025 but also 3 days from punch-west-end-2025",
+      "confidence": "medium"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
