@@ -93,14 +93,14 @@ export function clearReturnUrl(): void {
 /**
  * `?signin=1` deep link (the account line in our emails, BRO-4893).
  * Returns the analytics source for the sign-in prompt, or null when the URL
- * doesn't ask for sign-in. `utm_source` (snake_case only) names the email,
+ * doesn't ask for sign-in. `utm_source` (lowercase, hyphens -> _) names the email,
  * e.g. ?signin=1&utm_source=newsletter -> 'email_newsletter'.
  */
 export function signInSourceFromSearch(search: string): string | null {
   const params = new URLSearchParams(search);
   if (params.get('signin') !== '1') return null;
   const utm = params.get('utm_source') || '';
-  return /^[a-z_]{1,32}$/.test(utm) ? `email_${utm}` : 'email_link';
+  return /^[a-z0-9_-]{1,32}$/.test(utm) ? `email_${utm.replace(/-/g, '_')}` : 'email_link';
 }
 
 /**
