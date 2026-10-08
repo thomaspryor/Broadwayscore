@@ -157,6 +157,10 @@ function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   const hd = require('./headless-dispatchability.js');
   const drain = require('./linear-drain-parked.js');
   if (IOS_APP_CARD_RE.test(String(issue.title || ''))) return 'ios-app-repo';
+  // BRO-2204: a card marked "NO-DISPATCH:" must not be launched by any
+  // dispatcher; the cloud worker picked one that said it needs the owner's
+  // answer before any code. Description only: comments quote the marker.
+  if (require('./no-dispatch-marker.js').hasNoDispatchMarker(issue.description)) return 'no-dispatch-marker';
   const cmd = drain.verifyCommand(issue);
   if (!cmd) return 'no-safe-verify';
   if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(cmd).trim())) {
