@@ -3203,18 +3203,17 @@
       "resolvedAt": "2026-09-28T22:26:57.009Z"
     },
     "corpus-drift:critic-outlets": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "incidentOpenedAt": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-10-05T14:06:16.823Z",
-      "lastNotifiedAt": "2026-10-05T14:06:16.823Z",
+      "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
+      "lastSeen": "2026-10-08T11:25:20.258Z",
+      "lastNotifiedAt": "2026-10-08T11:25:20.258Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.138Z",
-      "notifyCount": 18,
+      "notifyCount": 19,
       "cardId": null,
-      "linearIdentifier": "BRO-4515",
-      "resolvedAt": "2026-10-05T14:59:53.897Z"
+      "linearIdentifier": "BRO-4515"
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3222,13 +3221,12 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-08T01:07:04.414Z",
-      "lastNotifiedAt": "2026-10-07T11:05:12.909Z",
+      "lastSeen": "2026-10-08T11:25:20.275Z",
+      "lastNotifiedAt": "2026-10-08T11:25:20.275Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
-      "notifyCount": 20,
+      "notifyCount": 21,
       "cardId": null,
-      "linearIdentifier": "BRO-4501",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-4501"
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3479,13 +3477,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-08T01:07:04.420Z",
+      "lastSeen": "2026-10-08T11:25:20.281Z",
       "lastNotifiedAt": "2026-10-07T14:15:58.297Z",
       "lastSurfacedAt": "2026-10-07T14:15:58.297Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3899,13 +3897,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-10-05T11:20:30.123Z",
-      "lastSeen": "2026-10-08T01:07:04.393Z",
+      "lastSeen": "2026-10-08T11:25:20.247Z",
       "lastNotifiedAt": "2026-10-07T13:40:13.377Z",
       "lastSurfacedAt": "2026-10-06T13:33:30.414Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-4795",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -5844,13 +5842,12 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-10-07T01:51:51.676Z",
-      "lastSeen": "2026-10-08T01:07:04.366Z",
-      "lastNotifiedAt": "2026-10-07T01:51:51.676Z",
-      "lastSurfacedAt": "2026-10-07T01:51:51.676Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-10-08T11:25:20.216Z",
+      "lastNotifiedAt": "2026-10-08T11:25:20.216Z",
+      "lastSurfacedAt": "2026-10-08T11:25:20.216Z",
+      "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 7
+      "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5909,13 +5906,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-08T01:07:04.377Z",
+      "lastSeen": "2026-10-08T11:25:20.230Z",
       "lastNotifiedAt": "2026-10-07T14:15:58.257Z",
       "lastSurfacedAt": "2026-10-07T14:15:58.257Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -9131,13 +9128,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-08T01:07:04.399Z",
+      "lastSeen": "2026-10-08T11:25:20.253Z",
       "lastNotifiedAt": "2026-10-07T14:15:58.276Z",
       "lastSurfacedAt": "2026-10-07T14:15:58.276Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -11894,6 +11891,19 @@
       "lastSeen": "2026-10-08T09:04:59.304Z",
       "lastNotifiedAt": "2026-10-08T09:04:59.304Z",
       "lastSurfacedAt": "2026-10-08T09:04:59.304Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "corpus-drift:autoclear-vs-ensemble": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
+      "firstSeen": "2026-10-08T11:25:20.264Z",
+      "incidentOpenedAt": "2026-10-08T11:25:20.264Z",
+      "lastSeen": "2026-10-08T11:25:20.264Z",
+      "lastNotifiedAt": "2026-10-08T11:25:20.264Z",
+      "lastSurfacedAt": "2026-10-08T11:25:20.264Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
