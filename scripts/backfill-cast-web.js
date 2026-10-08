@@ -13,7 +13,7 @@
  *   --category=CAT     Filter: off-broadway, west-end (default: both)
  *   --dry-run          Show what would be processed
  *   --force            Re-process shows with existing cast files
- *   --show-filter=ID   Process a single show
+ *   --show-filter=ID   Process a single show, or several as a comma-separated list (no spaces)
  *   --limit=N          Max shows to process (default: unlimited)
  *
  * Requires: SCRAPINGBEE_API_KEY, ANTHROPIC_API_KEY (or GEMINI_API_KEY)
@@ -38,6 +38,7 @@ const {
 } = require('./lib/cast-extraction-guards');
 const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
 const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
+const { selectShowsByFilter } = require('./lib/cast-show-filter');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -447,8 +448,11 @@ async function main() {
 
   // Filter to target shows
   if (showFilter) {
-    shows = shows.filter(s => s.id === showFilter || s.slug === showFilter);
-    if (shows.length === 0) { console.error(`No show found: ${showFilter}`); process.exit(1); }
+    // --show-filter takes one id/slug or a comma-separated list (BRO-2517).
+    const { matched, missing } = selectShowsByFilter(shows, showFilter);
+    if (matched.length === 0) { console.error(`No show found: ${showFilter}`); process.exit(1); }
+    if (missing.length) console.warn(`  WARNING: ${missing.length} --show-filter id(s) not found: ${missing.join(', ')}`);
+    shows = matched;
   } else {
     // Default: OB + WE shows
     shows = shows.filter(s => {

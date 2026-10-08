@@ -118,6 +118,7 @@ test('deferred shows: the remainder replaces the file; merged in order, de-dupli
     assert.deepEqual(merged, ['b-2026', 'c-2026', 'd-2026']);
     assert.equal(recordDeferredShows([], f), false); // all done: file emptied
     assert.equal(readFileSync(f, 'utf8'), '');
+    assert.equal(recordDeferredShows(['a-2026'], join(dir, 'missing', 'x.txt')), false); // write fails: no throw
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -130,7 +131,8 @@ test('repo: gather-reviews.js records deferred shows and the workflow re-dispatc
   const y = readFileSync(join(wfDir, 'gather-reviews.yml'), 'utf8');
   assert.match(y, /GATHER_DEFERRED_FILE: \$\{\{ runner\.temp \}\}\/deferred-shows\.txt/);
   assert.match(y, /name: gather-deferred-\$\{\{ github\.run_id \}\}/);
-  assert.match(y, /pattern: gather-deferred-\$\{\{ github\.run_id \}\}/);
+  // Current attempt only: earlier attempts already re-dispatched their own lists.
+  assert.match(y, /pattern: gather-deferred-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}-\*/);
   assert.match(y, /collectDeferredShows[\s\S]{0,800}gh workflow run gather-reviews\.yml/);
 });
 

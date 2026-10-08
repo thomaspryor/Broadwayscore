@@ -747,6 +747,17 @@ function validateDates(shows) {
       issues++;
     }
 
+    // BRO-4883: a closed West End show with no closingDate is never revisited
+    // (audit-we-closing-dates.js only scans open rows), and the unit test
+    // tests/unit/audit-we-closing-dates.test.mjs ("BRO-3792: closed West End
+    // shows always carry a closingDate") reads data/shows.json on main. Failing
+    // here makes the writer's own validate step refuse the push instead of
+    // turning main test.yml red after the data has already landed.
+    if (show.category === 'west-end' && show.status === 'closed' && !show.closingDate) {
+      error(`Show "${show.title}" (${show.id}) is a closed West End show with no closingDate — set the real closing date or do not mark it closed`);
+      issues++;
+    }
+
     if (show.status === 'open' && show.closingDate && show.closingDate < today) {
       warn(`Show "${show.title}" still open but closingDate has passed: ${show.closingDate}`);
     }

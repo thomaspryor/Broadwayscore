@@ -1009,9 +1009,10 @@ jobs:
         if: ${{ !cancelled() }}
         uses: actions/download-artifact@v5
         with:
-          # No run_attempt here: after "Re-run failed jobs" the shards that passed
-          # keep their attempt-1 lists, which this must still pick up.
-          pattern: gather-deferred-${{ github.run_id }}-*
+          # This attempt's lists only. This step runs in every attempt that is not
+          # cancelled, so earlier attempts already re-dispatched their own lists;
+          # reading them again after "Re-run failed jobs" sent the same shows twice.
+          pattern: gather-deferred-${{ github.run_id }}-${{ github.run_attempt }}-*
           path: ${{ runner.temp }}/gather-deferred
       - name: Re-dispatch deferred shows (BRO-4859)
         if: ${{ !cancelled() }}

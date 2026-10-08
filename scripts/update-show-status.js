@@ -405,6 +405,15 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
       continue;
     }
 
+    // BRO-4883: West End needs a real closingDate to be closed (BRO-3792;
+    // validate-data.js errors on a closed west-end row without one), and this
+    // path has none to give. Leave it open: audit-we-closing-dates.js scans
+    // open West End rows and flags POSSIBLY_CLOSED with the evidence.
+    if (cat === 'west-end') {
+      console.log(`  ⚠️  ${show.title} (${cat}): missing from TodayTix ${daysMissing}+ days — not auto-closing (no closingDate to write; audit-we-closing-dates.js owns West End closes)`);
+      continue;
+    }
+
     // Circuit breaker
     if (autoCloseCount >= MAX_AUTO_CLOSE) {
       console.log(`  ⚠️ Circuit breaker: ${MAX_AUTO_CLOSE} auto-closes reached, skipping remaining`);
