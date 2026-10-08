@@ -37,13 +37,24 @@ function buildTombstoneRows(sourceFile, stats, now = new Date()) {
   }));
 }
 
-/** Writes rows to a new unique file under dir; returns its relative path, or null if no rows. */
-function writeTombstones(dir, rows, now = new Date()) {
+/**
+ * Writes rows to a file under dir; returns its relative path, or null if no rows.
+ * In CI the name is fixed per run + attempt + source file, so the push action's
+ * retry loop (which re-runs the reconcile and drops the same rows again)
+ * overwrites one file instead of leaving one duplicate file per attempt
+ * (BRO-4852 ship-check). Different runs still never share a file.
+ */
+function writeTombstones(dir, rows, now = new Date(), env = process.env) {
   if (!rows.length) return null;
   fs.mkdirSync(dir, { recursive: true });
-  const name = `${now.toISOString().replace(/[:.]/g, '-')}-${crypto.randomBytes(3).toString('hex')}.jsonl`;
+  const runKey = env.GITHUB_RUN_ID
+    ? `run-${env.GITHUB_RUN_ID}-${env.GITHUB_RUN_ATTEMPT || 1}-${path.basename(String(rows[0].file || 'merge'), '.json')}`
+    : null;
+  const name = runKey
+    ? `${runKey}.jsonl`
+    : `${now.toISOString().replace(/[:.]/g, '-')}-${crypto.randomBytes(3).toString('hex')}.jsonl`;
   const rel = path.join(dir, name);
-  fs.writeFileSync(rel, rows.map((r) => JSON.stringify(r)).join('\n') + '\n', { flag: 'wx' });
+  fs.writeFileSync(rel, rows.map((r) => JSON.stringify(r)).join('\n') + '\n', { flag: runKey ? 'w' : 'wx' });
   return rel;
 }
 
