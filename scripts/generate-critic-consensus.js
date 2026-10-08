@@ -12,7 +12,7 @@ import Anthropic from '@anthropic-ai/sdk';
 // The scored-review floor below which a Critics' Take is not generated. Shared
 // with opening-night-checks/critics-take-present.check.js so the check cannot
 // demand a consensus this script is coded to refuse (task #389).
-import { MIN_SCORED_REVIEWS, isConsensusEligible } from './lib/critic-consensus-eligibility.js';
+import { MIN_SCORED_REVIEWS, isConsensusEligible, liveScoredCounts, staleConsensusIds } from './lib/critic-consensus-eligibility.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
 // concurrency group keeps a single pending run, so per-show dispatches were
@@ -26,6 +26,7 @@ const ROOT = path.resolve(__dirname, '..');
 const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const SHOWS_FILE = path.join(ROOT, 'data', 'shows.json');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
+const REVIEWS_FILE = path.join(ROOT, 'data', 'reviews.json');
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -244,6 +245,22 @@ async function main() {
     showStatusMap[s.id] = s.status;
   }
 
+  // Live scored reviews per show, from reviews.json (what the site shows).
+  // null = unreadable: fall back to the review-texts count alone (BRO-4852).
+  let liveCounts = null;
+  try { liveCounts = liveScoredCounts(JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'))); } catch { liveCounts = null; }
+
+  // Prune every consensus whose show has too few live reviews, whatever the
+  // --show filter: no LLM call, and a blurb outliving its reviews is wrong on
+  // the page today (BRO-4852).
+  if (liveCounts) {
+    const stale = staleConsensusIds(consensusData.shows, liveCounts);
+    if (stale.length) {
+      console.log(`🗑️  Removing ${stale.length} consensus entr${stale.length === 1 ? 'y' : 'ies'} with fewer than ${MIN_SCORED_REVIEWS} live reviews: ${stale.join(', ')}`);
+      for (const id of stale) delete consensusData.shows[id];
+    }
+  }
+
   // Layer 5c: Orphan cleanup — remove consensus for shows not in shows.json
   {
     const orphanIds = Object.keys(consensusData.shows).filter(id => !showIdSet.has(id));
@@ -294,10 +311,12 @@ async function main() {
 
     // Layer 5a: Input validation — minimum review threshold
     const scoredReviews = reviews.filter(r => r.score != null);
-    if (!isConsensusEligible(scoredReviews.length)) {
-      console.log(`  ⏭️  Skipped - only ${scoredReviews.length} scored reviews (need ${MIN_SCORED_REVIEWS}+)`);
-      // Delete stale consensus if show dropped below threshold
-      if (consensusData.shows[showId] && (consensusData.shows[showId].reviewCount || 0) >= MIN_SCORED_REVIEWS) {
+    const eligibleCount = liveCounts ? Math.min(scoredReviews.length, liveCounts.get(showId) || 0) : scoredReviews.length;
+    if (!isConsensusEligible(eligibleCount)) {
+      console.log(`  ⏭️  Skipped - only ${eligibleCount} scored reviews (need ${MIN_SCORED_REVIEWS}+)`);
+      // Delete stale consensus if show dropped below threshold (any stored
+      // count: a blurb stored with reviewCount 1 used to be kept forever)
+      if (consensusData.shows[showId]) {
         console.log(`  🗑️  Removing stale consensus (reviews dropped below threshold)`);
         delete consensusData.shows[showId];
       }

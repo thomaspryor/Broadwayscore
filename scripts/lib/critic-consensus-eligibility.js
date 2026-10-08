@@ -65,4 +65,27 @@ function isConsensusEligible(scoredReviewCount) {
   return Number.isFinite(scoredReviewCount) && scoredReviewCount >= MIN_SCORED_REVIEWS;
 }
 
-module.exports = { MIN_SCORED_REVIEWS, isConsensusEligible };
+/**
+ * Scored rows per show in reviews.json: what the site actually shows. The
+ * generator's review-texts view skips fewer exclusions than the rebuild, so a
+ * Critics' Take written from it outlived the reviews it summarised (BRO-4852:
+ * Midnight kept a blurb about Ben Platt after its two wrong-show reviews were
+ * dropped; 25 shows carried a blurb with fewer than 2 live reviews).
+ * @param {{reviews?: object[]}|object[]} reviewsJson
+ * @returns {Map<string, number>}
+ */
+function liveScoredCounts(reviewsJson) {
+  const rows = Array.isArray(reviewsJson) ? reviewsJson : (reviewsJson && reviewsJson.reviews) || [];
+  const counts = new Map();
+  for (const r of rows) {
+    if (r && r.showId && r.assignedScore != null) counts.set(r.showId, (counts.get(r.showId) || 0) + 1);
+  }
+  return counts;
+}
+
+/** Show ids holding a consensus while the site has too few live reviews for one. */
+function staleConsensusIds(consensusShows, counts) {
+  return Object.keys(consensusShows || {}).filter((id) => !isConsensusEligible(counts.get(id) || 0));
+}
+
+module.exports = { MIN_SCORED_REVIEWS, isConsensusEligible, liveScoredCounts, staleConsensusIds };
