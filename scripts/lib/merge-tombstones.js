@@ -16,11 +16,15 @@ const crypto = require('crypto');
 const TOMBSTONE_DIR = 'review-merge-tombstones';
 
 function buildTombstoneRows(sourceFile, stats, now = new Date()) {
-  const keys = (stats && stats.unknownBylineFossilsDroppedKeys) || [];
+  const keys = [
+    ...((stats && stats.unknownBylineFossilsDroppedKeys) || []).map((k) => ({ ...k, reason: 'unknown-byline-fossil' })),
+    // BRO-4852: remote-only rows our rebuild excluded (three-way rule).
+    ...((stats && stats.droppedByOursKeys) || []).map((k) => ({ ...k, reason: 'excluded-by-our-rebuild' })),
+  ];
   return keys.map((k) => ({
     at: now.toISOString(),
     file: sourceFile,
-    reason: 'unknown-byline-fossil',
+    reason: k.reason,
     showId: k.showId,
     outlet: k.outlet,
     url: k.url,

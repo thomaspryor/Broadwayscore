@@ -236,3 +236,35 @@ test('push-core-data consumer loop tolerates an unterminated / missing last line
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
+
+// BRO-4852: the third arg is the job's pre-run snapshot; reviews.json uses it
+// so a row our rebuild excluded is not unioned back from remote.
+test('reconcile-core-data-registry: base dir keeps rebuild exclusions out of reviews.json; bad/missing base falls back to union', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'reconcile-core-data-'));
+  try {
+    const checkout = path.join(tmp, 'checkout');
+    const remoteDir = path.join(tmp, 'remote');
+    const baseDir = path.join(tmp, 'base');
+    for (const d of [checkout, remoteDir, baseDir]) fs.mkdirSync(d, { recursive: true });
+    const kept = { showId: 'wicked-2003', outlet: 'Variety', criticName: 'Marilyn Stasio', assignedScore: 80 };
+    const wrong = { showId: 'two-girls-off-broadway-2026', outlet: 'The Guardian', criticName: null, assignedScore: 87 };
+    const added = { showId: 'soon-off-broadway-2026', outlet: 'Time Out', criticName: 'Adam Feldman', assignedScore: 70 };
+    const write = (dir, reviews) => fs.writeFileSync(path.join(dir, 'reviews.json'), JSON.stringify({ _meta: {}, reviews }, null, 2) + '\n');
+    const showIds = () => JSON.parse(fs.readFileSync(path.join(checkout, 'reviews.json'), 'utf8')).reviews.map((r) => r.showId).sort();
+
+    write(checkout, [kept]); write(remoteDir, [kept, wrong, added]); write(baseDir, [kept, wrong]);
+    execFileSync('node', [SCRIPT, remoteDir, baseDir], { cwd: checkout, encoding: 'utf8' });
+    assert.deepEqual(showIds(), ['soon-off-broadway-2026', 'wicked-2003']);
+    assert.ok(fs.readdirSync(path.join(checkout, 'review-merge-tombstones')).length >= 1, 'drop leaves a tombstone');
+
+    write(checkout, [kept]); fs.writeFileSync(path.join(baseDir, 'reviews.json'), '{not json');
+    execFileSync('node', [SCRIPT, remoteDir, baseDir], { cwd: checkout, encoding: 'utf8' });
+    assert.deepEqual(showIds(), ['soon-off-broadway-2026', 'two-girls-off-broadway-2026', 'wicked-2003']);
+
+    write(checkout, [kept]);
+    execFileSync('node', [SCRIPT, remoteDir, path.join(tmp, 'missing')], { cwd: checkout, encoding: 'utf8' });
+    assert.deepEqual(showIds(), ['soon-off-broadway-2026', 'two-girls-off-broadway-2026', 'wicked-2003']);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+});

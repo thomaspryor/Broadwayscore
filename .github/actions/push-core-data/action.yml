@@ -740,8 +740,11 @@ runs:
           # registry entry, not a matching edit here. Prints changed
           # basenames, one per line, so exactly those get `git add`ed — not
           # a blanket `-A` (same reasoning as the per-file blocks above).
+          # Second arg (BRO-4852): the checkout snapshot is the base for
+          # three-way mergers (reviews.json), so a row our rebuild excluded is
+          # not unioned back from remote's older copy.
           if [ -d /tmp/remote-core-data ]; then
-            RECONCILED_REGISTRY_FILES=$(node "${GITHUB_WORKSPACE}/scripts/lib/reconcile-core-data-registry.js" /tmp/remote-core-data 2>&1 >/tmp/.reconciled-registry-files) || true
+            RECONCILED_REGISTRY_FILES=$(node "${GITHUB_WORKSPACE}/scripts/lib/reconcile-core-data-registry.js" /tmp/remote-core-data /tmp/core-data-snapshot 2>&1 >/tmp/.reconciled-registry-files) || true
             [ -n "$RECONCILED_REGISTRY_FILES" ] && echo "$RECONCILED_REGISTRY_FILES"
             if [ -s /tmp/.reconciled-registry-files ]; then
               # `|| [ -n "$f" ]` keeps an unterminated last line (BRO-4809: the
