@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T20:09:16.102Z",
+  "timestamp": "2026-10-08T20:36:28.235Z",
   "stats": {
-    "totalReviews": 48538,
-    "alreadyFlagged": 18966,
-    "dateGuardCatches": 277,
-    "directorMismatch": 1471,
-    "tvFilmSignals": 1419,
-    "londonSignals": 1420,
+    "totalReviews": 48550,
+    "alreadyFlagged": 19012,
+    "dateGuardCatches": 278,
+    "directorMismatch": 1473,
+    "tvFilmSignals": 1422,
+    "londonSignals": 1436,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4804
+    "noPublishDate": 4733
   },
   "findings": [
     {
@@ -2770,6 +2770,39 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2025-09-24",
+      "url": "https://monstagigz.com/2025/09/24/theatre-review-bacchae-starring-clare-perkins-ukweli-roach-james-mcardle-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/bacchae-olivier-national-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -7207,6 +7240,20 @@
       "score": 39,
       "publishDate": "2025-09-26",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/clarkston-joe-locke-review-b2834186.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "clarkston-west-end-2025",
+      "file": "standard--martin-robinson.json",
+      "score": 39,
+      "publishDate": "2025-09-26",
+      "url": "https://www.standard.co.uk/culture/theatre/clarkston-trafalgar-theatre-review-b1249795.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17610,7 +17657,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -17676,6 +17723,25 @@
       "publishDate": "2026-10-08",
       "url": "https://thespyinthestalls.com/2026/10/into-the-woods/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "score": 82,
+      "publishDate": "2026-01-25",
+      "url": "https://theartsdispatch.substack.com/p/into-the-woods-review-bridge-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 240d before show (2026-01-25 vs 2026-09-22)"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -17761,7 +17827,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 89,
+      "score": 90,
       "publishDate": "2026-10-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-woods-review-noel-coward-theatre-jordan-fein-stephen-sondheim-6r2kfzqln",
       "findings": [
@@ -22960,25 +23026,6 @@
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 76,
-      "publishDate": "2026-06-20",
-      "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
       "publishDate": "2026-06-20",
       "url": "https://www.londontheatre.co.uk/reviews/much-ado-about-nothing-review-shakespeares-globe-2026",
@@ -25403,7 +25450,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "2025-11-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/othello-david-harewood-theatre-royal-haymarket-review-khwbzf7r5",
       "findings": [
@@ -27309,10 +27356,29 @@
     },
     {
       "showId": "punch-west-end-2025",
-      "file": "london-theatre--anya-ryan.json",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 100,
+      "publishDate": "2025-09-28",
+      "url": "https://www.allthatdazzles.co.uk/post/review-punch-apollo-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "hampstead-highgate-express--bridget-galton.json",
       "score": null,
-      "publishDate": null,
-      "url": "https://www.londontheatre.co.uk/reviews/punch-review-apollo-theatre",
+      "publishDate": "2025-10-08",
+      "url": "https://www.hamhigh.co.uk/news/25525241.review-punch-james-graham-apollo-theatre-london/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27332,6 +27398,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"adam penford\" from punch-2025"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leanne pinder\" from punch-2025"
         }
       ]
     },
@@ -44898,6 +44969,34 @@
     },
     {
       "showId": "bacchae-west-end-2025",
+      "file": "all-that-dazzles-uk--sam-admin.json",
+      "score": null,
+      "publishDate": "2025-09-25",
+      "url": "https://www.allthatdazzles.co.uk/post/review-bacchae-national-theatre-olivier",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": 19,
+      "publishDate": "2025-09-25",
+      "url": "https://www.broadwayworld.com/westend/article/Review-BACCHAE-National-Theatre-20250925",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "bacchae-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
       "score": 62,
       "publishDate": "2025-09-25",
@@ -44907,6 +45006,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "file": "indiependent--lucy-carter.json",
+      "score": null,
+      "publishDate": "2025-10-06",
+      "url": "https://www.indiependent.co.uk/style-over-substance-bacchae-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2025-09-29",
+      "url": "https://liamodell.com/2025/09/29/bacchae-review-national-theatre-london-nima-taleghani-heartstopper-indhu-rubasingham-sharon-small-clare-perkins-james-mcardle-pronunciation/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
         }
       ]
     },
@@ -47401,6 +47528,20 @@
       "score": 79,
       "publishDate": "2025-09-18",
       "url": "https://everything-theatre.co.uk/2025/09/review-cow-deer-royal-court-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "cow-deer-west-end-2025",
+      "file": "firstnightmagazine--unknown.json",
+      "score": null,
+      "publishDate": "2025-09-13",
+      "url": "https://firstnightmagazine.com/2025/09/13/review-of-cow-deer-asmr-staging-puts-audiences-in-a-state-of-foley-a-deux/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -51163,10 +51304,52 @@
     },
     {
       "showId": "hamlet-west-end-2025",
+      "file": "liamodell--liam-odell.json",
+      "score": null,
+      "publishDate": "2025-10-05",
+      "url": "https://liamodell.com/2025/10/05/hamlet-review-national-theatre-2025-hiran-abeysekera-alistair-petrie-robert-hastie-francesca-mills-running-time/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-west-end-2025",
       "file": "london-theatre--anya-ryan.json",
       "score": 64,
       "publishDate": "2025-10-03",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-west-end-2025",
+      "file": "london-theatre--unknown.json",
+      "score": null,
+      "publishDate": "2025-10-03",
+      "url": "https://www.londontheatre.co.uk/reviews/hamlet-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": "2025-10-05",
+      "url": "https://playsinternational.org.uk/hamlet-lyttelton-national-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -55573,6 +55756,20 @@
     },
     {
       "showId": "mary-page-marlowe-west-end-2025",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 82,
+      "publishDate": "2025-10-11",
+      "url": "https://www.allthatdazzles.co.uk/post/review-mary-page-marlowe-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-page-marlowe-west-end-2025",
       "file": "artsdesk--matt-wolf.json",
       "score": 89,
       "publishDate": "2025-10-24",
@@ -55601,10 +55798,52 @@
     },
     {
       "showId": "mary-page-marlowe-west-end-2025",
+      "file": "express-uk--stefan-kyriazis.json",
+      "score": 31,
+      "publishDate": "2025-10-09",
+      "url": "https://www.express.co.uk/entertainment/theatre/2118948/mary-page-marlowe-review-susan-sarandon-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-page-marlowe-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 64,
+      "publishDate": "2025-10-09",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/mary-page-marlowe-review-susan-sarandon-andrea-riseborough-b2842339.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-page-marlowe-west-end-2025",
       "file": "observer--susannah-clapp.json",
       "score": 63,
       "publishDate": "2025-10-17",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-page-marlowe-west-end-2025",
+      "file": "observer--unknown.json",
+      "score": null,
+      "publishDate": "2025-10-17",
+      "url": "https://observer.co.uk/culture/theatre/article/mary-page-marlowe-is-a-disappointing-play",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -57630,7 +57869,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "financialtimes--tim-bano.json",
-      "score": 62,
+      "score": 61,
       "publishDate": "2025-11-05",
       "url": "https://www.ft.com/content/acafbefa-0ba2-4913-8e2c-ad709a0958cc",
       "findings": [
@@ -57643,8 +57882,21 @@
     },
     {
       "showId": "othello-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "publishDate": "2025-11-05",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-othello-theatre-royal-haymarket",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 60,
+      "score": 63,
       "publishDate": "2025-11-05",
       "url": "https://www.timeout.com/london/theatre/othello-23-review",
       "findings": [
@@ -63122,6 +63374,19 @@
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-10-06",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-importance-of-being-earnest-noel-coward-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2025",
       "file": "london-theatre--julia-rank.json",
       "score": 90,
       "publishDate": "2025-10-01",
@@ -64949,6 +65214,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-shitheads-west-end-2026",
+      "file": "plays-international--maryam-philpott.json",
+      "score": 82,
+      "publishDate": "2026-02-16",
+      "url": "https://playsinternational.org.uk/the-shitheads-royal-court-theatre-upstairs/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
