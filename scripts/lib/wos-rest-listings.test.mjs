@@ -82,6 +82,12 @@ test('parseWosReviewTitle: the venue follows the LAST " at " (titles containing 
     { title: "Breakfast at Tiffany's", venue: 'Theatre Royal Haymarket' });
 });
 
+test('parseWosReviewTitle: pre-2020 "Review: <em>X</em> (Venue)" form (real 2018 titles)', () => {
+  assert.deepEqual(parseWosReviewTitle('Review: <em>Wise Children</em> (The Old Vic)', ''), { title: 'Wise Children', venue: 'Old Vic' });
+  assert.deepEqual(parseWosReviewTitle('Review: <em>The Inheritance</em> (Noël Coward Theatre)', ''), { title: 'The Inheritance', venue: 'Noël Coward Theatre' });
+  assert.equal(parseWosReviewTitle('Did <em>Company</em> drive critics crazy?', ''), null);
+});
+
 test('parseWosReviewTitle returns null for non-review posts', () => {
   assert.equal(parseWosReviewTitle('Casting announced for Kyoto transfer', ''), null);
 });
