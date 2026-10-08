@@ -8,6 +8,7 @@ const require = createRequire(import.meta.url);
 const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
+  mayServeDiskImage,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -175,4 +176,15 @@ test('archive: an existing file is reused only when it came from the same source
   assert.equal(canReuseArchivedFile({ recordedSource: undefined, incomingUrl: art, fileExists: true, force: false }), false);
   assert.equal(canReuseArchivedFile({ recordedSource: art, incomingUrl: art, fileExists: false, force: false }), false);
   assert.equal(canReuseArchivedFile({ recordedSource: art, incomingUrl: art, fileExists: true, force: true }), false);
+});
+
+test('page builder: a disk hero whose recorded source was rejected is not served', () => {
+  const theatr = 'https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/othello.jpg';
+  const row = { id: 'othello-1970', rejectedImageUrls: [`${theatr}?alt=media`] };
+  // othello-1970 kept the 2025 Denzel Washington banner this way.
+  assert.equal(mayServeDiskImage(row, theatr), false);
+  assert.equal(mayServeDiskImage(row, 'https://assets.playbill.com/playbill-covers/othello-1970.jpg'), true);
+  // No record, or nothing rejected: served as before.
+  assert.equal(mayServeDiskImage(row, undefined), true);
+  assert.equal(mayServeDiskImage({ id: 'x' }, theatr), true);
 });
