@@ -358,8 +358,14 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // 643 review objects, none of which any card renders (the cards read only
   // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
   const relatedShowsOpen = getRelatedShowsOpen(show).map(s => serializeShowForClient(s));
+  // A show already in "Open Shows You Might Like" (e.g. Oh, Mary! playing Off-Broadway)
+  // must not reappear in "Closed" for its Broadway run, so drop closed recs whose title matches.
+  const openRecTitles = new Set(relatedShowsOpen.map(s => s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()));
   const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end')
-    ? getRelatedShowsClosed(show).map(s => serializeShowForClient(s))
+    ? getRelatedShowsClosed(show, 12)
+        .filter(s => !openRecTitles.has(s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()))
+        .slice(0, 6)
+        .map(s => serializeShowForClient(s))
     : [];
   const otherProductions = getOtherProductions(show).map(s => serializeShowForClient(s));
   const comparisons = getComparisonsForShow(show.slug);
