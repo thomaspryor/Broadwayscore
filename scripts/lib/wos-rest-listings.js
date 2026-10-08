@@ -118,6 +118,9 @@ function parseWosShow(raw, venueById, genreById) {
 function parseWosReviewTitle(rawTitle, rawTeaser) {
   const t = decodeEntities(rawTitle);
   const teaser = decodeEntities(rawTeaser);
+  // Pre-2020 house style: "Review: <em>Wise Children</em> (The Old Vic)".
+  const old = t.match(/^review:\s*(.+?)\s*\(([^()]+)\)\s*$/i);
+  if (old) return { title: cleanReviewedTitle(old[1]), venue: old[2].replace(/^the\s+/i, '').trim() };
   // Greedy title: the venue follows the LAST " at " ("Breakfast at
   // Tiffany's at the Theatre Royal Haymarket – review").
   let m = t.match(/^(?:review:\s*)?(.+) at (?:the )?(.+?)\s*[–—-]\s*review\b/i)
