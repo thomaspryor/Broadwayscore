@@ -19,6 +19,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { buildTodayTixUrl } = require('./lib/url-utils');
 const { classifyTodayTixStartDate, unconfirmedStartFlags } = require('./lib/todaytix-dates');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { gateScrapedSynopsis, truncateAtSentence } = require('./lib/synopsis-fact-check');
 
 const USAGE = `enrich-todaytix-data.js — Enrich shows.json with TodayTix data (all categories: Broadway, OB, WE).
 
@@ -148,6 +149,7 @@ async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const showsData = loadShows();
   const shows = showsData.shows;
+  const showsByIdForGate = Object.fromEntries(shows.map((s) => [s.id, s]));
 
   console.log(`Total shows in shows.json: ${shows.length}`);
   console.log(`DRY_RUN: ${DRY_RUN}\n`);
@@ -276,11 +278,19 @@ async function main() {
     }
 
     if ((!show.synopsis || show.synopsis === '') && tt.description) {
-      const synopsis = stripHtml(tt.description).substring(0, 500);
+      // Cut at a sentence end: a hard 500-char cut ends mid-word and the gate
+      // below would reject every long description as truncated.
+      const synopsis = truncateAtSentence(stripHtml(tt.description), 500);
       if (synopsis.length > 20) {
-        if (!DRY_RUN) show.synopsis = synopsis;
-        stats.synopsisSet++;
-        changes.push(`synopsis (${synopsis.length} chars)`);
+        // TodayTix descriptions are producer marketing copy: gate them (BRO-4853).
+        const gate = gateScrapedSynopsis(show, synopsis, { showsById: showsByIdForGate });
+        if (!gate.ok) {
+          changes.push(`synopsis skipped (${gate.reason})`);
+        } else {
+          if (!DRY_RUN) show.synopsis = synopsis;
+          stats.synopsisSet++;
+          changes.push(`synopsis (${synopsis.length} chars)`);
+        }
       }
     }
 

@@ -32,6 +32,7 @@ const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-writ
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
 const { findConflictingShowId, isShowScoreNotFoundPage, decideDeadUrlAction } = require('./lib/show-score-url-map');
 const { recordSbCall } = require('./lib/provider-telemetry');
+const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -1302,9 +1303,17 @@ async function main() {
               console.log(`  ✓ Enriched runtime: ${data.metadata.runtime}`);
             }
             if (data.metadata.synopsis && !show.synopsis) {
-              show.synopsis = data.metadata.synopsis;
-              enriched = true;
-              console.log(`  ✓ Enriched synopsis (${data.metadata.synopsis.length} chars)`);
+              // Show Score's blurb is producer marketing copy. Gate it (BRO-4853:
+              // it put a false Tony claim on Other Desert Cities) so a bad blurb is
+              // left unwritten for Wikipedia enrichment instead of going live.
+              const gate = gateScrapedSynopsis(show, data.metadata.synopsis, { showsById: showMapById });
+              if (gate.ok) {
+                show.synopsis = data.metadata.synopsis;
+                enriched = true;
+                console.log(`  ✓ Enriched synopsis (${data.metadata.synopsis.length} chars)`);
+              } else {
+                console.log(`  ✗ Skipped Show Score synopsis (${gate.reason})`);
+              }
             }
             if (enriched) metadataEnriched++;
           }
