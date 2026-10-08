@@ -149,7 +149,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -160,7 +160,8 @@
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 125,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-10-08T20:29:41.774Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -5991,7 +5992,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
@@ -6009,7 +6010,9 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37810073037"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-08T20:29:44.813Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -11108,10 +11111,10 @@
       "title": "Scheduled sender delivered MORE THAN ONCE on 2026-10-04: reddit-post-ready",
       "firstSeen": "2026-10-06T20:06:51.087Z",
       "incidentOpenedAt": "2026-10-06T20:06:51.087Z",
-      "lastSeen": "2026-10-07T20:23:58.229Z",
-      "lastNotifiedAt": "2026-10-07T20:23:58.229Z",
+      "lastSeen": "2026-10-08T20:28:37.646Z",
+      "lastNotifiedAt": "2026-10-08T20:28:37.646Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-4755"
     },
@@ -11651,10 +11654,10 @@
       "title": "Scheduled sender delivered MORE THAN ONCE on 2026-10-06: reddit-post-ready",
       "firstSeen": "2026-10-07T20:23:58.505Z",
       "incidentOpenedAt": "2026-10-07T20:23:58.505Z",
-      "lastSeen": "2026-10-07T20:23:58.505Z",
-      "lastNotifiedAt": "2026-10-07T20:23:58.505Z",
+      "lastSeen": "2026-10-08T20:28:38.565Z",
+      "lastNotifiedAt": "2026-10-08T20:28:38.565Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4848"
     },
@@ -12161,6 +12164,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "scheduled-email-count:2026-10-07": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Scheduled sender delivered MORE THAN ONCE on 2026-10-07: reddit-post-ready",
+      "firstSeen": "2026-10-08T20:28:41.543Z",
+      "incidentOpenedAt": "2026-10-08T20:28:41.543Z",
+      "lastSeen": "2026-10-08T20:28:41.543Z",
+      "lastNotifiedAt": "2026-10-08T20:28:41.543Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4880"
     }
   }
 }
