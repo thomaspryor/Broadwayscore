@@ -23,6 +23,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const ROOT = path.join(__dirname, '..');
 const BATCHES_PATH = path.join(ROOT, 'scripts', 'backfill-batches.json');
@@ -44,8 +45,15 @@ function nextBackfillSlice(all, cursor, count) {
   return { shows, next: after, cycle };
 }
 
+const USAGE = `historical-backfill-next.js — pick the next slice of the historical review backfill and advance its cursor.
+
+Usage: node scripts/historical-backfill-next.js [--count=24] [--dry-run]
+  --count=N   shows to pick (positive integer, default ${DEFAULT_COUNT})
+  --dry-run   print the slice without writing the cursor`;
+
 function main() {
   const args = process.argv.slice(2);
+  if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const countArg = args.find((a) => a.startsWith('--count='));
   const count = countArg ? parseInt(countArg.split('=')[1], 10) : DEFAULT_COUNT;
   if (!(count >= 1)) {
