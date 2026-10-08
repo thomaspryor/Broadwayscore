@@ -1,14 +1,11 @@
 {
-  "updatedAt": "2026-10-07T09:04:27.682Z",
-  "scanned": 2302,
-  "showsWithViolations": 61,
-  "totalViolations": 61,
-  "newSinceLastRun": 4,
+  "updatedAt": "2026-10-08T09:27:23.174Z",
+  "scanned": 2312,
+  "showsWithViolations": 62,
+  "totalViolations": 62,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "affluenza-off-west-end-2026",
-    "an-evening-with-an-immigrant-off-west-end-2026",
-    "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-    "shucked-tour-2027"
+    "and-juliet-tour-2024"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -62,6 +59,7 @@
     "school-pictures-off-broadway-2026",
     "an-evening-with-an-immigrant-off-west-end-2026",
     "lost-in-del-valle-return-off-broadway-2026",
+    "and-juliet-tour-2024",
     "beetlejuice-tour-2026",
     "the-outsiders-tour-2025",
     "water-for-elephants-tour-2025",
@@ -474,7 +472,7 @@
       "showId": "affluenza-off-west-end-2026",
       "title": "Affluenza",
       "openingDate": "2026-10-05",
-      "message": "affluenza-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "affluenza-off-west-end-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -534,6 +532,15 @@
       ]
     },
     {
+      "showId": "and-juliet-tour-2024",
+      "title": "& Juliet",
+      "openingDate": "2024-09-22",
+      "message": "and-juliet-tour-2024 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "beetlejuice-tour-2026",
       "title": "Beetlejuice",
       "openingDate": "2026-02-13",
@@ -546,7 +553,7 @@
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 29x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 36x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -591,7 +598,7 @@
       "showId": "spamalot-tour-2025",
       "title": "Spamalot",
       "openingDate": "2025-12-01",
-      "message": "spamalot-tour-2025 review text mentions \"revival\" 18x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "spamalot-tour-2025 review text mentions \"revival\" 21x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
