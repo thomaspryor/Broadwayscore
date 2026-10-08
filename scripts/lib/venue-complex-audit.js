@@ -44,6 +44,11 @@ const GENERIC_TOKENS = new Set([
   // false-positived against Signature's "Alice Griffin Jewel Box Theater" on
   // "box" alone and turned main red. "Jewel" still identifies Signature's.
   'box', 'black', 'blackbox',
+  // BRO-447 (2026-10-08): "players" is a troupe-name word, not a place. The
+  // Brooklyn Gallery Players (Park Slope) false-positived against The Players
+  // Theatre (Greenwich Village) on this token alone and turned the daily
+  // Check Corpus Drift run red.
+  'players',
 ]);
 
 function coreTokens(str) {
