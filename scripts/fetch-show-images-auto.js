@@ -34,6 +34,8 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
+const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex } = require('./lib/image-source-match');
+const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
 const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
@@ -595,21 +597,7 @@ async function loadMezzanineProductions() {
   return mezzanineCache;
 }
 
-// Mezzanine openedAt comes back from Parse API as { __type: 'Date', iso: '...' }
-// but diary-shows.json fallback writes plain ISO strings. Handle both shapes.
-function extractMezzYear(openedAt) {
-  if (!openedAt) return 0;
-  if (typeof openedAt === 'object' && openedAt !== null) {
-    const iso = openedAt.iso || '';
-    const y = parseInt(String(iso).substring(0, 4));
-    return Number.isFinite(y) && y > 1900 ? y : 0;
-  }
-  if (typeof openedAt === 'string') {
-    const y = parseInt(openedAt.substring(0, 4));
-    return Number.isFinite(y) && y > 1900 ? y : 0;
-  }
-  return 0;
-}
+let mezzVenueCity = null;
 
 async function fetchFromMezzanine(show) {
   const { byNormTitle } = await loadMezzanineProductions();
@@ -619,49 +607,18 @@ async function fetchFromMezzanine(show) {
   const candidates = byNormTitle.get(normTitle);
   if (!candidates || candidates.length === 0) return null;
 
-  // Pick the best match by year proximity
-  const showYear = show.openingDate ? parseInt(show.openingDate.substring(0, 4)) : 0;
-  let best = null;
-  let bestDist = Infinity;
-
-  for (const p of candidates) {
-    const mYear = extractMezzYear(p.openedAt);
-    const dist = showYear && mYear ? Math.abs(showYear - mYear) : 999;
-
-    // Year proximity is the PRIMARY signal. Broadway flag and ratings count are
-    // only used as tiebreakers when year distance is equal. Previously, the
-    // Broadway flag dominated year, so the first Broadway-flagged candidate
-    // would win for every production of the same title.
-    if (!best ||
-        dist < bestDist ||
-        (dist === bestDist && p.isBroadway && !best.isBroadway) ||
-        (dist === bestDist && p.isBroadway === best.isBroadway && (p.ratingsCount || 0) > (best.ratingsCount || 0))) {
-      best = p;
-      bestDist = dist;
-    }
-  }
-
-  if (!best || !best.artUrl) return null;
-
-  // Reject if the best candidate's year is > 2 years off from the show.
-  // This applies whether there is 1 candidate or many — a 1979 show should NOT
-  // get the 1992 production's poster just because it's the only Mezzanine entry.
-  // When no candidates have dates at all, fall through and trust verification downstream.
-  const bestYear = extractMezzYear(best.openedAt);
-  if (showYear && bestYear && bestDist > 2) {
-    console.log(`   ✗ Mezzanine: best candidate is ${bestDist} years off (${bestYear} vs show ${showYear}) — skipping`);
-    return null;
-  }
-
-  // Extra guard: if multiple candidates exist but the show has no opening year,
-  // we cannot disambiguate productions. Skip rather than return an arbitrary one.
-  if (candidates.length > 1 && !showYear) {
-    console.log(`   ✗ Mezzanine: ${candidates.length} candidates but show has no openingDate — skipping`);
+  // Venue first, then market, then nearest full date (scripts/lib/image-source-match.js).
+  // A year-only comparison with a Broadway tie-break gave the 2025 Old Vic
+  // Oedipus the Studio 54 poster (BRO-4851).
+  if (!mezzVenueCity) mezzVenueCity = buildVenueCityIndex(allShowsData ? allShowsData.shows : []);
+  const { candidate: best, reason } = pickMezzanineCandidate(show, candidates, mezzVenueCity);
+  if (!best) {
+    console.log(`   ✗ Mezzanine: ${candidates.length} candidate(s), none for this production — ${reason}`);
     return null;
   }
 
   const theater = best.theater || 'unknown venue';
-  console.log(`   ✓ Mezzanine: found poster art (${theater}, ${bestDist <= 2 ? `year match dist=${bestDist}` : 'no year'})`);
+  console.log(`   ✓ Mezzanine: found poster art (${theater}, ${reason})`);
 
   return {
     thumbnail: best.artUrl,
@@ -733,7 +690,14 @@ async function fetchFromTheatr(show) {
   const candidates = byNormTitle.get(normTitle);
   if (!candidates || candidates.length === 0) return null;
 
-  const best = candidates.find(c => c.eventCategory === 'Broadway') || candidates[0];
+  const atVenue = candidates.find(c => c.venue && venuesMatch(c.venue.name, show.venue));
+  const best = atVenue || candidates.find(c => c.eventCategory === 'Broadway') || candidates[0];
+  // Theatr lists current New York productions only: a London row, or a closed
+  // row with another same-title production, would get some other run's art.
+  if (!theatrEligible(show, best, allShowsData && allShowsData.shows)) {
+    console.log('   ✗ Theatr: title match is not this production (NYC-only source / other same-title production) — skipping');
+    return null;
+  }
   const hasImages = best.imageUrl || best.posterUrl || best.heroUrl;
   if (!hasImages) return null;
 
@@ -754,6 +718,10 @@ let ibdbImageCache = null;
 
 // Fetch show images from IBDB page (which embeds broadway.org CDN images)
 async function fetchFromIBDB(show) {
+  if (!ibdbEligible(show)) {
+    console.log('   ✗ IBDB: Broadway-only source, skipped for a London show');
+    return null;
+  }
   if (!ibdbImageCache) {
     ibdbImageCache = loadIbdbImageCache();
   }
@@ -1962,6 +1930,10 @@ function snapshotLocalImageFiles(images) {
 // Returns { images, verifyResult, url, tierName, score } for candidate collection,
 // or null if rejected.
 async function verifyAndCollect(images, show, tierName, verifyCtx) {
+  if (isRejectedImage(images, show)) {
+    console.log(`   ✗ ${tierName}: image is in this show's rejectedImageUrls — skipping`);
+    return null;
+  }
   if (!verifyCtx) {
     delete images._verifyBuffer;
     delete images._remainingCandidates;
@@ -2393,9 +2365,17 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // Logic lives in scripts/lib/canon-poster-art.js so it's unit-testable
   // without the network/API-key dependencies of this file (BRO-119).
   const newerProduction = findNewerSameTitleProduction(show, allShowsData.shows);
-  const skipTodayTix = !!newerProduction;
-  if (skipTodayTix) {
+  // A closed London row with ANY same-city sibling of its title: TodayTix
+  // serves the current production's art, which may be the older one too
+  // (BRO-4851, Oedipus 2024/2025).
+  const londonSibling = !newerProduction && show.status === 'closed' && todaytixMarket(show) === 'london'
+    ? findOtherSameTitleProduction(show, allShowsData.shows, { sameMarket: true })
+    : null;
+  const skipTodayTix = !!(newerProduction || londonSibling);
+  if (newerProduction) {
     console.log(`   ⚠ Newer production "${newerProduction.id}" exists — skipping TodayTix, trying IBDB/Google`);
+  } else if (londonSibling) {
+    console.log(`   ⚠ Same-title London production "${londonSibling.id}" exists — skipping TodayTix`);
   }
 
   let apiData = null;
@@ -2897,7 +2877,7 @@ async function main() {
     for (const show of shows) {
       // Try Theatr first (has bannerImageUrl)
       const theatrImages = await fetchFromTheatr(show);
-      if (theatrImages?.hero) {
+      if (theatrImages?.hero && !isRejectedImage({ hero: theatrImages.hero }, show)) {
         if (!show.images) show.images = {};
         show.images.hero = theatrImages.hero;
         filled++;
@@ -2908,7 +2888,7 @@ async function main() {
       const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
       if (apiData) {
         const hero = apiData.hero || apiData.headerImage || null;
-        if (hero && !/coming.?soon/i.test(hero) && !/NORAM/i.test(hero)) {
+        if (hero && !/coming.?soon/i.test(hero) && !/NORAM/i.test(hero) && !isRejectedImage({ hero }, show)) {
           if (!show.images) show.images = {};
           show.images.hero = hero.includes('?') ? hero : hero + '?fm=webp&q=90';
           filled++;

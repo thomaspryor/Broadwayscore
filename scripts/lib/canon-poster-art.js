@@ -25,23 +25,42 @@
 function findNewerSameTitleProduction(show, allShows) {
   if (show.status !== 'closed') return null;
 
-  const baseTitle = show.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
   const showYear = show.openingDate ? new Date(show.openingDate).getFullYear() : 0;
 
   return allShows.find((s) => {
     if (s.id === show.id) return false;
-    const sBase = s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
-    // Exact match OR the full base title (2+ words) appears separated by punctuation (- : , !)
-    // Catches "The Tempest - Globe", "Encores! The Wild Party", "Doubt: A Parable"
-    // but NOT short titles like "Big" → "Big Fish" (space-only, no punct) or single words
-    const escaped = baseTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const hasMultipleWords = baseTitle.includes(' ');
-    const isVariant = hasMultipleWords &&
-      new RegExp(`(^${escaped}\\s*[-:,]|[-:!]\\s*${escaped}$)`).test(sBase);
-    if (sBase !== baseTitle && !isVariant) return false;
+    if (!sameTitle(show, s)) return false;
     const sYear = s.openingDate ? new Date(s.openingDate).getFullYear() : 0;
     return sYear > showYear;
   }) ?? null;
 }
 
-module.exports = { findNewerSameTitleProduction };
+const baseTitleOf = (t) => String(t || '').toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim();
+
+// Exact match OR the full base title (2+ words) appears separated by punctuation (- : , !)
+// Catches "The Tempest - Globe", "Encores! The Wild Party", "Doubt: A Parable"
+// but NOT short titles like "Big" → "Big Fish" (space-only, no punct) or single words
+function sameTitle(show, s) {
+  const baseTitle = baseTitleOf(show.title);
+  const sBase = baseTitleOf(s.title);
+  if (sBase === baseTitle) return true;
+  const escaped = baseTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return baseTitle.includes(' ')
+    && new RegExp(`(^${escaped}\\s*[-:,]|[-:!]\\s*${escaped}$)`).test(sBase);
+}
+
+/**
+ * Any OTHER row sharing `show`'s title (older or newer), or null. With
+ * `sameMarket`, only rows in the same TodayTix city count. A closed London row
+ * with a same-title sibling must not take TodayTix art: the page serves
+ * whichever production is current, so the 2025 Old Vic Oedipus could get the
+ * 2024 Wyndham's art and vice versa (BRO-4851).
+ */
+function findOtherSameTitleProduction(show, allShows, { sameMarket = false } = {}) {
+  const { todaytixMarket } = require('./todaytix-market');
+  const market = todaytixMarket(show);
+  return (allShows || []).find((s) => s.id !== show.id && sameTitle(show, s)
+    && (!sameMarket || todaytixMarket(s) === market)) ?? null;
+}
+
+module.exports = { findNewerSameTitleProduction, findOtherSameTitleProduction, sameTitle };
