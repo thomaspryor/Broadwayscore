@@ -40,7 +40,7 @@ import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoa
 import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
-import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
@@ -928,7 +928,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
               priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
               stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : null,
-            }))} initialCount={5} category={show.category} />
+              isTopCritic: !!(r.criticName && TOP_CRITICS.has(r.criticName)),
+            }))} initialCount={5} category={show.category} showTiers={!isOpera} />
 
             {/* Subtle in-card methodology link — explains how CriticScore is
                 computed without a verbose accordion. Links to the same
