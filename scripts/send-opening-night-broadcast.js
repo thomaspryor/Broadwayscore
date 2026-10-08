@@ -559,7 +559,7 @@ async function main() {
     const { collectRecreateDraftIds, recreateDraftBlockReason } = require('./lib/recreate-draft-guard');
     const refuse = (why) => {
       console.error(`\n--recreate-draft REFUSED: ${why}`);
-      console.error('Nothing was deleted and no new draft was created.');
+      console.error('No new draft was created.');
       process.exit(1);
     };
     // A preview run would delete the draft and then only email a preview.
@@ -585,6 +585,7 @@ async function main() {
       console.log(`\n[DRY RUN] Would delete old draft(s) ${draftIds.join(', ') || '(none)'} and clear records: ${keys.join(', ') || '(none)'}`);
     } else {
       const { default: https } = await import('https');
+      const deletedIds = new Set();
       for (const id of draftIds) {
         console.log(`--recreate-draft: deleting old draft ${id}...`);
         const res = await new Promise((resolve) => {
@@ -604,8 +605,17 @@ async function main() {
           req.end();
         });
         if (!(res.statusCode >= 200 && res.statusCode < 300)) {
+          // Drafts deleted earlier in this loop are gone from Resend: drop their
+          // records now, or a rerun would GET a 404 for them and refuse forever.
+          if (deletedIds.size) {
+            for (const key of keys) {
+              if (deletedIds.has(sentData.shows[key]?.draftId)) delete sentData.shows[key];
+            }
+            saveSentData(sentData);
+          }
           refuse(`could not delete old draft ${id} (${res.statusCode}: ${String(res.body).slice(0, 100)})`);
         }
+        deletedIds.add(id);
         console.log(`  Old draft deleted from Resend`);
       }
       // Clear every record of the deleted draft(s) so the script treats the show as new
