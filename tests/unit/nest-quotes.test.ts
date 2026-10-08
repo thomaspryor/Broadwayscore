@@ -21,6 +21,29 @@ test('quotes without nested quotation are unchanged', () => {
   assert.equal(nestQuotes(plain), plain);
 });
 
-test('an unpaired quote mark is left alone', () => {
+test('an unpaired quote mark mid-sentence is left alone', () => {
   assert.equal(nestQuotes('He said "it works'), 'He said "it works');
+});
+
+test('a quote wrapped entirely in its own marks loses the wrapper', () => {
+  assert.equal(
+    nestQuotes('"Gold\'s invigorating production showcases four stellar performances."'),
+    'Gold\'s invigorating production showcases four stellar performances.'
+  );
+  assert.equal(nestQuotes('“A quietly devastating evening.”'), 'A quietly devastating evening.');
+});
+
+test('a stray unmatched opening or closing mark is dropped', () => {
+  assert.equal(
+    nestQuotes('"You will be thrilled by the performances...'),
+    'You will be thrilled by the performances...'
+  );
+  assert.equal(nestQuotes('It soars.”'), 'It soars.');
+});
+
+test('a stray opening mark plus a nested title keeps the title as single quotes', () => {
+  assert.equal(
+    nestQuotes('"The standard advice is \'Write about what you know.\' In the case of "A Strange Loop," both apply.'),
+    'The standard advice is \'Write about what you know.\' In the case of ‘A Strange Loop,’ both apply.'
+  );
 });
