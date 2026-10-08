@@ -312,13 +312,12 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-07T08:47:58.892Z",
-      "lastNotifiedAt": "2026-10-06T13:42:25.095Z",
-      "lastSurfacedAt": "2026-10-06T13:42:25.095Z",
-      "notifyCount": 28,
+      "lastSeen": "2026-10-08T09:06:39.780Z",
+      "lastNotifiedAt": "2026-10-08T09:06:39.780Z",
+      "lastSurfacedAt": "2026-10-08T09:06:39.780Z",
+      "notifyCount": 29,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-3030"
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "open",
@@ -8826,16 +8825,15 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 34 P0 older than 24h, 416 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 32 P0 older than 24h, 391 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-07T08:47:20.983Z",
-      "lastNotifiedAt": "2026-10-06T13:42:01.719Z",
-      "lastSurfacedAt": "2026-10-06T13:42:01.719Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-10-08T09:06:00.375Z",
+      "lastNotifiedAt": "2026-10-08T09:06:00.375Z",
+      "lastSurfacedAt": "2026-10-08T09:06:00.375Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "open",
@@ -10916,13 +10914,13 @@
       "title": "Placeholder synopsis on MAGIC MIKE LIVE New York",
       "firstSeen": "2026-10-06T10:26:03.633Z",
       "incidentOpenedAt": "2026-10-06T10:26:03.633Z",
-      "lastSeen": "2026-10-08T02:01:10.407Z",
+      "lastSeen": "2026-10-08T09:04:59.287Z",
       "lastNotifiedAt": "2026-10-06T10:26:03.633Z",
       "lastSurfacedAt": "2026-10-06T10:26:03.633Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-publish-date-pre-opening:missing:affluenza-off-west-end-2026": {
       "status": "open",
@@ -10944,13 +10942,13 @@
       "title": "Content mismatch on Into the Woods",
       "firstSeen": "2026-10-06T10:26:09.742Z",
       "incidentOpenedAt": "2026-10-06T10:26:09.742Z",
-      "lastSeen": "2026-10-08T02:01:10.422Z",
+      "lastSeen": "2026-10-08T09:04:59.299Z",
       "lastNotifiedAt": "2026-10-06T10:26:09.742Z",
       "lastSurfacedAt": "2026-10-06T10:26:09.742Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 27
+      "silentRefires": 28
     },
     "gap:what-the-animals-say-off-west-end-2026/timeout-london--unknown.json": {
       "status": "open",
@@ -11522,13 +11520,13 @@
       "title": "Placeholder synopsis on Betty's Summer Vacation (The Heights Players)",
       "firstSeen": "2026-10-07T08:46:25.853Z",
       "incidentOpenedAt": "2026-10-07T08:46:25.853Z",
-      "lastSeen": "2026-10-08T02:01:12.670Z",
+      "lastSeen": "2026-10-08T09:05:02.163Z",
       "lastNotifiedAt": "2026-10-07T08:46:25.853Z",
       "lastSurfacedAt": "2026-10-07T08:46:25.853Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-4784-inline": {
       "status": "resolved",
@@ -11771,12 +11769,13 @@
       "title": "Unhandled CV.wrongProduction on Into the Woods",
       "firstSeen": "2026-10-08T02:01:10.415Z",
       "incidentOpenedAt": "2026-10-08T02:01:10.415Z",
-      "lastSeen": "2026-10-08T02:01:10.415Z",
+      "lastSeen": "2026-10-08T09:04:59.293Z",
       "lastNotifiedAt": "2026-10-08T02:01:10.415Z",
       "lastSurfacedAt": "2026-10-08T02:01:10.415Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:into-the-woods-noel-coward-west-end-2026": {
       "status": "open",
@@ -11894,6 +11893,19 @@
       "lastSeen": "2026-10-08T07:08:45.153Z",
       "lastNotifiedAt": "2026-10-08T07:08:45.153Z",
       "lastSurfacedAt": "2026-10-08T07:08:45.153Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-publish-date-pre-opening:into-the-woods-noel-coward-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Pre-opening publishDate on Into the Woods",
+      "firstSeen": "2026-10-08T09:04:59.304Z",
+      "incidentOpenedAt": "2026-10-08T09:04:59.304Z",
+      "lastSeen": "2026-10-08T09:04:59.304Z",
+      "lastNotifiedAt": "2026-10-08T09:04:59.304Z",
+      "lastSurfacedAt": "2026-10-08T09:04:59.304Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
