@@ -1,12 +1,14 @@
 {
-  "generatedAt": "2026-10-08T09:50:03.481Z",
+  "generatedAt": "2026-10-08T17:18:09.448Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 230,
-  "clean": 224,
-  "defective": 6,
+  "checked": 226,
+  "clean": 218,
+  "defective": 8,
   "byType": {
+    "missing-from-prod": 2,
+    "score-drift": 1,
     "unreachable": 6
   },
   "shows": [
@@ -99,6 +101,44 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
+    },
+    {
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "openingDate": "2026-10-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: one-minute-critic"
+        }
+      ],
+      "missingFromProd": [
+        "one-minute-critic"
+      ],
+      "localCount": 15,
+      "deployedCount": 14
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.28 vs local 75.85 (Δ0.43)"
+        }
+      ],
+      "missingFromProd": [
+        "broadwayworld"
+      ],
+      "localCount": 30,
+      "deployedCount": 29
     }
   ]
 }
