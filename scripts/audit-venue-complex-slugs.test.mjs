@@ -12,7 +12,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findOrphanSubVenueSlugs, slugify, normalizeVenueName } =
+const { findOrphanSubVenueSlugs, findCandidateGaps, slugify, normalizeVenueName } =
   require('./lib/venue-complex-audit.js');
 
 const complexDefs = require('../data/venue-complexes.json').complexes;
@@ -120,3 +120,35 @@ test('the live venue-complex files have a usable top-level complexes object and 
   assert.ok(checked >= 2, `expected at least the two known markets to be checked, checked ${checked}`);
 });
 
+
+// BRO-447: "players" alone is a troupe-name word. Gallery Players (Brooklyn) is
+// not a sub-venue of The Players Theatre (Greenwich Village). Synthetic rows,
+// so this does not depend on the live corpus.
+test('findCandidateGaps does not link unrelated venues on the shared word "players"', () => {
+  const shows = [
+    { venue: 'The Players Theatre', category: 'off-broadway' },
+    { venue: 'The Steve & Marie Sgouros Theatre (The Players Theatre Loft)', category: 'off-broadway' },
+    { venue: 'Gallery Players', category: 'off-broadway' },
+  ];
+  const defs = {
+    'the-players-theatre': {
+      name: 'The Players Theatre',
+      subVenueSlugs: ['the-steve-marie-sgouros-theatre-the-players-theatre-loft'],
+    },
+  };
+  assert.deepEqual(findCandidateGaps(shows, defs, isOffBroadway), {});
+});
+
+test('findCandidateGaps still flags a real distinguishing-token gap', () => {
+  const shows = [
+    { venue: 'Sgouros Hall East', category: 'off-broadway' },
+    { venue: 'The Steve & Marie Sgouros Theatre (The Players Theatre Loft)', category: 'off-broadway' },
+  ];
+  const defs = {
+    'the-players-theatre': {
+      name: 'The Players Theatre',
+      subVenueSlugs: ['the-steve-marie-sgouros-theatre-the-players-theatre-loft'],
+    },
+  };
+  assert.deepEqual(Object.keys(findCandidateGaps(shows, defs, isOffBroadway)), ['the-players-theatre']);
+});
