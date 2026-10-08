@@ -41,6 +41,15 @@ test('a stray unmatched opening or closing mark is dropped', () => {
   assert.equal(nestQuotes('It soars.”'), 'It soars.');
 });
 
+test('an odd number of inner marks is left as written rather than mispaired', () => {
+  const odd = 'In the Still of the Night, “Gloria,” “You Can‘t Hurry Love.';
+  assert.equal(nestQuotes(odd), odd);
+});
+
+test('a trailing inch mark is not treated as a stray quote', () => {
+  assert.equal(nestQuotes('He stands a towering 6\'2"'), 'He stands a towering 6\'2"');
+});
+
 test('a stray opening mark plus a nested title keeps the title as single quotes', () => {
   assert.equal(
     nestQuotes('"The standard advice is \'Write about what you know.\' In the case of "A Strange Loop," both apply.'),

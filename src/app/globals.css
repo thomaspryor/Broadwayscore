@@ -704,15 +704,11 @@ img {
 
   /* Exception for the outlet tier chip on review rows (BRO-4881) — an 18px
      "T1" inflated to a 44px square squeezed the outlet name to one letter.
-     The invisible ::before keeps a ~44px-tall tap area without the layout. */
+     The ::before tap area lives in the pointer: coarse block below so touch
+     tablets wider than 640px get it too. */
   .tier-chip {
     min-height: auto;
     min-width: auto;
-  }
-  .tier-chip::before {
-    content: "";
-    position: absolute;
-    inset: -13px -6px;
   }
 
   /* Exception for the showtime picker's icon row (matinee/evening/custom/clear)
@@ -749,4 +745,14 @@ body.btc-standalone > div:last-of-type > footer {
 body.btc-standalone > main,
 body.btc-standalone > div > main {
   min-height: 100vh !important;
+}
+
+/* Outlet tier chip (BRO-4881): an invisible ~44px-tall tap area around the
+   18px chip on touch screens of any width, without changing the layout. */
+@media (pointer: coarse) {
+  .tier-chip::before {
+    content: "";
+    position: absolute;
+    inset: -13px -6px;
+  }
 }

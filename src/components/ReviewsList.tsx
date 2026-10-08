@@ -146,11 +146,32 @@ function CriticsPickBadge() {
 // popover saying what the tier means and how much the review counts
 // (BRO-4881). Replaced the blue "Top Critic" text, which said the same
 // thing as T1 and was hidden on mobile.
+// Check the cleaned text: nestQuotes may strip the trailing mark that would
+// otherwise have counted as end punctuation.
+function withEndPunctuation(text: string): string {
+  return /[.!?'"’”]$/.test(text) ? text : `${text}.`;
+}
+
+// useLayoutEffect warns during the server render of this client component.
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier; isTopCritic?: boolean; criticName?: string; london: boolean }) {
   const [open, setOpen] = useState(false);
   const [shift, setShift] = useState(0);
+  const [above, setAbove] = useState(false);
   const wrapRef = useRef<HTMLSpanElement>(null);
   const popRef = useRef<HTMLSpanElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  // Hover or keyboard focus already opened the popover, so the click (or
+  // Enter) that usually follows should keep it open rather than toggle it shut.
+  const openedPassively = useRef(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout>>();
+  const openPassively = () => {
+    clearTimeout(closeTimer.current);
+    if (!open) openedPassively.current = true;
+    setOpen(true);
+  };
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
   const popId = useId();
   const info = TIER_DISPLAY[tier];
   const promoted = tier === 1 && isTopCritic;
@@ -159,15 +180,19 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
     ? `${criticName || 'This critic'} is one of a small group of critics whose reviews count in full wherever they are published.`
     : (london ? info.examplesLondon : info.examplesNyc);
 
-  // Keep the popover inside the viewport (it is anchored to the chip, which
-  // can sit near the right edge on phones).
-  useLayoutEffect(() => {
-    if (!open || !popRef.current) return;
+  // Keep the popover inside the viewport: shift it left when the chip sits
+  // near the right edge on phones, and open it upward when the chip is too
+  // close to the bottom (scrolling to reveal it would close it).
+  useIsoLayoutEffect(() => {
+    if (!open || !popRef.current || !wrapRef.current) return;
     const rect = popRef.current.getBoundingClientRect();
     const maxRight = document.documentElement.clientWidth - 16;
     const left = rect.left - shift;
     const overRight = left + rect.width - maxRight;
     setShift(overRight > 0 ? -overRight : 0);
+    const chip = wrapRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - chip.bottom;
+    setAbove(spaceBelow < rect.height + 8 && chip.top > spaceBelow);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
@@ -176,6 +201,10 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
     const close = (e: Event) => {
       if (e instanceof KeyboardEvent && e.key !== 'Escape') return;
       if (e.type === 'pointerdown' && wrapRef.current?.contains(e.target as Node)) return;
+      // Tabbing to the popover link can scroll it into view; keep it open.
+      if (e.type === 'scroll' && wrapRef.current?.querySelector(':focus-visible')) return;
+      // Escape from the popover link would otherwise drop focus to <body>.
+      if (e.type === 'keydown' && wrapRef.current?.contains(document.activeElement)) btnRef.current?.focus();
       setOpen(false);
     };
     document.addEventListener('pointerdown', close);
@@ -192,37 +221,47 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
     <span
       ref={wrapRef}
       className="relative flex-shrink-0 inline-flex"
-      onPointerEnter={(e) => { if (e.pointerType === 'mouse') setOpen(true); }}
-      onPointerLeave={(e) => { if (e.pointerType === 'mouse') setOpen(false); }}
+      onPointerEnter={(e) => { if (e.pointerType === 'mouse') openPassively(); }}
+      onPointerLeave={(e) => {
+        // Short grace period so a slightly diagonal path to the link still lands.
+        if (e.pointerType === 'mouse') closeTimer.current = setTimeout(() => setOpen(false), 150);
+      }}
       onBlur={(e) => { if (!wrapRef.current?.contains(e.relatedTarget as Node)) setOpen(false); }}
     >
       <button
+        ref={btnRef}
         type="button"
         className={`tier-chip relative inline-flex items-center h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em] cursor-help transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
           open
             ? 'text-white border-brand/60 bg-brand/[0.08]'
-            : `${tier === 1 ? 'text-gray-400' : 'text-gray-500'} border-white/[0.12] hover:text-white hover:border-brand/60 hover:bg-brand/[0.08]`
+            : `${tier === 1 ? 'text-gray-300' : 'text-gray-400'} border-white/[0.12] hover:text-white hover:border-brand/60 hover:bg-brand/[0.08]`
         }`}
         aria-label={`Tier ${tier}: ${title}. ${info.relative}`}
         aria-expanded={open}
         aria-controls={open ? popId : undefined}
-        onClick={() => setOpen(o => !o)}
-        onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) setOpen(true); }}
+        onClick={() => {
+          if (open && openedPassively.current) { openedPassively.current = false; return; }
+          openedPassively.current = false;
+          setOpen(o => !o);
+        }}
+        onFocus={(e) => { if (e.currentTarget.matches(':focus-visible')) openPassively(); }}
         data-testid="tier-chip"
       >
         T{tier}
       </button>
       {open && (
+        // The outer span's padding bridges the gap to the chip, so the mouse
+        // never leaves the hover area on its way to the link.
         <span
           ref={popRef}
           id={popId}
-          role="tooltip"
-          className="absolute top-[calc(100%+8px)] -left-3 z-30 w-72 max-w-[calc(100vw-32px)] grid gap-2.5 p-3.5 pb-3 rounded-xl bg-surface-elevated border border-white/10 shadow-[0_16px_40px_-8px_rgba(0,0,0,0.7),0_2px_6px_rgba(0,0,0,0.4)] text-left whitespace-normal font-normal motion-safe:animate-fade-in"
+          className={`absolute ${above ? 'bottom-full pb-2' : 'top-full pt-2'} -left-3 z-30 w-72 max-w-[calc(100vw-32px)]`}
           style={{ transform: shift ? `translateX(${shift}px)` : undefined }}
         >
+        <span className="relative grid gap-2.5 p-3.5 pb-3 rounded-xl bg-surface-elevated border border-white/10 shadow-[0_16px_40px_-8px_rgba(0,0,0,0.7),0_2px_6px_rgba(0,0,0,0.4)] text-left whitespace-normal font-normal motion-safe:animate-fade-in">
           <span
             aria-hidden="true"
-            className="absolute -top-[6px] w-2.5 h-2.5 rotate-45 bg-surface-elevated border-l border-t border-white/10"
+            className={`absolute ${above ? '-bottom-[6px] border-r border-b' : '-top-[6px] border-l border-t'} w-2.5 h-2.5 rotate-45 bg-surface-elevated border-white/10`}
             style={{ left: `${12 + 4 - shift}px` }}
           />
           <span className="flex items-baseline gap-2">
@@ -241,6 +280,7 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
           <Link href="/methodology#critic-score" className="text-xs font-semibold text-brand hover:underline">
             How we weight critics →
           </Link>
+        </span>
         </span>
       )}
     </span>
@@ -346,7 +386,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {review.pullQuote && !review.quote && !review.summary && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{nestQuotes(review.pullQuote)}{/[.!?''""\u2019]$/.test(review.pullQuote.trim()) ? '' : '.'}&rdquo;
+            &ldquo;{withEndPunctuation(nestQuotes(review.pullQuote))}&rdquo;
           </p>
         )}
 

@@ -34,7 +34,7 @@ export const TIER_DISPLAY: Record<OutletTier, TierDisplay> = {
     weight: 0.75,
     relative: 'Counts ¾ as much as a Tier 1 review.',
     examplesNyc: 'TheaterMania, New York Stage Review, BroadwayWorld, New York Theatre Guide, Daily News, NY Post.',
-    examplesLondon: 'WhatsOnStage, Daily Mail, London Theatre, The Reviews Hub, The Arts Desk.',
+    examplesLondon: 'WhatsOnStage, London Theatre, The Reviews Hub, The Arts Desk.',
   },
   3: {
     title: 'General coverage',
