@@ -30,6 +30,8 @@
 
 'use strict';
 
+// venue-write-guard-ok: venue goes to the candidates audit file only; promote-historical-we.js routes the shows.json write through sanitizeVenueForWrite.
+
 const fs = require('fs');
 const path = require('path');
 

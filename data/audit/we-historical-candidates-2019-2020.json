@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T00:01:01.959Z",
+  "generatedAt": "2026-10-08T00:10:06.555Z",
   "season": "2019-2020",
   "sources": [
     "wos-listing",
@@ -9,10 +9,10 @@
   ],
   "counts": {
     "listings": 232,
-    "promotable": 29,
+    "promotable": 36,
     "notPromotable": {
       "non-theatre genre": 116,
-      "no review signal": 47,
+      "no review signal": 40,
       "run of 5 days < 14": 1,
       "run of 0 days < 14": 27,
       "run of 3 days < 14": 1,
@@ -24,7 +24,7 @@
       "run of 1 days < 14": 2,
       "run of 6 days < 14": 1
     },
-    "unlistedReviews": 0
+    "unlistedReviews": 8
   },
   "candidates": [
     {
@@ -143,16 +143,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/faith-hope-and-charity_201891/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/faith-hope-and-charity_201891/",
+        "wosReview": "https://www.whatsonstage.com/news/review-faith-hope-and-charity-national-theatre_49917/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -166,16 +168,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/big-the-musical_194436/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/big-the-musical_194436/",
+        "wosReview": "https://www.whatsonstage.com/news/review-big-the-musical-dominion-theatre_49915/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -420,16 +424,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/groan-ups_188003/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/groan-ups_188003/",
+        "wosReview": "https://www.whatsonstage.com/news/review-groan-ups-vaudeville-theatre_50105/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -592,16 +598,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-man-in-the-white-suit_195624/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-man-in-the-white-suit_195624/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-man-in-the-white-suit-wyndhams-theatre_50077/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -784,15 +792,18 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/a-history-of-water-in-the-middle-east_197643/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/a-history-of-water-in-the-middle-east_197643/",
+        "wosReview": "https://www.whatsonstage.com/news/review-a-history-of-water-in-the-middle-east-royal-court_50125/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -848,16 +859,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/lungs_201696/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/lungs_201696/",
+        "wosReview": "https://www.whatsonstage.com/news/review-lungs-old-vic_50166/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -1064,16 +1077,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-antipodes_201886/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-antipodes_201886/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-antipodes-national-theatre_50255/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -1108,16 +1123,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mary-poppins_187417/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mary-poppins_187417/",
+        "wosReview": "https://www.whatsonstage.com/news/review-mary-poppins-prince-edward-theatre_50345/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -1131,16 +1148,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/on-bear-ridge_197657/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/on-bear-ridge_197657/",
+        "wosReview": "https://www.whatsonstage.com/news/review-on-bear-ridge-royal-court_50229/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -1261,16 +1280,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dear-evan-hansen_177884/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dear-evan-hansen_177884/",
+        "wosReview": "https://www.whatsonstage.com/news/review-dear-evan-hansen-noel-coward-theatre_50391/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -1326,16 +1347,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/juliet_187987/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/juliet_187987/",
+        "wosReview": "https://www.whatsonstage.com/news/review-juliet-shaftesbury-theatre_50400/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -1898,15 +1921,18 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/midnight-movie_197644/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/midnight-movie_197644/",
+        "wosReview": "https://www.whatsonstage.com/news/review-midnight-movie-royal-court_50515/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -1920,16 +1946,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cyrano-de-bergerac_206084/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cyrano-de-bergerac_206084/",
+        "wosReview": "https://www.whatsonstage.com/news/review-cyrano-de-bergerac-playhouse-theatre_50523/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2071,16 +2099,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-ocean-at-the-end-of-the-lane_201890/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-ocean-at-the-end-of-the-lane_201890/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-ocean-at-the-end-of-the-lane-national-theatre_50561/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2094,16 +2124,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/three-sisters_201898/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/three-sisters_201898/",
+        "wosReview": "https://www.whatsonstage.com/news/review-three-sisters-national-theatre_50551/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2138,16 +2170,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/a-kind-of-people_197638/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/a-kind-of-people_197638/",
+        "wosReview": "https://www.whatsonstage.com/news/review-a-kind-of-people-royal-court_50557/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2203,10 +2237,12 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/goldilocks-and-the-three-bears_199682/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/goldilocks-and-the-three-bears_199682/",
+        "wosReview": "https://www.whatsonstage.com/news/review-goldilocks-and-the-three-bears-the-london-palladium_50559/"
       },
       "inShowsJson": null,
       "decision": {
@@ -2267,15 +2303,18 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/girl-from-the-north-country_202580/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/girl-from-the-north-country_202580/",
+        "wosReview": "https://www.whatsonstage.com/news/review-girl-from-the-north-country-gielgud-theatre_50587/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -2354,16 +2393,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/magic-goes-wrong_191871/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/magic-goes-wrong_191871/",
+        "wosReview": "https://www.whatsonstage.com/news/review-magic-goes-wrong-vaudeville-theatre_50661/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2526,16 +2567,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/uncle-vanya_210098/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/uncle-vanya_210098/",
+        "wosReview": "https://www.whatsonstage.com/news/review-uncle-vanya-harold-pinter-theatre_50759/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2548,15 +2591,18 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/scenes-with-girls_197650/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/scenes-with-girls_197650/",
+        "wosReview": "https://www.whatsonstage.com/news/review-scenes-with-girls-royal-court_50744/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -2570,16 +2616,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-welkin_208624/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-welkin_208624/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-welkin-national-theatre_50755/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2592,9 +2640,12 @@
         "musical"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/les-miserables_252939/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/les-miserables_252939/",
+        "wosReview": "https://www.whatsonstage.com/news/review-les-miserables-sondheim-theatre_50720/"
       },
       "inShowsJson": null,
       "decision": {
@@ -2656,16 +2707,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/kunene-and-the-king_210166/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/kunene-and-the-king_210166/",
+        "wosReview": "https://www.whatsonstage.com/news/review-kunene-and-the-king-ambassadors-theatre_50796/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2679,16 +2732,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/leopoldstadt_203101/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/leopoldstadt_203101/",
+        "wosReview": "https://www.whatsonstage.com/news/review-leopoldstadt-wyndhams-theatre_50920/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2744,16 +2799,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/endgame_197724/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/endgame_197724/",
+        "wosReview": "https://www.whatsonstage.com/news/review-endgame-the-old-vic_50847/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2808,15 +2865,18 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-visit-or-the-old-lady-comes-to-call_208623/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-visit-or-the-old-lady-comes-to-call_208623/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-visit-or-the-old-lady-comes-to-call-national-theatre_50947/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -2830,16 +2890,18 @@
       ],
       "season": "2019-2020",
       "signals": [
+        "wos-review",
         "olivier-2020"
       ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/death-of-england_208625/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/death-of-england_208625/",
+        "wosReview": "https://www.whatsonstage.com/news/review-death-of-england-national-theatre_50871/"
       },
       "inShowsJson": null,
       "decision": {
         "promotable": true,
         "persistent": true,
-        "reason": "signals: olivier-2020"
+        "reason": "signals: wos-review, olivier-2020"
       }
     },
     {
@@ -2873,15 +2935,18 @@
         "musical"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-prince-of-egypt_197808/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-prince-of-egypt_197808/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-prince-of-egypt-dominion-theatre_51022/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -2999,15 +3064,18 @@
         "musical"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pretty-woman-the-musical_208253/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pretty-woman-the-musical_208253/",
+        "wosReview": "https://www.whatsonstage.com/news/review-pretty-woman-the-musical-piccadilly-theatre_51066/"
       },
       "inShowsJson": null,
       "decision": {
-        "promotable": false,
-        "persistent": false,
-        "reason": "no review signal (WOS review, Olivier nomination)"
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
       }
     },
     {
@@ -3314,9 +3382,12 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/shoe-lady_226045/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/shoe-lady_226045/",
+        "wosReview": "https://www.whatsonstage.com/news/review-shoe-lady-royal-court_51149/"
       },
       "inShowsJson": null,
       "decision": {
@@ -3440,9 +3511,12 @@
         "play"
       ],
       "season": "2019-2020",
-      "signals": [],
+      "signals": [
+        "wos-review"
+      ],
       "sourceUrls": {
-        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-seven-streams-of-the-river-ota_208621/"
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-seven-streams-of-the-river-ota_208621/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-seven-streams-of-the-river-ota-national-theatre_51186/"
       },
       "inShowsJson": null,
       "decision": {
@@ -4966,5 +5040,87 @@
       }
     }
   ],
-  "unlistedReviews": []
+  "unlistedReviews": [
+    {
+      "title": "The Upstart Crow",
+      "venue": "Gielgud Theatre",
+      "date": "2020-02-18",
+      "url": "https://www.whatsonstage.com/news/review-the-upstart-crow-gielgud-theatre_50969/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "A Midsummer Night's Dream",
+      "venue": "Criterion Theatre",
+      "date": "2019-12-16",
+      "url": "https://www.whatsonstage.com/news/review-a-midsummer-nights-dream-criterion-theatre_50574/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "My Brilliant Friend",
+      "venue": "National Theatre",
+      "date": "2019-11-27",
+      "url": "https://www.whatsonstage.com/news/review-my-brilliant-friend-national-theatre_50446/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Ian McKellen On Stage",
+      "venue": "Harold Pinter Theatre",
+      "date": "2019-10-02",
+      "url": "https://www.whatsonstage.com/news/review-ian-mckellen-on-stage-harold-pinter-theatre_50007/",
+      "rating": 5,
+      "market": [
+        83,
+        98
+      ]
+    },
+    {
+      "title": "\"Master Harold\"…and the Boys",
+      "venue": "National Theatre",
+      "date": "2019-10-02",
+      "url": "https://www.whatsonstage.com/news/review-master-harold-and-the-boys-national-theatre_50024/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Glass. Kill. Bluebeard. Imp.",
+      "venue": "Royal Court",
+      "date": "2019-09-26",
+      "url": "https://www.whatsonstage.com/news/review-glass-kill-bluebeard-imp-royal-court_49982/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "A Very Expensive Poison",
+      "venue": "Old Vic",
+      "date": "2019-09-06",
+      "url": "https://www.whatsonstage.com/news/review-a-very-expensive-poison-old-vic_49826/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Hansard",
+      "venue": "National Theatre",
+      "date": "2019-09-04",
+      "url": "https://www.whatsonstage.com/news/review-hansard-national-theatre_49808/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    }
+  ]
 }

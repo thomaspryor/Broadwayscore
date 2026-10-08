@@ -30,7 +30,9 @@
  * routing it through fetchPage() would spend proxy credits for nothing.
  */
 
-const WOS_API_BASE = 'https://www.whatsonstage.com/wp-json/wp/v2';
+// venue-write-guard-ok: parses WOS API rows into plain objects; callers that write shows.json sanitize the venue.
+
+const WOS_API_BASE ='https://www.whatsonstage.com/wp-json/wp/v2';
 const LONDON_MARKET_ID = 83;
 const REVIEW_CATEGORY_IDS = [63, 69];
 const USER_AGENT = 'BroadwayScorecardBot/1.0 (+https://broadwayscorecard.com; historical listings)';

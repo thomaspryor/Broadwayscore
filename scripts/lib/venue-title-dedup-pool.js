@@ -21,6 +21,8 @@ const { venuesMatch, isSubtitleVariantOf } = require('./deduplication');
 
 const DAY_MS = 86400000;
 
+// venue-write-guard-ok: in-memory dedup pool read from shows.json; nothing here writes a venue.
+
 /**
  * @param {Array<object>} shows shows.json entries
  * @returns {Array<{title: string, venue: string, startDate: string|null, id?: string}>}
