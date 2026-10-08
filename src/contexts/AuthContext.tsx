@@ -341,7 +341,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // BRO-4597). Strip the param first: Google sign-in returns to the saved URL,
   // and a param left in place would reopen the modal after signing in.
   useEffect(() => {
-    if (loading) return;
+    if (loading || !getSupabaseClient()) return;
     const signInLinkSource = takeSignInParam();
     if (signInLinkSource && !user) showSignIn('generic', signInLinkSource);
   }, [loading, user, showSignIn]);

@@ -46,7 +46,9 @@ export default function HeaderSubscribeButton({ placement = 'header' }: { placem
     if (placement === 'header') {
       // Signed-in visitors are already on the list (auto-subscribe on sign-in).
       if (isSubscribed || isAuthenticated || (featureFlags.userAccounts && authLoading)) return null;
-    } else if (isSubscribed || isAuthenticated) {
+    } else if (isSubscribed) {
+      // Only this market's flag: sign-in joins the Broadway list, so a
+      // signed-in visitor on a West End page may not be on that list.
       return <span>{EMAIL_LIST_COPY.joinedShort}</span>;
     }
   }

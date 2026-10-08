@@ -148,7 +148,7 @@ export default function RootLayout({
                     scripts/check-header-overflow.mjs. */}
                 <div className="flex items-center shrink-0 gap-1 sm:gap-3">
                   <HeaderSecondaryMarketLink />
-                  <div className="hidden xl:block">
+                  <div className="hidden xl:block empty:hidden">
                     <HeaderSubscribeButton />
                   </div>
                   <HeaderSearch />

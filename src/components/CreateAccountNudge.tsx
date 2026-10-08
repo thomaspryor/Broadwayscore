@@ -26,7 +26,7 @@ export default function CreateAccountNudge({ source, className = '' }: { source:
       <button
         type="button"
         onClick={() => showSignIn('generic', source)}
-        className="mt-3 px-4 py-2 text-sm font-semibold text-white bg-white/10 border border-white/15 hover:bg-white/15 hover:border-white/25 rounded-lg transition-colors"
+        className="mt-3 min-h-[44px] px-4 py-2 text-sm font-semibold text-white bg-white/10 border border-white/15 hover:bg-white/15 hover:border-white/25 rounded-lg transition-colors"
       >
         {ACCOUNT_NUDGE_COPY.button}
       </button>

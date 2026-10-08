@@ -5,7 +5,14 @@ import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import CreateAccountNudge from '@/components/CreateAccountNudge';
 import { EMAIL_LIST_COPY } from '@/config/email-list-copy';
 
-export default function FooterEmailCapture({ inputId = 'footer-email' }: { inputId?: string }) {
+export default function FooterEmailCapture({
+  inputId = 'footer-email',
+  showAccountNudge = true,
+}: {
+  inputId?: string;
+  /** Off for the home page's inline copy so the page shows one nudge, in the footer. */
+  showAccountNudge?: boolean;
+}) {
   const [email, setEmail] = useState('');
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
@@ -28,7 +35,7 @@ export default function FooterEmailCapture({ inputId = 'footer-email' }: { input
           <span>{EMAIL_LIST_COPY.joined(market)}</span>
         </div>
         {/* List members are not account holders; say so and offer one (BRO-4893). */}
-        <CreateAccountNudge source="footer_bridge" className="mt-4" />
+        {showAccountNudge && <CreateAccountNudge source="footer_bridge" className="mt-4" />}
       </div>
     );
   }
