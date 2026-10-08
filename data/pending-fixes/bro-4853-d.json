@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4853-d",
   "planId": "f47be729-328d-4ed7-b533-6ad5ed8ec80c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-08T00:08:35.129Z",
   "submitter": {
     "name": null,
@@ -26,5 +26,13 @@
         "description": "Synopsis is not about this show: it is wiki infobox markup. Cleared so the production-verified Wikipedia enricher can refill it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-08T01:00:43.727Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for night-and-day-1979"
+    }
+  ]
 }
