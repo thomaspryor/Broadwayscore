@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T23:13:59.875Z",
+  "timestamp": "2026-10-08T23:23:41.914Z",
   "stats": {
-    "totalReviews": 49455,
-    "alreadyFlagged": 19074,
-    "dateGuardCatches": 277,
-    "directorMismatch": 1493,
+    "totalReviews": 49462,
+    "alreadyFlagged": 19090,
+    "dateGuardCatches": 278,
+    "directorMismatch": 1501,
     "tvFilmSignals": 1422,
-    "londonSignals": 1450,
+    "londonSignals": 1456,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 5512
+    "noPublishDate": 5484
   },
   "findings": [
     {
@@ -18336,7 +18336,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "nytimes--houman-barekat.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2025-12-12",
       "url": "https://www.nytimes.com/2025/12/12/theater/into-the-woods-bridge-theater.html",
       "findings": [
@@ -35499,6 +35499,115 @@
       ]
     },
     {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-02-08",
+      "url": "https://inews.co.uk/culture/arts/hills-of-california-review-harold-pinter-theatre-2896068",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.londontheatre.co.uk/reviews/the-hills-of-california-review-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "nytimes--houman-barekat.json",
+      "publishDate": "2024-02-09",
+      "url": "https://www.nytimes.com/2024/02/09/theater/hills-of-california-review-jez-butterworth.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "radio-times--olivia-garrett.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/the-hills-of-california-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.standard.co.uk/culture/theatre/the-hills-of-california-harold-pinter-theatre-review-jez-butterworth-sam-mendes-b1137646.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "thestage--sam-marlowe.json",
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/long-reviews/the-hills-of-california-review-at-harold-pinter-theatre-london-from-jez-butterworth-directed-by-sam-mendes",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.timeout.com/london/theatre/the-hills-of-california-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.thetimes.co.uk/article/the-hills-of-california-theatre-review-jez-butterworths-new-play-falters-at-the-end-p9qhvmhxw",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
       "showId": "the-holes-off-broadway-2026",
       "file": "bylinebyline--ali-royals.json",
       "publishDate": "2026-09-01",
@@ -35779,6 +35888,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-king-and-i-west-end-2024",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2018-07-17",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-king-and-i",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 2013d before show (2018-07-17 vs 2024-01-20)"
         }
       ]
     },
@@ -48281,6 +48403,19 @@
       ]
     },
     {
+      "showId": "dear-octopus-west-end-2024",
+      "file": "london-theatre--julia-rank.json",
+      "publishDate": "2024-02-15",
+      "url": "https://www.londontheatre.co.uk/reviews/dear-octopus-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 61,
@@ -54265,6 +54400,45 @@
       "score": 63,
       "publishDate": "2025-06-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/just-for-one-day-review-live-aid-musical-inspires-and-frustrates-bcr0xh0sn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2024-02-14",
+      "url": "https://www.broadwayworld.com/westend/article/Review-JUST-FOR-ONE-DAY-The-Old-Vic-20240214",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2024-02-14",
+      "url": "https://www.londontheatre.co.uk/reviews/just-for-one-day-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2024-02-14",
+      "url": "https://variety.com/2024/legit/reviews/just-for-one-day-review-musical-live-aid-1235910922/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -64657,6 +64831,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-motive-and-the-cue-west-end-2023",
+      "file": "timeout-london--leonie-cooper.json",
+      "score": 86,
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/the-motive-and-the-cue-review-1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
