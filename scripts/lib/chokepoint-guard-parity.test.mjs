@@ -66,15 +66,6 @@ const WRITE_DECISION_GUARDS = new Set([
 // it isn't actually a write-decision guard (used only during discovery,
 // before a URL is ever handed to the write chokepoint).
 const EXEMPTIONS = {
-  isRoundupUrl:
-    'Coverage already achieved indirectly: isRoundupUrl(url).isRoundup is the ' +
-    'inner check inside isRoundupPageAsReview (review-guards.js), which additionally ' +
-    'requires outletId to be in ROUNDUP_HOST_OUTLETS for that URL\'s host — the same 6 ' +
-    'hosts isRoundupUrl checks. review-file-writer.js already imports and calls ' +
-    'isRoundupPageAsReview (Guard E1). Calling the bare isRoundupUrl predicate directly ' +
-    'would DROP that outlet-gating and regress the documented 2026-07-11 policy that a ' +
-    'named critic quoted FROM a roundup page still counts as a review (see ' +
-    'ROUNDUP_HOST_OUTLETS comment in review-guards.js).',
   shouldRouteUnknownCriticToPending:
     'Routes NEW files to a `_pending/{showId}/` directory instead of the show\'s main ' +
     'review-texts dir (raw fs.writeFileSync, bypassing even safeWriteReview) — a ' +
