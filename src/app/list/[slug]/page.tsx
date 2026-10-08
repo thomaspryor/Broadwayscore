@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
-import { noStoreFetch } from '@/lib/share-links/load';
+import { redirect } from 'next/navigation';
+import { noStoreFetch, shareTokenFromParam } from '@/lib/share-links/load';
 import { BASE_URL } from '@/lib/seo';
 import SharedListClient from './SharedListClient';
 
@@ -8,7 +9,8 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getListData(slug: string) {
+async function getListData(rawSlug: string) {
+  const slug = shareTokenFromParam(rawSlug);
   // Lists can be made private or deleted at any time; never serve a cached title/owner (BRO-4525).
   const client = getServerSupabaseClient({ fetch: noStoreFetch });
   if (!client) return null;
@@ -78,5 +80,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SharedListPage({ params }: PageProps) {
   const { slug } = await params;
+  // Older shares sent the list name as share-sheet text, which some targets
+  // glued onto the link ("<slug> My List"): redirect to the clean URL.
+  const clean = shareTokenFromParam(slug);
+  if (clean && clean !== slug) redirect(`/list/${clean}`);
   return <SharedListClient slug={slug} />;
 }

@@ -21,6 +21,22 @@ export type LoadShareResult<P> =
 /** Same format the database CHECKs; anything else can't be a real link. */
 export const SHARE_TOKEN_RE = /^[a-f0-9]{32}$/;
 
+/**
+ * The token part of a link's path segment. Some share sheets paste the
+ * message right after the link ("<token> My theater plans on Broadway
+ * Scorecard"), and a browser keeps it as %20-joined path text. Everything
+ * after the first space is dropped; the rest must still be a real token.
+ */
+export function shareTokenFromParam(param: string): string {
+  let s = param;
+  try {
+    s = decodeURIComponent(param);
+  } catch {
+    // keep it raw: a bad escape just fails the format check below
+  }
+  return s.trim().split(/\s/)[0];
+}
+
 /** A fetch that opts out of Next's fetch/Data Cache. */
 export const noStoreFetch: typeof fetch = (input, init) => fetch(input, { ...init, cache: 'no-store' });
 
@@ -35,6 +51,7 @@ export async function loadShareWith<P>(
   fn: string,
   isPayload: (v: unknown) => v is P,
 ): Promise<LoadShareResult<P>> {
+  token = shareTokenFromParam(token);
   // Malformed tokens never touch the database.
   if (!SHARE_TOKEN_RE.test(token)) return { status: 'not-shared' };
   if (!client) return { status: 'unavailable' };
