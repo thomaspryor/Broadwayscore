@@ -1,16 +1,128 @@
 {
-  "generatedAt": "2026-10-07T12:00:36.464Z",
-  "total": 1355,
-  "armedCount": 930,
-  "refusedCount": 425,
+  "generatedAt": "2026-10-08T12:15:13.370Z",
+  "total": 1363,
+  "armedCount": 924,
+  "refusedCount": 439,
   "byKind": {
-    "no-section": 123,
-    "no-command": 156,
-    "shape": 137,
+    "no-section": 128,
+    "shape": 140,
+    "no-command": 162,
     "basename": 8,
     "path-prefix": 1
   },
   "refused": [
+    {
+      "id": "BRO-4867",
+      "name": "Opening-night audit 2026-10-08",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4867/opening-night-audit-2026-10-08",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4863",
+      "name": "Opening-night watch 2026-10-07",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4863/opening-night-watch-2026-10-07",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4862",
+      "name": "MAGIC MIKE LIVE New York: 8 roundup-listed review(s) still not captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4862/magic-mike-live-new-york-8-roundup-listed-reviews-still-not-captured",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=magic-mike-live-new-york-off-broadway-2026 --dry-run --verbose)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4861",
+      "name": "Daily coverage-holes audit in CI (advisory): run scripts/audit-coverage-holes.js and surface A-D in the health digest",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4861/daily-coverage-holes-audit-in-ci-advisory-run-scriptsaudit-coverage",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4859",
+      "name": "gather-reviews.yml: a queued dispatch is silently cancelled by the next one (shared 'review-texts-backfill-write' group keeps one pending run)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4859/gather-reviewsyml-a-queued-dispatch-is-silently-cancelled-by-the-next",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4858",
+      "name": "Audit archived WestEndTheatre roundup rows for critic/URL bleed from neighbouring outlet blocks",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4858/audit-archived-westendtheatre-roundup-rows-for-criticurl-bleed-from",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4857",
+      "name": "validate-data: 4 West End/OWE shows have previewsStartDate after openingDate (JCS Drury Lane, Fences OWE, Pride Bridge, Cursed Child one-part)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4857/validate-data-4-west-endowe-shows-have-previewsstartdate-after",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4856",
+      "name": "Synopsis provenance stamp + arm synopsis fact checks as blocking after BRO-4853 plan applies",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4856/synopsis-provenance-stamp-arm-synopsis-fact-checks-as-blocking-after",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js 2>&1 | grep -c 'synopsis' returns 0 on main)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4851",
+      "name": "West End historical backfill: review + improve plan, fix season discovery, run 2024-25 pilot season",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4851/west-end-historical-backfill-review-improve-plan-fix-season-discovery",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4848",
+      "name": "Scheduled sender delivered MORE THAN ONCE on 2026-10-06: reddit-post-ready",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4848/scheduled-sender-delivered-more-than-once-on-2026-10-06-reddit-post",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4847",
+      "name": "UX audit: The affordance for adding a show to the watchlist is inconsistent between views: it's a large tappable card in",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4847/ux-audit-the-affordance-for-adding-a-show-to-the-watchlist-is",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4846",
+      "name": "Execute the hooks migration (BRO-383 follow-up): remove the DELETE hooks in the order memory/hooks-audit.md lists",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4846/execute-the-hooks-migration-bro-383-follow-up-remove-the-delete-hooks",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4845",
+      "name": "triage-review-gap.js misses review-texts files whose outletId is unhyphenated (readaboutstuff vs registry read-about-stuff) -> false true-missed-discovery",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4845/triage-review-gapjs-misses-review-texts-files-whose-outletid-is",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/triage-review-gap.js --show=the-hungry-ghost-off-west-end-2026 --outlet=\"Read About Stuff\" reports a non-mi)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4841",
+      "name": "Tour automation first-live-week review: Liberation mis-created as tour",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4841/tour-automation-first-live-week-review-liberation-mis-created-as-tour",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
     {
       "id": "BRO-4836",
       "name": "Opening-night audit 2026-10-07",
