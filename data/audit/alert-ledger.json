@@ -149,7 +149,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -161,7 +161,8 @@
       "notifyCount": 124,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-08T15:52:55.852Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -11596,7 +11597,7 @@
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:d40249b9": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"TodayTix-gap shows without TodayTix have at least 2 real Ticketmaster links (documented ceiling — see file header; 3 until The Gruffalo closed 2026-09-08)\"",
       "firstSeen": "2026-10-07T16:33:27.444Z",
@@ -11607,7 +11608,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4844",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-08T15:52:57.782Z",
+      "resolveReason": "job-green"
     },
     "cron-health:Weekly A/B Monitors": {
       "status": "open",
