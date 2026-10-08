@@ -60,7 +60,7 @@ export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, 
       const link = reuse ? url : await ensure({ display_name: name });
       if (!link) { showToast?.('Couldn’t create your link. Try again.', 'error'); return; }
       if (!live) trackSharedDiary({ name: 'diary_share_enabled', props: { shows: showsSeen } });
-      const outcome = await shareOrCopy({ title: 'My theater diary', text: 'My theater diary on Broadway Scorecard', url: link });
+      const outcome = await shareOrCopy({ title: 'My theater diary', url: link });
       if (outcome === 'shared') trackSharedDiary({ name: 'diary_shared', props: { method: 'native-sheet' } });
       if (outcome === 'copied') {
         trackSharedDiary({ name: 'diary_shared', props: { method: 'copy' } });
