@@ -108,6 +108,7 @@ const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-dis
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { recordDeferredShows } = require('./lib/gather-deferred');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { checkReviewTextsPreflight } = require('./lib/review-texts-preflight');
@@ -5913,10 +5914,15 @@ async function main() {
 
   const results = [];
 
+  // BRO-4859: the shows not yet gathered, kept on disk for the workflow's
+  // follow-up job (re-dispatch). Rewritten after each show, so a crash leaves
+  // the unreached ones listed.
+  recordDeferredShows(showIds);
   for (let i = 0; i < showIds.length; i++) {
     if (timeBudget.exceeded()) {
       const remaining = showIds.slice(i);
       console.log(`\n⏱ Time budget (${timeBudget.minutes}min) exceeded after ${timeBudget.elapsedMin()}min — deferring ${remaining.length} show(s) to next run: ${remaining.join(', ')}`);
+      recordDeferredShows(remaining); // BRO-4859: already on disk; kept explicit
       break;
     }
     const showId = showIds[i];
@@ -5931,6 +5937,7 @@ async function main() {
       result = { showId, success: false, error: err.message, reviewsFound: 0, filesCreated: 0 };
     }
     results.push(result);
+    recordDeferredShows(showIds.slice(i + 1));
     await sleep(2000); // Delay between shows
   }
 
