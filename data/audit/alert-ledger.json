@@ -4838,13 +4838,13 @@
       "title": "Data audits failing (non-blocking): Run data validation, Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-08T01:10:56.942Z",
+      "lastSeen": "2026-10-08T01:47:36.536Z",
       "lastNotifiedAt": "2026-10-07T22:38:20.357Z",
       "lastSurfacedAt": "2026-10-07T22:38:20.357Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 9
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -11740,7 +11740,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4849-coverage-holes": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4849-coverage-holes",
       "firstSeen": "2026-10-08T01:01:41.473Z",
@@ -11750,7 +11750,8 @@
       "lastSurfacedAt": "2026-10-08T01:01:41.473Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-08T01:42:26.713Z"
     }
   }
 }

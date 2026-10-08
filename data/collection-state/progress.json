@@ -298,13 +298,17 @@
     "dear-jack-dear-louise-off-west-end-2026/londonpubtheatres--albertine-sins.json",
     "the-authenticator-west-end-2026/north-west-end--michelle-knight.json",
     "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+    "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+    "deep-heat-rivalry-off-west-end-2026/londontheatredirect--neil-r-harris.json",
+    "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
-    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
     "hay-fever-west-end-2026/jonathan-baz--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
@@ -467,7 +471,24 @@
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
     "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ny1--unknown.json"
+    "romeo-and-juliet-west-end-2026/ny1--unknown.json",
+    "blood-of-my-blood-west-end-2026/chelmsfordtheatre--unknown.json",
+    "youre-so-special-off-west-end-2026/guardian--unknown.json",
+    "palesteenian-off-west-end-2026/guardian--unknown.json",
+    "a-world-elsewhere-off-west-end-2026/thestage--oliver-jones.json",
+    "the-world-is-full-of-married-men-off-west-end-2026/thestage--dave-fargnoli.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -661,12 +682,21 @@
       "inter-alia-west-end-2026/lbc--johnny-jenkins.json",
       "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
       "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+      "franz-and-marie-west-end-2026/london-box-office--unknown.json",
+      "deep-heat-rivalry-off-west-end-2026/londontheatredirect--neil-r-harris.json",
+      "a-month-in-the-country-west-end-2026/anthearepresents--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
@@ -700,7 +730,8 @@
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "becky-shaw-2026/cote-notices--david-cote.json"
+      "becky-shaw-2026/cote-notices--david-cote.json",
+      "into-the-woods-noel-coward-west-end-2026/1883magazine--unknown.json"
     ],
     "scrapingbee": [
       "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
@@ -779,6 +810,114 @@
     ]
   },
   "startTime": "2026-10-07T20:51:07.380Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/ny1--unknown.json",
-  "log": []
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-08T01:03:29.752Z",
+      "event": "bb-session",
+      "session": "41c5a3fe",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-08T01:03:49.878Z",
+      "event": "bb-session",
+      "session": "07642785",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-08T01:04:20.517Z",
+      "event": "bb-session",
+      "session": "04ef8aa1",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-08T01:04:37.951Z",
+      "event": "bb-session",
+      "session": "7a32a016",
+      "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-08T01:09:59.923Z",
+      "event": "bb-session",
+      "session": "07481444",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-08T01:10:00.858Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:10:20.834Z",
+      "event": "bb-session",
+      "session": "4b657a96",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-08T01:10:22.233Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:10:35.865Z",
+      "event": "bb-session",
+      "session": "39af0f98",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-08T01:10:45.295Z",
+      "event": "bb-session",
+      "session": "c9c86c70",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-08T01:11:51.119Z",
+      "event": "bb-session",
+      "session": "0ba2942a",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-08T01:12:00.631Z",
+      "event": "bb-session",
+      "session": "5cfffe47",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-08T01:43:05.544Z",
+      "event": "bb-session",
+      "session": "07a1f654",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-08T01:44:48.075Z",
+      "event": "bb-session",
+      "session": "a4174ac4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T01:44:48.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:45:06.412Z",
+      "event": "bb-session",
+      "session": "c9e20dd1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T01:45:07.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-08T01:47:38.851Z",
+      "event": "bb-session",
+      "session": "393b8c25",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    }
+  ],
+  "recoveredAfterFailure": [
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
+  ]
 }
