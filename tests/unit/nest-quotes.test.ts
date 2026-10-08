@@ -1,5 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import { nestQuotes } from '../../src/lib/nest-quotes';
 
 test('straight-quoted title inside a pull quote becomes single quotes', () => {
@@ -48,6 +50,26 @@ test('an odd number of inner marks is left as written rather than mispaired', ()
 
 test('a trailing inch mark is not treated as a stray quote', () => {
   assert.equal(nestQuotes('He stands a towering 6\'2"'), 'He stands a towering 6\'2"');
+});
+
+test('every critic quote wrapped in curly marks goes through nestQuotes', () => {
+  // Critic and outlet pages showed doubled marks because only ReviewsList
+  // used nestQuotes (BRO-4881). Any &ldquo;{...quote...}&rdquo; must call it.
+  const offenders: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(p);
+      else if (entry.name.endsWith('.tsx')) {
+        fs.readFileSync(p, 'utf8').split('\n').forEach((line, i) => {
+          const m = line.match(/&ldquo;\{([^}]*[qQ]uote[^}]*)\}/);
+          if (m && !m[1].includes('nestQuotes(')) offenders.push(`${p}:${i + 1}`);
+        });
+      }
+    }
+  };
+  walk(path.join(__dirname, '../../src'));
+  assert.deepEqual(offenders, []);
 });
 
 test('a stray opening mark plus a nested title keeps the title as single quotes', () => {
