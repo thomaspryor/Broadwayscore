@@ -248,7 +248,9 @@
     "franz-and-marie-west-end-2026/london-box-office--unknown.json",
     "three-men-in-a-boat-off-west-end-2026/londontheatredirect--mr-howard.json",
     "hadestown-2019/the-knockturnal--justin-rodriguez.json",
-    "hadestown-2019/theater-life--isa-goldberg.json"
+    "hadestown-2019/theater-life--isa-goldberg.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "pride-west-end-2026/nyt-theater--unknown.json",
@@ -411,7 +413,17 @@
     "cats-west-end-2026/thewrap--robert-hofler.json",
     "into-the-woods-noel-coward-west-end-2026/theatreandtonic--unknown.json",
     "soon-off-broadway-2026/playbill--unknown.json",
-    "falls-for-jodie-off-broadway-2026/talkinbroadway--unknown.json"
+    "falls-for-jodie-off-broadway-2026/talkinbroadway--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -567,7 +579,9 @@
       "franz-and-marie-west-end-2026/london-box-office--unknown.json",
       "three-men-in-a-boat-off-west-end-2026/londontheatredirect--mr-howard.json",
       "hadestown-2019/the-knockturnal--justin-rodriguez.json",
-      "hadestown-2019/theater-life--isa-goldberg.json"
+      "hadestown-2019/theater-life--isa-goldberg.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -581,7 +595,8 @@
       "data/review-texts/the-little-foxes-2017/nytimes--ben-brantley.json",
       "the-little-foxes-2017/nytimes--ben-brantley.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
-      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json"
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -703,7 +718,7 @@
     ]
   },
   "startTime": "2026-10-08T09:43:17.993Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-08T09:45:49.458Z",
@@ -1050,6 +1065,35 @@
       "event": "bb-session",
       "session": "089ece99",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-08T14:47:36.781Z",
+      "event": "bb-session",
+      "session": "94f93baf",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-08T14:47:53.086Z",
+      "event": "bb-session",
+      "session": "40e66ac7",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-08T14:49:32.755Z",
+      "event": "bb-session",
+      "session": "5310a0ec",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-08T14:51:47.888Z",
+      "event": "bb-session",
+      "session": "6bee1d07",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-08T14:51:48.796Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
