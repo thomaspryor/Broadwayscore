@@ -85,4 +85,5 @@ for (const h of picked) {
 console.log(`${APPLY ? 'Flagged' : 'Would flag'} ${picked.length} of ${hits.length} false-truncation scores (scanned ${scanned} files) across ${Object.keys(byShow).length} shows, reason=${REASON}`);
 for (const [s, n] of Object.entries(byShow).slice(0, 15)) console.log(`  ${n}  ${s}`);
 if (JSON_OUT) fs.writeFileSync(JSON_OUT, JSON.stringify(picked.map(h => ({ file: path.relative(ROOT, h.f), showId: h.showId, score: h.d.assignedScore })), null, 1));
+if (!APPLY) for (const h of picked.slice(0, 15)) console.log(`  file ${path.relative(ROOT, h.f)} status=${h.d.llmMetadata.textSource.status} scoredAt=${h.d.llmMetadata.scoredAt} src=${h.d.scoreSource}`);
 if (!APPLY) console.log('\n(dry run, pass --apply to write needsRescore flags)');

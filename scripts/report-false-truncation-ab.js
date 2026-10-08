@@ -39,6 +39,9 @@ function summarize(file, d) {
     confidence: llm.confidence == null ? null : llm.confidence,
     textStatus: src.status || null,
     needsRescore: d.needsRescore === true,
+    rescoreReason: d.rescoreReason || null,
+    textFetchedAt: d.textFetchedAt || null,
+    tier: d.contentTier || null,
     scoredAt: (d.llmMetadata && d.llmMetadata.scoredAt) || null,
   };
 }
@@ -69,6 +72,7 @@ function compare(before, current) {
     pairs.push({ b, a: summarize(b.file, d) });
   }
   const done = pairs.filter(p => !p.a.needsRescore && p.a.scoredAt && p.a.scoredAt !== p.b.scoredAt);
+  const pendingRows = pairs.filter(p => !done.includes(p));
   const drifts = done.filter(p => p.b.score != null && p.a.score != null).map(p => p.a.score - p.b.score);
   const meanSigned = drifts.length ? drifts.reduce((s, x) => s + x, 0) / drifts.length : 0;
   const meanAbs = drifts.length ? drifts.reduce((s, x) => s + Math.abs(x), 0) / drifts.length : 0;
@@ -87,7 +91,7 @@ function compare(before, current) {
   const big = done.filter(p => p.b.score != null && p.a.score != null && Math.abs(p.a.score - p.b.score) >= 10)
     .map(p => ({ file: p.b.file, before: p.b.score, after: p.a.score }));
   return {
-    total: before.length, missing, rescored: done.length, pending: pairs.length - done.length,
+    pendingRows, total: before.length, missing, rescored: done.length, pending: pairs.length - done.length,
     meanSigned, meanAbs, maxShift, shifts, changedBucket,
     confBefore: conf(done.map(p => p.b)), confAfter: conf(done.map(p => p.a)),
     truncatedBefore: stillTruncated(done.map(p => p.b)), truncatedAfter: stillTruncated(done.map(p => p.a)),
@@ -129,11 +133,21 @@ function main() {
   console.log(`A/B: ${r.rescored} of ${r.total} rescored (${r.pending} pending, ${r.missing} missing)`);
   console.log(`Mean drift ${r.meanSigned >= 0 ? '+' : ''}${f1(r.meanSigned)} pts (mean absolute ${f1(r.meanAbs)}), limit ${DRIFT_LIMIT}`);
   console.log(`Largest bucket share move ${f1(r.maxShift)} pts, limit ${SHIFT_LIMIT}: ${BUCKETS.map(b => `${b} ${r.shifts[b] >= 0 ? '+' : ''}${f1(r.shifts[b])}`).join(', ')}`);
+  if (r.pending > 0) {
+    // Why a file is still pending: still flagged, flagged for a different reason, or never rescored.
+    const why = {};
+    for (const p of r.pendingRows) {
+      const k = p.a.needsRescore ? `still flagged (${p.a.rescoreReason || 'no reason'})` : (p.a.scoredAt === p.b.scoredAt ? 'unflagged, scoredAt unchanged' : 'other');
+      why[k] = (why[k] || 0) + 1;
+    }
+    console.log(`Pending breakdown: ${Object.entries(why).map(([k, n]) => `${k}: ${n}`).join('; ')}`);
+    for (const p of r.pendingRows.slice(0, 12)) console.log(`  pending ${p.b.file} tier=${p.a.tier} status=${p.a.textStatus} flagged=${p.a.needsRescore} fetched=${p.a.textFetchedAt}`);
+  }
   console.log(`Bucket changed on ${r.changedBucket}; moves of 10+ pts: ${r.bigMoves.length}`);
   console.log(`Mean confidence ${f1(r.confBefore)} -> ${f1(r.confAfter)}; text status truncated ${r.truncatedBefore} -> ${r.truncatedAfter}`);
   if (r.rescored > 0 && !r.fixTookEffect) console.log('FIX DID NOT TAKE EFFECT: text status is still truncated on most rescored files (is contentTier reaching the scorer?)');
   console.log(r.rescored === 0 ? 'VERDICT: NOT MEASURED (nothing rescored yet)' : r.pass ? 'VERDICT: PASS' : 'VERDICT: FAIL (stop, do not run the bulk wave)');
-  if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify(r, null, 1));
+  if (jsonOut) fs.writeFileSync(jsonOut, JSON.stringify({ ...r, pendingRows: undefined }, null, 1));
   process.exit(r.rescored === 0 ? 1 : r.pass ? 0 : 3);
 }
 
