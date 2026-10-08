@@ -16,6 +16,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { TIER_WEIGHTS, VALID_TIERS, DEFAULT_TIER } from '../../src/config/scoring';
 import { TIER_DISPLAY } from '../../src/config/tier-display';
+import outletTiers from '../../src/config/outlet-tiers.json';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsOutletTiers = require('../../scripts/lib/outlet-tiers');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -133,5 +134,35 @@ test('TIER_DISPLAY (Critic Scorecard tier chips) matches TIER_WEIGHTS', () => {
       (TIER_WEIGHTS as Record<number, number>)[tier],
       `TIER_DISPLAY[${tier}].weight must equal TIER_WEIGHTS[${tier}]`
     );
+  }
+});
+
+test('TIER_DISPLAY example outlets sit in that tier for their market', () => {
+  // The chip popover names example outlets per tier. An outlet with a
+  // regional tier (Daily Mail: NYC T2, London T1) was once listed under the
+  // wrong London tier; check every named example against outlet-tiers.json.
+  const ALIASES: Record<string, string> = {
+    WSJ: 'wsj',
+    'The Times': 'times-uk',
+    'Daily News': 'nydailynews',
+    'NY Post': 'nypost',
+  };
+  type Entry = { name?: string; tier?: number; tiers?: Record<string, number> };
+  const entries = Object.entries(outletTiers as unknown as Record<string, Entry>)
+    .filter(([, v]) => v && typeof v === 'object' && v.name);
+  const norm = (s: string) => s.toLowerCase().replace(/^the /, '').replace(/[^a-z0-9]/g, '');
+  for (const tier of [1, 2] as const) {
+    for (const [field, market] of [['examplesNyc', 'nyc'], ['examplesLondon', 'london']] as const) {
+      for (const name of TIER_DISPLAY[tier][field].replace(/\.$/, '').split(', ')) {
+        const hits = ALIASES[name]
+          ? entries.filter(([k]) => k === ALIASES[name])
+          : entries.filter(([, v]) => norm(v.name!) === norm(name));
+        assert.ok(hits.length > 0, `example outlet "${name}" (tier ${tier}, ${market}) not in outlet-tiers.json; add an alias`);
+        for (const [key, v] of hits) {
+          const actual = v.tiers?.[market] ?? v.tier;
+          assert.equal(actual, tier, `"${name}" (${key}) is a ${market} tier ${tier} example but its ${market} tier is ${actual}`);
+        }
+      }
+    }
   }
 });

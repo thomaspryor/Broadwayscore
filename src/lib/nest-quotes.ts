@@ -17,7 +17,11 @@ export function nestQuotes(text: string): string {
     t = t.slice(1, -1);
   } else if (marks % 2 === 1) {
     if (isOpen(t[0])) t = t.slice(1);
-    else if (isClose(t[t.length - 1])) t = t.slice(0, -1);
+    // A trailing " after a digit is an inch mark (6'2"), not a stray quote.
+    else if (isClose(t[t.length - 1]) && !/\d/.test(t[t.length - 2] || '')) t = t.slice(0, -1);
   }
+  // With an odd count left, a closing mark could pair with a later opening
+  // one and garble the text; leave it as written instead.
+  if ((t.match(/["“”]/g) || []).length % 2 === 1) return t;
   return t.replace(/["“]([^"“”]+)["”]/g, '‘$1’');
 }
