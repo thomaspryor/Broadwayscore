@@ -20,6 +20,7 @@
  */
 
 const { SCRAPED_PAGE_CHROME_RE } = require('./synopsis-validation');
+const { foldDiacritics } = require('./title-match');
 
 // Longest alternatives first so "Play Revival" is not read as plain "Play".
 const CATEGORY_SRC =
@@ -176,7 +177,8 @@ function checkAwardClaims(show, ctx) {
   return result;
 }
 
-const titleKey = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+// Fold accents BEFORE stripping non-alphanumerics ("Les Misérables" must not shred).
+const titleKey = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
 
 // Related productions legitimately share copy: reruns, tours, "Both Parts" vs
 // "One Part". Related = linked by originalProductionId/tourOf, or one
@@ -250,7 +252,7 @@ function ledeTitleMismatch(show) {
   if (show && LEDE_MISMATCH_ALLOW.has(show.id)) return null;
   const m = show && show.synopsis && show.synopsis.match(WIKI_LEDE_RE);
   if (!m) return null;
-  const key = (t) => String(t || '').toLowerCase().replace(/&/g, 'and').replace(/^(the|a|an)\s+/, '').replace(/[^a-z0-9]/g, '');
+  const key = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/&/g, 'and').replace(/^(the|a|an)\s+/, '').replace(/[^a-z0-9]/g, '');
   const subject = key(m[1].replace(/\([^)]*\)/g, ''));
   const title = key(show.title);
   if (!subject || !title) return null;
