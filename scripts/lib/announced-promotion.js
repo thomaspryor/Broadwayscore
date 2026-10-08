@@ -73,7 +73,8 @@ function decideAnnouncedPromotion(show, now = new Date()) {
  *     would happily promote the very entries the 45-day rule protects.
  *
  *  2. No temporal floor. isStuckInPreviews (the score-threshold arm) counts
- *     reviews and consults no date at all, and openSignalFromReviews' lower
+ *     reviews with no date check (reviewsPredateRun now gates it, but only when
+ *     previewsStartDate is known), and openSignalFromReviews' lower
  *     bound is `show.previewsStartDate && ...` — inert precisely when both dates
  *     are null, which IS this class. So a returning production with declared
  *     priorRuns (review-guards.js keeps prior-run reviews in reviews.json) could

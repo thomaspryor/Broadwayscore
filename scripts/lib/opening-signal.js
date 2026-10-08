@@ -171,6 +171,32 @@ function estimatePressNight(dates) {
 }
 
 /**
+ * Review dates that can belong to THIS run: on/after previewsStartDate when it
+ * is known. A row can carry an earlier production's reviews (a revival or a
+ * new staging of the same title); their dates must not pick the press night.
+ */
+function runDates(show, dates) {
+  const all = dates || [];
+  if (!show || !show.previewsStartDate) return all;
+  return all.filter((d) => typeof d === 'string' && d.slice(0, 10) >= show.previewsStartDate);
+}
+
+/**
+ * True when the row's reviews cannot show THIS run has opened: previews have
+ * not started yet, or every dated review predates previews (they belong to an
+ * earlier production). Gates the score-threshold arm, which otherwise counts
+ * reviews with no date check. BRO-4857: Cursed Child one-part (previews
+ * 2026-10-09) flipped open with the 2016 press night as its openingDate.
+ * Rows whose reviews are all dateless keep the old count-only behaviour.
+ */
+function reviewsPredateRun(show, entry, isDateReached) {
+  if (!show || !show.previewsStartDate) return false;
+  if (!isDateReached(show.previewsStartDate)) return true;
+  const dated = (entry && entry.dates ? entry.dates : []).filter((d) => typeof d === 'string' && d.length >= 10);
+  return dated.length > 0 && runDates(show, dated).length === 0;
+}
+
+/**
  * Is this show stuck in a pre-open status despite having a displayable review
  * slate? Returns true when status is previews/upcoming AND the show has enough
  * reviews to display a score by the SAME rule the site uses (reviewsRemaining===0).
@@ -214,9 +240,8 @@ function isStuckInPreviews(show, counts) {
  */
 function openSignalFromReviews(show, entry, isDateReached) {
   if (!show || !PRE_OPEN_STATUSES.has(show.status)) return null;
-  const pressNight = estimatePressNight(entry ? entry.dates : []);
+  const pressNight = estimatePressNight(runDates(show, entry ? entry.dates : []));
   if (!pressNight || !isDateReached(pressNight)) return null;
-  if (show.previewsStartDate && pressNight < show.previewsStartDate) return null;
   return { date: pressNight, source: 'review-open-signal' };
 }
 
@@ -241,7 +266,7 @@ function openSignalFromReviews(show, entry, isDateReached) {
  */
 function chooseOpeningDateBackfill(show, dates, isDateReached) {
   if (!show || show.openingDate) return null;
-  const pressNight = estimatePressNight(dates);
+  const pressNight = estimatePressNight(runDates(show, dates));
   if (pressNight && isDateReached(pressNight)) {
     return { date: pressNight, source: 'review-derived-press-night' };
   }
@@ -401,6 +426,8 @@ function shouldSkipPreviewsShow(show, todayStr, publishedDate = null) {
 }
 
 module.exports = {
+  runDates,
+  reviewsPredateRun,
   shouldSkipPreviewsShow,
   MIN_REVIEWS_BY_CATEGORY,
   MIN_REVIEWS_DEFAULT,
