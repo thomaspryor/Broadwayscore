@@ -12,7 +12,9 @@ import Anthropic from '@anthropic-ai/sdk';
 // The scored-review floor below which a Critics' Take is not generated. Shared
 // with opening-night-checks/critics-take-present.check.js so the check cannot
 // demand a consensus this script is coded to refuse (task #389).
-import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds } from './lib/critic-consensus-eligibility.js';
+import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
+import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
+import { normalizeOutlet } from './lib/review-normalization.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
 // concurrency group keeps a single pending run, so per-show dispatches were
@@ -35,7 +37,7 @@ const anthropic = new Anthropic({
 /**
  * Load review texts for a show
  */
-function loadReviewTexts(showId) {
+function loadReviewTexts(showId, liveOutlets = null) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) {
     return [];
@@ -51,6 +53,15 @@ function loadReviewTexts(showId) {
       // Skip excluded reviews
       if (data.duplicateOf || data.wrongProduction || data.wrongShow || data.wrongAttribution ||
           data.isRoundupArticle || data.rejectionReason || data.contentTier === 'invalid') continue;
+      // Only outlets the site actually shows for this show: the rebuild's
+      // guards exclude more than the flags above, and a Critics' Take written
+      // from an excluded review (another production, another show) is wrong on
+      // the page (BRO-4852; 858 such inputs across 1,289 takes on 2026-10-08).
+      // Same outlet normalisation the rebuild applies to reviews.json rows
+      // (rebuild-all-reviews.js normalizeOutletCanonical), so an alias such as
+      // metro -> metro-uk still matches.
+      if (liveOutlets && !liveOutlets.has(`${showId}|${data.outletId}`)
+          && !liveOutlets.has(`${showId}|${normalizeOutlet(data.outletId || data.outlet)}`)) continue;
 
       // Collect all available text (prefer full text, fall back to excerpts)
       const textParts = [];
@@ -80,6 +91,17 @@ function loadReviewTexts(showId) {
   }
 
   return reviews;
+}
+
+/**
+ * The reply text, or a clear error. content[0].text crashed with "Cannot read
+ * properties of undefined (reading 'text')" when a reply came back with no
+ * text block (wicked-tour-2021, BRO-4852), hiding the reason.
+ */
+function responseText(message) {
+  const text = finalResponseText(message && message.content).trim();
+  if (!text) throw new Error(`empty Claude reply (${describeResponse(message)})`);
+  return text;
 }
 
 /**
@@ -121,7 +143,7 @@ Write only the concise consensus (max 280 chars), nothing else.`;
     ],
   });
 
-  let consensus = message.content[0].text.trim();
+  let consensus = responseText(message);
 
   // Validate length and sentence count
   const sentenceCount = (consensus.match(/[.!?]+/g) || []).length;
@@ -248,7 +270,12 @@ async function main() {
   // Live scored reviews per show, from reviews.json (what the site shows).
   // null = unreadable: fall back to the review-texts count alone (BRO-4852).
   let liveCounts = null;
-  try { liveCounts = liveScoredCounts(JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'))); } catch { liveCounts = null; }
+  let liveOutlets = null;
+  try {
+    const reviewsJson = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'));
+    liveCounts = liveScoredCounts(reviewsJson);
+    liveOutlets = liveOutletKeys(reviewsJson);
+  } catch { liveCounts = null; liveOutlets = null; }
 
   // Prune every consensus whose show has too few live reviews, whatever the
   // --show filter: no LLM call, and a blurb outliving its reviews is wrong on
@@ -259,6 +286,7 @@ async function main() {
       // A truncated reviews.json would otherwise wipe every Critics' Take.
       console.warn(`::warning::consensus prune skipped: ${stale.length} entries look stale (cap ${MAX_STALE_PRUNE}), reviews.json is probably incomplete`);
       liveCounts = null;
+      liveOutlets = null;
     } else if (stale.length) {
       console.log(`🗑️  Removing ${stale.length} consensus entr${stale.length === 1 ? 'y' : 'ies'} with fewer than ${MIN_SCORED_REVIEWS} live reviews: ${stale.join(', ')}`);
       for (const id of stale) delete consensusData.shows[id];
@@ -311,7 +339,7 @@ async function main() {
     console.log(`\n📖 ${showTitle} (${showId})`);
 
     // Load reviews
-    const reviews = loadReviewTexts(showId);
+    const reviews = loadReviewTexts(showId, liveOutlets);
 
     // Layer 5a: Input validation — minimum review threshold
     const scoredReviews = reviews.filter(r => r.score != null);
@@ -406,7 +434,7 @@ Write only the concise consensus (max 280 chars), nothing else.`;
           temperature: 0.5,
           messages: [{ role: 'user', content: retryPrompt }],
         });
-        const retryText = retryMsg.content[0].text.trim();
+        const retryText = responseText(retryMsg);
         if (!NEGATIVE_KEYWORDS.test(retryText) && !HEDGED_NEGATIVE.test(retryText)) {
           consensus = retryText;
           console.log(`  ✅ Retry succeeded — sentiment now matches breakdown`);
@@ -438,7 +466,7 @@ Write only the concise consensus (max 280 chars), nothing else.`;
           temperature: 0.5,
           messages: [{ role: 'user', content: retryPrompt }],
         });
-        consensus = retryMsg.content[0].text.trim();
+        consensus = responseText(retryMsg);
         console.log(`  ✅ Inverse retry complete`);
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
