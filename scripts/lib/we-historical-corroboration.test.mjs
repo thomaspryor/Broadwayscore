@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { recordsAgree, isCorroborated } = require('./we-historical-corroboration.js');
+const { recordsAgree, venueFamily, signalMatchesListing, decideWeHistoricalPromotion } = require('./we-historical-corroboration.js');
 
 test('recordsAgree: exact match', () => {
   const a = { title: 'Juno and the Paycock', venue: 'Gielgud Theatre', openingDate: '2024-10-03' };
@@ -48,54 +48,80 @@ test('recordsAgree: normalizes accents/case in title and venue', () => {
   assert.equal(recordsAgree(a, b), true);
 });
 
-test('isCorroborated: 2 independent sources agreeing → corroborated', () => {
-  const candidate = { title: 'Juno and the Paycock', venue: 'Gielgud Theatre', openingDate: '2024-10-03', discoverySource: 'theatre-record' };
-  const sources = [
-    { source: 'wikipedia', title: 'Juno and the Paycock', venue: 'Gielgud Theatre', openingDate: '2024-10-03' },
-    { source: 'olivier-eligibility', title: 'Juno and the Paycock', venue: 'Gielgud Theatre', openingDate: '2024-10-07' },
-  ];
-  const result = isCorroborated(candidate, sources);
-  assert.equal(result.corroborated, true);
-  assert.deepEqual(result.agreeingSources.sort(), ['olivier-eligibility', 'wikipedia']);
+// --- decideWeHistoricalPromotion (plan v3.1) ---------------------------------
+
+const TODAY = '2026-10-07';
+const KYOTO = {
+  title: 'Kyoto', venue: '@sohoplace', previewsStartDate: '2025-01-09', openingDate: null,
+  closingDate: '2025-05-03', genres: ['play'], signals: ['wos-review', 'olivier-2025'], season: '2024-2025',
+};
+
+test('decide: dated West End run with a review signal is promotable', () => {
+  const d = decideWeHistoricalPromotion(KYOTO, { today: TODAY });
+  assert.equal(d.promotable, true);
 });
 
-test('isCorroborated: only 1 independent source agreeing → NOT corroborated', () => {
-  const candidate = { title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30', discoverySource: 'theatre-record' };
-  const sources = [
-    { source: 'wikipedia', title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30' },
-  ];
-  const result = isCorroborated(candidate, sources);
-  assert.equal(result.corroborated, false);
+test('decide: non-West-End venue is a persistent no (Off-West End is out of scope)', () => {
+  const d = decideWeHistoricalPromotion({ ...KYOTO, venue: 'Kiln Theatre' }, { today: TODAY });
+  assert.deepEqual([d.promotable, d.persistent], [false, true]);
 });
 
-test('isCorroborated: TR self-agreement does NOT count toward the threshold (circularity guard)', () => {
-  const candidate = { title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30', discoverySource: 'theatre-record' };
-  const sources = [
-    { source: 'theatre-record', title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30' },
-    { source: 'wikipedia', title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30' },
-  ];
-  const result = isCorroborated(candidate, sources);
-  assert.equal(result.corroborated, false);
-  assert.deepEqual(result.agreeingSources, ['wikipedia']);
+test('decide: start outside the season is a persistent no', () => {
+  const d = decideWeHistoricalPromotion({ ...KYOTO, previewsStartDate: '2025-09-02', closingDate: '2025-12-01' }, { today: TODAY });
+  assert.deepEqual([d.promotable, d.persistent], [false, true]);
 });
 
-test('isCorroborated: same source listed twice counts once, not twice', () => {
-  const candidate = { title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30' };
-  const sources = [
-    { source: 'wikipedia', title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30' },
-    { source: 'wikipedia', title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-31' },
-  ];
-  const result = isCorroborated(candidate, sources);
-  assert.equal(result.corroborated, false);
-  assert.equal(result.agreeingSources.length, 1);
+test("decide: concerts, opera, dance, children's shows are out", () => {
+  for (const g of ['event', 'opera', 'dance', 'children', 'concert']) {
+    const d = decideWeHistoricalPromotion({ ...KYOTO, genres: [g] }, { today: TODAY });
+    assert.equal(d.promotable, false, g);
+  }
 });
 
-test('isCorroborated: irrelevant sources (different show) do not falsely corroborate', () => {
-  const candidate = { title: 'Barcelona', venue: 'Donmar Warehouse', openingDate: '2024-10-30' };
-  const sources = [
-    { source: 'wikipedia', title: 'The Cherry Orchard', venue: 'Donmar Warehouse', openingDate: '2024-10-30' },
-    { source: 'olivier-eligibility', title: 'Barcelona', venue: 'Royal Court', openingDate: '2024-10-30' },
-  ];
-  const result = isCorroborated(candidate, sources);
-  assert.equal(result.corroborated, false);
+test('decide: a run shorter than 14 days is out (one-night specials, short visits)', () => {
+  const d = decideWeHistoricalPromotion({ ...KYOTO, closingDate: '2025-01-15' }, { today: TODAY });
+  assert.deepEqual([d.promotable, d.persistent], [false, true]);
+});
+
+test('decide: a late press night does not make a long run "short" (run measured from first preview)', () => {
+  const macbeth = { ...KYOTO, title: 'Macbeth', venue: 'Harold Pinter Theatre', previewsStartDate: '2024-10-01', openingDate: '2024-12-08', closingDate: '2024-12-14' };
+  assert.equal(decideWeHistoricalPromotion(macbeth, { today: TODAY }).promotable, true);
+});
+
+test('decide: not closed yet, or no closing date, is a NON-persistent no', () => {
+  const open = decideWeHistoricalPromotion({ ...KYOTO, closingDate: '2027-01-01' }, { today: TODAY });
+  const none = decideWeHistoricalPromotion({ ...KYOTO, closingDate: null }, { today: TODAY });
+  assert.deepEqual([open.promotable, open.persistent], [false, false]);
+  assert.deepEqual([none.promotable, none.persistent], [false, false]);
+});
+
+test('decide: no review signal is a NON-persistent no (approvals file can overrule)', () => {
+  const d = decideWeHistoricalPromotion({ ...KYOTO, signals: [] }, { today: TODAY });
+  assert.deepEqual([d.promotable, d.persistent], [false, false]);
+});
+
+test('venueFamily: National Theatre stage names collapse; unrelated venues do not', () => {
+  assert.equal(venueFamily('National Theatre'), 'national-theatre');
+  assert.equal(venueFamily('Lyttelton Theatre'), 'national-theatre');
+  assert.equal(venueFamily('National Theatre Lyttelton'), 'national-theatre');
+  assert.equal(venueFamily('Olivier Theatre'), 'national-theatre');
+  assert.equal(venueFamily('Royal Court'), 'royal-court');
+  assert.equal(venueFamily('@sohoplace'), venueFamily('sohoplace'));
+  assert.notEqual(venueFamily('Prince Edward Theatre'), venueFamily('Prince of Wales Theatre'));
+  assert.equal(venueFamily('Noel Coward Theatre'), venueFamily('Noël Coward Theatre'));
+});
+
+test('signalMatchesListing: WOS review dated inside the run, same venue family', () => {
+  const listing = { title: 'Here We Are', venue: 'Lyttelton Theatre', previewsStartDate: '2025-04-23', openingDate: '2025-05-08', closingDate: '2025-06-28' };
+  assert.equal(signalMatchesListing({ title: 'Here We Are', venue: 'National Theatre', date: '2025-05-09' }, listing), true);
+  // A review of a different year's production (revival) does not match.
+  assert.equal(signalMatchesListing({ title: 'Here We Are', venue: 'National Theatre', date: '2027-03-01' }, listing), false);
+  // Same title elsewhere (regional run) does not match.
+  assert.equal(signalMatchesListing({ title: 'Here We Are', venue: 'Crucible Theatre', date: '2025-05-09' }, listing), false);
+});
+
+test('signalMatchesListing: undated Olivier signal matches on title + any listed venue', () => {
+  const listing = { title: 'The Years', venue: 'Harold Pinter Theatre', previewsStartDate: '2025-01-24', closingDate: '2025-04-19' };
+  assert.equal(signalMatchesListing({ title: 'The Years', venues: ['Almeida Theatre', 'Harold Pinter Theatre'] }, listing), true);
+  assert.equal(signalMatchesListing({ title: 'The Years', venues: ['Almeida Theatre'] }, listing), false);
 });
