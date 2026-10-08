@@ -1466,27 +1466,6 @@
     "queuedAt": "2026-10-07T22:35:00.974Z"
   },
   {
-    "conditionKey": "mezzanine:session-token-expired",
-    "title": "Mezzanine Scraper Failed — Session Token Expired",
-    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37699361914",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Action Required",
-        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37699361914)"
-      }
-    ],
-    "queuedAt": "2026-10-07T22:57:44.632Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 14 review(s) flagged for anchored re-score",
     "description": "{\"false-truncation\":6,\"clobbered\":8} across the whole corpus, by market {\"broadway\":5,\"west-end\":9}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [false-truncation] the-mystery-of-edwin-drood-1985/amny--matt-windman.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] magic-mike-live-west-end-2021/the-sun--lyndsey-clarke.json score 84 scored with a truncation warning on a complete-tier text\n- [false-truncation] magic-mike-live-west-end-2021/guardian--tanya-gold.json score 47 scored with a truncation warning on a complete-tier text\n- [false-truncation] six-the-musical-west-end-2021/west-end-wilma--west-end-wilma.json score 96 scored with a truncation warning on a complete-tier text\n- [false-truncation] inter-alia-west-end-2026/london-box-office--stuart-king.json score 82 scored with a truncation warning on a complete-tier text\n- [false-truncation] the-price-off-west-end-2026/london-box-office--stuart-king.json score 76 scored with a truncation warning on a complete-tier text\n- [clobbered] equus-west-end-2026/thereviewshub--the-reviews-hub-london.json commit c863fe428 scoring stamp 2026-10-07T17:06:50.488Z -> 2026-10-07T17:06:50.487Z\n- [clobbered] soldiers-of-tomorrow-off-west-end-2026/thereviewshub--john-cutler.json commit c863fe428 scoring stamp 2026-10-07T16:55:22.846Z -> 2026-10-07T16:55:22.845Z\n- [clobbered] cleansed-off-west-end-2026/thereviewshub--the-reviews-hub-london.json commit f1c12a2b8 scoring stamp 2026-10-07T15:39:41.858Z -> 2026-10-07T15:39:41.857Z\n- [clobbered] cost-of-living-2022/timeout--adam-feldman.json commit f1c12a2b8 scoring stamp 2026-07-21T16:24:58.048Z -> 2026-07-21T16:24:58.047Z",
@@ -2210,5 +2189,26 @@
       }
     ],
     "queuedAt": "2026-10-08T15:08:26.607Z"
+  },
+  {
+    "conditionKey": "mezzanine:session-token-expired",
+    "title": "Mezzanine Scraper Failed — Session Token Expired",
+    "description": "The Mezzanine audience data update failed with an authentication error (401/403). **The session token has expired.** To fix: set up mitmproxy on your Mac, proxy iPhone traffic through it, open the Mezzanine app, then update the `MEZZANINE_SESSION_TOKEN` GitHub Secret with the new token.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37806008088",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Action Required",
+        "value": "Re-intercept Mezzanine iOS app via mitmproxy"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37806008088)"
+      }
+    ],
+    "queuedAt": "2026-10-08T16:05:50.658Z"
   }
 ]
