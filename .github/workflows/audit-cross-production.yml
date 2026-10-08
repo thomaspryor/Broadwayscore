@@ -11,6 +11,8 @@ permissions:
   contents: write
 
 concurrency:
+  # concurrency-queue-ok: rare (weekly cron / manual); shares this group only with
+  # its sibling review-texts audit. gather-reviews.yml left it in BRO-4859.
   group: review-texts-backfill-write
   cancel-in-progress: false
 
