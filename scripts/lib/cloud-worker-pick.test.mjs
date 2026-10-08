@@ -384,3 +384,20 @@ test('iOS app cards are skipped: the cloud worker has no checkout of the app rep
   const { pick } = pickCloudCard([issue({ identifier: 'BRO-1', title: 'iOS: app bug' }), issue({ identifier: 'BRO-2' })], { nowMs: NOW });
   assert.equal(pick.identifier, 'BRO-2');
 });
+
+test('BRO-2204: a card carrying the NO-DISPATCH marker is never picked or resumed', () => {
+  const marked = issue({ identifier: 'BRO-2204', description: `NO-DISPATCH: needs the owner's answer first\n${BODY}` });
+  assert.equal(skipReason(marked, NOW), 'no-dispatch-marker');
+  const { pick, skipped } = pickCloudCard([marked], { nowMs: NOW });
+  assert.equal(pick, null);
+  assert.equal(skipped['no-dispatch-marker'], 1);
+  // Checked before VERIFY parsing: a marked card with no VERIFY still reports the marker.
+  assert.equal(skipReason(issue({ description: 'NO-DISPATCH: owner first\n\n## Problem\nX.' }), NOW), 'no-dispatch-marker');
+  // The same card without the marker is still picked.
+  assert.equal(skipReason(issue({ identifier: 'BRO-2204' }), NOW), null);
+  // A stranded land ref for a marked card is not resumed either.
+  const markedStarted = startedCard({ identifier: 'BRO-100', description: `NO-DISPATCH: owner first\n${BODY}` });
+  assert.deepEqual(findResumeCandidates([markedStarted], [landRef()], { nowMs: NOW }), []);
+  // Only the description counts: a comment quoting the marker is not a hold.
+  assert.equal(skipReason(issue({ comments: { nodes: [{ body: 'NO-DISPATCH: quoted', createdAt: FRESH }] } }), NOW), null);
+});
