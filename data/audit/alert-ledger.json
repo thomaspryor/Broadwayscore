@@ -149,20 +149,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-06T20:21:52.640Z",
-      "lastSeen": "2026-10-07T17:06:28.918Z",
-      "lastNotifiedAt": "2026-10-06T20:21:52.640Z",
+      "incidentOpenedAt": "2026-10-08T17:35:25.315Z",
+      "lastSeen": "2026-10-08T17:35:25.315Z",
+      "lastNotifiedAt": "2026-10-08T17:35:25.315Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 124,
+      "notifyCount": 125,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 3,
-      "resolvedAt": "2026-10-08T15:52:55.852Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4838,13 +4836,13 @@
       "title": "Data audits failing (non-blocking): Run data validation, Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-08T17:23:28.560Z",
+      "lastSeen": "2026-10-08T17:34:28.664Z",
       "lastNotifiedAt": "2026-10-07T22:38:20.357Z",
       "lastSurfacedAt": "2026-10-07T22:38:20.357Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 31
+      "silentRefires": 32
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5995,9 +5993,9 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "incidentOpenedAt": "2026-10-08T17:19:00.907Z",
-      "lastSeen": "2026-10-08T17:19:00.907Z",
-      "lastNotifiedAt": "2026-10-08T17:19:00.907Z",
+      "incidentOpenedAt": "2026-10-08T16:51:03.762Z",
+      "lastSeen": "2026-10-08T17:35:25.310Z",
+      "lastNotifiedAt": "2026-10-08T16:51:03.762Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
@@ -6008,7 +6006,8 @@
         "runId": "37810073037",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37810073037"
       },
-      "absentRunIds": []
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -12047,6 +12046,19 @@
       "lastSeen": "2026-10-08T16:43:11.770Z",
       "lastNotifiedAt": "2026-10-08T16:43:11.770Z",
       "lastSurfacedAt": "2026-10-08T16:43:11.770Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-2242-historical-art": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-2242-historical-art",
+      "firstSeen": "2026-10-08T17:37:08.876Z",
+      "incidentOpenedAt": "2026-10-08T17:37:08.876Z",
+      "lastSeen": "2026-10-08T17:37:08.876Z",
+      "lastNotifiedAt": "2026-10-08T17:37:08.876Z",
+      "lastSurfacedAt": "2026-10-08T17:37:08.876Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
