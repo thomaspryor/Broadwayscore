@@ -273,6 +273,8 @@ test('BRO-4804: not flagged when the scorer saw it as complete, the tier is not 
   assert.equal(isFalseTruncationScore(footerScored({ needsRescore: true })), false);
   assert.equal(isFalseTruncationScore(footerScored({ humanReviewScore: 70 })), false);
   assert.equal(isFalseTruncationScore(footerScored({ scoreSource: 'explicit-rating' })), false);
+  // _locked files get every protected field restored at push, so a rescore never sticks
+  assert.equal(isFalseTruncationScore(footerScored({ _locked: true })), false);
 });
 
 test('BRO-4804: a genuinely truncated text (paywall wording) is never flagged', () => {

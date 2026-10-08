@@ -70,6 +70,9 @@ function isFalseTruncationScore(data, show, filePath) {
   if (!src || src.type !== 'fullText' || src.status !== 'truncated') return false;
   if (data.needsRescore === true) return false;
   if (data.humanReviewScore != null) return false;
+  // push-review-texts restores every protected field on a _locked file, so a rescore is reverted at push
+  // and the file would be flagged and paid for again on every pass.
+  if (data._locked === true) return false;
   if (data.scoreSource && !isLlmScoreSource(data.scoreSource)) return false;
   // The recorded 'truncated' status is the evidence the scorer hedged; a footer strip may since make the
   // untrusted read complete too, so only the tier-trusted read is required here.
