@@ -385,6 +385,8 @@ jobs:
           COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
           COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          # BRO-4859: shows the time budget stops short of; the follow-up job re-dispatches them.
+          GATHER_DEFERRED_FILE: ${{ runner.temp }}/deferred-shows.txt
         run: |
           SHOWS="${{ matrix.shows }}"
 
@@ -504,6 +506,15 @@ jobs:
         with:
           name: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
           path: /tmp/serp-shard-out/
+          retention-days: 1
+          if-no-files-found: ignore
+          overwrite: true
+      - name: Upload deferred shows (BRO-4859)
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: gather-deferred-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
+          path: ${{ runner.temp }}/deferred-shows.txt
           retention-days: 1
           if-no-files-found: ignore
           overwrite: true
@@ -988,6 +999,60 @@ jobs:
             -f run_calibration=false
 
           echo "LLM scoring auto-triggered successfully."
+
+      # BRO-4859: gather-reviews.js stops starting shows once its time budget is
+      # spent; the shows it never reached were only logged and then dropped (run
+      # 37788158212: 24 of 48). Each shard uploads them; dispatch one new run
+      # for all of them with this run's settings. A run that deferred every
+      # show it was given is not re-dispatched (it would loop): it alerts.
+      - name: Download deferred show lists (BRO-4859)
+        if: ${{ !cancelled() }}
+        uses: actions/download-artifact@v5
+        with:
+          # No run_attempt here: after "Re-run failed jobs" the shards that passed
+          # keep their attempt-1 lists, which this must still pick up.
+          pattern: gather-deferred-${{ github.run_id }}-*
+          path: ${{ runner.temp }}/gather-deferred
+      - name: Re-dispatch deferred shows (BRO-4859)
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEFERRED_DIR: ${{ runner.temp }}/gather-deferred
+          RUN_SHOWS: ${{ inputs.shows }}
+          IN_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
+          IN_MAX_TIER: ${{ inputs.max_tier }}
+          IN_AGG_ONLY: ${{ inputs.aggregators_only }}
+          IN_VALIDATE_URLS: ${{ inputs.validate_urls }}
+          IN_NO_SB_SERP: ${{ inputs.no_sb_serp }}
+          IN_OPENING_NIGHT: ${{ inputs.opening_night }}
+          IN_SPEND_PURPOSE: ${{ inputs.spend_purpose }}
+          REF: ${{ github.ref_name }}
+        run: |
+          SHOWS=$(node -e '
+            const fs = require("fs"), path = require("path");
+            const { collectDeferredShows, redispatchPlan } = require("./scripts/lib/gather-deferred");
+            const texts = [];
+            const walk = (d) => { try { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+              const p = path.join(d, e.name);
+              if (e.isDirectory()) walk(p); else if (e.name === "deferred-shows.txt") texts.push(fs.readFileSync(p, "utf8"));
+            } } catch {} };
+            walk(process.env.DEFERRED_DIR);
+            const plan = redispatchPlan(collectDeferredShows(texts), process.env.RUN_SHOWS);
+            // Fail the step so Notify on failure alerts: these shows still need a gather.
+            if (plan.stalled) { console.error("::error::every show in this run was deferred (no progress); not re-dispatching: " + process.env.RUN_SHOWS); process.exitCode = 3; }
+            console.log(plan.shows.join(","));
+          ')
+          if [ -z "$SHOWS" ]; then echo "No deferred shows"; exit 0; fi
+          echo "::notice::Re-dispatching $(echo "$SHOWS" | tr ',' '\n' | wc -l) deferred show(s): $SHOWS"
+          gh workflow run gather-reviews.yml --ref "$REF" \
+            -f shows="$SHOWS" \
+            -f parallel_jobs="$IN_PARALLEL_JOBS" \
+            -f max_tier="$IN_MAX_TIER" \
+            -f aggregators_only="$IN_AGG_ONLY" \
+            -f validate_urls="$IN_VALIDATE_URLS" \
+            -f no_sb_serp="$IN_NO_SB_SERP" \
+            -f opening_night="$IN_OPENING_NIGHT" \
+            -f spend_purpose="$IN_SPEND_PURPOSE"
 
       - name: Notify on failure
         if: failure()
