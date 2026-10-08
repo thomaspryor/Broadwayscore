@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
-import { saveReturnUrl, clearReturnUrl, clearPendingAction } from '@/lib/deferred-auth';
+import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath } from '@/lib/deferred-auth';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
@@ -26,8 +26,12 @@ interface AuthContextValue {
   profile: UserProfile | null;
   loading: boolean;
   isAuthenticated: boolean;
-  /** `source` names the entry point for analytics (e.g. 'my_shows'). */
-  signIn: (provider: 'google' | 'apple', source?: string) => void;
+  /**
+   * `source` names the entry point for analytics (e.g. 'my_shows').
+   * `returnTo` is the page to land on afterwards; the current page when
+   * omitted.
+   */
+  signIn: (provider: 'google' | 'apple', source?: string, returnTo?: string) => void;
   signOut: () => Promise<void>;
   /**
    * Permanently delete the signed-in account and everything it saved (the
@@ -39,9 +43,17 @@ interface AuthContextValue {
   /**
    * Show sign-in modal. `context` picks the headline; `source` names the
    * button that asked (e.g. 'show_bookmark') so the funnel shows which entry
-   * points bring sign-ups.
+   * points bring sign-ups. `returnTo` is where sign-in lands afterwards (the
+   * menu and header send people to My Shows); the current page when omitted.
+   * Pass it here rather than calling saveReturnUrl() yourself: signIn() saves
+   * the return page itself and would overwrite yours (BRO-4894).
    */
-  showSignIn: (context?: ModalContext, source?: string) => void;
+  showSignIn: (context?: ModalContext, source?: string, options?: SignInOptions) => void;
+}
+
+export interface SignInOptions {
+  /** Same-site path to land on after sign-in, e.g. '/my-shows'. */
+  returnTo?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -60,7 +72,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContext, setModalContext] = useState<ModalContext>('generic');
   const [modalSource, setModalSource] = useState<string>('generic');
+  const [modalReturnTo, setModalReturnTo] = useState<string | null>(null);
   const [signInLoading, setSignInLoading] = useState(false);
+
+  // Google sign-in leaves for Google with the box showing "Signing in..." and
+  // both buttons disabled. Safari (iOS above all) restores the page from its
+  // back-forward cache when the person comes back with Back, state included,
+  // so without this the box stayed stuck and nothing but a reload could clear
+  // it (BRO-4894: an iPhone did exactly that on 2026-10-08 and gave up).
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) setSignInLoading(false);
+    };
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
+  }, []);
 
   // Initialize auth state on mount
   useEffect(() => {
@@ -180,7 +206,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signIn = useCallback(async (provider: 'google' | 'apple', source: string = 'unknown') => {
+  const signIn = useCallback(async (provider: 'google' | 'apple', source: string = 'unknown', returnTo?: string) => {
     const client = getSupabaseClient();
     if (!client) return;
     markSignInStarted(provider, source);
@@ -213,6 +239,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // The onAuthStateChange SIGNED_IN event handles UI updates.
         // Clear any stale return URL from a previous Google flow attempt.
         clearReturnUrl();
+        // The menu and header promise My Shows after sign-in; keep that
+        // promise on the popup path too (no reload when already there).
+        if (returnTo) {
+          const target = safeReturnPath(returnTo);
+          if (target !== window.location.pathname + window.location.search) window.location.assign(target);
+        }
       } catch (err) {
         setSignInLoading(false);
         // User closed popup or Apple error — not a crash. The SDK rejects
@@ -228,8 +260,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Google: standard OAuth redirect flow
-    saveReturnUrl();
+    // Google: standard OAuth redirect flow. The requested page wins; the
+    // current page otherwise.
+    saveReturnUrl(returnTo);
     const { error } = await client.auth.signInWithOAuth({
       provider,
       options: {
@@ -293,21 +326,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return 'deleted';
   }, []);
 
-  const showSignIn = useCallback((context: ModalContext = 'generic', source?: string) => {
+  const showSignIn = useCallback((context: ModalContext = 'generic', source?: string, options?: SignInOptions) => {
     const src = source || context;
     setModalContext(context);
     setModalSource(src);
+    setModalReturnTo(options?.returnTo ?? null);
     setModalOpen(true);
     trackUgc('sign_in_prompt_shown', { context, source: src });
   }, []);
 
   const handleModalSignIn = useCallback((provider: 'google' | 'apple') => {
     if (provider !== 'apple') setSignInLoading(true);
-    signIn(provider, modalSource);
-  }, [signIn, modalSource]);
+    signIn(provider, modalSource, modalReturnTo ?? undefined);
+  }, [signIn, modalSource, modalReturnTo]);
 
   const handleModalClose = useCallback(() => {
     setModalOpen(false);
+    setModalReturnTo(null);
     trackUgc('sign_in_prompt_dismissed', { context: modalContext, source: modalSource });
   }, [modalContext, modalSource]);
 

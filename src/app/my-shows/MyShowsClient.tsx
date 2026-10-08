@@ -13,6 +13,7 @@ import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import { supabaseRestDelete, supabaseRestInsert, supabaseRestSelect, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { trackUgc } from '@/lib/ugc-analytics';
+import { prepareAppleSignIn } from '@/lib/apple-auth';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
 import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
@@ -588,6 +589,15 @@ export default function MyShowsClient() {
     }
     return selectSharedDiary({ ...payload, showText: false }, shows, now).showsSeen;
   }, [reviews, showMap]);
+
+  // The signed-out view below has its own Continue with Apple button, outside
+  // the sign-in box that normally sets Apple up when it opens. Safari blocks
+  // a popup opened after any waiting, so set Apple up here as well; without
+  // this the tap failed with popup_blocked_by_browser, the bug BRO-4615 fixed
+  // for the box only (BRO-4894).
+  useEffect(() => {
+    if (featureFlags.userAccounts && !isMockMode && !authLoading && !isAuthenticated) prepareAppleSignIn().catch(() => {});
+  }, [isMockMode, authLoading, isAuthenticated]);
 
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
