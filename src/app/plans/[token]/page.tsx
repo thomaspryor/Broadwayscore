@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { cache } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { SHARE_TOKEN_RE, shareTokenFromParam } from '@/lib/share-links/load';
 import { loadSharedPlansView } from '@/lib/shared-plans/load-view';
 import { plansSummary, plansTitle } from '@/lib/shared-plans/view-model';
 import SharedPlansView from './SharedPlansView';
@@ -40,6 +41,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function SharedPlansPage({ params }: PageProps) {
+  // A share sheet glued its message onto the link: send the friend to the
+  // clean URL so the address bar (and anything copied from it) is the real link.
+  const clean = shareTokenFromParam(params.token);
+  if (clean !== params.token && SHARE_TOKEN_RE.test(clean)) redirect(`/plans/${clean}`);
   const data = await load(params.token);
   if (data.status === 'not-shared') notFound();
   // Database or config failure: the error boundary shows "try again" rather
