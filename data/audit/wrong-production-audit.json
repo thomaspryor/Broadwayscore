@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T02:38:59.400Z",
+  "timestamp": "2026-10-08T02:47:57.062Z",
   "stats": {
-    "totalReviews": 47109,
-    "alreadyFlagged": 18794,
+    "totalReviews": 47123,
+    "alreadyFlagged": 18796,
     "dateGuardCatches": 278,
-    "directorMismatch": 1376,
-    "tvFilmSignals": 1371,
-    "londonSignals": 1312,
+    "directorMismatch": 1378,
+    "tvFilmSignals": 1374,
+    "londonSignals": 1316,
     "offBroadwaySignals": 506,
     "yearMismatch": 121,
-    "noPublishDate": 4446
+    "noPublishDate": 4449
   },
   "findings": [
     {
@@ -4012,6 +4012,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "tvfanatic--paul-dailly.json",
+      "publishDate": "2026-09-24",
+      "url": "https://www.tvfanatic.com/outlander-blood-of-my-blood-exclusive-interview-harriet-slater-jamie-roy-hermione-corfield-jeremy-irvine/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -11505,7 +11518,7 @@
     },
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
-      "file": "guardian--unknown.json",
+      "file": "guardian--mark-lawson.json",
       "score": 76,
       "publishDate": "2026-08-09",
       "url": "https://www.theguardian.com/stage/2026/aug/09/game-of-thrones-the-mad-king-review-royal-shakespeare-theatre-stratford-upon-avon",
@@ -11533,7 +11546,7 @@
     },
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
-      "file": "independent--unknown.json",
+      "file": "independent--alice-saville.json",
       "score": 78,
       "publishDate": "2026-08-09",
       "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/game-of-thrones-the-mad-king-review-stratford-upon-avon-b3029956.html",
@@ -16772,6 +16785,37 @@
       "score": 92,
       "publishDate": "July 15th, 2022",
       "url": "https://www.wsj.com/articles/into-the-woods-broadway-steven-sondheim-review-james-lapine-rob-berman-lear-debessonet-brian-darcy-james-sara-bareilles-gavin-creel-phillipa-soo-patina-miller-alysia-velez-joshua-henry-annie-golden-david-patrick-kelly-julia-lester-cole-thompson-11657835121",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "bestoftheatre--al-gorman.json",
+      "publishDate": "2026-09-11",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/what-to-expect-into-the-woods",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "london-theatre--julia-rank.json",
+      "publishDate": "2026-10-07",
+      "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-noel-coward-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26334,6 +26378,37 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "file": "guardian--hannah-j-davies.json",
+      "publishDate": "2026-09-24",
+      "url": "https://www.theguardian.com/stage/2026/sep/24/stranger-things-gaten-matarazzo-rent-tom-stoppard-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "file": "monstagigz--neil.json",
+      "publishDate": "2026-10-01",
+      "url": "https://monstagigz.com/2026/10/01/theatre-review-rent-the-musical-starring-gaten-matarazzo-at-tom-stoppards-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -43265,6 +43340,19 @@
       ]
     },
     {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "eventslist--unknown.json",
+      "publishDate": null,
+      "url": "https://eventslist.co.uk/london/events/rct-blood-of-my-blood-2026-10-01",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
       "file": "cultural-capital--unknown.json",
       "score": 77,
@@ -50610,6 +50698,19 @@
       "score": 85,
       "publishDate": "2026-10-06",
       "url": "https://seatplan.com/london/news/into-the-woods-review-noel-coward-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "theatremonkey--unknown.json",
+      "publishDate": null,
+      "url": "https://www.theatremonkey.com/show/into-the-woods-noel-coward-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

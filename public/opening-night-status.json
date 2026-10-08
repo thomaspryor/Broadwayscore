@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T02:39:06.682Z",
+  "generatedAt": "2026-10-08T02:48:06.255Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -427,10 +427,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -474,10 +470,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ]
@@ -1705,23 +1697,22 @@
       "status": "open",
       "slug": "franz-and-marie-west-end",
       "thumbnail": "/images/shows/franz-and-marie-west-end-2026/thumbnail.webp",
-      "siteScore": 76.05,
-      "liveScore": 76,
-      "scoreDrift": -0.04999999999999716,
+      "siteScore": 74.82,
+      "liveScore": 75,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 1,
-      "t2": 0,
+      "t2": 1,
       "t3": 6,
       "positive": 5,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:0/3",
           "T2:1/2"
         ],
@@ -1871,6 +1862,18 @@
           "t3": 6,
           "p": 5,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-08T02:48:06.255Z",
+          "rc": 8,
+          "s": 74.82,
+          "t1": 1,
+          "t2": 1,
+          "t3": 6,
+          "p": 5,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
