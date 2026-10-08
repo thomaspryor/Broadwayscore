@@ -128,16 +128,35 @@ test('buildWestEndAggregatorShowEntry: unparseable date falls back to current ye
 });
 
 // West End rep-house runs are frequently limited engagements — a roundup
-// from >120 days ago is very likely a closed run, same reasoning
-// buildRegionalShowEntry already applies to regional tryouts. Live-tested
-// 2026-08-14: an unfiltered LBO listing crawl surfaces plenty of these.
-test('buildWestEndAggregatorShowEntry: an old (>120d) roundup promotes as closed, a fresh one as open', () => {
+// from >120 days ago is very likely a closed run. BRO-4883: this path used to
+// promote those as status 'closed' with a null closingDate, which broke
+// "closed West End shows always carry a closingDate" on main (10 rows on
+// 2026-10-08, incl. duplicates and operas the WE historical pipeline had
+// already rejected). They are now refused; closed seasons come from the
+// historical pipeline with real dates.
+test('decideWestEndAggregatorPromotion: a >120d-old roundup is refused (persistent), a 100d-old one still promotes', () => {
+  const DAY = 24 * 60 * 60 * 1000;
+  const discoveredAt = '2026-10-08T20:02:45.750Z';
+  const at = days => new Date(Date.parse(discoveredAt) - days * DAY).toISOString();
+  const old = decideWestEndAggregatorPromotion({ ...WE_CANDIDATE, articlePublishedAt: at(200), discoveredAt });
+  assert.equal(old.confirmed, false);
+  assert.equal(old.persistent, true, 'same answer every run — remember the rejection');
+  assert.match(old.reason, /closed run/);
+  // The live 2026-10-08 case: Krapp's Last Tape roundup published 2026-05-19.
+  const krapp = decideWestEndAggregatorPromotion({ ...WE_CANDIDATE, venue: 'royal court', articlePublishedAt: '2026-05-19T09:00:00+01:00', discoveredAt });
+  assert.equal(krapp.confirmed, false);
+  const recent = decideWestEndAggregatorPromotion({ ...WE_CANDIDATE, articlePublishedAt: at(100), discoveredAt });
+  assert.equal(recent.confirmed, true);
+});
+
+test('buildWestEndAggregatorShowEntry: never writes a closed row (it has no closing date to give it)', () => {
   const oldDate = new Date(Date.now() - 200 * 24 * 60 * 60 * 1000).toISOString();
   const freshDate = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString();
-  const old = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, articlePublishedAt: oldDate });
-  const fresh = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, articlePublishedAt: freshDate });
-  assert.equal(old.status, 'closed');
-  assert.equal(fresh.status, 'open');
+  for (const d of [oldDate, freshDate]) {
+    const e = buildWestEndAggregatorShowEntry({ ...WE_CANDIDATE, articlePublishedAt: d });
+    assert.equal(e.status, 'open');
+    assert.equal(e.closingDate, null);
+  }
 });
 
 // BRO-3716: main was red 19.8h+ because validate-market-expansion.js
