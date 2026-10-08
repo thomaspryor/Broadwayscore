@@ -1,7 +1,17 @@
 {
-  "generatedAt": "2026-10-07T08:53:03.268Z",
-  "bannerText": "136/313 Done(14d) verified on main · 11 FAILED · 1 vacuous · 11 stuck-but-done — PARTIAL RUN: 176 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-08T09:12:38.272Z",
+  "bannerText": "147/175 Done(14d) verified on main · 10 FAILED · 2 vacuous · 17 stuck-but-done — PARTIAL RUN: 16 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
+    {
+      "title": "FAILED BRO-2216 — P1: white-rabbit-red-rabbit-west-end-2026 wrong-production-by-date — thestage/dave-fargnoli",
+      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2216/p1-white-rabbit-red-rabbit-west-end-2026-wrong-production-by-date"
+    },
+    {
+      "title": "FAILED BRO-4838 — P1: 1-2 star and space-separated star ratings never captured (Affluenza Theatre and Tonic 1-star scored 42)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/capture-published-stars.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4838/p1-1-2-star-and-space-separated-star-ratings-never-captured-affluenza"
+    },
     {
       "title": "FAILED BRO-4752 — test.yml Test Summary passes when a needs job never got a runner (result 'abandoned'), hiding red runs from the streak alert",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/test-summary-needs-results.test.mjs",
@@ -9,23 +19,13 @@
     },
     {
       "title": "FAILED BRO-4750 — Tour pages: automated runtime + synopsis source for national tours (11 tours show no runtime)",
-      "detail": "TAP version 13 # Subtest: every national tour has a runtime, or is a documented gap not ok 1 - every national tour has a runtime, or is a documented gap --- duration_ms: 2.489392 …",
+      "detail": "TAP version 13 # Subtest: every national tour has a runtime, or is a documented gap ok 1 - every national tour has a runtime, or is a documented gap --- duration_ms: 1.227083 ... …",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4750/tour-pages-automated-runtime-synopsis-source-for-national-tours-11"
     },
     {
       "title": "FAILED BRO-4722 — Commercial data: check every figure shown as fact against its cited source (pre-Forbes)",
       "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4722/commercial-data-check-every-figure-shown-as-fact-against-its-cited"
-    },
-    {
-      "title": "FAILED BRO-4668 — test.yml E2E races prod deploy: wait for undeployed site changes before Playwright",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-await-deploy.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4668/testyml-e2e-races-prod-deploy-wait-for-undeployed-site-changes-before"
-    },
-    {
-      "title": "FAILED BRO-4666 — Boring Waltz weekly cost scraper has failed every run since April (Reddit 403); retire or revive gap-fill-only",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4666/boring-waltz-weekly-cost-scraper-has-failed-every-run-since-april"
     },
     {
       "title": "FAILED BRO-3678 — Missing show: The Cartographer",
@@ -43,5 +43,5 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3463/closing-date-audit-1-show-need-review-2026-09-15"
     }
   ],
-  "moreCount": 15
+  "moreCount": 21
 }
