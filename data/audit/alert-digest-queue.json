@@ -1795,5 +1795,34 @@
       }
     ],
     "queuedAt": "2026-10-07T23:41:03.314Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4853-synopsis-fact-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4853-synopsis-fact-guard",
+    "description": "land.yml did not land land/bro-4853-synopsis-fact-guard: the unit-tests-node gate went red at b009d012d6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37702989142",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4853-synopsis-fact-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b009d012d606dda202c2282bcea92a6a058d7310"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37702989142"
+      }
+    ],
+    "queuedAt": "2026-10-08T00:05:39.516Z"
   }
 ]
