@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-07T09:03:56.367Z",
+  "generatedAt": "2026-10-08T09:25:38.395Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3323,
-  "flaggedShows": 66,
-  "flaggedFiles": 229,
+  "scannedShows": 3334,
+  "flaggedShows": 65,
+  "flaggedFiles": 225,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 33,
+    "likely-contamination": 32,
     "needs-human-review": 31,
     "likely-single-prior-run": 2
   },
@@ -2227,81 +2227,6 @@
       ]
     },
     {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "title": "Blood of my Blood",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Royal Court",
-      "previewsStartDate": "2026-10-01",
-      "openingDate": "2026-10-07",
-      "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 4,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 2,
-        "flaggedCount": 4,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-08-28",
-          "url": "https://www.londonboxoffice.co.uk/news/post/juniper-blood-donmar-warehouse-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2025-08-27",
-          "url": "https://www.thestage.co.uk/reviews/juniper-blood-review-donmar-warehouse-london-mike-bartlett-james-macdonald",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--holly-omahony.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Holly O’Mahony",
-          "publishDate": "2025-08-26",
-          "url": "https://www.timeout.com/london/theatre/juniper-blood-review",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "previewPlaceholder",
-          "afterReason": "previewPlaceholder",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2025-08-27",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/juniper-blood-review-a-self-indulgent-mess-from-mike-bartlett-8nzzslnhh",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
       "market": "west-end",
@@ -3942,7 +3867,7 @@
       "showId": "an-oak-tree-off-west-end-2026",
       "title": "An Oak Tree",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "The Other Palace - Main Theatre",
       "previewsStartDate": "2026-10-07",
       "openingDate": null,
