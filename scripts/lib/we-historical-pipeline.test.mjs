@@ -249,3 +249,15 @@ test('fixAllCapsTitle and straight apostrophes in written titles', () => {
   assert.equal(e.title, "Mrs Warren's Profession");
   assert.equal(e.id, 'mrs-warrens-profession-west-end-2025');
 });
+
+// BRO-4851: WOS lists Porn Play as "P*rn Play"; promoted as-is, gather found 0 reviews.
+test('planPromotions: a censored title is held until approvals supply the real one', () => {
+  const c = { title: 'P*rn Play', venue: 'Royal Court Theatre', season: '2025-2026', previewsStartDate: '2025-11-06', closingDate: '2025-12-13',
+    genres: ['play'], signals: ['wos-review'], decision: { promotable: true, persistent: true, reason: 'signals: wos-review' } };
+  const held = planPromotions({ candidates: [c], shows: [], approvals: {}, today: '2026-10-08' });
+  assert.equal(held.toPromote.length, 0);
+  assert.match(held.skipped[0].reason, /censored title/);
+  const fixed = planPromotions({ candidates: [c], shows: [], approvals: { '2025-2026': { 'P*rn Play': { title: 'Porn Play' } } }, today: '2026-10-08' });
+  assert.equal(fixed.toPromote.length, 1);
+  assert.equal(fixed.toPromote[0].title, 'Porn Play');
+});
