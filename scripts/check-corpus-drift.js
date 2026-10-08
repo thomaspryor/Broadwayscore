@@ -375,6 +375,27 @@ const AUDITS = [
     crashCodes: [2],           // 0 under baseline / 1 = new un-baselined (showId,file) hit / 2 = corpus missing
   },
   {
+    name: 'counted-review-integrity',
+    label: 'counted reviews that break an invariant (same review on unrelated shows, one review under two critics, URL year outside the run, never-opened show, junk outlet, openingDate after its own reviews, unresolved priorRuns)',
+    script: 'audit-counted-review-integrity.js',
+    // BRO-4886: monitor, not a gate (CLAUDE.md 19). Baseline 85 = the 83 found
+    // on 2026-10-08, most of them untriaged cross-show quote repeats (some are a
+    // multi-show column legitimately quoted on both shows). Drift fires when a
+    // new bad row pushes the total above it; lower --max after a cleanup pass.
+    args: ['--max=85'],
+    crashCodes: [2],           // 0 at/under baseline / 1 grew above it / 2 = corpus missing
+  },
+  {
+    name: 'flagged-in-window',
+    label: 'review files excluded as wrong production/show although their date and URL year sit inside the run (recovery backlog)',
+    script: 'audit-counted-review-integrity.js',
+    // BRO-4886: 825 on 2026-10-08. Includes real cross-market and tour reviews, so this is a
+    // worklist for the recovery scripts, not a defect count. It must not grow; lower --max as
+    // sweeps clear it.
+    args: ['--flagged', '--max=850'],
+    crashCodes: [2],           // 0 at/under baseline / 1 grew above it / 2 = review-texts missing
+  },
+  {
     name: 'self-contradictory-clears',
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'a review asserting an exclusion flag AND its own retraction breadcrumb at once (baseline-diff)',

@@ -4113,6 +4113,11 @@ function isRejectedAtExclusion(data) {
 
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
+  // BRO-4886: a production cancelled before it opened has no reviews to count.
+  // Who's Afraid of Virginia Woolf 2020 (9 previews, then COVID) carried a score
+  // from a 2005 review. No escape hatch: there is no review of a show that
+  // never had a press night.
+  if (show && show.cancelledBeforeOpening === true) return 'showNeverOpened';
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.

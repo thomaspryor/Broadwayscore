@@ -363,6 +363,10 @@ function isBlockedReviewUrl(url) {
       || matchesDomainSet(hostname, CENSUS_JUNK_DOMAINS)) return true;
     // Path-based blocking for sites that publish BOTH reviews and listings
     const lowerPath = parsed.pathname.toLowerCase();
+    // Topic and people index pages (topics.nytimes.com/.../ricky-martin/) are not
+    // reviews. A BWW roundup that linked one got "Ricky Martin" registered as an
+    // outlet and counted at 45 on Evita 2012 (BRO-4886).
+    if (/^topics\./.test(hostname.toLowerCase()) || lowerPath.includes('/timestopics/')) return true;
     // Playbill: /article/ paths are reviews/content (allow), /production/ and /show/ are listings (block)
     if (matchesDomainSet(hostname, new Set(['playbill.com']))) {
       if (lowerPath.startsWith('/article/')) return false; // allow articles
