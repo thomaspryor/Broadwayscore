@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-07T21:13:46.965Z",
+  "generated": "2026-10-08T04:22:35.458Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 21,
+  "count": 23,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -29,6 +29,13 @@
       "loserFile": "about-entertainment--ben-brantley.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after about-entertainment--ben-brantley.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "catch-me-if-you-can-2011",
+      "loserFile": "ap--unknown.json",
+      "targetFile": "ap--mark-kennedy.json",
+      "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -148,6 +155,13 @@
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "loserFile": "daily-mail--georgina-brown.json",
+      "targetFile": "daily-mail--joanna-crawley.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]

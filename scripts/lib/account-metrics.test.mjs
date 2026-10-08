@@ -11,7 +11,7 @@ const require = createRequire(import.meta.url);
 const m = require('./account-metrics.js');
 const here = path.dirname(fileURLToPath(import.meta.url));
 
-const NOW = Date.parse('2026-10-08T12:00:00Z'); // a Thursday
+const NOW = Date.parse('2026-12-10T12:00:00Z'); // a Thursday, after the accounts launch
 const iso = (daysAgo) => new Date(NOW - daysAgo * 86400000).toISOString();
 
 test('slimUsers drops CI test accounts and never keeps an email', () => {
@@ -47,10 +47,10 @@ test('summarizeAccounts counts totals, new per day/week and accounts that saved 
   assert.equal(s.withWatchlist, 1);
   assert.equal(s.withAnything, 2);
   assert.equal(s.daily.length, 60);
-  assert.equal(s.daily.at(-1).date, '2026-10-08');
+  assert.equal(s.daily.at(-1).date, '2026-12-10');
   assert.equal(s.daily.at(-1).newAccounts, 1);
   assert.equal(s.weeks.length, 12);
-  assert.equal(s.weeks.at(-1).week, '2026-10-05');
+  assert.equal(s.weeks.at(-1).week, '2026-12-07');
   assert.equal(s.weeks.at(-1).newAccounts, 2, 'Mon 10-05 .. Thu 10-08: a (today) + b (Tue)');
   assert.equal(s.weeks.at(-1).partial, true);
 });
@@ -103,7 +103,7 @@ test('buildDashboardData merges signed-in users into the daily series and lists 
     accounts,
     ph: {
       active: [{ dau: 1, wau: 2, mau: 3 }],
-      daily: [{ day: '2026-10-08', signed_in_users: 2 }],
+      daily: [{ day: '2026-12-10', signed_in_users: 2 }],
       actions: [{ event: 'rating_submitted', last7: 2, last30: 2, users30: 2 }],
       funnel: null,
       health: [{}],
@@ -219,14 +219,14 @@ test('summarizeAccounts counts real people only and reports what it left out', (
   ], { ownerEmail: 'janedoe@gmail.com' });
   const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'p' }, { user_id: 'o' }], watchlist: [], lists: [] }, NOW);
   assert.equal(a.total, 1);
-  assert.deepEqual(a.excluded, { yours: 1, test: 1 });
+  assert.deepEqual(a.excluded, { yours: 1, test: 1, prelaunch: 0 });
   assert.equal(a.withRating, 1);
   assert.equal(a.people.length, 1);
   assert.deepEqual(Object.keys(a.people[0]).sort(), ['joined', 'lastSignIn', 'provider', 'saved']);
   assert.equal(a.people[0].saved, true);
   assert.ok(!JSON.stringify(a).includes('@'), 'no email leaves the summary');
   const line = m.weeklySummaryLines(m.buildDashboardData({ now: NOW, accounts: a, ph: {} }))[0];
-  assert.match(line, /1 real account in total, 1 new this past week \(not counting 1 of yours and 1 test\)/);
+  assert.match(line, /1 real account in total, 1 new this past week \(not counting 1 of yours, 1 test\)/);
 });
 
 // BRO-4619 welcome screen.
@@ -289,4 +289,29 @@ test('weeklySummaryLines leaves welcome-screen events out of "most common this w
     { event: 'watchlist_add', last7: 4, last30: 4, users30: 2 },
   ] } });
   assert.ok(m.weeklySummaryLines(d).includes('Most common this week: added to watchlist (4).'));
+});
+
+test('classifyAccount and slimUsers treat every listed owner address as the owner', () => {
+  assert.equal(m.classifyAccount('pat@work.example.org', ['jane.doe@gmail.com', 'Pat@Work.example.org']), 'owner');
+  assert.equal(m.classifyAccount('pat@company.com', ['jane.doe@gmail.com']), 'person');
+  assert.equal(m.classifyAccount('pat+x@company.com', ['pat@company.com']), 'owner');
+  const users = m.slimUsers([
+    { id: 'a', email: 'janedoe@gmail.com', created_at: iso(1) },
+    { id: 'b', email: 'pat@company.com', created_at: iso(1) },
+    { id: 'c', email: 'fan@yahoo.com', created_at: iso(1) },
+  ], { ownerEmail: 'jane.doe@gmail.com', ownerEmails: ['pat@company.com'] });
+  assert.deepEqual(users.map((u) => u.kind), ['owner', 'owner', 'person']);
+});
+
+test('accounts made before the public launch are counted as pre-launch, not people', () => {
+  const users = m.slimUsers([
+    { id: 'old', email: 'friend@yahoo.com', created_at: '2026-07-27T12:00:00Z' },
+    { id: 'eve', email: 'eve@yahoo.com', created_at: `${m.ACCOUNTS_LAUNCH_DAY}T00:00:01Z` },
+    { id: 'oldtest', email: 'claude-e2e-1@example.com', created_at: '2026-07-01T00:00:00Z' },
+  ], {});
+  assert.deepEqual(users.map((u) => u.kind), ['prelaunch', 'person', 'test']);
+  const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'old' }], watchlist: [], lists: [] }, Date.parse('2026-10-08T00:00:00Z'));
+  assert.equal(a.total, 1);
+  assert.deepEqual(a.excluded, { yours: 0, test: 1, prelaunch: 1 });
+  assert.equal(a.withRating, 0, "a pre-launch account's rating is not a real person's");
 });

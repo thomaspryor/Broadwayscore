@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-07T02:27:01.630Z",
+    "lastUpdated": "2026-10-08T02:22:38.294Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12007,6 +12007,17 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-07T02:27:01.630Z"
+    },
+    "far-out-magazine": {
+      "displayName": "Far Out Magazine",
+      "tier": 3,
+      "aliases": [
+        "far-out-magazine"
+      ],
+      "domain": "faroutmagazine.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-08T02:22:38.294Z"
     }
   },
   "_aliasIndex": {

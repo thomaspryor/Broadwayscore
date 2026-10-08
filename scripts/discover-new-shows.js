@@ -175,6 +175,7 @@ const {
   parseVenuePageBudget, loadVenueCache, saveVenueCache, planVenueFetches, recordVenueResult,
 } = require('./lib/theatremonkey-venue');
 const { findConflictingShowId } = require('./lib/show-score-url-map');
+const { gateScrapedSynopsis, truncateAtSentence } = require('./lib/synopsis-fact-check');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
 
@@ -3355,7 +3356,11 @@ async function discoverShows() {
         runtime: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].runtime) || null,
         intermissions: runtimeEnrichments[show.id] != null ? runtimeEnrichments[show.id].intermissions : null,
         images: {},
-        synopsis: show.description ? show.description.replace(/<[^>]*>/g, '').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim().substring(0, 500) : '',
+        synopsis: (() => {
+          const text = show.description ? truncateAtSentence(show.description.replace(/<[^>]*>/g, '').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim(), 500) : '';
+          // Producer copy: keep it only if it passes the shared shape + award-claim gate (BRO-4853).
+          return text && gateScrapedSynopsis({ id: show.id, status }, text, { showsById: {} }).ok ? text : '';
+        })(),
         ageRecommendation: (runtimeEnrichments[show.id] && runtimeEnrichments[show.id].ageRecommendation) || null,
         previewsStartDate: show.previewsStartDate || null,
         openingDateSource: show.openingDateSource || null,

@@ -24,6 +24,8 @@
  *
  * Env: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
  *      POSTHOG_PERSONAL_API_KEY; for alerts RESEND_API_KEY, OWNER_EMAIL.
+ *      The owner's other addresses live in the private data repo
+ *      (analytics/owner-emails.json, a JSON array), never in this public one.
  */
 'use strict';
 
@@ -42,6 +44,20 @@ const SEND_ALERTS = !args['no-alerts'] && !SIMULATE;
 
 const DASHBOARD_URL = 'https://broadwayscorecard.com/admin/accounts';
 
+/** The owner's extra addresses, from the private data checkout. Missing file = none. */
+function loadOwnerEmails() {
+  const candidates = [process.env.OWNER_EMAILS_FILE, '/tmp/core-data-checkout/analytics/owner-emails.json'].filter(Boolean);
+  for (const p of candidates) {
+    try {
+      const list = JSON.parse(fs.readFileSync(p, 'utf8'));
+      if (Array.isArray(list)) return list.filter((x) => typeof x === 'string');
+    } catch {
+      // not there or not JSON: try the next one
+    }
+  }
+  return [];
+}
+
 async function supabaseGet(urlPath, { range } = {}) {
   const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -56,13 +72,24 @@ async function supabaseGet(urlPath, { range } = {}) {
 
 async function fetchAllUsers() {
   const all = [];
+  const OWNER_EMAILS = loadOwnerEmails();
+  // Counts only (no addresses) so a missing match shows in the run log.
+  const ownerList = [process.env.OWNER_EMAIL, ...OWNER_EMAILS].filter(Boolean).map(m.inboxKey);
+  const matches = ownerList.map(() => 0);
   // Stop on an empty page: if GoTrue caps per_page below what we ask for,
   // a short page is not the last page.
   for (let page = 1; page <= 1000; page++) {
     const r = await supabaseGet(`/auth/v1/admin/users?page=${page}&per_page=200`);
     const users = Array.isArray(r) ? r : (r.users || []);
-    if (users.length === 0) return all;
-    all.push(...m.slimUsers(users, { ownerEmail: process.env.OWNER_EMAIL }));
+    if (users.length === 0) {
+      console.log(`owner addresses: ${OWNER_EMAILS.length} from the private list${process.env.OWNER_EMAIL ? ' + OWNER_EMAIL' : ''}; accounts matched per address: [${matches.join(', ')}]`);
+      return all;
+    }
+    for (const u of users) {
+      const i = ownerList.indexOf(m.inboxKey(u && u.email));
+      if (i >= 0) matches[i]++;
+    }
+    all.push(...m.slimUsers(users, { ownerEmail: process.env.OWNER_EMAIL, ownerEmails: OWNER_EMAILS }));
   }
   throw new Error('more than 100k users: raise the page cap');
 }

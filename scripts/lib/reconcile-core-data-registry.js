@@ -12,7 +12,11 @@
  * {merged, stats} merge-function shape (BRO-76).
  *
  * Usage:
- *   node scripts/lib/reconcile-core-data-registry.js <remote-snapshot-dir>
+ *   node scripts/lib/reconcile-core-data-registry.js <remote-snapshot-dir> [<base-snapshot-dir>]
+ *
+ * <base-snapshot-dir> (BRO-4852) is the job's pre-run checkout snapshot
+ * (/tmp/core-data-snapshot from checkout-core-data). Mergers taking a third
+ * argument get that file as their base; missing or unparsable = no base.
  *
  * <remote-snapshot-dir> holds one file per registered basename, captured via
  * `git show origin/main:<basename>` BEFORE the caller's rebase ran (see
@@ -36,7 +40,7 @@ const { activeEntriesFor } = require('./core-data-merge-registry');
 const { TOMBSTONE_DIR, buildTombstoneRows, writeTombstones } = require('./merge-tombstones');
 
 function main() {
-  const [snapshotDir] = process.argv.slice(2);
+  const [snapshotDir, baseDir] = process.argv.slice(2);
   if (!snapshotDir) { console.error('reconcile-core-data-registry: missing <remote-snapshot-dir>'); process.exit(0); }
 
   const changedFiles = [];
@@ -51,7 +55,11 @@ function main() {
       const ours = JSON.parse(before);
       const remote = JSON.parse(remoteText);
 
-      const result = entry.merge(ours, remote);
+      let base;
+      if (baseDir && entry.merge.length >= 3) {
+        try { base = JSON.parse(fs.readFileSync(path.join(baseDir, entry.file), 'utf8')); } catch { base = undefined; }
+      }
+      const result = entry.merge.length >= 3 ? entry.merge(ours, remote, base) : entry.merge(ours, remote);
       const after = JSON.stringify(result.merged, null, 2) + (entry.newline === false ? '' : '\n');
       // Audit BEFORE the unchanged-bytes early exit: the common production shape
       // is a clean local file plus a remote-only fossil the merge declines to

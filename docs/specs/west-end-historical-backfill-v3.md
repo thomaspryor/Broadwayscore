@@ -275,6 +275,11 @@ only if needed):
   - Lesson for Phase B: every same-title pair (revivals, NT-to-West End
     transfers) is the risk case. Run the season audit and spot-check
     those pairs first.
+- **Manual flags lost on rebase.** A gather job that checked out before a
+  manual wrong-production flag wrote the file back; the rebase restore
+  returned the flag without its reason, and the rebuild's UK-URL auto-clear
+  then removed it. The restore now brings a live flag's reason and note back
+  with it (restore-protected-fields.js). Re-flagged in review-texts 657bde10f.
 
 **Fixed in the data:**
 - The 14 misfiled reviews were removed (review-texts db8e50881).

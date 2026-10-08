@@ -16,6 +16,7 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 
 const USAGE = `fetch-synopses-wikipedia.js — Fetches show synopses from Wikipedia's free API for shows missing synopsis data.
 
@@ -195,6 +196,14 @@ async function fetchWikipediaSynopsis(show) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // Retired for writes (BRO-4853): this script takes the top Wikipedia search hit with
+  // no production check, so it attached the wrong article (The Encounter -> "Brief
+  // Encounter", The Great Society -> "Natasha, Pierre & The Great Comet of 1812").
+  // enrich-wikipedia-synopsis.js does the same job behind verifyProductionMatch.
+  if (!dryRun) {
+    console.error('fetch-synopses-wikipedia.js no longer writes: use scripts/enrich-wikipedia-synopsis.js (verifies the article is the right production). Re-run with --dry-run to preview matches.');
+    process.exit(1);
+  }
   const showsData = loadShows();
   const showList = showsData.shows || showsData;
 
@@ -219,12 +228,16 @@ async function main() {
 
     const result = await fetchWikipediaSynopsis(show);
 
-    if (result) {
+    const factGate = result ? gateScrapedSynopsis(show, result.synopsis, { showsById: {} }) : null;
+    if (result && factGate.ok) {
       console.log(`OK (${result.source}, ${result.synopsis.length} chars)`);
       if (!dryRun) {
         show.synopsis = result.synopsis;
       }
       fetched++;
+    } else if (result) {
+      console.log(`rejected (${factGate.reason})`);
+      failed++;
     } else {
       console.log('not found');
       failed++;

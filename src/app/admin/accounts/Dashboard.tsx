@@ -10,7 +10,7 @@ interface Payload {
   generatedAt: string;
   accounts: {
     total: number; newToday: number;
-    excluded?: { yours: number; test: number };
+    excluded?: { yours: number; test: number; prelaunch?: number };
     people?: { joined: string | null; lastSignIn: string | null; provider: string; saved: boolean }[]; newLast7: number; newLast30: number;
     signedInLast7: number; signedInLast30: number; providers: Record<string, number>;
     withRating: number; withWatchlist: number; withList: number; withSeen?: number; withAnything: number;
@@ -217,8 +217,8 @@ export default function Dashboard() {
             label="Real accounts"
             value={fmtN(a.total)}
             lines={[
-              a.excluded && (a.excluded.yours || a.excluded.test)
-                ? `not counting ${[a.excluded.yours ? `${a.excluded.yours} of yours` : '', a.excluded.test ? `${a.excluded.test} test` : ''].filter(Boolean).join(' or ')}`
+              a.excluded && (a.excluded.yours || a.excluded.test || a.excluded.prelaunch)
+                ? `not counting ${[a.excluded.yours ? `${a.excluded.yours} of yours` : '', a.excluded.test ? `${a.excluded.test} test` : '', a.excluded.prelaunch ? `${a.excluded.prelaunch} pre-launch` : ''].filter(Boolean).join(', ')}`
                 : `${a.newToday} new today (UTC)`,
               providers,
             ]}
@@ -332,7 +332,7 @@ export default function Dashboard() {
           </Card>
         )}
         {a?.people && (
-          <Card title="Real accounts" note="Newest first. Your own accounts and test sign-ups are left out of every number on this page.">
+          <Card title="Real accounts" note="Newest first. Your own accounts, test sign-ups and accounts made before the Oct 4 launch are left out of every number on this page.">
             {a.people.length === 0 ? (
               <p className="text-sm text-gray-400">No real accounts yet.</p>
             ) : (

@@ -563,6 +563,9 @@ jobs:
 
       - name: Generate opening night status page
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/generate-status-page.js
         continue-on-error: true
 

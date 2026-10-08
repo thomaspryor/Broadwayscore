@@ -773,6 +773,31 @@ function _missingShortTitleToken(shortWords, longWords, candidateLower) {
     && shortWords.some(w => !matchesAsWholeWord(w, candidateLower));
 }
 
+// A title whose other words are all on TITLE_GENERIC_WORDS ("Two Girls",
+// "Into the Woods", "The King and I", "All My Sons") reduces to ONE matching
+// word, and that word alone matched any page carrying it: "Two Girls" took the
+// newyorkcitytheatre.com roundup for "School Girls; Or, The African Mean Girls
+// Play" and four of its reviews went live on a show that had not started
+// previews (BRO-4852). When the single word came from a multi-word title, the
+// whole title must appear as a phrase. Billing ("The New Musical", "The Play",
+// "on Broadway", a " - " / ";" subtitle, a leading "A"/"An") is dropped first,
+// and number words read as digits ("Two Girls" = "2 Girls").
+const _NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+function _titlePhrase(s) {
+  return foldAmpersand(normalizeForMatching(String(s || '').toLowerCase()))
+    .replace(/'/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
+    .split(' ').map(w => { const n = _NUMBER_WORDS.indexOf(w); return n >= 0 ? String(n) : w; }).join(' ');
+}
+function _missingTitlePhrase(showTitle, candidateText) {
+  const pre = String(showTitle || '').replace(/^\s*the\s+/i, '').replace(/\s*(?:[:(;]|\s[-\u2013\u2014]\s).*$/, '');
+  const phrase = _titlePhrase(pre)
+    .replace(/\s+on broadway$/, '')
+    .replace(/\s+(?:(?:the|a)\s+)?(?:new\s+)?(?:musical|play)$/, '')
+    .replace(/^(?:a|an)\s+/, '');
+  if (phrase.split(' ').length < 2) return false;
+  return !(` ${_titlePhrase(candidateText)} `).includes(` ${phrase} `);
+}
+
 const TITLE_GENERIC_WORDS = new Set([
   'the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival',
   'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for', 'to',
@@ -834,6 +859,7 @@ function titleWordsMatch(showTitle, candidateText) {
     .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
   const shortWords = [...new Set(titleTokens.filter(w => w.length <= 2))];
   let showSlugWords = titleTokens.filter(w => w.length > 2);
+  const singleFromPreColon = showSlugWords.length > 0;
 
   // If pre-colon part has no meaningful words, use the FULL title including subtitle
   // (e.g., "All Out: Comedy About Ambition" → "ambition" is the only distinctive word)
@@ -866,7 +892,8 @@ function titleWordsMatch(showTitle, candidateText) {
 
   if (showSlugWords.length === 1) {
     // Single-word: word-boundary match to prevent partial matches
-    return matchesAsWholeWord(showSlugWords[0], candidateLower);
+    if (!matchesAsWholeWord(showSlugWords[0], candidateLower)) return false;
+    return !(singleFromPreColon && _missingTitlePhrase(showTitle, candidateLower));
   }
 
   // Multi-word: require ≥50% of meaningful words, minimum 2
@@ -945,6 +972,7 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
     .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
   const shortWords = [...new Set(titleTokens.filter(w => w.length <= 2))];
   let words = titleTokens.filter(w => w.length > 2);
+  const singleFromPreColon = words.length > 0;
 
   // Full-title fallback if pre-colon part has no meaningful words
   if (words.length === 0) {
@@ -991,6 +1019,12 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
   // Single meaningful word — moderate confidence at best
   if (words.length === 1) {
     const matched = matchesAsWholeWord(words[0], candidateLower);
+    // Word present but the multi-word title is not (BRO-4852): report it as
+    // a non-match with matchCount 1, so page-validator asks the LLM and, with
+    // no LLM available, rejects instead of accepting "low confidence".
+    if (matched && singleFromPreColon && _missingTitlePhrase(showTitle, candidateText)) {
+      return { matched: false, confidence: 0, matchCount: 1, threshold: 1, words, reason: 'missing-title-phrase' };
+    }
     return { matched, confidence: matched ? 0.6 : 0, matchCount: matched ? 1 : 0, threshold: 1, words };
   }
 

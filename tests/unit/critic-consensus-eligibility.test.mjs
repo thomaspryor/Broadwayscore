@@ -42,7 +42,9 @@ describe('the floor is shared, not restated', () => {
   it('generate-critic-consensus.js imports the predicate instead of hardcoding a number', () => {
     const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'generate-critic-consensus.js'), 'utf8');
     assert.match(src, /from '\.\/lib\/critic-consensus-eligibility\.js'/);
-    assert.match(src, /isConsensusEligible\(scoredReviews\.length\)/);
+    // eligibleCount = min(review-texts count, live reviews.json count) since BRO-4852.
+    assert.match(src, /isConsensusEligible\(eligibleCount\)/);
+    assert.match(src, /Math\.min\(scoredReviews\.length, liveCounts\.get\(showId\)/);
     // The literal this replaced. If someone reintroduces it the two sides can
     // drift again silently, which is exactly how the loop started.
     assert.doesNotMatch(src, /scoredReviews\.length\s*<\s*\d/);
@@ -126,4 +128,38 @@ describe('the floor is shared, not restated', () => {
     assert.equal(below.ok, true, 'one scored review is below the floor — no Take expected');
     assert.match(below.message, new RegExp(`below the ${MIN_SCORED_REVIEWS}`));
   });
+});
+
+// BRO-4852: Midnight kept a Critics' Take about Ben Platt after its two
+// wrong-show reviews left reviews.json; 25 shows held a blurb with fewer than
+// two live reviews. Eligibility now also counts what the site shows.
+it('staleConsensusIds: a blurb with fewer than MIN live reviews is stale, whatever its stored reviewCount', async () => {
+  const { liveScoredCounts, staleConsensusIds } = await import('../../scripts/lib/critic-consensus-eligibility.js');
+  const counts = liveScoredCounts({ reviews: [
+    { showId: 'a', assignedScore: 80 }, { showId: 'a', assignedScore: 70 },
+    { showId: 'b', assignedScore: 90 }, { showId: 'b', assignedScore: null },
+  ] });
+  assert.equal(counts.get('a'), 2);
+  assert.equal(counts.get('b'), 1);
+  const stale = staleConsensusIds({
+    a: { reviewCount: 2 }, b: { reviewCount: 1 }, midnight: { reviewCount: 3 },
+  }, counts);
+  assert.deepEqual(stale.sort(), ['b', 'midnight']);
+  // Flagged rows do not count (critics-take-present.check.js rule).
+  const flagged = liveScoredCounts({ reviews: [{ showId: 'c', assignedScore: 80, wrongShow: true }, { showId: 'c', compositeScore: 70 }] });
+  assert.equal(flagged.get('c'), 1);
+});
+
+it('generate-critic-consensus skips the prune when it would delete more than MAX_STALE_PRUNE entries', () => {
+  const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'generate-critic-consensus.js'), 'utf8');
+  assert.match(src, /stale\.length > MAX_STALE_PRUNE/);
+});
+
+// The contamination audit read r.score, a field reviews.json rows never carry,
+// so REVIEWCOUNT_DRIFT/MEANSCORE_DRIFT could never fire (BRO-4852).
+it('audit-critic-consensus-contamination reads the score reviews.json actually carries', () => {
+  const { reviewScore } = require('../../scripts/audit-critic-consensus-contamination.js');
+  assert.equal(reviewScore({ assignedScore: 81 }), 81);
+  assert.equal(reviewScore({ compositeScore: 70 }), 70);
+  assert.equal(reviewScore({ assignedScore: null }), undefined);
 });

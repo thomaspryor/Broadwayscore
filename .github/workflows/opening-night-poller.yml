@@ -313,6 +313,8 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         id: poll
         env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           # BRO-67: DTLI/BWW extraction now routes through
           # llmFallbackExtractIfNeeded (zero AND partial-extraction triggers).
           # Without this, callClaude rejects immediately with "ANTHROPIC_API_KEY

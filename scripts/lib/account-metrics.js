@@ -36,6 +36,10 @@ const TEST_DOMAINS = new Set(['example.com', 'example.org', 'example.net', 'test
 const TEST_TLDS = ['.test', '.invalid', '.example', '.local', '.localhost'];
 const TEST_LOCAL = /^(claude|e2e|qa|test)([-_.+]|\d|$)/;
 
+// Accounts opened to the public on the website this day (first sign-in box on
+// broadwayscorecard.com in PostHog). Earlier accounts are the owner's and testers'.
+const ACCOUNTS_LAUNCH_DAY = '2026-10-04';
+
 /** Same inbox? Gmail ignores dots and +tags; everyone else, +tags only. */
 function inboxKey(email) {
   const e = String(email || '').trim().toLowerCase();
@@ -52,11 +56,12 @@ function inboxKey(email) {
  * 'ci-test' (dropped), 'test' (a fake address), 'owner' (the owner's own inbox,
  * +aliases included) or 'person'. Only this label leaves the module.
  */
-function classifyAccount(email, ownerEmail) {
+function classifyAccount(email, ownerEmails) {
   if (typeof email !== 'string' || !email.includes('@')) return 'person'; // e.g. Apple with no email shared
   const e = email.trim().toLowerCase();
   if (e.endsWith(TEST_EMAIL_SUFFIX)) return 'ci-test';
-  if (ownerEmail && inboxKey(e) === inboxKey(ownerEmail)) return 'owner';
+  const owners = (Array.isArray(ownerEmails) ? ownerEmails : [ownerEmails]).filter(Boolean);
+  if (owners.some((o) => inboxKey(e) === inboxKey(o))) return 'owner';
   const [local, domain] = [e.slice(0, e.lastIndexOf('@')), e.slice(e.lastIndexOf('@') + 1)];
   if (TEST_DOMAINS.has(domain) || TEST_TLDS.some((t) => domain.endsWith(t))) return 'test';
   if (TEST_LOCAL.test(local)) return 'test';
@@ -279,12 +284,13 @@ function mondayOf(iso) {
  * Supabase auth users → only what the page needs. Emails are read here to
  * drop test accounts and go no further.
  */
-function slimUsers(rawUsers, { ownerEmail } = {}) {
+function slimUsers(rawUsers, { ownerEmail, ownerEmails } = {}) {
   const out = [];
   for (const u of rawUsers || []) {
     if (!u || !u.id) continue;
-    const kind = classifyAccount(u.email, ownerEmail);
+    let kind = classifyAccount(u.email, [ownerEmail, ...(ownerEmails || [])]);
     if (kind === 'ci-test') continue;
+    if (kind === 'person' && u.created_at && String(u.created_at).slice(0, 10) < ACCOUNTS_LAUNCH_DAY) kind = 'prelaunch';
     out.push({
       id: u.id,
       kind,
@@ -306,6 +312,7 @@ function summarizeAccounts(allUsers, activity, now = Date.now(), days = 60) {
   const excluded = {
     yours: allUsers.filter((u) => u.kind === 'owner').length,
     test: allUsers.filter((u) => u.kind === 'test').length,
+    prelaunch: allUsers.filter((u) => u.kind === 'prelaunch').length,
   };
   const ids = new Set(users.map((u) => u.id));
   const per = (rows) => {
@@ -514,7 +521,7 @@ function weeklySummaryLines(d) {
   const a = d && d.accounts;
   if (!a) return lines;
   const ex = a.excluded || {};
-  const skipped = [ex.yours ? `${ex.yours} of yours` : '', ex.test ? `${ex.test} test` : ''].filter(Boolean).join(' and ');
+  const skipped = [ex.yours ? `${ex.yours} of yours` : '', ex.test ? `${ex.test} test` : '', ex.prelaunch ? `${ex.prelaunch} from before launch` : ''].filter(Boolean).join(', ');
   lines.push(`${plural(a.total, 'real account', 'real accounts')} in total, ${a.newLast7} new this past week${skipped ? ` (not counting ${skipped})` : ''}.`);
   if (d.active) lines.push(`${plural(d.active.wau, 'signed-in person', 'signed-in people')} used the site this week (${d.active.dau} in the last day, ${d.active.mau} in the last 30 days).`);
   const seenPart = a.withSeen ? `, ${a.withSeen} marked shows as seen without stars` : '';
@@ -551,6 +558,7 @@ module.exports = {
   buildQueries,
   rowsToObjects,
   slimUsers,
+  ACCOUNTS_LAUNCH_DAY,
   classifyAccount,
   inboxKey,
   summarizeAccounts,

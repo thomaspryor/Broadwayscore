@@ -23,6 +23,8 @@
  *   REVIEWCOUNT_DRIFT     (fail) — |consensus.reviewCount − reviews.json count| >= 10
  *                                    (consensus is summarising a stale review set)
  *   MEANSCORE_DRIFT       (fail) — |consensus.meanScore − reviews.json mean| >= 15
+ *   BELOW_FLOOR           (warn) — take exists but the show has < MIN_SCORED_REVIEWS
+ *                                    live reviews (BRO-4852; 0 baseline after the prune)
  *                                    (consensus text reflects an outdated critical mood)
  *
  * Thresholds chosen against live data (2026-05-24, 941 consensus records):
@@ -41,6 +43,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { MIN_SCORED_REVIEWS, isConsensusEligible } = require('./lib/critic-consensus-eligibility');
 
 const ROOT = path.join(__dirname, '..');
 const CONSENSUS_FILE = path.join(ROOT, 'data', 'critic-consensus.json');
@@ -67,15 +70,24 @@ function loadShowIds() {
 
 // reviews.json may be {reviews:[...]} or a bare array depending on
 // snapshot age — handle both.
+/** The score a reviews.json row carries (assignedScore, else compositeScore). */
+function reviewScore(r) {
+  const v = r && (r.assignedScore != null ? r.assignedScore : (r.compositeScore != null ? r.compositeScore : r.score));
+  return typeof v === 'number' ? v : undefined;
+}
+
 function loadReviewsByShow() {
   try {
     const raw = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf-8'));
     const arr = Array.isArray(raw) ? raw : (raw.reviews || []);
     const m = new Map();
     for (const r of arr) {
-      if (!r || !r.showId) continue;
+      if (!r || !r.showId || r.wrongShow || r.wrongProduction) continue;
       if (!m.has(r.showId)) m.set(r.showId, []);
-      m.get(r.showId).push(r);
+      // reviews.json rows carry assignedScore (compositeScore on a few), never
+      // `score`: reading r.score left every drift signal below dead since it
+      // landed, "0 baseline hits" included (BRO-4852).
+      m.get(r.showId).push({ ...r, score: reviewScore(r) });
     }
     return m;
   } catch {
@@ -99,6 +111,12 @@ function audit() {
 
     if (reviewsByShow) {
       const reviews = reviewsByShow.get(id);
+      // BELOW_FLOOR (warn, BRO-4852): a Critics' Take on a show the site has
+      // fewer than MIN_SCORED_REVIEWS live reviews for. The generator prunes
+      // these every run; a hit means a prune was skipped (its cap tripped) or
+      // regressed. Midnight carried a take written from two wrong-show reviews.
+      const liveScored = (reviews || []).filter(r => typeof r.score === 'number').length;
+      if (!isConsensusEligible(liveScored)) flags.push(`BELOW_FLOOR:live=${liveScored},min=${MIN_SCORED_REVIEWS}`);
       if (reviews) {
         const scored = reviews.filter(r => typeof r.score === 'number');
         if (scored.length > 0) {
@@ -109,7 +127,8 @@ function audit() {
           }
 
           const actualMean = scored.reduce((s, r) => s + r.score, 0) / actualCount;
-          const msDiff = Math.abs((c.meanScore || 0) - actualMean);
+          // No stored meanScore = nothing to drift from (generator's own guard).
+          const msDiff = c.meanScore != null ? Math.abs(c.meanScore - actualMean) : 0;
           if (msDiff >= MEANSCORE_DRIFT_THRESHOLD) {
             flags.push(`MEANSCORE_DRIFT:consensus=${c.meanScore || 0},actual=${Math.round(actualMean)},diff=${Math.round(msDiff)}`);
           }
@@ -190,4 +209,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { audit, FAIL_SIGNALS, REVIEWCOUNT_DRIFT_THRESHOLD, MEANSCORE_DRIFT_THRESHOLD };
+module.exports = { audit, reviewScore, FAIL_SIGNALS, REVIEWCOUNT_DRIFT_THRESHOLD, MEANSCORE_DRIFT_THRESHOLD };

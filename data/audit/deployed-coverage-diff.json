@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-07T22:38:26.716Z",
+  "generatedAt": "2026-10-08T02:36:06.043Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 230,
-  "clean": 223,
-  "defective": 7,
+  "checked": 228,
+  "clean": 222,
+  "defective": 6,
   "byType": {
-    "unreachable": 7
+    "unreachable": 6
   },
   "shows": [
     {
@@ -89,21 +89,6 @@
       "showId": "gimme-a-sign-off-broadway-2026",
       "title": "Gimme a Sign!",
       "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
-      "title": "Repro Eco: Tomorrow Is Now",
-      "openingDate": "2026-09-16",
       "ok": false,
       "defects": [
         {

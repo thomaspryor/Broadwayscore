@@ -380,3 +380,50 @@ test('same-title different-production: "on Broadway" roundup is rejected for the
   // No same-title Broadway sibling: nothing to confuse it with.
   assert.equal(validateRoundupPageTitle(broadwayPage, 'The Outsiders', 'regional', []).ok, true);
 });
+
+// "Two Girls" reduced to the single word "girls" ("two" is a generic word) and
+// matched the NYC Theatre roundup for "School Girls; Or, The African Mean Girls
+// Play": four School Girls reviews went live on a show that had not started
+// previews (BRO-4852). A one-word reduction of a multi-word title now needs
+// the whole title as a phrase.
+test('single-word reduction of a multi-word title needs the full phrase (BRO-4852)', async () => {
+  const { titleWordsMatch, titleWordsMatchWithConfidence } = require('./show-matching.js');
+  const { validatePageMatchesShow } = require('./page-validator.js');
+  const rejects = [
+    ['Two Girls', 'School Girls; Or, The African Mean Girls Play Reviews | New York City Theatre'],
+    ['The King and I', 'The Lion King Reviews'],
+    ['All My Sons', 'Sons of the Prophet'],
+    ['Come From Away', 'Far Away Reviews'],
+  ];
+  for (const [title, cand] of rejects) {
+    assert.equal(titleWordsMatch(title, cand), false, `${title} vs ${cand}`);
+    const c = titleWordsMatchWithConfidence(title, cand);
+    assert.equal(c.matched, false, `${title} vs ${cand}`);
+    assert.equal(c.matchCount, 1);
+  }
+  const accepts = [
+    ['Two Girls', 'Two Girls Reviews | New York City Theatre'],
+    ['Two Girls', 'two-girls-review'],
+    ['The King and I', 'Review Roundup: THE KING AND I'],
+    ['Me and My Girl', 'Me & My Girl review'],
+    ['Oh, Mary!', 'Oh, Mary! Broadway Reviews'],
+    ['Amélie, A New Musical', 'Amelie reviews'],
+    ['Boop! The Musical', 'BOOP! Review roundup'],
+    ['Dana H.', 'Dana H. reviews'],
+    // Billing words and numerals are not part of the phrase a page must carry.
+    ['Copperfield! The New Musical', 'COPPERFIELD! Off-Broadway Reviews | Show Score'],
+    ['Giant The Play', 'Giant | Show Score'],
+    ['Oh, Hello on Broadway', 'Oh, Hello! review'],
+    ['Riverdance - On Broadway', 'Riverdance reviews'],
+    ['Two Girls', '2 Girls review'],
+    ['Act One', 'Act 1 Broadway reviews'],
+  ];
+  for (const [title, cand] of accepts) {
+    assert.equal(titleWordsMatch(title, cand), true, `${title} vs ${cand}`);
+    assert.equal(titleWordsMatchWithConfidence(title, cand).matched, true, `${title} vs ${cand}`);
+  }
+  // With no LLM to break the tie, the page is rejected rather than accepted.
+  const page = '<html><head><title>School Girls; Or, The African Mean Girls Play Reviews | New York City Theatre</title></head><body><h1>School Girls; Or, The African Mean Girls Play Reviews</h1></body></html>';
+  const v = await validatePageMatchesShow(page, 'Two Girls', { skipLlm: true, openingYear: 2026 });
+  assert.equal(v.valid, false);
+});

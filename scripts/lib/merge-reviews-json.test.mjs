@@ -722,3 +722,42 @@ test('mergeReviewsJson: provenance records every drop, including showId, across 
   }
   assert.equal(merged.reviews.length, 2, 'exactly the two bylined rows remain');
 });
+
+// BRO-4852: run 37705532802 rebuilt reviews.json without seven wrongShow rows,
+// lost the push race, and the two-way union put all seven back ("added":8).
+test('mergeReviewsJson with base: rows our rebuild excluded stay excluded; real remote additions survive (BRO-4852)', () => {
+  const row = (showId, outlet, extra = {}) => ({ showId, outlet, outletId: outlet.toLowerCase(), criticName: null, assignedScore: 85, ...extra });
+  const excluded = [
+    row('two-girls-off-broadway-2026', 'The Guardian'), row('two-girls-off-broadway-2026', 'The New York Times'),
+    row('two-girls-off-broadway-2026', 'Theatrely'), row('two-girls-off-broadway-2026', 'Vulture'),
+    row('midnight-off-broadway-2026', 'BroadwayWorld', { criticName: 'Michael Major' }),
+    row('midnight-off-broadway-2026', 'BroadwayWorld', { criticName: 'Persson Clementine Scott' }),
+    row('and-juliet-tour-2024', 'Deadline'),
+  ];
+  const kept = row('wicked-2003', 'Variety', { criticName: 'Marilyn Stasio' });
+  const base = { _meta: { lastUpdated: '2026-10-08T00:00:00Z' }, reviews: [kept, ...excluded] };
+  const ours = { _meta: { lastUpdated: '2026-10-08T00:05:25Z' }, reviews: [kept] };
+  const newRemote = row('soon-off-broadway-2026', 'Time Out', { criticName: 'Adam Feldman' });
+  const remote = { _meta: { lastUpdated: '2026-10-08T00:05:46Z' }, reviews: [kept, ...excluded, newRemote] };
+
+  const { merged, stats } = mergeReviewsJson(ours, remote, base);
+  assert.deepEqual(merged.reviews.map((r) => r.showId).sort(), ['soon-off-broadway-2026', 'wicked-2003']);
+  assert.equal(stats.droppedByOurs, 7);
+  assert.equal(stats.droppedByOursKeys.length, 7);
+  assert.equal(stats.added, 1);
+
+  // No base: legacy two-way union (all 8 come back).
+  assert.equal(mergeReviewsJson(ours, remote).merged.reviews.length, 9);
+});
+
+test('mergeReviewsJson with base: a remote row edited since base, or a manualEntry row, is kept (BRO-4852)', () => {
+  const r = { showId: 'x-2026', outlet: 'Variety', criticName: 'A B', assignedScore: 70 };
+  const m = { showId: 'y-2026', outlet: 'Vulture', criticName: 'C D', assignedScore: 60, manualEntry: true };
+  const base = { reviews: [r, m] };
+  const ours = { reviews: [] };
+  const remote = { reviews: [{ ...r, assignedScore: 75 }, m] };
+  const { merged, stats } = mergeReviewsJson(ours, remote, base);
+  assert.equal(merged.reviews.length, 2);
+  assert.equal(stats.droppedByOurs, 0);
+  assert.equal(mergeReviewsJson.requiresTrueBase, true);
+});
