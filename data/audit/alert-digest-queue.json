@@ -1911,5 +1911,29 @@
       }
     ],
     "queuedAt": "2026-10-08T01:01:41.474Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-into-the-woods-noel-coward-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Into the Woods",
+    "description": "1883magazine/Nick Barr (1883magazine--nick-barr.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'Into the Woods' — https://1883magazine.com/into-the-woods-review-the-bridge/\nobserver/Susannah Clapp (observer--susannah-clapp.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'Into the Woods' — https://observer.co.uk/culture/theatre/article/the-bridges-into-the-woods-is-a-thrilling-mischievous-delight\nplays-international/Maryam Philpott (plays-international--maryam-philpott.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a production of 'Into the Woods' — https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T02:01:10.416Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:into-the-woods-noel-coward-west-end-2026",
+    "title": "Shipped review missing publishDate on Into the Woods",
+    "description": "i-paper/Fiona Mountford SHIPPED with no publishDate — cannot confirm post-opening: https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T02:01:10.428Z"
   }
 ]
