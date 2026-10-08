@@ -28,6 +28,7 @@ const { cleanup: cleanupScraper } = require('./lib/scraper');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { extractTodaytixPageIdentity, todaytixPageMatchesShow } = require('./lib/todaytix-page-identity');
 
 const USAGE = `auto-fix-show-data.js — Automatically fixes show data issues - FULL automation:.
 
@@ -194,16 +195,19 @@ function todayTixUrl(show, todayTixInfo) {
 }
 
 // Fetch synopsis from TodayTix
+// Returns { text, trusted }: trusted when the page's own product record (id,
+// title, venue, dates) is this production, see scripts/lib/todaytix-page-identity.js.
 async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
-  if (!todayTixInfo?.id) return null;
+  if (!todayTixInfo?.id) return { text: null, trusted: false };
 
   const url = todayTixUrl(show, todayTixInfo);
 
   try {
     const html = await fetchUrl(url);
-    return extractSynopsisFromHtml(html);
+    const trusted = todaytixPageMatchesShow(extractTodaytixPageIdentity(html), show, todayTixInfo.id);
+    return { text: extractSynopsisFromHtml(html), trusted };
   } catch {
-    return null;
+    return { text: null, trusted: false };
   }
 }
 
@@ -215,6 +219,13 @@ async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
 
   try {
     const html = await fetchUrl(url);
+    // A recycled TodayTix id serves another show's page; when the page names
+    // its own production and it is not this one, its team is not ours.
+    const identity = extractTodaytixPageIdentity(html);
+    if (identity && !todaytixPageMatchesShow(identity, show, todayTixInfo.id)) {
+      console.log(`    ✗ TodayTix page is "${identity.title}" at ${identity.venue || '?'}, not this production — skipping its creative team`);
+      return null;
+    }
     return extractCreativeTeamFromHtml(html);
   } catch {
     return null;
@@ -361,13 +372,21 @@ async function fixSynopsis(show, todayTixIds) {
   // path is moot anyway (generateSynopsisWithLLM returns null), so this just
   // leaves the field null in keyless local runs. The cron always has the key.
   const verifier = ANTHROPIC_API_KEY ? (p => callClaudeAPI(p, 200, CLAUDE_OPUS)) : null;
-  const accept = async (text, source) => {
+  const accept = async (text, source, { trusted = false } = {}) => {
     if (!text || !isValidSynopsis(text)) return false;
     // Award claims must agree with awards.json (LLMs and producer copy both invent them, BRO-4853).
     const factGate = gateScrapedSynopsis(show, text, { showsById: {} });
     if (!factGate.ok) {
       console.log(`    ✗ rejected ${source} synopsis (${factGate.reason})`);
       return false;
+    }
+    // The page itself says it is this production (id + title + venue + dates);
+    // the LLM verifier rejects every record too sparse to confirm, which is
+    // every new historical row (BRO-4851).
+    if (trusted) {
+      console.log(`    ✓ ${source} page identity matches this production — verifier not needed`);
+      show.synopsis = text;
+      return true;
     }
     if (!verifier) {
       console.log(`    ✗ skipped ${source} synopsis — no verifier (ANTHROPIC_API_KEY) to confirm right show`);
@@ -384,7 +403,8 @@ async function fixSynopsis(show, todayTixIds) {
 
   // Try TodayTix first
   const todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
-  if (await accept(await fetchSynopsisFromTodayTix(show, todayTixInfo), 'TodayTix')) {
+  const tt = await fetchSynopsisFromTodayTix(show, todayTixInfo);
+  if (await accept(tt.text, 'TodayTix', { trusted: tt.trusted })) {
     return `Fetched synopsis from TodayTix for ${show.title}`;
   }
 
