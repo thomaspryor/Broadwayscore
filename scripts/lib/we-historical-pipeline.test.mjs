@@ -11,6 +11,7 @@ const require = createRequire(import.meta.url);
 const { buildCandidates, collapseDuplicateListings, plausibleOpeningDate } = require('../discover-historical-shows-we.js');
 const { planPromotions, effectiveDecision, fixAllCapsTitle, buildShowEntry } = require('../promote-historical-we.js');
 const { planWetMerge, matchWetRow } = require('../merge-wet-stars-urls.js');
+const { auditSeason } = require('../audit-we-historical-season.js');
 
 const SEASON = '2024-2025';
 const TODAY = '2026-10-07';
@@ -180,6 +181,33 @@ test('planPromotions writes the venue spelling already used on the site', () => 
 test('effectiveDecision: an approval cannot mark a show that has not closed as closed', () => {
   const c = { title: 'X', venue: 'Gielgud Theatre', previewsStartDate: '2026-01-01', closingDate: '2027-01-01', season: '2025-2026', decision: { promotable: false, reason: 'not closed yet' } };
   assert.equal(effectiveDecision(c, { '2025-2026': { X: { decision: 'approve' } } }, TODAY).promotable, false);
+});
+
+test('auditSeason: flags a review of the OTHER same-title production and duplicate critics', () => {
+  const show = (id, venue, previews, close) => ({ id, title: 'Oedipus', venue, previewsStartDate: previews, closingDate: close, status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' });
+  const shows = [show('oedipus-west-end-2024', "Wyndham's Theatre", '2024-10-04', '2025-01-04'), show('oedipus-west-end-2025', 'The Old Vic', '2025-01-21', '2025-03-29')];
+  const rev = (showId, outletId, critic, date, score = 60) => ({ showId, outletId, outlet: outletId, criticName: critic, publishDate: date, assignedScore: score, url: 'https://x' });
+  const reviews = [
+    ...['guardian', 'telegraph', 'times-uk', 'standard', 'financialtimes'].map(o => rev('oedipus-west-end-2024', o, `${o} critic`, '2024-10-16')),
+    rev('oedipus-west-end-2025', 'guardian', 'A', '2025-02-05'),
+    rev('oedipus-west-end-2025', 'guardian', 'A', '2025-02-06'),
+    // Wyndham's review (Oct 2024) attached to the Old Vic production:
+    rev('oedipus-west-end-2025', 'telegraph', 'B', '2024-10-16'),
+  ];
+  const r = auditSeason({ shows, reviews, season: SEASON });
+  assert.equal(r.checks.inWindow.value, 1);
+  assert.equal(r.checks.inWindow.rows[0].showId, 'oedipus-west-end-2025');
+  assert.equal(r.checks.duplicates.value, 1);
+  assert.equal(r.checks.displayable.value, 0.5);
+  assert.equal(r.pass, false);
+});
+
+test('auditSeason: a clean season passes; --ids limits the audit to a batch', () => {
+  const s = { id: 'kyoto-west-end-2025', title: 'Kyoto', venue: '@sohoplace', previewsStartDate: '2025-01-09', closingDate: '2025-05-03', status: 'closed', category: 'west-end', market: 'west-end', season: SEASON, discoverySource: 'we-historical:wos' };
+  const other = { ...s, id: 'unscored-west-end-2025' };
+  const reviews = ['guardian', 'telegraph', 'times-uk', 'standard', 'thestage'].map(o => ({ showId: s.id, outletId: o, outlet: o, criticName: o, publishDate: '2025-01-20', assignedScore: 70 }));
+  assert.equal(auditSeason({ shows: [s, other], reviews, season: SEASON }).pass, false);
+  assert.equal(auditSeason({ shows: [s, other], reviews, season: SEASON, ids: new Set([s.id]) }).pass, true);
 });
 
 test('fixAllCapsTitle and straight apostrophes in written titles', () => {
