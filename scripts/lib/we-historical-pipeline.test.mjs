@@ -10,7 +10,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { buildCandidates, collapseDuplicateListings, plausibleOpeningDate } = require('../discover-historical-shows-we.js');
 const { planPromotions, effectiveDecision, fixAllCapsTitle, buildShowEntry } = require('../promote-historical-we.js');
-const { planWetMerge, matchWetRow } = require('../merge-wet-stars-urls.js');
+const { planWetMerge, matchWetRow, roundupWindow } = require('../merge-wet-stars-urls.js');
+const { discoverWetRoundupRows } = require('./wet-roundup-discover.js');
 const { auditSeason } = require('../audit-we-historical-season.js');
 
 const SEASON = '2024-2025';
@@ -208,6 +209,19 @@ test('auditSeason: a clean season passes; --ids limits the audit to a batch', ()
   const reviews = ['guardian', 'telegraph', 'times-uk', 'standard', 'thestage'].map(o => ({ showId: s.id, outletId: o, outlet: o, criticName: o, publishDate: '2025-01-20', assignedScore: 70 }));
   assert.equal(auditSeason({ shows: [s, other], reviews, season: SEASON }).pass, false);
   assert.equal(auditSeason({ shows: [s, other], reviews, season: SEASON, ids: new Set([s.id]) }).pass, true);
+});
+
+test('roundupWindow + discoverWetRoundupRows: historical merge searches only the run\'s own window', async () => {
+  const show = { id: 'just-for-one-day-the-live-aid-musical-west-end-2025', title: 'Just For One Day', previewsStartDate: '2025-05-15', closingDate: '2026-02-07' };
+  const w = roundupWindow(show);
+  assert.deepEqual(w, { after: '2025-04-15', before: '2026-06-07' });
+  let url = '';
+  await discoverWetRoundupRows(show, { ...w, fetchJSON: async (u) => { url = u; return []; }, fetchPage: async () => null, log: () => {} });
+  assert.match(url, /&after=2025-04-15T00:00:00&before=2026-06-07T00:00:00$/);
+  // Live callers pass no window: URL unchanged.
+  await discoverWetRoundupRows(show, { fetchJSON: async (u) => { url = u; return []; }, fetchPage: async () => null, log: () => {} });
+  assert.doesNotMatch(url, /after=/);
+  assert.deepEqual(roundupWindow({ title: 'X' }), {});
 });
 
 test('fixAllCapsTitle and straight apostrophes in written titles', () => {
