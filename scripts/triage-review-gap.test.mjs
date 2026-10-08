@@ -158,3 +158,7 @@ test('isPreRunFile: prior run, human-reviewed, undated are exempt', () => {
   assert.equal(isPreRunFile(f('2026-08-20', { humanReviewScore: 70 }), show), false);
   assert.equal(isPreRunFile(f('2026-08-20'), { ...show, priorRuns: [{ openingDate: '2026-08-01', closingDate: '2026-08-30' }] }), false);
 });
+
+test('isPreRunFile: no previewsStartDate -> never hides a file (openingDate fallback removed)', () => {
+  assert.equal(isPreRunFile({ data: { publishDate: '2026-09-09' } }, { openingDate: '2026-09-10' }), false);
+});

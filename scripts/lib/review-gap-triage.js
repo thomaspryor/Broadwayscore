@@ -109,7 +109,10 @@ function isOtherProductionFile(file, showRecord, exclusionRule) {
 function isPreRunFile(file, showRecord) {
   const data = file && file.data;
   if (!data || !showRecord) return false;
-  const start = _ts(showRecord.previewsStartDate) ?? _ts(showRecord.openingDate);
+  // previewsStartDate only (same as isOtherProductionFile): without it we can't tell a
+  // preview-period review from a pre-run feature. Outlet-level reviews.json/prod
+  // presence still wins in classifyGap, so an ingested+counted file is never hidden.
+  const start = _ts(showRecord.previewsStartDate);
   const pub = _ts(data.publishDate);
   if (start == null || pub == null || pub >= start) return false;
   if (isWithinPriorRun(data.publishDate, showRecord.priorRuns) || isWithinTourLeg(data.publishDate, showRecord.tourLegs)) return false;

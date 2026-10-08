@@ -176,6 +176,8 @@ function wpPostMatchesShow(post, titleWords) {
  * carry no tone tag, so keep /stage/ article URLs whose slug says "review";
  * the dispatcher's urlLooksLikeReview() then narrows to the polled show.
  */
+const _sectionCache = new Map();
+
 function extractGuardianRssReviewUrls(xml) {
   const urls = [];
   const re = /<link>(https:\/\/www\.theguardian\.com\/stage\/\d{4}\/[a-z]{3}\/\d{1,2}\/[^<\s]*review[^<\s]*)<\/link>/gi;
@@ -272,6 +274,7 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="((?:https:\/\/www\.timeout\.com)?\/[a-z]+\/[^"]*review[^"]*)"/gi,
     normalizeUrl: (u) => (u.startsWith('/') ? `https://www.timeout.com${u}` : u),
     requiresJs: true,
+    outletIdOverride: 'timeout-london', // canonical id; lets the section arm suppress this paid render
   },
   'ew': {
     name: 'Entertainment Weekly',
@@ -523,7 +526,10 @@ const SITE_SEARCH_ENDPOINTS = {
       const urls = [];
       for (const page of ['https://www.timeout.com/london/theatre', 'https://www.timeout.com/london/news']) {
         try {
-          const html = await fetchSSR(page);
+          // Show-independent page: memoise per process so N shows x polls don't refetch.
+          const hit = _sectionCache.get(page);
+          const html = hit && Date.now() - hit.at < 120000 ? hit.html : await fetchSSR(page);
+          _sectionCache.set(page, { at: Date.now(), html });
           urls.push(...extractSectionLinks(html, 'https://www.timeout.com', /^\/london\/(?:news|theatre)\/[a-z0-9-]*review[a-z0-9-]*$/i));
         } catch (e) {
           console.warn(`    Site search [Time Out section]: ${page} failed (${e.message})`);
@@ -1133,6 +1139,12 @@ async function fetchSSR(url, timeoutMs = 15000) {
 
   // Determine whether to fall back. Only burn BD/SB credits when the response
   // looks blocked, not for every legitimate 4xx (e.g. 404 = post truly missing).
+  // Never ship an api-key URL to a paid proxy / log it (BRO-4899 review): the
+  // Guardian arm already degrades to its keyless RSS.
+  if (/content\.guardianapis\.com/.test(url)) {
+    throw new Error(direct ? `HTTP ${direct.status}` : 'network error');
+  }
+
   const shouldFallback = !direct
     || direct.status === 403
     || direct.status === 429
