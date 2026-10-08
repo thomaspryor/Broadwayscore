@@ -217,7 +217,18 @@ test('CONCURRENT-WRITER STRESS: N racing writers all survive via CAS retry, bran
         cwd: cloneDir, encoding: 'utf8', env: { ...process.env, ...GIT_ENV }, timeout: 15000,
       })
     );
-    await Promise.all(writers);
+    // allSettled, NOT Promise.all (BRO-4748): Promise.all rejects on the FIRST
+    // failing writer while the other children keep running, so the `finally`
+    // teardown deleted the temp repo under live git processes (ENOTEMPTY),
+    // masking the real writer error as a teardown failure. Wait for every
+    // writer to exit, then surface the actual failure.
+    const settled = await Promise.allSettled(writers);
+    const failed = settled
+      .map((r, i) => ({ r, i }))
+      .filter(({ r }) => r.status === 'rejected');
+    assert.equal(failed.length, 0,
+      `all writers must exit 0; failures: ` + failed.map(({ r, i }) =>
+        `writer ${i}: ${r.reason && r.reason.message}\n${r.reason && r.reason.stderr}`).join('\n'));
 
     const content = sh(`git --git-dir="${originDir}" show ${FAILURE_BRANCH}:${FAILURE_FILE}`);
     const entries = parseLedgerLines(content, ['reason', 'ts']);
