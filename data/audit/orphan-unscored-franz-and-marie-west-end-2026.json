@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "franz-and-marie-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-08T01:06:08.219Z",
+  "detectedAt": "2026-10-08T02:47:42.572Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -23,6 +23,23 @@
       "eligibilityReason": null
     },
     {
+      "file": "stagetopage--unknown.json",
+      "outletId": "stagetopage",
+      "criticName": "Unknown",
+      "url": "http://www.stagetopage.co.uk/2026/10/franz-marie-review.html",
+      "fullTextLen": 3942,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
       "file": "whatnightout--unknown.json",
       "outletId": "whatnightout",
       "criticName": "Unknown",
@@ -40,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }

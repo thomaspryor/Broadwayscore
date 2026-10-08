@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-07T22:53:49.965Z",
+  "generated": "2026-10-08T02:43:06.839Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
   "count": 22,
   "orphans": [
@@ -151,11 +151,11 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "oh-mary-west-end-2025",
-      "loserFile": "broadwayworld--aliya-al-hassan.json",
-      "targetFile": "broadwayworld--unknown.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--unknown.json was flagged invalid after broadwayworld--aliya-al-hassan.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
+      "showId": "trainspotting-the-musical-west-end-2026",
+      "loserFile": "daily-mail--georgina-brown.json",
+      "targetFile": "daily-mail--joanna-crawley.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
+      "field": "duplicateOf"
     }
   ]
 }

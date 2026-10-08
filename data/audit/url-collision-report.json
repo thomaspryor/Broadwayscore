@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-08T00:52:53.132Z",
+  "generatedAt": "2026-10-08T02:31:23.821Z",
   "summary": {
-    "total": 6,
-    "high": 2,
-    "medium": 3,
-    "low": 1
+    "total": 16,
+    "high": 6,
+    "medium": 4,
+    "low": 6
   },
   "collisions": [
     {
@@ -116,6 +116,114 @@
       "confidence": "medium"
     },
     {
+      "url": "https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/",
+      "normalizedUrl": "https://whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732",
+      "candidates": [
+        {
+          "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+          "file": "whatsonstage--alun-hood.json",
+          "publishDate": "2026-02-12",
+          "openingDate": "2026-02-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "here-we-are-west-end-2025",
+          "file": "whatsonstage--sarah-crompton.json",
+          "publishDate": "2025-05-09",
+          "openingDate": "2025-05-08",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "reason": "publishDate 2026-02-12 is 1 days from here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026 but also 1 days from here-we-are-west-end-2025",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "normalizedUrl": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": null,
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "i-paper"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "i-paper--fiona-mountford.json",
+          "publishDate": "2025-12-12",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "i-paper"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate 2025-12-12 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "normalizedUrl": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/into-the-woods-bridge-theatre-sondheim-review-b2883199.html",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "independent--louis-chilton.json",
+          "publishDate": null,
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "independent"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "independent--louis-chilton.json",
+          "publishDate": "2025-12-12",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "independent"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate 2025-12-12 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187/",
+      "normalizedUrl": "https://whatsonstage.com/news/into-the-woods-at-the-bridge-theatre-review-magical-moments-in-the-woods_1706187",
+      "candidates": [
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "whatsonstage--sarah-crompton.json",
+          "publishDate": null,
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "into-the-woods-west-end-2025",
+          "file": "whatsonstage--sarah-crompton.json",
+          "publishDate": "December 12th, 2025",
+          "openingDate": "2025-12-11",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "into-the-woods-west-end-2025",
+      "reason": "publishDate December 12th, 2025 is 1 days from into-the-woods-west-end-2025 opening (2025-12-11)",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -139,6 +247,168 @@
         }
       ],
       "suggestedWinner": "little-bear-ridge-road-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.allthatdazzles.co.uk/post/review-oedipus-the-old-vic",
+      "normalizedUrl": "https://allthatdazzles.co.uk/post/review-oedipus-the-old-vic",
+      "candidates": [
+        {
+          "showId": "oedipus-west-end-2024",
+          "file": "all-that-dazzles-uk--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-10-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "all-that-dazzles-uk"
+        },
+        {
+          "showId": "oedipus-west-end-2025",
+          "file": "all-that-dazzles-uk--unknown.json",
+          "publishDate": null,
+          "openingDate": "2025-02-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "all-that-dazzles-uk"
+        }
+      ],
+      "suggestedWinner": "oedipus-west-end-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "/people/Kyle-Turner/",
+      "normalizedUrl": "/people/kyle-turner",
+      "candidates": [
+        {
+          "showId": "oedipus-west-end-2024",
+          "file": "nytg--kyle-turner.json",
+          "publishDate": null,
+          "openingDate": "2024-10-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytg"
+        },
+        {
+          "showId": "oedipus-west-end-2025",
+          "file": "nytg--kyle-turner.json",
+          "publishDate": null,
+          "openingDate": "2025-02-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytg"
+        }
+      ],
+      "suggestedWinner": "oedipus-west-end-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/oedipus-old-vic-review-rami-malek/",
+      "normalizedUrl": "https://telegraph.co.uk/theatre/what-to-see/oedipus-old-vic-review-rami-malek",
+      "candidates": [
+        {
+          "showId": "oedipus-west-end-2024",
+          "file": "telegraph--unknown.json",
+          "publishDate": null,
+          "openingDate": "2024-10-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "telegraph"
+        },
+        {
+          "showId": "oedipus-west-end-2025",
+          "file": "telegraph--claire-allfree.json",
+          "publishDate": "2025-02-04",
+          "openingDate": "2025-02-04",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "telegraph"
+        }
+      ],
+      "suggestedWinner": "oedipus-west-end-2025",
+      "reason": "publishDate 2025-02-04 is 0 days from oedipus-west-end-2025 opening (2025-02-04)",
+      "confidence": "high"
+    },
+    {
+      "url": "/people/Adam-Feldman/",
+      "normalizedUrl": "/people/adam-feldman",
+      "candidates": [
+        {
+          "showId": "oedipus-west-end-2024",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": null,
+          "openingDate": "2024-10-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout"
+        },
+        {
+          "showId": "oedipus-west-end-2025",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": null,
+          "openingDate": "2025-02-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "oedipus-west-end-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "/people/Sara-Holdren/",
+      "normalizedUrl": "/people/sara-holdren",
+      "candidates": [
+        {
+          "showId": "oedipus-west-end-2024",
+          "file": "vulture--sara-holdren.json",
+          "publishDate": null,
+          "openingDate": "2024-10-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "vulture"
+        },
+        {
+          "showId": "oedipus-west-end-2025",
+          "file": "vulture--sara-holdren.json",
+          "publishDate": null,
+          "openingDate": "2025-02-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "vulture"
+        }
+      ],
+      "suggestedWinner": "oedipus-west-end-2025",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "/people/Charles-Isherwood/",
+      "normalizedUrl": "/people/charles-isherwood",
+      "candidates": [
+        {
+          "showId": "oedipus-west-end-2024",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": null,
+          "openingDate": "2024-10-15",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "wsj"
+        },
+        {
+          "showId": "oedipus-west-end-2025",
+          "file": "wsj--charles-isherwood.json",
+          "publishDate": null,
+          "openingDate": "2025-02-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "wsj"
+        }
+      ],
+      "suggestedWinner": "oedipus-west-end-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
     },
