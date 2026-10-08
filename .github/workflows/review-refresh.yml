@@ -384,7 +384,13 @@ jobs:
               tr_show="$(echo "$tr_show" | xargs)"
               [ -z "$tr_show" ] && continue
               node scripts/extract-theatre-record.js --show="$tr_show" --no-skip-existing \
-                || { echo "::warning::Theatre Record extraction failed for $tr_show"; tr_failures=$((tr_failures+1)); }
+                || { echo "::warning::Theatre Record extraction failed for $tr_show"; tr_failures=$((tr_failures+1)); continue; }
+              # TR texts carry neither the review URL nor the critic's stars;
+              # merge both from the show's WestEndTheatre roundup before the
+              # first scoring pass, so stars anchor the score from the start
+              # (BRO-4851; was a hand-run step in the 2024 pilot).
+              node scripts/merge-wet-stars-urls.js --show="$tr_show" --apply \
+                || echo "::warning::WET star/URL merge failed for $tr_show"
             done
             echo "Per-show TR extraction done: ${#TR_SHOWS[@]} requested, $tr_failures failed"
           else
