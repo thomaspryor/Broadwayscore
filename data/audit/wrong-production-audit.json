@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T02:47:57.062Z",
+  "timestamp": "2026-10-08T03:46:10.099Z",
   "stats": {
-    "totalReviews": 47123,
-    "alreadyFlagged": 18796,
-    "dateGuardCatches": 278,
-    "directorMismatch": 1378,
-    "tvFilmSignals": 1374,
-    "londonSignals": 1316,
-    "offBroadwaySignals": 506,
+    "totalReviews": 47136,
+    "alreadyFlagged": 18803,
+    "dateGuardCatches": 279,
+    "directorMismatch": 1398,
+    "tvFilmSignals": 1373,
+    "londonSignals": 1325,
+    "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 4449
+    "noPublishDate": 4427
   },
   "findings": [
     {
@@ -4012,19 +4012,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "file": "tvfanatic--paul-dailly.json",
-      "publishDate": "2026-09-24",
-      "url": "https://www.tvfanatic.com/outlander-blood-of-my-blood-exclusive-interview-harriet-slater-jamie-roy-hermione-corfield-jeremy-irvine/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -16814,6 +16801,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "london-theatre--julia-rank.json",
+      "score": 92,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre.co.uk/reviews/into-the-woods-review-noel-coward-theatre",
       "findings": [
@@ -16827,7 +16815,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -23080,6 +23068,276 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 734d before show (2024-12-13 vs 2026-12-17)"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "artsdesk--demetrios-matheou.json",
+      "score": null,
+      "publishDate": "October 17th, 2024",
+      "url": "https://theartsdesk.com/theatre/oedipus-wyndhams-theatre-review-careful-what-you-wish",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2024-10-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "publishDate": "2024-10-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2024-10-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-10-17",
+      "url": "https://www.ft.com/content/3ccd81e3-3a23-4975-adc0-dd9253d31cd5",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2024-10-16",
+      "url": "https://www.theguardian.com/stage/2024/oct/16/oedipus-review-lesley-manville-and-mark-strong-electrify-ancient-saga-turned-political-thriller",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-10-16",
+      "url": "https://inews.co.uk/culture/arts/rami-malek-fans-money-oedipus-3519801",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2024-10-16",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/rami-malek-oedipus-indira-varma-b2692489.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "independent--unknown.json",
+      "publishDate": "October 16th, 2024",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/oedipus-mark-strong-lesley-manville-review-b2630136.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "October 16th, 2024",
+      "url": "https://www.londontheatre.co.uk/reviews/oedipus-review-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "londontheatre1--loretta-monaco.json",
+      "publishDate": "2024-10-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2024-10-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": null,
+      "publishDate": "October 17th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/oedipus-wyndham-s-theatre-review-mark-strong-lesley-manville-b1188165.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "theatre-weekly--ke-meng.json",
+      "score": null,
+      "publishDate": "October 15th, 2024",
+      "url": "https://theatreweekly.com/review-oedipus-at-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "thereviewshub--daniel-spicer-cusack.json",
+      "publishDate": "2024-10-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2024-10-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "October 16th, 2024",
+      "url": "https://www.timeout.com/london/theatre/oedipus-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2024-10-16",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/oedipus-review-other-worldly-production-let-down-by-stiff-oscar-winner-cc73c8dgt",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        }
+      ]
+    },
+    {
+      "showId": "oedipus-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-10-20",
+      "url": "https://www.thetimes.com/article/fbb4dc11-5297-438a-a08c-58e99240ed1c",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from oedipus-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -40457,6 +40715,25 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2020",
+      "file": "dailybeast--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thedailybeast.com/albee-or-not-to-be-review-of-everyones-fine-with-virginia-woolf/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2020",
       "file": "nytg--unknown.json",
       "score": 86,
       "publishDate": null,
@@ -46114,6 +46391,33 @@
       ]
     },
     {
+      "showId": "dr-strangelove-west-end-2024",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.allthatdazzles.co.uk/post/review-dr-strangelove-no%C3%ABl-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dr-strangelove-west-end-2024",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre/1968412/dr-strangelove-review-steve-coogan",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "dracula-west-end-2025",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 61,
@@ -50709,9 +51013,15 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatremonkey--unknown.json",
-      "publishDate": null,
+      "score": 92,
+      "publishDate": "2025-12-13",
       "url": "https://www.theatremonkey.com/show/into-the-woods-noel-coward-theatre/",
       "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 283d before show (2025-12-13 vs 2026-09-22)"
+        },
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
@@ -51277,6 +51587,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-the-live-aid-musical-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/just-for-one-day-review-live-aid-musical-inspires-and-frustrates-bcr0xh0sn",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -54096,6 +54420,19 @@
       ]
     },
     {
+      "showId": "oedipus-west-end-2024",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "publishDate": null,
+      "url": "https://www.allthatdazzles.co.uk/post/review-oedipus-the-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "oh-hello-on-broadway-2016",
       "file": "front-row-center--tulis-mccall.json",
       "score": 87,
@@ -54993,6 +55330,20 @@
       "score": 80,
       "publishDate": "2025-12-16",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz?gaa_at=eafs&gaa_n=AWEtsqc0hUH9KoQ4XW_xHQI3YlaYk3ddGSuPLhoNCgtRG27k_ugyuAd5eEuvyyNh0wM%3D&gaa_ts=695300de&gaa_sig=Xw4QOETBlXABAvt0TZvRowDWPHNVHFtiHbv5jxLzZUBFlPyacS1-6lLOzdOP0aw_Mje-9gNBXOYTL54R2ye1IQ%3D%3D&gearefresh=",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
