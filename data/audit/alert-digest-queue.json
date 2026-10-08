@@ -2123,5 +2123,34 @@
       }
     ],
     "queuedAt": "2026-10-08T11:44:34.180Z"
+  },
+  {
+    "conditionKey": "land:land/backfill-to-ci",
+    "title": "Landing blocked: unit-tests-node red on land/backfill-to-ci",
+    "description": "land.yml did not land land/backfill-to-ci: the unit-tests-node gate went red at 623ac6f369. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37782100739",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/backfill-to-ci"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "623ac6f369755d7a95135cba86a62e4d1459d3fb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37782100739"
+      }
+    ],
+    "queuedAt": "2026-10-08T13:38:39.788Z"
   }
 ]
