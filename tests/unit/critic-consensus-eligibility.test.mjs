@@ -154,3 +154,12 @@ it('generate-critic-consensus skips the prune when it would delete more than MAX
   const src = fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'generate-critic-consensus.js'), 'utf8');
   assert.match(src, /stale\.length > MAX_STALE_PRUNE/);
 });
+
+// The contamination audit read r.score, a field reviews.json rows never carry,
+// so REVIEWCOUNT_DRIFT/MEANSCORE_DRIFT could never fire (BRO-4852).
+it('audit-critic-consensus-contamination reads the score reviews.json actually carries', () => {
+  const { reviewScore } = require('../../scripts/audit-critic-consensus-contamination.js');
+  assert.equal(reviewScore({ assignedScore: 81 }), 81);
+  assert.equal(reviewScore({ compositeScore: 70 }), 70);
+  assert.equal(reviewScore({ assignedScore: null }), undefined);
+});
