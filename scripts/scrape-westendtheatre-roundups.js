@@ -302,7 +302,11 @@ function extractSectionReviews(htmlContent) {
       const stars = (starsText.match(/★/g) || []).length;
       if (stars === 0) return;
 
-      const $quote = $pub.nextAll('.reviewnewquote').first();
+      // Read only this outlet's own block (siblings up to the next pubhead):
+      // an unbounded nextAll() let a block with no quote/byline take the next
+      // outlet's (BRO-4851, same bug as lib/wet-roundup-discover.js).
+      const $block = $pub.nextUntil('.reviewnewpubhead');
+      const $quote = $block.filter('.reviewnewquote').first();
       const excerptText = $quote.text().trim();
       const excerpts = [];
       const qr = /[""\u201c]([^""\u201d]+)[""\u201d]/g;
@@ -312,7 +316,7 @@ function extractSectionReviews(htmlContent) {
       }
       const excerpt = excerpts.join(' … ').substring(0, 800) || excerptText.substring(0, 300);
 
-      const authorText = $pub.nextAll('.reviewnewauthor').first().text().trim();
+      const authorText = $block.filter('.reviewnewauthor').first().text().trim();
       let critic = null;
       if (authorText) {
         const cm = authorText.match(/^([A-Z][a-z]+(?:\s[A-Z][a-z'-]+)+)/);
@@ -320,7 +324,7 @@ function extractSectionReviews(htmlContent) {
       }
 
       let reviewUrl = null;
-      const $authorDiv = $pub.nextAll('.reviewnewauthor').first();
+      const $authorDiv = $block.filter('.reviewnewauthor').first();
       const $link = $authorDiv.next('a[href]');
       if ($link.length) {
         const href = $link.attr('href');

@@ -19,7 +19,7 @@ const require = createRequire(import.meta.url);
 const { venuesMatch, aliasCanonical } = require('./deduplication.js');
 const { canonicalVenue } = require('./title-match.js');
 const { findExistingMatch } = require('./candidate-dedup.js');
-const { recordsAgree, isCorroborated } = require('./we-historical-corroboration.js');
+const { recordsAgree, signalMatchesListing } = require('./we-historical-corroboration.js');
 const westEndVenues = require('../../data/west-end-venues.json');
 
 test('canonicalVenue itself still collapses these to the same first word (documents the bug this suite guards against)', () => {
@@ -85,15 +85,10 @@ test('we-historical-corroboration recordsAgree: venue collision on a shared lead
   assert.equal(recordsAgree(a, b), false);
 });
 
-test('we-historical-corroboration isCorroborated: two venue-colliding-but-unrelated sources do not falsely corroborate', () => {
-  const candidate = { title: 'Some Fictional Show', venue: 'Prince of Wales Theatre', openingDate: '2024-01-01' };
-  const sources = [
-    { source: 'wikipedia', title: 'Some Fictional Show', venue: 'Prince Edward Theatre', openingDate: '2024-01-01' },
-    { source: 'olivier-eligibility', title: 'Some Fictional Show', venue: 'Prince Edward Theatre', openingDate: '2024-01-01' },
-  ];
-  const result = isCorroborated(candidate, sources);
-  assert.equal(result.corroborated, false);
-  assert.deepEqual(result.agreeingSources, []);
+test('we-historical-corroboration signalMatchesListing: a venue-colliding-but-unrelated signal does not match', () => {
+  const listing = { title: 'Some Fictional Show', venue: 'Prince of Wales Theatre', openingDate: '2024-01-01', closingDate: '2024-03-01' };
+  assert.equal(signalMatchesListing({ title: 'Some Fictional Show', venue: 'Prince Edward Theatre', date: '2024-01-02' }, listing), false);
+  assert.equal(signalMatchesListing({ title: 'Some Fictional Show', venues: ['Prince Edward Theatre'] }, listing), false);
 });
 
 // BRO-2544 near-miss (caught by ship-check adversarial review before merge):
