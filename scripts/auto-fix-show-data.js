@@ -28,7 +28,7 @@ const { cleanup: cleanupScraper } = require('./lib/scraper');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { extractTodaytixPageIdentity, todaytixPageMatchesShow } = require('./lib/todaytix-page-identity');
+const { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout } = require('./lib/todaytix-page-identity');
 
 const USAGE = `auto-fix-show-data.js — Automatically fixes show data issues - FULL automation:.
 
@@ -210,7 +210,10 @@ async function fetchSynopsisFromTodayTix(show, todayTixInfo) {
     if (identity && identity.about && todaytixPageMatchesShow(identity, show, todayTixInfo.id)) {
       return { text: identity.about, trusted: true };
     }
-    return { text: extractSynopsisFromHtml(html), trusted: false };
+    // The meta/JSON-LD description is the same producer copy as product.about
+    // (pull quotes, "currently playing at", cut mid-sentence), so it goes
+    // through the same story-sentence filter; '' means fall back to the LLM.
+    return { text: cleanTodaytixAbout(extractSynopsisFromHtml(html)) || null, trusted: false };
   } catch {
     return { text: null, trusted: false };
   }
@@ -858,4 +861,6 @@ module.exports = {
   fixCreativeTeam,
   verifyCreativeTeamViaSerp,
   generateCreativeTeamWithSerpVerification,
+  fetchSynopsisFromTodayTix,
+  extractSynopsisFromHtml,
 };
