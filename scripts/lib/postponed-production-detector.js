@@ -17,7 +17,7 @@ const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
 const MONTH_RE = '(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\\.?';
 // Cue words that mark a FIRST-performance / launch date, not a closing or
 // mid-run date. A bare date with no cue is ignored (avoids "through June 27").
-const CUE_RE = '(?:coming(?:\\s+(?:soon\\s+)?to\\s+[A-Za-z ]{2,30}?)?|opens?(?:\\s+(?:on|in))?|opening|premieres?|begins?|starts?|previews?\\s+(?:begin|start)|first\\s+performance|returning|rescheduled\\s+(?:to|for)|postponed\\s+(?:to|until))';
+const CUE_RE = '(?:coming(?:\\s+(?:soon\\s+)?to\\s+[A-Za-z ]{2,30}?)?|opening\\s+(?:night|date)|premieres?|previews?\\s+(?:begin|start)|first\\s+performance|rescheduled\\s+(?:to|for)|postponed\\s+(?:to|until))';
 const DATE_RE = new RegExp(
   `\\b${CUE_RE}[:,\\s-]{0,4}(?:on\\s+)?(?:\\w+day,?\\s+)?${MONTH_RE}\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(20\\d{2})`,
   'gi'
@@ -34,7 +34,8 @@ function extractCuedDates(text) {
   if (!text) return out;
   const re = new RegExp(DATE_RE.source, DATE_RE.flags);
   let m;
-  while ((m = re.exec(String(text).replace(/\s+/g, ' '))) !== null) {
+  const flat = String(text).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ');
+  while ((m = re.exec(flat)) !== null) {
     const mi = monthIndex(m[1]);
     if (mi < 0) continue;
     out.push(`${m[3]}-${String(mi + 1).padStart(2, '0')}-${String(m[2]).padStart(2, '0')}`);
@@ -57,7 +58,9 @@ function evaluatePostponed(show, ctx) {
   if (ctx.reviewCount > 0 || !ctx.pageText || !show.openingDate) return null;
   const grace = ctx.graceHours == null ? 48 : ctx.graceHours;
   const since = hoursSince(show.openingDate, ctx.now);
-  if (since == null || since < grace) return null;
+  const maxDays = ctx.maxDaysPast == null ? 60 : ctx.maxDaysPast;
+  // Long-running shows' pages carry unrelated future dates; only recent openings are suspects.
+  if (since == null || since < grace || since > maxDays * 24) return null;
   const today = ctx.now.toISOString().slice(0, 10);
   const future = extractCuedDates(ctx.pageText).filter(d => d > today && d > show.openingDate).sort();
   if (future.length === 0) return null;

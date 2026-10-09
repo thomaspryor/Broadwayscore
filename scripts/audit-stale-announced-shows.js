@@ -291,7 +291,10 @@ async function findPostponed(showsData, now) {
   const fixture = PAGES_FIXTURE ? loadJSON(PAGES_FIXTURE, {}) : null;
   const effNow = NOW_OVERRIDE ? new Date(NOW_OVERRIDE) : now;
   const out = [];
+  const deadline = Date.now() + 90000; // fetch budget so CI timeout can't kill the audit
+  let fetchFailures = 0;
   for (const show of showsData.shows) {
+    if (Date.now() > deadline) { console.log('  ⚠️  postponed check hit its 90s fetch budget; remaining shows skipped'); break; }
     if (!['open', 'previews'].includes(show.status) || !show.openingDate) continue;
     if ((counts.get(show.id) || 0) > 0) continue;
     // Prefilter BEFORE any network fetch: inside the 48h grace window or no page to read.
@@ -307,7 +310,7 @@ async function findPostponed(showsData, now) {
           const r = await fetchPage(url);
           const hit = evaluatePostponed(show, { now: effNow, reviewCount: 0, pageText: r.content });
           if (hit) { pageText = r.content; break; }
-        } catch (e) { /* page unreachable: no signal */ }
+        } catch (e) { fetchFailures++; }
       }
     }
     const hit = evaluatePostponed(show, { now: effNow, reviewCount: 0, pageText });
@@ -323,6 +326,8 @@ async function findPostponed(showsData, now) {
     }
     out.push({ id: show.id, title: show.title, openingDate: show.openingDate, futureDate: hit.futureDate, reason: hit.reason, demoted });
   }
+  if (fetchFailures > 0) console.log(`  ⚠️  postponed check: ${fetchFailures} official/TodayTix page fetch(es) failed (no signal for those)`);
+  if (!fixture) { try { await require('./lib/scraper').cleanup(); } catch (e) { /* no browser to close */ } }
   return out;
 }
 
