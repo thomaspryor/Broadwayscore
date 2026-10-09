@@ -4,6 +4,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 import HeaderSearch from '@/components/HeaderSearch';
 import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 import FooterEmailCapture from '@/components/FooterEmailCapture';
+import FooterAccountBox from '@/components/FooterAccountBox';
 import FooterMarketContent from '@/components/FooterMarketContent';
 import { isCategoryEnabled } from '@/lib/markets';
 import FooterExploreCards from '@/components/FooterExploreCards';
@@ -202,9 +203,11 @@ export default function RootLayout({
               }}
             />
 
-            {/* Email Capture */}
-            <div className="max-w-md mx-auto mb-8 pb-8 border-b border-white/5">
+            {/* Email list and free account side by side (BRO-4946): the footer
+                used to offer only the email list. */}
+            <div className="max-w-3xl mx-auto mb-8 pb-8 border-b border-white/5 grid gap-2 md:grid-cols-2 md:gap-10">
               <FooterEmailCapture />
+              <FooterAccountBox />
             </div>
 
             {/* Bottom */}

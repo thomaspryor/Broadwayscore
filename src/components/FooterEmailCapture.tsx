@@ -2,17 +2,9 @@
 
 import { useState, useCallback } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
-import CreateAccountNudge from '@/components/CreateAccountNudge';
 import { EMAIL_LIST_COPY } from '@/config/email-list-copy';
 
-export default function FooterEmailCapture({
-  inputId = 'footer-email',
-  showAccountNudge = true,
-}: {
-  inputId?: string;
-  /** Off for the home page's inline copy so the page shows one nudge, in the footer. */
-  showAccountNudge?: boolean;
-}) {
+export default function FooterEmailCapture({ inputId = 'footer-email' }: { inputId?: string }) {
   const [email, setEmail] = useState('');
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
@@ -27,16 +19,15 @@ export default function FooterEmailCapture({
 
   if (isSubscribed || status === 'success' || status === 'already_subscribed') {
     return (
-      <div className="text-center py-4">
-        {/* Inline check so it stays next to the text when the line wraps on phones. */}
+      <div className="py-4">
+        {/* Left-aligned like the account box beside it in the footer (BRO-4946).
+            Inline check so it stays next to the text when the line wraps on phones. */}
         <p className="text-sm text-emerald-400">
           <svg className="inline-block w-4 h-4 mr-1.5 -mt-0.5 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
           {EMAIL_LIST_COPY.joined(market)}
         </p>
-        {/* List members are not account holders; say so and offer one (BRO-4893). */}
-        {showAccountNudge && <CreateAccountNudge source="footer_bridge" className="mt-4" />}
       </div>
     );
   }
@@ -59,7 +50,7 @@ export default function FooterEmailCapture({
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
+          className="min-h-[40px] px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
         >
           {status === 'submitting' ? 'Sending...' : 'Get emails'}
         </button>

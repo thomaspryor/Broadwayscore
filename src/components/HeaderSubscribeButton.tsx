@@ -11,18 +11,18 @@ import { useAuth } from '@/contexts/AuthContext';
 /**
  * Opening night emails signup button + modal.
  *
- * `placement="header"`: renders nothing once this browser is on the list or
- * the visitor is signed in. A joined-state badge here sat next to "Sign in"
- * and read as "you have an account" (BRO-4893).
- * `placement="footer"` (footer link row): shows plain joined text instead.
+ * Renders nothing once this browser is on the list or the visitor is signed
+ * in. A joined-state badge here sat next to "Sign in" and read as "you have
+ * an account" (BRO-4893). Header only: the footer link row promotes the
+ * account instead (BRO-4946).
  */
-export default function HeaderSubscribeButton({ placement = 'header' }: { placement?: 'header' | 'footer' }) {
+export default function HeaderSubscribeButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const { loading: authLoading, isAuthenticated } = useAuth();
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
-    source: placement === 'header' ? 'header' : 'footer_link',
+    source: 'header',
   });
   const marketLabel = labelFor(market);
   // Signed-out success shows the account nudge; keep the modal open so it can be clicked.
@@ -42,16 +42,8 @@ export default function HeaderSubscribeButton({ placement = 'header' }: { placem
     if (ok) setEmail('');
   }, [email, submit]);
 
-  if (!isOpen) {
-    if (placement === 'header') {
-      // Signed-in visitors are already on the list (auto-subscribe on sign-in).
-      if (isSubscribed || isAuthenticated || (featureFlags.userAccounts && authLoading)) return null;
-    } else if (isSubscribed) {
-      // Only this market's flag: sign-in joins the Broadway list, so a
-      // signed-in visitor on a West End page may not be on that list.
-      return <span>{EMAIL_LIST_COPY.joinedShort}</span>;
-    }
-  }
+  // Signed-in visitors are already on the list (auto-subscribe on sign-in).
+  if (!isOpen && (isSubscribed || isAuthenticated || (featureFlags.userAccounts && authLoading))) return null;
 
   return (
     <>
