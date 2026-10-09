@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isOtherProductionFile } = require('./lib/review-gap-triage.js');
+const { isOtherProductionFile, isPreRunFile } = require('./lib/review-gap-triage.js');
 const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), 'triage-review-gap.js');
 const SHOW = 'fixture-show-west-end-2026';
 const show = { id: SHOW, title: 'Fixture Show', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', market: 'west-end' };
@@ -133,4 +133,32 @@ test('--url: _pending strand file with no url stays a candidate (never hidden)',
   assert.notEqual(r.state, 'true-missed-discovery');
   assert.equal(r.signals.reviewTexts.candidateCount, 1);
   assert.equal(r.signals.reviewTexts.anyPendingByline, true);
+});
+
+// BRO-4899: a pre-previews same-outlet file (interview) must not mask the real review.
+test('pre-previews interview alone -> true-missed-discovery (not covering the outlet)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--an-interviewer.json`]: { ...base, publishDate: '2026-08-20' } });
+  assert.equal(r.state, 'true-missed-discovery');
+});
+
+test('pre-previews interview + in-window review -> reports only the review file', () => {
+  const r = run({
+    [`${SHOW}/fixture-outlet--an-interviewer.json`]: { ...base, publishDate: '2026-08-20' },
+    [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-10' },
+  });
+  assert.equal(r.state, 'in-pipeline-awaiting-deploy');
+  assert.deepEqual(r.signals.reviewTexts.paths.map((p) => path.basename(p)), ['fixture-outlet--a-critic.json']);
+});
+
+test('isPreRunFile: prior run, human-reviewed, undated are exempt', () => {
+  const f = (d, extra = {}) => ({ data: { publishDate: d, ...extra } });
+  assert.equal(isPreRunFile(f('2026-08-20'), show), true);
+  assert.equal(isPreRunFile(f('2026-09-01'), show), false);
+  assert.equal(isPreRunFile(f(null), show), false);
+  assert.equal(isPreRunFile(f('2026-08-20', { humanReviewScore: 70 }), show), false);
+  assert.equal(isPreRunFile(f('2026-08-20'), { ...show, priorRuns: [{ openingDate: '2026-08-01', closingDate: '2026-08-30' }] }), false);
+});
+
+test('isPreRunFile: no previewsStartDate -> never hides a file (openingDate fallback removed)', () => {
+  assert.equal(isPreRunFile({ data: { publishDate: '2026-09-09' } }, { openingDate: '2026-09-10' }), false);
 });

@@ -42,14 +42,18 @@ import {
  * fails: it raises bytes without raising the slug count. /west-end and
  * /off-broadway were re-measured on production 2026-09-29 (doc/rsc/slugs:
  * 1,302,158/972,108/366 and 891,402/592,938/137) x1.1, rounded up to 10KB.
+ * Re-derived 2026-10-08 (BRO-4900) after the West End historical backfill
+ * took /west-end past x1.5: 1,797,808/1,291,440/562 and
+ * 1,101,133/691,676/193, same x1.1/10KB rule. Bytes per show fell on both
+ * routes (3,558 -> 3,199 and 6,507 -> 5,705), so this was catalog growth.
  */
 const PAGE_WEIGHT_BUDGETS: Record<string, CatalogBudget> = {
   // Not scaled: the homepage's 317 slugs (2026-09-29) are curated sections,
   // not one market's catalog, so more shows there is a change to review, not
   // growth. 2026-09-29 production: 889,058 doc / 856,189 rsc (budget unchanged).
   '/': { documentBytes: 1_020_000, rscBytes: 980_000 },
-  '/west-end': { documentBytes: 1_440_000, rscBytes: 1_070_000, baselineItems: 366 },
-  '/off-broadway': { documentBytes: 990_000, rscBytes: 660_000, baselineItems: 137 },
+  '/west-end': { documentBytes: 1_980_000, rscBytes: 1_430_000, baselineItems: 562 },
+  '/off-broadway': { documentBytes: 1_220_000, rscBytes: 770_000, baselineItems: 193 },
   // Fixed-content guide page: no slugs in its payload, never scaled.
   '/guides/best-broadway-musicals': { documentBytes: 460_000, rscBytes: 270_000 },
 };

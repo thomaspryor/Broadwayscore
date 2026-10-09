@@ -59,3 +59,35 @@ test('includeJs=false restricts to SSR-only endpoints (cost-free layer)', () => 
     }
   }
 });
+
+// BRO-4899: rent-west-end-2026 opening night — 5 T1/T2 reviews live on outlet
+// section pages were never discovered (Guardian API 'test' key 401, Telegraph 402
+// not falling back, Stage/Time Out only reachable via paid JS search).
+import * as ssd4899 from './site-search-discovery.js';
+import { test as test4899 } from 'node:test';
+import assert4899 from 'node:assert/strict';
+
+test4899('BRO-4899: extractGuardianRssReviewUrls keeps stage review links only', () => {
+  const xml = `<link>https://www.theguardian.com/stage/theatre</link>
+<link>https://www.theguardian.com/stage/2026/oct/09/rent-review-tom-stoppard-theatre</link>
+<link>https://www.theguardian.com/politics/2026/oct/08/some-review-of-politics</link>
+<link>https://www.theguardian.com/stage/2026/oct/08/brian-blessed-90-interview</link>`;
+  assert4899.deepEqual(ssd4899.extractGuardianRssReviewUrls(xml), ['https://www.theguardian.com/stage/2026/oct/09/rent-review-tom-stoppard-theatre']);
+  assert4899.deepEqual(ssd4899.extractGuardianRssReviewUrls(null), []);
+});
+
+test4899('BRO-4899: extractSectionLinks resolves relative hrefs and filters by path', () => {
+  const html = '<a href="/reviews/rent-review-x">a</a><a href="/news/other">b</a><a href="/reviews/rent-review-x#c">c</a><a href="https://elsewhere.com/reviews/z">d</a>';
+  assert4899.deepEqual(ssd4899.extractSectionLinks(html, 'https://www.thestage.co.uk', /^\/reviews\/[a-z0-9-]+$/i), ['https://www.thestage.co.uk/reviews/rent-review-x']);
+});
+
+test4899('BRO-4899: every WE T1/T2 press-night outlet has a non-JS (free-pass) discovery arm', () => {
+  const E = ssd4899.SITE_SEARCH_ENDPOINTS;
+  const free = new Set();
+  for (const [id, ep] of Object.entries(E)) {
+    if (!ep.requiresJs && (!ep.market || ep.market === 'west-end')) free.add(ep.outletIdOverride || id);
+  }
+  for (const outlet of ['guardian', 'telegraph', 'independent', 'thestage', 'timeout-london']) {
+    assert4899.ok(free.has(outlet), `${outlet} has no free-pass west-end discovery arm`);
+  }
+});

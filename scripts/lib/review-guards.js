@@ -1587,6 +1587,29 @@ function isRoundupUrl(url) {
     return { isRoundup: true, reason: 'BritishTheatre review round-up post (aggregate of other critics)' };
   }
 
+  // BRO-4875: three more hosts whose own critics-roundup articles were ingested
+  // and scored as that outlet's review. Host-scoped like every pattern above.
+  //   londontheatredirect.com /news/{slug}-review-roundup and
+  //     /news/review-roundup-what-are-the-critics-saying-about-{show}: Into the
+  //     Woods (Bridge) at 92, inherited onto the Noel Coward transfer page the
+  //     week of its opening broadcast, and Hay Fever 2026 at 90. LTD's own
+  //     reviews (/news/evita-review, /news/oh-mary-review) are untouched.
+  //   independent.co.uk .../{show}-reviews-roundup-...: Cursed Child West End
+  //     2021 at 93 under the compiler's byline.
+  //   latimes.com Culture Monster ...-what-did-the-critics-think: A Little Night
+  //     Music 2009 at 60. A staff byline summarising other critics is still an
+  //     aggregate (2026-07-11 policy, see ROUNDUP_HOST_OUTLETS).
+  // Optional locale segment: Hay Fever's roundup is also in the corpus at /fr/news/.../amp.
+  if (/londontheatredirect\.com\/(?:[a-z]{2}\/)?news\/[^?#]*(?:review-round-?up|what-are-the-critics-saying)/i.test(url)) {
+    return { isRoundup: true, reason: 'London Theatre Direct review roundup article' };
+  }
+  if (/independent\.co\.uk\/[^?#]*-reviews?-round-?up-/i.test(url)) {
+    return { isRoundup: true, reason: 'Independent critics review roundup article' };
+  }
+  if (/latimes\.com\/[^?#]*what-did-(?:the-)?critics-think/i.test(url)) {
+    return { isRoundup: true, reason: 'LA Times what-did-the-critics-think roundup' };
+  }
+
   // NOTE: Do NOT add generic cross-domain roundup URL patterns (e.g. bare
   // /review-roundup/ on any host). Many legitimate individual critic reviews
   // are SOURCED from roundup pages — the URL points to the roundup where the
@@ -2770,6 +2793,10 @@ const ROUNDUP_HOST_OUTLETS = {
   // data/outlet-registry.json.
   'bestoftheatre.co.uk': ['bestoftheatre', 'best-of-theatre'],
   'britishtheatre.com': ['british-theatre', 'britishtheatre'],
+  // BRO-4875, with their isRoundupUrl patterns. Ids per data/outlet-registry.json.
+  'londontheatredirect.com': ['londontheatredirect', 'london-theatre-direct'],
+  'independent.co.uk': ['independent', 'the-independent'],
+  'latimes.com': ['latimes', 'la-times', 'los-angeles-times'],
   // Policy decided 2026-07-11 (user): a NAMED CRITIC reviewing the show
   // counts; a site's AGGREGATED score does not. isRoundupUrl matches only
   // these hosts' aggregate/roundup pages — never their individual critic

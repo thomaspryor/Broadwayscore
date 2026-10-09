@@ -99,6 +99,29 @@ function isOtherProductionFile(file, showRecord, exclusionRule) {
 }
 
 /**
+ * BRO-4899: a same-outlet file published BEFORE the production's first preview
+ * (a cast interview, a pre-opening feature) is not that outlet's review, and
+ * must not make triage say "Do NOT start URL-resolution work" while the real
+ * review is still undiscovered. Reviews cannot predate previews, so this holds
+ * whether or not a guard has excluded the file. Prior runs / tour legs and
+ * human-reviewed files are exempt (same carve-outs as isOtherProductionFile).
+ */
+function isPreRunFile(file, showRecord) {
+  const data = file && file.data;
+  if (!data || !showRecord) return false;
+  // previewsStartDate only (same as isOtherProductionFile): without it we can't tell a
+  // preview-period review from a pre-run feature. Outlet-level reviews.json/prod
+  // presence still wins in classifyGap, so an ingested+counted file is never hidden.
+  const start = _ts(showRecord.previewsStartDate);
+  const pub = _ts(data.publishDate);
+  if (start == null || pub == null || pub >= start) return false;
+  if (isWithinPriorRun(data.publishDate, showRecord.priorRuns) || isWithinTourLeg(data.publishDate, showRecord.tourLegs)) return false;
+  if (data.wrongProductionManualClear === true || data.wrongProductionOverride === true
+    || data.humanReviewedWrongProduction === false || data.humanReviewScore != null) return false;
+  return true;
+}
+
+/**
  * BRO-4475: with a known review URL, a same-outlet record that carries a
  * DIFFERENT url is a look-alike (BWW forum thread) and must not count. Records
  * with NO url (unreadable, _pending strand) cannot be disproven, so they stay
@@ -121,4 +144,4 @@ function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl };
+module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl };

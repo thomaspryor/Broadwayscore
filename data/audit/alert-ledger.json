@@ -149,19 +149,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-08T17:35:25.315Z",
-      "lastSeen": "2026-10-08T17:35:25.315Z",
-      "lastNotifiedAt": "2026-10-08T17:35:25.315Z",
+      "incidentOpenedAt": "2026-10-09T00:41:25.288Z",
+      "lastSeen": "2026-10-09T00:41:25.288Z",
+      "lastNotifiedAt": "2026-10-09T00:41:25.288Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 125,
+      "notifyCount": 126,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "resolvedAt": "2026-10-08T20:29:41.774Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -5999,7 +5998,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-10-09T00:11:23.379Z",
-      "lastSeen": "2026-10-09T00:11:23.379Z",
+      "lastSeen": "2026-10-09T00:41:25.279Z",
       "lastNotifiedAt": "2026-10-09T00:11:23.379Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
@@ -6011,7 +6010,8 @@
         "runId": "37810073037",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37810073037"
       },
-      "absentRunIds": []
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6925,12 +6925,13 @@
     "land:land/bro-4265-tm-gap-test": {
       "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: colocated-tests red on land/bro-4265-tm-gap-test",
+      "title": "Landing blocked: rebase red on land/bro-4265-tm-gap-test",
       "firstSeen": "2026-09-29T19:55:13.934Z",
-      "lastSeen": "2026-09-29T19:55:13.934Z",
-      "lastNotifiedAt": "2026-09-29T19:55:13.934Z",
-      "lastSurfacedAt": "2026-09-29T19:55:13.934Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-10-09T00:31:29.686Z",
+      "lastSeen": "2026-10-09T00:31:29.686Z",
+      "lastNotifiedAt": "2026-10-09T00:31:29.686Z",
+      "lastSurfacedAt": "2026-10-09T00:31:29.686Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -12199,7 +12200,7 @@
       "resolveReason": "job-green"
     },
     "land:land/bro-4875-roundup-hosts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-4875-roundup-hosts",
       "firstSeen": "2026-10-08T23:47:55.471Z",
@@ -12209,7 +12210,8 @@
       "lastSurfacedAt": "2026-10-08T23:47:55.471Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-09T00:25:15.384Z"
     },
     "land:land/bro-4893-email-vs-account": {
       "status": "open",
@@ -12217,12 +12219,13 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-4893-email-vs-account",
       "firstSeen": "2026-10-08T23:52:01.544Z",
       "incidentOpenedAt": "2026-10-08T23:52:01.544Z",
-      "lastSeen": "2026-10-08T23:52:01.544Z",
+      "lastSeen": "2026-10-09T00:42:24.051Z",
       "lastNotifiedAt": "2026-10-08T23:52:01.544Z",
       "lastSurfacedAt": "2026-10-08T23:52:01.544Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-4895-mv05itcf": {
       "status": "open",

@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
-import { saveReturnUrl } from '@/lib/deferred-auth';
+import type { SignInOptions } from '@/contexts/AuthContext';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import type { UserProfile } from '@/types/user';
@@ -15,7 +15,7 @@ interface HamburgerMenuProps {
   profile?: UserProfile | null;
   email?: string;
   /** 'watchlist_local' when the visitor has shows saved on this device. */
-  onSignIn?: (context: 'generic' | 'watchlist_local') => void;
+  onSignIn?: (context: 'generic' | 'watchlist_local', options?: SignInOptions) => void;
   onSignOut?: () => void;
   onDeleteAccount?: () => void;
 }
@@ -185,8 +185,10 @@ export default function HamburgerMenu({
                     <button
                       type="button"
                       onClick={() => {
-                        saveReturnUrl('/my-shows');
-                        closeInto(() => onSignIn?.(localList.length > 0 ? 'watchlist_local' : 'generic'));
+                        // Land on My Shows afterwards. Asked for through the
+                        // sign-in flow, which saves the return page itself
+                        // (saving the return page here directly was overwritten, BRO-4894).
+                        closeInto(() => onSignIn?.(localList.length > 0 ? 'watchlist_local' : 'generic', { returnTo: '/my-shows' }));
                       }}
                       className="mt-3 w-full flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-surface bg-brand rounded-lg hover:bg-brand-hover transition-colors"
                     >

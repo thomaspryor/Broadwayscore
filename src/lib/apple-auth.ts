@@ -39,6 +39,8 @@ declare global {
   }
 }
 
+import { reportUgcError } from './ugc-analytics';
+
 let sdkLoaded = false;
 let sdkLoading: Promise<void> | null = null;
 
@@ -130,7 +132,13 @@ export function prepareAppleSignIn(): Promise<void> {
  * it, inside the tap.
  */
 export async function signInWithAppleSDK(): Promise<AppleAuthResult> {
-  if (!prepared) await prepareAppleSignIn(); // late: the browser may block this popup
+  if (!prepared) {
+    // Late: the browser may block this popup. Counted so a new Continue
+    // with Apple button that skips prepareAppleSignIn() shows up in the
+    // accounts dashboard instead of failing quietly (BRO-4894).
+    reportUgcError('auth.apple_sign_in', { message: 'popup prepared after the tap; caller skipped prepareAppleSignIn()', code: 'apple_late_prepare' });
+    await prepareAppleSignIn();
+  }
   if (!prepared || !window.AppleID) {
     throw new Error('Apple JS SDK not available');
   }
