@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T18:00:04.502Z",
+  "timestamp": "2026-10-09T18:17:11.260Z",
   "stats": {
-    "totalReviews": 51747,
-    "alreadyFlagged": 19451,
-    "dateGuardCatches": 264,
+    "totalReviews": 51830,
+    "alreadyFlagged": 19457,
+    "dateGuardCatches": 265,
     "directorMismatch": 1592,
     "tvFilmSignals": 1494,
-    "londonSignals": 1631,
+    "londonSignals": 1638,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5493
+    "noPublishDate": 5491
   },
   "findings": [
     {
@@ -10810,7 +10810,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "liamodell--liam-odell.json",
-      "score": null,
+      "score": 61,
       "publishDate": "2025-08-08",
       "url": "https://liamodell.com/2025/08/08/every-brilliant-thing-review-lenny-henry-play-theatre-show-duncan-macmillan-jeremy-herrin-soho-place-theatre-london-minnie-driver-sue-perkins-jonny-donahoe-ambika-mod-list/",
       "findings": [
@@ -10871,7 +10871,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "sierz-co-uk--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2025-08-21",
       "url": "https://sierz.co.uk/reviews/every-brilliant-thing-sohoplace/",
       "findings": [
@@ -10899,7 +10899,7 @@
     {
       "showId": "every-brilliant-thing-west-end-2025",
       "file": "telegraph--marianka-swain.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "2025-08-08",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/lenny-henry-every-brilliant-thing-review/",
       "findings": [
@@ -48311,6 +48311,32 @@
       ]
     },
     {
+      "showId": "black-superhero-west-end-2023",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2023-03-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "black-superhero-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2023-03-22",
+      "url": "https://www.thetimes.co.uk/article/black-superhero-review-a-bundle-of-slogans-and-cliches-cgxcczhsz",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "black-swan-regional-2026",
       "file": "playbill--gabby.json",
       "publishDate": "2026-06-16",
@@ -48717,6 +48743,7 @@
     {
       "showId": "born-with-teeth-west-end-2025",
       "file": "london-box-office--stuart-king.json",
+      "score": 77,
       "publishDate": "2025-09-04",
       "url": "https://www.londonboxoffice.co.uk/news/post/born-with-teeth-wyndhams-review",
       "findings": [
@@ -48743,7 +48770,7 @@
     {
       "showId": "born-with-teeth-west-end-2025",
       "file": "londontheatredirect--london-theatre-direct-limited.json",
-      "score": null,
+      "score": 99,
       "publishDate": "2025-09-03",
       "url": "https://www.londontheatredirect.com/news/born-with-teeth-review?srsltid=AU7gw4VvCSzs8gEgXaMtWa8gNEGpwuduSZUSr-zVSNo5KvqnIOBvzuif",
       "findings": [
@@ -51632,6 +51659,58 @@
       ]
     },
     {
+      "showId": "dixon-and-daughters-west-end-2023",
+      "file": "artsdesk--aleks-sierz.json",
+      "publishDate": "2023-04-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "dixon-and-daughters-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2023-05-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dixon-and-daughters-west-end-2023",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2023-04-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dixon-and-daughters-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2023-04-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "doubt-2024",
       "file": "ew--dalton-ross.json",
       "score": 86,
@@ -52871,6 +52950,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023",
+      "file": "timeout-london--alice-saville.json",
+      "publishDate": "2023-01-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 65d before show (2023-01-19 vs 2023-03-25)"
         }
       ]
     },
@@ -71995,6 +72087,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "vardy-v-rooney-the-wagatha-christie-trial-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 80,
+      "publishDate": "April 12th, 2023",
+      "url": "https://theatreweekly.com/review-vardy-v-rooney-the-wagatha-christie-trial-at-the-ambassadors-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
