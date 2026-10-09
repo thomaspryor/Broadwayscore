@@ -2648,18 +2648,6 @@
     "queuedAt": "2026-10-09T09:56:18.544Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37924846063",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T11:42:49.114Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:guardian",
     "title": "Auto-remediation gave up on rent-west-end-2026",
     "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"rent-west-end-2026\",\"outlet\":\"guardian\",\"phases\":\"0,1,2,3\"}",
@@ -2740,5 +2728,17 @@
       }
     ],
     "queuedAt": "2026-10-09T11:52:29.467Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37926727080",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T12:00:22.463Z"
   }
 ]
