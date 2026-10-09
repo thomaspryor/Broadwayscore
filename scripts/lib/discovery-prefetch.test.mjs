@@ -42,3 +42,21 @@ test('discovery stub for in-window show ends with non-empty fullText on disk', a
   assert.ok(d.fullText && d.fullText.length >= 200, `fullText empty: ${JSON.stringify(d).slice(0, 300)}`);
   assert.ok(!/--unknown\.json$/.test(res.filepath), res.filepath);
 });
+
+test('unregistered outlet is not prefetched (keeps writer unknown-outlet guard effective)', async () => {
+  let called = false;
+  const pre = await prefetchDiscoveredArticle(URL_, { outletId: 'unknown', fetchPageFn: async () => { called = true; return { content: HTML }; } });
+  assert.equal(called, false);
+  assert.equal(pre.fullText, null);
+});
+
+test('hung fetch is bounded by timeoutMs', async () => {
+  const pre = await prefetchDiscoveredArticle(URL_, { timeoutMs: 20, fetchPageFn: () => new Promise(() => {}) });
+  assert.equal(pre.fullText, null);
+});
+
+test('registered outlet with SERP-less byline resolves from JSON-LD', async () => {
+  const pre = await prefetchDiscoveredArticle(URL_, { outletId: 'standard', showId: 'rent-west-end-2026', fetchPageFn: async () => ({ content: HTML }) });
+  assert.equal(pre.criticName, 'Nick Curtis');
+  assert.ok(pre.fullText);
+});
