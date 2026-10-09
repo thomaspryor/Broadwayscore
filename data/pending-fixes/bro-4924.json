@@ -1,0 +1,58 @@
+{
+  "issueNumber": "bro-4924",
+  "planId": "59e7382e-8173-42d7-9266-9f3b46a3e0a1",
+  "status": "applied",
+  "createdAt": "2026-10-09T11:11:35.167Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the Dirty Dancing North American tour (launched 2026-08-12 at the Ordway, St. Paul) as a tour of the announced 2027 Broadway run, so the BroadwayWorld tour review roundup can be gathered.",
+    "steps": [
+      "Append dirty-dancing-tour-2026 (tourOf dirty-dancing-2027), launch hand-verified from the Ordway launch page and the BWW roundup"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dirty-dancing-tour-2026",
+          "title": "Dirty Dancing",
+          "slug": "dirty-dancing-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-08-12",
+          "closingDate": null,
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "dirty-dancing-2027",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/dirty-dancing-the-musical/, current-era launch verified by hand: https://ordway.org/news/dirty-dancing-north-american-tour-launch/ ; https://www.broadwayworld.com/article/Review-Roundup-DIRTY-DANCING-Launches-North-American-Tour-20260923",
+          "statusSource": "added by hand 2026-10-09 (BRO-4924): launch 2026-08-12 (Ordway Center, St. Paul) checked against the Ordway launch page and the BroadwayWorld tour roundup; schedule from https://tourstoyou.org/shows/dirty-dancing-the-musical/",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "dirty-dancing-the-musical",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/dirty-dancing-2027/thumbnail.webp",
+            "poster": "/images/shows/dirty-dancing-2027/poster.webp"
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T11:58:26.639Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dirty-dancing-tour-2026"
+    }
+  ]
+}

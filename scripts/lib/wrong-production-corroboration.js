@@ -144,4 +144,25 @@ function bucketDateGuardCandidate({ corrob, isBeforePreview }) {
   return null;
 }
 
-module.exports = { evaluateCurrentRunCorroboration, bucketDateGuardCandidate, ROUNDUP_EXCERPT_FIELDS };
+/**
+ * Should the date-guard flagger HOLD (skip + warn) instead of flagging?
+ * A Theatre Record month inside the run is real evidence of a misparsed date,
+ * so it holds at any gap. cv-affirms-production alone holds only while the
+ * gap is small enough to be a misparse (implausible=false, i.e. not past
+ * validate-data CHECK 0's 180-day backstop). Past that, an LLM saying "looks
+ * like this production" cannot outweigh a real date years early: the held row
+ * stayed includable, CHECK 0 failed validate-data, and every validate-gated
+ * core-data push was refused (BRO-4884: the-king-and-i-west-end-2024 carried a
+ * 2018 London Palladium review, 2013d early, held on cv-affirms + an LBO excerpt).
+ *
+ * @param {{strength: string|null, signals: string[]}} corrob
+ * @param {boolean} implausible - evaluateDatePlausibility(...).implausible
+ * @returns {boolean}
+ */
+function shouldHoldDateGuardFlag({ corrob, implausible }) {
+  if (!corrob || corrob.strength !== 'strong') return false;
+  if (corrob.signals.some((s) => s.startsWith('theatre-record-month:'))) return true;
+  return !implausible;
+}
+
+module.exports = { evaluateCurrentRunCorroboration, bucketDateGuardCandidate, shouldHoldDateGuardFlag, ROUNDUP_EXCERPT_FIELDS };

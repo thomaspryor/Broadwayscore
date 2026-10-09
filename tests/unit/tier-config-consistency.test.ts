@@ -17,6 +17,7 @@ import assert from 'node:assert/strict';
 import { TIER_WEIGHTS, VALID_TIERS, DEFAULT_TIER } from '../../src/config/scoring';
 import { TIER_DISPLAY, TIER_LIST, tierBarsLit, tierPercent } from '../../src/config/tier-display';
 import outletTiers from '../../src/config/outlet-tiers.json';
+import { METHODOLOGY_TIER_OUTLETS, methodologyOutletList, outletMarketTier } from '../../src/lib/methodology-tiers';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsOutletTiers = require('../../scripts/lib/outlet-tiers');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -207,4 +208,20 @@ test('tier chip bars and "Counts" key follow the weights (BRO-4905)', () => {
   const src: string = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
   assert.match(src, /i < tierBarsLit\(tier\)/, 'TierBars must use tierBarsLit');
   assert.match(src, /\{tierPercent\(t\)\}%/, 'Counts key must use tierPercent');
+});
+
+test('methodology pages list each outlet under its real tier for that market (BRO-4925)', () => {
+  // The lists were hand-typed and drifted (Daily Mail shown as London T2, Playbill as T2
+  // with no tier entry). Now they are ids checked against outlet-tiers.json.
+  for (const market of ['nyc', 'london'] as const) {
+    for (const tier of [1, 2] as const) {
+      const ids = METHODOLOGY_TIER_OUTLETS[market][tier];
+      assert.equal(new Set(ids).size, ids.length, `${market} T${tier} lists an outlet twice`);
+      for (const id of ids) {
+        assert.equal(outletMarketTier(id, market), tier, `${id} is listed as ${market} tier ${tier} but outlet-tiers.json says ${outletMarketTier(id, market)}`);
+        assert.equal(jsOutletTiers.getTier(id, { showCategory: market === 'nyc' ? 'broadway' : 'west-end' }), tier, `${id}: getTier disagrees for ${market}`);
+      }
+    }
+  }
+  assert.match(methodologyOutletList('london', 1), /^.+, .+ and .+$/);
 });

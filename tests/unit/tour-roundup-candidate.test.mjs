@@ -157,3 +157,22 @@ test('a roundup and a Tours To You row for one show merge into the schedule row 
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+test('a national-tour roundup matches Broadway shows only, so a West End production of the title cannot take it (BRO-4924)', () => {
+  const { roundupMatchPool } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const { matchBwwRoundupSlugToShow } = require('../../scripts/lib/show-matching.js');
+  const shows = [
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway', status: 'announced', openingDate: null },
+    { id: 'dirty-dancing-the-classic-story-on-stage-west-end-2026', title: 'Dirty Dancing: The Classic Story on Stage', category: 'off-west-end', status: 'upcoming', openingDate: '2026-10-16' },
+  ];
+  const tourSlug = 'Review-Roundup-DIRTY-DANCING-Launches-North-American-Tour-20260923';
+  assert.equal(isNationalTourRoundupSlug(tourSlug), true);
+  // Unfiltered, the token tie breaks on openingDate and the West End show wins.
+  assert.equal(matchBwwRoundupSlugToShow(tourSlug, shows).show.id, 'dirty-dancing-the-classic-story-on-stage-west-end-2026');
+  assert.equal(matchBwwRoundupSlugToShow(tourSlug, roundupMatchPool(tourSlug, shows)).show.id, 'dirty-dancing-2027');
+  // A West End-only title has no Broadway show to tour from: unmatched, not mis-filed.
+  assert.equal(matchBwwRoundupSlugToShow(tourSlug, roundupMatchPool(tourSlug, shows.slice(1))), null);
+  // Other slugs keep matching every show.
+  const plain = 'Review-Roundup-DIRTY-DANCING-Opens-in-the-West-End-20261016';
+  assert.equal(roundupMatchPool(plain, shows), shows);
+});

@@ -29,6 +29,7 @@ const {
   matchSlugToShow, matchBwwRoundupSlugToShow, loadShows,
   cleanSlugForMatcher, _showDistinctiveTokens, _tokenAppearsInSlug,
 } = require('./lib/show-matching');
+const { roundupMatchPool } = require('./lib/tour-roundup-candidate');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -124,7 +125,8 @@ function main() {
       } else if (r.bwwRoundupUrl && /review-roundup/i.test(r.bwwRoundupUrl)) {
         slug = r.bwwRoundupUrl.split('/article/')[1] || '';
         source = 'bww';
-        matcher = matchBwwRoundupSlugToShow;
+        // Live routing matches a national-tour roundup against Broadway/tour shows only (BRO-4924).
+        matcher = (sl, list, opts) => matchBwwRoundupSlugToShow(sl, roundupMatchPool(sl, list), opts);
       }
       if (!slug || !matcher) continue;
 
