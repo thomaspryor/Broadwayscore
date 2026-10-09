@@ -377,6 +377,19 @@ Lessons, each fixed in code:
   lib/date-guard.js, tests in date-guard.test.mjs), and collection replaces
   the string with a real date when the page has one. Run the audit after
   collection and scoring have drained, not right after gather.
+- **Validation errors block every data save.** The 2023-24 synopsis re-run
+  was written but refused at push: validate-data failed on three rows, none
+  from this season's logic. (1) The flagger held a 2018 King and I review on
+  an LLM "affirms this production" pass alone, so it stayed includable and
+  CHECK 0 failed; that signal now holds only within 180 days
+  (shouldHoldDateGuardFlag in lib/wrong-production-corroboration.js), and a
+  dry run flags 7 more such rows years early. (2) The BWW/LBO excerpt-stub
+  path in gather-reviews had none of createReviewFile's guards and kept
+  re-creating a director-as-critic stub; both write paths now refuse junk,
+  fragment and creative-team outlets/critics (lib/aggregator-stub-guard.js).
+  The two existing rows are fixed by data/pending-fixes/bro-4884.json. The
+  third, Gang of Three, is a return of the 2025 King's Head staging; its 2025
+  review is excluded until that run is recorded as a priorRun.
 
 ## Side benefit (separate card)
 
