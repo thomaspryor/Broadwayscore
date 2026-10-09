@@ -2318,18 +2318,6 @@
     "queuedAt": "2026-10-08T22:45:08.108Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37857186395",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-08T23:08:14.414Z"
-  },
-  {
     "conditionKey": "land:land/bro-4881-critic-quotes",
     "title": "Landing blocked: unit-tests-node red on land/bro-4881-critic-quotes",
     "description": "land.yml did not land land/bro-4881-critic-quotes: the unit-tests-node gate went red at 64295dc9e1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37853995566",
@@ -2400,6 +2388,18 @@
     "queuedAt": "2026-10-08T23:47:55.472Z"
   },
   {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37861535546",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-08T23:55:07.507Z"
+  },
+  {
     "conditionKey": "land:land/bro-4893-email-vs-account",
     "title": "Landing blocked: unit-tests-node red on land/bro-4893-email-vs-account",
     "description": "land.yml did not land land/bro-4893-email-vs-account: the unit-tests-node gate went red at ad8d371643. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37858861933",
@@ -2427,5 +2427,34 @@
       }
     ],
     "queuedAt": "2026-10-08T23:52:01.545Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4886-integrity-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4886-integrity-audit",
+    "description": "land.yml did not land land/bro-4886-integrity-audit: the unit-tests-node gate went red at 94cfb9ec7a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37859451038",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4886-integrity-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "94cfb9ec7af7ca658976690defc6c3ebd3122481"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37859451038"
+      }
+    ],
+    "queuedAt": "2026-10-08T23:59:36.567Z"
   }
 ]

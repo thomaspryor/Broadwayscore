@@ -261,3 +261,27 @@ test('planPromotions: a censored title is held until approvals supply the real o
   assert.equal(fixed.toPromote.length, 1);
   assert.equal(fixed.toPromote[0].title, 'Porn Play');
 });
+
+// Phase B found these by eye; the season audit now flags them (BRO-4851).
+test('season audit: wrong-production posters, censored titles and synopses to look at', () => {
+  const { auditSeason, posterProblem, synopsisNeedsLook } = require('../audit-we-historical-season.js');
+  const othello = { id: 'othello-west-end-2025', title: 'Othello', category: 'west-end', season: '2025-2026', discoverySource: 'we-historical:wos', images: { poster: '/p.jpg', hero: null } };
+  assert.equal(posterProblem(othello, { poster: 'https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/imgs/x.jpeg' }), 'London row with NYC-only (Theatr) art');
+  assert.equal(posterProblem({ ...othello, rejectedImageUrls: ['https://x/a.jpg'] }, { poster: 'https://x/a.jpg?w=1' }), 'art from a rejected URL');
+  assert.equal(posterProblem(othello, { poster: 'https://www.theaterdiary.com/parse/files/othello haymarket.jpg' }), null);
+  assert.equal(synopsisNeedsLook('Don’t miss Emmy-nominated actor Joe Locke making his West End debut in this tender drama. Clarkston follows two young men who meet in a small town.'), true);
+  assert.equal(synopsisNeedsLook('The Shitheads is a play that is set thousands of years ago among some of the earliest inhabitants of Britain. The harmony of their cave life is shattered when strangers arrive.'), false);
+  const porn = { ...othello, id: 'p-rn-play-west-end-2025', title: 'P*rn Play', images: {} };
+  const r = auditSeason({ shows: [othello, porn], reviews: [], season: '2025-2026', imageSources: { [othello.id]: { poster: 'https://x/theatr-app.appspot.com/y.jpg' } } });
+  assert.equal(r.checks.poster.pass, false);
+  assert.deepEqual(r.checks.poster.missing, ['p-rn-play-west-end-2025']);
+  assert.equal(r.checks.titles.pass, false);
+  assert.equal(r.checks.synopsis.pass, null);
+  assert.equal(r.pass, false);
+});
+
+test('season audit poster check ignores a cleared field whose old source is still on file', () => {
+  const { posterProblem } = require('../audit-we-historical-season.js');
+  const godot = { id: 'waiting-for-godot-west-end-2024', category: 'west-end', images: { poster: '/p.jpg', thumbnail: '/t.jpg', hero: null }, rejectedImageUrls: ['https://x/banner.jpg'] };
+  assert.equal(posterProblem(godot, { poster: 'https://www.theaterdiary.com/godot haymarket.jpg', hero: 'https://x/banner.jpg' }), null);
+});

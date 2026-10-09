@@ -31,10 +31,41 @@ const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|to
 // "currently playing at Wyndham's ... has just won rave reviews", "Sheridan
 // Smith stars in ...", "one of nine shows in the theatre's 2024 season",
 // "returns to the West End this May", "Hamnet premiered in April at the Swan").
-const PRODUCTION_NEWS_RE = /\b(currently|now) (playing|performing|running)\b|\bis (playing|performing) at\b|\brave reviews\b|\b(award|olivier|tony|bafta)[- ]win|\bstar(s|ring)? (in|as)\b|\b(will be|is) directed\b|\bdirected by\b|\bartistic director\b|\breturns? to (london|the west end)\b|\b(transfers?|promoted) to the west end\b|\bwest end (debut|transfer|premiere)\b|\b(strictly )?limited (run|season|time|engagement)\b|\b\d+-week (run|season)\b|\bpremiered\b|\bgraced the stage\b|\bsold-out\b/i;
+const PRODUCTION_NEWS_RE = /\b(currently|now) (playing|performing|running)\b|\bis (playing|performing) at\b|\brave reviews\b|\b(award|olivier|tony|bafta)[- ]win|\bstar(s|ring)? (in|as)\b|\b(will be|is) directed\b|\bdirected by\b|\bartistic director\b|\breturns? to (london|the west end)\b|\b(transfers?|promoted) to the west end\b|\bwest end (debut|transfer|premiere)\b|\b(strictly )?limited (run|season|time|engagement)\b|\b\d+-week (run|season)\b|\bpremiered\b|\bgraced the stage\b|\bsold-out\b|\bmaking (her|his|their) .*debut\b/i;
 // isValidSynopsis rejects text opening this way; such sentences are pitch, not plot.
 const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come discover|Catch |Book |Have you ever|Immerse yourself|Audiences will|Fly to |Attend the )/i;
 const MAX_ABOUT_CHARS = 700;
+
+/**
+ * A quotation that is a pull quote or soundbite, not a quoted title: an
+ * unbalanced quote (split across sentences), a quoted span over 4 words, or a
+ * short quote followed by an attribution ("Utterly brilliant" – The Guardian).
+ * A quoted title ("After the Act" is a verbatim musical...) is story.
+ */
+function isPullQuote(sentence) {
+  const marks = (sentence.match(/"/g) || []).length;
+  if (marks === 0) return false;
+  if (marks % 2 === 1) return true;
+  for (const m of sentence.matchAll(/"([^"]*)"(\s*[–—-]\s*[A-Z(]|\s*\()?/g)) {
+    if (m[1].trim().split(/\s+/).length > 4 || m[2]) return true;
+  }
+  return false;
+}
+
+/**
+ * Why a sentence is not story, or null. Shared by cleanTodaytixAbout and the
+ * season audit (scripts/audit-we-historical-season.js) so both apply one rule.
+ * @returns {'pull-quote'|'selling-or-list'|'production-news'|'pitch-opener'|null}
+ */
+function nonStoryReason(sentence) {
+  const s = String(sentence || '').replace(/[\u201C\u201D]/g, '"').replace(/[\u2018\u2019]/g, "'").trim();
+  if (!s) return null;
+  if (isPullQuote(s)) return 'pull-quote';
+  if (NON_STORY_SENTENCE_RE.test(s)) return 'selling-or-list';
+  if (PRODUCTION_NEWS_RE.test(s)) return 'production-news';
+  if (MARKETING_OPENER_RE.test(s)) return 'pitch-opener';
+  return null;
+}
 
 /**
  * product.about reduced to its story sentences: markdown/HTML stripped,
@@ -58,9 +89,9 @@ function cleanTodaytixAbout(text) {
   let len = 0;
   for (const raw of sentences) {
     const sentence = raw.trim().replace(/^["'\s]+/, '');
-    // A sentence holding a quotation is a pull quote or a cast/creative
-    // soundbite, not plot (Unicorn: "...very, very funny," Nicola Walker said).
-    if (!sentence || /"/.test(sentence) || NON_STORY_SENTENCE_RE.test(sentence) || PRODUCTION_NEWS_RE.test(sentence) || MARKETING_OPENER_RE.test(sentence)) continue;
+    // Pull quotes / soundbites (Unicorn: "...very, very funny," Nicola Walker
+    // said), selling, billing and pitch openers are not plot.
+    if (!sentence || nonStoryReason(sentence)) continue;
     if (len + sentence.length + 1 > MAX_ABOUT_CHARS) break;
     kept.push(sentence);
     len += sentence.length + 1;
@@ -110,4 +141,4 @@ function todaytixPageMatchesShow(identity, show, expectedId) {
   return true;
 }
 
-module.exports = { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout };
+module.exports = { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout, nonStoryReason };

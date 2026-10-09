@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout } = require('./todaytix-page-identity.js');
+const { extractTodaytixPageIdentity, todaytixPageMatchesShow, cleanTodaytixAbout, nonStoryReason } = require('./todaytix-page-identity.js');
 
 const page = (product, extra = {}) => `<html><script id="__NEXT_DATA__" type="application/json">${JSON.stringify({
   props: { pageProps: { product, ...extra } },
@@ -82,4 +82,15 @@ test('cleanTodaytixAbout drops production news, billing and star credits', () =>
   // Bacchae (Phase B): "includes" slipped past the cast-list rule.
   assert.equal(cleanTodaytixAbout('The cast also includes Melanie-Joyce Bermudez, Ebony Clarke and Natasha Gooden. The play follows a god who returns to Thebes when the king denies him.'),
     'The play follows a god who returns to Thebes when the king denies him.');
+});
+
+// Season-audit sharing (BRO-4851): quoted titles are story; pull quotes are not.
+test('nonStoryReason: quoted titles survive, pull quotes of any length and split quotes do not', () => {
+  assert.equal(nonStoryReason('"After the Act" is a verbatim musical examining Section 28.'), null);
+  assert.equal(nonStoryReason('"Utterly brilliant" \u2013 The Guardian.'), 'pull-quote');
+  assert.equal(nonStoryReason('"Utterly brilliant" (Daily Mail).'), 'pull-quote');
+  assert.equal(nonStoryReason('Go see it," said the Times.'), 'pull-quote');
+  assert.equal(nonStoryReason('Hailed as \u201Cjoyous and emotionally volcanic\u201D (Daily Mail), this new musical features hits by Queen.'), 'pull-quote');
+  assert.equal(nonStoryReason('Susan Sarandon is making her UK theatre debut.'), 'production-news');
+  assert.equal(nonStoryReason('In a small rural pub in County Leitrim, a group of local men gather.'), null);
 });
