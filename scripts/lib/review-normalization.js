@@ -1052,10 +1052,37 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // very URL the flag is about, minus the flag. urlSwapRegressed and
   // urlFlipFlop had this hole before BRO-3092; urlCollidesWithSibling would
   // have inherited it.
+  // BRO-4887: a URL-based flag about a url whose own path date sits clearly
+  // outside this show's run (a 2022 article filed under the 1987 show) is NOT
+  // a venue-transfer to heal. Two misfiled NY Post / NYSR copies were
+  // auto-cleared this way and went live on the 1987 page with a fake date.
+  // Veto only: same helper, same fail-open rules as the url-swap guard above
+  // (no show record, no show dates or no date in the url => unchanged).
+  let autoClearUrlDateVeto = false;
+  if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
+      && !merged.wrongProductionManualClear && isUrlBasedWrongProd) {
+    const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
+    const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
+    if (veto.regression) {
+      autoClearUrlDateVeto = true;
+      console.warn(`[mergeReviews] kept wrongProduction for ${existing.outletId || context.file || '?'}: ${veto.reason}`);
+      logExclusion({
+        script: context.script || 'unknown-caller',
+        showId: context.showId || 'unknown',
+        file: context.file || '-',
+        reason: 'skippedAutoClearUrlDateVeto',
+        details: {
+          url: merged.url, outletId: existing.outletId, criticName: existing.criticName,
+          urlDate: veto.urlDate, issue: veto.issue, diffDays: veto.diffDays,
+        },
+      });
+    }
+  }
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
+      && !autoClearUrlDateVeto
       && isUrlBasedWrongProd) {
     delete merged.wrongProduction;
     delete merged.wrongProductionNote;
