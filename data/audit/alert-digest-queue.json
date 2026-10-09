@@ -135,6 +135,18 @@
     "queuedAt": "2026-10-09T16:18:28.993Z"
   },
   {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:times-uk",
+    "title": "Auto-remediation gave up on rent-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"rent-west-end-2026\",\"outlet\":\"times-uk\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T17:00:11.232Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:a-small-and-quiet-light-off-west-end-2026",
     "title": "Review gap — \"A Small And Quiet Light\" missing 5 cited review(s)",
     "description": "A Small And Quiet Light (a-small-and-quiet-light-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-small-and-quiet-light-off-west-end-2026 --checkpoint --ingest-missing",
