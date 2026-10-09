@@ -149,7 +149,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -161,7 +161,8 @@
       "notifyCount": 127,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-09T20:54:10.655Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12553,7 +12554,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:80529a26": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
       "firstSeen": "2026-10-09T14:40:39.110Z",
@@ -12567,10 +12568,12 @@
       "absentRunIds": [
         "37951424811",
         "37956977077"
-      ]
+      ],
+      "resolvedAt": "2026-10-09T20:54:12.338Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Unit Tests:2a5215c8": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real data: an unscored running tour with a schedule is indexable; a closed unscored one is not\"",
       "firstSeen": "2026-10-09T15:38:20.162Z",
@@ -12581,7 +12584,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4940",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-09T20:54:12.342Z",
+      "resolveReason": "job-green"
     },
     "feedback-outcomes:2026-10-09T12:58:53.431983+00:00": {
       "status": "open",
