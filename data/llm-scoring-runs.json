@@ -1,5 +1,27 @@
 [
   {
+    "startedAt": "2026-10-08T16:51:49.060Z",
+    "completedAt": "2026-10-08T16:52:07.946Z",
+    "totalReviews": 48344,
+    "processed": 0,
+    "skipped": 48337,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 27225,
+      "output": 784,
+      "total": 74450
+    },
+    "costUsd": 0.1331552,
+    "runId": "37811686568",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
     "startedAt": "2026-10-08T16:52:09.283Z",
     "completedAt": "2026-10-08T16:52:10.927Z",
     "totalReviews": 0,
@@ -625988,40 +626010,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-09T10:11:54.661Z",
-    "completedAt": "2026-10-09T10:12:38.730Z",
-    "totalReviews": 50774,
-    "processed": 6,
-    "skipped": 50761,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 52215,
-      "output": 2331,
-      "total": 136509
-    },
-    "costUsd": 0.193971,
-    "runId": "37915678418",
-    "errorDetails": [
-      {
-        "showId": "back-to-the-future-2023",
-        "outletId": "whatsonstage",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "therese-raquin-2015",
-        "outletId": "nyt-theater",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-09T10:12:40.837Z",
-    "completedAt": "2026-10-09T10:12:43.844Z",
+    "startedAt": "2026-10-09T10:15:06.186Z",
+    "completedAt": "2026-10-09T10:15:06.207Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -626032,7 +626022,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "37915678418",
+    "runId": "37915741312",
     "errorDetails": []
   }
 ]
