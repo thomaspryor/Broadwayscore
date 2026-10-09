@@ -69,11 +69,9 @@ export function judgeGoogle(authorizeUrl, hop, googlePage) {
     if (googlePage.status === 403) return { ok: false, inconclusive: true, reason: 'Google answered HTTP 403 (bot block) for the sign-in page' };
     const dead = (googlePage.body || '').match(/invalid_client|deleted_client|disabled_client/i);
     if (dead && googlePage.status >= 400) return { ok: false, reason: `Google rejects the OAuth client (${dead[0]})` };
-    const mismatch = /redirect_uri_mismatch/i.test(googlePage.body || '');
-    // Google answers this error with HTTP 400. The same words on any other
-    // status (an interstitial, a bot page) are not proof: digest, never page.
-    if (mismatch && googlePage.status === 400) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): the OAuth client does not list the Supabase callback URL' };
-    if (mismatch) return { ok: false, inconclusive: true, reason: `Google's page mentions redirect_uri_mismatch but answered HTTP ${googlePage.status}` };
+    // Google's own error markers; the page can come with HTTP 200 when
+    // redirects are followed (seen live 2026-10-09), so the status is no guide.
+    if (/Error 400: redirect_uri_mismatch|data-error-code="redirect_uri_mismatch"/i.test(googlePage.body || '')) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): the OAuth client does not list the Supabase callback URL' };
   }
   return { ok: true, reason: 'Supabase redirects to accounts.google.com' };
 }
