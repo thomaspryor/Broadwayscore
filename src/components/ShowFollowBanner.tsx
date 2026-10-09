@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { emailCaptureConfig } from '@/config/email-capture';
+import { SHOW_EMAIL_COPY } from '@/config/email-list-copy';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
 const FOLLOW_PREFIX = 'bsc_show_follow_subscribed_';
@@ -103,7 +104,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
-          <span>Following {showTitle}</span>
+          <span>{SHOW_EMAIL_COPY.success(showTitle)}</span>
         </div>
       </div>
     );
@@ -115,7 +116,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
         <div className="flex items-start gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-sm font-semibold text-white leading-tight mb-2">
-              Follow {showTitle} for new reviews, cast changes & lottery alerts
+              {SHOW_EMAIL_COPY.prompt(showTitle)}
             </p>
             <form onSubmit={handleSubmit} className="flex gap-2">
               <label htmlFor="show-follow-email" className="sr-only">Email address</label>
@@ -133,7 +134,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
                 disabled={status === 'submitting'}
                 className="px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
               >
-                {status === 'submitting' ? '...' : 'Follow'}
+                {status === 'submitting' ? '...' : SHOW_EMAIL_COPY.button}
               </button>
             </form>
             {status === 'error' && errorMessage && (

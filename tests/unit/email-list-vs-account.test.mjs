@@ -24,7 +24,7 @@ const require = createRequire(import.meta.url);
 const { EMAIL_LIST_COPY, ACCOUNT_NUDGE_COPY } = await import('../../src/config/email-list-copy.ts');
 const { getTriggerCopy } = await import('../../src/lib/gate-logic.ts');
 const { signInSourceFromSearch } = await import('../../src/lib/deferred-auth.ts');
-const { buildAccountCtaHtml, buildBroadcastFooterHtml } = require('../../scripts/lib/email-templates.js');
+const { buildAccountCtaHtml, buildBroadcastFooterHtml, buildFooterHtml } = require('../../scripts/lib/email-templates.js');
 
 // Email-list surfaces a visitor sees. Comments are stripped before matching.
 const SURFACES = [
@@ -100,4 +100,13 @@ test('both email footers carry the account line', () => {
   }
   // The weekly newsletter builds its own footer; it must call the same helper.
   assert.match(read('scripts/newsletter/generate.mjs'), /\$\{buildAccountCtaHtml\(/);
+});
+
+test('per-show email banner and its emails say "email me", not "follow" (BRO-4897)', () => {
+  const banner = stripComments(read('src/components/ShowFollowBanner.tsx'));
+  assert.doesNotMatch(banner, /Following \{showTitle\}|'Follow'|>\s*Follow \{showTitle\}/);
+  assert.match(banner, /SHOW_EMAIL_COPY\.prompt\(showTitle\)/);
+  const footer = buildFooterHtml('Hamilton', 'hamilton-2015', 'a@example.com', 'broadway');
+  assert.doesNotMatch(footer, /you followed|Unfollow this show/);
+  assert.match(footer, /Stop emails about this show/);
 });
