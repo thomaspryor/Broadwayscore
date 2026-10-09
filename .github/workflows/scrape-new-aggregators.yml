@@ -182,8 +182,15 @@ jobs:
               # BWW: the staged candidate's sourceUrl IS the roundup — pass it
               # directly (--roundup-url) so ingestion doesn't depend on SERP
               # re-discovery of a slug-parsed title (Millions E2E gap, 2026-07-10).
-              node -e "const d=require('./data/audit/last-promotion-ids.json');for(const p of d.promoted)console.log(p.id+'|'+(p.sourceUrl||''))" | while IFS='|' read -r pid purl; do
-                if [ -n "$purl" ] && echo "$purl" | grep -q "broadwayworld.com"; then
+              node -e "const d=require('./data/audit/last-promotion-ids.json');for(const p of d.promoted)console.log(p.id+'|'+(p.sourceUrl||'')+'|'+(p.source||''))" | while IFS='|' read -r pid purl psource; do
+                if [ "$psource" = "guardian-review" ]; then
+                  # Guardian-triggered UK flagship-house show (BRO-4923): the
+                  # triggering review's URL IS the first review. PV/BWW cannot
+                  # see an RSC/Chichester production, so skip them and ingest
+                  # the Guardian piece directly. The wider UK press is found by
+                  # discover-regional-serp-reviews, dispatched after the push.
+                  node scripts/ingest-review-from-url.js --show="$pid" --url="$purl" --outlet=guardian || true
+                elif [ -n "$purl" ] && echo "$purl" | grep -q "broadwayworld.com"; then
                   node scripts/scrape-bww-reviews.js --shows="$pid" --roundup-url="$purl" || true
                 else
                   node scripts/scrape-bww-reviews.js --shows="$pid" || true
@@ -283,6 +290,25 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Playbill Verdict scrape"
+
+      # Guardian-triggered UK flagship-house shows (BRO-4923) have no PV/BWW
+      # roundup, so the rest of their press comes from the regional SERP
+      # discovery (registry outlets: Telegraph, Stage, WhatsOnStage, ...).
+      # After both pushes (core data for the new id, review-texts for the Guardian
+      # piece ingested above), for the same reason as the image fetch: the
+      # dispatched run checks out the new id. One dispatch per id, the
+      # workflow's `show` input takes a single id. Weekly cron still catches
+      # anything this misses.
+      - name: Dispatch UK press discovery for Guardian-triggered shows
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json');console.log(d.promoted.filter(p=>p.source==='guardian-review').map(p=>p.id).join(' '))" 2>/dev/null)
+          for id in $IDS; do
+            gh workflow run discover-regional-serp-reviews.yml -f show="$id" || echo "::warning::regional SERP dispatch failed for $id — weekly cron will pick it up"
+          done
       - name: Push aggregator-archive to private repo (PV)
         if: always()
         uses: ./.github/actions/push-aggregator-archive

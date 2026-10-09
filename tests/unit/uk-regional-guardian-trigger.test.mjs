@@ -47,9 +47,35 @@ test('a non-flagship regional house is still dropped', () => {
   assert.equal(r, null);
 });
 
-test('alias matching is whole-word: "rsc" in a slug counts, "rscx" does not', () => {
-  assert.ok(ukFlagshipVenueFor({ slug: 'as-you-like-it-review-rsc' }));
-  assert.equal(ukFlagshipVenueFor({ slug: 'something-review-rscx-stage' }), null);
+test('alias matching is whole-phrase: a slug naming the house counts, a longer word does not', () => {
+  assert.equal(ukFlagshipVenueFor({ slug: 'hamlet-review-royal-shakespeare-theatre-stratford' }).venue, 'Royal Shakespeare Theatre');
+  assert.equal(ukFlagshipVenueFor({ slug: 'hamlet-review-royal-shakespeare-theatrex' }), null);
+  // Bare "rsc" is deliberately not an alias (aggregator-candidate-extract.js: too short, collides).
+  assert.equal(ukFlagshipVenueFor({ slug: 'as-you-like-it-review-rsc' }), null);
+});
+
+test('staging is idempotent: the same report twice yields the same rows (no duplicate shows)', () => {
+  const report = [{ title: 'As You Like It', source: 'guardian-review', url: 'https://g/1', date: '2026-10-07T10:00:00Z', market: 'uk-regional', venue: 'Royal Shakespeare Theatre' }];
+  const strip = (rows) => rows.map(({ discoveredAt, ...r }) => r);
+  assert.deepEqual(strip(stageUkRegionalCandidates(report, 'a')), strip(stageUkRegionalCandidates(report, 'b')));
+});
+
+test('the workflow selects only guardian-review promotions for the UK press dispatch', async () => {
+  const fs = await import('node:fs');
+  const yml = fs.readFileSync(new URL('../../.github/workflows/scrape-new-aggregators.yml', import.meta.url), 'utf8');
+  const m = yml.match(/IDS=\$\(node -e "(const d=require[^"]+)"/g).find((s) => s.includes('guardian-review'));
+  assert.ok(m, 'dispatch step must filter on source guardian-review');
+  const expr = m.replace(/^IDS=\$\(node -e "/, '').replace(/"$/, '');
+  const dir = fs.mkdtempSync(new URL('file:///tmp/ukg-').pathname);
+  fs.mkdirSync(`${dir}/data/audit`, { recursive: true });
+  fs.writeFileSync(`${dir}/data/audit/last-promotion-ids.json`, JSON.stringify({ promoted: [
+    { id: 'a-regional-2026', source: 'guardian-review' },
+    { id: 'b-regional-2026', source: 'bww-roundup' },
+    { id: 'c-regional-2026', source: 'guardian-review' },
+  ] }));
+  const { execFileSync } = await import('node:child_process');
+  const out = execFileSync('node', ['-e', expr], { cwd: dir, encoding: 'utf8' }).trim();
+  assert.equal(out, 'a-regional-2026 c-regional-2026');
 });
 
 test('venue table: every entry is usable by the promoter and the market-utils lookup', () => {

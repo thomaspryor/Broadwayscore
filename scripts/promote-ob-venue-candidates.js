@@ -44,7 +44,7 @@
 const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
-const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
+const { loadStaging, writeStagingCandidates, updateStaging, candidateHash } = require('./lib/venue-listing-discover');
 const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle, decideVenueListingPromotion, venuesCompatible, discoveryGateReason } = require('./lib/ob-cross-validation');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow } = require('./lib/theatermania-ob');
 const { cleanListingTitle } = require('./lib/ob-listing-platforms');
@@ -680,19 +680,23 @@ async function main() {
   // Flagship UK houses the Guardian feed found missing (BRO-4923) join the
   // staging file before it is read, so the one regional loop below handles
   // them. Candidates the audit already matched are not in its report.
-  if (regionalOnly && !dryRun) {
+  let ukRows = [];
+  if (regionalOnly) {
     try {
       const rd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
-      const ukRows = stageUkRegionalCandidates(rd.candidates);
-      if (ukRows.length) {
-        writeStagingCandidates(ukRows);
-        console.log(`Staged ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
-      }
+      ukRows = stageUkRegionalCandidates(rd.candidates);
+      if (ukRows.length && !dryRun) writeStagingCandidates(ukRows);
+      if (ukRows.length) console.log(`${dryRun ? 'Would stage' : 'Staged'} ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
     } catch (e) {
       if (e.code !== 'ENOENT') console.warn(`UK Guardian staging skipped: ${e.message}`);
     }
   }
-  const staged = loadStaging();
+  let staged = loadStaging();
+  // --dry-run writes nothing, so preview the Guardian rows in memory.
+  if (dryRun && ukRows.length) {
+    const have = new Set(staged.map(c => c.candidateHash));
+    staged = staged.concat(ukRows.filter(r => !have.has(candidateHash(r))));
+  }
   // Reset the promotion record up front so a crash mid-run can never leave a
   // STALE file claiming yesterday's promotions happened again (the workflow
   // reads it to decide targeted scrapes and commits it).
