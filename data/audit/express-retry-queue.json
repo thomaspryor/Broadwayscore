@@ -95,6 +95,45 @@
       "outletIds": [
         "telegraph"
       ],
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-09T13:52:04.878Z"
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-09T13:52:04.878Z",
+      "dueAt": "2026-10-09T14:52:04.878Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-09T13:52:04.878Z",
+      "dueAt": "2026-10-09T16:52:04.878Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "nytimes"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "market": "broadway",
+      "queuedAt": "2026-10-09T13:52:04.878Z",
+      "dueAt": "2026-10-10T01:52:04.878Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "nytimes"
+      ],
       "attempted": false
     }
   ]
