@@ -38,3 +38,14 @@ export const ACCOUNT_NUDGE_COPY = {
   pitch: 'Create a free account to save your ratings and build a watchlist.',
   button: 'Create a free account',
 } as const;
+
+/**
+ * Per-show email updates (ShowFollowBanner). Not "Follow": the account
+ * Watchlist is how signed-in people follow a show, and two kinds of "follow"
+ * read as the same thing (BRO-4897).
+ */
+export const SHOW_EMAIL_COPY = {
+  prompt: (showTitle: string) => `Get ${showTitle} news by email: opening night score, closing dates, lotteries`,
+  button: 'Email me',
+  success: (showTitle: string) => `We'll email you about ${showTitle}`,
+} as const;

@@ -5,8 +5,8 @@ import { Suspense } from 'react';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export const metadata: Metadata = {
-  title: 'Unfollow Show',
-  description: 'Unfollow a Broadway show to stop receiving update emails.',
+  title: 'Stop Show Emails',
+  description: 'Stop getting update emails about a show.',
   alternates: {
     canonical: `${BASE_URL}/unfollow`,
   },

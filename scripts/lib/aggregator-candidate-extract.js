@@ -84,6 +84,14 @@ function findVenueMatch(text, preferLast) {
     if (!chosen || preferLast) chosen = { venue: cleanVenue(m[1]), index: m.index };
     if (!preferLast) break;
   }
+  // A headline can name the house by initialism instead of a theater word
+  // ("... Opens at the RSC, Starring Jonathan Groff"), which HEADLINE_VENUE_RE
+  // cannot see. Headline only (preferLast): a bare "RSC" in lede prose is too
+  // loose to trust, and the uk-regional-venues allowlist deliberately omits it.
+  if (!chosen && preferLast) {
+    const am = /\bat\s+(?:the\s+)?RSC\b/i.exec(text);
+    if (am) chosen = { venue: 'Royal Shakespeare Theatre', index: am.index };
+  }
   return chosen;
 }
 

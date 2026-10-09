@@ -2795,18 +2795,6 @@
     "queuedAt": "2026-10-09T12:26:47.836Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37932214165",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T12:51:20.888Z"
-  },
-  {
     "conditionKey": "land:land/bro-4897-follow-emails",
     "title": "Landing blocked: unit-tests-node red on land/bro-4897-follow-emails",
     "description": "land.yml did not land land/bro-4897-follow-emails: the unit-tests-node gate went red at 9df9f52c1b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37929378038",
@@ -2834,5 +2822,46 @@
       }
     ],
     "queuedAt": "2026-10-09T12:48:12.333Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37935653529",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T13:20:37.648Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2740-triage-plan",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2740-triage-plan",
+    "description": "land.yml did not land land/bro-2740-triage-plan: the unit-tests-node gate went red at f5aec0b4fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37931887374",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2740-triage-plan"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f5aec0b4fe8bb53c2d760bebce5a75a5c9312a38"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37931887374"
+      }
+    ],
+    "queuedAt": "2026-10-09T13:16:29.072Z"
   }
 ]
