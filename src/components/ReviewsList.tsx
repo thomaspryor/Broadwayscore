@@ -155,11 +155,14 @@ function withEndPunctuation(text: string): string {
 // useLayoutEffect warns during the server render of this client component.
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
+// Shared by the review-row chip and the key's sample chips so they stay identical.
+const TIER_CHIP_BOX = 'inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em]';
+
 // Four ascending bars, lit one per step of weight (T1 all four, T4 one), so the
 // chip shows how much a review counts and not only which tier it is (BRO-4905).
-function TierBars({ tier }: { tier: OutletTier }) {
+function TierBars({ tier, className = '' }: { tier: OutletTier; className?: string }) {
   return (
-    <span className="inline-flex items-end gap-[1.5px] h-[9px]" aria-hidden="true" data-testid="tier-bars">
+    <span className={`inline-flex items-end gap-[1.5px] h-[9px] ${className}`} aria-hidden="true" data-testid="tier-bars">
       {[3, 5, 7, 9].map((h, i) => (
         <span key={h} className={`w-[2px] rounded-[1px] ${i < tierBarsLit(tier) ? 'bg-current' : 'bg-white/[0.14]'}`} style={{ height: h }} />
       ))}
@@ -243,7 +246,7 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
       <button
         ref={btnRef}
         type="button"
-        className={`tier-chip relative inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em] cursor-help transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
+        className={`tier-chip relative ${TIER_CHIP_BOX} cursor-help transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 ${
           open
             ? 'text-white border-brand/60 bg-brand/[0.08]'
             : `${tier === 1 ? 'text-gray-300' : 'text-gray-400'} border-white/[0.12] hover:text-white hover:border-brand/60 hover:bg-brand/[0.08]`
@@ -260,7 +263,8 @@ function TierChip({ tier, isTopCritic, criticName, london }: { tier: OutletTier;
         data-testid="tier-chip"
       >
         T{tier}
-        <TierBars tier={tier} />
+        {/* Below 360px the bars cost the outlet name its last letters; the key still shows them. */}
+        <TierBars tier={tier} className="max-[359px]:hidden" />
       </button>
       {open && (
         // The outer span's padding bridges the gap to the chip, so the mouse
@@ -455,6 +459,8 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
     return reviews; // already sorted by score from engine
   }, [reviews, sortMode]);
   const hasStops = reviews.some(r => r.stopLabel);
+  // Same rule as the per-row chips: no tiered review, no key.
+  const hasTierChips = showTiers && reviews.some(r => r.tier);
 
   const shouldCollapse = sortedReviews.length > initialCount;
   const displayedReviews = shouldCollapse && !isExpanded
@@ -487,34 +493,25 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
               By City
             </button>
           )}
-          {showTiers && (
-            <Link
-              href="/methodology#critic-score"
-              className="ml-auto inline-flex items-center gap-1.5 whitespace-nowrap text-gray-500 hover:text-brand transition-colors"
-              aria-label="Weighted by outlet tier, T1 to T4. How we weight critics"
-            >
-              <span className="hidden sm:inline">Weighted by outlet tier</span>
-              {/* Below 380px the label wrapped the sort buttons; the chip alone links there. */}
-              <span className="hidden min-[380px]:inline sm:hidden">Weighted by tier</span>
-              <span className="px-1 rounded border border-white/[0.12] text-[10px] font-semibold leading-[16px] tabular-nums">T1–T4</span>
-            </Link>
-          )}
         </div>
       )}
-      {showTiers && (
-        // The whole scale at once, so the bars are learned from one line (BRO-4905).
+      {hasTierChips && (
+        // The one tier key: the whole scale at once, so the bars are learned
+        // from one line, and its label links to the methodology (BRO-4905).
         <div className="flex items-start gap-3 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
-          <span className="leading-[18px]">Counts</span>
-          <span className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <Link href="/methodology#critic-score" className="leading-[18px] whitespace-nowrap hover:text-brand transition-colors" aria-label="Weighted by outlet tier. How we weight critics">
+            <span className="hidden sm:inline">Weighted by outlet tier · </span>Counts
+          </Link>
+          <ul className="flex flex-wrap items-center gap-x-3 gap-y-1.5" aria-label="How much each tier counts">
             {TIER_LIST.map(t => (
-              <span key={t} className="inline-flex items-center gap-1.5">
-                <span aria-hidden="true" className={`inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border border-white/[0.12] text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em] ${t === 1 ? 'text-gray-300' : 'text-gray-400'}`}>
+              <li key={t} className="inline-flex items-center gap-1.5">
+                <span aria-hidden="true" className={`${TIER_CHIP_BOX} border-white/[0.12] ${t === 1 ? 'text-gray-300' : 'text-gray-400'}`}>
                   T{t}<TierBars tier={t} />
                 </span>
                 <span className="tabular-nums text-gray-400"><span className="sr-only">Tier {t}: </span>{tierPercent(t)}%</span>
-              </span>
+              </li>
             ))}
-          </span>
+          </ul>
         </div>
       )}
       {displayedReviews.map((review, i) => (
