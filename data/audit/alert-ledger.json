@@ -817,7 +817,7 @@
       "linearIdentifier": null
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (869/500 reqs)",
@@ -828,7 +828,8 @@
       "lastSurfacedAt": "2026-10-09T06:52:31.800Z",
       "notifyCount": 23,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-10-09T19:07:28.974Z"
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "open",
@@ -12307,13 +12308,13 @@
       "title": "Unhandled CV.wrongProduction on Rent",
       "firstSeen": "2026-10-09T09:12:56.270Z",
       "incidentOpenedAt": "2026-10-09T09:12:56.270Z",
-      "lastSeen": "2026-10-09T19:03:05.776Z",
+      "lastSeen": "2026-10-09T19:06:54.087Z",
       "lastNotifiedAt": "2026-10-09T09:12:56.270Z",
       "lastSurfacedAt": "2026-10-09T09:12:56.270Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-stale-upcoming-tag-triumph-off-broadway-2026": {
       "status": "open",
@@ -12376,13 +12377,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T11:43:17.392Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.392Z",
-      "lastSeen": "2026-10-09T19:03:05.789Z",
+      "lastSeen": "2026-10-09T19:06:54.100Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.392Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.392Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:telegraph": {
       "status": "open",
@@ -12390,13 +12391,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T11:43:17.400Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.400Z",
-      "lastSeen": "2026-10-09T19:03:05.795Z",
+      "lastSeen": "2026-10-09T19:06:54.106Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.400Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.400Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:timeout-london": {
       "status": "open",
@@ -12404,13 +12405,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T11:43:17.408Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.408Z",
-      "lastSeen": "2026-10-09T19:03:05.806Z",
+      "lastSeen": "2026-10-09T19:06:54.119Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.408Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.408Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "broadcast-gate:checklist:rent-west-end-2026": {
       "status": "open",
@@ -12419,13 +12420,13 @@
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-10-09T11:43:17.542Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.542Z",
-      "lastSeen": "2026-10-09T19:03:05.944Z",
+      "lastSeen": "2026-10-09T19:06:54.252Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.542Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.542Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "land:land/bro-4923-uk-regional-trigger": {
       "status": "open",
@@ -12615,13 +12616,13 @@
       "title": "Shipped review missing publishDate on Rent",
       "firstSeen": "2026-10-09T16:18:24.209Z",
       "incidentOpenedAt": "2026-10-09T16:18:24.209Z",
-      "lastSeen": "2026-10-09T19:03:05.783Z",
+      "lastSeen": "2026-10-09T19:06:54.094Z",
       "lastNotifiedAt": "2026-10-09T16:18:24.209Z",
       "lastSurfacedAt": "2026-10-09T16:18:24.209Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-publish-date-pre-opening:an-oak-tree-off-west-end-2026": {
       "status": "open",
@@ -12642,13 +12643,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T17:00:11.232Z",
       "incidentOpenedAt": "2026-10-09T17:00:11.232Z",
-      "lastSeen": "2026-10-09T19:03:05.800Z",
+      "lastSeen": "2026-10-09T19:06:54.112Z",
       "lastNotifiedAt": "2026-10-09T17:00:11.232Z",
       "lastSurfacedAt": "2026-10-09T17:00:11.232Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-fulltext-mentions-show:short:rent-west-end-2026": {
       "status": "open",
