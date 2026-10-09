@@ -203,7 +203,7 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
     for (const k of ['duplicateOf', 'duplicateReason']) if (after[k] == null) expected.add(k);
   }
   if (field === 'duplicateOf' && after && after[field] != null) {
-    expected.add('duplicateReason');
+    if (after.duplicateReason === 'url-collision-detected-at-write') expected.add('duplicateReason');
     if (after.duplicateClearReason == null) expected.add('duplicateClearReason');
   }
   for (const k of keys) {
