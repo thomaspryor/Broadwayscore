@@ -9,6 +9,7 @@ import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
 import { AUTHOR } from '@/config/author';
 import { formatShowDate } from './date-utils';
 import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
+import { isTourScored, isTourScoreHidden } from './tour-listing';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -266,7 +267,10 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
   const minReviewsForSchema = getMarketMinReviews(show.category);
-  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema) {
+  // A tour follows the page's own TBD rule (isTourScoreHidden: +2 reviews with
+  // no T1/T2, no rating in previews or upcoming, the coverage floor), so an
+  // indexed tour never claims a rating its page hides.
+  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema && (!isTour || !isTourScoreHidden(show))) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: toFiveStarScale(show.criticScore.score),
@@ -784,7 +788,7 @@ export function generateShowFAQSchema(show: ComputedShow, consensusText?: string
 // FAQPage Schema for browse/category pages
 export function generateBrowseFAQSchema(
   pageTitle: string,
-  shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
+  shows: { title: string; slug: string; venue?: string; criticScore?: { score: number; reviewCount: number; tier1Count?: number; tier2Count?: number } | null; status?: string; closingDate?: string | null; type?: string; category?: string }[],
 ) {
   const isLondon = shows.length > 0 && isLondonMarket(shows[0].category);
   const isOffBroadway = shows.length > 0 && shows[0].category === 'off-broadway';
@@ -803,8 +807,13 @@ export function generateBrowseFAQSchema(
   // Q: What are the best shows in this category?
   const firstCategory = shows.length > 0 ? shows[0].category : undefined;
   const minReviewsForBrowse = getMarketMinReviews(firstCategory);
+  // The tours page also lists tours still waiting on a score; a tour counts as
+  // scored by the badge rule (extra reviews needed with no T1/T2), not the bare minimum.
+  const hasScore = (s: typeof shows[number]) => !!s.criticScore?.score
+    && s.criticScore.reviewCount >= minReviewsForBrowse
+    && (s.category !== 'tour' || isTourScored({ category: 'tour', criticScore: s.criticScore } as Parameters<typeof isTourScored>[0]));
   const topShows = shows
-    .filter(s => s.criticScore?.score && s.criticScore.reviewCount >= minReviewsForBrowse)
+    .filter(hasScore)
     .slice(0, 5);
 
   if (topShows.length >= 2) {
@@ -812,7 +821,7 @@ export function generateBrowseFAQSchema(
       .map((s, i) => `${i + 1}. ${s.title} (${Math.round(s.criticScore!.score)}/100)`)
       .join(', ');
     faqs.push({
-      question: isTour ? 'What are the best-reviewed Broadway national tours?' : `What are the ${pageTitle.toLowerCase()}?`,
+      question: isTour ? 'What are the best-reviewed national tours?' : `What are the ${pageTitle.toLowerCase()}?`,
       answer: `Based on aggregated critic reviews, the top-rated are: ${listStr}. Scores are based on reviews from major outlets including ${outletNames}.`,
     });
   }
@@ -820,9 +829,12 @@ export function generateBrowseFAQSchema(
   // Q: How many shows are in this category?
   const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews' || s.status === 'upcoming');
   if (openShows.length > 0) {
+    // The tours page lists unscored tours too ("Reviews coming in"); say how
+    // many of the running ones have a score instead of calling them all scored.
+    const scoredOpen = openShows.filter(hasScore).length;
     faqs.push(isTour ? {
-      question: 'How many Broadway national tours are on the road now?',
-      answer: `${openShows.length} Broadway national tours with critic scores are on the road now.`,
+      question: 'How many national tours are on the road now?',
+      answer: `${openShows.length} national tours are on the road or announced, ${scoredOpen} of them with critic scores. The rest are waiting on enough local reviews for a score.`,
     } : {
       question: `How many ${pageTitle.toLowerCase().replace('best ', '')} are currently ${marketLabel}?`,
       answer: `There are currently ${openShows.length} ${pageTitle.toLowerCase().replace('best ', '')} playing ${marketLabel}.`,
@@ -833,7 +845,7 @@ export function generateBrowseFAQSchema(
   const topShow = topShows[0];
   if (topShow?.criticScore) {
     faqs.push({
-      question: isTour ? 'What is the highest-rated Broadway national tour?' : `What is the highest-rated among the ${pageTitle.toLowerCase()}?`,
+      question: isTour ? 'What is the highest-rated national tour?' : `What is the highest-rated among the ${pageTitle.toLowerCase()}?`,
       answer: `${topShow.title} is the highest-rated with a CriticScore of ${Math.round(topShow.criticScore.score)}/100 based on ${topShow.criticScore.reviewCount} professional reviews.`,
     });
   }

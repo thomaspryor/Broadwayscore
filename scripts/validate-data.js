@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { tourImageProblems } = require('./lib/tour-family');
+const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
@@ -375,11 +375,13 @@ function validateNoDuplicates(shows) {
     if (transferIssues === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
   }
 
-  // National tours (category:'tour', BRO-4211): each tour names the Broadway
-  // production it tours via tourOf. The Broadway side derives its tours from
-  // these links, so a dangling or wrong-market tourOf hides the tour entirely.
+  // National tours (category:'tour', BRO-4211, BRO-4931): a tour names the
+  // production it tours via tourOf, which may be any non-tour category
+  // (Broadway, Off-Broadway, regional, West End, Off-West End). A standalone
+  // touring show has no tourOf (the field is absent, never null) and is anchored
+  // by tourScheduleSlug. The parent side derives its tours from these links, so
+  // a dangling or tour-to-tour tourOf hides the tour entirely.
   {
-    const byId = new Map(shows.map(s => [s.id, s]));
     let tourIssues = 0;
     for (const s of shows) {
       if (s.category !== 'tour' && s.tourOf === undefined) continue;
@@ -388,23 +390,16 @@ function validateNoDuplicates(shows) {
         tourIssues++;
         continue;
       }
-      const target = s.tourOf ? byId.get(s.tourOf) : null;
-      if (!s.tourOf) {
-        error(`Tour "${s.id}" is missing tourOf (the Broadway production it tours)`);
-        tourIssues++;
-      } else if (!target) {
-        error(`Tour "${s.id}" tourOf "${s.tourOf}" does not reference an existing show`);
-        tourIssues++;
-      } else if (target.category !== 'broadway') {
-        error(`Tour "${s.id}" tourOf "${s.tourOf}" must point at a category:'broadway' show (got "${target.category}")`);
-        tourIssues++;
+      for (const p of tourLinkProblems(s, shows)) {
+        (p.level === 'error' ? error : warn)(p.msg);
+        if (p.level === 'error') tourIssues++;
       }
       for (const problem of tourImageProblems(s, shows)) {
         error(`Tour "${s.id}" image: ${problem}`);
         tourIssues++;
       }
     }
-    if (tourIssues === 0) ok('All tours (category:tour) link to a Broadway production and use their own or its art');
+    if (tourIssues === 0) ok('All tours (category:tour) link to a production (or stand alone with a schedule page) and use their own or its art');
   }
 
   // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.

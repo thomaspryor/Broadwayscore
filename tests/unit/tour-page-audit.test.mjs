@@ -215,3 +215,73 @@ test('runAlerts reports a card that was not filed as a failure', async () => {
   const out = await A.runAlerts({ findings: [{ severity: 'error', code: 'x', where: 'w', message: 'm' }], router, log: () => {} });
   assert.equal(out.alertDispatchFailed, true);
 });
+
+// ---- BRO-4931: tours of any market, and standalone tours --------------------
+
+const okSchedule = { source: 'https://tourstoyou.org/shows/x/', stops: [stop('Boston, MA', '2026-10-01', '2026-10-12'), stop('Hartford, CT', '2026-10-14', '2026-10-19')] };
+const errorsOf = fs => fs.filter(f => f.severity === 'error').map(f => f.code);
+const warnsOf = fs => fs.filter(f => f.severity === 'warn').map(f => f.code);
+
+test('checkTourData: a tour of an Off-Broadway, regional or West End parent passes, and tourof-not-broadway is gone', () => {
+  for (const category of ['off-broadway', 'regional', 'west-end', 'off-west-end']) {
+    const p = { ...parent, category };
+    const got = A.checkTourData({ show: base, parent: p, schedule: okSchedule, today: '2026-10-05', shows: [p, base] });
+    assert.deepEqual(errorsOf(got), [], category);
+    assert.ok(!codes(got).includes('tourof-not-broadway'), category);
+  }
+});
+
+test('checkTourData: tourof-is-tour when the parent is itself a tour', () => {
+  const got = A.checkTourData({ show: base, parent: { ...parent, category: 'tour' }, schedule: okSchedule, today: '2026-10-05' });
+  assert.ok(errorsOf(got).includes('tourof-is-tour'));
+});
+
+test('checkTourData: tourof-missing is only a warning, and only when a same-title production exists', () => {
+  const { tourOf, ...lone } = base;
+  const standalone = A.checkTourData({ show: lone, parent: undefined, schedule: okSchedule, today: '2026-10-05', shows: [lone] });
+  assert.deepEqual(errorsOf(standalone), []);
+  assert.ok(!codes(standalone).includes('tourof-missing'), 'a genuinely standalone tour is clean');
+  const withTwin = A.checkTourData({ show: lone, parent: undefined, schedule: okSchedule, today: '2026-10-05', shows: [lone, parent] });
+  assert.deepEqual(errorsOf(withTwin), []);
+  assert.ok(warnsOf(withTwin).includes('tourof-missing'));
+  // No shows passed (legacy caller): nothing to compare, so no warning.
+  assert.ok(!codes(A.checkTourData({ show: lone, parent: undefined, schedule: okSchedule, today: '2026-10-05' })).includes('tourof-missing'));
+});
+
+test('checkTourData: art may come from the parent category or Broadway twin, not another market', () => {
+  const offB = { ...parent, id: 'x-off-broadway-2020', category: 'off-broadway' };
+  const bway = { id: 'x-2027', title: 'X', category: 'broadway' };
+  const wEnd = { id: 'x-west-end-2019', title: 'X', category: 'west-end' };
+  const show = art => ({ ...base, tourOf: offB.id, images: { poster: `/images/shows/${art}/poster.webp` } });
+  const run = art => A.checkTourData({ show: show(art), parent: offB, schedule: okSchedule, today: '2026-10-05', shows: [offB, bway, wEnd] });
+  for (const ok of ['x-tour-2025', offB.id, bway.id]) assert.ok(!codes(run(ok)).includes('art-from-other-production'), ok);
+  assert.ok(codes(run(wEnd.id)).includes('art-from-other-production'));
+  assert.ok(codes(run('y-2019')).includes('art-from-other-production'));
+  // Without `shows` the parent's own art is still allowed.
+  const bare = A.checkTourData({ show: show(offB.id), parent: offB, schedule: okSchedule, today: '2026-10-05' });
+  assert.ok(!codes(bare).includes('art-from-other-production'));
+});
+
+test('parseShowPage reads the market label of the parent link; checkShowPage wants the label and href of the parent category', () => {
+  const html = (label, href) => `<html><head><title>t</title></head><body><a href="${href}">See the ${label} production →</a></body></html>`;
+  const p = A.parseShowPage(html('Off-Broadway', '/show/x-off-broadway-2020'));
+  assert.equal(p.parentLinkLabel, 'Off-Broadway');
+  assert.equal(p.broadwayLink, '/show/x-off-broadway-2020');
+  assert.equal(A.parseShowPage('<html><body><a href="/z">Elsewhere</a></body></html>').parentLinkLabel, null);
+
+  const offB = { ...parent, id: 'x-off-broadway-2020', slug: 'x-off-broadway-2020', category: 'off-broadway' };
+  const check = (label, href, par = offB) => A.checkShowPage({
+    url: 'https://broadwayscorecard.com/show/x-tour-2025', page: A.parseShowPage(html(label, href)), show: { ...base, tourOf: par.id }, parent: par,
+    schedule: okSchedule, tickets: [], todays: ['2026-10-05'], listed: true, inSitemap: true, cityPages: null,
+  });
+  const linkCodes = fs => codes(fs).filter(c => /link/.test(c));
+  assert.deepEqual(linkCodes(check('Off-Broadway', '/show/x-off-broadway-2020')), []);
+  assert.deepEqual(linkCodes(check('regional', '/show/x-regional-2020', { ...offB, id: 'x-regional-2020', slug: 'x-regional-2020', category: 'regional' })), []);
+  assert.ok(linkCodes(check('Off-Broadway', '/show/other')).includes('broadway-link-wrong'));
+  assert.ok(linkCodes(check('Broadway', '/show/x-off-broadway-2020')).includes('parent-link-label-wrong'), 'an Off-Broadway parent is not called Broadway');
+  // The label is the copy contract (src/lib/tour-display.ts): a capitalised
+  // "Regional" mid-sentence is the wording the page used to ship.
+  const reg = { ...offB, id: 'x-regional-2020', slug: 'x-regional-2020', category: 'regional' };
+  assert.ok(linkCodes(check('Regional', '/show/x-regional-2020', reg)).includes('parent-link-label-wrong'), 'regional reads lower-case');
+  assert.deepEqual(linkCodes(check('West End', '/show/x-west-end', { ...offB, id: 'x-west-end', slug: 'x-west-end', category: 'west-end' })), []);
+});

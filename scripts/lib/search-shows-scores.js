@@ -47,10 +47,9 @@ function buildShowsWithScores(reviews, shows, publicShowsDir) {
 }
 
 /**
- * Mirror of src/lib/data-core.ts isTourListed for the search index: a tour
- * needs the market minimum of reviews (+2 when none is T1/T2) before it is on
- * the tours page, in the sitemap and indexed; search follows the same rule
- * (BRO-4601). `slim` is the public/data/shows/{id}.json object (rc, rv[].t).
+ * Mirror of src/lib/tour-listing.ts isTourScored (data-core isTourListed): a
+ * tour needs the market minimum of reviews (+2 when none is T1/T2) to have a
+ * score (BRO-4601). `slim` is the public/data/shows/{id}.json object (rc, rv[].t).
  */
 function isTourListedSlim(slim) {
   const { getMarketMinReviews } = require('./min-reviews');
@@ -59,4 +58,19 @@ function isTourListedSlim(slim) {
   return rc >= getMarketMinReviews('tour') + (top === 0 ? 2 : 0);
 }
 
-module.exports = { buildShowsWithScores, isTourListedSlim };
+/**
+ * Mirror of src/lib/tour-listing.ts isTourIndexable for the search index
+ * (BRO-4931): a scored tour always; an unscored tour only while it is not
+ * closed and still has a stop ahead (same rule as the tours page). A closed or
+ * fully-ended unscored tour stays out of search, like it stays noindex and out
+ * of the sitemap.
+ * @param {object|null} slim public/data/shows/{id}.json
+ * @param {string} status the show's status in shows.json
+ * @param {boolean} hasFutureStops data/tour-schedules.json has a stop ending today or later
+ */
+function isTourIndexableSlim(slim, status, hasFutureStops) {
+  if (isTourListedSlim(slim)) return true;
+  return status !== 'closed' && !!hasFutureStops;
+}
+
+module.exports = { buildShowsWithScores, isTourListedSlim, isTourIndexableSlim };

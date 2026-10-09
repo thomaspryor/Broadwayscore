@@ -19,7 +19,8 @@ import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { isCategoryEnabled } from './markets';
-import { getMarketMinReviews } from './market-utils';
+import { isTourScored, isTourBrowsable, isTourIndexable } from './tour-listing';
+import { getTourSchedule } from './data-tour-schedule';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
@@ -205,40 +206,68 @@ export function getRegionalShows(): ComputedShow[] {
 
 /** North American national tours (category 'tour', BRO-4211). */
 /**
- * A tour is listed (Tours page, the Broadway page's "On tour" line, sitemap)
- * once it has enough critic reviews for a score. A tour created automatically
- * from a roundup starts with none; its page exists for review gathering but
- * isn't promoted until it can show a score (BRO-4262).
+ * A tour is listed (home "On Tour Now" shelf, city pages, score lines) once it
+ * has enough critic reviews for a score. A tour created automatically from a
+ * roundup starts with none (BRO-4262). Listed is about the SCORE; whether a
+ * tour is on the tours page or indexed is a wider rule, below (BRO-4931).
  */
 export function isTourListed(show: Pick<ComputedShow, 'category' | 'criticScore'>): boolean {
-  if (show.category !== 'tour') return true;
-  const cs = show.criticScore;
-  // Same rule as the score badge (ScoreBadge.tsx): +2 when no T1/T2 review.
-  const top = (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0);
-  const min = getMarketMinReviews('tour') + (top === 0 ? 2 : 0);
-  return (cs?.reviewCount ?? 0) >= min;
+  return isTourScored(show);
 }
 
 export function getTourShows(): ComputedShow[] {
   return getAllShows().filter(show => show.category === 'tour' && isTourListed(show));
 }
 
+const todayISO = () => new Date().toISOString().slice(0, 10);
+
 /**
- * National tours of a Broadway production, for its "On tour" line. A tour's
- * tourOf names one Broadway run, but every Broadway production of the same
- * title gets the line (Beetlejuice tours from beetlejuice-2019, and the 2022
- * and 2025 returns are the pages people land on). Empty while the tour flag
- * is off, so a flag-off build never links to a 404.
+ * Tours on the tours page (/browse/broadway-national-tours): the scored tours
+ * plus every tour that is not closed and still has engagements to come, so a
+ * running tour with no score yet shows under "Reviews coming in" instead of
+ * being hidden (BRO-4931).
+ */
+export function getTourBrowseShows(today = todayISO()): ComputedShow[] {
+  return getAllShows().filter(show =>
+    show.category === 'tour'
+    && isTourBrowsable(show, getTourSchedule(show.id).some(s => s.end >= today)),
+  );
+}
+
+/**
+ * Whether a show's page may be indexed and is in the sitemap and search.
+ * Always true outside tours; a tour needs a score, or to be live with a stop
+ * still ahead (tour-listing.ts), the same rule as the tours page so a listed
+ * tour is never noindex. Closed, unscheduled or fully-ended unscored tours
+ * stay noindex.
+ */
+export function isTourIndexableShow(show: Pick<ComputedShow, 'id' | 'category' | 'criticScore' | 'status'>, today = todayISO()): boolean {
+  if (show.category !== 'tour') return true;
+  return isTourIndexable(show, getTourSchedule(show.id).some(s => s.end >= today));
+}
+
+/**
+ * National tours of a production, for its "On tour" line. A tour's tourOf
+ * names one run (Broadway, Off-Broadway, regional, West End...), and every
+ * other production of the same title in the same market gets the line too
+ * (Beetlejuice tours from beetlejuice-2019, and the 2022 and 2025 returns are
+ * the pages people land on). A standalone tour has no tourOf, so nothing
+ * links to it. Only tours whose own page is indexable are linked, so no page
+ * links to a noindex tour. Empty while the tour flag is off, so a flag-off
+ * build never links to a 404.
  */
 export function getToursOf(show: Pick<ComputedShow, 'id' | 'title' | 'category'>): ComputedShow[] {
   if (!isCategoryEnabled('tour')) return [];
-  if (show.category && show.category !== 'broadway') return [];
+  if (show.category === 'tour') return [];
+  const market = show.category ?? 'broadway';
   const title = show.title.trim().toLowerCase();
   return getAllShows().filter(t => {
-    if (t.category !== 'tour' || !t.tourOf || !isTourListed(t)) return false;
+    if (t.category !== 'tour' || !t.tourOf || !isTourIndexableShow(t)) return false;
     if (t.tourOf === show.id) return true;
     const parent = getShowById(t.tourOf);
-    return !!parent && parent.title.trim().toLowerCase() === title;
+    return !!parent
+      && (parent.category ?? 'broadway') === market
+      && parent.title.trim().toLowerCase() === title;
   });
 }
 
@@ -1177,7 +1206,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : config.source === 'off-west-end' ? getOffWestEndShows()
     : config.source === 'regional' ? getRegionalShows()
-    : config.source === 'tour' ? getTourShows()
+    : config.source === 'tour' ? getTourBrowseShows()
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts

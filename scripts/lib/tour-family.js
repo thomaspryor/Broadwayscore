@@ -27,6 +27,36 @@ function isTourShow(show) {
   return Boolean(show) && show.category === 'tour';
 }
 
+// What a tour may descend from (BRO-4931). A tour's parent is any non-tour
+// production of the title: Broadway, Off-Broadway, regional, West End or
+// Off-West End. A tour with no parent at all (a touring show that never played
+// a tracked market first) is standalone: it omits tourOf and carries
+// tourScheduleSlug instead.
+const TOUR_PARENT_CATEGORIES = ['broadway', 'off-broadway', 'regional', 'west-end', 'off-west-end'];
+
+// What AUTOMATIC discovery may pick as a tour's parent (BRO-4931): a UK
+// production is a different show (a London Mousetrap, Choir of Man or Hamnet is
+// not the North American tour on the road), so Tours To You pages and BWW
+// roundups are matched against these three only. A West End or off-West End
+// parent is reached only by a person: an override row in data/tour-page-classes.json
+// naming parentId, or a manual add-show (which may use any TOUR_PARENT_CATEGORIES).
+const AUTO_TOUR_PARENT_CATEGORIES = ['broadway', 'off-broadway', 'regional'];
+
+/** The tour-parent category of a show (a show with no category is Broadway), or null. */
+function tourParentCategory(show) {
+  const c = (show && show.category) || 'broadway';
+  return TOUR_PARENT_CATEGORIES.includes(c) ? c : null;
+}
+
+// "See the <label> production": what a tour's parent link calls its market.
+const TOUR_PARENT_LABELS = {
+  broadway: 'Broadway',
+  'off-broadway': 'Off-Broadway',
+  regional: 'regional',
+  'west-end': 'West End',
+  'off-west-end': 'Off-West End',
+};
+
 /**
  * Date window per tour, in launch order. A tour with no launch date gets no
  * window (it can't be told apart from its siblings by date).
@@ -81,11 +111,18 @@ function pickTourForDate(tours, review = {}, now = new Date()) {
 
 const normTitle = (t) => String(t || '').trim().toLowerCase().replace(/[!?.,'"]/g, '');
 
-/** Every tour entry whose title matches (tours carry their parent's title). */
+/** Every tour entry whose title matches (tours carry their parent's title, or their own when standalone). */
 function toursOfTitle(title, shows) {
   const t = normTitle(title);
   if (!t) return [];
   return (shows || []).filter(s => isTourShow(s) && normTitle(s.title) === t);
+}
+
+/** Every non-tour production whose title matches: the candidates for a tour's parent. */
+function productionsOfTitle(title, shows) {
+  const t = normTitle(title);
+  if (!t) return [];
+  return (shows || []).filter(s => !isTourShow(s) && normTitle(s.title) === t);
 }
 
 /**
@@ -118,17 +155,18 @@ function sameProductionLikely(tour, parent, shows = null) {
 }
 
 /**
- * What a tour borrows from its Broadway parent when it has nothing of its own
- * (BRO-4262): its synopsis (same story), and, when the parent is plausibly the
- * same production (sameProductionLikely), the parent's archived thumbnail and
- * poster (key art) and its runtime. Never the hero: that is usually a Broadway
- * cast photo. Only local archived image paths are copied, so a parent's
+ * What a tour borrows from its parent (any TOUR_PARENT_CATEGORIES production)
+ * when it has nothing of its own (BRO-4262): its synopsis (same story), and,
+ * when the parent is plausibly the same production (sameProductionLikely), the
+ * parent's archived thumbnail and poster (key art) and its runtime. Never the
+ * hero (usually a cast photo) or the cast. A standalone tour has no parent and
+ * inherits nothing. Only local archived image paths are copied, so a parent's
  * unverified remote URL never spreads.
  * @param {Array} [shows] all shows, so an earlier tour of the title counts
  * @returns {object|null} fields to set on the tour, or null when nothing is missing
  */
 function tourInheritance(tour, parent, shows = null) {
-  if (!isTourShow(tour) || !parent) return null;
+  if (!isTourShow(tour) || !parent || isTourShow(parent)) return null;
   const patch = {};
   if (!tour.synopsis && parent.synopsis) patch.synopsis = parent.synopsis;
   if (!sameProductionLikely(tour, parent, shows)) return Object.keys(patch).length ? patch : null;
@@ -159,23 +197,68 @@ function applyTourInheritance(shows) {
   return changed;
 }
 
+// A tour id is <base>-tour-<year>: the parent's market never rides along
+// (mexodus-off-broadway-2026 tours as mexodus-tour-2026).
+const MARKET_BEFORE_TOUR_RE = /-(on-broadway|off-broadway|off-west-end|west-end|regional)-tour-\d{4}$/;
+
 /**
- * Tour art must be the tour's own archived file or one from a Broadway
- * production of the same title. Anything else is a title-search accident
- * (the Shucked tour once pointed at a SIX photo). Returns problem strings.
+ * Link problems on one tour entry (validate-data.js, BRO-4931), as
+ * { level: 'error' | 'warn', msg }. tourOf is optional: present, it names an
+ * existing non-tour show; absent (never null), the tour is standalone and
+ * needs tourScheduleSlug. Warns when a standalone tour shares a title with a
+ * non-tour show (it probably tours that show).
+ * @param {object} tour a category:'tour' entry
+ * @param {Array} shows all shows
+ */
+function tourLinkProblems(tour, shows) {
+  const out = [];
+  if (!isTourShow(tour)) return out;
+  if (MARKET_BEFORE_TOUR_RE.test(tour.id)) {
+    out.push({ level: 'error', msg: `Tour "${tour.id}" id carries a market before -tour-<year>; a tour id is <base>-tour-<year> (mexodus-off-broadway-2026 tours as mexodus-tour-2026)` });
+  }
+  if (tour.tourOf === null || tour.tourOf === '') {
+    out.push({ level: 'error', msg: `Tour "${tour.id}" has an empty tourOf; omit the field for a standalone tour, never write null` });
+  } else if (tour.tourOf === undefined) {
+    if (!tour.tourScheduleSlug) out.push({ level: 'error', msg: `Tour "${tour.id}" has no tourOf and no tourScheduleSlug; a standalone tour needs its Tours To You page` });
+    const same = productionsOfTitle(tour.title, shows);
+    if (same.length) out.push({ level: 'warn', msg: `Tour "${tour.id}" has no tourOf but ${same.length} non-tour show(s) share its title (${same.slice(0, 3).map(o => o.id).join(', ')}); set tourOf if it tours one of them` });
+  } else {
+    const target = (shows || []).find(s => s.id === tour.tourOf);
+    if (!target) out.push({ level: 'error', msg: `Tour "${tour.id}" tourOf "${tour.tourOf}" does not reference an existing show` });
+    else if (isTourShow(target)) out.push({ level: 'error', msg: `Tour "${tour.id}" tourOf "${tour.tourOf}" is itself a tour; name the production it tours` });
+  }
+  return out;
+}
+
+/**
+ * Show ids whose archived art a tour may use: itself, its tourOf, and any
+ * same-title production in the parent's category or on Broadway.
+ */
+function allowedTourArtIds(tour, shows) {
+  const t = normTitle(tour.title);
+  const parent = tour.tourOf ? (shows || []).find(s => s.id === tour.tourOf) : null;
+  const categories = new Set(['broadway']);
+  if (parent && tourParentCategory(parent)) categories.add(tourParentCategory(parent));
+  return [tour.id, ...(tour.tourOf ? [tour.tourOf] : []), ...(shows || [])
+    .filter(s => !isTourShow(s) && categories.has(s.category || 'broadway') && normTitle(s.title) === t)
+    .map(s => s.id)];
+}
+
+/**
+ * Tour art must be the tour's own archived file, its parent's, or one from a
+ * same-title production in the parent's category or on Broadway. Anything else
+ * is a title-search accident (the Shucked tour once pointed at a SIX photo).
+ * Returns problem strings.
  */
 function tourImageProblems(tour, shows) {
   if (!isTourShow(tour) || !tour.images) return [];
-  const t = normTitle(tour.title);
-  const allowed = [tour.id, ...(shows || [])
-    .filter(s => (s.category || 'broadway') === 'broadway' && normTitle(s.title) === t)
-    .map(s => s.id)];
+  const allowed = allowedTourArtIds(tour, shows);
   const problems = [];
   for (const [k, v] of Object.entries(tour.images)) {
     if (!v || k.startsWith('_')) continue;
     const m = /^\/images\/shows\/([^/]+)\//.exec(String(v));
     if (!m) problems.push(`${k} is not an archived image (${String(v).slice(0, 80)})`);
-    else if (!allowed.includes(m[1])) problems.push(`${k} comes from "${m[1]}", not this tour or a Broadway "${tour.title}"`);
+    else if (!allowed.includes(m[1])) problems.push(`${k} comes from "${m[1]}", not this tour, its parent or a same-title "${tour.title}" production`);
   }
   return problems;
 }
@@ -194,9 +277,18 @@ function withoutTours(shows) {
 }
 
 module.exports = {
+  TOUR_PARENT_CATEGORIES,
+  AUTO_TOUR_PARENT_CATEGORIES,
+  TOUR_PARENT_LABELS,
+  tourParentCategory,
+  productionsOfTitle,
+  normTitle,
   withoutTours,
   isTourShow,
   tourImageProblems,
+  allowedTourArtIds,
+  tourLinkProblems,
+  MARKET_BEFORE_TOUR_RE,
   tourInheritance,
   applyTourInheritance,
   toursOfTitle,

@@ -1,7 +1,7 @@
 {
   "system": "sync",
   "status": "warn",
-  "lastChecked": "2026-10-05T11:14:04.818Z",
+  "lastChecked": "2026-10-09T13:52:36.110Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "46748 files, 22576 reviews (surplus: 24172)"
+      "message": "51123 files, 25102 reviews (surplus: 26021)"
     },
     {
       "name": "Sync: open show coverage",
@@ -24,17 +24,17 @@
     {
       "name": "Sync: cast coverage",
       "status": "warn",
-      "message": "2 empty cast: Other Desert Cities, Billy Crystal 860"
+      "message": "2 empty cast: Billy Crystal 860, A Few Good Men"
     },
     {
       "name": "Sync: baseline drift",
       "status": "warn",
-      "message": "Reviews dropped: 22576 vs baseline 22657"
+      "message": "Reviews dropped: 25102 vs baseline 25283"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 9/27/2026 (8d ago)"
+      "message": "weekEnding 10/4/2026 (5d ago)"
     }
   ]
 }

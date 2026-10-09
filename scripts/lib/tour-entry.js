@@ -13,8 +13,13 @@
  * and the schedule page as evidence.
  */
 
-const { tourInheritance, toursOfTitle, tourImageProblems } = require('./tour-family');
+const { tourInheritance, toursOfTitle, tourImageProblems, productionsOfTitle, tourParentCategory } = require('./tour-family');
 const { distinctWorksOfTitle } = require('./tour-history');
+const { foldDiacritics } = require('./title-match');
+
+// A standalone tour (no parent) must say what it is: the type decides which
+// shows it can be confused with and how the page describes it.
+const STANDALONE_TYPES = ['musical', 'play', 'special', 'opera'];
 
 // How a tour's launch was confirmed (decideTourDates launchSource) and what
 // the entry records for it. One row per source so a new source cannot fall
@@ -38,14 +43,33 @@ function scheduleSlugOf(url) {
   return m ? m[1] : null;
 }
 
-/** Parent id without its year: beetlejuice-2019 -> beetlejuice. */
+// The market a parent id may carry before its year: mexodus-off-broadway-2026,
+// mystic-pizza-regional-2025. A tour id never does (add-show-action.js and
+// validate-data.js refuse it), and review-guards.js isLikelyTourReview keys on
+// the plain <base>-tour-<year> shape.
+const MARKET_TOKEN_RE = /^(.+?)-(?:on-broadway|off-broadway|off-west-end|west-end|regional)$/;
+
+/** Parent id without its year or market: beetlejuice-2019 -> beetlejuice, mexodus-off-broadway-2026 -> mexodus. */
 function baseSlug(parentId) {
-  return String(parentId || '').replace(/-\d{4}$/, '');
+  const noYear = String(parentId || '').replace(/-\d{4}$/, '');
+  const m = MARKET_TOKEN_RE.exec(noYear);
+  return m ? m[1] : noYear;
+}
+
+/** Kebab-case of a title, for a standalone tour that has no parent id to start from. */
+function titleSlug(title) {
+  return foldDiacritics(String(title || '')).toLowerCase()
+    .replace(/&/g, 'and').replace(/['\u2019]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
 /**
  * @param {object} args
- * @param {object} args.parent Broadway show the roundup matched
+ * @param {object|null} args.parent production the tour descends from (any TOUR_PARENT_CATEGORIES category),
+ *   or null for a standalone tour (BRO-4931), which also needs title, type and a Tours To You scheduleUrl
+ * @param {string} [args.title] standalone tour only
+ * @param {string} [args.type] standalone tour only (musical, play, special, opera)
+ * @param {boolean} [args.allowStandaloneOverExisting] a standalone tour is refused when a same-title
+ *   non-tour production exists (it is probably that production's tour); set only when a person decided it is not
  * @param {Array} args.shows all shows (collision and sibling-tour checks)
  * @param {{write:{openingDate?,closingDate?}, notes:string[], problem?:string}} args.decision decideTourDates result for a blank tour
  * @param {string} [args.roundupUrl] BWW national-tour roundup (none for a tour found running on Tours To You)
@@ -56,15 +80,31 @@ function baseSlug(parentId) {
  * @param {Date} [args.now]
  * @returns {{entry: object} | {skip: string}}
  */
-function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds = null, knownEnds = null, now = new Date() }) {
-  if (!parent || (parent.category || 'broadway') !== 'broadway') return { skip: 'parent is not a Broadway show' };
-  // Two different works share the title (A Christmas Carol: Jack Thorne's
-  // play and the Dickens solo shows): the title alone can't say which one
-  // tours, and a wrong parent hands the tour the wrong cast and images.
-  // Only works of the parent's kind compete: the Frozen musical is not mistaken
-  // for the 2004 play (BRO-4724 ship-check).
-  const works = distinctWorksOfTitle(parent.title, shows, parent.type);
-  if (works.length > 1) return { skip: `"${parent.title}" names ${works.length} different Broadway works (${works.map(g => g.join('+')).join(' / ')}); which one tours is not clear` };
+function buildTourEntry({ parent = null, title: standaloneTitle = null, type: standaloneType = null, allowStandaloneOverExisting = false, shows, decision, roundupUrl, scheduleUrl, retiredIds = null, knownEnds = null, now = new Date() }) {
+  let title;
+  let type;
+  if (parent) {
+    if (!tourParentCategory(parent)) return { skip: `parent ${parent.id} is category ${parent.category}, not a production a tour can descend from` };
+    title = parent.title;
+    type = parent.type || 'musical';
+    // Two different works share the title (A Christmas Carol: Jack Thorne's
+    // play and the Dickens solo shows): the title alone can't say which one
+    // tours, and a wrong parent hands the tour the wrong cast and images.
+    // Only works of the parent's kind compete: the Frozen musical is not mistaken
+    // for the 2004 play (BRO-4724 ship-check).
+    const works = distinctWorksOfTitle(parent.title, shows, parent.type);
+    if (works.length > 1) return { skip: `"${parent.title}" names ${works.length} different Broadway works (${works.map(g => g.join('+')).join(' / ')}); which one tours is not clear` };
+  } else {
+    // A standalone tour (BRO-4931): no tracked production to inherit from, so
+    // the caller must name it, and the schedule page is its only anchor.
+    title = String(standaloneTitle || '').trim();
+    if (!title) return { skip: 'standalone tour needs a title' };
+    if (!STANDALONE_TYPES.includes(standaloneType)) return { skip: `standalone tour needs a known type (${STANDALONE_TYPES.join(', ')}), got ${standaloneType}` };
+    type = standaloneType;
+    if (!scheduleSlugOf(scheduleUrl)) return { skip: 'standalone tour needs a Tours To You schedule URL (its tourScheduleSlug)' };
+    const same = productionsOfTitle(title, shows);
+    if (same.length && !allowStandaloneOverExisting) return { skip: `"${title}" already has non-tour production(s) (${same.map(s => s.id).slice(0, 3).join(', ')}); the tour probably descends from one of them` };
+  }
   if (!roundupUrl && !scheduleUrl) return { skip: 'no evidence URL (roundup or schedule)' };
   if (!decision || decision.problem) return { skip: `dates: ${(decision && decision.problem) || 'no decision'}` };
   const launch = decision.write && decision.write.openingDate;
@@ -83,29 +123,30 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   // A second tour must start after every earlier tour of the title has
   // closed, or is shown by its schedule ending first (a tour booked after a
   // layoff, BRO-4724).
-  const earlier = toursOfTitle(parent.title, shows);
+  const earlier = toursOfTitle(title, shows);
   const endOf = t => t.closingDate || (knownEnds && knownEnds[t.id]) || null;
   const stillOpen = earlier.find(t => !endOf(t) || endOf(t) >= launch);
   if (stillOpen) return { skip: `tour ${stillOpen.id} is still open or overlaps ${launch}` };
 
-  const id = `${baseSlug(parent.id)}-tour-${launch.slice(0, 4)}`;
+  const id = `${parent ? baseSlug(parent.id) : titleSlug(title)}-tour-${launch.slice(0, 4)}`;
   if ((shows || []).some(s => s.id === id || s.slug === id)) return { skip: `id ${id} already exists` };
   if (retiredIds && retiredIds.has(id)) return { skip: `id ${id} is retired` };
 
   const close = decision.write.closingDate || null;
   const entry = {
     id,
-    title: parent.title,
+    title,
     slug: id,
     venue: 'North American Tour',
     openingDate: launch,
     closingDate: close,
     status: upcoming ? 'upcoming' : close && close < today ? 'closed' : 'open',
-    type: parent.type || 'musical',
+    type,
     isRevival: false,
     category: 'tour',
     market: 'tour',
-    tourOf: parent.id,
+    // A standalone tour omits tourOf (never null): validators read an absent field as 'no parent'.
+    ...(parent ? { tourOf: parent.id } : {}),
     tags: ['tour'],
     provisional: true,
     ...(roundupUrl
@@ -120,10 +161,10 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
     ...(close ? { closingDateSource: source.closingDateSource, closingDateUpdatedAt: today } : {}),
     images: { hero: null, thumbnail: null, poster: null },
   };
-  Object.assign(entry, tourInheritance(entry, parent, shows) || {});
+  if (parent) Object.assign(entry, tourInheritance(entry, parent, shows) || {});
   const imageProblems = tourImageProblems(entry, shows);
   if (imageProblems.length) return { skip: `images: ${imageProblems.join('; ')}` };
   return { entry };
 }
 
-module.exports = { buildTourEntry, baseSlug, scheduleSlugOf, LAUNCH_SOURCES };
+module.exports = { buildTourEntry, baseSlug, titleSlug, STANDALONE_TYPES, scheduleSlugOf, LAUNCH_SOURCES };

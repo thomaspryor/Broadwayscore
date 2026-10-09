@@ -166,7 +166,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
       title: show.title,
       slug: show.slug,
       venue: show.venue,
-      criticScore: show.criticScore ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount } : null,
+      criticScore: show.criticScore ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count } : null,
       status: show.status,
       closingDate: show.closingDate,
       type: show.type,

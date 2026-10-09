@@ -13,6 +13,8 @@
  * Pure: no I/O.
  */
 
+const { tourParentCategory } = require('./tour-family');
+
 const DAY = 86400000;
 
 function decode(s) {
@@ -120,7 +122,7 @@ function splitSegmentsAt(segments, cuts) {
 
 const WRITER_ROLE_RE = /book|music|lyric|playwright|written|script|libretto|adapt/i;
 
-/** A Broadway production's writers (book, music, lyrics, playwright), lowercased. */
+/** A production's writers (book, music, lyrics, playwright), lowercased. */
 function writersOf(show) {
   return new Set(((show && show.creativeTeam) || [])
     .filter(c => WRITER_ROLE_RE.test(String(c.role || '')))
@@ -129,7 +131,8 @@ function writersOf(show) {
 }
 
 /**
- * Different works sharing a Broadway title, as groups of production ids.
+ * Different works sharing a title among the productions a tour can descend
+ * from (TOUR_PARENT_CATEGORIES), as groups of production ids.
  * Productions linked by isRevival/originalProductionId are one work, and so
  * are productions sharing a writer; one with no writers listed can't be told
  * apart and is left out. More than one group means the title alone can't say
@@ -139,7 +142,7 @@ function writersOf(show) {
  */
 function distinctWorksOfTitle(title, shows, type = null) {
   const key = String(title || '').trim().toLowerCase();
-  const originals = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
+  const originals = (shows || []).filter(s => tourParentCategory(s)
     && String(s.title || '').trim().toLowerCase() === key && !s.isRevival && !s.originalProductionId
     && (!type || !s.type || s.type === type));
   const withWriters = originals.map(s => ({ id: s.id, w: writersOf(s) })).filter(x => x.w.size);

@@ -7,21 +7,60 @@
  * BroadwayWorld national-tour roundup, so tours running before launch never
  * arrived: the category held three closed tours while about forty were out.
  * Tours To You lists every touring show as a WordPress page under /shows/
- * (252 pages via the pages API; the /shows/ index shows only 54). For each
- * page whose title is a Broadway show, a schedule segment running now, or one
- * booked to launch within UPCOMING_DAYS, is a tour candidate. create-tour-entries.js then applies the same evidence rules
- * as for a roundup (Wikipedia confirms the launch, no earlier tour open).
+ * (252 pages via the pages API; the /shows/ index shows only 54). Each page is
+ * classified first (tour-page-class.js): a production with a schedule segment
+ * running now, or booked to launch within UPCOMING_DAYS, is a tour candidate
+ * (BRO-4931: of any tracked production in any market, or standalone when none
+ * is tracked). create-tour-entries.js then applies the same evidence rules as
+ * for a roundup (the launch is confirmed, no earlier tour open).
  *
- * Pure: callers fetch the pages list and schedules.
+ * Pure apart from listShowPages' injected fetch: callers fetch the schedules.
  */
 
 const { foldDiacritics } = require('./title-match');
-const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment } = require('./tour-schedule');
+const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment, tooFewStops } = require('./tour-schedule');
 const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
-const { toursOfTitle } = require('./tour-family');
+const { toursOfTitle, normTitle, TOUR_PARENT_CATEGORIES, AUTO_TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
+const { classifyTourPage, SKIPPED_CLASSES, pageTitleFromHtml, decodeTitle } = require('./tour-page-class');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
-const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt`;
+const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt,title`;
+
+/**
+ * Every show page on Tours To You (WordPress pages API, 100 a page): slugs,
+ * plus each page's last edit (`modified`) so edited pages are read first, and
+ * its title (`titles`). Returns an array of slugs carrying `.modified` and
+ * `.titles` maps.
+ */
+async function listShowPages(fetchText) {
+  const out = [];
+  const modified = {};
+  const titles = {};
+  for (let page = 1; page <= 50; page++) {
+    let rows;
+    try {
+      rows = JSON.parse(await fetchText(`${PAGES_API}&page=${page}`));
+    } catch (e) {
+      // WordPress answers past the last page with an HTTP 400.
+      if (page > 1 && /HTTP 400/.test(e.message)) break;
+      throw e;
+    }
+    if (!Array.isArray(rows) || rows.length === 0) break;
+    for (const r of rows) {
+      if (!r.slug) continue;
+      out.push(r.slug);
+      // The page's own title, from the API (never taken from the URL).
+      if (r.title && r.title.rendered) titles[r.slug] = decodeTitle(r.title.rendered);
+      // modified_gmt is UTC without a zone suffix (plain `modified` is site-local).
+      if (r.modified_gmt) modified[r.slug] = `${r.modified_gmt}Z`;
+    }
+    if (rows.length < 100) break;
+  }
+  const slugs = [...new Set(out)];
+  slugs.modified = modified;
+  slugs.titles = titles;
+  return slugs;
+}
 
 /** Title or slug to a comparable key: "Moulin Rouge! The Musical" -> moulin-rouge. */
 function titleKey(s) {
@@ -57,23 +96,36 @@ const PRE_BROADWAY_STATUSES = new Set(['announced', 'upcoming', 'previews']);
 const PRE_BROADWAY_WINDOW_DAYS = 365;
 
 /**
- * The Broadway production a tour of this schedule page descends from: the
- * latest Broadway production of the title that opened before the tour's
- * first engagement; failing that, the same title's Broadway run not yet open
- * (a tour that launches first). Null when no Broadway show has the title.
+ * The production a tour of this schedule page descends from (BRO-4931: any
+ * TOUR_PARENT_CATEGORIES production, not only Broadway). Categories are tried
+ * in that priority order (broadway, off-broadway, regional, west-end,
+ * off-west-end); within one, the latest production of the title that opened on
+ * or before the tour's first engagement. Outside Broadway only a title that
+ * matches whole counts: a subtitled production in another market is a
+ * different show ("Dirty Dancing: The Classic Story on Stage" is not the
+ * Dirty Dancing musical). Failing all that, the title's Broadway run not yet
+ * open (a tour that launches first). Null when nothing has the title.
+ * `categories` narrows the markets tried: automatic discovery passes
+ * AUTO_TOUR_PARENT_CATEGORIES (no UK parents, BRO-4931); the default is every
+ * TOUR_PARENT_CATEGORIES market, for a person's manual add.
  */
-function parentForSlug(slug, shows, beforeIso) {
+function parentForSlug(slug, shows, beforeIso, categories = TOUR_PARENT_CATEGORIES) {
   const before = String(beforeIso || '').slice(0, 10);
-  const broadway = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
+  const candidates = (shows || []).filter(s => tourParentCategory(s) && categories.includes(tourParentCategory(s))
     && s.openingDate && (!before || s.openingDate <= before));
   const latest = list => list.sort((a, b) => b.openingDate.localeCompare(a.openingDate))[0] || null;
-  for (const key of slugKeys(slug)) {
-    // The whole title first: "Cats" must not become "CATS: The Jellicle Ball"
-    // just because that title's head is "Cats".
-    const exact = latest(broadway.filter(s => titleKey(s.title) === key));
-    if (exact) return exact;
-    const byHead = latest(broadway.filter(s => titleKeys(s.title).has(key)));
-    if (byHead) return byHead;
+  for (const category of categories) {
+    const inCategory = candidates.filter(s => (s.category || 'broadway') === category);
+    if (!inCategory.length) continue;
+    for (const key of slugKeys(slug)) {
+      // The whole title first: "Cats" must not become "CATS: The Jellicle Ball"
+      // just because that title's head is "Cats".
+      const exact = latest(inCategory.filter(s => titleKey(s.title) === key));
+      if (exact) return exact;
+      if (category !== 'broadway') continue;
+      const byHead = latest(inCategory.filter(s => titleKeys(s.title).has(key)));
+      if (byHead) return byHead;
+    }
   }
   // A tour that launches before its Broadway run (Dirty Dancing toured from
   // Aug 2026 and opens at the Lena Horne in Feb 2027, BRO-4924) has no earlier
@@ -177,47 +229,88 @@ function lifecyclePlan({ segments, html, tours }) {
 }
 
 /**
- * The tour on this schedule page that is running now, or failing that one
- * booked to launch soon, as a candidate row, or {skip} saying why not. A
- * segment already covered by a tour of the title is passed over, so a page
- * whose current tour is tracked still yields the next one.
- * @returns {{candidate: object} | {skip: string}}
+ * The tracked production a classified page tours from, for the segment that
+ * starts at segStart: an override's named parent as is, a title match re-picked
+ * by that date (a later revival is not an earlier tour's parent), or null.
  */
-function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date() }) {
+function parentForClass(cls, { slug, title, shows, segStart }) {
+  if (cls.parentId && cls.source === 'override') return (shows || []).find(s => s.id === cls.parentId) || null;
+  if (cls.parentId) return parentForSlug(slug, shows, segStart, AUTO_TOUR_PARENT_CATEGORIES) || (title ? parentForSlug(titleKey(title), shows, segStart, AUTO_TOUR_PARENT_CATEGORIES) : null);
+  return null;
+}
+
+/**
+ * The tour on this schedule page that is running now, or failing that one
+ * booked to launch soon, as a candidate row, or {skip, kind} saying why not
+ * (kind: event, aggregator, template, company, nothing-running, too-few-stops,
+ * no-parent, tracked). A segment already covered by a tour of the title is
+ * passed over, so a page whose current tour is tracked still yields the next one.
+ *
+ * Since BRO-4931 the page is classified first (tour-page-class.js): only a
+ * production becomes a candidate. A production with a tracked parent in any
+ * market carries it (parentId; broadwayShowId too when it is a Broadway show);
+ * one without is standalone and keyed page:<slug>. A page nothing can classify
+ * is recorded with needsClassification so create-tour-entries.js can try
+ * Wikipedia and route-tour-candidates.js can ask the owner.
+ * @param {{slug: string, scheduleUrl: string, html: string, shows: object[], now?: Date, pageTitle?: string, overrides?: object, wikiText?: string}} args
+ * @returns {{candidate: object, lifecycle?: object} | {skip: string, kind: string, pageClass?: object, lifecycle?: object}}
+ */
+function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date(), pageTitle = null, overrides = {}, wikiText = '' }) {
   const rows = parseTourSchedule(html);
-  if (!rows.length) return { skip: 'schedule parsed to no engagements' };
-  // The title's tracked tours decide how this page splits (BRO-4724).
-  const titleParent = parentForSlug(slug, shows, null);
-  const tracked = titleParent ? toursOfTitle(titleParent.title, shows) : [];
+  const title = pageTitle || pageTitleFromHtml(html);
+  const cls = classifyTourPage({ slug, pageTitle: title, rows, shows, overrides, wikiText });
+  if (SKIPPED_CLASSES.has(cls.class)) return { skip: `${cls.class} page: ${cls.reason}`, kind: cls.class, pageClass: cls };
+  if (!rows.length) return { skip: 'schedule parsed to no engagements', kind: 'nothing-running', pageClass: cls };
+  // The title's tracked tours decide how this page splits (BRO-4724). A page
+  // with no tracked production answers to its own title.
+  const titleParent = cls.parentId ? parentForClass(cls, { slug, title, shows, segStart: null }) : null;
+  const tourTitle = titleParent ? titleParent.title : (cls.title || title);
+  const tracked = tourTitle ? toursOfTitle(tourTitle, shows) : [];
   const plan = lifecyclePlan({ segments: segmentTourRows(rows), html, tours: tracked });
   const segments = splitSegmentsAt(segmentTourRows(rows), plan.cuts);
   const lifecycle = { reopen: plan.reopen, undecided: plan.undecided };
   const running = currentSegment(segments, now);
   const options = [...(running ? [running] : []), ...upcomingSegments(segments, now).filter(s => s !== running)];
-  if (!options.length) return { skip: 'no tour running now or booked to launch', lifecycle };
+  if (!options.length) return { skip: 'no tour running now or booked to launch', kind: 'nothing-running', lifecycle, pageClass: cls };
   let skip = null;
+  let kind = null;
+  const note = (s, k) => { if (!skip) { skip = s; kind = k; } };
   for (const seg of options) {
     const segStart = seg.start.toISOString().slice(0, 10);
-    const parent = parentForSlug(slug, shows, segStart);
-    if (!parent) { skip = skip || 'no Broadway show of this title'; continue; }
+    const parent = parentForClass(cls, { slug, title, shows, segStart });
+    // A title that matches a tracked production, none of which had opened by
+    // this segment: not standalone (it would be refused as a tour of that
+    // production) and not parented yet.
+    if (cls.parentId && !parent) { note('no production of this title had opened by the tour\'s first engagement', 'no-parent'); continue; }
+    const standaloneTitle = cls.title || title;
+    if (!parent && !standaloneTitle) { note('page has no title to name a standalone tour', 'no-parent'); continue; }
+    // A page nobody has classified is not worth a question for a one-off run.
+    if (!parent && cls.class === 'unclassified' && tooFewStops(seg.rows)) { note(`only ${seg.rows.length} engagements and no tracked production`, 'too-few-stops'); continue; }
     // Already tracked: a tour of the title that covers this segment. Recording
     // it again would replace that tour's candidate row (and its createdTourId).
     // A running tour the page shows ending before this segment (knownEnds)
-    // doesn't cover it.
+    // doesn't cover it. A standalone tour has no tourOf; it is matched by title.
     const endOf = t => t.closingDate || plan.knownEnds[t.id] || null;
-    const ofTitle = toursOfTitle(parent.title, shows);
+    const ofTitle = toursOfTitle(parent ? parent.title : standaloneTitle, shows);
     const covering = ofTitle.find(t => t.openingDate
       && (!endOf(t) || endOf(t) >= segStart)
       && t.openingDate <= seg.end.toISOString().slice(0, 10));
-    if (covering) { skip = skip || `already tracked as ${covering.id}`; continue; }
+    if (covering) { note(`already tracked as ${covering.id}`, 'tracked'); continue; }
     // Carried to create-tour-entries.js, which re-splits the page the same
     // way and lets a running predecessor that ends first stand aside.
     const predecessorEnds = Object.fromEntries(ofTitle.filter(t => !t.closingDate && plan.knownEnds[t.id] && plan.knownEnds[t.id] < segStart).map(t => [t.id, plan.knownEnds[t.id]]));
     const cuts = plan.cuts.filter(c => c < segStart);
+    const isBroadway = parent && (parent.category || 'broadway') === 'broadway';
     return {
       candidate: {
-        broadwayShowId: parent.id,
-        title: parent.title,
+        key: parent ? parent.id : `page:${slug}`,
+        // Back-compat for rows and readers that predate BRO-4931: only a Broadway parent.
+        ...(isBroadway ? { broadwayShowId: parent.id } : {}),
+        ...(parent ? { parentId: parent.id } : {}),
+        title: parent ? parent.title : standaloneTitle,
+        ...(parent ? { type: parent.type || 'musical' } : (cls.type ? { type: cls.type } : {})),
+        pageClass: cls.class,
+        ...(cls.class === 'unclassified' ? { needsClassification: true } : {}),
         source: 'tourstoyou',
         slug: `tourstoyou:${slug}:${segStart}`,
         url: scheduleUrl,
@@ -229,24 +322,31 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
         ...(cuts.length ? { splitAt: cuts } : {}),
         ...(Object.keys(predecessorEnds).length ? { predecessorEnds } : {}),
       },
+      pageClass: cls,
       lifecycle,
     };
   }
-  return { skip, lifecycle };
+  return { skip, kind, lifecycle, pageClass: cls };
 }
 
+/** A candidate row's ledger key: the tracked parent's id, or page:<slug> for a standalone tour. */
+const candidateKey = c => c.key || c.broadwayShowId;
+
 /**
- * One candidate per Broadway show. Two pages running a tour of the same show
- * from different starts (two companies) is ambiguous: the first is kept with
- * an ambiguous note, so it is never created automatically but still reaches
- * the owner as a suggestion.
+ * One candidate per tour parent, or per normalised title for a standalone
+ * tour (two pages for one show: "jersey-boys" and "jersey-boys-1"). Two
+ * pages running a tour of the same show from different starts (two companies)
+ * is ambiguous: the first is kept with an ambiguous note, so it is never
+ * created automatically but still reaches the owner as a suggestion.
  * @returns {{candidates: object[], ambiguous: string[]}}
  */
 function dedupeCandidates(candidates) {
   const byShow = new Map();
   for (const c of candidates) {
-    if (!byShow.has(c.broadwayShowId)) byShow.set(c.broadwayShowId, []);
-    byShow.get(c.broadwayShowId).push(c);
+    const key = candidateKey(c);
+    const k = String(key).startsWith('page:') && c.title ? `title:${normTitle(c.title)}` : key;
+    if (!byShow.has(k)) byShow.set(k, []);
+    byShow.get(k).push(c);
   }
   const out = [];
   const ambiguous = [];
@@ -261,4 +361,20 @@ function dedupeCandidates(candidates) {
   return { candidates: out, ambiguous };
 }
 
-module.exports = { PAGES_API, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, dedupeCandidates };
+/**
+ * The BWW roundup-only row (tour-roundup-candidate.js roundupOnlyCandidate)
+ * that belongs to a Tours To You page row, or null: its title hint answers to
+ * the page's slug or title. Rows that already created a tour are left alone.
+ * @param {object} pageRow a candidate row from runningTourCandidate
+ * @param {object[]} rows the candidate ledger
+ */
+function roundupRowFor(pageRow, rows) {
+  if (!pageRow || !pageRow.tourScheduleSlug) return null;
+  const wanted = new Set([...slugKeys(pageRow.tourScheduleSlug), ...titleKeys(pageRow.title)]);
+  const hit = (rows || []).filter(r => r && String(r.key || '').startsWith('roundup:') && !r.createdTourId && r.roundupUrl && r.title
+    && [...titleKeys(r.title)].some(k => wanted.has(k)));
+  // Two roundups for one page is ambiguous: none is borrowed.
+  return hit.length === 1 ? hit[0] : null;
+}
+
+module.exports = { PAGES_API, listShowPages, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, parentForClass, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, dedupeCandidates, candidateKey, roundupRowFor };

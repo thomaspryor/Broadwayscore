@@ -71,21 +71,89 @@ function buildDiscoveryDateRange(show, now = new Date()) {
   return { dateMin, dateMax };
 }
 
-// The tour query ("<title>" national tour review) also matches the original
-// Broadway run's reviews, which belong to the Broadway show, not the tour.
-// Reject a tour candidate that points at Broadway/New York and never mentions
-// a tour. A plain "Review: <title>" from a tour-stop paper (no marker either
-// way) still passes; the date window and validateSerpCandidate cover the rest.
+// A tour candidate is a review of the touring company, found by a tour query
+// ("<title>" national tour review) or by the per-stop city search. Both also
+// surface things that are not: the original Broadway run's reviews, overseas
+// productions, and non-review pages about the tour. Decided by what the page IS,
+// never by whether it says "tour": a local review of the touring company
+// routinely names no tour ("Broadway in Santa Barbara", "Hancher's Broadway
+// series", BroadwayWorld /central-new-york/) and used to be rejected for the
+// word "broadway" or "new-york" alone (BRO-4931: 0 reviews on kinky-boots-tour-2025).
+// The date window (SERP dateRange + ingest --date-window) keeps Broadway-era
+// reviews out; this function only judges the page itself.
 const TOUR_MARKER = /\btour(s|ing|ed)?\b|national[-\s]tour/i;
-const BROADWAY_MARKER = /\bbroadway\b|\bnew[-\s]york\b|\bnyc\b|nytimes\.com/i;
-function tourCandidateIsTour(show, candidate) {
-  if (show.market !== 'tour') return true;
+
+// Outlets that review the New York production, not a tour stop. A hit here with
+// no tour word is the Broadway company's review.
+const NYC_MARKET_HOSTS = new Set([
+  'nytimes.com', 'vulture.com', 'nymag.com', 'newyorker.com', 'variety.com', 'nypost.com', 'nydailynews.com',
+  'amny.com', 'newsday.com', 'broadway.com', 'newyorkstagereview.com', 'newyorktheatreguide.com',
+  'talkinbroadway.com', 'broadwaynews.com', 'wsj.com',
+]);
+// (TheaterMania, Hollywood Reporter, Deadline and Playbill are left out on purpose:
+// they also review tour stops, e.g. a TheaterMania review of Hell's Kitchen at the Pantages.)
+// BroadwayWorld first path segments that are the New York company, not a region.
+const BWW_NYC_SECTIONS = new Set(['article', 'off-broadway', 'off-off-broadway', 'broadway', 'nyc', 'new-york-city', 'cabaret']);
+// BroadwayWorld editions outside the US, Canada and Mexico (tours play those only).
+const BWW_OVERSEAS_SECTIONS = new Set([
+  'uk', 'uk-regional', 'london', 'west-end', 'belgium', 'australia', 'new-zealand', 'germany', 'france', 'netherlands',
+  'spain', 'italy', 'portugal', 'sweden', 'norway', 'denmark', 'finland', 'poland', 'czech', 'hungary', 'greece',
+  'ireland', 'austria', 'switzerland', 'russia', 'turkey', 'israel', 'india', 'japan', 'korea', 'china', 'hong-kong',
+  'taiwan', 'singapore', 'philippines', 'south-africa', 'brazil', 'argentina', 'chile', 'dubai',
+]);
+// Interviews, previews, features and press items are never a review, whatever
+// the outlet (the Chicago "InterviewFeature-KINKY-BOOTS-Dancing-in-Heels-Workshop"
+// page was ingested as a review). Checked on the URL path and title only.
+const NON_REVIEW_KIND = /interviewfeature|(?:^|[^a-z])(?:interview|previews?|sneak[-\s]peek|meet[-\s]the[-\s]cast|photos?|video|press[-\s]release|now[-\s]playing|on[-\s]sale|tickets?|auditions?|casting)(?:$|[^a-z])/i;
+// Broadway-company phrasing that survives without a tour word. "ran on Broadway"
+// in a local review is fine; "returns to Broadway" is the New York run.
+const BROADWAY_COMPANY_TEXT = /\b(?:returns?|back|heads?|moves?|transfers?|opens?|opening|debuts?|currently|now)\s+(?:on|to|at)\s+broadway\b|\bnyc\b|\bnew[-\s]york[-\s]city\b/i;
+
+function hostAndPath(url) {
+  try {
+    const u = new URL(url);
+    return { host: u.hostname.toLowerCase().replace(/^www\./, ''), segments: u.pathname.split('/').filter(Boolean) };
+  } catch { return { host: '', segments: [] }; }
+}
+
+function hostInSet(host, set) {
+  const parts = host.split('.');
+  for (let i = 0; i < parts.length - 1; i++) if (set.has(parts.slice(i).join('.'))) return true;
+  return false;
+}
+
+// Pure verdict for one tour candidate: { ok, reason }. Non-tour shows always pass.
+function tourCandidateVerdict(show, candidate) {
+  if (show.market !== 'tour') return { ok: true, reason: null };
+  const url = candidate.url || '';
   // An overseas production's review (Spamalot's Melbourne season, BRO-4656):
   // tours here play the US, Canada and Mexico only.
-  if (isOverseasHost(candidate.url)) return false;
-  const text = `${candidate.url || ''} ${candidate.title || ''} ${candidate.snippet || candidate.description || ''}`;
-  if (TOUR_MARKER.test(text)) return true;
-  return !BROADWAY_MARKER.test(text);
+  if (isOverseasHost(url)) return { ok: false, reason: 'overseas' };
+  const { host, segments } = hostAndPath(url);
+  const isBww = host === 'broadwayworld.com' || host.endsWith('.broadwayworld.com');
+  const articleAt = segments.indexOf('article');
+  if (isBww) {
+    if (segments.some((seg, i) => i < Math.max(articleAt, 1) && BWW_OVERSEAS_SECTIONS.has(seg.toLowerCase()))) return { ok: false, reason: 'overseas' };
+    // BroadwayWorld reviews are /<region>/article/Review-<SHOW>-at-<VENUE>-<date>;
+    // interviews, "is Now Playing" releases and photo pages share the path shape.
+    const slug = articleAt >= 0 ? segments[articleAt + 1] || '' : '';
+    if (!/^(?:bww-)?review-/i.test(slug) || /roundup/i.test(slug)) return { ok: false, reason: 'non-review' };
+  }
+  let pathText = '';
+  try { pathText = decodeURIComponent(segments.join('/')); } catch { pathText = segments.join('/'); }
+  if (NON_REVIEW_KIND.test(`${pathText} ${candidate.title || ''}`)) return { ok: false, reason: 'non-review' };
+  const text = `${url} ${candidate.title || ''} ${candidate.snippet || candidate.description || ''}`;
+  if (TOUR_MARKER.test(text)) return { ok: true, reason: null };
+  // No tour word: the page is the touring company's unless it is the New York company's.
+  const nycHost = hostInSet(host, NYC_MARKET_HOSTS) || (host === 'timeout.com' && segments[0] === 'newyork')
+    || (isBww && (segments.length === 0 || BWW_NYC_SECTIONS.has((segments[0] || '').toLowerCase())));
+  if (nycHost) return { ok: false, reason: 'broadway-company' };
+  if (BROADWAY_COMPANY_TEXT.test(`${candidate.title || ''} ${candidate.snippet || candidate.description || ''}`)) return { ok: false, reason: 'broadway-company' };
+  return { ok: true, reason: null };
+}
+
+function tourCandidateIsTour(show, candidate) {
+  return tourCandidateVerdict(show, candidate).ok;
 }
 
 function normalizeUrl(url) {
@@ -112,4 +180,4 @@ function resolveRegisteredOutlet(url) {
 }
 
 
-module.exports = { normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet, DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, cityFromVenue };
+module.exports = { normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet, DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, tourCandidateVerdict, cityFromVenue };

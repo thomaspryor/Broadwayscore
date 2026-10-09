@@ -1,11 +1,12 @@
 {
-  "updatedAt": "2026-10-08T09:27:23.174Z",
-  "scanned": 2312,
-  "showsWithViolations": 62,
-  "totalViolations": 62,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-10-09T14:10:10.310Z",
+  "scanned": 2452,
+  "showsWithViolations": 64,
+  "totalViolations": 64,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "and-juliet-tour-2024"
+    "a-christmas-carol-west-end-2026",
+    "white-rabbit-red-rabbit-west-end-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -38,7 +39,9 @@
     "cabaret-at-the-kit-kat-club-west-end-2021",
     "operation-mincemeat-west-end-2024",
     "death-note-the-musical-west-end-2026",
+    "a-christmas-carol-west-end-2026",
     "the-story-west-end-2026",
+    "white-rabbit-red-rabbit-west-end-2026",
     "how-shakespeare-saved-my-life-off-broadway-2026",
     "paranormal-activity-2026",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
@@ -310,7 +313,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 56x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 57x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -343,10 +346,28 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2026",
+      "title": "A Christmas Carol",
+      "openingDate": "2026-11-24",
+      "message": "a-christmas-carol-west-end-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "the-story-west-end-2026",
       "title": "The Story",
       "openingDate": "2026-09-03",
       "message": "the-story-west-end-2026 review text mentions \"revival\" 25x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2026",
+      "title": "White Rabbit Red Rabbit",
+      "openingDate": "2026-06-09",
+      "message": "white-rabbit-red-rabbit-west-end-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -553,7 +574,7 @@
       "showId": "the-outsiders-tour-2025",
       "title": "The Outsiders",
       "openingDate": "2025-09-17",
-      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 36x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 38x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -588,7 +609,7 @@
     {
       "showId": "gang-of-three-off-west-end-2026",
       "title": "Gang Of Three",
-      "openingDate": null,
+      "openingDate": "2026-10-01",
       "message": "gang-of-three-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
@@ -607,7 +628,7 @@
       "showId": "the-music-man-tour-2026",
       "title": "The Music Man",
       "openingDate": "2026-01-12",
-      "message": "the-music-man-tour-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-music-man-tour-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

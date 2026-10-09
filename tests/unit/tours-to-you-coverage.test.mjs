@@ -163,3 +163,18 @@ test('a job that stopped running shows up as stale pages too', () => {
   const rows = tourAutomationResults({ autocreate: { generatedAt: daysAgo(10), created: [], discovery: { coverage } } }, NOW);
   assert.ok(rows.some(r => r.name === 'Data: Tours To You pages not checked'));
 });
+
+test('reading every page, not only Broadway titles, still covers ~250 pages inside the stale window (BRO-4931)', () => {
+  // The daily job gives discovery 6 of its 8 minutes; a page costs about 2.3 s (the 2 s pacer plus the fetch),
+  // so a run reads about 156 pages. Pages an override or slug rule rules out are never fetched and never listed.
+  const perRun = Math.floor((6 * 60) / 2.3);
+  const slugs = Array.from({ length: 230 }, (_, i) => `show-${String(i).padStart(3, '0')}`);
+  const day = n => new Date(Date.UTC(2026, 9, 10 + n, 12));
+  let coverage = {};
+  for (let n = 0; n < 12; n++) {
+    if (n === 4) continue; // a missed daily run
+    const read = orderForCheck(slugs, coverage, {}).slice(0, perRun);
+    coverage = nextCoverage(coverage, slugs, read, day(n).toISOString());
+    assert.deepEqual(stalePages(coverage, day(n), STALE_DAYS), [], `day ${n}: a page waited longer than ${STALE_DAYS} days`);
+  }
+});

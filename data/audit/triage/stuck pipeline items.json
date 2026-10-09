@@ -1,15 +1,15 @@
 {
   "system": "stuck pipeline items",
-  "status": "pass",
-  "lastChecked": "2026-10-05T11:14:04.824Z",
+  "status": "warn",
+  "lastChecked": "2026-10-09T13:52:36.114Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Stuck pipeline items",
-      "status": "pass",
-      "message": "No pipeline signals flagged possibly-stuck by the overnight digest."
+      "status": "warn",
+      "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. Shows losing scored reviews: good-west-end-2022: 8→4 reviews (scored files exist but being dropped)"
     }
   ]
 }
