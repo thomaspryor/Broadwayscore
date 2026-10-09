@@ -2650,13 +2650,95 @@
   {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37916452061",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37924846063",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-09T10:21:07.486Z"
+    "queuedAt": "2026-10-09T11:42:49.114Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:guardian",
+    "title": "Auto-remediation gave up on rent-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"rent-west-end-2026\",\"outlet\":\"guardian\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T11:43:17.393Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:telegraph",
+    "title": "Auto-remediation gave up on rent-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"rent-west-end-2026\",\"outlet\":\"telegraph\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T11:43:17.401Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:timeout-london",
+    "title": "Auto-remediation gave up on rent-west-end-2026",
+    "description": "unparsed-explicit-ratings keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: recover-explicit-ratings.yml {\"show\":\"rent-west-end-2026\",\"outlet\":\"timeout-london\",\"phases\":\"0,1,2,3\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T11:43:17.409Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:rent-west-end-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "rent-west-end-2026"
+      }
+    ],
+    "queuedAt": "2026-10-09T11:43:17.546Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4923-uk-regional-trigger",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4923-uk-regional-trigger",
+    "description": "land.yml did not land land/bro-4923-uk-regional-trigger: the unit-tests-node gate went red at 112f8d12f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37922810904",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4923-uk-regional-trigger"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "112f8d12f92f5e63279587a3f8408c1c43020d0b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37922810904"
+      }
+    ],
+    "queuedAt": "2026-10-09T11:52:29.467Z"
   }
 ]
