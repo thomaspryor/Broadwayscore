@@ -7,7 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { loadImageSources, saveImageSources, IMAGE_SOURCES_PATH } = require('./image-sources-store.js');
+const { loadImageSources, saveImageSources, recordImageSource, IMAGE_SOURCES_PATH } = require('./image-sources-store.js');
 
 const tmpDir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'imgsrc-'));
 
@@ -30,4 +30,15 @@ test('save round-trips and leaves no temp file', () => {
 test('the real map loads', () => {
   if (!fs.existsSync(IMAGE_SOURCES_PATH)) return;
   assert.ok(Object.keys(loadImageSources()).length > 1000);
+});
+
+test('recordImageSource sets only the named formats and keeps other rows', () => {
+  const d = tmpDir();
+  const f = path.join(d, 'image-sources.json');
+  saveImageSources({ 'la-boheme-met-2025': { poster: 'https://old/p.jpg', hero: 'https://old/h.jpg' }, 'other': { poster: 'x' } }, f);
+  recordImageSource('la-boheme-met-2025', ['poster', 'thumbnail'], 'https://new/a.jpg', f);
+  assert.deepEqual(loadImageSources(f), {
+    'la-boheme-met-2025': { poster: 'https://new/a.jpg', hero: 'https://old/h.jpg', thumbnail: 'https://new/a.jpg' },
+    other: { poster: 'x' },
+  });
 });

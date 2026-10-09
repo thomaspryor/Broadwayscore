@@ -32,4 +32,12 @@ function saveImageSources(map, file = IMAGE_SOURCES_PATH) {
   fs.renameSync(tmp, file);
 }
 
-module.exports = { IMAGE_SOURCES_PATH, loadImageSources, saveImageSources };
+/** One-shot: record `source` for each format of showId's own files, then save. */
+function recordImageSource(showId, formats, source, file = IMAGE_SOURCES_PATH) {
+  const map = loadImageSources(file);
+  map[showId] = map[showId] || {};
+  for (const f of formats) map[showId][f] = source;
+  saveImageSources(map, file);
+}
+
+module.exports = { IMAGE_SOURCES_PATH, loadImageSources, saveImageSources, recordImageSource };
