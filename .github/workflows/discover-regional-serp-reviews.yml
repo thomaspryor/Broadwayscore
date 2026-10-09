@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       show:
-        description: 'Single regional show ID (default: all shows in the pool)'
+        description: 'Regional show ID, or a comma-separated list (default: all shows in the pool)'
         required: false
         default: ''
         type: string

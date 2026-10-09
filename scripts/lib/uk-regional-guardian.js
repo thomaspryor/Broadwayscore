@@ -51,10 +51,24 @@ function ukFlagshipVenueFor({ tags = [], slug = '' } = {}) {
   return null;
 }
 
+/** The table entry for `venue` (as stored on a candidate or show), or undefined. */
+function ukVenueEntry(venue) {
+  const v = norm(venue);
+  return v ? UK_VENUES.find((e) => v.includes(norm(e.match))) : undefined;
+}
+
 /** True when `venue` (as stored on a candidate or show) is one of the flagship UK houses. */
 function isUkFlagshipVenue(venue) {
-  const v = norm(venue);
-  return !!v && UK_VENUES.some((e) => v.includes(norm(e.match)));
+  return !!ukVenueEntry(venue);
+}
+
+/**
+ * Regional shows at a flagship UK house. The audit's "is this already
+ * catalogued?" index is built from these only: a title-only index would let an
+ * open US regional Hamlet hide the RSC Hamlet the Guardian just reviewed.
+ */
+function ukFlagshipShows(shows) {
+  return (shows || []).filter((s) => s && s.category === 'regional' && isUkFlagshipVenue(s.venue));
 }
 
 /**
@@ -98,7 +112,10 @@ function stageUkRegionalCandidates(candidates, nowIso = new Date().toISOString()
   for (const c of candidates || []) {
     if (!c || c.market !== 'uk-regional' || c.source !== 'guardian-review') continue;
     if (!c.title || !c.url || !c.venue || !isUkFlagshipVenue(c.venue)) continue;
-    const slug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const titleSlug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    // The house key keeps ids apart when two flagship houses stage the same
+    // title in one year (Hamlet at the RSC and at Bristol Old Vic).
+    const slug = titleSlug && `${titleSlug}-${ukVenueEntry(c.venue).idKey}`;
     const key = `${slug}|${norm(c.venue)}`;
     if (!slug || seen.has(key)) continue;
     seen.add(key);
@@ -116,4 +133,4 @@ function stageUkRegionalCandidates(candidates, nowIso = new Date().toISOString()
   return out;
 }
 
-module.exports = { ukFlagshipVenueFor, isUkFlagshipVenue, decideUkFlagshipPromotion, stageUkRegionalCandidates };
+module.exports = { ukFlagshipVenueFor, isUkFlagshipVenue, ukVenueEntry, ukFlagshipShows, decideUkFlagshipPromotion, stageUkRegionalCandidates };

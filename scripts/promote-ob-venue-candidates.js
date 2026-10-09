@@ -57,7 +57,8 @@ const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
-const { decideUkFlagshipPromotion, stageUkRegionalCandidates } = require('./lib/uk-regional-guardian');
+const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows } = require('./lib/uk-regional-guardian');
+const normalizeTitleForStaging = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { productionIdYear } = require('./lib/todaytix-dates');
 const { venuesMatch } = require('./lib/deduplication');
@@ -684,7 +685,10 @@ async function main() {
   if (regionalOnly) {
     try {
       const rd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
-      ukRows = stageUkRegionalCandidates(rd.candidates);
+      // Rows for shows already in shows.json are dropped here: the audit report
+      // is refreshed every 6h, so without this they would re-stage and re-skip daily.
+      const have = ukFlagshipShows(loadShows().shows).map(s => normalizeTitleForStaging(s.title));
+      ukRows = stageUkRegionalCandidates(rd.candidates).filter(r => !have.includes(normalizeTitleForStaging(r.title)));
       if (ukRows.length && !dryRun) writeStagingCandidates(ukRows);
       if (ukRows.length) console.log(`${dryRun ? 'Would stage' : 'Staged'} ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
     } catch (e) {

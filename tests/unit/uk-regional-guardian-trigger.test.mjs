@@ -10,9 +10,10 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { extractGuardianReview, buildShowTitleIndex, findUnmatchedCandidates } = require('../../scripts/lib/reverse-discovery.js');
-const { ukFlagshipVenueFor, isUkFlagshipVenue, decideUkFlagshipPromotion, stageUkRegionalCandidates } = require('../../scripts/lib/uk-regional-guardian.js');
+const { ukFlagshipVenueFor, isUkFlagshipVenue, ukFlagshipShows, decideUkFlagshipPromotion, stageUkRegionalCandidates } = require('../../scripts/lib/uk-regional-guardian.js');
 const { decideRegionalPromotion, buildRegionalShowEntry } = require('../../scripts/promote-ob-venue-candidates.js');
 const { feederVenueCity } = require('../../scripts/lib/aggregator-candidate-extract.js');
+const { getTheaterAddress } = require('../../scripts/lib/venue-addresses.js');
 const table = require('../../data/uk-regional-venues.json');
 
 // Shape of the live feed item for the RSC production (2026-10-07).
@@ -67,6 +68,7 @@ test('the workflow selects only guardian-review promotions for the UK press disp
   assert.ok(m, 'dispatch step must filter on source guardian-review');
   const expr = m.replace(/^IDS=\$\(node -e "/, '').replace(/"$/, '');
   const dir = fs.mkdtempSync(new URL('file:///tmp/ukg-').pathname);
+  try {
   fs.mkdirSync(`${dir}/data/audit`, { recursive: true });
   fs.writeFileSync(`${dir}/data/audit/last-promotion-ids.json`, JSON.stringify({ promoted: [
     { id: 'a-regional-2026', source: 'guardian-review' },
@@ -75,7 +77,28 @@ test('the workflow selects only guardian-review promotions for the UK press disp
   ] }));
   const { execFileSync } = await import('node:child_process');
   const out = execFileSync('node', ['-e', expr], { cwd: dir, encoding: 'utf8' }).trim();
-  assert.equal(out, 'a-regional-2026 c-regional-2026');
+  assert.equal(out, 'a-regional-2026,c-regional-2026');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('the same title at two flagship houses stages two distinct ids', () => {
+  const rows = stageUkRegionalCandidates([
+    { title: 'Hamlet', source: 'guardian-review', url: 'https://g/1', date: '2026-10-07T10:00:00Z', market: 'uk-regional', venue: 'Royal Shakespeare Theatre' },
+    { title: 'Hamlet', source: 'guardian-review', url: 'https://g/2', date: '2026-10-08T10:00:00Z', market: 'uk-regional', venue: 'Bristol Old Vic' },
+  ]);
+  assert.deepEqual(rows.map((r) => r.slug), ['hamlet-rsc', 'hamlet-bristol-old-vic']);
+});
+
+test('an open US regional show with the same title does not hide the UK flagship one', () => {
+  const shows = [
+    { id: 'hamlet-osf-regional-2026', title: 'Hamlet', slug: 'hamlet-osf-regional-2026', category: 'regional', status: 'open', venue: 'Oregon Shakespeare Festival, Ashland, OR' },
+    { id: 'hamlet-rsc-regional-2026', title: 'Hamlet', slug: 'hamlet-rsc-regional-2026', category: 'regional', status: 'closed', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' },
+  ];
+  assert.equal(ukFlagshipShows(shows).length, 1);
+  const item = { title: 'Hamlet', market: 'uk-regional', venue: 'Chichester Festival Theatre' };
+  assert.equal(findUnmatchedCandidates([item], buildShowTitleIndex(ukFlagshipShows(shows.slice(0, 1)), 'regional'), { allowClosedRevival: true }).length, 1);
 });
 
 test('venue table: every entry is usable by the promoter and the market-utils lookup', () => {
@@ -87,7 +110,11 @@ test('venue table: every entry is usable by the promoter and the market-utils lo
     matches.add(e.match);
     assert.equal(feederVenueCity(e.venue), e.city, `${e.venue} must classify as a regional feeder`);
     assert.equal(isUkFlagshipVenue(`${e.venue}, ${e.city}`), true);
+    assert.match(e.idKey, /^[a-z0-9-]+$/);
+    assert.ok(getTheaterAddress(e.venue), `${e.venue} needs a street address in venue-addresses.js`);
+    assert.ok(getTheaterAddress(`${e.venue}, ${e.city}`), `${e.venue}, ${e.city} needs a street address key`);
   }
+  assert.equal(new Set(table.map((e) => e.idKey)).size, table.length, 'idKey must be unique');
 });
 
 test('stageUkRegionalCandidates keeps only flagship uk-regional Guardian rows, once each', () => {
@@ -101,7 +128,7 @@ test('stageUkRegionalCandidates keeps only flagship uk-regional Guardian rows, o
   assert.equal(rows.length, 1);
   assert.deepEqual(
     { title: rows[0].title, slug: rows[0].slug, category: rows[0].category, source: rows[0].source, sourceUrl: rows[0].sourceUrl },
-    { title: 'As You Like It', slug: 'as-you-like-it', category: 'regional', source: 'guardian-review', sourceUrl: 'https://g/1' },
+    { title: 'As You Like It', slug: 'as-you-like-it-rsc', category: 'regional', source: 'guardian-review', sourceUrl: 'https://g/1' },
   );
 });
 
@@ -123,7 +150,7 @@ test('a Guardian candidate at a non-flagship venue, or with no URL, is refused',
 
 test('buildRegionalShowEntry mints a provisional UK regional entry sourced to the Guardian', () => {
   const e = buildRegionalShowEntry(staged);
-  assert.equal(e.id, 'as-you-like-it-regional-2026');
+  assert.equal(e.id, 'as-you-like-it-rsc-regional-2026');
   assert.equal(e.venue, 'Royal Shakespeare Theatre, Stratford-upon-Avon');
   assert.equal(e.category, 'regional');
   assert.equal(e.market, 'regional');

@@ -296,19 +296,20 @@ jobs:
       # discovery (registry outlets: Telegraph, Stage, WhatsOnStage, ...).
       # After both pushes (core data for the new id, review-texts for the Guardian
       # piece ingested above), for the same reason as the image fetch: the
-      # dispatched run checks out the new id. One dispatch per id, the
-      # workflow's `show` input takes a single id. Weekly cron still catches
-      # anything this misses.
+      # dispatched run checks out the new id. ONE dispatch with every id
+      # (comma list): the workflow's concurrency group keeps a single pending
+      # run, so per-id dispatches would drop all but the last. Weekly cron still
+      # catches anything this misses.
       - name: Dispatch UK press discovery for Guardian-triggered shows
         if: always()
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json');console.log(d.promoted.filter(p=>p.source==='guardian-review').map(p=>p.id).join(' '))" 2>/dev/null)
-          for id in $IDS; do
-            gh workflow run discover-regional-serp-reviews.yml -f show="$id" || echo "::warning::regional SERP dispatch failed for $id — weekly cron will pick it up"
-          done
+          IDS=$(node -e "const d=require('./data/audit/last-promotion-ids.json');console.log(d.promoted.filter(p=>p.source==='guardian-review').map(p=>p.id).join(','))" 2>/dev/null)
+          if [ -n "$IDS" ]; then
+            gh workflow run discover-regional-serp-reviews.yml -f show="$IDS" || echo "::warning::regional SERP dispatch failed for $IDS — weekly cron will pick it up"
+          fi
       - name: Push aggregator-archive to private repo (PV)
         if: always()
         uses: ./.github/actions/push-aggregator-archive

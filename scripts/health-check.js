@@ -4083,7 +4083,7 @@ function buildStillMissingPredicate() {
     ).shows;
     const nycIndex = buildShowTitleIndex(shows, 'nyc');
     const weIndex = buildShowTitleIndex(shows, 'west-end');
-    const regionalIndex = buildShowTitleIndex(shows, 'regional'); // uk-regional Guardian items (BRO-4923)
+    const regionalIndex = buildShowTitleIndex(require('./lib/uk-regional-guardian').ukFlagshipShows(shows), 'regional'); // uk-regional Guardian items (BRO-4923)
     const { bwwRoundupCataloguedElsewhere } = require('./lib/reverse-discovery');
     return (c) => {
       const index = c && c.market === 'west-end' ? weIndex : c && c.market === 'uk-regional' ? regionalIndex : nycIndex;

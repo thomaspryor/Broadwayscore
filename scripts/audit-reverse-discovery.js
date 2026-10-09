@@ -89,6 +89,7 @@ async function main(argv = process.argv.slice(2)) {
     buildShowTitleIndex, findUnmatchedCandidates, bwwRoundupCataloguedElsewhere, candidateKey,
   } = require('./lib/reverse-discovery');
   const { loadReviewEvidence, mergeEvidence, saveReviewEvidence } = require('./lib/review-evidence');
+  const { ukFlagshipShows } = require('./lib/uk-regional-guardian');
 
   const dryRun = argv.includes('--dry-run');
   const days = parseInt((argv.find(a => a.startsWith('--days=')) || '').split('=')[1] || '45', 10);
@@ -102,7 +103,7 @@ async function main(argv = process.argv.slice(2)) {
   // IS missing — a global index would swallow it.
   const weIndex = buildShowTitleIndex(shows, 'we');
   const nycIndex = buildShowTitleIndex(shows, 'nyc');
-  const regionalIndex = buildShowTitleIndex(shows, 'regional');
+  const regionalIndex = buildShowTitleIndex(ukFlagshipShows(shows), 'regional');
   console.log(`Loaded ${shows.length} shows (${weIndex.exact.size} WE / ${nycIndex.exact.size} NYC title variants)`);
 
   const items = [];
