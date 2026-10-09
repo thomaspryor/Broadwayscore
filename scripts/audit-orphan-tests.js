@@ -158,6 +158,9 @@ const EXEMPT_NEVER_CI = {
   // schedule fetch acted, from live data. Date-gated RECHECK-AFTER probe; it
   // sat in the CI unit manifest and redded main (BRO-4837).
   'verify-bro-4724-recheck.test.mjs': 'BRO-4724',
+  // BRO-4930: asserts the 2026-10 outlet tier moves reached published show
+  // JSON after the nightly rebuild-reviews run. Date-gated RECHECK-AFTER probe.
+  'verify-outlet-tiers-published.test.mjs': 'BRO-4930',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
