@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-09T11:25:40.466Z",
+    "generatedAt": "2026-10-09T15:40:24.132Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 371,
-  "errorSeverity": 265,
-  "warningSeverity": 106,
+  "totalGaps": 375,
+  "errorSeverity": 266,
+  "warningSeverity": 109,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1871,6 +1871,15 @@
       "severity": "error"
     },
     {
+      "showId": "no-i-d-west-end-2023",
+      "category": "west-end",
+      "expected": 7,
+      "extracted": 0,
+      "gap": 7,
+      "ratio": 0,
+      "severity": "error"
+    },
+    {
       "showId": "noises-off-2016",
       "category": "broadway",
       "expected": 54,
@@ -2627,6 +2636,15 @@
       "severity": "warning"
     },
     {
+      "showId": "the-doctor-west-end-2022",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
+    },
+    {
       "showId": "the-encounter-2016",
       "category": "broadway",
       "expected": 62,
@@ -2924,6 +2942,15 @@
       "severity": "warning"
     },
     {
+      "showId": "the-pillowman-west-end-2023",
+      "category": "west-end",
+      "expected": 14,
+      "extracted": 8,
+      "gap": 6,
+      "ratio": 0.57,
+      "severity": "warning"
+    },
+    {
       "showId": "the-pirates-of-penzance-1976",
       "category": "broadway",
       "expected": 13,
@@ -3048,6 +3075,15 @@
       "gap": 17,
       "ratio": 0.32,
       "severity": "error"
+    },
+    {
+      "showId": "the-unfriend-west-end-2023",
+      "category": "west-end",
+      "expected": 14,
+      "extracted": 8,
+      "gap": 6,
+      "ratio": 0.57,
+      "severity": "warning"
     },
     {
       "showId": "the-unknown-off-broadway-2026",
