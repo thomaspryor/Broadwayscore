@@ -1,82 +1,21 @@
 {
-  "updatedAt": "2026-10-09T11:35:48.862Z",
-  "processed": 40,
-  "failed": 20,
-  "successRate": "66.7%",
+  "updatedAt": "2026-10-09T12:01:44.722Z",
+  "processed": 54,
+  "failed": 46,
+  "successRate": "54.0%",
   "tierBreakdown": {
-    "playwright": 18,
-    "amp": 2,
-    "browserbase": 2,
+    "playwright": 23,
+    "amp": 3,
+    "browserbase": 4,
     "directCookies": 1,
     "scrapingdog": 1,
-    "scrapingbee": 5,
+    "scrapingbee": 6,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 21
   },
-  "browserbaseSessions": 23,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-10-09T11:19:09.222Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-10-09T11:21:07.331Z",
-      "event": "bb-session",
-      "session": "6abb4f6a",
-      "url": "https://deadline.com/2014/07/tupac-shakur-musical-holler-if-ya-hear-me-gets-broa"
-    },
-    {
-      "t": "2026-10-09T11:22:55.132Z",
-      "event": "bb-session",
-      "session": "72a0a327",
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater/balancing-tupac-and-th"
-    },
-    {
-      "t": "2026-10-09T11:22:59.860Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-10-09T11:23:25.830Z",
-      "event": "bb-session",
-      "session": "aae88d8c",
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater/balancing-tupac-and-th"
-    },
-    {
-      "t": "2026-10-09T11:23:30.592Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-10-09T11:30:17.404Z",
-      "event": "bb-session",
-      "session": "fecf14e7",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/the-realistic-joneses-2"
-    },
-    {
-      "t": "2026-10-09T11:30:18.363Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-09T11:31:54.361Z",
-      "event": "bb-session",
-      "session": "5980de7e",
-      "url": "http://online.wsj.com/article/AP659b105326b84174b54104033afa3360.html"
-    },
-    {
-      "t": "2026-10-09T11:31:55.247Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-09T11:32:06.394Z",
-      "event": "bb-session",
-      "session": "977a53e6",
-      "url": "http://online.wsj.com/article/AP659b105326b84174b54104033afa3360.html"
-    },
     {
       "t": "2026-10-09T11:32:07.240Z",
       "event": "bb-cookie-inject",
@@ -125,6 +64,68 @@
       "t": "2026-10-09T11:35:28.441Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-09T11:36:52.797Z",
+      "event": "bb-session",
+      "session": "24aaa91b",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-09T11:36:53.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T11:37:12.079Z",
+      "event": "bb-session",
+      "session": "088ac771",
+      "url": "http://online.wsj.com/article/SB10001424052702304410204579141234114756574.html"
+    },
+    {
+      "t": "2026-10-09T11:37:12.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T11:38:02.142Z",
+      "event": "bb-session",
+      "session": "f0b93419",
+      "url": "http://bigstory.ap.org/article/review-winslow-boy-tonic-stubborn"
+    },
+    {
+      "t": "2026-10-09T11:38:21.261Z",
+      "event": "bb-session",
+      "session": "faf57e23",
+      "url": "http://bigstory.ap.org/article/review-winslow-boy-tonic-stubborn"
+    },
+    {
+      "t": "2026-10-09T11:40:18.972Z",
+      "event": "bb-session",
+      "session": "62251542",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/228290251_Theater_review__"
+    },
+    {
+      "t": "2026-10-09T11:40:23.718Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-09T11:40:45.958Z",
+      "event": "bb-session",
+      "session": "9df45b0d",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/228290251_Theater_review__"
+    },
+    {
+      "t": "2026-10-09T11:40:50.712Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-09T11:41:53.671Z",
+      "event": "bb-session",
+      "session": "46b08a2d",
+      "url": "http://www.hollywoodreporter.com/review/testament-mary-theater-review-443968?utm"
     }
   ]
 }
