@@ -1,70 +1,5 @@
 [
   {
-    "startedAt": "2026-10-08T18:30:31.071Z",
-    "completedAt": "2026-10-08T18:30:50.534Z",
-    "totalReviews": 48592,
-    "processed": 3,
-    "skipped": 48587,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 18776,
-      "output": 1133,
-      "total": 51363
-    },
-    "costUsd": 0.0738601,
-    "runId": "37824442241",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-08T18:30:51.705Z",
-    "completedAt": "2026-10-08T18:31:00.586Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9392,
-      "output": 661,
-      "total": 10053
-    },
-    "costUsd": 0.0247158,
-    "runId": "37824442241",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-08T18:35:25.987Z",
-    "completedAt": "2026-10-08T18:35:26.544Z",
-    "totalReviews": 48592,
-    "processed": 0,
-    "skipped": 48590,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37824966221",
-    "errorDetails": [
-      {
-        "showId": "magic-mike-live-new-york-off-broadway-2026",
-        "outletId": "nyctourism",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-08T18:35:28.580Z",
     "completedAt": "2026-10-08T18:35:43.219Z",
     "totalReviews": 5,
@@ -627942,6 +627877,60 @@
     },
     "costUsd": 0,
     "runId": "37922510175",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T11:29:11.202Z",
+    "completedAt": "2026-10-09T11:34:44.587Z",
+    "totalReviews": 50837,
+    "processed": 6,
+    "skipped": 50813,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 92781,
+      "output": 4930,
+      "total": 271157
+    },
+    "costUsd": 0.2679066,
+    "runId": "37923741025",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T11:35:21.631Z",
+    "completedAt": "2026-10-09T11:39:08.889Z",
+    "totalReviews": 50837,
+    "processed": 44,
+    "skipped": 49892,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 256894,
+      "output": 14420,
+      "total": 674192
+    },
+    "costUsd": 1.1292681,
+    "runId": "37923741025",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T11:39:10.152Z",
+    "completedAt": "2026-10-09T11:39:53.864Z",
+    "totalReviews": 20,
+    "processed": 20,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 56163,
+      "output": 4896,
+      "total": 61059
+    },
+    "costUsd": 0.1539666,
+    "runId": "37923741025",
     "errorDetails": []
   }
 ]
