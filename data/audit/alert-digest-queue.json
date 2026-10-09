@@ -2427,5 +2427,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-09T00:02:37.970Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4886-integrity-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4886-integrity-audit",
+    "description": "land.yml did not land land/bro-4886-integrity-audit: the unit-tests-node gate went red at 94cfb9ec7a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37859451038",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4886-integrity-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "94cfb9ec7af7ca658976690defc6c3ebd3122481"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37859451038"
+      }
+    ],
+    "queuedAt": "2026-10-08T23:59:36.567Z"
   }
 ]
