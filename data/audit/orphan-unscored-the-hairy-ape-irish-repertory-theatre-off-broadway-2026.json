@@ -2,9 +2,43 @@
   "version": 1,
   "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
   "openingDate": "2026-10-04",
-  "detectedAt": "2026-10-09T21:31:30.602Z",
+  "detectedAt": "2026-10-09T21:40:48.479Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "frombroadway--sara-holdren.json",
+      "outletId": "frombroadway",
+      "criticName": "Sara Holdren",
+      "url": "https://news.frombroadway.com/post/review-roundup-the-hairy-ape-irish-repertory-theatre",
+      "fullTextLen": 6953,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "irish-central--unknown.json",
+      "outletId": "irish-central",
+      "criticName": "Unknown",
+      "url": "https://www.irishcentral.com/opinion/others/the-hairy-ape-irish-rep",
+      "fullTextLen": 5658,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "is-never-out-of-placeaverage-rating--irish-rep.json",
       "outletId": "is-never-out-of-placeaverage-rating",
@@ -23,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
