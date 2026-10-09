@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T14:59:30.199Z",
+  "generatedAt": "2026-10-09T15:54:49.028Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-09",
-      "status": "previews",
+      "status": "open",
       "slug": "good-time-charlie-off-broadway",
       "thumbnail": "/images/shows/good-time-charlie-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -383,13 +383,127 @@
       ]
     },
     {
+      "id": "from-the-heart-west-end-2026",
+      "title": "From The Heart",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "special",
+      "openingDate": "2026-10-09",
+      "status": "open",
+      "slug": "from-the-heart-west-end",
+      "thumbnail": "/images/shows/from-the-heart-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 92,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 6,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-09T15:54:49.028Z",
+          "rc": 1,
+          "s": 92,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "a-ghost-in-your-ear-off-broadway-2026",
       "title": "A Ghost In Your Ear",
       "market": "broadway",
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-09",
-      "status": "previews",
+      "status": "open",
       "slug": "a-ghost-in-your-ear-off-broadway",
       "thumbnail": "/images/shows/a-ghost-in-your-ear-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
@@ -494,10 +608,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -769,7 +879,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-09",
-      "status": "upcoming",
+      "status": "open",
       "slug": "bettys-summer-vacation-the-heights-players-off-broadway",
       "thumbnail": "/images/shows/bettys-summer-vacation-the-heights-players-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1337,6 +1447,113 @@
           "t2": 4,
           "t3": 5,
           "p": 13,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "an-oak-tree-off-west-end-2026",
+      "title": "An Oak Tree",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-08",
+      "status": "open",
+      "slug": "an-oak-tree-off-west-end",
+      "thumbnail": "/images/shows/an-oak-tree-off-west-end-2026/thumbnail.webp",
+      "siteScore": 77.18,
+      "liveScore": 77,
+      "scoreDrift": -0.18000000000000682,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 8,
+      "t1": 1,
+      "t2": 2,
+      "t3": 5,
+      "positive": 5,
+      "mixed": 3,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "T1:0/3"
+        ],
+        "highConfidence": 6,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-09T15:54:49.028Z",
+          "rc": 8,
+          "s": 77.18,
+          "t1": 1,
+          "t2": 2,
+          "t3": 5,
+          "p": 5,
           "m": 3,
           "n": 0,
           "bc": "waiting"
@@ -2318,7 +2535,7 @@
       "openingDate": "2026-10-07",
       "status": "open",
       "slug": "all-male-as-you-like-it-regional-2026",
-      "thumbnail": null,
+      "thumbnail": "/images/shows/all-male-as-you-like-it-regional-2026/thumbnail.jpg",
       "siteScore": null,
       "liveScore": 87,
       "scoreDrift": null,

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T14:59:20.498Z",
+  "timestamp": "2026-10-09T15:54:39.021Z",
   "stats": {
-    "totalReviews": 50890,
-    "alreadyFlagged": 19318,
+    "totalReviews": 51306,
+    "alreadyFlagged": 19358,
     "dateGuardCatches": 253,
-    "directorMismatch": 1576,
+    "directorMismatch": 1577,
     "tvFilmSignals": 1483,
-    "londonSignals": 1582,
+    "londonSignals": 1581,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5429
+    "noPublishDate": 5795
   },
   "findings": [
     {
@@ -27008,6 +27008,19 @@
       ]
     },
     {
+      "showId": "patriots-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": null,
+      "url": "https://www.thetimes.co.uk/article/patriots-review-drama-of-dissidents-life-lost-in-the-details-fgmsllncd",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
+        }
+      ]
+    },
+    {
       "showId": "peter-pan-goes-wrong-2023",
       "file": "variety--bob-verini.json",
       "score": 85,
@@ -45750,19 +45763,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "affluenza-off-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-09-21",
-      "url": "https://www.timeout.com/london/theatre/affluenza",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
