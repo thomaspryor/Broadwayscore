@@ -282,9 +282,13 @@ async function generateSynopsisWithLLM(show) {
   // after a bare "Generating via Claude..." with no reason (BRO-4884).
   const usable = (t, model) => {
     let why = null;
-    t = cutToLastSentence(t);
-    if (!t) why = 'no text returned';
-    else if (/^\s*UNKNOWN\s*$/i.test(t.trim())) why = 'replied UNKNOWN';
+    // UNKNOWN has no sentence end, so test it before the cut (run 37868803406
+    // logged bare UNKNOWN replies as "no text returned").
+    const raw = (t || '').trim();
+    t = cutToLastSentence(raw);
+    if (!raw) why = 'no text returned';
+    else if (/^UNKNOWN\.?$/i.test(raw)) why = 'replied UNKNOWN';
+    else if (!t) why = `no complete sentence: "${raw.slice(0, 120)}"`;
     else if (!isValidSynopsis(t)) why = `fails isValidSynopsis: "${t.trim().slice(0, 120)}"`;
     if (why) console.log(`    · ${model}: ${why}`);
     return why ? null : t;

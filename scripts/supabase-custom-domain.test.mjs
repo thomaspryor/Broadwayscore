@@ -2,7 +2,7 @@
 // Run: node --test scripts/supabase-custom-domain.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { validateHostname, relativeName, collectTxtRecords, judgeStatus, exitCodeFor, judgeGoogleRedirectProbe, redact, wantedRecords, nextStep, googleCallbackUrl, ACTIONS } from './supabase-custom-domain.mjs';
+import { validateHostname, relativeName, collectTxtRecords, judgeStatus, exitCodeFor, judgeGoogleRedirectProbe, redact, wantedRecords, nextStep, googleCallbackUrl, isNotConfigured, ACTIONS } from './supabase-custom-domain.mjs';
 
 test('only one label under broadwayscorecard.com is accepted', () => {
   assert.equal(validateHostname('auth.broadwayscorecard.com'), 'auth');
@@ -94,6 +94,13 @@ test('the next-step line names the Google callback when verified and never claim
   assert.match(nextStep('create', 'failed', host), /Nothing changed for visitors/);
   assert.match(nextStep('delete', 'none', host), /back on the Supabase address/);
   assert.match(nextStep('status', 'none', host), /Run create/);
+});
+
+test('"No custom hostname configuration found." (HTTP 400, live 2026-10-09) means not set up, not broken', () => {
+  assert.equal(isNotConfigured(400, { message: 'No custom hostname configuration found.' }), true);
+  assert.equal(isNotConfigured(404, null), true);
+  assert.equal(isNotConfigured(400, { message: 'invalid token' }), false);
+  assert.equal(isNotConfigured(200, { status: '2_initiated' }), false);
 });
 
 test('wanted records: the CNAME points at the project host; actions are the documented set', () => {

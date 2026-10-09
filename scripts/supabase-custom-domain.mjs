@@ -247,10 +247,16 @@ async function ensureRecords(ctx, wanted) {
   return plan;
 }
 
+/** The Management API answers "nothing configured" as HTTP 400 with this message (seen live 2026-10-09), not 404. */
+export function isNotConfigured(status, json) {
+  if (status === 404) return true;
+  return status === 400 && /no custom hostname/i.test(String(json && json.message || ''));
+}
+
 async function getStatus(ctx) {
   const r = await supabase('GET', '/custom-hostname', ctx.sb);
-  if (r.status === 404) return { phase: 'none', detail: 'no custom hostname registered', json: null };
-  if (r.status >= 400) throw new Error(`Supabase custom-hostname read failed: HTTP ${r.status}`);
+  if (isNotConfigured(r.status, r.json)) return { phase: 'none', detail: 'no custom hostname registered', json: null };
+  if (r.status >= 400) throw new Error(`Supabase custom-hostname read failed: HTTP ${r.status}${r.json && r.json.message ? ` ${r.json.message}` : ''}`);
   return { ...judgeStatus(r.json), json: r.json };
 }
 
@@ -361,8 +367,9 @@ async function actActivate(ctx) {
 async function actDelete(ctx) {
   if (ctx.confirm !== 'DELETE') throw new Error('refused: CONFIRM must be the word DELETE');
   const r = await supabase('DELETE', '/custom-hostname', ctx.sb);
-  if (r.status >= 400 && r.status !== 404) throw new Error(`Supabase delete refused: HTTP ${r.status}`);
-  summary(r.status === 404 ? 'Supabase had no custom hostname' : 'Supabase custom hostname removed');
+  const absent = isNotConfigured(r.status, r.json);
+  if (r.status >= 400 && !absent) throw new Error(`Supabase delete refused: HTTP ${r.status}`);
+  summary(absent ? 'Supabase had no custom hostname' : 'Supabase custom hostname removed');
   const existing = await listRecords(ZONE, ctx.vercel);
   const mine = recordsToDelete(existing, wantedRecords(ctx.label, ctx.ref)).concat(
     existing.filter((rec) => String(rec.type).toUpperCase() === 'TXT' && /^(_acme-challenge|_cf-custom-hostname)\./.test(String(rec.name).toLowerCase()) && String(rec.name).toLowerCase().endsWith(`.${ctx.label}`)),
