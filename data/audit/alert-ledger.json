@@ -12298,12 +12298,13 @@
       "title": "Unhandled CV.wrongProduction on Rent",
       "firstSeen": "2026-10-09T09:12:56.270Z",
       "incidentOpenedAt": "2026-10-09T09:12:56.270Z",
-      "lastSeen": "2026-10-09T09:12:56.270Z",
+      "lastSeen": "2026-10-09T11:43:17.386Z",
       "lastNotifiedAt": "2026-10-09T09:12:56.270Z",
       "lastSurfacedAt": "2026-10-09T09:12:56.270Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-stale-upcoming-tag-triumph-off-broadway-2026": {
       "status": "open",
@@ -12356,6 +12357,59 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4918"
+    },
+    "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:guardian": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on rent-west-end-2026",
+      "firstSeen": "2026-10-09T11:43:17.392Z",
+      "incidentOpenedAt": "2026-10-09T11:43:17.392Z",
+      "lastSeen": "2026-10-09T11:43:17.392Z",
+      "lastNotifiedAt": "2026-10-09T11:43:17.392Z",
+      "lastSurfacedAt": "2026-10-09T11:43:17.392Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:telegraph": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on rent-west-end-2026",
+      "firstSeen": "2026-10-09T11:43:17.400Z",
+      "incidentOpenedAt": "2026-10-09T11:43:17.400Z",
+      "lastSeen": "2026-10-09T11:43:17.400Z",
+      "lastNotifiedAt": "2026-10-09T11:43:17.400Z",
+      "lastSurfacedAt": "2026-10-09T11:43:17.400Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:timeout-london": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on rent-west-end-2026",
+      "firstSeen": "2026-10-09T11:43:17.408Z",
+      "incidentOpenedAt": "2026-10-09T11:43:17.408Z",
+      "lastSeen": "2026-10-09T11:43:17.408Z",
+      "lastNotifiedAt": "2026-10-09T11:43:17.408Z",
+      "lastSurfacedAt": "2026-10-09T11:43:17.408Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast-gate:checklist:rent-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Opening Night Broadcast Blocked — Checklist Errors",
+      "firstSeen": "2026-10-09T11:43:17.542Z",
+      "incidentOpenedAt": "2026-10-09T11:43:17.542Z",
+      "lastSeen": "2026-10-09T11:43:17.542Z",
+      "lastNotifiedAt": "2026-10-09T11:43:17.542Z",
+      "lastSurfacedAt": "2026-10-09T11:43:17.542Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
