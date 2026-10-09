@@ -1,20 +1,20 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-10-05T11:14:04.819Z",
+  "lastChecked": "2026-10-09T13:52:36.111Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Coverage: SERP census recall",
-      "status": "pass",
-      "message": "a plain Google search found 30%, reviews already collected found 96%, our targeted searches found 19% — across 3 recent opening(s); 54 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (7d ago)"
+      "status": "warn",
+      "message": "Review coverage dropped — a plain Google search now finds 17% vs 38% recently (across 1 recent opening(s); 18 review pages any of our searches could find). New shows may be going live with published reviews missing."
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "The naive search found 9 review URL(s) this pipeline hasn't discovered yet: the-cherry-orchard-riverside-studios-off-west-end-2026, september-l-davis-the-apology-tour-off-broadway-2026, la-gringa-off-broadway-2026"
+      "message": "The naive search found 2 review URL(s) this pipeline hasn't discovered yet: our-sinatra-a-musical-celebration-off-broadway-2026"
     }
   ]
 }

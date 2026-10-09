@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-08T09:25:38.395Z",
+  "generatedAt": "2026-10-09T14:08:26.717Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3334,
+  "scannedShows": 3518,
   "flaggedShows": 65,
   "flaggedFiles": 225,
   "readmissionRiskFiles": 0,
@@ -10,9 +10,9 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 32,
-    "needs-human-review": 31,
-    "likely-single-prior-run": 2
+    "likely-contamination": 35,
+    "needs-human-review": 29,
+    "likely-single-prior-run": 1
   },
   "shows": [
     {
@@ -1220,7 +1220,7 @@
       "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
       "title": "The Curious Case of Benjamin Button",
       "market": "broadway",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "The Public Theater/Newman Theater",
       "previewsStartDate": "2026-10-08",
       "openingDate": "2026-10-21",
@@ -1724,8 +1724,8 @@
       "venue": "Bloomsbury Theatre",
       "previewsStartDate": "2026-12-03",
       "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Premature-scored reviews span 5 distinct years (2011, 2016, 2017, 2024, 2025) and 5237d — could be multiple legitimate prior runs or multi-production contamination; read the texts before deciding.",
+      "verdict": "likely-contamination",
+      "reasoning": "6/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 7,
         "distinctYears": [
@@ -1736,7 +1736,7 @@
           2025
         ],
         "spanDays": 5237,
-        "flaggedCount": 3,
+        "flaggedCount": 6,
         "venueMentionCount": 2
       },
       "suggestedPriorRun": null,
@@ -1795,40 +1795,40 @@
         },
         {
           "file": "musicaltheatremusings--sarah-mcpartlan.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "musicaltheatremusings",
           "criticName": "Sarah McPartlan",
           "publishDate": "2025-12-07",
           "url": "https://musicaltheatremusings.co.uk/stick-man-bloomsbury-theatre/",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
           "file": "plays-to-see--rivka-jacobson.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "plays-to-see",
           "criticName": "Rivka Jacobson",
           "publishDate": "2025-12-08",
           "url": "https://playstosee.com/reviews/stick-man-children-theatre/",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
           "file": "whatsonstage--michael-coveney.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "whatsonstage",
           "criticName": "Michael Coveney",
           "publishDate": "2011-08-07",
           "url": "https://www.whatsonstage.com/news/stick-man-live-on-stage_7898/",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -2235,7 +2235,7 @@
       "previewsStartDate": "2026-10-22",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "3/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 4,
         "distinctYears": [
@@ -2245,21 +2245,21 @@
           2024
         ],
         "spanDays": 2586,
-        "flaggedCount": 3,
+        "flaggedCount": 4,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
       "reviews": [
         {
           "file": "london-box-office--christian-durham.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "london-box-office",
           "criticName": "Christian Durham",
           "publishDate": "2017-02-26",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-the-girls",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -2846,6 +2846,55 @@
       ]
     },
     {
+      "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+      "title": "Midnight In The Garden Of Good And Evil",
+      "market": "broadway",
+      "status": "announced",
+      "venue": "TBA",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2024
+        ],
+        "spanDays": 0,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "splash-magazines--jessie-bond.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "splash-magazines",
+          "criticName": "Jessie Bond",
+          "publishDate": "2024-07-09T13:09:20-04:00",
+          "url": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/#gsc.tab=0",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "variety--steven-oxman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "variety",
+          "criticName": "Steven Oxman",
+          "publishDate": "2024-07-09T13:09:20-04:00",
+          "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
       "title": "Robin Hood and the Merry Mandem",
       "market": "west-end",
@@ -3199,8 +3248,8 @@
       "venue": "London Coliseum",
       "previewsStartDate": "2026-12-17",
       "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Premature-scored reviews span 2 distinct years (2016, 2024) and 2916d — could be multiple legitimate prior runs or multi-production contamination; read the texts before deciding.",
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 2,
         "distinctYears": [
@@ -3208,7 +3257,7 @@
           2024
         ],
         "spanDays": 2916,
-        "flaggedCount": 1,
+        "flaggedCount": 2,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
@@ -3228,14 +3277,14 @@
         },
         {
           "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "london-box-office",
           "criticName": "Stuart King",
           "publishDate": "2024-12-13",
           "url": "https://www.londonboxoffice.co.uk/news/post/nutcracker-coliseum-review",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -3336,60 +3385,6 @@
           "publishDate": "2025-05-01",
           "url": "https://www.londonboxoffice.co.uk/news/post/my-master-builder-review",
           "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "gang-of-three-off-west-end-2026",
-      "title": "Gang Of Three",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "King's Head Theatre",
-      "previewsStartDate": "2026-10-01",
-      "openingDate": null,
-      "verdict": "likely-single-prior-run",
-      "reasoning": "2 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 2/2 review texts mention the show's own venue (\"King's Head Theatre\") — supports same-venue return.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 0,
-        "venueMentionCount": 2
-      },
-      "suggestedPriorRun": {
-        "venue": "King's Head Theatre",
-        "reviewDateRangeStart": "2025-05-08",
-        "reviewDateRangeEnd": "2025-05-08",
-        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
-      },
-      "reviews": [
-        {
-          "file": "artsdesk--unknown.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
-          "outletId": "artsdesk",
-          "criticName": "Unknown",
-          "publishDate": "2025-05-08",
-          "url": "https://theartsdesk.com/theatre/gang-three-kings-head-theatre-three-old-labour-ghosts-resurrected-entertain-and-educate",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-05-08",
-          "url": "https://www.londonboxoffice.co.uk/news/post/gang-of-three-review",
-          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -3807,21 +3802,21 @@
           2025
         ],
         "spanDays": 0,
-        "flaggedCount": 0,
+        "flaggedCount": 1,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
       "reviews": [
         {
           "file": "the-suburban--alexandra-cohen.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "contentTierInvalid",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "the-suburban",
           "criticName": "Alexandra Cohen",
           "publishDate": "2025-11-30",
           "url": "https://www.thesuburban.com/columnists/mike_cohen_cohen_chatter/the-hills-are-alive-at-mirvish-with-the-sound-of-music/article_72e9ab9f-f497-44fc-b848-c43871574f15.html",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         }

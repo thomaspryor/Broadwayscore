@@ -1,7 +1,7 @@
 {
   "system": "main",
-  "status": "warn",
-  "lastChecked": "2026-10-05T11:14:04.821Z",
+  "status": "pass",
+  "lastChecked": "2026-10-09T13:52:36.112Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,8 +13,8 @@
     },
     {
       "name": "Main: green rate",
-      "status": "warn",
-      "message": "rate 69.3% (green 307 / red 136, 443 runs, 9 hung (cancelled >= 10 min, counted red)), 7d trend from 9.6%, day 0 of 14 at ≥80% → FAIL"
+      "status": "pass",
+      "message": "rate 85.9% (green 408 / red 67, 475 runs, 1 hung (cancelled >= 10 min, counted red)), 7d trend from 55.6%, day 4 of 14 at ≥80% → PASS"
     }
   ]
 }
