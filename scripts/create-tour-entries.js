@@ -51,7 +51,7 @@ const { reopenBlocker, candidateKey } = require('./lib/tour-discovery');
 const { toursOfTitle } = require('./lib/tour-family');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { openTourCandidates, recordTourCandidates, candidateParentId } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, recordTourCandidates, candidateParentId, sortForCreate } = require('./lib/tour-roundup-candidate');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { decideTourCreation, candidateRoundupUrl } = require('./lib/tour-create-decision');
 const { loadTourPageClasses } = require('./lib/tour-page-class');
@@ -136,10 +136,7 @@ async function main() {
   // (page:<slug>) or a Tours To You slug.
   const only = ((argv.find(a => a.startsWith('--only=')) || '').split('=')[1] || '').split(',').filter(Boolean);
   const wanted = c => !only.length || [candidateKey(c), candidateParentId(c), c.tourScheduleSlug, c.tourScheduleSlug && `page:${c.tourScheduleSlug}`].some(k => k && only.includes(k));
-  // Parented tours first, then standalone pages, those still to be classified last: each of those costs two
-  // Wikipedia reads, and they must not use up the time budget before a parented tour is decided (BRO-4931).
-  const rank = c => (candidateParentId(c) ? 0 : c.needsClassification ? 2 : 1);
-  const open = openTourCandidates(rows, shows).filter(wanted).sort((a, b) => rank(a) - rank(b));
+  const open = sortForCreate(openTourCandidates(rows, shows).filter(wanted));
   if (only.length) console.log(`--only: ${only.join(', ')}`);
   // A retired id must never come back (data/retired-show-ids.json, core-data).
   const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };

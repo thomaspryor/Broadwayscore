@@ -94,18 +94,14 @@
         "start": null,
         "end": null,
         "stopsInSegment": 0,
-        "class": "production (title-match)"
+        "class": "unclassified (none)"
       },
       "saved": true
     },
     "heathers-the-musical": {
       "pageTitle": "Heathers the Musical",
-      "expect": [
-        "create",
-        "skip-tracked"
-      ],
-      "id": "heathers-the-musical-tour-2027",
-      "parent": "heathers-the-musical-off-broadway-2025",
+      "expect": "suggest",
+      "planned": "create",
       "seen": {
         "stopsOnPage": 7,
         "status": "booked-ahead",
@@ -114,6 +110,7 @@
         "stopsInSegment": 7,
         "class": "production (title-match)"
       },
+      "reason": "tour of a off-broadway production (heathers-the-musical-off-broadway-2025) needs more than the schedule alone: launch evidence is tourstoyou-upcoming; Wikipedia, a BWW roundup or a hand-verified launc",
       "saved": true
     },
     "the-bodyguard": {
@@ -210,7 +207,7 @@
         "start": null,
         "end": null,
         "stopsInSegment": 0,
-        "class": "production (title-match)"
+        "class": "unclassified (none)"
       },
       "saved": true
     },
@@ -455,7 +452,8 @@
     },
     "clue": {
       "pageTitle": "Clue",
-      "expect": "suggest",
+      "expect": "needs-classification",
+      "planned": "suggest",
       "seen": {
         "stopsOnPage": 166,
         "status": "running",
@@ -464,7 +462,7 @@
         "stopsInSegment": 166,
         "class": "unclassified (none)"
       },
-      "reason": "no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)",
+      "reason": "the Wikipedia article \"Clue (musical)\" never mentions a tour, so it may be a different production of the title",
       "saved": true
     },
     "forbidden-broadway-the-next-generation": {
@@ -590,7 +588,7 @@
         "start": null,
         "end": null,
         "stopsInSegment": 0,
-        "class": "production (title-match)"
+        "class": "unclassified (none)"
       },
       "saved": true
     },

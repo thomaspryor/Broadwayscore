@@ -45,8 +45,10 @@ const SHOWS = [
 const OVERRIDE = (title, type = 'musical') => ({ class: 'production', title, type, reason: 'owner', issue: 'BRO-4931', reviewedAt: '2026-10-09' });
 const ev = args => evaluateTourPage({ slug: 'some-show', pageTitle: 'Some Show', html: BOOKED, shows: SHOWS, now: NOW, ...args });
 
+const article = (text, title = 'Some Show (musical)') => async () => ({ title, text: `${text}\n\nA North American tour is booked for 2026.` });
+
 test('a standalone production booked ahead is created with no tourOf, its page as the anchor, and the type from Wikipedia', async () => {
-  const r = await ev({ fetchWiki: async () => '{{Infobox musical\n| name = Some Show\n}}' });
+  const r = await ev({ fetchWikiArticle: article('{{Infobox musical\n| name = Some Show\n}}') });
   assert.equal(r.outcome, 'create');
   assert.equal(r.entry.id, 'some-show-tour-2026');
   assert.equal('tourOf' in r.entry, false, 'omitted, never null');
@@ -55,13 +57,17 @@ test('a standalone production booked ahead is created with no tourOf, its page a
 });
 
 test('a page nothing can classify is never created: needs-classification, not a guess', async () => {
-  assert.equal((await ev({ fetchWiki: async () => '' })).outcome, 'needs-classification');
+  assert.equal((await ev({ fetchWikiArticle: async () => null })).outcome, 'needs-classification');
   assert.equal((await ev({})).outcome, 'needs-classification', 'no Wikipedia text at all');
-  assert.equal((await ev({ fetchWiki: async () => '{{Infobox book\n| name = Some Show\n}}' })).outcome, 'needs-classification');
+  assert.equal((await ev({ fetchWikiArticle: article('{{Infobox book\n| name = Some Show\n}}') })).outcome, 'needs-classification');
+  // P1-4: an article that never mentions a tour is not trusted (Clue -> the 1997 musical).
+  const clue = await ev({ slug: 'clue', pageTitle: 'Clue', fetchWikiArticle: async () => ({ title: 'Clue (musical)', text: '{{Infobox musical\n| name = Clue\n}}\n\nIt played Off-Broadway in 1997.' }) });
+  assert.equal(clue.outcome, 'needs-classification');
+  assert.match(clue.reason, /never mentions a tour/);
 });
 
 test('a concert, circus or dance infobox turns a candidate into a skipped event at the create step', async () => {
-  const r = await ev({ fetchWiki: async () => '{{Infobox concert tour\n| name = Some Show\n}}' });
+  const r = await ev({ fetchWikiArticle: article('{{Infobox concert tour\n| name = Some Show\n}}') });
   assert.equal(r.outcome, 'skip-event');
 });
 
@@ -89,11 +95,45 @@ test('evidence rules are unchanged for a standalone tour: too few stops, a long-
   assert.equal(copy.outcome, 'skip-duplicate-schedule');
 });
 
-test('a tour of an Off-Broadway production is created with that parent, and its id carries no market', async () => {
-  const r = await evaluateTourPage({ slug: 'mexodus', pageTitle: 'Mexodus', html: BOOKED, shows: SHOWS, now: NOW, fetchWiki: async () => '' });
+test('P1-1: a tour of an Off-Broadway parent needs 5+ distinct cities and a launch Wikipedia or a roundup confirms, not the schedule alone', async () => {
+  // Booked ahead from 5 cities, Wikipedia silent: the schedule alone ("tourstoyou-upcoming") is not enough off Broadway.
+  const thin = await evaluateTourPage({ slug: 'mexodus', pageTitle: 'Mexodus', html: BOOKED, shows: SHOWS, now: NOW, fetchWiki: async () => '' });
+  assert.equal(thin.outcome, 'suggest');
+  assert.match(thin.reason, /tourstoyou-upcoming; Wikipedia, a BWW roundup or a hand-verified launch is needed/);
+  // Wikipedia names the launch: created, with that parent, and the id carries no market.
+  const wiki = 'A North American tour began on November 10, 2026 at the Citizens Opera House in Boston.';
+  const r = await evaluateTourPage({ slug: 'mexodus', pageTitle: 'Mexodus', html: BOOKED, shows: SHOWS, now: NOW, fetchWiki: async () => wiki });
   assert.equal(r.outcome, 'create');
   assert.deepEqual([r.entry.id, r.entry.tourOf], ['mexodus-tour-2026', 'mexodus-off-broadway-2026']);
   assert.equal(r.candidate.broadwayShowId, undefined);
+  // Four cities even with Wikipedia: a regional co-production, not a national tour.
+  const four = page([row('Boston, MA', 'A', 'November 10-15, 2026'), row('Hartford, CT', 'B', 'November 17-22, 2026'), row('Albany, NY', 'C', 'November 24-29, 2026'), row('Buffalo, NY', 'D', 'December 1-6, 2026')]);
+  const few = await evaluateTourPage({ slug: 'mexodus', pageTitle: 'Mexodus', html: four, shows: SHOWS, now: NOW, fetchWiki: async () => wiki });
+  assert.equal(few.outcome, 'suggest');
+  assert.match(few.reason, /4 distinct cities in the segment, 5 needed/);
+  // Seven rows in five cities count five, not seven.
+  const sevenInFour = page([
+    row('Boston, MA', 'A', 'November 10-15, 2026'), row('Boston, MA', 'B', 'November 16-17, 2026'), row('Hartford, CT', 'C', 'November 18-22, 2026'),
+    row('Albany, NY', 'D', 'November 24-29, 2026'), row('Albany, NY', 'E', 'November 30, 2026'), row('Buffalo, NY', 'F', 'December 1-6, 2026'), row('Erie, PA', 'G', 'December 8-13, 2026'),
+  ]);
+  const distinct = await evaluateTourPage({ slug: 'mexodus', pageTitle: 'Mexodus', html: sevenInFour, shows: SHOWS, now: NOW, fetchWiki: async () => wiki });
+  assert.equal(distinct.outcome, 'create', '5 distinct cities in 7 rows');
+  // A Broadway parent is not held to this: the schedule alone still creates it.
+  const broadway = [{ id: 'foo-2024', title: 'Foo', category: 'broadway', status: 'open', openingDate: '2024-04-01', type: 'musical', images: { hero: null, thumbnail: null, poster: null } }];
+  assert.equal((await evaluateTourPage({ slug: 'foo', pageTitle: 'Foo', html: BOOKED, shows: broadway, now: NOW, fetchWiki: async () => '' })).outcome, 'create');
+});
+
+test('P1-1: nonBroadwayEvidenceProblem lists what is missing', () => {
+  const { nonBroadwayEvidenceProblem } = require('../../scripts/lib/tour-create-decision.js');
+  const rows = n => Array.from({ length: n }, (_, i) => ({ city: `City ${i}, ST` }));
+  const heathers = { id: 'heathers-the-musical-off-broadway-2025', category: 'off-broadway' };
+  assert.match(nonBroadwayEvidenceProblem(heathers, { segmentRows: rows(7), launchSource: 'tourstoyou-upcoming' }), /launch evidence is tourstoyou-upcoming/);
+  assert.match(nonBroadwayEvidenceProblem(heathers, { segmentRows: rows(3), launchSource: 'wikipedia' }), /3 distinct cities/);
+  assert.match(nonBroadwayEvidenceProblem(heathers, { segmentRows: rows(3), launchSource: 'tourstoyou-fresh' }), /3 distinct cities.*launch evidence is tourstoyou-fresh/);
+  for (const src of ['wikipedia', 'bww-roundup', 'hand-verified']) assert.equal(nonBroadwayEvidenceProblem(heathers, { segmentRows: rows(5), launchSource: src }), null, src);
+  assert.equal(nonBroadwayEvidenceProblem({ id: 'x', category: 'broadway' }, { segmentRows: rows(1), launchSource: 'tourstoyou-fresh' }), null);
+  assert.equal(nonBroadwayEvidenceProblem({ id: 'x' }, { segmentRows: rows(1), launchSource: null }), null, 'no category is Broadway');
+  assert.equal(nonBroadwayEvidenceProblem(null, null), null, 'standalone tours are governed by TOUR_STANDALONE_AUTOCREATE instead');
 });
 
 test('pages that are not productions are told apart before any schedule is read', async () => {
@@ -166,7 +206,11 @@ test('the committed sweep fixture is well formed and its overrides are valid', (
   // The owner's answers (BRO-4931), as outcomes.
   const want = (cls, list) => list.forEach(s => assert.ok([].concat(fixture.pages[s].expect).includes(cls), `${s} should be ${cls}`));
   want('skip-event', ['riverdance', 'stomp', 'the-hip-hop-nutcracker', 'mannheim-steamroller-christmas', 'the-simon-and-garfunkel-story', 'a-charlie-brown-christmas', 'cirque-dreams-holidaze']);
-  want('create', ['the-cat-in-the-hat', 'hallmarkish', 'dolly-partons-smoky-mountain-christmas-carol', 'heathers-the-musical']);
+  want('create', ['the-cat-in-the-hat', 'hallmarkish', 'dolly-partons-smoky-mountain-christmas-carol']);
+  // P1-1: Heathers (7 stops, an Off-Broadway parent, launch known only from the schedule) is a suggestion now.
+  want('suggest', ['heathers-the-musical', 'the-bodyguard', 'mystic-pizza', 'mexodus']);
+  // P1-4: Clue's first Wikipedia article is the 1997 musical, which never toured: it is not classified from it.
+  want('needs-classification', ['clue', 'all-the-devils-are-here']);
   want('skip-too-few-stops', ['potted-potter']);
   want('skip-aggregator', ['holiday-shows', 'miscellaneous-shows']);
   assert.deepEqual(overrideProblems(loadTourPageClasses()), []);

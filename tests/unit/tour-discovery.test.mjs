@@ -420,8 +420,34 @@ test('a title that matches a production which had not opened by the tour is neit
 
 test('a Broadway parent keeps broadwayShowId; an Off-Broadway or West End one carries parentId only', () => {
   const westEnd = { id: 'woman-in-black-west-end-1989', title: 'The Woman in Black', category: 'west-end', openingDate: '1989-06-07' };
-  const r = runningTourCandidate({ slug: 'the-woman-in-black', scheduleUrl: 'u', html: MARKET_PAGE, shows: [westEnd], now: NOW });
+  // Automatic discovery never picks a UK parent (P1-2): without an override the page is unclassified.
+  const auto = runningTourCandidate({ slug: 'the-woman-in-black', pageTitle: 'The Woman in Black', scheduleUrl: 'u', html: MARKET_PAGE, shows: [westEnd], now: NOW });
+  assert.equal(auto.candidate.parentId, undefined);
+  assert.equal(auto.candidate.needsClassification, true);
+  // A person names it in data/tour-page-classes.json.
+  const overrides = { 'the-woman-in-black': { class: 'production', parentId: westEnd.id, reason: 'x', issue: 'BRO-4931', reviewedAt: '2026-10-09' } };
+  const r = runningTourCandidate({ slug: 'the-woman-in-black', scheduleUrl: 'u', html: MARKET_PAGE, shows: [westEnd], overrides, now: NOW });
   assert.deepEqual([r.candidate.key, r.candidate.parentId, r.candidate.broadwayShowId], ['woman-in-black-west-end-1989', 'woman-in-black-west-end-1989', undefined]);
+});
+
+test('P1-2: the Choir of Man, Hamnet and the Mousetrap do not pick London parents; the shared constant is the three US markets', () => {
+  const { AUTO_TOUR_PARENT_CATEGORIES, TOUR_PARENT_CATEGORIES } = require('../../scripts/lib/tour-family.js');
+  assert.deepEqual(AUTO_TOUR_PARENT_CATEGORIES, ['broadway', 'off-broadway', 'regional']);
+  assert.ok(AUTO_TOUR_PARENT_CATEGORIES.every(c => TOUR_PARENT_CATEGORIES.includes(c)));
+  const shows = [
+    { id: 'the-choir-of-man-off-west-end-2026', title: 'The Choir of Man', category: 'off-west-end', openingDate: '2026-01-01' },
+    { id: 'hamnet-west-end-2023', title: 'Hamnet', category: 'west-end', openingDate: '2023-03-01' },
+    { id: 'the-mousetrap-west-end-1952', title: 'The Mousetrap', category: 'west-end', openingDate: '1952-11-25' },
+  ];
+  for (const slug of ['the-choir-of-man', 'hamnet', 'the-mousetrap']) {
+    assert.equal(parentForSlug(slug, shows, null, AUTO_TOUR_PARENT_CATEGORIES), null, slug);
+    const r = runningTourCandidate({ slug, pageTitle: slug, scheduleUrl: 'u', html: MARKET_PAGE, shows, now: NOW });
+    assert.equal(r.candidate && r.candidate.parentId, undefined, slug);
+  }
+  // The roundup matcher uses the same constant.
+  assert.equal(require('../../scripts/lib/tour-roundup-candidate.js').isTourParentCategory('west-end'), false);
+  // A manual caller still gets every market (Step A).
+  assert.equal(parentForSlug('hamnet', shows, null).id, 'hamnet-west-end-2023');
 });
 
 test('candidates dedupe by key: two pages of one standalone show are ambiguous, different standalone shows are not', () => {

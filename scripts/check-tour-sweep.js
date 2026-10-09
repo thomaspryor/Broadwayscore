@@ -65,15 +65,17 @@ async function main() {
   let fetchPageText = null;
   let titles = {};
   let fetchWiki = null;
+  let fetchWikiArticle = null;
   if (live) {
     const { politeFetchText } = require('./lib/tours-to-you');
     const { listShowPages } = require('./lib/tour-discovery');
     const listed = await listShowPages(url => politeFetchText(url));
     titles = listed.titles || {};
     fetchPageText = async slug => politeFetchText(`https://tourstoyou.org/shows/${slug}/`);
-    fetchWiki = require('./enrich-tour-dates').fetchWikiText;
+    ({ fetchWikiText: fetchWiki, fetchWikiArticle } = require('./enrich-tour-dates'));
   } else {
     fetchWiki = async () => '';
+    fetchWikiArticle = async () => null;
   }
 
   const rows = [];
@@ -94,10 +96,19 @@ async function main() {
       continue;
     }
     const title = pageTitle || pageTitleFromHtml(html);
-    // Saved Wikipedia text offline, if any; live asks Wikipedia for the title the pipeline would use.
-    const savedWiki = readIf(path.join(WIKI_DIR, `${slug}.txt`));
-    const wikiFor = savedWiki !== null ? async () => savedWiki : fetchWiki;
-    const run = at => evaluateTourPage({ slug, pageTitle: title, html, shows, overrides, tourSchedules, retiredIds, now: at, fetchWiki: wikiFor });
+    // Saved Wikipedia article offline, if any (first line "<!-- article: NAME -->"); live asks Wikipedia
+    // for the title the pipeline would use. The saved text feeds the dates only if it mentions a tour,
+    // as fetchWikiText would, and always feeds classification, as fetchWikiArticle would.
+    const saved = readIf(path.join(WIKI_DIR, `${slug}.txt`));
+    let wikiFor = fetchWiki;
+    let articleFor = fetchWikiArticle;
+    if (saved !== null) {
+      const m = /^<!-- article: (.*) -->\n/.exec(saved);
+      const text = saved.replace(/^<!-- article: .* -->\n/, '');
+      wikiFor = async () => (/\btour\b/i.test(text) ? text : '');
+      articleFor = async () => ({ title: m ? m[1] : null, text });
+    }
+    const run = at => evaluateTourPage({ slug, pageTitle: title, html, shows, overrides, tourSchedules, retiredIds, now: at, fetchWiki: wikiFor, fetchWikiArticle: articleFor });
     const got = await run(now);
     // The same page as of the fixture date, for telling time passing from a regression.
     const then = live ? await run(asOf) : null;

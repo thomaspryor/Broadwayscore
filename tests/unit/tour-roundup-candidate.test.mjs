@@ -377,3 +377,68 @@ test('a row the create step classified as an event stops being a suggestion; a s
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+test('P2: standalone pages dedupe by normalised title; the same show on two pages from different starts is ambiguous', () => {
+  const { dedupeCandidates } = require('../../scripts/lib/tour-discovery.js');
+  const a = { key: 'page:jersey-boys', title: 'Jersey Boys', segmentStart: '2026-09-01', tourScheduleSlug: 'jersey-boys' };
+  const b = { key: 'page:jersey-boys-1', title: 'JERSEY BOYS!', segmentStart: '2026-09-01', tourScheduleSlug: 'jersey-boys-1' };
+  const same = dedupeCandidates([a, b]);
+  assert.deepEqual(same.candidates.map(c => c.key), ['page:jersey-boys'], 'one tour on two pages is one candidate');
+  const later = dedupeCandidates([a, { ...b, segmentStart: '2027-02-01' }]);
+  assert.equal(later.candidates.length, 1);
+  assert.ok(later.candidates[0].ambiguous);
+  assert.equal(dedupeCandidates([a, { key: 'page:other', title: 'Other Show', segmentStart: '2026-09-01' }]).candidates.length, 2);
+});
+
+test('P2: sortForCreate puts parented tours first and unclassified standalone pages last, keeping order within a group', () => {
+  const { sortForCreate } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const rows = [
+    { key: 'page:b', needsClassification: true }, { key: 'page:a' }, { key: 'x-2020', parentId: 'x-2020' },
+    { key: 'page:c', needsClassification: true }, { broadwayShowId: 'y-2021', key: 'y-2021' }, { key: 'page:d' },
+  ];
+  assert.deepEqual(sortForCreate(rows).map(r => r.key), ['x-2020', 'y-2021', 'page:a', 'page:d', 'page:b', 'page:c']);
+  assert.equal(rows[0].key, 'page:b', 'the input is not reordered');
+});
+
+test('P2: a row keeps the class the create step gave it while the same segment is rediscovered as unclassified', async () => {
+  const { recordTourCandidates, openTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tour-cand-'));
+  try {
+    const file = path.join(dir, 'c.json');
+    const read = () => JSON.parse(fs.readFileSync(file, 'utf8'));
+    const base = { key: 'page:some-show', title: 'Some Show', source: 'tourstoyou', slug: 'tourstoyou:some-show:2026-09-01', tourScheduleSlug: 'some-show', segmentStart: '2026-09-01' };
+    const discovered = { ...base, pageClass: 'unclassified', needsClassification: true };
+    recordTourCandidates(file, [discovered], '2026-10-01T00:00:00Z');
+    // The create step reads Wikipedia: a stage musical.
+    const rows = read();
+    Object.assign(rows[0], { pageClass: 'production', type: 'musical' });
+    delete rows[0].needsClassification;
+    fs.writeFileSync(file, JSON.stringify(rows));
+    // Next day discovery, with no Wikipedia, calls it unclassified again: the answer stays.
+    recordTourCandidates(file, [discovered], '2026-10-02T00:00:00Z');
+    let [row] = read();
+    assert.deepEqual([row.pageClass, row.type, row.needsClassification, row.firstSeen], ['production', 'musical', undefined, '2026-10-01T00:00:00Z']);
+    // An event answer stays too, so the row does not reopen daily.
+    const events = read();
+    events[0].pageClass = 'event';
+    delete events[0].type;
+    fs.writeFileSync(file, JSON.stringify(events));
+    recordTourCandidates(file, [discovered], '2026-10-03T00:00:00Z');
+    [row] = read();
+    assert.equal(row.pageClass, 'event');
+    assert.equal(openTourCandidates([row], []).length, 0);
+    // A different segment is a different tour and starts again.
+    recordTourCandidates(file, [{ ...discovered, slug: 'tourstoyou:some-show:2027-03-01', segmentStart: '2027-03-01' }], '2026-10-04T00:00:00Z');
+    [row] = read();
+    assert.deepEqual([row.pageClass, row.needsClassification], ['unclassified', true]);
+    // A classifier answer (an override since) beats the earlier one.
+    recordTourCandidates(file, [{ ...base, slug: 'tourstoyou:some-show:2027-03-01', segmentStart: '2027-03-01', pageClass: 'production', type: 'play' }], '2026-10-05T00:00:00Z');
+    [row] = read();
+    assert.deepEqual([row.pageClass, row.type, row.needsClassification], ['production', 'play', undefined]);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
+  }
+});

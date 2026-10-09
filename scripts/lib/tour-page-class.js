@@ -169,6 +169,17 @@ function companyOfSlug(slug, shows) {
   return trackedTourKeys(shows).get(titleKey(base)) || null;
 }
 
+/**
+ * The article's prose: citations and every {{template}} removed. A hatnote such as
+ * {{About||the national touring play ... |Clue: On Stage}} says there is ANOTHER
+ * work (it is the clue that this one never toured), and an infobox field is not prose.
+ */
+function bodyProse(wikiText) {
+  let t = proseOnly(wikiText);
+  for (let i = 0; i < 6 && /\{\{[^{}]*\}\}/.test(t); i++) t = t.replace(/\{\{[^{}]*\}\}/g, '');
+  return t;
+}
+
 const result = (cls, extra) => ({ class: cls, title: null, type: null, reason: '', source: '', ...extra });
 
 // Leading articles never decide whether two titles are the same show.
@@ -273,7 +284,7 @@ function classifyTourPage({ slug, pageTitle = null, rows = null, shows = [], ove
   const box = infoboxClass(wikiText);
   if (box) {
     const undecided = reason => result('unclassified', { title: pageTitle, reason, source: 'none' });
-    if (!TOUR_MENTION_RE.test(proseOnly(wikiText))) return undecided(`the Wikipedia article${wikiTitle ? ` "${wikiTitle}"` : ''} never mentions a tour, so it may be a different production of the title`);
+    if (!TOUR_MENTION_RE.test(bodyProse(wikiText))) return undecided(`the Wikipedia article${wikiTitle ? ` "${wikiTitle}"` : ''} never mentions a tour, so it may be a different production of the title`);
     const conflict = disambiguationConflict(wikiTitle, s, pageTitle);
     if (conflict) return undecided(`Wikipedia article does not fit the page: ${conflict}`);
     if (box.class === 'production') {
@@ -321,6 +332,7 @@ module.exports = {
   overrideProblems,
   maxConcurrentCities,
   infoboxClass,
+  bodyProse,
   similarTrackedShow,
   disambiguationConflict,
   TOUR_MENTION_RE,

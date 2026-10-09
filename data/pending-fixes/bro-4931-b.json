@@ -8,54 +8,20 @@
     "email": null
   },
   "plan": {
-    "summary": "Add 11 national tours the new discovery system found but could not auto-confirm (BRO-4931 owner decision: every touring production is tracked, with or without a Broadway parent). Four are booked-ahead tours confirmed from the Tours To You schedule (Heathers 2027, Dolly Parton’s Smoky Mountain Christmas Carol, The Unauthorized Hallmark(ish) Parody Musical, Dr. Seuss’ The Cat in the Hat); seven had their current-era launch checked by hand against two sources each (Mystic Pizza, Clue second tour, Menopause The Musical 25th anniversary tour, Spamilton, The Bodyguard, All the Devils Are Here). All are provisional tour entries with no closing date.",
+    "summary": "Add 9 national tours of theatrical productions (BRO-4931 owner decision: every touring production is tracked, with or without a Broadway parent). Three are booked-ahead standalone tours confirmed from the Tours To You schedule (Dolly Parton's Smoky Mountain Christmas Carol, The Unauthorized Hallmark-ish Parody Musical, Dr. Seuss' The Cat in the Hat). Six had their current-era launch checked by hand against two sources each (Mystic Pizza, Clue second tour, Menopause The Musical 25th anniversary tour, Spamilton, The Bodyguard, All the Devils Are Here). All are provisional tour entries with no closing date. Heathers and Mexodus are left out until their tours are confirmed.",
     "steps": [
-      "Append heathers-the-musical-tour-2027 (upcoming, launch 2027-05-15, tourOf heathers-the-musical-off-broadway-2025)",
-      "Append dolly-partons-smoky-mountain-christmas-carol-tour-2026 (upcoming, launch 2026-11-13, standalone)",
-      "Append the-unauthorized-hallmark-ish-parody-musical-tour-2026 (upcoming, launch 2026-11-20, standalone)",
-      "Append dr-seuss-the-cat-in-the-hat-tour-2027 (upcoming, launch 2027-01-23, standalone)",
-      "Append mystic-pizza-tour-2026 (open, launch 2026-09-26, tourOf mystic-pizza-regional-2025)",
-      "Append clue-tour-2025 (open, launch 2025-10-21, standalone)",
-      "Append menopause-the-musical-tour-2026 (open, launch 2026-07-14, standalone)",
-      "Append spamilton-an-american-parody-tour-2018 (open, launch 2018-12-20, standalone)",
-      "Append the-bodyguard-tour-2026 (upcoming, launch 2026-10-15, standalone)",
-      "Append all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024 (open, launch 2024-10-12, standalone)"
+      "Append dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+      "Append the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+      "Append dr-seuss-the-cat-in-the-hat-tour-2027",
+      "Append mystic-pizza-tour-2026",
+      "Append clue-tour-2025",
+      "Append menopause-the-musical-tour-2026",
+      "Append spamilton-an-american-parody-tour-2018",
+      "Append the-bodyguard-tour-2026",
+      "Append all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024"
     ],
     "riskLevel": "Low",
     "actions": [
-      {
-        "type": "add-show",
-        "show": {
-          "id": "heathers-the-musical-tour-2027",
-          "title": "Heathers The Musical",
-          "slug": "heathers-the-musical-tour-2027",
-          "venue": "North American Tour",
-          "openingDate": "2027-05-15",
-          "closingDate": null,
-          "status": "upcoming",
-          "type": "musical",
-          "isRevival": false,
-          "category": "tour",
-          "market": "tour",
-          "tourOf": "heathers-the-musical-off-broadway-2025",
-          "tags": [
-            "tour"
-          ],
-          "provisional": true,
-          "discoverySource": "tour-schedule:tourstoyou",
-          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/heathers-the-musical/, launch is the first listed engagement of a tour booked ahead",
-          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/heathers-the-musical/; Tours To You lists 7 engagements from Baltimore (2027-05-15) to Toronto (2027-08-29)",
-          "openingDateSource": "tourstoyou-first-engagement",
-          "tourScheduleSlug": "heathers-the-musical",
-          "images": {
-            "hero": null,
-            "thumbnail": "/images/shows/heathers-the-musical-off-broadway-2025/thumbnail.webp",
-            "poster": "/images/shows/heathers-the-musical-off-broadway-2025/poster.webp"
-          },
-          "synopsis": "*Heathers* is a musical comedy based on the cult film and follows Veronica as she tries to navigate teenage issues, first love, and three Heathers who rule the school with an iron fist.",
-          "runtime": "2h 20m"
-        }
-      },
       {
         "type": "add-show",
         "show": {

@@ -252,4 +252,15 @@ function openTourCandidates(rows, shows) {
   });
 }
 
-module.exports = { isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates };
+/**
+ * Candidates in the order create-tour-entries.js decides them: parented tours
+ * first, then standalone pages, those still to be classified last. A standalone
+ * page costs two Wikipedia reads, so it must not use up the run's time budget
+ * before a parented tour is decided (BRO-4931). Stable; returns a new array.
+ */
+function sortForCreate(candidates) {
+  const rank = c => (candidateParentId(c) ? 0 : c.needsClassification ? 2 : 1);
+  return [...candidates].sort((a, b) => rank(a) - rank(b));
+}
+
+module.exports = { sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates };

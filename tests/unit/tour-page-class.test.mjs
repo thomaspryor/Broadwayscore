@@ -257,3 +257,11 @@ test('P2: event words are checked on the slug before a title match, as whole wor
   for (const slug of ['contributed-musical', 'concerto-for-two', 'tributary', 'stompers', 'circuses-of-the-world']) assert.equal(EVENT_RE.test(slug), false, slug);
   for (const slug of ['rain-a-tribute-to-the-beatles', 'the-illusionists-1', 'disney-on-ice', 'the-hip-hop-nutcracker', 'stomp']) assert.equal(EVENT_RE.test(slug), true, slug);
 });
+
+test('P1-4: a hatnote naming a touring play is not a mention of a tour (the real Clue article)', () => {
+  const { bodyProse } = require('../../scripts/lib/tour-page-class.js');
+  const clue = "{{Short description|1997 musical}}\n{{About||the national touring play based on the 1985 film|Clue: On Stage}}\n{{Infobox Musical\n| name= Clue The Musical\n| tours = none\n}}\n'''Clue the Musical''' ran Off-Broadway in 1997.";
+  assert.doesNotMatch(bodyProse(clue), /tour/i);
+  assert.equal(classifyTourPage({ slug: 'clue', pageTitle: 'Clue', shows: SHOWS, wikiText: clue, wikiTitle: 'Clue (musical)' }).class, 'unclassified');
+  assert.match(bodyProse("A national tour began in {{lang|en|Denver}} in 2026.<ref>x tour y</ref>"), /national tour began/);
+});
