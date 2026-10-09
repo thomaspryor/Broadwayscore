@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "slam-frank-off-broadway-2026",
   "openingDate": "2026-10-04",
-  "detectedAt": "2026-10-09T21:57:31.444Z",
+  "detectedAt": "2026-10-09T22:47:38.673Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "thedaviddesk2--davidsheward.json",
-      "outletId": "thedaviddesk2",
-      "criticName": "David.sheward",
-      "url": "http://thedaviddesk2.blogspot.com/2026/10/off-bway-reviews-slam-frank-creation.html",
-      "fullTextLen": 7268,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "timeout--unknown.json",
       "outletId": "timeout",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
