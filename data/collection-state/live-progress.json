@@ -1,131 +1,130 @@
 {
-  "updatedAt": "2026-10-09T10:34:18.938Z",
-  "processed": 63,
-  "failed": 37,
-  "successRate": "63.0%",
+  "updatedAt": "2026-10-09T11:35:48.862Z",
+  "processed": 40,
+  "failed": 20,
+  "successRate": "66.7%",
   "tierBreakdown": {
-    "playwright": 42,
-    "amp": 1,
-    "browserbase": 13,
-    "directCookies": 0,
+    "playwright": 18,
+    "amp": 2,
+    "browserbase": 2,
+    "directCookies": 1,
     "scrapingdog": 1,
-    "scrapingbee": 10,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 14
   },
-  "browserbaseSessions": 21,
+  "browserbaseSessions": 23,
   "recentActivity": [
     {
-      "t": "2026-10-09T10:17:17.266Z",
-      "event": "bb-session",
-      "session": "f0950763",
-      "url": "https://www.washingtonpost.com/news/style-blog/wp/2015/10/29/therese-raquin-with"
-    },
-    {
-      "t": "2026-10-09T10:17:17.629Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-10-09T10:19:46.797Z",
-      "event": "bb-session",
-      "session": "f2b4d9da",
-      "url": "http://www.wsj.com/articles/the-gin-game-review-a-sugar-coated-pill-1444947066"
-    },
-    {
-      "t": "2026-10-09T10:19:47.190Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-09T10:21:34.937Z",
-      "event": "bb-session",
-      "session": "1a744b26",
-      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
-    },
-    {
-      "t": "2026-10-09T10:21:38.763Z",
+      "t": "2026-10-09T11:19:09.222Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
     },
     {
-      "t": "2026-10-09T10:21:56.192Z",
+      "t": "2026-10-09T11:21:07.331Z",
       "event": "bb-session",
-      "session": "433b9190",
-      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
+      "session": "6abb4f6a",
+      "url": "https://deadline.com/2014/07/tupac-shakur-musical-holler-if-ya-hear-me-gets-broa"
     },
     {
-      "t": "2026-10-09T10:22:00.027Z",
+      "t": "2026-10-09T11:22:55.132Z",
+      "event": "bb-session",
+      "session": "72a0a327",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/balancing-tupac-and-th"
+    },
+    {
+      "t": "2026-10-09T11:22:59.860Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
     },
     {
-      "t": "2026-10-09T10:26:32.832Z",
+      "t": "2026-10-09T11:23:25.830Z",
       "event": "bb-session",
-      "session": "9033ad7e",
-      "url": "http://www.hollywoodreporter.com/review/doctor-zhivago-theater-review-790426"
+      "session": "aae88d8c",
+      "url": "http://www.northjersey.com/arts-and-entertainment/theater/balancing-tupac-and-th"
     },
     {
-      "t": "2026-10-09T10:26:51.401Z",
-      "event": "bb-session",
-      "session": "c8a862ea",
-      "url": "http://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/"
+      "t": "2026-10-09T11:23:30.592Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     },
     {
-      "t": "2026-10-09T10:28:43.655Z",
+      "t": "2026-10-09T11:30:17.404Z",
       "event": "bb-session",
-      "session": "a7d86c74",
-      "url": "http://www.washingtonpost.com/entertainment/music/review-broadways-doctor-zhivag"
+      "session": "fecf14e7",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/the-realistic-joneses-2"
     },
     {
-      "t": "2026-10-09T10:28:44.031Z",
+      "t": "2026-10-09T11:30:18.363Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "newyorker.com"
     },
     {
-      "t": "2026-10-09T10:28:51.147Z",
+      "t": "2026-10-09T11:31:54.361Z",
       "event": "bb-session",
-      "session": "6ec616b6",
-      "url": "http://www.washingtonpost.com/entertainment/music/review-broadways-doctor-zhivag"
+      "session": "5980de7e",
+      "url": "http://online.wsj.com/article/AP659b105326b84174b54104033afa3360.html"
     },
     {
-      "t": "2026-10-09T10:28:51.536Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-10-09T10:30:09.695Z",
-      "event": "bb-session",
-      "session": "b934de8c",
-      "url": "http://www.nytimes.com/2015/04/10/theater/review-wolf-hall-the-stage-version-unt"
-    },
-    {
-      "t": "2026-10-09T10:30:10.064Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-09T10:30:27.127Z",
-      "event": "bb-session",
-      "session": "e2cd9186",
-      "url": "http://www.nytimes.com/2015/04/10/theater/review-wolf-hall-the-stage-version-unt"
-    },
-    {
-      "t": "2026-10-09T10:30:27.478Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-09T10:33:03.737Z",
-      "event": "bb-session",
-      "session": "7e0bce6b",
-      "url": "http://www.wsj.com/articles/review-of-wolf-hall-now-on-broadway-1428631502"
-    },
-    {
-      "t": "2026-10-09T10:33:04.132Z",
+      "t": "2026-10-09T11:31:55.247Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T11:32:06.394Z",
+      "event": "bb-session",
+      "session": "977a53e6",
+      "url": "http://online.wsj.com/article/AP659b105326b84174b54104033afa3360.html"
+    },
+    {
+      "t": "2026-10-09T11:32:07.240Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T11:32:56.994Z",
+      "event": "bb-session",
+      "session": "d8e0d96f",
+      "url": "https://www.wsj.com/articles/SB10001424052702304157204579509233838468248"
+    },
+    {
+      "t": "2026-10-09T11:32:57.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T11:33:17.627Z",
+      "event": "bb-session",
+      "session": "04d0a707",
+      "url": "https://www.wsj.com/articles/SB10001424052702304157204579509233838468248"
+    },
+    {
+      "t": "2026-10-09T11:33:18.515Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T11:35:18.889Z",
+      "event": "bb-session",
+      "session": "928eaf62",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-realistic-joneses"
+    },
+    {
+      "t": "2026-10-09T11:35:19.878Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-09T11:35:27.516Z",
+      "event": "bb-session",
+      "session": "c5b63bff",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/the-realistic-joneses"
+    },
+    {
+      "t": "2026-10-09T11:35:28.441Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
