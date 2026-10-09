@@ -41,8 +41,9 @@ describe('outlet-registry.json tier schema', () => {
     assert.deepEqual(invalid, [], `Outlets with invalid tier:\n  ${invalid.join('\n  ')}`);
   });
 
-  test('tier-4 outlets (forward, theater-pizzazz) validate cleanly', () => {
-    for (const id of ['forward', 'theater-pizzazz']) {
+  // theater-pizzazz: T4 -> T3 in the 2026-10 outlet tier audit (BRO-4930)
+  test('tier-4 outlets (forward, stagezine) validate cleanly', () => {
+    for (const id of ['forward', 'stagezine']) {
       const outlet = registry.outlets[id];
       assert.ok(outlet, `${id} should exist in outlet-registry.json`);
       assert.equal(outlet.tier, 4, `${id} should be tier 4`);

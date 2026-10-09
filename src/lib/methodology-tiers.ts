@@ -20,14 +20,14 @@ export const METHODOLOGY_TIER_OUTLETS: Record<MethodologyMarket, Record<1 | 2, r
     1: ['nytimes', 'vulture', 'variety', 'hollywood-reporter', 'wsj', 'washpost', 'newyorker', 'timeout',
       'broadwaynews', 'deadline', 'ap', 'newsday', 'latimes', 'guardian'],
     2: ['theatermania', 'nysr', 'broadwayworld', 'nytg', 'theatrely', 'nydailynews', 'nypost', 'theater-life',
-      'front-row-center', 'theater-scene', 'cititour', 'talkinbroadway', 'backstage', 'ew', 'rollingstone',
+      'theater-scene', 'cititour', 'talkinbroadway', 'backstage', 'ew', 'rollingstone',
       'people', 'slate', 'indiewire'],
   },
   london: {
     1: ['guardian', 'times-uk', 'telegraph', 'standard', 'financialtimes', 'thestage', 'timeout-london',
       'independent', 'observer', 'daily-mail', 'i-paper'],
     2: ['whatsonstage', 'london-theatre', 'thereviewshub', 'artsdesk', 'british-theatre', 'the-spectator-uk',
-      'everything-theatre', 'theatre-weekly', 'london-box-office', 'broadwayworld', 'nytimes'],
+      'london-box-office', 'broadwayworld', 'nytimes'],
   },
 };
 

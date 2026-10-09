@@ -58,7 +58,8 @@ describe('getOutletConfig() — Default tier (no showCategory)', () => {
       'indiewire', 'dailybeast', 'nytg', 'nysr',
       'theatrely', 'time', 'bloomberg', 'slate',
       'chicagotribune', 'usatoday', 'nydailynews', 'rollingstone',
-      'people', 'parade', 'billboard', 'huffpost', 'backstage',
+      'people', 'huffpost', 'backstage',
+      // parade, billboard: T2 -> T3 in the 2026-10 outlet tier audit (BRO-4930)
       'village-voice', 'amny', 'talkinbroadway',
       'ny1', 'nbcny', 'curtainup',
       // BroadwayWorld — promoted from T3 to T2 in v5
