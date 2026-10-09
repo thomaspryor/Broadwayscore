@@ -1,14 +1,6 @@
 {
   "entries": [
     {
-      "showId": "soon-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-05T17:22:03.176Z",
-      "dueAt": "2026-10-06T09:22:03.176Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-06T10:49:51.856Z"
-    },
-    {
       "showId": "the-infinite-wrench-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-07T14:11:04.668Z",
@@ -62,6 +54,42 @@
       ],
       "attempted": true,
       "attemptedAt": "2026-10-08T06:43:00.923Z"
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "rent-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-09T00:43:10.279Z",
+      "dueAt": "2026-10-09T01:43:10.279Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "rent-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-09T00:43:10.279Z",
+      "dueAt": "2026-10-09T03:43:10.279Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "rent-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-09T00:43:10.279Z",
+      "dueAt": "2026-10-09T12:43:10.279Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
     }
   ]
 }
