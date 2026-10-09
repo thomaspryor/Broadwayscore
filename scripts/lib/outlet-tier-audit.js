@@ -163,20 +163,33 @@ function computeOutletStats(reviews, opts = {}) {
 }
 
 /**
- * Current tier for an outlet, same precedence as compute-critic-score.js.
+ * Current tier for an outlet, same precedence and falsy semantics as
+ * compute-critic-score.js: per region, config (tiers[region] ?? tier) ||
+ * registry (tiers[region] ?? tier) || DEFAULT_TIER. A config entry with no
+ * usable tier falls through to the registry exactly as the scorer does.
  * @returns {{ nyc: number, london: number, source: 'config'|'registry'|'default' }}
  */
 function resolveCurrentTier(outletId, tiersConfig, registry) {
-  const pick = (entry) => {
-    const base = entry.tier != null ? entry.tier : (entry.tiers && (entry.tiers.nyc ?? entry.tiers.london)) ?? DEFAULT_TIER;
-    const t = entry.tiers || {};
-    return { nyc: t.nyc != null ? t.nyc : base, london: t.london != null ? t.london : base };
+  const cfg = tiersConfig[outletId];
+  const reg = registry[outletId];
+  const regional = (entry, region) => {
+    if (!entry) return undefined;
+    if (entry.tiers && entry.tiers[region] != null) return entry.tiers[region];
+    return entry.tier;
   };
-  if (tiersConfig[outletId]) return { ...pick(tiersConfig[outletId]), source: 'config' };
-  if (registry[outletId] && (registry[outletId].tier != null || registry[outletId].tiers)) {
-    return { ...pick(registry[outletId]), source: 'registry' };
-  }
-  return { nyc: DEFAULT_TIER, london: DEFAULT_TIER, source: 'default' };
+  const sources = new Set();
+  const pick = (region) => {
+    const o = regional(cfg, region);
+    if (o) { sources.add('config'); return o; }
+    const r = regional(reg, region);
+    if (r) { sources.add('registry'); return r; }
+    sources.add('default');
+    return DEFAULT_TIER;
+  };
+  const nyc = pick('nyc');
+  const london = pick('london');
+  const source = sources.has('config') ? 'config' : sources.has('registry') ? 'registry' : 'default';
+  return { nyc, london, source };
 }
 
 /**
@@ -240,7 +253,7 @@ function simulateImpact({ reviews, shows, registry, tiersConfig, proposals }) {
   const showById = new Map(shows.map(s => [s.id, s]));
   const moved = [];
   for (const [showId, rows] of byShow) {
-    if (!rows.some(r => ids.has((r.outletId || '').toLowerCase()))) continue;
+    if (!rows.some(r => ids.has((r.outletId || '').toLowerCase().trim()))) continue;
     const show = showById.get(showId) || {};
     const b = before(rows, registry, show.category, show.type);
     const a = after(rows, registry, show.category, show.type);

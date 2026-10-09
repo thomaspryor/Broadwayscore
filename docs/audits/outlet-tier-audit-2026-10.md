@@ -38,7 +38,7 @@ The corpus is not evenly spread over time:
 - `normalizedShare`: for each year from the outlet's first to last review, divide the outlet's count by the corpus total for that year, then take the mean. Years in the span where the outlet published nothing count as 0. Years where the whole corpus has fewer than 100 dated reviews (everything before 2006) are skipped, because one review in a year with 8 corpus reviews would read as a 12% share. This keeps 2026's volume from dominating, and an outlet active only in the thin 2020-21 years is measured against those years' small totals instead of being penalized for COVID.
 - `share2015_19`: the outlet's pooled count in 2015-2019 divided by the corpus count in those years (a stable pre-expansion baseline).
 - `share2022plus`: the same for 2022 onward.
-- `nycReviews`, `londonReviews`: reviews on NYC (Broadway, Off-Broadway, tours) vs London (West End, Off-West End) shows, which decides whether a regional split matters.
+- `nycReviews`, `londonReviews`: reviews on NYC-tier shows (Broadway, Off-Broadway, tours and US regional, all of which score with an outlet's NYC tier) vs London (West End, Off-West End) shows, which decides whether a regional split matters.
 
 Caveat: normalizedShare is generous to short-lived outlets by design. An outlet with 18 reviews all in 2011 reads 3.4% because 2011's corpus was small. Use the two window shares to compare outlets of different ages.
 
@@ -81,7 +81,7 @@ Default is keep. Volume is one input. Defunct outlets keep the tier that matched
 
 8 moves out of 297 outlets. The other 289 keep their current tier.
 
-Score impact is simulated: `scripts/lib/compute-critic-score.js` (the scorer behind the published `cs`) runs on `data/reviews.json` twice per show, once with the current config and once with an in-memory copy carrying the move. The config file is never written. "Shows moved" counts shows whose unrounded score changes. "Displayed change" counts shows whose rounded score changes by at least one point. On the current config this simulation matches the published score (`public/data/shows/{id}.json:cs`, the field `getCriticScore` reads) exactly for 768 of 1,151 shows and within 1 point for 1,081 (94%). Production reads review-text files this session did not have, so the deltas are reliable but absolute numbers can differ by a point.
+Score impact is simulated: `scripts/lib/compute-critic-score.js` (the scorer behind the published `cs`) runs on `data/reviews.json` twice per show, once with the current config and once with an in-memory copy carrying the move. The config file is never written. "Shows moved" counts shows whose unrounded score changes. "Displayed change" counts shows whose rounded score changes by at least one point. On the current config this simulation matches the published score (`public/data/shows/{id}.json:cs`, the field `getCriticScore` reads) exactly for 768 of 1,151 shows and within 1 point for 1,081 (94%). The gap is most likely data timing: the audit used the 2026-10-06 `reviews.json` snapshot while the published files were rebuilt on 2026-10-09. Each delta compares the same inputs with and without the move, so absolute numbers can be off by about a point while the direction and size of each shift hold. Impact counts also include shows the site hides (announced, or reviews hidden), so they run slightly high.
 
 `scripts/scoring-delta.js` was not used for impact. It replays review inclusion and score-source logic, and a tier weight change moves neither.
 
@@ -93,10 +93,10 @@ Score impact is simulated: `scripts/lib/compute-critic-score.js` (the scorer beh
 | DC Theater Arts | T4 to T3 (up) | 22 | 5 | 2.4 | Renamed DC Metro Theater Arts, whose old id is already T3. |
 | Express (UK) | T4/T4 to T4/T3 (up in London) | 15 | 4 | 0.4 | National daily with professional critics. |
 | South London | T4 to T3 (up) | 16 | 1 | 0.3 | Local news publisher (Southwark News group) with bylined reviews. |
-| ReviewsGate | registry T4 to T3, adds a config entry | 5 | 2 | 0.3 | Defunct multi-contributor UK review site with veteran critics. |
+| ReviewsGate | registry T4 to T3 (up), adds a config entry | 5 | 2 | 0.3 | Defunct multi-contributor UK review site with veteran critics. |
 | Medium | T3 to T4 (down) | 19 | 1 | 0.5 | Self-publishing platform; individual posts, no editorial oversight. |
 
-All 8 together: 406 shows move, 92 change their displayed score by at least one point, the largest shift is 6.1 points, and the mean absolute shift is 0.3. The biggest movers are all small London shows, driven by Everything Theatre:
+All 8 together: 406 shows move, 92 change their displayed score by at least one point, the largest shift is 6.1 points, and the mean absolute shift is 0.3. Most of the biggest movers are small London shows, driven by Everything Theatre. Beetlejuice's tour moves because of the DC Theater Arts promotion:
 
 | Show | Published | Before (sim) | After (sim) | Shift |
 |---|---|---|---|---|

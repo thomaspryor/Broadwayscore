@@ -124,6 +124,34 @@ describe('resolveCurrentTier precedence', () => {
   });
 });
 
+describe('resolveCurrentTier parity with the real scorer', () => {
+  // Infer the scorer's tier for outlet x: x scores 0, reference T1 outlet scores 100.
+  // s = 100 * 1 / (1 + w)  →  w = 100 / s - 1.
+  const WEIGHT_TO_TIER = { '1': 1, '0.75': 2, '0.4': 3, '0.2': 4 };
+  function scorerTier(cfg, registry, category) {
+    const score = loadScorerWithTiers({ ...cfg, ref: { tier: 1 } });
+    const r = score([
+      { outletId: 'x', criticName: 'A', assignedScore: 0, publishDate: '2020-01-01' },
+      { outletId: 'ref', criticName: 'B', assignedScore: 100, publishDate: '2020-01-01' },
+    ], registry, category);
+    return WEIGHT_TO_TIER[String(Math.round((100 / r.s - 1) * 100) / 100)];
+  }
+  const cases = [
+    ['config only', { x: { tier: 2 } }, {}],
+    ['config regional', { x: { tier: 2, tiers: { nyc: 2, london: 1 } } }, {}],
+    ['config london-only tiers, no tier: falls to registry', { x: { tiers: { london: 2 } } }, { x: { tier: 4 } }],
+    ['registry regional', {}, { x: { tier: 3, tiers: { london: 4 } } }],
+    ['nothing: default', {}, {}],
+  ];
+  for (const [name, cfg, registry] of cases) {
+    it(name, () => {
+      const got = resolveCurrentTier('x', cfg, registry);
+      assert.strictEqual(got.nyc, scorerTier(cfg, registry, 'broadway'), 'nyc');
+      assert.strictEqual(got.london, scorerTier(cfg, registry, 'west-end'), 'london');
+    });
+  }
+});
+
 describe('applyProposals + scorer swap', () => {
   const tiersPath = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'src', 'config', 'outlet-tiers.json');
   const realTiers = JSON.parse(fs.readFileSync(tiersPath, 'utf8'));

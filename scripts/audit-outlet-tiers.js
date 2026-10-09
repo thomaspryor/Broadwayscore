@@ -89,7 +89,7 @@ const CSV_COLUMNS = [
 function csvCell(v) {
   if (v == null) return '';
   const s = String(v);
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
 function fmt(n, digits) {
@@ -99,13 +99,12 @@ function fmt(n, digits) {
 function changeLabel(row, j) {
   const c = row.current;
   if (j.proposedNyc === c.nyc && j.proposedLondon === c.london) {
-    return row.current.source === 'config' ? 'keep' : 'keep (registry)';
+    return c.source === 'config' ? 'keep' : `keep (${c.source})`;
   }
-  if (row.current.source !== 'config') return 'configure';
   const up = j.proposedNyc < c.nyc || j.proposedLondon < c.london;
   const down = j.proposedNyc > c.nyc || j.proposedLondon > c.london;
-  if (up && down) return 'regional split';
-  return up ? 'move up' : 'move down';
+  const dir = up && down ? 'regional split' : up ? 'move up' : 'move down';
+  return c.source === 'config' ? dir : `configure (${dir})`;
 }
 
 function toCsv(rows, justifications) {
