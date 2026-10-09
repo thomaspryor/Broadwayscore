@@ -12073,7 +12073,7 @@
       "linearIdentifier": null
     },
     "tour-page-audit:closed-tour-has-future-stops": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "National tour pages show wrong information: 1 page problem(s) (closed-tour-has-future-stops)",
       "firstSeen": "2026-10-08T18:00:09.303Z",
@@ -12089,7 +12089,9 @@
         "mode": "dispatch-at-filing",
         "runId": "37820206082",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
-      }
+      },
+      "resolvedAt": "2026-10-09T17:32:13.345Z",
+      "resolveReason": "audit-tour-pages: no longer reported"
     },
     "tour-page-audit:poster-missing": {
       "status": "open",
@@ -12097,7 +12099,7 @@
       "title": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
       "firstSeen": "2026-10-08T18:00:17.152Z",
       "incidentOpenedAt": "2026-10-08T18:00:17.152Z",
-      "lastSeen": "2026-10-08T18:00:17.152Z",
+      "lastSeen": "2026-10-09T17:32:13.352Z",
       "lastNotifiedAt": "2026-10-08T18:00:17.152Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -12108,7 +12110,8 @@
         "mode": "dispatch-at-filing",
         "runId": "37820206082",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
-      }
+      },
+      "silentRefires": 1
     },
     "tour-page-audit:schedule-orphan": {
       "status": "open",
@@ -12116,7 +12119,7 @@
       "title": "National tour pages show wrong information: 1 page problem(s) (schedule-orphan)",
       "firstSeen": "2026-10-08T18:00:24.104Z",
       "incidentOpenedAt": "2026-10-08T18:00:24.104Z",
-      "lastSeen": "2026-10-08T18:00:24.104Z",
+      "lastSeen": "2026-10-09T17:32:13.356Z",
       "lastNotifiedAt": "2026-10-08T18:00:24.104Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -12127,7 +12130,8 @@
         "mode": "dispatch-at-filing",
         "runId": "37820206082",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37820206082"
-      }
+      },
+      "silentRefires": 1
     },
     "cron-health-chronic:Weekly A/B Monitors": {
       "status": "open",
