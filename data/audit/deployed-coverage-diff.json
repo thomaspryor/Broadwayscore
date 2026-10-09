@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T16:57:17.159Z",
+  "generatedAt": "2026-10-09T21:35:25.691Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -8,7 +8,6 @@
   "defective": 7,
   "byType": {
     "score-drift": 3,
-    "missing-from-prod": 2,
     "unreachable": 4
   },
   "shows": [
@@ -73,49 +72,6 @@
       "deployedCount": null
     },
     {
-      "showId": "an-oak-tree-off-west-end-2026",
-      "title": "An Oak Tree",
-      "openingDate": "2026-10-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: thestage"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.18 vs local 77.48 (Δ0.3)"
-        }
-      ],
-      "missingFromProd": [
-        "thestage"
-      ],
-      "localCount": 9,
-      "deployedCount": 8
-    },
-    {
-      "showId": "dirty-dancing-tour-2026",
-      "title": "Dirty Dancing",
-      "openingDate": "2026-08-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "2 scored outlet(s) absent from the deployed payload: around-the-town-chicago, new-city-stage"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed payload has no numeric cs (local 73.53)"
-        }
-      ],
-      "missingFromProd": [
-        "around-the-town-chicago",
-        "new-city-stage"
-      ],
-      "localCount": 4,
-      "deployedCount": 2
-    },
-    {
       "showId": "rent-west-end-2026",
       "title": "Rent",
       "openingDate": "2026-10-08",
@@ -123,12 +79,42 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.9 vs local 79.53 (Δ0.63)"
+          "detail": "deployed cs 79.62 vs local 79.71 (Δ0.09)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17
+      "localCount": 22,
+      "deployedCount": 22
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "title": "Into the Woods",
+      "openingDate": "2026-10-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.48 vs local 85.59 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 52,
+      "deployedCount": 52
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "title": "Hay Fever",
+      "openingDate": "2026-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 66.67 vs local 66.38 (Δ0.29)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 34
     }
   ]
 }
