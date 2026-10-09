@@ -503,16 +503,18 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
       )}
       {showTiers && (
         // The whole scale at once, so the bars are learned from one line (BRO-4905).
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
-          <span>Counts</span>
-          {TIER_LIST.map(t => (
-            <span key={t} className="inline-flex items-center gap-1.5">
-              <span aria-hidden="true" className={`inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border border-white/[0.12] text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em] ${t === 1 ? 'text-gray-300' : 'text-gray-400'}`}>
-                T{t}<TierBars tier={t} />
+        <div className="flex items-start gap-3 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
+          <span className="leading-[18px]">Counts</span>
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            {TIER_LIST.map(t => (
+              <span key={t} className="inline-flex items-center gap-1.5">
+                <span aria-hidden="true" className={`inline-flex items-center gap-[3px] h-[18px] px-[5px] rounded border border-white/[0.12] text-[10px] font-semibold leading-none tabular-nums tracking-[0.02em] ${t === 1 ? 'text-gray-300' : 'text-gray-400'}`}>
+                  T{t}<TierBars tier={t} />
+                </span>
+                <span className="tabular-nums text-gray-400"><span className="sr-only">Tier {t}: </span>{tierPercent(t)}%</span>
               </span>
-              <span className="tabular-nums text-gray-400"><span className="sr-only">Tier {t}: </span>{tierPercent(t)}%</span>
-            </span>
-          ))}
+            ))}
+          </span>
         </div>
       )}
       {displayedReviews.map((review, i) => (
