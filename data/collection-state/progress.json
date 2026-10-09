@@ -374,7 +374,9 @@
     "dear-jack-dear-louise-off-west-end-2026/londonpubtheatres--albertine-sins.json",
     "the-authenticator-west-end-2026/north-west-end--michelle-knight.json",
     "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "dear-octopus-west-end-2024/guardian--kate-wyver.json",
@@ -590,7 +592,19 @@
     "romeo-and-juliet-west-end-2026/nydailynews--joe-dziemianowicz.json",
     "romeo-and-juliet-west-end-2026/nydailynews--unknown.json",
     "romeo-and-juliet-west-end-2026/amny--unknown.json",
-    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json"
+    "romeo-and-juliet-west-end-2026/ap--mark-kennedy.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -837,7 +851,9 @@
       "death-of-a-salesman-2026/ny1--adolfo-mena-cejas.json",
       "dear-jack-dear-louise-off-west-end-2026/londonpubtheatres--albertine-sins.json",
       "romeo-and-juliet-west-end-2026/express-uk--neil-norman.json",
-      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json"
+      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -999,7 +1015,7 @@
     ]
   },
   "startTime": "2026-10-08T22:53:51.152Z",
-  "lastProcessed": "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-08T22:58:24.454Z",
@@ -1159,6 +1175,46 @@
       "event": "bb-session",
       "session": "e1f77384",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-09T03:38:21.553Z",
+      "event": "bb-session",
+      "session": "5e80623c",
+      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
+    },
+    {
+      "t": "2026-10-09T03:38:40.023Z",
+      "event": "bb-session",
+      "session": "c919546b",
+      "url": "http://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker-"
+    },
+    {
+      "t": "2026-10-09T03:42:22.049Z",
+      "event": "bb-session",
+      "session": "43fc28ac",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-09T03:44:14.479Z",
+      "event": "bb-session",
+      "session": "559c230f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-09T03:44:14.801Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-09T03:44:31.663Z",
+      "event": "bb-session",
+      "session": "318162aa",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-09T03:44:31.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
