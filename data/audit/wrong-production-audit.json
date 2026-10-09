@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-09T09:55:26.720Z",
+  "timestamp": "2026-10-09T10:08:19.240Z",
   "stats": {
-    "totalReviews": 50324,
-    "alreadyFlagged": 19219,
+    "totalReviews": 50334,
+    "alreadyFlagged": 19221,
     "dateGuardCatches": 276,
-    "directorMismatch": 1545,
+    "directorMismatch": 1544,
     "tvFilmSignals": 1476,
-    "londonSignals": 1560,
+    "londonSignals": 1563,
     "offBroadwaySignals": 508,
     "yearMismatch": 122,
     "noPublishDate": 5186
@@ -9009,20 +9009,6 @@
       "score": 90,
       "publishDate": "2012-03-15",
       "url": "https://www.philly.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
-      "file": "philadelphia-inquirer--unknown.json",
-      "score": 88,
-      "publishDate": "2012-03-15",
-      "url": "https://www.inquirer.com/philly/entertainment/20120315_Broadway_review_Death_of_a_Salesman.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18067,6 +18053,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "jolienstheatrediary--jolien.json",
+      "publishDate": "2026-10-08",
+      "url": "https://www.jolienstheatrediary.com/reviews/review-into-the-woods-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -44034,6 +44038,20 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-2005",
+      "file": "nytg--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "ap--mark-kennedy.json",
       "score": 93,
@@ -44250,25 +44268,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-2020",
-      "file": "nytg--unknown.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"anthony page\" from whos-afraid-of-virginia-woolf-2005"
         }
       ]
     },
@@ -46069,6 +46068,19 @@
       ]
     },
     {
+      "showId": "an-oak-tree-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-10-08",
+      "url": "https://theatreandtonic.co.uk/blog/an-oak-tree-the-other-palace-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "anansi-the-spider-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 82,
@@ -47426,6 +47438,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "afridiziak-theatre-news--mark-arbouine.json",
+      "publishDate": "2026-10-09",
+      "url": "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
