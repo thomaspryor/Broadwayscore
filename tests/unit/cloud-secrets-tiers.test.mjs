@@ -28,6 +28,12 @@ test('LINEAR_API_KEY is a REQUIRED (Tier 1) cloud secret', () => {
   );
 });
 
+test('the accounts and deploy keys are listed, so a cloud session sees when it lacks them (BRO-4894)', () => {
+  for (const k of ['SUPABASE_ACCESS_TOKEN', 'SUPABASE_PROJECT_REF', 'SUPABASE_SERVICE_ROLE_KEY', 'NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'VERCEL_TOKEN', 'SENTRY_AUTH_TOKEN']) {
+    assert.ok(TIER_1.includes(k) || TIER_2.includes(k), `${k} must be in a tier: the 2026-10-08 accounts audit ran with none of these and could not tell`);
+  }
+});
+
 test('requiring the script does not execute it (no process.exit on import)', () => {
   // The module is guarded by `require.main === module`. Without that guard this
   // very test file would kill its own worker on import.
