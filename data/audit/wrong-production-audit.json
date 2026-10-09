@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-08T23:52:59.796Z",
+  "timestamp": "2026-10-09T00:08:10.101Z",
   "stats": {
-    "totalReviews": 49515,
-    "alreadyFlagged": 19122,
+    "totalReviews": 49519,
+    "alreadyFlagged": 19125,
     "dateGuardCatches": 278,
-    "directorMismatch": 1501,
+    "directorMismatch": 1500,
     "tvFilmSignals": 1424,
-    "londonSignals": 1462,
+    "londonSignals": 1463,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 5484
+    "noPublishDate": 5480
   },
   "findings": [
     {
@@ -17888,19 +17888,6 @@
           "severity": "MEDIUM",
           "detail": "Published 240d before show (2026-01-25 vs 2026-09-22)"
         },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "theatre-tickets--unknown.json",
-      "publishDate": null,
-      "url": "https://noel-coward.theatre-tickets.com/into-the-woods",
-      "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -46002,6 +45989,20 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "london-box-office--unknown.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-unattached--mike-stone.json",
       "score": 89,
       "publishDate": "2026-10-08",
@@ -59098,6 +59099,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 61,
       "publishDate": "2026-10-08",
       "url": "https://www.timeout.com/london/news/rent-review-tom-stoppard-theatre-gaten-matarazzo-100826",
       "findings": [
