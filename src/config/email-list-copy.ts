@@ -45,7 +45,7 @@ export const ACCOUNT_NUDGE_COPY = {
  * read as the same thing (BRO-4897).
  */
 export const SHOW_EMAIL_COPY = {
-  prompt: (showTitle: string) => `Email me about ${showTitle}: its opening night score, closing news and lotteries`,
+  prompt: (showTitle: string) => `Get ${showTitle} news by email: opening night score, closing dates, lotteries`,
   button: 'Email me',
   success: (showTitle: string) => `We'll email you about ${showTitle}`,
 } as const;
