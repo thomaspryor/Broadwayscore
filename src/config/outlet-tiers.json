@@ -30,7 +30,7 @@
     "scoreFormat": "text_bucket"
   },
   "billboard": {
-    "tier": 2,
+    "tier": 3,
     "name": "Billboard",
     "scoreFormat": "text_bucket"
   },
@@ -122,9 +122,9 @@
     "scoreFormat": "text_bucket"
   },
   "dc-theater-arts": {
-    "tier": 4,
+    "tier": 3,
     "tiers": {
-      "nyc": 4
+      "nyc": 3
     },
     "name": "DC Theater Arts",
     "scoreFormat": "text_bucket"
@@ -147,9 +147,9 @@
     }
   },
   "everything-theatre": {
-    "tier": 2,
+    "tier": 3,
     "tiers": {
-      "london": 2
+      "london": 3
     },
     "name": "Everything Theatre",
     "scoreFormat": "stars",
@@ -189,9 +189,9 @@
     "scoreFormat": "text_bucket"
   },
   "front-row-center": {
-    "tier": 2,
+    "tier": 3,
     "tiers": {
-      "nyc": 2
+      "nyc": 3
     },
     "name": "Front Row Center",
     "scoreFormat": "text_bucket"
@@ -400,7 +400,7 @@
     "maxScale": 5
   },
   "parade": {
-    "tier": 2,
+    "tier": 3,
     "name": "Parade",
     "scoreFormat": "text_bucket"
   },
@@ -497,9 +497,9 @@
     "scoreFormat": "text_bucket"
   },
   "theater-pizzazz": {
-    "tier": 4,
+    "tier": 3,
     "tiers": {
-      "nyc": 4
+      "nyc": 3
     },
     "name": "Theater Pizzazz",
     "scoreFormat": "text_bucket"
@@ -521,9 +521,9 @@
     }
   },
   "theatre-weekly": {
-    "tier": 2,
+    "tier": 3,
     "tiers": {
-      "london": 2
+      "london": 3
     },
     "name": "Theatre Weekly",
     "scoreFormat": "text_bucket"
@@ -621,7 +621,7 @@
     "scoreFormat": "text_bucket"
   },
   "vox": {
-    "tier": 2,
+    "tier": 3,
     "name": "Vox",
     "scoreFormat": "text_bucket"
   },
@@ -668,7 +668,7 @@
     }
   },
   "express-uk": {
-    "tier": 4,
+    "tier": 3,
     "name": "Express  (UK)",
     "scoreFormat": "text_bucket"
   },
@@ -678,12 +678,12 @@
     "scoreFormat": "text_bucket"
   },
   "times-square-chronicles": {
-    "tier": 4,
+    "tier": 3,
     "name": "Times Square Chronicles",
     "scoreFormat": "text_bucket"
   },
   "broadway-and-me": {
-    "tier": 4,
+    "tier": 3,
     "name": "Broadway & Me",
     "scoreFormat": "text_bucket"
   },
@@ -758,7 +758,7 @@
     "scoreFormat": "text_bucket"
   },
   "america-magazine": {
-    "tier": 4,
+    "tier": 3,
     "name": "America Magazine",
     "scoreFormat": "text_bucket"
   },
@@ -778,7 +778,7 @@
     "scoreFormat": "text_bucket"
   },
   "off-off-online": {
-    "tier": 4,
+    "tier": 3,
     "name": "Off Off Online",
     "scoreFormat": "text_bucket"
   },
@@ -788,7 +788,7 @@
     "scoreFormat": "text_bucket"
   },
   "south-london": {
-    "tier": 4,
+    "tier": 3,
     "name": "South London",
     "scoreFormat": "text_bucket"
   },
@@ -808,7 +808,7 @@
     "scoreFormat": "text_bucket"
   },
   "theatre-vibe": {
-    "tier": 4,
+    "tier": 3,
     "name": "Theatre Vibe",
     "scoreFormat": "text_bucket"
   },
@@ -835,6 +835,216 @@
   "lbc": {
     "tier": 4,
     "name": "Lbc",
+    "scoreFormat": "text_bucket"
+  },
+  "act-three-the-reviews": {
+    "tier": 4,
+    "name": "Act Three: The Reviews",
+    "scoreFormat": "text_bucket"
+  },
+  "as-her-world-turns": {
+    "tier": 4,
+    "name": "As Her World Turns",
+    "scoreFormat": "text_bucket"
+  },
+  "bobs-theater-blog": {
+    "tier": 4,
+    "name": "Bob's Theater Blog",
+    "scoreFormat": "text_bucket"
+  },
+  "gotham-playgoer": {
+    "tier": 4,
+    "name": "Gotham Playgoer",
+    "scoreFormat": "text_bucket"
+  },
+  "melindas-malarky": {
+    "tier": 4,
+    "name": "Melinda's Malarky",
+    "scoreFormat": "text_bucket"
+  },
+  "theatre-bee-uk": {
+    "tier": 4,
+    "name": "Theatre Bee",
+    "scoreFormat": "text_bucket"
+  },
+  "backstage-barbie": {
+    "tier": 4,
+    "name": "BackStage Barbie",
+    "scoreFormat": "text_bucket"
+  },
+  "a-youngish-perspective": {
+    "tier": 4,
+    "name": "A Youngish Perspective",
+    "scoreFormat": "text_bucket"
+  },
+  "readaboutstuff": {
+    "tier": 4,
+    "name": "readaboutstuff",
+    "scoreFormat": "text_bucket"
+  },
+  "monstagigz": {
+    "tier": 4,
+    "name": "Monstagigz",
+    "scoreFormat": "text_bucket"
+  },
+  "labor-press": {
+    "tier": 4,
+    "name": "Labor Press",
+    "scoreFormat": "text_bucket"
+  },
+  "fordham-observer": {
+    "tier": 4,
+    "name": "Fordham Observer",
+    "scoreFormat": "text_bucket"
+  },
+  "the-contending": {
+    "tier": 4,
+    "name": "The Contending",
+    "scoreFormat": "text_bucket"
+  },
+  "firstnightmagazine": {
+    "tier": 4,
+    "name": "First Night Magazine",
+    "scoreFormat": "text_bucket"
+  },
+  "diandra-reviews-it-all": {
+    "tier": 4,
+    "name": "Diandra Reviews It All",
+    "scoreFormat": "text_bucket"
+  },
+  "magical-misstari-tour": {
+    "tier": 4,
+    "name": "Magical Misstari Tour",
+    "scoreFormat": "text_bucket"
+  },
+  "flipsidereviews": {
+    "tier": 4,
+    "name": "Flipsidereviews",
+    "scoreFormat": "text_bucket"
+  },
+  "theater-in-the-now": {
+    "tier": 4,
+    "name": "Theater In The Now",
+    "scoreFormat": "text_bucket"
+  },
+  "film-festival-traveler": {
+    "tier": 4,
+    "name": "Film Festival Traveler",
+    "scoreFormat": "text_bucket"
+  },
+  "4columns": {
+    "tier": 2,
+    "name": "4Columns",
+    "scoreFormat": "text_bucket"
+  },
+  "pinkprincetheatre": {
+    "tier": 4,
+    "name": "Pinkprincetheatre",
+    "scoreFormat": "text_bucket"
+  },
+  "unmissabletheatre": {
+    "tier": 4,
+    "name": "Unmissabletheatre",
+    "scoreFormat": "text_bucket"
+  },
+  "onin": {
+    "tier": 4,
+    "name": "Onin",
+    "scoreFormat": "text_bucket"
+  },
+  "viewfromthegods": {
+    "tier": 4,
+    "name": "Viewfromthegods",
+    "scoreFormat": "text_bucket"
+  },
+  "pop-dust": {
+    "tier": 4,
+    "name": "Pop Dust",
+    "scoreFormat": "text_bucket"
+  },
+  "the-three-tomatoes": {
+    "tier": 4,
+    "name": "The Three Tomatoes",
+    "scoreFormat": "text_bucket"
+  },
+  "london-theatre-reviews": {
+    "tier": 4,
+    "name": "London Theatre Reviews",
+    "scoreFormat": "text_bucket"
+  },
+  "aaron-in-nyc": {
+    "tier": 4,
+    "name": "Aaron in NYC",
+    "scoreFormat": "text_bucket"
+  },
+  "partially-obstructed-view": {
+    "tier": 4,
+    "name": "Partially Obstructed View",
+    "scoreFormat": "text_bucket"
+  },
+  "reviewsgate": {
+    "tier": 3,
+    "name": "ReviewsGate",
+    "scoreFormat": "text_bucket"
+  },
+  "seatplan": {
+    "tier": 4,
+    "name": "Seatplan",
+    "scoreFormat": "text_bucket"
+  },
+  "revstanstheatreblog": {
+    "tier": 4,
+    "name": "Revstanstheatreblog",
+    "scoreFormat": "text_bucket"
+  },
+  "harry-theatre-life": {
+    "tier": 4,
+    "name": "Harry Theatre Life",
+    "scoreFormat": "text_bucket"
+  },
+  "uinterview": {
+    "tier": 4,
+    "name": "UInterview",
+    "scoreFormat": "text_bucket"
+  },
+  "londontheatredirect": {
+    "tier": 4,
+    "name": "Londontheatredirect",
+    "scoreFormat": "text_bucket"
+  },
+  "the-knockturnal": {
+    "tier": 4,
+    "name": "The Knockturnal",
+    "scoreFormat": "text_bucket"
+  },
+  "splash-magazines": {
+    "tier": 4,
+    "name": "Splash Magazines",
+    "scoreFormat": "text_bucket"
+  },
+  "around-the-town-chicago": {
+    "tier": 4,
+    "name": "Around the Town Chicago",
+    "scoreFormat": "text_bucket"
+  },
+  "the-globe-and-mail": {
+    "tier": 2,
+    "name": "The Globe and Mail",
+    "scoreFormat": "text_bucket"
+  },
+  "popbytes": {
+    "tier": 4,
+    "name": "Popbytes",
+    "scoreFormat": "text_bucket"
+  },
+  "nyc-theatre-addict": {
+    "tier": 4,
+    "name": "Nyc Theatre Addict",
+    "scoreFormat": "text_bucket"
+  },
+  "jonathan-baz": {
+    "tier": 4,
+    "name": "Jonathan Baz",
     "scoreFormat": "text_bucket"
   }
 }
