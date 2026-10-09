@@ -69,9 +69,8 @@ async function checkAspect(filePath, role) {
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
-const { canReuseArchivedFile } = require('./lib/image-source-match');
-
-const SOURCES_PATH = path.join(__dirname, '..', 'data', 'image-sources.json');
+const { canReuseArchivedFile, isDownloadableSource, isRejectedImage } = require('./lib/image-source-match');
+const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 
 const FORMATS = ['poster', 'thumbnail', 'hero'];
 
@@ -174,12 +173,7 @@ async function main() {
   const showsData = loadShows();
 
   // Load or create image sources backup
-  let imageSources = {};
-  try {
-    imageSources = JSON.parse(fs.readFileSync(SOURCES_PATH, 'utf8'));
-  } catch {
-    // File doesn't exist yet
-  }
+  const imageSources = loadImageSources();
 
   let shows = showsData.shows;
   if (showFilter) {
@@ -260,6 +254,14 @@ async function main() {
         const sourceUrl = imageSources[show.id]?.[format];
         if (!sourceUrl) {
           console.warn(`  ⚠ ${show.title} ${format}: Local file missing and no source URL`);
+          totalFailed++;
+          continue;
+        }
+        // A hand-set file (manual:<note>) has nothing to re-download, and a
+        // source a person rejected for this show would bring the wrong
+        // production's art back (BRO-4901).
+        if (!isDownloadableSource(sourceUrl) || isRejectedImage({ [format]: sourceUrl }, show)) {
+          console.warn(`  ⚠ ${show.title} ${format}: Local file missing; recorded source is ${isDownloadableSource(sourceUrl) ? 'rejected for this show' : 'not downloadable'} — not re-downloading`);
           totalFailed++;
           continue;
         }
@@ -375,7 +377,7 @@ async function main() {
   }
 
   // Save image sources backup
-  fs.writeFileSync(SOURCES_PATH, JSON.stringify(imageSources, null, 2) + '\n');
+  saveImageSources(imageSources);
 
   // Save updated shows.json with local paths
   saveShows(showsData);
