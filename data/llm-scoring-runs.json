@@ -1,65 +1,5 @@
 [
   {
-    "startedAt": "2026-10-09T02:01:40.702Z",
-    "completedAt": "2026-10-09T02:09:07.987Z",
-    "totalReviews": 50434,
-    "processed": 70,
-    "skipped": 50345,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 404945,
-      "output": 24559,
-      "total": 1119245
-    },
-    "costUsd": 1.6726789500000003,
-    "runId": "37872296404",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-09T02:09:10.004Z",
-    "completedAt": "2026-10-09T02:10:18.285Z",
-    "totalReviews": 31,
-    "processed": 31,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 66435,
-      "output": 6920,
-      "total": 73355
-    },
-    "costUsd": 0.1956756,
-    "runId": "37872296404",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-09T02:15:04.796Z",
-    "completedAt": "2026-10-09T02:15:07.343Z",
-    "totalReviews": 50440,
-    "processed": 0,
-    "skipped": 50438,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 3905,
-      "output": 112,
-      "total": 11406
-    },
-    "costUsd": 0.026230049999999998,
-    "runId": "37873383795",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-09T02:15:09.198Z",
     "completedAt": "2026-10-09T02:15:12.080Z",
     "totalReviews": 0,
@@ -508336,6 +508276,49 @@
     },
     "costUsd": 0,
     "runId": "37963870407",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T17:07:29.120Z",
+    "completedAt": "2026-10-09T17:17:58.367Z",
+    "totalReviews": 52047,
+    "processed": 102,
+    "skipped": 51923,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 579442,
+      "output": 35200,
+      "total": 1585086
+    },
+    "costUsd": 2.3841537500000003,
+    "runId": "37963621914",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+        "outletId": "london-box-office",
+        "error": "Cannot read properties of undefined (reading 'rejection')"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T17:17:59.786Z",
+    "completedAt": "2026-10-09T17:19:13.416Z",
+    "totalReviews": 33,
+    "processed": 33,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 73367,
+      "output": 7530,
+      "total": 80897
+    },
+    "costUsd": 0.216548,
+    "runId": "37963621914",
     "errorDetails": []
   }
 ]
