@@ -27,7 +27,7 @@ function formatResults(results, max = 8) {
 }
 
 function buildGroundingPrompt(show, synopsis, results) {
-  return `You are checking a theatre synopsis against web search results. Use ONLY the search results below as evidence, not your own knowledge.
+  return `You are checking a theatre synopsis against web search results. The search results below are the evidence. Use your own knowledge only to recall the story of a published source the results name, never to fill in a story the results do not identify.
 
 Production: "${show.title}" at ${show.venue || 'an unknown venue'}${show.openingDate ? ` (${show.openingDate.slice(0, 4)})` : ''}
 
@@ -38,9 +38,9 @@ Search results:
 ${formatResults(results)}
 
 Do the search results describe the same story as the synopsis: the same central character(s) and the same core situation?
-- SUPPORTED: the results describe the synopsis's central premise (a work's well-known source, e.g. "Oscar Wilde's novel", counts when the synopsis tells that source's story).
-- CONTRADICTED: the results describe a different premise, different central characters, or details that conflict with the synopsis.
-- UNSUPPORTED: the results do not say what the story is about.
+- SUPPORTED: the results describe the synopsis's central premise. Also SUPPORTED when the results name a published source this production adapts (a novel, film, TV series, memoir or earlier play, e.g. "adapted from Virginia Woolf's novel") and the synopsis tells that source's story as you know it, with nothing in the results conflicting.
+- CONTRADICTED: the results describe a different premise, different central characters, or details that conflict with the synopsis; or the synopsis does not match the named source's story.
+- UNSUPPORTED: the results neither say what the story is about nor name a published source it adapts. A new original play with no plot in the results is UNSUPPORTED, however plausible the synopsis sounds.
 Reply with exactly one word, SUPPORTED, CONTRADICTED or UNSUPPORTED, then a colon and one short reason.`;
 }
 

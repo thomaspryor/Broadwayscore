@@ -13,7 +13,8 @@ test('query names the production: quoted title, venue, year', () => {
 
 test('prompt carries the synopsis and the snippets and forbids own knowledge', () => {
   const p = buildGroundingPrompt(show, 'A girl and her emo phase.', [{ title: 'Review', snippet: 'Eileen grieves her sister.' }]);
-  assert.match(p, /Use ONLY the search results/);
+  assert.match(p, /The search results below are the evidence/);
+  assert.match(p, /new original play with no plot in the results is UNSUPPORTED/);
   assert.match(p, /A girl and her emo phase\./);
   assert.match(p, /Eileen grieves her sister\./);
 });
