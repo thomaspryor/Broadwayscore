@@ -389,6 +389,31 @@ function readTsxManifest(cwd) {
   return new Set(text.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#')));
 }
 
+/**
+ * Every test file test.yml runs under `npx tsx --test`, as a Set of
+ * repo-relative paths: the union of TSX_MANIFESTS (the tsx unit batch AND the
+ * E2E batch), each tolerated when missing. runSafeChecks uses this so an
+ * edited e2e-listed test that imports .ts runs under tsx in Land, as in CI
+ * (BRO-4930, Land run 37989385716). merge-post-merge-test-gate.js keeps
+ * readTsxManifest: it SKIPS manifest-listed tests, and widening that skip
+ * would drop the tests/unit/<base>.test.mjs files it reaches from a source
+ * edit, which decideChecks never runs.
+ */
+// Mirrors test-manifest.js TSX_MANIFESTS; kept local because this runner stays
+// builtins-only. autonomous-checks.test.mjs pins the two lists equal.
+const TSX_RUN_MANIFESTS = ['tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt'];
+
+function readTsxRunTests(cwd) {
+  const out = new Set();
+  for (const rel of TSX_RUN_MANIFESTS) {
+    let text;
+    try { text = fs.readFileSync(path.join(cwd, rel), 'utf8'); }
+    catch { continue; }
+    for (const l of text.split('\n')) { const t = l.trim(); if (t && !t.startsWith('#')) out.add(t); }
+  }
+  return out;
+}
+
 // ── The runner ──────────────────────────────────────────────────────────────
 
 /**
@@ -403,7 +428,7 @@ function readTsxManifest(cwd) {
  * @param {number} [o.tier]
  * @param {boolean} [o.buildCheck]
  * @param {(relPath:string)=>boolean} [o.existsFn]
- * @param {Set<string>} [o.tsxManifest] - defaults to readTsxManifest(cwd)
+ * @param {Set<string>} [o.tsxManifest] - defaults to readTsxRunTests(cwd)
  * @param {string|null} [o.prepareFrom] - repo root to fill node_modules/data from
  * @returns {{name:string, pass:boolean, detail?:string}[]}
  */
@@ -415,7 +440,7 @@ function runSafeChecks(o) {
   const existsFn = o.existsFn || (f => fs.existsSync(path.join(cwd, f)));
   const results = [];
 
-  const tsxManifest = o.tsxManifest || readTsxManifest(cwd);
+  const tsxManifest = o.tsxManifest || readTsxRunTests(cwd);
   const checks = decideChecks(changedFiles, existsFn, { tier, buildCheck, tsxManifest });
   if (checkableDone) {
     const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
@@ -482,6 +507,8 @@ module.exports = {
   tierOf,
   decideChecks,
   readTsxManifest,
+  readTsxRunTests,
+  TSX_RUN_MANIFESTS,
   cardCheckArgv,
   tokenizeCheckCommand,
   isUiDiff,
