@@ -1633,7 +1633,13 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     const locPrefixed = tokens.length === 1 && _tokenOnlyLocationPrefixed(tokens[0], cleanedSlug);
     candidates.push({ show, matched: matchedTokens, total: tokens.length, score, totalLen, locPrefixed });
   }
-  if (candidates.length === 0) return _matchExactTitle(cleanedSlug, shows, articleYear);
+  // Opt-in: only a BroadwayWorld roundup that says it opens/launches on Broadway
+  // or on tour may take the exact-title path. A bare "six" or a Playbill
+  // "read-the-reviews-for-six-on-broadway" names no production, and the tie-break
+  // would send it to whichever same-title production is newest (the tour or the
+  // West End one), misrouting reviews that used to fall through to the
+  // market-aware matcher (ship-check 2026-10-09).
+  if (candidates.length === 0) return options.exactTitle ? _matchExactTitle(cleanedSlug, shows, articleYear) : null;
   // Sort by:
   //   1. squared-length score desc (longer + more distinctive tokens win;
   //      naturally favors all-tokens-match for multi-word shows like
@@ -1728,9 +1734,12 @@ function matchBwwRoundupSlugToShow(rawSlug, shows, options = {}) {
       if (y >= 1900 && y <= 2100) articleYear = y;
     }
   }
+  // The slug says the show opens/launches on Broadway or on tour (BRO-4929): the
+  // only BWW roundups allowed through the exact-title path for short titles.
+  const exactTitle = /-(?:opens|launches|launch|embarks|kicks-off|begins)(?:-[a-z0-9]+){0,5}-(?:broadway|tour)(?:-\d{8})?$|-on-tour(?:-\d{8})?$/.test(s);
   for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
   for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
-  return _matchCleanedSlugAgainstShows(s, shows, { ...options, year: articleYear });
+  return _matchCleanedSlugAgainstShows(s, shows, { ...options, year: articleYear, exactTitle });
 }
 
 /**

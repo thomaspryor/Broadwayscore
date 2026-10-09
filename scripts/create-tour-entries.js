@@ -4,15 +4,18 @@
  * tour entries, with no one in the loop, when the evidence holds.
  *
  * A candidate (data/audit/tour-roundup-candidates.json, written by
- * scrape-bww-reviews.js --landing-discover) becomes a category:'tour' entry
- * only when:
- *   - BroadwayWorld published a national-tour roundup matching exactly one
- *     Broadway show (how the candidate was recorded),
- *   - Tours To You lists the tour and Wikipedia names its launch date
- *     (tour-schedule.js decideTourDates),
+ * scrape-bww-reviews.js --landing-discover and discover-running-tours.js)
+ * becomes a category:'tour' entry only when:
+ *   - it is a production (tour-page-class.js): a BroadwayWorld national-tour
+ *     roundup matched a Broadway, Off-Broadway or regional show, or a Tours To
+ *     You page is a tracked production in any market, or a standalone touring
+ *     show (no tracked parent, BRO-4931; TOUR_STANDALONE_AUTOCREATE),
+ *   - Tours To You lists the tour and its launch is confirmed (tour-schedule.js
+ *     decideTourDates: Wikipedia, a BWW roundup, or a launch now or booked ahead),
  *   - no earlier tour of the title is still open (buildTourEntry).
  * Anything short of that stays a candidate, and route-tour-candidates.js asks
- * the owner about it as before.
+ * the owner about it as before. The evidence rules live in
+ * lib/tour-create-decision.js, shared with check-tour-sweep.js.
  *
  * Before that, discover-running-tours.js records tours already on the road
  * from Tours To You's full show list (BRO-4325): a roundup only ever arrives
@@ -32,21 +35,16 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { tourAutomationMode } = require('./lib/tour-automation-mode');
-// A Tours To You tour whose first engagement is this close to today is
-// launching now, so that engagement is its launch (decideTourDates option).
-// 30, not 60: Harry Potter's page starts at Seattle on Aug 22 (43 days before
-// this was written) though the tour opened in Denver in May; a wider window
-// would have created it with that date (BRO-4601 report run).
-const FRESH_LAUNCH_DAYS = 30;
+const { tourAutomationMode, standaloneTourMode } = require('./lib/tour-automation-mode');
 // A tour booked ahead is created as 'upcoming' (tour-discovery.js).
-const { UPCOMING_DAYS, reopenBlocker } = require('./lib/tour-discovery');
+const { reopenBlocker, candidateKey } = require('./lib/tour-discovery');
 const { toursOfTitle } = require('./lib/tour-family');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { openTourCandidates, recordTourCandidates, roundupDateFromSlug } = require('./lib/tour-roundup-candidate');
-const { decideTourDates, duplicateScheduleOf, tooFewStops } = require('./lib/tour-schedule');
+const { openTourCandidates, recordTourCandidates, candidateParentId } = require('./lib/tour-roundup-candidate');
 const { buildTourEntry } = require('./lib/tour-entry');
+const { decideTourCreation, candidateRoundupUrl } = require('./lib/tour-create-decision');
+const { loadTourPageClasses } = require('./lib/tour-page-class');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 const ROOT = path.join(__dirname, '..');
@@ -58,13 +56,16 @@ const USAGE = `create-tour-entries.js — create national-tour entries from roun
   --write   write shows.json and mark candidates created (default: report only)
   --time-budget-min=N  stop cleanly after N minutes
   --no-discover  skip finding running tours on Tours To You
-  --only=ID,ID   only these candidates (Broadway parent ids), e.g. a first small batch
-  TOUR_AUTOCREATE=off|report   kill switch / force report-only`;
+  --only=ID,ID   only these candidates (parent ids or page keys such as page:the-bodyguard), e.g. a first small batch
+  TOUR_AUTOCREATE=off|report   kill switch / force report-only
+  TOUR_STANDALONE_AUTOCREATE=off|report|write   tours with no tracked production (default report, never louder than TOUR_AUTOCREATE)`;
 
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const mode = tourAutomationMode(process.env.TOUR_AUTOCREATE);
+  // Tours with no tracked production behind them are new ground: own switch, default report (BRO-4931).
+  const standaloneMode = standaloneTourMode(process.env.TOUR_STANDALONE_AUTOCREATE, mode);
   // Every run leaves a report, even an empty one: the daily digest reads its
   // timestamp to tell a quiet week from a job that stopped running.
   // What running-tour discovery did this run, for the health check (BRO-4325).
@@ -96,11 +97,11 @@ async function main() {
     try {
       const { discoverRunningTours } = require('./discover-running-tours');
       const current = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
-      const r = await discoverRunningTours({ shows: current, budget: discoveryBudget, coverage: prevCoverage, fallback });
+      const r = await discoverRunningTours({ shows: current, budget: discoveryBudget, coverage: prevCoverage, fallback, overrides: loadTourPageClasses() });
       const { candidates, ambiguous, pages, checked } = r;
       lifecycle = { reopen: r.reopen || [], undecided: r.undecided || [] };
       for (const u of lifecycle.undecided) console.log(`  ${u.id} closed ${u.closingDate} but its page lists it from ${u.resumes}; left as is: ${u.reason}`);
-      discovery = { pages, eligible: r.eligible, checked, failed: r.failed, rateLimited: r.rateLimited, found: candidates.length, ambiguous: ambiguous.length, error: null, coverage: r.coverage };
+      discovery = { pages, eligible: r.eligible, checked, failed: r.failed, rateLimited: r.rateLimited, found: candidates.length, ambiguous: ambiguous.length, error: null, coverage: r.coverage, classes: r.classes, denied: r.denied, autoClassified: r.autoClassified };
       // Recorded in report mode too: route-tour-candidates.js reads the file.
       const n = recordTourCandidates(CANDIDATES, candidates);
       console.log(`${candidates.length} running tour(s) found; ${n} candidate row(s) tracked`);
@@ -119,10 +120,13 @@ async function main() {
   const rows = JSON.parse(fs.readFileSync(CANDIDATES, 'utf8'));
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const byId = new Map(shows.map(s => [s.id, s]));
+  const overrides = loadTourPageClasses();
   // --only: a small first batch (BRO-4601 plan review: 2 tours end to end
-  // before the rest; CLAUDE.md section 8).
+  // before the rest; CLAUDE.md section 8). Takes a parent id, a page key
+  // (page:<slug>) or a Tours To You slug.
   const only = ((argv.find(a => a.startsWith('--only=')) || '').split('=')[1] || '').split(',').filter(Boolean);
-  const open = openTourCandidates(rows, shows).filter(c => !only.length || only.includes(c.broadwayShowId));
+  const wanted = c => !only.length || [candidateKey(c), candidateParentId(c), c.tourScheduleSlug, c.tourScheduleSlug && `page:${c.tourScheduleSlug}`].some(k => k && only.includes(k));
+  const open = openTourCandidates(rows, shows).filter(wanted);
   if (only.length) console.log(`--only: ${only.join(', ')}`);
   // A retired id must never come back (data/retired-show-ids.json, core-data).
   const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };
@@ -134,51 +138,51 @@ async function main() {
   const results = [];
   for (const c of open) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
-    const parent = byId.get(c.broadwayShowId);
-    console.log(`\n${c.title} (${c.broadwayShowId})`);
+    const parentId = candidateParentId(c);
+    const parent = parentId ? byId.get(parentId) : null;
+    const key = candidateKey(c);
+    const standalone = !parent;
+    console.log(`\n${c.title} (${key})`);
+    const record = (extra) => results.push({ candidate: key, parentId: parentId || null, standalone, title: c.title, type: c.type || null, roundupUrl: null, scheduleUrl: c.url, notes: [], entry: null, ...extra });
+    if (parentId && !parent) { console.log(`  stays a suggestion: parent ${parentId} is not in shows.json`); record({ skip: `parent ${parentId} not found` }); continue; }
+    // Standalone tours are new ground: their own switch (tour-automation-mode.js).
+    if (standalone && standaloneMode === 'off') { console.log('  stays a suggestion: TOUR_STANDALONE_AUTOCREATE=off'); record({ skip: 'standalone tours are off' }); continue; }
     // Two companies of one show on the road: which is "the" tour is the
     // owner's call (route-tour-candidates.js asks).
     if (c.ambiguous) {
       console.log(`  stays a suggestion: two tours running at once (${c.ambiguous})`);
-      results.push({ candidate: c.broadwayShowId, roundupUrl: null, scheduleUrl: c.url, notes: [], skip: `two tours running at once: ${c.ambiguous}`, entry: null });
+      record({ skip: `two tours running at once: ${c.ambiguous}` });
       continue;
     }
-    const probe = { id: null, title: parent.title, tourScheduleSlug: c.tourScheduleSlug, openingDate: null, closingDate: null };
-    const found = c.source === 'tourstoyou';
+    const title = parent ? parent.title : c.title;
+    const probe = { id: null, title, tourScheduleSlug: c.tourScheduleSlug, openingDate: null, closingDate: null };
     // Plain GET first; the paid chain only on a 429 (BRO-4725: 429s left
     // Tours To You-found tours with "no evidence URL" on 2026-10-05).
     const { url: scheduleUrl, html } = await fetchSchedule(probe, fallback, { budget });
     let wiki = '';
-    try { wiki = await fetchWikiText(parent.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
+    try { wiki = await fetchWikiText(title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
     // A schedule row may carry the BWW roundup seen for the same show
-    // (recordTourCandidates); its date confirms the launch when Wikipedia is
-    // silent (BRO-4563).
-    const roundupUrl = found ? (c.roundupUrl || null) : c.url;
-    // Only the publication date in the slug: when the job first saw a roundup
-    // says nothing about when the tour launched (a backfilled old roundup).
-    const roundupDate = roundupUrl ? roundupDateFromSlug(roundupUrl) : null;
-    const decision = scheduleUrl
-      // splitAt: where discovery cut the page because a closed tour's rows
-      // are followed by a new tour's (BRO-4724).
-      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS, upcomingDays: UPCOMING_DAYS, cuts: c.splitAt } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
-      : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
-    // A page can carry another show's table (the Come From Away page showed
-    // Operation Mincemeat's 2026 tour, BRO-4601): never create a tour whose
-    // engagements are another tour's.
-    const copyOf = !decision.problem && duplicateScheduleOf(decision.segmentRows, tourSchedules);
-    if (copyOf) decision.problem = `schedule duplicates ${copyOf}'s engagements (wrong table on the Tours To You page?)`;
-    if (!decision.problem && tooFewStops(decision.segmentRows)) decision.problem = `only ${decision.segmentRows.length} engagements: a regional co-production or a limited run, not a national tour`;
-    const knownEnds = found ? (c.predecessorEnds || null) : null;
-    const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds, knownEnds });
+    // (recordTourCandidates), or a roundup-only row pairs with this page by
+    // title; its date confirms the launch when Wikipedia is silent (BRO-4563).
+    const roundupUrl = candidateRoundupUrl(c, rows);
+    const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText: wiki, roundupUrl, retiredIds, tourSchedules, overrides });
+    if (d.outcome === 'needs-classification' || /^skip-(event|aggregator|template|company)$/.test(d.outcome)) {
+      console.log(`  stays a suggestion: ${d.outcome === 'needs-classification' ? 'needs a human to say what this page is' : d.outcome}: ${d.reason}`);
+      record({ roundupUrl, scheduleUrl, skip: d.reason, outcome: d.outcome });
+      continue;
+    }
+    const built = d.built;
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
-    else console.log(`  ${write ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})`);
-    results.push({ candidate: c.broadwayShowId, roundupUrl, scheduleUrl, notes: decision.notes, launchSource: decision.launchSource || null, knownEnds, skip: built.skip || null, entry: built.entry || null });
+    else console.log(`  ${write && (!standalone || standaloneMode === 'write') ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})${standalone ? ' [standalone]' : ''}`);
+    record({ roundupUrl, scheduleUrl, notes: d.decision.notes, launchSource: d.decision.launchSource || null, knownEnds: d.knownEnds, skip: built.skip || null, entry: built.entry || null, outcome: d.outcome, type: d.candidate.type || null });
   }
 
   const created = [];
   const reopened = [];
   for (const x of lifecycle.reopen) console.log(`${x.id}: ${write ? 'reopening' : 'would reopen'} (closed ${x.closingDate}, its page lists it again from ${x.resumes}: ${x.reason})`);
-  if (write && (results.some(r => r.entry) || lifecycle.reopen.length)) {
+  // A standalone entry is written only when its own switch says write.
+  const writable = r => r.entry && (!r.standalone || standaloneMode === 'write');
+  if (write && (results.some(writable) || lifecycle.reopen.length)) {
     const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
     const snapshot = loadShows();
     const today = new Date().toISOString().slice(0, 10);
@@ -190,11 +194,12 @@ async function main() {
       if (blocked) { console.log(`${x.id}: not reopened: ${blocked}`); continue; }
       if (reopenTour(show, x, today)) reopened.push(x.id);
     }
-    for (const r of results.filter(x => x.entry)) {
+    for (const r of results.filter(writable)) {
       // Re-check under the write lock: another run may have added it, or a
       // tour of the title may have been added or reopened meanwhile.
       if (snapshot.shows.some(s => s.id === r.entry.id)) continue;
-      const recheck = buildTourEntry({ parent: snapshot.shows.find(s => s.id === r.candidate), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds, knownEnds: r.knownEnds });
+      const parentNow = r.parentId ? snapshot.shows.find(s => s.id === r.parentId) : null;
+      const recheck = buildTourEntry({ parent: parentNow || null, ...(parentNow ? {} : { title: r.title, type: r.type }), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds, knownEnds: r.knownEnds });
       if (recheck.skip) { console.log(`  ${r.entry.id} skipped under lock: ${recheck.skip}`); continue; }
       snapshot.shows.push(r.entry);
       created.push(r.entry.id);
@@ -203,16 +208,20 @@ async function main() {
     if (created.length) {
       const now = new Date().toISOString();
       const next = rows.map(row => {
-        const hit = results.find(x => x.candidate === row.broadwayShowId && x.entry && created.includes(x.entry.id));
-        return hit ? { ...row, createdTourId: hit.entry.id, createdAt: now } : row;
+        const hit = results.find(x => x.candidate === candidateKey(row) && x.entry && created.includes(x.entry.id));
+        if (hit) return { ...row, createdTourId: hit.entry.id, createdAt: now };
+        // The BWW roundup that backed a standalone tour settles with it.
+        const backed = results.find(x => x.entry && created.includes(x.entry.id) && x.roundupUrl && row.roundupUrl === x.roundupUrl && String(row.key || '').startsWith('roundup:'));
+        return backed ? { ...row, createdTourId: backed.entry.id, createdAt: now } : row;
       });
       fs.writeFileSync(CANDIDATES, JSON.stringify(next, null, 2) + '\n');
     }
   }
 
-  writeAudit({ mode: write ? 'write' : 'report', created, reopened, results });
+  writeAudit({ mode: write ? 'write' : 'report', standaloneMode, created, reopened, results });
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `created=${created.join(',')}\nreopened=${reopened.join(',')}\n`);
-  console.log(`\n${write ? `Created ${created.length}` : `${results.filter(r => r.entry).length} would be created`}; ${results.filter(r => r.skip).length} stay suggestions.`);
+  const wouldCreate = results.filter(r => r.entry);
+  console.log(`\n${write ? `Created ${created.length}` : `${wouldCreate.length} would be created`}${write && wouldCreate.length > created.length ? ` (${wouldCreate.length - created.length} more reported only: standalone mode ${standaloneMode})` : ''}; ${results.filter(r => r.skip).length} stay suggestions.`);
   if (reopened.length) console.log(`Reopened ${reopened.length}: ${reopened.join(', ')}`);
 }
 

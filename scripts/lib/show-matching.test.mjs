@@ -488,3 +488,18 @@ test('exact-title path: same-title productions tie-break by article year (BRO-49
   const m = matchBwwRoundupSlugToShow('Review-Roundup-OH-MARY-Opens-National-Tour-20261007', [bway, tour]);
   assert.equal(m.show.id, 'oh-mary-tour-2026');
 });
+
+test('exact-title path is for national-tour roundup slugs only (ship-check BRO-4931)', () => {
+  const shows = [
+    { id: 'six-2021', title: 'SIX', category: 'broadway', status: 'closed', openingDate: '2021-10-03' },
+    { id: 'six-tour-2022', title: 'SIX', category: 'tour', status: 'open', openingDate: '2022-09-20' },
+    { id: 'rent-west-end-2026', title: 'Rent', category: 'west-end', status: 'open', openingDate: '2026-03-01' },
+  ];
+  // Playbill Verdict and non-tour roundup slugs name no tour: no exact-title match.
+  assert.equal(matchSlugToShow('read-the-reviews-for-six-on-broadway', shows), null);
+  assert.equal(matchSlugToShow('read-the-reviews-for-rent-off-broadway', shows), null);
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-SIX', shows), null);
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-SIX-20240101', shows), null);
+  // A national-tour roundup slug still matches (production context breaks the tie).
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-SIX-Launches-North-American-Tour-20260101', shows).via, 'slug-exact-title');
+});
