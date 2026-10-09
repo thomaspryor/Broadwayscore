@@ -4046,6 +4046,33 @@ function isBodylessAggregatorScoreUncorroborated(data, show) {
   return !bodylessCorroboratedByProduction(data, show);
 }
 
+// BRO-4890 (revival promo): two inclusion rules that were missing.
+//
+// 1. A production that was cancelled before it ever opened has no reviews.
+//    whos-afraid-of-virginia-woolf-2020 (9 previews, COVID) carried a counted
+//    2005 review from a different production. shows.json marks these with
+//    cancelledBeforeOpening: true; nothing read it until now.
+function isCancelledBeforeOpeningShow(show) {
+  return !!show && show.cancelledBeforeOpening === true;
+}
+
+// 2. A row known only from a raw search hit, with no url and no stored text,
+//    has nothing a reader or the scorer can check. The canonical unvetted-SERP
+//    source list (unvetted-serp-sources.js, BRO-4101) plus 'web-search', the
+//    tag the older discovery path wrote. EVERY source on the record must be a
+//    search source, so an aggregator-backed stub (show-score, bww-*, dtli,
+//    theatre-record) is never touched. Human overrides keep a row.
+const UNVERIFIABLE_SEARCH_SOURCES = new Set([...require('./unvetted-serp-sources').SUSPECT_SOURCES, 'web-search']);
+function isUnverifiableWebSearchRow(data) {
+  if (!data) return false;
+  const sources = [].concat(data.sources || [], data.source || []).filter((x) => typeof x === 'string' && x);
+  if (!sources.length || !sources.every((x) => UNVERIFIABLE_SEARCH_SOURCES.has(x))) return false;
+  if (data.url) return false;
+  if (String(data.fullText || '').trim().length >= 50) return false;
+  if (data.humanReviewScore || data.adjudicatedScore) return false;
+  return true;
+}
+
 /**
  * Named non-review URL rule (BRO-4101), as a pure predicate shared by
  * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
@@ -4140,6 +4167,10 @@ function isRejectedAtExclusion(data) {
 
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
+  // BRO-4890: show-level and unverifiable-row exclusions run first; the rebuild loop and
+  // scoring-delta.js decideInclusion mirror them in the same order.
+  if (isCancelledBeforeOpeningShow(show)) return 'cancelledBeforeOpening';
+  if (isUnverifiableWebSearchRow(data)) return 'unverifiableWebSearchRow';
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.
@@ -5442,6 +5473,8 @@ module.exports = {
   pickRerouteTarget,
   isIncludableForRebuild,
   isNamedNonReviewUrlRecord,
+  isCancelledBeforeOpeningShow,
+  isUnverifiableWebSearchRow,
   bodylessScoreProvenance,
   isBodylessAggregatorScoreUncorroborated,
   bodylessCorroboratedByProduction,
