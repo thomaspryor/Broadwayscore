@@ -31,7 +31,10 @@ const NON_STORY_SENTENCE_RE = /todaytix|\btickets?\b|\bbook (now|your|tickets|to
 // "currently playing at Wyndham's ... has just won rave reviews", "Sheridan
 // Smith stars in ...", "one of nine shows in the theatre's 2024 season",
 // "returns to the West End this May", "Hamnet premiered in April at the Swan").
-const PRODUCTION_NEWS_RE = /\b(currently|now) (playing|performing|running)\b|\bis (playing|performing) at\b|\brave reviews\b|\b(award|olivier|tony|bafta)[- ]win|\bstar(s|ring)? (in|as)\b|\b(will be|is) directed\b|\bdirected by\b|\bartistic director\b|\breturns? to (london|the west end)\b|\b(transfers?|promoted) to the west end\b|\bwest end (debut|transfer|premiere)\b|\b(strictly )?limited (run|season|time|engagement)\b|\b\d+-week (run|season)\b|\bpremiered\b|\bgraced the stage\b|\bsold-out\b|\bmaking (her|his|their) .*debut\b/i;
+// Phase C 2023-24: "Olivier Award nominee ... reprise their leading roles" (A Mirror),
+// "This groundbreaking new production expertly balances ..." (Bacchae). Not
+// "transports audiences": it leads story sentences ("... to 1950s Buffalo, where").
+const PRODUCTION_NEWS_RE = /\b(currently|now) (playing|performing|running)\b|\bis (playing|performing) at\b|\brave reviews\b|\b(award|olivier|tony|bafta)[- ]win|\bstar(s|ring)? (in|as)\b|\b(will be|is) directed\b|\bdirected by\b|\bartistic director\b|\breturns? to (london|the west end)\b|\b(transfers?|promoted) to the west end\b|\bwest end (debut|transfer|premiere)\b|\b(strictly )?limited (run|season|time|engagement)\b|\b\d+-week (run|season)\b|\bpremiered\b|\bgraced the stage\b|\bsold-out\b|\bmaking (her|his|their) .*debut\b|\breprises? (his|her|their) (\w+ )?roles?\b|\b(award|olivier|tony|bafta)[- ]nomin|\bthis (\w+ ){0,3}production\b/i;
 // isValidSynopsis rejects text opening this way; such sentences are pitch, not plot.
 const MARKETING_OPENER_RE = /^(See |Get tickets|Don't miss|Experience the|Come discover|Catch |Book |Have you ever|Immerse yourself|Audiences will|Fly to |Attend the )/i;
 const MAX_ABOUT_CHARS = 700;
