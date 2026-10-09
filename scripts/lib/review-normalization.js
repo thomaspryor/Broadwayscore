@@ -1060,7 +1060,8 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // (no show record, no show dates or no date in the url => unchanged).
   let autoClearUrlDateVeto = false;
   if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
-      && !merged.wrongProductionManualClear && isUrlBasedWrongProd) {
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !merged.wrongProductionManualClear && !cvSaysWrongProduction && isUrlBasedWrongProd) {
     const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
     const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
     if (veto.regression) {

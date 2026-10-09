@@ -10,9 +10,15 @@
  *  2. Pin: once a show's openingDate is corrected, the rebuild's stale dated
  *     pre-opening guard flag is released by shouldAutoClearStaleDateGuard.
  */
+import os from 'node:os';
+import fs from 'node:fs';
+import path from 'node:path';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+
+// Keep the exclusion log out of the real data/audit directory.
+process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'itw-veto-'));
 
 const require = createRequire(import.meta.url);
 const { mergeReviews } = require('../../scripts/lib/review-normalization.js');
