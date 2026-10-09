@@ -21,7 +21,7 @@ const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/r
 const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateShowScorePreviousProduction, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
-const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
+const { evaluateCurrentRunCorroboration, shouldHoldDateGuardFlag } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
@@ -284,14 +284,17 @@ function run() {
       // 2026-07-11). STRONG corroboration (Theatre Record archives the review
       // under an in-window month) → HOLD the flag, route to human review; the
       // unflagged file stays excluded by the rebuild's own corroboration hold,
-      // and validate-data CHECK 0 reddens CI if it is >180d early. WEAK
+      // and validate-data CHECK 0 reddens CI if it is >180d early.
+      // cv-affirms-production alone holds only inside that 180-day line
+      // (shouldHoldDateGuardFlag, BRO-4884). WEAK
       // (roundup excerpts only — ~75% of those flags were correct in the
       // 2026-07-12 sweep) → flag as usual but count a warning.
       // before_preview only: an after_close date is more likely a successor
       // production mislinked back (can share the TR month near closing).
       if (issue === 'before_preview') {
         const corrob = evaluateCurrentRunCorroboration({ review: data, show });
-        if (corrob.strength === 'strong') {
+        const implausible = evaluateDatePlausibility({ review: data, show }).implausible;
+        if (shouldHoldDateGuardFlag({ corrob, implausible })) {
           corroborationHeld++;
           heldDetails.push({ showId: showDir, file, date: data.publishDate, outlet: data.outlet || '?', signals: corrob.signals, issue, diffDays });
           continue;

@@ -151,3 +151,39 @@ describe('evaluateCurrentRunCorroboration', () => {
     }).strength, 'weak');
   });
 });
+
+// BRO-4884: cv-affirms-production alone must not hold a flag past validate-data
+// CHECK 0's 180-day line (the-king-and-i-west-end-2024 carried a 2018 review).
+const { shouldHoldDateGuardFlag } = require('./wrong-production-corroboration.js');
+const { evaluateDatePlausibility } = require('./date-plausibility.js');
+
+describe('shouldHoldDateGuardFlag', () => {
+  const cvOnly = { strength: 'strong', signals: ['roundup-excerpt:lboRoundupExcerpt', 'cv-affirms-production'] };
+  const tr = { strength: 'strong', signals: ['theatre-record-month:2026/5'] };
+
+  test('cv-affirms alone holds a small gap (possible misparse) but not an implausible one', () => {
+    assert.equal(shouldHoldDateGuardFlag({ corrob: cvOnly, implausible: false }), true);
+    assert.equal(shouldHoldDateGuardFlag({ corrob: cvOnly, implausible: true }), false);
+  });
+
+  test('a Theatre Record month inside the run holds at any gap', () => {
+    assert.equal(shouldHoldDateGuardFlag({ corrob: tr, implausible: true }), true);
+    assert.equal(shouldHoldDateGuardFlag({ corrob: tr, implausible: false }), true);
+  });
+
+  test('weak or no corroboration never holds', () => {
+    assert.equal(shouldHoldDateGuardFlag({ corrob: { strength: 'weak', signals: ['roundup-excerpt:theStageExcerpt'] }, implausible: false }), false);
+    assert.equal(shouldHoldDateGuardFlag({ corrob: { strength: null, signals: [] }, implausible: false }), false);
+    assert.equal(shouldHoldDateGuardFlag({ corrob: null, implausible: false }), false);
+  });
+
+  test('incident fixture: a 2018 review on the 2024 Dominion King and I is implausible, so it is flagged, not held', () => {
+    const show = { id: 'the-king-and-i-west-end-2024', previewsStartDate: '2024-01-20', openingDate: '2024-01-31', closingDate: '2024-06-29' };
+    const review = { publishDate: '2018-07-17', lboRoundupExcerpt: 'x', contentVerification: { isValid: true, confidence: 'high', wrongProduction: false, wrongArticle: false } };
+    const corrob = evaluateCurrentRunCorroboration({ review, show });
+    assert.equal(corrob.strength, 'strong');
+    const { implausible } = evaluateDatePlausibility({ review, show });
+    assert.equal(implausible, true);
+    assert.equal(shouldHoldDateGuardFlag({ corrob, implausible }), false);
+  });
+});
