@@ -1,6 +1,16 @@
 {
-  "timestamp": "2026-10-09T02:21:47.921Z",
+  "timestamp": "2026-10-09T02:26:33.267Z",
   "regressions": [
+    {
+      "showId": "the-grapes-of-wrath-west-end-2024",
+      "oldCount": 9,
+      "newCount": 0,
+      "dropped": 9,
+      "scoredOnDisk": 9,
+      "flaggedScored": 0,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
     {
       "showId": "why-am-i-so-single-west-end-2024",
       "oldCount": 15,
@@ -12,20 +22,10 @@
       "reason": "scored files exist but being dropped"
     },
     {
-      "showId": "a-mirror-west-end-2024",
-      "oldCount": 4,
-      "newCount": 1,
-      "dropped": 3,
-      "scoredOnDisk": 5,
-      "flaggedScored": 0,
-      "inlineGuardExcluded": 0,
-      "reason": "scored files exist but being dropped"
-    },
-    {
       "showId": "plaza-suite-west-end-2024",
       "oldCount": 5,
-      "newCount": 2,
-      "dropped": 3,
+      "newCount": 0,
+      "dropped": 5,
       "scoredOnDisk": 10,
       "flaggedScored": 0,
       "inlineGuardExcluded": 0,
@@ -34,9 +34,19 @@
     {
       "showId": "the-bounds-west-end-2024",
       "oldCount": 6,
-      "newCount": 3,
-      "dropped": 3,
+      "newCount": 1,
+      "dropped": 5,
       "scoredOnDisk": 6,
+      "flaggedScored": 0,
+      "inlineGuardExcluded": 0,
+      "reason": "scored files exist but being dropped"
+    },
+    {
+      "showId": "a-mirror-west-end-2024",
+      "oldCount": 4,
+      "newCount": 0,
+      "dropped": 4,
+      "scoredOnDisk": 5,
       "flaggedScored": 0,
       "inlineGuardExcluded": 0,
       "reason": "scored files exist but being dropped"
@@ -44,8 +54,8 @@
     {
       "showId": "the-picture-of-dorian-gray-west-end-2024",
       "oldCount": 7,
-      "newCount": 4,
-      "dropped": 3,
+      "newCount": 3,
+      "dropped": 4,
       "scoredOnDisk": 10,
       "flaggedScored": 0,
       "inlineGuardExcluded": 0,
