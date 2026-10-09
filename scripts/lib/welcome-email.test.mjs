@@ -248,3 +248,9 @@ test('idempotency key is stable per account', () => {
   assert.equal(w.idempotencyKeyFor('abc'), w.idempotencyKeyFor('abc'));
   assert.notEqual(w.idempotencyKeyFor('abc'), w.idempotencyKeyFor('abd'));
 });
+
+test('footer tells new account holders they also get the opening night emails (BRO-4893)', () => {
+  const { text, html } = w.buildWelcomeEmail({ displayName: 'Ann Lee', email: 'ann@example.com' });
+  assert.match(text, /also gets our opening night emails/);
+  assert.match(html, /also gets our opening night emails/);
+});

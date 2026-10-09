@@ -89,3 +89,34 @@ export function clearReturnUrl(): void {
     // localStorage not available
   }
 }
+
+/**
+ * `?signin=1` deep link (the account line in our emails, BRO-4893).
+ * Returns the analytics source for the sign-in prompt, or null when the URL
+ * doesn't ask for sign-in. `utm_source` (lowercase, hyphens -> _) names the email,
+ * e.g. ?signin=1&utm_source=newsletter -> 'email_newsletter'.
+ */
+export function signInSourceFromSearch(search: string): string | null {
+  const params = new URLSearchParams(search);
+  if (params.get('signin') !== '1') return null;
+  const utm = params.get('utm_source') || '';
+  return /^[a-z0-9_-]{1,32}$/.test(utm) ? `email_${utm.replace(/-/g, '_')}` : 'email_link';
+}
+
+/**
+ * Reads the `?signin=1` deep link and removes `signin` from the address bar,
+ * so a reload, a shared link or the return from Google sign-in can't reopen
+ * the modal. Keeps every other param (utm_* stay for analytics).
+ */
+export function takeSignInParam(): string | null {
+  try {
+    const source = signInSourceFromSearch(window.location.search);
+    if (!source) return null;
+    const url = new URL(window.location.href);
+    url.searchParams.delete('signin');
+    window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
+    return source;
+  } catch {
+    return null;
+  }
+}

@@ -39,6 +39,12 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
 
   useEffect(() => {
     setIsSubscribed(isFormspreeSubscribed(market));
+    // Another capture on the page (footer box, home inline box, sign-in
+    // auto-subscribe) fires 'bsc_subscribed'; re-read so every instance agrees
+    // (BRO-4893: the header button stayed up after joining from the footer).
+    const recheck = () => setIsSubscribed(isFormspreeSubscribed(market));
+    window.addEventListener('bsc_subscribed', recheck);
+    return () => window.removeEventListener('bsc_subscribed', recheck);
   }, [market]);
 
   const submit = useCallback(async (email: string, extra?: { firstName?: string }): Promise<boolean> => {
