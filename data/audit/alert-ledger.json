@@ -155,12 +155,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-09T15:38:20.550Z",
-      "lastSeen": "2026-10-09T15:38:20.550Z",
+      "lastSeen": "2026-10-09T16:11:18.704Z",
       "lastNotifiedAt": "2026-10-09T15:38:20.550Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 127,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -12547,7 +12548,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-4938",
       "absentRunIds": [
-        "37951424811"
+        "37951424811",
+        "37955201128"
       ]
     },
     "test-yml:red:Unit Tests:2a5215c8": {
@@ -12556,12 +12558,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real data: an unscored running tour with a schedule is indexable; a closed unscored one is not\"",
       "firstSeen": "2026-10-09T15:38:20.162Z",
       "incidentOpenedAt": "2026-10-09T15:38:20.162Z",
-      "lastSeen": "2026-10-09T15:38:20.162Z",
+      "lastSeen": "2026-10-09T16:11:18.697Z",
       "lastNotifiedAt": "2026-10-09T15:38:20.162Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4940"
+      "linearIdentifier": "BRO-4940",
+      "silentRefires": 1
     },
     "feedback-outcomes:2026-10-09T12:58:53.431983+00:00": {
       "status": "open",
