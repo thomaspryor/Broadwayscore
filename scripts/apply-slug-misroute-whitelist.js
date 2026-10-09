@@ -53,6 +53,7 @@ const { safeRenameReview } = require('./lib/review-write-guard');
 const {
   matchSlugToShow, matchBwwRoundupSlugToShow, loadShows,
 } = require('./lib/show-matching');
+const { roundupMatchPool } = require('./lib/tour-roundup-candidate');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 const args = process.argv.slice(2);
@@ -95,7 +96,7 @@ function currentRouting(reviewPath, shows) {
     source = 'pv'; matcher = matchSlugToShow;
   } else if (r.bwwRoundupUrl && /review-roundup/i.test(r.bwwRoundupUrl)) {
     slug = r.bwwRoundupUrl.split('/article/')[1] || '';
-    source = 'bww'; matcher = matchBwwRoundupSlugToShow;
+    source = 'bww'; matcher = (sl, list, opts) => matchBwwRoundupSlugToShow(sl, roundupMatchPool(sl, list), opts); // tour roundups: Broadway/tour pool, as live (BRO-4924)
   }
   if (!slug || !matcher) return null;
   // Match the PRODUCTION matcher's year derivation EXACTLY so the stale guard

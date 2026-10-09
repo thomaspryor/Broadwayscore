@@ -270,6 +270,12 @@ test('a tour that launches before its Broadway run takes the upcoming Broadway r
   // Once the Broadway run has an official date after the tour launch, it is still the parent.
   const dated = shows.map(s => s.id === 'dirty-dancing-2027' ? { ...s, openingDate: '2027-03-14', status: 'upcoming' } : s);
   assert.equal(parentForSlug('dirty-dancing-the-musical', dated, '2026-08-12').id, 'dirty-dancing-2027');
+  // And after the Broadway run has opened (status open, opening within a year of the tour start).
+  const opened = shows.map(s => s.id === 'dirty-dancing-2027' ? { ...s, openingDate: '2027-03-14', status: 'open' } : s);
+  assert.equal(parentForSlug('dirty-dancing-the-musical', opened, '2026-08-12').id, 'dirty-dancing-2027');
+  // A Broadway run that opened years after the tour started is a different production.
+  const farLater = shows.map(s => s.id === 'dirty-dancing-2027' ? { ...s, openingDate: '2031-03-14', status: 'open' } : s);
+  assert.equal(parentForSlug('dirty-dancing-the-musical', farLater, '2026-08-12'), null);
 });
 
 test('an earlier Broadway production still wins over a Broadway run not yet open, and other future shows are never a fallback', () => {

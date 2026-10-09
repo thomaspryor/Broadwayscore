@@ -53,6 +53,8 @@ function slugKeys(slug) {
 
 // A Broadway production announced but not yet open.
 const PRE_BROADWAY_STATUSES = new Set(['announced', 'upcoming', 'previews']);
+// A Broadway run that opens this long after a tour starts still counts as that tour's parent.
+const PRE_BROADWAY_WINDOW_DAYS = 365;
 
 /**
  * The Broadway production a tour of this schedule page descends from: the
@@ -76,11 +78,13 @@ function parentForSlug(slug, shows, beforeIso) {
   // A tour that launches before its Broadway run (Dirty Dancing toured from
   // Aug 2026 and opens at the Lena Horne in Feb 2027, BRO-4924) has no earlier
   // Broadway production, so the Broadway run still ahead is its parent. Only
-  // as a last resort and only a production not yet open, so a stale revival
-  // that opened after an older tour started is still not picked over a real
-  // earlier parent.
+  // as a last resort, so an older tour keeps its real earlier parent. "Ahead"
+  // is a run not yet open (any status in PRE_BROADWAY_STATUSES) or one that
+  // opened within PRE_BROADWAY_WINDOW_DAYS after the tour's first engagement,
+  // so the tour keeps its parent once the Broadway run opens.
+  const windowEnd = before ? new Date(new Date(`${before}T00:00:00Z`).getTime() + PRE_BROADWAY_WINDOW_DAYS * 86400000).toISOString().slice(0, 10) : null;
   const ahead = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
-    && PRE_BROADWAY_STATUSES.has(String(s.status || '').toLowerCase())
+    && (PRE_BROADWAY_STATUSES.has(String(s.status || '').toLowerCase()) || (windowEnd && s.openingDate && s.openingDate > before && s.openingDate <= windowEnd))
     && (!s.openingDate || !before || s.openingDate > before));
   const soonest = list => list.sort((a, b) => String(a.openingDate || a.unconfirmedStartDate || '9999').localeCompare(String(b.openingDate || b.unconfirmedStartDate || '9999')))[0] || null;
   for (const key of slugKeys(slug)) {
