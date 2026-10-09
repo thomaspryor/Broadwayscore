@@ -74,3 +74,12 @@ test('verification prompt uses the first-preview year when openingDate is missin
   assert.match(prompt, /2025/);
   assert.doesNotMatch(prompt, /Year: \?/);
 });
+
+// BRO-4884: Opus rejected generic plots of King Lear, Pygmalion, Private Lives
+// for WE revivals "for lacking production-specific details" (run 37868803406).
+test('prompt lets a revival match on its source work\'s story', () => {
+  const p = buildVerificationPrompt({ title: 'King Lear', openingDate: '2023-11-01', type: 'play', venue: "Wyndham's Theatre" }, 'plot');
+  assert.match(p, /revival or new staging of a well-known work/);
+  assert.match(p, /Do not answer MISMATCH only because production-specific details are missing/);
+  assert.match(p, /different show that merely shares the title/);
+});
