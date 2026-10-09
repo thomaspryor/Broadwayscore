@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   diffShow, summarize, deployedOutletIds, deployedShowUrl, severityRank, CS_TOLERANCE,
+  stampFirstDefectAt, persistentDefects, STALE_GRACE_HOURS,
 } = require('./deployed-coverage-diff.js');
 
 // A realistic deployed payload: outlet DISPLAY NAMES in `o`, no outletId.
@@ -153,4 +154,44 @@ test('severity still dominates recency (an old unpublished page outranks a new d
     diffShow({ showId: 'old-gone', openingDate: '2015-01-01', localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: null, fetchError: '404' }),
   ];
   assert.deepEqual(summarize(rows).shows.map((r) => r.showId), ['old-gone', 'new-drift']);
+});
+
+// ── BRO-3030: signal vs noise ────────────────────────────────────────────────
+
+test('a show with no local reviews and no cs is NOT unreachable on a prod 404 (nothing to serve)', () => {
+  const r = diffShow({ showId: 'new-show', localScoredOutletIds: [], localCs: null, localFileExists: false, deployedJson: null, fetchError: 'HTTP 404' });
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.defects, []);
+  // ...but only for a 404: a 5xx or timeout is still a real unreachable
+  for (const err of ['HTTP 503', 'fetch timeout (20s)']) {
+    assert.equal(diffShow({ showId: 'new-show', localScoredOutletIds: [], localCs: null, localFileExists: false, deployedJson: null, fetchError: err }).ok, false, err);
+  }
+  // ...a built local public file means the page should be live, even with no cs yet
+  assert.equal(diffShow({ showId: 'built', localScoredOutletIds: [], localCs: null, localFileExists: true, deployedJson: null, fetchError: 'HTTP 404' }).ok, false);
+  assert.equal(diffShow({ showId: 'unknown', localScoredOutletIds: [], localCs: null, deployedJson: null, fetchError: 'HTTP 404' }).ok, false, 'flag omitted => conservative');
+  // ...and a show that HAS local data still reports its 404 (the original killed-deploy case)
+  assert.equal(diffShow({ showId: 's', localScoredOutletIds: ['nytimes'], localCs: 80, deployedJson: null, fetchError: 'HTTP 404' }).ok, false);
+  assert.equal(diffShow({ showId: 's', localScoredOutletIds: [], localCs: 80, deployedJson: null, fetchError: 'HTTP 404' }).ok, false);
+});
+
+test('stampFirstDefectAt carries the first-seen time across runs and drops it once clean', () => {
+  const bad = (id) => ({ showId: id, ok: false, defects: [{ type: 'score-drift', detail: 'x' }] });
+  const clean = (id) => ({ showId: id, ok: true, defects: [] });
+  const prev = { shows: [{ showId: 'a', firstDefectAt: '2026-10-09T00:00:00.000Z' }, { showId: 'gone', firstDefectAt: '2026-10-08T00:00:00.000Z' }] };
+  const now = '2026-10-09T09:00:00.000Z';
+  const out = stampFirstDefectAt([bad('a'), bad('b'), clean('gone'), null], prev, now);
+  assert.equal(out.find(r => r.showId === 'a').firstDefectAt, '2026-10-09T00:00:00.000Z', 'carried');
+  assert.equal(out.find(r => r.showId === 'b').firstDefectAt, now, 'new defect starts now');
+  assert.equal(out.find(r => r.showId === 'gone').firstDefectAt, undefined, 'a clean row loses its clock');
+  assert.equal(stampFirstDefectAt([bad('a')], null, now)[0].firstDefectAt, now, 'no previous report');
+});
+
+test('persistentDefects: only diffs older than the deploy-backstop grace count as stale', () => {
+  const nowMs = Date.parse('2026-10-09T12:00:00.000Z');
+  const row = (id, at) => ({ showId: id, ok: false, firstDefectAt: at, defects: [{ type: 'score-drift' }] });
+  const hoursAgo = (h) => new Date(nowMs - h * 3600000).toISOString();
+  const kept = persistentDefects([row('fresh', hoursAgo(1)), row('edge', hoursAgo(STALE_GRACE_HOURS)), row('old', hoursAgo(30)),
+    row('nostamp', undefined), { showId: 'ok', ok: true, defects: [] }], nowMs).map(r => r.showId);
+  assert.deepEqual(kept, ['edge', 'old']);
+  assert.equal(STALE_GRACE_HOURS, 6, 'matches the vercel-deploy.yml 6h backstop');
 });
