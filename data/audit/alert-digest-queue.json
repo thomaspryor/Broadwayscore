@@ -2740,5 +2740,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-09T12:05:43.215Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4907-outlet-tier-audit",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4907-outlet-tier-audit",
+    "description": "land.yml did not land land/bro-4907-outlet-tier-audit: the unit-tests-node gate went red at 0496dffcbc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37923797636",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4907-outlet-tier-audit"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0496dffcbc17674010dd0d37604648dbe3fd679b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37923797636"
+      }
+    ],
+    "queuedAt": "2026-10-09T12:00:20.614Z"
   }
 ]
