@@ -25,7 +25,7 @@ export default function UnfollowClient() {
   if (!email || !showId) {
     return (
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white mb-4">Invalid Unfollow Link</h1>
+        <h1 className="text-2xl font-bold text-white mb-4">Invalid Link</h1>
         <p className="text-gray-400 mb-6">This link appears to be incomplete.</p>
         <Link href="/" className="text-brand hover:text-brand-hover transition-colors">
           Back to Broadway Scorecard
@@ -65,9 +65,9 @@ export default function UnfollowClient() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 className="text-2xl font-bold text-white mb-3">Unfollowed</h1>
+        <h1 className="text-2xl font-bold text-white mb-3">Emails stopped</h1>
         <p className="text-gray-400 mb-8">
-          You won&apos;t receive any more updates for <span className="text-white font-medium">{showTitle}</span>.
+          You won&apos;t get any more emails about <span className="text-white font-medium">{showTitle}</span>.
         </p>
         <Link href={`/show/${showId}`} className="text-brand hover:text-brand-hover transition-colors">
           View {showTitle} on Broadway Scorecard
@@ -78,9 +78,9 @@ export default function UnfollowClient() {
 
   return (
     <div className="text-center">
-      <h1 className="text-2xl font-bold text-white mb-3">Unfollow {showTitle}?</h1>
+      <h1 className="text-2xl font-bold text-white mb-3">Stop emails about {showTitle}?</h1>
       <p className="text-gray-400 mb-8">
-        You&apos;ll stop receiving email updates about this show.
+        You&apos;ll stop getting email updates about this show. Your other emails from us don&apos;t change.
       </p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <button
@@ -88,7 +88,7 @@ export default function UnfollowClient() {
           disabled={status === 'submitting'}
           className="px-6 py-3 bg-red-500/80 hover:bg-red-500 disabled:bg-red-500/40 text-white font-semibold rounded-lg transition-colors"
         >
-          {status === 'submitting' ? 'Unfollowing...' : 'Yes, Unfollow'}
+          {status === 'submitting' ? 'Stopping...' : 'Yes, stop these emails'}
         </button>
         <Link
           href={`/show/${showId}`}

@@ -239,8 +239,8 @@ function buildFooterHtml(showTitle, showId, email, market) {
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
     <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
-      You're receiving this because you followed ${escapeHtml(showTitle)} on <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
-      <a href="${escapeHtml(unfollowUrl)}" style="color:rgba(255,255,255,0.35);">Unfollow this show</a>
+      You're receiving this because you asked for email updates about ${escapeHtml(showTitle)} on <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
+      <a href="${escapeHtml(unfollowUrl)}" style="color:rgba(255,255,255,0.35);">Stop emails about this show</a>
     </p>
   </td></tr>`;
 }

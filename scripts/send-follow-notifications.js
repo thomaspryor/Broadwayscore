@@ -21,6 +21,8 @@ const path = require('path');
 const { sendAlert } = require('./lib/discord-notify');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { unfollowedShowIds, dropAgedChanges } = require('./lib/follow-digest-prune');
+const crypto = require('crypto');
 
 const USAGE = `send-follow-notifications.js — Reads show-changes-digest.json + followers.json, sends notification.
 
@@ -48,8 +50,14 @@ const MAX_SENDS_PER_RUN = Math.min(MONTHLY_LIMIT - BUDGET_RESERVE, 100); // 100/
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
 
 // High-priority change types — a single one of these warrants an email
+// BRO-4897: closing news is what a follower most wants (and the signup box
+// promises it), so it sends on its own. 'cast-change' is NOT here: it fires
+// on any creative-team data edit and the email can only say "Creative team
+// updated" with no detail, which is all one follower got 7 Mondays running.
+// It is also left out of the email and the 2-change count (emailChanges).
 const HIGH_PRIORITY_TYPES = [
-  'opening-night', 'status-change', 'cast-change', 'lottery-added', 'recoupment',
+  'opening-night', 'status-change', 'lottery-added', 'recoupment',
+  'closing-announced', 'closing-extended', 'closing-shortened',
   // BRO-770: a tier entry into Buzzing/Troubled is itself the whole story —
   // don't wait for a second unrelated change to cross the 2-change threshold.
   'social-tier-buzzing', 'social-tier-troubled',
@@ -61,6 +69,21 @@ function loadJSON(filePath) {
   } catch {
     return null;
   }
+}
+
+// Checkpoint key. Includes a fingerprint of the changes so a leftover checkpoint
+// from a partial run can only skip THAT email, never a later one about new
+// changes to the same show (BRO-4897: the checkpoint is now actually committed).
+function sendKey(showId, email, changes) {
+  const fp = crypto.createHash('sha1')
+    .update((changes || []).map(c => `${c.type}:${c.message}`).join('|'))
+    .digest('hex').slice(0, 10);
+  return `${showId}:${email}:${fp}`;
+}
+
+// Changes worth putting in a follower's email ('cast-change' carries no detail).
+function emailChanges(changes) {
+  return (changes || []).filter(c => c.type !== 'cast-change');
 }
 
 function shouldNotify(changes) {
@@ -95,6 +118,23 @@ async function main() {
     process.exit(0);
   }
 
+  // Digest housekeeping (BRO-4897), before anything is queued: drop changes for
+  // shows nobody follows and changes older than 30 days, so neither can come
+  // back later as stale news. Skipped when followers.json is empty (a bad sync
+  // must not wipe every show's pending news).
+  {
+    const followedCount = Object.values(followers.followers).filter(l => Array.isArray(l) && l.length).length;
+    const unfollowed = followedCount > 0 ? unfollowedShowIds(digest.changes, followers.followers) : [];
+    for (const showId of unfollowed) delete digest.changes[showId];
+    const aged = dropAgedChanges(digest.changes);
+    if ((unfollowed.length || aged) && !DRY_RUN) {
+      fs.writeFileSync(DIGEST_PATH, JSON.stringify(digest, null, 2));
+    }
+    if (unfollowed.length || aged) {
+      console.log(`Digest housekeeping: dropped ${unfollowed.length} unfollowed shows and ${aged} changes older than 30 days`);
+    }
+  }
+
   const shows = loadJSON(SHOWS_PATH);
   const showsList = shows ? (shows.shows || shows) : {};
   const showsArr = Array.isArray(showsList) ? showsList : Object.values(showsList);
@@ -115,7 +155,8 @@ async function main() {
   const changesEntries = Object.entries(digest.changes);
   const sendQueue = [];
 
-  for (const [showId, changes] of changesEntries) {
+  for (const [showId, allChanges] of changesEntries) {
+    const changes = emailChanges(allChanges);
     if (!shouldNotify(changes)) {
       console.log(`  Skip ${showId}: changes below notification threshold`);
       continue;
@@ -128,7 +169,7 @@ async function main() {
     }
 
     for (const email of showFollowers) {
-      const key = `${showId}:${email}`;
+      const key = sendKey(showId, email, changes);
       if (alreadySent.has(key)) continue;
       sendQueue.push({ showId, email, changes });
     }
@@ -232,8 +273,7 @@ async function main() {
 
       sentCount++;
       sentPerShow[showId]++;
-      const key = `${showId}:${email}`;
-      sentKeys.push(key);
+      sentKeys.push(sendKey(showId, email, changes));
       console.log(`  Sent to ${email.replace(/(.{2}).*(@.*)/, '$1***$2')} for ${showTitle} (${sentCount}/${Math.min(sendQueue.length, MAX_SENDS_PER_RUN)})`);
 
       // Checkpoint every 25 sends
