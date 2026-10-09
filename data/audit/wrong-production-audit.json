@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T22:47:53.277Z",
+  "timestamp": "2026-10-09T23:31:40.653Z",
   "stats": {
-    "totalReviews": 52173,
-    "alreadyFlagged": 19490,
-    "dateGuardCatches": 258,
-    "directorMismatch": 1606,
+    "totalReviews": 52221,
+    "alreadyFlagged": 19493,
+    "dateGuardCatches": 259,
+    "directorMismatch": 1609,
     "tvFilmSignals": 1502,
     "londonSignals": 1666,
     "offBroadwaySignals": 511,
     "yearMismatch": 127,
-    "noPublishDate": 5552
+    "noPublishDate": 5592
   },
   "findings": [
     {
@@ -12465,6 +12465,20 @@
       ]
     },
     {
+      "showId": "from-the-heart-west-end-2026",
+      "file": "boxofficeradio--unknown.json",
+      "score": 91,
+      "publishDate": "2024-07-09",
+      "url": "https://boxofficeradio.co.uk/review-don-blacks-from-the-heart-garrick-theatre-london",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 821d before show (2024-07-09 vs 2026-10-08)"
+        }
+      ]
+    },
+    {
       "showId": "frostnixon-2007",
       "file": "newsday--linda-winer.json",
       "score": 44,
@@ -12480,6 +12494,47 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "frozen-west-end-2021",
+      "file": "artsdesk--marianka-swain.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/frozen-theatre-royal-drury-lane-review-twinkling-spectacle-sincere-drama-its-heart",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from frozen-2018"
+        }
+      ]
+    },
+    {
+      "showId": "frozen-west-end-2021",
+      "file": "i-paper--unknown.json",
+      "publishDate": null,
+      "url": "https://inews.co.uk/culture/frozen-theatre-royal-drury-lane-london-review-stephanie-mckeon-1188331",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from frozen-2018"
+        }
+      ]
+    },
+    {
+      "showId": "frozen-west-end-2021",
+      "file": "telegraph--marianka-swain.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-theatre-royal-drury-lane-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from frozen-2018"
         }
       ]
     },

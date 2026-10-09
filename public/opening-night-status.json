@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T22:48:03.285Z",
+  "generatedAt": "2026-10-09T23:31:50.550Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,26 +392,25 @@
       "status": "open",
       "slug": "from-the-heart-west-end",
       "thumbnail": "/images/shows/from-the-heart-west-end-2026/thumbnail.jpg",
-      "siteScore": 81.04,
-      "liveScore": 81,
-      "scoreDrift": -0.04000000000000625,
+      "siteScore": 83.12,
+      "liveScore": 83,
+      "scoreDrift": -0.12000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
-      "t1": 0,
-      "t2": 3,
-      "t3": 8,
-      "positive": 10,
+      "total": 16,
+      "t1": 1,
+      "t2": 4,
+      "t3": 11,
+      "positive": 15,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3",
-          "T2:1/2"
+          "T1:0/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 14,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -516,6 +515,18 @@
           "t2": 3,
           "t3": 8,
           "p": 10,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-09T23:31:50.550Z",
+          "rc": 16,
+          "s": 83.12,
+          "t1": 1,
+          "t2": 4,
+          "t3": 11,
+          "p": 15,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -3206,17 +3217,17 @@
       "status": "open",
       "slug": "the-hungry-ghost-off-west-end",
       "thumbnail": "/images/shows/the-hungry-ghost-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 79.72,
+      "siteScore": 79.62,
       "liveScore": 80,
-      "scoreDrift": 0.28000000000000114,
+      "scoreDrift": 0.37999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 20,
+      "total": 21,
       "t1": 1,
       "t2": 7,
-      "t3": 12,
-      "positive": 16,
+      "t3": 13,
+      "positive": 17,
       "mixed": 4,
       "negative": 0,
       "readiness": {
@@ -3224,7 +3235,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 16,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3553,6 +3564,18 @@
           "t2": 7,
           "t3": 12,
           "p": 16,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-09T23:31:50.550Z",
+          "rc": 21,
+          "s": 79.62,
+          "t1": 1,
+          "t2": 7,
+          "t3": 13,
+          "p": 17,
           "m": 4,
           "n": 0,
           "bc": "waiting"
