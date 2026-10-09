@@ -109,5 +109,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-09T16:22:23.895Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:rent-west-end-2026",
+    "title": "Shipped review missing publishDate on Rent",
+    "description": "artsdesk/Matt Wolf SHIPPED with no publishDate — cannot confirm post-opening: https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T16:18:24.209Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:an-oak-tree-off-west-end-2026",
+    "title": "Pre-opening publishDate on An Oak Tree",
+    "description": "timeout-london/Tim Bano SHIPPED with publishDate 2026-09-22 (16d before openingDate 2026-10-08): https://www.timeout.com/london/theatre/an-oak-tree-review",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T16:18:28.993Z"
   }
 ]
