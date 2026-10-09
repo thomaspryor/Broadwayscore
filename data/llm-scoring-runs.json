@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-08T18:09:47.376Z",
-    "completedAt": "2026-10-08T18:20:06.348Z",
-    "totalReviews": 48573,
-    "processed": 106,
-    "skipped": 48465,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 519727,
-      "output": 34358,
-      "total": 1400595
-    },
-    "costUsd": 2.15732755,
-    "runId": "37821510485",
-    "errorDetails": [
-      {
-        "showId": "the-brightening-air-west-end-2025",
-        "outletId": "daily-mail",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-08T18:20:08.539Z",
-    "completedAt": "2026-10-08T18:22:21.146Z",
-    "totalReviews": 54,
-    "processed": 54,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 137286,
-      "output": 12685,
-      "total": 149971
-    },
-    "costUsd": 0.3887106000000001,
-    "runId": "37821510485",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-08T18:25:57.437Z",
     "completedAt": "2026-10-08T18:26:41.999Z",
     "totalReviews": 48584,
@@ -627952,6 +627909,44 @@
     },
     "costUsd": 0,
     "runId": "37921483823",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T11:12:32.935Z",
+    "completedAt": "2026-10-09T11:13:35.271Z",
+    "totalReviews": 50827,
+    "processed": 1,
+    "skipped": 50809,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 67698,
+      "output": 3164,
+      "total": 198038
+    },
+    "costUsd": 0.2811731,
+    "runId": "37921927083",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T11:13:37.374Z",
+    "completedAt": "2026-10-09T11:13:40.396Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37921927083",
     "errorDetails": []
   }
 ]
