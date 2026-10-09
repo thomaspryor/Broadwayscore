@@ -61,7 +61,7 @@ jobs:
     # "OB discovery S7" step, 8 min hard cap, continue-on-error) + StubHub
     # 5 min (hard step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
     # below) + setup-node/misc ~5 min ≈ 108-118 min, ~12-22 min margin to 130.
-    timeout-minutes: 130
+    timeout-minutes: 133
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
