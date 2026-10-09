@@ -427,3 +427,64 @@ test('single-word reduction of a multi-word title needs the full phrase (BRO-485
   const v = await validatePageMatchesShow(page, 'Two Girls', { skipLlm: true, openingYear: 2026 });
   assert.equal(v.valid, false);
 });
+
+// BRO-4929: shows whose only long title word is under 5 chars (Oh, Mary!, SIX,
+// Boop!, The Wiz, MJ) were unmatchable by the token path, whose gate must stay
+// as it is (a 4-char gate caused 241 misroutes on 2026-05-27). A roundup slug
+// that equals the show's whole title, once a national-tour tail is removed,
+// matches through the exact-title path instead.
+test('exact-title path: short-title shows match a national-tour roundup slug (BRO-4929)', () => {
+  const shows = [
+    { id: 'oh-mary-2024', title: 'Oh, Mary!', category: 'broadway', status: 'open', openingDate: '2024-07-11' },
+    { id: 'six-2021', title: 'SIX', category: 'broadway', status: 'open', openingDate: '2021-10-03' },
+    { id: 'six-degrees-of-separation-2017', title: 'Six Degrees of Separation', category: 'broadway', status: 'closed', openingDate: '2017-04-25' },
+    { id: 'boop-2025', title: 'Boop! The Musical', category: 'broadway', status: 'closed', openingDate: '2025-04-05' },
+    { id: 'the-wiz-2024', title: 'The Wiz', category: 'broadway', status: 'closed', openingDate: '2024-04-17' },
+    { id: 'mj-2022', title: 'MJ The Musical', category: 'broadway', status: 'open', openingDate: '2022-02-01' },
+    { id: 'mary-jane-2024', title: 'Mary Jane', category: 'broadway', status: 'closed', openingDate: '2024-04-23' },
+  ];
+  const expect = {
+    'Review-Roundup-OH-MARY-Opens-National-Tour-20261007': 'oh-mary-2024',
+    'Review-Roundup-SIX-Launches-North-American-Tour-20260101': 'six-2021',
+    'Review-Roundup-BOOP-Launches-National-Tour-20261003': 'boop-2025',
+    'Review-Roundup-BOOP-THE-MUSICAL-Launches-National-Tour-20261003': 'boop-2025',
+    'Review-Roundup-THE-WIZ-on-Tour-20260926': 'the-wiz-2024',
+    'Review-Roundup-MJ-Opens-National-Tour-20260101': 'mj-2022',
+    'Review-Roundup-OH-MARY-Opens-on-Broadway-20240711': 'oh-mary-2024',
+  };
+  for (const [slug, id] of Object.entries(expect)) {
+    const m = matchBwwRoundupSlugToShow(slug, shows);
+    assert.ok(m, slug);
+    assert.equal(m.show.id, id, slug);
+    assert.equal(m.via, 'slug-exact-title', slug);
+  }
+});
+
+test('exact-title path: only exact equality, never a partial or reduced title (BRO-4929)', () => {
+  const ohMary = { id: 'oh-mary-2024', title: 'Oh, Mary!', category: 'broadway', status: 'open', openingDate: '2024-07-11' };
+  const cats = { id: 'cats-2016', title: 'Cats', category: 'broadway', status: 'closed', openingDate: '2016-07-31' };
+  const jellicle = { id: 'cats-the-jellicle-ball-2026', title: 'CATS: The Jellicle Ball', category: 'broadway', status: 'closed', openingDate: '2026-04-07' };
+  const six = { id: 'six-2021', title: 'SIX', category: 'broadway', status: 'open', openingDate: '2021-10-03' };
+  // "Mary Jane" is not "Oh, Mary!".
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-MARY-JANE-Opens-National-Tour-20261007', [ohMary]), null);
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-MARY-JANE-Opens-Off-Broadway-20240423', [ohMary]), null);
+  // A subtitled title does not answer to its first word, and the reverse.
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-National-Tour-20261007', [cats]), null);
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-CATS-Opens-National-Tour-20261007', [jellicle]), null);
+  // ...but exact equality does match.
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-CATS-Opens-National-Tour-20261007', [jellicle, cats]).show.id, 'cats-2016');
+  // Extra words in the slug are not equality ("SIX Degrees..." is not SIX).
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-SIX-FLAGS-Opens-National-Tour-20261007', [six]), null);
+  // Tour words in the middle of a slug are not stripped.
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-NATIONAL-TOUR-OH-MARY-20261007', [ohMary]), null);
+  // The token path is untouched: a long-token show still matches via it.
+  const hamilton = { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway', status: 'open', openingDate: '2015-08-06' };
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-HAMILTON-Launches-National-Tour-20261007', [hamilton]).via, 'slug-token-set');
+});
+
+test('exact-title path: same-title productions tie-break by article year (BRO-4929)', () => {
+  const bway = { id: 'oh-mary-2024', title: 'Oh, Mary!', category: 'broadway', status: 'open', openingDate: '2024-07-11' };
+  const tour = { id: 'oh-mary-tour-2026', title: 'Oh, Mary!', category: 'tour', status: 'open', openingDate: '2026-09-19' };
+  const m = matchBwwRoundupSlugToShow('Review-Roundup-OH-MARY-Opens-National-Tour-20261007', [bway, tour]);
+  assert.equal(m.show.id, 'oh-mary-tour-2026');
+});

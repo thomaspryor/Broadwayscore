@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { isCategoryEnabled } from '@/lib/markets';
-import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, isTourListed, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, isTourIndexableShow, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
@@ -183,7 +183,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
-    : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
+    : `${isTourMeta && reviewCount === 0
+      ? `Reviews of ${show.title} ${marketLabel} are coming in as local critics see it in each city.`
+      : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.`}${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
   ).trim();
   const truncatedDescription = description.length > 160
     ? description.slice(0, 157).replace(/\s\S*$/, '...')
@@ -203,9 +205,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
         // A tour's seoTitle already says "National Tour"; the market label would repeat it.
         : `${seoTitle} Reviews${isTourMeta ? '' : ` ${marketLabel}`} — ${siteName}`,
     },
-    // A tour below the listing threshold is left out of the tours page and the
-    // sitemap (isTourListed); keep it out of search too until it has reviews.
-    ...(isTourMeta && !isTourListed(show) ? { robots: { index: false, follow: true } } : {}),
+    // An unscored tour is indexed once it is live with a schedule (the page's
+    // own content); a closed or unscheduled one with no score stays out of
+    // search, the sitemap and the search index (isTourIndexableShow, BRO-4931).
+    ...(isTourMeta && !isTourIndexableShow(show) ? { robots: { index: false, follow: true } } : {}),
     description: truncatedDescription,
     alternates: {
       canonical: canonicalUrl,

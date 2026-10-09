@@ -28,7 +28,7 @@ test('national tour roundup slugs are recognised; UK tours and look-alike words 
   ]) assert.equal(isNationalTourRoundupSlug(s), false, s);
 });
 
-test('a candidate only for a Broadway show with no tour entry of its title', () => {
+test('a candidate only for a Broadway, Off-Broadway or regional show with no tour entry of its title', () => {
   const dbh = { id: 'death-becomes-her-2024', title: 'Death Becomes Her', category: 'broadway' };
   const bj19 = { id: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway' };
   const bj25 = { id: 'beetlejuice-2025', title: 'Beetlejuice', category: 'broadway' };
@@ -38,7 +38,12 @@ test('a candidate only for a Broadway show with no tour entry of its title', () 
   assert.deepEqual(tourCandidateFor(slug, dbh, shows), { broadwayShowId: 'death-becomes-her-2024', title: 'Death Becomes Her' });
   assert.equal(tourCandidateFor(slug, bj25, shows), null, 'a tour of the same title already exists');
   assert.equal(tourCandidateFor('Review-Roundup-X-Opens-on-Broadway-20260101', dbh, shows), null);
-  assert.equal(tourCandidateFor(slug, { id: 'x-off-broadway-2026', title: 'X', category: 'off-broadway' }, shows), null);
+  // Off-Broadway and regional productions can be toured from too (BRO-4931); West End cannot.
+  assert.deepEqual(tourCandidateFor(slug, { id: 'x-off-broadway-2026', title: 'X', category: 'off-broadway' }, shows), { broadwayShowId: 'x-off-broadway-2026', title: 'X' });
+  assert.deepEqual(tourCandidateFor(slug, { id: 'x-regional-2026', title: 'X', category: 'regional' }, shows), { broadwayShowId: 'x-regional-2026', title: 'X' });
+  assert.equal(tourCandidateFor(slug, { id: 'x-west-end-2026', title: 'X', category: 'west-end' }, shows), null);
+  assert.equal(tourCandidateFor(slug, { id: 'x-owe-2026', title: 'X', category: 'off-west-end' }, shows), null);
+  assert.equal(tourCandidateFor(slug, { id: 'x-tour-2026', title: 'X', category: 'tour' }, shows), null);
   assert.equal(tourCandidateFor(slug, null, shows), null);
 });
 
@@ -158,7 +163,7 @@ test('a roundup and a Tours To You row for one show merge into the schedule row 
   }
 });
 
-test('a national-tour roundup matches Broadway shows only, so a West End production of the title cannot take it (BRO-4924)', () => {
+test('a national-tour roundup never matches a West End production of the title (BRO-4924)', () => {
   const { roundupMatchPool } = require('../../scripts/lib/tour-roundup-candidate.js');
   const { matchBwwRoundupSlugToShow } = require('../../scripts/lib/show-matching.js');
   const shows = [
@@ -175,4 +180,99 @@ test('a national-tour roundup matches Broadway shows only, so a West End product
   // Other slugs keep matching every show.
   const plain = 'Review-Roundup-DIRTY-DANCING-Opens-in-the-West-End-20261016';
   assert.equal(roundupMatchPool(plain, shows), shows);
+});
+
+test('the roundup pool adds Off-Broadway and regional shows but still excludes West End (BRO-4931)', () => {
+  const { roundupMatchPool } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const { matchBwwRoundupSlugToShow } = require('../../scripts/lib/show-matching.js');
+  const shows = [
+    { id: 'the-brightest-off-broadway-2026', title: 'The Brightest Star', category: 'off-broadway', status: 'open', openingDate: '2026-03-01' },
+    { id: 'harbor-lights-regional-2026', title: 'Harbor Lights', category: 'regional', status: 'open', openingDate: '2026-02-01' },
+    { id: 'moonlit-garden-west-end-2026', title: 'Moonlit Garden', category: 'west-end', status: 'open', openingDate: '2026-01-01' },
+    { id: 'moonlit-garden-off-west-end-2026', title: 'Moonlit Garden', category: 'off-west-end', status: 'open', openingDate: '2026-01-01' },
+    { id: 'sample-show-2026', title: 'Sample Show', category: 'broadway', status: 'open', openingDate: '2026-01-01' },
+  ];
+  const slug = (t) => `Review-Roundup-${t}-Launches-National-Tour-20261007`;
+  assert.deepEqual(roundupMatchPool(slug('X'), shows).map(s => s.category), ['off-broadway', 'regional', 'broadway']);
+  // An Off-Broadway-only title's national-tour roundup now matches that show.
+  assert.equal(matchBwwRoundupSlugToShow(slug('THE-BRIGHTEST-STAR'), roundupMatchPool(slug('THE-BRIGHTEST-STAR'), shows)).show.id, 'the-brightest-off-broadway-2026');
+  assert.equal(matchBwwRoundupSlugToShow(slug('HARBOR-LIGHTS'), roundupMatchPool(slug('HARBOR-LIGHTS'), shows)).show.id, 'harbor-lights-regional-2026');
+  // A West End-only title still does not.
+  assert.equal(matchBwwRoundupSlugToShow(slug('MOONLIT-GARDEN'), roundupMatchPool(slug('MOONLIT-GARDEN'), shows)), null);
+  // Non-tour slugs are unfiltered.
+  assert.equal(roundupMatchPool('Review-Roundup-MOONLIT-GARDEN-Opens-in-the-West-End-20261016', shows), shows);
+});
+
+test('Oh, Mary! national-tour roundup resolves through the pool to the tour entry (BRO-4929 + BRO-4931)', () => {
+  const { roundupMatchPool } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const { matchBwwRoundupSlugToShow } = require('../../scripts/lib/show-matching.js');
+  const shows = [
+    { id: 'oh-mary-2024', title: 'Oh, Mary!', category: 'broadway', status: 'open', openingDate: '2024-07-11' },
+    { id: 'oh-mary-off-broadway-2024', title: 'Oh, Mary!', category: 'off-broadway', status: 'closed', openingDate: '2024-02-08' },
+    { id: 'oh-mary-west-end-2025', title: 'Oh, Mary!', category: 'west-end', status: 'open', openingDate: '2025-12-18' },
+    { id: 'oh-mary-tour-2026', title: 'Oh, Mary!', category: 'tour', status: 'open', openingDate: '2026-09-19' },
+  ];
+  const slug = 'Review-Roundup-OH-MARY-Opens-National-Tour-20261007';
+  const m = matchBwwRoundupSlugToShow(slug, roundupMatchPool(slug, shows));
+  assert.equal(m.show.id, 'oh-mary-tour-2026');
+  assert.equal(m.via, 'slug-exact-title');
+  // Without the tour entry it resolves to a US parent, never the West End run.
+  const noTour = shows.filter(s => s.category !== 'tour');
+  assert.equal(matchBwwRoundupSlugToShow(slug, roundupMatchPool(slug, noTour)).show.id, 'oh-mary-2024');
+});
+
+test('roundupOnlyCandidate: a documented row shape, a title hint only, null for non-tour slugs (BRO-4931)', () => {
+  const { roundupOnlyCandidate } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const url = 'https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-LUMINA-Launches-North-American-Tour-20261005';
+  const row = roundupOnlyCandidate('Review-Roundup-THE-GREAT-LUMINA-Launches-North-American-Tour-20261005', url);
+  assert.deepEqual(row, {
+    key: 'roundup:review-roundup-the-great-lumina-launches-north-american-tour-20261005',
+    source: 'bww-roundup',
+    slug: 'Review-Roundup-THE-GREAT-LUMINA-Launches-North-American-Tour-20261005',
+    url,
+    roundupUrl: url,
+    title: 'The Great Lumina',
+  });
+  assert.equal('broadwayShowId' in row, false);
+  assert.equal(roundupOnlyCandidate('Review-Roundup-X-Opens-on-Broadway-20260101', url), null);
+  assert.equal(roundupOnlyCandidate('Review-Roundup-SIX-Launches-UK-and-Ireland-Tour-20250110', url), null);
+  assert.equal(roundupOnlyCandidate('Review-Roundup-SHUCKED-on-Tour-20241106', url).title, 'Shucked');
+});
+
+test('roundup-only rows are recorded beside show rows, old rows still read, and openTourCandidates skips them (BRO-4931)', async () => {
+  const { recordTourCandidates, openTourCandidates, roundupOnlyCandidate } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tour-cand-'));
+  try {
+    const file = path.join(dir, 'c.json');
+    const read = () => JSON.parse(fs.readFileSync(file, 'utf8'));
+    // An old row (no key field) as written before this change.
+    fs.writeFileSync(file, JSON.stringify([{ broadwayShowId: 'death-becomes-her-2024', title: 'Death Becomes Her', url: 'https://x/a', slug: 'Review-Roundup-DEATH-BECOMES-HER-Launches-National-Tour-20260915', firstSeen: '2026-09-01T00:00:00Z', notifiedAt: '2026-09-02T00:00:00Z' }]));
+    const slug = 'Review-Roundup-THE-GREAT-LUMINA-Launches-North-American-Tour-20261005';
+    const only = roundupOnlyCandidate(slug, 'https://www.broadwayworld.com/article/' + slug);
+    assert.equal(recordTourCandidates(file, [only], '2026-10-06T00:00:00Z'), 2);
+    assert.equal(recordTourCandidates(file, [only], '2026-10-07T00:00:00Z'), 2, 'same roundup seen again is the same row');
+    let rows = read();
+    const old = rows.find(r => r.broadwayShowId === 'death-becomes-her-2024');
+    assert.equal(old.notifiedAt, '2026-09-02T00:00:00Z', 'old row untouched');
+    const ro = rows.find(r => r.key === only.key);
+    assert.equal(ro.firstSeen, '2026-10-06T00:00:00Z');
+    assert.equal(ro.lastSeen, '2026-10-07T00:00:00Z');
+    assert.equal(ro.source, 'bww-roundup');
+    // An old show row updates in place (keyed by broadwayShowId) beside the new kind.
+    recordTourCandidates(file, [{ broadwayShowId: 'death-becomes-her-2024', title: 'Death Becomes Her', url: 'https://x/a', slug: old.slug }], '2026-10-08T00:00:00Z');
+    rows = read();
+    assert.equal(rows.length, 2);
+    assert.equal(rows.find(r => r.broadwayShowId === 'death-becomes-her-2024').notifiedAt, '2026-09-02T00:00:00Z');
+    // Roundup-only rows are not suggestions; old rows still are.
+    const dbh = { id: 'death-becomes-her-2024', title: 'Death Becomes Her', category: 'broadway' };
+    assert.deepEqual(openTourCandidates(rows, [dbh]).map(r => r.broadwayShowId), ['death-becomes-her-2024']);
+    // Two different standalone roundups are two rows.
+    const other = 'Review-Roundup-ANOTHER-SHOW-Opens-National-Tour-20261009';
+    assert.equal(recordTourCandidates(file, [roundupOnlyCandidate(other, 'https://x/' + other)], '2026-10-09T00:00:00Z'), 3);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
+  }
 });

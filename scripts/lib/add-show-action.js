@@ -46,10 +46,22 @@ function marketShapeProblem(shows, show) {
   if (show.category === 'tour') {
     if (show.market !== 'tour') return 'add-show: category "tour" needs market "tour"';
     if (!/-tour-\d{4}$/.test(show.id)) return 'add-show: tour id must end "-tour-<year>"';
+    // The market belongs to the parent, not the tour: mexodus-off-broadway-2026
+    // tours as mexodus-tour-2026 (review-guards.js isLikelyTourReview keys on
+    // the plain shape).
+    if (/-(on-broadway|off-broadway|off-west-end|west-end|regional)-tour-\d{4}$/.test(show.id)) return 'add-show: tour id must not carry a market ("-off-broadway-tour-<year>"); use "<base>-tour-<year>"';
     if (show.venue !== 'North American Tour') return 'add-show: tour venue must be "North American Tour"';
-    const parent = shows.find(s => s.id === show.tourOf);
-    if (!parent) return `add-show: tourOf "${show.tourOf}" not found`;
-    if (parent.category !== 'broadway') return `add-show: tourOf "${show.tourOf}" must be a broadway show`;
+    // tourOf is optional (BRO-4931): a tour of an Off-Broadway, regional or West
+    // End show names it; a standalone touring show omits it (never null) and is
+    // anchored by its Tours To You page instead.
+    if (show.tourOf === null || show.tourOf === '') return 'add-show: omit tourOf for a standalone tour, never set it empty';
+    if (show.tourOf === undefined) {
+      if (!show.tourScheduleSlug) return 'add-show: a standalone tour (no tourOf) needs tourScheduleSlug';
+    } else {
+      const parent = shows.find(s => s.id === show.tourOf);
+      if (!parent) return `add-show: tourOf "${show.tourOf}" not found`;
+      if (parent.category === 'tour') return `add-show: tourOf "${show.tourOf}" is itself a tour; name the production it tours`;
+    }
   }
   return null;
 }

@@ -29,17 +29,30 @@ function isNationalTourRoundupSlug(slug) {
   return TOUR_SLUG_RE.test(s) && !UK_SLUG_RE.test(s);
 }
 
+// Categories a North American tour can be touring FROM: Broadway, Off-Broadway
+// and regional productions (BRO-4931), plus tour entries themselves. West End
+// and off-West End are a different production and never tour parents here.
+const TOUR_PARENT_CATEGORIES = ['broadway', 'off-broadway', 'regional'];
+const ROUNDUP_POOL_CATEGORIES = [...TOUR_PARENT_CATEGORIES, 'tour'];
+
 /**
  * The shows a BWW roundup slug may be matched against. A national-tour
- * roundup is about a Broadway title's tour, so it matches Broadway shows (and
- * tour entries) only: the token matcher ties every production of a title and
- * breaks the tie on openingDate, so the West End "Dirty Dancing" beat the
- * undated Broadway one and the tour roundup was dropped as a West End article
- * (BRO-4924). Any other slug matches everything, as before.
+ * roundup is about a US-produced title's tour, so it matches Broadway,
+ * Off-Broadway, regional and tour shows only, never West End: the token
+ * matcher ties every production of a title and breaks the tie on openingDate,
+ * so the West End "Dirty Dancing" beat the undated Broadway one and the tour
+ * roundup was dropped as a West End article (BRO-4924). Off-Broadway and
+ * regional titles are tracked tours too (BRO-4931). Any other slug matches
+ * everything, as before.
  */
 function roundupMatchPool(slug, shows) {
   if (!isNationalTourRoundupSlug(slug)) return shows;
-  return (shows || []).filter(s => ['broadway', 'tour'].includes(s.category || 'broadway'));
+  return (shows || []).filter(s => ROUNDUP_POOL_CATEGORIES.includes(s.category || 'broadway'));
+}
+
+/** True when a show of this category can be the parent of a tracked tour. */
+function isTourParentCategory(category) {
+  return TOUR_PARENT_CATEGORIES.includes(category || 'broadway');
 }
 
 /** A BWW roundup's publication date from its slug tail (-YYYYMMDD), or null. */
@@ -53,13 +66,14 @@ function roundupDateFromSlug(slugOrUrl) {
 }
 
 /**
- * The Broadway show a tour roundup suggests adding a tour for, or null when
- * the slug isn't a tour roundup, the match isn't a Broadway show, or a tour
- * entry for that production (or another of its title) already exists.
+ * The show (Broadway, Off-Broadway or regional) a tour roundup suggests adding
+ * a tour for, or null when the slug isn't a tour roundup, the match isn't one
+ * of those, or a tour entry for that production (or another of its title)
+ * already exists.
  */
 function tourCandidateFor(slug, matchedShow, shows, { predecessorEnds = null, segmentStart = null } = {}) {
   if (!isNationalTourRoundupSlug(slug) || !matchedShow) return null;
-  if ((matchedShow.category || 'broadway') !== 'broadway') return null;
+  if (!isTourParentCategory(matchedShow.category)) return null;
   const title = String(matchedShow.title || '').trim().toLowerCase();
   const byId = new Map((shows || []).map(s => [s.id, s]));
   // A tour of this title that is still running (or undated) already owns the
@@ -81,22 +95,58 @@ function tourCandidateFor(slug, matchedShow, shows, { predecessorEnds = null, se
 }
 
 /**
- * Merge candidates into the JSON ledger at file (one row per Broadway show,
- * keeping the first-seen time). Returns the number of rows tracked.
+ * A national-tour roundup that matched NO show at all (a standalone touring
+ * show, or a title we don't track yet). Row shape, kept stable because the
+ * Tours To You pairing step reads it (BRO-4931):
+ *
+ *   { key: 'roundup:<lowercased slug>',   // ledger key; there is no show id
+ *     source: 'bww-roundup',
+ *     slug, url, roundupUrl,              // slug as on BWW; url === roundupUrl
+ *     title }                             // HINT only: cleaned slug, title-cased
+ *   // no broadwayShowId. openTourCandidates() skips these rows (no show to
+ *   // tour from); recordTourCandidates() keys rows by `r.key || r.broadwayShowId`.
+ *   // recordTourCandidates adds firstSeen / lastSeen, and a pairing step may
+ *   // add notifiedAt / createdTourId.
+ *
+ * The title is derived from the slug (head, tail phrase and date removed), so
+ * it is only a hint for matching a Tours To You page, never a show title.
+ * Returns null when the slug is not a national-tour roundup.
+ */
+function roundupOnlyCandidate(slug, url) {
+  const clean = String(slug || '').split(/[?#]/)[0];
+  if (!isNationalTourRoundupSlug(clean)) return null;
+  const title = clean.toLowerCase()
+    .replace(/^review-roundup-/, '')
+    .replace(/-\d{8}$/, '')
+    .replace(/-(?:opens|launches?|kicks-off|begins|embarks(?:-on)?|on-tour|north-american|first-national|national-tour|us-tour|touring-tour|tour-(?:launch|kicks|opens|begins)[a-z]*)(?:-.*)?$/, '')
+    .split('-').filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+  return { key: `roundup:${clean.toLowerCase()}`, source: 'bww-roundup', slug: clean, url, roundupUrl: url, title };
+}
+
+/**
+ * Merge candidates into the JSON ledger at file (one row per tour-parent show,
+ * or per `key` for roundup-only rows, keeping the first-seen time). Returns
+ * the number of rows tracked.
  */
 function recordTourCandidates(file, candidates, now = new Date().toISOString()) {
   const fs = require('fs');
   let rows = [];
   try { rows = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { rows = []; }
   if (!Array.isArray(rows)) rows = [];
-  const byId = new Map(rows.map(r => [r.broadwayShowId, r]));
+  // Rows from before roundup-only candidates have no key: broadwayShowId is it.
+  const keyOf = r => r.key || r.broadwayShowId;
+  const byId = new Map(rows.filter(r => keyOf(r)).map(r => [keyOf(r), r]));
   const fromSchedule = r => !!r && r.source === 'tourstoyou';
   // What a schedule page said this run about how it splits (tour-discovery.js
   // lifecyclePlan): never carried over from an earlier run (BRO-4724).
   const PAGE_FACTS = ['splitAt', 'predecessorEnds'];
   const dropStale = (row, c) => { if (fromSchedule(c)) for (const k of PAGE_FACTS) if (!(k in c)) delete row[k]; return row; };
   for (const c of candidates) {
-    let prev = byId.get(c.broadwayShowId);
+    const ck = keyOf(c);
+    if (!ck) continue;
+    let prev = byId.get(ck);
     // A BWW roundup and a Tours To You listing of one show are two sources
     // for the same tour, not two tours: keep the schedule row and carry the
     // roundup on it, so create-tour-entries.js can use the roundup to confirm
@@ -116,7 +166,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
       const asked = !fromSchedule(prev) && prev.notifiedAt ? { notifiedAt: prev.notifiedAt } : {};
       const row = { ...keep, ...asked, ...schedule, ...roundup, firstSeen: keep.firstSeen || now, lastSeen: now };
       if (!schedule.ambiguous) delete row.ambiguous;
-      byId.set(c.broadwayShowId, dropStale(row, c));
+      byId.set(ck, dropStale(row, c));
       continue;
     }
     // A different roundup for the same show is a later tour (BRO-4262): start
@@ -127,22 +177,24 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
     const row = { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now };
     // A tour no longer ambiguous (one company left) is decided normally.
     if (!c.ambiguous) delete row.ambiguous;
-    byId.set(c.broadwayShowId, dropStale(row, c));
+    byId.set(ck, dropStale(row, c));
   }
-  const out = [...byId.values()].sort((a, b) => a.broadwayShowId.localeCompare(b.broadwayShowId));
+  const out = [...byId.values()].sort((a, b) => keyOf(a).localeCompare(keyOf(b)));
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');
   return out.length;
 }
 
 /**
- * Rows still worth suggesting: the show exists, is Broadway, and has no tour
- * entry of its title yet (a tour added since the roundup settles the row).
+ * Rows still worth suggesting: the show exists, is Broadway, Off-Broadway or
+ * regional, and has no tour entry of its title yet (a tour added since the
+ * roundup settles the row). Roundup-only rows (no broadwayShowId) are not
+ * suggestions: they wait for a Tours To You page to pair with.
  */
 function openTourCandidates(rows, shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
   return (rows || []).filter(r => {
     if (r.createdTourId) return false; // create-tour-entries.js made its entry (BRO-4262)
-    const show = byId.get(r.broadwayShowId);
+    const show = r.broadwayShowId ? byId.get(r.broadwayShowId) : null;
     // A tour found running on Tours To You (tour-discovery.js) has no roundup
     // slug; the same "no open tour of this title" test applies.
     const slug = r.source === 'tourstoyou' ? 'national-tour' : (r.slug || 'national-tour');
@@ -150,4 +202,4 @@ function openTourCandidates(rows, shows) {
   });
 }
 
-module.exports = { isNationalTourRoundupSlug, roundupMatchPool, roundupDateFromSlug, tourCandidateFor, recordTourCandidates, openTourCandidates };
+module.exports = { isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, tourCandidateFor, recordTourCandidates, openTourCandidates };

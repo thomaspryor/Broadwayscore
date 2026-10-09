@@ -18,7 +18,7 @@
 const { foldDiacritics } = require('./title-match');
 const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment } = require('./tour-schedule');
 const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
-const { toursOfTitle } = require('./tour-family');
+const { toursOfTitle, TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
 const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt`;
@@ -57,23 +57,33 @@ const PRE_BROADWAY_STATUSES = new Set(['announced', 'upcoming', 'previews']);
 const PRE_BROADWAY_WINDOW_DAYS = 365;
 
 /**
- * The Broadway production a tour of this schedule page descends from: the
- * latest Broadway production of the title that opened before the tour's
- * first engagement; failing that, the same title's Broadway run not yet open
- * (a tour that launches first). Null when no Broadway show has the title.
+ * The production a tour of this schedule page descends from (BRO-4931: any
+ * TOUR_PARENT_CATEGORIES production, not only Broadway). Categories are tried
+ * in that priority order (broadway, off-broadway, regional, west-end,
+ * off-west-end); within one, the latest production of the title that opened on
+ * or before the tour's first engagement. Outside Broadway only a title that
+ * matches whole counts: a subtitled production in another market is a
+ * different show ("Dirty Dancing: The Classic Story on Stage" is not the
+ * Dirty Dancing musical). Failing all that, the title's Broadway run not yet
+ * open (a tour that launches first). Null when nothing has the title.
  */
 function parentForSlug(slug, shows, beforeIso) {
   const before = String(beforeIso || '').slice(0, 10);
-  const broadway = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
+  const candidates = (shows || []).filter(s => tourParentCategory(s)
     && s.openingDate && (!before || s.openingDate <= before));
   const latest = list => list.sort((a, b) => b.openingDate.localeCompare(a.openingDate))[0] || null;
-  for (const key of slugKeys(slug)) {
-    // The whole title first: "Cats" must not become "CATS: The Jellicle Ball"
-    // just because that title's head is "Cats".
-    const exact = latest(broadway.filter(s => titleKey(s.title) === key));
-    if (exact) return exact;
-    const byHead = latest(broadway.filter(s => titleKeys(s.title).has(key)));
-    if (byHead) return byHead;
+  for (const category of TOUR_PARENT_CATEGORIES) {
+    const inCategory = candidates.filter(s => (s.category || 'broadway') === category);
+    if (!inCategory.length) continue;
+    for (const key of slugKeys(slug)) {
+      // The whole title first: "Cats" must not become "CATS: The Jellicle Ball"
+      // just because that title's head is "Cats".
+      const exact = latest(inCategory.filter(s => titleKey(s.title) === key));
+      if (exact) return exact;
+      if (category !== 'broadway') continue;
+      const byHead = latest(inCategory.filter(s => titleKeys(s.title).has(key)));
+      if (byHead) return byHead;
+    }
   }
   // A tour that launches before its Broadway run (Dirty Dancing toured from
   // Aug 2026 and opens at the Lena Horne in Feb 2027, BRO-4924) has no earlier

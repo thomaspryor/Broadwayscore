@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { tourImageProblems } = require('./lib/tour-family');
+const { tourImageProblems, normTitle: normalizeTourTitle } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
@@ -375,11 +375,15 @@ function validateNoDuplicates(shows) {
     if (transferIssues === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
   }
 
-  // National tours (category:'tour', BRO-4211): each tour names the Broadway
-  // production it tours via tourOf. The Broadway side derives its tours from
-  // these links, so a dangling or wrong-market tourOf hides the tour entirely.
+  // National tours (category:'tour', BRO-4211, BRO-4931): a tour names the
+  // production it tours via tourOf, which may be any non-tour category
+  // (Broadway, Off-Broadway, regional, West End, Off-West End). A standalone
+  // touring show has no tourOf (the field is absent, never null) and is anchored
+  // by tourScheduleSlug. The parent side derives its tours from these links, so
+  // a dangling or tour-to-tour tourOf hides the tour entirely.
   {
     const byId = new Map(shows.map(s => [s.id, s]));
+    const MARKET_BEFORE_TOUR_RE = /-(on-broadway|off-broadway|off-west-end|west-end|regional)-tour-\d{4}$/;
     let tourIssues = 0;
     for (const s of shows) {
       if (s.category !== 'tour' && s.tourOf === undefined) continue;
@@ -388,23 +392,38 @@ function validateNoDuplicates(shows) {
         tourIssues++;
         continue;
       }
-      const target = s.tourOf ? byId.get(s.tourOf) : null;
-      if (!s.tourOf) {
-        error(`Tour "${s.id}" is missing tourOf (the Broadway production it tours)`);
+      if (MARKET_BEFORE_TOUR_RE.test(s.id)) {
+        error(`Tour "${s.id}" id carries a market before -tour-<year> — a tour id is <base>-tour-<year> (e.g. mexodus-off-broadway-2026 tours as mexodus-tour-2026)`);
         tourIssues++;
-      } else if (!target) {
-        error(`Tour "${s.id}" tourOf "${s.tourOf}" does not reference an existing show`);
+      }
+      if (s.tourOf === null || s.tourOf === '') {
+        error(`Tour "${s.id}" has an empty tourOf — omit the field for a standalone tour, never write null`);
         tourIssues++;
-      } else if (target.category !== 'broadway') {
-        error(`Tour "${s.id}" tourOf "${s.tourOf}" must point at a category:'broadway' show (got "${target.category}")`);
-        tourIssues++;
+      } else if (s.tourOf === undefined) {
+        if (!s.tourScheduleSlug) {
+          error(`Tour "${s.id}" has no tourOf and no tourScheduleSlug — a standalone tour needs its Tours To You page`);
+          tourIssues++;
+        }
+        const sameTitle = shows.filter(o => o.category !== 'tour' && normalizeTourTitle(o.title) === normalizeTourTitle(s.title));
+        if (sameTitle.length) {
+          warn(`Tour "${s.id}" has no tourOf but ${sameTitle.length} non-tour show(s) share its title (${sameTitle.slice(0, 3).map(o => o.id).join(', ')}) — set tourOf if it tours one of them`);
+        }
+      } else {
+        const target = byId.get(s.tourOf);
+        if (!target) {
+          error(`Tour "${s.id}" tourOf "${s.tourOf}" does not reference an existing show`);
+          tourIssues++;
+        } else if (target.category === 'tour') {
+          error(`Tour "${s.id}" tourOf "${s.tourOf}" is itself a tour — name the production it tours`);
+          tourIssues++;
+        }
       }
       for (const problem of tourImageProblems(s, shows)) {
         error(`Tour "${s.id}" image: ${problem}`);
         tourIssues++;
       }
     }
-    if (tourIssues === 0) ok('All tours (category:tour) link to a Broadway production and use their own or its art');
+    if (tourIssues === 0) ok('All tours (category:tour) link to a production (or stand alone with a schedule page) and use their own or its art');
   }
 
   // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.

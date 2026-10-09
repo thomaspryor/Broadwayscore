@@ -12,6 +12,7 @@ import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '
 // Off-Broadway / Regional = 3) from score-buckets.ts.
 import { getMarketMinReviews, hasReachedStage } from '@/lib/market-utils';
 import { isRecentlyOpenedAwaitingReviews } from '@/lib/recently-opened';
+import { getTourSection, tourSectionRank, isTourScored } from '@/lib/tour-listing';
 import { formatShowDate } from '@/lib/date-utils';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -337,15 +338,32 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
   // markets.json through isCategoryEnabled).
   'broadway-national-tours': {
     slug: 'broadway-national-tours',
-    title: 'Broadway National Tours',
-    h1: 'Broadway National Tours: Critic Scores',
-    metaTitle: `Broadway National Tours ${CURRENT_SEASON}: Reviews & Critic Scores`,
-    metaDescription: 'Critic scores for Broadway national tours, built from local reviews in every city the tour plays. See how the touring production compares with the original Broadway run.',
-    intro: 'When a Broadway hit goes on the road, local critics in each city review the touring company: new cast, a production rebuilt to travel. We score those reviews the same way we score Broadway, so each tour gets its own critic score, kept separate from the Broadway run it came from.',
-    sort: 'score',
+    // Heading is market-neutral (BRO-4931): a tour can come from Broadway,
+    // Off-Broadway, the West End or a regional house, or stand alone. The URL
+    // keeps its original slug so inbound links and the sitemap entry survive.
+    title: 'National Tours',
+    h1: 'National Tours: Critic Scores',
+    metaTitle: `National Tours ${CURRENT_SEASON}: Reviews & Critic Scores`,
+    metaDescription: 'Critic scores and tour dates for national tours, built from local reviews in every city the tour plays. See how each touring production compares with the original run.',
+    intro: 'When a hit show goes on the road, local critics in each city review the touring company: new cast, a production rebuilt to travel. We score those reviews the same way we score every other production, so each tour gets its own critic score, kept separate from the original run it came from. Tours still waiting on enough reviews for a score are listed too, with their dates.',
+    // customSort (not 'score') so the sectionGroup headings render: they only
+    // show while each label is one contiguous run in the displayed order.
+    // Section order is TOUR_SECTIONS; within a section scored tours go best
+    // first and the rest A to Z.
+    customSort: (shows) => [...shows].sort((a, b) => {
+      const byRank = tourSectionRank(a) - tourSectionRank(b);
+      if (byRank !== 0) return byRank;
+      const aScore = isTourScored(a) ? a.criticScore?.score ?? null : null;
+      const bScore = isTourScored(b) ? b.criticScore?.score ?? null : null;
+      if (aScore != null && bScore != null && aScore !== bScore) return bScore - aScore;
+      if (aScore != null && bScore == null) return -1;
+      if (aScore == null && bScore != null) return 1;
+      return a.title.localeCompare(b.title);
+    }),
+    sectionGroup: (show) => getTourSection(show),
     source: 'tour',
     hideRanks: true, // a catalog of tours, not a ranking
-    howItWorks: 'Each tour\'s CriticScore is a weighted average of reviews by local critics in the cities it plays, from major papers like the Chicago Tribune to BroadwayWorld\'s city editions. Larger outlets carry more weight. Broadway reviews never count toward a tour\'s score. Toggle to Audience mode for letter grades, shown only where audiences have rated the touring production itself.',
+    howItWorks: 'Each tour\'s CriticScore is a weighted average of reviews by local critics in the cities it plays, from major papers like the Chicago Tribune to BroadwayWorld\'s city editions. Larger outlets carry more weight. Reviews of the original run never count toward a tour\'s score. A tour shows under Reviews coming in until enough critics have reviewed it for a score. Toggle to Audience mode for letter grades, shown only where audiences have rated the touring production itself.',
     relatedPages: ['best-broadway-show-right-now', 'best-recent-musicals', 'pre-broadway-out-of-town-shows'],
   },
 

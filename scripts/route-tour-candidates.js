@@ -74,9 +74,12 @@ async function main() {
       console.log(`  [WARN] ${c.broadwayShowId}: ${e.message} (will retry next run)`);
     }
   }
-  if (!dryRun && (sent > 0 || open.length !== rows.length)) {
-    fs.writeFileSync(FILE, JSON.stringify(open, null, 2) + '\n');
-    if (open.length !== rows.length) console.log(`Dropped ${rows.length - open.length} candidate(s) whose show now has a tour entry.`);
+  // Roundup-only rows (no show to suggest a tour for) wait for the Tours To You
+  // pairing step; they are not suggestions here but must survive the rewrite (BRO-4931).
+  const keep = rows.filter(r => !r.broadwayShowId || open.includes(r));
+  if (!dryRun && (sent > 0 || keep.length !== rows.length)) {
+    fs.writeFileSync(FILE, JSON.stringify(keep, null, 2) + '\n');
+    if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) whose show now has a tour entry.`);
   }
   console.log(`${open.length} open tour candidate(s).`);
 }
