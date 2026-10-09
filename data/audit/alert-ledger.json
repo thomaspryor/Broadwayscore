@@ -88,17 +88,17 @@
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-10-06T13:41:36.098Z",
-      "lastNotifiedAt": "2026-09-30T13:04:06.023Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 8,
-      "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "linearIdentifier": "BRO-3164",
       "incidentOpenedAt": "2026-07-24T07:50:35.775Z",
-      "silentRefires": 8
+      "deferredAuto": true,
+      "lastSeen": "2026-10-09T13:52:41.608Z",
+      "lastNotifiedAt": "2026-10-09T13:52:41.608Z",
+      "lastSurfacedAt": "2026-10-09T13:52:41.608Z",
+      "notifyCount": 9,
+      "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
+      "linearIdentifier": "BRO-3164"
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
@@ -170,13 +170,13 @@
       "firstSeen": "2026-07-27T08:00:24.727Z",
       "incidentOpenedAt": "2026-07-27T08:00:24.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-06T13:41:36.107Z",
+      "lastSeen": "2026-10-09T13:52:41.616Z",
       "lastNotifiedAt": "2026-10-05T15:21:35.595Z",
       "lastSurfacedAt": "2026-10-05T15:21:35.595Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": "BRO-3978",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -238,17 +238,17 @@
     },
     "health-check:Workflow repeat-failure: Check Corpus Drift": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Workflow repeat-failure: Check Corpus Drift",
       "firstSeen": "2026-07-28T07:42:01.446Z",
-      "lastSeen": "2026-10-04T12:54:02.682Z",
-      "lastNotifiedAt": "2026-09-28T14:32:29.014Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "incidentOpenedAt": "2026-10-09T13:52:41.578Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-09T13:52:41.578Z",
+      "lastNotifiedAt": "2026-10-09T13:52:41.578Z",
+      "lastSurfacedAt": "2026-10-09T13:52:41.578Z",
+      "notifyCount": 3,
       "cardId": "3ab637c5-416f-81a8-88d5-ed8d048a32f4",
-      "linearIdentifier": "BRO-447",
-      "silentRefires": 3,
-      "incidentOpenedAt": "2026-07-28T07:42:01.446Z"
+      "linearIdentifier": null
     },
     "t1-coverage:new-gaps-24h": {
       "status": "open",
@@ -311,10 +311,10 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-08T09:06:39.780Z",
-      "lastNotifiedAt": "2026-10-08T09:06:39.780Z",
-      "lastSurfacedAt": "2026-10-08T09:06:39.780Z",
-      "notifyCount": 29,
+      "lastSeen": "2026-10-09T13:53:46.491Z",
+      "lastNotifiedAt": "2026-10-09T13:53:46.491Z",
+      "lastSurfacedAt": "2026-10-09T13:53:46.491Z",
+      "notifyCount": 30,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -478,13 +478,13 @@
       "firstSeen": "2026-08-05T07:41:41.804Z",
       "incidentOpenedAt": "2026-08-05T07:41:41.804Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-06T13:41:36.093Z",
+      "lastSeen": "2026-10-09T13:52:41.602Z",
       "lastNotifiedAt": "2026-10-04T12:54:02.694Z",
       "lastSurfacedAt": "2026-10-04T12:54:02.694Z",
       "notifyCount": 4,
       "cardId": "3b3637c5-416f-8197-91e3-e6b68252159b",
       "linearIdentifier": "BRO-4171",
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "backstop:crazysexycool-regional-2026/washpost--thomas-floyd.json": {
       "status": "open",
@@ -646,17 +646,17 @@
     },
     "health-check:Revenue: affiliate health": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Revenue: affiliate health",
       "firstSeen": "2026-08-09T07:42:46.513Z",
-      "lastSeen": "2026-10-06T13:41:36.126Z",
-      "lastNotifiedAt": "2026-10-01T13:57:48.177Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 3,
-      "cardId": null,
-      "linearIdentifier": "BRO-3979",
       "incidentOpenedAt": "2026-10-06T13:41:36.126Z",
-      "silentRefires": 1
+      "deferredAuto": true,
+      "lastSeen": "2026-10-09T13:52:38.341Z",
+      "lastNotifiedAt": "2026-10-09T13:52:38.341Z",
+      "lastSurfacedAt": "2026-10-09T13:52:38.341Z",
+      "notifyCount": 4,
+      "cardId": null,
+      "linearIdentifier": "BRO-3979"
     },
     "health-check:Cron failed: Reverse Discovery": {
       "status": "open",
@@ -5237,17 +5237,17 @@
     },
     "health-check:Workflow repeat-failure: Land": {
       "status": "open",
-      "disposition": "digest",
+      "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Land",
       "firstSeen": "2026-09-25T12:18:21.736Z",
       "incidentOpenedAt": "2026-10-05T15:21:35.580Z",
       "deferredAuto": true,
-      "lastSeen": "2026-10-05T15:21:35.580Z",
-      "lastNotifiedAt": "2026-10-05T15:21:35.580Z",
-      "lastSurfacedAt": "2026-10-05T15:21:35.580Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-09T13:52:38.349Z",
+      "lastNotifiedAt": "2026-10-09T13:52:38.349Z",
+      "lastSurfacedAt": "2026-10-09T13:52:38.349Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4167"
     },
     "opening-night-remediation-exhausted-empty-cast:tru-off-west-end-2026": {
       "status": "open",
@@ -7751,19 +7751,17 @@
       "linearIdentifier": "BRO-4420"
     },
     "provider-spend:attribution-gap:brightdata": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
-      "title": "Untracked brightdata spend: ledger explains only 36%, 80% of billed",
+      "title": "Untracked brightdata spend: ledger explains only 79%, 75% of billed",
       "firstSeen": "2026-09-30T13:04:35.419Z",
-      "lastSeen": "2026-09-30T17:28:20.555Z",
-      "lastNotifiedAt": "2026-09-30T13:04:35.419Z",
+      "incidentOpenedAt": "2026-10-09T13:53:46.498Z",
+      "lastSeen": "2026-10-09T13:53:46.498Z",
+      "lastNotifiedAt": "2026-10-09T13:53:46.498Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-4423",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-02T13:16:15.702Z",
-      "resolveReason": "attributedPct 90%, 88% through 2026-10-01"
+      "linearIdentifier": "BRO-4936"
     },
     "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -8281,14 +8279,13 @@
       "disposition": "digest",
       "title": "Affiliate revenue: Payout economics — anomaly",
       "firstSeen": "2026-10-01T13:56:33.074Z",
-      "lastSeen": "2026-10-06T13:39:59.800Z",
-      "lastNotifiedAt": "2026-10-01T13:56:33.074Z",
-      "lastSurfacedAt": "2026-10-01T13:56:33.074Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null,
       "incidentOpenedAt": "2026-10-01T13:56:33.074Z",
-      "silentRefires": 8
+      "lastSeen": "2026-10-09T13:51:04.102Z",
+      "lastNotifiedAt": "2026-10-09T13:51:04.102Z",
+      "lastSurfacedAt": "2026-10-09T13:51:04.102Z",
+      "notifyCount": 2,
+      "cardId": null,
+      "linearIdentifier": null
     },
     "broadcast:never-sent:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "resolved",
@@ -8812,13 +8809,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 32 P0 older than 24h, 391 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 31 P0 older than 24h, 386 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-08T09:06:00.375Z",
-      "lastNotifiedAt": "2026-10-08T09:06:00.375Z",
-      "lastSurfacedAt": "2026-10-08T09:06:00.375Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-10-09T13:53:20.332Z",
+      "lastNotifiedAt": "2026-10-09T13:53:20.332Z",
+      "lastSurfacedAt": "2026-10-09T13:53:20.332Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -12458,7 +12455,7 @@
       "resolvedAt": "2026-10-09T13:30:41.567Z"
     },
     "land:land/bro-2740-triage-plan": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-2740-triage-plan",
       "firstSeen": "2026-10-09T13:16:29.071Z",
@@ -12468,7 +12465,8 @@
       "lastSurfacedAt": "2026-10-09T13:16:29.071Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-09T13:53:05.186Z"
     },
     "land:land/job/linear-BRO-4933-mv0yge56": {
       "status": "open",
@@ -12479,6 +12477,60 @@
       "lastSeen": "2026-10-09T13:42:37.332Z",
       "lastNotifiedAt": "2026-10-09T13:42:37.332Z",
       "lastSurfacedAt": "2026-10-09T13:42:37.332Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "affiliate:provider-auth:posthog": {
+      "status": "open",
+      "disposition": "human",
+      "title": "Affiliate revenue: posthog API — BROKEN",
+      "firstSeen": "2026-10-09T13:51:03.891Z",
+      "incidentOpenedAt": "2026-10-09T13:51:03.891Z",
+      "lastSeen": "2026-10-09T13:51:03.891Z",
+      "lastNotifiedAt": "2026-10-09T13:51:03.891Z",
+      "lastSurfacedAt": "2026-10-09T13:51:03.891Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "alert-router:deadman-early": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Alert Router: auto-dispatch silently failing for 1h (7 consecutive)",
+      "firstSeen": "2026-10-09T13:52:17.714Z",
+      "incidentOpenedAt": "2026-10-09T13:52:17.714Z",
+      "lastSeen": "2026-10-09T13:52:17.714Z",
+      "lastNotifiedAt": "2026-10-09T13:52:17.714Z",
+      "lastSurfacedAt": "2026-10-09T13:52:17.714Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Workflow repeat-failure: Add Requested Show": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Workflow repeat-failure: Add Requested Show",
+      "firstSeen": "2026-10-09T13:52:41.586Z",
+      "incidentOpenedAt": "2026-10-09T13:52:41.586Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-09T13:52:41.586Z",
+      "lastNotifiedAt": "2026-10-09T13:52:41.586Z",
+      "lastSurfacedAt": "2026-10-09T13:52:41.586Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "health-check:Workflow repeat-failure: Opening Night Broadcast": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "BSC Daily: Workflow repeat-failure: Opening Night Broadcast",
+      "firstSeen": "2026-10-09T13:52:41.594Z",
+      "incidentOpenedAt": "2026-10-09T13:52:41.594Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-09T13:52:41.594Z",
+      "lastNotifiedAt": "2026-10-09T13:52:41.594Z",
+      "lastSurfacedAt": "2026-10-09T13:52:41.594Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

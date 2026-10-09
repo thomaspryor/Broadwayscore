@@ -1,0 +1,334 @@
+{
+  "issueNumber": "bro-2740",
+  "planId": "53bfa044-744c-4720-97db-9e635611b6af",
+  "status": "applied",
+  "createdAt": "2026-10-09T12:42:09.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2740: record a clear on 48 review files that carry stale wrongProduction detector provenance but whose publish date falls inside the production window (detector parsed a stale date, or matched a year in the URL). The flag was already absent, so these score today; the clear stops them reading as orphans and stops the detector re-flagging them. The other 20 baselined files (no date, no url, pre-opening, or already excluded) are left for a human check. (part 1 of 2)",
+    "steps": [
+      "Set wrongProductionManualClear on each file whose publishDate is within 2 days before to 60 days after the show opening date and which has a url and no other exclusion flag."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2015/wsj--terry-teachout.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angels-in-america-2018/front-row-center--tulis-mccall.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-west-end-2026/times-uk--john-bleasdale.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/newsday--linda-winer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-2016/telegraph--dominic-cavendish.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-2012/backstage--erik-haagensen.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-2012/newsday--linda-winer.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gypsy-2024/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2024/broadwayworld--michael-dale.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hadestown-west-end-2024/london-box-office--phil-willmott.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-west-end-2026/london-theatre--aliya-al-hassan.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-west-end-2026/theatreandtonic--emmie-newitt.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-west-end-2026/thereviewshub--harry-mayes.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/amny--matt-windman.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-2016/chicagotribune--chris-jones.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-2014/ew--thom-geier.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-2014/huffpost--david-finkle.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-2740: publishDate is inside the production window, so the stored wrongProduction provenance is a stale detection. Flag was already absent; this records the clear."
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T13:56:22.039Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2015/wsj--terry-teachout.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-in-america-2018/front-row-center--tulis-mccall.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/telegraph--dzifa-benson.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "beetlejuice-west-end-2026/times-uk--john-bleasdale.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/amny--matt-windman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2013/timeout--david-cote.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/newsday--linda-winer.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-2016/telegraph--dominic-cavendish.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-west-end-2026/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-2012/backstage--erik-haagensen.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-2012/newsday--linda-winer.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/times-uk--dominic-maxwell.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gypsy-2024/amny--matt-windman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2024/broadwayworld--michael-dale.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-west-end-2024/london-box-office--phil-willmott.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-west-end-2026/london-theatre--aliya-al-hassan.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "iceboy-regional-2026/chicagotribune--christopher-borrelli.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-west-end-2026/theatreandtonic--emmie-newitt.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-west-end-2026/thereviewshub--harry-mayes.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-west-end-2026/times-uk--ann-treneman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/amny--matt-windman.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-liaisons-dangereuses-2016/chicagotribune--chris-jones.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-2014/ew--thom-geier.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-2014/huffpost--david-finkle.json wrongProductionManualClear: null -> true"
+    }
+  ]
+}
