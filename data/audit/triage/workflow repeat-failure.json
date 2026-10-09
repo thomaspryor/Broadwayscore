@@ -1,20 +1,35 @@
 {
   "system": "workflow repeat-failure",
-  "status": "warn",
-  "lastChecked": "2026-10-05T11:14:04.824Z",
+  "status": "error",
+  "lastChecked": "2026-10-09T13:52:36.114Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Rebuild Reviews Data",
-      "status": "warn",
-      "message": "Rebuild Reviews Data failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "name": "Workflow repeat-failure: Land",
+      "status": "error",
+      "message": "Land failed 6 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Land",
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "status": "error",
+      "message": "Check Corpus Drift failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Add Requested Show",
+      "status": "error",
+      "message": "Add Requested Show failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Opening Night Broadcast",
+      "status": "error",
+      "message": "Opening Night Broadcast failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Performance Budget",
       "status": "warn",
-      "message": "Land failed 2 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+      "message": "Check Performance Budget failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }
