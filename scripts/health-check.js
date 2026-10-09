@@ -4083,9 +4083,10 @@ function buildStillMissingPredicate() {
     ).shows;
     const nycIndex = buildShowTitleIndex(shows, 'nyc');
     const weIndex = buildShowTitleIndex(shows, 'west-end');
+    const regionalIndex = buildShowTitleIndex(shows, 'regional'); // uk-regional Guardian items (BRO-4923)
     const { bwwRoundupCataloguedElsewhere } = require('./lib/reverse-discovery');
     return (c) => {
-      const index = c && c.market === 'west-end' ? weIndex : nycIndex;
+      const index = c && c.market === 'west-end' ? weIndex : c && c.market === 'uk-regional' ? regionalIndex : nycIndex;
       if (resolveMatchedShowId(c && c.title, index)) return false;
       // BWW files West End / tour roundups as 'nyc' (see the helper).
       if (c && c.source === 'bww-roundup' && bwwRoundupCataloguedElsewhere(c.title, shows, c.date)) return false;

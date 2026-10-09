@@ -57,6 +57,7 @@ const { scrapeLortel } = require('./enrich-off-broadway-dates');
 const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
+const { decideUkFlagshipPromotion, stageUkRegionalCandidates } = require('./lib/uk-regional-guardian');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { productionIdYear } = require('./lib/todaytix-dates');
 const { venuesMatch } = require('./lib/deduplication');
@@ -391,6 +392,12 @@ function decideRegionalPromotion(candidate) {
   if (!candidate || candidate.category !== 'regional') {
     return { confirmed: false, reason: 'not a regional candidate' };
   }
+  // Guardian review at a flagship UK house outside London (BRO-4923): one
+  // named national critic at an allowlisted house is the "noteworthy" signal,
+  // so the 3-outlet roundup threshold below does not apply. Score display
+  // still needs 3 reviews (score-buckets.ts), so a thinly covered run shows
+  // no score instead of a wrong one.
+  if (candidate.source === 'guardian-review') return decideUkFlagshipPromotion(candidate);
   if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
     return { confirmed: false, reason: `regional candidate from non-roundup source "${candidate.source}" — needs a PV/BWW roundup page to go live` };
   }
@@ -636,7 +643,7 @@ function buildRegionalShowEntry(candidate) {
     slug: id, // regional slugs must contain '-regional' (useCurrentMarket)
     venue: sanitizedVenue ? (city ? `${sanitizedVenue}, ${city}` : sanitizedVenue) : null,
     openingDate,
-    openingDateSource: 'aggregator-roundup',
+    openingDateSource: candidate.source === 'guardian-review' ? 'guardian-review' : 'aggregator-roundup',
     previewsStartDate: null,
     closingDate: null,
     status: ageDays > 90 ? 'closed' : 'open',
@@ -648,7 +655,8 @@ function buildRegionalShowEntry(candidate) {
     // gated markets today, but there's no reason to leave a known-bad
     // pattern in a third copy of it.
     type: showTypeFor(candidate.title, candidate.listingGenre),
-    discoverySource: `aggregator-roundup:${candidate.source}`,
+    // A Guardian-triggered show is not a roundup find; validate-show-venue.js exempts it by name.
+    discoverySource: candidate.source === 'guardian-review' ? 'guardian-review' : `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
     // show exists; images/cast/exact dates arrive via the enrichment email.
@@ -669,6 +677,21 @@ function writeLastPromotionFile(promoted) {
 async function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  // Flagship UK houses the Guardian feed found missing (BRO-4923) join the
+  // staging file before it is read, so the one regional loop below handles
+  // them. Candidates the audit already matched are not in its report.
+  if (regionalOnly && !dryRun) {
+    try {
+      const rd = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'reverse-discovery-candidates.json'), 'utf8'));
+      const ukRows = stageUkRegionalCandidates(rd.candidates);
+      if (ukRows.length) {
+        writeStagingCandidates(ukRows);
+        console.log(`Staged ${ukRows.length} flagship-UK Guardian candidate(s): ${ukRows.map(r => r.title).join('; ')}`);
+      }
+    } catch (e) {
+      if (e.code !== 'ENOENT') console.warn(`UK Guardian staging skipped: ${e.message}`);
+    }
+  }
   const staged = loadStaging();
   // Reset the promotion record up front so a crash mid-run can never leave a
   // STALE file claiming yesterday's promotions happened again (the workflow

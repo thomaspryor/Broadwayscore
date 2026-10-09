@@ -18,6 +18,7 @@
  */
 
 const { normalizeTitle } = require('./title-match');
+const { ukFlagshipVenueFor } = require('./uk-regional-guardian');
 
 // Minimal HTML-entity decode for WP-API title.rendered values.
 function decodeEntities(s) {
@@ -63,13 +64,14 @@ function extractShowTitleFromWetRoundup(postTitle) {
  * Headline shapes: "<Title> review – <standfirst>" and "<Title> – review: ...".
  * Market: 'west-end' for a London production (a "London" or London-venue
  * keyword tag, or the Guardian's own "-london" slug suffix), 'nyc' for New York (Broadway /
- * Off-Broadway / New York tags, or a new-york slug). Anything else (UK
- * regional, Edinburgh, tours, schools tours) returns null: no catalogue
+ * Off-Broadway / New York tags, or a new-york slug), 'uk-regional' (plus
+ * `venue`) for a flagship house in data/uk-regional-venues.json (BRO-4923).
+ * Anything else (other UK regional, Edinburgh, tours, schools tours) returns null: no catalogue
  * market to check it against. The URL is only a routing signal here, never
  * metadata written to a show (CLAUDE.md §3).
  *
  * @param {{title?:string, link?:string, categories?:string[]}} item
- * @returns {{title:string, market:'west-end'|'nyc'}|null}
+ * @returns {{title:string, market:'west-end'|'nyc'|'uk-regional', venue?:string}|null}
  */
 // "review" must be followed by a dash/colon or the end, so "The Review Show
 // review – ..." yields "The Review Show", not "The".
@@ -106,6 +108,12 @@ function extractGuardianReview(item) {
   }
   const slug = slugTokens.join('-');
   if (tags.some(t => GUARDIAN_NYC_TAGS.has(t)) || /(^|-)new-york(-|$)/.test(slug)) return { title, market: 'nyc' };
+  // Flagship UK house outside London (RSC, Chichester, ...): the noteworthy-
+  // regional trigger (BRO-4923). Checked AFTER London so an RSC run at the
+  // Barbican stays a West End item. Every other regional UK review is still
+  // dropped (null) — the venue table is the "noteworthy" filter.
+  const uk = ukFlagshipVenueFor({ tags, slug });
+  if (uk) return { title, market: 'uk-regional', venue: uk.venue };
   return null;
 }
 
@@ -615,6 +623,7 @@ function buildShowTitleIndex(shows, market = null) {
       if (cat && market === 'we' && !WE_CATEGORIES.has(cat)) continue;
       if (cat && market === 'nyc' && !NYC_CATEGORIES.has(cat)) continue;
       if (cat && market === 'tour' && cat !== 'tour') continue;
+      if (cat && market === 'regional' && cat !== 'regional') continue;
     }
     const raws = [s.title, s.slug ? s.slug.replace(/-/g, ' ') : null];
     if (s.title && s.title.includes(' - ')) raws.push(s.title.split(' - ')[0]);
