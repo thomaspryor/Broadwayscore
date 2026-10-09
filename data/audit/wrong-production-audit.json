@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T18:17:11.260Z",
+  "timestamp": "2026-10-09T19:13:03.096Z",
   "stats": {
-    "totalReviews": 51830,
-    "alreadyFlagged": 19457,
+    "totalReviews": 51831,
+    "alreadyFlagged": 19458,
     "dateGuardCatches": 265,
-    "directorMismatch": 1592,
+    "directorMismatch": 1593,
     "tvFilmSignals": 1494,
-    "londonSignals": 1638,
+    "londonSignals": 1639,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5491
+    "noPublishDate": 5487
   },
   "findings": [
     {
@@ -18139,6 +18139,20 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "adventuresintheatreland--oviya-thirumalai-sheher.json",
+      "score": 93,
+      "publishDate": "2026-10-08",
+      "url": "https://www.adventuresintheatreland.com/post/into-the-woods-no%C3%ABl-coward-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "all-that-dazzles-uk--seth-wilby.json",
       "score": 96,
       "publishDate": "2026-10-08",
@@ -18436,7 +18450,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatreandtonic--penny-walshe.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2026-10-08",
       "url": "https://theatreandtonic.co.uk/blog/into-the-woods-at-noel-coward-theatre-review",
       "findings": [
@@ -18469,7 +18483,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 97,
+      "score": 99,
       "publishDate": "2026-10-08",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-noel-coward-theatre-london-stephen-sondheim-jordan-fein",
       "findings": [
@@ -18511,7 +18525,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "whatsonstage--alex-wood.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2026-10-07",
       "url": "https://www.whatsonstage.com/news/into-the-woods-moves-to-the-west-end-review_1734570/",
       "findings": [
@@ -48313,6 +48327,7 @@
     {
       "showId": "black-superhero-west-end-2023",
       "file": "london-theatre--matt-wolf.json",
+      "score": 78,
       "publishDate": "2023-03-24",
       "url": null,
       "findings": [
@@ -48326,6 +48341,7 @@
     {
       "showId": "black-superhero-west-end-2023",
       "file": "times-uk--clive-davis.json",
+      "score": 38,
       "publishDate": "2023-03-22",
       "url": "https://www.thetimes.co.uk/article/black-superhero-review-a-bundle-of-slogans-and-cliches-cgxcczhsz",
       "findings": [
@@ -48383,6 +48399,20 @@
       "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 82,
+      "publishDate": "2026-10-09",
+      "url": "https://www.allthatdazzles.co.uk/post/review-blood-of-my-blood-royal-court-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -51661,6 +51691,7 @@
     {
       "showId": "dixon-and-daughters-west-end-2023",
       "file": "artsdesk--aleks-sierz.json",
+      "score": 74,
       "publishDate": "2023-04-26",
       "url": null,
       "findings": [
@@ -51674,6 +51705,7 @@
     {
       "showId": "dixon-and-daughters-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 75,
       "publishDate": "2023-05-10",
       "url": null,
       "findings": [
@@ -51687,6 +51719,7 @@
     {
       "showId": "dixon-and-daughters-west-end-2023",
       "file": "thereviewshub--maryam-philpott.json",
+      "score": 74,
       "publishDate": "2023-04-26",
       "url": null,
       "findings": [
@@ -51700,6 +51733,7 @@
     {
       "showId": "dixon-and-daughters-west-end-2023",
       "file": "times-uk--clive-davis.json",
+      "score": 41,
       "publishDate": "2023-04-26",
       "url": null,
       "findings": [
@@ -52956,6 +52990,7 @@
     {
       "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023",
       "file": "timeout-london--alice-saville.json",
+      "score": 85,
       "publishDate": "2023-01-19",
       "url": null,
       "findings": [
@@ -56869,7 +56904,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatredirect--london-theatre-direct-limited.json",
-      "score": 99,
+      "score": 98,
       "publishDate": "2025-12-16",
       "url": "https://www.londontheatredirect.com/news/into-the-woods-bridge-review?srsltid=AU7gw4U-CUIj1BwFwic6RZ0Mch-KCfvYalkyq97gspOaqK4ODsOF9u0R",
       "findings": [
