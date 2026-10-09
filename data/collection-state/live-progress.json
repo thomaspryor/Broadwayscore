@@ -1,120 +1,131 @@
 {
-  "updatedAt": "2026-10-09T10:13:46.088Z",
-  "processed": 42,
-  "failed": 18,
-  "successRate": "70.0%",
+  "updatedAt": "2026-10-09T10:34:18.938Z",
+  "processed": 63,
+  "failed": 37,
+  "successRate": "63.0%",
   "tierBreakdown": {
-    "playwright": 29,
-    "amp": 0,
-    "browserbase": 4,
+    "playwright": 42,
+    "amp": 1,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingdog": 1,
-    "scrapingbee": 8,
+    "scrapingbee": 10,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 5
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 21,
   "recentActivity": [
     {
-      "t": "2026-10-09T09:46:09.954Z",
+      "t": "2026-10-09T10:17:17.266Z",
       "event": "bb-session",
-      "session": "a8d14e70",
-      "url": "https://www.nytimes.com/2026/06/03/theater/kenrex-play-murder-ken-mcelroy.html"
+      "session": "f0950763",
+      "url": "https://www.washingtonpost.com/news/style-blog/wp/2015/10/29/therese-raquin-with"
     },
     {
-      "t": "2026-10-09T09:46:10.331Z",
+      "t": "2026-10-09T10:17:17.629Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-10-09T09:47:00.324Z",
+      "t": "2026-10-09T10:19:46.797Z",
       "event": "bb-session",
-      "session": "193ecc9e",
-      "url": "https://www.nytimes.com/2026/06/03/theater/caissie-levy-broadway-tonys-ragtime.h"
+      "session": "f2b4d9da",
+      "url": "http://www.wsj.com/articles/the-gin-game-review-a-sugar-coated-pill-1444947066"
     },
     {
-      "t": "2026-10-09T09:47:00.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-09T09:52:23.573Z",
-      "event": "bb-session",
-      "session": "65dd279a",
-      "url": "https://www.talkinbroadway.com/page/ob/03_04_26.html"
-    },
-    {
-      "t": "2026-10-09T09:52:24.010Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-09T09:52:41.002Z",
-      "event": "bb-session",
-      "session": "bac288ee",
-      "url": "https://www.talkinbroadway.com/page/ob/03_04_26.html"
-    },
-    {
-      "t": "2026-10-09T09:52:41.361Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-09T09:54:13.321Z",
-      "event": "bb-session",
-      "session": "6df93957",
-      "url": "https://www.talkinbroadway.com/page/ob/02_24_26b.html"
-    },
-    {
-      "t": "2026-10-09T09:54:13.686Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-09T09:54:31.688Z",
-      "event": "bb-session",
-      "session": "ba644ed0",
-      "url": "https://www.talkinbroadway.com/page/ob/02_24_26b.html"
-    },
-    {
-      "t": "2026-10-09T09:54:31.984Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-09T09:57:23.076Z",
-      "event": "bb-session",
-      "session": "3502184b",
-      "url": "https://www.wsj.com/articles/back-to-the-future-the-musical-review-docs-delorean"
-    },
-    {
-      "t": "2026-10-09T09:57:23.453Z",
+      "t": "2026-10-09T10:19:47.190Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-09T10:01:26.218Z",
+      "t": "2026-10-09T10:21:34.937Z",
       "event": "bb-session",
-      "session": "2a55dc02",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/titanique-07-11-22"
+      "session": "1a744b26",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
     },
     {
-      "t": "2026-10-09T10:01:26.617Z",
+      "t": "2026-10-09T10:21:38.763Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-09T10:21:56.192Z",
+      "event": "bb-session",
+      "session": "433b9190",
+      "url": "https://www.northjersey.com/arts-and-entertainment/theater/pair-of-broadway-vete"
+    },
+    {
+      "t": "2026-10-09T10:22:00.027Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-09T10:26:32.832Z",
+      "event": "bb-session",
+      "session": "9033ad7e",
+      "url": "http://www.hollywoodreporter.com/review/doctor-zhivago-theater-review-790426"
+    },
+    {
+      "t": "2026-10-09T10:26:51.401Z",
+      "event": "bb-session",
+      "session": "c8a862ea",
+      "url": "http://deadline.com/2015/04/doctor-zhivago-musical-broadway-review-1201413548/"
+    },
+    {
+      "t": "2026-10-09T10:28:43.655Z",
+      "event": "bb-session",
+      "session": "a7d86c74",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-broadways-doctor-zhivag"
+    },
+    {
+      "t": "2026-10-09T10:28:44.031Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "washingtonpost.com"
     },
     {
-      "t": "2026-10-09T10:02:08.594Z",
+      "t": "2026-10-09T10:28:51.147Z",
       "event": "bb-session",
-      "session": "dd02c0b4",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dana-h-theater-review-123504401"
+      "session": "6ec616b6",
+      "url": "http://www.washingtonpost.com/entertainment/music/review-broadways-doctor-zhivag"
     },
     {
-      "t": "2026-10-09T10:02:16.238Z",
+      "t": "2026-10-09T10:28:51.536Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-09T10:30:09.695Z",
       "event": "bb-session",
-      "session": "5a34b431",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dana-h-theater-review-123504401"
+      "session": "b934de8c",
+      "url": "http://www.nytimes.com/2015/04/10/theater/review-wolf-hall-the-stage-version-unt"
+    },
+    {
+      "t": "2026-10-09T10:30:10.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-09T10:30:27.127Z",
+      "event": "bb-session",
+      "session": "e2cd9186",
+      "url": "http://www.nytimes.com/2015/04/10/theater/review-wolf-hall-the-stage-version-unt"
+    },
+    {
+      "t": "2026-10-09T10:30:27.478Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-09T10:33:03.737Z",
+      "event": "bb-session",
+      "session": "7e0bce6b",
+      "url": "http://www.wsj.com/articles/review-of-wolf-hall-now-on-broadway-1428631502"
+    },
+    {
+      "t": "2026-10-09T10:33:04.132Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
