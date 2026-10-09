@@ -244,3 +244,28 @@ test('evaluateDateGuard: a date OUTSIDE every declared priorRun is still flagged
     assert.equal(guardPublishDate({ ...rest, firstSeenAt: '2026-10-02T00:00:00Z' }, show).publishDate, '2026-10-02');
   });
 }
+
+// BRO-4884: Show Score's "For a previous production" date sentinel.
+const { evaluateShowScorePreviousProduction } = require('./date-guard.js');
+
+test('evaluateShowScorePreviousProduction: flags the Show Score sentinel on a show with no prior runs', () => {
+  const show = { id: 'a-view-from-the-bridge-west-end-2024', openingDate: '2024-11-04' };
+  for (const pd of ['For a previous production', ' for a previous production ']) {
+    assert.deepEqual(evaluateShowScorePreviousProduction({ review: { publishDate: pd }, show }),
+      { flag: true, reason: 'show_score_previous_production' });
+  }
+});
+
+test('evaluateShowScorePreviousProduction: abstains when the show declares priorRuns or tourLegs', () => {
+  const review = { publishDate: 'For a previous production' };
+  assert.equal(evaluateShowScorePreviousProduction({ review, show: { priorRuns: [{ venue: 'Young Vic' }] } }).flag, false);
+  assert.equal(evaluateShowScorePreviousProduction({ review, show: { tourLegs: [{ city: 'Leeds' }] } }).flag, false);
+});
+
+test('evaluateShowScorePreviousProduction: ignores real dates, nulls and text that only mentions a previous production', () => {
+  const show = {};
+  for (const pd of ['2024-11-05', 'November 5, 2024', null, undefined, 'Compared with a previous production, 2014']) {
+    assert.equal(evaluateShowScorePreviousProduction({ review: { publishDate: pd }, show }).flag, false);
+  }
+  assert.equal(evaluateShowScorePreviousProduction({ review: null, show }).flag, false);
+});
