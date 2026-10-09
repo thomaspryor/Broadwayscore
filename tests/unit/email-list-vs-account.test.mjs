@@ -70,6 +70,14 @@ test('footer stays inside UserProviders (nudge needs auth)', () => {
   assert.ok(providersClose > footerClose, '</UserProviders> must close after </footer>');
 });
 
+test('footer promotes the account next to the email box, not a second email button (BRO-4946)', () => {
+  const layout = read('src/app/layout.tsx');
+  assert.match(layout, /<FooterEmailCapture[^>]*\/>\s*<FooterAccountBox \/>/);
+  const branding = read('src/components/FooterBranding.tsx');
+  assert.match(branding, /<FooterAccountLink \/>/);
+  assert.doesNotMatch(branding, /HeaderSubscribeButton/);
+});
+
 test('sign-in modal headline offers account creation', () => {
   assert.match(read('src/components/auth/SignInModal.tsx'), /generic: 'Sign in or create a free account'/);
 });

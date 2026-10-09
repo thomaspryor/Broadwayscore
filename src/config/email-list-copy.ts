@@ -20,8 +20,6 @@ export const marketLabel = (market: ListMarket) =>
 export const EMAIL_LIST_COPY = {
   /** Button that opens the signup form. */
   cta: 'Get opening night emails',
-  /** Short joined state for tight spots (footer link row). */
-  joinedShort: 'Getting opening night emails',
   heading: (market: ListMarket) => `Never Miss a New ${marketLabel(market)} Show`,
   /** What subscribers get. Must mention the Sunday roundup. */
   promise: (market: ListMarket) =>
@@ -48,4 +46,14 @@ export const SHOW_EMAIL_COPY = {
   prompt: (showTitle: string) => `Get ${showTitle} news by email: opening night score, closing dates, lotteries`,
   button: 'Email me',
   success: (showTitle: string) => `We'll email you about ${showTitle}`,
+} as const;
+
+/** Footer box and link that promote the free account (BRO-4946). */
+export const ACCOUNT_PROMO_COPY = {
+  heading: 'Your theater diary, free',
+  pitch: 'Rate the shows you see, keep a watchlist and a diary, on any phone or computer.',
+  signedOutButton: 'Create a free account',
+  signedInButton: 'Go to My Shows',
+  linkSignedOut: 'Create a free account',
+  linkSignedIn: 'My Shows',
 } as const;

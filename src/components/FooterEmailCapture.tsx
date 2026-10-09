@@ -27,8 +27,9 @@ export default function FooterEmailCapture({
 
   if (isSubscribed || status === 'success' || status === 'already_subscribed') {
     return (
-      <div className="text-center py-4">
-        {/* Inline check so it stays next to the text when the line wraps on phones. */}
+      <div className="py-4">
+        {/* Left-aligned like the account box beside it in the footer (BRO-4946).
+            Inline check so it stays next to the text when the line wraps on phones. */}
         <p className="text-sm text-emerald-400">
           <svg className="inline-block w-4 h-4 mr-1.5 -mt-0.5 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
