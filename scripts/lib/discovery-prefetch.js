@@ -75,11 +75,7 @@ async function prefetchDiscoveredArticle(url, opts = {}) {
   return {
     fullText: hasBody ? text : null,
     publishDate,
-    criticName: resolveCritic({
-      criticArg: serpName,
-      byline,
-      outletEntry: outletEntryFor(opts.outletId),
-    }) === 'Unknown' ? null : resolveCritic({ criticArg: serpName, byline, outletEntry: outletEntryFor(opts.outletId) }),
+    criticName,
   };
 }
 
