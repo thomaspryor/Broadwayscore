@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-09T19:57:41.533Z",
+    "generatedAt": "2026-10-09T22:26:59.272Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 375,
+  "totalGaps": 376,
   "errorSeverity": 266,
-  "warningSeverity": 109,
+  "warningSeverity": 110,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -3128,6 +3128,15 @@
       "extracted": 8,
       "gap": 4,
       "ratio": 0.67,
+      "severity": "warning"
+    },
+    {
+      "showId": "the-wizard-of-oz-west-end-2023",
+      "category": "west-end",
+      "expected": 11,
+      "extracted": 8,
+      "gap": 3,
+      "ratio": 0.73,
       "severity": "warning"
     },
     {

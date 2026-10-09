@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T21:42:45.651Z",
+  "timestamp": "2026-10-09T22:47:53.277Z",
   "stats": {
-    "totalReviews": 52176,
-    "alreadyFlagged": 19487,
-    "dateGuardCatches": 261,
+    "totalReviews": 52173,
+    "alreadyFlagged": 19490,
+    "dateGuardCatches": 258,
     "directorMismatch": 1606,
-    "tvFilmSignals": 1500,
+    "tvFilmSignals": 1502,
     "londonSignals": 1666,
     "offBroadwaySignals": 511,
     "yearMismatch": 127,
-    "noPublishDate": 5565
+    "noPublishDate": 5552
   },
   "findings": [
     {
@@ -83,51 +83,10 @@
     },
     {
       "showId": "2-22-a-ghost-story-west-end-2023",
-      "file": "independent--unknown.json",
-      "publishDate": "August 12th, 2021",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/2-22-ghost-story-lily-allen-b1901356.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 527d before show (August 12th, 2021 vs 2023-01-21)"
-        }
-      ]
-    },
-    {
-      "showId": "2-22-a-ghost-story-west-end-2023",
-      "file": "london-theatre--matt-wolf.json",
-      "score": 68,
+      "file": "london-theatre--unknown.json",
+      "score": 75,
       "publishDate": "August 12th, 2021",
       "url": "https://www.londontheatre.co.uk/reviews/review-222-a-ghost-story-starring-lily-allen-at-the-noel-coward-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 527d before show (August 12th, 2021 vs 2023-01-21)"
-        }
-      ]
-    },
-    {
-      "showId": "2-22-a-ghost-story-west-end-2023",
-      "file": "standard--nick-curtis.json",
-      "score": 78,
-      "publishDate": "August 12th, 2021",
-      "url": "https://www.standard.co.uk/culture/theatre/222-a-ghost-story-theatre-review-lily-allen-b950289.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 527d before show (August 12th, 2021 vs 2023-01-21)"
-        }
-      ]
-    },
-    {
-      "showId": "2-22-a-ghost-story-west-end-2023",
-      "file": "thestage--tim-bano.json",
-      "score": 58,
-      "publishDate": "August 12th, 2021",
-      "url": "https://www.thestage.co.uk/long-reviews/222-a-ghost-story-noel-coward-theatre-lily-allen-hadley-fraser",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -16931,6 +16890,20 @@
     },
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "lost-in-theatreland--amy-rye.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://lostintheatreland.co.uk/idiots-assemble-spitting-image-the-musical-review-phoenix-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "thestage--paul-vale.json",
       "score": 60,
       "publishDate": "2023-06-15",
@@ -16945,10 +16918,24 @@
     },
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "west-end-best-friend--emma-rooney.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.westendbestfriend.co.uk/news/review-idiots-assemble-spitting-image-the-musical-phoenix-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "whatsonstage--gareth-carr.json",
       "score": 63,
       "publishDate": "2023-06-15",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/idiots-assemble-spitting-image-the-musical-at-the-phoenix-theatre-review_1358167/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -22452,7 +22439,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 76,
       "publishDate": "2025-04-14",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/manhunt-royal-court-review-terrifyingly-toxic-masculinity",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24188,7 +24175,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 81,
       "publishDate": "2025-02-20",
-      "url": null,
+      "url": "https://www.dailymail.com/tvshowbiz/article-14416467/Tom-Hiddleston-Hayley-Atwell-embrace-celebrate-opening-night-Ado-Nothing.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47145,6 +47132,19 @@
     },
     {
       "showId": "an-oak-tree-off-west-end-2026",
+      "file": "bestoftheatre--john-cutler.json",
+      "publishDate": "2026-10-09",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-an-oak-tree-the-other-palace",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "an-oak-tree-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 82,
       "publishDate": "2026-10-08",
@@ -54643,20 +54643,6 @@
     {
       "showId": "hadestown-tour-2024",
       "file": "hotchka--jeremy-fogelman.json",
-      "score": 81,
-      "publishDate": "2025-11-19",
-      "url": "https://hotchka.com/hadestown-review-washington-dc-national-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-tour-2024",
-      "file": "hotchka--unknown.json",
       "score": 81,
       "publishDate": "2025-11-19",
       "url": "https://hotchka.com/hadestown-review-washington-dc-national-theatre",
@@ -63424,7 +63410,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2026-10-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/rent-tom-stoppard-theatre-review",
       "findings": [
