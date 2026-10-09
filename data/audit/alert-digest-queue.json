@@ -461,5 +461,41 @@
       }
     ],
     "queuedAt": "2026-10-09T20:40:37.659Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-from-the-heart-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on From The Heart",
+    "description": "west-end-best-friend/Brian Penn (west-end-best-friend--brian-penn.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review describes a production that is a special r — https://www.westendbestfriend.co.uk/news/review-from-the-heart-garrick-theatre",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T21:02:51.883Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:from-the-heart-west-end-2026",
+    "title": "Shipped review missing publishDate on From The Heart",
+    "description": "jonathan-baz/null SHIPPED with no publishDate — cannot confirm post-opening: https://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T21:02:51.890Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-an-oak-tree-off-west-end-2026",
+    "title": "Review URL cross-show mismatch on An Oak Tree",
+    "description": "Review URL for london-theatre-reviews/null does not mention show slug (checked: an-oak-tree-off-west-end, an-oak-tree, tree): https://www.londontheatrereviews.co.uk/post.cfm?p=29317",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T21:02:51.902Z"
   }
 ]
