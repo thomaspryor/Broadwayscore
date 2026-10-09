@@ -171,6 +171,15 @@
  *     see findBareAuditDirectoryGlobs's
  *     own doc comment for the full reasoning.
  *
+ * (p) STAGE-WITHOUT-COMMIT (BRO-4897): a step that stages files (`git add`,
+ *     `git rm --cached`, or a staging helper) and then calls push-with-retry.sh
+ *     with no `git commit` / commit-or-amend.sh in between. push-with-retry.sh
+ *     only pushes commits ("Before calling: add + commit must already be
+ *     done"), so the staged files are silently never persisted while the run
+ *     stays green. send-follow-notifications.yml did this: its digest never
+ *     saved and one follower got the same Hamilton email 7 Mondays running.
+ *     Exempt with `# hygiene-stage-no-commit-ok: <reason>`.
+ *
  * (o) FULL-BLOB-CHECKOUT (advisory, BRO-4231): an actions/checkout `with:`
  *     block that sets `fetch-depth: 0` without `filter: blob:none`. Full
  *     history is kept on purpose (merge-base for push-with-retry.sh; the #209
@@ -477,6 +486,39 @@ function findShortPushTimeoutSteps(raw) {
   return violations;
 }
 
+/**
+ * Rule (p): stage, then push-with-retry.sh, with no commit in between (BRO-4897).
+ * Step-scoped, same step parsing as rule (i). Comment lines are ignored.
+ */
+const STAGE_RE = /\bgit (add|rm --cached)\b|stage-data-changes\.sh|git-add-existing\.sh/;
+const COMMIT_RE = /\bgit commit\b|commit-or-amend\.sh/;
+function findStageWithoutCommitSteps(raw) {
+  const violations = [];
+  const lines = raw.split('\n');
+  const stepStarts = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^ {6}- name:\s*(.+?)\s*$/);
+    if (m) stepStarts.push({ name: m[1].replace(/^['"]|['"]$/g, ''), startLine: i });
+  }
+  for (let idx = 0; idx < stepStarts.length; idx++) {
+    const { name, startLine } = stepStarts[idx];
+    const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
+    const body = lines.slice(startLine, endLine).map((l) => (l.trimStart().startsWith('#') ? '' : l));
+    for (let i = 0; i < body.length; i++) {
+      if (!/push-with-retry\.sh/.test(body[i])) continue;
+      let lastStage = -1;
+      for (let j = i - 1; j >= 0; j--) {
+        if (STAGE_RE.test(body[j])) { lastStage = j; break; }
+      }
+      if (lastStage === -1) continue;
+      const committed = body.slice(lastStage, i + 1).some((l) => COMMIT_RE.test(l));
+      if (!committed) violations.push({ name, lineNum: startLine + i + 1 });
+    }
+  }
+  return violations;
+}
+
 // Mirrors scripts/llm-scoring/index.ts's mode-aware defaults. Kept as literals
 // (this file is a standalone CI gate and must not import a TS module), and
 // asserted against the real constants by the unit test so they cannot drift.
@@ -719,6 +761,7 @@ async function main() {
     coreDataPush: [],
     deadCommit: [],
     shortPushTimeout: [],
+    stageWithoutCommit: [],
     shortBatchPollTimeout: [],
     quoteApostrophe: [],
     paidProviderOnPush: [],
@@ -841,6 +884,14 @@ async function main() {
       }
     }
 
+    // ── Rule (p): staged files pushed with no commit in between (BRO-4897) ─
+    if (!raw.includes('hygiene-stage-no-commit-ok:')) {
+      const hits = findStageWithoutCommitSteps(raw);
+      if (hits.length > 0) {
+        violations.stageWithoutCommit.push({ file, hits });
+      }
+    }
+
     // ── Rule (k): batch poll budget ≥ the step timeout that boxes it ─
     if (!raw.includes('hygiene-batch-poll-timeout-ok:')) {
       const hits = findShortBatchPollTimeoutSteps(raw);
@@ -943,6 +994,7 @@ async function main() {
     violations.coreDataPush.length +
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
+    violations.stageWithoutCommit.length +
     violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length +
     violations.paidProviderOnPush.length +
@@ -1099,6 +1151,19 @@ async function main() {
     console.error('Exempt (legitimate): add  # hygiene-batch-poll-timeout-ok: <reason>  in the file.\n');
   }
 
+  if (violations.stageWithoutCommit.length) {
+    console.error('── (p) Staged but never committed before push-with-retry.sh ─');
+    console.error('push-with-retry.sh only pushes commits, so files staged here are silently');
+    console.error('dropped while the run stays green (BRO-4897: a follow-email digest never');
+    console.error('saved and one subscriber got the same email 7 weeks running).\n');
+    for (const { file, hits } of violations.stageWithoutCommit) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      "${h.name}" line ${h.lineNum}`);
+    }
+    console.error('\nFix: add a commit after the "nothing staged" check and before the push.');
+    console.error("Exempt (legitimate): add  # hygiene-stage-no-commit-ok: <reason>  anywhere in the file.\n");
+  }
+
   if (violations.shortPushTimeout.length) {
     console.error('── (i) Short push timeout — timeout-minutes ≤ push-with-retry.sh deadline ─');
     console.error('This step calls push-with-retry.sh but its own `timeout-minutes:` leaves no');
@@ -1183,6 +1248,7 @@ module.exports = {
   findMissingGitIdentityCommits,
   findPipefailDeadExitCodeEcho,
   findShortPushTimeoutSteps,
+  findStageWithoutCommitSteps,
   findShortBatchPollTimeoutSteps,
   BATCH_MODE_POLL_MINUTES,
   INLINE_POLL_MINUTES,

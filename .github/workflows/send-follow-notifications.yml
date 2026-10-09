@@ -2,7 +2,12 @@ name: Send Follow Show Notifications
 on:
   schedule:
     - cron: '0 14 * * 1'  # Monday 2 PM UTC (morning US)
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      baseline_only:
+        description: 'Re-baseline the change digest (detect, then clear pending changes) and send nothing'
+        type: boolean
+        default: false
 
 # Serialize schedule + manual-dispatch runs against data/audit/follow-send-
 # checkpoint.json. This checkpoint is the double-send guard for user email
@@ -77,8 +82,25 @@ jobs:
       # below stays (core-data-merge-registry.js registers it as this
       # workflow's single-writer file; the drift test wants a writer).
 
+      - name: Baseline only — clear pending changes, send nothing
+        # One-off re-baseline (BRO-4897): the committed digest had been stuck
+        # at 2026-02-09 because "Commit updates" never committed, so every run
+        # re-detected eight months of changes. This records today's state as
+        # the baseline from exactly the inputs a Monday run reads.
+        if: steps.check.outputs.has_followers == 'true' && inputs.baseline_only == true
+        run: |
+          node -e '
+            const fs = require("fs");
+            const p = "data/audit/show-changes-digest.json";
+            const d = JSON.parse(fs.readFileSync(p, "utf8"));
+            const n = Object.keys(d.changes || {}).length;
+            d.changes = {};
+            fs.writeFileSync(p, JSON.stringify(d, null, 2));
+            console.log("Baseline: kept currentState for " + Object.keys(d.currentState || {}).length + " shows, cleared " + n + " pending");
+          '
+
       - name: Send notifications
-        if: steps.check.outputs.has_followers == 'true'
+        if: steps.check.outputs.has_followers == 'true' && inputs.baseline_only != true
         id: send
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -97,16 +119,6 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Sync followers & subscribers (from send-follow-notifications)'
 
-      - name: Notify on failure
-        if: failure()
-        uses: ./.github/actions/notify-failure
-        with:
-          title: 'Send Follow Notifications Failed'
-          severity: 'warning'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          resend_api_key: ${{ secrets.RESEND_API_KEY }}
-          owner_email: ${{ secrets.OWNER_EMAIL }}
-
       - name: Commit updates
         if: always() && steps.check.outputs.has_followers == 'true'
         run: |
@@ -119,8 +131,12 @@ jobs:
           # all-or-nothing command: a nonexistent pathspec makes git add fail with
           # nothing staged (verified), silently dropping the digest/checkpoint
           # commit on every successful send and re-diffing the same stale digest
-          # next run — the exact mechanism that resent duplicate notifications on
-          # 2026-08-24, 2026-08-31 and 2026-09-07 (BRO-1593).
+          # next run (BRO-1593). That fix was not enough: this step staged the
+          # files but never committed them, and push-with-retry.sh only pushes
+          # commits, so the digest stayed at 2026-02-09 and the same Hamilton
+          # email went to one follower every Monday 2026-08-24..10-05 (BRO-4897).
+          # audit-workflow-hygiene.js rule (i) now fails any stage-then-push
+          # step without a commit.
           for f in data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json; do
             if [ -f "$f" ]; then
               git add "$f"
@@ -132,4 +148,15 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
+          git commit -m "data: follow-notification digest state [skip ci]"
           bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Send Follow Notifications Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
