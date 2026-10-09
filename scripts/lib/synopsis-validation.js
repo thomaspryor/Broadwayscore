@@ -236,6 +236,23 @@ function isValidSynopsis(text) {
   return true;
 }
 
+/**
+ * Trim a model reply that ran out of tokens back to its last complete
+ * sentence (BRO-4884: 200-token replies cut mid-sentence failed
+ * isValidSynopsis and were dropped). Returns '' when no sentence ends.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function cutToLastSentence(text) {
+  if (!text || typeof text !== 'string') return '';
+  const trimmed = text.trim();
+  if (/[.!?]['"\u2019\u201D)\]]?$/.test(trimmed)) return trimmed;
+  let end = -1;
+  for (const m of trimmed.matchAll(/[.!?]['"\u2019\u201D)\]]?(?=\s)/g)) end = m.index + m[0].length;
+  return end > 0 ? trimmed.slice(0, end) : '';
+}
+
 module.exports = {
   PLOT_SIGNAL_RE,
   REFUSAL_PATTERNS,
@@ -251,4 +268,5 @@ module.exports = {
   isStaleSynopsis,
   isValidSynopsis,
   classifyBadSynopsis,
+  cutToLastSentence,
 };
