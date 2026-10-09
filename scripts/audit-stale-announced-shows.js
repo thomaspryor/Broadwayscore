@@ -61,9 +61,18 @@ const {
   describeOpeningEvidence,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { findPostponedShows } = require('./lib/postponed-production-audit');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
-const SHOWS_FILE = path.join(DATA_DIR, 'shows.json');
+const argvEarly = process.argv.slice(2);
+const argValue = (name) => (argvEarly.find(a => a.startsWith(`--${name}=`)) || '').slice(name.length + 3) || null;
+const SHOWS_FILE = argValue('shows-file') || path.join(DATA_DIR, 'shows.json');
+const REVIEWS_FILE = argValue('reviews-file') || path.join(DATA_DIR, 'reviews.json');
+// BRO-4913: {"<showId>": "<official page text>"} — bypasses network fetch (tests/VERIFY)
+const PAGES_FIXTURE = argValue('pages-fixture');
+const NOW_OVERRIDE = argValue('now');
+const DEMOTE = argvEarly.includes('--demote');
 const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
 const AUDIT_FILE = path.join(DATA_DIR, 'audit', 'stale-announced-shows.json');
 
@@ -107,9 +116,11 @@ const USAGE = `Usage:
   node scripts/audit-stale-announced-shows.js --ack=<show-id> --ack-note="<why>"  # record a triage decision
 `;
 
-function main() {
+async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const showsData = loadJSON(SHOWS_FILE);
+  // --demote writes shows.json: load through the write guard so the save takes the lock + merges.
+  const showsGuard = DEMOTE ? createShowsWriteGuard(SHOWS_FILE) : null;
+  const showsData = showsGuard ? showsGuard.loadShows() : loadJSON(SHOWS_FILE);
   if (!showsData || !Array.isArray(showsData.shows)) {
     console.error(`Could not load ${SHOWS_FILE}`);
     process.exit(1);
@@ -221,6 +232,7 @@ function main() {
   }
 
   const silencedByContamination = findSilencedByContamination(showsData.shows);
+  const postponed = await findPostponed(showsData, now);
 
   const report = {
     generatedAt: now.toISOString(),
@@ -228,6 +240,8 @@ function main() {
     reviewTextsAvailable,
     flaggedCount: flagged.length,
     flagged,
+    postponedCount: postponed.length,
+    postponed,
     silencedByContaminationCount: silencedByContamination.length,
     silencedByContamination,
   };
@@ -235,6 +249,13 @@ function main() {
   console.log(`audit-stale-announced-shows: ${flagged.length} stale 'announced' show(s) (stale-days=${STALE_DAYS})`);
   for (const f of flagged) {
     console.log(`  - ${f.id} (${f.title}): ${f.reasons.join('; ')}`);
+  }
+  console.log(`audit-stale-announced-shows: ${postponed.length} open/previews show(s) look postponed (official page shows a future date)`);
+  for (const p of postponed) {
+    console.log(`  - ${p.id} (${p.title}): ${p.reason}${p.demoted ? ' [demoted to upcoming]' : ''}`);
+  }
+  if (DEMOTE && postponed.length > 0 && !DRY_RUN) {
+    showsGuard.saveShows(showsData, { reason: 'BRO-4913 postponed demote' });
   }
   if (silencedByContamination.length > 0) {
     console.log(
@@ -254,9 +275,24 @@ function main() {
     console.log(`Wrote audit: ${AUDIT_FILE}`);
   }
 
-  if (FAIL_ON_GAP && flagged.length > 0) {
+  if (FAIL_ON_GAP && (flagged.length > 0 || postponed.length > 0)) {
     process.exit(1);
   }
 }
 
-main();
+// BRO-4913: postponed check, fixture pages only here. Live official-page fetching
+// lives in scripts/audit-postponed-shows.js so this audit never reaches the
+// scraper (and the scraper-spend ledger) from data-health-check.yml.
+async function findPostponed(showsData, now) {
+  const fixture = PAGES_FIXTURE ? loadJSON(PAGES_FIXTURE, {}) : null;
+  if (!fixture) return [];
+  const res = await findPostponedShows(showsData, {
+    now: NOW_OVERRIDE ? new Date(NOW_OVERRIDE) : now,
+    reviewsData: loadJSON(REVIEWS_FILE, null),
+    getPageText: async (show) => fixture[show.id] || null,
+    demote: DEMOTE && !DRY_RUN,
+  });
+  return res.postponed;
+}
+
+main().catch(e => { console.error(e); process.exit(1); });

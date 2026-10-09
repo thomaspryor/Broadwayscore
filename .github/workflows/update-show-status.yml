@@ -61,7 +61,7 @@ jobs:
     # "OB discovery S7" step, 8 min hard cap, continue-on-error) + StubHub
     # 5 min (hard step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
     # below) + setup-node/misc ~5 min ≈ 108-118 min, ~12-22 min margin to 130.
-    timeout-minutes: 130
+    timeout-minutes: 133
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
       new_shows: ${{ steps.discover.outputs.new_shows }}
@@ -200,6 +200,13 @@ jobs:
       - name: Fix stale upcoming tags
         continue-on-error: true
         run: node scripts/fix-stale-upcoming-tags.js --apply
+
+      # BRO-4913: demote open/previews shows with 0 reviews past openingDate whose
+      # official/TodayTix page shows a future launch date (postponed productions).
+      - name: Demote postponed productions
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-postponed-shows.js --demote
 
       # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
       # inherited the original production's ibdbUrl hard-fails validate-data
