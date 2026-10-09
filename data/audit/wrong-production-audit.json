@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T12:29:37.006Z",
+  "timestamp": "2026-10-09T13:35:17.685Z",
   "stats": {
-    "totalReviews": 50512,
-    "alreadyFlagged": 19291,
+    "totalReviews": 50685,
+    "alreadyFlagged": 19306,
     "dateGuardCatches": 253,
-    "directorMismatch": 1574,
+    "directorMismatch": 1573,
     "tvFilmSignals": 1483,
-    "londonSignals": 1575,
-    "offBroadwaySignals": 509,
-    "yearMismatch": 122,
-    "noPublishDate": 5123
+    "londonSignals": 1580,
+    "offBroadwaySignals": 510,
+    "yearMismatch": 126,
+    "noPublishDate": 5243
   },
   "findings": [
     {
@@ -14844,6 +14844,71 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "austin101magazine--jerristarbuck.json",
+      "score": 90,
+      "publishDate": "2026-02-23",
+      "url": "https://austin101magazine.com/review-hadestown-a-spellbinding-descent-into-love-labor-and-the-power-of-song/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "maryland-theatre-guide--unknown.json",
+      "score": 91,
+      "publishDate": "2025-11-20",
+      "url": "https://mdtheatreguide.com/2025/11/theatre-review-hadestown-at-the-national-theatre-2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "playbill--andrew-gans.json",
+      "publishDate": "2024-12-17",
+      "url": "https://playbill.com/article/watch-music-video-for-way-down-hadestown-from-london-hadestown",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "twin-cities-arts-reader--unknown.json",
+      "score": 90,
+      "publishDate": "2025-02-12",
+      "url": "https://twincitiesarts.com/2025/02/12/review-the-world-we-dream-about-in-hadestown-hennepin-arts/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
         }
       ]
     },
@@ -40843,11 +40908,6 @@
       "url": "https://www.cleveland.com/news/2026/09/where-else-revival-of-the-whos-rock-opera-tommy-to-launch-north-american-tour-in-cleveland.html",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
-        },
-        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: the-whos-tommy-2024"
@@ -53229,6 +53289,52 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "dc-theater-arts--daniella-ignacio.json",
+      "publishDate": "2025-11-19",
+      "url": "https://dctheaterarts.org/2025/11/19/come-home-with-me-meet-the-dmv-talent-in-hadestown/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "dc-theater-arts--zoe-winsky.json",
+      "score": 94,
+      "publishDate": "2025-11-21",
+      "url": "https://dctheaterarts.org/2025/11/21/hadestown-on-tour-at-the-national-theatre-is-one-hell-of-a-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "hotchka--unknown.json",
+      "score": 81,
+      "publishDate": "2025-11-19",
+      "url": "https://hotchka.com/hadestown-review-washington-dc-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
