@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4887",
   "planId": "beee02a1-c6b4-4e35-9a86-bd6b941a4f3b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-09T00:21:02.101Z",
   "submitter": {
     "name": null,
@@ -114,5 +114,68 @@
         "description": "Reason for the flag"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-09T02:14:55.459Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for into-the-woods-2022"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/nysr--david-finkle.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/theater-pizzazz--samuel-l-leiter.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/broadwaynews--brittani-samuel.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/theatrely--david-gordon.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-1987/nypost--johnny-oleksinski.json → into-the-woods-2022/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/nypost--johnny-oleksinski.json publishDate: \"1987-11-05\" -> \"2022-07-10\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1997/nypost--johnny-oleksinski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1987/nysr--david-finkle.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1997/theater-pizzazz--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-1987/independent--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-1987/independent--unknown.json wrongProductionReason: null -> \"The url (independent.co.uk .../into-the-woods-menier-chocolate-factory...) is the 2016 Menier Chocolate Factory London production, not the 1987 Broadway production.\""
+    }
+  ]
 }
