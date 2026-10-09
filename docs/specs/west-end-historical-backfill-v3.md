@@ -340,6 +340,13 @@ Lessons, each fixed in code:
   includes"). Both paths now share cleanTodaytixAbout
   (scripts/lib/todaytix-page-identity.js, tests in its .test.mjs); text with
   no story left falls back to the LLM writer and its wrong-show check.
+  A second pass added "reprise their roles", "Award nominee" and "this
+  <adjectives> production" (A Mirror, Bacchae); "transports audiences" was
+  left out because it leads story sentences.
+- **Silent LLM synopsis failures.** The re-run left 20 of 27 rows empty
+  after a bare "Generating via Claude..." line. callClaudeAPI swallowed HTTP
+  errors and UNKNOWN/invalid replies were dropped without a word; both now
+  log the reason (scripts/auto-fix-show-data.js).
 
 ## Side benefit (separate card)
 

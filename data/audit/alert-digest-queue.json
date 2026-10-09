@@ -923,31 +923,6 @@
     "queuedAt": "2026-10-07T09:58:52.313Z"
   },
   {
-    "conditionKey": "llm-scoring:cost-breach",
-    "title": "LLM scoring spend over budget",
-    "description": "GitHub run 37618568768: cumulative LLM scoring cost $9.41 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "GitHub run",
-        "value": "37618568768"
-      },
-      {
-        "name": "Cost",
-        "value": "$9.41"
-      },
-      {
-        "name": "Threshold",
-        "value": "$6.00"
-      }
-    ],
-    "queuedAt": "2026-10-07T13:20:33.806Z"
-  },
-  {
     "conditionKey": "feedback-outcomes:2026-10-07T09:50:52.381862+00:00,2026-10-07T09:52:31.440826+00:00",
     "title": "Feedback: 2 submission(s), all handled automatically",
     "description": "2 messages from users came in. All of them are being handled automatically. Nothing needs you.\n\nAffluenza — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"https://www.thereviewshub.com/affluenza-riverside-studios-london/\r\nThis review does not deserve an 80 if you read the full thing. If you change other reviews based on the content and not the stars it has been given you should do the same with this review. It's highly critical of the play itself and shouldn't be getting more than 60%\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1007\n\nAffluenza — User reports that a Theatre and Tonic review of 'Affluenza' originally gave one star but has been translated to 42/100 on the site — a gap the user considers a significant misrepresentation, as a one-star rating would typically map to a much lower score.. You will get another email when it is live on the site.\n  They wrote: \"https://theatreandtonic.co.uk/blog/affluenza-riverside-studios-london-review\r\nThis review has already been included BUT it originally got ONE star, how did this get 42/100? Shouldn't you respect the original rating at least a little bit? So not change it by 22 points? Or a whole star. This does not represent the original review.\"",
@@ -2533,18 +2508,6 @@
     "queuedAt": "2026-10-09T00:31:29.687Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37869572508",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T01:29:45.929Z"
-  },
-  {
     "conditionKey": "land:land/bro-4894-custom-domain",
     "title": "Landing blocked: race red on land/bro-4894-custom-domain",
     "description": "land.yml did not land land/bro-4894-custom-domain: the race gate went red at 39b266a9da. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4894-custom-domain @ 39b266a9da (origin/land/bro-4894-custom-domain) → origin/main @ f585b1e0d8 [land] attempt 1/3: rebased onto f585b1e0d8, 10 file(s) changed — running checks [land] verified-base: main moved e2716035da → f585b1e0d8 across 213 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] chec Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37863922260",
@@ -2572,5 +2535,17 @@
       }
     ],
     "queuedAt": "2026-10-09T01:36:35.078Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37871061318",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T01:48:04.092Z"
   }
 ]

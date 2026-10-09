@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T01:02:23.513Z",
+  "timestamp": "2026-10-09T01:44:22.346Z",
   "stats": {
-    "totalReviews": 49862,
-    "alreadyFlagged": 19160,
+    "totalReviews": 49936,
+    "alreadyFlagged": 19170,
     "dateGuardCatches": 278,
     "directorMismatch": 1500,
-    "tvFilmSignals": 1447,
-    "londonSignals": 1481,
+    "tvFilmSignals": 1453,
+    "londonSignals": 1495,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 5212
+    "noPublishDate": 5121
   },
   "findings": [
     {
@@ -21680,6 +21680,32 @@
       ]
     },
     {
+      "showId": "lyonesse-west-end-2023",
+      "file": "british-theatre--vera-liber.json",
+      "publishDate": "2023-10-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "lyonesse-west-end-2023",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2023-10-25",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-12672947/Lyonesse-review-Sunset-Boulevard-meets-Ab-Fab-set-Cornwall-Lily-James-Kristin-Scott-Thomas-serving-stardust-writes-PATRICK-MARMION.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
       "showId": "lysistrata-jones-2011",
       "file": "variety--steven-suskin.json",
       "score": 77,
@@ -22112,6 +22138,58 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"athol fugard\" from master-haroldand-the-boys-1982"
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 59,
+      "publishDate": "November 10th, 2023",
+      "url": "https://theartsdesk.com/theatre/mates-chelsea-royal-court-review-%E2%80%93-silly-rather-satirical",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 8,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MATES-IN-CHELSEA-Royal-Court-20231110",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 80,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/mates-in-chelsea-royal-court-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -25669,6 +25747,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "opening-night-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2024-03-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -56002,6 +56093,33 @@
       ]
     },
     {
+      "showId": "machinal-west-end-2024",
+      "file": "artsdesk--david-nice.json",
+      "score": 96,
+      "publishDate": "April 19th, 2024",
+      "url": "https://theartsdesk.com/theatre/machinal-old-vic-review-note-perfect-pity-and-terror",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "machinal-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-04-28",
+      "url": "https://www.thetimes.co.uk/article/the-long-island-housewife-sent-to-the-electric-chair-7fdb9r0tk",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "magic-mike-live-west-end-2021",
       "file": "london-theatre--suzy-evans.json",
       "score": 85,
@@ -56947,6 +57065,87 @@
       ]
     },
     {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2023-11-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "guardian--kate-wyver.json",
+      "score": 35,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.theguardian.com/stage/2023/nov/10/mates-in-chelsea-review-royal-court-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2023-12-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "thereviewshub--serafina-cusack.json",
+      "publishDate": "2023-11-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 41,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.timeout.com/london/theatre/mates-in-chelsea-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mates-in-chelsea-west-end-2023",
+      "file": "whatsonstage--frey-kwa-hawking.json",
+      "score": 36,
+      "publishDate": "November 10th, 2023",
+      "url": "https://www.whatsonstage.com/news/mates-in-chelsea-at-the-royal-court-theatre-review_1547343/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "matilda-the-musical-2013",
       "file": "amny--matt-windman.json",
       "score": 90,
@@ -57825,6 +58024,34 @@
       ]
     },
     {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "broadwayworld--abbie-grundy.json",
+      "score": null,
+      "publishDate": "June 26th, 2024",
+      "url": "https://www.broadwayworld.com/westend/article/Review-NEXT-TO-NORMAL-Wyndhams-Theatre-20240626",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 97,
+      "publishDate": "June 26th, 2024",
+      "url": "https://theatreweekly.com/review-next-to-normal-at-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "night-city-off-west-end-2026",
       "file": "bestoftheatre--arthur-fisher.json",
       "publishDate": "2026-09-15",
@@ -58695,6 +58922,20 @@
       ]
     },
     {
+      "showId": "opening-night-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 80,
+      "publishDate": "March 27th, 2024",
+      "url": "https://www.theguardian.com/stage/2024/mar/27/opening-night-review-gielgud-theatre-sheridan-smith-ivo-van-hove-rufus-wainwright",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
       "showId": "operation-mincemeat-2025",
       "file": "culturesauce--thom-geier.json",
       "score": 80,
@@ -59124,6 +59365,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2024",
+      "file": "telegraph--nick-ferris.json",
+      "score": null,
+      "publishDate": "May 15th, 2024",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/people-places-and-things-trafalgar-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
