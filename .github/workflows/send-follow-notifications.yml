@@ -97,16 +97,6 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Sync followers & subscribers (from send-follow-notifications)'
 
-      - name: Notify on failure
-        if: failure()
-        uses: ./.github/actions/notify-failure
-        with:
-          title: 'Send Follow Notifications Failed'
-          severity: 'warning'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          resend_api_key: ${{ secrets.RESEND_API_KEY }}
-          owner_email: ${{ secrets.OWNER_EMAIL }}
-
       - name: Commit updates
         if: always() && steps.check.outputs.has_followers == 'true'
         run: |
@@ -119,8 +109,13 @@ jobs:
           # all-or-nothing command: a nonexistent pathspec makes git add fail with
           # nothing staged (verified), silently dropping the digest/checkpoint
           # commit on every successful send and re-diffing the same stale digest
-          # next run — the exact mechanism that resent duplicate notifications on
-          # 2026-08-24, 2026-08-31 and 2026-09-07 (BRO-1593).
+          # next run (BRO-1593). That fix was not enough: this step staged the
+          # files but never committed them, and push-with-retry.sh only pushes
+          # commits, so the digest stayed at 2026-02-09 and the same Hamilton
+          # email went to one follower every Monday 2026-08-24..10-05 (BRO-4897).
+          # audit-workflow-hygiene.js rule (p) now fails any stage-then-push
+          # step without a commit. detect-show-changes.js re-baselines on its
+          # own when the committed digest is older than 21 days.
           for f in data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json; do
             if [ -f "$f" ]; then
               git add "$f"
@@ -132,4 +127,15 @@ jobs:
             echo "No changes to commit"
             exit 0
           fi
+          git commit -m "data: follow-notification digest state [skip ci]"
           bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Send Follow Notifications Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

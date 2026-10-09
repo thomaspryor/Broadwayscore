@@ -209,6 +209,19 @@ test('title containing " at " is not truncated (ship-check P1)', () => {
   assert.equal(f.venue, 'Todd Haimes Theatre');
 });
 
+test('headline naming the house as "the RSC" resolves the venue (As You Like It, 2026-10-09)', () => {
+  const f = extractArticleFields(
+    '<html><head><title>x</title></head><body><h1>Review Roundup: All-Male AS YOU LIKE IT Opens at the RSC, Starring Jonathan Groff</h1></body></html>'
+  );
+  assert.equal(f.venue, 'Royal Shakespeare Theatre');
+  assert.equal(f.title, 'All-Male AS YOU LIKE IT');
+  // The initialism is accepted in a headline only; a bare "RSC" in other prose is not a venue.
+  const g = extractArticleFields(
+    '<html><head><title>x</title></head><body><h1>Review Roundup: DINNER AT EIGHT</h1><p>Reviews of the RSC revival.</p></body></html>'
+  );
+  assert.equal(g.venue, null);
+});
+
 test('leading-type venue "Stage 42" is extracted (ship-check P2)', () => {
   const f = extractArticleFields(
     '<html><head><title>x</title></head><body><h1>Little Shop of Horrors Opens at Stage 42</h1></body></html>'
