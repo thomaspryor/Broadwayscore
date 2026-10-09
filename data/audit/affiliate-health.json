@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-10-06",
+  "asOf": "2026-10-07",
   "shadow": false,
   "checks": [
     {
@@ -11,14 +11,8 @@
     {
       "key": "affiliate:provider-auth:posthog",
       "label": "posthog API",
-      "verdict": "pass",
-      "reason": "reachable"
-    },
-    {
-      "key": "affiliate:dead-man",
-      "label": "Dead-man (both click signals)",
-      "verdict": "pass",
-      "reason": "at least one click signal alive"
+      "verdict": "critical",
+      "reason": "posthog fetch failed: PostHog daily clicks error: HTTP 503"
     },
     {
       "key": "affiliate:conversions-flatline",
@@ -30,39 +24,21 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "22 conversions in trailing 7d"
-    },
-    {
-      "key": "affiliate:click-flow-collapse",
-      "label": "Site ticket-click flow",
-      "verdict": "pass",
-      "reason": "661/676 = 98% of peak, above the 20% floor"
+      "reason": "28 conversions in trailing 7d"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "500/741 = 67% of peak, above the 20% floor"
-    },
-    {
-      "key": "affiliate:handoff-break",
-      "label": "Click → Impact handoff",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 76% over 3d"
-    },
-    {
-      "key": "affiliate:bot-divergence",
-      "label": "Bot click divergence",
-      "verdict": "pass",
-      "reason": "Impact/PostHog click ratio 0.8x over 3d"
+      "reason": "501/741 = 68% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:payout-anomaly",
       "label": "Payout economics",
       "verdict": "warn",
-      "reason": "8 conversions with a real sale amount but $0.00 payout in 7d (allowed 1)"
+      "reason": "9 conversions with a real sale amount but $0.00 payout in 7d (allowed 1)"
     }
   ],
-  "failingCount": 1,
-  "updatedAt": "2026-10-08T09:04:16.798Z"
+  "failingCount": 2,
+  "updatedAt": "2026-10-09T13:51:04.107Z"
 }
