@@ -367,23 +367,29 @@ function clearStaleScoringFailure(data) {
 const normTitle = (t) => String(t || '').trim().toLowerCase();
 
 /**
- * One entry per tour: which Broadway show folders to sweep and the date context.
- * Every BROADWAY production sharing the tourOf parent's title is a source
- * (Beetlejuice tour reviews landed on beetlejuice-2022 and -2025, not only the
- * parent 2019); other markets never are (beetlejuice-west-end-2026 is a
- * different production, and the UK filter only catches files that say so).
+ * One entry per tour: which show folders to sweep and the date context.
+ * Every same-title production in the tourOf parent's category (Broadway,
+ * Off-Broadway, regional, West End or Off-West End) plus every Broadway one is
+ * a source (Beetlejuice tour reviews landed on beetlejuice-2022 and -2025, not
+ * only the parent 2019); other markets never are (beetlejuice-west-end-2026 is
+ * a different production when the parent is Broadway, and the UK filter only
+ * catches files that say so). A standalone tour (no tourOf, BRO-4931) has no
+ * production to sweep: its list is empty, so nothing moves.
  */
 function planTourSweep(shows, { schedules = null, ukOutlets = null, genericVenues = null } = {}) {
   const byId = new Map(shows.map(s => [s.id, s]));
-  const tours = shows.filter(s => s.category === 'tour' && s.tourOf && byId.has(s.tourOf));
+  const tours = shows.filter(s => s.category === 'tour' && (!s.tourOf || byId.has(s.tourOf)));
+  const titleOf = t => normTitle(t.tourOf ? byId.get(t.tourOf).title : t.title);
   return tours.map(tour => {
-    const parent = byId.get(tour.tourOf);
-    const title = normTitle(parent.title);
-    const fromIds = shows
-      .filter(s => (s.category || 'broadway') === 'broadway' && normTitle(s.title) === title)
+    const parent = tour.tourOf ? byId.get(tour.tourOf) : null;
+    const title = titleOf(tour);
+    const parentCategory = parent ? (parent.category || 'broadway') : null;
+    const fromIds = !parent ? [] : shows
+      .filter(s => s.category !== 'tour' && ((s.category || 'broadway') === 'broadway' || (s.category || 'broadway') === parentCategory)
+        && normTitle(s.title) === title)
       .map(s => s.id)
       .sort();
-    const siblings = tours.filter(t => t.id !== tour.id && normTitle(byId.get(t.tourOf).title) === title);
+    const siblings = tours.filter(t => t.id !== tour.id && titleOf(t) === title);
     const otherToursOfTitle = siblings.length;
     const siblingTourUndated = siblings.length > 0 && (!tour.openingDate || siblings.some(t => !t.openingDate));
     const firstOpen = fromIds.map(id => byId.get(id).openingDate).filter(Boolean).sort()[0] || null;
@@ -392,7 +398,7 @@ function planTourSweep(shows, { schedules = null, ukOutlets = null, genericVenue
       tourId: tour.id,
       fromIds,
       ctx: {
-        broadwayOpeningDate: parent.openingDate || null,
+        broadwayOpeningDate: (parent && parent.openingDate) || null,
         firstBroadwayOpeningDate: firstOpen,
         tourLaunchDate: tour.openingDate || null,
         tourClosingDate: tour.status === 'closed' ? (tour.closingDate || null) : null,

@@ -628,7 +628,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                       {scoreBox}
                       <div className="pt-0.5 min-w-0">
                         {showTBD ? (
-                          <div className="text-base sm:text-lg font-bold text-gray-400">Awaiting Reviews</div>
+                          <div className="text-base sm:text-lg font-bold text-gray-400">{isTour ? 'Reviews coming in' : 'Awaiting Reviews'}</div>
                         ) : sentiment && (
                           <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
                         )}
@@ -941,6 +941,20 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <Link href="/methodology" className="hover:text-brand-hover transition-colors">
                 How this score works →
               </Link>
+            </p>
+          </section>
+        ) : isTour && show.status !== 'closed' ? (
+          // A live tour with no reviews yet (BRO-4931): the page is indexed for
+          // its schedule, so say plainly that reviews are on the way instead of
+          // the "archived reviews" or "opening night" copy.
+          <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-tour-pending" data-testid="tour-reviews-coming-in">
+            <header className="flex items-center justify-between gap-3 mb-3">
+              <h2 id="critic-scorecard-heading-tour-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">reviews coming in</span>
+            </header>
+            <p className="text-gray-400 text-sm">
+              Reviews coming in. Critics in each city review the tour as it plays, and the CriticScore appears once enough of those reviews are in.
+              {tourStops.length > 0 ? ' The schedule below shows where it plays.' : ''}
             </p>
           </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (

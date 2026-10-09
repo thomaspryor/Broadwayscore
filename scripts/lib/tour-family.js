@@ -189,6 +189,53 @@ function applyTourInheritance(shows) {
   return changed;
 }
 
+// A tour id is <base>-tour-<year>: the parent's market never rides along
+// (mexodus-off-broadway-2026 tours as mexodus-tour-2026).
+const MARKET_BEFORE_TOUR_RE = /-(on-broadway|off-broadway|off-west-end|west-end|regional)-tour-\d{4}$/;
+
+/**
+ * Link problems on one tour entry (validate-data.js, BRO-4931), as
+ * { level: 'error' | 'warn', msg }. tourOf is optional: present, it names an
+ * existing non-tour show; absent (never null), the tour is standalone and
+ * needs tourScheduleSlug. Warns when a standalone tour shares a title with a
+ * non-tour show (it probably tours that show).
+ * @param {object} tour a category:'tour' entry
+ * @param {Array} shows all shows
+ */
+function tourLinkProblems(tour, shows) {
+  const out = [];
+  if (!isTourShow(tour)) return out;
+  if (MARKET_BEFORE_TOUR_RE.test(tour.id)) {
+    out.push({ level: 'error', msg: `Tour "${tour.id}" id carries a market before -tour-<year>; a tour id is <base>-tour-<year> (mexodus-off-broadway-2026 tours as mexodus-tour-2026)` });
+  }
+  if (tour.tourOf === null || tour.tourOf === '') {
+    out.push({ level: 'error', msg: `Tour "${tour.id}" has an empty tourOf; omit the field for a standalone tour, never write null` });
+  } else if (tour.tourOf === undefined) {
+    if (!tour.tourScheduleSlug) out.push({ level: 'error', msg: `Tour "${tour.id}" has no tourOf and no tourScheduleSlug; a standalone tour needs its Tours To You page` });
+    const same = productionsOfTitle(tour.title, shows);
+    if (same.length) out.push({ level: 'warn', msg: `Tour "${tour.id}" has no tourOf but ${same.length} non-tour show(s) share its title (${same.slice(0, 3).map(o => o.id).join(', ')}); set tourOf if it tours one of them` });
+  } else {
+    const target = (shows || []).find(s => s.id === tour.tourOf);
+    if (!target) out.push({ level: 'error', msg: `Tour "${tour.id}" tourOf "${tour.tourOf}" does not reference an existing show` });
+    else if (isTourShow(target)) out.push({ level: 'error', msg: `Tour "${tour.id}" tourOf "${tour.tourOf}" is itself a tour; name the production it tours` });
+  }
+  return out;
+}
+
+/**
+ * Show ids whose archived art a tour may use: itself, its tourOf, and any
+ * same-title production in the parent's category or on Broadway.
+ */
+function allowedTourArtIds(tour, shows) {
+  const t = normTitle(tour.title);
+  const parent = tour.tourOf ? (shows || []).find(s => s.id === tour.tourOf) : null;
+  const categories = new Set(['broadway']);
+  if (parent && tourParentCategory(parent)) categories.add(tourParentCategory(parent));
+  return [tour.id, ...(tour.tourOf ? [tour.tourOf] : []), ...(shows || [])
+    .filter(s => !isTourShow(s) && categories.has(s.category || 'broadway') && normTitle(s.title) === t)
+    .map(s => s.id)];
+}
+
 /**
  * Tour art must be the tour's own archived file, its parent's, or one from a
  * same-title production in the parent's category or on Broadway. Anything else
@@ -197,13 +244,7 @@ function applyTourInheritance(shows) {
  */
 function tourImageProblems(tour, shows) {
   if (!isTourShow(tour) || !tour.images) return [];
-  const t = normTitle(tour.title);
-  const parent = tour.tourOf ? (shows || []).find(s => s.id === tour.tourOf) : null;
-  const categories = new Set(['broadway']);
-  if (parent && tourParentCategory(parent)) categories.add(tourParentCategory(parent));
-  const allowed = [tour.id, ...(tour.tourOf ? [tour.tourOf] : []), ...(shows || [])
-    .filter(s => !isTourShow(s) && categories.has(s.category || 'broadway') && normTitle(s.title) === t)
-    .map(s => s.id)];
+  const allowed = allowedTourArtIds(tour, shows);
   const problems = [];
   for (const [k, v] of Object.entries(tour.images)) {
     if (!v || k.startsWith('_')) continue;
@@ -236,6 +277,9 @@ module.exports = {
   withoutTours,
   isTourShow,
   tourImageProblems,
+  allowedTourArtIds,
+  tourLinkProblems,
+  MARKET_BEFORE_TOUR_RE,
   tourInheritance,
   applyTourInheritance,
   toursOfTitle,

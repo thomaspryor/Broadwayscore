@@ -12,6 +12,7 @@
  */
 
 const { sanitizeVenueForWrite } = require('./venue-classification');
+const { MARKET_BEFORE_TOUR_RE } = require('./tour-family');
 
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
 const ALLOWED = new Set([
@@ -49,7 +50,7 @@ function marketShapeProblem(shows, show) {
     // The market belongs to the parent, not the tour: mexodus-off-broadway-2026
     // tours as mexodus-tour-2026 (review-guards.js isLikelyTourReview keys on
     // the plain shape).
-    if (/-(on-broadway|off-broadway|off-west-end|west-end|regional)-tour-\d{4}$/.test(show.id)) return 'add-show: tour id must not carry a market ("-off-broadway-tour-<year>"); use "<base>-tour-<year>"';
+    if (MARKET_BEFORE_TOUR_RE.test(show.id)) return 'add-show: tour id must not carry a market ("-off-broadway-tour-<year>"); use "<base>-tour-<year>"';
     if (show.venue !== 'North American Tour') return 'add-show: tour venue must be "North American Tour"';
     // tourOf is optional (BRO-4931): a tour of an Off-Broadway, regional or West
     // End show names it; a standalone touring show omits it (never null) and is

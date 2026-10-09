@@ -80,7 +80,13 @@ function main() {
   const approvals = readJson(path.join(ROOT, 'data', 'tour-sweep-approvals.json'));
   const plans = planTourSweep(shows, loadSweepContext(ROOT)).filter(p => all || p.tourId === only);
   if (only && plans.length === 0) {
-    console.error(`${only} must exist in shows.json with category 'tour' and a tourOf that exists`); process.exit(2);
+    console.error(`${only} must exist in shows.json with category 'tour' and, if it has a tourOf, one that exists`); process.exit(2);
+  }
+  // A standalone tour (no tourOf, BRO-4931) has no production whose folders
+  // could hold its reviews: there is nothing to move.
+  if (only && plans.every(p => p.fromIds.length === 0)) {
+    console.log(`${only} has no parent production (standalone tour): nothing to sweep`);
+    process.exit(0);
   }
 
   const listFiles = (showId) => {
@@ -117,6 +123,7 @@ function main() {
   let totalMoved = 0;
   const report = [];
   for (const plan of plans) {
+    if (plan.fromIds.length === 0) continue; // standalone tour
     const toDir = path.join(reviewTextsDir, plan.tourId);
     const counts = {};
     const at = new Date().toISOString();

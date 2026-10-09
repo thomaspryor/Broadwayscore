@@ -224,3 +224,72 @@ test('a write aimed at a tour: UK outlets rejected; dated reviews go to the tour
   assert.equal(r('https://www.denverpost.com/x', '2019-05-01').action, 'accept');
   assert.equal(r('https://www.denverpost.com/2003/x', '2003-10-31', 'url-backfill-url-ymd').action, 'accept', 'URL-derived date is not trusted');
 });
+
+// BRO-4931: tours of Off-Broadway, West End and regional productions are tracked
+// too, so a tour-stop review of any of them reroutes to the tour by date window.
+test('tour reroute works for Off-Broadway, West End and regional parents (BRO-4931)', () => {
+  const shows = [
+    { id: 'lumina-off-broadway-2024', title: 'Lumina', category: 'off-broadway', openingDate: '2024-02-01', closingDate: '2024-06-01' },
+    { id: 'lumina-tour-2026', title: 'Lumina', category: 'tour', openingDate: '2026-09-19' },
+    { id: 'garden-west-end-2024', title: 'Garden', category: 'west-end', openingDate: '2024-03-01' },
+    { id: 'garden-tour-2026', title: 'Garden', category: 'tour', openingDate: '2026-09-19' },
+    { id: 'harbor-regional-2025', title: 'Harbor', category: 'regional', openingDate: '2025-05-01', closingDate: '2025-06-15' },
+    { id: 'harbor-tour-2026', title: 'Harbor', category: 'tour', openingDate: '2026-09-19' },
+    { id: 'plain-2024', title: 'Plain', category: 'broadway', openingDate: '2024-03-01' },
+    { id: 'plain-tour-2026', title: 'Plain', category: 'tour', openingDate: '2026-09-19' },
+  ];
+  const idx = buildSiblingIndex(shows);
+  const city = 'https://www.broadwayworld.com/denver/article/Review-Lumina-at-the-Buell-20261001';
+  const ruling = (showId, url, publishDate, dateSource) => classifyMarketRouting({ showId, url, publishDate, dateSource, category: shows.find(s => s.id === showId).category, siblingIndex: idx });
+
+  // Off-Broadway and West End parents: a US tour-stop page dated inside the tour window reroutes.
+  let d = ruling('lumina-off-broadway-2024', city, '2026-10-01');
+  assert.deepEqual([d.action, d.targetShowId], ['reroute', 'lumina-tour-2026']);
+  d = ruling('garden-west-end-2024', city.replace('Lumina', 'Garden'), '2026-10-01');
+  assert.deepEqual([d.action, d.targetShowId], ['reroute', 'garden-tour-2026']);
+  // Not a tour-stop URL (a UK page for a West End parent, a plain national paper): no tour reroute.
+  d = ruling('garden-west-end-2024', 'https://www.broadwayworld.com/westend/article/Review-Garden-20261001', '2026-10-01');
+  assert.notEqual(d.targetShowId, 'garden-tour-2026');
+  d = ruling('lumina-off-broadway-2024', 'https://www.nytimes.com/2026/10/01/theater/lumina.html', '2026-10-01');
+  assert.notEqual(d.targetShowId, 'lumina-tour-2026');
+  // A date outside every tour window never reroutes (the Off-Broadway run's own review).
+  d = ruling('lumina-off-broadway-2024', city, '2024-02-10');
+  assert.notEqual(d.targetShowId, 'lumina-tour-2026');
+  // Broadway behaviour is unchanged.
+  d = ruling('plain-2024', city.replace('Lumina', 'Plain'), '2026-10-01');
+  assert.deepEqual([d.action, d.targetShowId], ['reroute', 'plain-tour-2026']);
+
+  // Regional parent: the date must be inside a tour window AND outside the regional run.
+  d = ruling('harbor-regional-2025', city.replace('Lumina', 'Harbor'), '2025-05-20');
+  assert.notEqual(d.targetShowId, 'harbor-tour-2026');
+  d = ruling('harbor-regional-2025', city.replace('Lumina', 'Harbor'), '2025-08-01');
+  assert.notEqual(d.targetShowId, 'harbor-tour-2026', 'inside closing + 60 days and outside any tour window');
+  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', '2026-10-01');
+  assert.deepEqual([d.action, d.targetShowId], ['reroute', 'harbor-tour-2026']);
+  // Undated, or dated only by its URL: not enough for a regional parent.
+  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', null);
+  assert.notEqual(d.targetShowId, 'harbor-tour-2026');
+  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', '2026-10-01', 'url-backfill-url-ymd');
+  assert.notEqual(d.targetShowId, 'harbor-tour-2026');
+});
+
+test('regional parent: tourDecision gates on the parent run window (BRO-4931)', () => {
+  const { tourDecision } = require('../../scripts/lib/market-routing.js');
+  const tourSib = { id: 'harbor-tour-2026', category: 'tour', openingDate: new Date('2026-09-19'), closingDate: null, year: 2026 };
+  const base = { category: 'regional', openingDate: new Date('2026-09-01'), closingDate: new Date('2026-09-30'), siblings: [tourSib] };
+  const call = (sib, publishDate) => tourDecision('harbor-regional-2026', sib, { url: 'https://www.denverpost.com/x', publishDate, dateSource: 'extracted' });
+  // Inside the run (tour window overlaps it): stays with the regional production.
+  assert.equal(call(base, '2026-09-25'), null);
+  // Inside the 60-day trailing slack: still the regional production's.
+  assert.equal(call(base, '2026-11-15'), null);
+  // Past closing + 60 days and inside the tour window: the tour.
+  assert.equal(call(base, '2026-12-15').targetShowId, 'harbor-tour-2026');
+  // Open-ended regional run (no closing) never reroutes; no opening date cannot be judged.
+  assert.equal(call({ ...base, closingDate: null }, '2026-12-15'), null);
+  assert.equal(call({ ...base, openingDate: null }, '2026-12-15'), null);
+  // Before the run began (opening minus 7 days) and inside a tour window reroutes.
+  const early = { ...base, openingDate: new Date('2026-12-01'), closingDate: new Date('2026-12-20') };
+  assert.equal(call(early, '2026-10-01').targetShowId, 'harbor-tour-2026');
+  // A tour (or any category outside the routable set) never reroutes through this branch.
+  assert.equal(call({ ...base, category: 'tour' }, '2026-12-15'), null);
+});

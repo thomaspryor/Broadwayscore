@@ -267,7 +267,9 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
   const minReviewsForSchema = getMarketMinReviews(show.category);
-  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema) {
+  // A tour follows the score badge's rule (+2 reviews with no T1/T2), so an
+  // unscored tour that is now indexed never claims a rating its page hides.
+  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema && (!isTour || isTourScored(show))) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: toFiveStarScale(show.criticScore.score),

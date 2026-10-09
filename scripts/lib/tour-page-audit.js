@@ -33,6 +33,10 @@ function nowNext(stops, today) {
   };
 }
 
+const { TOUR_PARENT_LABELS, productionsOfTitle, allowedTourArtIds, tourParentCategory } = require('./tour-family');
+
+const PARENT_LINK_RE = /See the (.+?) production/i;
+
 const normTitle = t => String(t || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
   .replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').replace(/\b(the|a|an|musical)\b/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -104,7 +108,10 @@ function parseShowPage(html) {
 
   const reviewsHeader = $('#critic-reviews header').first().text().replace(/\s+/g, ' ');
   const rcM = reviewsHeader.match(/(\d+)\s+reviews?/);
-  const broadwayLink = $('a').filter((_, a) => /See the Broadway production/i.test($(a).text())).first().attr('href') || null;
+  // "See the Broadway production" / "See the Off-Broadway production" / ...: the link's market label follows the parent's category.
+  const parentLinkEl = $('a').filter((_, a) => PARENT_LINK_RE.test($(a).text())).first();
+  const broadwayLink = parentLinkEl.attr('href') || null;
+  const parentLinkLabel = parentLinkEl.length ? (PARENT_LINK_RE.exec(parentLinkEl.text()) || [])[1] || null : null;
   const allTicketHrefs = $('a[href]').toArray().map(a => $(a).attr('href')).filter(h => /todaytix\.com/i.test(h));
   const imgs = $('img[src], img[srcset]').toArray().map(i => $(i).attr('src') || '').filter(Boolean);
   return {
@@ -125,6 +132,7 @@ function parseShowPage(html) {
     hasSchedule: card.length > 0,
     lastStopNote: /played its last scheduled stop/i.test(card.text()),
     broadwayLink,
+    parentLinkLabel,
     ticketHrefs: allTicketHrefs,
     images: imgs,
     jsonLd: parseJsonLd($),
@@ -211,27 +219,35 @@ function rangeMatchesStop(text, stop) {
 
 /**
  * Checks on the data a tour page is built from (shows.json record, its
- * Broadway parent, schedule, ticket rows). `others` is every other tour's
- * schedule, keyed by id, for the copied-table check.
+ * parent production, schedule, ticket rows). `others` is every other tour's
+ * schedule, keyed by id, for the copied-table check. `shows` (all shows) lets
+ * the audit tell a standalone tour from one missing its tourOf, and widens the
+ * allowed art to same-title productions in the parent's category or Broadway.
+ * tourOf is optional (BRO-4931): a standalone touring show has none.
  */
-function checkTourData({ show, parent, schedule, tickets = [], others = {}, today, listed = false }) {
+function checkTourData({ show, parent, schedule, tickets = [], others = {}, today, listed = false, shows = null }) {
   const out = [];
   const w = `data:${show.id}`;
   const stops = (schedule && schedule.stops) || [];
 
-  if (!show.tourOf) out.push(finding('error', 'tourof-missing', w, 'tour has no tourOf (Broadway parent)'));
-  else if (!parent) out.push(finding('error', 'tourof-dangling', w, `tourOf "${show.tourOf}" is not in shows.json`));
+  if (!show.tourOf) {
+    // Standalone tours are valid; only a tour that shares its title with a
+    // production is probably missing the link.
+    const same = shows ? productionsOfTitle(show.title, shows) : [];
+    if (same.length) out.push(finding('warn', 'tourof-missing', w, `tour has no tourOf but ${same.length} production(s) share its title (${same.slice(0, 3).map(s => s.id).join(', ')})`));
+  } else if (!parent) out.push(finding('error', 'tourof-dangling', w, `tourOf "${show.tourOf}" is not in shows.json`));
   else {
-    if (parent.category && parent.category !== 'broadway') out.push(finding('error', 'tourof-not-broadway', w, `tourOf ${parent.id} is category ${parent.category}`));
+    if (parent.category === 'tour') out.push(finding('error', 'tourof-is-tour', w, `tourOf ${parent.id} is itself a tour`));
     if (normTitle(parent.title) !== normTitle(show.title)) out.push(finding('error', 'tourof-title-mismatch', w, `tour "${show.title}" points at "${parent.title}" (${parent.id})`));
   }
 
   const imgs = show.images || {};
   if (!imgs.poster && !imgs.thumbnail && !imgs.hero) out.push(finding('error', 'poster-missing', w, 'no poster, thumbnail or hero image'));
+  const artIds = new Set(allowedTourArtIds(show, shows || (parent ? [parent] : [])));
   for (const [k, v] of Object.entries(imgs)) {
     const m = typeof v === 'string' && v.match(/\/images\/shows\/([^/]+)\//);
-    if (m && m[1] !== show.id && m[1] !== show.tourOf) {
-      out.push(finding('error', 'art-from-other-production', w, `${k} image comes from ${m[1]}, neither this tour nor its parent ${show.tourOf}`));
+    if (m && !artIds.has(m[1])) {
+      out.push(finding('error', 'art-from-other-production', w, `${k} image comes from ${m[1]}, not this tour, its parent ${show.tourOf || '(none)'} or a same-title production`));
     }
   }
   if (!show.synopsis || String(show.synopsis).trim().length < 40) out.push(finding('warn', 'synopsis-missing', w, 'no synopsis (or under 40 chars)'));
@@ -451,8 +467,12 @@ function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays
 
   // Parent production
   if (show.tourOf && parent) {
-    if (!page.broadwayLink) warn('broadway-link-missing', 'no "See the Broadway production" link');
-    else if (page.broadwayLink !== `/show/${parent.slug || parent.id}`) err('broadway-link-wrong', `"See the Broadway production" links ${page.broadwayLink}, tourOf is ${parent.slug || parent.id}`);
+    const label = TOUR_PARENT_LABELS[tourParentCategory(parent)] || 'Broadway';
+    if (!page.broadwayLink) warn('broadway-link-missing', `no "See the ${label} production" link`);
+    else {
+      if (page.broadwayLink !== `/show/${parent.slug || parent.id}`) err('broadway-link-wrong', `"See the ${label} production" links ${page.broadwayLink}, tourOf is ${parent.slug || parent.id}`);
+      if (page.parentLinkLabel && page.parentLinkLabel.toLowerCase() !== label.toLowerCase()) warn('parent-link-label-wrong', `parent link says "See the ${page.parentLinkLabel} production", parent is category ${parent.category || 'broadway'} ("${label}")`);
+    }
   }
 
   // Runtime: the tour's own, else (if shown) the Broadway parent's.

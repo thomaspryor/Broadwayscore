@@ -52,6 +52,7 @@ const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 const { selectDueStops, buildStopQuery, buildStopDateRange, stopDateWindowArg, looksLikeScreenVersion, unregisteredLooksLikeStopReview } = require('./lib/tour-stop-discovery');
 const { isBroadwayCategory } = require('./lib/venue-classification');
+const { toursOfTitle } = require('./lib/tour-family');
 
 // Same per-ingest wall-time cap as discover-regional-serp-reviews.js.
 const INGEST_TIMEOUT_MS = 3 * 60 * 1000;
@@ -83,19 +84,23 @@ function filesOf(showId) {
   return fs.readdirSync(dir).filter((f) => f.endsWith('.json') && !f.startsWith('_')).map((f) => path.join(dir, f));
 }
 
-// URLs already held by the tour, its Broadway parent, any other Broadway
+// URLs already held by the tour, its parent, any other Broadway or parent-market
 // production of that title (Beetlejuice tour reviews sat on beetlejuice-2022
 // and -2025, the sweep's sources) or any sibling tour: a result already filed
 // elsewhere in the family is not a new review.
 function familyUrls(show, shows) {
   const ids = new Set([show.id]);
+  // Sibling tours of the title are family whether or not the tour has a parent
+  // (a standalone tour, BRO-4931, has only these).
+  for (const t of toursOfTitle(show.title, shows)) ids.add(t.id);
   if (show.tourOf) {
     ids.add(show.tourOf);
     const parent = shows.find((s) => s.id === show.tourOf);
     const title = parent && String(parent.title || '').trim().toLowerCase();
+    const parentCategory = parent && (parent.category || 'broadway');
     for (const s of shows) {
       if (s.tourOf === show.tourOf) ids.add(s.id);
-      else if (title && isBroadwayCategory(s) && String(s.title || '').trim().toLowerCase() === title) ids.add(s.id);
+      else if (title && s.category !== 'tour' && ((s.category || 'broadway') === parentCategory || isBroadwayCategory(s)) && String(s.title || '').trim().toLowerCase() === title) ids.add(s.id);
     }
   }
   const urls = new Set();

@@ -211,7 +211,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 <span className={`w-1.5 h-1.5 rounded-full ${isTour ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
                 <div>
                   <div className={`text-sm font-semibold ${isTour ? 'text-sky-200' : 'text-white'}`}>National Tours</div>
-                  <div className="text-[11px] text-gray-500">Broadway shows on the road</div>
+                  <div className="text-[11px] text-gray-500">Touring shows, scored city by city</div>
                 </div>
               </div>
               {isTour && (

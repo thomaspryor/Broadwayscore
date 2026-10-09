@@ -58,7 +58,7 @@ function buildFixture({ slug = OLD } = {}) {
       { id: OLD, title: 'Fixture Musical', slug, venue: 'Fixture Theatre', openingDate: '2027-03-01', status: 'upcoming',
         images: { hero: `/images/shows/${OLD}/hero.webp`, thumbnail: `/images/shows/${OLD}/thumbnail.webp` } },
       { id: OTHER, title: 'Other Play', slug: OTHER, venue: 'Other House', openingDate: '2024-05-01', status: 'closed',
-        originalProductionId: OLD, transferOf: OLD, priorRuns: [{ id: OLD, venue: 'Tryout' }] },
+        originalProductionId: OLD, transferOf: OLD, tourOf: OLD, priorRuns: [{ id: OLD, venue: 'Tryout' }] },
     ],
   });
   writeJson(C('reviews.json'), { _meta: {}, reviews: [{ showId: OLD, outletId: 'nytimes', assignedScore: 80 }, { showId: OTHER, outletId: 'variety', assignedScore: 60 }] });
@@ -186,6 +186,7 @@ test('dry-run plan lists every key, ref and path and writes nothing', () => {
     assert.ok(ops.includes('replace-path shows[0].images.hero'));
     assert.ok(ops.includes('replace-value shows[1].originalProductionId'));
     assert.ok(ops.includes('replace-value shows[1].transferOf'));
+    assert.ok(ops.includes('replace-value shows[1].tourOf'), 'tourOf follows a rename whatever the parent category (BRO-4931)');
     assert.ok(ops.includes('replace-value shows[1].priorRuns[0].id'));
     assert.ok(ops.some((o) => o.startsWith('set-aliases')));
 
@@ -292,6 +293,7 @@ test('apply renames everything; grep over the copies finds only aliases and redi
     const stripped = shows.shows.map(({ aliases, ...rest }) => rest);
     assert.ok(!JSON.stringify(stripped).includes(OLD), 'old id only in aliases');
     assert.equal(shows.shows[1].originalProductionId, NEW);
+    assert.equal(shows.shows[1].tourOf, NEW);
     assert.equal(shows.shows[1].priorRuns[0].id, NEW);
     assert.equal(shows.shows[0].id, NEW, 'row keeps its position');
     // the one review-texts leftover is the archivePath into the (untouched) aggregator-archive repo

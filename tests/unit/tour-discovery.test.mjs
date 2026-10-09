@@ -287,3 +287,67 @@ test('an earlier Broadway production still wins over a Broadway run not yet open
   assert.equal(parentForSlug('the-wiz', shows, '2025-02-22').id, 'the-wiz-2024');
   assert.equal(parentForSlug('cats', shows, '2025-02-22'), null, 'a dated production that is not announced/upcoming/previews is not a parent');
 });
+
+// ---- BRO-4931: a tour may descend from any market --------------------------
+
+test('Heathers resolves to the US Off-Broadway production, not the London one', () => {
+  const shows = [
+    { id: 'heathers-the-musical-off-west-end-2026', title: 'Heathers: The Musical', category: 'off-west-end', status: 'closed', openingDate: '2026-07-14' },
+    { id: 'heathers-the-musical-off-broadway-2025', title: 'Heathers: The Musical', category: 'off-broadway', status: 'open', openingDate: '2025-06-30' },
+  ];
+  assert.equal(parentForSlug('heathers-the-musical', shows, '2026-09-20').id, 'heathers-the-musical-off-broadway-2025');
+  assert.equal(parentForSlug('heathers', shows, null).id, 'heathers-the-musical-off-broadway-2025');
+  // Listed in the other order: priority, not array order, decides.
+  assert.equal(parentForSlug('heathers', [...shows].reverse(), '2026-09-20').id, 'heathers-the-musical-off-broadway-2025');
+});
+
+test('categories are tried broadway, off-broadway, regional, west-end, off-west-end', () => {
+  const mk = (category, openingDate = '2020-01-01') => ({ id: `foo-${category}`, title: 'Foo', category, status: 'closed', openingDate });
+  const all = ['off-west-end', 'west-end', 'regional', 'off-broadway', 'broadway'].map(c => mk(c));
+  const order = ['broadway', 'off-broadway', 'regional', 'west-end', 'off-west-end'];
+  for (let i = 0; i < order.length; i++) {
+    const pool = all.filter(s => order.indexOf(s.category) >= i);
+    assert.equal(parentForSlug('foo', pool, '2026-01-01').category, order[i]);
+  }
+});
+
+test('within a category the latest production opened on or before the tour start wins', () => {
+  const shows = [
+    { id: 'bar-regional-2018', title: 'Bar', category: 'regional', openingDate: '2018-05-01' },
+    { id: 'bar-regional-2024', title: 'Bar', category: 'regional', openingDate: '2024-05-01' },
+    { id: 'bar-regional-2027', title: 'Bar', category: 'regional', openingDate: '2027-05-01' },
+  ];
+  assert.equal(parentForSlug('bar', shows, '2026-01-01').id, 'bar-regional-2024');
+  assert.equal(parentForSlug('bar', shows, '2020-01-01').id, 'bar-regional-2018');
+  assert.equal(parentForSlug('bar', shows, '2016-01-01'), null, 'nothing had opened yet and no Broadway run is ahead');
+});
+
+test('a Broadway production still beats a later market, and a subtitled production in another market is not the same show', () => {
+  const shows = [
+    { id: 'baz-2010', title: 'Baz', category: 'broadway', openingDate: '2010-01-01' },
+    { id: 'baz-off-broadway-2024', title: 'Baz', category: 'off-broadway', openingDate: '2024-01-01' },
+    { id: 'qux-2019', title: 'Qux: A New Musical', category: 'broadway', openingDate: '2019-01-01' },
+    { id: 'qux-the-classic-story-west-end-2022', title: 'Qux: The Classic Story on Stage', category: 'west-end', openingDate: '2022-01-01' },
+  ];
+  assert.equal(parentForSlug('baz', shows, '2026-01-01').id, 'baz-2010');
+  assert.equal(parentForSlug('qux', shows, '2026-01-01').id, 'qux-2019', 'Broadway matches by head');
+  assert.equal(parentForSlug('qux', shows.filter(s => s.id !== 'qux-2019'), '2026-01-01'), null, 'a subtitled West End production matches only by whole title');
+});
+
+test('a regional run is a parent with no Broadway show at all, once it has opened', () => {
+  const shows = [{ id: 'mystic-pizza-regional-2025', title: 'Mystic Pizza', category: 'regional', openingDate: '2025-08-01' }];
+  assert.equal(parentForSlug('mystic-pizza', shows, '2026-09-20').id, 'mystic-pizza-regional-2025');
+  assert.equal(parentForSlug('mystic-pizza', shows, '2025-01-01'), null, 'a tour that launches before the regional run opened has no parent yet');
+});
+
+test('runningTourCandidate names an Off-Broadway show as the tour parent', () => {
+  const mex = { id: 'mexodus-off-broadway-2026', title: 'Mexodus', category: 'off-broadway', openingDate: '2026-03-01' };
+  const html = page([
+    row('Boston, MA', 'Citizens Opera House', 'September 22-27, 2026'),
+    row('Hartford, CT', 'The Bushnell', 'September 29-October 4, 2026'),
+    row('Providence, RI', 'PPAC', 'October 6-11, 2026'),
+  ]);
+  const r = runningTourCandidate({ slug: 'mexodus', scheduleUrl: 'https://tourstoyou.org/shows/mexodus/', html, shows: [mex], now: NOW });
+  assert.equal(r.candidate && r.candidate.broadwayShowId, 'mexodus-off-broadway-2026');
+  assert.equal(r.candidate.tourScheduleSlug, 'mexodus');
+});

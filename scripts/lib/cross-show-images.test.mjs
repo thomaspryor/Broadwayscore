@@ -72,6 +72,18 @@ test('tours are left to tour-family.js (same-title Broadway art is allowed there
   assert.deepEqual(crossShowImageProblems(tour, [tour], {}), []);
 });
 
+test('tours of any market are left to tourImageProblems (BRO-4931): off-broadway parent art passes there, foreign art does not', () => {
+  const { tourImageProblems } = require('./tour-family.js');
+  const parent = { id: 'x-off-broadway-2025', title: 'X', category: 'off-broadway' };
+  const tour = { id: 'x-tour-2026', title: 'X', category: 'tour', tourOf: parent.id, images: { thumbnail: img(parent.id) } };
+  const shows = [parent, tour];
+  assert.deepEqual(crossShowImageProblems(tour, shows, {}), [], 'delegated, not double-reported');
+  assert.deepEqual(tourImageProblems(tour, shows), []);
+  const foreign = { ...tour, images: { thumbnail: img('y-2019') } };
+  assert.deepEqual(crossShowImageProblems(foreign, [parent, foreign], {}), []);
+  assert.equal(tourImageProblems(foreign, [parent, foreign]).length, 1);
+});
+
 test('baseline is empty: every cross-show path fails validate-data', () => {
   const { CROSS_SHOW_IMAGES_BASELINE } = require('./cross-show-images.js');
   assert.equal(CROSS_SHOW_IMAGES_BASELINE.size, 0);

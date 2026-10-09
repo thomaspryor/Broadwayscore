@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pickTourForDate, tourWindows, toursOfTitle, runningTourFor } = require('./tour-family.js');
+const { pickTourForDate, tourWindows, toursOfTitle, runningTourFor, TOUR_PARENT_CATEGORIES, tourInheritance, tourImageProblems, tourLinkProblems, productionsOfTitle } = require('./tour-family.js');
 const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing.js');
 const { isLikelyTourReview } = require('./review-guards.js');
 const { isNotBroadway } = require('./content-filters.js');
@@ -116,4 +116,81 @@ test('poster and runtime come only from a parent that is plausibly the productio
   assert.ok(tourInheritance(tour, { ...parent, status: 'open', closingDate: null }).images, 'parent still running');
   const earlier = { id: 'mark-twain-tonight-tour-2024', title: 'Mark Twain Tonight!', category: 'tour', openingDate: '2024-10-01' };
   assert.ok(tourInheritance(tour, parent, [parent, earlier, tour]).images, 'an earlier tour of the title: a touring production exists');
+});
+
+// ---- BRO-4931: tours of any market, and standalone tours --------------------
+
+const img = id => `/images/shows/${id}/poster.webp`;
+const offB = { id: 'mexodus-off-broadway-2026', title: 'Mexodus', category: 'off-broadway', status: 'open', openingDate: '2026-03-01',
+  synopsis: 'A road story.', runtime: '2h', images: { hero: img('mexodus-off-broadway-2026').replace('poster', 'hero'), thumbnail: img('mexodus-off-broadway-2026').replace('poster', 'thumbnail'), poster: img('mexodus-off-broadway-2026') }, cast: [{ name: 'A' }] };
+const mexTour = { id: 'mexodus-tour-2026', title: 'Mexodus', category: 'tour', tourOf: offB.id, openingDate: '2026-09-20', images: { hero: null, thumbnail: null, poster: null } };
+
+test('TOUR_PARENT_CATEGORIES is every non-tour market, Broadway first', () => {
+  assert.deepEqual(TOUR_PARENT_CATEGORIES, ['broadway', 'off-broadway', 'regional', 'west-end', 'off-west-end']);
+});
+
+test('a tour inherits synopsis, runtime and key art from an Off-Broadway parent, never the hero or cast', () => {
+  const patch = tourInheritance(mexTour, offB, [offB, mexTour]);
+  assert.equal(patch.synopsis, 'A road story.');
+  assert.equal(patch.runtime, '2h');
+  assert.equal(patch.images.poster, img(offB.id));
+  assert.equal(patch.images.hero, null);
+  assert.equal(patch.cast, undefined);
+});
+
+test('the same-production rule still gates art and runtime for a regional or West End parent', () => {
+  const old = { ...offB, category: 'west-end', status: 'closed', closingDate: '2015-01-01' };
+  const patch = tourInheritance(mexTour, old, [old, mexTour]);
+  assert.deepEqual(Object.keys(patch), ['synopsis']);
+});
+
+test('a standalone tour (no parent) inherits nothing, and a tour is never a parent', () => {
+  assert.equal(tourInheritance({ ...mexTour, tourOf: undefined }, null, [mexTour]), null);
+  assert.equal(tourInheritance(mexTour, { ...mexTour, id: 'other-tour-2020', synopsis: 'x' }, []), null);
+});
+
+test('tour art may come from the tour, its parent, or same-title productions in the parent category or on Broadway', () => {
+  const bway = { id: 'mexodus-2027', title: 'Mexodus', category: 'broadway' };
+  const westEnd = { id: 'mexodus-west-end-2025', title: 'Mexodus', category: 'west-end' };
+  const shows = [offB, bway, westEnd, mexTour];
+  const withArt = id => ({ ...mexTour, images: { poster: img(id) } });
+  for (const ok of [mexTour.id, offB.id, bway.id]) assert.deepEqual(tourImageProblems(withArt(ok), shows), [], ok);
+  const bad = tourImageProblems(withArt(westEnd.id), shows);
+  assert.equal(bad.length, 1, 'a West End production is not this Off-Broadway tour\'s art source');
+  assert.match(bad[0], /mexodus-west-end-2025/);
+  assert.equal(tourImageProblems(withArt('six-2019'), shows).length, 1);
+  // With a West End parent, the West End production is allowed.
+  assert.deepEqual(tourImageProblems({ ...withArt(westEnd.id), tourOf: westEnd.id }, shows), []);
+  // A standalone tour: its own art, or a same-title Broadway show's.
+  const lone = { id: 'elf-tour-2026', title: 'Elf', category: 'tour', images: { poster: img('elf-tour-2026') } };
+  assert.deepEqual(tourImageProblems(lone, [lone]), []);
+  assert.equal(tourImageProblems({ ...lone, images: { poster: img('elf-2010') } }, [lone]).length, 1);
+});
+
+test('toursOfTitle matches a standalone tour on its own title; productionsOfTitle never returns tours', () => {
+  const lone = { id: 'elf-tour-2026', title: 'Elf!', category: 'tour', tourScheduleSlug: 'elf' };
+  const elf = { id: 'elf-2010', title: 'Elf', category: 'broadway' };
+  assert.deepEqual(toursOfTitle('Elf', [lone, elf]).map(s => s.id), ['elf-tour-2026']);
+  assert.deepEqual(productionsOfTitle('ELF', [lone, elf]).map(s => s.id), ['elf-2010']);
+  assert.equal(runningTourFor(elf, [lone, elf], NOW), 'elf-tour-2026');
+});
+
+test('tourLinkProblems: tourOf is optional, but a present one must exist and not be a tour', () => {
+  const shows = [offB, mexTour];
+  const errs = (tour, all = shows) => tourLinkProblems(tour, all).filter(p => p.level === 'error').map(p => p.msg);
+  const warns = (tour, all = shows) => tourLinkProblems(tour, all).filter(p => p.level === 'warn').map(p => p.msg);
+  assert.deepEqual(tourLinkProblems(mexTour, shows), [], 'a tour of an Off-Broadway show is valid');
+  assert.match(errs({ ...mexTour, tourOf: 'nope-2020' })[0], /does not reference an existing show/);
+  assert.match(errs({ ...mexTour, tourOf: 'mexodus-tour-2026' })[0], /is itself a tour/);
+  assert.match(errs({ ...mexTour, tourOf: null })[0], /empty tourOf/);
+  assert.match(errs({ ...mexTour, tourOf: '' })[0], /empty tourOf/);
+  assert.match(errs({ ...mexTour, id: 'mexodus-off-broadway-tour-2026' })[0], /market before -tour-<year>/);
+  // Standalone: needs the schedule slug; warns when a same-title production exists.
+  const lone = { id: 'elf-tour-2026', title: 'Elf', category: 'tour', tourScheduleSlug: 'elf' };
+  assert.deepEqual(tourLinkProblems(lone, [lone]), []);
+  assert.match(errs({ ...lone, tourScheduleSlug: undefined }, [lone])[0], /no tourOf and no tourScheduleSlug/);
+  const elf = { id: 'elf-2010', title: 'Elf', category: 'broadway' };
+  assert.deepEqual(errs(lone, [lone, elf]), []);
+  assert.match(warns(lone, [lone, elf])[0], /elf-2010/);
+  assert.deepEqual(tourLinkProblems(elf, [elf]), [], 'non-tours are not this check\'s business');
 });

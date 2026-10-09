@@ -65,7 +65,7 @@ async function main() {
           ? (c.ambiguous
             ? `Tours To You lists two ${c.title} tours running at once (${c.ambiguous}), so which one to track wasn't decided automatically.`
             : `Tours To You lists a ${c.title} tour running since ${c.segmentStart}, but Wikipedia doesn't confirm its launch, so it wasn't added automatically.`)
-          : `BroadwayWorld published a national-tour review roundup for ${c.title} (${c.broadwayShowId}), which has no tour entry.`} Add a category:'tour' entry with tourOf:${c.broadwayShowId}, then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
+          : `BroadwayWorld published a national-tour review roundup for ${c.title} (${c.broadwayShowId}), which has no tour entry.`} Add a category:'tour' entry with tourOf:${c.broadwayShowId} (the production it tours; any market counts), then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
         cooldownHours: 24 * 30,
       });
       c.notifiedAt = new Date().toISOString();

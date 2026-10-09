@@ -23,6 +23,9 @@ import {
   getOffWestEndShows,
   getOffBroadwayShows,
   getToursOf,
+  getTourShows,
+  getTourBrowseShows,
+  isTourIndexableShow,
   getAllLondonShows,
   getMarketStats,
   getShowsByStatus,
@@ -194,6 +197,20 @@ describe('national tours (launched in code, BRO-4211)', () => {
   test('getToursOf links the Broadway page to its tour', () => {
     const ids = getToursOf({ id: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway' }).map(t => t.id);
     assert.ok(ids.includes('beetlejuice-tour-2022'), `expected beetlejuice-tour-2022, got ${JSON.stringify(ids)}`);
+  });
+
+  test('getToursOf also links tours from an Off-Broadway or regional parent (BRO-4931)', () => {
+    const ids = (category: string) => getToursOf({ id: 'beetlejuice-2019', title: 'Beetlejuice', category } as never).map(t => t.id);
+    assert.ok(ids('off-broadway').includes('beetlejuice-tour-2022'));
+    assert.ok(ids('regional').includes('beetlejuice-tour-2022'));
+    assert.deepEqual(ids('tour'), []);
+  });
+
+  test('the tours page lists every scored tour plus the live unscored ones, never a noindex page', () => {
+    const browse = new Set(getTourBrowseShows().map(s => s.id));
+    for (const s of getTourShows()) assert.ok(browse.has(s.id), s.id);
+    assert.ok(browse.size >= getTourShows().length);
+    for (const s of getTourBrowseShows()) assert.ok(isTourIndexableShow(s), `${s.id} is listed but noindex`);
   });
 });
 

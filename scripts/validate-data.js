@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { tourImageProblems, normTitle: normalizeTourTitle } = require('./lib/tour-family');
+const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
@@ -382,8 +382,6 @@ function validateNoDuplicates(shows) {
   // by tourScheduleSlug. The parent side derives its tours from these links, so
   // a dangling or tour-to-tour tourOf hides the tour entirely.
   {
-    const byId = new Map(shows.map(s => [s.id, s]));
-    const MARKET_BEFORE_TOUR_RE = /-(on-broadway|off-broadway|off-west-end|west-end|regional)-tour-\d{4}$/;
     let tourIssues = 0;
     for (const s of shows) {
       if (s.category !== 'tour' && s.tourOf === undefined) continue;
@@ -392,31 +390,9 @@ function validateNoDuplicates(shows) {
         tourIssues++;
         continue;
       }
-      if (MARKET_BEFORE_TOUR_RE.test(s.id)) {
-        error(`Tour "${s.id}" id carries a market before -tour-<year> — a tour id is <base>-tour-<year> (e.g. mexodus-off-broadway-2026 tours as mexodus-tour-2026)`);
-        tourIssues++;
-      }
-      if (s.tourOf === null || s.tourOf === '') {
-        error(`Tour "${s.id}" has an empty tourOf — omit the field for a standalone tour, never write null`);
-        tourIssues++;
-      } else if (s.tourOf === undefined) {
-        if (!s.tourScheduleSlug) {
-          error(`Tour "${s.id}" has no tourOf and no tourScheduleSlug — a standalone tour needs its Tours To You page`);
-          tourIssues++;
-        }
-        const sameTitle = shows.filter(o => o.category !== 'tour' && normalizeTourTitle(o.title) === normalizeTourTitle(s.title));
-        if (sameTitle.length) {
-          warn(`Tour "${s.id}" has no tourOf but ${sameTitle.length} non-tour show(s) share its title (${sameTitle.slice(0, 3).map(o => o.id).join(', ')}) — set tourOf if it tours one of them`);
-        }
-      } else {
-        const target = byId.get(s.tourOf);
-        if (!target) {
-          error(`Tour "${s.id}" tourOf "${s.tourOf}" does not reference an existing show`);
-          tourIssues++;
-        } else if (target.category === 'tour') {
-          error(`Tour "${s.id}" tourOf "${s.tourOf}" is itself a tour — name the production it tours`);
-          tourIssues++;
-        }
+      for (const p of tourLinkProblems(s, shows)) {
+        (p.level === 'error' ? error : warn)(p.msg);
+        if (p.level === 'error') tourIssues++;
       }
       for (const problem of tourImageProblems(s, shows)) {
         error(`Tour "${s.id}" image: ${problem}`);

@@ -174,7 +174,7 @@ export default function TourCityPage({ params }: { params: { city: string } }) {
         {section('Coming up', ahead, 'ahead')}
         {section('Played in the past year', past, 'past')}
         <p className="text-sm text-gray-400">
-          <Link href={TOURS_HUB} className="text-brand hover:text-brand-hover font-medium">All Broadway national tours →</Link>
+          <Link href={TOURS_HUB} className="text-brand hover:text-brand-hover font-medium">All national tours →</Link>
         </p>
         <HowThisWorks className="mt-8">
           <p>Dates come from each tour&apos;s published schedule. Scores are CriticScore, a weighted average of reviews of the touring production, including local critics in the cities it plays. A tour shows a score once enough critics have reviewed it.</p>
