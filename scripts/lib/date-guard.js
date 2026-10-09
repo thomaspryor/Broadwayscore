@@ -155,6 +155,24 @@ function evaluateDateGuard({ pubDate, show, outletId, priorRuns, tourLegs }) {
  * @param {Date|string|null} [args.now] - reference "now" (defaults to current time)
  * @returns {{ flag: boolean, reason: string|null }}
  */
+// Show Score prints "For a previous production" in place of a date when a
+// critic review on a show's page belongs to an earlier staging. Ingest stores
+// that string as publishDate, it parses to null, and so no date guard ever saw
+// these rows (BRO-4884: A View from the Bridge West End 2024 carried the 2014
+// Young Vic reviews; The Play That Goes Wrong Off-Broadway 2019 carried tour
+// and Broadway reviews, two of them scored and live). A show with declared
+// priorRuns or tourLegs abstains: there the earlier staging may be one we count.
+const SHOW_SCORE_PREVIOUS_PRODUCTION_RE = /^\s*for a previous production\s*$/i;
+
+function evaluateShowScorePreviousProduction({ review, show }) {
+  const pd = review && review.publishDate;
+  if (typeof pd !== 'string' || !SHOW_SCORE_PREVIOUS_PRODUCTION_RE.test(pd)) return { flag: false, reason: null };
+  if (show && ((show.priorRuns || []).length || (show.tourLegs || []).length)) {
+    return { flag: false, reason: 'prior_runs_declared' };
+  }
+  return { flag: true, reason: 'show_score_previous_production' };
+}
+
 function evaluateDatelessRevivalGuard({ hasUsableDate, isMultiProductionTitle, show, now }) {
   if (hasUsableDate) return { flag: false, reason: null };
   if (!isMultiProductionTitle) return { flag: false, reason: null };
@@ -345,6 +363,7 @@ module.exports = {
   evaluateLlmYearMisdate,
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,
+  evaluateShowScorePreviousProduction,
   earliestShowDate,
   isArticleOutsideProductionWindow,
   evaluatePreWindowInclusion,

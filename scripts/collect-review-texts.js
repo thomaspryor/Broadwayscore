@@ -163,6 +163,7 @@ const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, 
 const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
+const { evaluateShowScorePreviousProduction } = require('./lib/date-guard');
 const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 
 /**
@@ -4691,6 +4692,13 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   // refetch this file on every run forever.
   if (data.needsRefetch) data.needsRefetch = false;
 
+  // Show Score's "For a previous production" is not a date, but it is truthy,
+  // so it used to block all three fallbacks below (BRO-4884). Look for a real
+  // date; keep the sentinel only if none turns up, so the wrong-production
+  // flagger still sees it.
+  const sentinelPublishDate = evaluateShowScorePreviousProduction({ review: data, show: null }).flag ? data.publishDate : null;
+  if (sentinelPublishDate) data.publishDate = null;
+
   // Extract publishDate from HTML if not already set
   if (!data.publishDate && html) {
     const extractedDate = extractPublishDateFromHtml(html);
@@ -4721,6 +4729,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       console.log(`    → Extracted publishDate from text: ${extractedDate}`);
     }
   }
+  if (sentinelPublishDate && !data.publishDate) data.publishDate = sentinelPublishDate;
 
   // Schmigadoon 2026 postmortem Bug #5: anticipatory pre-opening-night posts.
   // For preview-heavy outlets (frontmezzjunkies, broadwaydirect, ...) require
