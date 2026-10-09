@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-09T17:21:20.166Z",
+  "generated": "2026-10-09T17:29:30.357Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 23,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -148,13 +148,6 @@
       "loserFile": "whatsonstage--tanyel-gumushan.json",
       "targetFile": "whatsonstage--alun-hood.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--alun-hood.json was flagged invalid after whatsonstage--tanyel-gumushan.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-unfriend-west-end-2023",
-      "loserFile": "timeout-london--andrzej-lukowski.json",
-      "targetFile": "timeout-london--tim-bano.json",
-      "reason": "orphaned-duplicate-heal: timeout-london--tim-bano.json was flagged invalid after timeout-london--andrzej-lukowski.json was pointed at it",
       "field": "duplicateOf"
     },
     {
