@@ -185,7 +185,50 @@ test('isTransientFetchError recognizes AbortController timeouts, not real API er
   assert.equal(isTransientFetchError(abortByName), true);
   assert.equal(isTransientFetchError(abortByMessage), true);
   assert.equal(isTransientFetchError(new Error('PostHog daily clicks error: HTTP 401')), false);
+  assert.equal(isTransientFetchError(new Error('Impact performance-by-day error: HTTP 403')), false);
   assert.equal(isTransientFetchError(new Error('Impact credentials missing (IMPACT_ACCOUNT_SID / IMPACT_AUTH_TOKEN)')), false);
+});
+
+// 2026-10-09 incident (BRO-4945): one PostHog 503 paged CRITICAL with no retry.
+test('isTransientFetchError treats provider 5xx/429/408 as transient', () => {
+  assert.equal(isTransientFetchError(new Error('PostHog daily clicks error: HTTP 503')), true);
+  assert.equal(isTransientFetchError(new Error('Impact performance-by-day error: HTTP 502')), true);
+  assert.equal(isTransientFetchError(new Error('Impact API error: HTTP 504')), true);
+  assert.equal(isTransientFetchError(new Error('PostHog daily clicks error: HTTP 429')), true);
+  assert.equal(isTransientFetchError(new Error('PostHog daily clicks error: HTTP 408')), true);
+});
+
+test('fetchWithOneRetry retries a PostHog 503 once with the longer HTTP delay, then succeeds', async () => {
+  let calls = 0;
+  const slept = [];
+  const result = await fetchWithOneRetry(
+    () => {
+      calls += 1;
+      if (calls === 1) return Promise.reject(new Error('PostHog daily clicks error: HTTP 503'));
+      return Promise.resolve('ok');
+    },
+    'posthog',
+    { sleep: async (ms) => { slept.push(ms); } }
+  );
+  assert.equal(result, 'ok');
+  assert.equal(calls, 2);
+  assert.deepEqual(slept, [15000]);
+});
+
+test('fetchWithOneRetry surfaces a 503 that persists past the retry', async () => {
+  let calls = 0;
+  await assert.rejects(
+    fetchWithOneRetry(
+      () => {
+        calls += 1;
+        return Promise.reject(new Error('PostHog daily clicks error: HTTP 503'));
+      },
+      'posthog',
+      { sleep: async () => {} }
+    ),
+    /HTTP 503/
+  );
+  assert.equal(calls, 2);
 });
 
 test('fetchWithOneRetry retries exactly once on a transient abort, then succeeds', async () => {
@@ -194,7 +237,7 @@ test('fetchWithOneRetry retries exactly once on a transient abort, then succeeds
     calls += 1;
     if (calls === 1) return Promise.reject(Object.assign(new Error('aborted'), { name: 'AbortError' }));
     return Promise.resolve('ok');
-  });
+  }, 'test', { sleep: async () => {} });
   assert.equal(result, 'ok');
   assert.equal(calls, 2);
 });
@@ -217,8 +260,52 @@ test('fetchWithOneRetry surfaces the error if the retry also aborts', async () =
     fetchWithOneRetry(() => {
       calls += 1;
       return Promise.reject(Object.assign(new Error('aborted'), { name: 'AbortError' }));
-    }),
+    }, 'test', { sleep: async () => {} }),
     /aborted/
   );
   assert.equal(calls, 2);
+});
+
+// A gateway error with an HTML body used to throw a JSON SyntaxError, which
+// hid the status from the retry rule above (BRO-4945).
+test('provider fetchers report a non-JSON gateway error as HTTP <status>, which the monitor retries', async (t) => {
+  const { fetchPosthogDailyClicks, fetchImpactActionsWindow } = require('./affiliate-stats.js');
+  const envKeys = ['POSTHOG_PERSONAL_API_KEY', 'POSTHOG_PROJECT_ID', 'IMPACT_ACCOUNT_SID', 'IMPACT_AUTH_TOKEN'];
+  const savedEnv = Object.fromEntries(envKeys.map((k) => [k, process.env[k]]));
+  const savedFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = savedFetch;
+    for (const k of envKeys) {
+      if (savedEnv[k] === undefined) delete process.env[k];
+      else process.env[k] = savedEnv[k];
+    }
+  });
+  Object.assign(process.env, { POSTHOG_PERSONAL_API_KEY: 'x', POSTHOG_PROJECT_ID: '1', IMPACT_ACCOUNT_SID: 's', IMPACT_AUTH_TOKEN: 't' });
+  globalThis.fetch = async () => new Response('<html><body>502 Bad Gateway</body></html>', { status: 502 });
+
+  const phErr = await fetchPosthogDailyClicks(28).then(() => null, (e) => e);
+  assert.ok(phErr, 'PostHog fetch should reject on a 502');
+  assert.match(phErr.message, /PostHog daily clicks error: HTTP 502/);
+  assert.equal(isTransientFetchError(phErr), true);
+
+  const impactErr = await fetchImpactActionsWindow(14).then(() => null, (e) => e);
+  assert.ok(impactErr, 'Impact actions fetch should reject on a 502');
+  assert.match(impactErr.message, /Impact API error: HTTP 502/);
+  assert.equal(isTransientFetchError(impactErr), true);
+
+  // Impact 503 with its own JSON Message keeps the status (else no retry).
+  globalThis.fetch = async () => new Response(JSON.stringify({ Message: 'Service Unavailable' }), { status: 503 });
+  const impactJsonErr = await fetchImpactActionsWindow(14).then(() => null, (e) => e);
+  assert.ok(impactJsonErr, 'Impact actions fetch should reject on a 503');
+  assert.equal(impactJsonErr.message, 'Impact API error: HTTP 503: Service Unavailable');
+  assert.equal(isTransientFetchError(impactJsonErr), true);
+
+  // A 401 auth failure stays non-transient so a revoked key pages at once.
+  globalThis.fetch = async () => new Response(JSON.stringify({ Message: 'Unauthorized' }), { status: 401 });
+  const impactAuthErr = await fetchImpactActionsWindow(14).then(() => null, (e) => e);
+  assert.equal(isTransientFetchError(impactAuthErr), false);
+
+  // A 200 with a broken body is still a hard error, never silently empty data.
+  globalThis.fetch = async () => new Response('not json', { status: 200 });
+  await assert.rejects(fetchPosthogDailyClicks(28), SyntaxError);
 });
