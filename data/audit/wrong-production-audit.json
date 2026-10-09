@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T10:08:19.240Z",
+  "timestamp": "2026-10-09T10:45:23.631Z",
   "stats": {
-    "totalReviews": 50334,
-    "alreadyFlagged": 19221,
+    "totalReviews": 50368,
+    "alreadyFlagged": 19236,
     "dateGuardCatches": 276,
-    "directorMismatch": 1544,
-    "tvFilmSignals": 1476,
-    "londonSignals": 1563,
+    "directorMismatch": 1543,
+    "tvFilmSignals": 1474,
+    "londonSignals": 1562,
     "offBroadwaySignals": 508,
     "yearMismatch": 122,
-    "noPublishDate": 5186
+    "noPublishDate": 5144
   },
   "findings": [
     {
@@ -18059,6 +18059,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
+      "score": 86,
       "publishDate": "2026-10-08",
       "url": "https://www.jolienstheatrediary.com/reviews/review-into-the-woods-noel-coward-theatre",
       "findings": [
@@ -39693,25 +39694,6 @@
     },
     {
       "showId": "the-realistic-joneses-2014",
-      "file": "huffpost--david-finkle.json",
-      "score": 42,
-      "publishDate": null,
-      "url": "https://www.huffpost.com/david-finkle/first-nighter-will-enos-t_b_5102418.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "the-realistic-joneses-2014",
       "file": "newsday--linda-winer.json",
       "score": 80,
       "publishDate": "2014-04-04",
@@ -39721,20 +39703,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-realistic-joneses-2014",
-      "file": "variety--marilyn-stasio.json",
-      "score": 78,
-      "publishDate": "April 7, 2014",
-      "url": "https://variety.com/2014/legit/reviews/broadway-review-the-realistic-joneses-1201153702/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -40270,7 +40238,7 @@
       "showId": "the-testament-of-mary-2013",
       "file": "newsday--linda-winer.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "2013-04-22T20:08:09-04:00",
       "url": "http://www.newsday.com/entertainment/theater/testament-of-mary-review-fiona-shaw-shines-in-audacious-drama-1.5115487",
       "findings": [
         {
@@ -44038,20 +44006,6 @@
       ]
     },
     {
-      "showId": "whos-afraid-of-virginia-woolf-2005",
-      "file": "nytg--unknown.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.newyorktheatreguide.com/reviews/whos-afraid-of-virginia-woolf",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
       "showId": "whos-afraid-of-virginia-woolf-2012",
       "file": "ap--mark-kennedy.json",
       "score": 93,
@@ -46070,6 +46024,7 @@
     {
       "showId": "an-oak-tree-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 82,
       "publishDate": "2026-10-08",
       "url": "https://theatreandtonic.co.uk/blog/an-oak-tree-the-other-palace-review",
       "findings": [
@@ -46912,6 +46867,20 @@
       ]
     },
     {
+      "showId": "back-to-the-future-2023",
+      "file": "whatsonstage--tom-millward.json",
+      "score": null,
+      "publishDate": "2023-09-29",
+      "url": "https://www.whatsonstage.com/news/west-end-vs-broadway-back-to-the-future-the-musical-two-doc-browns-reach-88mph_1530931/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "back-to-the-future-west-end-2021",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 93,
@@ -47444,6 +47413,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "afridiziak-theatre-news--mark-arbouine.json",
+      "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://www.afridiziak.com/reviews/blood-of-my-blood-by-joy-nesbitt/",
       "findings": [
@@ -62315,36 +62285,8 @@
     },
     {
       "showId": "sister-act-2011",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 91,
-      "publishDate": "2011-04-21",
-      "url": "https://www.nydailynews.com/2011/04/21/sister-act-review-happy-and-habit-forming/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "sister-act-2011",
       "file": "nytimes--ben-brantley.json",
       "score": 61,
-      "publishDate": "April 20, 2011",
-      "url": "https://www.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "sister-act-2011",
-      "file": "nytimes--charles-isherwood.json",
-      "score": 58,
       "publishDate": "April 20, 2011",
       "url": "https://www.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html",
       "findings": [
@@ -65499,7 +65441,7 @@
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
       "file": "nbcny--robert-kahn.json",
       "score": 89,
-      "publishDate": null,
+      "publishDate": "2014-10-05T21:18:57-04:00",
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/review-curious-incident-278119091.html",
       "findings": [
         {
@@ -68881,7 +68823,7 @@
       "showId": "the-testament-of-mary-2013",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "2013-04-22T20:08:09-04:00",
       "url": "http://www.nydailynews.com/entertainment/music-arts/theater-review-testament-mary-article-1.1324310",
       "findings": [
         {
@@ -69570,6 +69512,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "therese-raquin-2015",
+      "file": "huffpost--david-finkle.json",
+      "score": 57,
+      "publishDate": "2015-10-29T20:36:35+00:00",
+      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-keira-knigh_b_8428464.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
         }
       ]
     },
