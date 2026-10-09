@@ -347,6 +347,36 @@ Lessons, each fixed in code:
   after a bare "Generating via Claude..." line. callClaudeAPI swallowed HTTP
   errors and UNKNOWN/invalid replies were dropped without a word; both now
   log the reason (scripts/auto-fix-show-data.js).
+- **Musicals stored as plays.** WOS gives no genre for many rows, and promote
+  defaulted every genre-less row to play: 7 of 68 in 2023-24 were musicals
+  (Sunset Boulevard, Next to Normal, Old Friends, ...). Promote now also reads
+  "musical" from any existing same-title row, takes a per-title `type` in the
+  approvals file, and prints every row it still guessed as play so the hand
+  check catches the rest (inferShowType in promote-historical-we.js, tests in
+  we-historical-pipeline.test.mjs).
+- **Revivals got no synopsis.** The Opus wrong-show check answered MISMATCH
+  for a correct plot of Pygmalion, King Lear or The King and I because
+  nothing in it was specific to this staging. buildVerificationPrompt now
+  says a revival tells its source work's story. Checked with GPT-4o and
+  Gemini standing in: 10/10 on revivals with the new wording, every
+  wrong-show trap still MISMATCH (old wording 5/10 and 9/10). The writer
+  prompt got the same revival clause, its 300-token cap no longer cuts
+  mid-sentence (cutToLastSentence in synopsis-validation.js), and its log
+  now says "replied UNKNOWN" or "no complete sentence" instead of "no text
+  returned".
+- **Review files are not scored reviews.** Show Score and SERP discovery
+  write URL-only stubs; they count toward the audit only after the
+  collect-review-texts cron fetches the text and scoring runs. Some Show
+  Score rows are dated "For a previous production" (A View from the Bridge
+  2024 listed the 2014 Young Vic reviews). That string parsed to no date, so
+  no guard saw it, and collection never looked for the real date because the
+  field was not empty. Corpus-wide: 30 such rows, 9 not excluded, 2 of them
+  scored and live (The Play That Goes Wrong Off-Broadway 2019). The
+  pre-rebuild flagger now marks them wrongProduction unless the show declares
+  priorRuns or tourLegs (evaluateShowScorePreviousProduction in
+  lib/date-guard.js, tests in date-guard.test.mjs), and collection replaces
+  the string with a real date when the page has one. Run the audit after
+  collection and scoring have drained, not right after gather.
 
 ## Side benefit (separate card)
 
