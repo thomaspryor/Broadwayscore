@@ -71,16 +71,23 @@ function roundupDateFromSlug(slugOrUrl) {
  * tour (BRO-4931) just {id: null, title}: a tour with no tourOf is matched by
  * its own title, since it carries no parent to compare.
  */
+// Straight and curly apostrophes read the same: a Tours To You page title has
+// a straight one where the entry built from the page title may have a curly one
+// ("Dolly Parton's" vs "Dolly Parton\u2019s", BRO-4931).
+const sameTitleKey = t => String(t || '').trim().toLowerCase().replace(/[\u2018\u2019\u02bc`\u00b4]/g, "'");
+
 function hasOpenTour(matched, shows, { predecessorEnds = null, segmentStart = null } = {}) {
-  const title = String(matched.title || '').trim().toLowerCase();
+  const title = sameTitleKey(matched.title);
   const byId = new Map((shows || []).map(s => [s.id, s]));
   return (shows || []).some(s => {
     if (s.category !== 'tour') return false;
     const parent = s.tourOf ? byId.get(s.tourOf) : null;
     const sameTitle = (matched.id && s.tourOf === matched.id)
-      || (!!parent && String(parent.title || '').trim().toLowerCase() === title)
-      // Standalone tours carry no tourOf: their own title is the only link.
-      || (!s.tourOf && String(s.title || '').trim().toLowerCase() === title);
+      || (!!parent && sameTitleKey(parent.title) === title)
+      // Standalone tours carry no tourOf: their own title, or the Tours To You
+      // page they were built from, is the link.
+      || (!s.tourOf && sameTitleKey(s.title) === title)
+      || (!!matched.tourScheduleSlug && s.tourScheduleSlug === matched.tourScheduleSlug);
     if (!sameTitle || (s.status === 'closed' && s.closingDate)) return false;
     // A running tour its schedule page shows ending before this one starts
     // (tour-discovery.js lifecyclePlan, BRO-4724): the tour booked after its
@@ -241,7 +248,7 @@ function openTourCandidates(rows, shows) {
     const parentId = candidateParentId(r);
     if (!parentId) {
       // Only a Tours To You page row can stand on its own title.
-      return found && !!r.title && !hasOpenTour({ id: null, title: r.title }, shows, opts);
+      return found && !!r.title && !hasOpenTour({ id: null, title: r.title, tourScheduleSlug: r.tourScheduleSlug }, shows, opts);
     }
     const show = byId.get(parentId);
     if (!show) return false;
