@@ -258,3 +258,26 @@ test('a three-engagement regional co-production is not a national tour (Liberati
   assert.equal(tooFewStops(new Array(MIN_TOUR_STOPS).fill({})), false);
   assert.equal(tooFewStops(undefined), false);
 });
+
+test('a tour that launches before its Broadway run takes the upcoming Broadway run as parent (BRO-4924)', () => {
+  const shows = [
+    { id: 'dirty-dancing-2027', title: 'Dirty Dancing', category: 'broadway', status: 'announced', openingDate: null, unconfirmedStartDate: '2027-02-12' },
+    { id: 'dirty-dancing-west-end-2027', title: 'Dirty Dancing', category: 'west-end', status: 'upcoming', openingDate: null },
+    { id: 'dirty-dancing-the-classic-story-on-stage-west-end-2026', title: 'Dirty Dancing: The Classic Story on Stage', category: 'off-west-end', status: 'upcoming', openingDate: '2026-10-16' },
+  ];
+  assert.equal(parentForSlug('dirty-dancing-the-musical', shows, '2026-08-12').id, 'dirty-dancing-2027');
+  assert.equal(parentForSlug('dirty-dancing-the-musical', shows, null).id, 'dirty-dancing-2027');
+  // Once the Broadway run has an official date after the tour launch, it is still the parent.
+  const dated = shows.map(s => s.id === 'dirty-dancing-2027' ? { ...s, openingDate: '2027-03-14', status: 'upcoming' } : s);
+  assert.equal(parentForSlug('dirty-dancing-the-musical', dated, '2026-08-12').id, 'dirty-dancing-2027');
+});
+
+test('an earlier Broadway production still wins over a Broadway run not yet open, and other future shows are never a fallback', () => {
+  const shows = [
+    { id: 'the-wiz-2024', title: 'The Wiz', category: 'broadway', status: 'closed', openingDate: '2024-04-17' },
+    { id: 'the-wiz-2030', title: 'The Wiz', category: 'broadway', status: 'announced', openingDate: null },
+    { id: 'cats-2030', title: 'Cats', category: 'broadway', status: 'open', openingDate: '2030-01-01' },
+  ];
+  assert.equal(parentForSlug('the-wiz', shows, '2025-02-22').id, 'the-wiz-2024');
+  assert.equal(parentForSlug('cats', shows, '2025-02-22'), null, 'a dated production that is not announced/upcoming/previews is not a parent');
+});

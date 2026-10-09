@@ -51,10 +51,14 @@ function slugKeys(slug) {
   return [...new Set([titleKey(slug), slugKey(slug)])].filter(Boolean);
 }
 
+// A Broadway production announced but not yet open.
+const PRE_BROADWAY_STATUSES = new Set(['announced', 'upcoming', 'previews']);
+
 /**
  * The Broadway production a tour of this schedule page descends from: the
  * latest Broadway production of the title that opened before the tour's
- * first engagement. Null when no Broadway show has the title.
+ * first engagement; failing that, the same title's Broadway run not yet open
+ * (a tour that launches first). Null when no Broadway show has the title.
  */
 function parentForSlug(slug, shows, beforeIso) {
   const before = String(beforeIso || '').slice(0, 10);
@@ -67,6 +71,22 @@ function parentForSlug(slug, shows, beforeIso) {
     const exact = latest(broadway.filter(s => titleKey(s.title) === key));
     if (exact) return exact;
     const byHead = latest(broadway.filter(s => titleKeys(s.title).has(key)));
+    if (byHead) return byHead;
+  }
+  // A tour that launches before its Broadway run (Dirty Dancing toured from
+  // Aug 2026 and opens at the Lena Horne in Feb 2027, BRO-4924) has no earlier
+  // Broadway production, so the Broadway run still ahead is its parent. Only
+  // as a last resort and only a production not yet open, so a stale revival
+  // that opened after an older tour started is still not picked over a real
+  // earlier parent.
+  const ahead = (shows || []).filter(s => (s.category || 'broadway') === 'broadway'
+    && PRE_BROADWAY_STATUSES.has(String(s.status || '').toLowerCase())
+    && (!s.openingDate || !before || s.openingDate > before));
+  const soonest = list => list.sort((a, b) => String(a.openingDate || a.unconfirmedStartDate || '9999').localeCompare(String(b.openingDate || b.unconfirmedStartDate || '9999')))[0] || null;
+  for (const key of slugKeys(slug)) {
+    const exact = soonest(ahead.filter(s => titleKey(s.title) === key));
+    if (exact) return exact;
+    const byHead = soonest(ahead.filter(s => titleKeys(s.title).has(key)));
     if (byHead) return byHead;
   }
   return null;

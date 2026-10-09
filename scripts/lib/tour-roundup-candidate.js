@@ -29,6 +29,19 @@ function isNationalTourRoundupSlug(slug) {
   return TOUR_SLUG_RE.test(s) && !UK_SLUG_RE.test(s);
 }
 
+/**
+ * The shows a BWW roundup slug may be matched against. A national-tour
+ * roundup is about a Broadway title's tour, so it matches Broadway shows (and
+ * tour entries) only: the token matcher ties every production of a title and
+ * breaks the tie on openingDate, so the West End "Dirty Dancing" beat the
+ * undated Broadway one and the tour roundup was dropped as a West End article
+ * (BRO-4924). Any other slug matches everything, as before.
+ */
+function roundupMatchPool(slug, shows) {
+  if (!isNationalTourRoundupSlug(slug)) return shows;
+  return (shows || []).filter(s => ['broadway', 'tour'].includes(s.category || 'broadway'));
+}
+
 /** A BWW roundup's publication date from its slug tail (-YYYYMMDD), or null. */
 function roundupDateFromSlug(slugOrUrl) {
   const m = String(slugOrUrl || '').split(/[?#]/)[0].match(/-(\d{4})(\d{2})(\d{2})\/?$/);
@@ -137,4 +150,4 @@ function openTourCandidates(rows, shows) {
   });
 }
 
-module.exports = { isNationalTourRoundupSlug, roundupDateFromSlug, tourCandidateFor, recordTourCandidates, openTourCandidates };
+module.exports = { isNationalTourRoundupSlug, roundupMatchPool, roundupDateFromSlug, tourCandidateFor, recordTourCandidates, openTourCandidates };

@@ -51,7 +51,7 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
-const { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
+const { isNationalTourRoundupSlug, roundupMatchPool, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
 const { runningTourFor } = require('./lib/tour-family');
 
 // Paths
@@ -1357,7 +1357,7 @@ async function landingDiscoverMode(shows, options = {}) {
   const tourCandidates = [];
   for (const url of roundupUrls) {
     const slug = (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
-    const match = matchBwwRoundupSlugToShow(slug, shows);
+    const match = matchBwwRoundupSlugToShow(slug, roundupMatchPool(slug, shows));
     // A national-tour roundup matches the Broadway show by title, and
     // processShow's category guard would drop it after fetching. Suggest the
     // tour to the owner instead when it isn't tracked yet (BRO-4211).
