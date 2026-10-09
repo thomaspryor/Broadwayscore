@@ -12295,13 +12295,13 @@
       "title": "Unhandled CV.wrongProduction on Rent",
       "firstSeen": "2026-10-09T09:12:56.270Z",
       "incidentOpenedAt": "2026-10-09T09:12:56.270Z",
-      "lastSeen": "2026-10-09T12:51:31.340Z",
+      "lastSeen": "2026-10-09T14:43:16.683Z",
       "lastNotifiedAt": "2026-10-09T09:12:56.270Z",
       "lastSurfacedAt": "2026-10-09T09:12:56.270Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-stale-upcoming-tag-triumph-off-broadway-2026": {
       "status": "open",
@@ -12361,13 +12361,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T11:43:17.392Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.392Z",
-      "lastSeen": "2026-10-09T12:51:31.346Z",
+      "lastSeen": "2026-10-09T14:43:16.691Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.392Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.392Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:telegraph": {
       "status": "open",
@@ -12375,13 +12375,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T11:43:17.400Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.400Z",
-      "lastSeen": "2026-10-09T12:51:31.352Z",
+      "lastSeen": "2026-10-09T14:43:16.697Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.400Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.400Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-explicit-ratings:rent-west-end-2026:timeout-london": {
       "status": "open",
@@ -12389,13 +12389,13 @@
       "title": "Auto-remediation gave up on rent-west-end-2026",
       "firstSeen": "2026-10-09T11:43:17.408Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.408Z",
-      "lastSeen": "2026-10-09T12:51:31.357Z",
+      "lastSeen": "2026-10-09T14:43:16.704Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.408Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.408Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "broadcast-gate:checklist:rent-west-end-2026": {
       "status": "open",
@@ -12404,13 +12404,13 @@
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-10-09T11:43:17.542Z",
       "incidentOpenedAt": "2026-10-09T11:43:17.542Z",
-      "lastSeen": "2026-10-09T12:51:31.483Z",
+      "lastSeen": "2026-10-09T14:43:16.828Z",
       "lastNotifiedAt": "2026-10-09T11:43:17.542Z",
       "lastSurfacedAt": "2026-10-09T11:43:17.542Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-4923-uk-regional-trigger": {
       "status": "open",
@@ -12534,6 +12534,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:80529a26": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
+      "firstSeen": "2026-10-09T14:40:39.110Z",
+      "incidentOpenedAt": "2026-10-09T14:40:39.110Z",
+      "lastSeen": "2026-10-09T14:40:39.110Z",
+      "lastNotifiedAt": "2026-10-09T14:40:39.110Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4938"
     }
   }
 }

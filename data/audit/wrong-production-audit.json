@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T13:35:17.685Z",
+  "timestamp": "2026-10-09T14:59:20.498Z",
   "stats": {
-    "totalReviews": 50685,
-    "alreadyFlagged": 19306,
+    "totalReviews": 50890,
+    "alreadyFlagged": 19318,
     "dateGuardCatches": 253,
-    "directorMismatch": 1573,
+    "directorMismatch": 1576,
     "tvFilmSignals": 1483,
-    "londonSignals": 1580,
+    "londonSignals": 1582,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5243
+    "noPublishDate": 5429
   },
   "findings": [
     {
@@ -25994,6 +25994,48 @@
       ]
     },
     {
+      "showId": "othello-2025",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 46,
+      "publishDate": "March 23, 2025",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/othello-theater-review-denzel-washington-jake-gyllenhaal-shakespeare-broadway-1236170552/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from othello-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "othello-2025",
+      "file": "thewrap--robert-hofler.json",
+      "score": 73,
+      "publishDate": "March 23, 2025",
+      "url": "https://www.thewrap.com/othello-broadway-review-denzel-washington-jake-gyllenhaal/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from othello-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "othello-2025",
+      "file": "variety--daniel-daddario.json",
+      "score": 57,
+      "publishDate": "March 23, 2025",
+      "url": "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyllenhaal-broadway-1236345962/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from othello-west-end-2022"
+        }
+      ]
+    },
+    {
       "showId": "othello-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -47426,6 +47468,20 @@
       ]
     },
     {
+      "showId": "ballet-shoes-west-end-2025",
+      "file": "loureviews--louise-penn.json",
+      "score": 94,
+      "publishDate": "2025-12-03",
+      "url": "https://loureviews.blog/2025/12/03/theatre-review-ballet-shoes-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "beaches-2026",
       "file": "washpost--thomas-floyd.json",
       "score": 25,
@@ -60928,6 +60984,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "loureviews--louise-penn.json",
+      "score": 72,
+      "publishDate": "2025-11-29",
+      "url": "https://loureviews.blog/2025/11/29/theatre-review-porn-play-royal-court-upstairs/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
