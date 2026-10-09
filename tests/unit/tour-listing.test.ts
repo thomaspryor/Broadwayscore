@@ -151,12 +151,14 @@ test('real data: every running tour with stops ahead is browsable, scored tours 
   assert.deepEqual(runs, TOUR_SECTIONS.filter(t => runs.includes(t)), 'sections are in display order');
 });
 
-test('real data: an unscored running tour with a schedule is indexable; a closed unscored one is not', async () => {
+test('real data: an unscored running tour with a stop still ahead is indexable; a closed or finished unscored one is not', async () => {
   const dc = await import('../../src/lib/data-core');
   const { getTourSchedule } = await import('../../src/lib/data-tour-schedule');
+  const today = new Date().toISOString().slice(0, 10);
   for (const s of dc.getAllShows().filter(x => x.category === 'tour')) {
-    const scheduled = getTourSchedule(s.id).length > 0;
-    const expected = dc.isTourListed(s) || (s.status !== 'closed' && scheduled);
+    // The shipped rule: scored, or not closed with at least one stop ending today or later.
+    const hasFutureStops = getTourSchedule(s.id).some(stop => stop.end >= today);
+    const expected = dc.isTourListed(s) || (s.status !== 'closed' && hasFutureStops);
     assert.equal(dc.isTourIndexableShow(s), expected, s.id);
   }
 });
