@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-09T15:59:18.573Z",
+  "generatedAt": "2026-10-09T17:50:21.815Z",
   "summary": {
-    "total": 13,
-    "high": 4,
-    "medium": 7,
-    "low": 2
+    "total": 15,
+    "high": 5,
+    "medium": 5,
+    "low": 5
   },
   "collisions": [
     {
@@ -33,6 +33,33 @@
       "suggestedWinner": "an-enemy-of-the-people-west-end-2024",
       "reason": "publishDate February 21st, 2024 is 1 days from an-enemy-of-the-people-west-end-2024 but also 26 days from an-enemy-of-the-people-2024",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=29317",
+      "normalizedUrl": "https://londontheatrereviews.co.uk/post.cfm",
+      "candidates": [
+        {
+          "showId": "an-oak-tree-off-west-end-2026",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-10-08",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-theatre-reviews"
+        },
+        {
+          "showId": "into-the-woods-noel-coward-west-end-2026",
+          "file": "london-theatre-reviews--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-10-07",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "london-theatre-reviews"
+        }
+      ],
+      "suggestedWinner": "an-oak-tree-off-west-end-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
@@ -203,7 +230,7 @@
         {
           "showId": "othello-west-end-2022",
           "file": "independent--unknown.json",
-          "publishDate": null,
+          "publishDate": "November 5th, 2025",
           "openingDate": "2022-11-23",
           "hasScore": false,
           "hasFullText": false,
@@ -219,9 +246,36 @@
           "outletId": "independent"
         }
       ],
-      "suggestedWinner": "othello-west-end-2025",
-      "reason": "Only one candidate has score/fullText",
-      "confidence": "medium"
+      "suggestedWinner": "othello-west-end-2022",
+      "reason": "publishDate November 5th, 2025 is 1078+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.timeout.com/london/theatre/othello-23-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/othello-23-review",
+      "candidates": [
+        {
+          "showId": "othello-west-end-2022",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2022-12-01",
+          "openingDate": "2022-11-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "othello-west-end-2025",
+          "file": "timeout-london--andrzej-lukowski.json",
+          "publishDate": "2025-11-05",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "othello-west-end-2022",
+      "reason": "publishDate 2022-12-01 is 8 days from othello-west-end-2022 opening (2022-11-23)",
+      "confidence": "high"
     },
     {
       "url": "https://www.whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279/",
@@ -230,7 +284,7 @@
         {
           "showId": "othello-west-end-2022",
           "file": "whatsonstage--unknown.json",
-          "publishDate": null,
+          "publishDate": "November 4th, 2025",
           "openingDate": "2022-11-23",
           "hasScore": false,
           "hasFullText": false,
@@ -246,9 +300,9 @@
           "outletId": "whatsonstage"
         }
       ],
-      "suggestedWinner": "othello-west-end-2025",
-      "reason": "Only one candidate has score/fullText",
-      "confidence": "medium"
+      "suggestedWinner": "othello-west-end-2022",
+      "reason": "publishDate November 4th, 2025 is 1077+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
