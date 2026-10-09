@@ -23,8 +23,8 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { PAGES_API, runningTourCandidate, dedupeCandidates, candidateKey } = require('./lib/tour-discovery');
-const { classifyTourPage, loadTourPageClasses, decodeTitle, SKIPPED_CLASSES } = require('./lib/tour-page-class');
+const { listShowPages, runningTourCandidate, dedupeCandidates, candidateKey } = require('./lib/tour-discovery');
+const { classifyTourPage, loadTourPageClasses, SKIPPED_CLASSES } = require('./lib/tour-page-class');
 const { recordTourCandidates } = require('./lib/tour-roundup-candidate');
 const { STALE_DAYS, orderForCheck, nextCoverage, stalePages } = require('./lib/tours-to-you-coverage');
 
@@ -34,42 +34,6 @@ const CANDIDATES = path.join(ROOT, 'data', 'audit', 'tour-roundup-candidates.jso
 
 const USAGE = `discover-running-tours.js — find national tours on the road now (BRO-4325)
   --record   record candidates (default: report only)`;
-
-/**
- * Every show page on Tours To You (WordPress pages API, 100 a page): slugs,
- * plus each page's last edit (`modified`) so edited pages are read first, and
- * its title (`titles`). Returns an array of slugs carrying `.modified` and
- * `.titles` maps.
- */
-async function listShowPages(fetchText) {
-  const out = [];
-  const modified = {};
-  const titles = {};
-  for (let page = 1; page <= 50; page++) {
-    let rows;
-    try {
-      rows = JSON.parse(await fetchText(`${PAGES_API}&page=${page}`));
-    } catch (e) {
-      // WordPress answers past the last page with an HTTP 400.
-      if (page > 1 && /HTTP 400/.test(e.message)) break;
-      throw e;
-    }
-    if (!Array.isArray(rows) || rows.length === 0) break;
-    for (const r of rows) {
-      if (!r.slug) continue;
-      out.push(r.slug);
-      // The page's own title, from the API (never taken from the URL).
-      if (r.title && r.title.rendered) titles[r.slug] = decodeTitle(r.title.rendered);
-      // modified_gmt is UTC without a zone suffix (plain `modified` is site-local).
-      if (r.modified_gmt) modified[r.slug] = `${r.modified_gmt}Z`;
-    }
-    if (rows.length < 100) break;
-  }
-  const slugs = [...new Set(out)];
-  slugs.modified = modified;
-  slugs.titles = titles;
-  return slugs;
-}
 
 /**
  * Reads every show page the classifier does not deny up front (an override or

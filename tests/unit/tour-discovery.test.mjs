@@ -450,7 +450,7 @@ test('a BWW roundup-only row pairs with the Tours To You page it names; two roun
 
 test('the pages API asks for each page\'s title and listShowPages keeps it, decoded, beside the slug (BRO-4931)', async () => {
   const { PAGES_API } = require('../../scripts/lib/tour-discovery.js');
-  const { listShowPages } = require('../../scripts/discover-running-tours.js');
+  const { listShowPages } = require('../../scripts/lib/tour-discovery.js');
   assert.match(PAGES_API, /_fields=slug,link,modified_gmt,title/);
   const answers = {
     1: JSON.stringify([

@@ -7,22 +7,60 @@
  * BroadwayWorld national-tour roundup, so tours running before launch never
  * arrived: the category held three closed tours while about forty were out.
  * Tours To You lists every touring show as a WordPress page under /shows/
- * (252 pages via the pages API; the /shows/ index shows only 54). For each
- * page whose title is a Broadway show, a schedule segment running now, or one
- * booked to launch within UPCOMING_DAYS, is a tour candidate. create-tour-entries.js then applies the same evidence rules
- * as for a roundup (Wikipedia confirms the launch, no earlier tour open).
+ * (252 pages via the pages API; the /shows/ index shows only 54). Each page is
+ * classified first (tour-page-class.js): a production with a schedule segment
+ * running now, or booked to launch within UPCOMING_DAYS, is a tour candidate
+ * (BRO-4931: of any tracked production in any market, or standalone when none
+ * is tracked). create-tour-entries.js then applies the same evidence rules as
+ * for a roundup (the launch is confirmed, no earlier tour open).
  *
- * Pure: callers fetch the pages list and schedules.
+ * Pure apart from listShowPages' injected fetch: callers fetch the schedules.
  */
 
 const { foldDiacritics } = require('./title-match');
 const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment, tooFewStops } = require('./tour-schedule');
 const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
 const { toursOfTitle, TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
-const { classifyTourPage, SKIPPED_CLASSES, pageTitleFromHtml } = require('./tour-page-class');
+const { classifyTourPage, SKIPPED_CLASSES, pageTitleFromHtml, decodeTitle } = require('./tour-page-class');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
 const PAGES_API = `https://tourstoyou.org/wp-json/wp/v2/pages?parent=${SHOWS_PARENT_ID}&per_page=100&_fields=slug,link,modified_gmt,title`;
+
+/**
+ * Every show page on Tours To You (WordPress pages API, 100 a page): slugs,
+ * plus each page's last edit (`modified`) so edited pages are read first, and
+ * its title (`titles`). Returns an array of slugs carrying `.modified` and
+ * `.titles` maps.
+ */
+async function listShowPages(fetchText) {
+  const out = [];
+  const modified = {};
+  const titles = {};
+  for (let page = 1; page <= 50; page++) {
+    let rows;
+    try {
+      rows = JSON.parse(await fetchText(`${PAGES_API}&page=${page}`));
+    } catch (e) {
+      // WordPress answers past the last page with an HTTP 400.
+      if (page > 1 && /HTTP 400/.test(e.message)) break;
+      throw e;
+    }
+    if (!Array.isArray(rows) || rows.length === 0) break;
+    for (const r of rows) {
+      if (!r.slug) continue;
+      out.push(r.slug);
+      // The page's own title, from the API (never taken from the URL).
+      if (r.title && r.title.rendered) titles[r.slug] = decodeTitle(r.title.rendered);
+      // modified_gmt is UTC without a zone suffix (plain `modified` is site-local).
+      if (r.modified_gmt) modified[r.slug] = `${r.modified_gmt}Z`;
+    }
+    if (rows.length < 100) break;
+  }
+  const slugs = [...new Set(out)];
+  slugs.modified = modified;
+  slugs.titles = titles;
+  return slugs;
+}
 
 /** Title or slug to a comparable key: "Moulin Rouge! The Musical" -> moulin-rouge. */
 function titleKey(s) {
@@ -334,4 +372,4 @@ function roundupRowFor(pageRow, rows) {
   return hit.length === 1 ? hit[0] : null;
 }
 
-module.exports = { PAGES_API, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, parentForClass, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, dedupeCandidates, candidateKey, roundupRowFor };
+module.exports = { PAGES_API, listShowPages, UPCOMING_DAYS, titleKey, titleKeys, slugKey, slugKeys, parentForSlug, parentForClass, upcomingSegments, lifecyclePlan, reopenBlocker, runningTourCandidate, dedupeCandidates, candidateKey, roundupRowFor };

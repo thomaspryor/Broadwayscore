@@ -153,7 +153,8 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   const fromSchedule = r => !!r && r.source === 'tourstoyou';
   // What a schedule page said this run about how it splits (tour-discovery.js
   // lifecyclePlan): never carried over from an earlier run (BRO-4724).
-  const PAGE_FACTS = ['splitAt', 'predecessorEnds'];
+  // needsClassification/type/upcoming (BRO-4931): an override added since, or a tour no longer booked ahead, must not leave the old value on the row.
+  const PAGE_FACTS = ['splitAt', 'predecessorEnds', 'needsClassification', 'type', 'upcoming'];
   const dropStale = (row, c) => { if (fromSchedule(c)) for (const k of PAGE_FACTS) if (!(k in c)) delete row[k]; return row; };
   for (const c of candidates) {
     const ck = keyOf(c);
@@ -201,6 +202,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
  * BRO-4931), else broadwayShowId (roundup rows and older rows), else null for
  * a standalone page row or a roundup-only row.
  */
+const NOT_A_PRODUCTION = new Set(['event', 'aggregator', 'template', 'company']);
 const candidateParentId = r => r.parentId || r.broadwayShowId || null;
 
 /**
@@ -218,6 +220,8 @@ function openTourCandidates(rows, shows) {
   return (rows || []).filter(r => {
     if (r.createdTourId) return false; // create-tour-entries.js made its entry (BRO-4262)
     if (String(r.key || '').startsWith('roundup:')) return false;
+    // create-tour-entries.js read the page's Wikipedia infobox and found it is no stage production.
+    if (NOT_A_PRODUCTION.has(r.pageClass)) return false;
     // A tour found running on Tours To You (tour-discovery.js) has no roundup
     // slug; the same "no open tour of this title" test applies.
     const found = r.source === 'tourstoyou';

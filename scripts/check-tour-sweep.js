@@ -67,7 +67,7 @@ async function main() {
   let fetchWiki = null;
   if (live) {
     const { politeFetchText } = require('./lib/tours-to-you');
-    const { listShowPages } = require('./discover-running-tours');
+    const { listShowPages } = require('./lib/tour-discovery');
     const listed = await listShowPages(url => politeFetchText(url));
     titles = listed.titles || {};
     fetchPageText = async slug => politeFetchText(`https://tourstoyou.org/shows/${slug}/`);

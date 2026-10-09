@@ -350,3 +350,30 @@ test('page rows are recorded by key: two standalone pages are two rows, the same
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+test('a row the create step classified as an event stops being a suggestion; a stale needsClassification is dropped when the page is read again (BRO-4931)', async () => {
+  const { openTourCandidates, recordTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const base = { title: 'Some Show', source: 'tourstoyou', tourScheduleSlug: 'some-show', segmentStart: '2026-09-01' };
+  assert.equal(openTourCandidates([{ ...base, key: 'page:some-show', pageClass: 'event' }], []).length, 0);
+  assert.equal(openTourCandidates([{ ...base, key: 'page:some-show', pageClass: 'production' }], []).length, 1);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tour-cand-'));
+  try {
+    const file = path.join(dir, 'c.json');
+    const unclassified = { ...base, key: 'page:some-show', slug: 'tourstoyou:some-show:2026-09-01', pageClass: 'unclassified', needsClassification: true };
+    recordTourCandidates(file, [unclassified], '2026-10-01T00:00:00Z');
+    // A person classified the page since: the same segment is read again with an override.
+    const classified = { ...base, key: 'page:some-show', slug: 'tourstoyou:some-show:2026-09-01', pageClass: 'production', type: 'musical' };
+    recordTourCandidates(file, [classified], '2026-10-02T00:00:00Z');
+    const [row] = JSON.parse(fs.readFileSync(file, 'utf8'));
+    assert.deepEqual([row.pageClass, row.type, row.needsClassification, row.firstSeen], ['production', 'musical', undefined, '2026-10-01T00:00:00Z']);
+    // And a tour no longer booked ahead is not left marked upcoming.
+    recordTourCandidates(file, [{ ...classified, upcoming: true }], '2026-10-03T00:00:00Z');
+    recordTourCandidates(file, [classified], '2026-10-04T00:00:00Z');
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8'))[0].upcoming, undefined);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
+  }
+});

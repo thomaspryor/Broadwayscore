@@ -136,6 +136,7 @@ async function main() {
     try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tour-schedules.json'), 'utf8')).tours || {}; } catch { return {}; }
   })();
   const results = [];
+  let ledgerChanged = false;
   for (const c of open) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
     const parentId = candidateParentId(c);
@@ -167,6 +168,12 @@ async function main() {
     // title; its date confirms the launch when Wikipedia is silent (BRO-4563).
     const roundupUrl = candidateRoundupUrl(c, rows);
     const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText: wiki, roundupUrl, retiredIds, tourSchedules, overrides });
+    // What Wikipedia's infobox said about a page discovery could not classify goes back on its row, so the
+    // owner digest asks about a launch that cannot be confirmed, not about what the page is.
+    if (!parent && c.needsClassification) {
+      if (d.candidate) { c.pageClass = 'production'; c.type = d.candidate.type; delete c.needsClassification; ledgerChanged = true; }
+      else if (d.pageClass && d.pageClass.class !== 'unclassified') { c.pageClass = d.pageClass.class; delete c.needsClassification; ledgerChanged = true; }
+    }
     if (d.outcome === 'needs-classification' || /^skip-(event|aggregator|template|company)$/.test(d.outcome)) {
       console.log(`  stays a suggestion: ${d.outcome === 'needs-classification' ? 'needs a human to say what this page is' : d.outcome}: ${d.reason}`);
       record({ roundupUrl, scheduleUrl, skip: d.reason, outcome: d.outcome });
@@ -178,6 +185,7 @@ async function main() {
     record({ roundupUrl, scheduleUrl, notes: d.decision.notes, launchSource: d.decision.launchSource || null, knownEnds: d.knownEnds, skip: built.skip || null, entry: built.entry || null, outcome: d.outcome, type: d.candidate.type || null });
   }
 
+  if (ledgerChanged) fs.writeFileSync(CANDIDATES, JSON.stringify(rows, null, 2) + '\n');
   const created = [];
   const reopened = [];
   for (const x of lifecycle.reopen) console.log(`${x.id}: ${write ? 'reopening' : 'would reopen'} (closed ${x.closingDate}, its page lists it again from ${x.resumes}: ${x.reason})`);
