@@ -13,7 +13,7 @@ import os from 'node:os';
 
 const require = createRequire(import.meta.url);
 const {
-  classifyTourPage, loadTourPageClasses, overrideProblems, overlappingEngagements, infoboxClass,
+  classifyTourPage, loadTourPageClasses, overrideProblems, maxConcurrentCities, infoboxClass,
   companyOfSlug, decodeTitle, pageTitleFromHtml, TEMPLATE_RE, EVENT_RE, OVERRIDES_PATH,
 } = require('../../scripts/lib/tour-page-class.js');
 
@@ -82,27 +82,38 @@ test('hamilton-angelica and six-the-musical-boleyn are companies of tracked tour
   assert.equal(companyOfSlug('wicked-elphaba', SHOWS), null);
 });
 
-test('overlapping engagements in different cities make an aggregator; a tour that runs in order does not', () => {
+test('five or more cities at once make an aggregator; a show with two or three companies on the road does not', () => {
   // Holiday Shows: many productions listed on one page, several cities at once.
   const aggregator = [
     eng('Boston, MA', '2026-11-20', '2026-11-22'),
     eng('Denver, CO', '2026-11-20', '2026-11-22'),
     eng('Austin, TX', '2026-11-21', '2026-11-23'),
     eng('Miami, FL', '2026-11-22', '2026-11-24'),
-    eng('Seattle, WA', '2026-11-30'),
+    eng('Seattle, WA', '2026-11-22'),
+    eng('Reno, NV', '2026-12-30'),
   ];
-  assert.equal(overlappingEngagements(aggregator), 4);
+  assert.equal(maxConcurrentCities(aggregator), 5);
   const c = classifyTourPage({ slug: 'holiday-shows', pageTitle: 'Holiday Shows', rows: aggregator, shows: SHOWS });
   assert.deepEqual([c.class, c.source], ['aggregator', 'structure']);
-  assert.match(c.reason, /one company cannot be in two cities/);
-  assert.equal(overlappingEngagements(SEQUENTIAL), 0);
+  assert.match(c.reason, /5 different cities have an engagement at the same moment/);
+  // One company on the road: never two cities at once.
+  assert.equal(maxConcurrentCities(SEQUENTIAL), 1);
   assert.equal(classifyTourPage({ slug: 'some-new-show', pageTitle: 'Some New Show', rows: SEQUENTIAL, shows: SHOWS }).class, 'unclassified');
-  // Back-to-back stops that share a changeover day are one company moving on.
-  assert.equal(overlappingEngagements([eng('A, MA', '2026-10-01', '2026-10-06'), eng('B, CT', '2026-10-06', '2026-10-11'), eng('C, NY', '2026-10-11', '2026-10-16')]), 0);
-  // Two overlaps are too few to call (a single double-booked date, a typo).
-  assert.equal(classifyTourPage({ slug: 'some-new-show', rows: [eng('A, MA', '2026-10-01', '2026-10-06'), eng('B, CT', '2026-10-03', '2026-10-08'), eng('C, NY', '2026-10-20')], shows: SHOWS }).class, 'unclassified');
+  // Menopause The Musical, Rudolph, Potted Potter: a few companies of ONE show overlap in time and are not an aggregator
+  // (the first rule, three overlapping engagements, wrongly called all of them lists of shows; measured 2026-10-09).
+  const threeCompanies = [
+    eng('Boston, MA', '2026-10-06', '2026-10-11'), eng('Denver, CO', '2026-10-06', '2026-10-11'), eng('Austin, TX', '2026-10-07', '2026-10-12'),
+    eng('Hartford, CT', '2026-10-13', '2026-10-18'), eng('Reno, NV', '2026-10-13', '2026-10-18'), eng('Tulsa, OK', '2026-10-13', '2026-10-18'),
+    eng('Albany, NY', '2026-10-20', '2026-10-25'), eng('Provo, UT', '2026-10-20', '2026-10-25'), eng('Selma, AL', '2026-10-21', '2026-10-26'),
+  ];
+  assert.equal(maxConcurrentCities(threeCompanies), 3);
+  assert.equal(classifyTourPage({ slug: 'some-new-show', pageTitle: 'Some New Show', rows: threeCompanies, shows: SHOWS }).class, 'unclassified');
+  // Back-to-back stops that share a changeover day are one company moving on; the next day is not concurrent.
+  assert.equal(maxConcurrentCities([eng('A, MA', '2026-10-01', '2026-10-06'), eng('B, CT', '2026-10-07', '2026-10-11'), eng('C, NY', '2026-10-12', '2026-10-16')]), 1);
+  assert.equal(maxConcurrentCities([eng('A, MA', '2026-10-01', '2026-10-06'), eng('B, CT', '2026-10-06', '2026-10-11')]), 2);
   // The same city twice at once is one house, not two cities.
-  assert.equal(overlappingEngagements([eng('Boston, MA', '2026-10-01', '2026-10-06'), eng('Boston, MA', '2026-10-02', '2026-10-07')]), 0);
+  assert.equal(maxConcurrentCities([eng('Boston, MA', '2026-10-01', '2026-10-06'), eng('Boston, MA', '2026-10-02', '2026-10-07')]), 1);
+  assert.equal(maxConcurrentCities([]), 0);
 });
 
 test('a title match is never an aggregator, whatever its table looks like (Hamilton runs several companies)', () => {

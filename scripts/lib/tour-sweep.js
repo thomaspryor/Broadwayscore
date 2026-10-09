@@ -50,7 +50,7 @@ const EVIDENCE_OUTCOMES = new Set(['create', 'suggest', 'skip-nothing-running', 
  * @param {object} [args.tourSchedules] data/tour-schedules.json .tours
  * @param {{has: Function}|null} [args.retiredIds]
  * @param {Date} [args.now]
- * @param {(title: string) => Promise<string>} [args.fetchWiki] Wikipedia wikitext for a title
+ * @param {(title: string, opts?: {requireTour?: boolean}) => Promise<string>} [args.fetchWiki] Wikipedia wikitext for a title
  * @param {object[]} [args.ledgerRows] candidate ledger rows, for pairing a BWW roundup with the page
  * @returns {Promise<{outcome: string, reason: string, entry?: object, candidate?: object, pageClass?: object}>}
  */
@@ -64,7 +64,8 @@ async function evaluateTourPage({ slug, pageTitle = null, html, shows, overrides
   const parent = parentId ? shows.find(s => s.id === parentId) || null : null;
   const title = parent ? parent.title : c.title;
   let wikiText = '';
-  if (fetchWiki) { try { wikiText = await fetchWiki(title); } catch { wikiText = ''; } }
+  // The same fetch create-tour-entries.js makes: a page nothing classified needs the article's infobox even if it never mentions a tour.
+  if (fetchWiki) { try { wikiText = await fetchWiki(title, { requireTour: !c.needsClassification }); } catch { wikiText = ''; } }
   const roundupUrl = candidateRoundupUrl(c, ledgerRows);
   const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText, roundupUrl, retiredIds, tourSchedules, now, overrides });
   return { outcome: d.outcome, reason: d.reason, ...(d.built.entry ? { entry: d.built.entry } : {}), candidate: d.candidate || c, pageClass: d.pageClass || r.pageClass };

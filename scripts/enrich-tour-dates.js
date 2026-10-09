@@ -73,8 +73,13 @@ function fetchJson(url) {
   });
 }
 
-/** Wikitext of the first candidate article that exists and mentions a tour. */
-async function fetchWikiText(title) {
+/**
+ * Wikitext of the first candidate article that exists and mentions a tour.
+ * `requireTour: false` (BRO-4931) takes the first article that exists, for
+ * telling what a page IS from its infobox (tour-page-class.js) when the
+ * article says nothing of a tour.
+ */
+async function fetchWikiText(title, { requireTour = true } = {}) {
   const titles = [`${title} (musical)`, `${title} (play)`, title];
   const url = `${WIKI_API}?action=query&titles=${encodeURIComponent(titles.join('|'))}&prop=revisions&rvprop=content&rvslots=main&format=json&formatversion=2&redirects=1`;
   const data = await fetchJson(url);
@@ -85,7 +90,7 @@ async function fetchWikiText(title) {
   for (const t of titles) {
     const resolved = redirects.get(norm.get(t) || t) || norm.get(t) || t;
     const text = byTitle.get(resolved);
-    if (text && /\btour\b/i.test(text)) return text;
+    if (text && (!requireTour || /\btour\b/i.test(text))) return text;
   }
   return '';
 }

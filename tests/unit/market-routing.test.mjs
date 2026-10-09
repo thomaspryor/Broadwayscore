@@ -264,12 +264,20 @@ test('tour reroute works for Off-Broadway, West End and regional parents (BRO-49
   assert.notEqual(d.targetShowId, 'harbor-tour-2026');
   d = ruling('harbor-regional-2025', city.replace('Lumina', 'Harbor'), '2025-08-01');
   assert.notEqual(d.targetShowId, 'harbor-tour-2026', 'inside closing + 60 days and outside any tour window');
-  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', '2026-10-01');
+  const harborCity = city.replace('Lumina', 'Harbor');
+  d = ruling('harbor-regional-2025', harborCity, '2026-10-01');
   assert.deepEqual([d.action, d.targetShowId], ['reroute', 'harbor-tour-2026']);
-  // Undated, or dated only by its URL: not enough for a regional parent.
-  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', null);
+  // A known tour-presenter paper is tour evidence too.
+  d = ruling('harbor-regional-2025', 'https://www.houstonchronicle.com/entertainment/arts-theater/article/harbor-review-1.php', '2026-10-01');
+  assert.deepEqual([d.action, d.targetShowId], ['reroute', 'harbor-tour-2026']);
+  // Right date window, no tour-stop evidence (an ordinary local paper could be
+  // reviewing a different regional company of the same title): not moved on date alone.
+  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', '2026-10-01');
   assert.notEqual(d.targetShowId, 'harbor-tour-2026');
-  d = ruling('harbor-regional-2025', 'https://www.denverpost.com/2026/10/01/harbor-review/', '2026-10-01', 'url-backfill-url-ymd');
+  // Undated, or dated only by its URL: not enough for a regional parent.
+  d = ruling('harbor-regional-2025', harborCity, null);
+  assert.notEqual(d.targetShowId, 'harbor-tour-2026');
+  d = ruling('harbor-regional-2025', harborCity, '2026-10-01', 'url-backfill-url-ymd');
   assert.notEqual(d.targetShowId, 'harbor-tour-2026');
 });
 
@@ -277,13 +285,16 @@ test('regional parent: tourDecision gates on the parent run window (BRO-4931)', 
   const { tourDecision } = require('../../scripts/lib/market-routing.js');
   const tourSib = { id: 'harbor-tour-2026', category: 'tour', openingDate: new Date('2026-09-19'), closingDate: null, year: 2026 };
   const base = { category: 'regional', openingDate: new Date('2026-09-01'), closingDate: new Date('2026-09-30'), siblings: [tourSib] };
-  const call = (sib, publishDate) => tourDecision('harbor-regional-2026', sib, { url: 'https://www.denverpost.com/x', publishDate, dateSource: 'extracted' });
+  const stopUrl = 'https://www.broadwayworld.com/denver/article/Review-Harbor-20261215';
+  const call = (sib, publishDate, url = stopUrl) => tourDecision('harbor-regional-2026', sib, { url, publishDate, dateSource: 'extracted' });
   // Inside the run (tour window overlaps it): stays with the regional production.
   assert.equal(call(base, '2026-09-25'), null);
   // Inside the 60-day trailing slack: still the regional production's.
   assert.equal(call(base, '2026-11-15'), null);
   // Past closing + 60 days and inside the tour window: the tour.
   assert.equal(call(base, '2026-12-15').targetShowId, 'harbor-tour-2026');
+  // ...but only for a tour-stop URL: another regional company's local review stays put.
+  assert.equal(call(base, '2026-12-15', 'https://www.denverpost.com/x'), null);
   // Open-ended regional run (no closing) never reroutes; no opening date cannot be judged.
   assert.equal(call({ ...base, closingDate: null }, '2026-12-15'), null);
   assert.equal(call({ ...base, openingDate: null }, '2026-12-15'), null);

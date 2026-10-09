@@ -16,8 +16,9 @@
  *   2. template: the slug says template / tester / test / sample
  *   3. title match: the page is a tracked production (any tour-parent market)
  *   4. company: "<tracked tour>-<one word>" is one company of that tour
- *   5. aggregator by structure: engagements overlapping in time in different
- *      cities (one company cannot be in two cities at once)
+ *   5. aggregator by structure: five or more cities with an engagement at the
+ *      same moment (a touring show has a handful of companies at most; a list
+ *      of many shows, like Holiday Shows, has dozens)
  *   6. event keywords (deny only): circus, tribute, concert, steamroller...
  *   7. Wikipedia infobox (musical / play => production; concert, circus,
  *      dance => event) when the caller supplies the article
@@ -41,8 +42,13 @@ const TEMPLATE_RE = /(^|-)(template|tester|test|sample)(-|$)/;
 const EVENT_RE = /cirque|circus|tribute|concert|orchestra|symphony|illusionist|on-ice|steamroller|riverdance|stomp|nutcracker/;
 // A company page needs a real suffix word; these are the same show's own page.
 const NOT_A_COMPANY_WORD = new Set(['tour', 'the', 'musical', 'show', 'live', 'play', 'on', 'of', 'and', 'a']);
-// Engagements overlapping another city's this often make a page an aggregator.
-const AGGREGATOR_MIN_OVERLAPS = 3;
+// Cities with an engagement at the same moment, at least this many, make a page
+// an aggregator. The first design called three overlapping engagements enough
+// ("one company cannot be in two cities at once"), but a production with two
+// or three companies on the road (Menopause The Musical, Rudolph, Potted Potter)
+// overlaps that much and is one show; the pages measured on 2026-10-09 split
+// cleanly: Holiday Shows has 21 cities at once, every real production at most 4.
+const AGGREGATOR_MIN_CITIES = 5;
 
 const kebab = s => String(s || '').toLowerCase().replace(/&/g, 'and').replace(/['‘’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const cityKey = c => String(c || '').toLowerCase().replace(/\s+/g, ' ').trim();
@@ -74,23 +80,34 @@ function overrideProblems(overrides) {
   return out;
 }
 
-/** How many engagements overlap an engagement in a different city. */
-function overlappingEngagements(rows) {
+const DAY = 86400000;
+
+/**
+ * The most distinct cities with an engagement at the same moment. An
+ * engagement holds its first through its last day; a stop that ends one day
+ * and another that starts the next are not concurrent, two that share a day are.
+ */
+function maxConcurrentCities(rows) {
+  const events = [];
   const list = (rows || []).filter(r => r && r.start && r.end);
-  let n = 0;
-  for (let i = 0; i < list.length; i++) {
-    for (let j = 0; j < list.length; j++) {
-      if (i === j) continue;
-      const a = list[i];
-      const b = list[j];
-      if (cityKey(a.city) === cityKey(b.city)) continue;
-      // Back-to-back stops that share a changeover day do not overlap; two
-      // one-day dates that coincide do.
-      const overlap = (a.start < b.end && b.start < a.end) || (a.start.getTime() === b.start.getTime() && a.end.getTime() === b.end.getTime());
-      if (overlap) { n++; break; }
+  list.forEach((r, i) => {
+    events.push([r.start.getTime(), 1, i]);
+    events.push([r.end.getTime() + DAY, -1, i]);
+  });
+  // At an equal time ends come first, so back-to-back stops never overlap.
+  events.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const active = new Map();
+  let max = 0;
+  for (const [, delta, i] of events) {
+    const city = cityKey(list[i].city);
+    if (delta > 0) active.set(city, (active.get(city) || 0) + 1);
+    else {
+      const left = active.get(city) - 1;
+      if (left) active.set(city, left); else active.delete(city);
     }
+    max = Math.max(max, active.size);
   }
-  return n;
+  return max;
 }
 
 /** The infobox of a Wikipedia article's wikitext, as { kind } or null. */
@@ -180,10 +197,10 @@ function classifyTourPage({ slug, pageTitle = null, rows = null, shows = [], ove
   const company = companyOfSlug(s, shows);
   if (company) return result('company', { companyOf: company, title: pageTitle, reason: `one company of ${company} under its own page`, source: 'company-rule' });
 
-  // 5. Several cities at once: a list of shows, not one tour.
+  // 5. Many cities at once: a list of shows, not one tour.
   if (rows && rows.length) {
-    const n = overlappingEngagements(rows);
-    if (n >= AGGREGATOR_MIN_OVERLAPS) return result('aggregator', { title: pageTitle, reason: `${n} engagements overlap another city's in time; one company cannot be in two cities at once`, source: 'structure' });
+    const n = maxConcurrentCities(rows);
+    if (n >= AGGREGATOR_MIN_CITIES) return result('aggregator', { title: pageTitle, reason: `${n} different cities have an engagement at the same moment; a touring show has a few companies at most`, source: 'structure' });
   }
 
   // 6. Event keywords deny.
@@ -230,11 +247,11 @@ module.exports = {
   OVERRIDES_PATH,
   TEMPLATE_RE,
   EVENT_RE,
-  AGGREGATOR_MIN_OVERLAPS,
+  AGGREGATOR_MIN_CITIES,
   classifyTourPage,
   loadTourPageClasses,
   overrideProblems,
-  overlappingEngagements,
+  maxConcurrentCities,
   infoboxClass,
   companyOfSlug,
   decodeTitle,

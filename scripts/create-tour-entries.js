@@ -160,7 +160,8 @@ async function main() {
     // Tours To You-found tours with "no evidence URL" on 2026-10-05).
     const { url: scheduleUrl, html } = await fetchSchedule(probe, fallback, { budget });
     let wiki = '';
-    try { wiki = await fetchWikiText(title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
+    // A page nothing classified needs the article's infobox even when it never mentions a tour.
+    try { wiki = await fetchWikiText(title, { requireTour: !c.needsClassification }); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
     // A schedule row may carry the BWW roundup seen for the same show
     // (recordTourCandidates), or a roundup-only row pairs with this page by
     // title; its date confirms the launch when Wikipedia is silent (BRO-4563).
