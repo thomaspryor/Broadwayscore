@@ -233,3 +233,39 @@ test('buildSynopsisPrompt asks for the source work\'s story on a revival and kee
   assert.match(prompt, /Do NOT guess or describe a different same-titled show/);
   assert.doesNotMatch(prompt, /not certain about the plot of THIS specific production/);
 });
+
+// Run 37868803406 logged a bare UNKNOWN reply as "no text returned" (the
+// sentence trim ran first). Fake the Anthropic reply at https.request.
+test('generateSynopsisWithLLM logs UNKNOWN and cut-off replies by their real reason', async () => {
+  const https = require('https');
+  const { EventEmitter } = require('events');
+  const realRequest = https.request;
+  const realLog = console.log;
+  const prevKey = process.env.ANTHROPIC_API_KEY;
+  process.env.ANTHROPIC_API_KEY = 'test-key';
+  const replies = ['UNKNOWN', 'A king divides his realm between'];
+  const logs = [];
+  https.request = (_opts, onRes) => {
+    const req = new EventEmitter();
+    req.write = () => {};
+    req.end = () => {
+      const res = new EventEmitter();
+      res.statusCode = 200;
+      onRes(res);
+      res.emit('data', JSON.stringify({ content: [{ text: replies.shift() }] }));
+      res.emit('end');
+    };
+    return req;
+  };
+  console.log = (...a) => logs.push(a.join(' '));
+  try {
+    const { generateSynopsisWithLLM } = loadWithMocks({ serpQueryImpl: async () => [], ibdbCreativeTeam: [] });
+    assert.equal(await generateSynopsisWithLLM({ title: 'King Lear', type: 'play', venue: 'Wyndham\'s Theatre', openingDate: '2023-11-01' }), null);
+  } finally {
+    https.request = realRequest;
+    console.log = realLog;
+    if (prevKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = prevKey;
+  }
+  assert.ok(logs.some(l => /replied UNKNOWN/.test(l)), logs.join('\n'));
+  assert.ok(logs.some(l => /no complete sentence: "A king divides his realm between"/.test(l)), logs.join('\n'));
+});

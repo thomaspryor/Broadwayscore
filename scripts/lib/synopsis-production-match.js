@@ -39,6 +39,7 @@ CANDIDATE SYNOPSIS:
 "${synopsis}"
 
 Does the candidate synopsis describe THIS EXACT production (the one in the record above)? It is a MISMATCH if the synopsis is about a different show that merely shares the title, names different people/venue/year, or describes a plot inconsistent with this cast/era. If the record is too sparse to identify the production (e.g. cast, venue, and year are all unknown and the title is shared by multiple shows) so that you cannot confirm it, answer MISMATCH. If you are not fully confident it is the same production, answer MISMATCH.
+A revival or new staging of a well-known work (a classic play, a known musical, an adaptation of a famous novel or film) tells that work's story. For such a production, a synopsis of that work's story is a MATCH even if it says nothing specific to this staging, provided you are confident the record is that work and nothing in the synopsis contradicts the record. Do not answer MISMATCH only because production-specific details are missing.
 Reply with ONLY one word on the FIRST line — either MATCH or MISMATCH (nothing else on that line). Put your one-sentence reason on the SECOND line.`;
 }
 
