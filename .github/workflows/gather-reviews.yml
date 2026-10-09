@@ -78,7 +78,23 @@ concurrency:
 
 jobs:
   # Step 1: Split shows into batches for parallel processing
+  # BRO-4146: the Mac launchd backfill (scripts/backfill-gather-batch.sh) was
+  # retired in favour of historical-backfill.yml, but a Mac whose checkout is
+  # stuck behind origin/main keeps running the old script every day at 08:00
+  # UTC. Its dispatch is the only one that sets no_sb_serp without a
+  # spend_purpose (historical-backfill.yml tags its runs), so those runs skip
+  # every job here instead of re-gathering shows the CI backfill already owns.
+  # Dispatching by hand with no_sb_serp? Set spend_purpose to anything.
+  retired-mac-backfill:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.no_sb_serp && inputs.spend_purpose == '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Skip retired Mac backfill dispatch
+        run: echo "::notice::Skipped. no_sb_serp=true with no spend_purpose is the retired Mac backfill (scripts/backfill-gather-batch.sh); the daily backfill now runs from historical-backfill.yml. Set spend_purpose to run this by hand."
+
   prepare:
+    if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.no_sb_serp && inputs.spend_purpose == '') }}
     runs-on: ubuntu-latest
     # The slot wait below gives up and starts anyway at 180 min.
     timeout-minutes: 200
@@ -1065,7 +1081,7 @@ jobs:
   # Step 4: Update related issues
   update-issues:
     needs: [gather-reviews]
-    if: always()
+    if: always() && needs.gather-reviews.result != 'skipped'
     runs-on: ubuntu-latest
     steps:
       - name: Update issue (if exists)
