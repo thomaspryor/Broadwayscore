@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-09T10:18:20.630Z",
+    "lastUpdated": "2026-10-09T12:53:20.966Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12191,6 +12191,62 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-09T10:18:20.630Z"
+    },
+    "austin101magazine": {
+      "displayName": "Austin101magazine",
+      "tier": 3,
+      "aliases": [
+        "austin101magazine"
+      ],
+      "domain": "austin101magazine.com"
+    },
+    "belmontvision": {
+      "displayName": "Belmontvision",
+      "tier": 3,
+      "aliases": [
+        "belmontvision"
+      ],
+      "domain": "belmontvision.com"
+    },
+    "gamerant": {
+      "displayName": "Gamerant",
+      "tier": 3,
+      "aliases": [
+        "gamerant"
+      ],
+      "domain": "gamerant.com"
+    },
+    "huntnewsnu": {
+      "displayName": "Huntnewsnu",
+      "tier": 3,
+      "aliases": [
+        "huntnewsnu"
+      ],
+      "domain": "huntnewsnu.com"
+    },
+    "intermissionblog": {
+      "displayName": "Intermissionblog",
+      "tier": 3,
+      "aliases": [
+        "intermissionblog"
+      ],
+      "domain": "intermissionblog.com"
+    },
+    "littlevillagemag": {
+      "displayName": "Littlevillagemag",
+      "tier": 3,
+      "aliases": [
+        "littlevillagemag"
+      ],
+      "domain": "littlevillagemag.com"
+    },
+    "rachelsreviewstheatre": {
+      "displayName": "Rachelsreviewstheatre",
+      "tier": 3,
+      "aliases": [
+        "rachelsreviewstheatre"
+      ],
+      "domain": "rachelsreviewstheatre.com"
     }
   },
   "_aliasIndex": {
