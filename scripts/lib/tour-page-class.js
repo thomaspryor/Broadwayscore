@@ -41,6 +41,7 @@
 const fs = require('fs');
 const path = require('path');
 const { proseOnly } = require('./tour-schedule');
+const { foldDiacritics } = require('./title-match');
 
 const CLASSES = ['production', 'event', 'aggregator', 'template', 'company', 'unclassified'];
 // One list with buildTourEntry: a standalone tour is refused for any other type.
@@ -66,7 +67,7 @@ const NOT_A_COMPANY_WORD = new Set(['tour', 'the', 'musical', 'show', 'live', 'p
 // companies needs a production override, not an aggregator one.
 const AGGREGATOR_MIN_CITIES = 5;
 
-const kebab = s => String(s || '').toLowerCase().replace(/&/g, 'and').replace(/['‘’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const kebab = s => foldDiacritics(String(s || '')).toLowerCase().replace(/&/g, 'and').replace(/['‘’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const cityKey = c => String(c || '').toLowerCase().replace(/\s+/g, ' ').trim();
 
 /**
