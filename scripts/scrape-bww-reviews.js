@@ -51,7 +51,7 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
-const { isNationalTourRoundupSlug, roundupMatchPool, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
+const { isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupOnlyCandidate, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
 const { runningTourFor } = require('./lib/tour-family');
 
 // Paths
@@ -1361,8 +1361,9 @@ async function landingDiscoverMode(shows, options = {}) {
     // A national-tour roundup matches the Broadway show by title, and
     // processShow's category guard would drop it after fetching. Suggest the
     // tour to the owner instead when it isn't tracked yet (BRO-4211).
-    // Broadway matches only: a roundup matching a tour entry directly keeps the normal path.
-    if (match && (match.show.category || 'broadway') === 'broadway' && isNationalTourRoundupSlug(slug)) {
+    // Broadway, Off-Broadway and regional matches (BRO-4931): a roundup matching
+    // a tour entry directly keeps the normal path.
+    if (match && isTourParentCategory(match.show.category) && isNationalTourRoundupSlug(slug)) {
       const cand = tourCandidateFor(slug, match.show, shows);
       console.log(`  [TOUR]  ${match.show.id} ← ${slug.slice(0, 70)}${cand ? ' (suggesting a tour entry)' : ' (tour already tracked)'}`);
       // Recorded here; scripts/route-tour-candidates.js turns the file into owner
@@ -1382,6 +1383,11 @@ async function landingDiscoverMode(shows, options = {}) {
     } else {
       unmatched.push({ url, slug });
       console.log(`  [MISS]  ${slug.slice(0, 70)}`);
+      // A national-tour roundup no show matches (a standalone touring show, or a
+      // title we don't track): keep it as a roundup-only candidate for the Tours
+      // To You pairing step (BRO-4931). It also stays in the unmatched audit.
+      const only = !options.dryRun && roundupOnlyCandidate(slug, url);
+      if (only) tourCandidates.push(only);
     }
   }
 

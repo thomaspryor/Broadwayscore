@@ -73,8 +73,17 @@ function fetchJson(url) {
   });
 }
 
-/** Wikitext of the first candidate article that exists and mentions a tour. */
-async function fetchWikiText(title) {
+/**
+ * The first candidate article that exists (and, unless requireTour is false,
+ * mentions a tour), as { title, text } or null. `title` is the article's name
+ * with its "(musical)" / "(play)" qualifier: the resolved name when it has one,
+ * else the name that was asked for, so a redirect from "Clue (musical)" to
+ * "Clue The Musical" still shows that a musical was guessed.
+ * `requireTour: false` (BRO-4931) is only for telling what a page IS from its
+ * infobox (tour-page-class.js); such text never feeds a date decision, since the
+ * first article that exists can be a different work (Clue -> the 1997 musical).
+ */
+async function fetchWikiArticle(title, { requireTour = true } = {}) {
   const titles = [`${title} (musical)`, `${title} (play)`, title];
   const url = `${WIKI_API}?action=query&titles=${encodeURIComponent(titles.join('|'))}&prop=revisions&rvprop=content&rvslots=main&format=json&formatversion=2&redirects=1`;
   const data = await fetchJson(url);
@@ -85,9 +94,15 @@ async function fetchWikiText(title) {
   for (const t of titles) {
     const resolved = redirects.get(norm.get(t) || t) || norm.get(t) || t;
     const text = byTitle.get(resolved);
-    if (text && /\btour\b/i.test(text)) return text;
+    if (text && (!requireTour || /\btour\b/i.test(text))) return { title: /\((musical|play)\)\s*$/i.test(resolved) ? resolved : t, text };
   }
-  return '';
+  return null;
+}
+
+/** Wikitext of the first candidate article that exists and mentions a tour, or ''. The dates' source. */
+async function fetchWikiText(title) {
+  const article = await fetchWikiArticle(title, { requireTour: true });
+  return article ? article.text : '';
 }
 
 
@@ -176,4 +191,4 @@ if (require.main === module) {
     .finally(() => require('./lib/scraper').cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0)));
 }
 
-module.exports = { fetchWikiText, fetchSchedule, fetchText, earlierClosings };
+module.exports = { fetchWikiText, fetchWikiArticle, fetchSchedule, fetchText, earlierClosings };

@@ -230,20 +230,59 @@ function collectSameTitleSignals(candidate, ctx) {
 }
 
 /**
- * Tour branch (BRO-4262). Only a Broadway target can hand a review to a tour,
- * and only on positive evidence: the URL is one the tour guard reads as a tour
- * stop (a regional BWW city page or a known tour-stop paper). The tour is
- * picked by date window (tour-family.js); no single matching tour = no reroute,
- * and the caller's tour guard then rejects the write as before.
+ * Tour branch (BRO-4262, generalised BRO-4931). A review of a Broadway,
+ * Off-Broadway, West End or regional production is handed to a tour of the
+ * same title only on positive evidence, and the tour is picked by date window
+ * (tour-family.js); no single matching tour = no reroute, and the caller's tour
+ * guard then rejects the write as before.
+ *  - Broadway, Off-Broadway, West End: the URL is one the tour guard reads as a
+ *    tour stop (a regional BWW city page or a known tour-stop paper).
+ *  - Regional: a regional show's own local coverage is legitimate (a city page
+ *    is not tour evidence for it), so the review must be dated, inside a tour
+ *    window, and OUTSIDE the regional run (opening minus 7 days to closing plus
+ *    60 days, the tour window's own slack), and the URL must read as a tour
+ *    stop (isLikelyTourReview), so another regional company's review is not
+ *    moved on date alone. A regional with no opening date, or still running,
+ *    never reroutes.
  * @returns {{action:'reroute', targetShowId, reason}|null}
  */
+const TOUR_ROUTABLE_CATEGORIES = new Set(['broadway', 'off-broadway', 'west-end', 'off-west-end']);
+const REGIONAL_RUN_BEFORE_DAYS = 7;
+const REGIONAL_RUN_AFTER_DAYS = 60;
+
+function isOutsideRun(sibData, publishDate) {
+  const open = sibData.openingDate;
+  const pub = new Date(publishDate);
+  if (!open || Number.isNaN(pub.getTime())) return false;
+  const DAY = 86400000;
+  if (pub.getTime() < open.getTime() - REGIONAL_RUN_BEFORE_DAYS * DAY) return true;
+  return !!sibData.closingDate && pub.getTime() > sibData.closingDate.getTime() + REGIONAL_RUN_AFTER_DAYS * DAY;
+}
+
 function tourDecision(showId, sibData, { url, publishDate, dateSource }) {
-  if (!sibData || (sibData.category || 'broadway') !== 'broadway') return null;
+  if (!sibData) return null;
+  const category = sibData.category || 'broadway';
+  const regional = category === 'regional';
+  if (!regional && !TOUR_ROUTABLE_CATEGORIES.has(category)) return null;
   const tours = (sibData.siblings || []).filter(s => s.category === 'tour');
   if (tours.length === 0) return null;
-  if (!isLikelyTourReview(url, showId)) return null;
+  if (regional) {
+    // Needs a trusted date: a date read off the URL doesn't count (CLAUDE.md section 3).
+    if (!publishDate || /url/i.test(String(dateSource || ''))) return null;
+    if (!isOutsideRun(sibData, publishDate)) return null;
+    // Date alone would move a review of a DIFFERENT regional company of the same
+    // title (a later local mounting reviewed by its own paper). Also need the
+    // same tour-stop evidence a Broadway parent needs (a BWW city page or a known
+    // tour-presenter paper). isLikelyTourReview reads a `-regional-` id as "a
+    // regional show's own local coverage" and returns false, so ask it about the
+    // id with that marker removed.
+    if (!isLikelyTourReview(url, showId.replace(/-regional-/g, '-'))) return null;
+  } else if (!isLikelyTourReview(url, showId)) {
+    return null;
+  }
   const pick = pickTourForDate(tours, { publishDate, dateSource });
   if (!pick.tourId) return null;
+  if (regional && pick.reason !== 'in-tour-window') return null;
   return { action: 'reroute', targetShowId: pick.tourId, reason: `tour-stop review: ${pick.reason}` };
 }
 

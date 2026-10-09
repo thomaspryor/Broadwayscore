@@ -17,4 +17,22 @@ function tourAutomationMode(value, now = new Date()) {
   return now.toISOString().slice(0, 10) >= LIVE_FROM ? 'write' : 'report';
 }
 
-module.exports = { tourAutomationMode, LIVE_FROM };
+/**
+ * Mode for creating STANDALONE tours (BRO-4931): touring shows with no tracked
+ * production to descend from, found on Tours To You alone. A parented tour of
+ * an Off-Broadway, regional or West End show follows TOUR_AUTOCREATE like a
+ * Broadway one; a standalone one is new ground (the page's title and type are
+ * the only anchor), so it is report-only until the owner has seen the first
+ * results and sets TOUR_STANDALONE_AUTOCREATE=write. Unset is always report,
+ * never date-switched. It is never louder than the main switch: with
+ * TOUR_AUTOCREATE=off or report it is off or report too.
+ */
+const RANK = { off: 0, report: 1, write: 2 };
+function standaloneTourMode(value, mainMode) {
+  const v = String(value || '').trim().toLowerCase();
+  const own = Object.prototype.hasOwnProperty.call(RANK, v) ? v : 'report';
+  const main = Object.prototype.hasOwnProperty.call(RANK, mainMode) ? mainMode : 'report';
+  return RANK[own] <= RANK[main] ? own : main;
+}
+
+module.exports = { tourAutomationMode, standaloneTourMode, LIVE_FROM };

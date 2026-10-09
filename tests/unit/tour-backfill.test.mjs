@@ -424,3 +424,42 @@ test('an overseas production (.com.au, .de) never moves to the tour or stays on 
   const plan = { tourId: 'spamalot-tour-2025', fromIds: [], ctx };
   assert.deepEqual(decideTourIntegrity(plan, id => files[id] || []).map(r => `${r.kind}:${r.file}`), ['uk-on-tour:apn.json']);
 });
+
+// ---- BRO-4931: tours of any market, and standalone tours --------------------
+
+test('planTourSweep: an Off-Broadway parent sweeps its own market plus Broadway, never West End', () => {
+  const shows = [
+    { id: 'mex-off-broadway-2026', title: 'Mexodus', category: 'off-broadway', openingDate: '2026-03-01' },
+    { id: 'mex-off-broadway-2023', title: 'Mexodus', category: 'off-broadway', openingDate: '2023-03-01' },
+    { id: 'mex-2027', title: 'Mexodus', category: 'broadway', openingDate: '2027-03-01' },
+    { id: 'mex-west-end-2026', title: 'Mexodus', category: 'west-end', openingDate: '2026-04-01' },
+    { id: 'mex-regional-2022', title: 'Mexodus', category: 'regional', openingDate: '2022-04-01' },
+    { id: 'other-off-broadway-2026', title: 'Other', category: 'off-broadway', openingDate: '2026-03-01' },
+    { id: 'mex-tour-2026', title: 'Mexodus', category: 'tour', tourOf: 'mex-off-broadway-2026', openingDate: '2026-09-20' },
+  ];
+  const [plan] = planTourSweep(shows);
+  assert.equal(plan.tourId, 'mex-tour-2026');
+  assert.deepEqual(plan.fromIds, ['mex-2027', 'mex-off-broadway-2023', 'mex-off-broadway-2026']);
+  assert.equal(plan.ctx.broadwayOpeningDate, '2026-03-01');
+  assert.equal(plan.ctx.firstBroadwayOpeningDate, '2023-03-01');
+  // A regional parent takes regional siblings.
+  const regional = planTourSweep(shows.map(s => (s.id === 'mex-tour-2026' ? { ...s, tourOf: 'mex-regional-2022' } : s)))[0];
+  assert.deepEqual(regional.fromIds, ['mex-2027', 'mex-regional-2022']);
+});
+
+test('planTourSweep: a standalone tour is planned with nothing to sweep, and does not disturb other tours', () => {
+  const shows = [
+    { id: 'p-2022', title: 'P', category: 'broadway', openingDate: '2022-01-01' },
+    { id: 'p-tour-2024', title: 'P', category: 'tour', tourOf: 'p-2022', openingDate: '2024-01-01' },
+    { id: 'elf-tour-2026', title: 'Elf', category: 'tour', tourScheduleSlug: 'elf', openingDate: '2026-09-20' },
+    { id: 'dangling-tour-2026', title: 'D', category: 'tour', tourOf: 'missing-2020' },
+  ];
+  const plans = planTourSweep(shows);
+  assert.deepEqual(plans.map(p => p.tourId).sort(), ['elf-tour-2026', 'p-tour-2024'], 'a dangling tourOf is still left out');
+  const elf = plans.find(p => p.tourId === 'elf-tour-2026');
+  assert.deepEqual(elf.fromIds, []);
+  assert.equal(elf.ctx.broadwayOpeningDate, null);
+  assert.equal(elf.ctx.otherToursOfTitle, 0);
+  assert.deepEqual(decideTourSweep(elf, () => []), []);
+  assert.equal(plans.find(p => p.tourId === 'p-tour-2024').ctx.otherToursOfTitle, 0, 'a tour of another title is not a sibling');
+});

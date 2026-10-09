@@ -88,8 +88,54 @@ test('adds a tour linked to an existing broadway parent', () => {
 });
 test('refuses malformed tour entries', () => {
   assert.equal(applyAddShow([], { show: tour() }).ok, false); // parent missing
-  assert.equal(applyAddShow([{ ...parent, category: 'regional' }], { show: tour() }).ok, false);
   assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), venue: 'Shubert Theatre' } }).ok, false);
   assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), market: 'broadway' } }).ok, false);
   assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), id: 'p-2026', slug: 'p-2026' } }).ok, false);
+});
+
+// ---- BRO-4931: tours of any market, and standalone tours --------------------
+
+test('adds a tour of an Off-Broadway, regional or West End parent', () => {
+  for (const category of ['off-broadway', 'regional', 'west-end', 'off-west-end']) {
+    const shows = [{ ...parent, category }];
+    const r = applyAddShow(shows, { show: tour() });
+    assert.equal(r.ok, true, `${category}: ${r.reason}`);
+    assert.equal(shows[1].tourOf, 'p-2024');
+  }
+});
+test('refuses a tour whose tourOf is itself a tour, or does not exist', () => {
+  const r = applyAddShow([{ ...parent, category: 'tour' }], { show: tour() });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /is itself a tour/);
+  assert.match(applyAddShow([], { show: tour() }).reason, /not found/);
+});
+test('adds a standalone tour with no tourOf when it carries tourScheduleSlug', () => {
+  const { tourOf, ...lone } = tour();
+  const shows = [];
+  const r = applyAddShow(shows, { show: lone });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal('tourOf' in shows[0], false);
+  assert.equal(shows[0].tourScheduleSlug, 'p');
+});
+test('refuses a standalone tour with no tourScheduleSlug, and an empty tourOf', () => {
+  const { tourOf, tourScheduleSlug, ...noSlug } = tour();
+  const a = applyAddShow([], { show: noSlug });
+  assert.equal(a.ok, false);
+  assert.match(a.reason, /needs tourScheduleSlug/);
+  for (const empty of [null, '']) {
+    const b = applyAddShow([{ ...parent }], { show: { ...tour(), tourOf: empty } });
+    assert.equal(b.ok, false, String(empty));
+    assert.match(b.reason, /omit tourOf/);
+  }
+});
+test('refuses a tour id that carries the parent market before -tour-<year>', () => {
+  for (const id of ['p-off-broadway-tour-2026', 'p-regional-tour-2026', 'p-west-end-tour-2026', 'p-off-west-end-tour-2026', 'p-on-broadway-tour-2026']) {
+    const r = applyAddShow([{ ...parent }], { show: { ...tour(), id, slug: id } });
+    assert.equal(r.ok, false, id);
+    assert.match(r.reason, /must not carry a market/);
+  }
+  assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), id: 'mexodus-tour-2026', slug: 'mexodus-tour-2026' } }).ok, true);
+});
+test('tourOf and tourScheduleSlug still belong only on category "tour"', () => {
+  assert.equal(applyAddShow([{ ...parent }], { show: { ...base(), tourScheduleSlug: 'x' } }).ok, false);
 });

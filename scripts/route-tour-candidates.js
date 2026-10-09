@@ -15,7 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, candidateParentId } = require('./lib/tour-roundup-candidate');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -50,33 +50,44 @@ async function main() {
     if (found && Date.now() - Date.parse(c.firstSeen || 0) < 14 * 86400000) continue;
     // Not launched yet: create-tour-entries.js decides it once it has.
     if (found && c.segmentStart && c.segmentStart > new Date().toISOString().slice(0, 10)) continue;
-    console.log(`${dryRun ? '[dry-run] would suggest' : 'suggesting'}: ${c.title} (${c.broadwayShowId}) ← ${c.url}`);
+    const key = c.key || c.broadwayShowId;
+    const parentId = candidateParentId(c);
+    console.log(`${dryRun ? '[dry-run] would suggest' : 'suggesting'}: ${c.title} (${key}) ← ${c.url}`);
     if (dryRun) continue;
     try {
       await routeAlert({
-        conditionKey: `tour-candidate:${c.broadwayShowId}`,
+        conditionKey: `tour-candidate:${key}`,
         title: `Tour candidate: ${c.title} national tour`,
         severity: 'info',
         disposition: 'digest',
         decision: true,
-        decisionPrompt: `Add the ${c.title} national tour as a tracked tour?`,
+        // A page nothing could classify (BRO-4931): the owner says what it is
+        // (data/tour-page-classes.json), not whether a known show tours.
+        decisionPrompt: c.needsClassification
+          ? `Is ${c.title} a touring stage production worth tracking (not a concert, circus or dance show)?`
+          : `Add the ${c.title} national tour as a tracked tour?`,
         url: c.url,
-        description: `${found
+        description: `${c.needsClassification
+          ? `Tours To You lists ${c.title} touring since ${c.segmentStart}, but it matches no tracked production and Wikipedia doesn't say it is a musical or play, so it wasn't added automatically. Add it to data/tour-page-classes.json as slug ${c.tourScheduleSlug} (class production with title and type, or event/aggregator to stop asking).`
+          : found
           ? (c.ambiguous
             ? `Tours To You lists two ${c.title} tours running at once (${c.ambiguous}), so which one to track wasn't decided automatically.`
             : `Tours To You lists a ${c.title} tour running since ${c.segmentStart}, but Wikipedia doesn't confirm its launch, so it wasn't added automatically.`)
-          : `BroadwayWorld published a national-tour review roundup for ${c.title} (${c.broadwayShowId}), which has no tour entry.`} Add a category:'tour' entry with tourOf:${c.broadwayShowId}, then run node scripts/sweep-tour-reviews.js --tour=<id>.`,
+          : `BroadwayWorld published a national-tour review roundup for ${c.title} (${parentId}), which has no tour entry.`} ${c.needsClassification ? '' : parentId ? `Add a category:'tour' entry with tourOf:${parentId} (the production it tours; any market counts), then run node scripts/sweep-tour-reviews.js --tour=<id>.` : `Add a category:'tour' entry with tourScheduleSlug:${c.tourScheduleSlug} and no tourOf (a standalone tour), then run node scripts/sweep-tour-reviews.js --tour=<id>.`}`,
         cooldownHours: 24 * 30,
       });
       c.notifiedAt = new Date().toISOString();
       sent++;
     } catch (e) {
-      console.log(`  [WARN] ${c.broadwayShowId}: ${e.message} (will retry next run)`);
+      console.log(`  [WARN] ${key}: ${e.message} (will retry next run)`);
     }
   }
-  if (!dryRun && (sent > 0 || open.length !== rows.length)) {
-    fs.writeFileSync(FILE, JSON.stringify(open, null, 2) + '\n');
-    if (open.length !== rows.length) console.log(`Dropped ${rows.length - open.length} candidate(s) whose show now has a tour entry.`);
+  // Roundup-only rows (no show to suggest a tour for) wait for the Tours To You
+  // pairing step; they are not suggestions here but must survive the rewrite (BRO-4931).
+  const keep = rows.filter(r => (!r.broadwayShowId && !r.key) || String(r.key || '').startsWith('roundup:') || open.includes(r));
+  if (!dryRun && (sent > 0 || keep.length !== rows.length)) {
+    fs.writeFileSync(FILE, JSON.stringify(keep, null, 2) + '\n');
+    if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) whose show now has a tour entry.`);
   }
   console.log(`${open.length} open tour candidate(s).`);
 }

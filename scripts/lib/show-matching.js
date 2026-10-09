@@ -1507,6 +1507,84 @@ function _tokenOnlyLocationPrefixed(token, cleanedSlug) {
   return sawOccurrence;
 }
 
+/**
+ * Tie-break between two candidates that matched the slug equally well (the
+ * date-context, closed and recency axes of the sort in
+ * _matchCleanedSlugAgainstShows). Candidates are { show }. Shared with the
+ * exact-title path so both pick the same production.
+ */
+function _compareByProductionContext(a, b, articleYear) {
+  // Date-context axis (only when an article year is supplied via
+  // options.year). Prefer a production whose opening is within ±2 years of
+  // the article date, then closest by year. Inserted BELOW token-match but
+  // ABOVE the closed/recency heuristics: for same-token-set productions
+  // (e.g. a bare "Cabaret" slug matching both cabaret-2014 and cabaret-1987)
+  // the article date is the only signal that separates them, and it is a
+  // stronger signal than "prefer the newer/open one". A missing openingDate
+  // yields gap Infinity → never in-window, never wins this axis, so the
+  // matcher falls through to the existing recency behavior unchanged.
+  if (articleYear) {
+    const aGap = _yearGap(a.show, articleYear);
+    const bGap = _yearGap(b.show, articleYear);
+    const aIn = aGap <= 2 ? 0 : 1;
+    const bIn = bGap <= 2 ? 0 : 1;
+    if (aIn !== bIn) return aIn - bIn;       // in-window candidates first
+    // Closest opening year — but ONLY among in-window candidates. When NO
+    // candidate is within ±2 years (aIn === bIn === 1), the article date is
+    // not a reliable disambiguator (e.g. a 2023 West End "Les Misérables"
+    // roundup vs the open WE production whose openingDate is the 1985
+    // original — gap 38 — and a closed 2014 Broadway revival — gap 9).
+    // Falling through to the closed/recency heuristics below correctly
+    // prefers the OPEN current production instead of the year-nearest closed
+    // one. Using closest-year here would wrongly route to the 2014 revival.
+    if (aIn === 0 && aGap !== bGap) return aGap - bGap;
+  }
+  const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
+  const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
+  if (aClosed !== bClosed) return aClosed - bClosed;
+  const aYear = parseInt((a.show.openingDate || '').slice(0, 4), 10) || 0;
+  const bYear = parseInt((b.show.openingDate || '').slice(0, 4), 10) || 0;
+  return bYear - aYear;
+}
+
+// Trailing "<verb> [the|its] [national|north-american|us] tour" phrases a
+// roundup slug may carry after the title ("-opens-national-tour",
+// "-launches-north-american-tour", "-on-tour"), with an optional date. Removed
+// ONLY for the exact-title comparison below, never for token matching.
+const _TOUR_TAIL_RE = /-(?:(?:opens|launches|launch|kicks-off|begins|embarks-on|embarks)-(?:its-|the-|on-)?(?:(?:north-american|national|us|first-national)-)?tour|on-tour|(?:north-american|national|us|first-national|touring)-tour)(?:-\d{8})?$/;
+
+// The slug forms a show's own title can take in an aggregator slug: the whole
+// title ("oh-mary" for "Oh, Mary!") and the title without a trailing "the
+// musical" ("boop" for "Boop! The Musical"). Deliberately NOT the text before
+// a colon or comma: "CATS: The Jellicle Ball" must not answer to "cats".
+function _exactTitleSlugs(show) {
+  const plain = String(show.title || '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/'/g, '');
+  const full = titleToSlug(plain).replace(/-+/g, '-').replace(/^-|-$/g, '');
+  if (!full) return [];
+  const out = [full];
+  const bare = full.replace(/-the-musical$/, '');
+  if (bare && bare !== full) out.push(bare);
+  return out;
+}
+
+/**
+ * Exact-title path (BRO-4929). The token gate above skips shows whose only long
+ * word has under 5 characters (Oh, Mary!, SIX, Boop!, The Wiz, MJ, 860), and it
+ * must not be loosened (a 4-char gate made 241 misroutes on 2026-05-27). A slug
+ * that, once any national-tour tail is removed, EQUALS a show's whole title slug
+ * is no guess, so it matches. Only exact equality counts: "mary-jane" is not
+ * "oh-mary", and "cats-the-jellicle-ball" is not "cats". Runs only when the
+ * token path found nothing, so it never changes an existing match.
+ */
+function _matchExactTitle(cleanedSlug, shows, articleYear) {
+  const bare = cleanedSlug.replace(/-\d{8}$/, '').replace(_TOUR_TAIL_RE, '');
+  if (!bare) return null;
+  const hits = shows.filter(show => _exactTitleSlugs(show).includes(bare)).map(show => ({ show }));
+  if (hits.length === 0) return null;
+  hits.sort((a, b) => _compareByProductionContext(a, b, articleYear));
+  return { show: hits[0].show, confidence: 'high', via: 'slug-exact-title' };
+}
+
 function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   if (!cleanedSlug || !shows || shows.length === 0) return null;
   const articleYear = options && options.year ? options.year : null;
@@ -1555,7 +1633,13 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     const locPrefixed = tokens.length === 1 && _tokenOnlyLocationPrefixed(tokens[0], cleanedSlug);
     candidates.push({ show, matched: matchedTokens, total: tokens.length, score, totalLen, locPrefixed });
   }
-  if (candidates.length === 0) return null;
+  // Opt-in: only a BroadwayWorld roundup that says it opens/launches on Broadway
+  // or on tour may take the exact-title path. A bare "six" or a Playbill
+  // "read-the-reviews-for-six-on-broadway" names no production, and the tie-break
+  // would send it to whichever same-title production is newest (the tour or the
+  // West End one), misrouting reviews that used to fall through to the
+  // market-aware matcher (ship-check 2026-10-09).
+  if (candidates.length === 0) return options.exactTitle ? _matchExactTitle(cleanedSlug, shows, articleYear) : null;
   // Sort by:
   //   1. squared-length score desc (longer + more distinctive tokens win;
   //      naturally favors all-tokens-match for multi-word shows like
@@ -1576,37 +1660,7 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   candidates.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;
-    // Date-context axis (only when an article year is supplied via
-    // options.year). Prefer a production whose opening is within ±2 years of
-    // the article date, then closest by year. Inserted BELOW token-match but
-    // ABOVE the closed/recency heuristics: for same-token-set productions
-    // (e.g. a bare "Cabaret" slug matching both cabaret-2014 and cabaret-1987)
-    // the article date is the only signal that separates them, and it is a
-    // stronger signal than "prefer the newer/open one". A missing openingDate
-    // yields gap Infinity → never in-window, never wins this axis, so the
-    // matcher falls through to the existing recency behavior unchanged.
-    if (articleYear) {
-      const aGap = _yearGap(a.show, articleYear);
-      const bGap = _yearGap(b.show, articleYear);
-      const aIn = aGap <= 2 ? 0 : 1;
-      const bIn = bGap <= 2 ? 0 : 1;
-      if (aIn !== bIn) return aIn - bIn;       // in-window candidates first
-      // Closest opening year — but ONLY among in-window candidates. When NO
-      // candidate is within ±2 years (aIn === bIn === 1), the article date is
-      // not a reliable disambiguator (e.g. a 2023 West End "Les Misérables"
-      // roundup vs the open WE production whose openingDate is the 1985
-      // original — gap 38 — and a closed 2014 Broadway revival — gap 9).
-      // Falling through to the closed/recency heuristics below correctly
-      // prefers the OPEN current production instead of the year-nearest closed
-      // one. Using closest-year here would wrongly route to the 2014 revival.
-      if (aIn === 0 && aGap !== bGap) return aGap - bGap;
-    }
-    const aClosed = (a.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
-    const bClosed = (b.show.status || '').toLowerCase() === 'closed' ? 1 : 0;
-    if (aClosed !== bClosed) return aClosed - bClosed;
-    const aYear = parseInt((a.show.openingDate || '').slice(0, 4), 10) || 0;
-    const bYear = parseInt((b.show.openingDate || '').slice(0, 4), 10) || 0;
-    return bYear - aYear;
+    return _compareByProductionContext(a, b, articleYear);
   });
   return { show: candidates[0].show, confidence: 'high', via: 'slug-token-set' };
 }
@@ -1680,9 +1734,12 @@ function matchBwwRoundupSlugToShow(rawSlug, shows, options = {}) {
       if (y >= 1900 && y <= 2100) articleYear = y;
     }
   }
+  // The slug says the show opens/launches on Broadway or on tour (BRO-4929): the
+  // only BWW roundups allowed through the exact-title path for short titles.
+  const exactTitle = /-(?:opens|launches|launch|embarks|kicks-off|begins)(?:-[a-z0-9]+){0,5}-(?:broadway|tour)(?:-\d{8})?$|-on-tour(?:-\d{8})?$/.test(s);
   for (const p of BWW_HEAD_PATTERNS) s = s.replace(p, '');
   for (const p of BWW_TAIL_PATTERNS) s = s.replace(p, '');
-  return _matchCleanedSlugAgainstShows(s, shows, { ...options, year: articleYear });
+  return _matchCleanedSlugAgainstShows(s, shows, { ...options, year: articleYear, exactTitle });
 }
 
 /**

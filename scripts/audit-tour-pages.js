@@ -149,7 +149,7 @@ async function main() {
 
   // 1. Data checks (no network).
   for (const t of tours) {
-    add(A.checkTourData({ show: t, parent: byId.get(t.tourOf), schedule: schedules[t.id], tickets: tickets[t.id] || [], others: schedules, today }));
+    add(A.checkTourData({ show: t, parent: byId.get(t.tourOf), schedule: schedules[t.id], tickets: tickets[t.id] || [], others: schedules, today, shows }));
   }
   for (const id of Object.keys(schedules)) {
     const s = byId.get(id);

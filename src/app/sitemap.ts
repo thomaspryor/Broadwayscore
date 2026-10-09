@@ -13,7 +13,7 @@ import {
   getDataFreshness,
   getOperaShows,
   getOperaTitleSlug,
-  isTourListed,
+  isTourIndexableShow,
 } from '@/lib/data-core';
 import { getAllCriticSlugs, getAllOutletSlugs } from '@/lib/data-reviews';
 import { getAllActorSlugs } from '@/lib/data-actors';
@@ -52,7 +52,7 @@ function buildShowsShard(ctx: DateContext): MetadataRoute.Sitemap {
   const operaSlugs = new Set(getOperaShows().map(s => s.slug));
   return getAllShowSlugs()
     .filter(slug => !operaSlugs.has(slug))
-    .filter(slug => { const s = getShowBySlug(slug); return !s || isTourListed(s); })
+    .filter(slug => { const s = getShowBySlug(slug); return !s || isTourIndexableShow(s); })
     .map((slug) => {
       const show = getShowBySlug(slug);
       const isOpen = show?.status === 'open';

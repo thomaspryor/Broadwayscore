@@ -31,6 +31,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
+import { isLiveTour } from '@/lib/tour-listing';
 import {
   ScoreBadge,
   ScoreBreakdownBar,
@@ -870,16 +871,19 @@ function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pic
 }
 
 function AwaitingCard({ show, reviewCount, reviewsRemaining }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; reviewCount: number; reviewsRemaining: number }) {
+  // A national tour is reviewed city by city as it plays, so its empty state
+  // says reviews are coming in rather than that something is missing (BRO-4931).
+  const isTour = show.category === 'tour';
   const progress = (
     <>
-      {show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? 'Show opens soon' : 'Not enough reviews yet'}
+      {show.status === 'previews' ? 'Show in previews' : show.status === 'upcoming' ? (isTour ? 'Tour starts soon' : 'Show opens soon') : isTour ? 'Critics in each city review the tour as it plays' : 'Not enough reviews yet'}
       {reviewCount > 0 ? ` · ${reviewCount} ${reviewCount === 1 ? 'review' : 'reviews'} collected` : null}
       {reviewsRemaining > 0 ? ` · ${reviewsRemaining} more for a CriticScore` : null}
     </>
   );
   return (
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
-      <p className="text-sm font-semibold text-gray-300 mb-0.5">Awaiting reviews</p>
+      <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid="awaiting-reviews">{isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews'}</p>
       {reviewCount > 0 ? (
         <a href="#critic-reviews" className="text-xs text-gray-500 hover:text-brand transition-colors">{progress}</a>
       ) : (

@@ -3,6 +3,8 @@ import { getShowById, getTourStops, getToursOf } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-core';
 import { featureFlags } from '@/config/feature-flags';
 import { hasReachedStage } from '@/lib/market-utils';
+import { getTourParentLabel, describeTourScores } from '@/lib/tour-display';
+import { isTourScored } from '@/lib/tour-listing';
 import { hasEnoughReviews, applyCoverageFloor } from '@/config/score-buckets';
 
 /**
@@ -20,18 +22,23 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
 
   return (
     <>
-      {/* National tour (BRO-4211): scored apart from the Broadway run it tours. */}
+      {/* National tour (BRO-4211): scored apart from the run it tours. The parent
+          can be Broadway, Off-Broadway, a regional house or the West End, and a
+          standalone tour has none (BRO-4931), so the wording follows its category. */}
       {isTour && (() => {
         const parent = show.tourOf ? getShowById(show.tourOf) : null;
+        const parentMarket = parent ? getTourParentLabel(parent.category) : null;
         return (
           <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="tour-trust-line">
             <span className="text-gray-400">
-              Reviewed by critics in each city on the tour, scored separately from Broadway.
+              {parentMarket
+                ? `Reviewed by critics in each city on the tour, scored separately from the ${parentMarket} run.`
+                : 'Reviewed by critics in each city on the tour.'}
               {parent && (
                 <>
                   {' '}
                   <Link href={`/show/${parent.slug}`} className="text-sky-300 underline decoration-sky-300/40 underline-offset-2 hover:text-sky-200" data-testid="tour-of-link">
-                    See the Broadway production →
+                    See the {parentMarket} production →
                   </Link>
                 </>
               )}
@@ -40,7 +47,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
         );
       })()}
 
-      {/* Broadway side: its national tour(s). Empty while the tour flag is off. */}
+      {/* Parent side (any market): its national tour(s). Empty while the tour flag is off. */}
       {!isTour && (() => {
         const tours = getToursOf(show);
         if (tours.length === 0) return null;
@@ -59,9 +66,15 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
                   { scorePublicSince: t.scorePublicSince, coverageState: t.cov?.state, coverageAcked: t.coverageAcked },
                 );
                 const tourScore = (!tourHidden && t?.criticScore?.score) ? Math.round(t.criticScore.score) : null;
-                return tourScore
-                  ? <>{' '}— critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>
-                  : <>{' '}— the national tour has its own critic score.{' '}</>;
+                if (tourScore) {
+                  return <>{' '}— critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>;
+                }
+                // No tour has a score yet: its page exists for the dates, so
+                // say reviews are on the way rather than promising a score.
+                if (!tours.some(isTourScored)) {
+                  return <>{' '}— {tours.length > 1 ? 'the national tours are' : 'the national tour is'} {tours.every(x => x.status === 'upcoming') ? 'announced' : 'on the road'}, with critic reviews coming in.{' '}</>;
+                }
+                return <>{' '}— {describeTourScores(tours.filter(isTourScored).length, tours.length)}.{' '}</>;
               })()}
               {tours.map((tour, i) => (
                 <span key={tour.id}>
