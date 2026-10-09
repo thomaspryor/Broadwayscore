@@ -269,3 +269,54 @@ test('generateSynopsisWithLLM logs UNKNOWN and cut-off replies by their real rea
   assert.ok(logs.some(l => /replied UNKNOWN/.test(l)), logs.join('\n'));
   assert.ok(logs.some(l => /no complete sentence: "A king divides his realm between"/.test(l)), logs.join('\n'));
 });
+
+// BRO-4884: Opus invented an emo/dead-father plot for Instructions for a
+// Teenage Armageddon after Haiku replied UNKNOWN. A fallback plot now needs
+// search results that describe the same story.
+async function runFallback(judgeReply) {
+  const https = require('https');
+  const { EventEmitter } = require('events');
+  const realRequest = https.request;
+  const realLog = console.log;
+  const prevKey = process.env.ANTHROPIC_API_KEY;
+  process.env.ANTHROPIC_API_KEY = 'test-key';
+  const invented = 'A teenage girl navigates grief and the emo scene of the mid-2000s after the loss of her father.';
+  const replies = ['UNKNOWN', invented, judgeReply];
+  const prompts = [];
+  const logs = [];
+  https.request = (_opts, onRes) => {
+    const req = new EventEmitter();
+    req.write = (body) => prompts.push(JSON.parse(body).messages[0].content);
+    req.end = () => {
+      const res = new EventEmitter();
+      res.statusCode = 200;
+      onRes(res);
+      res.emit('data', JSON.stringify({ content: [{ text: replies.shift() }] }));
+      res.emit('end');
+    };
+    return req;
+  };
+  console.log = (...a) => logs.push(a.join(' '));
+  const snippets = [{ title: 'Instructions for a Teenage Armageddon review', snippet: 'Eileen, 15, is grieving her sister Olive, who died of anorexia.' }];
+  try {
+    const { generateSynopsisWithLLM } = loadWithMocks({ serpQueryImpl: async () => snippets, ibdbCreativeTeam: [] });
+    const out = await generateSynopsisWithLLM({ title: 'Instructions for a Teenage Armageddon', type: 'play', venue: 'Garrick Theatre', openingDate: '2024-03-14' });
+    return { out, invented, prompts, logs };
+  } finally {
+    https.request = realRequest;
+    console.log = realLog;
+    if (prevKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = prevKey;
+  }
+}
+
+test('generateSynopsisWithLLM drops an Opus fallback plot that search results contradict', async () => {
+  const { out, prompts, logs } = await runFallback('CONTRADICTED: the results describe a girl grieving her sister');
+  assert.equal(out, null);
+  assert.match(prompts[2], /died of anorexia/);
+  assert.ok(logs.some(l => /dropped, search results CONTRADICTED/.test(l)), logs.join('\n'));
+});
+
+test('generateSynopsisWithLLM keeps an Opus fallback plot that search results support', async () => {
+  const { out, invented } = await runFallback('SUPPORTED: same premise');
+  assert.equal(out, invented);
+});
