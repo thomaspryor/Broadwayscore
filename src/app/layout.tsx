@@ -204,8 +204,11 @@ export default function RootLayout({
             />
 
             {/* Email list and free account side by side (BRO-4946): the footer
-                used to offer only the email list. */}
-            <div className="max-w-3xl mx-auto mb-8 pb-8 border-b border-white/5 grid gap-2 md:grid-cols-2 md:gap-10">
+                used to offer only the email list. grid-cols-1 keeps the phone
+                track at minmax(0,1fr): an implicit track sizes to the email
+                form's min-content and pushed every page wider than 320-360px
+                phones (BRO-4949). */}
+            <div className="max-w-3xl mx-auto mb-8 pb-8 border-b border-white/5 grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-10">
               <FooterEmailCapture />
               <FooterAccountBox />
             </div>
