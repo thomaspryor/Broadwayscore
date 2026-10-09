@@ -57,6 +57,26 @@ describe('outlet-registry.json tier schema', () => {
   });
 });
 
+describe('outlet-registry.json tier parity with src/config/outlet-tiers.json', () => {
+  // Scoring reads outlet-tiers.json first, but opening-night readiness, the
+  // broadcast script and admin composite read registry .tier directly. On
+  // 2026-10-09 22 outlets had drifted (The Stage, Time Out London and the
+  // Independent read T2 there while scoring used T1). Pin them together.
+  test('registry .tier matches the config tier for the outlet region', () => {
+    const tiers = JSON.parse(readFileSync(resolve(ROOT, 'src', 'config', 'outlet-tiers.json'), 'utf8'));
+    const cfg = tiers.outlets || tiers;
+    const drift = [];
+    for (const [id, o] of Object.entries(cfg)) {
+      const g = registry.outlets[id];
+      if (!o || typeof o !== 'object' || !g || g.tier == null) continue;
+      const region = ['london', 'uk', 'west-end'].includes(g.region) ? 'london' : 'nyc';
+      const expected = o.tiers && o.tiers[region] != null ? o.tiers[region] : o.tier;
+      if (expected != null && expected !== g.tier) drift.push(`${id}: registry ${g.tier}, config ${expected} (${region})`);
+    }
+    assert.deepEqual(drift, [], `Registry tiers drifted from outlet-tiers.json:\n  ${drift.join('\n  ')}`);
+  });
+});
+
 describe('outlet-registry.json cvStyle arming (BRO-2776)', () => {
   // These keys were populated once (cbf7e97c5c) and a CLEAN 3-way merge
   // (4014d52077) dropped every one of them, which left
