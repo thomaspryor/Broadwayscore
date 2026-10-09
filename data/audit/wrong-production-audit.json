@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T19:44:32.140Z",
+  "timestamp": "2026-10-09T20:03:06.023Z",
   "stats": {
-    "totalReviews": 51955,
-    "alreadyFlagged": 19458,
+    "totalReviews": 52051,
+    "alreadyFlagged": 19475,
     "dateGuardCatches": 266,
-    "directorMismatch": 1598,
-    "tvFilmSignals": 1498,
-    "londonSignals": 1649,
+    "directorMismatch": 1602,
+    "tvFilmSignals": 1500,
+    "londonSignals": 1662,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5485
+    "noPublishDate": 5482
   },
   "findings": [
     {
@@ -8095,6 +8095,63 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "crazy-for-you-west-end-2023",
+      "file": "artsdesk--matt-wolf.json",
+      "publishDate": "2023-07-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike ockrent\" from crazy-for-you-1992"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "crazy-for-you-west-end-2023",
+      "file": "i-paper--kate-maltby.json",
+      "publishDate": "2023-07-04",
+      "url": "https://inews.co.uk/culture/arts/crazy-for-you-gillian-lynne-theatre-review-joyous-2452485",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike ockrent\" from crazy-for-you-1992"
+        }
+      ]
+    },
+    {
+      "showId": "crazy-for-you-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2023-07-04",
+      "url": "https://www.standard.co.uk/culture/theatre/crazy-for-you-gillian-lynne-theatre-review-charlie-stemp-gershwin-b1091951.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike ockrent\" from crazy-for-you-1992"
+        }
+      ]
+    },
+    {
+      "showId": "crazy-for-you-west-end-2023",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2023-07-04",
+      "url": "https://www.whatsonstage.com/news/crazy-for-you-in-the-west-end-review_1508472/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike ockrent\" from crazy-for-you-1992"
         }
       ]
     },
@@ -16830,6 +16887,7 @@
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "artsdesk--helen-hawkins.json",
+      "score": 63,
       "publishDate": "2023-06-16",
       "url": "https://theartsdesk.com/theatre/idiots-assemble-spitting-image-musical-phoenix-theatre-review-more-crude-cruel",
       "findings": [
@@ -16843,6 +16901,7 @@
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "british-theatre--vera-liber.json",
+      "score": 64,
       "publishDate": "2023-06-16",
       "url": null,
       "findings": [
@@ -16856,6 +16915,7 @@
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "thestage--paul-vale.json",
+      "score": 58,
       "publishDate": "2023-06-15",
       "url": "https://www.thestage.co.uk/reviews/idiots-assemble-spitting-image-the-musical-review-at-the-phoenix-theatre-london-from-al-murray-matt-forde-sean-foley",
       "findings": [
@@ -16869,6 +16929,7 @@
     {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "whatsonstage--gareth-carr.json",
+      "score": 63,
       "publishDate": "2023-06-15",
       "url": null,
       "findings": [
@@ -27289,6 +27350,7 @@
     {
       "showId": "patriots-west-end-2023",
       "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 78,
       "publishDate": "2023-06-07",
       "url": null,
       "findings": [
@@ -27307,6 +27369,7 @@
     {
       "showId": "patriots-west-end-2023",
       "file": "londontheatre1--peter-yates.json",
+      "score": 91,
       "publishDate": "2023-06-07",
       "url": null,
       "findings": [
@@ -27320,6 +27383,7 @@
     {
       "showId": "patriots-west-end-2023",
       "file": "observer--susannah-clapp.json",
+      "score": 85,
       "publishDate": "2023-06-11",
       "url": "https://www.theguardian.com/stage/2023/jun/11/patriots-noel-coward-theatre-review-all-of-it-alistair-mcdowall-kate-oflynn-royal-court-yours-unfaithfully-jermyn-street-miles-malleson",
       "findings": [
@@ -27333,6 +27397,7 @@
     {
       "showId": "patriots-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 87,
       "publishDate": "2023-06-06",
       "url": null,
       "findings": [
@@ -27351,6 +27416,7 @@
     {
       "showId": "patriots-west-end-2023",
       "file": "thereviewshub--scott-matthewman.json",
+      "score": 74,
       "publishDate": "2023-06-07",
       "url": null,
       "findings": [
@@ -35789,6 +35855,19 @@
       ]
     },
     {
+      "showId": "the-crown-jewels-west-end-2023",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2023-07-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-crucible-west-end-2022",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
@@ -35818,6 +35897,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from the-crucible-2002"
+        }
+      ]
+    },
+    {
+      "showId": "the-crucible-west-end-2023",
+      "file": "whatsonstage--daniella-harrison.json",
+      "score": null,
+      "publishDate": "June 16th, 2023",
+      "url": "https://www.whatsonstage.com/news/the-crucible-in-the-west-end-review-the-production-fares-even-better-in-a-smaller-venue_1363783/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -46401,6 +46494,19 @@
       ]
     },
     {
+      "showId": "accidental-death-of-an-anarchist-west-end-2023",
+      "file": "standard--tim-bano.json",
+      "publishDate": "2023-06-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "after-the-act-west-end-2025",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 82,
@@ -47712,6 +47818,7 @@
     {
       "showId": "aspects-of-love-west-end-2023",
       "file": "i-paper--fiona-mountford.json",
+      "score": 81,
       "publishDate": "2023-05-26",
       "url": "https://inews.co.uk/culture/arts/aspects-of-love-lyric-review-andrew-lloyd-webber-stylish-update-2367316",
       "findings": [
@@ -47725,6 +47832,7 @@
     {
       "showId": "aspects-of-love-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 63,
       "publishDate": "2023-05-25",
       "url": "https://theatreweekly.com/review-aspects-of-love-at-lyric-theatre/",
       "findings": [
@@ -50937,6 +51045,20 @@
       ]
     },
     {
+      "showId": "cuckoo-west-end-2023",
+      "file": "whatsonstage--alun-hood.json",
+      "score": 67,
+      "publishDate": "July 13th, 2023",
+      "url": "https://www.whatsonstage.com/news/cuckoo-at-royal-court-theatre-review_1511358/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "cymbeline-2007",
       "file": "nytimes--ben-brantley.json",
       "score": 75,
@@ -54103,6 +54225,7 @@
     {
       "showId": "great-expectations-west-end-2023",
       "file": "times-uk--clive-davis.json",
+      "score": 56,
       "publishDate": "2023-05-29",
       "url": "https://www.thetimes.co.uk/article/great-expectations-review-eddie-izzards-mighty-dickens-marathon-205jtpzbz",
       "findings": [
@@ -54110,6 +54233,46 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "grenfell-in-the-words-of-survivors-west-end-2023",
+      "file": "british-theatre--keith-mckenna.json",
+      "publishDate": "2023-07-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "grenfell-in-the-words-of-survivors-west-end-2023",
+      "file": "observer--kate-kellaway.json",
+      "publishDate": "2023-07-23",
+      "url": "https://www.theguardian.com/stage/2023/jul/23/grenfell-in-the-words-of-survivors-gillian-slovo-dorfman-national-theatre-review-cuckoo-michael-wynne-royal-court-the-sound-of-music-chichester-festival-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "grenfell-in-the-words-of-survivors-west-end-2023",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 82,
+      "publishDate": "July 21st, 2023",
+      "url": "https://www.whatsonstage.com/news/grenfell-in-the-words-of-survivors-at-the-national-theatre-review_1513460/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -54213,6 +54376,7 @@
     {
       "showId": "groundhog-day-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 97,
       "publishDate": "2023-06-09",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/groundhog-day-review-its-a-delight-to-have-this-romcom-back/",
       "findings": [
@@ -54226,6 +54390,7 @@
     {
       "showId": "groundhog-day-west-end-2023",
       "file": "thereviewshub--john-cutler.json",
+      "score": 71,
       "publishDate": "2023-06-09",
       "url": null,
       "findings": [
@@ -56168,6 +56333,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "hope-has-a-happy-meal-west-end-2023",
+      "file": "timeout-london--tom-wicker.json",
+      "publishDate": "2023-06-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -60540,6 +60718,7 @@
     {
       "showId": "mrs-doubtfire-west-end-2023",
       "file": "telegraph--marianka-swain.json",
+      "score": 91,
       "publishDate": "2024-06-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/mrs-doubtfire-shaftesbury-theatre-review-robin-williams/",
       "findings": [
@@ -63490,6 +63669,7 @@
     {
       "showId": "rose-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 77,
       "publishDate": "June 6th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/rose-ambassadors-theatre-review-maureen-lipman/",
       "findings": [
@@ -67369,6 +67549,32 @@
       ]
     },
     {
+      "showId": "the-crown-jewels-west-end-2023",
+      "file": "i-paper--anya-ryan.json",
+      "publishDate": "2023-07-28",
+      "url": "https://inews.co.uk/culture/arts/the-crown-jewels-garrick-theatre-review-despite-mel-giedroyc-and-al-murray-this-is-a-vulgar-tragic-mess-2510980",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-crown-jewels-west-end-2023",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2023-07-30",
+      "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-crucible-2016",
       "file": "thewrap--robert-hofler.json",
       "score": 78,
@@ -67379,6 +67585,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "the-crucible-west-end-2023",
+      "file": "london-theatre--suzy-evans.json",
+      "score": null,
+      "publishDate": "June 22nd, 2023",
+      "url": "https://www.londontheatre.co.uk/reviews/the-crucible-west-end-review-milly-alcock",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -69824,6 +70044,33 @@
       ]
     },
     {
+      "showId": "the-pillowman-west-end-2023",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": null,
+      "publishDate": "June 23, 2023",
+      "url": "https://theartsdesk.com/theatre/pillowman-duke-york%E2%80%99s-theatre-review-starry-slack",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-pillowman-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2023-07-05",
+      "url": "https://www.ft.com/content/93d2651a-d28d-41e5-afe3-c6fa6fd29b10",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-pitmen-painters-2010",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 74,
@@ -71293,6 +71540,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wizard-of-oz-west-end-2023",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2023-07-07",
+      "url": "https://www.whatsonstage.com/news/the-wizard-of-oz-in-the-west-end-review_1509522/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
