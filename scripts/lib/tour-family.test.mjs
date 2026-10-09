@@ -194,3 +194,13 @@ test('tourLinkProblems: tourOf is optional, but a present one must exist and not
   assert.match(warns(lone, [lone, elf])[0], /elf-2010/);
   assert.deepEqual(tourLinkProblems(elf, [elf]), [], 'non-tours are not this check\'s business');
 });
+
+test('toursOfTitle ignores apostrophe style: a straight-quote page title finds a curly-quote tour (BRO-4931)', () => {
+  const shows = [
+    { id: 'dolly-tour', title: 'Dolly Parton\u2019s Smoky Mountain Christmas Carol', category: 'tour', market: 'tour' },
+    { id: 'seuss-tour', title: 'Dr. Seuss\u2019 The Cat in the Hat', category: 'tour', market: 'tour' },
+  ];
+  assert.deepEqual(toursOfTitle("Dolly Parton's Smoky Mountain Christmas Carol", shows).map(s => s.id), ['dolly-tour']);
+  assert.deepEqual(toursOfTitle("Dr. Seuss' The Cat in the Hat", shows).map(s => s.id), ['seuss-tour']);
+  assert.deepEqual(toursOfTitle('Dr. Seuss The Grinch', shows), []);
+});

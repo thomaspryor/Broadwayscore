@@ -109,7 +109,10 @@ function pickTourForDate(tours, review = {}, now = new Date()) {
   return { tourId: null, reason: 'outside-tour-windows' };
 }
 
-const normTitle = (t) => String(t || '').trim().toLowerCase().replace(/[!?.,'"]/g, '');
+// Curly apostrophes and quotes too: a Tours To You page title has a straight one
+// where the show's own title may have a curly one (Dolly Parton's, Dr. Seuss',
+// 20 titles at BRO-4931), and the two must name the same title.
+const normTitle = (t) => String(t || '').trim().toLowerCase().replace(/[!?.,'"‘’“”ʼ`]/g, '');
 
 /** Every tour entry whose title matches (tours carry their parent's title, or their own when standalone). */
 function toursOfTitle(title, shows) {
