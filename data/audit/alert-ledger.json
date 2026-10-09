@@ -149,19 +149,18 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-09T00:41:25.288Z",
-      "lastSeen": "2026-10-09T00:41:25.288Z",
-      "lastNotifiedAt": "2026-10-09T00:41:25.288Z",
+      "incidentOpenedAt": "2026-10-09T15:30:27.179Z",
+      "lastSeen": "2026-10-09T15:30:27.179Z",
+      "lastNotifiedAt": "2026-10-09T15:30:27.179Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
-      "notifyCount": 126,
+      "notifyCount": 127,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "resolvedAt": "2026-10-09T02:31:28.575Z"
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -11555,7 +11554,7 @@
       "silentRefires": 2
     },
     "mezzanine:session-token-expired": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Mezzanine Scraper Failed — Session Token Expired",
@@ -11567,7 +11566,8 @@
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-10-09T15:25:32.364Z"
     },
     "gap:the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--marc-miller.json": {
       "status": "resolved",
@@ -12546,7 +12546,29 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4938"
+      "linearIdentifier": "BRO-4938",
+      "absentRunIds": [
+        "37950216401"
+      ]
+    },
+    "test-yml:red:Unit Tests:2a5215c8": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real data: an unscored running tour with a schedule is indexable; a closed unscored one is not\"",
+      "firstSeen": "2026-10-09T15:30:19.282Z",
+      "incidentOpenedAt": "2026-10-09T15:30:19.282Z",
+      "lastSeen": "2026-10-09T15:30:19.282Z",
+      "lastNotifiedAt": "2026-10-09T15:30:19.282Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4940",
+      "dispatch": {
+        "requestedAt": "2026-10-09T15:30:19.282Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37950216401",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37950216401"
+      }
     }
   }
 }
