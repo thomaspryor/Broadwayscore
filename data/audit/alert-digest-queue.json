@@ -2417,16 +2417,33 @@
     "queuedAt": "2026-10-08T23:52:01.545Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37862206960",
-    "severity": "warning",
+    "conditionKey": "land:land/job/linear-BRO-4895-mv05itcf",
+    "title": "Landing blocked: race red on land/job/linear-BRO-4895-mv05itcf",
+    "description": "land.yml did not land land/job/linear-BRO-4895-mv05itcf: the race gate went red at bf16f36f2c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4895-mv05itcf @ bf16f36f2c (origin/land/job/linear-BRO-4895-mv05itcf) → origin/main @ 04875309f2 [land] attempt 1/3: rebased onto 04875309f2, 5 file(s) changed — running checks [land] verified-base: main moved 3a9de95d27 → 04875309f2 across 344 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data)  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37859009347",
+    "severity": "error",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T00:02:37.970Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4895-mv05itcf"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "bf16f36f2ce466158c2e87af3e43e331a4a53bb3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37859009347"
+      }
+    ],
+    "queuedAt": "2026-10-09T00:10:14.900Z"
   },
   {
     "conditionKey": "land:land/bro-4886-integrity-audit",
