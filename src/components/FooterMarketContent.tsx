@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
-import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
 
 interface FooterMarketContentProps {
   totalReviews: number;

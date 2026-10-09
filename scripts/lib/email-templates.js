@@ -270,6 +270,20 @@ function buildSocialRowHtml(market) {
   </td></tr>`;
 }
 
+/**
+ * "Sign in or create a free account" line for the bottom of every list email
+ * (BRO-4893): list members kept assuming the email list was an account.
+ * Links to the market home with ?signin=1, which the site turns into the
+ * sign-in modal (src/lib/deferred-auth.ts takeSignInParam). Worded for
+ * account holders too, since signing in also joins the list.
+ * Returns a bare inline fragment so each footer can wrap it in its own markup.
+ */
+function buildAccountCtaHtml(market, utmSource, linkColor = '#d4a574') {
+  const siteUrl = isLondonMarket(market) ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
+  const href = `${siteUrl}?signin=1&utm_source=${encodeURIComponent(utmSource)}&utm_medium=email`;
+  return `Save your ratings and build a watchlist: <a href="${escapeHtml(href)}" style="color:${linkColor};">sign in or create a free account</a>.`;
+}
+
 function buildBroadcastFooterHtml(email, market) {
   // When email is null, use Resend's unsubscribe template variable (for drafts/broadcasts).
   // When email is provided, use our custom unsubscribe URL (for transactional/preview sends).
@@ -280,9 +294,12 @@ function buildBroadcastFooterHtml(email, market) {
   const siteName = siteNameForMarket(market);
   const siteUrl = isWE ? 'https://broadwayscorecard.com/west-end' : 'https://broadwayscorecard.com';
   return `<tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
+    <p style="margin:0 0 12px;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;font-family:${FONT};">
+      ${buildAccountCtaHtml(market, 'opening_night')}
+    </p>
     <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;font-family:${FONT};">
-      You're receiving this because you subscribed to <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
-      <a href="${escapeHtml(unsubscribeUrl)}" style="color:rgba(255,255,255,0.35);">Unsubscribe from opening night alerts</a>
+      You're receiving this because you joined the opening night email list at <a href="${siteUrl}" style="color:#d4a574;">${siteName}</a>.<br>
+      <a href="${escapeHtml(unsubscribeUrl)}" style="color:rgba(255,255,255,0.35);">Unsubscribe from opening night emails</a>
     </p>
   </td></tr>`;
 }
@@ -991,6 +1008,7 @@ module.exports = {
   resolveNewsletterEdition,
   buildFooterHtml,
   buildBroadcastFooterHtml,
+  buildAccountCtaHtml,
   buildSocialRowHtml,
   buildEmailHtml,
   buildOpeningNightHtml,

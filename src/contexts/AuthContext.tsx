@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
-import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath } from '@/lib/deferred-auth';
+import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
@@ -334,6 +334,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setModalOpen(true);
     trackUgc('sign_in_prompt_shown', { context, source: src });
   }, []);
+
+  // `?signin=1` (the account line in our emails, BRO-4893) opens the sign-in
+  // modal once auth has settled. Read window.location after mount, not
+  // the Next search-params hook (it bails the static export to client rendering,
+  // BRO-4597). Strip the param first: Google sign-in returns to the saved URL,
+  // and a param left in place would reopen the modal after signing in.
+  useEffect(() => {
+    if (loading || !getSupabaseClient()) return;
+    const signInLinkSource = takeSignInParam();
+    if (signInLinkSource && !user) showSignIn('generic', signInLinkSource);
+  }, [loading, user, showSignIn]);
 
   const handleModalSignIn = useCallback((provider: 'google' | 'apple') => {
     if (provider !== 'apple') setSignInLoading(true);

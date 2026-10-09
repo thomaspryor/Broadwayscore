@@ -148,7 +148,7 @@ export default function RootLayout({
                     scripts/check-header-overflow.mjs. */}
                 <div className="flex items-center shrink-0 gap-1 sm:gap-3">
                   <HeaderSecondaryMarketLink />
-                  <div className="hidden xl:block">
+                  <div className="hidden xl:block empty:hidden">
                     <HeaderSubscribeButton />
                   </div>
                   <HeaderSearch />
@@ -175,7 +175,9 @@ export default function RootLayout({
               {children}
             </main>
           </ProGateProvider>
-        </UserProviders>
+        {/* The footer sits inside UserProviders on purpose: its email box
+            offers email-list members a free account and must know who is
+            signed in (BRO-4893). Don't move </UserProviders> back above it. */}
         <footer className="border-t border-white/5 mt-6 sm:mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
             {/* Explore More Theatre — promoted market cards, reordered by current market */}
@@ -209,6 +211,7 @@ export default function RootLayout({
             <FooterBranding totalReviews={totalReviews} />
           </div>
         </footer>
+        </UserProviders>
         <ScrollToTop />
         <AnalyticsWrapper />
       </body>

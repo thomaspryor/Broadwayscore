@@ -25,7 +25,7 @@ export default function FooterBranding({ totalReviews }: { totalReviews: number 
           <span className="text-gray-500 hidden sm:inline">|</span>
           <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Buy Me a Coffee</a>
           <span className="text-gray-500 hidden sm:inline">|</span>
-          <HeaderSubscribeButton />
+          <HeaderSubscribeButton placement="footer" />
           <span className="text-gray-500 hidden sm:inline">|</span>
           <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           <span className="text-gray-500 hidden sm:inline">|</span>

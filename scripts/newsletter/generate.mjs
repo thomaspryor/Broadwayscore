@@ -28,7 +28,7 @@ const cjsRequire = createRequire(import.meta.url);
 // pills agree with the site and the digest emails — `special` is EVENT, not
 // a raw uppercased type string.
 const { showFormatTitle, showFormatLabel, resolveShowFormat } = cjsRequire('../lib/show-format.js');
-const { buildUnsubscribeUrl, resolveNewsletterEdition } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
+const { buildUnsubscribeUrl, resolveNewsletterEdition, buildAccountCtaHtml } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
 const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
@@ -3300,6 +3300,7 @@ ${sectionOrder.join('')}
       <a href="${SITE}${BRAND.primaryPath}" style="text-decoration:none;color:inherit;"><span style="color:#fff;">${BRAND.prefix}</span><span style="background:${BRAND.accentGrad};-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;color:${BRAND.accentSolid};">Scorecard</span><span style="font-size:8px;color:#6b7280;font-weight:400;vertical-align:super;">™</span></a>
     </div>
     <div style="font-size:13px;color:#9ca3af;margin-top:10px;">Every show. Every review. One score.</div>
+    <div style="font-size:13px;color:#d1d5db;margin-top:14px;">${buildAccountCtaHtml(IS_WE ? 'west-end' : 'broadway', 'newsletter', BRAND.accentSolid)}</div>
     <div style="font-size:11px;color:#6b7280;margin-top:18px;">
       <a href="${SITE}/about" style="color:#9ca3af;text-decoration:none;">About</a> &nbsp;·&nbsp;
       <a href="${SITE}${BRAND.primaryPath}/methodology" style="color:#9ca3af;text-decoration:none;">Methodology</a> &nbsp;·&nbsp;
