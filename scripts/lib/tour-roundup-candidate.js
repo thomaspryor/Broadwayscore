@@ -66,6 +66,31 @@ function roundupDateFromSlug(slugOrUrl) {
 }
 
 /**
+ * True when a tour of this title is already tracked and still running (or
+ * undated). `matched` is the tour parent ({id, title}), or for a standalone
+ * tour (BRO-4931) just {id: null, title}: a tour with no tourOf is matched by
+ * its own title, since it carries no parent to compare.
+ */
+function hasOpenTour(matched, shows, { predecessorEnds = null, segmentStart = null } = {}) {
+  const title = String(matched.title || '').trim().toLowerCase();
+  const byId = new Map((shows || []).map(s => [s.id, s]));
+  return (shows || []).some(s => {
+    if (s.category !== 'tour') return false;
+    const parent = s.tourOf ? byId.get(s.tourOf) : null;
+    const sameTitle = (matched.id && s.tourOf === matched.id)
+      || (!!parent && String(parent.title || '').trim().toLowerCase() === title)
+      // Standalone tours carry no tourOf: their own title is the only link.
+      || (!s.tourOf && String(s.title || '').trim().toLowerCase() === title);
+    if (!sameTitle || (s.status === 'closed' && s.closingDate)) return false;
+    // A running tour its schedule page shows ending before this one starts
+    // (tour-discovery.js lifecyclePlan, BRO-4724): the tour booked after its
+    // layoff is a candidate now, not only once the first is marked closed.
+    const end = predecessorEnds && predecessorEnds[s.id];
+    return !(end && segmentStart && !s.closingDate && end < segmentStart);
+  });
+}
+
+/**
  * The show (Broadway, Off-Broadway or regional) a tour roundup suggests adding
  * a tour for, or null when the slug isn't a tour roundup, the match isn't one
  * of those, or a tour entry for that production (or another of its title)
@@ -74,23 +99,10 @@ function roundupDateFromSlug(slugOrUrl) {
 function tourCandidateFor(slug, matchedShow, shows, { predecessorEnds = null, segmentStart = null } = {}) {
   if (!isNationalTourRoundupSlug(slug) || !matchedShow) return null;
   if (!isTourParentCategory(matchedShow.category)) return null;
-  const title = String(matchedShow.title || '').trim().toLowerCase();
-  const byId = new Map((shows || []).map(s => [s.id, s]));
   // A tour of this title that is still running (or undated) already owns the
   // roundup. Once every tour of the title has closed, a new tour roundup is a
   // second tour and is a candidate again (Beetlejuice 2026, BRO-4262).
-  const hasTour = (shows || []).some(s => {
-    if (s.category !== 'tour' || !s.tourOf) return false;
-    const parent = byId.get(s.tourOf);
-    const sameTitle = s.tourOf === matchedShow.id || (!!parent && String(parent.title || '').trim().toLowerCase() === title);
-    if (!sameTitle || (s.status === 'closed' && s.closingDate)) return false;
-    // A running tour its schedule page shows ending before this one starts
-    // (tour-discovery.js lifecyclePlan, BRO-4724): the tour booked after its
-    // layoff is a candidate now, not only once the first is marked closed.
-    const end = predecessorEnds && predecessorEnds[s.id];
-    return !(end && segmentStart && !s.closingDate && end < segmentStart);
-  });
-  if (hasTour) return null;
+  if (hasOpenTour(matchedShow, shows, { predecessorEnds, segmentStart })) return null;
   return { broadwayShowId: matchedShow.id, title: matchedShow.title };
 }
 
@@ -185,21 +197,44 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
 }
 
 /**
- * Rows still worth suggesting: the show exists, is Broadway, Off-Broadway or
- * regional, and has no tour entry of its title yet (a tour added since the
- * roundup settles the row). Roundup-only rows (no broadwayShowId) are not
- * suggestions: they wait for a Tours To You page to pair with.
+ * A candidate row's tracked parent id: parentId (Tours To You rows since
+ * BRO-4931), else broadwayShowId (roundup rows and older rows), else null for
+ * a standalone page row or a roundup-only row.
+ */
+const candidateParentId = r => r.parentId || r.broadwayShowId || null;
+
+/**
+ * Rows still worth suggesting. A row with a tracked parent: the parent exists
+ * and no tour of its title is running yet (a tour added since the roundup
+ * settles the row). A standalone page row (key page:<slug>, no parent, since
+ * BRO-4931): no tracked tour carries its title, tours with no tourOf being
+ * matched by their own title. A row whose page nothing could classify
+ * (needsClassification) stays open so the owner digest can ask. Roundup-only
+ * rows (key roundup:..., no page yet) are not suggestions: they wait for a
+ * Tours To You page to pair with.
  */
 function openTourCandidates(rows, shows) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
   return (rows || []).filter(r => {
     if (r.createdTourId) return false; // create-tour-entries.js made its entry (BRO-4262)
-    const show = r.broadwayShowId ? byId.get(r.broadwayShowId) : null;
+    if (String(r.key || '').startsWith('roundup:')) return false;
     // A tour found running on Tours To You (tour-discovery.js) has no roundup
     // slug; the same "no open tour of this title" test applies.
-    const slug = r.source === 'tourstoyou' ? 'national-tour' : (r.slug || 'national-tour');
-    return !!show && !!tourCandidateFor(slug, show, shows, r.source === 'tourstoyou' ? { predecessorEnds: r.predecessorEnds, segmentStart: r.segmentStart } : {});
+    const found = r.source === 'tourstoyou';
+    const slug = found ? 'national-tour' : (r.slug || 'national-tour');
+    const opts = found ? { predecessorEnds: r.predecessorEnds, segmentStart: r.segmentStart } : {};
+    const parentId = candidateParentId(r);
+    if (!parentId) {
+      // Only a Tours To You page row can stand on its own title.
+      return found && !!r.title && !hasOpenTour({ id: null, title: r.title }, shows, opts);
+    }
+    const show = byId.get(parentId);
+    if (!show) return false;
+    // The page row's parent was validated against TOUR_PARENT_CATEGORIES when
+    // the page was read (a West End parent is fine for a page); a roundup is not.
+    if (found) return !hasOpenTour(show, shows, opts);
+    return !!tourCandidateFor(slug, show, shows, opts);
   });
 }
 
-module.exports = { isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, tourCandidateFor, recordTourCandidates, openTourCandidates };
+module.exports = { isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates };
