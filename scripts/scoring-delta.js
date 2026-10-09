@@ -882,6 +882,8 @@ function getUrlShowIdsAll(guards) {
 function decideInclusion(review, show, guards) {
   // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
+  // The row predicate reads review.sources, review.humanReviewScore and
+  // review.adjudicatedScore, which is why those are in FLAG_FIELDS.
   if (typeof guards.isCancelledBeforeOpeningShow === 'function' && guards.isCancelledBeforeOpeningShow(show)) {
     return { included: false, reason: 'cancelledBeforeOpening' };
   }
