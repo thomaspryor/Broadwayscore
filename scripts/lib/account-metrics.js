@@ -97,6 +97,10 @@ const ACTION_LABELS = {
 const ACTION_EVENTS = Object.keys(ACTION_LABELS);
 // A sign-up "took" when the person saved something.
 const ACTIVATION_EVENTS = ['rating_submitted', 'watchlist_add', 'list_created', 'list_item_added', 'import_completed'];
+// Signed-out saves to this device (watchlist_add with local=true, BRO-4616)
+// are not account activity: left in, "Added to watchlist" read 110 adds by 1
+// person on 2026-10-08, and a device save counted as a sign-up that took.
+const NOT_LOCAL = "coalesce(toString(properties.local), '') != 'true'";
 // Welcome-screen picks are written straight to reviews / seen_unrated and fire
 // no rating_submitted, so a saved pick counts on its own.
 const WELCOME_PICKED = "event = 'onboarding_step_completed' AND toString(properties.step) = 'shows' AND toFloat(properties.shows_added) > 0";
@@ -172,7 +176,7 @@ SELECT event,
   count() AS last30,
   count(DISTINCT properties.user_id) AS users30
 FROM events
-WHERE event IN (${sqlList(ACTION_EVENTS)}) AND timestamp >= now() - INTERVAL 30 DAY
+WHERE event IN (${sqlList(ACTION_EVENTS)}) AND ${NOT_LOCAL} AND timestamp >= now() - INTERVAL 30 DAY
 GROUP BY event ORDER BY last30 DESC LIMIT 100`,
     // Inner columns are n_* because HogQL resolves an outer alias of the same
     // name inside WHERE (illegal_aggregation).
@@ -198,7 +202,7 @@ FROM (
     countIf(event = 'sign_in_prompt_shown') AS n_shown,
     countIf(event = 'sign_in_started') AS n_started,
     countIf(event = 'sign_in_completed') AS n_completed,
-    countIf(event IN (${sqlList(ACTIVATION_EVENTS)}) OR (${WELCOME_PICKED})) AS n_acted
+    countIf((event IN (${sqlList(ACTIVATION_EVENTS)}) AND ${NOT_LOCAL}) OR (${WELCOME_PICKED})) AS n_acted
   FROM events
   WHERE timestamp >= now() - INTERVAL 30 DAY
     AND event IN ('sign_in_prompt_shown', 'sign_in_started', 'sign_in_completed', 'onboarding_step_completed', ${sqlList(ACTIVATION_EVENTS)})
