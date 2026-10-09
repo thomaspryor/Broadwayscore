@@ -82,6 +82,18 @@ const TIER_2 = [
   'REDDIT_CLIENT_ID',
   'REDDIT_CLIENT_SECRET',
   'BSKY_APP_PASSWORD',
+  // Accounts and deploy work (BRO-4894). None of these were listed, so a
+  // cloud session auditing sign-in had no way to see it lacked them: the
+  // Supabase Management API (custom domain, auth config), the service role
+  // (account counts), the public pair a local build with accounts needs,
+  // Vercel (deploy checks, DNS) and Sentry (crash lookups).
+  'SUPABASE_ACCESS_TOKEN',
+  'SUPABASE_PROJECT_REF',
+  'SUPABASE_SERVICE_ROLE_KEY',
+  'NEXT_PUBLIC_SUPABASE_URL',
+  'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+  'VERCEL_TOKEN',
+  'SENTRY_AUTH_TOKEN',
 ];
 
 // Shortest value we will show a 3-char prefix for. A 40-char token loses
