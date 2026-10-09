@@ -457296,20 +457296,26 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-09T19:02:03.246Z",
-    "completedAt": "2026-10-09T19:02:07.540Z",
-    "totalReviews": 29,
-    "processed": 1,
-    "skipped": 28,
-    "errors": 0,
+    "startedAt": "2026-10-09T19:01:44.163Z",
+    "completedAt": "2026-10-09T19:03:00.812Z",
+    "totalReviews": 52269,
+    "processed": 2,
+    "skipped": 52250,
+    "errors": 1,
     "tokensUsed": {
-      "input": 3967,
-      "output": 292,
-      "total": 11851
+      "input": 71702,
+      "output": 3339,
+      "total": 209950
     },
-    "costUsd": 0.0163796,
-    "runId": "37976976437",
-    "errorDetails": [],
+    "costUsd": 0.32188714999999996,
+    "runId": "37976945487",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ],
     "validation": [
       {
         "showId": "11-to-midnight-off-broadway-2026",
@@ -459644,10 +459650,10 @@
       {
         "showId": "an-oak-tree-off-west-end-2026",
         "ourDistribution": {
-          "up": 8,
+          "up": 9,
           "flat": 4,
           "down": 0,
-          "total": 12
+          "total": 13
         },
         "hasDisagreement": false
       },
@@ -484519,8 +484525,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-09T19:03:33.377Z",
-    "completedAt": "2026-10-09T19:03:33.396Z",
+    "startedAt": "2026-10-09T19:04:20.498Z",
+    "completedAt": "2026-10-09T19:04:23.153Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -484531,7 +484537,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "37976976437",
+    "runId": "37976945487",
     "errorDetails": []
   }
 ]
