@@ -78,6 +78,22 @@ function diffShow(p, opts = {}) {
   const local = new Set(p.localScoredOutletIds || []);
   const defects = [];
 
+  // BRO-3030: a show with NO local scored reviews and no local cs has no public JSON to
+  // serve (the slim file is only built once there is something to show), so a prod 404
+  // is the expected state, not "the site is serving stale coverage". 4 of the 8 daily
+  // "defects" on 2026-10-09 were exactly this (brand-new shows with zero reviews).
+  // Only HTTP 404 qualifies; a 5xx / timeout is still a real unreachable.
+  // A built local public file means the page SHOULD be live (1057 of them carry no cs), so a
+  // prod 404 there is a real outage even with no scored reviews.
+  if (!p.deployedJson && local.size === 0 && p.localCs == null && p.localFileExists === false
+      && /^HTTP 404\b/.test(p.fetchError || '')) {
+    return {
+      showId: p.showId, title: p.title || p.showId, openingDate: p.openingDate || null,
+      ok: true, defects: [], missingFromProd: [], localCount: 0, deployedCount: null,
+      note: 'no local reviews yet: nothing to serve',
+    };
+  }
+
   if (!p.deployedJson) {
     // Unreachable is its own class, NOT "everything is missing": reporting 40
     // missing outlets for one 404 would swamp the report and hide the real
@@ -166,6 +182,37 @@ function deployedShowUrl(showId, base = 'https://broadwayscorecard.com') {
   return `${base}/data/shows/${showId}.json`;
 }
 
+// BRO-3030: deploys lag a data commit by 20-30 min in bursts and by up to 6h when the
+// content-aware gate defers (vercel-deploy.yml backstop), so a one-off diff is normal
+// and was firing "the site is serving stale coverage" almost daily for 37+ days. A diff
+// only counts as stale once the same show has been defective for longer than the
+// backstop.
+const STALE_GRACE_HOURS = 6;
+
+/**
+ * PURE. Stamp each defective row with `firstDefectAt`: carried from the previous report
+ * when that show was defective there too, else `nowIso`. Clean rows get no stamp.
+ * @param {Array} rows diffShow() results
+ * @param {object|null} prevReport the previous run's report ({shows:[{showId, firstDefectAt}]})
+ */
+function stampFirstDefectAt(rows, prevReport, nowIso) {
+  const prev = new Map();
+  for (const r of (prevReport && Array.isArray(prevReport.shows)) ? prevReport.shows : []) {
+    if (r && r.showId && r.firstDefectAt) prev.set(r.showId, r.firstDefectAt);
+  }
+  return (rows || []).filter(Boolean).map((r) => (r.ok ? r : { ...r, firstDefectAt: prev.get(r.showId) || nowIso }));
+}
+
+/** PURE. Defective rows whose firstDefectAt is older than the grace window. */
+function persistentDefects(rows, nowMs, graceHours = STALE_GRACE_HOURS) {
+  return (rows || []).filter((r) => {
+    if (!r || r.ok) return false;
+    const t = Date.parse(r.firstDefectAt || '');
+    return Number.isFinite(t) && (nowMs - t) / 3600000 >= graceHours;
+  });
+}
+
 module.exports = {
+  STALE_GRACE_HOURS, stampFirstDefectAt, persistentDefects,
   diffShow, summarize, deployedOutletIds, deployedShowUrl, severityRank, CS_TOLERANCE,
 };

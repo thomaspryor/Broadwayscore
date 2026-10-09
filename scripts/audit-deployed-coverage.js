@@ -33,7 +33,9 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { diffShow, summarize, deployedShowUrl } = require('./lib/deployed-coverage-diff');
+const {
+  diffShow, summarize, deployedShowUrl, stampFirstDefectAt, persistentDefects, STALE_GRACE_HOURS,
+} = require('./lib/deployed-coverage-diff');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { selectDeployedCoverageTargets } = require('./lib/deployed-coverage-targets');
 
@@ -172,11 +174,19 @@ async function main() {
       showId, title: show.title, openingDate: show.openingDate || null,
       localScoredOutletIds: scoredByShow.get(showId) || new Set(),
       localCs: localCs(showId),
+      localFileExists: fs.existsSync(path.join(PUBLIC_SHOWS, `${showId}.json`)),
       deployedJson, fetchError,
     });
   });
 
-  const summary = summarize(rows);
+  // BRO-3030: carry first-seen-defective across runs so the alert fires only for diffs that
+  // outlive the deploy backstop, not for ordinary deploy lag.
+  let prevReport = null;
+  try { prevReport = JSON.parse(fs.readFileSync(opts.reportPath, 'utf8')); } catch { /* first run */ }
+  const stamped = stampFirstDefectAt(rows, prevReport, new Date(nowMs).toISOString());
+  const persistentRows = persistentDefects(stamped, nowMs);
+  const summary = summarize(stamped);
+  const persistentSummary = { ...summarize(persistentRows), checked: summary.checked };
   for (const r of summary.shows.slice(0, 40)) {
     console.log(`${r.title} (${r.showId})`);
     for (const d of r.defects) console.log(`  ${d.type === 'unreachable' ? '🚨' : '⚠️ '} ${d.type}: ${d.detail}`);
@@ -184,7 +194,7 @@ async function main() {
   if (summary.shows.length > 40) console.log(`… ${summary.shows.length - 40} more defective show(s)`);
 
   console.log(`\n=== Summary ===`);
-  console.log(`Checked: ${summary.checked} | clean: ${summary.clean} | stale/missing on prod: ${summary.defective}`);
+  console.log(`Checked: ${summary.checked} | clean: ${summary.clean} | stale/missing on prod: ${summary.defective} (${persistentSummary.defective} for over ${STALE_GRACE_HOURS}h)`);
   for (const [type, n] of Object.entries(summary.byType)) console.log(`  ${type}: ${n}`);
   if (skippedForBudget > 0) {
     console.log(`⏱  ${skippedForBudget} show(s) SKIPPED — ${budget.minutes}min time budget spent (not checked, not clean).`);
@@ -196,6 +206,8 @@ async function main() {
     daysChecked: opts.days,
     skippedForBudget,
     ...summary,
+    persistentDefective: persistentSummary.defective,
+    staleGraceHours: STALE_GRACE_HOURS,
   };
   try {
     fs.mkdirSync(path.dirname(opts.reportPath), { recursive: true });
@@ -203,16 +215,26 @@ async function main() {
     console.log(`\nReport → ${opts.reportPath}`);
   } catch (e) { console.error('Failed to write report:', e.message); }
 
-  if (opts.alert && summary.defective > 0) {
+  if (opts.alert && persistentSummary.defective === 0 && !opts.showId && skippedForBudget === 0) {
+    // Nothing has been stale past the deploy backstop: close the condition so the digest
+    // stops reprinting it (BRO-3030). A recurrence re-opens the condition; BRO-3030 stays its tracker (resolveCondition keeps linearIdentifier), so it resurfaces weekly rather than daily.
+    try {
+      const { resolveCondition } = require('./lib/owner-alert-router');
+      if (resolveCondition('deployed-coverage:stale', { reason: `no show stale for over ${STALE_GRACE_HOURS}h` })) {
+        console.log('Resolved deployed-coverage:stale (no persistent staleness).');
+      }
+    } catch (e) { console.error('Condition resolve failed:', e.message); }
+  }
+  if (opts.alert && persistentSummary.defective > 0) {
     try {
       const { routeAlert } = require('./lib/owner-alert-router');
       const routed = await routeAlert({
         conditionKey: 'deployed-coverage:stale',
         title: 'Deployed coverage — the site is serving stale coverage',
         description: [
-          `${summary.defective}/${summary.checked} show(s) differ between internal state and what prod serves.`,
-          ...Object.entries(summary.byType).map(([t, n]) => `${t}: ${n}`),
-          ...summary.shows.slice(0, 5).map((r) => `${r.title}: ${r.defects.map((d) => d.type).join('+')}`),
+          `${persistentSummary.defective}/${persistentSummary.checked} show(s) have differed between internal state and what prod serves for over ${STALE_GRACE_HOURS}h.`,
+          ...Object.entries(persistentSummary.byType).map(([t, n]) => `${t}: ${n}`),
+          ...persistentSummary.shows.slice(0, 5).map((r) => `${r.title}: ${r.defects.map((d) => d.type).join('+')}`),
         ].join('\n'),
         severity: 'error',
         // 'digest' per the owner mandate (card #611): ALL non-page-worthy senders
@@ -225,7 +247,7 @@ async function main() {
       // queued — must be handled explicitly (lint guard, card #616).
       console.log(routed.action === 'silent'
         ? 'Digest line suppressed (a fresher one is already queued within 20h).'
-        : `Queued for the daily digest (${summary.defective} stale show(s)).`);
+        : `Queued for the daily digest (${persistentSummary.defective} stale show(s)).`);
     } catch (e) { console.error('Alert routing failed:', e.message); }
   }
 
