@@ -116,7 +116,7 @@ test('reviewEvidence: keeps only {kind ∈ EVIDENCE_KINDS, url: http(s)} entries
 });
 
 test('resolveEvidenceOutlet: a registered outlet host resolves; an unregistered host and a defunct venue-site entry do not', () => {
-  assert.deepEqual(resolveEvidenceOutlet(LBO, REGISTRY), { outletId: 'london-box-office', tier: 3, reason: null });
+  assert.deepEqual(resolveEvidenceOutlet(LBO, REGISTRY), { outletId: 'london-box-office', tier: 2, reason: null }); // T3 -> T2 registry sync (BRO-4930)
   assert.deepEqual(resolveEvidenceOutlet(WOS, REGISTRY), { outletId: 'whatsonstage', tier: 2, reason: null });
   const nobody = resolveEvidenceOutlet(NOBODY, REGISTRY);
   assert.equal(nobody.outletId, null);
@@ -156,7 +156,7 @@ test('decide: an evidence-backed candidate at a venue OUTSIDE VENUE_LISTING_PAGE
   assert.equal(r.source, 'review-url');
   assert.equal(r.page, LBO2, 'page is the evidence URL string on this path');
   assert.equal(r.outletId, 'london-box-office');
-  assert.match(r.reason, /review-url .* \(registered outlet london-box-office, T3\) names "Flush" on fetch/);
+  assert.match(r.reason, /review-url .* \(registered outlet london-box-office, T2\) names "Flush" on fetch/);
 });
 
 test('decide: a coverage-url (announced production) confirms the same way and says so', () => {
