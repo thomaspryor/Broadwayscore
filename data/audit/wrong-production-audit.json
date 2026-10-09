@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T16:18:11.068Z",
+  "timestamp": "2026-10-09T16:33:47.454Z",
   "stats": {
-    "totalReviews": 51453,
-    "alreadyFlagged": 19410,
+    "totalReviews": 51452,
+    "alreadyFlagged": 19412,
     "dateGuardCatches": 262,
     "directorMismatch": 1579,
     "tvFilmSignals": 1485,
-    "londonSignals": 1594,
+    "londonSignals": 1595,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5613
+    "noPublishDate": 5600
   },
   "findings": [
     {
@@ -22313,6 +22313,7 @@
     {
       "showId": "marvellous-west-end-2022",
       "file": "independent--isobel-lewis.json",
+      "score": 42,
       "publishDate": "2022-10-23",
       "url": null,
       "findings": [
@@ -48240,6 +48241,7 @@
     {
       "showId": "blues-for-an-alabama-sky-west-end-2022",
       "file": "artsdesk--helen-hawkins.json",
+      "score": 82,
       "publishDate": "2022-10-22",
       "url": null,
       "findings": [
@@ -48253,6 +48255,7 @@
     {
       "showId": "blues-for-an-alabama-sky-west-end-2022",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 63,
       "publishDate": "2022-10-07",
       "url": null,
       "findings": [
@@ -51137,6 +51140,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "maryland-theatre-guide--jennifer-georgia.json",
+      "score": 80,
+      "publishDate": "2026-10-05",
+      "url": "https://mdtheatreguide.com/2026/10/theatre-review-dirty-dancing-the-musical-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -56767,7 +56784,7 @@
     {
       "showId": "jews-in-their-own-words-west-end-2022",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 59,
+      "score": 60,
       "publishDate": "September 29th, 2022",
       "url": "https://theartsdesk.com/theatre/jews-their-own-words-royal-court-review-calling-out-ancient-prejudice",
       "findings": [
@@ -56794,7 +56811,7 @@
     {
       "showId": "jews-in-their-own-words-west-end-2022",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 68,
+      "score": 64,
       "publishDate": "September 30th, 2022",
       "url": "https://www.timeout.com/london/theatre/jews-in-their-own-words-review",
       "findings": [
@@ -65411,6 +65428,7 @@
     {
       "showId": "the-boy-with-two-hearts-west-end-2022",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 39,
       "publishDate": "2022-10-07",
       "url": "https://www.dailymail.co.uk/news/article-11289877/PATRICK-MARMION-reviews-Blues-Alabama-Sky.html",
       "findings": [
@@ -66365,7 +66383,7 @@
     {
       "showId": "the-doctor-west-end-2022",
       "file": "guardian--arifa-akbar.json",
-      "score": null,
+      "score": 96,
       "publishDate": "October 9, 2022",
       "url": "https://www.theguardian.com/stage/2022/oct/10/the-doctor-review-duke-of-yorks-theatre-robert-icke-juliet-stevenson",
       "findings": [
@@ -66393,6 +66411,7 @@
     {
       "showId": "the-doctor-west-end-2022",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 100,
       "publishDate": "2022-10-10",
       "url": "https://www.thetimes.co.uk/article/the-doctor-review-juliet-stevenson-stuns-in-the-play-of-the-decade-vgvqkn0jz",
       "findings": [
