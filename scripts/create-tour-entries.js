@@ -30,6 +30,16 @@
  *   node scripts/create-tour-entries.js --write   write shows.json + candidates file
  * TOUR_AUTOCREATE=off|report|write (repo variable) wins; unset = report-only
  * until tour-automation-mode.js LIVE_FROM, then write.
+ * TOUR_STANDALONE_AUTOCREATE=off|report|write governs tours with no tracked
+ * production behind them (BRO-4931); default report, never louder than
+ * TOUR_AUTOCREATE. NOTE: the daily step in .github/workflows/scrape-new-aggregators.yml
+ * passes only TOUR_AUTOCREATE, so the variable has no effect in CI until that
+ * step's env also carries TOUR_STANDALONE_AUTOCREATE: ${{ vars.TOUR_STANDALONE_AUTOCREATE }}
+ * (a workflow edit that needs the infrastructure review first). Until then the
+ * daily job reports standalone tours and a person writes the first batch with
+ * --only. A tour of an Off-Broadway or regional parent is written only with 5+
+ * distinct cities and a launch confirmed by Wikipedia, a BWW roundup or by hand
+ * (lib/tour-create-decision.js); a UK parent only through an override row.
  */
 
 const fs = require('fs');
@@ -116,7 +126,7 @@ async function main() {
   }
   if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); writeAudit({ mode: write ? 'write' : 'report', created: [], results: [] }); return; }
 
-  const { fetchSchedule, fetchWikiText } = require('./enrich-tour-dates');
+  const { fetchSchedule, fetchWikiText, fetchWikiArticle } = require('./enrich-tour-dates');
   const rows = JSON.parse(fs.readFileSync(CANDIDATES, 'utf8'));
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const byId = new Map(shows.map(s => [s.id, s]));
@@ -126,7 +136,10 @@ async function main() {
   // (page:<slug>) or a Tours To You slug.
   const only = ((argv.find(a => a.startsWith('--only=')) || '').split('=')[1] || '').split(',').filter(Boolean);
   const wanted = c => !only.length || [candidateKey(c), candidateParentId(c), c.tourScheduleSlug, c.tourScheduleSlug && `page:${c.tourScheduleSlug}`].some(k => k && only.includes(k));
-  const open = openTourCandidates(rows, shows).filter(wanted);
+  // Parented tours first, then standalone pages, those still to be classified last: each of those costs two
+  // Wikipedia reads, and they must not use up the time budget before a parented tour is decided (BRO-4931).
+  const rank = c => (candidateParentId(c) ? 0 : c.needsClassification ? 2 : 1);
+  const open = openTourCandidates(rows, shows).filter(wanted).sort((a, b) => rank(a) - rank(b));
   if (only.length) console.log(`--only: ${only.join(', ')}`);
   // A retired id must never come back (data/retired-show-ids.json, core-data).
   const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };
@@ -161,13 +174,16 @@ async function main() {
     // Tours To You-found tours with "no evidence URL" on 2026-10-05).
     const { url: scheduleUrl, html } = await fetchSchedule(probe, fallback, { budget });
     let wiki = '';
-    // A page nothing classified needs the article's infobox even when it never mentions a tour.
-    try { wiki = await fetchWikiText(title, { requireTour: !c.needsClassification }); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
+    try { wiki = await fetchWikiText(title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
+    // A page nothing classified also gets the first article that exists, for its infobox only: it can
+    // be another work (Clue -> the 1997 musical), so it never feeds the date decision above.
+    let classifyWiki = null;
+    if (c.needsClassification && !parent) { try { classifyWiki = await fetchWikiArticle(title, { requireTour: false }); } catch (e) { console.log(`  wikipedia (classification) failed: ${e.message}`); } }
     // A schedule row may carry the BWW roundup seen for the same show
     // (recordTourCandidates), or a roundup-only row pairs with this page by
     // title; its date confirms the launch when Wikipedia is silent (BRO-4563).
     const roundupUrl = candidateRoundupUrl(c, rows);
-    const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText: wiki, roundupUrl, retiredIds, tourSchedules, overrides });
+    const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText: wiki, classifyWiki, roundupUrl, retiredIds, tourSchedules, overrides });
     // What Wikipedia's infobox said about a page discovery could not classify goes back on its row, so the
     // owner digest asks about a launch that cannot be confirmed, not about what the page is.
     if (!parent && c.needsClassification) {
@@ -208,6 +224,8 @@ async function main() {
       // tour of the title may have been added or reopened meanwhile.
       if (snapshot.shows.some(s => s.id === r.entry.id)) continue;
       const parentNow = r.parentId ? snapshot.shows.find(s => s.id === r.parentId) : null;
+      // A parent that has gone since is not a reason to fall back to a standalone entry for the same tour.
+      if (r.parentId && !parentNow) { console.log(`  ${r.entry.id} skipped under lock: parent ${r.parentId} is gone`); continue; }
       const recheck = buildTourEntry({ parent: parentNow || null, ...(parentNow ? {} : { title: r.title, type: r.type }), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds, knownEnds: r.knownEnds });
       if (recheck.skip) { console.log(`  ${r.entry.id} skipped under lock: ${recheck.skip}`); continue; }
       snapshot.shows.push(r.entry);

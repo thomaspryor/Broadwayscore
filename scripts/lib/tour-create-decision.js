@@ -28,6 +28,24 @@ const { UPCOMING_DAYS, roundupRowFor } = require('./tour-discovery');
 // would have created it with that date (BRO-4601 report run).
 const FRESH_LAUNCH_DAYS = 30;
 
+// A tour of a production outside Broadway (BRO-4931: Off-Broadway, regional, or a
+// UK parent a person named) is written by the daily job only on firmer
+// evidence than a Broadway parent's: a real national tour (not a regional
+// co-production that plays a few houses) and a launch some source other than
+// the Tours To You schedule itself confirms. Heathers: 7 stops, upcoming only.
+const NON_BROADWAY_MIN_CITIES = 5;
+const CONFIRMED_LAUNCH_SOURCES = new Set(['wikipedia', 'bww-roundup', 'hand-verified']);
+
+/** Why a tour of this non-Broadway parent stays a suggestion, or null. Pure. */
+function nonBroadwayEvidenceProblem(parent, decision) {
+  if (!parent || (parent.category || 'broadway') === 'broadway') return null;
+  const cities = new Set(((decision && decision.segmentRows) || []).map(r => String(r.city || '').toLowerCase().replace(/\s+/g, ' ').trim()).filter(Boolean));
+  const why = [];
+  if (cities.size < NON_BROADWAY_MIN_CITIES) why.push(`${cities.size} distinct cit${cities.size === 1 ? 'y' : 'ies'} in the segment, ${NON_BROADWAY_MIN_CITIES} needed`);
+  if (!decision || !CONFIRMED_LAUNCH_SOURCES.has(decision.launchSource)) why.push(`launch evidence is ${(decision && decision.launchSource) || 'none'}; Wikipedia, a BWW roundup or a hand-verified launch is needed`);
+  return why.length ? `tour of a ${parent.category} production (${parent.id}) needs more than the schedule alone: ${why.join('; ')}` : null;
+}
+
 /** The BWW roundup that backs a candidate, or null: its own, or one paired by title (BRO-4931). */
 function candidateRoundupUrl(candidate, ledgerRows = []) {
   if (candidate.source !== 'tourstoyou') return candidate.url;
@@ -43,14 +61,15 @@ function candidateRoundupUrl(candidate, ledgerRows = []) {
  * from the page, before a candidate exists: tour-discovery.js runningTourCandidate.)
  */
 function decideTourCreation({
-  candidate: c, parent = null, shows, scheduleUrl, html, wikiText = '', roundupUrl = null,
+  candidate: c, parent = null, shows, scheduleUrl, html, wikiText = '', classifyWiki = null, roundupUrl = null,
   retiredIds = null, tourSchedules = {}, now = new Date(), overrides = {}, allowStandaloneOverExisting = false,
 }) {
   let cand = c;
   // A page discovery could not classify gets Wikipedia's infobox now (step 7 of
   // tour-page-class.js). Still unclassified: it stays a candidate, never created.
   if (!parent && c.needsClassification) {
-    const cls = classifyTourPage({ slug: c.tourScheduleSlug, pageTitle: c.title, rows: parseTourSchedule(html), shows, overrides, wikiText });
+    // The infobox article is for telling what the page IS only; wikiText (dates) is a different fetch.
+    const cls = classifyTourPage({ slug: c.tourScheduleSlug, pageTitle: c.title, rows: parseTourSchedule(html), shows, overrides, wikiText: classifyWiki ? classifyWiki.text : '', wikiTitle: classifyWiki ? classifyWiki.title : null });
     if (cls.class !== 'production') {
       return { outcome: cls.class === 'unclassified' ? 'needs-classification' : `skip-${cls.class}`, reason: cls.reason, pageClass: cls, decision: null, built: { skip: cls.reason } };
     }
@@ -77,7 +96,11 @@ function decideTourCreation({
   if (!decision.problem && tooFewStops(decision.segmentRows)) { decision.problem = `only ${decision.segmentRows.length} engagements: a regional co-production or a limited run, not a national tour`; kind = 'skip-too-few-stops'; }
   const knownEnds = found ? (cand.predecessorEnds || null) : null;
   const standalone = parent ? {} : { title: cand.title, type: PRODUCTION_TYPES.includes(cand.type) ? cand.type : null };
-  const built = buildTourEntry({ parent, ...standalone, allowStandaloneOverExisting, shows, decision, roundupUrl, scheduleUrl, retiredIds, knownEnds, now });
+  let built = buildTourEntry({ parent, ...standalone, allowStandaloneOverExisting, shows, decision, roundupUrl, scheduleUrl, retiredIds, knownEnds, now });
+  if (built.entry) {
+    const thin = nonBroadwayEvidenceProblem(parent, decision);
+    if (thin) built = { skip: thin };
+  }
   return {
     outcome: built.entry ? 'create' : (kind || 'suggest'),
     reason: built.skip || '',
@@ -85,4 +108,4 @@ function decideTourCreation({
   };
 }
 
-module.exports = { FRESH_LAUNCH_DAYS, candidateRoundupUrl, decideTourCreation };
+module.exports = { FRESH_LAUNCH_DAYS, NON_BROADWAY_MIN_CITIES, CONFIRMED_LAUNCH_SOURCES, nonBroadwayEvidenceProblem, candidateRoundupUrl, decideTourCreation };

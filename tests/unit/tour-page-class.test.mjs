@@ -13,7 +13,7 @@ import os from 'node:os';
 
 const require = createRequire(import.meta.url);
 const {
-  classifyTourPage, loadTourPageClasses, overrideProblems, maxConcurrentCities, infoboxClass,
+  classifyTourPage, loadTourPageClasses, overrideProblems, maxConcurrentCities, infoboxClass, similarTrackedShow, disambiguationConflict,
   companyOfSlug, decodeTitle, pageTitleFromHtml, TEMPLATE_RE, EVENT_RE, OVERRIDES_PATH,
 } = require('../../scripts/lib/tour-page-class.js');
 
@@ -65,7 +65,11 @@ test('a page titled like a tracked production is that production, in any market'
   const mystic = classifyTourPage({ slug: 'mystic-pizza', pageTitle: 'Mystic Pizza', shows: SHOWS });
   assert.equal(mystic.parentId, 'mystic-pizza-regional-2025');
   assert.equal(mystic.title, 'Mystic Pizza');
-  assert.equal(classifyTourPage({ slug: 'the-woman-in-black', pageTitle: 'The Woman in Black', shows: SHOWS }).parentId, 'the-woman-in-black-west-end-1989');
+  // A UK production is never an automatic parent (BRO-4931): a London Woman in Black is not the North American tour.
+  assert.equal(classifyTourPage({ slug: 'the-woman-in-black', pageTitle: 'The Woman in Black', shows: SHOWS }).class, 'unclassified');
+  // A person can name it.
+  const named = classifyTourPage({ slug: 'the-woman-in-black', pageTitle: 'The Woman in Black', shows: SHOWS, overrides: { 'the-woman-in-black': { class: 'production', parentId: 'the-woman-in-black-west-end-1989', reason: 'x', issue: 'BRO-1', reviewedAt: '2026-10-09' } } });
+  assert.deepEqual([named.class, named.parentId, named.source], ['production', 'the-woman-in-black-west-end-1989', 'override']);
   // A title match beats an event keyword: the shows list decides what is a show.
   assert.equal(classifyTourPage({ slug: 'six-the-musical', pageTitle: 'SIX', shows: SHOWS }).parentId, 'six-2021');
 });
@@ -136,12 +140,14 @@ test('event keywords deny; a production override is the way back in', () => {
   assert.equal(classifyTourPage({ slug: 'holiday-spectacular', pageTitle: 'Cirque Holiday Spectacular', shows: SHOWS }).class, 'event');
 });
 
+const TOURED = '\n\nA North American tour began in 2026.';
+
 test('Wikipedia infobox: musical or play is a production with its type; concert, circus and dance are events', () => {
-  const musical = classifyTourPage({ slug: 'the-bodyguard', pageTitle: 'The Bodyguard', shows: SHOWS, wikiText: '{{Infobox musical\n| name = The Bodyguard\n}}' });
+  const musical = classifyTourPage({ slug: 'the-bodyguard', pageTitle: 'The Bodyguard', shows: SHOWS, wikiText: `{{Infobox musical\n| name = The Bodyguard\n}}${TOURED}` });
   assert.deepEqual([musical.class, musical.type, musical.source, musical.title], ['production', 'musical', 'wikipedia', 'The Bodyguard']);
-  assert.equal(classifyTourPage({ slug: 'a-play', pageTitle: 'A Play', shows: SHOWS, wikiText: '{{Infobox play |name=A Play}}' }).type, 'play');
+  assert.equal(classifyTourPage({ slug: 'a-play', pageTitle: 'A Play', shows: SHOWS, wikiText: `{{Infobox play |name=A Play}}${TOURED}` }).type, 'play');
   for (const box of ['{{Infobox concert tour\n|name=x}}', '{{Infobox circus\n|name=x}}', '{{Infobox dance\n|name=x}}']) {
-    assert.equal(classifyTourPage({ slug: 'a-thing', pageTitle: 'A Thing', shows: SHOWS, wikiText: box }).class, 'event', box);
+    assert.equal(classifyTourPage({ slug: 'a-thing', pageTitle: 'A Thing', shows: SHOWS, wikiText: box + TOURED }).class, 'event', box);
   }
   // A book, film or album infobox says nothing about the stage show.
   assert.equal(infoboxClass('{{Infobox book\n| name = The Cat in the Hat}}'), null);
@@ -195,4 +201,59 @@ test('the committed data/tour-page-classes.json is valid and every row says who 
   for (const slug of ['the-cat-in-the-hat', 'hallmarkish', 'dolly-partons-smoky-mountain-christmas-carol']) {
     assert.equal(classifyTourPage({ slug, shows: SHOWS, overrides }).class, 'production', slug);
   }
+});
+
+test('P1-4: an infobox counts only if the article mentions a tour and its (musical)/(play) name fits the page', () => {
+  const musicalBox = '{{Infobox musical\n| name = Clue\n}}\n\nThe musical played Off-Broadway in 1997.';
+  // The clue fixture shape: the first article that exists is the 1997 musical, which never tours.
+  const clue = classifyTourPage({ slug: 'clue', pageTitle: 'Clue', shows: SHOWS, wikiText: musicalBox, wikiTitle: 'Clue (musical)' });
+  assert.equal(clue.class, 'unclassified');
+  assert.match(clue.reason, /never mentions a tour/);
+  // Mentioning a tour is not enough when the article name says musical and the page says play.
+  const toured = `${musicalBox} A national tour followed.`;
+  const conflict = classifyTourPage({ slug: 'clue-the-play', pageTitle: 'Clue: The Play', shows: SHOWS, wikiText: toured, wikiTitle: 'Clue (musical)' });
+  assert.equal(conflict.class, 'unclassified');
+  assert.match(conflict.reason, /does not fit the page/);
+  // Fine: tours, and the qualifier agrees (or there is none).
+  assert.equal(classifyTourPage({ slug: 'clue', pageTitle: 'Clue', shows: SHOWS, wikiText: toured, wikiTitle: 'Clue (musical)' }).class, 'production');
+  assert.equal(classifyTourPage({ slug: 'clue', pageTitle: 'Clue', shows: SHOWS, wikiText: toured, wikiTitle: 'Clue' }).class, 'production');
+  assert.equal(disambiguationConflict('Clue (play)', 'clue-the-musical', 'Clue the Musical') !== null, true);
+  assert.equal(disambiguationConflict('Clue', 'clue-the-musical', 'Clue the Musical'), null);
+  // A tour mentioned only in a citation title is not touring.
+  assert.equal(classifyTourPage({ slug: 'clue', pageTitle: 'Clue', shows: SHOWS, wikiText: `${musicalBox}<ref>{{cite web|title=Clue tour announced}}</ref>`, wikiTitle: 'Clue (musical)' }).class, 'unclassified');
+});
+
+test('P1-3: a page whose title prefixes (or is prefixed by) a tracked show is never a duplicate standalone', () => {
+  // The two real cases: Tina vs "Tina: The Tina Turner Musical", SpongeBob SquarePants vs "The SpongeBob Musical".
+  const shows = [
+    { id: 'tina-2019', title: 'Tina', category: 'broadway', openingDate: '2019-11-07' },
+    { id: 'spongebob-squarepants-2017', title: 'SpongeBob SquarePants', category: 'broadway', openingDate: '2017-12-04' },
+  ];
+  const wiki = '{{Infobox musical\n| name = x\n}}\n\nA North American tour ran in 2026.';
+  const tina = classifyTourPage({ slug: 'tina-the-tina-turner-musical', pageTitle: 'Tina: The Tina Turner Musical', shows, wikiText: wiki });
+  assert.equal(tina.class, 'unclassified');
+  assert.match(tina.reason, /resembles tracked show tina-2019/);
+  const sponge = classifyTourPage({ slug: 'the-spongebob-musical', pageTitle: 'The SpongeBob Musical', shows, wikiText: wiki });
+  assert.equal(sponge.class, 'unclassified');
+  assert.match(sponge.reason, /resembles tracked show spongebob-squarepants-2017/);
+  // Unrelated titles, and prefixes under 4 characters, still classify.
+  assert.equal(classifyTourPage({ slug: 'clue', pageTitle: 'Clue', shows, wikiText: wiki }).class, 'production');
+  const six = [{ id: 'six-degrees-1990', title: 'Six Degrees of Separation', category: 'broadway', openingDate: '1990-11-08' }];
+  assert.equal(similarTrackedShow(six, 'six-the-musical-x', 'Six X'), null, '"six" is under 4 characters');
+  assert.equal(similarTrackedShow(shows, 'tinag', 'Tinag'), null, 'whole words only');
+  // A UK-only show of the same title also stops it (the-choir-of-man vs a London production).
+  const uk = [{ id: 'the-choir-of-man-off-west-end-2026', title: 'The Choir of Man', category: 'off-west-end', openingDate: '2026-01-01' }];
+  assert.equal(classifyTourPage({ slug: 'the-choir-of-man', pageTitle: 'The Choir of Man', shows: uk, wikiText: wiki }).class, 'unclassified');
+  // An override is a person's answer and wins.
+  const overrides = { 'tina-the-tina-turner-musical': { class: 'production', title: 'Tina: The Tina Turner Musical', type: 'musical', reason: 'x', issue: 'BRO-1', reviewedAt: '2026-10-09' } };
+  assert.equal(classifyTourPage({ slug: 'tina-the-tina-turner-musical', pageTitle: 'Tina: The Tina Turner Musical', shows, wikiText: wiki, overrides }).class, 'production');
+});
+
+test('P2: event words are checked on the slug before a title match, as whole words', () => {
+  const shows = [{ id: 'jesus-christ-superstar-2012', title: 'Jesus Christ Superstar', category: 'broadway', openingDate: '2012-03-22' }];
+  const concert = classifyTourPage({ slug: 'jesus-christ-superstar-in-concert', pageTitle: 'Jesus Christ Superstar in Concert', shows });
+  assert.deepEqual([concert.class, concert.source], ['event', 'keyword']);
+  assert.equal(classifyTourPage({ slug: 'jesus-christ-superstar', pageTitle: 'Jesus Christ Superstar', shows }).parentId, 'jesus-christ-superstar-2012');
+  for (const slug of ['contributed-musical', 'concerto-for-two', 'tributary', 'stompers', 'circuses-of-the-world']) assert.equal(EVENT_RE.test(slug), false, slug);
+  for (const slug of ['rain-a-tribute-to-the-beatles', 'the-illusionists-1', 'disney-on-ice', 'the-hip-hop-nutcracker', 'stomp']) assert.equal(EVENT_RE.test(slug), true, slug);
 });

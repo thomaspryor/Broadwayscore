@@ -20,7 +20,7 @@
 const { foldDiacritics } = require('./title-match');
 const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment, tooFewStops } = require('./tour-schedule');
 const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
-const { toursOfTitle, TOUR_PARENT_CATEGORIES, AUTO_TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
+const { toursOfTitle, normTitle, TOUR_PARENT_CATEGORIES, AUTO_TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
 const { classifyTourPage, SKIPPED_CLASSES, pageTitleFromHtml, decodeTitle } = require('./tour-page-class');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
@@ -333,7 +333,8 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
 const candidateKey = c => c.key || c.broadwayShowId;
 
 /**
- * One candidate per tour parent (or per page, for a standalone tour). Two
+ * One candidate per tour parent, or per normalised title for a standalone
+ * tour (two pages for one show: "jersey-boys" and "jersey-boys-1"). Two
  * pages running a tour of the same show from different starts (two companies)
  * is ambiguous: the first is kept with an ambiguous note, so it is never
  * created automatically but still reaches the owner as a suggestion.
@@ -342,7 +343,8 @@ const candidateKey = c => c.key || c.broadwayShowId;
 function dedupeCandidates(candidates) {
   const byShow = new Map();
   for (const c of candidates) {
-    const k = candidateKey(c);
+    const key = candidateKey(c);
+    const k = String(key).startsWith('page:') && c.title ? `title:${normTitle(c.title)}` : key;
     if (!byShow.has(k)) byShow.set(k, []);
     byShow.get(k).push(c);
   }

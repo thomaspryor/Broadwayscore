@@ -97,7 +97,7 @@ async function discoverRunningTours({ shows, budget = null, coverage = {}, fallb
   const stale = stalePages(next);
   log(`Read ${read.length} of ${worth.length} page(s) this run (${failed} failed, ${stats.rateLimited - limitedBefore} rate-limited answer(s)); ${stale.length} not read in over ${STALE_DAYS} days`);
   log(`Classes of the pages read: ${Object.entries(classes).map(([k, n]) => `${n} ${k}`).join(', ') || 'none'}`);
-  for (const a of autoClassified) log(`  ${a.slug} is an ${a.class} by structure (${a.reason}); add it to data/tour-page-classes.json to stop reading it`);
+  for (const a of autoClassified) log(`  ${a.slug} was set aside as an ${a.class} by its structure (${a.reason}). If it is a list of different shows, add it to data/tour-page-classes.json as ${a.class} to stop reading it; if it is one production with several companies, add it there as a production instead`);
   const { candidates, ambiguous } = dedupeCandidates(found);
   for (const a of ambiguous) log(`  ambiguous (two tours running at once), left for the owner: ${a}`);
   return { candidates, ambiguous, reopen, undecided, checked: read.length, failed, pages: slugs.length, eligible: worth.length, coverage: next, rateLimited: stats.rateLimited - limitedBefore, classes, denied, autoClassified };

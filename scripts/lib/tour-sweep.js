@@ -50,11 +50,12 @@ const EVIDENCE_OUTCOMES = new Set(['create', 'suggest', 'skip-nothing-running', 
  * @param {object} [args.tourSchedules] data/tour-schedules.json .tours
  * @param {{has: Function}|null} [args.retiredIds]
  * @param {Date} [args.now]
- * @param {(title: string, opts?: {requireTour?: boolean}) => Promise<string>} [args.fetchWiki] Wikipedia wikitext for a title
+ * @param {(title: string) => Promise<string>} [args.fetchWiki] Wikipedia wikitext of the article that mentions a tour (dates)
+ * @param {(title: string, opts?: {requireTour?: boolean}) => Promise<{title: string, text: string}|null>} [args.fetchWikiArticle] first article that exists, for the infobox only
  * @param {object[]} [args.ledgerRows] candidate ledger rows, for pairing a BWW roundup with the page
  * @returns {Promise<{outcome: string, reason: string, entry?: object, candidate?: object, pageClass?: object}>}
  */
-async function evaluateTourPage({ slug, pageTitle = null, html, shows, overrides = {}, tourSchedules = {}, retiredIds = null, now = new Date(), fetchWiki = null, ledgerRows = [] }) {
+async function evaluateTourPage({ slug, pageTitle = null, html, shows, overrides = {}, tourSchedules = {}, retiredIds = null, now = new Date(), fetchWiki = null, ledgerRows = [], fetchWikiArticle = null }) {
   const scheduleUrl = `https://tourstoyou.org/shows/${slug}/`;
   // Discovery reads the page without Wikipedia, as discover-running-tours.js does.
   const r = runningTourCandidate({ slug, scheduleUrl, html, shows, now, pageTitle, overrides });
@@ -64,10 +65,13 @@ async function evaluateTourPage({ slug, pageTitle = null, html, shows, overrides
   const parent = parentId ? shows.find(s => s.id === parentId) || null : null;
   const title = parent ? parent.title : c.title;
   let wikiText = '';
-  // The same fetch create-tour-entries.js makes: a page nothing classified needs the article's infobox even if it never mentions a tour.
-  if (fetchWiki) { try { wikiText = await fetchWiki(title, { requireTour: !c.needsClassification }); } catch { wikiText = ''; } }
+  let classifyWiki = null;
+  // The same two fetches create-tour-entries.js makes: the article that mentions a tour (dates), and, for a
+  // page nothing classified, the first article that exists (infobox only, never dates).
+  if (fetchWiki) { try { wikiText = await fetchWiki(title); } catch { wikiText = ''; } }
+  if (fetchWikiArticle && c.needsClassification && !parent) { try { classifyWiki = await fetchWikiArticle(title, { requireTour: false }); } catch { classifyWiki = null; } }
   const roundupUrl = candidateRoundupUrl(c, ledgerRows);
-  const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText, roundupUrl, retiredIds, tourSchedules, now, overrides });
+  const d = decideTourCreation({ candidate: c, parent, shows, scheduleUrl, html, wikiText, classifyWiki, roundupUrl, retiredIds, tourSchedules, now, overrides });
   return { outcome: d.outcome, reason: d.reason, ...(d.built.entry ? { entry: d.built.entry } : {}), candidate: d.candidate || c, pageClass: d.pageClass || r.pageClass };
 }
 

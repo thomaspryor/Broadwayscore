@@ -156,6 +156,17 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   // needsClassification/type/upcoming (BRO-4931): an override added since, or a tour no longer booked ahead, must not leave the old value on the row.
   const PAGE_FACTS = ['splitAt', 'predecessorEnds', 'needsClassification', 'type', 'upcoming'];
   const dropStale = (row, c) => { if (fromSchedule(c)) for (const k of PAGE_FACTS) if (!(k in c)) delete row[k]; return row; };
+  // Discovery reads a page without Wikipedia, so it reports 'unclassified' every run for a page the
+  // create step already classified from the infobox (production, or an event). That earlier answer
+  // stays on the row for the same segment, or the row would reopen and drop out daily (BRO-4931).
+  const keepEarlierClass = (row, prev, c) => {
+    if (!prev || !fromSchedule(c) || c.pageClass !== 'unclassified' || !prev.pageClass || prev.pageClass === 'unclassified') return row;
+    if (prev.slug && c.slug && prev.slug !== c.slug) return row;
+    const kept = { ...row, pageClass: prev.pageClass };
+    if (prev.type) kept.type = prev.type; else delete kept.type;
+    delete kept.needsClassification;
+    return kept;
+  };
   for (const c of candidates) {
     const ck = keyOf(c);
     if (!ck) continue;
@@ -179,7 +190,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
       const asked = !fromSchedule(prev) && prev.notifiedAt ? { notifiedAt: prev.notifiedAt } : {};
       const row = { ...keep, ...asked, ...schedule, ...roundup, firstSeen: keep.firstSeen || now, lastSeen: now };
       if (!schedule.ambiguous) delete row.ambiguous;
-      byId.set(ck, dropStale(row, c));
+      byId.set(ck, keepEarlierClass(dropStale(row, c), prev, c));
       continue;
     }
     // A different roundup for the same show is a later tour (BRO-4262): start
@@ -190,7 +201,7 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
     const row = { ...prev, ...c, firstSeen: (prev && prev.firstSeen) || now, lastSeen: now };
     // A tour no longer ambiguous (one company left) is decided normally.
     if (!c.ambiguous) delete row.ambiguous;
-    byId.set(ck, dropStale(row, c));
+    byId.set(ck, keepEarlierClass(dropStale(row, c), prev, c));
   }
   const out = [...byId.values()].sort((a, b) => keyOf(a).localeCompare(keyOf(b)));
   fs.writeFileSync(file, JSON.stringify(out, null, 2) + '\n');

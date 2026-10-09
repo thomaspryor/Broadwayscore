@@ -14,14 +14,22 @@
  * classifyTourPage checks, in order, and the first that fires decides:
  *   1. a human override (data/tour-page-classes.json) - always wins
  *   2. template: the slug says template / tester / test / sample
- *   3. title match: the page is a tracked production (any tour-parent market)
+ *   3. title match: the page is a tracked production in a market automatic
+ *      discovery may tour from (AUTO_TOUR_PARENT_CATEGORIES: Broadway,
+ *      Off-Broadway, regional; a UK parent only by an override naming parentId).
+ *      An event word in the SLUG is checked first (step 2b), so
+ *      "jesus-christ-superstar-in-concert" is not the Broadway production
  *   4. company: "<tracked tour>-<one word>" is one company of that tour
  *   5. aggregator by structure: five or more cities with an engagement at the
  *      same moment (a touring show has a handful of companies at most; a list
  *      of many shows, like Holiday Shows, has dozens)
  *   6. event keywords (deny only): circus, tribute, concert, steamroller...
  *   7. Wikipedia infobox (musical / play => production; concert, circus,
- *      dance => event) when the caller supplies the article
+ *      dance => event) when the caller supplies the article, and only if the
+ *      article mentions touring, its "(musical)"/"(play)" name does not
+ *      contradict the page, and no tracked show has a similar title (a
+ *      "Tina: The Tina Turner Musical" page is probably the tour of "Tina",
+ *      not a new standalone show: the owner decides)
  *   8. otherwise 'unclassified': never created by itself, recorded with
  *      needsClassification and sent to the owner digest
  *
@@ -32,6 +40,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { proseOnly } = require('./tour-schedule');
 
 const CLASSES = ['production', 'event', 'aggregator', 'template', 'company', 'unclassified'];
 // One list with buildTourEntry: a standalone tour is refused for any other type.
@@ -40,15 +49,21 @@ const OVERRIDES_PATH = path.join(__dirname, '..', '..', 'data', 'tour-page-class
 
 const TEMPLATE_RE = /(^|-)(template|tester|test|sample)(-|$)/;
 // Deny only: a page matching these is an event unless a person said otherwise.
-const EVENT_RE = /cirque|circus|tribute|concert|orchestra|symphony|illusionist|on-ice|steamroller|riverdance|stomp|nutcracker/;
+// Whole slug words only: (^|-)word(-|$), so "contributed" or "concerto" are not events.
+const EVENT_RE = /(^|-)(cirque|circus|tributes?|concerts?|orchestra|symphony|illusionists?|on-ice|steamroller|riverdance|stomp|nutcrackers?)(-|$)/;
+// An article that never mentions touring cannot say what is on the road.
+const TOUR_MENTION_RE = /\btour(ed|ing)?\b/i;
 // A company page needs a real suffix word; these are the same show's own page.
 const NOT_A_COMPANY_WORD = new Set(['tour', 'the', 'musical', 'show', 'live', 'play', 'on', 'of', 'and', 'a']);
 // Cities with an engagement at the same moment, at least this many, make a page
 // an aggregator. The first design called three overlapping engagements enough
 // ("one company cannot be in two cities at once"), but a production with two
 // or three companies on the road (Menopause The Musical, Rudolph, Potted Potter)
-// overlaps that much and is one show; the pages measured on 2026-10-09 split
-// cleanly: Holiday Shows has 21 cities at once, every real production at most 4.
+// overlaps that much and is one show. Measured on 2026-10-09: Holiday Shows has
+// 21 cities at once; every untitled production page has at most 4 (Hamilton's own
+// page reaches 5 with its companies, but it is a title match and never reaches
+// this rule). A page this rule catches that is really one production with many
+// companies needs a production override, not an aggregator one.
 const AGGREGATOR_MIN_CITIES = 5;
 
 const kebab = s => String(s || '').toLowerCase().replace(/&/g, 'and').replace(/['‘’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -156,6 +171,44 @@ function companyOfSlug(slug, shows) {
 
 const result = (cls, extra) => ({ class: cls, title: null, type: null, reason: '', source: '', ...extra });
 
+// Leading articles never decide whether two titles are the same show.
+// Nor does a trailing "(the) musical" or "(the) play" ("the-spongebob-musical" is "spongebob").
+const stripArticle = k => String(k || '').replace(/^(the|a|an)-/, '').replace(/(-the)?-(musical|play)$/, '');
+
+/**
+ * A tracked non-tour show (any market) whose title is the page's, or a whole-word
+ * prefix of it, or the other way round (BRO-4931): "Tina" and "Tina: The Tina Turner
+ * Musical", "SpongeBob SquarePants" and "The SpongeBob Musical". Each key must be at
+ * least 4 characters to count as a prefix. Such a page may be the tour of that
+ * show (a subtitle mismatch), so it is never made a duplicate standalone tour
+ * by itself.
+ */
+function similarTrackedShow(shows, slug, pageTitle) {
+  const { titleKey, titleKeys, slugKey } = require('./tour-discovery');
+  const pageKeys = [...new Set([titleKey(pageTitle), titleKey(slug), slugKey(slug)].filter(Boolean).map(stripArticle))];
+  const related = (a, b) => (a.length >= 4 && (b === a || b.startsWith(`${a}-`))) || (b.length >= 4 && a.startsWith(`${b}-`));
+  for (const show of shows || []) {
+    if (!show || show.category === 'tour') continue;
+    for (const k of [...titleKeys(show.title)].map(stripArticle)) {
+      if (k && pageKeys.some(p => related(p, k))) return show;
+    }
+  }
+  return null;
+}
+
+/**
+ * Why a Wikipedia article's "(musical)" / "(play)" name contradicts the page, or
+ * null. Clue's tour is of the play; the article found was "Clue (musical)".
+ */
+function disambiguationConflict(wikiTitle, slug, pageTitle) {
+  const m = /\((musical|play)\)\s*$/i.exec(String(wikiTitle || ''));
+  if (!m) return null;
+  const kind = m[1].toLowerCase();
+  const words = new Set(`${slug}-${kebab(pageTitle)}`.split('-'));
+  const other = kind === 'musical' ? 'play' : 'musical';
+  return words.has(other) ? `the article is "${wikiTitle}" but the page says ${other}` : null;
+}
+
 /**
  * @param {object} args
  * @param {string} args.slug Tours To You page slug
@@ -163,12 +216,14 @@ const result = (cls, extra) => ({ class: cls, title: null, type: null, reason: '
  * @param {Array<{city, start: Date, end: Date}>} [args.rows] parsed engagements; omit to classify on the slug alone
  * @param {Array} args.shows all shows
  * @param {object} [args.overrides] loadTourPageClasses()
- * @param {string} [args.wikiText] the title's Wikipedia wikitext
+ * @param {string} [args.wikiText] the title's Wikipedia wikitext (classification only; never used for dates)
+ * @param {string} [args.wikiTitle] the name of the article wikiText came from, e.g. "Clue (musical)"
  * @param {string} [args.beforeIso] a production counts as a parent only if it opened by then
  * @returns {{class: string, parentId?: string, companyOf?: string, title: string|null, type: string|null, reason: string, source: string}}
  */
-function classifyTourPage({ slug, pageTitle = null, rows = null, shows = [], overrides = {}, wikiText = '', beforeIso = null }) {
+function classifyTourPage({ slug, pageTitle = null, rows = null, shows = [], overrides = {}, wikiText = '', wikiTitle = null, beforeIso = null }) {
   const { parentForSlug, titleKey } = require('./tour-discovery');
+  const { AUTO_TOUR_PARENT_CATEGORIES } = require('./tour-family');
   const s = String(slug || '').toLowerCase();
 
   // 1. A person's call always wins.
@@ -188,8 +243,14 @@ function classifyTourPage({ slug, pageTitle = null, rows = null, shows = [], ove
   // 2. Template pages.
   if (TEMPLATE_RE.test(s)) return result('template', { title: pageTitle, reason: 'slug names a template, tester or sample page', source: 'slug-rule' });
 
-  // 3. A tracked production of this title, in any tour-parent market.
-  const parent = parentForSlug(s, shows, beforeIso) || (pageTitle ? parentForSlug(titleKey(pageTitle), shows, beforeIso) : null);
+  // 2b. An event word in the slug beats a title match: "jesus-christ-superstar-in-concert"
+  // is a concert of a show we track, not that show.
+  const slugHit = EVENT_RE.exec(s);
+  if (slugHit) return result('event', { title: pageTitle, reason: `"${slugHit[2]}" in the page name marks a concert, circus or dance event, not a stage production`, source: 'keyword' });
+
+  // 3. A tracked production of this title in a market automatic discovery tours from.
+  const parent = parentForSlug(s, shows, beforeIso, AUTO_TOUR_PARENT_CATEGORIES)
+    || (pageTitle ? parentForSlug(titleKey(pageTitle), shows, beforeIso, AUTO_TOUR_PARENT_CATEGORIES) : null);
   if (parent) {
     return result('production', { parentId: parent.id, title: parent.title, type: parent.type || 'musical', reason: `title matches tracked production ${parent.id}`, source: 'title-match' });
   }
@@ -204,17 +265,23 @@ function classifyTourPage({ slug, pageTitle = null, rows = null, shows = [], ove
     if (n >= AGGREGATOR_MIN_CITIES) return result('aggregator', { title: pageTitle, reason: `${n} different cities have an engagement at the same moment; a touring show has a few companies at most`, source: 'structure' });
   }
 
-  // 6. Event keywords deny.
-  const words = `${s} ${kebab(pageTitle)}`;
-  const hit = EVENT_RE.exec(words);
-  if (hit) return result('event', { title: pageTitle, reason: `"${hit[0]}" marks a concert, circus or dance event, not a stage production`, source: 'keyword' });
+  // 6. Event words in the page's title deny.
+  const hit = EVENT_RE.exec(kebab(pageTitle));
+  if (hit) return result('event', { title: pageTitle, reason: `"${hit[2]}" in the title marks a concert, circus or dance event, not a stage production`, source: 'keyword' });
 
-  // 7. Wikipedia's infobox, when we have the article.
+  // 7. Wikipedia's infobox, when we have the article and it can be trusted for this page.
   const box = infoboxClass(wikiText);
   if (box) {
-    return box.class === 'production'
-      ? result('production', { title: pageTitle, type: box.type, reason: `Wikipedia infobox "${box.kind}"`, source: 'wikipedia' })
-      : result('event', { title: pageTitle, reason: `Wikipedia infobox "${box.kind}" is not a stage production`, source: 'wikipedia' });
+    const undecided = reason => result('unclassified', { title: pageTitle, reason, source: 'none' });
+    if (!TOUR_MENTION_RE.test(proseOnly(wikiText))) return undecided(`the Wikipedia article${wikiTitle ? ` "${wikiTitle}"` : ''} never mentions a tour, so it may be a different production of the title`);
+    const conflict = disambiguationConflict(wikiTitle, s, pageTitle);
+    if (conflict) return undecided(`Wikipedia article does not fit the page: ${conflict}`);
+    if (box.class === 'production') {
+      const like = similarTrackedShow(shows, s, pageTitle);
+      if (like) return undecided(`title resembles tracked show ${like.id} ("${like.title}"); this may be its tour rather than a new standalone show`);
+      return result('production', { title: pageTitle, type: box.type, reason: `Wikipedia infobox "${box.kind}"`, source: 'wikipedia' });
+    }
+    return result('event', { title: pageTitle, reason: `Wikipedia infobox "${box.kind}" is not a stage production`, source: 'wikipedia' });
   }
 
   // 8. A human has to say.
@@ -254,6 +321,9 @@ module.exports = {
   overrideProblems,
   maxConcurrentCities,
   infoboxClass,
+  similarTrackedShow,
+  disambiguationConflict,
+  TOUR_MENTION_RE,
   companyOfSlug,
   decodeTitle,
   pageTitleFromHtml,
