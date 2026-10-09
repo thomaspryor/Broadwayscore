@@ -64,24 +64,42 @@ const LOOKBACK_DAYS = 28;
 // 28-day HogQL aggregation took >8s once while every other check passed).
 const MONITOR_FETCH_TIMEOUT_MS = 25000;
 const MONITOR_RETRY_DELAY_MS = 2000;
+// A provider-side 5xx/429 needs longer than a timeout retry to clear: the
+// 2026-10-09 PostHog 503 paged CRITICAL from a single attempt (BRO-4945).
+const MONITOR_HTTP_RETRY_DELAY_MS = 15000;
 
-function isTransientFetchError(err) {
-  return err && (err.name === 'AbortError' || /aborted/i.test(err.message || ''));
+function isAbortError(err) {
+  return Boolean(err && (err.name === 'AbortError' || /aborted/i.test(err.message || '')));
 }
 
-// One retry, only for the timeout/abort class of failure — an auth or HTTP
-// error is a real provider fault and retrying it immediately just burns the
+// Server-side/rate-limit statuses only. 4xx auth errors (401/403) are a real
+// fault (revoked key) and must page on the first attempt. Same status rule as
+// posthog-adhoc-query.js isTransientError.
+function isTransientHttpError(err) {
+  const m = /\bHTTP (\d{3})\b/.exec((err && err.message) || '');
+  if (!m) return false;
+  const status = Number(m[1]);
+  return status >= 500 || status === 429 || status === 408;
+}
+
+function isTransientFetchError(err) {
+  return isAbortError(err) || isTransientHttpError(err);
+}
+
+// One retry, for timeouts/aborts and provider 5xx/429/408 only. An auth or
+// other 4xx error is a real provider fault and retrying it just burns the
 // remaining budget for no gain. Logs on retry even when the second attempt
-// succeeds — a provider that's merely slow-not-dead should stay visible in
+// succeeds — a provider that's merely flaky-not-dead should stay visible in
 // the run's own step log, not vanish as a silent "pass" (ship-check finding,
 // 2026-08-22).
-async function fetchWithOneRetry(fn, label) {
+async function fetchWithOneRetry(fn, label, { sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms)) } = {}) {
   try {
     return await fn();
   } catch (err) {
     if (!isTransientFetchError(err)) throw err;
-    console.warn(`[affiliate-health] ${label || 'fetch'}: transient error (${err.message}), retrying once`);
-    await new Promise((resolve) => setTimeout(resolve, MONITOR_RETRY_DELAY_MS));
+    const delayMs = isAbortError(err) ? MONITOR_RETRY_DELAY_MS : MONITOR_HTTP_RETRY_DELAY_MS;
+    console.warn(`[affiliate-health] ${label || 'fetch'}: transient error (${err.message}), retrying once in ${delayMs / 1000}s`);
+    await sleep(delayMs);
     return fn();
   }
 }

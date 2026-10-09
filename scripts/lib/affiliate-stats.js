@@ -44,7 +44,18 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = PROVIDER_TIMEOUT_
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const res = await fetch(url, { ...options, signal: controller.signal });
-    const data = await res.json();
+    // A gateway 502/503/504 often carries an HTML body. Parsing it as JSON
+    // threw a SyntaxError that hid the status from callers (and from
+    // check-affiliate-health.js's retry rule), so a non-OK response with a
+    // non-JSON body comes back as data:null and the caller reports HTTP <status>.
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (err) {
+      if (res.ok) throw err;
+      data = null;
+    }
     return { ok: res.ok, status: res.status, data };
   } finally {
     clearTimeout(timer);
@@ -65,15 +76,19 @@ async function fetchImpact(startDate, endDate, opts = {}) {
   }
 
   const url = `https://api.impact.com/Mediapartners/${sid}/Actions.json?StartDate=${fmtISO(startDate)}&EndDate=${fmtISO(endDate)}`;
-  const { ok, data } = await fetchWithTimeout(
+  const { ok, status, data } = await fetchWithTimeout(
     url,
     { headers: { Authorization: basicAuth(sid, token), Accept: 'application/json' } },
     opts.timeoutMs
   );
 
-  if (!ok || data.Status === 'ERROR') {
-    const msg = data.Message || `HTTP error`;
-    throw new Error(`Impact API error: ${msg}`);
+  // Keep "HTTP <status>" in the message whenever the response was non-OK:
+  // check-affiliate-health.js decides retry-vs-page from that status.
+  if (!ok) {
+    throw new Error(`Impact API error: HTTP ${status}${data && data.Message ? `: ${data.Message}` : ''}`);
+  }
+  if (data.Status === 'ERROR') {
+    throw new Error(`Impact API error: ${data.Message || 'Status ERROR'}`);
   }
 
   return { actions: data.Actions || [] };
@@ -301,8 +316,8 @@ async function fetchPartnerize(startDate, endDate) {
     fetchWithTimeout(`${base}/conversion.json${qs}`, auth),
   ]);
 
-  if (!clicks.ok) throw new Error(`Partnerize clicks error: ${clicks.status}`);
-  if (!conversions.ok) throw new Error(`Partnerize conversions error: ${conversions.status}`);
+  if (!clicks.ok) throw new Error(`Partnerize clicks error: HTTP ${clicks.status}`);
+  if (!conversions.ok) throw new Error(`Partnerize conversions error: HTTP ${conversions.status}`);
 
   const clickCount = clicks.data.count || 0;
   const convCount = conversions.data.count || 0;
@@ -372,8 +387,8 @@ async function fetchPosthog(startDate, endDate) {
     }),
   ]);
 
-  if (!scalarsRes.ok) throw new Error(`PostHog HogQL scalars error: ${scalarsRes.status}`);
-  if (!platformsRes.ok) throw new Error(`PostHog HogQL platforms error: ${platformsRes.status}`);
+  if (!scalarsRes.ok) throw new Error(`PostHog HogQL scalars error: HTTP ${scalarsRes.status}`);
+  if (!platformsRes.ok) throw new Error(`PostHog HogQL platforms error: HTTP ${platformsRes.status}`);
 
   const [pageviews = 0, showPageviews = 0, ticketClicks = 0] = scalarsRes.data.results?.[0] || [];
   const byPlatform = (platformsRes.data.results || []).map(([platform, count]) => ({
