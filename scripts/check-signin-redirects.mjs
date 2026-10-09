@@ -46,8 +46,13 @@ const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (
 
 const isTransient = (status) => status === 429 || status >= 500;
 
-/** Pure verdicts, exported for the unit test. */
-export function judgeGoogle(authorizeUrl, hop) {
+/**
+ * Pure verdicts, exported for the unit test. `googlePage` is Google's own
+ * answer for the hop (status + body), when fetched: a redirect_uri_mismatch
+ * page means Supabase's callback is not on the OAuth client, which the hop
+ * alone cannot see (BRO-4894: the custom auth domain changes that callback).
+ */
+export function judgeGoogle(authorizeUrl, hop, googlePage) {
   if (!authorizeUrl) return { ok: false, reason: 'clicking Continue with Google did not request the Supabase authorize URL' };
   if (!/\/auth\/v1\/authorize\?/.test(authorizeUrl) || !/provider=google/.test(authorizeUrl)) {
     return { ok: false, reason: `unexpected authorize URL ${authorizeUrl.split('?')[0]}` };
@@ -58,6 +63,18 @@ export function judgeGoogle(authorizeUrl, hop) {
   let host = '';
   try { host = new URL(hop.location).hostname; } catch { /* empty */ }
   if (host !== 'accounts.google.com') return { ok: false, reason: `Supabase redirected to ${host || 'nowhere'} instead of accounts.google.com` };
+  if (googlePage) {
+    if (isTransient(googlePage.status)) return { ok: false, inconclusive: true, reason: `Google answered HTTP ${googlePage.status}` };
+    // A bot block (403) is not a verdict either way.
+    if (googlePage.status === 403) return { ok: false, inconclusive: true, reason: 'Google answered HTTP 403 (bot block) for the sign-in page' };
+    const dead = (googlePage.body || '').match(/invalid_client|deleted_client|disabled_client/i);
+    if (dead && googlePage.status >= 400) return { ok: false, reason: `Google rejects the OAuth client (${dead[0]})` };
+    const mismatch = /redirect_uri_mismatch/i.test(googlePage.body || '');
+    // Google answers this error with HTTP 400. The same words on any other
+    // status (an interstitial, a bot page) are not proof: digest, never page.
+    if (mismatch && googlePage.status === 400) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): the OAuth client does not list the Supabase callback URL' };
+    if (mismatch) return { ok: false, inconclusive: true, reason: `Google's page mentions redirect_uri_mismatch but answered HTTP ${googlePage.status}` };
+  }
   return { ok: true, reason: 'Supabase redirects to accounts.google.com' };
 }
 
@@ -73,6 +90,17 @@ export function judgeApple(popupUrl, hop, base) {
   if (hop.status !== 200) return { ok: false, reason: `Apple answered HTTP ${hop.status}` };
   if (/invalid_request|invalid_client|unauthorized_client/i.test(hop.body || '')) return { ok: false, reason: 'Apple refused the request (invalid client or redirect)' };
   return { ok: true, reason: 'Apple shows its sign-in page for our redirect' };
+}
+
+/** Google's sign-in page for the hop's Location (redirects followed), or null. */
+async function googlePageFor(hop) {
+  if (!hop || !hop.location) return null;
+  try {
+    const res = await fetch(hop.location, { redirect: 'follow', headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
+    return { status: res.status, body: (await res.text()).slice(0, 300000) };
+  } catch {
+    return null;
+  }
 }
 
 async function oneHop(url) {
@@ -179,12 +207,13 @@ async function routeAlerts(result) {
 }
 
 /** Two tries; a browser error counts as inconclusive, not broken. */
-async function checkProvider(browser, capture, judge) {
+async function checkProvider(browser, capture, judge, probe) {
   let r;
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const url = await capture(browser);
-      r = judge(url, url ? await oneHop(url) : null);
+      const hop = url ? await oneHop(url) : null;
+      r = judge(url, hop, probe && hop ? await probe(hop) : undefined);
     } catch (e) {
       r = { ok: false, inconclusive: true, reason: `the check itself failed: ${String(e && e.message || e).slice(0, 200)}` };
     }
@@ -206,7 +235,7 @@ async function main() {
   try {
     // CHROMIUM_PATH: a preinstalled browser when the pinned one is absent (cloud sandboxes).
     browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
-    result.google = await checkProvider(browser, captureGoogle, judgeGoogle);
+    result.google = await checkProvider(browser, captureGoogle, judgeGoogle, googlePageFor);
     result.apple = await checkProvider(browser, captureApple, (u, hop) => judgeApple(u, hop, BASE));
   } catch (e) {
     result.error = String(e && e.message || e).slice(0, 300);

@@ -90,6 +90,10 @@ on:
       - 'scripts/check-signin-redirects.mjs'
       - 'scripts/check-signin-redirects.test.mjs'
       - 'scripts/account-metrics.js'
+      # BRO-4894: Supabase custom auth domain operator (lib scripts/lib/vercel-dns.mjs
+      # is covered by the glob above).
+      - 'scripts/supabase-custom-domain.mjs'
+      - 'scripts/supabase-custom-domain.test.mjs'
       # scripts/audit-we-closing-dates.js (BRO-1158) is the I/O orchestrator for
       # scripts/lib/{we-closing-date-extract,we-closing-date-classify,westend-slug-discovery}.js
       # (all covered by the scripts/lib/** glob above). A solo edit to the
