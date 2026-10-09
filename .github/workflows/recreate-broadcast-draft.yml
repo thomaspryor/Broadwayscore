@@ -123,6 +123,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           # routeAlert (owner-notification-failed / draft-creation-failed) files through Linear.
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # Read only by fetchPage() in the script's require chain; wired so the
+          # scrapingdog-pairing guard holds. The draft path never scrapes.
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           # The next five are read only by scraping/billing helpers in the script's
           # require chain; the draft path never uses them.
           # audit-secret-gap-ok: SCRAPINGBEE_API_KEY
@@ -147,6 +150,22 @@ jobs:
           else
             grep -q "Draft created" /tmp/recreate.log \
               || { echo "::error::no draft was created (see log)"; exit 1; }
+          fi
+
+      # routeAlert's ledger must persist or the once-per-incident rule never
+      # holds. One commit for all three files, as in account-metrics.yml.
+      - name: Commit alert ledger
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: recreate-broadcast-draft alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh
           fi
 
       # opening-night-sent.json and critic-consensus.json are CORE_FILES:
