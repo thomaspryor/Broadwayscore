@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const checks = require('./autonomous-checks.js');
 const {
   decideChecks, cardCheckArgv, checksEnv, isUiDiff, hasSrcChange,
-  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, readTsxManifest, BUILD_TIMEOUT_MS, BUILD_ENV,
+  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, readTsxManifest, readTsxRunTests, BUILD_TIMEOUT_MS, BUILD_ENV,
 } = checks;
 
 const never = () => false;
@@ -138,6 +138,31 @@ test('a colocated .test.mjs listed in the tsx manifest runs under tsx', () => {
   const tsxManifest = new Set(['scripts/lib/foo.test.mjs']);
   const out = decideChecks(['scripts/lib/foo.js'], exists, { tier: 3, tsxManifest });
   assert.deepEqual(names(out).filter(n => n.startsWith('colocated')), ['colocated-tests-tsx']);
+});
+
+test('readTsxRunTests unions the tsx and e2e manifests (both run under tsx in test.yml), tolerating a missing one', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-tsxrun-'));
+  fs.mkdirSync(path.join(dir, 'tests'));
+  fs.writeFileSync(path.join(dir, 'tests/unit-test-manifest.txt'), 'tests/unit/node-only.test.mjs\n');
+  fs.writeFileSync(path.join(dir, 'tests/unit-test-manifest-tsx.txt'), '# c\ntests/unit/a.test.ts\ntests/unit/both.test.mjs\n');
+  assert.deepEqual([...readTsxRunTests(dir)].sort(), ['tests/unit/a.test.ts', 'tests/unit/both.test.mjs']);
+  fs.writeFileSync(path.join(dir, 'tests/e2e-unit-test-manifest.txt'), 'tests/unit/both.test.mjs\ntests/unit/outlet-id-mapper.test.mjs\n');
+  assert.deepEqual([...readTsxRunTests(dir)].sort(),
+    ['tests/unit/a.test.ts', 'tests/unit/both.test.mjs', 'tests/unit/outlet-id-mapper.test.mjs']);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('TSX_RUN_MANIFESTS matches test-manifest.js TSX_MANIFESTS (a new tsx-run manifest must reach Land too)', () => {
+  assert.deepEqual([...checks.TSX_RUN_MANIFESTS].sort(), [...require('./test-manifest.js').TSX_MANIFESTS].sort());
+});
+
+test('an edited e2e-listed test that imports .ts runs under tsx in the real repo (Land run 37989385716, BRO-4930)', () => {
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
+  const f = 'tests/unit/outlet-id-mapper.test.mjs';
+  const out = decideChecks([f], () => true, { tier: 3, tsxManifest: readTsxRunTests(root) });
+  const tsx = out.find(c => c.name === 'colocated-tests-tsx');
+  assert.ok(tsx && tsx.argv.includes(f), 'outlet-id-mapper.test.mjs must route to colocated-tests-tsx');
+  assert.ok(!out.some(c => c.name === 'colocated-tests'), 'and never to plain node --test');
 });
 
 test('readTsxManifest reads the real manifest and is empty when the file is missing', () => {
