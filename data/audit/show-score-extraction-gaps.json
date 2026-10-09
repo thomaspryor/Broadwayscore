@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-08T18:41:00.612Z",
+    "generatedAt": "2026-10-08T23:55:53.218Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 365,
+  "totalGaps": 369,
   "errorSeverity": 264,
-  "warningSeverity": 101,
+  "warningSeverity": 105,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -258,6 +258,15 @@
       "gap": 10,
       "ratio": 0.44,
       "severity": "error"
+    },
+    {
+      "showId": "bacchae-west-end-2025",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
     },
     {
       "showId": "back-to-the-future-2023",
@@ -1799,6 +1808,15 @@
       "severity": "error"
     },
     {
+      "showId": "mrs-warrens-profession-west-end-2025",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
+    },
+    {
       "showId": "my-fair-lady-2018",
       "category": "broadway",
       "expected": 56,
@@ -1995,6 +2013,15 @@
       "gap": 66,
       "ratio": 0.11,
       "severity": "error"
+    },
+    {
+      "showId": "othello-west-end-2025",
+      "category": "west-end",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
     },
     {
       "showId": "our-town-2024",
@@ -2562,6 +2589,15 @@
       "gap": 13,
       "ratio": 0.38,
       "severity": "error"
+    },
+    {
+      "showId": "the-deep-blue-sea-west-end-2025",
+      "category": "west-end",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "the-dinosaurs-off-broadway-2026",
