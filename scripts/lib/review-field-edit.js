@@ -192,6 +192,20 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
     const bc = after && after._urlChangedClear;
     if (bc && bc.to === after.url && Array.isArray(bc.cleared)) bc.cleared.forEach((k) => expected.add(k));
   }
+  // BRO-4888: the write guard resolves a duplicate-pointer pair itself. Setting
+  // duplicateClearReason on a file that points at a same-url sibling makes it
+  // refuse the cycle and clear that file's own duplicateOf/duplicateReason;
+  // setting duplicateOf stamps its own duplicateReason and may null the clear
+  // reason. Those are the intended outcome, not surprises. Value-aware on
+  // purpose: a guard that SETS a pointer while the plan edits a reason field
+  // still counts as unexpected.
+  if (field === 'duplicateClearReason' && after && after[field] != null) {
+    for (const k of ['duplicateOf', 'duplicateReason']) if (after[k] == null) expected.add(k);
+  }
+  if (field === 'duplicateOf' && after && after[field] != null) {
+    expected.add('duplicateReason');
+    if (after.duplicateClearReason == null) expected.add('duplicateClearReason');
+  }
   for (const k of keys) {
     if (k === field || k === 'approvedFixes' || expectedKeys.includes(k) || expected.has(k)) continue;
     if (JSON.stringify(before[k] === undefined ? null : before[k]) !== JSON.stringify(after[k] === undefined ? null : after[k])) changed.push(k);

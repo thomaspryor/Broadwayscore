@@ -143,3 +143,35 @@ test('setting a flag with no auto-clear present has no side effects', () => {
   const off = applyReviewFieldEdit({ url: 'u', wrongProduction: true }, { field: 'wrongProduction', oldValue: true, newValue: false }, stamp);
   assert.deepEqual(off.sideEffectKeys, []);
 });
+
+// BRO-4888: duplicate-pointer plans. The write guard resolves a same-url pair on
+// its own; that outcome must not be reported as an unexpected change, but a
+// guard that SETS a pointer while the plan edits a reason field still must.
+test('unexpectedChanges: duplicate-pointer side effects the guard is expected to make', () => {
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  // Hemming: writing the clear reason makes the guard clear duplicateOf/duplicateReason.
+  const hemmingBefore = { duplicateOf: 'bano.json', duplicateReason: 'criticName-override-collided-at-rename', duplicateClearReason: null };
+  const hemmingAfter = { duplicateOf: null, duplicateReason: null, duplicateClearReason: 'auto-cleared at write: refusing cycle' };
+  assert.deepEqual(unexpectedChanges(hemmingBefore, hemmingAfter, 'duplicateClearReason'), []);
+  // Bano: setting duplicateOf makes the guard stamp its own duplicateReason.
+  const banoBefore = { duplicateOf: null, duplicateReason: null };
+  const banoAfter = { duplicateOf: 'hemming.json', duplicateReason: 'url-collision-detected-at-write' };
+  assert.deepEqual(unexpectedChanges(banoBefore, banoAfter, 'duplicateOf'), []);
+});
+
+test('unexpectedChanges: a guard that sets a duplicate pointer while a reason field is edited is still reported', () => {
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const before = { duplicateOf: null, duplicateReason: null };
+  // The plan edits duplicateReason; the guard set duplicateOf on top: not the plan's intent.
+  assert.deepEqual(unexpectedChanges(before, { duplicateOf: 'x.json', duplicateReason: 'y' }, 'duplicateReason'), ['duplicateOf']);
+  // The plan edits duplicateClearReason; the guard SET duplicateOf instead of clearing it.
+  assert.deepEqual(
+    unexpectedChanges({ duplicateOf: null }, { duplicateOf: 'x.json', duplicateClearReason: 'z' }, 'duplicateClearReason'),
+    ['duplicateOf'],
+  );
+  // Unrelated fields are never excused by the duplicate allowance.
+  assert.deepEqual(
+    unexpectedChanges({ duplicateOf: null }, { duplicateOf: 'x.json', wrongProduction: true }, 'duplicateOf'),
+    ['wrongProduction'],
+  );
+});
