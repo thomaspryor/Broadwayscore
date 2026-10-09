@@ -2456,5 +2456,34 @@
       }
     ],
     "queuedAt": "2026-10-08T23:59:36.567Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4875-recreate-draft",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4875-recreate-draft",
+    "description": "land.yml did not land land/bro-4875-recreate-draft: the unit-tests-node gate went red at 5f73e7d5bc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37860421367",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4875-recreate-draft"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5f73e7d5bc4d9f7f89809f03ae26f237f66adfe4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37860421367"
+      }
+    ],
+    "queuedAt": "2026-10-09T00:09:58.736Z"
   }
 ]
