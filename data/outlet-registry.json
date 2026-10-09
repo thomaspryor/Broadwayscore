@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-09T06:17:22.217Z",
+    "lastUpdated": "2026-10-09T10:18:20.630Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12169,6 +12169,28 @@
         "heyrhody"
       ],
       "domain": "heyrhody.com"
+    },
+    "jupiterhadley": {
+      "displayName": "Jupiterhadley",
+      "tier": 3,
+      "aliases": [
+        "jupiterhadley"
+      ],
+      "domain": "jupiterhadley.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-09T10:18:20.630Z"
+    },
+    "jolienstheatrediary": {
+      "displayName": "Jolienstheatrediary",
+      "tier": 3,
+      "aliases": [
+        "jolienstheatrediary"
+      ],
+      "domain": "jolienstheatrediary.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-09T10:18:20.630Z"
     }
   },
   "_aliasIndex": {
