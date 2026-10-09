@@ -1664,6 +1664,8 @@ on:
       # the scripts/lib/** glob above.
       - 'scripts/audit-stale-announced-shows.js'
       - 'scripts/audit-stale-announced-shows.test.mjs'
+      - 'scripts/audit-stale-announced-postponed.test.mjs'
+      - 'scripts/fixtures/postponed/**'
       - 'scripts/audit-stale-review-texts.js'
       - 'scripts/audit-stale-review-texts.test.mjs'
       # Open-card premise re-check — the mirror of autonomous-acceptance-recheck.js
