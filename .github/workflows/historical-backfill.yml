@@ -15,12 +15,20 @@ name: Historical Review Backfill
 on:
   schedule:
     - cron: '37 6 * * *'
+    # Backup slot: GitHub dropped the first 06:37 run (2026-10-09). The script
+    # does nothing if today's slice already started, so this only fills a gap.
+    - cron: '17 7 * * *'
   workflow_dispatch:
     inputs:
       count:
         description: 'Shows to dispatch this run (default 24; each gather shard takes up to 4)'
         required: false
         default: '24'
+      force:
+        description: 'Run even if today''s slice was already dispatched'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -46,7 +54,9 @@ jobs:
         run: |
           COUNT="${{ github.event.inputs.count || '24' }}"
           [[ "$COUNT" =~ ^[1-9][0-9]*$ ]] || COUNT=24
-          node scripts/historical-backfill-next.js --count="$COUNT"
+          FORCE=""
+          [ "${{ github.event.inputs.force }}" = "true" ] && FORCE="--force"
+          node scripts/historical-backfill-next.js --count="$COUNT" $FORCE
 
       - name: Dispatch gather-reviews
         id: dispatch

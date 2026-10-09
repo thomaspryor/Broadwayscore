@@ -47,9 +47,17 @@ function nextBackfillSlice(all, cursor, count) {
 
 const USAGE = `historical-backfill-next.js — pick the next slice of the historical review backfill and advance its cursor.
 
-Usage: node scripts/historical-backfill-next.js [--count=24] [--dry-run]
+Usage: node scripts/historical-backfill-next.js [--count=24] [--dry-run] [--force]
+  --force     run even if today's slice was already dispatched
   --count=N   shows to pick (positive integer, default ${DEFAULT_COUNT})
   --dry-run   print the slice without writing the cursor`;
+
+/** Pure: did the cursor advance earlier on the same UTC day as `nowMs`? */
+function alreadyRanToday(cursor, nowMs = Date.now()) {
+  const t = cursor && cursor.updatedAt ? new Date(cursor.updatedAt).getTime() : NaN;
+  if (Number.isNaN(t)) return false;
+  return new Date(t).toISOString().slice(0, 10) === new Date(nowMs).toISOString().slice(0, 10);
+}
 
 function main() {
   const args = process.argv.slice(2);
@@ -61,9 +69,18 @@ function main() {
     process.exit(2);
   }
   const dryRun = args.includes('--dry-run');
+  const force = args.includes('--force');
   const all = JSON.parse(fs.readFileSync(BATCHES_PATH, 'utf8')).flat();
   let cursor = {};
   try { cursor = JSON.parse(fs.readFileSync(CURSOR_PATH, 'utf8')); } catch { /* first run */ }
+  // historical-backfill.yml has a backup cron (GitHub sometimes drops a
+  // scheduled run, as it did for the first 06:37 run on 2026-10-09). Once
+  // today's slice has started, later runs the same UTC day do nothing.
+  if (!force && alreadyRanToday(cursor)) {
+    console.log(`Historical backfill: today's slice already dispatched (cursor updated ${cursor.updatedAt}); nothing to do`);
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'shows=\nfirst=\n');
+    return;
+  }
   const { shows, next, cycle } = nextBackfillSlice(all, cursor, count);
   const from = (next - shows.length + all.length) % all.length;
   console.log(`Historical backfill: ${shows.length} show(s) from position ${from} of ${all.length} (cycle ${cycle}); next position ${next}`);
@@ -77,4 +94,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { nextBackfillSlice, DEFAULT_COUNT };
+module.exports = { nextBackfillSlice, alreadyRanToday, DEFAULT_COUNT };
