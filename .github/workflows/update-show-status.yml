@@ -201,6 +201,13 @@ jobs:
         continue-on-error: true
         run: node scripts/fix-stale-upcoming-tags.js --apply
 
+      # BRO-4913: demote open/previews shows with 0 reviews past openingDate whose
+      # official/TodayTix page shows a future launch date (postponed productions).
+      - name: Demote postponed productions
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-postponed-shows.js --demote
+
       # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
       # inherited the original production's ibdbUrl hard-fails validate-data
       # ("Shared ibdbUrl ... null the stale url on the revival entry") and

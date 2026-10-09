@@ -1,7 +1,7 @@
 name: Daily Data Health Check
 on:
   schedule:
-    # Daily (02:15 UTC since BRO-4800, see below). Card #364 (owner merge decision 2026-07-26 — "I don't
+    # 06:45 UTC daily. Card #364 (owner merge decision 2026-07-26 — "I don't
     # like getting emails unless they're urgent") REVERSES #409's 07:00→16:00
     # move: health-check.js no longer sends its own "BSC Daily"/"BSC URGENT"
     # email (see health-check.js's sendEmailDigest — it now writes
@@ -13,13 +13,7 @@ on:
     # fresh when the morning email reads it, with margin before the 07:00 UTC
     # trio. See the staleness-band note in check-cron-health.yml before
     # re-timing again.
-    # BRO-4800: moved 06:45 -> 02:15 UTC. GitHub fires this repo's schedules
-    # hours late: every 06:45 run from 2026-09-15 to 2026-10-06 started
-    # between 11:34 and 15:17 UTC, i.e. AFTER the 11:30 UTC morning digest,
-    # which therefore always showed the previous afternoon's snapshot. Crons
-    # near 02:00-03:45 UTC start ~08:15-10:50 UTC, so a 25-40 min run lands
-    # before the digest.
-    - cron: '15 2 * * *'
+    - cron: '45 6 * * *'
   workflow_dispatch: {}
 
 # Ship-check finding (card #374): a manual workflow_dispatch overlapping the
@@ -1032,20 +1026,7 @@ jobs:
         if: always()
         continue-on-error: true
         timeout-minutes: 3
-        env:
-          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
-          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: node scripts/audit-stale-announced-shows.js
-
-      # BRO-4913: the audit's postponed-production check fetches official pages
-      # via fetchPage, which writes the scraper-spend ledger.
-      - name: Commit scraper-spend ledger
-        if: always()
-        continue-on-error: true
-        uses: ./.github/actions/commit-scraper-spend-ledger
-        with:
-          workflow-name: data-health-check
 
       # Notion-schedule-coupling audit (BRO-3431 reopen). The four schedules
       # named in BRO-3431 all shared one shape: a LIVE schedule (a loaded

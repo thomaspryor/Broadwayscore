@@ -62,7 +62,7 @@ const {
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
-const { evaluatePostponed } = require('./lib/postponed-production-detector');
+const { findPostponedShows } = require('./lib/postponed-production-audit');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const argvEarly = process.argv.slice(2);
@@ -280,58 +280,19 @@ async function main() {
   }
 }
 
-// BRO-4913: open/previews shows with 0 reviews 48h+ past openingDate whose
-// official/TodayTix page shows a future first-performance date → postponed.
+// BRO-4913: postponed check, fixture pages only here. Live official-page fetching
+// lives in scripts/audit-postponed-shows.js so this audit never reaches the
+// scraper (and the scraper-spend ledger) from data-health-check.yml.
 async function findPostponed(showsData, now) {
-  const reviewsData = loadJSON(REVIEWS_FILE, null);
-  if (!reviewsData || !Array.isArray(reviewsData.reviews)) {
-    console.log(`  ⚠️  ${REVIEWS_FILE} unreadable — postponed check skipped (fail closed)`);
-    return [];
-  }
-  const reviews = reviewsData.reviews;
-  const counts = new Map();
-  for (const r of reviews) counts.set(r.showId, (counts.get(r.showId) || 0) + 1);
   const fixture = PAGES_FIXTURE ? loadJSON(PAGES_FIXTURE, {}) : null;
-  const effNow = NOW_OVERRIDE ? new Date(NOW_OVERRIDE) : now;
-  const out = [];
-  const deadline = Date.now() + 90000; // fetch budget so CI timeout can't kill the audit
-  let fetchFailures = 0;
-  for (const show of showsData.shows) {
-    if (Date.now() > deadline) { console.log('  ⚠️  postponed check hit its 90s fetch budget; remaining shows skipped'); break; }
-    if (!['open', 'previews'].includes(show.status) || !show.openingDate) continue;
-    if ((counts.get(show.id) || 0) > 0) continue;
-    // Prefilter BEFORE any network fetch: inside the 48h grace window or no page to read.
-    if (!evaluatePostponed(show, { now: effNow, reviewCount: 0, pageText: 'coming january 1, 2099' })) continue;
-    if (!fixture && !show.officialUrl && !show.todaytixUrl) continue;
-    let pageText = null;
-    if (fixture) {
-      pageText = fixture[show.id] || null;
-    } else {
-      const { fetchPage } = require('./lib/scraper');
-      for (const url of [show.officialUrl, show.todaytixUrl].filter(Boolean)) {
-        try {
-          const r = await fetchPage(url);
-          const hit = evaluatePostponed(show, { now: effNow, reviewCount: 0, pageText: r.content });
-          if (hit) { pageText = r.content; break; }
-        } catch (e) { fetchFailures++; }
-      }
-    }
-    const hit = evaluatePostponed(show, { now: effNow, reviewCount: 0, pageText });
-    if (!hit) continue;
-    let demoted = false;
-    if (DEMOTE && !DRY_RUN) {
-      show.status = 'upcoming';
-      show.openingDate = hit.futureDate;
-      show.previewsStartDate = hit.futureDate;
-      show.openingDateSource = 'official-site';
-      show.openingDateNote = `Auto-demoted by audit-stale-announced-shows (BRO-4913): official page shows ${hit.futureDate}`;
-      demoted = true;
-    }
-    out.push({ id: show.id, title: show.title, openingDate: show.openingDate, futureDate: hit.futureDate, reason: hit.reason, demoted });
-  }
-  if (fetchFailures > 0) console.log(`  ⚠️  postponed check: ${fetchFailures} official/TodayTix page fetch(es) failed (no signal for those)`);
-  if (!fixture) { try { await require('./lib/scraper').cleanup(); } catch (e) { /* no browser to close */ } }
-  return out;
+  if (!fixture) return [];
+  const res = await findPostponedShows(showsData, {
+    now: NOW_OVERRIDE ? new Date(NOW_OVERRIDE) : now,
+    reviewsData: loadJSON(REVIEWS_FILE, null),
+    getPageText: async (show) => fixture[show.id] || null,
+    demote: DEMOTE && !DRY_RUN,
+  });
+  return res.postponed;
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
