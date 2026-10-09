@@ -113,10 +113,45 @@ SNAPSHOT_FILE="data/audit/sync-refused-${TAG}.json"
 cd "$REPO_DIR" || { echo "::error::[$TAG] cannot cd to $REPO_DIR"; exit 1; }
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# SELF-UPDATE (BRO-4146, owner-approved 2026-10-09): this script runs from the
+# checkout it syncs, so a checkout it cannot fast-forward also keeps running
+# the OLD copy of this script, and a fix to the sync logic can never reach it.
+# In October 2026 the Mac sat 2,500+ commits behind for days on a dirty .pyc
+# that a later version would have cleared; only someone at the Mac could
+# unstick it. So before touching anything, run origin/main's copy instead
+# whenever it differs. origin/main is whatever the previous tick fetched (at
+# most one interval old), so this needs no extra network call, and it is the
+# same code a successful fast-forward would run next tick. Any failure (no
+# origin/main yet, a file missing there, a syntax error) falls back to this
+# copy. SYNC_SELF_UPDATED stops a second hop. Trade-off: an unpushed local
+# edit to these three files is ignored in favour of origin/main's copy; to
+# test a local edit, run it with SYNC_SELF_UPDATED=1.
+if [ -z "${SYNC_SELF_UPDATED:-}" ] && git rev-parse -q --verify origin/main >/dev/null 2>&1; then
+  _fresh_dir=$(mktemp -d "${TMPDIR:-/tmp}/sync-audit-fresh.XXXXXX" 2>/dev/null) || _fresh_dir=""
+  _fresh_ok=0
+  if [ -n "$_fresh_dir" ]; then
+    _fresh_ok=1
+    for _f in sync-audit-checkout.sh push-mutex.sh sync-audit-decision.js; do
+      git show "origin/main:scripts/lib/$_f" > "$_fresh_dir/$_f" 2>/dev/null || { _fresh_ok=0; break; }
+    done
+    if [ "$_fresh_ok" -eq 1 ] && ! bash -n "$_fresh_dir/sync-audit-checkout.sh" 2>/dev/null; then
+      _fresh_ok=0
+    fi
+  fi
+  if [ "$_fresh_ok" -eq 1 ] && { ! cmp -s "$_fresh_dir/sync-audit-checkout.sh" "$SCRIPT_DIR/sync-audit-checkout.sh" \
+       || ! cmp -s "$_fresh_dir/push-mutex.sh" "$SCRIPT_DIR/push-mutex.sh" \
+       || ! cmp -s "$_fresh_dir/sync-audit-decision.js" "$SCRIPT_DIR/sync-audit-decision.js"; }; then
+    echo "[$TAG] this checkout's sync script differs from origin/main's; running origin/main's copy"
+    SYNC_SELF_UPDATED=1 SYNC_FRESH_DIR="$_fresh_dir" exec bash "$_fresh_dir/sync-audit-checkout.sh" "$(pwd)"
+  fi
+  [ -n "$_fresh_dir" ] && rm -rf "$_fresh_dir"
+fi
+
 # shellcheck source=scripts/lib/push-mutex.sh
 source "$SCRIPT_DIR/push-mutex.sh"
 push_mutex_acquire
-trap 'push_mutex_release' EXIT
+trap 'push_mutex_release; [ -n "${SYNC_FRESH_DIR:-}" ] && rm -rf "$SYNC_FRESH_DIR"' EXIT
 
 write_refused_snapshot() {
   local reason="$1" dirty="$2" blocking="${3:-}"
@@ -471,6 +506,34 @@ if [ -n "$DIRTY_AUDIT_FILES" ]; then
 $DIRTY_AUDIT_FILES
 EOF
   fi
+fi
+
+# Python bytecode (BRO-4146): *.pyc is rebuilt on every import, so a dirty or
+# untracked one is never work worth keeping. A tracked .pyc that a local test
+# run rewrote blocked this gate for days in October 2026 (origin/main has
+# since untracked it and ignores __pycache__/, but an old checkout still
+# tracks it).
+DIRTY_PYC=$( (git diff --name-only; git diff --cached --name-only) | grep '\.pyc$' | sort -u || true)
+if [ -n "$DIRTY_PYC" ]; then
+  echo "[$TAG] resetting rewritten .pyc file(s):"
+  echo "$DIRTY_PYC" | sed "s/^/[$TAG]   /"
+  while IFS= read -r f; do
+    [ -n "$f" ] || continue
+    if git cat-file -e "HEAD:$f" 2>/dev/null; then
+      git checkout HEAD -- "$f" || echo "::error::[$TAG] could not reset $f to HEAD"
+    elif git reset -q -- "$f" 2>/dev/null; then
+      rm -f -- "$f"
+    fi
+  done <<EOF
+$DIRTY_PYC
+EOF
+fi
+UNTRACKED_PYC=$(git status --porcelain --untracked-files=all 2>/dev/null \
+  | awk '/^\?\? /{print substr($0,4)}' | grep '\.pyc$' || true)
+if [ -n "$UNTRACKED_PYC" ]; then
+  echo "[$TAG] removing untracked .pyc file(s):"
+  echo "$UNTRACKED_PYC" | sed "s/^/[$TAG]   /"
+  echo "$UNTRACKED_PYC" | xargs -I{} rm -f -- "{}"
 fi
 
 # UNTRACKED regenerable snapshots (review finding, task #1563): a crashed

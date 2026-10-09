@@ -466,6 +466,86 @@ else
   echo "PASS[15]: a non-main branch mid-rebase (detached HEAD) is refused before any self-heal ($rc15)"
 fi
 
+# --- Case 16: origin/main holds a newer sync script → it runs instead (BRO-4146) ---
+# The stuck-checkout trap: the script runs from the checkout it syncs, so a
+# checkout it cannot fast-forward keeps the old script forever. With an
+# origin/main copy that differs, the gate must exec that copy, which then
+# does the sync. The previous tick's fetch is simulated with a plain fetch.
+# Also: a fresh copy that fails `bash -n` must be ignored (case 16b).
+publish_lib_to_origin() {
+  local origin="$1" via="$2" marker_line="$3"
+  git init -q "$via"
+  git -C "$via" config user.email ci@ci.ci
+  git -C "$via" config user.name ci
+  git -C "$via" remote add origin "$origin"
+  git -C "$via" fetch -q origin main
+  git -C "$via" checkout -q main
+  mkdir -p "$via/scripts/lib"
+  cp "$SCRIPT_DIR/push-mutex.sh" "$SCRIPT_DIR/sync-audit-decision.js" "$via/scripts/lib/"
+  awk -v m="$marker_line" '{print} /^set -uo pipefail$/ && !done {print m; done=1}' "$LIB" > "$via/scripts/lib/sync-audit-checkout.sh"
+  git -C "$via" add -A
+  git -C "$via" commit -q -m "ci: newer sync script"
+  git -C "$via" push -q origin main
+  rm -rf "$via"
+}
+O16="$TMP/o16"; C16="$TMP/c16"; T16="$TMP/tmp16"; mkdir -p "$T16"
+setup_pair "$O16" "$C16"
+publish_lib_to_origin "$O16" "$TMP/via16" 'echo "FRESH-COPY-RAN dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"'
+git -C "$C16" fetch -q origin main
+out16=$(cd "$TMP" && TMPDIR="$T16" SYNC_TAG=case16 bash "$LIB" c16 2>&1); rc16=$?
+if [ "$rc16" -ne 0 ]; then
+  echo "FAIL[16]: expected exit 0, got $rc16. Output:"; echo "$out16"; fail=1
+elif ! grep -q "running origin/main's copy" <<<"$out16" || ! grep -q "FRESH-COPY-RAN dir=$T16/sync-audit-fresh\." <<<"$out16"; then
+  echo "FAIL[16]: expected origin/main's copy to run from a temp dir. Output:"; echo "$out16"; fail=1
+elif [ "$(grep -c FRESH-COPY-RAN <<<"$out16")" -ne 1 ]; then
+  echo "FAIL[16]: the fresh copy must not hop again. Output:"; echo "$out16"; fail=1
+elif [ "$(git -C "$C16" rev-parse HEAD)" != "$(git -C "$C16" rev-parse origin/main)" ]; then
+  echo "FAIL[16]: expected the fresh copy to fast-forward the checkout (relative repo-dir arg)"; fail=1
+elif [ -n "$(ls -A "$T16")" ]; then
+  echo "FAIL[16]: temp copy not cleaned up: $(ls -A "$T16")"; fail=1
+else
+  echo "PASS[16]: a differing origin/main sync script runs instead, once, and cleans up ($rc16)"
+fi
+
+O16b="$TMP/o16b"; C16b="$TMP/c16b"
+setup_pair "$O16b" "$C16b"
+publish_lib_to_origin "$O16b" "$TMP/via16b" 'if then BROKEN-SYNTAX'
+git -C "$C16b" fetch -q origin main
+out16b=$(SYNC_TAG=case16b bash "$LIB" "$C16b" 2>&1); rc16b=$?
+if [ "$rc16b" -ne 0 ]; then
+  echo "FAIL[16b]: expected the local copy to sync anyway, got $rc16b. Output:"; echo "$out16b"; fail=1
+elif grep -q "running origin/main's copy" <<<"$out16b"; then
+  echo "FAIL[16b]: a fresh copy that fails bash -n must be ignored. Output:"; echo "$out16b"; fail=1
+elif [ "$(git -C "$C16b" rev-parse HEAD)" != "$(git -C "$C16b" rev-parse origin/main)" ]; then
+  echo "FAIL[16b]: expected HEAD at origin/main"; fail=1
+else
+  echo "PASS[16b]: a broken origin/main sync script is ignored and the local copy syncs ($rc16b)"
+fi
+
+# --- Case 17: rewritten tracked .pyc + stray untracked .pyc → reset, recovers (BRO-4146) ---
+O17="$TMP/o17"; C17="$TMP/c17"
+setup_pair "$O17" "$C17"
+mkdir -p "$C17/scripts/__pycache__"
+printf 'bytecode-v1' > "$C17/scripts/__pycache__/x.cpython-311.pyc"
+git -C "$C17" add -A && git -C "$C17" commit -q -m "track pyc" && git -C "$C17" push -q origin main
+# Origin untracks the .pyc (as ffe6df1fb did), so ff-only must rewrite that path.
+V17="$TMP/via17"; git clone -q -b main "$O17" "$V17"
+git -C "$V17" config user.email ci@ci.ci; git -C "$V17" config user.name ci
+git -C "$V17" rm -q scripts/__pycache__/x.cpython-311.pyc
+git -C "$V17" commit -q -m "ci: untrack pyc"; git -C "$V17" push -q origin main; rm -rf "$V17"
+printf 'bytecode-rewritten' > "$C17/scripts/__pycache__/x.cpython-311.pyc"
+printf 'stray' > "$C17/scripts/__pycache__/x.cpython-314.pyc"
+out17=$(SYNC_TAG=case17 bash "$LIB" "$C17" 2>&1); rc17=$?
+if [ "$rc17" -ne 0 ]; then
+  echo "FAIL[17]: expected recovery, got $rc17. Output:"; echo "$out17"; fail=1
+elif [ "$(git -C "$C17" rev-parse HEAD)" != "$(git -C "$C17" rev-parse origin/main)" ]; then
+  echo "FAIL[17]: expected HEAD at origin/main"; fail=1
+elif [ -n "$(git -C "$C17" status --porcelain)" ]; then
+  echo "FAIL[17]: expected a clean tree, got: $(git -C "$C17" status --porcelain)"; fail=1
+else
+  echo "PASS[17]: rewritten and stray .pyc files are cleared and the sync recovers ($rc17)"
+fi
+
 if [ "$fail" -ne 0 ]; then
   echo "sync-audit-checkout test: FAILED"; exit 1
 fi
