@@ -31,6 +31,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
+import { isLiveTour } from '@/lib/tour-listing';
 import {
   ScoreBadge,
   ScoreBreakdownBar,
@@ -882,7 +883,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining }: { show: ComputedS
   );
   return (
     <div className="card p-4 text-center bg-surface-overlay border-white/5">
-      <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid="awaiting-reviews">{isTour ? 'Reviews coming in' : 'Awaiting reviews'}</p>
+      <p className="text-sm font-semibold text-gray-300 mb-0.5" data-testid="awaiting-reviews">{isLiveTour(show) ? 'Reviews coming in' : 'Awaiting reviews'}</p>
       {reviewCount > 0 ? (
         <a href="#critic-reviews" className="text-xs text-gray-500 hover:text-brand transition-colors">{progress}</a>
       ) : (

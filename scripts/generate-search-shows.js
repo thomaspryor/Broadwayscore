@@ -44,17 +44,18 @@ const showsWithScores = buildShowsWithScores(reviews, shows, path.join(outputDir
 
 // Filter out unscored closed shows (historical shows without reviews)
 // These are hidden in HeaderSearch anyway — no point shipping them to every user
-// A tour with no score yet is indexed once it is live with a schedule; a closed
+// A tour with no score yet is indexed while it is live with a stop still ahead; a closed
 // or unscheduled unscored one is noindexed, so it stays out of search too
 // (isTourIndexableSlim mirrors src/lib/tour-listing.ts isTourIndexable, BRO-4931).
 const tourSchedules = (() => {
   try { return JSON.parse(fs.readFileSync(path.join(dataDir, 'tour-schedules.json'), 'utf-8')).tours || {}; } catch { return {}; }
 })();
+const todayISO = new Date().toISOString().slice(0, 10);
 const readSlim = (id) => { try { return JSON.parse(fs.readFileSync(path.join(outputDir, 'shows', `${id}.json`), 'utf-8')); } catch { return null; } };
 const visibleShows = shows.filter(show =>
   isCategoryEnabled(show.category) &&
   (showsWithScores.has(show.id) || show.status !== 'closed') &&
-  (show.category !== 'tour' || isTourIndexableSlim(readSlim(show.id), show.status, (tourSchedules[show.id]?.stops?.length ?? 0) > 0))
+  (show.category !== 'tour' || isTourIndexableSlim(readSlim(show.id), show.status, (tourSchedules[show.id]?.stops ?? []).some(st => st.end >= todayISO)))
 );
 
 // Map shows to search-friendly format (matching HeaderSearch's Show interface)

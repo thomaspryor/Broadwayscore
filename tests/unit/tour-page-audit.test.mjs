@@ -279,4 +279,9 @@ test('parseShowPage reads the market label of the parent link; checkShowPage wan
   assert.deepEqual(linkCodes(check('regional', '/show/x-regional-2020', { ...offB, id: 'x-regional-2020', slug: 'x-regional-2020', category: 'regional' })), []);
   assert.ok(linkCodes(check('Off-Broadway', '/show/other')).includes('broadway-link-wrong'));
   assert.ok(linkCodes(check('Broadway', '/show/x-off-broadway-2020')).includes('parent-link-label-wrong'), 'an Off-Broadway parent is not called Broadway');
+  // The label is the copy contract (src/lib/tour-display.ts): a capitalised
+  // "Regional" mid-sentence is the wording the page used to ship.
+  const reg = { ...offB, id: 'x-regional-2020', slug: 'x-regional-2020', category: 'regional' };
+  assert.ok(linkCodes(check('Regional', '/show/x-regional-2020', reg)).includes('parent-link-label-wrong'), 'regional reads lower-case');
+  assert.deepEqual(linkCodes(check('West End', '/show/x-west-end', { ...offB, id: 'x-west-end', slug: 'x-west-end', category: 'west-end' })), []);
 });

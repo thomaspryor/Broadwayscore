@@ -212,6 +212,15 @@ describe('national tours (launched in code, BRO-4211)', () => {
     assert.ok(browse.size >= getTourShows().length);
     for (const s of getTourBrowseShows()) assert.ok(isTourIndexableShow(s), `${s.id} is listed but noindex`);
   });
+
+  test('indexable and browsable stay in step on any date, including after every stop has ended', () => {
+    for (const today of ['2020-01-01', '2026-10-09', '2999-01-01']) {
+      const browse = new Set(getTourBrowseShows(today).map(s => s.id));
+      for (const s of getAllShows().filter(x => x.category === 'tour')) {
+        assert.equal(isTourIndexableShow(s, today), browse.has(s.id), `${s.id} on ${today}`);
+      }
+    }
+  });
 });
 
 describe('market partitioning', () => {

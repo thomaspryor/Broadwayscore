@@ -9,7 +9,7 @@ import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
 import { AUTHOR } from '@/config/author';
 import { formatShowDate } from './date-utils';
 import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
-import { isTourScored } from './tour-listing';
+import { isTourScored, isTourScoreHidden } from './tour-listing';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -267,9 +267,10 @@ export function generateShowSchema(show: ComputedShow, lastUpdated?: string, per
   // Add aggregate rating if we have scores and sufficient reviews
   // Uses 1-5 star scale for Google rich snippet compatibility
   const minReviewsForSchema = getMarketMinReviews(show.category);
-  // A tour follows the score badge's rule (+2 reviews with no T1/T2), so an
-  // unscored tour that is now indexed never claims a rating its page hides.
-  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema && (!isTour || isTourScored(show))) {
+  // A tour follows the page's own TBD rule (isTourScoreHidden: +2 reviews with
+  // no T1/T2, no rating in previews or upcoming, the coverage floor), so an
+  // indexed tour never claims a rating its page hides.
+  if (show.criticScore?.score && show.criticScore?.reviewCount >= minReviewsForSchema && (!isTour || !isTourScoreHidden(show))) {
     schema.aggregateRating = {
       '@type': 'AggregateRating',
       ratingValue: toFiveStarScale(show.criticScore.score),

@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, isTourIndexableShow, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
+import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards } from '@/lib/data-awards';
@@ -183,9 +184,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
-    : `${isTourMeta && reviewCount === 0
+    : `${isLiveTour(show) && reviewCount === 0
       ? `Reviews of ${show.title} ${marketLabel} are coming in as local critics see it in each city.`
-      : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.`}${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
+      : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
   ).trim();
   const truncatedDescription = description.length > 160
     ? description.slice(0, 157).replace(/\s\S*$/, '...')
@@ -628,7 +629,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                       {scoreBox}
                       <div className="pt-0.5 min-w-0">
                         {showTBD ? (
-                          <div className="text-base sm:text-lg font-bold text-gray-400">{isTour ? 'Reviews coming in' : 'Awaiting Reviews'}</div>
+                          <div className="text-base sm:text-lg font-bold text-gray-400">{isLiveTour(show) ? 'Reviews coming in' : 'Awaiting Reviews'}</div>
                         ) : sentiment && (
                           <div className={`text-base sm:text-lg font-bold ${sentiment.colorClass}`}>{sentiment.label}</div>
                         )}
@@ -943,18 +944,17 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               </Link>
             </p>
           </section>
-        ) : isTour && show.status !== 'closed' ? (
+        ) : isLiveTour(show) ? (
           // A live tour with no reviews yet (BRO-4931): the page is indexed for
           // its schedule, so say plainly that reviews are on the way instead of
           // the "archived reviews" or "opening night" copy.
           <section id="critic-reviews" className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8 scroll-mt-20" aria-labelledby="critic-scorecard-heading-tour-pending" data-testid="tour-reviews-coming-in">
             <header className="flex items-center justify-between gap-3 mb-3">
               <h2 id="critic-scorecard-heading-tour-pending" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Critic Scorecard</h2>
-              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">reviews coming in</span>
+              <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">no score yet</span>
             </header>
             <p className="text-gray-400 text-sm">
-              Reviews coming in. Critics in each city review the tour as it plays, and the CriticScore appears once enough of those reviews are in.
-              {tourStops.length > 0 ? ' The schedule below shows where it plays.' : ''}
+              Critics in each city review the tour as it plays, and the CriticScore appears once enough of those reviews are in.
             </p>
           </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (

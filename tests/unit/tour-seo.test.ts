@@ -104,3 +104,18 @@ test('an indexed but unscored tour claims no aggregateRating; a scored one does 
   assert.equal((generateShowSchema(mk({ reviewCount: 4, tier1Count: 0, tier2Count: 0 })) as Record<string, unknown>).aggregateRating, undefined);
   assert.ok((generateShowSchema(mk({ reviewCount: 3, tier1Count: 0, tier2Count: 1 })) as Record<string, unknown>).aggregateRating);
 });
+
+test('a tour claims aggregateRating only when its page shows the score (previews, upcoming, coverage floor)', () => {
+  const mk = (over: Record<string, unknown>) => ({ ...tour, ...over }) as unknown as ComputedShow;
+  const rating = (s: ComputedShow) => (generateShowSchema(s) as Record<string, any>).aggregateRating;
+  // Scored and live: rating carries the real review count.
+  assert.equal(rating(mk({}))?.reviewCount, 5);
+  // The page shows TBD for previews and upcoming tours even with enough reviews.
+  assert.equal(rating(mk({ status: 'previews' })), undefined);
+  assert.equal(rating(mk({ status: 'upcoming' })), undefined);
+  // Never-public score with an incomplete coverage verdict stays TBD on the page.
+  assert.equal(rating(mk({ cov: { state: 'incomplete' } })), undefined);
+  assert.ok(rating(mk({ cov: { state: 'incomplete' }, coverageAcked: true })));
+  // A score public for 24h+ stays shown (the coverage floor wins outright).
+  assert.ok(rating(mk({ cov: { state: 'incomplete' }, scorePublicSince: '2020-01-01T00:00:00Z' })));
+});

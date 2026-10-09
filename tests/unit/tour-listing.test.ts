@@ -14,7 +14,7 @@ import { createRequire } from 'node:module';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
-  isTourScored, isTourBrowsable, isTourIndexable, getTourSection, tourSectionRank, TOUR_SECTIONS,
+  isTourScored, isTourBrowsable, isTourIndexable, isLiveTour, getTourSection, tourSectionRank, TOUR_SECTIONS,
 } from '../../src/lib/tour-listing';
 
 process.env.NEXT_PUBLIC_FEATURES = 'tour';
@@ -39,6 +39,14 @@ test('isTourScored: 3 reviews with a T1/T2, 5 without; non-tours always pass', (
   assert.equal(isTourScored({ category: 'broadway', criticScore: undefined } as any), true);
 });
 
+test('isLiveTour: only open or previews tours say "Reviews coming in"; upcoming and closed do not', () => {
+  assert.equal(isLiveTour(tour()), true);
+  assert.equal(isLiveTour(tour({ status: 'previews' })), true);
+  assert.equal(isLiveTour(tour({ status: 'upcoming' })), false);
+  assert.equal(isLiveTour(tour({ status: 'closed' })), false);
+  assert.equal(isLiveTour({ category: 'broadway', status: 'open' } as any), false);
+});
+
 test('sections: running scored, running unscored, upcoming, closed; ranks follow TOUR_SECTIONS', () => {
   assert.equal(getTourSection(tour()), 'On the road now');
   assert.equal(getTourSection(unscored()), 'Reviews coming in');
@@ -61,13 +69,27 @@ test('browsable: scored, or not closed with stops ahead; never a closed unscored
   assert.equal(isTourBrowsable({ category: 'broadway', status: 'open' } as any, true), false);
 });
 
-test('indexable: unscored tours need a schedule and must not be closed', () => {
+test('indexable: unscored tours need a stop ahead and must not be closed', () => {
   assert.equal(isTourIndexable(tour({ status: 'closed' }), false), true);
   assert.equal(isTourIndexable(unscored(), true), true);
   assert.equal(isTourIndexable(unscored({ status: 'upcoming' }), true), true);
   assert.equal(isTourIndexable(unscored(), false), false);
   assert.equal(isTourIndexable(unscored({ status: 'closed' }), true), false);
   assert.equal(isTourIndexable({ category: 'broadway', status: 'closed' } as any, false), true);
+});
+
+test('indexable and browsable agree for every tour state (a listed tour is never noindex)', () => {
+  for (const scored of [true, false]) {
+    for (const status of ['open', 'previews', 'upcoming', 'closed'] as const) {
+      for (const ahead of [true, false]) {
+        const t = scored ? tour({ status }) : unscored({ status });
+        assert.equal(isTourIndexable(t, ahead), isTourBrowsable(t, ahead), `scored=${scored} status=${status} ahead=${ahead}`);
+      }
+    }
+  }
+  // The regression: an open unscored tour whose stops have all ended.
+  assert.equal(isTourIndexable(unscored(), false), false);
+  assert.equal(isTourBrowsable(unscored(), false), false);
 });
 
 test('search index mirrors indexable (isTourIndexableSlim)', () => {
@@ -78,7 +100,8 @@ test('search index mirrors indexable (isTourIndexableSlim)', () => {
   assert.equal(isTourIndexableSlim(none, 'upcoming', true), true);
   assert.equal(isTourIndexableSlim(none, 'open', false), false);
   assert.equal(isTourIndexableSlim(none, 'closed', true), false);
-  assert.equal(isTourIndexableSlim(null, 'open', true), true, 'no slim file yet but live with a schedule');
+  assert.equal(isTourIndexableSlim(null, 'open', true), true, 'no slim file yet but live with a stop ahead');
+  assert.equal(isTourIndexableSlim(none, 'open', false), false, 'every stop already ended');
 });
 
 test('tours page config: neutral heading, unchanged URL, sections in one run each', async () => {

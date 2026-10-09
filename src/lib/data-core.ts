@@ -236,12 +236,14 @@ export function getTourBrowseShows(today = todayISO()): ComputedShow[] {
 
 /**
  * Whether a show's page may be indexed and is in the sitemap and search.
- * Always true outside tours; a tour needs a score, or to be live with a
- * schedule (tour-listing.ts). Closed or unscheduled unscored tours stay noindex.
+ * Always true outside tours; a tour needs a score, or to be live with a stop
+ * still ahead (tour-listing.ts), the same rule as the tours page so a listed
+ * tour is never noindex. Closed, unscheduled or fully-ended unscored tours
+ * stay noindex.
  */
-export function isTourIndexableShow(show: Pick<ComputedShow, 'id' | 'category' | 'criticScore' | 'status'>): boolean {
+export function isTourIndexableShow(show: Pick<ComputedShow, 'id' | 'category' | 'criticScore' | 'status'>, today = todayISO()): boolean {
   if (show.category !== 'tour') return true;
-  return isTourIndexable(show, getTourSchedule(show.id).length > 0);
+  return isTourIndexable(show, getTourSchedule(show.id).some(s => s.end >= today));
 }
 
 /**

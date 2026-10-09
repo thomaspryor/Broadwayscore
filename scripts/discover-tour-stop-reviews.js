@@ -15,8 +15,9 @@
  * a sibling tour; a social, ticketing or UGC domain (isBlockedReviewUrl); not
  * review-shaped or a roundup; a screen version or video page (Wicked: For Good
  * played during the Buffalo stop); validateSerpCandidate's wrong-production
- * markers; tourCandidateIsTour (Broadway/New York with no tour word, or an
- * overseas country domain);
+ * markers; tourCandidateIsTour (an overseas edition, a non-review page such as an
+ * interview or press item, or the New York company's review; a local review
+ * need not say "tour", BRO-4931);
  * a registered outlet, or an unregistered one whose result title names the
  * show and says "review" (ingested under a provisional outlet id).
  *

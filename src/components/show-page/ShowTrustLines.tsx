@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { getShowById, getTourStops, getToursOf } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-core';
 import { featureFlags } from '@/config/feature-flags';
-import { hasReachedStage, getMarketLabel } from '@/lib/market-utils';
+import { hasReachedStage } from '@/lib/market-utils';
+import { getTourParentLabel, describeTourScores } from '@/lib/tour-display';
 import { isTourScored } from '@/lib/tour-listing';
 import { hasEnoughReviews, applyCoverageFloor } from '@/config/score-buckets';
 
@@ -26,7 +27,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
           standalone tour has none (BRO-4931), so the wording follows its category. */}
       {isTour && (() => {
         const parent = show.tourOf ? getShowById(show.tourOf) : null;
-        const parentMarket = parent ? getMarketLabel(parent.category) : null;
+        const parentMarket = parent ? getTourParentLabel(parent.category) : null;
         return (
           <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="tour-trust-line">
             <span className="text-gray-400">
@@ -73,7 +74,7 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
                 if (!tours.some(isTourScored)) {
                   return <>{' '}— {tours.length > 1 ? 'the national tours are' : 'the national tour is'} {tours.every(x => x.status === 'upcoming') ? 'announced' : 'on the road'}, with critic reviews coming in.{' '}</>;
                 }
-                return <>{' '}— the national tour has its own critic score.{' '}</>;
+                return <>{' '}— {describeTourScores(tours.filter(isTourScored).length, tours.length)}.{' '}</>;
               })()}
               {tours.map((tour, i) => (
                 <span key={tour.id}>

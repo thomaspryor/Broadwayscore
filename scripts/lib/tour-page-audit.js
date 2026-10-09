@@ -471,7 +471,7 @@ function checkShowPage({ url, page, show, parent, schedule, tickets = [], todays
     if (!page.broadwayLink) warn('broadway-link-missing', `no "See the ${label} production" link`);
     else {
       if (page.broadwayLink !== `/show/${parent.slug || parent.id}`) err('broadway-link-wrong', `"See the ${label} production" links ${page.broadwayLink}, tourOf is ${parent.slug || parent.id}`);
-      if (page.parentLinkLabel && page.parentLinkLabel.toLowerCase() !== label.toLowerCase()) warn('parent-link-label-wrong', `parent link says "See the ${page.parentLinkLabel} production", parent is category ${parent.category || 'broadway'} ("${label}")`);
+      if (page.parentLinkLabel && page.parentLinkLabel !== label) warn('parent-link-label-wrong', `parent link says "See the ${page.parentLinkLabel} production", parent is category ${parent.category || 'broadway'} ("${label}")`);
     }
   }
 
