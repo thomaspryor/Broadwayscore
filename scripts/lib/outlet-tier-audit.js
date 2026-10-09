@@ -226,8 +226,10 @@ const normCritic = (name) => (name || '').toLowerCase().replace(/\s+/g, ' ').tri
  *  - consensus: each scored review against the mean of OTHER outlets'
  *    T1/T2 reviews of the same show (needs CONSENSUS_MIN_PEERS). mad is the
  *    mean absolute gap, bias the mean signed gap (positive = kinder).
- *  - crossover: share of the outlet's reviews written by critics who also
- *    have CROSSOVER_MIN_REVIEWS+ reviews at a different T1/T2 outlet.
+ *  - crossover: share of the outlet's named critics who also have
+ *    CROSSOVER_MIN_REVIEWS+ reviews at a different T1/T2 outlet (any period).
+ * Pickup only uses shows whose Show Score list is complete, and every signal
+ * counts a show+outlet pair once.
  * @param {object} p
  * @param {object[]} p.reviews
  * @param {Record<string,object>} [p.showScoreShows] show-score.json .shows
@@ -240,20 +242,33 @@ function computeQualitySignals({ reviews, showScoreShows = {}, normalizeOutlet =
   const idOf = (r) => (r.outletId || '').toLowerCase().trim();
   const regionFor = (showId) => regionOf(categoryByShow[showId]);
   const isTop = (outletId, showId) => tierOf(outletId, regionFor(showId)) <= 2;
+  const normCache = new Map();
+  const norm = (name) => {
+    if (!normCache.has(name)) normCache.set(name, normalizeOutlet(name));
+    return normCache.get(name);
+  };
 
+  // Only shows whose Show Score list is complete: a truncated list measures
+  // display order, not coverage.
   const ssListed = new Map();
   for (const [showId, s] of Object.entries(showScoreShows)) {
     if (!s || !Array.isArray(s.criticReviews) || !s.criticReviews.length) continue;
-    ssListed.set(showId, new Set(s.criticReviews.map(c => normalizeOutlet(c.outlet))));
+    if (typeof s.criticReviewCount === 'number' && s.criticReviews.length < s.criticReviewCount) continue;
+    ssListed.set(showId, new Set(s.criticReviews.map(c => norm(c.outlet))));
   }
 
+  // One entry per show+outlet (duplicate rows would double-count), score = mean.
   const byShow = new Map();
   for (const r of reviews) {
-    if (!byShow.has(r.showId)) byShow.set(r.showId, []);
-    byShow.get(r.showId).push(r);
+    const id = idOf(r);
+    if (!id) continue;
+    if (!byShow.has(r.showId)) byShow.set(r.showId, new Map());
+    const outlets = byShow.get(r.showId);
+    if (!outlets.has(id)) outlets.set(id, []);
+    if (typeof r.assignedScore === 'number') outlets.get(id).push(r.assignedScore);
   }
 
-  // critic → outlets where they have CROSSOVER_MIN_REVIEWS+ reviews at T1/T2
+  // critic → outlets where they have CROSSOVER_MIN_REVIEWS+ reviews, T1/T2 only
   const criticOutletCounts = new Map();
   for (const r of reviews) {
     const c = normCritic(r.criticName);
@@ -269,39 +284,39 @@ function computeQualitySignals({ reviews, showScoreShows = {}, normalizeOutlet =
     if (!topOutletsByCritic.has(c)) topOutletsByCritic.set(c, new Set());
     topOutletsByCritic.get(c).add(idOf(r));
   }
+  const criticsByOutlet = new Map();
+  for (const r of reviews) {
+    const c = normCritic(r.criticName);
+    if (!c) continue;
+    if (!criticsByOutlet.has(idOf(r))) criticsByOutlet.set(idOf(r), new Set());
+    criticsByOutlet.get(idOf(r)).add(c);
+  }
 
   const acc = new Map();
   const get = (id) => {
-    if (!acc.has(id)) acc.set(id, { eligible: 0, listed: 0, gaps: [], critics: new Set(), crossover: 0, total: 0 });
+    if (!acc.has(id)) acc.set(id, { eligible: 0, listed: 0, gaps: [] });
     return acc.get(id);
   };
-
-  for (const [showId, rows] of byShow) {
+  for (const [showId, outlets] of byShow) {
     const listed = ssListed.get(showId);
-    for (const r of rows) {
-      const id = idOf(r);
-      if (!id) continue;
+    const scored = [...outlets].filter(([, sc]) => sc.length).map(([id, sc]) => [id, mean(sc)]);
+    for (const [id, sc] of outlets) {
       const a = get(id);
-      a.total++;
-      const c = normCritic(r.criticName);
-      if (c) {
-        a.critics.add(c);
-        const tops = topOutletsByCritic.get(c);
-        if (tops && [...tops].some(o => o !== id)) a.crossover++;
-      }
       if (listed) {
         a.eligible++;
         if (listed.has(id)) a.listed++;
       }
-      if (typeof r.assignedScore !== 'number') continue;
-      const peers = rows.filter(p => idOf(p) !== id && typeof p.assignedScore === 'number' && isTop(idOf(p), showId));
+      if (!sc.length) continue;
+      const peers = scored.filter(([pid]) => pid !== id && isTop(pid, showId));
       if (peers.length < CONSENSUS_MIN_PEERS) continue;
-      a.gaps.push(r.assignedScore - mean(peers.map(p => p.assignedScore)));
+      a.gaps.push(mean(sc) - mean(peers.map(([, v]) => v)));
     }
   }
 
   const out = new Map();
   for (const [id, a] of acc) {
+    const critics = [...(criticsByOutlet.get(id) || [])];
+    const crossed = critics.filter(c => [...(topOutletsByCritic.get(c) || [])].some(o => o !== id));
     out.set(id, {
       outletId: id,
       showScoreEligible: a.eligible,
@@ -310,8 +325,9 @@ function computeQualitySignals({ reviews, showScoreShows = {}, normalizeOutlet =
       consensusN: a.gaps.length,
       consensusMad: a.gaps.length ? mean(a.gaps.map(Math.abs)) : null,
       consensusBias: a.gaps.length ? mean(a.gaps) : null,
-      distinctCritics: a.critics.size,
-      crossoverShare: a.total ? a.crossover / a.total : null,
+      distinctCritics: critics.length,
+      crossoverCritics: crossed.length,
+      crossoverShare: critics.length ? crossed.length / critics.length : null,
     });
   }
   return out;

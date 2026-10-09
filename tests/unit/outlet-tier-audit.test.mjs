@@ -205,11 +205,12 @@ describe('computeQualitySignals', () => {
   const r = (showId, outletId, criticName, assignedScore) => ({ showId, outletId, criticName, assignedScore });
 
   it('pickup counts only shows Show Score lists critics for', () => {
-    const reviews = [r('a', 'blog', 'B', 80), r('b', 'blog', 'B', 80), r('c', 'blog', 'B', 80)];
+    const reviews = [r('a', 'blog', 'B', 80), r('a', 'blog', 'B2', 80), r('b', 'blog', 'B', 80), r('c', 'blog', 'B', 80), r('d', 'blog', 'B', 80)];
     const showScoreShows = {
-      a: { criticReviews: [{ outlet: 'The Blog' }] },
-      b: { criticReviews: [{ outlet: 'Other' }] },
+      a: { criticReviews: [{ outlet: 'The Blog' }], criticReviewCount: 1 },
+      b: { criticReviews: [{ outlet: 'Other' }], criticReviewCount: 1 },
       c: { criticReviews: [] },
+      d: { criticReviews: [{ outlet: 'Other' }], criticReviewCount: 9 }, // truncated: skipped
     };
     const s = computeQualitySignals({ reviews, showScoreShows, normalizeOutlet: n => (n === 'The Blog' ? 'blog' : 'other'), tierOf }).get('blog');
     assert.strictEqual(s.showScoreEligible, 2);
@@ -222,6 +223,7 @@ describe('computeQualitySignals', () => {
       r('a', 'top1', 'X', 60), r('a', 'top2', 'Y', 70), r('a', 'top3', 'Z', 80), r('a', 'blog', 'B', 90),
       r('b', 'top1', 'X', 60), r('b', 'blog', 'B', 10), // only one peer: skipped
     ];
+    reviews.push(r('a', 'top1', 'X2', 60)); // duplicate peer row: counted once
     const s = computeQualitySignals({ reviews, tierOf }).get('blog');
     assert.strictEqual(s.consensusN, 1);
     assert.strictEqual(s.consensusBias, 20);
@@ -238,6 +240,7 @@ describe('computeQualitySignals', () => {
     ];
     const s = computeQualitySignals({ reviews, tierOf }).get('mixed');
     assert.strictEqual(s.distinctCritics, 2);
+    assert.strictEqual(s.crossoverCritics, 1);
     assert.strictEqual(s.crossoverShare, 0.5);
     // a critic's home T1 outlet does not count as crossover for itself
     assert.strictEqual(computeQualitySignals({ reviews, tierOf }).get('top1').crossoverShare, 0);
