@@ -9,6 +9,7 @@ const {
   normalizeVenueName, venuesMatch, pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, buildVenueCityIndex,
   canReuseArchivedFile,
   mayServeDiskImage,
+  keepExistingImage, findRejectedSourcesInUse, recordFileSources, fileSourceUrls, imagePathOwner, isDownloadableSource, recordedSourceFor,
 } = require('./image-source-match.js');
 
 const at = (iso) => ({ __type: 'Date', iso });
@@ -187,4 +188,69 @@ test('page builder: a disk hero whose recorded source was rejected is not served
   // No record, or nothing rejected: served as before.
   assert.equal(mayServeDiskImage(row, undefined), true);
   assert.equal(mayServeDiskImage({ id: 'x' }, theatr), true);
+});
+
+// BRO-4901: real rows. funny-girl-2002 still points at a Theatr upload it rejected;
+// waiting-for-godot-2013 was fixed by hand and now records a manual: source.
+const FG_REJECTED = 'https://d4ov6iqsvotvt.cloudfront.net/uploads/show/poster_image/6868/medium_1662483958-TT_480x720.jpg';
+const funnyGirl = {
+  id: 'funny-girl-2002',
+  images: { poster: '/images/shows/funny-girl-2002/poster.jpg', thumbnail: '/images/shows/funny-girl-2002/thumbnail.jpg', hero: null },
+  rejectedImageUrls: [FG_REJECTED],
+};
+const godot = {
+  id: 'waiting-for-godot-2013',
+  images: { poster: '/images/shows/waiting-for-godot-2013/poster.jpg', thumbnail: '/images/shows/waiting-for-godot-2013/thumbnail.jpg' },
+  rejectedImageUrls: ['https://d2rawotm8xdpob.cloudfront.net/v0/b/theatr-app.appspot.com/o/shows/godot.png'],
+};
+const SOURCES = {
+  'funny-girl-2002': { poster: FG_REJECTED, thumbnail: FG_REJECTED, hero: null },
+  'waiting-for-godot-2013': { poster: 'manual:original-run art (checked by eye, BRO-4901)', thumbnail: 'manual:original-run art (checked by eye, BRO-4901)' },
+};
+
+test('imagePathOwner and isDownloadableSource', () => {
+  assert.equal(imagePathOwner('/images/shows/funny-girl-2002/poster.jpg'), 'funny-girl-2002');
+  assert.equal(imagePathOwner('https://cdn/x.jpg'), null);
+  assert.equal(imagePathOwner(null), null);
+  assert.ok(isDownloadableSource(FG_REJECTED));
+  assert.ok(!isDownloadableSource('manual:hand-set'));
+  assert.ok(!isDownloadableSource(null));
+});
+
+test('keepExistingImage drops a file whose recorded source is rejected and keeps the rest', () => {
+  assert.equal(keepExistingImage(funnyGirl, 'poster', SOURCES), false);
+  assert.equal(keepExistingImage(godot, 'poster', SOURCES), true, 'manual: source is kept');
+  assert.equal(keepExistingImage(funnyGirl, 'hero', SOURCES), false, 'no local file to keep');
+  assert.equal(keepExistingImage({ ...godot, id: 'new-row' }, 'poster', {}), true, 'unknown source is kept');
+  assert.equal(keepExistingImage({ id: 'x', images: { poster: 'https://cdn/p.jpg' } }, 'poster', SOURCES), false, 'remote URL is not a kept file');
+});
+
+test('recordedSourceFor reads the map under the file owner, so cross-show paths use the owner entry', () => {
+  const borrower = { id: 'funny-girl-tour', images: { poster: '/images/shows/funny-girl-2002/poster.jpg' }, rejectedImageUrls: [FG_REJECTED] };
+  assert.equal(recordedSourceFor(borrower, 'poster', SOURCES), FG_REJECTED);
+  assert.equal(recordedSourceFor(funnyGirl, 'hero', SOURCES), null);
+});
+
+test('findRejectedSourcesInUse lists only in-use local fields mapped to a rejected URL', () => {
+  const rows = findRejectedSourcesInUse([funnyGirl, godot, { id: 'no-images' }], SOURCES);
+  assert.deepEqual(rows.map(r => `${r.id}.${r.format}`), ['funny-girl-2002.poster', 'funny-girl-2002.thumbnail']);
+  const cleared = { ...funnyGirl, images: { poster: null, thumbnail: null } };
+  assert.deepEqual(findRejectedSourcesInUse([cleared], SOURCES), []);
+});
+
+test('recordFileSources writes only entries whose path is still the field value', () => {
+  const sources = {};
+  const images = {
+    poster: '/images/shows/godot-west-end/poster.jpg',
+    thumbnail: '/images/shows/godot-west-end/thumbnail.jpg',
+    _fileSources: {
+      poster: { path: '/images/shows/godot-west-end/poster.jpg', source: 'https://cdn/a.jpg' },
+      thumbnail: { path: '/images/shows/godot-west-end/thumbnail.png', source: 'https://cdn/b.jpg' },
+      hero: { path: '/images/shows/godot-west-end/hero.jpg', source: 'https://cdn/c.jpg' },
+    },
+  };
+  assert.deepEqual(fileSourceUrls(images), { poster: 'https://cdn/a.jpg', thumbnail: 'https://cdn/b.jpg', hero: 'https://cdn/c.jpg' });
+  assert.deepEqual(recordFileSources(sources, images), ['poster']);
+  assert.deepEqual(sources, { 'godot-west-end': { poster: 'https://cdn/a.jpg' } });
+  assert.deepEqual(recordFileSources(null, images), []);
 });

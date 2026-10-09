@@ -36,7 +36,7 @@ const { isPlaceholderFile } = require('./lib/show-images');
 
 const ROOT = path.join(__dirname, '..');
 const SCHEDULES_PATH = path.join(ROOT, 'data', 'tour-schedules.json');
-const SOURCES_PATH = path.join(ROOT, 'data', 'image-sources.json');
+const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 // Tours searched with nothing found, so the next search waits RETRY_DAYS.
 const ATTEMPTS_PATH = path.join(ROOT, 'data', 'tour-art-attempts.json');
 const OUTPUT_DIR = path.join(ROOT, 'public', 'images', 'shows');
@@ -146,7 +146,7 @@ async function main() {
   const exists = p => fs.existsSync(path.join(PUBLIC_DIR, p));
   const open = shows.filter(s => isTourShow(s) && (only ? s.id === only : s.status !== 'closed'))
     .filter(t => rolesNeeded(t, exists).length);
-  const sources = fs.existsSync(SOURCES_PATH) ? JSON.parse(fs.readFileSync(SOURCES_PATH, 'utf8')) : {};
+  const sources = loadImageSources();
   // Point shows.json at own files an earlier run archived but failed to
   // record, before any search (and before backoff can skip the tour).
   let adopted = 0;
@@ -279,7 +279,7 @@ async function main() {
     // Saved per tour, right after its files: a kill between the two leaves at
     // most one tour's files unreferenced, which the next run rewrites.
     saveShows(snapshot);
-    fs.writeFileSync(SOURCES_PATH, JSON.stringify(sources, null, 2) + '\n');
+    saveImageSources(sources);
   }
 
   console.log('\n=== Tour art ===');

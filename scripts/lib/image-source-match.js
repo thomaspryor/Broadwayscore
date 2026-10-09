@@ -193,6 +193,92 @@ function mayServeDiskImage(show, recordedSource) {
   return !isRejectedImage({ hero: recordedSource }, show);
 }
 
+/** A recorded source a downloader can fetch (not manual:<note> or a label). */
+const isDownloadableSource = (u) => typeof u === 'string' && /^https?:\/\//i.test(u);
+
+/**
+ * The show id whose directory holds a local image path ("/images/shows/<id>/x.jpg"),
+ * or null. A lineage row can point at a linked production's file, and that
+ * file's provenance is recorded under the owner's id, not the row's.
+ */
+function imagePathOwner(p) {
+  const m = typeof p === 'string' && p.match(/^\/images\/shows\/([^/]+)\//);
+  return m ? m[1] : null;
+}
+
+/** The recorded source (image-sources.json) of the file show.images[format] serves. */
+function recordedSourceFor(show, format, sources) {
+  const owner = imagePathOwner(show && show.images && show.images[format]);
+  const v = owner && sources && sources[owner] ? sources[owner][format] : null;
+  return typeof v === 'string' ? v : null;
+}
+
+/**
+ * May the fetcher keep the local file a show already serves for this format
+ * when a re-fetch does not replace it? Not when that file's recorded source is
+ * one a person rejected for this show: applyImages kept Kyoto's and the West
+ * End Gatsby's New York banners this way after their rejection (BRO-4901).
+ * No recorded source means unknown provenance, not rejected, so it is kept.
+ */
+function keepExistingImage(show, format, sources) {
+  const existing = show && show.images && show.images[format];
+  if (!imagePathOwner(existing)) return false;
+  const recorded = recordedSourceFor(show, format, sources);
+  return !recorded || !isRejectedImage({ [format]: recorded }, show);
+}
+
+/**
+ * Local image fields in use whose recorded source is in the row's
+ * rejectedImageUrls: either the art is still the rejected production, or a
+ * hand fix replaced the file without updating image-sources.json. Both need a
+ * person (BRO-4901). Returns [{ id, format, path, source }].
+ */
+function findRejectedSourcesInUse(shows, sources) {
+  const out = [];
+  for (const show of shows || []) {
+    if (!show || !show.images || !Array.isArray(show.rejectedImageUrls) || !show.rejectedImageUrls.length) continue;
+    for (const format of ['poster', 'thumbnail', 'hero']) {
+      const p = show.images[format];
+      if (!imagePathOwner(p)) continue;
+      const source = recordedSourceFor(show, format, sources);
+      if (source && isRejectedImage({ [format]: source }, show)) out.push({ id: show.id, format, path: p, source });
+    }
+  }
+  return out;
+}
+
+/**
+ * images._fileSources ({ format: { path, source } }) is how a fetch path that
+ * writes a local file says where the bytes came from. The source URLs, for a
+ * rejectedImageUrls check before the file is used.
+ */
+function fileSourceUrls(images) {
+  const out = {};
+  for (const [format, e] of Object.entries((images && images._fileSources) || {})) {
+    if (e && typeof e.source === 'string') out[format] = e.source;
+  }
+  return out;
+}
+
+/**
+ * Write images._fileSources into the image-sources map for every format whose
+ * final value is still the file that fetch wrote (a format the caller kept
+ * from before, or replaced, is left alone). Mutates sources; returns the
+ * formats recorded.
+ */
+function recordFileSources(sources, images) {
+  const recorded = [];
+  if (!sources || !images) return recorded;
+  for (const [format, e] of Object.entries(images._fileSources || {})) {
+    const owner = e && imagePathOwner(e.path);
+    if (!owner || typeof e.source !== 'string' || images[format] !== e.path) continue;
+    sources[owner] = sources[owner] || {};
+    sources[owner][format] = e.source;
+    recorded.push(format);
+  }
+  return recorded;
+}
+
 /** IBDB is a Broadway database: any hit for a London row is another production. */
 function ibdbEligible(show) {
   return todaytixMarket(show) !== 'london';
@@ -208,4 +294,11 @@ module.exports = {
   canReuseArchivedFile,
   mayServeDiskImage,
   ibdbEligible,
+  isDownloadableSource,
+  imagePathOwner,
+  recordedSourceFor,
+  keepExistingImage,
+  findRejectedSourcesInUse,
+  fileSourceUrls,
+  recordFileSources,
 };

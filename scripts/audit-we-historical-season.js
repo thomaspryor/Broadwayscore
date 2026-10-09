@@ -41,6 +41,7 @@ const { getOutletTier } = require('./lib/review-normalization');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { todaytixMarket } = require('./lib/todaytix-market');
 const { nonStoryReason } = require('./lib/todaytix-page-identity');
+const { isRejectedImage } = require('./lib/image-source-match');
 
 const NYC_ONLY_IMAGE_HOST_RE = /theatr-app\.appspot\.com/;
 const CENSORED_TITLE_RE = /[a-z]\*+[a-z]/i;
@@ -53,8 +54,7 @@ function posterProblem(show, sourceUrls) {
   const urls = Object.entries(sourceUrls || {})
     .filter(([field, u]) => typeof u === 'string' && img[field])
     .map(([, u]) => u);
-  const rejected = new Set((show.rejectedImageUrls || []).map(u => u.split('?')[0]));
-  if (urls.some(u => rejected.has(u.split('?')[0]))) return 'art from a rejected URL';
+  if (urls.some(u => isRejectedImage({ poster: u }, show))) return 'art from a rejected URL';
   if (todaytixMarket(show) === 'london' && urls.some(u => NYC_ONLY_IMAGE_HOST_RE.test(u))) return 'London row with NYC-only (Theatr) art';
   return null;
 }
