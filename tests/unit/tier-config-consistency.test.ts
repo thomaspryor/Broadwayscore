@@ -15,7 +15,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { TIER_WEIGHTS, VALID_TIERS, DEFAULT_TIER } from '../../src/config/scoring';
-import { TIER_DISPLAY } from '../../src/config/tier-display';
+import { TIER_DISPLAY, TIER_LIST, tierBarsLit, tierPercent } from '../../src/config/tier-display';
 import outletTiers from '../../src/config/outlet-tiers.json';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jsOutletTiers = require('../../scripts/lib/outlet-tiers');
@@ -188,4 +188,23 @@ test('app show-detail tiers resolve per market, like the website', () => {
   for (const call of outletCalls) assert.match(call, /,\s*show\.category\)$/, `${call} must pass show.category`);
   // The app's tier sheet explains a promoted T1 from this flag.
   assert.match(src, /if \(isTopCritic\) entry\.tc = 1;/, 'generator must flag top critics (rv[].tc)');
+});
+
+test('tier chip bars and "Counts" key follow the weights (BRO-4905)', () => {
+  assert.deepEqual([...TIER_LIST], Object.keys(TIER_DISPLAY).map(Number), 'TIER_LIST covers every displayed tier');
+  for (const t of TIER_LIST) {
+    // The key prints these; a drifted weight would show the wrong percent.
+    assert.equal(tierPercent(t), Math.round(TIER_WEIGHTS[t as keyof typeof TIER_WEIGHTS] * 100), `T${t} percent`);
+    const lit = tierBarsLit(t);
+    assert.ok(lit >= 1 && lit <= 4, `T${t} lights 1-4 bars, got ${lit}`);
+  }
+  // A heavier tier always lights more bars than a lighter one.
+  for (let i = 1; i < TIER_LIST.length; i++) {
+    const [hi, lo] = [TIER_LIST[i - 1], TIER_LIST[i]];
+    assert.ok(TIER_DISPLAY[hi].weight > TIER_DISPLAY[lo].weight && tierBarsLit(hi) > tierBarsLit(lo), `T${hi} must outrank T${lo}`);
+  }
+  // The chip and the key both draw bars from the helper, not a hardcoded count.
+  const src: string = require('node:fs').readFileSync(require('node:path').join(__dirname, '../../src/components/ReviewsList.tsx'), 'utf8');
+  assert.match(src, /i < tierBarsLit\(tier\)/, 'TierBars must use tierBarsLit');
+  assert.match(src, /\{tierPercent\(t\)\}%/, 'Counts key must use tierPercent');
 });
