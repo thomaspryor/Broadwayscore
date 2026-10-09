@@ -365,15 +365,16 @@ async function main() {
     const showId = s.id || s.slug;
     const individualSent = sentData.shows[showId];
     if (!individualSent) return true;
-    if (RECREATE_DRAFT) return true;
     // A send observed on ANY record of this show's draft (its market: key or a
     // multi-show combo) is final, even if this per-show mirror is stale or was
     // flipped to deleted by a post-reap 404 (BRO-4474). Re-queueing here would
-    // put an already-sent show into a fresh combo draft.
+    // put an already-sent show into a fresh combo draft. Checked before
+    // --recreate-draft too (BRO-4875): recreating a sent show is a double send.
     if (sentOnSiblingRecord(sentData.shows, showId)) {
       console.log(`  Skipping ${s.title} — already sent (observed on a sibling record)`);
       return false;
     }
+    if (RECREATE_DRAFT) return true;
     if (shouldRequeueShow(individualSent)) {
       if (individualSent.completed) {
         console.log(`  Re-queueing ${s.title} — draft ${individualSent.draftStatus} at ${individualSent.draftCreatedAt}`);
@@ -548,52 +549,80 @@ async function main() {
   const broadcastKey = `${MARKET}:` + showsForEmail.map(s => s.showId).sort().join('+');
   const previousSent = sentData.shows[broadcastKey];
 
-  // --recreate-draft: delete the old Resend draft and clear the sent record so we proceed fresh.
-  // Skipped under --dry-run: the delete is a LIVE Resend API call and saveSentData mutates
-  // tracked state — neither belongs in a dry run (found 2026-07-05: dry-run cleared records).
-  if (RECREATE_DRAFT && previousSent && DRY_RUN) {
-    console.log(`\n[DRY RUN] Would delete old draft ${previousSent.draftId || '(none)'} and clear sent records`);
-  }
-  if (RECREATE_DRAFT && previousSent && !DRY_RUN) {
-    if (previousSent.draftId) {
-      console.log(`\n--recreate-draft: deleting old draft ${previousSent.draftId}...`);
-      try {
-        const { default: https } = await import('https');
-        await new Promise((resolve, reject) => {
+  // --recreate-draft: delete the old Resend draft(s) and clear the sent records so we proceed fresh.
+  // BRO-4875: fail closed at every step. The old draft must be provably unsent
+  // (tracker AND a live Resend GET), and a failed DELETE aborts before any
+  // tracker record is touched, so a second draft can never sit next to a live
+  // or already-sent one. The GET checks also run under --dry-run (read-only),
+  // so a dispatch can be rehearsed; only the DELETE and the tracker write are skipped.
+  if (RECREATE_DRAFT) {
+    const { collectRecreateDraftIds, recreateDraftBlockReason } = require('./lib/recreate-draft-guard');
+    const refuse = (why) => {
+      console.error(`\n--recreate-draft REFUSED: ${why}`);
+      console.error('No new draft was created.');
+      process.exit(1);
+    };
+    // A preview run would delete the draft and then only email a preview.
+    if (SEND_TO) refuse('--recreate-draft cannot be combined with --send-to');
+    const { keys, draftIds, blockReason } = collectRecreateDraftIds(
+      sentData.shows, broadcastKey, showsForEmail.map(s => s.showId));
+    if (blockReason) refuse(blockReason);
+
+    if (draftIds.length && RESEND_API_KEY) {
+      const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
+      for (const id of draftIds) {
+        const live = await getBroadcastWithRetry(id);
+        const why = recreateDraftBlockReason(live);
+        if (why) refuse(`draft ${id}: ${why}`);
+        console.log(`\n--recreate-draft: old draft ${id} is still unsent (status ${live.data.status})`);
+      }
+    } else if (draftIds.length) {
+      // Only reachable under --dry-run (main() exits earlier without a key otherwise).
+      console.log(`\n[DRY RUN] No RESEND_API_KEY: cannot check live status of ${draftIds.join(', ')}`);
+    }
+
+    if (DRY_RUN) {
+      console.log(`\n[DRY RUN] Would delete old draft(s) ${draftIds.join(', ') || '(none)'} and clear records: ${keys.join(', ') || '(none)'}`);
+    } else {
+      const { default: https } = await import('https');
+      const deletedIds = new Set();
+      for (const id of draftIds) {
+        console.log(`--recreate-draft: deleting old draft ${id}...`);
+        const res = await new Promise((resolve) => {
           const req = https.request({
             hostname: 'api.resend.com',
-            path: `/broadcasts/${previousSent.draftId}`,
+            path: `/broadcasts/${id}`,
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${RESEND_API_KEY}` },
-          }, res => {
+            timeout: 15000,
+          }, r => {
             let body = '';
-            res.on('data', c => body += c);
-            res.on('end', () => {
-              if (res.statusCode >= 200 && res.statusCode < 300) {
-                console.log(`  Old draft deleted from Resend`);
-                resolve();
-              } else {
-                console.warn(`  Could not delete old draft (${res.statusCode}: ${body.slice(0, 100)}) — continuing anyway`);
-                resolve();
-              }
-            });
+            r.on('data', c => body += c);
+            r.on('end', () => resolve({ statusCode: r.statusCode, body }));
           });
-          req.on('error', err => { console.warn(`  Delete request failed: ${err.message} — continuing`); resolve(); });
+          req.on('error', err => resolve({ statusCode: 0, body: err.message }));
+          req.on('timeout', () => { req.destroy(new Error('timeout')); });
           req.end();
         });
-      } catch (err) {
-        console.warn(`  Could not delete old draft: ${err.message} — continuing`);
+        if (!(res.statusCode >= 200 && res.statusCode < 300)) {
+          // Drafts deleted earlier in this loop are gone from Resend: drop their
+          // records now, or a rerun would GET a 404 for them and refuse forever.
+          if (deletedIds.size) {
+            for (const key of keys) {
+              if (deletedIds.has(sentData.shows[key]?.draftId)) delete sentData.shows[key];
+            }
+            saveSentData(sentData);
+          }
+          refuse(`could not delete old draft ${id} (${res.statusCode}: ${String(res.body).slice(0, 100)})`);
+        }
+        deletedIds.add(id);
+        console.log(`  Old draft deleted from Resend`);
       }
+      // Clear every record of the deleted draft(s) so the script treats the show as new
+      for (const key of keys) delete sentData.shows[key];
+      saveSentData(sentData);
+      console.log(`  Sent records cleared (${keys.join(', ') || 'none'}) — creating fresh draft`);
     }
-    // Clear all sent records for this broadcast so the script treats it as new
-    delete sentData.shows[broadcastKey];
-    for (const s of showsForEmail) {
-      if (sentData.shows[s.showId]?.broadcastKey === broadcastKey) {
-        delete sentData.shows[s.showId];
-      }
-    }
-    saveSentData(sentData);
-    console.log(`  Sent records cleared — creating fresh draft`);
   }
 
   if (previousSent?.completed && !SEND_TO && !RECREATE_DRAFT) {

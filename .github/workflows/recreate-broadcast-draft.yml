@@ -1,0 +1,185 @@
+# Replace an opening-night Resend draft that was built from stale data
+# (BRO-4875: Into the Woods' West End draft was made from 41 reviews / 84 before
+# same-day corrections moved the show to 61 / 86, and nothing could redo it).
+#
+# DRAFT ONLY. Runs send-opening-night-broadcast.js --recreate-draft, which
+# refuses unless the old draft is provably unsent (tracker records AND a live
+# Resend GET; a 404 counts as possibly-sent), deletes it, and creates a fresh
+# draft plus the usual "[Action Required] draft ready" email to the owner.
+# Nothing here ever calls /send: the owner still presses Send in Resend.
+#
+# Owner-triggered repair: it skips opening-night-broadcast.yml's QA checklist
+# and send-window time gates (the script's own data checks still run), so
+# only dispatch it after the show's data has been checked by hand.
+#
+# dry_run defaults to true: the rehearsal still checks the live draft status
+# and prints what would be deleted, but deletes and writes nothing.
+name: Recreate Broadcast Draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      market:
+        description: 'Market'
+        required: true
+        type: choice
+        options: [west-end, broadway]
+      shows:
+        description: 'Show id(s), comma-separated, exactly as in the old draft'
+        required: true
+        type: string
+      lookback_days:
+        description: 'How many days back the opening may be (default 3)'
+        required: false
+        type: number
+        default: 3
+      dry_run:
+        description: 'Rehearse only (check status, delete nothing, create nothing)'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+# Own group: sharing opening-night-broadcast.yml's `broadcast-send` group would
+# let a dispatch here evict that workflow's pending run (one pending run per
+# group). The script's send lock covers draft creation across both.
+concurrency:
+  group: recreate-broadcast-draft
+  cancel-in-progress: false
+
+jobs:
+  recreate:
+    name: Recreate Resend draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Validate inputs and recovery hold
+        env:
+          SHOWS: ${{ inputs.shows }}
+          LOOKBACK: ${{ inputs.lookback_days }}
+        run: |
+          SHOWS="${SHOWS//[[:space:]]/}"
+          if ! [[ "$SHOWS" =~ ^[a-z0-9-]+(,[a-z0-9-]+)*$ ]]; then
+            echo "::error::shows must be comma-separated show ids, got: $SHOWS"
+            exit 1
+          fi
+          if ! [[ "$LOOKBACK" =~ ^[0-9]+$ ]]; then
+            echo "::error::lookback_days must be a whole number, got: $LOOKBACK"
+            exit 1
+          fi
+          # Same hold opening-night-broadcast.yml honors. A manual dispatch fails
+          # loudly instead of skipping, so the person who ran it sees why.
+          if [ -f data/audit/recovery-active.marker ]; then
+            ACTIVE_UNTIL=$(jq -r '.activeUntil' data/audit/recovery-active.marker)
+            NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            if [ "$ACTIVE_UNTIL" \> "$NOW" ]; then
+              echo "::error::recovery-active marker present until $ACTIVE_UNTIL ($(jq -r '.reason' data/audit/recovery-active.marker))"
+              exit 1
+            fi
+          fi
+          echo "SHOWS=$SHOWS" >> "$GITHUB_ENV"
+          echo "LOOKBACK=$LOOKBACK" >> "$GITHUB_ENV"
+
+      - name: Generate consensus
+        # Runs on dry_run too so the rehearsal sees what the real run will
+        # (a missing consensus refuses the draft); dry_run pushes nothing.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        # Same as opening-night-broadcast.yml: a consensus failure must not block
+        # the draft (the script itself refuses a show with no consensus at all).
+        run: node scripts/generate-critic-consensus.js --shows="$SHOWS" || true
+
+      - name: Generate mobile data (pre-computed scores for email)
+        run: bash scripts/generate-mobile-artifacts.sh
+
+      - name: Recreate draft
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_WE_AUDIENCE_ID: ${{ secrets.RESEND_WE_AUDIENCE_ID }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # scripts/lib/send-lock.js takes its cross-session lock via the
+          # GitHub contents API and exits(1) without a token.
+          GH_TOKEN: ${{ github.token }}
+          # routeAlert (owner-notification-failed / draft-creation-failed) files through Linear.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # Read only by fetchPage() in the script's require chain; wired so the
+          # scrapingdog-pairing guard holds. The draft path never scrapes.
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # The next five are read only by scraping/billing helpers in the script's
+          # require chain; the draft path never uses them.
+          # audit-secret-gap-ok: SCRAPINGBEE_API_KEY
+          # audit-secret-gap-ok: BRIGHTDATA_TOKEN
+          # audit-secret-gap-ok: BRIGHTDATA_ZONE
+          # audit-secret-gap-ok: BRIGHTDATA_SERP_ZONE
+          # audit-secret-gap-ok: GHA_BILLING_PAT
+          MARKET: ${{ inputs.market }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          FLAGS=""
+          [ "$DRY_RUN" = "true" ] && FLAGS="--dry-run"
+          set +e
+          node scripts/send-opening-night-broadcast.js --market="$MARKET" --lookback="$LOOKBACK" \
+            --shows="$SHOWS" --recreate-draft $FLAGS 2>&1 | tee /tmp/recreate.log
+          RC=${PIPESTATUS[0]}
+          set -e
+          [ "$RC" -ne 0 ] && { echo "::error::send-opening-night-broadcast.js exited $RC"; exit 1; }
+          if [ "$DRY_RUN" = "true" ]; then
+            grep -q "Would create Resend draft" /tmp/recreate.log \
+              || { echo "::error::rehearsal did not reach draft creation (see log)"; exit 1; }
+          else
+            grep -q "Draft created" /tmp/recreate.log \
+              || { echo "::error::no draft was created (see log)"; exit 1; }
+          fi
+
+      # routeAlert's ledger must persist or the once-per-incident rule never
+      # holds. One commit for all three files, as in account-metrics.yml.
+      - name: Commit alert ledger
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: recreate-broadcast-draft alert ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # opening-night-sent.json and critic-consensus.json are CORE_FILES:
+      # untracked in the public repo, persisted only through push-core-data.
+      - name: Push core data to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Recreate opening-night broadcast draft'
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recreate Broadcast Draft Failed'
+          severity: 'warning'

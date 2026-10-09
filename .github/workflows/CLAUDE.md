@@ -247,6 +247,11 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Manual trigger:** `gh workflow run "Opening Night Broadcast" -f lookback_days=7`
 - **Related:** `opening-night-reviews.yml` handles SERP discovery + triggers gather-reviews (runs at 5 AM UTC). The data pipeline runs independently and feeds scored data to this broadcast workflow.
 
+## `recreate-broadcast-draft.yml`
+- **Runs:** Manual only. Inputs `market`, `shows` (ids exactly as in the old draft), `lookback_days` (default 3), `dry_run` (default **true**).
+- **Does:** Replaces an opening-night Resend draft built from stale data via `send-opening-night-broadcast.js --recreate-draft`: regenerates consensus, refuses unless every tracker record for the shows is unsent AND a live Resend GET of each old draftId says `draft`/`cancelled` (a 404 is refused, Resend also reaps sent broadcasts), deletes the old draft (a failed DELETE aborts before the tracker is touched), creates a fresh draft and the owner's "draft ready" email, pushes core data. Never calls `/send`. Guard logic: `scripts/lib/recreate-draft-guard.js` (BRO-4875).
+- **Dispatch:** `gh workflow run recreate-broadcast-draft.yml -f market=west-end -f shows=<id> -f dry_run=false` (rehearse first with the default dry run).
+
 ## `gather-reviews.yml`
 - **Runs:** When new shows discovered (or manually triggered)
 - **Does:** Gathers review data by searching aggregators and outlets, then scrapes supplementary aggregators (Playbill Verdict + NYC Theatre), then rebuilds `reviews.json`
