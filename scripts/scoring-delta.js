@@ -242,6 +242,8 @@ const FLAG_FIELDS = new Set([
   'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
   'wrongProductionManualClear', 'humanReviewedWrongProduction',
   'namedNonReviewUrlManualClear', 'source', 'url',
+  // BRO-4890: isUnverifiableWebSearchRow reads the whole source list and the human score overrides.
+  'sources', 'humanReviewScore', 'adjudicatedScore',
   'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
   // BRO-3338 (ship-check finding): load-bearing for the 6 new auto-clear
   // predicates' outer gates (DatelessRevival/StaleDateGuard match on
@@ -878,6 +880,16 @@ function getUrlShowIdsAll(guards) {
 }
 
 function decideInclusion(review, show, guards) {
+  // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
+  // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
+  // The row predicate reads review.sources, review.humanReviewScore and
+  // review.adjudicatedScore, which is why those are in FLAG_FIELDS.
+  if (typeof guards.isCancelledBeforeOpeningShow === 'function' && guards.isCancelledBeforeOpeningShow(show)) {
+    return { included: false, reason: 'cancelledBeforeOpening' };
+  }
+  if (typeof guards.isUnverifiableWebSearchRow === 'function' && guards.isUnverifiableWebSearchRow(review)) {
+    return { included: false, reason: 'unverifiableWebSearchRow' };
+  }
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
   // rebuild's auto-clear paths (shouldAutoClearWrongShowUkUrl, shouldAutoClearWrongShow,
@@ -1482,6 +1494,9 @@ function main() {
         // Edits inside non-review-url-patterns.js / unvetted-serp-sources.js are
         // NOT visible here — use a direct corpus scan for those.
         && (baseline.isNamedNonReviewUrlRecord?.toString() || '') === (working.isNamedNonReviewUrlRecord?.toString() || '')
+        // BRO-4890: show-level never-opened exclusion and the unverifiable search-row rule.
+        && (baseline.isCancelledBeforeOpeningShow?.toString() || '') === (working.isCancelledBeforeOpeningShow?.toString() || '')
+        && (baseline.isUnverifiableWebSearchRow?.toString() || '') === (working.isUnverifiableWebSearchRow?.toString() || '')
         // BRO-3135 body-less aggregator-score gate: the predicate AND the two
         // helpers it delegates to (toString() of a caller misses callee edits).
         && (baseline.isBodylessAggregatorScoreUncorroborated?.toString() || '') === (working.isBodylessAggregatorScoreUncorroborated?.toString() || '')
