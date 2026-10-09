@@ -20,9 +20,11 @@ test('Google passes only on a redirect to accounts.google.com', () => {
 test('Google fails when its page says redirect_uri_mismatch, and stays inconclusive on a Google outage', () => {
   const hop = { status: 302, location: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=x' };
   assert.equal(judgeGoogle(AUTH, hop, { status: 400, body: '<title>Error 400: redirect_uri_mismatch</title>' }).ok, false);
-  assert.match(judgeGoogle(AUTH, hop, { status: 400, body: 'redirect_uri_mismatch' }).reason, /redirect_uri_mismatch/);
+  assert.match(judgeGoogle(AUTH, hop, { status: 400, body: 'Error 400: redirect_uri_mismatch' }).reason, /redirect_uri_mismatch/);
+  // Live 2026-10-09: the error page came with HTTP 200 after redirects.
+  assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: '<button data-error-code="redirect_uri_mismatch">details</button>' }).ok, false);
   assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: '<html>Choose an account</html>' }).ok, true);
-  assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: 'help article about redirect_uri_mismatch' }).inconclusive, true, 'the words without the 400 never page');
+  assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: 'help article mentioning redirect_uri_mismatch in prose' }).ok, true, 'the bare words are not the error page');
   assert.equal(judgeGoogle(AUTH, hop, { status: 503, body: '' }).inconclusive, true);
   assert.equal(judgeGoogle(AUTH, hop, null).ok, true, 'no page fetched: the hop verdict stands');
   assert.equal(judgeGoogle(AUTH, hop, { status: 403, body: 'sorry' }).inconclusive, true, 'a bot block never pages');
