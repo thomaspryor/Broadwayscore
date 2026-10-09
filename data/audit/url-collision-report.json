@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-09T13:46:15.210Z",
+  "generatedAt": "2026-10-09T15:59:18.573Z",
   "summary": {
-    "total": 14,
+    "total": 13,
     "high": 4,
-    "medium": 5,
-    "low": 5
+    "medium": 7,
+    "low": 2
   },
   "collisions": [
     {
@@ -143,33 +143,6 @@
       "confidence": "medium"
     },
     {
-      "url": "http://www.sfgate.com/cgi-bin/article.cgi?f=/n/a/2012/04/01/entertainment/e172405D83.DTL",
-      "normalizedUrl": "https://sfgate.com/cgi-bin/article.cgi",
-      "candidates": [
-        {
-          "showId": "gore-vidals-the-best-man-2012",
-          "file": "sfgate--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2012-04-01",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "sfgate"
-        },
-        {
-          "showId": "nice-work-if-you-can-get-it-2012",
-          "file": "sfgate--mark-kennedy.json",
-          "publishDate": null,
-          "openingDate": "2012-04-24",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "sfgate"
-        }
-      ],
-      "suggestedWinner": "nice-work-if-you-can-get-it-2012",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -222,6 +195,60 @@
       "suggestedWinner": "mamma-mia-2025",
       "reason": "publishDate August 14, 2025 is 0 days from mamma-mia-2025 opening (2025-08-14)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
+      "normalizedUrl": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/othello-toby-jones-david-harewood-b2858391.html",
+      "candidates": [
+        {
+          "showId": "othello-west-end-2022",
+          "file": "independent--unknown.json",
+          "publishDate": null,
+          "openingDate": "2022-11-23",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "independent"
+        },
+        {
+          "showId": "othello-west-end-2025",
+          "file": "independent--alice-saville.json",
+          "publishDate": "2025-11-05",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "independent"
+        }
+      ],
+      "suggestedWinner": "othello-west-end-2025",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279/",
+      "normalizedUrl": "https://whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279",
+      "candidates": [
+        {
+          "showId": "othello-west-end-2022",
+          "file": "whatsonstage--unknown.json",
+          "publishDate": null,
+          "openingDate": "2022-11-23",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "whatsonstage"
+        },
+        {
+          "showId": "othello-west-end-2025",
+          "file": "whatsonstage--sarah-crompton.json",
+          "publishDate": "2025-11-04",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "whatsonstage"
+        }
+      ],
+      "suggestedWinner": "othello-west-end-2025",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
     },
     {
       "url": "https://www.theatrely.com/post/punch-redemption-and-runarounds-review",
@@ -303,60 +330,6 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
-    },
-    {
-      "url": "/people/Frank-Rizzo/",
-      "normalizedUrl": "/people/frank-rizzo",
-      "candidates": [
-        {
-          "showId": "summer-1976-2023",
-          "file": "frank-rizzo--frank-rizzo.json",
-          "publishDate": null,
-          "openingDate": "2023-04-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "frank-rizzo"
-        },
-        {
-          "showId": "waiting-for-godot-west-end-2024",
-          "file": "variety--frank-rizzo.json",
-          "publishDate": null,
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "variety"
-        }
-      ],
-      "suggestedWinner": "summer-1976-2023",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
-    },
-    {
-      "url": "/people/Joe-Dziemianowicz/",
-      "normalizedUrl": "/people/joe-dziemianowicz",
-      "candidates": [
-        {
-          "showId": "summer-1976-2023",
-          "file": "nydailynews--joe-dziemianowicz.json",
-          "publishDate": null,
-          "openingDate": "2023-04-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nydailynews"
-        },
-        {
-          "showId": "waiting-for-godot-west-end-2024",
-          "file": "nytg--joe-dziemianowicz.json",
-          "publishDate": null,
-          "openingDate": null,
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nytg"
-        }
-      ],
-      "suggestedWinner": "summer-1976-2023",
-      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
-      "confidence": "low"
     },
     {
       "url": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",

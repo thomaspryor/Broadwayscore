@@ -1,0 +1,76 @@
+{
+  "issueNumber": 1018,
+  "planId": "2e09bb63-2192-4b41-81c3-c346df24e552",
+  "status": "pending",
+  "createdAt": "2026-10-09T15:52:21.929Z",
+  "diagnosis": {
+    "fixType": "data",
+    "confidence": "high",
+    "showId": "the-heart-off-broadway-2026",
+    "showSlug": "the-heart-off-broadway",
+    "showIds": [
+      "the-heart-off-broadway-2026",
+      "rock-n-roll-2007",
+      "from-the-heart-west-end-2026"
+    ]
+  },
+  "submitter": {
+    "name": null,
+    "email": null,
+    "show": "The Heart",
+    "message": ""
+  },
+  "plan": {
+    "summary": "Remove the four AI-generated (llm-v6) review scores from The Heart's page, since the show is still in previews and no real critic reviews have been published yet — these scores appear to have been hallucinated by the LLM and may be misattributed from a similarly-named show.",
+    "steps": [
+      "Delete the four llm-v6 generated reviews attached to The Heart (the-heart-off-broadway-2026): New York Daily News (84), New York Theatre Guide (79), The New York Times (76), and TheaterMania (72).",
+      "Run gather-reviews.js for the show so it is queued to pick up real reviews once they are published after the October 29, 2026 opening night."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "data/review-texts/the-heart-off-broadway-2026/new-york-daily-news.json",
+        "destinationPath": null,
+        "description": "Delete the AI-generated New York Daily News review (score: 84, scoreSource: llm-v6, critic: null) for The Heart — no real review exists yet."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "data/review-texts/the-heart-off-broadway-2026/new-york-theatre-guide.json",
+        "destinationPath": null,
+        "description": "Delete the AI-generated New York Theatre Guide review (score: 79, scoreSource: llm-v6, critic: null) for The Heart — no real review exists yet."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "data/review-texts/the-heart-off-broadway-2026/the-new-york-times.json",
+        "destinationPath": null,
+        "description": "Delete the AI-generated New York Times review (score: 76, scoreSource: llm-v6, critic: null) for The Heart — no real review exists yet."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "data/review-texts/the-heart-off-broadway-2026/theatermania.json",
+        "destinationPath": null,
+        "description": "Delete the AI-generated TheaterMania review (score: 72, scoreSource: llm-v6, critic: null) for The Heart — no real review exists yet."
+      },
+      {
+        "type": "run-script",
+        "script": "gather-reviews.js",
+        "arguments": [
+          "--show",
+          "the-heart-off-broadway-2026"
+        ],
+        "description": "Re-run review gathering for The Heart so it is ready to ingest real critic reviews once they are published after the October 29, 2026 opening night."
+      }
+    ]
+  },
+  "verification": {
+    "passed": true,
+    "skipped": false,
+    "issues": [],
+    "confidence": "high"
+  }
+}
