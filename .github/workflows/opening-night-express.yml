@@ -355,6 +355,7 @@ jobs:
           # Score only this show's unscored reviews
           npx ts-node scripts/llm-scoring/index.ts \
             --show="${{ inputs.show_id }}" \
+            --ensemble \
             --unscored-only \
             --limit=30
           echo "Scoring complete."

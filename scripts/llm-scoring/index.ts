@@ -97,6 +97,7 @@ import { detectMultiShow } from './multi-show-detector';
 import { trimMultiShowText } from './trim-multi-show';
 import { PROMPT_VERSION, SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES } from './config';
 import { isScoreable } from './is-scoreable';
+const { detectPreOpeningInterviewFeature } = require('../lib/preopening-interview-signal');
 const { emitStage } = require('../lib/stage-latency');
 const { decideBatchDrain, decideDrainFollowUp } = require('../lib/batch-drain-decision');
 const { clearFailureFlags } = require('../lib/clear-failure-flags');
@@ -2190,6 +2191,27 @@ async function main(): Promise<void> {
         skipped++;
         continue;
       }
+    }
+
+    // BRO-4895: deterministic pre-score guard. A pre-press-night interview/feature
+    // (Variety "Rent, Reborn", 2026-10-08) was scored 78 and published as a T1
+    // review. Stamp it not_a_review before spending any LLM tokens. Runs for
+    // single-model, ensemble and --batch paths alike.
+    const interviewSignal = detectPreOpeningInterviewFeature(reviewFile, showFor(reviewFile));
+    if (interviewSignal.suspect) {
+      console.log(`REJECTED (not_a_review): ${interviewSignal.reason} (${interviewSignal.attributions} named quote attributions)`);
+      if (!options.dryRun) {
+        const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        fileData.contentTier = 'invalid';
+        fileData.rejectedAt = new Date().toISOString();
+        fileData.rejectedBy = 'preopening-interview-signal';
+        fileData.rejectionReason = 'not_a_review';
+        fileData.rejectionReasoning = `Published on/before opening date with ${interviewSignal.attributions} named quote attributions: interview/feature, not a review (BRO-4895)`;
+        fileData.rejectionAgreeCount = null;
+        saveReviewFile(filePath, fileData, { skipRejectionReasonClear: true });
+      }
+      skipped++;
+      continue;
     }
 
     // Sample token usage BEFORE the call so we can compute the per-call delta.
