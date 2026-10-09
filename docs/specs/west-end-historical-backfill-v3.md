@@ -400,7 +400,16 @@ Lessons, each fixed in code:
   plot snippets and with no-plot snippets, the real plot, Dorian Gray and
   Vanya are kept (GPT-4o dropped Vanya: empty, never wrong). Sweep of the 62
   LLM synopses from these runs found no other invention; the bad one was
-  replaced from the London Theatre review.
+  replaced from the London Theatre review. Grounding first dropped correct
+  adaptation plots (Orlando, The Boy with Two Hearts) whose snippets named
+  the source without retelling it; a named published source now counts.
+- **Gather dispatch needs `spend_purpose=historical-backfill`.** Since
+  ed718734e54 (BRO-4146) gather-reviews.yml skips every job when a manual
+  dispatch has `no_sb_serp=true` and no `spend_purpose` (it reads as the
+  retired Mac backfill). The run still ends green, so a re-gather of 13 thin
+  2022-23 shows did nothing and looked done. Dispatch with
+  `-F inputs[no_sb_serp]=true -f inputs[spend_purpose]=historical-backfill`
+  and check that `prepare` ran, not just the run conclusion.
 
 ## Side benefit (separate card)
 
