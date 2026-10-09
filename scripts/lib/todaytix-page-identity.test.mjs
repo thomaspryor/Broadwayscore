@@ -94,3 +94,11 @@ test('nonStoryReason: quoted titles survive, pull quotes of any length and split
   assert.equal(nonStoryReason('Susan Sarandon is making her UK theatre debut.'), 'production-news');
   assert.equal(nonStoryReason('In a small rural pub in County Leitrim, a group of local men gather.'), null);
 });
+
+// Phase C 2023-24 (BRO-4884): billing and pitch lines that passed as story.
+test('billing (reprise, nominee) and "this ... production" pitch are not story', () => {
+  assert.equal(cleanTodaytixAbout('Jonny Lee Miller (Trainspotting) and Olivier Award nominee Tanya Reynolds (Sex Education) reprise their leading roles. A Mirror is a play set in a totalitarian society in which all new works of art have to be approved by the Minister for Culture.'),
+    'A Mirror is a play set in a totalitarian society in which all new works of art have to be approved by the Minister for Culture.');
+  assert.equal(nonStoryReason('This groundbreaking new production expertly balances rhyme, spoken word, movement, and music to transport audiences to Thebes.'), 'production-news');
+  assert.equal(nonStoryReason('Lackawanna Blues transports audiences to 1950s Buffalo, where a young boy grows up in a boarding house.'), null);
+});
