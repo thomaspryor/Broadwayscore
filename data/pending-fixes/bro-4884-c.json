@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4884-c",
   "planId": "c9a3a7f3-1849-402a-a1c2-8d46819cd6cc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-09T21:45:41.295Z",
   "submitter": {
     "name": null,
@@ -35,5 +35,23 @@
         "description": "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-09T22:22:42.048Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted 2-22-a-ghost-story-west-end-2023/standard--nick-curtis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted 2-22-a-ghost-story-west-end-2023/london-theatre--matt-wolf.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted 2-22-a-ghost-story-west-end-2023/thestage--tim-bano.json"
+    }
+  ]
 }
