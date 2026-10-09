@@ -393,18 +393,6 @@
     "queuedAt": "2026-10-09T19:20:25.955Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37983666507",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T20:03:00.785Z"
-  },
-  {
     "conditionKey": "land:land/main-red-tour-orphan",
     "title": "Landing blocked: rebase red on land/main-red-tour-orphan",
     "description": "land.yml did not land land/main-red-tour-orphan: the rebase gate went red at bed6622f11. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37247630266",
@@ -432,5 +420,46 @@
       }
     ],
     "queuedAt": "2026-10-09T20:13:14.616Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37988262535",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T20:43:42.552Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4930-adopt-tiers",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4930-adopt-tiers",
+    "description": "land.yml did not land land/bro-4930-adopt-tiers: the unit-tests-node gate went red at 7ed1465a00. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37984673033",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4930-adopt-tiers"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7ed1465a00479fe723171d558e6f0c90ef548740"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37984673033"
+      }
+    ],
+    "queuedAt": "2026-10-09T20:40:37.659Z"
   }
 ]
