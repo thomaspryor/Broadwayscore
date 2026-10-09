@@ -291,7 +291,10 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
     // A running tour the page shows ending before this segment (knownEnds)
     // doesn't cover it. A standalone tour has no tourOf; it is matched by title.
     const endOf = t => t.closingDate || plan.knownEnds[t.id] || null;
-    const ofTitle = toursOfTitle(parent ? parent.title : standaloneTitle, shows);
+    // The page a tour was built from also names it: a title drifts between the
+    // page and the entry ("Dolly Parton's" vs "Dolly Parton’s", BRO-4931).
+    const byTitle = toursOfTitle(parent ? parent.title : standaloneTitle, shows);
+    const ofTitle = [...byTitle, ...(shows || []).filter(s => s.category === 'tour' && s.tourScheduleSlug === slug && !byTitle.includes(s))];
     const covering = ofTitle.find(t => t.openingDate
       && (!endOf(t) || endOf(t) >= segStart)
       && t.openingDate <= seg.end.toISOString().slice(0, 10));

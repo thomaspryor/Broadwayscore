@@ -442,3 +442,21 @@ test('P2: a row keeps the class the create step gave it while the same segment i
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+test('a standalone tour is already tracked despite apostrophe style or title drift (BRO-4931)', () => {
+  const { openTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const shows = [
+    { id: 'dolly-partons-smoky-mountain-christmas-carol-tour-2026', title: 'Dolly Parton\u2019s Smoky Mountain Christmas Carol', category: 'tour', status: 'upcoming', tourScheduleSlug: 'dolly-partons-smoky-mountain-christmas-carol' },
+    { id: 'dr-seuss-the-cat-in-the-hat-tour-2027', title: 'Dr. Seuss\u2019 The Cat in the Hat', category: 'tour', status: 'upcoming', tourScheduleSlug: 'the-cat-in-the-hat' },
+    { id: 'clue-tour-2025', title: 'Clue', category: 'tour', status: 'open', tourScheduleSlug: 'clue' },
+  ];
+  const rows = [
+    // straight vs curly apostrophe
+    { key: 'page:dolly-partons-smoky-mountain-christmas-carol', source: 'tourstoyou', title: "Dolly Parton's Smoky Mountain Christmas Carol", tourScheduleSlug: 'dolly-partons-smoky-mountain-christmas-carol' },
+    // title differs but the schedule page is the same tour
+    { key: 'page:the-cat-in-the-hat', source: 'tourstoyou', title: 'The Cat in the Hat', tourScheduleSlug: 'the-cat-in-the-hat' },
+    // a different page that merely shares nothing is still a candidate
+    { key: 'page:potted-potter', source: 'tourstoyou', title: 'Potted Potter', tourScheduleSlug: 'potted-potter' },
+  ];
+  assert.deepEqual(openTourCandidates(rows, shows).map(r => r.key), ['page:potted-potter']);
+});

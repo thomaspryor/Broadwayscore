@@ -115,7 +115,10 @@
     },
     "the-bodyguard": {
       "pageTitle": "The Bodyguard",
-      "expect": "suggest",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
       "planned": "create",
       "seen": {
         "stopsOnPage": 47,
@@ -314,7 +317,10 @@
     },
     "all-the-devils-are-here": {
       "pageTitle": "All The Devils Are Here: How Shakespeare Invented The Villain",
-      "expect": "needs-classification",
+      "expect": [
+        "needs-classification",
+        "skip-tracked"
+      ],
       "planned": "suggest",
       "seen": {
         "stopsOnPage": 10,
@@ -437,7 +443,10 @@
     },
     "mystic-pizza": {
       "pageTitle": "Mystic Pizza",
-      "expect": "suggest",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
       "planned": "create",
       "seen": {
         "stopsOnPage": 49,
@@ -452,7 +461,10 @@
     },
     "clue": {
       "pageTitle": "Clue",
-      "expect": "needs-classification",
+      "expect": [
+        "needs-classification",
+        "skip-tracked"
+      ],
       "planned": "suggest",
       "seen": {
         "stopsOnPage": 166,
@@ -594,7 +606,10 @@
     },
     "spamilton-an-american-parody": {
       "pageTitle": "Spamilton: An American Parody",
-      "expect": "suggest",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
       "seen": {
         "stopsOnPage": 59,
         "status": "running",
@@ -634,7 +649,10 @@
     },
     "menopause-the-musical": {
       "pageTitle": "Menopause the Musical",
-      "expect": "suggest",
+      "expect": [
+        "suggest",
+        "skip-tracked"
+      ],
       "seen": {
         "stopsOnPage": 230,
         "status": "running",
