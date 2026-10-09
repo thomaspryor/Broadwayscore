@@ -44,7 +44,7 @@ export default function HeaderHamburger() {
         authLoading={loading}
         profile={profile}
         email={user?.email}
-        onSignIn={(context) => showSignIn(context, 'menu')}
+        onSignIn={(context, options) => showSignIn(context, 'menu', options)}
         onSignOut={signOut}
         onDeleteAccount={() => setConfirmDelete(true)}
       />
