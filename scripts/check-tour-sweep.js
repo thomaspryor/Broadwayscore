@@ -24,7 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { evaluateTourPage, compareOutcome, OUTCOME_OF_KIND } = require('./lib/tour-sweep');
+const { evaluateTourPage, compareOutcome } = require('./lib/tour-sweep');
 const { classifyTourPage, loadTourPageClasses, overrideProblems, SKIPPED_CLASSES, pageTitleFromHtml } = require('./lib/tour-page-class');
 
 const ROOT = path.join(__dirname, '..');
@@ -62,16 +62,15 @@ async function main() {
   const asOf = noon(fixture.asOf);
   const today = new Date();
   const now = live ? today : asOf;
-  let fetchText = null;
-  let politeFetchText = null;
+  let fetchPageText = null;
   let titles = {};
   let fetchWiki = null;
   if (live) {
-    ({ politeFetchText } = require('./lib/tours-to-you'));
+    const { politeFetchText } = require('./lib/tours-to-you');
     const { listShowPages } = require('./discover-running-tours');
     const listed = await listShowPages(url => politeFetchText(url));
     titles = listed.titles || {};
-    fetchText = async slug => politeFetchText(`https://tourstoyou.org/shows/${slug}/`);
+    fetchPageText = async slug => politeFetchText(`https://tourstoyou.org/shows/${slug}/`);
     fetchWiki = require('./enrich-tour-dates').fetchWikiText;
   } else {
     fetchWiki = async () => '';
@@ -88,7 +87,7 @@ async function main() {
     const pre = classifyTourPage({ slug, pageTitle, shows, overrides });
     const ruledOut = SKIPPED_CLASSES.has(pre.class) && pre.source !== 'structure';
     if (ruledOut) html = '';
-    else if (live) { try { html = await fetchText(slug); } catch (e) { readError = e.message; } }
+    else if (live) { try { html = await fetchPageText(slug); } catch (e) { readError = e.message; } }
     else html = readIf(path.join(PAGES_DIR, `${slug}.html`));
     if (html === null) {
       rows.push({ slug, status: readError ? 'fail' : 'skip', want, why: readError ? `could not read the page: ${readError}` : 'no saved page (run with --live)' });
@@ -121,4 +120,3 @@ if (require.main === module) {
   main().catch((e) => { console.error(e); process.exitCode = 1; });
 }
 
-module.exports = { OUTCOME_OF_KIND };

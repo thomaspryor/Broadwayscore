@@ -954,7 +954,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">no score yet</span>
             </header>
             <p className="text-gray-400 text-sm">
-              Critics in each city review the tour as it plays, and the CriticScore appears once enough of those reviews are in.
+              The CriticScore appears once enough local critics have reviewed the tour.
             </p>
           </section>
         ) : show.status === 'previews' || show.status === 'upcoming' ? (

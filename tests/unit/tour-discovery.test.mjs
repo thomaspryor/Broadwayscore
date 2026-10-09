@@ -56,14 +56,17 @@ test('a running tour is a candidate; a finished or not-yet-listed one is not', (
   ]);
   const r = runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'https://tourstoyou.org/shows/the-wiz/', html: running, shows: SHOWS, now: NOW });
   assert.deepEqual(r.candidate, {
-    broadwayShowId: 'the-wiz-2024', title: 'The Wiz', source: 'tourstoyou',
+    key: 'the-wiz-2024', broadwayShowId: 'the-wiz-2024', parentId: 'the-wiz-2024', title: 'The Wiz', type: 'musical', pageClass: 'production', source: 'tourstoyou',
     slug: 'tourstoyou:the-wiz:2025-02-22', url: 'https://tourstoyou.org/shows/the-wiz/',
     tourScheduleSlug: 'the-wiz', segmentStart: '2025-02-22',
   });
   const ended = page([row('Baltimore, MD', 'Hippodrome', 'February 22-March 2, 2025'), row('Detroit, MI', 'Fisher', 'March 4-16, 2025')]);
   assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: ended, shows: SHOWS, now: NOW }).skip, 'no tour running now or booked to launch');
   assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: '<p>new layout</p>', shows: SHOWS, now: NOW }).skip, 'schedule parsed to no engagements');
-  assert.equal(runningTourCandidate({ slug: 'stomp', scheduleUrl: 'u', html: running, shows: SHOWS, now: NOW }).skip, 'no Broadway show of this title');
+  // Since BRO-4931 a title no tracked production carries is classified, not refused: a concert/circus/dance
+  // keyword is an event, anything else a standalone candidate waiting to be classified.
+  const stomp = runningTourCandidate({ slug: 'stomp', scheduleUrl: 'u', html: running, shows: SHOWS, now: NOW });
+  assert.deepEqual([stomp.kind, stomp.candidate], ['event', undefined]);
 });
 
 test('two pages running the same show from different starts are ambiguous', () => {
@@ -348,6 +351,118 @@ test('runningTourCandidate names an Off-Broadway show as the tour parent', () =>
     row('Providence, RI', 'PPAC', 'October 6-11, 2026'),
   ]);
   const r = runningTourCandidate({ slug: 'mexodus', scheduleUrl: 'https://tourstoyou.org/shows/mexodus/', html, shows: [mex], now: NOW });
-  assert.equal(r.candidate && r.candidate.broadwayShowId, 'mexodus-off-broadway-2026');
+  assert.equal(r.candidate && r.candidate.parentId, 'mexodus-off-broadway-2026');
+  assert.equal(r.candidate.key, 'mexodus-off-broadway-2026');
+  assert.equal(r.candidate.broadwayShowId, undefined, 'broadwayShowId is kept only when the parent IS a Broadway show');
   assert.equal(r.candidate.tourScheduleSlug, 'mexodus');
+  assert.equal(r.candidate.pageClass, 'production');
+});
+
+// ---- BRO-4931: parentless tours, page classes, candidate keys -----------------
+
+const MARKET_PAGE = page([
+  row('Boston, MA', 'Citizens Opera House', 'September 22-27, 2026'),
+  row('Hartford, CT', 'The Bushnell', 'September 29-October 4, 2026'),
+  row('Providence, RI', 'PPAC', 'October 6-11, 2026'),
+  row('Albany, NY', 'Proctors', 'October 13-18, 2026'),
+]);
+const URL_OF = slug => `https://tourstoyou.org/shows/${slug}/`;
+
+test('a Tours To You page with no tracked production is a standalone candidate keyed page:<slug>, waiting to be classified', () => {
+  const r = runningTourCandidate({ slug: 'the-bodyguard', pageTitle: 'The Bodyguard', scheduleUrl: URL_OF('the-bodyguard'), html: MARKET_PAGE, shows: SHOWS, now: NOW });
+  assert.deepEqual(r.candidate, {
+    key: 'page:the-bodyguard', title: 'The Bodyguard', pageClass: 'unclassified', needsClassification: true, source: 'tourstoyou',
+    slug: 'tourstoyou:the-bodyguard:2026-09-22', url: URL_OF('the-bodyguard'), tourScheduleSlug: 'the-bodyguard', segmentStart: '2026-09-22',
+  });
+  assert.equal(r.candidate.parentId, undefined);
+  assert.equal(r.candidate.broadwayShowId, undefined);
+});
+
+test('an override makes a parentless page a classified standalone production with its title and type', () => {
+  const overrides = { 'the-cat-in-the-hat': { class: 'production', title: "Dr. Seuss' The Cat in the Hat", type: 'musical', reason: 'owner', issue: 'BRO-4931', reviewedAt: '2026-10-09' } };
+  const r = runningTourCandidate({ slug: 'the-cat-in-the-hat', pageTitle: 'Dr. Seuss&#8217; The Cat in the Hat', scheduleUrl: URL_OF('the-cat-in-the-hat'), html: MARKET_PAGE, shows: SHOWS, overrides, now: NOW });
+  assert.equal(r.candidate.key, 'page:the-cat-in-the-hat');
+  assert.deepEqual([r.candidate.title, r.candidate.type, r.candidate.pageClass, r.candidate.needsClassification], ["Dr. Seuss' The Cat in the Hat", 'musical', 'production', undefined]);
+});
+
+test('events, aggregators, templates and companies are skipped with their kind, before any schedule is read', () => {
+  const tour = { id: 'hamilton-tour-2024', title: 'Hamilton', category: 'tour', tourOf: 'hamilton-2015', tourScheduleSlug: 'hamilton' };
+  const shows = [...SHOWS, tour];
+  for (const [slug, kind] of [['cirque-holiday', 'event'], ['show-page-template', 'template'], ['hamilton-angelica', 'company']]) {
+    const r = runningTourCandidate({ slug, scheduleUrl: URL_OF(slug), html: '', shows, now: NOW });
+    assert.equal(r.kind, kind, slug);
+    assert.match(r.skip, new RegExp(`^${kind} page`));
+  }
+  // The skip beats "nothing running": a page with no engagements at all is still told apart.
+  assert.equal(runningTourCandidate({ slug: 'some-show', scheduleUrl: 'u', html: '<p>new layout</p>', shows, now: NOW }).kind, 'nothing-running');
+});
+
+test('an unclassified page with too few engagements is not worth a question; a classified one is left to the create step', () => {
+  const three = page([row('Boston, MA', 'A', 'October 6-11, 2026'), row('Hartford, CT', 'B', 'October 13-18, 2026'), row('Albany, NY', 'C', 'October 20-25, 2026')]);
+  const unknown = runningTourCandidate({ slug: 'potted-potter', pageTitle: 'Potted Potter', scheduleUrl: 'u', html: three, shows: SHOWS, now: NOW });
+  assert.deepEqual([unknown.kind, unknown.candidate], ['too-few-stops', undefined]);
+  const overrides = { 'potted-potter': { class: 'production', title: 'Potted Potter', type: 'play', reason: 'x', issue: 'BRO-4931', reviewedAt: '2026-10-09' } };
+  const known = runningTourCandidate({ slug: 'potted-potter', pageTitle: 'Potted Potter', scheduleUrl: 'u', html: three, shows: SHOWS, overrides, now: NOW });
+  assert.equal(known.candidate.key, 'page:potted-potter', 'create-tour-entries.js applies tooFewStops to it');
+});
+
+test('a standalone tour already tracked (a tour with no tourOf and the same title) is not recorded again', () => {
+  const standalone = { id: 'the-bodyguard-tour-2026', title: 'The Bodyguard', category: 'tour', status: 'open', openingDate: '2026-09-22', closingDate: null, tourScheduleSlug: 'the-bodyguard' };
+  const r = runningTourCandidate({ slug: 'the-bodyguard', pageTitle: 'The Bodyguard', scheduleUrl: 'u', html: MARKET_PAGE, shows: [...SHOWS, standalone], now: NOW });
+  assert.deepEqual([r.kind, r.skip], ['tracked', 'already tracked as the-bodyguard-tour-2026']);
+});
+
+test('a title that matches a production which had not opened by the tour is neither parented nor standalone', () => {
+  const later = { id: 'foo-regional-2030', title: 'Foo', category: 'regional', openingDate: '2030-05-01' };
+  const r = runningTourCandidate({ slug: 'foo', pageTitle: 'Foo', scheduleUrl: 'u', html: MARKET_PAGE, shows: [later], now: NOW });
+  assert.equal(r.kind, 'no-parent');
+});
+
+test('a Broadway parent keeps broadwayShowId; an Off-Broadway or West End one carries parentId only', () => {
+  const westEnd = { id: 'woman-in-black-west-end-1989', title: 'The Woman in Black', category: 'west-end', openingDate: '1989-06-07' };
+  const r = runningTourCandidate({ slug: 'the-woman-in-black', scheduleUrl: 'u', html: MARKET_PAGE, shows: [westEnd], now: NOW });
+  assert.deepEqual([r.candidate.key, r.candidate.parentId, r.candidate.broadwayShowId], ['woman-in-black-west-end-1989', 'woman-in-black-west-end-1989', undefined]);
+});
+
+test('candidates dedupe by key: two pages of one standalone show are ambiguous, different standalone shows are not', () => {
+  const a = { key: 'page:foo', segmentStart: '2026-09-01', tourScheduleSlug: 'foo' };
+  const b = { key: 'page:foo', segmentStart: '2026-11-01', tourScheduleSlug: 'foo-1' };
+  const c = { key: 'page:bar', segmentStart: '2026-09-01', tourScheduleSlug: 'bar' };
+  const out = dedupeCandidates([a, b, c]);
+  assert.deepEqual(out.candidates.map(x => [x.key, Boolean(x.ambiguous)]), [['page:foo', true], ['page:bar', false]]);
+  assert.equal(out.ambiguous.length, 1);
+  // Old rows with only broadwayShowId still dedupe.
+  assert.equal(dedupeCandidates([{ broadwayShowId: 'x-2020', segmentStart: 's' }, { broadwayShowId: 'x-2020', segmentStart: 's' }]).candidates.length, 1);
+});
+
+test('a BWW roundup-only row pairs with the Tours To You page it names; two roundups are ambiguous; created rows are left alone', () => {
+  const { roundupRowFor } = require('../../scripts/lib/tour-discovery.js');
+  const pageRow = { key: 'page:the-bodyguard', title: 'The Bodyguard', tourScheduleSlug: 'the-bodyguard' };
+  const roundup = { key: 'roundup:review-roundup-the-bodyguard-launches-national-tour-20261015', source: 'bww-roundup', title: 'The Bodyguard', roundupUrl: 'https://www.broadwayworld.com/article/Review-Roundup-THE-BODYGUARD-Launches-National-Tour-20261015' };
+  const other = { key: 'roundup:review-roundup-clue-national-tour-20261001', source: 'bww-roundup', title: 'Clue', roundupUrl: 'https://x/clue' };
+  assert.equal(roundupRowFor(pageRow, [other, roundup]), roundup);
+  assert.equal(roundupRowFor(pageRow, [other]), null);
+  assert.equal(roundupRowFor(pageRow, [roundup, { ...roundup, key: 'roundup:other-slug' }]), null, 'two roundups for one page: none is borrowed');
+  assert.equal(roundupRowFor(pageRow, [{ ...roundup, createdTourId: 'x-tour-2025' }]), null);
+  // The page slug may differ from the roundup's title ("the-bodyguard-1", "...-the-musical").
+  assert.equal(roundupRowFor({ ...pageRow, tourScheduleSlug: 'the-bodyguard-the-musical' }, [roundup]), roundup);
+});
+
+test('the pages API asks for each page\'s title and listShowPages keeps it, decoded, beside the slug (BRO-4931)', async () => {
+  const { PAGES_API } = require('../../scripts/lib/tour-discovery.js');
+  const { listShowPages } = require('../../scripts/discover-running-tours.js');
+  assert.match(PAGES_API, /_fields=slug,link,modified_gmt,title/);
+  const answers = {
+    1: JSON.stringify([
+      { slug: 'twas-the-night-before', modified_gmt: '2026-07-13T04:00:46', title: { rendered: '&#8216;Twas the Night Before&#8230;' } },
+      { slug: 'the-simon-and-garfunkel-story', modified_gmt: '2026-07-01T20:46:47', title: { rendered: 'The Simon &#038; Garfunkel Story' } },
+      { slug: 'untitled-page', modified_gmt: '2026-07-01T20:46:47' },
+    ]),
+  };
+  const slugs = await listShowPages(async url => answers[Number(new URL(url).searchParams.get('page'))] || '[]');
+  assert.deepEqual([...slugs], ['twas-the-night-before', 'the-simon-and-garfunkel-story', 'untitled-page']);
+  assert.equal(slugs.titles['twas-the-night-before'], '‘Twas the Night Before…');
+  assert.equal(slugs.titles['the-simon-and-garfunkel-story'], 'The Simon & Garfunkel Story');
+  assert.equal('untitled-page' in slugs.titles, false, 'a page with no title is never given one from its URL');
+  assert.equal(slugs.modified['twas-the-night-before'], '2026-07-13T04:00:46Z');
 });

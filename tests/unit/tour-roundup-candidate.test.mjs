@@ -276,3 +276,77 @@ test('roundup-only rows are recorded beside show rows, old rows still read, and 
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+// ---- BRO-4931: tours with no Broadway parent ----------------------------------
+
+test('hasOpenTour: a tour with no tourOf is matched by its own title; a parented one by parent id or title', () => {
+  const { hasOpenTour, candidateParentId } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const standalone = { id: 'the-bodyguard-tour-2026', title: 'The Bodyguard', category: 'tour', status: 'open', closingDate: null, tourScheduleSlug: 'the-bodyguard' };
+  const parent = { id: 'mexodus-off-broadway-2026', title: 'Mexodus', category: 'off-broadway' };
+  const parented = { id: 'mexodus-tour-2026', title: 'Mexodus', category: 'tour', tourOf: parent.id, status: 'open', closingDate: null };
+  assert.equal(hasOpenTour({ id: null, title: 'The Bodyguard' }, [standalone]), true);
+  assert.equal(hasOpenTour({ id: null, title: 'Clue' }, [standalone]), false);
+  assert.equal(hasOpenTour(parent, [parented]), true);
+  assert.equal(hasOpenTour({ id: null, title: 'Mexodus' }, [parent, parented]), true, 'a standalone page for a title whose tour has a parent still finds it through the parent');
+  // A closed tour does not block the next one.
+  assert.equal(hasOpenTour({ id: null, title: 'The Bodyguard' }, [{ ...standalone, status: 'closed', closingDate: '2026-12-01' }]), false);
+  assert.equal(candidateParentId({ parentId: 'a', broadwayShowId: 'b' }), 'a');
+  assert.equal(candidateParentId({ broadwayShowId: 'b' }), 'b');
+  assert.equal(candidateParentId({ key: 'page:x' }), null);
+});
+
+test('a roundup for a Broadway show is not a candidate while a standalone tour of that title runs', () => {
+  const { tourCandidateFor } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const show = { id: 'foo-2024', title: 'Foo', category: 'broadway' };
+  const standalone = { id: 'foo-tour-2026', title: 'Foo', category: 'tour', status: 'open', closingDate: null, tourScheduleSlug: 'foo' };
+  const slug = 'Review-Roundup-FOO-Launches-National-Tour-20260915';
+  assert.equal(tourCandidateFor(slug, show, [show, standalone]), null);
+  assert.deepEqual(tourCandidateFor(slug, show, [show]), { broadwayShowId: 'foo-2024', title: 'Foo' });
+});
+
+test('openTourCandidates judges parentless page rows by title, parented rows by their parent, any market (BRO-4931)', () => {
+  const { openTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const westEnd = { id: 'woman-in-black-west-end-1989', title: 'The Woman in Black', category: 'west-end' };
+  const offB = { id: 'mexodus-off-broadway-2026', title: 'Mexodus', category: 'off-broadway' };
+  const shows = [westEnd, offB];
+  const page = { key: 'page:the-bodyguard', title: 'The Bodyguard', source: 'tourstoyou', pageClass: 'production', type: 'musical', tourScheduleSlug: 'the-bodyguard', segmentStart: '2026-10-15' };
+  const unclassified = { key: 'page:clue', title: 'Clue', source: 'tourstoyou', pageClass: 'unclassified', needsClassification: true, tourScheduleSlug: 'clue' };
+  const offRow = { key: offB.id, parentId: offB.id, title: 'Mexodus', source: 'tourstoyou', segmentStart: '2026-07-08' };
+  const weRow = { key: westEnd.id, parentId: westEnd.id, title: westEnd.title, source: 'tourstoyou', segmentStart: '2026-10-01' };
+  const gone = { key: 'x-2020', parentId: 'x-2020', title: 'X', source: 'tourstoyou' };
+  const roundupOnly = { key: 'roundup:review-roundup-lumina-national-tour-20261005', source: 'bww-roundup', title: 'Lumina', roundupUrl: 'https://x' };
+  const rows = [page, unclassified, offRow, weRow, gone, roundupOnly];
+  assert.deepEqual(openTourCandidates(rows, shows).map(r => r.key), ['page:the-bodyguard', 'page:clue', offB.id, westEnd.id],
+    'a West End parent is fine for a Tours To You page (a roundup never matches one); a missing parent and a roundup-only row are not suggestions');
+  // Once a standalone tour carries the title, the page row is settled.
+  const tour = { id: 'the-bodyguard-tour-2026', title: 'The Bodyguard', category: 'tour', status: 'open', closingDate: null, tourScheduleSlug: 'the-bodyguard' };
+  assert.deepEqual(openTourCandidates(rows, [...shows, tour]).map(r => r.key), ['page:clue', offB.id, westEnd.id]);
+  // A created row is settled whatever its shape.
+  assert.equal(openTourCandidates([{ ...page, createdTourId: tour.id }], shows).length, 0);
+  // A parentless row that is not from a Tours To You page has no title to stand on.
+  assert.equal(openTourCandidates([{ key: 'page:q', title: 'Q' }], shows).length, 0);
+});
+
+test('page rows are recorded by key: two standalone pages are two rows, the same page seen again keeps firstSeen and notifiedAt (BRO-4931)', async () => {
+  const { recordTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tour-cand-'));
+  try {
+    const file = path.join(dir, 'c.json');
+    const a = { key: 'page:the-bodyguard', title: 'The Bodyguard', source: 'tourstoyou', slug: 'tourstoyou:the-bodyguard:2026-10-15', tourScheduleSlug: 'the-bodyguard', segmentStart: '2026-10-15' };
+    const b = { key: 'page:clue', title: 'Clue', source: 'tourstoyou', slug: 'tourstoyou:clue:2024-02-27', tourScheduleSlug: 'clue', segmentStart: '2024-02-27', needsClassification: true };
+    assert.equal(recordTourCandidates(file, [a, b], '2026-10-09T00:00:00Z'), 2);
+    let rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+    rows.find(r => r.key === 'page:the-bodyguard').notifiedAt = '2026-10-10T00:00:00Z';
+    fs.writeFileSync(file, JSON.stringify(rows));
+    assert.equal(recordTourCandidates(file, [a], '2026-10-12T00:00:00Z'), 2);
+    rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const row = rows.find(r => r.key === 'page:the-bodyguard');
+    assert.deepEqual([row.firstSeen, row.lastSeen, row.notifiedAt], ['2026-10-09T00:00:00Z', '2026-10-12T00:00:00Z', '2026-10-10T00:00:00Z']);
+    assert.equal(rows.find(r => r.key === 'page:clue').lastSeen, '2026-10-09T00:00:00Z', 'a row not seen this run is untouched');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
+  }
+});

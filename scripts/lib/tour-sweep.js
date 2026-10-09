@@ -91,7 +91,7 @@ function compareOutcome(want, got, gotThen = null) {
   if (matches(got)) return { status: 'ok', why: '' };
   // Not what was expected today. If the page gave the expected outcome on the
   // fixture's date and both outcomes depend on the date, time passing is the likely cause.
-  if (gotThen && matches(gotThen) && EVIDENCE_OUTCOMES.has(got.outcome)) {
+  if (gotThen && matches(gotThen) && EVIDENCE_OUTCOMES.has(got.outcome) && EVIDENCE_OUTCOMES.has(gotThen.outcome)) {
     return { status: 'warn', why: `${got.outcome} today, ${gotThen.outcome} on the fixture date: depends on today's date` };
   }
   return { status: 'fail', why: `${got.outcome}${got.reason ? ` (${String(got.reason).slice(0, 140)})` : ''}, expected ${wanted.join(' or ')}${detail(got) ? `; ${detail(got)}` : ''}` };

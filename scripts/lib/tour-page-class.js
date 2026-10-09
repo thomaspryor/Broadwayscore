@@ -34,7 +34,8 @@ const fs = require('fs');
 const path = require('path');
 
 const CLASSES = ['production', 'event', 'aggregator', 'template', 'company', 'unclassified'];
-const PRODUCTION_TYPES = ['musical', 'play', 'special', 'opera'];
+// One list with buildTourEntry: a standalone tour is refused for any other type.
+const { STANDALONE_TYPES: PRODUCTION_TYPES } = require('./tour-entry');
 const OVERRIDES_PATH = path.join(__dirname, '..', '..', 'data', 'tour-page-classes.json');
 
 const TEMPLATE_RE = /(^|-)(template|tester|test|sample)(-|$)/;
