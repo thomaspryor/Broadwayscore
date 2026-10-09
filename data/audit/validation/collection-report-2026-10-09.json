@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-09T19:34:00.129Z",
+  "runDate": "2026-10-09T19:53:41.715Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "good-time-charlie-off-broadway-2026,from-the-heart-west-end-2026,a-ghost-in-your-ear-off-broadway-2026,bettys-summer-vacation-the-heights-players-off-broadway-2026",
+    "showFilter": "rent-west-end-2026,the-hungry-ghost-off-west-end-2026,into-the-woods-noel-coward-west-end-2026,triumph-off-broadway-2026,the-whos-tommy-tour-2026,all-male-as-you-like-it-regional-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 7,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "38.9%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,27 +25,27 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 13,
+    "tier1Success": 11,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier2Attempts": 3,
+    "tier2Success": 2,
+    "tier3Attempts": 3,
+    "tier3Success": 2,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 8,
+    "tier4Success": 1,
+    "totalFailed": 11,
+    "scrapingBeePageCredits": 21,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,11 +54,13 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 7,
+    "failed": 11,
     "shows": [
-      "a-ghost-in-your-ear-off-broadway-2026",
-      "from-the-heart-west-end-2026"
+      "all-male-as-you-like-it-regional-2026",
+      "into-the-woods-noel-coward-west-end-2026",
+      "rent-west-end-2026",
+      "the-hungry-ghost-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,20 +68,61 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
+    "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json",
+    "into-the-woods-noel-coward-west-end-2026/lsbo--unknown.json",
+    "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "the-hungry-ghost-off-west-end-2026/artsdesk--unknown.json",
+    "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json"
+  ],
   "failed": [
-    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
-    "from-the-heart-west-end-2026/thestage--unknown.json"
+    "rent-west-end-2026/financialtimes--sarah-hemming.json",
+    "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
+    "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json",
+    "all-male-as-you-like-it-regional-2026/guardian--arifa-akbar.json",
+    "all-male-as-you-like-it-regional-2026/financialtimes--sarah-hemming.json",
+    "all-male-as-you-like-it-regional-2026/stage-talk-magazine--philip-gooden.json",
+    "all-male-as-you-like-it-regional-2026/the-recs--nicola-berry.json",
+    "all-male-as-you-like-it-regional-2026/thestage--dave-fargnoli.json",
+    "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json",
+    "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json",
+    "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
+      "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json",
+      "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json",
+      "into-the-woods-noel-coward-west-end-2026/lsbo--unknown.json",
+      "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "the-hungry-ghost-off-west-end-2026/artsdesk--unknown.json",
+      "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json"
+    ],
     "failed": [
-      "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
-      "from-the-heart-west-end-2026/thestage--unknown.json"
+      "rent-west-end-2026/financialtimes--sarah-hemming.json",
+      "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
+      "into-the-woods-noel-coward-west-end-2026/variety--naman-ramachandran.json",
+      "all-male-as-you-like-it-regional-2026/guardian--arifa-akbar.json",
+      "all-male-as-you-like-it-regional-2026/financialtimes--sarah-hemming.json",
+      "all-male-as-you-like-it-regional-2026/stage-talk-magazine--philip-gooden.json",
+      "all-male-as-you-like-it-regional-2026/the-recs--nicola-berry.json",
+      "all-male-as-you-like-it-regional-2026/thestage--dave-fargnoli.json",
+      "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json",
+      "into-the-woods-noel-coward-west-end-2026/cherylmarkosky--unknown.json",
+      "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "into-the-woods-noel-coward-west-end-2026/london-theatre-reviews--unknown.json",
+      "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json",
+      "into-the-woods-noel-coward-west-end-2026/jolienstheatrediary--jolien.json",
+      "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "the-hungry-ghost-off-west-end-2026/artsdesk--unknown.json",
+      "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -87,8 +130,25 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "into-the-woods-noel-coward-west-end-2026/lsbo--unknown.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "cherylmarkosky": {
+      "count": 1,
+      "domain": "cherylmarkosky.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
