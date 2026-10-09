@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-09T12:53:20.966Z",
+    "lastUpdated": "2026-10-09T16:00:44.088Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -6271,7 +6271,10 @@
         "bigissue"
       ],
       "accessModel": "free",
-      "domain": "bigissue.com"
+      "domain": "bigissue.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-09T16:00:44.088Z"
     },
     "gay-socialites": {
       "displayName": "Gay Socialites",
@@ -9000,7 +9003,10 @@
       "aliases": [
         "dress-circle-antics"
       ],
-      "domain": "dresscircleantics.co.uk"
+      "domain": "dresscircleantics.co.uk",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-09T16:00:44.088Z"
     },
     "theatre-south-east": {
       "displayName": "Theatre South East",
