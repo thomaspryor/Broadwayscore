@@ -34,6 +34,14 @@ function isTourShow(show) {
 // tourScheduleSlug instead.
 const TOUR_PARENT_CATEGORIES = ['broadway', 'off-broadway', 'regional', 'west-end', 'off-west-end'];
 
+// What AUTOMATIC discovery may pick as a tour's parent (BRO-4931): a UK
+// production is a different show (a London Mousetrap, Choir of Man or Hamnet is
+// not the North American tour on the road), so Tours To You pages and BWW
+// roundups are matched against these three only. A West End or off-West End
+// parent is reached only by a person: an override row in data/tour-page-classes.json
+// naming parentId, or a manual add-show (which may use any TOUR_PARENT_CATEGORIES).
+const AUTO_TOUR_PARENT_CATEGORIES = ['broadway', 'off-broadway', 'regional'];
+
 /** The tour-parent category of a show (a show with no category is Broadway), or null. */
 function tourParentCategory(show) {
   const c = (show && show.category) || 'broadway';
@@ -270,6 +278,7 @@ function withoutTours(shows) {
 
 module.exports = {
   TOUR_PARENT_CATEGORIES,
+  AUTO_TOUR_PARENT_CATEGORIES,
   TOUR_PARENT_LABELS,
   tourParentCategory,
   productionsOfTitle,

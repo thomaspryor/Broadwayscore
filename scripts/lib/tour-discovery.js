@@ -20,7 +20,7 @@
 const { foldDiacritics } = require('./title-match');
 const { parseTourSchedule, segmentTourRows, currentSegment, pickSegment, tooFewStops } = require('./tour-schedule');
 const { isSeparateTour, splitSegmentsAt } = require('./tour-history');
-const { toursOfTitle, TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
+const { toursOfTitle, TOUR_PARENT_CATEGORIES, AUTO_TOUR_PARENT_CATEGORIES, tourParentCategory } = require('./tour-family');
 const { classifyTourPage, SKIPPED_CLASSES, pageTitleFromHtml, decodeTitle } = require('./tour-page-class');
 
 const SHOWS_PARENT_ID = 15096; // tourstoyou.org/shows/
@@ -105,13 +105,16 @@ const PRE_BROADWAY_WINDOW_DAYS = 365;
  * different show ("Dirty Dancing: The Classic Story on Stage" is not the
  * Dirty Dancing musical). Failing all that, the title's Broadway run not yet
  * open (a tour that launches first). Null when nothing has the title.
+ * `categories` narrows the markets tried: automatic discovery passes
+ * AUTO_TOUR_PARENT_CATEGORIES (no UK parents, BRO-4931); the default is every
+ * TOUR_PARENT_CATEGORIES market, for a person's manual add.
  */
-function parentForSlug(slug, shows, beforeIso) {
+function parentForSlug(slug, shows, beforeIso, categories = TOUR_PARENT_CATEGORIES) {
   const before = String(beforeIso || '').slice(0, 10);
-  const candidates = (shows || []).filter(s => tourParentCategory(s)
+  const candidates = (shows || []).filter(s => tourParentCategory(s) && categories.includes(tourParentCategory(s))
     && s.openingDate && (!before || s.openingDate <= before));
   const latest = list => list.sort((a, b) => b.openingDate.localeCompare(a.openingDate))[0] || null;
-  for (const category of TOUR_PARENT_CATEGORIES) {
+  for (const category of categories) {
     const inCategory = candidates.filter(s => (s.category || 'broadway') === category);
     if (!inCategory.length) continue;
     for (const key of slugKeys(slug)) {
@@ -232,7 +235,7 @@ function lifecyclePlan({ segments, html, tours }) {
  */
 function parentForClass(cls, { slug, title, shows, segStart }) {
   if (cls.parentId && cls.source === 'override') return (shows || []).find(s => s.id === cls.parentId) || null;
-  if (cls.parentId) return parentForSlug(slug, shows, segStart) || (title ? parentForSlug(titleKey(title), shows, segStart) : null);
+  if (cls.parentId) return parentForSlug(slug, shows, segStart, AUTO_TOUR_PARENT_CATEGORIES) || (title ? parentForSlug(titleKey(title), shows, segStart, AUTO_TOUR_PARENT_CATEGORIES) : null);
   return null;
 }
 

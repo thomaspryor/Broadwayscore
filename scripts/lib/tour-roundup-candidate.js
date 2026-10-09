@@ -32,7 +32,7 @@ function isNationalTourRoundupSlug(slug) {
 // Categories a North American tour can be touring FROM: Broadway, Off-Broadway
 // and regional productions (BRO-4931), plus tour entries themselves. West End
 // and off-West End are a different production and never tour parents here.
-const TOUR_PARENT_CATEGORIES = ['broadway', 'off-broadway', 'regional'];
+const { AUTO_TOUR_PARENT_CATEGORIES: TOUR_PARENT_CATEGORIES } = require('./tour-family');
 const ROUNDUP_POOL_CATEGORIES = [...TOUR_PARENT_CATEGORIES, 'tour'];
 
 /**
