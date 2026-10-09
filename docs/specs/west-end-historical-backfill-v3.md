@@ -390,6 +390,17 @@ Lessons, each fixed in code:
   The two existing rows are fixed by data/pending-fixes/bro-4884.json. The
   third, Gang of Three, is a return of the 2025 King's Head staging; its 2025
   review is excluded until that run is recorded as a priorRun.
+- **Invented plot for a new play.** Haiku answered UNKNOWN for Instructions
+  for a Teenage Armageddon; the Opus fallback wrote an emo/My Chemical
+  Romance/dead-father plot (the play is a girl grieving her sister) and the
+  Opus wrong-show check passed it. A fallback synopsis now needs web search
+  results about this production that describe the same story
+  (lib/synopsis-grounding.js; only SUPPORTED keeps it). Prompt checked with
+  GPT-4o and Gemini standing in for Haiku: the invented plot is dropped with
+  plot snippets and with no-plot snippets, the real plot, Dorian Gray and
+  Vanya are kept (GPT-4o dropped Vanya: empty, never wrong). Sweep of the 62
+  LLM synopses from these runs found no other invention; the bad one was
+  replaced from the London Theatre review.
 
 ## Side benefit (separate card)
 

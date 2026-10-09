@@ -18,6 +18,7 @@ const https = require('https');
 const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
+const { groundSynopsis } = require('./lib/synopsis-grounding');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
@@ -295,7 +296,20 @@ async function generateSynopsisWithLLM(show) {
   };
   const haiku = usable(await callClaudeAPI(prompt, 300, CLAUDE_HAIKU), CLAUDE_HAIKU);
   if (haiku) return haiku;
-  return usable(await callClaudeAPI(prompt, 300, CLAUDE_OPUS), CLAUDE_OPUS);
+  const opus = usable(await callClaudeAPI(prompt, 300, CLAUDE_OPUS), CLAUDE_OPUS);
+  if (!opus) return null;
+  // Haiku did not know this work, so Opus may be guessing; the Opus wrong-show
+  // check cannot catch its own invention. Keep it only if web search results
+  // about this production describe the same story (BRO-4884, lib/synopsis-grounding.js).
+  const g = await groundSynopsis(show, opus, {
+    search: q => serpQuery(q, { nbResults: 8 }),
+    judge: p => callClaudeAPI(p, 120, CLAUDE_HAIKU),
+  });
+  if (!g.supported) {
+    console.log(`    · ${CLAUDE_OPUS}: dropped, search results ${g.verdict}: ${g.reason}`);
+    return null;
+  }
+  return opus;
 }
 
 // Generate creative team via Claude API (fallback)
