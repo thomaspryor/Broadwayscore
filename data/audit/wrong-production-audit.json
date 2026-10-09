@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T19:13:03.096Z",
+  "timestamp": "2026-10-09T19:44:32.140Z",
   "stats": {
-    "totalReviews": 51831,
+    "totalReviews": 51955,
     "alreadyFlagged": 19458,
-    "dateGuardCatches": 265,
-    "directorMismatch": 1593,
-    "tvFilmSignals": 1494,
-    "londonSignals": 1639,
+    "dateGuardCatches": 266,
+    "directorMismatch": 1598,
+    "tvFilmSignals": 1498,
+    "londonSignals": 1649,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5487
+    "noPublishDate": 5485
   },
   "findings": [
     {
@@ -2554,6 +2554,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "an-oak-tree-off-west-end-2026",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 85,
+      "publishDate": "May 7th, 2025",
+      "url": "https://www.thestage.co.uk/reviews/an-oak-tree-review-young-vic-london-tim-crouch-jessie-buckley",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 518d before show (May 7th, 2025 vs 2026-10-07)"
         }
       ]
     },
@@ -16814,6 +16828,58 @@
       ]
     },
     {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "artsdesk--helen-hawkins.json",
+      "publishDate": "2023-06-16",
+      "url": "https://theartsdesk.com/theatre/idiots-assemble-spitting-image-musical-phoenix-theatre-review-more-crude-cruel",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "british-theatre--vera-liber.json",
+      "publishDate": "2023-06-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "thestage--paul-vale.json",
+      "publishDate": "2023-06-15",
+      "url": "https://www.thestage.co.uk/reviews/idiots-assemble-spitting-image-the-musical-review-at-the-phoenix-theatre-london-from-al-murray-matt-forde-sean-foley",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
+      "file": "whatsonstage--gareth-carr.json",
+      "publishDate": "2023-06-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "ifthen-2014",
       "file": "newsday--linda-winer.json",
       "score": 83,
@@ -27217,6 +27283,81 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": "2023-06-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "londontheatre1--peter-yates.json",
+      "publishDate": "2023-06-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2023-06-11",
+      "url": "https://www.theguardian.com/stage/2023/jun/11/patriots-noel-coward-theatre-review-all-of-it-alistair-mcdowall-kate-oflynn-royal-court-yours-unfaithfully-jermyn-street-miles-malleson",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2023-06-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "thereviewshub--scott-matthewman.json",
+      "publishDate": "2023-06-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from patriots-2024"
         }
       ]
     },
@@ -47569,6 +47710,32 @@
       ]
     },
     {
+      "showId": "aspects-of-love-west-end-2023",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2023-05-26",
+      "url": "https://inews.co.uk/culture/arts/aspects-of-love-lyric-review-andrew-lloyd-webber-stylish-update-2367316",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "aspects-of-love-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2023-05-25",
+      "url": "https://theatreweekly.com/review-aspects-of-love-at-lyric-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "british-theatre--susan-novak.json",
       "score": 78,
@@ -48390,6 +48557,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "bleak-expectations-west-end-2023",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "May 25th, 2023",
+      "url": "https://www.londontheatre.co.uk/reviews/bleak-expectations-west-end-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -53921,6 +54101,19 @@
       ]
     },
     {
+      "showId": "great-expectations-west-end-2023",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2023-05-29",
+      "url": "https://www.thetimes.co.uk/article/great-expectations-review-eddie-izzards-mighty-dickens-marathon-205jtpzbz",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "grey-gardens-2006",
       "file": "chicagotribune--chris-jones.json",
       "score": 90,
@@ -54014,6 +54207,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2023-06-09",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/groundhog-day-review-its-a-delight-to-have-this-romcom-back/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2023",
+      "file": "thereviewshub--john-cutler.json",
+      "publishDate": "2023-06-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -60319,6 +60538,19 @@
       ]
     },
     {
+      "showId": "mrs-doubtfire-west-end-2023",
+      "file": "telegraph--marianka-swain.json",
+      "publishDate": "2024-06-21",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/mrs-doubtfire-shaftesbury-theatre-review-robin-williams/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "my-fair-lady-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 82,
@@ -63252,6 +63484,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "rose-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "June 6th, 2023",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/rose-ambassadors-theatre-review-maureen-lipman/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },

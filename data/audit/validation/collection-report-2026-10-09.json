@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-10-09T18:56:53.694Z",
+  "runDate": "2026-10-09T19:34:00.129Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "an-oak-tree-off-west-end-2026",
+    "showFilter": "good-time-charlie-off-broadway-2026,from-the-heart-west-end-2026,a-ghost-in-your-ear-off-broadway-2026,bettys-summer-vacation-the-heights-players-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "28.6%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,8 +28,8 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 6,
-    "tier1Success": 6,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -42,22 +42,23 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 5,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 5,
+    "processed": 0,
+    "failed": 2,
     "shows": [
-      "an-oak-tree-off-west-end-2026"
+      "a-ghost-in-your-ear-off-broadway-2026",
+      "from-the-heart-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,35 +66,20 @@
       "failed": 0
     }
   },
-  "processed": [
-    "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-    "an-oak-tree-off-west-end-2026/bestoftheatre--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "an-oak-tree-off-west-end-2026/north-west-end--unknown.json",
-    "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
-    "an-oak-tree-off-west-end-2026/thestage--unknown.json",
-    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "an-oak-tree-off-west-end-2026/whatsonstage--lucinda-everett.json"
+    "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
+    "from-the-heart-west-end-2026/thestage--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-      "an-oak-tree-off-west-end-2026/bestoftheatre--unknown.json"
-    ],
+    "processed": [],
     "failed": [
-      "an-oak-tree-off-west-end-2026/north-west-end--unknown.json",
-      "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json",
-      "an-oak-tree-off-west-end-2026/thestage--unknown.json",
-      "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
-      "an-oak-tree-off-west-end-2026/whatsonstage--lucinda-everett.json"
+      "a-ghost-in-your-ear-off-broadway-2026/theatermania--unknown.json",
+      "from-the-heart-west-end-2026/thestage--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
-      "an-oak-tree-off-west-end-2026/bestoftheatre--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
