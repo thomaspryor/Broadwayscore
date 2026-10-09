@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { nextBackfillSlice } = require('./historical-backfill-next.js');
+const { nextBackfillSlice, alreadyRanToday } = require('./historical-backfill-next.js');
 
 const all = ['a', 'b', 'c', 'd', 'e'];
 
@@ -22,4 +22,12 @@ test('an out-of-range cursor (list shrank) restarts from the top', () => {
 
 test('count larger than the list returns each show once; duplicates removed', () => {
   assert.deepEqual(nextBackfillSlice(['a', 'b', 'a'], {}, 10), { shows: ['a', 'b'], next: 0, cycle: 1 });
+});
+
+test('alreadyRanToday: same UTC day only; missing or bad stamps never block', () => {
+  const now = Date.parse('2026-10-09T07:17:00Z');
+  assert.equal(alreadyRanToday({ updatedAt: '2026-10-09T06:40:00Z' }, now), true);
+  assert.equal(alreadyRanToday({ updatedAt: '2026-10-08T23:59:00Z' }, now), false);
+  assert.equal(alreadyRanToday({}, now), false);
+  assert.equal(alreadyRanToday({ updatedAt: 'garbage' }, now), false);
 });
