@@ -2646,5 +2646,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-09T07:28:25.245Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-rent-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Rent",
+    "description": "independent/Louis Chilton (independent--louis-chilton.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review discusses a production at the Tom Stoppard — https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/rent-review-west-end-gaten-matarazzo-b3063561.html\nlondon-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] The review discusses a performance of 'Rent' at the T — https://www.londonboxoffice.co.uk/news/post/rent-tom-stoppard-theatre-review\ntelegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The review discusses a production of 'Rent' but menti — https://www.telegraph.co.uk/theatre/what-to-see/rent-finally-looks-like-a-classic-musical/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T09:12:56.271Z"
+  },
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-triumph-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Triumph",
+    "description": "triumph-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=triumph-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T09:13:02.304Z"
   }
 ]
