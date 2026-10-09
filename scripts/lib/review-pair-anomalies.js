@@ -8,14 +8,17 @@
  *     carries the wrong byline (a Theatre Record copy credited to the wrong
  *     reviewer, an aggregator copy under the page's headline writer). The
  *     SAME-url version of this is dedupe-same-url-bylines.js's job, so it is
- *     deliberately not reported here; files that already carry a duplicate
+ *     deliberately not reported here. A file with NO url counts as a different
+ *     url on purpose: a Theatre Record copy is stored without one; files that already carry a duplicate
  *     pointer, are flagged wrong-production/non-review, or belong to a wire
  *     service are skipped.
  *  2. findOwnDomainRoundupFlags: isRoundupArticle=true on a file whose CURRENT
  *     url is a per-article page on the outlet's OWN domain and not a roundup
  *     url (the telegraph--dominic-cavendish shape: the flag was set while the
  *     file held an LBO roundup url, the url was later corrected, the flag
- *     stayed). Report-only: review-guards.js isLikelyStaleRoundupFlag keeps an
+ *     stayed). Many hits are genuine multi-show roundups on an outlet's own
+ *     domain, so every hit needs a person to read it before any flag is touched.
+ *     Report-only: review-guards.js isLikelyStaleRoundupFlag keeps an
  *     allowlist on purpose (multi-show roundups also live on an outlet's own
  *     domain), so this must not feed an auto-clear.
  *
