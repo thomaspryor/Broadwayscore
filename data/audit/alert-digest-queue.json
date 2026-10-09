@@ -2566,18 +2566,6 @@
     "queuedAt": "2026-10-09T02:13:05.461Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37875593931",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T02:45:37.355Z"
-  },
-  {
     "conditionKey": "land:land/bro-4894-cloud-secrets",
     "title": "Landing blocked: resolve red on land/bro-4894-cloud-secrets",
     "description": "land.yml did not land land/bro-4894-cloud-secrets: the resolve gate went red at 1749478a6f. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4894-cloud-secrets\" is neither a local branch nor on origin (attempts 0, 1.3s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37873707165",
@@ -2605,5 +2593,17 @@
       }
     ],
     "queuedAt": "2026-10-09T02:50:09.606Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37876609044",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T02:56:10.053Z"
   }
 ]

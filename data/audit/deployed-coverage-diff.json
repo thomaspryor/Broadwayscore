@@ -1,13 +1,14 @@
 {
-  "generatedAt": "2026-10-08T22:46:56.413Z",
+  "generatedAt": "2026-10-09T02:56:21.729Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 226,
-  "clean": 220,
-  "defective": 6,
+  "checked": 220,
+  "clean": 215,
+  "defective": 5,
   "byType": {
-    "unreachable": 6
+    "unreachable": 4,
+    "score-drift": 1
   },
   "shows": [
     {
@@ -71,34 +72,19 @@
       "deployedCount": null
     },
     {
-      "showId": "truly-howard-hughes-off-broadway-2026",
-      "title": "Truly, Howard Hughes",
-      "openingDate": "2026-09-17",
+      "showId": "beetlejuice-tour-2026",
+      "title": "Beetlejuice",
+      "openingDate": "2026-02-13",
       "ok": false,
       "defects": [
         {
-          "type": "unreachable",
-          "detail": "HTTP 404"
+          "type": "score-drift",
+          "detail": "deployed cs 75.43 vs local 79.63 (Δ4.2)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
+      "localCount": 7,
+      "deployedCount": 8
     }
   ]
 }
