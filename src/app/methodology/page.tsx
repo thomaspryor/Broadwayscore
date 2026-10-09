@@ -240,7 +240,7 @@ export default function MethodologyPage() {
         <section id="critic-score" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">How CriticScore™ works</h2>
           <p className="text-gray-300 mb-4">
-            Each review gets a score out of 100 (the next section explains how). The CriticScore is the average of those scores, but not every review counts the same. A review in The New York Times reaches far more people, and comes from a far more experienced critic, than a post on a personal blog. So we sort outlets into four tiers, and the tier decides how much a review counts. You&apos;ll see the tier as a small T1 to T4 label next to each outlet name.
+            Each review gets a score out of 100 (the next section explains how). The CriticScore is the average of those scores, but not every review counts the same. A review in The New York Times reaches far more readers than a post on a personal blog, so we sort outlets into four tiers, and the tier decides how much a review counts. You&apos;ll see the tier as a small T1 to T4 label next to each outlet name.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">The four tiers</h3>
