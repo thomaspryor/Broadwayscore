@@ -1,21 +1,5 @@
 [
   {
-    "startedAt": "2026-10-08T16:58:32.286Z",
-    "completedAt": "2026-10-08T16:58:52.385Z",
-    "totalReviews": 8,
-    "processed": 8,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 17272,
-      "output": 1708,
-      "total": 18980
-    },
-    "costUsd": 0.0502255,
-    "runId": "37812218067",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-08T17:03:05.170Z",
     "completedAt": "2026-10-08T17:03:57.987Z",
     "totalReviews": 45,
@@ -626001,6 +625985,49 @@
     },
     "costUsd": 0,
     "runId": "37916286158",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T10:22:01.083Z",
+    "completedAt": "2026-10-09T10:23:28.794Z",
+    "totalReviews": 50781,
+    "processed": 9,
+    "skipped": 50756,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 96563,
+      "output": 5276,
+      "total": 282895
+    },
+    "costUsd": 0.40052220000000005,
+    "runId": "37916777717",
+    "errorDetails": [
+      {
+        "showId": "backstairs-billy-west-end-2023",
+        "outletId": "telegraph",
+        "error": "Cannot read properties of undefined (reading 'rejection')"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T10:23:30.873Z",
+    "completedAt": "2026-10-09T10:23:33.848Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37916777717",
     "errorDetails": []
   }
 ]
