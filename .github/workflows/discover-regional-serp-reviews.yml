@@ -16,8 +16,14 @@ on:
         default: false
         type: boolean
 
+# Per-run group (BRO-4923): scrape-new-aggregators.yml dispatches this for each
+# batch of Guardian-triggered shows, and a static group keeps only ONE pending
+# run, so a dispatch arriving while the weekly run was busy was silently
+# evicted with its show ids. Runs only read the registry and push through
+# push-review-texts (retrying), and each makes one SERP query per show, so
+# overlap is cheap.
 concurrency:
-  group: discover-regional-serp-reviews
+  group: discover-regional-serp-reviews-${{ github.run_id }}
   cancel-in-progress: false
 
 permissions:

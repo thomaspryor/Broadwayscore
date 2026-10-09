@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: venue here is a name from the checked-in data/uk-regional-venues.json table, passed on as a routing hint; the shows.json write goes through buildRegionalShowEntry -> sanitizeVenueForWrite.
 /**
  * Reverse discovery audit — alert-only detector for shows the aggregators
  * are reviewing that are NOT in shows.json.

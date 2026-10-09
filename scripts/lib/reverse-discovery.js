@@ -1,3 +1,4 @@
+// venue-write-guard-ok: venue here is a name from the checked-in data/uk-regional-venues.json table, passed on as a routing hint; the shows.json write goes through buildRegionalShowEntry -> sanitizeVenueForWrite.
 /**
  * Reverse discovery — pure decision functions.
  *

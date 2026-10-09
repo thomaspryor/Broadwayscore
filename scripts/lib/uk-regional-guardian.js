@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: venue here is a name from the checked-in data/uk-regional-venues.json table, passed on as a routing hint; the shows.json write goes through buildRegionalShowEntry -> sanitizeVenueForWrite.
 /**
  * Noteworthy-UK-regional trigger (BRO-4923, owner ask 2026-10-09: "pull
  * reviews for As You Like It and any other high profile shows outside of
@@ -22,8 +23,9 @@
  */
 
 const UK_VENUES = require('../../data/uk-regional-venues.json');
+const { foldDiacritics } = require('./title-match');
 
-const norm = (s) => String(s || '')
+const norm = (s) => foldDiacritics(String(s || ''))
   .toLowerCase()
   .replace(/[‘’]/g, "'")
   .replace(/[^a-z0-9']+/g, ' ')
@@ -112,7 +114,7 @@ function stageUkRegionalCandidates(candidates, nowIso = new Date().toISOString()
   for (const c of candidates || []) {
     if (!c || c.market !== 'uk-regional' || c.source !== 'guardian-review') continue;
     if (!c.title || !c.url || !c.venue || !isUkFlagshipVenue(c.venue)) continue;
-    const titleSlug = c.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const titleSlug = foldDiacritics(c.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     // The house key keeps ids apart when two flagship houses stage the same
     // title in one year (Hamlet at the RSC and at Bristol Old Vic).
     const slug = titleSlug && `${titleSlug}-${ukVenueEntry(c.venue).idKey}`;
