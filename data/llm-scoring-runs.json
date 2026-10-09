@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-08T11:40:07.174Z",
-    "completedAt": "2026-10-08T11:40:59.267Z",
-    "totalReviews": 24,
-    "processed": 24,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 63715,
-      "output": 5300,
-      "total": 69015
-    },
-    "costUsd": 0.17448,
-    "runId": "37770607419",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-08T11:45:27.993Z",
-    "completedAt": "2026-10-08T11:45:28.287Z",
-    "totalReviews": 47761,
-    "processed": 0,
-    "skipped": 47760,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37771768036",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-08T11:45:30.301Z",
     "completedAt": "2026-10-08T11:45:32.737Z",
     "totalReviews": 0,
@@ -645916,6 +645878,44 @@
     },
     "costUsd": 0.5965223000000001,
     "runId": "37871122401",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T02:01:40.702Z",
+    "completedAt": "2026-10-09T02:09:07.987Z",
+    "totalReviews": 50434,
+    "processed": 70,
+    "skipped": 50345,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 404945,
+      "output": 24559,
+      "total": 1119245
+    },
+    "costUsd": 1.6726789500000003,
+    "runId": "37872296404",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T02:09:10.004Z",
+    "completedAt": "2026-10-09T02:10:18.285Z",
+    "totalReviews": 31,
+    "processed": 31,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 66435,
+      "output": 6920,
+      "total": 73355
+    },
+    "costUsd": 0.1956756,
+    "runId": "37872296404",
     "errorDetails": []
   }
 ]
