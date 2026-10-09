@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-09T02:31:58.780Z",
+    "generatedAt": "2026-10-09T10:57:37.505Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 370,
+  "totalGaps": 371,
   "errorSeverity": 265,
-  "warningSeverity": 105,
+  "warningSeverity": 106,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -3092,6 +3092,15 @@
       "extracted": 8,
       "gap": 4,
       "ratio": 0.67,
+      "severity": "warning"
+    },
+    {
+      "showId": "therese-raquin-2015",
+      "category": "broadway",
+      "expected": 51,
+      "extracted": 48,
+      "gap": 3,
+      "ratio": 0.94,
       "severity": "warning"
     },
     {
