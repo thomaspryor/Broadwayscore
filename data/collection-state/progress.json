@@ -249,7 +249,10 @@
     "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "singfeld-a-musical-about-nothing-off-broadway-2023/backstage--unknown.json",
-    "the-lion-king-tour-2021/salt-lake-city-weekly--scott-renshaw.json"
+    "the-lion-king-tour-2021/salt-lake-city-weekly--scott-renshaw.json",
+    "good-time-charlie-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "dear-octopus-west-end-2024/guardian--kate-wyver.json",
@@ -398,7 +401,17 @@
     "rent-west-end-2026/independent--louis-chilton.json",
     "rent-west-end-2026/telegraph--dominic-cavendish.json",
     "mrs-doubtfire-tour-2025/arkansas-democrat-gazette--eric-e-harrison.json",
-    "wicked-west-end-2021/thestage--paul-vale.json"
+    "wicked-west-end-2021/thestage--paul-vale.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -575,7 +588,9 @@
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
       "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
       "one-day-the-musical-west-end-2026/london-box-office--shehrazade-zafar-arif.json",
-      "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json"
+      "an-oak-tree-off-west-end-2026/thereviewshub--the-reviews-hub-london.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -591,7 +606,9 @@
       "the-house-of-bernarda-alba-west-end-2023/financialtimes--sarah-hemming.json",
       "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
-      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json"
+      "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
+      "data/review-texts/good-time-charlie-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "good-time-charlie-off-broadway-2026/nytimes--laura-collins-hughes.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -682,7 +699,7 @@
     ]
   },
   "startTime": "2026-10-08T22:53:51.152Z",
-  "lastProcessed": "the-lion-king-1997/familyvacationcritic--unknown.json",
+  "lastProcessed": "human-things-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-10-08T22:58:24.454Z",
@@ -842,6 +859,35 @@
       "event": "bb-session",
       "session": "e1f77384",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-09T02:20:52.193Z",
+      "event": "bb-session",
+      "session": "fd208492",
+      "url": "https://www.nytimes.com/2026/10/08/theater/ryan-j-haddad-good-time-charlie.html"
+    },
+    {
+      "t": "2026-10-09T02:20:53.089Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-09T02:25:54.353Z",
+      "event": "bb-session",
+      "session": "335953eb",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-09T02:26:11.985Z",
+      "event": "bb-session",
+      "session": "6a8106c2",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-09T02:28:32.307Z",
+      "event": "bb-session",
+      "session": "8a0f1805",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
     }
   ],
   "recoveredAfterFailure": [

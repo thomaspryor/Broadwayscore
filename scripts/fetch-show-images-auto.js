@@ -34,7 +34,8 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
-const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex } = require('./lib/image-source-match');
+const { pickMezzanineCandidate, theatrEligible, isRejectedImage, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 const { findOtherSameTitleProduction } = require('./lib/canon-poster-art');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
@@ -271,7 +272,11 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   // dispatch with only_missing=false, --show=<id>) must not silently replace
   // curated/manual images with a re-scraped roundup photo. (ship-check P2)
   const posterOnDisk = path.join(IMAGES_DIR, show.id, 'poster.webp');
-  if (!process.argv.includes('--force') && fs.existsSync(posterOnDisk) && !isPlaceholderFile(posterOnDisk)) {
+  // ...unless the file's recorded source is one a person rejected for this
+  // show: keeping it would serve the wrong production's art forever (BRO-4901).
+  const recordedRegional = recordedSourceFor({ images: localPaths }, 'poster', imageSourcesForApply || loadImageSources());
+  const regionalRejected = !!recordedRegional && isRejectedImage({ poster: recordedRegional }, show);
+  if (!process.argv.includes('--force') && !regionalRejected && fs.existsSync(posterOnDisk) && !isPlaceholderFile(posterOnDisk)) {
     console.log('   ✓ regional images already on disk — keeping (use --force to re-source)');
     return { ...localPaths };
   }
@@ -306,6 +311,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       const ogImage = extractOgImage(html, src.url);
       if (!ogImage) { console.log(`   ⚠ no og:image on ${src.label}`); continue; }
       console.log(`   Regional source (${src.label}): ${ogImage.slice(0, 90)}`);
+      if (isRejectedImage({ poster: ogImage }, show)) { console.log('   ✗ og:image is in this show\'s rejectedImageUrls'); continue; }
       const buffer = await downloadImageDirect(ogImage);
       const meta = await sharpLib(buffer).metadata();
       if (!meta.width || meta.width < 400) { console.log(`   ⚠ source image too small (${meta.width}px)`); continue; }
@@ -338,7 +344,9 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
       await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
       console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);
-      return { ...localPaths, _source: `regional-venue:${src.label}` };
+      const _fileSources = {};
+      for (const format of ['poster', 'thumbnail', 'hero']) _fileSources[format] = { path: localPaths[format], source: ogImage };
+      return { ...localPaths, _source: `regional-venue:${src.label}`, _fileSources };
     } catch (e) {
       console.log(`   ⚠ ${src.label} failed: ${e.message.slice(0, 80)}`);
     }
@@ -1662,8 +1670,19 @@ async function extractImageBuffer(result) {
 
 // Helper: filter Google Images results to usable candidates
 // Handles both ScrapingBee (base64 image) and Bright Data (imageUrl) formats
-function filterGoogleCandidates(results, maxCount = 10) {
+// A Google result's image URL (Bright Data), or the page it came from
+// (ScrapingBee base64), for image-sources.json. Not downloadable in the second
+// case, which archive-show-images.js knows not to re-fetch.
+function googleResultSource(r) {
+  if (r && r.imageUrl) return r.imageUrl;
+  return `google-images:${(r && (r.url || r.link)) || 'unknown page'}`;
+}
+
+// show: drop results from a URL a person rejected for it, before any file is
+// written (BRO-4901).
+function filterGoogleCandidates(results, maxCount = 10, show = null) {
   return (results || [])
+    .filter(r => !show || !isRejectedImage({ poster: googleResultSource(r) }, show))
     .filter(r => {
       // ScrapingBee: has base64 data URI
       const hasSBImage = r.image && r.image.startsWith('data:image/');
@@ -1703,6 +1722,7 @@ async function fetchFromGoogleImages(show) {
   let thumbnailBuffer = null;
   let thumbnailResult = null;
   let posterBuffer = null;
+  let posterResult = null;
   let squareCandidates = [];
   let posterCandidates = [];
   let squareErrored = false;
@@ -1719,7 +1739,7 @@ async function fetchFromGoogleImages(show) {
 
   try {
     const squareResults = await searchGoogleImages(squareQuery);
-    squareCandidates = filterGoogleCandidates(squareResults, 10);
+    squareCandidates = filterGoogleCandidates(squareResults, 10, show);
     console.log(`   Found ${squareCandidates.length} square candidates`);
 
     for (const result of squareCandidates) {
@@ -1742,7 +1762,7 @@ async function fetchFromGoogleImages(show) {
       const fallbackQuery = `"${safeTitle}" ${marketKw} square`;
       console.log(`   Retrying square search without year: "${fallbackQuery}"`);
       const fallbackResults = await searchGoogleImages(fallbackQuery);
-      const fallbackCandidates = filterGoogleCandidates(fallbackResults, 10);
+      const fallbackCandidates = filterGoogleCandidates(fallbackResults, 10, show);
       for (const result of fallbackCandidates) {
         const buffer = await extractImageBuffer(result);
         if (buffer) {
@@ -1773,7 +1793,7 @@ async function fetchFromGoogleImages(show) {
 
   try {
     const posterResults = await searchGoogleImages(posterQuery);
-    posterCandidates = filterGoogleCandidates(posterResults, 10);
+    posterCandidates = filterGoogleCandidates(posterResults, 10, show);
     console.log(`   Found ${posterCandidates.length} poster candidates`);
 
     for (const result of posterCandidates) {
@@ -1786,6 +1806,7 @@ async function fetchFromGoogleImages(show) {
         }
         console.log(`   ✓ Valid poster image (${(buffer.length/1024).toFixed(0)} KB) from ${result.domain}`);
         posterBuffer = buffer;
+        posterResult = result;
         break;
       }
     }
@@ -1795,12 +1816,13 @@ async function fetchFromGoogleImages(show) {
       const fallbackQuery = `"${safeTitle}" ${marketKw} poster`;
       console.log(`   Retrying poster search without year: "${fallbackQuery}"`);
       const fallbackResults = await searchGoogleImages(fallbackQuery);
-      posterCandidates = filterGoogleCandidates(fallbackResults, 10);
+      posterCandidates = filterGoogleCandidates(fallbackResults, 10, show);
       for (const result of posterCandidates) {
         const buffer = await extractImageBuffer(result);
         if (buffer) {
           if (!isPortraitOrSquareBuffer(buffer)) continue;
           posterBuffer = buffer;
+          posterResult = result;
           break;
         }
       }
@@ -1851,13 +1873,18 @@ async function fetchFromGoogleImages(show) {
   const allRemaining = [...squareCandidates, ...posterCandidates]
     .filter(r => !usedResults.includes(r));
 
+  const thumbLocal = `/images/shows/${show.id}/thumbnail.jpg`;
+  const posterLocal = posterPath ? `/images/shows/${show.id}/poster.jpg` : null;
+  const _fileSources = { thumbnail: { path: thumbLocal, source: googleResultSource(thumbnailBuffer ? thumbnailResult : posterResult) } };
+  if (posterLocal) _fileSources.poster = { path: posterLocal, source: googleResultSource(posterResult) };
   return {
-    thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
-    poster: posterPath ? `/images/shows/${show.id}/poster.jpg` : null,
+    thumbnail: thumbLocal,
+    poster: posterLocal,
     hero: null,
     _verifyBuffer: finalThumbnailBuffer,
     _remainingCandidates: allRemaining,
     _hasNativeSquare: !!thumbnailBuffer,
+    _fileSources,
   };
 }
 
@@ -1872,7 +1899,9 @@ async function fetchFromGoogleImages(show) {
 // while shows.json kept images.poster: null forever (card #795: gimme-a-sign,
 // el-quijote both stuck "missing_poster" with a valid poster file already
 // sitting unreferenced in public/images/shows/).
-async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null) {
+// previousPosterFile: that poster's _fileSources entry, so its source is still
+// recorded when this retry's thumbnail wins.
+async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null, previousPosterFile = null) {
   for (const result of remainingCandidates) {
     try {
       const buffer = await extractImageBuffer(result);
@@ -1888,10 +1917,14 @@ async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster 
       fs.writeFileSync(thumbnailPath, compressed);
 
       const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
+      const images = buildRetryCandidateImages({ showId: show.id, previousPoster });
+      const _fileSources = { thumbnail: { path: images.thumbnail, source: googleResultSource(result) } };
+      if (previousPoster && previousPosterFile && previousPosterFile.path === previousPoster) _fileSources.poster = previousPosterFile;
       return {
-        ...buildRetryCandidateImages({ showId: show.id, previousPoster }),
+        ...images,
         _verifyBuffer: buffer,
         _remainingCandidates: nextRemaining,
+        _fileSources,
       };
     } catch {
       continue;
@@ -1930,7 +1963,8 @@ function snapshotLocalImageFiles(images) {
 // Returns { images, verifyResult, url, tierName, score } for candidate collection,
 // or null if rejected.
 async function verifyAndCollect(images, show, tierName, verifyCtx) {
-  if (isRejectedImage(images, show)) {
+  // Local-write tiers carry the downloaded URL in _fileSources, not in images.
+  if (isRejectedImage(images, show) || isRejectedImage(fileSourceUrls(images), show)) {
     console.log(`   ✗ ${tierName}: image is in this show's rejectedImageUrls — skipping`);
     return null;
   }
@@ -2277,6 +2311,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     // so a rejected thumbnail must not cost us a poster already on disk.
     const remaining = googleImages._remainingCandidates || [];
     const previousPoster = googleImages.poster || null;
+    const previousPosterFile = (googleImages._fileSources && googleImages._fileSources.poster) || null;
     const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
     if (candidate) {
       candidates.push(candidate);
@@ -2292,7 +2327,7 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
     }
     // Rejected — try next candidate from the same search results
     if (remaining.length === 0) break;
-    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster);
+    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster, previousPosterFile);
   }
   if (!googleGate.skip && !googleErrored) noteGoogleAttempt(show.id, googleAccepted);
 
@@ -2571,17 +2606,28 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
 
 // Every show in the run, for applyImages' cross-show path guard (lineage links).
 let allShowsForImageGuard = [];
+// data/image-sources.json, loaded by main for real runs (null in dry runs):
+// applyImages reads it to decide what to keep and records the files it writes.
+let imageSourcesForApply = null;
 
 // Apply fetched images to a show object, preserving existing local images
 // when the new fetch doesn't provide a replacement.
 function applyImages(show, images) {
+  // A local file whose recorded source a person rejected for this show is
+  // never kept over a re-fetch (BRO-4901: Kyoto and the West End Gatsby kept
+  // their New York banners when a re-fetch found a poster but no hero).
+  const sources = imageSourcesForApply || {};
   const existingThumb = show.images?.thumbnail;
   const hasLocalThumb = existingThumb && existingThumb.startsWith('/images/');
   const newThumbIsNative = isNativeSquareUrl(images.thumbnail);
 
   if (hasLocalThumb && !newThumbIsNative) {
-    console.log(`   ⚠ Keeping existing local thumbnail for ${show.id} (new source is poster crop)`);
-    images.thumbnail = existingThumb;
+    if (keepExistingImage(show, 'thumbnail', sources)) {
+      console.log(`   ⚠ Keeping existing local thumbnail for ${show.id} (new source is poster crop)`);
+      images.thumbnail = existingThumb;
+    } else {
+      console.log(`   ✗ Not keeping existing local thumbnail for ${show.id}: its recorded source is rejected for this show`);
+    }
   }
 
   // Preserve existing local images when the new fetch returns null.
@@ -2589,10 +2635,16 @@ function applyImages(show, images) {
   for (const format of ['hero', 'poster', 'thumbnail']) {
     const existing = show.images?.[format];
     if (!images[format] && existing && existing.startsWith('/images/')) {
-      console.log(`   ⚠ Keeping existing local ${format} for ${show.id} (new source is null)`);
-      images[format] = existing;
+      if (keepExistingImage(show, format, sources)) {
+        console.log(`   ⚠ Keeping existing local ${format} for ${show.id} (new source is null)`);
+        images[format] = existing;
+      } else {
+        console.log(`   ✗ Dropping existing local ${format} for ${show.id}: its recorded source is rejected for this show`);
+      }
     }
   }
+
+  const fileSources = images._fileSources;
 
   // Strip internal underscore-prefixed fields before writing to shows.json
   // (_verifyBuffer, _remainingCandidates are already stripped in verifyAndCollect,
@@ -2609,6 +2661,9 @@ function applyImages(show, images) {
     console.log(`   ✗ Refusing ${d.key} for ${show.id}: ${d.path} belongs to ${d.owner}`);
   }
   show.images = safe;
+  // Files this fetch wrote and the row now serves: record where they came from,
+  // so image-sources.json never describes bytes that were replaced (BRO-4901).
+  if (imageSourcesForApply && fileSources) recordFileSources(imageSourcesForApply, { ...safe, _fileSources: fileSources });
 }
 
 // Generate a phone-friendly HTML comparison page for dry-run results
@@ -2742,6 +2797,7 @@ async function main() {
   const showsData = loadShows();
   allShowsForImageGuard = showsData.shows;
   allShowsData = showsData;
+  if (!dryRunMode) imageSourcesForApply = loadImageSources();
 
   // ============================================================
   // AUDIT-EXISTING MODE: Scan current images through Gemini (REPORT-ONLY)
@@ -2983,6 +3039,9 @@ async function main() {
     showsData._meta = showsData._meta || {};
     showsData._meta.lastUpdated = new Date().toISOString();
     saveShows(showsData);
+    // Same checkpoint as shows.json: the watchdog and archive-show-images.js
+    // (next workflow step) must see the sources of the files written so far.
+    if (imageSourcesForApply) saveImageSources(imageSourcesForApply);
     console.log(`   💾 shows.json saved (${showsData.shows.length} shows)`);
   };
 
@@ -3063,6 +3122,18 @@ async function main() {
         const targetPath = path.join(__dirname, '..', 'public', targetThumb);
         if (!fs.existsSync(targetPath)) {
           fs.copyFileSync(posterPath, targetPath);
+          // The copy is the poster's art, so it carries the poster's recorded source.
+          // No recorded poster source: drop the old entry, which described the missing file.
+          const src = imageSourcesForApply && recordedSourceFor(s, 'poster', imageSourcesForApply);
+          const owner = imagePathOwner(targetThumb);
+          if (imageSourcesForApply && owner) {
+            if (src) {
+              imageSourcesForApply[owner] = imageSourcesForApply[owner] || {};
+              imageSourcesForApply[owner].thumbnail = src;
+            } else if (imageSourcesForApply[owner]) {
+              delete imageSourcesForApply[owner].thumbnail;
+            }
+          }
         }
         s.images.thumbnail = targetThumb;
         fallbackCount++;

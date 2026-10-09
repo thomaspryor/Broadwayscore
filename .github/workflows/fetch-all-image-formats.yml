@@ -124,6 +124,12 @@ jobs:
           fi
           node scripts/archive-show-images.js $ARCHIVE_ARGS
 
+      # BRO-4901: advisory. Lists art whose recorded source is a URL the show rejected.
+      - name: Audit image sources against rejected URLs
+        if: always()
+        continue-on-error: true
+        run: node scripts/audit-image-source-rejected.js --strict
+
       - name: Check for changes
         if: always()
         id: changes

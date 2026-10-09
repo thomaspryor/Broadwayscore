@@ -25,6 +25,7 @@ const { serpImagesQuery } = require('./lib/url-discovery');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { recordImageSource } = require('./lib/image-sources-store');
 
 const USAGE = `fetch-square-images.js — Fetches native square (1080x1080) promotional images from Google Images.
 
@@ -281,7 +282,8 @@ async function processShow(show) {
             console.log(`   ✅ Found square image: ${img.width}x${img.height} (ratio ${img.ratio.toFixed(2)})`);
 
             if (!dryRun) {
-              resizeAndSave(img.buffer, thumbPath, 540);
+              resizeAndSave(img.buffer, thumbPath, 540); // writes the file on every path, even when it returns false
+              recordImageSource(show.id, ['thumbnail'], img.url); // BRO-4901
               console.log(`   Saved: ${thumbPath}`);
 
               show.images = show.images || {};
@@ -311,7 +313,8 @@ async function processShow(show) {
     console.log(`   🔲 Cropping non-square fallback: ${bestFallback.width}x${bestFallback.height} (ratio ${bestFallback.ratio.toFixed(2)})`);
 
     if (!dryRun) {
-      resizeAndSave(bestFallback.buffer, thumbPath, 540, true);
+      resizeAndSave(bestFallback.buffer, thumbPath, 540, true); // writes the file on every path
+      recordImageSource(show.id, ['thumbnail'], bestFallback.url); // BRO-4901
       console.log(`   Saved (cropped): ${thumbPath}`);
 
       show.images = show.images || {};

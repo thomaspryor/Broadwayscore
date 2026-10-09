@@ -21,6 +21,7 @@ const { compressImage } = require('./lib/compress-image');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { recordImageSource } = require('./lib/image-sources-store');
 
 const USAGE = `fetch-opera-images.js — Downloads production images for Met Opera shows from metopera.org season pages.
 
@@ -231,6 +232,7 @@ async function fetchAndSaveImage(showId, imageUrl) {
     saved.push('thumbnail');
   }
 
+  recordImageSource(showId, saved, imageUrl); // BRO-4901: the map must describe the new files
   console.log(`    ✓ saved: ${saved.join(', ')}`);
   return true;
 }
