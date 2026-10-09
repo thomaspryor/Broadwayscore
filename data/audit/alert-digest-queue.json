@@ -2795,18 +2795,6 @@
     "queuedAt": "2026-10-09T12:26:47.836Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37932214165",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T12:51:20.888Z"
-  },
-  {
     "conditionKey": "land:land/bro-4897-follow-emails",
     "title": "Landing blocked: unit-tests-node red on land/bro-4897-follow-emails",
     "description": "land.yml did not land land/bro-4897-follow-emails: the unit-tests-node gate went red at 9df9f52c1b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37929378038",
@@ -2834,5 +2822,17 @@
       }
     ],
     "queuedAt": "2026-10-09T12:48:12.333Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37934493994",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T13:12:11.902Z"
   }
 ]
