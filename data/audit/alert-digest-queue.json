@@ -2533,18 +2533,6 @@
     "queuedAt": "2026-10-09T00:31:29.687Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37869572508",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-09T01:29:45.929Z"
-  },
-  {
     "conditionKey": "land:land/bro-4894-custom-domain",
     "title": "Landing blocked: race red on land/bro-4894-custom-domain",
     "description": "land.yml did not land land/bro-4894-custom-domain: the race gate went red at 39b266a9da. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4894-custom-domain @ 39b266a9da (origin/land/bro-4894-custom-domain) → origin/main @ f585b1e0d8 [land] attempt 1/3: rebased onto f585b1e0d8, 10 file(s) changed — running checks [land] verified-base: main moved e2716035da → f585b1e0d8 across 213 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] chec Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37863922260",
@@ -2572,5 +2560,17 @@
       }
     ],
     "queuedAt": "2026-10-09T01:36:35.078Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run data validation, Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37871061318",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T01:48:04.092Z"
   }
 ]
