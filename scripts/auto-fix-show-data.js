@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { isValidSynopsis, classifyBadSynopsis, cutToLastSentence } = require('./lib/synopsis-validation');
 const { imageOnDisk } = require('./lib/show-images');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
@@ -245,9 +245,12 @@ async function fetchCreativeTeamFromTodayTix(show, todayTixInfo) {
 // regional plays). The wrong-show verification gate is applied by the caller
 // (fixSynopsis) so it covers BOTH this and the TodayTix scrape path — see the
 // note there. Here we only return a well-formed, non-refusal candidate.
-async function generateSynopsisWithLLM(show) {
-  if (!ANTHROPIC_API_KEY) return null;
-
+// The prompt for one production. A revival has its work's plot, so the model
+// must not answer UNKNOWN just because it knows nothing about this staging:
+// WE historical 2023-24 rows (title + venue + year only) got UNKNOWN from both
+// Haiku and Opus for Pygmalion, King Lear, Private Lives (run 37863714181,
+// BRO-4884). The wrong-show verifier in fixSynopsis still checks every answer.
+function buildSynopsisPrompt(show) {
   const year = (show.openingDate || show.previewsStartDate)?.slice(0, 4) || '';
   const castInfo = show.cast && show.cast.length > 0
     ? `Cast: ${show.cast.map(c => c.name).join(', ')}.` : '';
@@ -260,26 +263,35 @@ Venue: ${show.venue || 'a Broadway theater'}
 ${castInfo}
 ${creativeInfo}
 The cast, year, and venue identify the exact production — titles are often shared by unrelated shows, so use them to pin down WHICH show this is.
-If you are not certain about the plot of THIS specific production, reply with exactly: UNKNOWN
+A revival or new staging of an existing work (a classic play, a known musical or opera, an adaptation of a known novel or film) has that work's plot: if you know which work this is, describe its story even when you know nothing about this staging.
+Reply with exactly UNKNOWN only if you do not know the story, or cannot tell which same-titled work this is.
 Do NOT guess or describe a different same-titled show.
+The venue is where it is staged, not where the story is set. Name no performers or creatives unless they are listed above.
 Write in present tense. Focus on the SPECIFIC plot/premise — what is it actually about?
 Do NOT open with production history ("X is a play written by Y", "had its world premiere", "transferred to"). Start with the story, setting, or central premise.
 No generic descriptions, marketing language, or ticket information.
 Return only the synopsis text (or exactly UNKNOWN), nothing else.`;
+  return prompt;
+}
+
+async function generateSynopsisWithLLM(show) {
+  if (!ANTHROPIC_API_KEY) return null;
+  const prompt = buildSynopsisPrompt(show);
 
   // Say why a candidate is dropped: run 37857317226 left 20 of 27 rows empty
   // after a bare "Generating via Claude..." with no reason (BRO-4884).
   const usable = (t, model) => {
     let why = null;
+    t = cutToLastSentence(t);
     if (!t) why = 'no text returned';
     else if (/^\s*UNKNOWN\s*$/i.test(t.trim())) why = 'replied UNKNOWN';
     else if (!isValidSynopsis(t)) why = `fails isValidSynopsis: "${t.trim().slice(0, 120)}"`;
     if (why) console.log(`    · ${model}: ${why}`);
     return why ? null : t;
   };
-  const haiku = usable(await callClaudeAPI(prompt, 200, CLAUDE_HAIKU), CLAUDE_HAIKU);
+  const haiku = usable(await callClaudeAPI(prompt, 300, CLAUDE_HAIKU), CLAUDE_HAIKU);
   if (haiku) return haiku;
-  return usable(await callClaudeAPI(prompt, 200, CLAUDE_OPUS), CLAUDE_OPUS);
+  return usable(await callClaudeAPI(prompt, 300, CLAUDE_OPUS), CLAUDE_OPUS);
 }
 
 // Generate creative team via Claude API (fallback)
@@ -875,4 +887,5 @@ module.exports = {
   fetchSynopsisFromTodayTix,
   extractSynopsisFromHtml,
   generateSynopsisWithLLM,
+  buildSynopsisPrompt,
 };

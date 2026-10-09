@@ -133,7 +133,21 @@ function buildVenueSpellings(shows) {
   return best;
 }
 
-function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map()) {
+// WOS leaves genres empty on some listings, and an empty list used to mean
+// 'play': 2023-24 stored Sunset Boulevard, Next to Normal, The Witches, Old
+// Friends, Just for One Day and The Time Traveller's Wife as plays (BRO-4884).
+// Order: hand override (approvals[season][title].type) > WOS genre or a title
+// that says musical > a same-titled musical already in shows.json > 'play',
+// flagged as guessed so the dry run lists it for the hand check.
+function inferShowType(candidate, musicalTitles = new Set()) {
+  if (candidate.type === 'musical' || candidate.type === 'play') return { type: candidate.type, guessed: false };
+  const genres = candidate.genres || [];
+  if (genres.includes('musical') || titleSaysMusical(candidate.title)) return { type: 'musical', guessed: false };
+  if (musicalTitles.has(normalizeTitle(candidate.title))) return { type: 'musical', guessed: false };
+  return { type: 'play', guessed: !genres.length };
+}
+
+function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), musicalTitles = new Set()) {
   // BRO-3863 — normalise BEFORE the slug/id are derived from the title, with
   // the same normaliser the validate-data.js gate uses.
   // Straight apostrophes, matching shows.json ("Mrs Warren's Profession").
@@ -156,9 +170,9 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map()) 
     status: 'closed',
     category: 'west-end',
     market: 'west-end',
-    // 'play' when the title doesn't say "musical": validate-market-expansion
-    // requires a type for non-announced west-end rows (BRO-3716).
-    type: (candidate.genres || []).includes('musical') || titleSaysMusical(candidate.title) ? 'musical' : 'play',
+    // validate-market-expansion requires a type for non-announced west-end
+    // rows (BRO-3716); see inferShowType for the order.
+    type: inferShowType(candidate, musicalTitles).type,
     tags: ['historical'],
     season: candidate.season,
     discoverySource: DISCOVERY_SOURCE,
@@ -184,7 +198,9 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
   const westEndIds = new Set(shows.filter(s => s.market === 'west-end').map(s => s.id));
   const venueVocabulary = buildVenueVocabulary(shows);
   const venueSpellings = buildVenueSpellings(shows);
+  const musicalTitles = new Set(shows.filter(s => s.type === 'musical').map(s => normalizeTitle(s.title)));
   const toPromote = [];
+  const typeGuessed = [];
   const skipped = [];
   for (const c of candidates) {
     if (only && only.size && !only.has(c.title)) continue;
@@ -194,12 +210,13 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     // review search matches nothing. A censored title needs the real one set as
     // approvals[season][title].title before promotion (BRO-4851).
     const titleOverride = approvals?.[c.season]?.[c.title]?.title;
-    const cand = titleOverride ? { ...c, title: titleOverride } : c;
+    const typeOverride = approvals?.[c.season]?.[c.title]?.type;
+    const cand = { ...c, ...(titleOverride ? { title: titleOverride } : {}), ...(typeOverride ? { type: typeOverride } : {}) };
     if (/[a-z]\*+[a-z]/i.test(cand.title)) {
       skipped.push({ title: c.title, reason: 'censored title; set the real title as approvals[season][title].title' });
       continue;
     }
-    const entry = buildShowEntry(cand, venueVocabulary, venueSpellings);
+    const entry = buildShowEntry(cand, venueVocabulary, venueSpellings, musicalTitles);
     if (!entry) { skipped.push({ title: c.title, reason: 'no usable date for the id year' }); continue; }
     if (!entry.venue) { skipped.push({ title: c.title, reason: `venue "${c.venue}" failed sanitizeVenueForWrite` }); continue; }
     const startDate = entry.openingDate || entry.previewsStartDate;
@@ -212,10 +229,11 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     if (subtitleDup) { skipped.push({ title: c.title, reason: `subtitle-variant duplicate of "${subtitleDup}"` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ title: c.title, reason: `id ${entry.id} already exists` }); continue; }
     toPromote.push(entry);
+    if (inferShowType(cand, musicalTitles).guessed) typeGuessed.push(entry.id);
     pool.push({ title: entry.title, venue: entry.venue, startDate, id: entry.id });
     existingIds.add(entry.id);
   }
-  return { toPromote, skipped };
+  return { toPromote, skipped, typeGuessed };
 }
 
 function readJson(p, fallback) {
@@ -292,13 +310,17 @@ function main() {
   const audit = JSON.parse(fs.readFileSync(file, 'utf8'));
   const approvals = readJson(APPROVALS_PATH, {});
   const showsData = loadShows();
-  const { toPromote, skipped } = planPromotions({ candidates: audit.candidates || [], shows: showsData.shows, approvals, only });
+  const { toPromote, skipped, typeGuessed } = planPromotions({ candidates: audit.candidates || [], shows: showsData.shows, approvals, only });
 
   const unknownOnly = [...only].filter(t => !(audit.candidates || []).some(c => c.title === t));
   if (unknownOnly.length) console.log(`--only titles not in the candidates file: ${unknownOnly.join(' | ')}`);
   console.log(`Candidates: ${audit.candidates?.length || 0} (file generated ${audit.generatedAt})`);
   console.log(`Will promote: ${toPromote.length}`);
   for (const e of toPromote) console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.previewsStartDate || '?'} / ${e.openingDate || '?'} → ${e.closingDate}`);
+  if (typeGuessed.length) {
+    console.log(`Type guessed as 'play' (WOS gave no genre), check each and set approvals[season][title].type = 'musical' where wrong:`);
+    for (const id of typeGuessed) console.log(`  ? ${id}`);
+  }
   if (only.size || process.argv.includes('--verbose')) {
     for (const s of skipped) console.log(`  - ${s.title}: ${s.reason}`);
   } else {
@@ -317,4 +339,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle };
+module.exports = { buildShowEntry, buildVenueSpellings, planPromotions, effectiveDecision, fixAllCapsTitle, inferShowType };

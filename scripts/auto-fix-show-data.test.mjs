@@ -221,3 +221,15 @@ test('fixCreativeTeam: IBDB step never overwrites an existing creativeTeam[1] wi
 
   assert.deepEqual(show.creativeTeam, [{ name: 'Existing Person', role: 'Director' }]);
 });
+
+// BRO-4884: sparse WE revival rows (title + venue + year) got UNKNOWN from both
+// models; the prompt must tell them a revival has its source work's plot.
+test('buildSynopsisPrompt asks for the source work\'s story on a revival and keeps the wrong-show guard', () => {
+  const { buildSynopsisPrompt } = loadWithMocks({ serpQueryImpl: async () => [], ibdbCreativeTeam: [] });
+  const prompt = buildSynopsisPrompt({ title: 'King Lear', type: 'play', venue: 'Wyndham\'s Theatre', openingDate: '2023-11-01' });
+  assert.match(prompt, /Title: "King Lear" \(2023\)/);
+  assert.match(prompt, /revival or new staging of an existing work/);
+  assert.match(prompt, /describe its story even when you know nothing about this staging/);
+  assert.match(prompt, /Do NOT guess or describe a different same-titled show/);
+  assert.doesNotMatch(prompt, /not certain about the plot of THIS specific production/);
+});

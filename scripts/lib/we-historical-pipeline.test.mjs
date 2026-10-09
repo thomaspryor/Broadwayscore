@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { buildCandidates, collapseDuplicateListings, plausibleOpeningDate } = require('../discover-historical-shows-we.js');
-const { planPromotions, effectiveDecision, fixAllCapsTitle, buildShowEntry } = require('../promote-historical-we.js');
+const { planPromotions, effectiveDecision, fixAllCapsTitle, buildShowEntry, inferShowType } = require('../promote-historical-we.js');
 const { planWetMerge, matchWetRow, roundupWindow } = require('../merge-wet-stars-urls.js');
 const { discoverWetRoundupRows } = require('./wet-roundup-discover.js');
 const { auditSeason } = require('../audit-we-historical-season.js');
@@ -284,4 +284,25 @@ test('season audit poster check ignores a cleared field whose old source is stil
   const { posterProblem } = require('../audit-we-historical-season.js');
   const godot = { id: 'waiting-for-godot-west-end-2024', category: 'west-end', images: { poster: '/p.jpg', thumbnail: '/t.jpg', hero: null }, rejectedImageUrls: ['https://x/banner.jpg'] };
   assert.equal(posterProblem(godot, { poster: 'https://www.theaterdiary.com/godot haymarket.jpg', hero: 'https://x/banner.jpg' }), null);
+});
+
+// BRO-4884: WOS gave no genre for Sunset Boulevard, Next to Normal, The
+// Witches and others, and an empty list used to mean 'play'.
+test('inferShowType: no WOS genre inherits a same-titled musical, else play flagged as guessed', () => {
+  const musicals = new Set(['sunset boulevard']);
+  assert.deepEqual(inferShowType({ title: 'Sunset Boulevard', genres: [] }, musicals), { type: 'musical', guessed: false });
+  assert.deepEqual(inferShowType({ title: 'The Witches', genres: [] }, musicals), { type: 'play', guessed: true });
+  assert.deepEqual(inferShowType({ title: 'King Lear', genres: ['play'] }, musicals), { type: 'play', guessed: false });
+  assert.deepEqual(inferShowType({ title: 'Mean Girls', genres: ['musical'] }), { type: 'musical', guessed: false });
+  assert.deepEqual(inferShowType({ title: 'The Witches', genres: [], type: 'musical' }), { type: 'musical', guessed: false });
+});
+
+test('planPromotions: approvals type override wins, and unguessable rows are listed', () => {
+  const c = (title) => ({ title, venue: 'Olivier Theatre', previewsStartDate: '2024-01-10', openingDate: '2024-01-20', closingDate: '2024-03-01', genres: [], season: SEASON, signals: ['wos-review'], sourceUrls: {}, inShowsJson: null, decision: { promotable: true } });
+  const shows = [...SHOWS, { id: 'sunset-boulevard-2024', title: 'Sunset Boulevard', venue: 'St. James Theatre', type: 'musical' }];
+  const approvals = { [SEASON]: { 'The Witches': { type: 'musical' } } };
+  const { toPromote, typeGuessed } = planPromotions({ candidates: [c('Sunset Boulevard'), c('The Witches'), c('Nye')], shows, approvals, today: TODAY });
+  const type = Object.fromEntries(toPromote.map(e => [e.title, e.type]));
+  assert.deepEqual(type, { 'Sunset Boulevard': 'musical', 'The Witches': 'musical', Nye: 'play' });
+  assert.deepEqual(typeGuessed, ['nye-west-end-2024']);
 });
