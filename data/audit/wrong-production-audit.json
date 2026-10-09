@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T03:08:50.938Z",
+  "timestamp": "2026-10-09T05:28:51.823Z",
   "stats": {
-    "totalReviews": 50184,
-    "alreadyFlagged": 19185,
-    "dateGuardCatches": 278,
-    "directorMismatch": 1540,
-    "tvFilmSignals": 1463,
-    "londonSignals": 1527,
+    "totalReviews": 50186,
+    "alreadyFlagged": 19212,
+    "dateGuardCatches": 275,
+    "directorMismatch": 1547,
+    "tvFilmSignals": 1477,
+    "londonSignals": 1562,
     "offBroadwaySignals": 507,
     "yearMismatch": 122,
-    "noPublishDate": 5100
+    "noPublishDate": 5081
   },
   "findings": [
     {
@@ -1823,6 +1823,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"pilot episode\""
+        }
+      ]
+    },
+    {
+      "showId": "alterations-west-end-2025",
+      "file": "london-theatre--anya-ryan.json",
+      "score": null,
+      "publishDate": "February 28th, 2025",
+      "url": "https://www.londontheatre.co.uk/reviews/alterations-review-national-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -4483,6 +4502,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "born-with-teeth-west-end-2025",
+      "file": "standard--unknown.json",
+      "publishDate": null,
+      "url": "https://www.standard.co.uk/culture/theatre/born-with-teeth-wyndhams-theatre-review-ncuti-gatwa-b1245727.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"episode 5\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -7570,6 +7607,20 @@
       "score": 80,
       "publishDate": "2025-09-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15135421/CLARKSTON-review-Heartstoppers-Joe-Locke-PATRICK-MARMION.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "clarkston-west-end-2025",
+      "file": "daily-mail--unknown.json",
+      "score": null,
+      "publishDate": "2025-09-26",
+      "url": "https://www.dailymail.com/tvshowbiz/article-15135421/CLARKSTON-review-Heartstoppers-Joe-Locke-PATRICK-MARMION.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -11073,6 +11124,20 @@
       "score": 55,
       "publishDate": "May 16th, 2024",
       "url": "https://www.timeout.com/london/theatre/fawlty-towers-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "fawlty-towers-west-end-2024",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://variety.com/2024/theater/global/fawlty-towers-john-cleese-stage-play-racial-slurs-1235989568/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17970,6 +18035,20 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "british-theatre--rebecca-clifton.json",
+      "score": 78,
+      "publishDate": "2026-10-08",
+      "url": "https://www.britishtheatreguide.info/reviews/into-the-woods-noel-coward-the-26085",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "broadwayworld--cheryl-markosky.json",
       "score": 91,
       "publishDate": null,
@@ -18116,39 +18195,6 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "partially-obstructed-view--view-my-complete.json",
-      "score": 77,
-      "publishDate": null,
-      "url": "http://partially-obstructed-view.blogspot.com/2025/12/theatre-review-into-woods.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "plays-international--maryam-philpott.json",
-      "score": 78,
-      "publishDate": "2025-12-15",
-      "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 281d before show (2025-12-15 vs 2026-09-22)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "south-london--michael-holland.json",
       "score": 79,
       "publishDate": null,
@@ -18197,25 +18243,6 @@
       "publishDate": "2026-10-08",
       "url": "https://thespyinthestalls.com/2026/10/into-the-woods/",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 82,
-      "publishDate": "2026-01-25",
-      "url": "https://theartsdispatch.substack.com/p/into-the-woods-review-bridge-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 240d before show (2026-01-25 vs 2026-09-22)"
-        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
@@ -18664,6 +18691,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "partially-obstructed-view--view-my-complete.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "http://partially-obstructed-view.blogspot.com/2025/12/theatre-review-into-woods.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
       "score": 78,
       "publishDate": "2025-12-15",
@@ -18758,6 +18799,20 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "theartsdispatch--the-arts-dispatch.json",
+      "score": 82,
+      "publishDate": "2026-01-25",
+      "url": "https://theartsdispatch.substack.com/p/into-the-woods-review-bridge-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "theatre-south-east--unknown.json",
       "score": 87,
       "publishDate": "2026-01-10",
@@ -18818,6 +18873,20 @@
       "score": 95,
       "publishDate": "2025-12-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "whatsonstage--alex-wood.json",
+      "score": null,
+      "publishDate": "2025-12-14",
+      "url": "https://www.whatsonstage.com/news/were-the-critics-all-bark-and-no-bite-with-into-the-woods_1706386/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19894,6 +19963,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "new-statesman--unknown.json",
+      "publishDate": null,
+      "url": "https://www.newstatesman.com/culture/theatre/2024/02/live-aid-musical-just-for-one-day-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -23835,6 +23917,20 @@
     },
     {
       "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "london-box-office--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-about-nothing-theatre-royal-drury-lane-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
       "file": "london-theatre--marianka-swain.json",
       "score": 99,
       "publishDate": "February 20th, 2025",
@@ -23867,6 +23963,34 @@
       "score": 88,
       "publishDate": "2025-02-23",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "partially-obstructed-view--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://partially-obstructed-view.blogspot.com/2025/02/theatre-review-much-ado-about-nothing.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2025",
+      "file": "radio-times--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/much-ado-about-nothing-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26136,6 +26260,112 @@
       ]
     },
     {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 56,
+      "publishDate": "November 15th, 2025",
+      "url": "https://theartsdesk.com/theatre/porn-play-royal-court-review-poor-script-saved-star-casting",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "independent--annabel-nugent.json",
+      "score": 80,
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/porn-play-ambika-mod-royal-court-theatre-b2865307.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "independent--unknown.json",
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/porn-play-ambika-mod-royal-court-theatre-b2865307.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "observer--unknown.json",
+      "publishDate": null,
+      "url": "https://observer.co.uk/culture/theatre/article/porn-play-is-an-unflinching-portrayal-of-self-destructive-addiction",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 72,
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/porn-play-royal-court-review-b1258079.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "telegraph--unknown.json",
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/porn-play-royal-court-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "pacific-overtures-2004",
       "file": "nytimes--ben-brantley.json",
       "score": 51,
@@ -26921,6 +27151,25 @@
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 82,
       "publishDate": "2023-11-30",
+      "url": "https://www.allthatdazzles.co.uk/post/review-peter-pan-goes-wrong-lyric-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-goes-wrong-west-end-2023",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 88,
+      "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-peter-pan-goes-wrong-lyric-theatre",
       "findings": [
         {
@@ -35245,6 +35494,20 @@
       ]
     },
     {
+      "showId": "the-enfield-haunting-west-end-2023",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 13,
+      "publishDate": "January 11th, 2024",
+      "url": "https://www.whatsonstage.com/news/the-enfield-haunting-review-a-shocker-in-all-the-wrong-ways_1562236/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-enormous-crocodile-west-end-2026",
       "file": "afridiziak-theatre-news--ronke-lawal.json",
       "score": 88,
@@ -35768,6 +36031,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-grapes-of-wrath-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "score": 62,
+      "publishDate": "August 1st, 2024",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-grapes-of-wrath-review-national-theatre-b2589426.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"frank galati\" from the-grapes-of-wrath-1990"
         }
       ]
     },
@@ -36446,6 +36723,20 @@
     },
     {
       "showId": "the-hills-of-california-west-end-2024",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 99,
+      "publishDate": "February 8th, 2024",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-hills-of-california-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-hills-of-california-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
       "score": 78,
       "publishDate": "2024-02-08",
@@ -37116,6 +37407,20 @@
       "showId": "the-mongol-khan-west-end-2023",
       "file": "standard--nick-curtis.json",
       "publishDate": "2023-11-21",
+      "url": "https://www.standard.co.uk/culture/theatre/the-mongol-khan-coliseum-theatre-review-b1121676.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mongol-khan-west-end-2023",
+      "file": "standard--unknown.json",
+      "score": null,
+      "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/the-mongol-khan-coliseum-theatre-review-b1121676.html",
       "findings": [
         {
@@ -41083,19 +41388,6 @@
       ]
     },
     {
-      "showId": "triumph-off-broadway-2026",
-      "file": "motorcycle--unknown.json",
-      "publishDate": "2026-10-08",
-      "url": "https://www.motorcycle.com/bikes/spain-s-tamarit-motorcycles-crowned-winner-of-triumph-originals-2026-44672593",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "trophy-boys-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 79,
@@ -42089,6 +42381,20 @@
       "file": "times-uk--clive-davis.json",
       "score": 35,
       "publishDate": "2025-02-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/unicorn-review-crude-banter-nicola-walker-stephen-mangan-hmbjw77qk",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "unicorn-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "score": 42,
+      "publishDate": "February 14th, 2025",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/unicorn-review-crude-banter-nicola-walker-stephen-mangan-hmbjw77qk",
       "findings": [
         {
@@ -45585,6 +45891,20 @@
     },
     {
       "showId": "alterations-west-end-2025",
+      "file": "cultural-capital--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://maryamphilpottblog.wordpress.com/2025/02/24/alterations-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "alterations-west-end-2025",
       "file": "financialtimes--sarah-hemming.json",
       "score": 77,
       "publishDate": "2025-02-28",
@@ -46796,6 +47116,19 @@
       ]
     },
     {
+      "showId": "ballet-shoes-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/ballet-shoes-national-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "beaches-2026",
       "file": "washpost--thomas-floyd.json",
       "score": 25,
@@ -47411,6 +47744,33 @@
     },
     {
       "showId": "born-with-teeth-west-end-2025",
+      "file": "nytimes--houman-barekat.json",
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2025/09/03/theater/born-with-teeth-wyndhams-theatre-london-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "born-with-teeth-west-end-2025",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playsinternational.org.uk/born-with-teeth-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "born-with-teeth-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 82,
       "publishDate": "2025-09-03",
@@ -47425,9 +47785,36 @@
     },
     {
       "showId": "born-with-teeth-west-end-2025",
+      "file": "sunday-express--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre/2103613/edward-bleumel-doctor-who-ncuti-gatwa-shakespeare-play-born-with-teeth",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "born-with-teeth-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 53,
       "publishDate": "2025-09-03",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/born-with-teeth-review-ncuti-gatwa-stars-in-sweaty-shakespeare-fan-fiction-kldpvhnlb",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "born-with-teeth-west-end-2025",
+      "file": "times-uk--unknown.json",
+      "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/born-with-teeth-review-ncuti-gatwa-stars-in-sweaty-shakespeare-fan-fiction-kldpvhnlb",
       "findings": [
         {
@@ -53674,9 +54061,36 @@
     },
     {
       "showId": "hello-dolly-west-end-2024",
+      "file": "london-box-office--john-yap.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-hello-again-union-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
       "file": "nytimes--matt-wolf.json",
       "publishDate": "2024-07-19",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2024/07/19/theater/hello-dolly-imelda-staunton.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -55208,29 +55622,15 @@
     },
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "1883magazine--nick-barr.json",
-      "score": 92,
-      "publishDate": "2026-01-12",
-      "url": "https://1883magazine.com/into-the-woods-review-the-bridge/",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "score": 97,
+      "publishDate": "2025-12-16",
+      "url": "https://www.londontheatredirect.com/news/into-the-woods-bridge-review?srsltid=AU7gw4U-CUIj1BwFwic6RZ0Mch-KCfvYalkyq97gspOaqK4ODsOF9u0R",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
-          "detail": "Published 253d before show (2026-01-12 vs 2026-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "file": "onceaweektheatre--edward-lukes.json",
-      "score": 88,
-      "publishDate": "2025-12-19",
-      "url": "https://onceaweektheatre.com/into-the-woods-at-the-bridge-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 277d before show (2025-12-19 vs 2026-09-22)"
+          "detail": "Published 280d before show (2025-12-16 vs 2026-09-22)"
         }
       ]
     },
@@ -56839,6 +57239,20 @@
     },
     {
       "showId": "london-tide-west-end-2024",
+      "file": "independent--tim-bano.json",
+      "score": 57,
+      "publishDate": "April 19th, 2024",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/london-tide-review-national-theatre-pj-harvey-b2530315.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "london-tide-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
       "score": 57,
       "publishDate": "April 18th, 2024",
@@ -56969,6 +57383,20 @@
       "score": 96,
       "publishDate": "April 19th, 2024",
       "url": "https://theartsdesk.com/theatre/machinal-old-vic-review-note-perfect-pity-and-terror",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "machinal-west-end-2024",
+      "file": "oldvictheatrecom--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.oldvictheatre.com/news/machinal-in-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -57826,6 +58254,19 @@
     },
     {
       "showId": "mary-page-marlowe-west-end-2025",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-10-09",
+      "url": "https://www.londonboxoffice.co.uk/news/post/mary-page-marlowe-old-vic-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-page-marlowe-west-end-2025",
       "file": "observer--susannah-clapp.json",
       "score": 63,
       "publishDate": "2025-10-17",
@@ -58096,6 +58537,20 @@
       "score": 85,
       "publishDate": "2018-04-13",
       "url": "https://www.stagezine.com/mean-girls-awesome-adaptation-hit-film/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mean-girls-west-end-2024",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playsinternational.org.uk/mean-girls-savoy-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -58523,6 +58978,20 @@
     },
     {
       "showId": "my-master-builder-west-end-2025",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.allthatdazzles.co.uk/post/review-my-master-builder-wyndham-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "my-master-builder-west-end-2025",
       "file": "thereviewshub--jane-darcy.json",
       "score": 79,
       "publishDate": "2025-04-30",
@@ -58922,6 +59391,62 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "loureviews--louise-penn.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://loureviews.blog/2024/06/27/theatre-review-next-to-normal-wyndhams/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "micablackwell--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://micablackwell.co.uk/next-to-normal-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "radio-times--joanna-magill.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.radiotimes.com/going-out/tickets/next-to-normal-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "next-to-normal-west-end-2024",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 43,
+      "publishDate": null,
+      "url": "https://www.spectator.co.uk/article/punishingly-dull-but-the-crowd-loved-it-next-to-normal-at-wyndhams-theatre-reviewed/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -60047,6 +60572,47 @@
       ]
     },
     {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 70,
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.timeout.com/london/theatre/porn-play-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.timeout.com/london/theatre/porn-play-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.whatsonstage.com/news/prn-play-starring-ambika-mod-at-the-royal-court-review_1702687/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martland.json",
       "score": 96,
@@ -60793,6 +61359,20 @@
       "file": "british-theatre--ray-rackham.json",
       "publishDate": null,
       "url": "https://www.britishtheatre.com/shows/rent",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 78,
+      "publishDate": "2026-10-09",
+      "url": "https://www.londonboxoffice.co.uk/news/post/rent-tom-stoppard-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -62039,6 +62619,20 @@
       "score": 79,
       "publishDate": "2024-05-09",
       "url": "https://www.broadwayworld.com/westend/article/Review-SPIRITED-AWAY-London-Coliseum-20240509",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "spirited-away-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 63,
+      "publishDate": "2024-05-09T05:03:15+00:00",
+      "url": "https://www.timeout.com/london/theatre/spirited-away-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -65667,6 +66261,20 @@
       ]
     },
     {
+      "showId": "the-hot-wing-king-west-end-2024",
+      "file": "london-theatre--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.londontheatre.co.uk/reviews/the-hot-wing-king-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "artsdesk--demetrios-matheou.json",
       "publishDate": "2023-11-30",
@@ -68594,6 +69202,20 @@
     },
     {
       "showId": "the-witches-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 82,
+      "publishDate": "November 21st, 2023",
+      "url": "https://theatreweekly.com/review-roald-dahls-the-witches-at-the-national-theatre-olivier-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-witches-west-end-2023",
       "file": "thereviewshub--maryam-philpott.json",
       "publishDate": "2023-11-22",
       "url": null,
@@ -69061,6 +69683,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "till-the-stars-come-down-west-end-2024",
+      "file": "plays-international--maryam-philpott.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://playsinternational.org.uk/till-the-stars-come-down-dorfman-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -69555,6 +70191,20 @@
     },
     {
       "showId": "underdog-the-other-other-bronte-west-end-2024",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.allthatdazzles.co.uk/post/review-underdog-the-other-other-bront%C3%AB-dorfman-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "underdog-the-other-other-bronte-west-end-2024",
       "file": "londontheatre1--terry-eastham.json",
       "publishDate": "2024-04-05",
       "url": null,
@@ -69576,6 +70226,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "unicorn-west-end-2025",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://monstagigz.com/2025/02/09/theatre-review-unicorn-starring-nicola-walker-stephen-mangan-erin-doherty-at-the-garrick-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -70106,6 +70770,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "white-rabbit-red-rabbit-west-end-2024",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "October 2nd, 2024",
+      "url": "https://www.londontheatre.co.uk/reviews/white-rabbit-red-rabbit-review-soho-place",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
