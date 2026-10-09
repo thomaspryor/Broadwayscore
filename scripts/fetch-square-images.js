@@ -282,7 +282,8 @@ async function processShow(show) {
             console.log(`   ✅ Found square image: ${img.width}x${img.height} (ratio ${img.ratio.toFixed(2)})`);
 
             if (!dryRun) {
-              if (resizeAndSave(img.buffer, thumbPath, 540)) recordImageSource(show.id, ['thumbnail'], img.url); // BRO-4901
+              resizeAndSave(img.buffer, thumbPath, 540); // writes the file on every path, even when it returns false
+              recordImageSource(show.id, ['thumbnail'], img.url); // BRO-4901
               console.log(`   Saved: ${thumbPath}`);
 
               show.images = show.images || {};
@@ -312,7 +313,8 @@ async function processShow(show) {
     console.log(`   🔲 Cropping non-square fallback: ${bestFallback.width}x${bestFallback.height} (ratio ${bestFallback.ratio.toFixed(2)})`);
 
     if (!dryRun) {
-      if (resizeAndSave(bestFallback.buffer, thumbPath, 540, true)) recordImageSource(show.id, ['thumbnail'], bestFallback.url); // BRO-4901
+      resizeAndSave(bestFallback.buffer, thumbPath, 540, true); // writes the file on every path
+      recordImageSource(show.id, ['thumbnail'], bestFallback.url); // BRO-4901
       console.log(`   Saved (cropped): ${thumbPath}`);
 
       show.images = show.images || {};
