@@ -466,7 +466,7 @@ async function main() {
           // BWW Review-Roundup URLs) and URL-based outletId refinement
           // (resolveOutletFromUrl handles cases like metro.co.uk → metro-uk
           // that the local domainToOutletId fallback misses).
-          const _pre = await prefetchDiscoveredArticle(url, { criticName });
+          const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
           const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || result.title?.split(/[-–—|]/)[0]?.trim() || canonicalOutletId,
@@ -608,7 +608,7 @@ async function main() {
 
         // Route through createOrMergeReviewFile for Guard E (auto-flag
         // BWW Review-Roundup URLs) and URL-based outletId refinement.
-        const _pre = await prefetchDiscoveredArticle(url, { criticName });
+        const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
         const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
           outletId: canonicalOutletId,
           outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
@@ -724,7 +724,7 @@ async function main() {
             });
             if (hasDupe) { skippedDupe++; continue; }
           }
-          const _pre = await prefetchDiscoveredArticle(url, { criticName });
+          const _pre = await prefetchDiscoveredArticle(url, { criticName, outletId: canonicalOutletId, showId });
           const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
