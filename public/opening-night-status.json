@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T17:06:33.033Z",
+  "generatedAt": "2026-10-09T17:25:15.931Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -392,28 +392,27 @@
       "status": "open",
       "slug": "from-the-heart-west-end",
       "thumbnail": "/images/shows/from-the-heart-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 75,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "siteScore": 80.24,
+      "liveScore": 80,
+      "scoreDrift": -0.23999999999999488,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 7,
       "t1": 0,
       "t2": 2,
-      "t3": 1,
-      "positive": 2,
+      "t3": 5,
+      "positive": 6,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "7/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "T2:1/2"
         ],
-        "highConfidence": 1,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -498,6 +497,18 @@
           "t2": 2,
           "t3": 1,
           "p": 2,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-09T17:25:15.931Z",
+          "rc": 7,
+          "s": 80.24,
+          "t1": 0,
+          "t2": 2,
+          "t3": 5,
+          "p": 6,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1270,9 +1281,9 @@
       "status": "open",
       "slug": "rent-west-end",
       "thumbnail": "/images/shows/rent-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.9,
+      "siteScore": 78.94,
       "liveScore": 79,
-      "scoreDrift": 0.09999999999999432,
+      "scoreDrift": 0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1487,6 +1498,18 @@
           "t": "2026-10-09T17:06:33.033Z",
           "rc": 18,
           "s": 78.9,
+          "t1": 7,
+          "t2": 6,
+          "t3": 5,
+          "p": 15,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-09T17:25:15.931Z",
+          "rc": 18,
+          "s": 78.94,
           "t1": 7,
           "t2": 6,
           "t3": 5,
@@ -2619,9 +2642,9 @@
           "2/12 total",
           "T1:1/3",
           "T2:1/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,

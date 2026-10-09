@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T17:06:23.228Z",
+  "timestamp": "2026-10-09T17:25:09.347Z",
   "stats": {
-    "totalReviews": 51496,
-    "alreadyFlagged": 19427,
+    "totalReviews": 51616,
+    "alreadyFlagged": 19437,
     "dateGuardCatches": 264,
     "directorMismatch": 1579,
-    "tvFilmSignals": 1485,
-    "londonSignals": 1597,
+    "tvFilmSignals": 1487,
+    "londonSignals": 1610,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5486
+    "noPublishDate": 5490
   },
   "findings": [
     {
@@ -24730,7 +24730,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2022-10-24",
       "url": "https://www.londontheatre.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-west-end-review-garrick-theatre",
       "findings": [
@@ -24758,7 +24758,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": null,
+      "score": 81,
       "publishDate": "October 24th, 2022",
       "url": "https://www.standard.co.uk/culture/theatre/my-sons-a-queer-but-what-can-you-do-garrick-theatre-review-west-end-b1034714.html",
       "findings": [
@@ -24772,7 +24772,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "telegraph--marianka-swain.json",
-      "score": null,
+      "score": 64,
       "publishDate": "October 24th, 2022",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/sons-queer-what-can-do-garrick-theatre-review-rob-madges-bittersweet/",
       "findings": [
@@ -24786,7 +24786,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 55,
       "publishDate": "October 24th, 2022",
       "url": "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-charming-but-slender-confessional-snbkftqmz",
       "findings": [
@@ -25023,6 +25023,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2016 (0x). 2001 matches production: noises-off-2001"
+        }
+      ]
+    },
+    {
+      "showId": "noises-off-west-end-2023",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 79,
+      "publishDate": "2023-01-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -26167,6 +26181,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"eric tucker\" from othello-bedlam-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 57,
+      "publishDate": "2022-12-01",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/othello-nationals-lyttelton-theatre-review-fleet-potent-giles/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
         }
       ]
     },
@@ -47235,6 +47263,20 @@
       ]
     },
     {
+      "showId": "as-you-like-it-west-end-2022",
+      "file": "thestage--sam-marlowe.json",
+      "score": 56,
+      "publishDate": "2022-12-15",
+      "url": "https://www.thestage.co.uk/reviews/reviews/as-you-like-it-review-sohoplace-by-william-shakespeare-with-leah-harvey-rose-ayling-ellis-and-alfred-enoch",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "british-theatre--susan-novak.json",
       "score": 78,
@@ -47627,6 +47669,34 @@
       ]
     },
     {
+      "showId": "baghdaddy-west-end-2022",
+      "file": "artsdesk--aleks-sierz.json",
+      "score": 58,
+      "publishDate": "November 29th, 2022",
+      "url": "https://theartsdesk.com/theatre/baghdaddy-royal-court-review-middle-eastern-magic-realism",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "baghdaddy-west-end-2022",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": 73,
+      "publishDate": "November 25th, 2022",
+      "url": "https://www.broadwayworld.com/westend/article/Review-BAGHDADDY-Royal-Court-20221125",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "ballet-shoes-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 80,
@@ -47744,6 +47814,34 @@
       "score": 76,
       "publishDate": "2026-05-31",
       "url": "https://westendwilma.com/beetlejuice-musical-review-london-2026/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "best-of-enemies-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 74,
+      "publishDate": "November 30th, 2022",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/best-enemies-noel-coward-theatre-review-zachary-quinto-makes/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "best-of-enemies-west-end-2022",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 100,
+      "publishDate": "November 29th, 2022",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/best-of-enemies-west-end-david-harewood_57909.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -52516,6 +52614,7 @@
     {
       "showId": "from-the-heart-west-end-2026",
       "file": "jonathan-baz--unknown.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
       "findings": [
@@ -52529,6 +52628,7 @@
     {
       "showId": "from-the-heart-west-end-2026",
       "file": "the-spy-in-the-stalls--thespyinthestalls.json",
+      "score": 81,
       "publishDate": "2026-10-09",
       "url": "https://thespyinthestalls.com/2026/10/from-the-heart/",
       "findings": [
@@ -55031,6 +55131,20 @@
       ]
     },
     {
+      "showId": "hex-west-end-2022",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 66,
+      "publishDate": "2022-12-07",
+      "url": "https://www.broadwayworld.com/westend/article/Review-HEX-National-Theatre-20221207",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "high-2011",
       "file": "timeout--david-cote.json",
       "score": 17,
@@ -57101,6 +57215,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "kerry-jackson-west-end-2022",
+      "file": "thereviewshub--scott-matthewman.json",
+      "score": 61,
+      "publishDate": "2022-12-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -60246,6 +60374,48 @@
       ]
     },
     {
+      "showId": "noises-off-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 87,
+      "publishDate": "2023-01-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "noises-off-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 82,
+      "publishDate": "2023-01-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "noises-off-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 63,
+      "publishDate": "2023-01-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "now-you-see-me-live-west-end-2026",
       "file": "bestoftheatre--unknown.json",
       "publishDate": null,
@@ -61258,6 +61428,48 @@
       ]
     },
     {
+      "showId": "othello-west-end-2022",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 63,
+      "publishDate": "2022-12-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2022",
+      "file": "londontheatre1--alan-fitter.json",
+      "score": 62,
+      "publishDate": "2022-12-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2022",
+      "file": "observer--kate-kellaway.json",
+      "score": 76,
+      "publishDate": "2022-12-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "othello-west-end-2025",
       "file": "everything-theatre--sheilina-somani.json",
       "score": 89,
@@ -62153,7 +62365,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-10-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/rent-tom-stoppard-theatre-review",
       "findings": [
