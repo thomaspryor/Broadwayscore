@@ -1,0 +1,39 @@
+{
+  "issueNumber": "bro-4884-c",
+  "planId": "c9a3a7f3-1849-402a-a1c2-8d46819cd6cc",
+  "status": "pending",
+  "createdAt": "2026-10-09T21:45:41.295Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4884: 2:22 A Ghost Story (Lyric 2023) holds three records whose url/date are 2021 Lily Allen reviews and whose text is the 2023 review from Theatre Record; they fail validate-data and block validate-gated core-data pushes. Delete and re-run Theatre Record for the show.",
+    "steps": [
+      "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url.",
+      "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url.",
+      "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "2-22-a-ghost-story-west-end-2023/standard--nick-curtis.json",
+        "description": "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "2-22-a-ghost-story-west-end-2023/london-theatre--matt-wolf.json",
+        "description": "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "2-22-a-ghost-story-west-end-2023/thestage--tim-bano.json",
+        "description": "Mixed record: url and date are this critic’s 2021 Lily Allen review (Noel Coward run, a merge swapped in for a Cheryl news article), text is the 2023 Lyric review from Theatre Record 2023/2. Held by the date guard, it fails validate-data CHECK 0. Deleted so the Theatre Record re-run recreates a clean 2023 record with no url."
+      }
+    ]
+  }
+}

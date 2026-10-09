@@ -410,6 +410,17 @@ Lessons, each fixed in code:
   2022-23 shows did nothing and looked done. Dispatch with
   `-F inputs[no_sb_serp]=true -f inputs[spend_purpose]=historical-backfill`
   and check that `prepare` ran, not just the run conclusion.
+- **Recast runs pick up the original run's reviews.** Long runs that move
+  theatres with a new star (2:22 A Ghost Story: Noel Coward 2021 with Lily
+  Allen, Lyric 2023 with Cheryl) share critics and titles. On the 2023 row a
+  merge swapped a Cheryl news url for the same critic's 2021 review, the next
+  refresh took the 2021 date from it, and the Theatre Record batch added the
+  real 2023 text. Date says 2021, the Theatre Record month says 2023, so the
+  flagger holds the row and validate-data fails, blocking pushes. Repaired by
+  deleting the three mixed records and re-running Theatre Record
+  (data/pending-fixes/bro-4884-c.json). When the audit or validate-data shows
+  a held row on a recast run, check whether the text and the url describe the
+  same staging before flagging either way.
 
 ## Side benefit (separate card)
 
