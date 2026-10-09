@@ -432,5 +432,34 @@
       }
     ],
     "queuedAt": "2026-10-09T20:13:14.616Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4930-adopt-tiers",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4930-adopt-tiers",
+    "description": "land.yml did not land land/bro-4930-adopt-tiers: the unit-tests-node gate went red at 7ed1465a00. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37984673033",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4930-adopt-tiers"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7ed1465a00479fe723171d558e6f0c90ef548740"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37984673033"
+      }
+    ],
+    "queuedAt": "2026-10-09T20:40:37.659Z"
   }
 ]
