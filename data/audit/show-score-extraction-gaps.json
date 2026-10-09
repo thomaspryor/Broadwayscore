@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-09T00:26:00.645Z",
+    "generatedAt": "2026-10-09T00:57:43.688Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 369,
-  "errorSeverity": 264,
+  "totalGaps": 370,
+  "errorSeverity": 265,
   "warningSeverity": 105,
   "gaps": [
     {
@@ -923,6 +923,15 @@
       "extracted": 8,
       "gap": 22,
       "ratio": 0.27,
+      "severity": "error"
+    },
+    {
+      "showId": "g-west-end-2024",
+      "category": "west-end",
+      "expected": 5,
+      "extracted": 0,
+      "gap": 5,
+      "ratio": 0,
       "severity": "error"
     },
     {
