@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { downstreamWorkflows } = require('./lib/ingest-downstream');
+const { pushReviewTexts } = require('./lib/land-ingested-reviews');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
@@ -263,35 +264,12 @@ async function main() {
   const newReviews = results.created + results.updated;
   if (newReviews > 0 && !noPushReviewTexts && !dryRun && results.touchedPaths.length > 0) {
     const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
-    const relPaths = results.touchedPaths.map(p => path.relative(reviewTextsDir, p));
-    try {
-      console.log('\nPushing review-texts to private repo...');
-      // Stage only the files this run touched — never a blanket `git add .`
-      // -A so a path this run renamed away is staged as a deletion.
-      execSync(`git -C "${reviewTextsDir}" add -A -- ${relPaths.map(p => `"${p}"`).join(' ')}`, { stdio: 'pipe' });
-      const status = execSync(
-        `git -C "${reviewTextsDir}" status --porcelain ${relPaths.map(p => `"${p}"`).join(' ')}`,
-        { encoding: 'utf8' }
-      ).trim();
-      if (!status) {
-        console.log('  — No changes to push (files match remote).');
-      } else {
-        execSync(
-          `git -C "${reviewTextsDir}" commit -m "ingest-urls: ${newReviews} review(s) for ${showId}"`,
-          { stdio: 'pipe' }
-        );
-        // Rebase in case remote has moved (CI pushes all the time)
-        try {
-          execSync(`git -C "${reviewTextsDir}" pull --rebase --autostash origin main`, { stdio: 'pipe' });
-        } catch (rebaseErr) {
-          console.log(`  ⚠️  Pull-rebase failed: ${execErrorDetail(rebaseErr)}`);
-          console.log('  Attempting push anyway; if it fails resolve manually.');
-        }
-        execSync(`git -C "${reviewTextsDir}" push origin main`, { stdio: 'pipe' });
-        console.log(`  ✓ Pushed ${newReviews} review-text file(s) to private repo`);
-      }
-    } catch (e) {
-      console.log(`  ⚠️  Push to review-texts failed: ${execErrorDetail(e)}`);
+    console.log('\nPushing review-texts to private repo...');
+    const push = pushReviewTexts({
+      reviewTextsDir, touchedPaths: results.touchedPaths,
+      message: `ingest-urls: ${newReviews} review(s) for ${showId}`,
+    });
+    if (!push.pushed) {
       console.log('  The CI workflows below will not see the new files.');
       console.log('  Fix: cd data/review-texts && git status, resolve, then push manually.');
     }

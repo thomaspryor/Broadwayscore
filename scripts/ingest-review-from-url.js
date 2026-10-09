@@ -115,6 +115,10 @@ let provisional = hasFlag('provisional');
 // salvage, aggregator star relay) instead of exiting 1 and dropping the
 // review. process-review-submission.yml passes this on its final attempt.
 const stubOnFailure = hasFlag('stub-on-failure');
+// BRO-4908: --land pushes the written file to the review-texts repo and dispatches
+// per-show scoring. Without it the file is only on local disk: CI scores from a
+// fresh clone, so the review sits unscored until a later rebuild self-heals.
+const land = hasFlag('land');
 // Exit code for "the page could not be read" (fetch error, no HTML, empty
 // extraction). Refusals (blocked/non-review URL, blocklist, wrong show,
 // write-guard) keep exit 1, so the workflow retries only what a retry can fix.
@@ -124,12 +128,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--land]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url] [--land]');
   process.exit(1);
 }
 
@@ -632,6 +636,24 @@ if (!show) {
     if (!dryRun && (result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
       console.error(`\n❌ Write-guard refused the write — nothing changed on disk (${result.reason})${result.quarantinedPath ? `\n   quarantined to: ${result.quarantinedPath}` : ''}`);
       process.exit(1);
+    }
+  }
+
+  if (!dryRun && result.filepath && (result.action === 'new' || result.action === 'updated')) {
+    if (land) {
+      console.log('\nLanding (push review-texts, then dispatch scoring)...');
+      const { landIngestedReviews } = require('./lib/land-ingested-reviews');
+      const landed = landIngestedReviews({
+        showId, reviewTextsDir, touchedPaths: [result.filepath], newReviews: 1,
+        message: `ingest-review-from-url: 1 review for ${showId}`,
+        only: ['llm-ensemble-score.yml'],
+      });
+      if (!landed.push.pushed || landed.dispatched.some((d) => !d.ok)) {
+        console.error('❌ --land did not complete: review is NOT pushed/queued for scoring.');
+        process.exit(1);
+      }
+    } else {
+      console.log(`⚠️  Not scored yet: file is local only. Re-run with --land, or push review-texts and run: gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
     }
   }
 
