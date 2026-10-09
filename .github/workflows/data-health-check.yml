@@ -1032,7 +1032,20 @@ jobs:
         if: always()
         continue-on-error: true
         timeout-minutes: 3
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: node scripts/audit-stale-announced-shows.js
+
+      # BRO-4913: the audit's postponed-production check fetches official pages
+      # via fetchPage, which writes the scraper-spend ledger.
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: data-health-check
 
       # Notion-schedule-coupling audit (BRO-3431 reopen). The four schedules
       # named in BRO-3431 all shared one shape: a LIVE schedule (a loaded

@@ -61,6 +61,7 @@ const {
   describeOpeningEvidence,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
+const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { evaluatePostponed } = require('./lib/postponed-production-detector');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -117,7 +118,9 @@ const USAGE = `Usage:
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const showsData = loadJSON(SHOWS_FILE);
+  // --demote writes shows.json: load through the write guard so the save takes the lock + merges.
+  const showsGuard = DEMOTE ? createShowsWriteGuard(SHOWS_FILE) : null;
+  const showsData = showsGuard ? showsGuard.loadShows() : loadJSON(SHOWS_FILE);
   if (!showsData || !Array.isArray(showsData.shows)) {
     console.error(`Could not load ${SHOWS_FILE}`);
     process.exit(1);
@@ -252,7 +255,7 @@ async function main() {
     console.log(`  - ${p.id} (${p.title}): ${p.reason}${p.demoted ? ' [demoted to upcoming]' : ''}`);
   }
   if (DEMOTE && postponed.length > 0 && !DRY_RUN) {
-    fs.writeFileSync(SHOWS_FILE, JSON.stringify(showsData, null, 2) + '\n');
+    showsGuard.saveShows(showsData, { reason: 'BRO-4913 postponed demote' });
   }
   if (silencedByContamination.length > 0) {
     console.log(
