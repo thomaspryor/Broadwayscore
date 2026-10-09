@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T01:44:22.346Z",
+  "timestamp": "2026-10-09T01:57:40.320Z",
   "stats": {
-    "totalReviews": 49936,
-    "alreadyFlagged": 19170,
+    "totalReviews": 49937,
+    "alreadyFlagged": 19171,
     "dateGuardCatches": 278,
     "directorMismatch": 1500,
-    "tvFilmSignals": 1453,
-    "londonSignals": 1495,
+    "tvFilmSignals": 1452,
+    "londonSignals": 1494,
     "offBroadwaySignals": 507,
     "yearMismatch": 121,
-    "noPublishDate": 5121
+    "noPublishDate": 5165
   },
   "findings": [
     {
@@ -2964,7 +2964,7 @@
     {
       "showId": "backstairs-billy-west-end-2023",
       "file": "timeout-london--tom-wicker.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "November 8th, 2023",
       "url": "https://www.timeout.com/london/theatre/backstairs-billy-review",
       "findings": [
@@ -4408,6 +4408,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "british-theatre--howard-loxton.json",
+      "score": 78,
       "publishDate": "2024-05-31",
       "url": null,
       "findings": [
@@ -4421,6 +4422,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 86,
       "publishDate": "2024-05-31",
       "url": null,
       "findings": [
@@ -4433,25 +4435,8 @@
     },
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
-      "file": "daily-mail--robert-gore-langton.json",
-      "publishDate": "2024-06-09",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "london-theatre--olivia-rook.json",
+      "score": 79,
       "publishDate": "2024-05-30",
       "url": null,
       "findings": [
@@ -4470,6 +4455,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "standard--nick-curtis.json",
+      "score": 78,
       "publishDate": "2024-05-30",
       "url": "https://www.standard.co.uk/culture/theatre/boys-from-the-blackstuff-national-theatre-review-b1160984.html",
       "findings": [
@@ -4483,6 +4469,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "thestage--sam-marlowe.json",
+      "score": 58,
       "publishDate": "2024-05-30",
       "url": "https://www.thestage.co.uk/reviews/boys-from-the-blackstuff-review-olivier-theatre-national-theatre-london-alan-bleasdale-james-graham",
       "findings": [
@@ -4501,6 +4488,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
       "publishDate": "2024-05-30",
       "url": "https://www.timeout.com/london/theatre/boys-from-the-blackstuff-review",
       "findings": [
@@ -4514,6 +4502,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "times-uk--clive-davis.json",
+      "score": 56,
       "publishDate": "2024-05-30",
       "url": "https://www.thetimes.co.uk/article/boys-from-the-blackstuff-national-theatre-review-nz5pnb9tb",
       "findings": [
@@ -9262,6 +9251,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2023",
       "file": "london-theatre--matt-wolf.json",
+      "score": 79,
       "publishDate": "2023-10-10",
       "url": null,
       "findings": [
@@ -10901,7 +10891,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "artsdesk--adam-sweeting.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "May 16th, 2024",
       "url": "https://www.theartsdesk.com/theatre/fawlty-towers-play-apollo-theatre-review-lightning-strikes-twice",
       "findings": [
@@ -10915,6 +10905,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 79,
       "publishDate": "2024-05-16",
       "url": "https://www.broadwayworld.com/westend/article/Review-FAWLTY-TOWERS-THE-PLAY-Apollo-Theatre-20240516",
       "findings": [
@@ -10928,7 +10919,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "guardian--brian-logan.json",
-      "score": null,
+      "score": 66,
       "publishDate": "May 15th, 2024",
       "url": "https://www.theguardian.com/stage/article/2024/may/15/fawlty-towers-review-apollo-theatre-london-john-cleese-sitcom",
       "findings": [
@@ -10942,6 +10933,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 75,
       "publishDate": "2024-05-16",
       "url": null,
       "findings": [
@@ -10955,7 +10947,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "May 15th, 2024",
       "url": "https://theatreweekly.com/review-fawlty-towers-the-play-at-the-apollo-theatre/",
       "findings": [
@@ -10969,7 +10961,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "timeout-london--tom-wicker.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "May 16th, 2024",
       "url": "https://www.timeout.com/london/theatre/fawlty-towers-review",
       "findings": [
@@ -12492,7 +12484,7 @@
     {
       "showId": "gang-of-three-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 90,
+      "score": 96,
       "publishDate": "2025-05-08",
       "url": "https://theartsdesk.com/theatre/gang-three-kings-head-theatre-three-old-labour-ghosts-resurrected-entertain-and-educate",
       "findings": [
@@ -14882,6 +14874,7 @@
     {
       "showId": "harry-clarke-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 16,
       "publishDate": "2024-03-22",
       "url": null,
       "findings": [
@@ -14895,7 +14888,7 @@
     {
       "showId": "harry-clarke-west-end-2024",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 95,
       "publishDate": "March 14th, 2024",
       "url": "https://www.thetimes.co.uk/article/harry-clarke-theatre-review-billy-crudup-is-hypnotic-in-one-man-conman-tale-7h252pmmz",
       "findings": [
@@ -16896,6 +16889,7 @@
     {
       "showId": "instructions-for-a-teenage-armageddon-west-end-2024",
       "file": "british-theatre--sandra-giorgetti.json",
+      "score": 76,
       "publishDate": "2024-03-25",
       "url": null,
       "findings": [
@@ -17865,7 +17859,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "artsdesk--david-nice.json",
-      "score": 90,
+      "score": 82,
       "publishDate": "2026-10-08",
       "url": "https://theartsdesk.com/theatre/woods-noel-coward-theatre-review-honouring-masterpiece",
       "findings": [
@@ -19854,6 +19848,7 @@
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
       "file": "londontheatre1--mary-beer.json",
+      "score": 64,
       "publishDate": "2024-06-14",
       "url": null,
       "findings": [
@@ -19867,6 +19862,7 @@
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 77,
       "publishDate": "2024-06-16",
       "url": null,
       "findings": [
@@ -21613,6 +21609,7 @@
     {
       "showId": "long-days-journey-into-night-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 36,
       "publishDate": "2024-04-04",
       "url": null,
       "findings": [
@@ -25962,6 +25959,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "times-uk--clive-davis.json",
+      "score": 54,
       "publishDate": "2025-11-04",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/othello-theatre-royal-haymarket-london-review-ngv0vj09g",
       "findings": [
@@ -25975,7 +25973,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 61,
+      "score": 59,
       "publishDate": "2025-11-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/othello-david-harewood-theatre-royal-haymarket-review-khwbzf7r5",
       "findings": [
@@ -26826,7 +26824,7 @@
     {
       "showId": "peter-pan-goes-wrong-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2023-11-30",
       "url": "https://www.allthatdazzles.co.uk/post/review-peter-pan-goes-wrong-lyric-theatre",
       "findings": [
@@ -32085,7 +32083,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "bnn--sheena-oberoi.json",
-      "score": null,
+      "score": 70,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
       "findings": [
@@ -32099,7 +32097,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "i-paper--fiona-mountford.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
       "findings": [
@@ -32113,7 +32111,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "independent--alice-saville.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
       "findings": [
@@ -32141,7 +32139,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
       "findings": [
@@ -36008,6 +36006,7 @@
     {
       "showId": "the-hills-of-california-west-end-2024",
       "file": "times-uk--clive-davis.json",
+      "score": 65,
       "publishDate": "2024-02-08",
       "url": "https://www.thetimes.co.uk/article/the-hills-of-california-theatre-review-jez-butterworths-new-play-falters-at-the-end-p9qhvmhxw",
       "findings": [
@@ -36034,6 +36033,7 @@
     {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 78,
       "publishDate": "2023-11-29",
       "url": "https://www.ft.com/content/c0dcef42-4684-4106-a22d-da34414e5021",
       "findings": [
@@ -45029,6 +45029,7 @@
     {
       "showId": "an-enemy-of-the-people-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 5,
       "publishDate": "2024-02-22",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13109293/Feeble-sophomoric-paper-Matt-Smith-not-exciting-hes-wasted-one-star-adaptation-Enemy-People-writes-PATRICK-MARMION.html",
       "findings": [
@@ -46025,7 +46026,7 @@
     {
       "showId": "backstairs-billy-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "November 8th, 2023",
       "url": "https://www.whatsonstage.com/news/backstairs-billy-review-luke-evans-and-penelope-wilton-in-a-west-end-clarence-house-caper_1545918/",
       "findings": [
@@ -46667,6 +46668,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "express-uk--holly-omahony.json",
+      "score": 58,
       "publishDate": "2024-05-28",
       "url": null,
       "findings": [
@@ -46680,6 +46682,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 79,
       "publishDate": "2024-05-24",
       "url": null,
       "findings": [
@@ -46693,6 +46696,7 @@
     {
       "showId": "bluets-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 67,
       "publishDate": "2024-06-02",
       "url": null,
       "findings": [
@@ -46748,6 +46752,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "broadwayworld--gary-naylor.json",
+      "score": 71,
       "publishDate": "2024-05-30",
       "url": null,
       "findings": [
@@ -46761,6 +46766,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "thereviewshub--maryam-philpott.json",
+      "score": 91,
       "publishDate": "2024-05-30",
       "url": null,
       "findings": [
@@ -48871,7 +48877,7 @@
     {
       "showId": "dear-england-west-end-2023",
       "file": "telegraph--claire-allfree.json",
-      "score": 95,
+      "score": 93,
       "publishDate": "October 20th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-prince-edward-theatre-review-joseph-fiennes/",
       "findings": [
@@ -49605,6 +49611,7 @@
     {
       "showId": "dugsi-dayz-west-end-2024",
       "file": "telegraph--claire-allfree.json",
+      "score": 78,
       "publishDate": "2024-05-05",
       "url": null,
       "findings": [
@@ -52326,6 +52333,7 @@
     {
       "showId": "hamnet-west-end-2023",
       "file": "british-theatre--howard-loxton.json",
+      "score": 75,
       "publishDate": "2023-10-20",
       "url": null,
       "findings": [
@@ -52339,6 +52347,7 @@
     {
       "showId": "hamnet-west-end-2023",
       "file": "broadwayworld--cindy-marcolina.json",
+      "score": 64,
       "publishDate": "2023-10-19",
       "url": "https://www.broadwayworld.com/westend/article/Review-HAMNET-Garrick-Theatre-20231019",
       "findings": [
@@ -54169,7 +54178,7 @@
     {
       "showId": "infinite-life-west-end-2023",
       "file": "londontheatre1--ben-ross.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2023-12-01",
       "url": "https://www.londontheatre1.com/reviews/infinite-life-a-new-play-by-annie-baker-review/",
       "findings": [
@@ -54183,6 +54192,7 @@
     {
       "showId": "infinite-life-west-end-2023",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 87,
       "publishDate": "2023-12-01",
       "url": null,
       "findings": [
@@ -55070,7 +55080,7 @@
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
-      "score": null,
+      "score": 93,
       "publishDate": "June 10th, 2024",
       "url": "https://www.londontheatre.co.uk/reviews/kathy-and-stella-solve-a-murder-review-ambassadors-theatre",
       "findings": [
@@ -55956,6 +55966,7 @@
     {
       "showId": "london-tide-west-end-2024",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 78,
       "publishDate": "2024-04-18",
       "url": null,
       "findings": [
@@ -58924,7 +58935,7 @@
     {
       "showId": "opening-night-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "March 27th, 2024",
       "url": "https://www.theguardian.com/stage/2024/mar/27/opening-night-review-gielgud-theatre-sheridan-smith-ivo-van-hove-rufus-wainwright",
       "findings": [
@@ -59147,7 +59158,7 @@
     {
       "showId": "othello-west-end-2025",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 63,
+      "score": 62,
       "publishDate": "2025-11-05",
       "url": "https://www.timeout.com/london/theatre/othello-23-review",
       "findings": [
@@ -59371,7 +59382,7 @@
     {
       "showId": "people-places-and-things-west-end-2024",
       "file": "telegraph--nick-ferris.json",
-      "score": null,
+      "score": 65,
       "publishDate": "May 15th, 2024",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/people-places-and-things-trafalgar-theatre-review/",
       "findings": [
@@ -64669,7 +64680,7 @@
     {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2023-11-29",
       "url": "https://www.timeout.com/london/theatre/the-house-of-bernarda-alba-7-review",
       "findings": [
@@ -64683,6 +64694,7 @@
     {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 81,
       "publishDate": "2023-11-29",
       "url": "https://www.whatsonstage.com/news/the-house-of-bernarda-alba-at-the-national-theatre-review_1553845/",
       "findings": [
