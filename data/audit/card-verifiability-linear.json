@@ -1,16 +1,240 @@
 {
-  "generatedAt": "2026-10-08T12:15:13.370Z",
-  "total": 1363,
-  "armedCount": 924,
-  "refusedCount": 439,
+  "generatedAt": "2026-10-09T12:07:46.857Z",
+  "total": 1407,
+  "armedCount": 943,
+  "refusedCount": 464,
   "byKind": {
-    "no-section": 128,
-    "shape": 140,
-    "no-command": 162,
-    "basename": 8,
-    "path-prefix": 1
+    "no-section": 140,
+    "no-command": 168,
+    "path-prefix": 2,
+    "shape": 146,
+    "basename": 8
   },
   "refused": [
+    {
+      "id": "BRO-4929",
+      "name": "BWW roundups for short-titled shows (Oh Mary, Six, Boop, The Wiz, MJ) never match by slug, so tour roundups are dropped",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4929/bww-roundups-for-short-titled-shows-oh-mary-six-boop-the-wiz-mj-never",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4928",
+      "name": "Backfill publishDate on ~2,500 undated reviews (11% of corpus)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4928/backfill-publishdate-on-2500-undated-reviews-11percent-of-corpus",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4927",
+      "name": "Hollywood Reporter Broadway reviews fell from ~28/yr to 3-8/yr since 2023: collection gap or real cutback?",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4927/hollywood-reporter-broadway-reviews-fell-from-28yr-to-3-8yr-since-2023",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f data/reviews.json)",
+      "kind": "path-prefix"
+    },
+    {
+      "id": "BRO-4926",
+      "name": "Reattribute misfiled outlet rows: dtli aggregator rows + british-theatre id mixing two sites",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4926/reattribute-misfiled-outlet-rows-dtli-aggregator-rows-british-theatre",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e 'const R=require(\"./data/reviews.json\").reviews;process.exit(R.some(r=>r.outletId===\"dtli\"&&/didtheylikeit/.test)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4923",
+      "name": "UK regional: add RSC As You Like It (Groff), fix Globe cast, auto-trigger for noteworthy non-London UK shows",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4923/uk-regional-add-rsc-as-you-like-it-groff-fix-globe-cast-auto-trigger",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4922",
+      "name": "UK regional: add RSC As You Like It (Groff), fix Globe cast, auto-trigger for noteworthy non-London UK shows",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4922/uk-regional-add-rsc-as-you-like-it-groff-fix-globe-cast-auto-trigger",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4921",
+      "name": "Opening-night audit 2026-10-09",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4921/opening-night-audit-2026-10-09",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4920",
+      "name": "Revival-promo leftovers after BRO-4890: Much Ado, Woolf, Salesman, Saigon items",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4920/revival-promo-leftovers-after-bro-4890-much-ado-woolf-salesman-saigon",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4919",
+      "name": "Revival-promo leftovers after BRO-4890: Much Ado Globe contamination and Drury Lane rehoming, Woolf 2012/West End 2026, Salesman 2012/2026, Saigon Michael Dale",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4919/revival-promo-leftovers-after-bro-4890-much-ado-globe-contamination",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4918",
+      "name": "Good Time Charlie: 1 roundup-listed review(s) still not captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4918/good-time-charlie-1-roundup-listed-reviews-still-not-captured",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=good-time-charlie-off-broadway-2026 --dry-run --verbose)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4917",
+      "name": "A Ghost In Your Ear: 3 roundup-listed review(s) still not captured",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4917/a-ghost-in-your-ear-3-roundup-listed-reviews-still-not-captured",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --show=a-ghost-in-your-ear-off-broadway-2026 --dry-run --verbose)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4916",
+      "name": "Review gap — \"Spandex\" missing 1 cited review(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4916/review-gap-spandex-missing-1-cited-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4915",
+      "name": "Review gap — \"La Bohème\" missing 6 cited review(s)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4915/review-gap-la-boheme-missing-6-cited-reviews",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4914",
+      "name": "London Into the Woods + Evita pages: refetches, rescoring calls and the 52 own-domain roundup flags left over from BRO-4888",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4914/london-into-the-woods-evita-pages-refetches-rescoring-calls-and-the-52",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4912",
+      "name": "Opening-night watch 2026-10-08",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4912/opening-night-watch-2026-10-08",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4910",
+      "name": "Into the Woods Broadway pages: bylines and refetches that need the live outlet pages (Observer, NYT, amNY, Front Mezz Junkies, Talkin' Broadway, 2002 reviews)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4910/into-the-woods-broadway-pages-bylines-and-refetches-that-need-the-live",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4906",
+      "name": "Image fetcher writes unverified Google candidates over the live poster/thumbnail file",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4906/image-fetcher-writes-unverified-google-candidates-over-the-live",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test scripts/lib/image-source-match.test.mjs passes, plus a new test that a rejected Google candidate leaves the )",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4904",
+      "name": "Accounts: deleted-account ghost session keeps failing saves for up to an hour; OAuth return page shows a false Sign-in failed after 10 s on slow phones",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4904/accounts-deleted-account-ghost-session-keeps-failing-saves-for-up-to",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4903",
+      "name": "Accounts audit follow-ups needing owner decisions: after-first-save sheet (0 of 33 on phones), signed-out My Shows for device-saved shows, Apple relay email registration, Google OAuth brand verification",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4903/accounts-audit-follow-ups-needing-owner-decisions-after-first-save",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4894",
+      "name": "Accounts launch audit (Oct 8): sign-in funnel losses, Apple on My Shows, stuck modal after Back, consent screen shows supabase.co",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4894/accounts-launch-audit-oct-8-sign-in-funnel-losses-apple-on-my-shows",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4892",
+      "name": "Separate email list from accounts on the site (tester thought newsletter signup = account)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4892/separate-email-list-from-accounts-on-the-site-tester-thought",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4886",
+      "name": "Revival promo spot check: older productions of upcoming 2026-27 revivals (reviews, scores, wrong-production)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4886/revival-promo-spot-check-older-productions-of-upcoming-2026-27",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4885",
+      "name": "Tier display consistency: outlet-page TierBadge colors + iOS app tier chips/quote nesting",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4885/tier-display-consistency-outlet-page-tierbadge-colors-ios-app-tier",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4884",
+      "name": "WE historical Phase C: 2023-24 to 2018-19",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4884/we-historical-phase-c-2023-24-to-2018-19",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-we-historical-season.js --season=2018-2019)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-4880",
+      "name": "Scheduled sender delivered MORE THAN ONCE on 2026-10-07: reddit-post-ready",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4880/scheduled-sender-delivered-more-than-once-on-2026-10-07-reddit-post",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4879",
+      "name": "Cron stale 3+ consecutive days: Weekly A/B Monitors",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4879/cron-stale-3-consecutive-days-weekly-ab-monitors",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4871",
+      "name": "🚨 BSC Rebuild: 41 reviews dropped [SUSPICIOUS]",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4871/bsc-rebuild-41-reviews-dropped-suspicious",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-4870",
+      "name": "Triage 17 dispatched workflows that keep only one pending run (BRO-4859 baseline)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4870/triage-17-dispatched-workflows-that-keep-only-one-pending-run-bro-4859",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const g=require('./scripts/lib/workflow-dependency-graph.js');process.exit(g.QUEUE_EVICTION_BASELINE.length===0)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-4867",
       "name": "Opening-night audit 2026-10-08",
@@ -44,26 +268,10 @@
       "kind": "no-section"
     },
     {
-      "id": "BRO-4859",
-      "name": "gather-reviews.yml: a queued dispatch is silently cancelled by the next one (shared 'review-texts-backfill-write' group keeps one pending run)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4859/gather-reviewsyml-a-queued-dispatch-is-silently-cancelled-by-the-next",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
       "id": "BRO-4858",
       "name": "Audit archived WestEndTheatre roundup rows for critic/URL bleed from neighbouring outlet blocks",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4858/audit-archived-westendtheatre-roundup-rows-for-criticurl-bleed-from",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
-    },
-    {
-      "id": "BRO-4857",
-      "name": "validate-data: 4 West End/OWE shows have previewsStartDate after openingDate (JCS Drury Lane, Fences OWE, Pride Bridge, Cursed Child one-part)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4857/validate-data-4-west-endowe-shows-have-previewsstartdate-after",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
     },
@@ -74,14 +282,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4856/synopsis-provenance-stamp-arm-synopsis-fact-checks-as-blocking-after",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/validate-data.js 2>&1 | grep -c 'synopsis' returns 0 on main)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-4851",
-      "name": "West End historical backfill: review + improve plan, fix season discovery, run 2024-25 pilot season",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4851/west-end-historical-backfill-review-improve-plan-fix-season-discovery",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
     },
     {
       "id": "BRO-4848",

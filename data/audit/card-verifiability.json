@@ -1,12 +1,60 @@
 {
-  "generatedAt": "2026-10-08T12:15:06.783Z",
+  "generatedAt": "2026-10-09T12:07:35.792Z",
   "total": 300,
-  "armedCount": 286,
-  "refusedCount": 14,
+  "armedCount": 283,
+  "refusedCount": 17,
   "byKind": {
-    "no-section": 14
+    "no-section": 17
   },
   "refused": [
+    {
+      "id": "3f4637c5-416f-81db-9944-d807fc98e82f",
+      "name": "[Review Submission] Theaterly review of Human Things",
+      "priority": "P2 Later",
+      "url": "https://app.notion.com/p/Review-Submission-Theaterly-review-of-Human-Things-3f4637c5416f81db9944d807fc98e82f",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3f3637c5-416f-8197-969d-dfb19c8617b9",
+      "name": "[Review Submission] Wheelie Good Show review of Thelma & Louise: A New Musical",
+      "priority": "P2 Later",
+      "url": "https://app.notion.com/p/Review-Submission-Wheelie-Good-Show-review-of-Thelma-Louise-A-New-Musical-3f3637c5416f8197969ddfb19c8617b9",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3f3637c5-416f-8170-a4a0-c764a505f518",
+      "name": "[Review Submission] Wheelie Good Show review of Man to Man",
+      "priority": "P2 Later",
+      "url": "https://app.notion.com/p/Review-Submission-Wheelie-Good-Show-review-of-Man-to-Man-3f3637c5416f8170a4a0c764a505f518",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3f3637c5-416f-819f-811b-e34575b86dd0",
+      "name": "[Review Submission] Wheelie Good Show review of Golden Boy",
+      "priority": "P2 Later",
+      "url": "https://app.notion.com/p/Review-Submission-Wheelie-Good-Show-review-of-Golden-Boy-3f3637c5416f819f811be34575b86dd0",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3f3637c5-416f-8188-9d94-d76dbb0ddf42",
+      "name": "[Review Submission] Wheelie Good Show review of The Story",
+      "priority": "P2 Later",
+      "url": "https://app.notion.com/p/Review-Submission-Wheelie-Good-Show-review-of-The-Story-3f3637c5416f81889d94d76dbb0ddf42",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "3f3637c5-416f-81db-97ef-dcfbcb590834",
+      "name": "[Review Submission] Wheelie Good Show review of Death Note: The Musical",
+      "priority": "P2 Later",
+      "url": "https://app.notion.com/p/Review-Submission-Wheelie-Good-Show-review-of-Death-Note-The-Musical-3f3637c5416f81db97efdcfbcb590834",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
     {
       "id": "3f2637c5-416f-8106-a995-ecd3500a5c0a",
       "name": "[Review Submission] New York Sun review of Human Things",
@@ -92,30 +140,6 @@
       "name": "[Review Submission] The Chiswick Calendar review of Affluenza",
       "priority": "P2 Later",
       "url": "https://app.notion.com/p/Review-Submission-The-Chiswick-Calendar-review-of-Affluenza-3f1637c5416f8176b500ea2dc8761f69",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "3f1637c5-416f-8188-b617-c1439ca4a525",
-      "name": "[Review Submission] Plays International & Europe review of Affluenza",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Review-Submission-Plays-International-Europe-review-of-Affluenza-3f1637c5416f8188b617c1439ca4a525",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "3f1637c5-416f-8139-9533-e1b52cb0644a",
-      "name": "[Review Submission] Theatre and tonic review of Affluenza",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Review-Submission-Theatre-and-tonic-review-of-Affluenza-3f1637c5416f81399533e1b52cb0644a",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "3f1637c5-416f-8116-955a-d1ac29d4f922",
-      "name": "[Review Submission] the Guardian review of Affluenza",
-      "priority": "P2 Later",
-      "url": "https://app.notion.com/p/Review-Submission-the-Guardian-review-of-Affluenza-3f1637c5416f8116955ad1ac29d4f922",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
     }
@@ -686,24 +710,6 @@
       "cmd": "node --test tests/unit/discount-tix-bundle.test.mjs",
       "missingPaths": [
         "tests/unit/discount-tix-bundle.test.mjs"
-      ]
-    },
-    {
-      "id": "3ec637c5-416f-8176-b981-c3d181af82de",
-      "name": "[Other] — Operation Mincemeat (Broadway) Please fix the tabulation for Chris Jones’ review and overall CriticScore for M…",
-      "url": "https://app.notion.com/p/Other-Operation-Mincemeat-Broadway-Please-fix-the-tabulation-for-Chris-Jones-review-and-overal-3ec637c5416f8176b981c3d181af82de",
-      "cmd": "node --test tests/unit/operation-mincemeat-criticcore.test.mjs",
-      "missingPaths": [
-        "tests/unit/operation-mincemeat-criticcore.test.mjs"
-      ]
-    },
-    {
-      "id": "3eb637c5-416f-8114-9942-cb59b02b4c07",
-      "name": "[Review Submission] The BroadGays review of CRAZY MAMA",
-      "url": "https://app.notion.com/p/Review-Submission-The-BroadGays-review-of-CRAZY-MAMA-3eb637c5416f81149942cb59b02b4c07",
-      "cmd": "node --test tests/unit/review-submission-crazy-mama.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-submission-crazy-mama.test.mjs"
       ]
     }
   ],
