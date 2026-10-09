@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T06:18:42.708Z",
+  "timestamp": "2026-10-09T09:36:31.595Z",
   "stats": {
-    "totalReviews": 50186,
+    "totalReviews": 50275,
     "alreadyFlagged": 19217,
     "dateGuardCatches": 276,
-    "directorMismatch": 1547,
-    "tvFilmSignals": 1477,
-    "londonSignals": 1561,
-    "offBroadwaySignals": 507,
+    "directorMismatch": 1546,
+    "tvFilmSignals": 1476,
+    "londonSignals": 1560,
+    "offBroadwaySignals": 508,
     "yearMismatch": 122,
-    "noPublishDate": 5063
+    "noPublishDate": 5111
   },
   "findings": [
     {
@@ -19128,20 +19128,6 @@
       ]
     },
     {
-      "showId": "jekyll-and-hyde-2013",
-      "file": "ap--mark-kennedy.json",
-      "score": 55,
-      "publishDate": "April 18, 2013",
-      "url": "http://www.thenewstribune.com/2013/04/18/2563512/review-jekyll-hyde-overwrought.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"amazon prime\""
-        }
-      ]
-    },
-    {
       "showId": "jesa-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -27228,7 +27214,7 @@
       "showId": "pippin-2013",
       "file": "amny--matt-windman.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2013-04-26T12:18:43-04:00",
       "url": "https://www.amny.com/urbanite-1.812039/theater-review-pippin-3-5-stars-1.5142492",
       "findings": [
         {
@@ -27408,20 +27394,6 @@
     },
     {
       "showId": "pippin-2013",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 93,
-      "publishDate": "April 26, 2013",
-      "url": "https://www.nydailynews.com/2013/04/26/pippin-theater-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from pippin-1972"
-        }
-      ]
-    },
-    {
-      "showId": "pippin-2013",
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 90,
       "publishDate": "2013-04-26",
@@ -27508,7 +27480,7 @@
       "showId": "pippin-2013",
       "file": "village-voice--michael-musto.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "2013-04-26T12:18:43-04:00",
       "url": "https://blogs.villagevoice.com/dailymusto/2013/04/pippin_opens_my.php",
       "findings": [
         {
@@ -40368,7 +40340,7 @@
     {
       "showId": "the-time-travellers-wife-west-end-2023",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 62,
+      "score": 66,
       "publishDate": "November 2nd, 2023",
       "url": "https://www.timeout.com/london/theatre/the-time-travellers-wife-the-musical-review",
       "findings": [
@@ -42303,7 +42275,7 @@
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
       "file": "whatsonstage--alex-wood.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "2024-04-24",
       "url": "https://www.whatsonstage.com/news/two-strangers-carry-a-cake-across-new-york-review-sweet-sugary-and-a-sure-fire-west-end-success_1595056/",
       "findings": [
@@ -44477,7 +44449,7 @@
       "showId": "wolf-hall-parts-one-and-two-2015",
       "file": "thewrap--robert-hofler.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "2015-04-09T19:56:56-04:00",
       "url": "https://www.thewrap.com/wolf-hall-theater-review-hilary-mantels-historical-saga-is-well-worth-six-hour-investment/",
       "findings": [
         {
@@ -49459,20 +49431,6 @@
       ]
     },
     {
-      "showId": "constellations-2015",
-      "file": "ny1--roma-torre.json",
-      "score": 89,
-      "publishDate": "2015-01-14",
-      "url": "https://ny1.com/nyc/bronx/theater-reviews/2015/01/14/theater-review---constellations-",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
       "showId": "copenhagen-2000",
       "file": "curtainup--elyse-sommer.json",
       "score": 90,
@@ -49913,6 +49871,20 @@
       "score": 78,
       "publishDate": "2021-10-18",
       "url": "https://www.amny.com/entertainment/broadway/review-dana-h-tells-gruesome-tale-of-real-life-hostage-situation/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dana-h-2021",
+      "file": "observer--david-cote.json",
+      "score": 95,
+      "publishDate": "2021-10-17T20:14:39-04:00",
+      "url": "https://observer.com/2021/10/deirdre-oconnell-holds-us-utterly-captive-in-dana-h/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -67393,7 +67365,7 @@
     {
       "showId": "the-motive-and-the-cue-west-end-2023",
       "file": "timeout-london--leonie-cooper.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "December 20th, 2023",
       "url": "https://www.timeout.com/london/theatre/the-motive-and-the-cue-review-1",
       "findings": [
@@ -69204,7 +69176,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 93,
+      "score": 95,
       "publishDate": "2023-11-24",
       "url": "https://www.mailplus.co.uk/edition/showbiz/theatre/330664/dahls-witches-cast-a-spell-over-me",
       "findings": [
@@ -69218,7 +69190,7 @@
     {
       "showId": "the-witches-west-end-2023",
       "file": "independent--alice-saville.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "November 22nd, 2023",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-witches-musical-review-national-theatre-b2451592.html",
       "findings": [
@@ -70822,7 +70794,7 @@
     {
       "showId": "white-rabbit-red-rabbit-west-end-2024",
       "file": "thestage--dave-fargnoli.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "October 3rd, 2024",
       "url": "https://www.thestage.co.uk/reviews/white-rabbit-red-rabbit-review-sohoplace-london-nassim-soleimanpour-nick-mohammed",
       "findings": [
