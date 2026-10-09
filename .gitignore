@@ -295,6 +295,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/experiments/
 # BRO-3018 inventory; scripts/tests/notion-live-write-paths.test.mjs reads it in CI.
 !/docs/notion-linear-residue-sweep.md
+# BRO-4907 outlet tier audit: the card's acceptance criteria require these committed.
+!/docs/audits/
+/docs/audits/*
+!/docs/audits/outlet-tier-audit-2026-10.*
 # Task #1218's hit/miss audit of the review process itself — acceptance
 # criteria requires it committed (not scratch), so future sessions/audits
 # can find it without depending on one machine's claude-outputs copy.
