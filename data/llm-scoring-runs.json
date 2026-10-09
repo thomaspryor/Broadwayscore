@@ -501536,24 +501536,24 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-09T14:19:12.439Z",
-    "completedAt": "2026-10-09T14:20:28.779Z",
-    "totalReviews": 51212,
-    "processed": 3,
-    "skipped": 51150,
+    "startedAt": "2026-10-09T14:25:35.136Z",
+    "completedAt": "2026-10-09T14:28:25.675Z",
+    "totalReviews": 51218,
+    "processed": 34,
+    "skipped": 51175,
     "errors": 1,
     "tokensUsed": {
-      "input": 99059,
-      "output": 3802,
-      "total": 278857
+      "input": 164302,
+      "output": 11112,
+      "total": 490418
     },
-    "costUsd": 0.46162015,
-    "runId": "37942899569",
+    "costUsd": 0.75765095,
+    "runId": "37943522600",
     "errorDetails": [
       {
-        "showId": "flamenc-oh-off-west-end-2026",
-        "outletId": "londontheatredirect",
-        "error": "input_validation_failed:body_too_short"
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
       }
     ],
     "validation": [
@@ -504521,6 +504521,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "baghdaddy-west-end-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 5,
+          "down": 1,
+          "total": 8
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "ballad-lines-off-west-end-2026",
         "ourDistribution": {
           "up": 11,
@@ -504533,10 +504543,10 @@
       {
         "showId": "ballet-shoes-west-end-2025",
         "ourDistribution": {
-          "up": 1,
+          "up": 2,
           "flat": 0,
           "down": 0,
-          "total": 1
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -504909,6 +504919,16 @@
         },
         "dtliDistribution": {
           "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "best-of-enemies-west-end-2022",
+        "ourDistribution": {
+          "up": 6,
           "flat": 0,
           "down": 0,
           "total": 6
@@ -509544,6 +509564,16 @@
           "flat": 4,
           "down": 0,
           "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "from-the-heart-west-end-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -514962,6 +514992,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "marvellous-west-end-2022",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 3,
+          "down": 0,
+          "total": 8
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "marvins-room-2017",
         "ourDistribution": {
           "up": 25,
@@ -517191,10 +517231,10 @@
       {
         "showId": "orlando-west-end-2022",
         "ourDistribution": {
-          "up": 2,
-          "flat": 1,
-          "down": 0,
-          "total": 3
+          "up": 6,
+          "flat": 4,
+          "down": 1,
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -517314,12 +517354,22 @@
         "hasDisagreement": false
       },
       {
+        "showId": "othello-west-end-2022",
+        "ourDistribution": {
+          "up": 17,
+          "flat": 9,
+          "down": 2,
+          "total": 28
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "othello-west-end-2025",
         "ourDistribution": {
           "up": 17,
-          "flat": 8,
+          "flat": 9,
           "down": 2,
-          "total": 27
+          "total": 28
         },
         "hasDisagreement": false
       },
@@ -517461,10 +517511,10 @@
       {
         "showId": "p-rn-play-west-end-2025",
         "ourDistribution": {
-          "up": 7,
+          "up": 8,
           "flat": 2,
           "down": 1,
-          "total": 10
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -528230,19 +528280,19 @@
     ]
   },
   {
-    "startedAt": "2026-10-09T14:21:06.126Z",
-    "completedAt": "2026-10-09T14:21:08.259Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-10-09T14:29:46.435Z",
+    "completedAt": "2026-10-09T14:30:18.224Z",
+    "totalReviews": 19,
+    "processed": 19,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
+      "input": 11345,
+      "output": 3907,
+      "total": 15252
     },
-    "costUsd": 0,
-    "runId": "37942899569",
+    "costUsd": 0.058483400000000005,
+    "runId": "37943522600",
     "errorDetails": []
   }
 ]
