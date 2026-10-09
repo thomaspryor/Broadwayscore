@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-09T09:59:38.263Z",
+  "generatedAt": "2026-10-09T16:57:17.159Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 222,
-  "clean": 216,
-  "defective": 6,
+  "checked": 232,
+  "clean": 225,
+  "defective": 7,
   "byType": {
-    "score-drift": 2,
-    "missing-from-prod": 1,
+    "score-drift": 3,
+    "missing-from-prod": 2,
     "unreachable": 4
   },
   "shows": [
@@ -73,40 +73,62 @@
       "deployedCount": null
     },
     {
-      "showId": "blood-of-my-blood-west-end-2026",
-      "title": "Blood of my Blood",
-      "openingDate": "2026-10-07",
+      "showId": "an-oak-tree-off-west-end-2026",
+      "title": "An Oak Tree",
+      "openingDate": "2026-10-08",
       "ok": false,
       "defects": [
         {
           "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: london-box-office"
+          "detail": "1 scored outlet(s) absent from the deployed payload: thestage"
         },
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.2 vs local 81.08 (Δ0.12)"
+          "detail": "deployed cs 77.18 vs local 77.48 (Δ0.3)"
         }
       ],
       "missingFromProd": [
-        "london-box-office"
+        "thestage"
       ],
-      "localCount": 6,
-      "deployedCount": 5
+      "localCount": 9,
+      "deployedCount": 8
     },
     {
-      "showId": "sinatra-the-musical-west-end-2026",
-      "title": "Sinatra The Musical",
-      "openingDate": "2026-06-24",
+      "showId": "dirty-dancing-tour-2026",
+      "title": "Dirty Dancing",
+      "openingDate": "2026-08-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "2 scored outlet(s) absent from the deployed payload: around-the-town-chicago, new-city-stage"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 73.53)"
+        }
+      ],
+      "missingFromProd": [
+        "around-the-town-chicago",
+        "new-city-stage"
+      ],
+      "localCount": 4,
+      "deployedCount": 2
+    },
+    {
+      "showId": "rent-west-end-2026",
+      "title": "Rent",
+      "openingDate": "2026-10-08",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 65.79 vs local 65.96 (Δ0.17)"
+          "detail": "deployed cs 78.9 vs local 79.53 (Δ0.63)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 39,
-      "deployedCount": 39
+      "localCount": 17,
+      "deployedCount": 17
     }
   ]
 }
