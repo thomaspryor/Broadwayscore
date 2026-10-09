@@ -24,6 +24,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
 const {
   computeOutletStats,
   computeQualitySignals,
@@ -160,6 +161,11 @@ function summarize(moved) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    const src = fs.readFileSync(__filename, 'utf8');
+    console.log(src.slice(src.indexOf(' * Usage:'), src.indexOf(' */')).replace(/^ \* ?/gm, ''));
+    return;
+  }
   const inputs = loadInputs();
   const { rows, yearTotals } = buildRows(inputs);
 
