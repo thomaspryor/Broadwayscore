@@ -150,16 +150,33 @@ export function exitCodeFor(action, phase) {
   return phase === 'verified' || phase === 'active' ? 0 : 2;
 }
 
+/** Google's own error markers for a callback the OAuth client does not list. */
+export const GOOGLE_MISMATCH_MARKERS = /Error 400: redirect_uri_mismatch|data-error-code="redirect_uri_mismatch"|"redirect_uri_mismatch",/i;
+/** Any other Google OAuth error page (invalid_client, disallowed_useragent, ...). */
+export const GOOGLE_ERROR_MARKERS = /Error \d{3}: [a-z_]+|\/signin\/oauth\/error|data-error-code=/i;
+/** What a real account chooser or sign-in page contains (error pages link to /signin/oauth/error, so that path is not evidence). */
+export const GOOGLE_SIGNIN_MARKERS = /Choose an account|identifierId|to continue to/i;
+/** A real phone browser: Google serves other agents a different, uninformative page (the 2026-10-09 false pass). */
+export const GOOGLE_PROBE_UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1';
+
 /**
- * Does Google accept our custom callback? Google's authorize page answers 400
- * "redirect_uri_mismatch" for a redirect the OAuth client does not list.
+ * Does Google accept our custom callback? Google's authorize page shows
+ * "Error 400: redirect_uri_mismatch" for a callback the OAuth client does
+ * not list, and it can serve that page with HTTP 200 (seen live
+ * 2026-10-09), so the verdict reads the page, not the status. Only a page
+ * that looks like the real account chooser passes; anything else is
+ * inconclusive and activation is refused.
  */
 export function judgeGoogleRedirectProbe(page) {
   if (!page) return { ok: false, inconclusive: true, reason: 'Google could not be reached' };
   if (page.status === 429 || page.status >= 500) return { ok: false, inconclusive: true, reason: `Google answered HTTP ${page.status}` };
-  if (/redirect_uri_mismatch/i.test(page.body || '')) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): add it to the OAuth client first' };
+  const body = page.body || '';
+  if (GOOGLE_MISMATCH_MARKERS.test(body)) return { ok: false, reason: 'Google rejects the callback (redirect_uri_mismatch): add it to the OAuth client first' };
+  const other = body.match(GOOGLE_ERROR_MARKERS);
+  if (other) return { ok: false, reason: `Google shows an error page (${other[0].slice(0, 60)})` };
   if (page.status >= 400) return { ok: false, reason: `Google answered HTTP ${page.status}` };
-  return { ok: true, reason: 'Google accepts the callback' };
+  if (!GOOGLE_SIGNIN_MARKERS.test(body)) return { ok: false, inconclusive: true, reason: 'Google answered with a page that is neither the account chooser nor an error; not activating on a guess' };
+  return { ok: true, reason: 'Google shows its account chooser for the callback' };
 }
 
 /** The callback the Google OAuth client must list before activation. */
@@ -332,7 +349,7 @@ async function probeGoogle(ctx) {
   const redirect = `https://${ctx.host}/auth/v1/callback`;
   const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirect)}&response_type=code&scope=email%20profile`;
   try {
-    const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': 'Mozilla/5.0 BroadwayScorecardDomainCheck' }, signal: AbortSignal.timeout(30000) });
+    const res = await fetch(url, { redirect: 'follow', headers: { 'User-Agent': GOOGLE_PROBE_UA, 'Accept-Language': 'en-US,en;q=0.9' }, signal: AbortSignal.timeout(30000) });
     const body = (await res.text()).slice(0, 300000);
     return judgeGoogleRedirectProbe({ status: res.status, body });
   } catch (e) {

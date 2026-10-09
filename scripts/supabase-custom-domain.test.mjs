@@ -68,10 +68,21 @@ test('exit codes: 0 done, 1 broken or refused, 2 pending', () => {
   assert.equal(exitCodeFor('create', 'active'), 0);
 });
 
-test('the Google probe refuses a redirect_uri_mismatch and stays inconclusive on Google outages', () => {
+test('the Google probe refuses a redirect_uri_mismatch even on HTTP 200, and never passes a page it cannot read', () => {
+  // Live 2026-10-09: Google served the error page with HTTP 200 and the old probe said "accepts".
+  const errorPage200 = { status: 200, body: '<button data-response-code="400" data-error-code="redirect_uri_mismatch">error details</button> Error 400: redirect_uri_mismatch' };
+  assert.equal(judgeGoogleRedirectProbe(errorPage200).ok, false);
+  assert.equal(judgeGoogleRedirectProbe(errorPage200).inconclusive, undefined, 'a real mismatch is a verdict, not a shrug');
   assert.equal(judgeGoogleRedirectProbe({ status: 400, body: '<title>Error 400: redirect_uri_mismatch</title>' }).ok, false);
-  assert.equal(judgeGoogleRedirectProbe({ status: 400, body: 'redirect_uri_mismatch' }).inconclusive, undefined);
   assert.equal(judgeGoogleRedirectProbe({ status: 200, body: '<html>Choose an account to continue to auth.broadwayscorecard.com</html>' }).ok, true);
+  assert.equal(judgeGoogleRedirectProbe({ status: 200, body: '<input id="identifierId">' }).ok, true);
+  // Any other Google error page is a refusal too, even when it links the sign-in error route.
+  const dead = judgeGoogleRedirectProbe({ status: 200, body: '<a href="https://accounts.google.com/signin/oauth/error?authError=x">Error 401: invalid_client</a>' });
+  assert.equal(dead.ok, false);
+  assert.equal(dead.inconclusive, undefined);
+  const blank = judgeGoogleRedirectProbe({ status: 200, body: '<html>Your browser is not supported</html>' });
+  assert.equal(blank.ok, false);
+  assert.equal(blank.inconclusive, true, 'an unreadable page must not activate');
   assert.equal(judgeGoogleRedirectProbe({ status: 503, body: '' }).inconclusive, true);
   assert.equal(judgeGoogleRedirectProbe(null).inconclusive, true);
   assert.equal(judgeGoogleRedirectProbe({ status: 403, body: 'blocked' }).ok, false);
