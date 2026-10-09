@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T09:36:31.595Z",
+  "timestamp": "2026-10-09T09:55:26.720Z",
   "stats": {
-    "totalReviews": 50275,
-    "alreadyFlagged": 19217,
+    "totalReviews": 50324,
+    "alreadyFlagged": 19219,
     "dateGuardCatches": 276,
-    "directorMismatch": 1546,
+    "directorMismatch": 1545,
     "tvFilmSignals": 1476,
     "londonSignals": 1560,
     "offBroadwaySignals": 508,
     "yearMismatch": 122,
-    "noPublishDate": 5111
+    "noPublishDate": 5186
   },
   "findings": [
     {
@@ -27268,20 +27268,6 @@
     },
     {
       "showId": "pippin-2013",
-      "file": "bloomberg--jeremy-gerard.json",
-      "score": 74,
-      "publishDate": "2013-04-26",
-      "url": "https://www.bloomberg.com/news/2013-04-26/andrea-martin-s-swing-a-long-dazzles-in-pippin-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from pippin-1972"
-        }
-      ]
-    },
-    {
-      "showId": "pippin-2013",
       "file": "bloomberg--unknown.json",
       "score": 66,
       "publishDate": "2013-04-26",
@@ -36892,8 +36878,8 @@
       "showId": "the-house-of-blue-leaves-2011",
       "file": "nytimes--ben-brantley.json",
       "score": 62,
-      "publishDate": "April 25, 2011",
-      "url": "https://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html",
+      "publishDate": null,
+      "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",

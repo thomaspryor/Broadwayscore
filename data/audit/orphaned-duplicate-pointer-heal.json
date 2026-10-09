@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-09T09:31:36.865Z",
+  "generated": "2026-10-09T09:50:19.766Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -170,6 +170,13 @@
       "targetFile": "london-box-office--stuart-king.json",
       "reason": "orphaned-duplicate-heal: london-box-office--stuart-king.json was flagged invalid after london-box-office--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "loserFile": "london-box-office--unknown.json",
+      "targetFile": "london-box-office--stuart-king.json",
+      "reason": "orphaned-duplicate-heal: london-box-office--stuart-king.json was flagged invalid after london-box-office--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
