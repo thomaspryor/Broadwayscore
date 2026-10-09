@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-10-08T09:12:38.272Z",
-  "bannerText": "147/175 Done(14d) verified on main · 10 FAILED · 2 vacuous · 17 stuck-but-done — PARTIAL RUN: 16 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-09T13:56:54.303Z",
+  "bannerText": "90/104 Done(14d) verified on main · 3 FAILED · 3 vacuous · 14 stuck-but-done — PARTIAL RUN: 3 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-2216 — P1: white-rabbit-red-rabbit-west-end-2026 wrong-production-by-date — thestage/dave-fargnoli",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2216/p1-white-rabbit-red-rabbit-west-end-2026-wrong-production-by-date"
+      "title": "FAILED BRO-2810 — P2: data-health-check.yml Commit digest snapshot still fails post-BRO-2370 under heavy push contention; Git Data API fallback also failed for a non-race reason",
+      "detail": "TAP version 13 # Subtest: push-via-git-api.sh replays our own diff onto a tip that moved after our base, without a local rebase ok 1 - push-via-git-api.sh replays our own diff ont…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2810/p2-data-health-checkyml-commit-digest-snapshot-still-fails-post-bro"
+    },
+    {
+      "title": "FAILED BRO-445 — BSC Daily: Stuck pipeline items",
+      "detail": "[check-health-row-absent] FAIL: \"Stuck pipeline items\" still listed in the 2026-10-09T13:52:41.624Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-445/bsc-daily-stuck-pipeline-items"
     },
     {
       "title": "FAILED BRO-4838 — P1: 1-2 star and space-separated star ratings never captured (Affluenza Theatre and Tonic 1-star scored 42)",
@@ -13,35 +18,30 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4838/p1-1-2-star-and-space-separated-star-ratings-never-captured-affluenza"
     },
     {
-      "title": "FAILED BRO-4752 — test.yml Test Summary passes when a needs job never got a runner (result 'abandoned'), hiding red runs from the streak alert",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/test-summary-needs-results.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4752/testyml-test-summary-passes-when-a-needs-job-never-got-a-runner-result"
+      "title": "STUCK BRO-4770 — Star-band follow-ups: backfill HTML-only ratings on submit-form files + flag out-of-band hand overrides at rebuild",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4770/star-band-follow-ups-backfill-html-only-ratings-on-submit-form-files"
     },
     {
-      "title": "FAILED BRO-4750 — Tour pages: automated runtime + synopsis source for national tours (11 tours show no runtime)",
-      "detail": "TAP version 13 # Subtest: every national tour has a runtime, or is a documented gap ok 1 - every national tour has a runtime, or is a documented gap --- duration_ms: 1.227083 ... …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4750/tour-pages-automated-runtime-synopsis-source-for-national-tours-11"
+      "title": "STUCK BRO-4745 — Codex trial: 3 cards by hand on the owner's ChatGPT plan, then a Codex card worker",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4745/codex-trial-3-cards-by-hand-on-the-owners-chatgpt-plan-then-a-codex"
     },
     {
-      "title": "FAILED BRO-4722 — Commercial data: check every figure shown as fact against its cited source (pre-Forbes)",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4722/commercial-data-check-every-figure-shown-as-fact-against-its-cited"
+      "title": "STUCK BRO-4487 — P0/P1 queue: make priority scarce + measure open P0/P1 age (pilot cleanup first)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4487/p0p1-queue-make-priority-scarce-measure-open-p0p1-age-pilot-cleanup"
     },
     {
-      "title": "FAILED BRO-3678 — Missing show: The Cartographer",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3678/missing-show-the-cartographer"
+      "title": "STUCK BRO-3680 — Missing show: Under the Influence",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3680/missing-show-under-the-influence"
     },
     {
-      "title": "FAILED BRO-3629 — Missing show: Fleabag",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3629/missing-show-fleabag"
-    },
-    {
-      "title": "FAILED BRO-3463 — Closing date audit: 1 show need review (2026-09-15)",
-      "detail": "⚠️ WARNING: 95 Off-West End shows missing \"off-west-end\" in slug: magic-mike-live-west-end, starlight-express-west-end-2024, into-the-woods-west-end-2025... ⚠️ WARNING: 66 Off-Bro…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3463/closing-date-audit-1-show-need-review-2026-09-15"
+      "title": "STUCK BRO-3162 — Roll out stale-checkout race guard to remaining 20 rebuild-all-reviews.js workflows (BRO-3161 follow-up)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3162/roll-out-stale-checkout-race-guard-to-remaining-20-rebuild-all"
     }
   ],
-  "moreCount": 21
+  "moreCount": 12
 }
