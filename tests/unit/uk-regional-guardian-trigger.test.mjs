@@ -171,3 +171,27 @@ test('audit matching uses regional shows only: the Globe and Broadway As You Lik
   const withRsc = [...shows, { id: 'as-you-like-it-rsc-regional-2026', title: 'As You Like It', slug: 'as-you-like-it-rsc-regional-2026', category: 'regional', status: 'open' }];
   assert.equal(findUnmatchedCandidates([item], buildShowTitleIndex(withRsc, 'regional'), { allowClosedRevival: true }).length, 0);
 });
+
+test('US/Canadian feeder houses added in BRO-4923 resolve to a city and never match a non-regional show venue', async () => {
+  const fs = await import('node:fs');
+  const { REGIONAL_FEEDER_VENUES } = require('../../scripts/lib/aggregator-candidate-extract.js');
+  assert.equal(feederVenueCity('Hartford Stage'), 'Hartford, CT');
+  assert.equal(feederVenueCity('Oregon Shakespeare Festival'), 'Ashland, OR');
+  assert.equal(feederVenueCity('Alley Theatre'), 'Houston, TX');
+  assert.equal(feederVenueCity('Stratford Festival'), 'Stratford, ON');
+  assert.equal(feederVenueCity('McCarter Theatre Center'), 'Princeton, NJ');
+  // Deliberately excluded: shares a name with, or hosts, non-regional work.
+  assert.equal(feederVenueCity('Signature Theatre'), null);
+  assert.equal(feederVenueCity('Kennedy Center Opera House'), null);
+  // Table-wide guard: no feeder pattern may claim a venue already filed under another market.
+  const path = new URL('../../data/shows.json', import.meta.url);
+  if (!fs.existsSync(path)) return; // data not linked in this checkout
+  const shows = JSON.parse(fs.readFileSync(path, 'utf8')).shows;
+  const clashes = [];
+  for (const v of REGIONAL_FEEDER_VENUES) {
+    for (const s of shows) {
+      if (s.venue && s.category !== 'regional' && v.re.test(s.venue)) clashes.push(`${v.domain} claims ${s.id} (${s.venue}, ${s.category})`);
+    }
+  }
+  assert.deepEqual(clashes, []);
+});

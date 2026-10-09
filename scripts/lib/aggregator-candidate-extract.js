@@ -1062,6 +1062,29 @@ const REGIONAL_FEEDER_VENUES = [
   // Performing Arts)" also covers the Buell, DCPA's touring Broadway house, so a
   // national-tour stop would wrongly promote as a regional production.
   { re: /\b(?:denver center|dcpa) theat(?:re|er) company\b|\b(?:wolf|space|singleton|kilstrom) theat(?:re|er)\b.*\b(?:denver|dcpa)\b|\b(?:denver|dcpa)\b.*\b(?:wolf|space|singleton|kilstrom) theat(?:re|er)\b/i, city: 'Denver, CO', domain: 'denvercenter.org' },
+  // Next tier of US/Canadian houses with a record of Broadway-bound or
+  // star-led work (BRO-4923, 2026-10-09). Before this a roundup for any of them
+  // classified off-broadway, failed the canonical-NYC-venue check and sat
+  // unpromoted (Dolly's Nashville tryout needed a hand-add the same way).
+  // Deliberately NOT listed: Kennedy Center (its Opera House hosts national
+  // tours, the DCPA/Buell problem above), Signature Theatre (the NYC
+  // Off-Broadway Signature shares the name), Studio Theatre, The Muny
+  // (reverse-discovery drops it on purpose, BWW_NON_NYC_RE).
+  { re: /\boregon shakespeare festival\b|\bangus bowmer theat(?:re|er)\b/i, city: 'Ashland, OR', domain: 'osfashland.org' },
+  { re: /\bhartford stage\b/i, city: 'Hartford, CT', domain: 'hartfordstage.org' },
+  { re: /\bmccarter theat(?:re|er)(?: center)?\b/i, city: 'Princeton, NJ', domain: 'mccarter.org' },
+  { re: /\balley theat(?:re|er)\b/i, city: 'Houston, TX', domain: 'alleytheatre.org' },
+  { re: /\bstratford festival\b/i, city: 'Stratford, ON', domain: 'stratfordfestival.ca' },
+  { re: /\bshaw festival\b/i, city: 'Niagara-on-the-Lake, ON', domain: 'shawfest.com' },
+  { re: /\bford'?s theat(?:re|er)\b/i, city: 'Washington, DC', domain: 'fords.org' },
+  { re: /\bwilliamstown theat(?:re|er) festival\b/i, city: 'Williamstown, MA', domain: 'wtfestival.org' },
+  { re: /\bbarrington stage\b/i, city: 'Pittsfield, MA', domain: 'barringtonstageco.org' },
+  { re: /\bcleveland play house\b/i, city: 'Cleveland, OH', domain: 'clevelandplayhouse.com' },
+  { re: /\btwo river theat(?:re|er)\b/i, city: 'Red Bank, NJ', domain: 'tworivertheater.org' },
+  { re: /\bcincinnati playhouse\b/i, city: 'Cincinnati, OH', domain: 'cincyplay.com' },
+  { re: /\bwestport country playhouse\b/i, city: 'Westport, CT', domain: 'westportplayhouse.org' },
+  { re: /\barden theat(?:re|er) company\b/i, city: 'Philadelphia, PA', domain: 'ardentheatre.org' },
+  { re: /\bgeorge street playhouse\b/i, city: 'New Brunswick, NJ', domain: 'georgestreetplayhouse.org' },
   // UK feeder venues (added 2026-08-13, card #1405): Game of Thrones: The Mad
   // King (RSC, world premiere) sat 3 days with reviews-but-no-shows.json-entry
   // because this table was US-only — classifyVenueMarket() fell through to
