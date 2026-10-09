@@ -2,15 +2,32 @@
   "version": 1,
   "showId": "rent-west-end-2026",
   "openingDate": "2026-10-08",
-  "detectedAt": "2026-10-08T23:52:46.628Z",
+  "detectedAt": "2026-10-09T00:07:58.691Z",
   "windowDays": 7,
   "orphans": [
     {
-      "file": "timeout-london--andrzej-lukowski.json",
-      "outletId": "timeout-london",
-      "criticName": "Andrzej Lukowski",
-      "url": "https://www.timeout.com/london/news/rent-review-tom-stoppard-theatre-gaten-matarazzo-100826",
-      "fullTextLen": 4614,
+      "file": "londontheatredirect--alicia-bridge.json",
+      "outletId": "londontheatredirect",
+      "criticName": "Alicia Bridge",
+      "url": "https://www.londontheatredirect.com/news/rent-review-2026",
+      "fullTextLen": 4827,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "west-end-best-friend--james-edge.json",
+      "outletId": "west-end-best-friend",
+      "criticName": "James Edge",
+      "url": "https://www.westendbestfriend.co.uk/news/review-rent-tom-stoppard-theatre",
+      "fullTextLen": 18017,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-08T23:52:46.628Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
