@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T16:33:47.454Z",
+  "timestamp": "2026-10-09T17:06:23.228Z",
   "stats": {
-    "totalReviews": 51452,
-    "alreadyFlagged": 19412,
-    "dateGuardCatches": 262,
+    "totalReviews": 51496,
+    "alreadyFlagged": 19427,
+    "dateGuardCatches": 264,
     "directorMismatch": 1579,
     "tvFilmSignals": 1485,
-    "londonSignals": 1595,
+    "londonSignals": 1597,
     "offBroadwaySignals": 510,
     "yearMismatch": 126,
-    "noPublishDate": 5600
+    "noPublishDate": 5486
   },
   "findings": [
     {
@@ -35399,6 +35399,7 @@
     {
       "showId": "the-crucible-west-end-2022",
       "file": "london-theatre--marianka-swain.json",
+      "score": 92,
       "publishDate": "2022-09-29",
       "url": null,
       "findings": [
@@ -35417,6 +35418,7 @@
     {
       "showId": "the-crucible-west-end-2022",
       "file": "variety--david-benedict.json",
+      "score": 42,
       "publishDate": "2022-09-29",
       "url": null,
       "findings": [
@@ -35460,7 +35462,7 @@
       "file": "thereviewshub--scott-matthewman.json",
       "score": 77,
       "publishDate": "2024-10-17",
-      "url": null,
+      "url": "https://www.thereviewshub.com/the-duchess-of-malfi-trafalgar-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -51941,6 +51943,7 @@
     {
       "showId": "eureka-day-west-end-2022",
       "file": "variety--david-benedict.json",
+      "score": 75,
       "publishDate": "2022-09-26",
       "url": null,
       "findings": [
@@ -52502,6 +52505,32 @@
       "score": 84,
       "publishDate": "2000-02-13",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "from-the-heart-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "publishDate": null,
+      "url": "https://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "from-the-heart-west-end-2026",
+      "file": "the-spy-in-the-stalls--thespyinthestalls.json",
+      "publishDate": "2026-10-09",
+      "url": "https://thespyinthestalls.com/2026/10/from-the-heart/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56798,6 +56827,7 @@
     {
       "showId": "jews-in-their-own-words-west-end-2022",
       "file": "everything-theatre--paul-hegarty.json",
+      "score": 76,
       "publishDate": "2022-09-29",
       "url": "https://everything-theatre.co.uk/2022/09/review-jews-in-their-own-words-royal-court-theatre/",
       "findings": [
@@ -61544,6 +61574,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 70,
+      "publishDate": "July 13th, 2022",
+      "url": "https://www.londontheatre.co.uk/reviews/patriots-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 317d before show (July 13th, 2022 vs 2023-05-26)"
+        }
+      ]
+    },
+    {
+      "showId": "patriots-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "score": 80,
+      "publishDate": "July 13th, 2022",
+      "url": "https://www.standard.co.uk/culture/theatre/patriots-almeida-theatre-review-putin-boris-berezovsky-peter-morgan-tom-hollander-b1011934.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 317d before show (July 13th, 2022 vs 2023-05-26)"
         }
       ]
     },
