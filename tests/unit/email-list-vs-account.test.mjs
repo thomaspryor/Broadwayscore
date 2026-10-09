@@ -31,6 +31,7 @@ const SURFACES = [
   'src/components/HeaderSubscribeButton.tsx',
   'src/components/FooterEmailCapture.tsx',
   'src/components/FooterBranding.tsx',
+  'src/components/FooterAccountBox.tsx',
   'src/config/email-list-copy.ts',
 ];
 const stripComments = (src) => src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:])\/\/.*$/gm, '$1');
@@ -72,7 +73,8 @@ test('footer stays inside UserProviders (nudge needs auth)', () => {
 
 test('footer promotes the account next to the email box, not a second email button (BRO-4946)', () => {
   const layout = read('src/app/layout.tsx');
-  assert.match(layout, /<FooterEmailCapture[^>]*\/>\s*<FooterAccountBox \/>/);
+  assert.match(layout, /<FooterAccountBox \/>/);
+  assert.match(layout, /<FooterEmailCapture \/>/);
   const branding = read('src/components/FooterBranding.tsx');
   assert.match(branding, /<FooterAccountLink \/>/);
   assert.doesNotMatch(branding, /HeaderSubscribeButton/);

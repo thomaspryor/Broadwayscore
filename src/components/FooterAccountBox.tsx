@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { ACCOUNT_PROMO_COPY } from '@/config/email-list-copy';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 const BUTTON = 'inline-flex items-center justify-center min-h-[40px] px-4 py-2 bg-brand hover:bg-brand-hover text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap';
 
@@ -15,11 +16,13 @@ const BUTTON = 'inline-flex items-center justify-center min-h-[40px] px-4 py-2 b
  */
 export default function FooterAccountBox() {
   const { loading, isAuthenticated, showSignIn } = useAuth();
+  const marketId = useCurrentMarket();
   if (!featureFlags.userAccounts) return null;
+  const isLondon = marketId === 'west-end' || marketId === 'off-west-end';
 
   return (
     <div className="py-4">
-      <p className="text-sm font-semibold text-white mb-1">{ACCOUNT_PROMO_COPY.heading}</p>
+      <p className="text-sm font-semibold text-white mb-1">{ACCOUNT_PROMO_COPY.heading(isLondon)}</p>
       <p className="text-xs text-gray-500 mb-3">{ACCOUNT_PROMO_COPY.pitch}</p>
       <div className="min-h-[40px]">
         {loading ? null : isAuthenticated ? (
@@ -50,7 +53,7 @@ export function FooterAccountLink() {
       ) : (
         <button
           type="button"
-          onClick={() => showSignIn('generic', 'footer_link', { returnTo: '/my-shows' })}
+          onClick={() => showSignIn('generic', 'footer_account_link', { returnTo: '/my-shows' })}
           className="font-semibold text-brand hover:text-brand-hover transition-colors"
         >
           {ACCOUNT_PROMO_COPY.linkSignedOut}

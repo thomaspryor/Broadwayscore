@@ -50,7 +50,7 @@ export const SHOW_EMAIL_COPY = {
 
 /** Footer box and link that promote the free account (BRO-4946). */
 export const ACCOUNT_PROMO_COPY = {
-  heading: 'Your theater diary, free',
+  heading: (london: boolean) => `Your ${london ? 'theatre' : 'theater'} diary, free`,
   pitch: 'Rate the shows you see, keep a watchlist and a diary, on any phone or computer.',
   signedOutButton: 'Create a free account',
   signedInButton: 'Go to My Shows',

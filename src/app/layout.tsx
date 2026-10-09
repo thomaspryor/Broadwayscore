@@ -204,10 +204,9 @@ export default function RootLayout({
             />
 
             {/* Email list and free account side by side (BRO-4946): the footer
-                used to offer only the email list. The account box replaces the
-                email box's own account nudge. */}
+                used to offer only the email list. */}
             <div className="max-w-3xl mx-auto mb-8 pb-8 border-b border-white/5 grid gap-2 md:grid-cols-2 md:gap-10">
-              <FooterEmailCapture showAccountNudge={false} />
+              <FooterEmailCapture />
               <FooterAccountBox />
             </div>
 

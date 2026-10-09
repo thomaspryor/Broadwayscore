@@ -2,17 +2,9 @@
 
 import { useState, useCallback } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
-import CreateAccountNudge from '@/components/CreateAccountNudge';
 import { EMAIL_LIST_COPY } from '@/config/email-list-copy';
 
-export default function FooterEmailCapture({
-  inputId = 'footer-email',
-  showAccountNudge = true,
-}: {
-  inputId?: string;
-  /** Off for the home page's inline copy so the page shows one nudge, in the footer. */
-  showAccountNudge?: boolean;
-}) {
+export default function FooterEmailCapture({ inputId = 'footer-email' }: { inputId?: string }) {
   const [email, setEmail] = useState('');
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
@@ -36,8 +28,6 @@ export default function FooterEmailCapture({
           </svg>
           {EMAIL_LIST_COPY.joined(market)}
         </p>
-        {/* List members are not account holders; say so and offer one (BRO-4893). */}
-        {showAccountNudge && <CreateAccountNudge source="footer_bridge" className="mt-4" />}
       </div>
     );
   }
@@ -60,7 +50,7 @@ export default function FooterEmailCapture({
         <button
           type="submit"
           disabled={status === 'submitting'}
-          className="px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
+          className="min-h-[40px] px-4 py-2 bg-brand hover:bg-brand-hover disabled:bg-brand/50 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap"
         >
           {status === 'submitting' ? 'Sending...' : 'Get emails'}
         </button>
