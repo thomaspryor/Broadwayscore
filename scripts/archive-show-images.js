@@ -69,7 +69,7 @@ async function checkAspect(filePath, role) {
 // archived here as if they were real key art (2026-07-31 review). Import it,
 // never re-declare it.
 const { isPlaceholderFile } = require('./lib/show-images');
-const { canReuseArchivedFile, isDownloadableSource, isRejectedImage } = require('./lib/image-source-match');
+const { canReuseArchivedFile, isDownloadableSource, isRejectedImage, imagePathOwner } = require('./lib/image-source-match');
 const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
 
 const FORMATS = ['poster', 'thumbnail', 'hero'];
@@ -251,7 +251,8 @@ async function main() {
           }
         }
         // Local path in shows.json but file is missing - try to re-download from source
-        const sourceUrl = imageSources[show.id]?.[format];
+        // Keyed by the file's owner: a row may serve another show's file (BRO-4901).
+        const sourceUrl = imageSources[imagePathOwner(url) || show.id]?.[format];
         if (!sourceUrl) {
           console.warn(`  ⚠ ${show.title} ${format}: Local file missing and no source URL`);
           totalFailed++;

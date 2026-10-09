@@ -12,13 +12,24 @@ const path = require('path');
 
 const IMAGE_SOURCES_PATH = path.join(__dirname, '..', '..', 'data', 'image-sources.json');
 
-/** The map, or {} when the file is missing or unreadable. */
+/**
+ * The map, or {} when the file does not exist yet. A corrupt file throws:
+ * loading it as {} would let the next save wipe every recorded source.
+ */
 function loadImageSources(file = IMAGE_SOURCES_PATH) {
-  try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return {}; }
+  let text;
+  try { text = fs.readFileSync(file, 'utf8'); } catch (e) {
+    if (e.code === 'ENOENT') return {};
+    throw e;
+  }
+  return JSON.parse(text);
 }
 
+/** Write via temp file + rename, so a kill mid-write never leaves a truncated map. */
 function saveImageSources(map, file = IMAGE_SOURCES_PATH) {
-  fs.writeFileSync(file, JSON.stringify(map, null, 2) + '\n');
+  const tmp = `${file}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(map, null, 2) + '\n');
+  fs.renameSync(tmp, file);
 }
 
 module.exports = { IMAGE_SOURCES_PATH, loadImageSources, saveImageSources };

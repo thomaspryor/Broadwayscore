@@ -272,7 +272,11 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   // dispatch with only_missing=false, --show=<id>) must not silently replace
   // curated/manual images with a re-scraped roundup photo. (ship-check P2)
   const posterOnDisk = path.join(IMAGES_DIR, show.id, 'poster.webp');
-  if (!process.argv.includes('--force') && fs.existsSync(posterOnDisk) && !isPlaceholderFile(posterOnDisk)) {
+  // ...unless the file's recorded source is one a person rejected for this
+  // show: keeping it would serve the wrong production's art forever (BRO-4901).
+  const recordedRegional = recordedSourceFor({ images: localPaths }, 'poster', imageSourcesForApply || loadImageSources());
+  const regionalRejected = !!recordedRegional && isRejectedImage({ poster: recordedRegional }, show);
+  if (!process.argv.includes('--force') && !regionalRejected && fs.existsSync(posterOnDisk) && !isPlaceholderFile(posterOnDisk)) {
     console.log('   ✓ regional images already on disk — keeping (use --force to re-source)');
     return { ...localPaths };
   }
@@ -3119,11 +3123,16 @@ async function main() {
         if (!fs.existsSync(targetPath)) {
           fs.copyFileSync(posterPath, targetPath);
           // The copy is the poster's art, so it carries the poster's recorded source.
+          // No recorded poster source: drop the old entry, which described the missing file.
           const src = imageSourcesForApply && recordedSourceFor(s, 'poster', imageSourcesForApply);
           const owner = imagePathOwner(targetThumb);
-          if (src && owner) {
-            imageSourcesForApply[owner] = imageSourcesForApply[owner] || {};
-            imageSourcesForApply[owner].thumbnail = src;
+          if (imageSourcesForApply && owner) {
+            if (src) {
+              imageSourcesForApply[owner] = imageSourcesForApply[owner] || {};
+              imageSourcesForApply[owner].thumbnail = src;
+            } else if (imageSourcesForApply[owner]) {
+              delete imageSourcesForApply[owner].thumbnail;
+            }
           }
         }
         s.images.thumbnail = targetThumb;
