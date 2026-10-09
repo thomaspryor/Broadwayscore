@@ -128,6 +128,8 @@ const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-gua
 const { computeReplacementPreserve, AGGREGATOR_FIELDS } = require('./lib/wrongprod-replacement-preserve');
 const { applyUrlChangeInvariant } = require('./lib/url-change-invariant');
 const { safeWriteReview, preserveFlaggedFields, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { aggregatorStubRejection } = require('./lib/aggregator-stub-guard');
+const { evaluateCreditedPersonAsCritic } = require('./lib/creative-as-critic');
 
 /**
  * Write a BWW/LBO aggregator-excerpt stub to disk.
@@ -144,7 +146,14 @@ const { safeWriteReview, preserveFlaggedFields, invalidateWrongProductionAutoCle
  * field when the incoming write omits it).
  */
 function saveAggregatorStub(filePath, stub) {
+  // BRO-4884: this path had none of createReviewFile()'s outlet/critic guards.
+  const rejection = aggregatorStubRejection({ outletId: stub.outletId, criticName: stub.criticName, show: _showsById().get(stub.showId) || null });
+  if (rejection) {
+    console.log(`    ✗ Skipping stub ${path.basename(filePath)}: ${rejection}`);
+    return false;
+  }
   safeWriteReview(filePath, preserveFlaggedFields(filePath, stub));
+  return true;
 }
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
@@ -3094,6 +3103,20 @@ function createReviewFile(showId, reviewData, options = {}) {
     return 'suspiciousOutlet';
   }
 
+  // CREDITED-PERSON GUARD (BRO-4884): the same check as review-file-writer.js
+  // Guard F2, which this chokepoint never had. A BWW roundup parse kept
+  // re-creating how-to-dance-in-ohio-2023/how-to-dance-in-ohio-is-an-underdog-
+  // itself--sammi-cannold.json (critic = the show's director): deleted by hand
+  // 2026-09-06, back on the next gather 2026-10-06, failing validate-data and
+  // with it every validate-gated core-data push.
+  if (!(reviewData.humanReviewScore != null || reviewData.manualEntry === true)) {
+    const credit = evaluateCreditedPersonAsCritic(_showsById().get(showId) || null, reviewData.criticName || '');
+    if (credit.kind === 'creative') {
+      console.warn(`    ✗ Skipping ${filename}: "${reviewData.criticName}" is a creative team member of ${showId}`);
+      return 'creditedPersonAsCritic';
+    }
+  }
+
   // NAMED NON-REVIEW URL GUARD (BRO-4101): this function is gather-reviews.js's
   // OWN write chokepoint — a separate implementation from review-file-writer.js's
   // createOrMergeReviewFile (which carries the same check), NOT a caller of it.
@@ -5668,7 +5691,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           // instead of the raw atomic write — a flagged file living at this
           // exact canonical path (missed by the fs.existsSync guard above,
           // e.g. under a legacy outlet-id variant) must not be clobbered.
-          saveAggregatorStub(filePath, stub);
+          if (!saveAggregatorStub(filePath, stub)) continue;
           console.log(`    [BWW stub] ${filename}`);
           stubsCreated++;
           reviewFilesTouched++;
@@ -5747,7 +5770,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           // Task #653/#816: same findExistingReviewFile skip-shape as the BWW
           // stub path above — route through saveAggregatorStub so a flagged
           // file at this canonical path is never silently clobbered.
-          saveAggregatorStub(filePath, stub);
+          if (!saveAggregatorStub(filePath, stub)) continue;
           console.log(`    [LBO stub] ${filename}`);
           lboStubs++;
         }
