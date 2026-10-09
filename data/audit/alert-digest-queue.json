@@ -2711,5 +2711,34 @@
       }
     ],
     "queuedAt": "2026-10-09T11:43:17.546Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4923-uk-regional-trigger",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4923-uk-regional-trigger",
+    "description": "land.yml did not land land/bro-4923-uk-regional-trigger: the unit-tests-node gate went red at 112f8d12f9. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37922810904",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4923-uk-regional-trigger"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "112f8d12f92f5e63279587a3f8408c1c43020d0b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37922810904"
+      }
+    ],
+    "queuedAt": "2026-10-09T11:52:29.467Z"
   }
 ]
