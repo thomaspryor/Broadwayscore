@@ -6,12 +6,19 @@
 
 const fs = require('fs');
 const path = require('path');
-const { isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt } = require('./lib/cron-coverage');
+const {
+  isScheduledWorkflow, parseExemptList, findUncoveredScheduled, findStaleExempt,
+  parseExemptEntries, findUnjustifiedExempt, findFalseDigestClaims, findDigestDrift,
+} = require('./lib/cron-coverage');
+const { DIGEST_CRONS, DIGEST_ONLY } = require('./lib/health-digest-crons');
 
 const CUSHION_HOURS = 12;
 const WORKFLOWS_DIR = path.join(__dirname, '..', '.github', 'workflows');
 const CHECK_FILE = path.join(WORKFLOWS_DIR, 'check-cron-health.yml');
 const EXEMPT_FILE = path.join(__dirname, '..', '.cron-health-exempt.txt');
+// BRO-2818: entries grandfathered from the 2026-06-28 bulk seed that still carry no
+// justification. Only shrinks: a NEW exempt entry without a reason fails the audit.
+const UNJUSTIFIED_BASELINE_FILE = path.join(__dirname, '..', '.cron-health-exempt-unjustified.txt');
 
 // Entries whose max_hours is intentionally tighter than worst-gap + CUSHION_HOURS.
 // These trade part of the standard cron-lag cushion for faster cancel detection
@@ -200,12 +207,53 @@ function main() {
     coverageFailures = uncovered.length;
   }
 
+  // ── BRO-2818: the exempt list must say WHY, and its coverage claims must be true ──
+  const exemptEntries = parseExemptEntries(fs.existsSync(EXEMPT_FILE) ? fs.readFileSync(EXEMPT_FILE, 'utf8') : '');
+  const falseClaims = findFalseDigestClaims(exemptEntries, DIGEST_CRONS.map(d => d.workflow));
+  const baseline = parseExemptList(fs.existsSync(UNJUSTIFIED_BASELINE_FILE) ? fs.readFileSync(UNJUSTIFIED_BASELINE_FILE, 'utf8') : '');
+  const unjustified = findUnjustifiedExempt(exemptEntries);
+  const newUnjustified = unjustified.filter(f => !baseline.has(f));
+  const baselineFixed = [...baseline].filter(f => !unjustified.includes(f)).sort();
+  const paging = new Map(entries.map(([, wf, hrs]) => [wf, parseInt(hrs, 10)]));
+  const drift = findDigestDrift(DIGEST_CRONS, paging, DIGEST_ONLY);
+
+  console.log(`Exempt justification: ${exemptEntries.size - unjustified.length} of ${exemptEntries.size} carry a reason; ${unjustified.length} grandfathered without one (${newUnjustified.length} new).`);
+  if (baselineFixed.length) {
+    console.log(`  🟡 ${baselineFixed.length} baselined entr(ies) now justified or removed (delete from .cron-health-exempt-unjustified.txt): ${baselineFixed.join(', ')}`);
+    warnings += baselineFixed.length;
+  }
+  if (drift.staleDigestOnly.length) {
+    console.log(`  🟡 DIGEST_ONLY lists workflow(s) not in the digest (prune scripts/lib/health-digest-crons.js): ${drift.staleDigestOnly.join(', ')}`);
+    warnings += drift.staleDigestOnly.length;
+  }
+  let justificationFailures = 0;
+  if (falseClaims.length) {
+    console.log(`\n🔴 exempt entr(ies) claim [digest] coverage but are not in health-check.js's digest list: ${falseClaims.join(', ')}`);
+    console.log('  fix: add the workflow to scripts/lib/health-digest-crons.js, or drop the [digest] claim.');
+    justificationFailures += falseClaims.length;
+  }
+  if (newUnjustified.length) {
+    console.log(`\n🔴 new exempt entr(ies) with no justification: ${newUnjustified.join(', ')}`);
+    console.log('  fix: put a # comment above the entry (or inline) saying why a stale run is acceptable and what, if anything, watches it.');
+    justificationFailures += newUnjustified.length;
+  }
+  if (drift.missingFromPaging.length || drift.hoursMismatch.length) {
+    if (drift.missingFromPaging.length) console.log(`\n🔴 digest cron(s) missing from check-cron-health.yml CRITICAL_CRONS and not in DIGEST_ONLY: ${drift.missingFromPaging.join(', ')}`);
+    if (drift.hoursMismatch.length) console.log(`\n🔴 digest vs paging max-hours mismatch: ${drift.hoursMismatch.join('; ')}`);
+    console.log('  fix: scripts/lib/health-digest-crons.js and check-cron-health.yml CRITICAL_CRONS must agree.');
+    justificationFailures += drift.missingFromPaging.length + drift.hoursMismatch.length;
+  }
+
   if (failures > 0) {
     console.log(`\n::error::${failures} check-cron-health entries are misconfigured — max_hours less than the worst cron gap.`);
     process.exit(1);
   }
   if (coverageFailures > 0) {
     console.log(`\n::error::${coverageFailures} scheduled workflow(s) are unmonitored — add to CRITICAL_CRONS or .cron-health-exempt.txt.`);
+    process.exit(1);
+  }
+  if (justificationFailures > 0) {
+    console.log(`\n::error::${justificationFailures} cron-coverage honesty problem(s) (BRO-2818) — see above.`);
     process.exit(1);
   }
   if (warnings > 0 && process.argv.includes('--strict')) {

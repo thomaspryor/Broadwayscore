@@ -9,6 +9,10 @@
 # To PROMOTE one of these to real-time paging, move it to CRITICAL_CRONS in
 # check-cron-health.yml and delete the line here. One filename per line; # = comment.
 # Seeded 2026-06-28 with the then-current uncovered set (status quo — no behavior change).
+# Header note (BRO-2818): the 2026-06-28 bulk seed left most entries below with no reason
+# (listed in .cron-health-exempt-unjustified.txt). New entries MUST carry one; the audit
+# fails otherwise. A comment block is consumed by the single entry right after it.
+# Claims of daily-digest coverage must be tagged [digest] and are verified by the audit.
 
 adjudicate-review-queue.yml
 aggregator-url-watcher.yml
@@ -35,6 +39,7 @@ audit-bww-rr-attributions.yml
 monitor-scheduled-email-count.yml
 # Reverse discovery (missing-show detector): candidates surface in the daily
 # digest via health-check.js; a stale run means at-worst 1-day-late candidates.
+# [digest] stale-run coverage: scripts/lib/health-digest-crons.js (24h).
 audit-reverse-discovery.yml
 audit-critic-coverage.yml
 audit-cross-production-weekly.yml
@@ -45,6 +50,10 @@ backfill-cast.yml
 brand-mention-monitor.yml
 check-cookie-health.yml
 check-corpus-drift.yml
+# BRO-2818: the watchdog itself cannot page on its own absence, so it is exempt from
+# CRITICAL_CRONS. [digest] stale-run coverage instead: scripts/lib/health-digest-crons.js
+# (36h), read by data-health-check.yml, which check-cron-health.yml pages on. The two
+# watch each other.
 check-cron-health.yml
 check-cwv-health.yml
 check-review-count-drift.yml

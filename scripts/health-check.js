@@ -2126,31 +2126,15 @@ function checkCronHealth() {
     return [{ name: 'Cron: health', status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
   }
 
-  // Keep in sync with .github/workflows/check-cron-health.yml CRITICAL_CRONS.
   // User-facing data refresh workflows were added 2026-04-14 so that their
   // most-recent-run failures surface in the daily digest with fix-now
   // urgency (playbook entry: `^Cron failed:`). Owner reads the email, not
   // the Discord channel the workflow's native notify-failure targets.
-  const CRITICAL_CRONS = [
-    { workflow: 'update-show-status.yml', maxHours: 36, name: 'Update Show Status' },
-    { workflow: 'rebuild-reviews.yml', maxHours: 36, name: 'Rebuild Reviews' },
-    { workflow: 'collect-review-texts.yml', maxHours: 36, name: 'Collect Review Texts' },
-    { workflow: 'llm-ensemble-score.yml', maxHours: 48, name: 'LLM Ensemble Score' },
-    { workflow: 'test.yml', maxHours: 48, name: 'Test Suite' },
-    { workflow: 'opening-night-broadcast.yml', maxHours: 36, name: 'Opening Night Broadcast' },
-    { workflow: 'update-lottery-rush.yml', maxHours: 192, name: 'Update Lottery/Rush' },
-    { workflow: 'weekly-grosses.yml', maxHours: 192, name: 'Weekly Grosses' },
-    { workflow: 'update-show-score.yml', maxHours: 192, name: 'Update Show Score' },
-    { workflow: 'update-mezzanine.yml', maxHours: 192, name: 'Update Mezzanine' },
-    { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
-    { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
-    { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
-    // 6-hourly; 24h = four missed runs. If this goes dark the evidence layer
-    // (roundup-anchored selection + missing-show candidates) silently stops.
-    { workflow: 'audit-reverse-discovery.yml', maxHours: 24, name: 'Reverse Discovery' },
-  ];
+  // The list itself lives in scripts/lib/health-digest-crons.js (BRO-2818) so the coverage
+  // audit can require() it and fail on drift against check-cron-health.yml.
+  const CRITICAL_CRONS = require('./lib/health-digest-crons').DIGEST_CRONS;
 
-  return CRITICAL_CRONS.map(({ workflow, maxHours, name }) =>
+  return CRITICAL_CRONS.map(({ workflow, maxHours, name, livenessOnly }) =>
     runCheck(`Cron: ${name}`, () => {
       try {
         // limit=5, not 1: on high-churn workflows the newest run is routinely a
@@ -2175,6 +2159,10 @@ function checkCronHealth() {
         const age = hoursAgo(run.createdAt);
         if (age > maxHours) {
           return { name: `Cron: ${name}`, status: 'error', message: `Last run ${formatAge(age)} ago (max ${maxHours}h). Conclusion: ${run.conclusion || 'still running'}`, hint: 'Check Actions tab — workflow may be disabled' };
+        }
+        if (livenessOnly && run.conclusion) {
+          // Watchdog-style cron that fails by design when it pages: ran inside the window = alive.
+          return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, ran (${run.conclusion}; liveness-only check)` };
         }
         if (run.conclusion === 'success') {
           return { name: `Cron: ${name}`, status: 'pass', message: `${formatAge(age)} ago, success` };
