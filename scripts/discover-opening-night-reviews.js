@@ -24,6 +24,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { prefetchDiscoveredArticle, applyPrefetch } = require('./lib/discovery-prefetch');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
 const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
@@ -465,7 +466,8 @@ async function main() {
           // BWW Review-Roundup URLs) and URL-based outletId refinement
           // (resolveOutletFromUrl handles cases like metro.co.uk → metro-uk
           // that the local domainToOutletId fallback misses).
-          const writeResult = createOrMergeReviewFile(showId, {
+          const _pre = await prefetchDiscoveredArticle(url, { criticName });
+          const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || result.title?.split(/[-–—|]/)[0]?.trim() || canonicalOutletId,
             criticName: criticName || 'Unknown',
@@ -476,7 +478,7 @@ async function main() {
               fullText: null,
               contentTier: 'excerpt',
             },
-          });
+          }, _pre));
           if (writeResult.action === 'skipped') {
             console.log(`  skipped (${writeResult.reason}): ${url}`);
             continue;
@@ -606,7 +608,8 @@ async function main() {
 
         // Route through createOrMergeReviewFile for Guard E (auto-flag
         // BWW Review-Roundup URLs) and URL-based outletId refinement.
-        const writeResult = createOrMergeReviewFile(showId, {
+        const _pre = await prefetchDiscoveredArticle(url, { criticName });
+        const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
           outletId: canonicalOutletId,
           outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
           criticName: criticName || 'Unknown',
@@ -617,7 +620,7 @@ async function main() {
             fullText: null,
             contentTier: 'excerpt',
           },
-        });
+        }, _pre));
         if (writeResult.action === 'skipped') {
           console.log(`  skipped (${writeResult.reason}): ${url}`);
           continue;
@@ -721,7 +724,8 @@ async function main() {
             });
             if (hasDupe) { skippedDupe++; continue; }
           }
-          const writeResult = createOrMergeReviewFile(showId, {
+          const _pre = await prefetchDiscoveredArticle(url, { criticName });
+          const writeResult = createOrMergeReviewFile(showId, applyPrefetch({
             outletId: canonicalOutletId,
             outlet: getOutletDisplayName(canonicalOutletId) || canonicalOutletId,
             criticName: criticName || 'Unknown',
@@ -732,7 +736,7 @@ async function main() {
               fullText: null,
               contentTier: 'excerpt',
             },
-          });
+          }, _pre));
           if (writeResult.action === 'skipped') {
             console.log(`  skipped (${writeResult.reason}): ${url}`);
             continue;
