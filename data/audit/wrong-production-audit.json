@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-09T01:57:40.320Z",
+  "timestamp": "2026-10-09T03:08:50.938Z",
   "stats": {
-    "totalReviews": 49937,
-    "alreadyFlagged": 19171,
+    "totalReviews": 50184,
+    "alreadyFlagged": 19185,
     "dateGuardCatches": 278,
-    "directorMismatch": 1500,
-    "tvFilmSignals": 1452,
-    "londonSignals": 1494,
+    "directorMismatch": 1540,
+    "tvFilmSignals": 1463,
+    "londonSignals": 1527,
     "offBroadwaySignals": 507,
-    "yearMismatch": 121,
-    "noPublishDate": 5165
+    "yearMismatch": 122,
+    "noPublishDate": 5100
   },
   "findings": [
     {
@@ -345,6 +345,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "syracuse-herald-journal--len-fonte.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noise-is-a-tuneful-diamond-in-the-rough-review.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -912,6 +925,84 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-06-05",
+      "url": "https://www.ft.com/content/bb237da1-a27b-4465-828d-66f8f4e191a0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "independent--tim-bano.json",
+      "publishDate": "2024-06-05",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-view-from-the-bridge-review-dominic-west-b2556983.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2024-06-09",
+      "url": "https://www.theguardian.com/stage/article/2024/jun/09/the-week-in-theatre-violas-room-a-view-from-the-bridge-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2024-06-04",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/a-view-from-the-bridge-theatre-royal-haymarket-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2024-06-04",
+      "url": "https://www.timeout.com/london/theatre/a-view-from-the-bridge-4-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-06-09",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/dominic-west-is-on-a-quest-for-greatness-will-he-succeed-jrsvp3hh3",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -4332,6 +4423,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "wkrn--colleen-guerry.json",
+      "publishDate": "2026-06-04",
+      "url": "https://www.wkrn.com/news/local-news/nashville/award-winning-musical-the-book-of-mormon-arrives-at-tpac/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -15744,6 +15853,19 @@
       ]
     },
     {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-07-18",
+      "url": "https://inews.co.uk/culture/arts/hello-dolly-review-imelda-staunton-3176917",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "hells-kitchen-tour-2025",
       "file": "so-sumi--glenn-sumi.json",
       "score": 76,
@@ -17437,34 +17559,6 @@
       ]
     },
     {
-      "showId": "into-the-woods-1987",
-      "file": "nysr--david-finkle.json",
-      "score": 77,
-      "publishDate": "1987-11-05",
-      "url": "http://nystagereview.com/2022/07/10/into-the-woods-the-beloved-sondheim-lapine-musical-in-full-bloom/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-1997",
-      "file": "theater-pizzazz--samuel-l-leiter.json",
-      "score": 84,
-      "publishDate": null,
-      "url": "https://www.theaterpizzazz.com/into-the-woods-2/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lear debessonet\" from into-the-woods-2022"
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-1997",
       "file": "washpost--peter-marks.json",
       "score": 89,
@@ -17746,20 +17840,6 @@
     },
     {
       "showId": "into-the-woods-2022",
-      "file": "theatrely--david-gordon.json",
-      "score": 94,
-      "publishDate": "July 10, 2022",
-      "url": "https://www.theatrely.com/post/a-sublime-into-the-woods-kicks-off-a-new-season-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
       "file": "theatrely--joey-sims.json",
       "score": 93,
       "publishDate": "July 10, 2022",
@@ -17938,7 +18018,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 74,
+      "score": 76,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -18051,7 +18131,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -18207,7 +18287,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 90,
+      "score": 89,
       "publishDate": "2026-10-08",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-woods-review-noel-coward-theatre-jordan-fein-stephen-sondheim-6r2kfzqln",
       "findings": [
@@ -19814,6 +19894,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-02-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -21679,6 +21772,7 @@
     {
       "showId": "lyonesse-west-end-2023",
       "file": "british-theatre--vera-liber.json",
+      "score": 60,
       "publishDate": "2023-10-28",
       "url": null,
       "findings": [
@@ -21692,6 +21786,7 @@
     {
       "showId": "lyonesse-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 54,
       "publishDate": "2023-10-25",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-12672947/Lyonesse-review-Sunset-Boulevard-meets-Ab-Fab-set-Cornwall-Lily-James-Kristin-Scott-Thomas-serving-stardust-writes-PATRICK-MARMION.html",
       "findings": [
@@ -27191,6 +27286,20 @@
       ]
     },
     {
+      "showId": "player-kings-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 96,
+      "publishDate": "April 12th, 2024",
+      "url": "https://www.londontheatre.co.uk/reviews/player-kings-review-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "plaza-suite-2022",
       "file": "deadline--greg-evans.json",
       "score": 74,
@@ -27229,6 +27338,247 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "artsdesk--matt-wolf.json",
+      "score": 77,
+      "publishDate": "January 29th, 2024",
+      "url": "https://theartsdesk.com/theatre/plaza-suite-savoy-theatre-review-real-life-married-couple-brings-panache-and-pain-period",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "british-theatre--vera-liber.json",
+      "publishDate": "2024-01-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "broadwayworld--debbie-gilpin.json",
+      "score": 73,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.broadwayworld.com/article/Review-PLAZA-SUITE-Savoy-Theatre-20240128",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-01-29",
+      "url": "https://www.ft.com/content/a54582cc-baf2-44b4-b8fe-68b3d677e9a6",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 38,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.theguardian.com/stage/2024/jan/29/plaza-suite-review-savoy-theatre-london-sarah-jessica-parker-matthew-broderick",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "hampstead-highgate-express--bridget-galton.json",
+      "publishDate": "2024-01-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2024-01-29",
+      "url": "https://inews.co.uk/culture/arts/plaza-suite-savoy-theatre-review-sarah-jessica-parkers-soul-sapping-west-end-debut-2877257",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "score": 39,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/plaza-suite-review-sarah-jessica-parker-matthew-broderick-b2485381.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "score": null,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.londontheatre.co.uk/reviews/plaza-suite-review-savoy-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2024-02-03",
+      "url": "https://www.theguardian.com/stage/2024/feb/03/till-the-stars-come-down-beth-steel-dorfman-national-theatre-review-othello-sam-wanamaker-playhouse-ola-ince-plaza-suite-neil-simon-matthew-broderick-sarah-jessica-parker-savoy",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 84,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/plaza-suite-savoy-theatre-west-end-review-sarah-jessica-parker-matthew-broderick-b1135031.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 74,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/plaza-suite-savoy-theatre-review-sarah-jessica-parker/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 81,
+      "publishDate": "January 29th, 2024",
+      "url": "https://theatreweekly.com/review-plaza-suite-at-the-savoy-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "thereviewshub--stephen-bates.json",
+      "publishDate": "2024-01-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "thestage--sam-marlowe.json",
+      "score": 38,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.thestage.co.uk/reviews/plaza-suite-review-at-savoy-theatre-london-by-neil-simon",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "January 29th, 2024",
+      "url": "https://www.thetimes.co.uk/article/plaza-suite-review-sarah-jessica-parker-and-matthew-broderick-sparkle-6njmdx8vf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "plaza-suite-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-02-04",
+      "url": "https://www.thetimes.co.uk/article/dont-get-into-debt-for-it-but-plaza-suite-is-a-treat-vc0s06llh",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john benjamin hickey\" from plaza-suite-2022"
         }
       ]
     },
@@ -31301,6 +31651,19 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "broadwayworld--angela-lin.json",
+      "publishDate": "2026-06-29",
+      "url": "https://www.broadwayworld.com/chicago/article/Interview-Marya-Grandy-of-SUFFS-at-CIBC-Theater-20260629",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "chicagotribune--emily-mcclanathan.json",
       "score": 78,
       "publishDate": "2026-07-10",
@@ -32082,10 +32445,93 @@
     },
     {
       "showId": "sunset-boulevard-west-end-2023",
+      "file": "artsdesk--mert-dilek.json",
+      "score": 97,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
       "file": "bnn--sheena-oberoi.json",
       "score": 70,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "british-theatre--howard-loxton.json",
+      "score": 89,
+      "publishDate": "2023-10-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "daily-mail--mark-cook.json",
+      "score": 97,
+      "publishDate": "2023-10-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 98,
+      "publishDate": "2023-10-18",
+      "url": "https://www.ft.com/content/66bbf718-db34-45eb-8ea5-74cc091c365c",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "guardian--arifa-akbar.json",
+      "score": 55,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre?CMP=twt_a-culture_b-gdnculture",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32111,7 +32557,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "independent--alice-saville.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
       "findings": [
@@ -32125,7 +32571,7 @@
     {
       "showId": "sunset-boulevard-west-end-2023",
       "file": "london-theatre--marianka-swain.json",
-      "score": null,
+      "score": 98,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
       "findings": [
@@ -32138,10 +32584,108 @@
     },
     {
       "showId": "sunset-boulevard-west-end-2023",
+      "file": "observer--susannah-clapp.json",
+      "score": 60,
+      "publishDate": "2023-10-15",
+      "url": "https://www.theguardian.com/stage/2023/oct/15/the-week-in-theatre-death-of-england-closing-time-sunset-boulevard-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 82,
+      "publishDate": "October 13th, 2023",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 91,
+      "publishDate": "2023-10-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 43,
+      "publishDate": "2023-10-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2023-10-12T21:01:54-04:00",
       "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 97,
+      "publishDate": "October 13th, 2023",
+      "url": "https://www.timeout.com/london/theatre/sunset-boulevard-1-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "times-uk--patricia-nicol.json",
+      "score": 81,
+      "publishDate": "2023-10-15",
+      "url": "https://www.thetimes.co.uk/article/744433dc-677b-11ee-815f-31c5e4390927",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "variety--david-benedict.json",
+      "score": 63,
+      "publishDate": "2023-10-18",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36033,7 +36577,7 @@
     {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2023-11-29",
       "url": "https://www.ft.com/content/c0dcef42-4684-4106-a22d-da34414e5021",
       "findings": [
@@ -36565,6 +37109,37 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mongol-khan-west-end-2023",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2023-11-21",
+      "url": "https://www.standard.co.uk/culture/theatre/the-mongol-khan-coliseum-theatre-review-b1121676.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "the-motive-and-the-cue-west-end-2023",
+      "file": "theatre-weekly--theatre-weekly.json",
+      "publishDate": "2023-12-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -37432,6 +38007,19 @@
       "score": 86,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/the-outsiders-even-better-the-second-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "file": "broadstreetreview--unknown.json",
+      "publishDate": "2026-05-28",
+      "url": "https://www.broadstreetreview.com/reviews/ensemble-arts-philly-and-the-shubert-organization-present-the-national-tour-of-the-outsiders",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39420,6 +40008,53 @@
       ]
     },
     {
+      "showId": "the-time-travellers-wife-west-end-2023",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 66,
+      "publishDate": "November 13th, 2023",
+      "url": "https://theartsdesk.com/theatre/time-travellers-wife-apollo-theatre-review-blockbuster-2003-novel-does-not-quite-land",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-time-travellers-wife-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 84,
+      "publishDate": "November 1st, 2023",
+      "url": "https://theatreweekly.com/review-the-time-travellers-wife-the-musical-at-the-apollo-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-time-travellers-wife-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 62,
+      "publishDate": "November 2nd, 2023",
+      "url": "https://www.timeout.com/london/theatre/the-time-travellers-wife-the-musical-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-traitors-live-experience-off-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 96,
@@ -40448,6 +41083,19 @@
       ]
     },
     {
+      "showId": "triumph-off-broadway-2026",
+      "file": "motorcycle--unknown.json",
+      "publishDate": "2026-10-08",
+      "url": "https://www.motorcycle.com/bikes/spain-s-tamarit-motorcycles-crowned-winner-of-triumph-originals-2026-44672593",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "trophy-boys-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 79,
@@ -41290,6 +41938,60 @@
       "score": 79,
       "publishDate": "2025-06-05",
       "url": "https://nystagereview.com/2025/06/05/from-massachusetts-two-strangers-carry-a-cake-across-new-york-and-fall-in-like/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "file": "london-theatre--marianka-swain.json",
+      "score": null,
+      "publishDate": "April 24th, 2024",
+      "url": "https://www.londontheatre.co.uk/reviews/two-strangers-carry-a-cake-across-new-york-review-criterion-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 97,
+      "publishDate": "April 23rd, 2024",
+      "url": "https://theatreweekly.com/review-two-strangers-carry-a-cake-across-new-york-at-the-criterion-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2024-04-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2024-04-24",
+      "url": "https://www.whatsonstage.com/news/two-strangers-carry-a-cake-across-new-york-review-sweet-sugary-and-a-sure-fire-west-end-success_1595056/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48946,6 +49648,19 @@
     },
     {
       "showId": "dear-octopus-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-02-15",
+      "url": "https://www.ft.com/content/8cf58a40-68d1-4718-bbd5-11588e74bd0b",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-octopus-west-end-2024",
       "file": "london-theatre--julia-rank.json",
       "score": 92,
       "publishDate": "2024-02-15",
@@ -48955,6 +49670,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-octopus-west-end-2024",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2024-02-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-octopus-west-end-2024",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2024-02-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -49613,6 +50354,19 @@
       "file": "telegraph--claire-allfree.json",
       "score": 78,
       "publishDate": "2024-05-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "echo-every-cold-hearted-oxygen-west-end-2024",
+      "file": "londontheatre1--mary-beer.json",
+      "publishDate": "2024-07-24",
       "url": null,
       "findings": [
         {
@@ -52892,6 +53646,73 @@
       ]
     },
     {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 85,
+      "publishDate": "2024-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2024-07-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2024-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "score": 82,
+      "publishDate": "July 19th, 2024",
+      "url": "https://www.standard.co.uk/culture/theatre/hello-dolly-london-palladium-review-imelda-staunton-b1171662.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "theatrecat--libby-purves.json",
+      "publishDate": "2024-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "hells-kitchen-2024",
       "file": "guardian--adrian-horton.json",
       "score": 93,
@@ -55023,6 +55844,19 @@
     },
     {
       "showId": "just-for-one-day-west-end-2024",
+      "file": "british-theatre--keith-mckenna.json",
+      "publishDate": "2024-02-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 59,
       "publishDate": "2024-02-14",
@@ -55041,6 +55875,32 @@
       "score": 81,
       "publishDate": "2024-02-14",
       "url": "https://www.londontheatre.co.uk/reviews/just-for-one-day-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2024-02-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "just-for-one-day-west-end-2024",
+      "file": "thereviewshub--richard-maguire.json",
+      "publishDate": "2024-02-16",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -56120,6 +56980,7 @@
     {
       "showId": "machinal-west-end-2024",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 82,
       "publishDate": "2024-04-28",
       "url": "https://www.thetimes.co.uk/article/the-long-island-housewife-sent-to-the-electric-chair-7fdb9r0tk",
       "findings": [
@@ -57078,6 +57939,7 @@
     {
       "showId": "mates-in-chelsea-west-end-2023",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 49,
       "publishDate": "2023-11-15",
       "url": null,
       "findings": [
@@ -57105,6 +57967,7 @@
     {
       "showId": "mates-in-chelsea-west-end-2023",
       "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 45,
       "publishDate": "2023-12-02",
       "url": null,
       "findings": [
@@ -57118,6 +57981,7 @@
     {
       "showId": "mates-in-chelsea-west-end-2023",
       "file": "thereviewshub--serafina-cusack.json",
+      "score": 77,
       "publishDate": "2023-11-10",
       "url": null,
       "findings": [
@@ -57557,6 +58421,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "mnemonic-west-end-2024",
+      "file": "telegraph--the-telegraph.json",
+      "publishDate": "2024-07-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -58037,7 +58914,7 @@
     {
       "showId": "next-to-normal-west-end-2024",
       "file": "broadwayworld--abbie-grundy.json",
-      "score": null,
+      "score": 79,
       "publishDate": "June 26th, 2024",
       "url": "https://www.broadwayworld.com/westend/article/Review-NEXT-TO-NORMAL-Wyndhams-Theatre-20240626",
       "findings": [
@@ -59441,6 +60318,20 @@
       ]
     },
     {
+      "showId": "player-kings-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 88,
+      "publishDate": "2024-04-21",
+      "url": "https://www.thetimes.co.uk/article/catch-mckellen-before-the-chimes-of-midnight-sv0v3ptfm",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "prayer-for-the-french-republic-2024",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": null,
@@ -59800,6 +60691,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"soho rep\""
+        }
+      ]
+    },
+    {
+      "showId": "pygmalion-west-end-2023",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 79,
+      "publishDate": "2023-09-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "pygmalion-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 45,
+      "publishDate": "2023-09-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -61003,6 +61922,34 @@
       ]
     },
     {
+      "showId": "slave-play-west-end-2024",
+      "file": "daily-mail--robert-gore-langton.json",
+      "score": 62,
+      "publishDate": "2024-07-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "slave-play-west-end-2024",
+      "file": "londontheatre1--marian-kennedy.json",
+      "score": 62,
+      "publishDate": "2024-07-11",
+      "url": "https://www.londontheatre1.com/reviews/slave-play-noel-coward-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
       "showId": "small-off-broadway-2026",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 92,
@@ -61069,6 +62016,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "spirited-away-west-end-2024",
+      "file": "artsdesk--gary-naylor.json",
+      "score": 95,
+      "publishDate": "2024-05-09T05:03:15+00:00",
+      "url": "https://theartsdesk.com/theatre/spirited-away-london-coliseum-review-spectacular-re-imagining-beloved-film",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "spirited-away-west-end-2024",
+      "file": "broadwayworld--cindy-marcolina.json",
+      "score": 79,
+      "publishDate": "2024-05-09",
+      "url": "https://www.broadwayworld.com/westend/article/Review-SPIRITED-AWAY-London-Coliseum-20240509",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -63779,6 +64754,20 @@
       ]
     },
     {
+      "showId": "the-confessions-west-end-2023",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 90,
+      "publishDate": "2023-10-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "the-constant-wife-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 76,
@@ -64679,6 +65668,32 @@
     },
     {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
+      "file": "artsdesk--demetrios-matheou.json",
+      "publishDate": "2023-11-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-bernarda-alba-west-end-2023",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2023-12-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 78,
       "publishDate": "2023-11-29",
@@ -64694,7 +65709,7 @@
     {
       "showId": "the-house-of-bernarda-alba-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2023-11-29",
       "url": "https://www.whatsonstage.com/news/the-house-of-bernarda-alba-at-the-national-theatre-review_1553845/",
       "findings": [
@@ -65699,6 +66714,19 @@
       ]
     },
     {
+      "showId": "the-mongol-khan-west-end-2023",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2023-11-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-monsters-off-broadway-2026",
       "file": "theatre-reviews-limited--joseph-verlezza.json",
       "score": null,
@@ -65737,6 +66765,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-motive-and-the-cue-west-end-2023",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": null,
+      "publishDate": "December 19th, 2023",
+      "url": "https://www.thetimes.co.uk/article/the-motive-and-the-cue-review-an-ode-to-theatre-thrills-in-the-west-end-9kcmj6mss",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -67524,6 +68566,46 @@
       ]
     },
     {
+      "showId": "the-witches-west-end-2023",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2023-11-24",
+      "url": "https://www.mailplus.co.uk/edition/showbiz/theatre/330664/dahls-witches-cast-a-spell-over-me",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-witches-west-end-2023",
+      "file": "independent--alice-saville.json",
+      "score": 97,
+      "publishDate": "November 22nd, 2023",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-witches-musical-review-national-theatre-b2451592.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-witches-west-end-2023",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2023-11-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-world-is-full-of-married-men-off-west-end-2026",
       "file": "liamodell--liam-odell.json",
       "score": 77,
@@ -68468,6 +69550,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "underdog-the-other-other-bronte-west-end-2024",
+      "file": "londontheatre1--terry-eastham.json",
+      "publishDate": "2024-04-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "underdog-the-other-other-bronte-west-end-2024",
+      "file": "thereviewshub--stephen-bates.json",
+      "publishDate": "2024-04-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
