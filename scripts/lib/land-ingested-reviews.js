@@ -26,11 +26,17 @@ function pushReviewTexts({ reviewTextsDir, touchedPaths, message, exec = execSyn
     // Stage only what this run touched; -A so a renamed-away path is a deletion.
     exec(`git -C "${reviewTextsDir}" add -A -- ${q}`, { stdio: 'pipe' });
     const status = String(exec(`git -C "${reviewTextsDir}" status --porcelain -- ${q}`, { encoding: 'utf8' }) || '').trim();
-    if (!status) {
-      log('  — No changes to push (files match remote).');
-      return { pushed: true };
+    if (status) {
+      exec(`git -C "${reviewTextsDir}" commit -m ${JSON.stringify(message)}`, { stdio: 'pipe' });
+    } else {
+      // Clean tree is only "nothing to push" if no earlier commit is stuck
+      // locally (a prior run that committed then failed at push).
+      const ahead = String(exec(`git -C "${reviewTextsDir}" rev-list --count origin/main..HEAD`, { encoding: 'utf8' }) || '0').trim();
+      if (ahead === '0') {
+        log('  — No changes to push (files match remote).');
+        return { pushed: true };
+      }
     }
-    exec(`git -C "${reviewTextsDir}" commit -m ${JSON.stringify(message)}`, { stdio: 'pipe' });
     try {
       exec(`git -C "${reviewTextsDir}" pull --rebase --autostash origin main`, { stdio: 'pipe' });
     } catch (rebaseErr) {
@@ -64,10 +70,11 @@ function dispatchDownstream({ showId, newReviews, only, exec = execSync, log = c
 }
 
 /** Push, and only if the push landed, dispatch. A failed push never dispatches (CI would score a clone without the files). */
-function landIngestedReviews({ showId, reviewTextsDir, touchedPaths, newReviews, message, only, exec, log }) {
+function landIngestedReviews({ showId, extraShowIds = [], reviewTextsDir, touchedPaths, newReviews, message, only, exec, log }) {
   const push = pushReviewTexts({ reviewTextsDir, touchedPaths, message, exec, log });
   if (!push.pushed) return { push, dispatched: [] };
-  return { push, dispatched: dispatchDownstream({ showId, newReviews, only, exec, log }) };
+  const shows = [...new Set([showId, ...extraShowIds])];
+  return { push, dispatched: shows.flatMap((id) => dispatchDownstream({ showId: id, newReviews, only, exec, log })) };
 }
 
 module.exports = { pushReviewTexts, dispatchDownstream, landIngestedReviews };

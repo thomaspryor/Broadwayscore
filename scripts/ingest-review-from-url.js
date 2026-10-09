@@ -607,10 +607,17 @@ if (!show) {
   // BRO-4431: a multi-show article (Vulture/New Yorker double reviews,
   // Theatrely capsule round-ups) is filed under every show it reviews, not
   // only the one it was submitted for.
+  const landPaths = result.filepath ? [result.filepath] : [];
+  const landShowIds = [];
+  if (result.renamedFrom) landPaths.push(result.renamedFrom, path.dirname(result.filepath));
   if (!dryRun && result.filepath && (result.action === 'new' || result.action === 'updated')) {
     try {
       const fan = applyMultiShowFanoutToFile(result.filepath, { reviewTextsDir });
       if (fan.applied) {
+        for (const c of fan.children) {
+          const childFile = path.join(reviewTextsDir, c.showId, path.basename(result.filepath));
+          if (fs.existsSync(childFile)) { landPaths.push(childFile); landShowIds.push(c.showId); }
+        }
         console.log(`  ↔ Multi-show article (${fan.strategy}): own section kept, ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
       }
     } catch (e) {
@@ -644,7 +651,7 @@ if (!show) {
       console.log('\nLanding (push review-texts, then dispatch scoring)...');
       const { landIngestedReviews } = require('./lib/land-ingested-reviews');
       const landed = landIngestedReviews({
-        showId, reviewTextsDir, touchedPaths: [result.filepath], newReviews: 1,
+        showId, extraShowIds: landShowIds, reviewTextsDir, touchedPaths: landPaths, newReviews: 1,
         message: `ingest-review-from-url: 1 review for ${showId}`,
         only: ['llm-ensemble-score.yml'],
       });
@@ -652,7 +659,7 @@ if (!show) {
         console.error('❌ --land did not complete: review is NOT pushed/queued for scoring.');
         process.exit(1);
       }
-    } else {
+    } else if (!process.env.CI) {
       console.log(`⚠️  Not scored yet: file is local only. Re-run with --land, or push review-texts and run: gh workflow run llm-ensemble-score.yml -f show_id=${showId}`);
     }
   }

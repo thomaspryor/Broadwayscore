@@ -17,15 +17,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-const { downstreamWorkflows } = require('./lib/ingest-downstream');
-const { pushReviewTexts } = require('./lib/land-ingested-reviews');
+const { pushReviewTexts, dispatchDownstream } = require('./lib/land-ingested-reviews');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
-const { execErrorDetail } = require('./lib/exec-error-detail');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
 function isRegisteredOutletId(id) {
@@ -279,21 +276,7 @@ async function main() {
   if (newReviews > 0 && !noRebuild && !dryRun) {
     console.log('\nTriggering downstream pipelines...');
 
-    const workflows = downstreamWorkflows(showId, newReviews);
-
-    for (const wf of workflows) {
-      try {
-        const cmd = `gh workflow run ${wf.file} ${wf.args}`;
-        if (verbose) console.log(`  $ ${cmd}`);
-        execSync(cmd, { stdio: 'pipe' });
-        console.log(`  ✓ ${wf.name} triggered`);
-      } catch (e) {
-        // ::warning:: so a failed dispatch is visible on the run page, not
-        // just buried in the log of a green run (BRO-4185: this failed on
-        // every run for as long as the arg was `-f show=`).
-        console.log(`::warning::${wf.name} failed to trigger for ${showId}: ${String(e.message).split('\n')[0]}`);
-      }
-    }
+    dispatchDownstream({ showId, newReviews });
 
     console.log('\nMonitor with:');
     console.log(`  gh run list --workflow=llm-ensemble-score.yml --limit=1`);

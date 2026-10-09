@@ -28,3 +28,19 @@ test('failed push never dispatches', () => {
   assert.equal(r.dispatched.length, 0);
   assert.ok(!calls.some((c) => c.startsWith('gh workflow run')));
 });
+
+test('clean tree with an earlier unpushed local commit still pushes', () => {
+  const calls = [];
+  const exec = (cmd) => { calls.push(cmd); if (cmd.includes('status --porcelain')) return ''; if (cmd.includes('rev-list')) return '1\n'; return ''; };
+  const r = landIngestedReviews({ ...base, exec, only: ['llm-ensemble-score.yml'] });
+  assert.ok(calls.some((c) => c.includes(' push origin main')));
+  assert.equal(r.dispatched.length, 1);
+});
+
+test('multi-show fan-out dispatches scoring per child show', () => {
+  const calls = [];
+  const exec = (cmd) => { calls.push(cmd); return cmd.includes('status --porcelain') ? 'A  x' : ''; };
+  const r = landIngestedReviews({ ...base, exec, extraShowIds: ['other-show'], only: ['llm-ensemble-score.yml'] });
+  assert.equal(r.dispatched.length, 2);
+  assert.ok(calls.some((c) => c.includes('show_id=other-show')));
+});
