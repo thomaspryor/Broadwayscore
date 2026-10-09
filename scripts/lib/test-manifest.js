@@ -12,6 +12,13 @@ const path = require('path');
 // independent copy is how a manifest gets silently missed again).
 const MANIFESTS = ['tests/unit-test-manifest.txt', 'tests/unit-test-manifest-tsx.txt', 'tests/e2e-unit-test-manifest.txt'];
 
+// The manifests test.yml runs under `npx tsx --test`: every one except the
+// plain-node unit-test-manifest.txt (the tsx batch, and the E2E batch at
+// test.yml's e2e-unit-test-manifest step). A test listed only here may import
+// .ts modules, so anything that re-runs it must use tsx too (BRO-4930: Land
+// ran the e2e-listed outlet-id-mapper.test.mjs under plain node and refused).
+const TSX_MANIFESTS = MANIFESTS.filter((m) => !m.endsWith('/unit-test-manifest.txt'));
+
 // Every extension this repo writes a test file in. Single source of truth for
 // the two "is this test actually executed by CI?" guards, which had DIVERGENT
 // hand-maintained lists until BRO-2751:
@@ -158,6 +165,7 @@ function sortManifestFile(manifestPath) {
 
 module.exports = {
   MANIFESTS,
+  TSX_MANIFESTS,
   TEST_FILE_EXTENSIONS,
   NODE_RUNNABLE_TEST_EXTENSIONS,
   testFileRegex,
