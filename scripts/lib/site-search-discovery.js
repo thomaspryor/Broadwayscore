@@ -172,6 +172,37 @@ function wpPostMatchesShow(post, titleWords) {
 }
 
 /**
+ * BRO-4899: Guardian stage-section RSS <link>s that look like reviews. RSS items
+ * carry no tone tag, so keep /stage/ article URLs whose slug says "review";
+ * the dispatcher's urlLooksLikeReview() then narrows to the polled show.
+ */
+const _sectionCache = new Map();
+
+function extractGuardianRssReviewUrls(xml) {
+  const urls = [];
+  const re = /<link>(https:\/\/www\.theguardian\.com\/stage\/\d{4}\/[a-z]{3}\/\d{1,2}\/[^<\s]*review[^<\s]*)<\/link>/gi;
+  let m;
+  while ((m = re.exec(xml || '')) !== null) urls.push(m[1]);
+  return [...new Set(urls)];
+}
+
+/**
+ * BRO-4899: absolute URLs for every href on a section page matching `pathRe`
+ * (root-relative hrefs resolved against `origin`).
+ */
+function extractSectionLinks(html, origin, pathRe) {
+  const urls = new Set();
+  const re = /href="([^"#?]+)"/gi;
+  let m;
+  while ((m = re.exec(html || '')) !== null) {
+    const href = m[1];
+    if (!pathRe.test(href)) continue;
+    urls.add(href.startsWith('/') ? origin + href : href);
+  }
+  return [...urls];
+}
+
+/**
  * Search endpoint configuration.
  * Each entry: outlet search URL template + how to extract result links.
  *
@@ -243,6 +274,7 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="((?:https:\/\/www\.timeout\.com)?\/[a-z]+\/[^"]*review[^"]*)"/gi,
     normalizeUrl: (u) => (u.startsWith('/') ? `https://www.timeout.com${u}` : u),
     requiresJs: true,
+    outletIdOverride: 'timeout-london', // canonical id; lets the section arm suppress this paid render
   },
   'ew': {
     name: 'Entertainment Weekly',
@@ -329,13 +361,28 @@ const SITE_SEARCH_ENDPOINTS = {
       // source (the codebase's positive-signal pattern, cf. Variety /legit/reviews/).
       // Wrong-SHOW reviews (a real review of a different show) still pass here — that
       // is the date/title guard's job (getWrongProductionReasonFromUrl), not this.
-      const url = `https://content.guardianapis.com/search?q=${q}&tag=stage/stage&show-tags=tone&api-key=test&page-size=20&order-by=relevance`;
-      const data = await fetchSSR(url);
-      const parsed = JSON.parse(data);
-      return (parsed.response?.results || [])
-        .filter(r => r.webUrl)
-        .filter(r => (r.tags || []).some(t => t.id === 'tone/reviews'))
-        .map(r => r.webUrl);
+      // BRO-4899: the shared 'test' key now returns 401, which silently zeroed this
+      // arm on rent-west-end-2026 opening night. Use GUARDIAN_API_KEY when set, and
+      // ALWAYS add the keyless section RSS (fresh within minutes of publish).
+      const key = process.env.GUARDIAN_API_KEY || 'test';
+      const url = `https://content.guardianapis.com/search?q=${q}&tag=stage/stage&show-tags=tone&api-key=${encodeURIComponent(key)}&page-size=20&order-by=relevance`;
+      const urls = [];
+      try {
+        const parsed = JSON.parse(await fetchSSR(url));
+        urls.push(...(parsed.response?.results || [])
+          .filter(r => r.webUrl)
+          .filter(r => (r.tags || []).some(t => t.id === 'tone/reviews'))
+          .map(r => r.webUrl));
+      } catch (e) {
+        console.warn(`    Site search [Guardian]: API failed (${e.message}) — relying on section RSS`);
+      }
+      try {
+        const rss = await fetchSSR('https://www.theguardian.com/stage/theatre/rss');
+        urls.push(...extractGuardianRssReviewUrls(rss));
+      } catch (e) {
+        console.warn(`    Site search [Guardian]: section RSS failed (${e.message})`);
+      }
+      return [...new Set(urls)];
     },
   },
 
@@ -451,6 +498,46 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="(https:\/\/www\.thestage\.co\.uk\/reviews\/[^"]*)"/gi,
     requiresJs: true,
     market: 'west-end',
+  },
+  // BRO-4899: SSR section scans for the two WE T1/T2 outlets whose search
+  // endpoints above are JS-rendered (paid render tier, only run for outlets still
+  // missing after the free pass). Both /reviews and /london/theatre list new
+  // reviews within minutes of the embargo lifting; verified for Rent 2026-10-08.
+  'thestage-section': {
+    name: 'The Stage',
+    domain: 'thestage.co.uk',
+    requiresJs: false,
+    market: 'west-end',
+    outletIdOverride: 'thestage',
+    fetchAndParse: async () => {
+      const html = await fetchSSR('https://www.thestage.co.uk/reviews');
+      const urls = extractSectionLinks(html, 'https://www.thestage.co.uk', /^\/reviews\/[a-z0-9-]+$/i);
+      if (urls.length === 0) console.warn('    Site search [The Stage section]: WARNING — 0 links (possible structural change)');
+      return urls;
+    },
+  },
+  'timeout-section': {
+    name: 'Time Out London',
+    domain: 'timeout.com',
+    requiresJs: false,
+    market: 'west-end',
+    outletIdOverride: 'timeout-london',
+    fetchAndParse: async () => {
+      const urls = [];
+      for (const page of ['https://www.timeout.com/london/theatre', 'https://www.timeout.com/london/news']) {
+        try {
+          // Show-independent page: memoise per process so N shows x polls don't refetch.
+          const hit = _sectionCache.get(page);
+          const html = hit && Date.now() - hit.at < 120000 ? hit.html : await fetchSSR(page);
+          _sectionCache.set(page, { at: Date.now(), html });
+          urls.push(...extractSectionLinks(html, 'https://www.timeout.com', /^\/london\/(?:news|theatre)\/[a-z0-9-]*review[a-z0-9-]*$/i));
+        } catch (e) {
+          console.warn(`    Site search [Time Out section]: ${page} failed (${e.message})`);
+        }
+      }
+      if (urls.length === 0) console.warn('    Site search [Time Out section]: WARNING — 0 review links (possible structural change)');
+      return [...new Set(urls)];
+    },
   },
   'telegraph': {
     name: 'The Telegraph',
@@ -1052,8 +1139,18 @@ async function fetchSSR(url, timeoutMs = 15000) {
 
   // Determine whether to fall back. Only burn BD/SB credits when the response
   // looks blocked, not for every legitimate 4xx (e.g. 404 = post truly missing).
+  // Never ship an api-key URL to a paid proxy / log it (BRO-4899 review): the
+  // Guardian arm already degrades to its keyless RSS.
+  if (/content\.guardianapis\.com/.test(url)) {
+    throw new Error(direct ? `HTTP ${direct.status}` : 'network error');
+  }
+
   const shouldFallback = !direct
     || direct.status === 403
+    || direct.status === 429
+    // BRO-4899: Telegraph answers datacenter/browser-UA requests with 402; the
+    // old 403/503-only gate threw "HTTP 402" and the caller swallowed it as "0 results".
+    || direct.status === 402
     || direct.status === 503
     || _looksLikeCloudflareChallenge(direct.body);
 
@@ -1371,6 +1468,8 @@ module.exports = {
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
   extractVultureTheaterArticleUrls,
+  extractGuardianRssReviewUrls,
+  extractSectionLinks,
   urlLooksLikeReview,
   operaTitleWords,
   filterOperaUrls,
