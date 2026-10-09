@@ -3357,7 +3357,7 @@ showDirs.forEach(showId => {
       // BRO-4890: a production cancelled before it ever opened has no reviews
       // (whos-afraid-of-virginia-woolf-2020 carried a counted 2005 review), and a
       // row known only from a search hit with no url and no stored text has
-      // nothing to check. Same predicates, same order as explainExclusion().
+      // nothing to check. Same predicates as explainExclusion(); runs after the wrongProduction auto-clear branches above, so only the reason label differs, never the include decision. Rows added after this loop (inheritPriorRunReviews, lease carry-over, manualEntry) skip it (BRO-4890 known limit).
       if (isCancelledBeforeOpeningShow(showById[showId])) {
         logExclusion("skippedCancelledBeforeOpening", showId, file, data);
         stats.skippedCancelledBeforeOpening = (stats.skippedCancelledBeforeOpening || 0) + 1;
