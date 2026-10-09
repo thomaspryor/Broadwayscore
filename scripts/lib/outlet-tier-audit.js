@@ -213,6 +213,110 @@ function applyProposals(tiersConfig, proposals) {
   return next;
 }
 
+const CONSENSUS_MIN_PEERS = 3;
+const CROSSOVER_MIN_REVIEWS = 3;
+
+const normCritic = (name) => (name || '').toLowerCase().replace(/\s+/g, ' ').trim();
+
+/**
+ * Evidence signals that do not depend on volume (BRO-4907 deep pass).
+ *  - pickup: on shows Show Score lists critic reviews for, the share of this
+ *    outlet's reviews that Show Score also lists. Aggregators curate who
+ *    counts, so a high pickup rate is outside evidence of standing.
+ *  - consensus: each scored review against the mean of OTHER outlets'
+ *    T1/T2 reviews of the same show (needs CONSENSUS_MIN_PEERS). mad is the
+ *    mean absolute gap, bias the mean signed gap (positive = kinder).
+ *  - crossover: share of the outlet's reviews written by critics who also
+ *    have CROSSOVER_MIN_REVIEWS+ reviews at a different T1/T2 outlet.
+ * @param {object} p
+ * @param {object[]} p.reviews
+ * @param {Record<string,object>} [p.showScoreShows] show-score.json .shows
+ * @param {(name:string)=>string} [p.normalizeOutlet] Show Score name → outlet id
+ * @param {Record<string,string>} [p.categoryByShow]
+ * @param {(outletId:string, region:'nyc'|'london')=>number} p.tierOf
+ * @returns {Map<string, object>}
+ */
+function computeQualitySignals({ reviews, showScoreShows = {}, normalizeOutlet = (x) => x, categoryByShow = {}, tierOf }) {
+  const idOf = (r) => (r.outletId || '').toLowerCase().trim();
+  const regionFor = (showId) => regionOf(categoryByShow[showId]);
+  const isTop = (outletId, showId) => tierOf(outletId, regionFor(showId)) <= 2;
+
+  const ssListed = new Map();
+  for (const [showId, s] of Object.entries(showScoreShows)) {
+    if (!s || !Array.isArray(s.criticReviews) || !s.criticReviews.length) continue;
+    ssListed.set(showId, new Set(s.criticReviews.map(c => normalizeOutlet(c.outlet))));
+  }
+
+  const byShow = new Map();
+  for (const r of reviews) {
+    if (!byShow.has(r.showId)) byShow.set(r.showId, []);
+    byShow.get(r.showId).push(r);
+  }
+
+  // critic → outlets where they have CROSSOVER_MIN_REVIEWS+ reviews at T1/T2
+  const criticOutletCounts = new Map();
+  for (const r of reviews) {
+    const c = normCritic(r.criticName);
+    if (!c) continue;
+    const key = `${c}|${idOf(r)}`;
+    criticOutletCounts.set(key, (criticOutletCounts.get(key) || 0) + 1);
+  }
+  const topOutletsByCritic = new Map();
+  for (const r of reviews) {
+    const c = normCritic(r.criticName);
+    if (!c || !isTop(idOf(r), r.showId)) continue;
+    if ((criticOutletCounts.get(`${c}|${idOf(r)}`) || 0) < CROSSOVER_MIN_REVIEWS) continue;
+    if (!topOutletsByCritic.has(c)) topOutletsByCritic.set(c, new Set());
+    topOutletsByCritic.get(c).add(idOf(r));
+  }
+
+  const acc = new Map();
+  const get = (id) => {
+    if (!acc.has(id)) acc.set(id, { eligible: 0, listed: 0, gaps: [], critics: new Set(), crossover: 0, total: 0 });
+    return acc.get(id);
+  };
+
+  for (const [showId, rows] of byShow) {
+    const listed = ssListed.get(showId);
+    for (const r of rows) {
+      const id = idOf(r);
+      if (!id) continue;
+      const a = get(id);
+      a.total++;
+      const c = normCritic(r.criticName);
+      if (c) {
+        a.critics.add(c);
+        const tops = topOutletsByCritic.get(c);
+        if (tops && [...tops].some(o => o !== id)) a.crossover++;
+      }
+      if (listed) {
+        a.eligible++;
+        if (listed.has(id)) a.listed++;
+      }
+      if (typeof r.assignedScore !== 'number') continue;
+      const peers = rows.filter(p => idOf(p) !== id && typeof p.assignedScore === 'number' && isTop(idOf(p), showId));
+      if (peers.length < CONSENSUS_MIN_PEERS) continue;
+      a.gaps.push(r.assignedScore - mean(peers.map(p => p.assignedScore)));
+    }
+  }
+
+  const out = new Map();
+  for (const [id, a] of acc) {
+    out.set(id, {
+      outletId: id,
+      showScoreEligible: a.eligible,
+      showScoreListed: a.listed,
+      pickupRate: a.eligible ? a.listed / a.eligible : null,
+      consensusN: a.gaps.length,
+      consensusMad: a.gaps.length ? mean(a.gaps.map(Math.abs)) : null,
+      consensusBias: a.gaps.length ? mean(a.gaps) : null,
+      distinctCritics: a.critics.size,
+      crossoverShare: a.total ? a.crossover / a.total : null,
+    });
+  }
+  return out;
+}
+
 const SCORER = path.join(__dirname, 'compute-critic-score.js');
 const TIERS_FILE = path.join(__dirname, '..', '..', 'src', 'config', 'outlet-tiers.json');
 
@@ -274,6 +378,7 @@ module.exports = {
   corpusYearTotals,
   regionOf,
   computeOutletStats,
+  computeQualitySignals,
   resolveCurrentTier,
   applyProposals,
   loadScorerWithTiers,

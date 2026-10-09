@@ -16,6 +16,7 @@ const {
   median,
   corpusYearTotals,
   computeOutletStats,
+  computeQualitySignals,
   resolveCurrentTier,
   applyProposals,
   loadScorerWithTiers,
@@ -195,5 +196,50 @@ describe('applyProposals + scorer swap', () => {
     // With real tiers (1.0 vs 0.2) the score sits near 90, not the 60 midpoint
     // an empty config (both default T3) would give.
     assert.ok(r.s > 75, `got ${r.s}`);
+  });
+});
+
+describe('computeQualitySignals', () => {
+  const tiers = { top1: 1, top2: 1, top3: 2, blog: 4, mixed: 3 };
+  const tierOf = (id) => tiers[id] || 3;
+  const r = (showId, outletId, criticName, assignedScore) => ({ showId, outletId, criticName, assignedScore });
+
+  it('pickup counts only shows Show Score lists critics for', () => {
+    const reviews = [r('a', 'blog', 'B', 80), r('b', 'blog', 'B', 80), r('c', 'blog', 'B', 80)];
+    const showScoreShows = {
+      a: { criticReviews: [{ outlet: 'The Blog' }] },
+      b: { criticReviews: [{ outlet: 'Other' }] },
+      c: { criticReviews: [] },
+    };
+    const s = computeQualitySignals({ reviews, showScoreShows, normalizeOutlet: n => (n === 'The Blog' ? 'blog' : 'other'), tierOf }).get('blog');
+    assert.strictEqual(s.showScoreEligible, 2);
+    assert.strictEqual(s.showScoreListed, 1);
+    assert.strictEqual(s.pickupRate, 0.5);
+  });
+
+  it('consensus compares with other outlets at T1/T2 and needs enough peers', () => {
+    const reviews = [
+      r('a', 'top1', 'X', 60), r('a', 'top2', 'Y', 70), r('a', 'top3', 'Z', 80), r('a', 'blog', 'B', 90),
+      r('b', 'top1', 'X', 60), r('b', 'blog', 'B', 10), // only one peer: skipped
+    ];
+    const s = computeQualitySignals({ reviews, tierOf }).get('blog');
+    assert.strictEqual(s.consensusN, 1);
+    assert.strictEqual(s.consensusBias, 20);
+    assert.strictEqual(s.consensusMad, 20);
+    // top1 is not its own peer, and the T4 blog is not a peer: 2 left, skipped
+    assert.strictEqual(computeQualitySignals({ reviews, tierOf }).get('top1').consensusN, 0);
+  });
+
+  it('crossover needs 3+ reviews at a different T1/T2 outlet', () => {
+    const reviews = [
+      r('a', 'top1', 'Pro', 50), r('b', 'top1', 'Pro', 50), r('c', 'top1', 'Pro', 50),
+      r('d', 'mixed', 'Pro', 50), r('e', 'mixed', 'Amateur', 50),
+      r('f', 'top2', 'Amateur', 50), r('g', 'top2', 'Amateur', 50), // only 2 at T1: no credit
+    ];
+    const s = computeQualitySignals({ reviews, tierOf }).get('mixed');
+    assert.strictEqual(s.distinctCritics, 2);
+    assert.strictEqual(s.crossoverShare, 0.5);
+    // a critic's home T1 outlet does not count as crossover for itself
+    assert.strictEqual(computeQualitySignals({ reviews, tierOf }).get('top1').crossoverShare, 0);
   });
 });

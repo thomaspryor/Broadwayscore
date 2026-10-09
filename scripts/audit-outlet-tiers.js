@@ -10,6 +10,9 @@
  *   node scripts/audit-outlet-tiers.js --stats-out=<file.json>
  *       Volume stats for every configured outlet + every unconfigured outlet
  *       with >= --min-reviews (default 5). Input for writing justifications.
+ *   node scripts/audit-outlet-tiers.js --signals-out=<file.json>
+ *       Volume stats plus non-volume evidence per outlet (Show Score pickup,
+ *       agreement with T1/T2 consensus, critic crossover). Input for research.
  *   node scripts/audit-outlet-tiers.js --justifications=<file.json> \
  *       --csv=<out.csv> --impact-out=<out.json>
  *       Merge stats with justifications/proposals, write the CSV, and
@@ -23,7 +26,9 @@ const fs = require('fs');
 const path = require('path');
 const {
   computeOutletStats,
+  computeQualitySignals,
   corpusYearTotals,
+  regionOf,
   resolveCurrentTier,
   simulateImpact,
 } = require('./lib/outlet-tier-audit');
@@ -48,6 +53,19 @@ function loadInputs() {
   const registry = regRaw.outlets || regRaw;
   const tiersConfig = readJson('src/config/outlet-tiers.json');
   return { reviews, shows, registry, tiersConfig };
+}
+
+function buildSignals({ reviews, shows, registry, tiersConfig }) {
+  const { normalizeOutlet } = require('./lib/review-normalization');
+  const showScore = readJson('data/show-score.json');
+  const categoryByShow = Object.fromEntries(shows.map(s => [s.id, s.category]));
+  return computeQualitySignals({
+    reviews,
+    showScoreShows: showScore.shows || {},
+    normalizeOutlet,
+    categoryByShow,
+    tierOf: (id, region) => resolveCurrentTier(id, tiersConfig, registry)[region],
+  });
 }
 
 function buildRows({ reviews, shows, registry, tiersConfig }) {
@@ -151,6 +169,17 @@ function main() {
     return;
   }
 
+  if (args['signals-out']) {
+    const signals = buildSignals(inputs);
+    const merged = rows.map(r => {
+      const { perYear, ...rest } = r;
+      return { ...rest, ...(signals.get(r.outletId) || {}) };
+    });
+    fs.writeFileSync(args['signals-out'], JSON.stringify(merged, null, 2));
+    console.log(`wrote ${merged.length} outlet rows with signals to ${args['signals-out']}`);
+    return;
+  }
+
   if (!args.justifications) {
     console.error('need --stats-out=<file> or --justifications=<file>');
     process.exit(1);
@@ -209,4 +238,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { buildRows, toCsv, changeLabel, CSV_COLUMNS };
+module.exports = { buildRows, buildSignals, toCsv, changeLabel, CSV_COLUMNS };
