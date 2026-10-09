@@ -1,8 +1,16 @@
 {
-  "timestamp": "2026-10-09T01:42:55.688Z",
-  "totalDrifted": 5,
+  "timestamp": "2026-10-09T01:48:35.079Z",
+  "totalDrifted": 7,
   "threshold": 20,
   "reviews": [
+    {
+      "showId": "slave-play-west-end-2024",
+      "outlet": "LondonTheatre1",
+      "critic": "Marian Kennedy",
+      "oldScore": 80,
+      "newScore": 62,
+      "delta": 18
+    },
     {
       "showId": "paranormal-activity-chicago-regional-2025",
       "outlet": "BroadwayWorld",
@@ -42,6 +50,14 @@
       "oldScore": 62,
       "newScore": 74,
       "delta": 12
+    },
+    {
+      "showId": "king-lear-west-end-2023",
+      "outlet": "The Stage",
+      "critic": "Sam Marlowe",
+      "oldScore": 16,
+      "newScore": 5,
+      "delta": 11
     }
   ]
 }
