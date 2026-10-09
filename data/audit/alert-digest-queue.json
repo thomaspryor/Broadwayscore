@@ -665,5 +665,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-09T23:11:09.983Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:from-the-heart-west-end-2026",
+    "title": "Pre-opening publishDate on From The Heart",
+    "description": "boxofficeradio/null SHIPPED with publishDate 2024-07-09 (822d before openingDate 2026-10-09): https://boxofficeradio.co.uk/review-don-blacks-from-the-heart-garrick-theatre-london\n⚠️  jonathan-baz/null also missing publishDate: https://www.jonathanbaz.com/2026/10/don-blacks-from-heart-review.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-09T23:25:53.234Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:from-the-heart-west-end-2026,rent-west-end-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "from-the-heart-west-end-2026,rent-west-end-2026"
+      }
+    ],
+    "queuedAt": "2026-10-09T23:25:53.351Z"
   }
 ]
