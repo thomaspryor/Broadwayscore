@@ -779,6 +779,17 @@ function classifyTitleDelta(refTitle, bodyTitle) {
   const bu = loosen(bodyTitle);
   if (au && bu && au === bu) return 'match';
 
+  // A BWW slug cannot say whether "All-Male" had a hyphen, so the slug side
+  // reads "All Male" while the body headline keeps "All-Male", and
+  // normalizeTitle() joins the hyphen ("allmale") but not the space. That
+  // single-character gap landed in the 'typo' bucket and refused the RSC
+  // "All-Male AS YOU LIKE IT" roundup (add-requested-show, 2026-10-09).
+  // Exact equality with all whitespace removed is safe for the same reason as
+  // the loosened check above: it demands identical letters, so it cannot turn
+  // a real mismatch into a match.
+  const squash = (s) => s.replace(/\s+/g, '');
+  if (squash(a) === squash(b)) return 'match';
+
   const d = levenshteinDistance(a, b);
   if (d >= 1 && d <= 3) return 'typo';
   return 'mismatch';

@@ -85,6 +85,10 @@ test('classifyTitleDelta: match / typo / mismatch', () => {
   assert.equal(classifyTitleDelta("Dad Dont Read This", "Dad Don't Read This"), 'match');
   assert.equal(classifyTitleDelta('Celebrity Autopbiography', 'Celebrity Autobiography'), 'typo');
   assert.equal(classifyTitleDelta('Broken Snow', 'A Completely Different Show'), 'mismatch');
+  // BWW slugs lose hyphens: "All-Male AS YOU LIKE IT" slugs to "All Male ...".
+  // Was 'typo' and refused the RSC roundup on 2026-10-09.
+  assert.equal(classifyTitleDelta('All Male As You Like It', 'All-Male AS YOU LIKE IT'), 'match');
+  assert.equal(classifyTitleDelta('Cats', 'Dogs at the Palace'), 'mismatch');
 });
 
 test('acceptance #1: Dad Dont Read This → accept w/ St. Luke\'s Theatre', () => {
