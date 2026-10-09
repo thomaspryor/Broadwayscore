@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import HeaderSubscribeButton from '@/components/HeaderSubscribeButton';
+import { FooterAccountLink } from '@/components/FooterAccountBox';
 import SocialIcons from '@/components/SocialIcons';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
@@ -24,8 +24,8 @@ export default function FooterBranding({ totalReviews }: { totalReviews: number 
           <Link href="/methodology" className="hover:text-white transition-colors">Methodology</Link>
           <span className="text-gray-500 hidden sm:inline">|</span>
           <a href="https://buymeacoffee.com/broadwayscorecard" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Buy Me a Coffee</a>
-          <span className="text-gray-500 hidden sm:inline">|</span>
-          <HeaderSubscribeButton placement="footer" />
+          {/* Account, not another email button: the email box sits right above (BRO-4946). */}
+          <FooterAccountLink />
           <span className="text-gray-500 hidden sm:inline">|</span>
           <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           <span className="text-gray-500 hidden sm:inline">|</span>
