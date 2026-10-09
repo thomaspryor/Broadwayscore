@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-08T21:23:19.213Z",
-    "completedAt": "2026-10-08T21:23:19.500Z",
-    "totalReviews": 49060,
-    "processed": 0,
-    "skipped": 49059,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37845993473",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-08T21:23:21.358Z",
-    "completedAt": "2026-10-08T21:23:24.042Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37845993473",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-08T21:37:21.352Z",
     "completedAt": "2026-10-08T21:38:03.787Z",
     "totalReviews": 49080,
@@ -529243,6 +529205,49 @@
     },
     "costUsd": 0,
     "runId": "37944838424",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T14:43:58.001Z",
+    "completedAt": "2026-10-09T14:44:21.237Z",
+    "totalReviews": 51328,
+    "processed": 0,
+    "skipped": 51321,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 23182,
+      "output": 1104,
+      "total": 68832
+    },
+    "costUsd": 0.12601159999999997,
+    "runId": "37945927644",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+        "outletId": "london-box-office",
+        "error": "Cannot read properties of undefined (reading 'rejection')"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T14:44:23.058Z",
+    "completedAt": "2026-10-09T14:44:25.867Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37945927644",
     "errorDetails": []
   }
 ]
