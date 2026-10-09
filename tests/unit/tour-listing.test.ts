@@ -154,8 +154,11 @@ test('real data: every running tour with stops ahead is browsable, scored tours 
 test('real data: an unscored running tour with a schedule is indexable; a closed unscored one is not', async () => {
   const dc = await import('../../src/lib/data-core');
   const { getTourSchedule } = await import('../../src/lib/data-tour-schedule');
+  const today = new Date().toISOString().slice(0, 10);
+  // "Running" means engagements still ahead, as isTourIndexableShow decides:
+  // a tour whose whole schedule is past is not indexable even if never closed.
   for (const s of dc.getAllShows().filter(x => x.category === 'tour')) {
-    const scheduled = getTourSchedule(s.id).length > 0;
+    const scheduled = getTourSchedule(s.id).some(e => e.end >= today);
     const expected = dc.isTourListed(s) || (s.status !== 'closed' && scheduled);
     assert.equal(dc.isTourIndexableShow(s), expected, s.id);
   }
