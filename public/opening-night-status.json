@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T10:08:28.702Z",
+  "generatedAt": "2026-10-09T10:45:32.979Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -494,6 +494,10 @@
         },
         {
           "name": "New York Post",
+          "isDualMarket": false
+        },
+        {
+          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -1717,9 +1721,9 @@
       "status": "open",
       "slug": "blood-of-my-blood-west-end",
       "thumbnail": "/images/shows/blood-of-my-blood-west-end-2026/thumbnail.webp",
-      "siteScore": 80.85,
-      "liveScore": 81,
-      "scoreDrift": 0.15000000000000568,
+      "siteScore": 79.82,
+      "liveScore": 80,
+      "scoreDrift": 0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1735,9 +1739,9 @@
         "reasons": [
           "6/8 total",
           "T1:0/3",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1917,6 +1921,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-09T10:45:32.979Z",
+          "rc": 6,
+          "s": 79.82,
+          "t1": 2,
+          "t2": 1,
+          "t3": 3,
+          "p": 6,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1930,17 +1946,17 @@
       "status": "open",
       "slug": "into-the-woods-noel-coward-west-end",
       "thumbnail": "/images/shows/into-the-woods-noel-coward-west-end-2026/thumbnail.webp",
-      "siteScore": 85.52,
+      "siteScore": 85.53,
       "liveScore": 86,
-      "scoreDrift": 0.480000000000004,
+      "scoreDrift": 0.46999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 62,
+      "total": 63,
       "t1": 14,
       "t2": 15,
-      "t3": 33,
-      "positive": 57,
+      "t3": 34,
+      "positive": 58,
       "mixed": 3,
       "negative": 2,
       "readiness": {
@@ -2251,6 +2267,18 @@
           "t2": 15,
           "t3": 33,
           "p": 57,
+          "m": 3,
+          "n": 2,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-10-09T10:45:32.979Z",
+          "rc": 63,
+          "s": 85.53,
+          "t1": 14,
+          "t2": 15,
+          "t3": 34,
+          "p": 58,
           "m": 3,
           "n": 2,
           "bc": "overdue"
