@@ -17,6 +17,19 @@ test('Google passes only on a redirect to accounts.google.com', () => {
   assert.equal(judgeGoogle(AUTH, { status: 400, location: '' }).inconclusive, undefined);
 });
 
+test('Google fails when its page says redirect_uri_mismatch, and stays inconclusive on a Google outage', () => {
+  const hop = { status: 302, location: 'https://accounts.google.com/o/oauth2/v2/auth?client_id=x' };
+  assert.equal(judgeGoogle(AUTH, hop, { status: 400, body: '<title>Error 400: redirect_uri_mismatch</title>' }).ok, false);
+  assert.match(judgeGoogle(AUTH, hop, { status: 400, body: 'redirect_uri_mismatch' }).reason, /redirect_uri_mismatch/);
+  assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: '<html>Choose an account</html>' }).ok, true);
+  assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: 'help article about redirect_uri_mismatch' }).inconclusive, true, 'the words without the 400 never page');
+  assert.equal(judgeGoogle(AUTH, hop, { status: 503, body: '' }).inconclusive, true);
+  assert.equal(judgeGoogle(AUTH, hop, null).ok, true, 'no page fetched: the hop verdict stands');
+  assert.equal(judgeGoogle(AUTH, hop, { status: 403, body: 'sorry' }).inconclusive, true, 'a bot block never pages');
+  assert.equal(judgeGoogle(AUTH, hop, { status: 401, body: 'Error 401: deleted_client' }).ok, false, 'a dead OAuth client is broken');
+  assert.equal(judgeGoogle(AUTH, hop, { status: 200, body: 'deleted_client mentioned in text' }).ok, true, 'the words alone are nothing');
+});
+
 test('Apple passes only when our callback is the redirect and Apple shows its page', () => {
   const popup = `https://appleid.apple.com/auth/authorize?client_id=com.x&redirect_uri=${encodeURIComponent(BASE + '/auth/apple-callback')}&response_mode=web_message`;
   assert.equal(judgeApple(popup, { status: 200, body: '<html>Sign in with Apple</html>' }, BASE).ok, true);

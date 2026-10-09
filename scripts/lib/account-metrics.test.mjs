@@ -144,6 +144,13 @@ test('summarizeFunnel names app rows with no source and keeps finish-only device
   assert.equal(f.totals.other.completed, 3);
 });
 
+test('device-only saves (watchlist_add local=true) count neither as an action nor as a sign-up that took', () => {
+  const q = m.buildQueries();
+  assert.match(q.actions, /coalesce\(toString\(properties\.local\), ''\) != 'true'/, 'actions table must leave out signed-out device saves');
+  const acted = q.funnel.match(/countIf\(\(event IN \([^)]*\) AND coalesce\(toString\(properties\.local\), ''\) != 'true'\) OR/);
+  assert.ok(acted, 'n_acted must leave out signed-out device saves');
+});
+
 test('funnel query keeps devices that only finished signing in', () => {
   const q = m.buildQueries().funnel;
   assert.match(q, /WHERE n_shown > 0 OR n_started > 0 OR n_completed > 0/);

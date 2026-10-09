@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-08T11:35:11.459Z",
-    "completedAt": "2026-10-08T11:35:11.759Z",
-    "totalReviews": 47761,
-    "processed": 0,
-    "skipped": 47760,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37770607419",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-08T11:35:57.809Z",
-    "completedAt": "2026-10-08T11:40:05.118Z",
-    "totalReviews": 47761,
-    "processed": 46,
-    "skipped": 47186,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 262278,
-      "output": 14390,
-      "total": 682144
-    },
-    "costUsd": 1.16963045,
-    "runId": "37770607419",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-08T11:40:07.174Z",
     "completedAt": "2026-10-08T11:40:59.267Z",
     "totalReviews": 24,
@@ -645916,6 +645878,44 @@
     },
     "costUsd": 0.0162099,
     "runId": "37871112421",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-09T01:47:01.519Z",
+    "completedAt": "2026-10-09T01:53:25.944Z",
+    "totalReviews": 50375,
+    "processed": 77,
+    "skipped": 50294,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 366695,
+      "output": 24073,
+      "total": 1017892
+    },
+    "costUsd": 1.59612645,
+    "runId": "37871122401",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-09T01:53:28.159Z",
+    "completedAt": "2026-10-09T01:56:56.303Z",
+    "totalReviews": 104,
+    "processed": 104,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 192769,
+      "output": 23439,
+      "total": 216208
+    },
+    "costUsd": 0.5965223000000001,
+    "runId": "37871122401",
     "errorDetails": []
   }
 ]

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4901",
   "planId": "f88d9e9c-d573-49d3-acc3-9699a1e14d8c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-09T00:14:17.838Z",
   "submitter": {
     "name": null,
@@ -66,5 +66,23 @@
         "description": "we-had-a-world-off-west-end-2026: poster carries the Manhattan Theatre Club logo and the thumbnail names MTC director Trip Cullman; New York production art on the Hampstead row"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-09T01:56:28.618Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for funny-girl-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sweeney-todd-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for we-had-a-world-off-west-end-2026"
+    }
+  ]
 }
