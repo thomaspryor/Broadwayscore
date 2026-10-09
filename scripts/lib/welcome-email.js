@@ -75,7 +75,7 @@ function headingFor(displayName) {
 }
 
 function footerText(email) {
-  return `You're getting this one-time email because you created a Broadway Scorecard account with ${email}. To delete your account, open the menu on broadwayscorecard.com and choose Delete account.`;
+  return `You're getting this one-time email because you created a Broadway Scorecard account with ${email}. Your account also gets our opening night emails, and each one has its own unsubscribe link. To delete your account, open the menu on broadwayscorecard.com and choose Delete account.`;
 }
 
 function buildStepRowsHtml() {

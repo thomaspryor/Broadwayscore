@@ -85,7 +85,7 @@ test.describe('UGC Visual Regression', () => {
     await expect(page.locator('text=Continue with Google')).toBeVisible({ timeout: 3000 });
 
     // Screenshot the modal panel (not the backdrop)
-    const modal = page.locator('[role="dialog"][aria-label="Sign in"] .bg-surface-raised');
+    const modal = page.locator('[role="dialog"][aria-label^="Sign in"] .bg-surface-raised');
     await expect(modal).toHaveScreenshot('sign-in-modal-rating.png');
   });
 });

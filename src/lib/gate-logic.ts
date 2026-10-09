@@ -213,8 +213,11 @@ const DOWNLOAD_WAITLIST_COPY: TriggerCopy = {
  * v3-2026-10-04 (BRO-4623): only csv_download/json_download copy changed (and
  * those modals became closable). exit_intent/scroll_depth/return_visitor copy
  * is identical to v2, so v2 and v3 rows can be pooled for those triggers.
+ * v4-2026-10-08 (BRO-4893): exit_intent/scroll_depth dropped "Nothing else."
+ * for "plus a short Sunday roundup" (subscribers get the Sunday newsletter).
+ * Do not pool v4 with earlier rows for those two triggers.
  */
-export const COPY_VERSION = 'v3-2026-10-04';
+export const COPY_VERSION = 'v4-2026-10-08';
 
 export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy {
   const market = isWE ? 'West End' : 'Broadway';
@@ -228,12 +231,12 @@ export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy
     },
     exit_intent: {
       heading: `Before you go: the ${market} CriticScore`,
-      subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict. Nothing else.',
+      subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict, plus a short Sunday roundup.',
       example: `Sample: Hamilton — ${exampleScore} · Sharp, electric, essential.`,
     },
     scroll_depth: {
       heading: `Before you go: the ${market} CriticScore`,
-      subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict. Nothing else.',
+      subheading: 'One email per opening night with the CriticScore and a one-line critics’ verdict, plus a short Sunday roundup.',
       example: `Sample: Hamilton — ${exampleScore} · Sharp, electric, essential.`,
     },
     return_visitor: {

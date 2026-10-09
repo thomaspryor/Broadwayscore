@@ -44,7 +44,7 @@ const { findMatchingPriorRun, isWithinTourLeg } = require('./wrong-production-au
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 
 const TEXT_QUALITY_REASONS = new Set(['not_a_review', 'garbage_text', 'truncated_text']);
-const AUTOMATED_REJECTERS = new Set(['ensemble-scoreability-check', 'news-article-heuristic-check']);
+const AUTOMATED_REJECTERS = new Set(['ensemble-scoreability-check', 'news-article-heuristic-check', 'preopening-interview-signal']);
 const AUTOMATED_NONREVIEW_METHODS = new Set(['heuristic+llm']);
 const COMPLETE_TEXT_MIN = 1500;
 // Tiers that say the body on disk is not a real article, whatever its length.

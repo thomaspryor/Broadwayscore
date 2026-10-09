@@ -7,6 +7,7 @@ const {
   isStaleSynopsis,
   classifyBadSynopsis,
   detectRefusalPattern,
+  cutToLastSentence,
 } = pkg;
 
 const PLACEHOLDER_1536 =
@@ -171,4 +172,14 @@ test('classifyBadSynopsis labels missing / placeholder / stale / refusal / ok', 
 test('detectRefusalPattern still catches LLM refusals', () => {
   assert.notEqual(detectRefusalPattern('I do not have enough information about this show.'), null);
   assert.equal(detectRefusalPattern(REAL_1536), null);
+});
+
+// --- token-limit truncation (BRO-4884) ---
+test('cutToLastSentence keeps whole replies and trims a cut-off tail', () => {
+  assert.equal(cutToLastSentence(' A king divides his realm. '), 'A king divides his realm.');
+  assert.equal(cutToLastSentence('He says, \u201CGo.\u201D'), 'He says, \u201CGo.\u201D');
+  assert.equal(cutToLastSentence('A king divides his realm. His daughters turn on him and the'), 'A king divides his realm.');
+  assert.equal(cutToLastSentence('A king asks "Who loves me most?" and then'), 'A king asks "Who loves me most?"');
+  assert.equal(cutToLastSentence('A king divides his realm between'), '');
+  assert.equal(cutToLastSentence(null), '');
 });
