@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4888",
   "planId": "bed3c034-c93f-4c9a-ae97-f0f9f0776cb9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-09T03:22:12.817Z",
   "submitter": {
     "name": null,
@@ -98,5 +98,58 @@
         "description": "Provenance for the score override"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-09T04:08:00.127Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/financialtimes--sarah-hemming.json duplicateClearReason: null -> \"auto-cleared at write: refusing duplicateOf cycle with financialtimes--tim-bano.json (it already points back at us)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-west-end-2025/financialtimes--tim-bano.json duplicateOf: null -> \"financialtimes--sarah-hemming.json\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/1883magazine--nick-barr.json → into-the-woods-west-end-2025/1883magazine--nick-barr.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/onceaweektheatre--edward-lukes.json → into-the-woods-west-end-2025/onceaweektheatre--edward-lukes.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/theartsdispatch--the-arts-dispatch.json → into-the-woods-west-end-2025/theartsdispatch--the-arts-dispatch.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved into-the-woods-noel-coward-west-end-2026/partially-obstructed-view--view-my-complete.json → into-the-woods-west-end-2025/partially-obstructed-view--view-my-complete.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-noel-coward-west-end-2026/plays-international--maryam-philpott.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewScore: null -> 51"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-west-end-2025/jonathan-baz--unknown.json humanReviewNote: null -> \"BRO-4888: header shows a three-asterisk (3/5) rating; star bands put 3/5 at 51-70; prose is negative so the band floor is used.\""
+    }
+  ]
 }
