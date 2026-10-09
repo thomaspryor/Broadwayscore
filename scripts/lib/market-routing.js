@@ -28,7 +28,7 @@
  * Pure: no filesystem I/O. Callers pass in shows list (or sibling index).
  */
 
-const { parseDate } = require('./date-utils');
+const { parseDate, toDateMs } = require('./date-utils');
 const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview, shouldSkipWrongProductionAudit } = require('./review-guards');
 const { pickTourForDate } = require('./tour-family');
 const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
@@ -252,11 +252,11 @@ const REGIONAL_RUN_AFTER_DAYS = 60;
 
 function isOutsideRun(sibData, publishDate) {
   const open = sibData.openingDate;
-  const pub = new Date(publishDate);
-  if (!open || Number.isNaN(pub.getTime())) return false;
+  const pub = toDateMs(publishDate);
+  if (!open || Number.isNaN(pub)) return false;
   const DAY = 86400000;
-  if (pub.getTime() < open.getTime() - REGIONAL_RUN_BEFORE_DAYS * DAY) return true;
-  return !!sibData.closingDate && pub.getTime() > sibData.closingDate.getTime() + REGIONAL_RUN_AFTER_DAYS * DAY;
+  if (pub < open.getTime() - REGIONAL_RUN_BEFORE_DAYS * DAY) return true;
+  return !!sibData.closingDate && pub > sibData.closingDate.getTime() + REGIONAL_RUN_AFTER_DAYS * DAY;
 }
 
 function tourDecision(showId, sibData, { url, publishDate, dateSource }) {
