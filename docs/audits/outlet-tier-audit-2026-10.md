@@ -1,6 +1,6 @@
 # Outlet tier audit, October 2026 (BRO-4907)
 
-Audit and proposal only. `src/config/outlet-tiers.json` is unchanged by this work; the owner decides which moves to adopt.
+Audit plus adoption. The owner asked for a deeper research pass before changing tiers; this document records that pass and the 57 moves it supports.
 
 - Per-outlet data: [`outlet-tier-audit-2026-10.csv`](outlet-tier-audit-2026-10.csv) (297 rows)
 - Justifications and proposed tiers (input to the CSV): [`outlet-tier-audit-2026-10.justifications.json`](outlet-tier-audit-2026-10.justifications.json)
@@ -68,64 +68,135 @@ The Hollywood Reporter's fall from 28 reviews in 2019 to 3-8 a year since 2023 i
 
 ## How each tier was judged
 
-Rubric applied to every row (1-3 sentence justification in the CSV):
+### Round 0 (first pass, superseded)
 
-- T1: national or international publications with staff critics whose reviews are read as the verdict.
-- T2: established professional outlets with paid or long-serving recognized critics and editorial oversight.
-- T3: smaller professional or semi-pro outlets, local papers, multi-contributor specialist sites with an editor.
-- T4: single-author or hobby blogs and incidental coverage, with no aggregator pickup and no recognized-critic status.
+The first pass drafted justifications largely from general knowledge and proposed 8 moves. The owner judged that too shallow, so every row was redone with the method below. Three first-pass moves did not survive: Broadway News (NYC T1 to T2), Medium (T3 to T4) and the ReviewsGate reasoning were all overturned by evidence (see "Considered and not moved").
 
-Default is keep. Volume is one input. Defunct outlets keep the tier that matched their standing when they published. Justifications were drafted per outlet, then every proposed move was fact-checked against the web on 2026-10-09. Moves whose key fact could not be confirmed were withdrawn (see below). Sources for checked claims are in the CSV `sources` column. Justifications without sources rest on general knowledge of the outlet plus the review data.
+### Evidence signals (computed, `--signals-out`)
 
-## Proposals
+`scripts/lib/outlet-tier-audit.js computeQualitySignals` adds three non-volume measures per outlet:
 
-8 moves out of 297 outlets. The other 289 keep their current tier.
+- Show Score pickup: share of the outlet's reviews that Show Score also lists, counted only on shows whose Show Score critic list is complete (list length at least `criticReviewCount`). Ignored under 15 eligible reviews. Show Score covers London thinly, so low London pickup is weak evidence.
+- Consensus gap and bias: mean absolute and signed difference between the outlet's score and the mean of the other T1/T2 outlets on the same show (at least 3 peers, one score per outlet per show). A bias above about +6 with a gap well above the T1/T2 reference range flags promotional or fan writing. Ignored under 15 shows.
+- Critic crossover: share of the outlet's reviews by critics who also have 3+ reviews at a different T1/T2 outlet.
 
-Score impact is simulated: `scripts/lib/compute-critic-score.js` (the scorer behind the published `cs`) runs on `data/reviews.json` twice per show, once with the current config and once with an in-memory copy carrying the move. The config file is never written. "Shows moved" counts shows whose unrounded score changes. "Displayed change" counts shows whose rounded score changes by at least one point. On the current config this simulation matches the published score (`public/data/shows/{id}.json:cs`, the field `getCriticScore` reads) exactly for 768 of 1,151 shows and within 1 point for 1,081 (94%). The gap is most likely data timing: the audit used the 2026-10-06 `reviews.json` snapshot while the published files were rebuilt on 2026-10-09. Each delta compares the same inputs with and without the move, so absolute numbers can be off by about a point while the direction and size of each shift hold. Impact counts also include shows the site hides (announced, or reviews hidden), so they run slightly high.
+### Research rounds
 
-`scripts/scoring-delta.js` was not used for impact. It replays review inclusion and score-source logic, and a tier weight change moves neither.
+1. Round 1: all 297 rows split into 8 batches. Each research agent had to look up, for every outlet, what it is (owner, active or defunct), its editorial model (staff, paid, volunteer, single author, quoting the site's own about or staff page), its critics' credentials (Drama Desk, Outer Critics Circle, NY Drama Critics' Circle, ATCA, UK Critics' Circle drama section) and outside recognition (Show Score, Did They Like It, BroadwayWorld roundups, London aggregators). Every factual claim needed a source URL. Tier definitions were given without example outlet lists, and citing another outlet's tier as a reason was forbidden. Default was keep; a two-tier move needed overwhelming evidence.
+2. Round 2 verify: the 22 low-confidence rows with 30+ reviews were re-researched by two fresh agents.
+3. Round 2 challenge: the 23 proposed moves with the most reviews were handed to two agents told to argue against each move. The decisive new sources were the Outer Critics Circle roster (outercritics.org/critics/) and the UK Critics' Circle drama member list (criticscircle.org.uk/drama/drama-members/), which round 1 had not checked. 20 moves were confirmed, 3 withdrawn.
 
-| Outlet | Change (NYC/London) | Shows moved | Displayed change | Max shift | Why |
-|---|---|---|---|---|---|
-| Broadway News | T1/T2 to T2/T2 (down in NYC) | 131 | 15 | 0.5 | Trade news site. Its T1 critic Isherwood left for the WSJ in 2022 and stays T1 through the top-critic list. Remaining reviewers fit T2. |
-| Everything Theatre | T2/T2 to T2/T3 (down in London) | 111 | 48 | 6.1 | Self-described 100% volunteer-run collective. |
-| Theater Pizzazz | T4 to T3 (up) | 172 | 23 | 1.3 | Editor/publisher, about 18 contributing writers including established critics, 177 NYC reviews. |
-| DC Theater Arts | T4 to T3 (up) | 22 | 5 | 2.4 | Renamed DC Metro Theater Arts, whose old id is already T3. |
-| Express (UK) | T4/T4 to T4/T3 (up in London) | 15 | 4 | 0.4 | National daily with professional critics. |
-| South London | T4 to T3 (up) | 16 | 1 | 0.3 | Local news publisher (Southwark News group) with bylined reviews. |
-| ReviewsGate | registry T4 to T3 (up), adds a config entry | 5 | 2 | 0.3 | Defunct multi-contributor UK review site with veteran critics. |
-| Medium | T3 to T4 (down) | 19 | 1 | 0.5 | Self-publishing platform; individual posts, no editorial oversight. |
+Final confidence across 297 rows: 62 high, 176 medium, 59 low. Low-confidence rows keep their tier (one low-confidence move, `londonlivinglarge` London T3 to T4, was dropped for that reason).
 
-All 8 together: 406 shows move, 92 change their displayed score by at least one point, the largest shift is 6.1 points, and the mean absolute shift is 0.3. Most of the biggest movers are small London shows, driven by Everything Theatre. Beetlejuice's tour moves because of the DC Theater Arts promotion:
+Limits: the research agents hit search caps, and several sources were unreachable (the Drama Desk voter list, the Wayback Machine at times, some defunct sites), so some rows rest on fewer sources than intended. The CSV `sources` column lists what each row rests on.
+
+## Moves
+
+57 moves out of 297 outlets: 12 promotions, 45 demotions. Most demotions are single-author or incidental-coverage blogs with few reviews each. Score impact is simulated as in the first pass: `scripts/lib/compute-critic-score.js` on `data/reviews.json`, current config versus an in-memory copy with the moves (the simulation matches published `cs` within 1 point for 94% of shows, so read deltas as relative).
+
+All 57 together: 716 shows move, 248 change their displayed score by at least one point, the largest shift is 6.1 points and the mean absolute shift is 0.44. On Broadway the largest is Girl from the North Country (2022), 80.2 to 83.9; every other Broadway show moves less than 1.8.
+
+Largest show shifts:
 
 | Show | Published | Before (sim) | After (sim) | Shift |
 |---|---|---|---|---|
 | The Uncontainable Nausea of Alec Baldwin (Off-West End) | 55 | 55.2 | 49.1 | -6.1 |
-| The Guy Who Didn't Like Musicals (West End) | 70 | 70.2 | 66.7 | -3.5 |
-| Age Is a Feeling (Off-West End) | 78 | 77.4 | 74.1 | -3.3 |
-| Eggs Aren't That Easy to Make (Off-West End) | 57 | 57.1 | 60.4 | +3.3 |
-| Beetlejuice (tour) | 80 | 77.0 | 74.6 | -2.4 |
-| Dear Liar (Off-West End) | 65 | 64.9 | 62.8 | -2.1 |
+| This Is Not Not a Drill (Off-Broadway) | unpublished | 80.0 | 75.1 | -4.9 |
+| Soon (Off-Broadway) | 57 | 49.4 | 54.1 | +4.8 |
+| Perfect Crime (Off-Broadway) | 58 | 58.1 | 62.8 | +4.6 |
+| Girl from the North Country (Broadway 2022) | 81 | 80.2 | 83.9 | +3.7 |
+| Becoming Hamlet (Off-Broadway) | 56 | 56.2 | 52.7 | -3.5 |
 
-On Broadway, 216 shows move, none by more than 0.8 (Walking with Ghosts, 2022).
+Per move (sorted by shows moved):
 
-### Unconfigured outlets that should be configured
+| Outlet | Change | Confidence | Shows moved | Displayed change | Max shift |
+|---|---|---|---|---|---|
+| Front Row Center (`front-row-center`) | NYC T2 to T3 | medium | 364 | 97 | 4.9 |
+| Theater Pizzazz (`theater-pizzazz`) | NYC T4 to T3 | high | 172 | 23 | 1.3 |
+| Everything Theatre (`everything-theatre`) | London T2 to T3 | high | 111 | 48 | 6.1 |
+| Theatre Weekly (`theatre-weekly`) | London T2 to T3 | medium | 96 | 31 | 2.1 |
+| Off Off Online (`off-off-online`) | NYC T4 to T3 | high | 60 | 24 | 4.8 |
+| Times Square Chronicles (`times-square-chronicles`) | NYC T4 to T3 | medium | 59 | 6 | 1.4 |
+| Broadway & Me (`broadway-and-me`) | NYC T4 to T3 | medium | 42 | 2 | 0.4 |
+| A Youngish Perspective (`a-youngish-perspective`) | London T3 to T4 | high | 37 | 10 | 2.1 |
+| readaboutstuff (`readaboutstuff`) | London T3 to T4 | medium | 33 | 1 | 0.6 |
+| Gotham Playgoer (`gotham-playgoer`) | NYC T3 to T4 | high | 30 | 1 | 0.2 |
+| London Theatre Reviews (`london-theatre-reviews`) | London T3 to T4 | medium | 24 | 4 | 0.5 |
+| DC Theater Arts (`dc-theater-arts`) | NYC T4 to T3 | high | 22 | 5 | 2.4 |
+| Monstagigz (`monstagigz`) | London T3 to T4 | high | 22 | 5 | 2.5 |
+| First Night Magazine (`firstnightmagazine`) | London T3 to T4 | medium | 21 | 5 | 3.5 |
+| Bob's Theater Blog (`bobs-theater-blog`) | NYC T3 to T4 | medium | 19 | 4 | 0.2 |
+| The Contending (`the-contending`) | NYC T3 to T4 | medium | 19 | 1 | 0.2 |
+| Theatre Vibe (`theatre-vibe`) | London T4 to T3 | medium | 18 | 3 | 0.4 |
+| Jonathan Baz (`jonathan-baz`) | London T3 to T4 | medium | 17 | 0 | 0.5 |
+| Act Three: The Reviews (`act-three-the-reviews`) | NYC T3 to T4 | medium | 16 | 4 | 0.3 |
+| South London (`south-london`) | London T4 to T3 | medium | 16 | 1 | 0.3 |
+| Londontheatredirect (`londontheatredirect`) | London T3 to T4 | high | 16 | 2 | 0.5 |
+| Express  (UK) (`express-uk`) | London T4 to T3 | medium | 15 | 4 | 0.4 |
+| As Her World Turns (`as-her-world-turns`) | NYC T3 to T4 | medium | 13 | 1 | 0.2 |
+| BackStage Barbie (`backstage-barbie`) | NYC T3 to T4 | high | 13 | 1 | 0.2 |
+| Labor Press (`labor-press`) | NYC T3 to T4 | medium | 12 | 0 | 0.1 |
+| Melinda's Malarky (`melindas-malarky`) | NYC T3 to T4 | high | 11 | 2 | 0.3 |
+| Film Festival Traveler (`film-festival-traveler`) | NYC T3 to T4 | medium | 11 | 0 | 0.2 |
+| Vox (`vox`) | NYC T2 to T3 | medium | 9 | 3 | 0.5 |
+| Fordham Observer (`fordham-observer`) | NYC T3 to T4 | medium | 8 | 0 | 0.2 |
+| Pinkprincetheatre (`pinkprincetheatre`) | London T3 to T4 | medium | 8 | 2 | 1.1 |
+| Unmissabletheatre (`unmissabletheatre`) | London T3 to T4 | high | 8 | 1 | 0.2 |
+| Magical Misstari Tour (`magical-misstari-tour`) | NYC T3 to T4 | high | 7 | 1 | 0.3 |
+| Onin (`onin`) | London T3 to T4 | medium | 7 | 2 | 0.3 |
+| Viewfromthegods (`viewfromthegods`) | London T3 to T4 | medium | 7 | 1 | 0.4 |
+| Theater In The Now (`theater-in-the-now`) | NYC T3 to T4 | medium | 6 | 0 | 0.1 |
+| 4Columns (`4columns`) | NYC T3 to T2 | medium | 6 | 1 | 1.8 |
+| Aaron in NYC (`aaron-in-nyc`) | NYC T3 to T4 | medium | 6 | 2 | 1.2 |
+| Splash Magazines (`splash-magazines`) | NYC T3 to T4 | medium | 6 | 1 | 0.4 |
+| The Globe and Mail (`the-globe-and-mail`) | NYC T3 to T2 | medium | 6 | 2 | 0.9 |
+| Theatre Bee (`theatre-bee-uk`) | London T3 to T4 | medium | 5 | 3 | 0.5 |
+| Parade (`parade`) | NYC T2 to T3 | medium | 5 | 1 | 0.3 |
+| Diandra Reviews It All (`diandra-reviews-it-all`) | NYC T3 to T4 | medium | 5 | 1 | 0.2 |
+| Flipsidereviews (`flipsidereviews`) | NYC T3 to T4 | medium | 5 | 0 | 0.2 |
+| Pop Dust (`pop-dust`) | NYC T3 to T4 | medium | 5 | 0 | 0.0 |
+| The Three Tomatoes (`the-three-tomatoes`) | NYC T3 to T4 | medium | 5 | 0 | 0.1 |
+| Partially Obstructed View (`partially-obstructed-view`) | NYC T3 to T4, London T3 to T4 | high | 5 | 1 | 0.4 |
+| ReviewsGate (`reviewsgate`) | London T4 to T3 | medium | 5 | 2 | 0.3 |
+| Seatplan (`seatplan`) | London T3 to T4 | medium | 5 | 1 | 0.6 |
+| Revstanstheatreblog (`revstanstheatreblog`) | London T3 to T4 | medium | 5 | 0 | 0.2 |
+| Harry Theatre Life (`harry-theatre-life`) | London T3 to T4 | high | 5 | 1 | 0.3 |
+| UInterview (`uinterview`) | NYC T3 to T4 | medium | 5 | 0 | 0.1 |
+| The Knockturnal (`the-knockturnal`) | NYC T3 to T4 | medium | 5 | 4 | 1.6 |
+| Around the Town Chicago (`around-the-town-chicago`) | NYC T3 to T4 | medium | 5 | 1 | 1.1 |
+| Popbytes (`popbytes`) | NYC T3 to T4 | medium | 5 | 0 | 0.4 |
+| Nyc Theatre Addict (`nyc-theatre-addict`) | NYC T3 to T4 | high | 5 | 1 | 0.1 |
+| Billboard (`billboard`) | NYC T2 to T3 | medium | 4 | 1 | 0.3 |
+| America Magazine (`america-magazine`) | NYC T4 to T3 | medium | 4 | 0 | 0.0 |
 
-Only ReviewsGate needs a config entry, because it moves. The other 166 high-volume unconfigured outlets keep their registry tier. Their justifications are in the CSV.
+Moves with the most weight behind them:
 
-### Regional splits
+- Front Row Center, NYC T2 to T3 (medium, revised in round 2): has an editor, but its authors page describes contributors mainly as actors, playwrights and producers, none of its top critics is on the Outer Critics Circle roster, and Did They Like It does not quote it. Largest single move by reach (364 shows).
+- Everything Theatre, London T2 to T3 (high): self-described 100% volunteer-run, paid in tickets, no Critics' Circle members.
+- Theatre Weekly, London T2 to T3 (medium): managing editor wrote 68 of 98 reviews and is not a Critics' Circle member; others come through an open guest programme.
+- Theater Pizzazz, Off Off Online, Broadway & Me, Times Square Chronicles, NYC T4 to T3: each has an editor or owner-critic on the Outer Critics Circle roster or Drama Desk.
+- DC Theater Arts NYC T4 to T3, ReviewsGate London T4 to T3, Express (UK) and South London London T4 to T3, Theatre Vibe London T4 to T3, 4Columns and The Globe and Mail NYC T3 to T2, America Magazine NYC T4 to T3.
 
-No new regional splits are proposed. Everything Theatre and Express (UK) move only their London tier and review only London shows, so the split is a formality. Existing splits (NYT, Variety, Vulture, WSJ, Washington Post, The Stage, the London nationals and others) were reviewed and kept.
+Config change: each moved outlet's entry in `src/config/outlet-tiers.json` gets the new tier (new entries for outlets that were registry-only, using the registry display name). Pinned by `tests/unit/outlet-tiers-adopted-2026-10.test.mjs` through `scripts/lib/outlet-tiers.js getTier`.
 
-### Considered and not proposed
+## Considered and not moved
 
-- Daily Mail and Observer (London T1 to T2), Time Out New York (NYC T1 to T2), Time Out London (London T1 to T2). These first came up because the audit rubric's example list put them at T2, which is a property of the rubric, not evidence about the outlets. Time Out in both cities has long-serving chief critics and is a leading voice, so it stays T1. Daily Mail and Observer are owner calls with no new evidence: the Observer changed ownership in 2025 and its long-time critic retired.
-- The Reviews Hub and Theatre Weekly (T2 to T3) and The Broadway Blog (NYC T2 to T3). Each rested on a "mostly volunteer" or "inactive" claim the fact-check could not confirm.
-- British Theatre (T2 to T3). The id mixes two sites: 48 of 98 rows link to British Theatre Guide and 9 to BritishTheatre.com. A demotion aimed at the smaller site would also hit the established one. The id needs splitting first (BRO-4926).
+- Broadway News stays NYC T1: Did They Like It lists it among its main outlets next to the NYT and Variety, it has an executive editor, and its critics include current Drama Critics' Circle voters.
+- Medium stays T3: 17 of 20 rows are Christian Lewis, an Outer Critics Circle member. The rows should be re-attributed to him (data issue below).
+- The Reviews Hub and LondonTheatre1 stay London T2: two of each outlet's main critics are Critics' Circle drama members.
+- Front Mezz Junkies stays T3: single author, but listed on the Outer Critics Circle roster.
+- Time Out (both cities), Daily Mail, Observer: no new evidence; kept.
+- Cititour, Theatrely, Exeunt, CurtainUp, NJ.com, Slant, StageBuddy: verified keeps (recognized critics or aggregator pickup).
+- Still unverified after two rounds, kept by default: nbcny, broadway-blog, theatreandtonic (leans T4), zeal-nyc, theater-news-online, scribicide.
 
 ## Data issues found
 
-- `dtli`: all 40 rows link to didtheylikeit.com, an aggregator, so they are filed under a fake outlet. BRO-4926.
-- `british-theatre`: two different sites under one id (above). BRO-4926.
-- `observer`: one id holds the New York Observer (observer.com, NYC rows) and the UK Observer (observer.co.uk and theguardian.com, London rows). The nyc2/lon1 split handles this correctly for now.
+- `dtli`: rows link to didtheylikeit.com, an aggregator. BRO-4926.
+- `british-theatre`: two sites (britishtheatreguide.info and britishtheatre.com) plus 41 rows without URLs. BRO-4926.
+- `dctheatrescene`: two sites (dctheatrescene.com, 85 rows; dcmetrotheaterarts.com, 57 rows, which is DC Theater Arts).
+- Duplicate ids for one outlet: `dc-metro-theater-arts` / `dc-theater-arts`; `gotham-playgoer` / `bobs-theater-blog` (same blog, renamed 2017). Both pairs now carry the same tier.
+- `observer`: New York Observer and UK Observer under one id; the nyc2/lon1 split handles it for now.
+- `medium`: platform, not an outlet; rows should be attributed to the individual critics.
+- `zeal-nyc`: some rows link to chriscaggiano.com, the critic's personal blog.
+- `south-london`: reviews credited to Michael Holland may be by other writers posting through a staff account.
 - Hollywood Reporter coverage gap since 2023. BRO-4927.
