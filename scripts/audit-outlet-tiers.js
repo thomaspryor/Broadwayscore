@@ -159,10 +159,11 @@ function main() {
   const justifications = JSON.parse(fs.readFileSync(args.justifications, 'utf8'));
   const missing = rows.filter(r => {
     const j = justifications[r.outletId];
-    return !j || !j.justification || !j.justification.trim() || !j.proposedNyc || !j.proposedLondon;
+    const validTier = t => Number.isInteger(t) && t >= 1 && t <= 4;
+    return !j || !j.justification || !j.justification.trim() || !validTier(j.proposedNyc) || !validTier(j.proposedLondon);
   });
   if (missing.length) {
-    console.error(`${missing.length} outlets lack a justification/proposal: ${missing.slice(0, 20).map(r => r.outletId).join(', ')}`);
+    console.error(`${missing.length} outlets lack a justification or an integer 1-4 proposedNyc/proposedLondon: ${missing.slice(0, 20).map(r => r.outletId).join(', ')}`);
     process.exit(1);
   }
 
