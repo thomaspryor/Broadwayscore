@@ -2,12 +2,7 @@ name: Send Follow Show Notifications
 on:
   schedule:
     - cron: '0 14 * * 1'  # Monday 2 PM UTC (morning US)
-  workflow_dispatch:
-    inputs:
-      baseline_only:
-        description: 'Re-baseline the change digest (detect, then clear pending changes) and send nothing'
-        type: boolean
-        default: false
+  workflow_dispatch: {}
 
 # Serialize schedule + manual-dispatch runs against data/audit/follow-send-
 # checkpoint.json. This checkpoint is the double-send guard for user email
@@ -82,25 +77,8 @@ jobs:
       # below stays (core-data-merge-registry.js registers it as this
       # workflow's single-writer file; the drift test wants a writer).
 
-      - name: Baseline only — clear pending changes, send nothing
-        # One-off re-baseline (BRO-4897): the committed digest had been stuck
-        # at 2026-02-09 because "Commit updates" never committed, so every run
-        # re-detected eight months of changes. This records today's state as
-        # the baseline from exactly the inputs a Monday run reads.
-        if: steps.check.outputs.has_followers == 'true' && inputs.baseline_only == true
-        run: |
-          node -e '
-            const fs = require("fs");
-            const p = "data/audit/show-changes-digest.json";
-            const d = JSON.parse(fs.readFileSync(p, "utf8"));
-            const n = Object.keys(d.changes || {}).length;
-            d.changes = {};
-            fs.writeFileSync(p, JSON.stringify(d, null, 2));
-            console.log("Baseline: kept currentState for " + Object.keys(d.currentState || {}).length + " shows, cleared " + n + " pending");
-          '
-
       - name: Send notifications
-        if: steps.check.outputs.has_followers == 'true' && inputs.baseline_only != true
+        if: steps.check.outputs.has_followers == 'true'
         id: send
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -135,8 +113,9 @@ jobs:
           # files but never committed them, and push-with-retry.sh only pushes
           # commits, so the digest stayed at 2026-02-09 and the same Hamilton
           # email went to one follower every Monday 2026-08-24..10-05 (BRO-4897).
-          # audit-workflow-hygiene.js rule (i) now fails any stage-then-push
-          # step without a commit.
+          # audit-workflow-hygiene.js rule (p) now fails any stage-then-push
+          # step without a commit. detect-show-changes.js re-baselines on its
+          # own when the committed digest is older than 21 days.
           for f in data/audit/show-changes-digest.json data/audit/follow-send-checkpoint.json data/audit/social-tier-transitions.json; do
             if [ -f "$f" ]; then
               git add "$f"

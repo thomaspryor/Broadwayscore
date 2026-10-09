@@ -65,3 +65,11 @@ test('comment lines are ignored', () => {
     'bash scripts/lib/push-with-retry.sh',
   ])), []);
 });
+
+test('a commit mentioned only in echo text does not count', () => {
+  assert.equal(findStageWithoutCommitSteps(wf([
+    `${G} add data/x.json`,
+    `echo "skipping ${G} commit"`,
+    'bash scripts/lib/push-with-retry.sh',
+  ])).length, 1);
+});

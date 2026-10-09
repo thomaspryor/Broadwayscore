@@ -171,15 +171,6 @@
  *     see findBareAuditDirectoryGlobs's
  *     own doc comment for the full reasoning.
  *
- * (p) STAGE-WITHOUT-COMMIT (BRO-4897): a step that stages files (`git add`,
- *     `git rm --cached`, or a staging helper) and then calls push-with-retry.sh
- *     with no `git commit` / commit-or-amend.sh in between. push-with-retry.sh
- *     only pushes commits ("Before calling: add + commit must already be
- *     done"), so the staged files are silently never persisted while the run
- *     stays green. send-follow-notifications.yml did this: its digest never
- *     saved and one follower got the same Hamilton email 7 Mondays running.
- *     Exempt with `# hygiene-stage-no-commit-ok: <reason>`.
- *
  * (o) FULL-BLOB-CHECKOUT (advisory, BRO-4231): an actions/checkout `with:`
  *     block that sets `fetch-depth: 0` without `filter: blob:none`. Full
  *     history is kept on purpose (merge-base for push-with-retry.sh; the #209
@@ -210,6 +201,15 @@
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
+ *
+ * (p) STAGE-WITHOUT-COMMIT (BRO-4897): a step that stages files (`git add`,
+ *     `git rm --cached`, or a staging helper) and then calls push-with-retry.sh
+ *     with no `git commit` / commit-or-amend.sh in between. push-with-retry.sh
+ *     only pushes commits ("Before calling: add + commit must already be
+ *     done"), so the staged files are silently never persisted while the run
+ *     stays green. send-follow-notifications.yml did this: its digest never
+ *     saved and one follower got the same Hamilton email 7 Mondays running.
+ *     Exempt with `# hygiene-stage-no-commit-ok: <reason>`.
  */
 const fs = require('fs');
 const path = require('path');
@@ -504,7 +504,7 @@ function findStageWithoutCommitSteps(raw) {
     const { name, startLine } = stepStarts[idx];
     const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
     const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
-    const body = lines.slice(startLine, endLine).map((l) => (l.trimStart().startsWith('#') ? '' : l));
+    const body = lines.slice(startLine, endLine).map((l) => (/^\s*(#|echo\b|printf\b)/.test(l) ? '' : l));
     for (let i = 0; i < body.length; i++) {
       if (!/push-with-retry\.sh/.test(body[i])) continue;
       let lastStage = -1;

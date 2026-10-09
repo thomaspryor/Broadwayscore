@@ -15,6 +15,7 @@
  * Usage: node scripts/detect-show-changes.js
  */
 
+const { isStaleBaseline, stampDetectedAt } = require('./lib/follow-digest-prune');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -343,9 +344,13 @@ function main() {
   // Load previous digest
   let previousState = {};
   let prevPendingChanges = {};
+  let staleBaseline = false;
   try {
     const prevDigest = JSON.parse(fs.readFileSync(DIGEST_PATH, 'utf8'));
     previousState = prevDigest.currentState || {};
+    // A baseline weeks old would re-detect everything since then and email it
+    // as news (BRO-4897: the digest sat at 2026-02-09 for eight months).
+    staleBaseline = isStaleBaseline(prevDigest.generatedAt);
     // Carry forward any undelivered changes from previous run
     prevPendingChanges = prevDigest.changes || {};
     console.log(`Loaded previous state with ${Object.keys(previousState).length} shows`);
@@ -357,8 +362,14 @@ function main() {
     console.log('No previous digest found — first run, establishing baseline');
   }
 
-  // Detect new changes
-  const newChanges = detectChanges(currentState, previousState, { reviews, consensus, showsMap });
+  // Detect new changes (none on a stale baseline: record today's state only)
+  const newChanges = staleBaseline
+    ? {}
+    : stampDetectedAt(detectChanges(currentState, previousState, { reviews, consensus, showsMap }));
+  if (staleBaseline) {
+    console.log('Previous digest is a stale baseline — re-baselining, dropping pending changes, nothing will be sent');
+    prevPendingChanges = {};
+  }
 
   // Merge: pending undelivered changes + newly detected, by change TYPE —
   // not a wholesale per-show overwrite. A wholesale overwrite silently drops
