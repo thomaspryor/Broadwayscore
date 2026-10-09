@@ -1,29 +1,34 @@
 {
-  "updatedAt": "2026-10-09T14:21:40.530Z",
-  "processed": 257,
-  "failed": 153,
-  "successRate": "62.7%",
+  "updatedAt": "2026-10-09T14:56:44.014Z",
+  "processed": 288,
+  "failed": 165,
+  "successRate": "63.6%",
   "tierBreakdown": {
-    "playwright": 154,
+    "playwright": 170,
     "amp": 4,
     "browserbase": 16,
     "directCookies": 0,
-    "scrapingdog": 31,
-    "scrapingbee": 27,
+    "scrapingdog": 39,
+    "scrapingbee": 31,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 42
+    "archive": 49
   },
   "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-10-09T13:19:55.238Z",
       "event": "bb-session",
-      "session": "73821012",
-      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+      "session": "dca3ac04",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
     },
     {
-      "t": "2026-10-09T13:50:38.072Z",
+      "t": "2026-10-09T13:19:55.528Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-09T13:21:29.009Z",
       "event": "bb-session",
       "session": "253459a3",
       "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
