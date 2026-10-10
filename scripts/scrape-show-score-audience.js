@@ -18,6 +18,7 @@
  *   At least one scraping method must be available (or Playwright installed).
  */
 
+const { canDiscoverShowScoreUrl } = require('./lib/showscore-status-eligibility');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
@@ -555,6 +556,8 @@ function isValidShowScorePage(html, url, showTitle, options = {}) {
  * Discover Show Score URL for a show by trying candidate patterns
  */
 async function discoverShowScoreUrl(show) {
+  // BRO-4876: tours have no Show Score page; guessing finds the parent's.
+  if (!canDiscoverShowScoreUrl(show)) return null;
   // For older productions, only discover if the newest already has a URL
   // (so we can ensure we find a DIFFERENT page, not the same one)
   let newestUrl = null;

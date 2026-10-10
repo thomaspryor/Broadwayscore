@@ -1,19 +1,26 @@
 {
-  "updatedAt": "2026-10-09T23:57:42.750Z",
-  "processed": 289,
-  "failed": 160,
-  "successRate": "64.4%",
+  "updatedAt": "2026-10-10T01:06:20.094Z",
+  "processed": 377,
+  "failed": 239,
+  "successRate": "61.2%",
   "tierBreakdown": {
-    "playwright": 176,
+    "playwright": 230,
     "amp": 1,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 34,
-    "scrapingbee": 26,
-    "brightdata": 7,
+    "scrapingdog": 37,
+    "scrapingbee": 32,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 48
+    "archive": 70
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-10T01:02:34.168Z",
+      "event": "bb-session",
+      "session": "2cd8a1f4",
+      "url": "https://www.trustpilot.com/review/www.londontheatredirect.com/product/affluenza-"
+    }
+  ]
 }

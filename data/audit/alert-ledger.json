@@ -12730,13 +12730,13 @@
       "title": "Unhandled CV.wrongProduction on From The Heart",
       "firstSeen": "2026-10-09T21:02:51.882Z",
       "incidentOpenedAt": "2026-10-09T21:02:51.882Z",
-      "lastSeen": "2026-10-09T23:44:41.519Z",
+      "lastSeen": "2026-10-10T00:57:21.061Z",
       "lastNotifiedAt": "2026-10-09T21:02:51.882Z",
       "lastSurfacedAt": "2026-10-09T21:02:51.882Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-publish-date-pre-opening:missing:from-the-heart-west-end-2026": {
       "status": "open",
@@ -12835,13 +12835,13 @@
       "title": "Pre-opening publishDate on From The Heart",
       "firstSeen": "2026-10-09T23:25:53.234Z",
       "incidentOpenedAt": "2026-10-09T23:25:53.234Z",
-      "lastSeen": "2026-10-09T23:44:41.526Z",
+      "lastSeen": "2026-10-10T00:57:22.551Z",
       "lastNotifiedAt": "2026-10-09T23:25:53.234Z",
       "lastSurfacedAt": "2026-10-09T23:25:53.234Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "broadcast-gate:checklist:from-the-heart-west-end-2026,rent-west-end-2026": {
       "status": "open",
@@ -12857,6 +12857,25 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 2
+    },
+    "test-yml:red:E2E Tests:192d3005": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Run unit tests — \"returns correct tier for tier 2 outlets\"",
+      "firstSeen": "2026-10-10T00:42:20.003Z",
+      "incidentOpenedAt": "2026-10-10T00:42:20.003Z",
+      "lastSeen": "2026-10-10T00:42:20.003Z",
+      "lastNotifiedAt": "2026-10-10T00:42:20.003Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4957",
+      "dispatch": {
+        "requestedAt": "2026-10-10T00:42:20.003Z",
+        "mode": "dispatch-at-filing",
+        "runId": "38009022090",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38009022090"
+      }
     }
   }
 }
