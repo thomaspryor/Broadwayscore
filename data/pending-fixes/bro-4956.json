@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4956",
   "planId": "b564e913-3019-4d1a-9160-42e390555584",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-10T09:30:00.000Z",
   "submitter": {
     "name": null,
@@ -185,5 +185,128 @@
         "description": "The Times on The Children (Lyric Hammersmith 2026): refused against a flagged junk Times file"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T02:43:59.858Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved blood-of-my-blood-west-end-2026/standard--nick-curtis.json → _superseded-misattributed/blood-of-my-blood-west-end-2026--standard--nick-curtis.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--dave-fargnoli.json wrongProductionReason: null -> \"prior production: Young Vic, May 2025 (this show is The Other Palace, Oct 2026)\""
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=an-oak-tree-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth --critic=\"Dave Fargnoli\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/londontheatre1--chris-omaweng.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/boxofficeradio--unknown.json publishDate: \"2024-07-09\" -> \"2026-10-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/boxofficeradio--unknown.json criticName: \"Unknown\" -> \"Paul Scott\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for rent-west-end-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/broadwaynews--brittani-samuel.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/broadwaynews--brittani-samuel.json isNonReviewReason: null -> \"review index page (broadwaynews.com/review/), not one critic's review (BRO-4956)\""
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-children-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-children-review-pitch-perfect-fallout-from-a-knock-at-the-door-h9cv5vwv2"
+    }
+  ]
 }
