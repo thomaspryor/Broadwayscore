@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { featureFlags } from '@/config/feature-flags';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -11,7 +12,6 @@ import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import AwardsCard from '@/components/AwardsCard';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
-import BoxOfficeScorecardV2 from '@/components/BoxOfficeScorecardV2';
 import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
@@ -45,6 +45,10 @@ import type { ShowRanks } from '@/lib/data-show-ranks';
 import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
+
+// BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
+// so the held feature's code and copy stay out of every show page's bundle.
+const BoxOfficeScorecardV2 = dynamic(() => import('@/components/BoxOfficeScorecardV2'));
 
 export interface ShowPageBelowFoldProps {
   // Narrowed to drop criticScore.reviews — this chunk (and WhereItRanks, which it
