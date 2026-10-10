@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T05:17:10.029Z",
+  "timestamp": "2026-10-10T05:40:04.610Z",
   "stats": {
-    "totalReviews": 53222,
-    "alreadyFlagged": 19588,
+    "totalReviews": 53380,
+    "alreadyFlagged": 19623,
     "dateGuardCatches": 258,
     "directorMismatch": 1637,
-    "tvFilmSignals": 1536,
-    "londonSignals": 1740,
+    "tvFilmSignals": 1539,
+    "londonSignals": 1754,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5858
+    "noPublishDate": 5869
   },
   "findings": [
     {
@@ -4414,6 +4414,20 @@
       ]
     },
     {
+      "showId": "blithe-spirit-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "score": 75,
+      "publishDate": "March 11th, 2020",
+      "url": "https://www.thetimes.co.uk/article/blithe-spirit-review-saunders-kicks-ass-as-madame-arcati-2x7283qhj",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 554d before show (March 11th, 2020 vs 2021-09-16)"
+        }
+      ]
+    },
+    {
       "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
       "score": 77,
@@ -4649,6 +4663,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "london-box-office--stuart-king.json",
+      "score": 60,
       "publishDate": null,
       "url": "https://www.londonboxoffice.co.uk/news/post/boys-from-the-blackstuff-review",
       "findings": [
@@ -4681,7 +4696,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "london-theatre--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": null,
       "url": "https://www.londontheatre.co.uk/reviews/boys-from-the-blackstuff-review-james-grahams-adaptation-is-filled-with-heart-national-theatre",
       "findings": [
@@ -4714,7 +4729,7 @@
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "thestage--sam-marlowe.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2024-05-30",
       "url": "https://www.thestage.co.uk/reviews/boys-from-the-blackstuff-review-olivier-theatre-national-theatre-london-alan-bleasdale-james-graham",
       "findings": [
@@ -8311,6 +8326,34 @@
       ]
     },
     {
+      "showId": "cruise-west-end-2022",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2022-08-18",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cruise-apollo-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "cruise-west-end-2022",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "score": null,
+      "publishDate": "2022-08-19",
+      "url": "https://everything-theatre.co.uk/2022/08/review-cruise-apollo-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
       "showId": "crybaby-2008",
       "file": "variety--charles-isherwood.json",
       "score": 45,
@@ -11399,7 +11442,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": null,
+      "score": 93,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-fawlty-towers-the-play-apollo-theatre",
       "findings": [
@@ -11441,7 +11484,7 @@
     {
       "showId": "fawlty-towers-west-end-2024",
       "file": "city-am--adam-bloodworth.json",
-      "score": null,
+      "score": 68,
       "publishDate": null,
       "url": "https://www.cityam.com/fawlty-towers-play-review-is-john-cleese-reboot-any-good/",
       "findings": [
@@ -43162,20 +43205,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -44285,6 +44314,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
+        }
+      ]
+    },
+    {
+      "showId": "under-milk-wood-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2021-06-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -47231,20 +47273,6 @@
     },
     {
       "showId": "a-number-west-end-2022",
-      "file": "artsdesk--matt-wolf.json",
-      "score": 91,
-      "publishDate": "2022-02-03",
-      "url": "https://theartsdesk.com/theatre/number-old-vic-review-revelatory-yet-again",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "a-number-west-end-2022",
       "file": "thereviewshub--scott-matthewman.json",
       "score": 90,
       "publishDate": "2022-02-02",
@@ -47501,6 +47529,84 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2021-06-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "theatrecat--libby-purves.json",
+      "publishDate": "2021-07-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2021-06-11",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "thestage--ava-wong-davies.json",
+      "publishDate": "2021-06-11",
+      "url": "https://www.thestage.co.uk/long-reviews/after-life",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2021-06-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "after-life-west-end-2021",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2021-06-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -52208,6 +52314,19 @@
       ]
     },
     {
+      "showId": "cruise-west-end-2022",
+      "file": "whatsonstage--tom-millward.json",
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/news/cruise-opening-night-what-would-your-one-person-west-end-show-be-about_57182/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "crybabies-the-scaring-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 86,
@@ -53054,6 +53173,71 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "file": "artsdesk--matt-wolf.json",
+      "publishDate": "2020-11-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2020-11-05",
+      "url": "https://www.theguardian.com/stage/2020/nov/05/death-of-england-delroy-review-olivier-national-theatre-london-roy-williams-clint-dyer",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "file": "thestage--dave-fargnoli.json",
+      "publishDate": "2020-11-05",
+      "url": "https://www.thestage.co.uk/long-reviews/death-of-england-delroy",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2020-11-05",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/death-of-england-delroy-review-a-commanding-physical-performance-9bl3ts3ln",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-delroy-west-end-2020",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2020-11-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -55472,7 +55656,7 @@
       "file": "london-theatre--marianka-swain.json",
       "score": 67,
       "publishDate": "2022-05-18",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/grease-dominion-theatre-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -60304,7 +60488,7 @@
       "showId": "life-of-pi-west-end-2021",
       "file": "shy-strange-manic--kariss-ainsworth.json",
       "score": null,
-      "publishDate": "2022-10-07",
+      "publishDate": "October 7th, 2022",
       "url": "https://shystrangemanic.com/2022/10/life-of-pi-at-the-wyndhams-theatre.html",
       "findings": [
         {
@@ -60540,19 +60724,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "machinal-west-end-2024",
-      "file": "london-box-office--stuart-king.json",
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/review-machinal-almeida",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -74385,6 +74556,45 @@
       ]
     },
     {
+      "showId": "under-milk-wood-west-end-2021",
+      "file": "independent--paul-taylor.json",
+      "publishDate": "2021-06-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "under-milk-wood-west-end-2021",
+      "file": "theatrecat--libby-purves.json",
+      "publishDate": "2021-07-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "under-milk-wood-west-end-2021",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2021-06-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "under-the-shadow-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 81,
@@ -74647,6 +74857,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "walden-west-end-2021",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2021-05-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
