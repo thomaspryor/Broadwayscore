@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T14:27:42.900Z",
+  "generatedAt": "2026-10-10T15:17:31.093Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -153,10 +153,6 @@
         },
         {
           "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -420,6 +416,112 @@
       ]
     },
     {
+      "id": "fences-off-west-end-2026",
+      "title": "Fences",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-09",
+      "status": "open",
+      "slug": "fences-off-west-end",
+      "thumbnail": "/images/shows/fences-off-west-end-2026/thumbnail.webp",
+      "siteScore": 78.1,
+      "liveScore": 78,
+      "scoreDrift": -0.09999999999999432,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 5,
+      "t1": 1,
+      "t2": 1,
+      "t3": 3,
+      "positive": 4,
+      "mixed": 0,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "5/8 total",
+          "T1:1/3",
+          "T2:1/2",
+          "hi-conf:4/6"
+        ],
+        "highConfidence": 4,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-10T15:17:31.093Z",
+          "rc": 5,
+          "s": 78.1,
+          "t1": 1,
+          "t2": 1,
+          "t3": 3,
+          "p": 4,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
       "id": "from-the-heart-west-end-2026",
       "title": "From The Heart",
       "market": "west-end",
@@ -672,10 +774,6 @@
         },
         {
           "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -1315,6 +1413,120 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ]
+    },
+    {
+      "id": "the-virtuous-burglar-off-west-end-2026",
+      "title": "The Virtuous Burglar",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-09",
+      "status": "open",
+      "slug": "the-virtuous-burglar-off-west-end",
+      "thumbnail": "/images/shows/the-virtuous-burglar-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 91,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 3,
+      "siteFileExists": true,
+      "total": 2,
+      "t1": 0,
+      "t2": 0,
+      "t3": 2,
+      "positive": 2,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "2/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:2/6"
+        ],
+        "highConfidence": 2,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-10T15:17:31.093Z",
+          "rc": 2,
+          "s": 91,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
