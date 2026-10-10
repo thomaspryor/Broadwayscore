@@ -1,50 +1,50 @@
 {
-  "runDate": "2026-10-10T05:10:32.768Z",
+  "runDate": "2026-10-10T05:25:04.531Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "life-of-pi-west-end-2021",
+    "showFilter": "cruise-west-end-2022",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
-    "failed": 2,
+    "processed": 13,
+    "failed": 4,
     "skipped": 0,
-    "successRate": "81.8%"
+    "successRate": "76.5%"
   },
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 2,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 9,
+    "tier1Attempts": 15,
+    "tier1Success": 12,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 2,
     "tier2Attempts": 1,
     "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 2,
+    "tier4Attempts": 3,
+    "tier4Success": 1,
+    "totalFailed": 4,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 9,
-    "failed": 2,
+    "processed": 13,
+    "failed": 4,
     "shows": [
-      "life-of-pi-west-end-2021"
+      "cruise-west-end-2022"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,60 +66,85 @@
     }
   },
   "processed": [
-    "life-of-pi-west-end-2021/all-that-dazzles-uk--unknown.json",
-    "life-of-pi-west-end-2021/artsdesk--rachel-halliburton.json",
-    "life-of-pi-west-end-2021/british-theatre--unknown.json",
-    "life-of-pi-west-end-2021/independent--annabel-nugent.json",
-    "life-of-pi-west-end-2021/london-box-office--miriam-gibson.json",
-    "life-of-pi-west-end-2021/london-box-office--stuart-king.json",
-    "life-of-pi-west-end-2021/londontheatre1--unknown.json",
-    "life-of-pi-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-    "life-of-pi-west-end-2021/times-uk--unknown.json"
+    "cruise-west-end-2022/observer--unknown.json",
+    "cruise-west-end-2022/all-that-dazzles-uk--unknown.json",
+    "cruise-west-end-2022/british-theatre--paul-t-davies.json",
+    "cruise-west-end-2022/consequence--unknown.json",
+    "cruise-west-end-2022/everything-theatre--unknown.json",
+    "cruise-west-end-2022/london-box-office--stuart-king.json",
+    "cruise-west-end-2022/london-theatre--matt-wolf.json",
+    "cruise-west-end-2022/micablackwell--unknown.json",
+    "cruise-west-end-2022/shy-strange-manic--kariss-ainsworth.json",
+    "cruise-west-end-2022/thestage--paul-vale.json",
+    "cruise-west-end-2022/times-uk--unknown.json",
+    "cruise-west-end-2022/whatsonstage--sarah-crompton.json",
+    "cruise-west-end-2022/whatsonstage--unknown.json"
   ],
   "failed": [
-    "life-of-pi-west-end-2021/i-paper--unknown.json",
-    "life-of-pi-west-end-2021/thestage--tim-bano.json"
+    "cruise-west-end-2022/city-am--adam-bloodworth.json",
+    "cruise-west-end-2022/liamodell--unknown.json",
+    "cruise-west-end-2022/standard--nick-curtis.json",
+    "cruise-west-end-2022/telegraph--dominic-cavendish.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "life-of-pi-west-end-2021/all-that-dazzles-uk--unknown.json",
-      "life-of-pi-west-end-2021/artsdesk--rachel-halliburton.json",
-      "life-of-pi-west-end-2021/british-theatre--unknown.json",
-      "life-of-pi-west-end-2021/independent--annabel-nugent.json",
-      "life-of-pi-west-end-2021/london-box-office--miriam-gibson.json",
-      "life-of-pi-west-end-2021/london-box-office--stuart-king.json",
-      "life-of-pi-west-end-2021/londontheatre1--unknown.json",
-      "life-of-pi-west-end-2021/shy-strange-manic--kariss-ainsworth.json",
-      "life-of-pi-west-end-2021/times-uk--unknown.json"
+      "cruise-west-end-2022/observer--unknown.json",
+      "cruise-west-end-2022/all-that-dazzles-uk--unknown.json",
+      "cruise-west-end-2022/british-theatre--paul-t-davies.json",
+      "cruise-west-end-2022/consequence--unknown.json",
+      "cruise-west-end-2022/everything-theatre--unknown.json",
+      "cruise-west-end-2022/london-box-office--stuart-king.json",
+      "cruise-west-end-2022/london-theatre--matt-wolf.json",
+      "cruise-west-end-2022/micablackwell--unknown.json",
+      "cruise-west-end-2022/shy-strange-manic--kariss-ainsworth.json",
+      "cruise-west-end-2022/thestage--paul-vale.json",
+      "cruise-west-end-2022/times-uk--unknown.json",
+      "cruise-west-end-2022/whatsonstage--sarah-crompton.json",
+      "cruise-west-end-2022/whatsonstage--unknown.json"
     ],
     "failed": [
-      "life-of-pi-west-end-2021/i-paper--unknown.json",
-      "life-of-pi-west-end-2021/thestage--tim-bano.json"
+      "cruise-west-end-2022/city-am--adam-bloodworth.json",
+      "cruise-west-end-2022/liamodell--unknown.json",
+      "cruise-west-end-2022/standard--nick-curtis.json",
+      "cruise-west-end-2022/telegraph--dominic-cavendish.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "life-of-pi-west-end-2021/all-that-dazzles-uk--unknown.json",
-      "life-of-pi-west-end-2021/artsdesk--rachel-halliburton.json",
-      "life-of-pi-west-end-2021/british-theatre--unknown.json",
-      "life-of-pi-west-end-2021/independent--annabel-nugent.json",
-      "life-of-pi-west-end-2021/london-box-office--miriam-gibson.json",
-      "life-of-pi-west-end-2021/london-box-office--stuart-king.json",
-      "life-of-pi-west-end-2021/londontheatre1--unknown.json"
+      "cruise-west-end-2022/observer--unknown.json",
+      "cruise-west-end-2022/all-that-dazzles-uk--unknown.json",
+      "cruise-west-end-2022/consequence--unknown.json",
+      "cruise-west-end-2022/everything-theatre--unknown.json",
+      "cruise-west-end-2022/london-box-office--stuart-king.json",
+      "cruise-west-end-2022/london-theatre--matt-wolf.json",
+      "cruise-west-end-2022/thestage--paul-vale.json",
+      "cruise-west-end-2022/whatsonstage--sarah-crompton.json",
+      "cruise-west-end-2022/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "life-of-pi-west-end-2021/shy-strange-manic--kariss-ainsworth.json"
+      "cruise-west-end-2022/micablackwell--unknown.json",
+      "cruise-west-end-2022/shy-strange-manic--kariss-ainsworth.json"
     ],
     "scrapingbee": [
-      "life-of-pi-west-end-2021/times-uk--unknown.json"
+      "cruise-west-end-2022/times-uk--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "cruise-west-end-2022/british-theatre--paul-t-davies.json"
+    ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
