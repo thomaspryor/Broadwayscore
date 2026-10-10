@@ -534,6 +534,8 @@ tests/unit/core-data-public-stage-exclusions.test.mjs
 tests/unit/core-data-sync-decision.test.mjs
 tests/unit/corpus-determinism.test.mjs
 tests/unit/corpus-scan-guard.test.mjs
+tests/unit/cost-for-week.test.mjs
+tests/unit/cost-history.test.mjs
 tests/unit/coverage-gap-alerts.test.mjs
 tests/unit/coverage-guard-wired.test.mjs
 tests/unit/coverage-holes-audit.test.mjs
@@ -731,6 +733,7 @@ tests/unit/ingest-review-url-blocklist.test.mjs
 tests/unit/initialize-commercial-stub.test.mjs
 tests/unit/input-builder-market-label.test.mjs
 tests/unit/intentional-clear-breadcrumb.test.mjs
+tests/unit/investor-return-model.test.mjs
 tests/unit/is-includable-for-rebuild.test.mjs
 tests/unit/is-likely-stale-roundup-flag.test.mjs
 tests/unit/is-likely-stale-suspected-misattribution.test.mjs
@@ -815,6 +818,7 @@ tests/unit/mobile-shows.test.mjs
 tests/unit/mobile-watchlist-delete-icon.test.mjs
 tests/unit/mobile-watchlist-grid-feedback.test.mjs
 tests/unit/model-default-guard.test.mjs
+tests/unit/model-return-v2.test.mjs
 tests/unit/model-table-single-source.test.mjs
 tests/unit/mount-flag-effect.test.mjs
 tests/unit/multi-critic-serp.test.mjs
