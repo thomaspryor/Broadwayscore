@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T19:08:52.672Z",
+  "timestamp": "2026-10-10T20:00:40.687Z",
   "stats": {
-    "totalReviews": 54532,
+    "totalReviews": 54564,
     "alreadyFlagged": 19941,
-    "dateGuardCatches": 271,
-    "directorMismatch": 1658,
+    "dateGuardCatches": 272,
+    "directorMismatch": 1659,
     "tvFilmSignals": 1522,
-    "londonSignals": 1799,
+    "londonSignals": 1798,
     "offBroadwaySignals": 504,
     "yearMismatch": 129,
-    "noPublishDate": 6161
+    "noPublishDate": 6191
   },
   "findings": [
     {
@@ -19614,6 +19614,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "lsbo--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.lsbo.co.uk/musical/into-the-woods",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
         }
       ]
     },
@@ -43533,6 +43547,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -47594,20 +47622,6 @@
       "score": 82,
       "publishDate": "2019-12-06",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-a-taste-of-honey",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "a-taste-of-honey-west-end-2019",
-      "file": "london-theatre--mark-shenton.json",
-      "score": 82,
-      "publishDate": "2022-01-25",
-      "url": "https://www.londontheatre.co.uk/reviews/review-a-taste-of-honey-at-trafalgar-studios",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
