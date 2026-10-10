@@ -1,60 +1,16 @@
 {
-  "generatedAt": "2026-10-10T16:32:00.357Z",
+  "generatedAt": "2026-10-10T16:50:06.212Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 232,
-  "clean": 224,
-  "defective": 8,
+  "clean": 227,
+  "defective": 5,
   "byType": {
-    "score-drift": 8,
-    "missing-from-prod": 2
+    "missing-from-prod": 2,
+    "score-drift": 5
   },
   "shows": [
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "title": "Into the Woods",
-      "openingDate": "2026-10-07",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: london-theatre-reviews"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.47 vs local 85.71 (Δ0.24)"
-        }
-      ],
-      "missingFromProd": [
-        "london-theatre-reviews"
-      ],
-      "localCount": 54,
-      "deployedCount": 53,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
-    },
-    {
-      "showId": "the-hungry-ghost-off-west-end-2026",
-      "title": "The Hungry Ghost",
-      "openingDate": "2026-10-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: sierz-co-uk"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.75 vs local 78.68 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [
-        "sierz-co-uk"
-      ],
-      "localCount": 21,
-      "deployedCount": 20,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
-    },
     {
       "showId": "fences-off-west-end-2026",
       "title": "Fences",
@@ -62,94 +18,90 @@
       "ok": false,
       "defects": [
         {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: guardian"
+        },
+        {
           "type": "score-drift",
-          "detail": "deployed cs 78.34 vs local 78.1 (Δ0.24)"
+          "detail": "deployed cs 81.34 vs local 78.1 (Δ3.24)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 5,
+      "missingFromProd": [
+        "guardian"
+      ],
+      "localCount": 6,
       "deployedCount": 6,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
     },
     {
-      "showId": "rent-west-end-2026",
-      "title": "Rent",
-      "openingDate": "2026-10-08",
+      "showId": "oh-mary-west-end-2025",
+      "title": "Oh, Mary!",
+      "openingDate": "2025-12-18",
       "ok": false,
       "defects": [
         {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
+        },
+        {
           "type": "score-drift",
-          "detail": "deployed cs 78.87 vs local 78.96 (Δ0.09)"
+          "detail": "deployed cs 75.78 vs local 75.35 (Δ0.43)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 29,
+      "missingFromProd": [
+        "broadwayworld"
+      ],
+      "localCount": 30,
       "deployedCount": 29,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
     },
     {
-      "showId": "franz-and-marie-west-end-2026",
-      "title": "Franz & Marie",
-      "openingDate": "2026-10-05",
+      "showId": "good-time-charlie-off-broadway-2026",
+      "title": "Good Time Charlie",
+      "openingDate": "2026-10-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.15 vs local 70.07 (Δ0.08)"
+          "detail": "deployed cs 76.74 vs local 77.7 (Δ0.96)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
+      "localCount": 9,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
     },
     {
-      "showId": "bull-off-west-end-2026",
-      "title": "Bull",
-      "openingDate": "2026-10-01",
+      "showId": "from-the-heart-west-end-2026",
+      "title": "From The Heart",
+      "openingDate": "2026-10-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 64.41 vs local 62.77 (Δ1.64)"
+          "detail": "deployed cs 82.5 vs local 82.57 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 19,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
+    },
+    {
+      "showId": "all-male-as-you-like-it-regional-2026",
+      "title": "As You Like It",
+      "openingDate": "2026-10-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.51 vs local 82.74 (Δ0.23)"
         }
       ],
       "missingFromProd": [],
       "localCount": 12,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "title": "Who’s Afraid of Virginia Woolf?",
-      "openingDate": "2026-09-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.43 vs local 85.32 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 35,
-      "deployedCount": 35,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
-    },
-    {
-      "showId": "the-standard-of-living-west-end-2026",
-      "title": "The Standard Of Living",
-      "openingDate": "2026-09-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.77 vs local 69.18 (Δ0.59)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30,
-      "firstDefectAt": "2026-10-10T16:31:56.587Z"
+      "deployedCount": 13,
+      "firstDefectAt": "2026-10-10T16:50:00.825Z"
     }
   ],
   "persistentDefective": 0,
