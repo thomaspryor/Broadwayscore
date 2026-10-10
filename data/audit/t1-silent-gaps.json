@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T01:35:08.400Z",
+  "generatedAt": "2026-10-10T06:36:38.952Z",
   "windowDays": 45,
   "showsScanned": 152,
   "gaps": [
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-09-29T06:59:42.774Z",
-      "fileAgeHours": 258.5712702777778,
+      "fileAgeHours": 263.6140702777778,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 240.4756663888889
+      "nonTerminalAgeHours": 245.50082
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -34,9 +34,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T11:13:40.183Z",
-      "fileAgeHours": 230.3387575,
+      "fileAgeHours": 235.38157555555554,
       "gapSeenAt": "2026-09-30T14:36:19.168Z",
-      "nonTerminalAgeHours": 226.98034194444443
+      "nonTerminalAgeHours": 232.00549555555557
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -51,29 +51,26 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654389 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-08T17:44:48.110Z",
-      "fileAgeHours": 31.81988888888889,
+      "fileAgeHours": 36.86270722222222,
       "gapSeenAt": "2026-10-08T22:46:44.413Z",
-      "nonTerminalAgeHours": 26.806662777777778
+      "nonTerminalAgeHours": 31.83181638888889
     },
     {
-      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "title": "The Hairy Ape",
-      "openingDate": "2026-10-04",
-      "file": "wsj--charles-isherwood.json",
-      "outletId": "wsj",
+      "showId": "golden-boy-off-west-end-2026",
+      "title": "Golden Boy",
+      "openingDate": "2026-09-15",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
       "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.wsj.com/articles/the-hairy-ape-review-a-drama-of-dehumanization-at-irish-rep-c7bded03",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  ScrapingBee failed (render_js=false, domain="
-      },
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing",
+      "recovery": null,
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-hairy-ape-irish-repertory-theatre-off-broadway-2026 --url=https://www.wsj.com/articles/the-hairy-ape-review-a-drama-of-dehumanization-at-irish-rep-c7bded03 --outlet=wsj --critic=\"Charles Isherwood\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-09T17:18:59.763Z",
-      "fileAgeHours": 8.268585833333333,
-      "gapSeenAt": "2026-10-10T01:35:08.399Z",
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
+      "firstSeen": "2026-09-22T16:40:31.606Z",
+      "fileAgeHours": 421.9343391666667,
+      "gapSeenAt": "2026-10-10T06:36:38.952Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -89,9 +86,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:34:19.900Z",
-      "fileAgeHours": 244.01316472222223,
+      "fileAgeHours": 249.03763444444445,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 240.4756663888889
+      "nonTerminalAgeHours": 245.50082
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -109,27 +106,9 @@
       "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ --outlet=tennessean   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:40:48.734Z",
-      "fileAgeHours": 243.90515527777777,
+      "fileAgeHours": 248.92962527777777,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 240.4756663888889
-    },
-    {
-      "showId": "the-secret-circus-musical-off-broadway-2026",
-      "title": "The Secret Circus Musical",
-      "openingDate": "2026-09-26",
-      "file": "broadwayworld--unknown.json",
-      "outletId": "broadwayworld",
-      "tier": 2,
-      "type": "unscored",
-      "dispatchable": true,
-      "url": "https://www.broadwayworld.com/off-off-broadway/regional/The-Secret-Circus-Musical-4401274",
-      "recovery": null,
-      "recoveryCount": 0,
-      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-secret-circus-musical-off-broadway-2026",
-      "firstSeen": "2026-09-27T01:33:21.008Z",
-      "fileAgeHours": 312.02958027777777,
-      "gapSeenAt": "2026-10-10T01:35:08.399Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 245.50082
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -144,9 +123,27 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 322.6774497222222,
+      "fileAgeHours": 327.7019002777778,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 319.8608688888889
+      "nonTerminalAgeHours": 324.8860225
+    },
+    {
+      "showId": "million-dollar-quartet-off-west-end-2026",
+      "title": "Million Dollar Quartet",
+      "openingDate": "2026-09-14",
+      "file": "broadwayworld--michael-major.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.broadwayworld.com/westend/article/Video-MILLION-DOLLAR-QUARTET-Trailer-Released-Ahead-of-2026-London-Return-20260909",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
+      "firstSeen": "2026-09-17T08:13:24.884Z",
+      "fileAgeHours": 550.3863355555555,
+      "gapSeenAt": "2026-10-10T06:36:38.952Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "burning-leaves-off-broadway-2026",
@@ -162,9 +159,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
       "firstSeen": "2026-09-30T14:32:12.902Z",
-      "fileAgeHours": 227.048665,
+      "fileAgeHours": 232.07311416666667,
       "gapSeenAt": "2026-10-01T02:44:11.346Z",
-      "nonTerminalAgeHours": 214.8491813888889
+      "nonTerminalAgeHours": 219.874335
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -179,9 +176,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 201.7263513888889,
+      "fileAgeHours": 206.7508013888889,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 200.4216438888889
+      "nonTerminalAgeHours": 205.4467975
     },
     {
       "showId": "the-visit-regional-2026",
@@ -196,9 +193,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-visit-regional-2026 --url=https://www.curtainup.com/visitwtf14.html --outlet=curtainup   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-02T06:13:33.238Z",
-      "fileAgeHours": 187.35974833333333,
+      "fileAgeHours": 192.38419777777779,
       "gapSeenAt": "2026-10-02T09:21:24.837Z",
-      "nonTerminalAgeHours": 184.22876722222222
+      "nonTerminalAgeHours": 189.25392083333332
     }
   ],
   "contradictions": []
