@@ -971,19 +971,10 @@
       "aliases": [
         "dctheatrescene",
         "dc theatre scene",
-        "dc-theatre-scene",
-        "dcmetro",
-        "dc-metro",
-        "dc metro theatre arts",
-        "dcmetrotheatrearts",
-        "d-c-metro",
-        "dc-metro-theatre-arts"
+        "dc-theatre-scene"
       ],
       "domain": "dctheatrescene.com",
-      "accessModel": "free",
-      "domainAliases": [
-        "dcmetrotheaterarts.com"
-      ]
+      "accessModel": "free"
     },
     "ny1": {
       "displayName": "NY1",
@@ -1228,21 +1219,6 @@
       ],
       "defaultCritic": "Janice C. Simpson"
     },
-    "gotham-playgoer": {
-      "displayName": "Gotham Playgoer",
-      "tier": 4,
-      "aliases": [
-        "gotham-playgoer",
-        "gotham playgoer"
-      ],
-      "domain": "bobs-theater-blog.blogspot.com",
-      "accessModel": "free",
-      "domainAliases": [
-        "gothamplaygoer.com",
-        "gotham-playgoer.blogspot.com"
-      ],
-      "defaultCritic": "Robert Sholiton"
-    },
     "medium": {
       "displayName": "Medium",
       "tier": 3,
@@ -1377,11 +1353,23 @@
       "aliases": [
         "dc-theater-arts",
         "dc theater arts",
-        "dctheaterarts"
+        "dctheaterarts",
+        "dcmetro",
+        "dc-metro",
+        "dc metro theatre arts",
+        "dcmetrotheatrearts",
+        "d-c-metro",
+        "dc-metro-theatre-arts",
+        "dc-metro-theater-arts",
+        "dc metro theater arts",
+        "dcmetrotheaterarts"
       ],
       "domain": "dctheaterarts.org",
       "accessModel": "free",
-      "defaultCritic": "Deb Miller"
+      "defaultCritic": "Deb Miller",
+      "domainAliases": [
+        "dcmetrotheaterarts.com"
+      ]
     },
     "the-interested-bystander": {
       "displayName": "The Interested Bystander",
@@ -1768,11 +1756,15 @@
       "aliases": [
         "bobs-theater-blog",
         "bob's theater blog",
-        "bobs theater blog"
+        "bobs theater blog",
+        "gotham-playgoer",
+        "gotham playgoer"
       ],
       "domain": "bobstheaterblog.com",
       "domainAliases": [
-        "bobs-theater-blog.blogspot.com"
+        "bobs-theater-blog.blogspot.com",
+        "gothamplaygoer.com",
+        "gotham-playgoer.blogspot.com"
       ],
       "accessModel": "free",
       "defaultCritic": "Robert Sholiton"
@@ -8716,11 +8708,6 @@
       "tier": 4,
       "domain": "afridiziak.com"
     },
-    "dc-metro-theater-arts": {
-      "displayName": "DC Metro Theater Arts",
-      "domain": "dcmetrotheaterarts.com",
-      "tier": 3
-    },
     "huron-daily": {
       "displayName": "Huron Daily Tribune",
       "domain": "michigansthumb.com",
@@ -12369,7 +12356,7 @@
     "the-new-york-sun": "new-york-sun",
     "ny-sun": "new-york-sun",
     "nysun": "new-york-sun",
-    "dcmetro": "dctheatrescene",
+    "dcmetro": "dc-theater-arts",
     "njcom-star-ledger": "njcom",
     "ny-1": "ny1",
     "the-philadelphia-inquirer": "philadelphia-inquirer",
@@ -12458,7 +12445,7 @@
     "the-mirror": "mirror",
     "the-new-zealand-herald": "nz-herald",
     "the-detroit-news": "detroit-news",
-    "dc-metro": "dctheatrescene",
+    "dc-metro": "dc-theater-arts",
     "newyorkmagazine": "vulture",
     "sf-gate": "sfgate",
     "rogerebertcom": "roger-ebert",
@@ -13006,8 +12993,12 @@
     "theatrevillage": "theatre-village",
     "classical-source": "classical-source",
     "classicalsource": "classical-source",
-    "indiependent": "indiependent"
+    "indiependent": "indiependent",
+    "gotham-playgoer": "bobs-theater-blog",
+    "gotham playgoer": "bobs-theater-blog",
+    "dc-metro-theater-arts": "dc-theater-arts",
+    "dc metro theater arts": "dc-theater-arts"
   },
   "lastUpdated": "2026-09-30T04:38:59.859Z",
-  "lastChange": "2026-09-30T04:38:59.860Z"
+  "lastChange": "BRO-4947: DC Metro Theater Arts (dcmetrotheaterarts.com) is DC Theater Arts, not DC Theatre Scene; dc-metro-theater-arts merged into dc-theater-arts; gotham-playgoer merged into bobs-theater-blog"
 }
