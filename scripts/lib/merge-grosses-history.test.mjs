@@ -25,6 +25,14 @@ test('mergeGrossesHistory: ours wins on a shared week+slug', () => {
   assert.equal(merged.weeks['2026-01-04'].a.gross, 111);
 });
 
+test('mergeGrossesHistory: unions published weekTotals, ours wins per week (BRO-4988)', () => {
+  const ours = { _meta: { lastUpdated: '2026-10-06T00:00:00Z', weekTotals: { '2026-10-04': { gross: 1, showCount: 30 } } }, weeks: {} };
+  const remote = { _meta: { lastUpdated: '2026-10-07T00:00:00Z', weekTotals: { '2026-10-04': { gross: 9, showCount: 9 }, '2026-09-27': { gross: 2, showCount: 29 } } }, weeks: {} };
+  const { merged } = mergeGrossesHistory(ours, remote);
+  assert.deepEqual(merged._meta.weekTotals, { '2026-10-04': { gross: 1, showCount: 30 }, '2026-09-27': { gross: 2, showCount: 29 } });
+  assert.equal(merged._meta.lastUpdated, '2026-10-07T00:00:00Z');
+});
+
 test('mergeGrossesHistory: keeps a local-only week untouched', () => {
   const ours = { weeks: { '2026-01-04': { a: { gross: 1 } } } };
   const remote = { weeks: {} };

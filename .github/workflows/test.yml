@@ -42,6 +42,8 @@ on:
       # BRO-2809: P0 score-integrity gate + its manifest-registered test.
       - 'scripts/check-score-integrity.js'
       - 'scripts/check-score-integrity.test.mjs'
+      # BRO-4988: weekly grosses integrity runner, tested by tests/unit/grosses-integrity.test.mjs.
+      - 'scripts/check-grosses-integrity.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
       - 'scripts/check-workflow-run-status.js'
       - 'scripts/check-workflow-run-status.test.mjs'
