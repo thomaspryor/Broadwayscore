@@ -1080,5 +1080,29 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T11:40:07.011Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-rent-west-end-2026",
+    "title": "Review URL cross-show mismatch on Rent",
+    "description": "Review URL for london-theatre-reviews/Ltr does not mention show slug (checked: rent-west-end, rent): https://www.londontheatrereviews.co.uk/post.cfm?p=29336",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T11:54:24.143Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:from-the-heart-west-end-2026",
+    "title": "Auto-remediation gave up on from-the-heart-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"from-the-heart-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T11:54:25.055Z"
   }
 ]
