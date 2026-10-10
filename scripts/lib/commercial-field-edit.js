@@ -5,7 +5,9 @@
 // (merge-commercial-data.js) keeps whichever record has the newer
 // lastUpdated, and a correction that left it unchanged tied with a
 // concurrent writer's stale copy and lost (BRO-4657: Lucky Guy's approved
-// fix was reverted by Commercial Friday Refresh on 2026-10-05).
+// fix was reverted by Commercial Friday Refresh on 2026-10-05). The write
+// guard now stamps every content change (commercial-record-stamp.js,
+// BRO-5005); this explicit stamp stays for callers that save another way.
 function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, now = new Date().toISOString()) {
   const record = commercial && commercial.shows && commercial.shows[slug];
   if (!record) return { ok: false, reason: `No commercial entry for "${slug}"` };
