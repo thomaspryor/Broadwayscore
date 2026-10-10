@@ -20,7 +20,7 @@ import type {
 } from './data-types';
 import type { CommercialDesignation, RecoupmentTrend } from '@/config/commercial';
 import { getDesignationSortOrder } from '@/config/commercial';
-import { getShowGrosses } from './data-grosses';
+import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
   computeGrossTrend,
@@ -43,6 +43,7 @@ import {
   isEstimatedRunningCost,
   getNonprofitProducer,
   getCitedSourceUrl,
+  meetsModelQualityFloor,
 } from './commercial-display';
 import {
   computeMarketMedianByWeek,
@@ -50,6 +51,7 @@ import {
   countStatuses,
   makeStaticCostProvider,
   reconcileWithAtRisk,
+  staleInputReasons,
   type CostProvider,
   type ShowBoxOfficeStatus,
   type WeekRow,
@@ -697,6 +699,26 @@ export interface ShowBoxOfficeV2 extends ShowBoxOfficeStatus {
   nonprofitOrg: string | null;
   /** Final designation for a closed show (links to the Commercial Scorecard), else null. */
   designation: CommercialDesignation | null;
+  /** Why a show has no usable cost (availability 'nocost' only), for the build report. */
+  noCostReason: string | null;
+}
+
+/**
+ * The one "is this cost an estimate" answer the v2 card uses, for BOTH its
+ * Reported/Estimate label and its range width (costHalfWidth), so they cannot
+ * disagree. Same rule as the existing "~" marker (isEstimatedRunningCost).
+ */
+export function isV2CostEstimate(data: ShowCommercial): boolean {
+  return isEstimatedRunningCost(data);
+}
+
+/** Why getBreakEven returns null for a record (null when it has a cost). */
+export function noCostReason(data: ShowCommercial): string | null {
+  if (getBreakEven(data) != null) return null;
+  if (data.modelBreakeven && !meetsModelQualityFloor(data)) {
+    return `no weekly cost on file; model break-even rejected by the quality floor (${data.modelDataQuality === 'low' ? 'low data quality' : `method ${data.modelMethod}`})`;
+  }
+  return 'no weekly cost or model break-even on file';
 }
 
 /** Market weeks the typical-show median covers (today's cost figures are wrong for older eras). */
@@ -752,7 +774,9 @@ function getBoxOfficeV2Context(): BoxOfficeV2Context {
   if (boxOfficeV2Context) return boxOfficeV2Context;
   const cost = makeStaticCostProvider((slug) => {
     const data = commercial.shows[slug];
-    return data ? { breakEven: getBreakEven(data), costMethodology: data.costMethodology ?? null } : null;
+    return data
+      ? { breakEven: getBreakEven(data), costMethodology: data.costMethodology ?? null, estimated: isV2CostEstimate(data) }
+      : null;
   });
   const recent = new Set(WEEK_KEYS_NEWEST_FIRST.slice(0, MARKET_MEDIAN_WEEKS));
   const shows: Array<{ showId: string; nonprofit: boolean; weeks: WeekRow[] }> = [];
@@ -765,8 +789,30 @@ function getBoxOfficeV2Context(): BoxOfficeV2Context {
   return boxOfficeV2Context;
 }
 
-/** Status for one Broadway show, or null when it has no commercial record or no grosses. */
+let staleInputs: string[] | null = null;
+
+/**
+ * Stale-input reasons for this build (memoized). Non-empty means every v2
+ * getter returns nothing and the build logs a loud error, so old inputs can
+ * never publish statuses.
+ */
+export function getBoxOfficeV2StaleReasons(today: string = new Date().toISOString().slice(0, 10)): string[] {
+  if (staleInputs) return staleInputs;
+  staleInputs = staleInputReasons({
+    historyNewestWeek: WEEK_KEYS_NEWEST_FIRST[0] ?? null,
+    grossesWeekEnding: getGrossesWeekEnding() ?? null,
+    commercialUpdated: commercial._meta?.lastUpdated ?? null,
+    today,
+  });
+  if (staleInputs.length) {
+    console.error(`[box-office-v2] STALE INPUTS, no statuses published this build: ${staleInputs.join('; ')}`);
+  }
+  return staleInputs;
+}
+
+/** Status for one Broadway show, or null when it has no commercial record or no grosses (or inputs are stale). */
 export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
+  if (getBoxOfficeV2StaleReasons().length) return null;
   const data = commercial.shows[slug];
   const show = rawShows.find((s) => s.slug === slug);
   if (!data || !show || show.category !== 'broadway') return null;
@@ -792,7 +838,7 @@ export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
   });
   status.band = reconcileWithAtRisk(status.band, atRisk);
   const hasCost = status.breakEven != null;
-  const reportedCost = hasCost && !isEstimatedRunningCost(data);
+  const reportedCost = hasCost && !isV2CostEstimate(data);
   return {
     ...status,
     title: show.title,
@@ -802,6 +848,7 @@ export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
     costSourceUrl: reportedCost ? getCitedSourceUrl(data.sources) : null,
     nonprofitOrg: getNonprofitProducer(data),
     designation: show.status === 'closed' && data.designation && data.designation !== 'TBD' ? data.designation : null,
+    noCostReason: status.availability === 'nocost' ? noCostReason(data) : null,
   };
 }
 

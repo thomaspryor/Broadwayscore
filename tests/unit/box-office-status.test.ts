@@ -34,6 +34,9 @@ import {
   countStatuses,
   COST_METHOD_HALF_WIDTH,
   DEFAULT_COST_HALF_WIDTH,
+  MIN_ESTIMATE_HALF_WIDTH,
+  staleInputReasons,
+  MAX_GROSSES_AGE_DAYS,
   SEASON_VIEW_MIN_WEEKS,
   type CostProvider,
   type WeekRow,
@@ -88,26 +91,29 @@ test('every costMethodology value in commercial.json maps to a range width', () 
   assert.ok(values.size >= 3, 'expected several costMethodology values; update this test');
   for (const v of Array.from(values)) {
     if (v == null) {
-      assert.equal(costHalfWidth(v), DEFAULT_COST_HALF_WIDTH, 'missing methodology gets the widest range');
+      assert.equal(costHalfWidth(v, false), DEFAULT_COST_HALF_WIDTH, 'missing methodology gets the widest range');
       continue;
     }
     assert.ok(v in COST_METHOD_HALF_WIDTH, `costMethodology "${v}" has no range width in COST_METHOD_HALF_WIDTH`);
   }
-  assert.equal(costHalfWidth('trade-reported'), 0.05);
-  assert.equal(costHalfWidth('sec-filing'), 0.05);
-  assert.equal(costHalfWidth('producer-confirmed'), 0.05);
-  assert.equal(costHalfWidth('reddit-standard'), 0.15);
-  assert.equal(costHalfWidth('industry-estimate'), 0.2);
-  assert.equal(costHalfWidth('deep-research'), 0.2);
+  assert.equal(costHalfWidth('trade-reported', false), 0.05);
+  assert.equal(costHalfWidth('sec-filing', false), 0.05);
+  assert.equal(costHalfWidth('producer-confirmed', false), 0.05);
+  assert.equal(costHalfWidth('reddit-standard', false), 0.15);
+  assert.equal(costHalfWidth('industry-estimate', false), 0.2);
+  assert.equal(costHalfWidth('deep-research', false), 0.2);
 });
 
 test('estimated cost methods never get the reported (narrowest) width', () => {
-  for (const m of Array.from(ESTIMATED_COST_METHODS)) assert.ok(costHalfWidth(m) >= 0.15, m);
+  for (const m of Array.from(ESTIMATED_COST_METHODS)) assert.ok(costHalfWidth(m, true) >= MIN_ESTIMATE_HALF_WIDTH, m);
+  // An uncited or flagged "trade-reported" figure reads Estimate, so it cannot keep the 5% width.
+  assert.equal(costHalfWidth('trade-reported', true), DEFAULT_COST_HALF_WIDTH);
+  assert.equal(costHalfWidth('producer-confirmed', true), DEFAULT_COST_HALF_WIDTH);
 });
 
 test('static provider: no break-even means no cost; quality follows width', () => {
   const p = makeStaticCostProvider((id) =>
-    ({ a: { breakEven: 500_000, costMethodology: 'trade-reported' }, b: { breakEven: null }, c: { breakEven: 400_000, costMethodology: 'reddit-standard' } } as Record<string, any>)[id]);
+    ({ a: { breakEven: 500_000, costMethodology: 'trade-reported', estimated: false }, b: { breakEven: null, estimated: true }, c: { breakEven: 400_000, costMethodology: 'reddit-standard', estimated: true } } as Record<string, any>)[id]);
   assert.equal(p('b', '2026-01-04'), null);
   assert.equal(p('zzz', '2026-01-04'), null);
   const a = p('a', '2026-01-04');
@@ -297,4 +303,39 @@ test('real data: a closed show with a short run gets a weekly whole-run summary'
   assert.equal(t.availability, 'closed');
   assert.equal(t.closedRun?.granularity, 'weekly');
   assert.ok((t.closedRun?.weeksWithCost ?? 0) > 0);
+});
+
+// ---------------------------------------------------------------- label and width agree
+
+test('real data: the Reported/Estimate label and the range width come from one flag', () => {
+  const rows = getRunningBoxOfficeV2().filter((r) => r.multiple && r.costBasis);
+  assert.ok(rows.length >= 10, 'expected statuses for most running shows');
+  for (const r of rows) {
+    const hw = r.multiple!.mid / r.multiple!.lo - 1;
+    if (r.costBasis === 'reported') assert.ok(hw <= 0.05 + 1e-6, `${r.slug}: Reported but range ±${hw.toFixed(3)}`);
+    else assert.ok(hw >= MIN_ESTIMATE_HALF_WIDTH - 1e-6, `${r.slug}: Estimate but range only ±${hw.toFixed(3)}`);
+  }
+});
+
+// ---------------------------------------------------------------- stale inputs
+
+const fresh = { historyNewestWeek: '2026-10-04', grossesWeekEnding: '10/4/2026', commercialUpdated: '2026-10-10T19:15:08Z', today: '2026-10-10' };
+
+test('staleInputReasons: current inputs are fresh', () => {
+  assert.deepEqual(staleInputReasons(fresh), []);
+  assert.deepEqual(staleInputReasons({ ...fresh, today: '2026-10-14' }), [], 'Wednesday before the retry is still fresh');
+});
+
+test('staleInputReasons: the Phase 1 inputs (newest week 2026-09-27 on 10-10) are stale', () => {
+  const r = staleInputReasons({ historyNewestWeek: '2026-09-27', grossesWeekEnding: '9/27/2026', commercialUpdated: '2026-10-05T00:00:00Z', today: '2026-10-10' });
+  assert.equal(r.length, 1);
+  assert.match(r[0], /13 days old/);
+  assert.equal(staleInputReasons({ ...fresh, today: '2026-10-15' }).length, 1, `${MAX_GROSSES_AGE_DAYS + 1} days is stale`);
+});
+
+test('staleInputReasons: mismatched grosses files and old commercial data are stale', () => {
+  assert.match(staleInputReasons({ ...fresh, grossesWeekEnding: '9/27/2026' })[0], /does not match/);
+  assert.match(staleInputReasons({ ...fresh, commercialUpdated: '2026-09-01T00:00:00Z' })[0], /commercial\.json updated 2026-09-01/);
+  assert.match(staleInputReasons({ ...fresh, commercialUpdated: null })[0], /no _meta\.lastUpdated/);
+  assert.deepEqual(staleInputReasons({ ...fresh, historyNewestWeek: null }), ['grosses-history.json has no weeks']);
 });

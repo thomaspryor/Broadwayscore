@@ -51,9 +51,20 @@ export const COST_METHOD_HALF_WIDTH: Readonly<Record<string, number>> = {
   'deep-research': 0.2,
 };
 export const DEFAULT_COST_HALF_WIDTH = 0.2;
+/** Narrowest width any cost the card labels "Estimate" can get. */
+export const MIN_ESTIMATE_HALF_WIDTH = 0.15;
 
-export function costHalfWidth(costMethodology: string | null | undefined): number {
-  return (costMethodology && COST_METHOD_HALF_WIDTH[costMethodology]) || DEFAULT_COST_HALF_WIDTH;
+/**
+ * Range half-width for a cost. `estimated` is the same flag that picks the
+ * card's "Reported"/"Estimate" label (isEstimatedRunningCost), so the two can
+ * never disagree: a reported cost gets its method's width, an estimate never
+ * narrower than MIN_ESTIMATE_HALF_WIDTH (an uncited "trade-reported" figure
+ * reads Estimate and gets the default width).
+ */
+export function costHalfWidth(costMethodology: string | null | undefined, estimated: boolean): number {
+  const byMethod = (costMethodology && COST_METHOD_HALF_WIDTH[costMethodology]) || DEFAULT_COST_HALF_WIDTH;
+  if (!estimated) return byMethod;
+  return byMethod >= MIN_ESTIMATE_HALF_WIDTH ? byMethod : DEFAULT_COST_HALF_WIDTH;
 }
 
 /** Same bands as costForWeek's qualityFor(). */
@@ -69,13 +80,13 @@ export function qualityForHalfWidth(halfWidth: number): CostQuality {
  * costMethodology. Swapping in costForWeek later happens behind a shadow diff.
  */
 export function makeStaticCostProvider(
-  lookup: (showId: string) => { breakEven: number | null; costMethodology?: string | null } | null | undefined,
+  lookup: (showId: string) => { breakEven: number | null; costMethodology?: string | null; estimated: boolean } | null | undefined,
 ): CostProvider {
   return (showId) => {
     const rec = lookup(showId);
     const be = rec?.breakEven;
     if (!rec || be == null || !(be > 0)) return null;
-    const hw = costHalfWidth(rec.costMethodology);
+    const hw = costHalfWidth(rec.costMethodology, rec.estimated);
     return { cost: be, breakEven: be, low: be * (1 - hw), high: be * (1 + hw), quality: qualityForHalfWidth(hw) };
   };
 }
@@ -521,4 +532,54 @@ export function countStatuses(statuses: Array<Pick<ShowBoxOfficeStatus, 'availab
     counts[k] = (counts[k] ?? 0) + 1;
   }
   return counts;
+}
+
+// ---------------------------------------------------------------------------
+// Input freshness. A build reading an old grosses-history or commercial.json
+// (a stale local clone, a half-synced checkout) must not publish statuses: the
+// Phase 1 table was computed on 6-day-old inputs and every number moved.
+
+/** A week ending Sunday S is published by Tuesday S+2; this allows a missed Tuesday + Wednesday retry. */
+export const MAX_GROSSES_AGE_DAYS = 10;
+/** commercial.json is refreshed weekly; older than this relative to the newest grosses week is stale. */
+export const MAX_COMMERCIAL_LAG_DAYS = 14;
+
+export interface FreshnessInput {
+  /** Newest week key in grosses-history.json (YYYY-MM-DD). */
+  historyNewestWeek: string | null;
+  /** grosses.json weekEnding (M/D/YYYY as stored). */
+  grossesWeekEnding: string | null;
+  /** commercial.json _meta.lastUpdated (ISO). */
+  commercialUpdated: string | null;
+  /** Build date (YYYY-MM-DD). */
+  today: string;
+}
+
+function mdyToIso(mdy: string | null): string | null {
+  const m = mdy?.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  return m ? `${m[3]}-${m[1].padStart(2, '0')}-${m[2].padStart(2, '0')}` : null;
+}
+
+/** Empty list = fresh. Each entry says what is stale and by how much. */
+export function staleInputReasons(input: FreshnessInput): string[] {
+  const reasons: string[] = [];
+  const newest = input.historyNewestWeek;
+  if (!newest) return ['grosses-history.json has no weeks'];
+  const age = daysBetween(newest, input.today);
+  if (age > MAX_GROSSES_AGE_DAYS) {
+    reasons.push(`newest grosses week ${newest} is ${age} days old (max ${MAX_GROSSES_AGE_DAYS})`);
+  }
+  const current = mdyToIso(input.grossesWeekEnding);
+  if (current && current !== newest) {
+    reasons.push(`grosses.json week ${current} does not match grosses-history.json newest week ${newest}`);
+  }
+  if (!input.commercialUpdated) {
+    reasons.push('commercial.json has no _meta.lastUpdated');
+  } else {
+    const lag = daysBetween(input.commercialUpdated.slice(0, 10), newest);
+    if (lag > MAX_COMMERCIAL_LAG_DAYS) {
+      reasons.push(`commercial.json updated ${input.commercialUpdated.slice(0, 10)}, ${lag} days before the newest grosses week`);
+    }
+  }
+  return reasons;
 }
