@@ -1454,7 +1454,7 @@ resolve_conflicts() {
         # BRO-257: 12+ independent workflows call queueDigestLine() and push
         # through this file (data-health-check.yml, scrape-new-aggregators.yml,
         # process-feedback.yml, audit-aggregator-gap.yml, check-arm-yield.yml,
-        # weekly-affiliate-report.yml, promote-we-aggregator.yml,
+        # affiliate-link-integrity.yml, promote-we-aggregator.yml,
         # opening-night-broadcast.yml, ...). Unlike the per-run-independent
         # audit/ logs in the generic arm below, this queue accumulates lines
         # across runs — a whole-file keep-local here would silently drop

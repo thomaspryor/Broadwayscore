@@ -146,6 +146,17 @@ jobs:
             # cadence/cushion used for enrich-west-end-dates.yml below.
             "update-lottery-rush.yml|110|Update Lottery/Rush"
             "weekly-grosses.yml|192|Weekly Grosses"
+            # Monday 13:00 UTC owner revenue email (the site's only revenue
+            # report). BRO-4951: the 2026-10-05 run's job never got a runner
+            # and was cancelled, so no email and no notify-failure; this
+            # workflow was exempt, so nothing noticed. A stale run self-heals
+            # by redispatch: the email arrives 2-3 days late, and since the
+            # report is a rolling 7 days back from send time, a day or two
+            # before that window go unreported that week. 192h = weekly cadence
+            # + 24h cron-lag cushion (observed runs land up to ~8h late).
+            # Watchable only since its link-integrity job moved to its own
+            # workflow: a success now means the email was delivered.
+            "weekly-affiliate-report.yml|192|Weekly Affiliate Report"
             "weekly-video-reviews.yml|192|Weekly Video Reviews"
             "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
             "outlet-listing-poller.yml|25|Outlet Listing Poller"
@@ -290,16 +301,21 @@ jobs:
           QUERY_FAILED=""
           NOW=$(date +%s)
 
-          # Fetch state for every workflow in the repo (two pages cover ~200 workflows).
-          # A workflow in `disabled_manually` keeps emitting cancelled scheduled runs that
-          # *look* recent to a plain `gh run list` — the May 2026 orchestrator outage went
-          # undetected for ~2.5 days because of this. Querying state directly catches it
-          # within one check-cron-health cycle.
+          # Fetch state for every workflow in the repo. A workflow in `disabled_manually`
+          # keeps emitting cancelled scheduled runs that *look* recent to a plain
+          # `gh run list` — the May 2026 orchestrator outage went undetected for ~2.5
+          # days because of this. Querying state directly catches it within one
+          # check-cron-health cycle. Pages until one comes back short (BRO-4951: this
+          # read a fixed two pages = 200 workflows while the repo had 270, so every
+          # workflow past the 200th silently skipped the state check).
           WF_STATES=$(
-            gh api "repos/$GITHUB_REPOSITORY/actions/workflows?per_page=100&page=1" \
-              --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null;
-            gh api "repos/$GITHUB_REPOSITORY/actions/workflows?per_page=100&page=2" \
-              --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null
+            for page in 1 2 3 4 5 6 7 8 9 10; do
+              PAGE_ROWS=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows?per_page=100&page=${page}" \
+                --jq '.workflows[] | "\(.path | split("/") | last)|\(.state)"' 2>/dev/null) || break
+              [ -n "$PAGE_ROWS" ] && printf '%s\n' "$PAGE_ROWS"
+              [ "$(printf '%s' "$PAGE_ROWS" | grep -c .)" -lt 100 ] && break
+            done
+            true  # loop status must not trip bash -e on the assignment
           )
 
           # friendly_name → workflow file, for self-heal redispatch below.
