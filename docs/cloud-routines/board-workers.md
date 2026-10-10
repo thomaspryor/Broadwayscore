@@ -14,7 +14,10 @@ the conversation stays small.
 ## 0. Reset
 
 In /home/user/Broadwayscore: `git fetch origin main && git checkout -f -B worker-base origin/main && git clean -fd -e .claude/worktrees`
-(retry the fetch with backoff on network errors). If the directory is missing,
+(retry the fetch with backoff on network errors), then `bash scripts/cloud-bootstrap-data.sh | tail -4`
+(routine sessions are multi-repo, so no repo hook does this: without it core data
+is the environment snapshot, days old, and review texts are absent; BRO-5008).
+If the directory is missing,
 reply "repo missing" and stop. Follow .claude/CLOUD.md and CLAUDE.md. Never ask
 the owner to do anything on a Mac.
 

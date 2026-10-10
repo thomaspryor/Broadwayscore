@@ -61,7 +61,7 @@ warn_if_no_review_texts() {
     if [ -n "${REVIEW_TEXTS_TOKEN:-}" ]; then
       log "WARN: REVIEW_TEXTS_TOKEN is set but the broadway-review-texts clone failed; check the token has repo scope."
     else
-      log "WARN: set REVIEW_TEXTS_TOKEN in the environment variables, then start a new session."
+      log "WARN: attach broadway-review-texts to the session (or set REVIEW_TEXTS_TOKEN), then start a new session."
     fi
   fi
 }
