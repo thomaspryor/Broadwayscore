@@ -55,3 +55,20 @@ describe('normalizeReviewUrl — preserve LSA identity, strip everything else', 
     assert.notStrictEqual(a, b);
   });
 });
+
+describe('normalizeReviewUrl — every query-ID host keeps its article id (BRO-4956)', () => {
+  it('keeps London Theatre Reviews post.cfm?p=N (bare post.cfm extracted 0 chars)', () => {
+    assert.strictEqual(
+      normalizeReviewUrl('https://www.londontheatrereviews.co.uk/post.cfm?p=29317&utm_source=bot'),
+      'https://www.londontheatrereviews.co.uk/post.cfm?p=29317'
+    );
+    assert.notStrictEqual(
+      normalizeReviewUrl('https://www.londontheatrereviews.co.uk/post.cfm?p=29317'),
+      normalizeReviewUrl('https://www.londontheatrereviews.co.uk/post.cfm?p=29032')
+    );
+  });
+  it('keeps talkinbroadway d.php?id=N and drops a query with no id key', () => {
+    assert.strictEqual(normalizeReviewUrl('https://www.talkinbroadway.com/page/ob/d.php?id=123'), 'https://www.talkinbroadway.com/page/ob/d.php?id=123');
+    assert.strictEqual(normalizeReviewUrl('https://example.com/r/?fbclid=x&ref=y'), 'https://example.com/r/');
+  });
+});
