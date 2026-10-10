@@ -19,6 +19,7 @@
  * Pure, no I/O (CLAUDE.md §15); scripts/lib/shared-image-source.test.mjs.
  */
 
+const { isOwnerUrl } = require('./owner-accounts');
 const { lineageIds, ALLOWED_SHARED_IMAGES } = require('./cross-show-images');
 const { sameTitle } = require('./canon-poster-art');
 const { todaytixMarket } = require('./todaytix-market');
@@ -266,7 +267,20 @@ function todaytixIdOwner(show, id, cachedShows, shows, opts) {
   return null;
 }
 
+// Our own pages (and the mirror domains and social posts in owner-accounts.js)
+// show whatever art a row already has, so a Google hit on them feeds a wrong
+// poster back in as if it were a source (BRO-4996: Hamilton art on a Doherty
+// row, 2011 art on Anything Goes 2002). Takes the URL, page or bare domain.
+function isOwnSiteSource(...urls) {
+  return urls.some(u => {
+    if (typeof u !== 'string' || !u) return false;
+    const url = u.replace(/^google-images:/, '');
+    return isOwnerUrl(/^https?:\/\//i.test(url) ? url : `https://${url}`);
+  });
+}
+
 module.exports = {
+  isOwnSiteSource,
   todaytixIdOwner,
   showScoreArtEligible,
   titleMatchesSlug,
