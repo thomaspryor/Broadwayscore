@@ -1,42 +1,48 @@
 {
-  "updatedAt": "2026-10-10T19:26:36.498Z",
-  "processed": 34,
-  "failed": 20,
-  "successRate": "63.0%",
+  "updatedAt": "2026-10-10T20:04:58.490Z",
+  "processed": 82,
+  "failed": 27,
+  "successRate": "75.2%",
   "tierBreakdown": {
-    "playwright": 29,
+    "playwright": 65,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-10T19:20:31.667Z",
+      "t": "2026-10-10T19:33:04.519Z",
       "event": "bb-session",
-      "session": "61262c3d",
+      "session": "61942e16",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
     },
     {
-      "t": "2026-10-10T19:20:32.554Z",
+      "t": "2026-10-10T19:33:05.080Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-10T19:20:54.391Z",
+      "t": "2026-10-10T19:33:22.409Z",
       "event": "bb-session",
-      "session": "10ad028f",
+      "session": "499825ac",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654485"
     },
     {
-      "t": "2026-10-10T19:20:55.243Z",
+      "t": "2026-10-10T19:33:22.876Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T19:41:21.514Z",
+      "event": "bb-session",
+      "session": "da178477",
+      "url": "https://deadline.com/2025/04/the-whos-tommy-national-tour-dates-1236365813/"
     }
   ]
 }
