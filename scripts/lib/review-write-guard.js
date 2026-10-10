@@ -1029,9 +1029,52 @@ const CLEAR_BREADCRUMBS = {
  */
 function isIntentionalClear(field, localData, committedData) {
   if (!localData) return false;
+  if (_differentArticleAtSamePath(field, localData, committedData)) return true;
+  return _isBreadcrumbClear(field, localData, committedData);
+}
+
+// The breadcrumb half alone. safeWriteReview's own merge uses this: there the
+// incoming url may still be refused (urlVerified, _locked), and its
+// url-change-invariant already clears old-article state when the url moves.
+function _isBreadcrumbClear(field, localData, committedData) {
+  if (!localData) return false;
   const pred = CLEAR_BREADCRUMBS[field];
   if (typeof pred === 'function' && pred(localData, committedData)) return true;
   return _urlChangeCleared(field, localData, committedData);
+}
+
+// State that describes one fetched ARTICLE, on top of url-change-invariant's
+// URL_DERIVED_FIELDS: its fetch/verification verdicts and the urls merged into it.
+// (mergedDuplicateUrls is a tombstone of the SLOT, not the article, and
+// needsReview can be about the critic: both stay restorable.)
+const ARTICLE_STATE_FIELDS = new Set([
+  'tierReason', 'fetchDiscoveryAbandoned', 'fetchRetryAfter',
+  'contentMismatchReopenedFor', 'incompleteReason', 'incompleteDetail',
+  'serpRetryAfter', 'serpRetryCount',
+  'contentVerificationPromoted', 'stuckRescoreCleared', 'stuckRescoreClearedAt',
+]);
+
+/**
+ * BRO-4956: the file at this path now holds a DIFFERENT article than the
+ * committed one (a flagged record was retired to the graveyard and the real
+ * review written at the same <outlet>--<critic>.json, or a plan moved a stale
+ * stub away and re-ingested). No url-change breadcrumb exists because nothing
+ * changed in place, so the push restore read the old article's score, flags
+ * and verdicts as "lost" and copied them onto the new one: the 2026 LBO Blood
+ * of my Blood review came back wrongProduction with the 2025 Juniper Blood
+ * score. A field that belongs to an article never carries across articles.
+ */
+function _differentArticleAtSamePath(field, localData, committedData) {
+  if (!committedData || !localData.url || !committedData.url) return false;
+  // A locked record keeps its unconditional restore.
+  if (committedData._locked === true || localData._locked === true) return false;
+  const { URL_DERIVED_FIELDS, urlCanonicallyChanged, MANUAL_WP_PREFIXES } = require('./url-change-invariant');
+  if (!URL_DERIVED_FIELDS.includes(field) && !ARTICLE_STATE_FIELDS.has(field)) return false;
+  // A manual 'Tour transfer' flag is about the production, not the article:
+  // url-change-invariant keeps it across url changes, so the restore does too.
+  if (/^wrongProduction/.test(field) && typeof committedData.wrongProductionNote === 'string'
+      && MANUAL_WP_PREFIXES.some((p) => committedData.wrongProductionNote.startsWith(p))) return false;
+  return urlCanonicallyChanged(committedData.url, localData.url);
 }
 
 /**
@@ -1557,8 +1600,8 @@ function safeWriteReview(filePath, newData, options = {}) {
       // (direct write) or force=true.
       const incomingSnapshot = { ...newData };
       const clearHonored = (field) =>
-        isIntentionalClear(field, incomingSnapshot, existing)
-        && !isIntentionalClear(field, existing, existing);
+        _isBreadcrumbClear(field, incomingSnapshot, existing)
+        && !_isBreadcrumbClear(field, existing, existing);
 
       const effectiveFields = getEffectiveProtectedFields(existing);
       for (const field of effectiveFields) {

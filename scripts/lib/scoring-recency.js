@@ -69,6 +69,13 @@ function carryNewerScoring(winner, other) {
   // _urlChangedClear, flag-combined-reviews) null llmScore/llmMetadata and leave
   // no stamp: never resurrect those.
   if (winner.llmScore === null || winner.llmMetadata === null) return { changed: false, from: a, to: b };
+  // A score belongs to the article it read. A winner holding a different
+  // article at the same path (a flagged record retired and the real review
+  // written in its place, BRO-4956) must never inherit the old article's score:
+  // the 2026 LBO Blood of my Blood review took the 2025 Juniper Blood 76 here.
+  if (winner.url && other.url && require('./url-change-invariant').urlCanonicallyChanged(other.url, winner.url)) {
+    return { changed: false, from: a, to: b };
+  }
   // A fresh non-LLM score (star extraction) is legitimate, not a stale revert.
   if (a === 0 && winner.scoreSource && !/^(llm|anchored)/.test(String(winner.scoreSource))
       && winner.assignedScore != null) {

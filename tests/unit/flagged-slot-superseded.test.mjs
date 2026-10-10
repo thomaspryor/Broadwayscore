@@ -160,6 +160,40 @@ test('writer puts the flagged file back when a later guard refuses the write', (
   fs.rmSync(root, { recursive: true, force: true });
 });
 
+test('push restore never copies the retired article\'s score and flags onto the new one', () => {
+  // push-review-texts restores a PROTECTED field when local is empty and the
+  // committed copy at the same path has it, unless isIntentionalClear says no.
+  // Live 2026-10-10: the LBO Blood of my Blood file came back wrongProduction
+  // with Juniper Blood's llmScore 76 because of exactly this.
+  const { isIntentionalClear, PROTECTED_FIELDS } = require('../../scripts/lib/review-write-guard.js');
+  const committed = {
+    ...JUNIPER, assignedScore: 76, llmScore: { score: 76 }, tierReason: 'Wrong production',
+    contentVerification: { wrongProduction: true }, wrongProductionReason: 'anticipatory_pre_opening_post',
+    mergedDuplicateUrls: [JUNIPER.url],
+  };
+  const local = { outletId: 'london-box-office', criticName: 'Stuart King', url: BLOOD_URL, publishDate: '2026-10-08', fullText: 'x'.repeat(500) };
+  const wouldRestore = PROTECTED_FIELDS.filter((f) => committed[f] != null && local[f] == null && !isIntentionalClear(f, local, committed));
+  for (const f of ['wrongProduction', 'wrongProductionReason', 'assignedScore', 'llmScore', 'contentVerification', 'tierReason']) {
+    assert.ok(!wouldRestore.includes(f), `${f} must not ride over from the retired article`);
+  }
+  // Same article (same url): a genuinely lost score is still restored.
+  assert.equal(isIntentionalClear('assignedScore', { ...local, url: JUNIPER.url }, committed), false);
+  // The slot's merge tombstone, a lock and a manual Tour-transfer flag are not article state.
+  assert.equal(isIntentionalClear('mergedDuplicateUrls', local, committed), false);
+  assert.equal(isIntentionalClear('assignedScore', local, { ...committed, _locked: true }), false);
+  assert.equal(isIntentionalClear('wrongProduction', local, { ...committed, wrongProductionNote: 'Tour transfer: Broadway run' }), false);
+
+  // The second push-time copier: newer-scoring-wins must not carry the old article's score either.
+  const { carryNewerScoring } = require('../../scripts/lib/scoring-recency.js');
+  const old = { ...committed, llmMetadata: { scoredAt: '2026-10-08T23:56:28Z' }, scoreSource: 'llm-v6' };
+  const fresh = { ...local };
+  assert.equal(carryNewerScoring(fresh, old).changed, false);
+  assert.equal(fresh.llmScore, undefined);
+  // Same article: the newer score still wins (BRO-4770 behaviour kept).
+  const sameArticle = { ...local, url: JUNIPER.url };
+  assert.equal(carryNewerScoring(sameArticle, { ...old, url: JUNIPER.url, originalScore: undefined, originalScoreNormalized: undefined }).changed, true);
+});
+
 test('writer dry run reports the supersede without moving anything', () => {
   const { root, showDir } = seed({ 'london-box-office--stuart-king.json': JUNIPER });
   const res = createOrMergeReviewFile(BLOOD.id, {
