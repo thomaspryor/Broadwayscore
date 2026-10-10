@@ -59,7 +59,10 @@ const SCHEDULED_SENDERS = [
   { key: 'opening-digest', label: 'Opening digest (standalone radar)', script: 'scripts/send-opening-digest.js', pattern: /^(?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week|Quiet week)(?: · (?:\d+ needs? help|\d+ broadcast-ready|\d+ opening today|\d+ tomorrow|\d+ upcoming this week))* · [A-Z][a-z]{2} \d{1,2}$/, expected: true, expectedSince: '2026-07-31' },
   // BRO-4360: one email per new Reddit opening-post draft (+ one reminder).
   // Event-driven, not daily, so allowed rather than expected.
-  { key: 'reddit-post-ready', label: 'Reddit opening-post draft', script: 'scripts/send-reddit-post-email.js', pattern: /^(?:Reddit post ready|Still ready to post): .+ \(\d{1,3}\/100\) for r\/\w+$/, allowed: true },
+  // eventDriven (BRO-4956): several drafts on one day are several legitimate
+  // emails, so only an identical subject twice counts as a duplicate. Counting
+  // every second send filed a "delivered MORE THAN ONCE" card on 8 of 9 days.
+  { key: 'reddit-post-ready', label: 'Reddit opening-post draft', script: 'scripts/send-reddit-post-email.js', pattern: /^(?:Reddit post ready|Still ready to post): .+ \(\d{1,3}\/100\) for r\/\w+$/, allowed: true, eventDriven: true },
   { key: 'reddit-engagement-digest', label: 'Reddit engagement digest', script: 'scripts/reddit-engagement-digest.js', pattern: /^r\/Broadway —/ },
   // allowed (not expected): a legitimate WEEKLY send — never a violation,
   // but its absence on the other six days must not read as "missing"
@@ -159,9 +162,14 @@ function decideDayViolation(dayBucket, dayKey = null) {
   // the day as "No violations" because it only ever asked whether a key
   // fired at all, never how many times). Any scheduled sender delivering
   // more than once in one ET day is a violation: "exactly 1" means 1.
+  // An eventDriven sender sends one email per event, so for it only the SAME
+  // subject twice is a duplicate.
   const duplicateKeys = senderKeys.filter((k) => {
     const bucket = dayBucket.senders.get(k);
-    return bucket && Array.isArray(bucket.subjects) && bucket.subjects.length > 1;
+    if (!bucket || !Array.isArray(bucket.subjects) || bucket.subjects.length <= 1) return false;
+    const def = SCHEDULED_SENDERS.find((s) => s.key === k);
+    if (def && def.eventDriven) return new Set(bucket.subjects).size < bucket.subjects.length;
+    return true;
   });
   return {
     violation: unexpected.length > 0 || duplicateKeys.length > 0,
