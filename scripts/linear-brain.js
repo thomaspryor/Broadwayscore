@@ -685,6 +685,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       priority: args.priority !== undefined ? Number(args.priority) : undefined,
       projectId: args['project-id'],
       model: args.model,
+      reuseTwin: true,
     });
     console.log(JSON.stringify(result.issue, null, 2));
     // Board-neutral marker (S1-T5, notion→linear cutover). Emitted BEFORE the
@@ -696,7 +697,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // because that is what every Linear-side reader — linear-brain find,
     // linear-client getIssue, the issue URL — already keys on.
     console.error(`__BOARD_CARD_ID__=${result.issue.identifier}`);
-    if (result.mode === 'dispatch') {
+    if (result.mode === 'reused') {
+      console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open with this title; the notes were added there as a comment (state=${result.stateName})`);
+    } else if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
     } else {
       console.error(`PARKED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}`);
