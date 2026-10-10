@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-09T18:06:23.580Z",
+    "lastUpdated": "2026-10-10T03:05:43.202Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -12261,6 +12261,22 @@
         "the-daily-iowan"
       ],
       "domain": "dailyiowan.com"
+    },
+    "letsplaytheatricalreview": {
+      "displayName": "Letsplaytheatricalreview",
+      "tier": 3,
+      "aliases": [
+        "letsplaytheatricalreview"
+      ],
+      "domain": "letsplaytheatricalreview.com"
+    },
+    "chi-mt": {
+      "displayName": "Chi Mt",
+      "tier": 3,
+      "aliases": [
+        "chi-mt"
+      ],
+      "domain": "chi-mt.com"
     }
   },
   "_aliasIndex": {
