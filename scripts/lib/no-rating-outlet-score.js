@@ -16,7 +16,7 @@ const { invalidateStarSidedAdjudication } = require('./star-reliability');
 
 function discardNoRatingOutletScore(data) {
   if (!data || data.originalScore == null || data.originalScore === '') return false;
-  if (!publishesNoCriticRating(data.outletId)) return false;
+  if (!publishesNoCriticRating(data.outletId, data)) return false;
   data.previousOriginalScore = data.originalScore;
   data.originalScore = null;
   data.originalScoreNormalized = null;

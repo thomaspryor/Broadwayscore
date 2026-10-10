@@ -1251,6 +1251,31 @@ function noScoreExtractor() {
   return { __skipGeneric: true };
 }
 
+// londontheatre.co.uk prints no stars in the article body, but every review page embeds the
+// critic's own rating in its Next.js page data: pageProps.initialState.content.pageContent
+// .ourCriticsRating (a "1".."5" string). Verified 2026-10-10 on 28 of 30 sampled review pages
+// spanning 2021-2026, and it equals the JSON-LD reviewRating (worstRating 1, bestRating 5) on
+// every page that also carries one (BRO-3139). Only pageContent counts: the same blob also
+// holds relatedArticles[] and a product.review block, whose ratings belong to OTHER articles.
+// The NO_CRITIC_RATING_OUTLETS entry below stays for londontheatre.co.uk's PRODUCT pages
+// ("Show-Score Rating" is an audience average there), so this source is the one exemption.
+const LONDON_THEATRE_PAGE_SOURCE = 'londontheatre-page-json';
+
+function extractLondonTheatreRating(html) {
+  const m = /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/.exec(html || '');
+  if (m) {
+    try {
+      const pc = JSON.parse(m[1])?.props?.pageProps?.initialState?.content?.pageContent;
+      const raw = pc && pc.ourCriticsRating;
+      const n = typeof raw === 'string' ? parseInt(raw, 10) : raw;
+      if (pc && pc.contentSubType === 'Reviews' && Number.isInteger(n) && n >= 1 && n <= 5 && String(raw).trim() === String(n)) {
+        return { originalScore: `${n}/5 stars`, normalizedScore: starsToNumeric(n, 5), source: LONDON_THEATRE_PAGE_SOURCE };
+      }
+    } catch { /* unparseable page data: no rating */ }
+  }
+  return { __skipGeneric: true }; // never fall through to generic extractors on this outlet
+}
+
 // Map outlet IDs to their extractors
 const OUTLET_EXTRACTORS = {
   // Outlets WITH explicit score formats
@@ -1307,7 +1332,7 @@ const OUTLET_EXTRACTORS = {
   'the-arts-desk': extractUKStarRating,
   'artsdesk': extractUKStarRating,
   'musical-theatre-review': extractUKStarRating,
-  'london-theatre': noScoreExtractor,    // LT reviews are text-only, no star ratings published
+  'london-theatre': extractLondonTheatreRating, // critic stars live in embedded page data, not the body (BRO-3139)
   'all-that-dazzles-uk': extractAllThatDazzlesScore,
   'all-that-dazzles': extractAllThatDazzlesScore,
   'london-box-office': extractLBOScore,
@@ -1681,6 +1706,7 @@ const OUTLET_VERIFIED_SOURCES = new Set([
   // NOTE: lbo-css-stars removed — LBO is an aggregator (in AGGREGATOR_SCORE_SOURCES).
   'atd-emoji-stars',
   'text-pattern', 'css-stars', 'word-stars', 'star-rating',
+  LONDON_THEATRE_PAGE_SOURCE, // BRO-3139
   'reviewshub-percentage', 'explicit-rating', 'afridiziak-star-image', 'manual-verified',
   'letter-grade', // EW and other outlets with letter grade systems
   // 1 Minute Critic — alt-text image rating + "N out of 5 stars" text
@@ -1774,9 +1800,17 @@ const NO_CRITIC_RATING_OUTLETS = new Set([
  * keeping londontheatre1 (a different site, which DOES publish stars) distinct.
  *
  * Lazily required to avoid a load-order cycle with review-normalization.
+ *
+ * @param {string} outletId
+ * @param {object} [data] the review-text file; when its originalScoreSource is the dedicated
+ *   londontheatre.co.uk page-data source the outlet is NOT treated as rating-less for it.
  */
-function publishesNoCriticRating(outletId) {
+function publishesNoCriticRating(outletId, data) {
   if (!outletId) return false;
+  // BRO-3139: a rating read from londontheatre.co.uk's own review-page data is the critic's
+  // verdict, so a file carrying one is not a "no rating" leak. Callers that hold the file
+  // pass it; the generic JSON-LD path (no data) keeps refusing the outlet.
+  if (data && data.originalScoreSource === LONDON_THEATRE_PAGE_SOURCE) return false;
   const raw = String(outletId).toLowerCase().trim();
   if (NO_CRITIC_RATING_OUTLETS.has(raw)) return true;
   try {
@@ -1792,6 +1826,8 @@ module.exports = {
   extractDesignation,
   NO_CRITIC_RATING_OUTLETS,
   publishesNoCriticRating,
+  LONDON_THEATRE_PAGE_SOURCE,
+  extractLondonTheatreRating,
   extractTimeOutScore,
   extractEWScore,
   extractNYSRScore,

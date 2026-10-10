@@ -276,6 +276,47 @@
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-10T16:31:40.351Z"
+    "queuedAt": "2026-10-10T16:49:49.968Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38069186693",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T16:54:24.532Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4977-wrong-show-and-page-bleed",
+    "title": "Landing blocked: rebase red on land/bro-4977-wrong-show-and-page-bleed",
+    "description": "land.yml did not land land/bro-4977-wrong-show-and-page-bleed: the rebase gate went red at 11284c6247. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38069241201",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4977-wrong-show-and-page-bleed"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "11284c6247d4df93157c1b7c6d150db057c5849d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38069241201"
+      }
+    ],
+    "queuedAt": "2026-10-10T16:52:29.525Z"
   }
 ]
