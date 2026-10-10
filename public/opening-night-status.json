@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T01:52:09.736Z",
+  "generatedAt": "2026-10-10T02:14:50.739Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -114,10 +114,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -2807,27 +2803,27 @@
       "status": "open",
       "slug": "all-male-as-you-like-it-regional-2026",
       "thumbnail": "/images/shows/all-male-as-you-like-it-regional-2026/thumbnail.jpg",
-      "siteScore": 86.89,
+      "siteScore": 86.77,
       "liveScore": 87,
-      "scoreDrift": 0.10999999999999943,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 11,
       "t1": 5,
       "t2": 1,
-      "t3": 3,
-      "positive": 9,
+      "t3": 5,
+      "positive": 11,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "11/12 total",
           "T2:1/3",
-          "hi-conf:4/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3208,6 +3204,18 @@
           "t2": 1,
           "t3": 3,
           "p": 9,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T02:14:50.739Z",
+          "rc": 11,
+          "s": 86.77,
+          "t1": 5,
+          "t2": 1,
+          "t3": 5,
+          "p": 11,
           "m": 0,
           "n": 0,
           "bc": "waiting"
