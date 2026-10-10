@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T09:58:18.414Z",
+  "timestamp": "2026-10-10T10:26:01.538Z",
   "stats": {
-    "totalReviews": 53794,
-    "alreadyFlagged": 19784,
-    "dateGuardCatches": 264,
+    "totalReviews": 53806,
+    "alreadyFlagged": 19802,
+    "dateGuardCatches": 267,
     "directorMismatch": 1671,
     "tvFilmSignals": 1557,
     "londonSignals": 1772,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5922
+    "noPublishDate": 5889
   },
   "findings": [
     {
@@ -1994,6 +1994,48 @@
       ]
     },
     {
+      "showId": "amelie-west-end-2021",
+      "file": "telegraph--fiona-mountford.json",
+      "score": 80,
+      "publishDate": "December 4th, 2019",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/amelie-palace-review-wonderfully-wistful-evening/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 561d before show (December 4th, 2019 vs 2021-06-17)"
+        }
+      ]
+    },
+    {
+      "showId": "amelie-west-end-2021",
+      "file": "thestage--dave-fargnoli.json",
+      "score": 80,
+      "publishDate": "April 18th, 2019",
+      "url": "https://www.thestage.co.uk/reviews/amelie-review-at-watermill-theatre-newbury--whimsical-and-warm-hearted-musical-adaptation",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 791d before show (April 18th, 2019 vs 2021-06-17)"
+        }
+      ]
+    },
+    {
+      "showId": "amelie-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "score": 87,
+      "publishDate": "December 4th, 2019",
+      "url": "https://www.thetimes.co.uk/article/amelie-the-musical-review-inventive-direction-and-delicate-choreography-make-for-an-exhilarating-experience-dm7gw9gsq",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 561d before show (December 4th, 2019 vs 2021-06-17)"
+        }
+      ]
+    },
+    {
       "showId": "america-who-hurt-you-off-broadway-2026",
       "file": "nysr--michael-sommers.json",
       "score": 60,
@@ -2801,7 +2843,7 @@
     {
       "showId": "anna-x-west-end-2021",
       "file": "a-younger-theatre--unknown.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2021-07-18",
       "url": "https://www.ayoungertheatre.com/review-anna-x-harold-pinter-theatre/",
       "findings": [
@@ -8518,7 +8560,7 @@
       "showId": "constellations-west-end-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 83,
-      "publishDate": null,
+      "publishDate": "July 2nd, 2021",
       "url": "https://www.theguardian.com/stage/2021/jul/02/constellations-review-a-stellar-revival-for-nick-paynes-high-concept-romance",
       "findings": [
         {
@@ -35164,7 +35206,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 44,
       "publishDate": "2022-06-20",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/not-who-i-am-royal-court-review-%E2%80%93-gimmicky-post-truth-spoof",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -64620,7 +64662,7 @@
       "file": "london-theatre--matt-wolf.json",
       "score": 74,
       "publishDate": "2021-07-30",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/review-oleanna-at-the-arts-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
