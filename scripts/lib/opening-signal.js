@@ -197,6 +197,20 @@ function reviewsPredateRun(show, entry, isDateReached) {
 }
 
 /**
+ * In previews with a known openingDate that hasn't arrived yet: exactly the
+ * state update-show-status Check 2c reverts open -> previews, so a
+ * review-driven "it opened" flip (Check 2d) would only oscillate. BRO-4953:
+ * four dateless wrong-show reviews (reviewsPredateRun can't judge dateless
+ * ones) flipped The Heart to "Now Playing" three weeks before its 2026-10-29
+ * opening. A future openingDate with no started previews is left alone: 2c
+ * would not revert that flip, and dated reviews may be correcting a stale date.
+ */
+function openingDateStillAhead(show, isDateReached) {
+  return !!(show && show.openingDate && !isDateReached(show.openingDate)
+    && show.previewsStartDate && isDateReached(show.previewsStartDate));
+}
+
+/**
  * Is this show stuck in a pre-open status despite having a displayable review
  * slate? Returns true when status is previews/upcoming AND the show has enough
  * reviews to display a score by the SAME rule the site uses (reviewsRemaining===0).
@@ -428,6 +442,7 @@ function shouldSkipPreviewsShow(show, todayStr, publishedDate = null) {
 module.exports = {
   runDates,
   reviewsPredateRun,
+  openingDateStillAhead,
   shouldSkipPreviewsShow,
   MIN_REVIEWS_BY_CATEGORY,
   MIN_REVIEWS_DEFAULT,
