@@ -164,7 +164,7 @@ function dateFromText(text) {
  * we can give it:
  *  1. a date written in weeklyRunningCostSource ("Broadway Journal (Dec 16, 2025)")  dateBasis 'source-text'
  *  2. the newest sources[] entry of a matching type with a date                        dateBasis 'sources'
- *  3. the record's lastUpdated / firstAdded                                             dateBasis 'record-updated'
+ *  3. the record's firstAdded, else lastUpdated                    dateBasis 'record-added' / 'record-updated'
  * A closed show's figure is never dated after its closing date (it describes
  * the run). Our own estimates are 2025-calibrated (recoupment-model.js
  * ERA_ANCHOR_YEAR), so an industry estimate with no better date gets 2025-07-01.
@@ -197,8 +197,9 @@ function legacyCostAnchor(record, show) {
     dateBasis = 'estimate-calibration-year';
   }
   if (!asOf) {
-    const d = String(record.lastUpdated || record.firstAdded || '').slice(0, 10);
-    if (DATE_RE.test(d)) { asOf = d; dateBasis = 'record-updated'; }
+    // firstAdded first: lastUpdated now moves on any content edit (BRO-5005).
+    const d = String(record.firstAdded || record.lastUpdated || '').slice(0, 10);
+    if (DATE_RE.test(d)) { asOf = d; dateBasis = record.firstAdded ? 'record-added' : 'record-updated'; }
   }
   if (!asOf) { asOf = '2025-07-01'; dateBasis = 'record-updated'; }
   if (show?.closingDate && DATE_RE.test(String(show.closingDate).slice(0, 10)) && asOf > String(show.closingDate).slice(0, 10)) {
