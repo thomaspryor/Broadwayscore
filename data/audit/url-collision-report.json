@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-10-10T09:53:17.606Z",
+  "generatedAt": "2026-10-10T10:35:39.868Z",
   "summary": {
-    "total": 18,
-    "high": 7,
+    "total": 19,
+    "high": 8,
     "medium": 7,
     "low": 4
   },
   "collisions": [
+    {
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cheryl-222-ghost-story-review-b2274352.html",
+      "normalizedUrl": "https://independent.co.uk/arts-entertainment/theatre-dance/reviews/cheryl-222-ghost-story-review-b2274352.html",
+      "candidates": [
+        {
+          "showId": "2-22-a-ghost-story-west-end-2021",
+          "file": "independent--unknown.json",
+          "publishDate": "February 2nd, 2023",
+          "openingDate": "2021-12-04",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "independent"
+        },
+        {
+          "showId": "2-22-a-ghost-story-west-end-2023",
+          "file": "independent--isobel-lewis.json",
+          "publishDate": "February 2nd, 2023",
+          "openingDate": "2023-01-21",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "independent"
+        }
+      ],
+      "suggestedWinner": "2-22-a-ghost-story-west-end-2023",
+      "reason": "publishDate February 2nd, 2023 is 12 days from 2-22-a-ghost-story-west-end-2023 opening (2023-01-21); next closest is 425 days from 2-22-a-ghost-story-west-end-2021",
+      "confidence": "high"
+    },
     {
       "url": "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
       "normalizedUrl": "https://theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
