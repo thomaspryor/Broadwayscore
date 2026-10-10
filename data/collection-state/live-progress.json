@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-10T20:04:58.490Z",
-  "processed": 82,
-  "failed": 27,
-  "successRate": "75.2%",
+  "updatedAt": "2026-10-10T20:36:12.978Z",
+  "processed": 131,
+  "failed": 38,
+  "successRate": "77.5%",
   "tierBreakdown": {
-    "playwright": 65,
+    "playwright": 98,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 2,
+    "scrapingdog": 16,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-10T19:33:04.519Z",
@@ -43,6 +43,17 @@
       "event": "bb-session",
       "session": "da178477",
       "url": "https://deadline.com/2025/04/the-whos-tommy-national-tour-dates-1236365813/"
+    },
+    {
+      "t": "2026-10-10T20:05:55.926Z",
+      "event": "bb-session",
+      "session": "49f61034",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654250"
+    },
+    {
+      "t": "2026-10-10T20:05:56.444Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
