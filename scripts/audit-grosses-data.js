@@ -30,10 +30,11 @@
 const fs = require('fs');
 const path = require('path');
 const integrity = require('./lib/grosses-integrity');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 
 // The League grosses cover Broadway only. Off-Broadway, West End, regional and
 // tour shows never have rows, so they must not count as "missing" ones.
-const broadwayShows = (showsData) => showsData.shows.filter((s) => s.category === 'broadway');
+const broadwayShows = (showsData) => showsData.shows.filter(isBroadwayCategory);
 
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
