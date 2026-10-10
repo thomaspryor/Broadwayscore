@@ -139,6 +139,42 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      - name: Validate before core-data push
+        id: validate_core
+        # BRO-4995: deep-research-commercial.js stamps researchAttempts /
+        # lastResearchedAt into data/commercial.json (core data). Without a
+        # core-data push those marks were lost every run, so the stale-closure
+        # classifier kept reporting "deep-research never ran" for researched
+        # shows. Same guard + push as commercial-stale-closures.yml.
+        if: always() && inputs.dry_run != true
+        run: node scripts/validate-data.js
+
+      - name: Deletion guard for commercial.json
+        id: guard_core
+        if: always() && inputs.dry_run != true
+        run: |
+          node -e "
+            const fs = require('fs');
+            if (!fs.existsSync('./data/commercial.json')) process.exit(0);
+            const c = JSON.parse(fs.readFileSync('./data/commercial.json','utf8'));
+            const count = Object.keys(c.shows || {}).length;
+            console.log('commercial show count: ' + count);
+            if (count < 120) {
+              console.error('::error::commercial show count dropped below 120 (' + count + ')');
+              process.exit(1);
+            }
+          "
+
+      - name: Push core data to private repo
+        # Runs even when the research step failed part-way (its marks for the
+        # shows it did finish are still worth keeping), but never past a
+        # failed validation or deletion guard.
+        if: ${{ !cancelled() && inputs.dry_run != true && steps.validate_core.outcome == 'success' && steps.guard_core.outcome == 'success' }}
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Deep research tracking marks'
+
       - name: Summary
         if: always()
         run: |
