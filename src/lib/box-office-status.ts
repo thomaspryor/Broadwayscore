@@ -71,11 +71,13 @@ export function costHalfWidth(costMethodology: string | null | undefined, estima
 export const REPORTED_SOURCE_MAX_AGE_MONTHS = 24;
 
 /** A quote that only gives a lower bound ("well over $1 million") is not a reported figure. */
-const FLOOR_QUOTE_RE = /\b(?:more than|well over|over|at least|north of|upwards of|in excess of)\s+(?:about\s+|roughly\s+)?\$/i;
+const FLOOR_QUOTE_RE = /\b(?:more than|well over|(?<!turned |rolled |carried )over|at least|north of|upwards of|in excess of|exceed(?:s|ed|ing)?|top(?:s|ped|ping))\s+(?:about\s+|roughly\s+)?\$/i;
 
 /** "Broadway Journal (Nov 6, 2023): ..." -> "2023-11-06"; null when the source names no parseable date. */
 export function costSourceDate(sourceText: string): string | null {
   const head = sourceText.split(':')[0];
+  const iso = head.match(/\((?:[^()]*\D)?((?:19|20)\d{2}-\d{2}-\d{2})\)/);
+  if (iso) return iso[1];
   const m = head.match(/\(([^()]*\b(?:19|20)\d{2})\)/);
   if (!m) return null;
   const t = Date.parse(`${m[1]} 12:00 UTC`);
@@ -498,7 +500,8 @@ export function computeCoverCosts(windowRows: WeekRow[], avgGross: number, break
  * and "close to" would then sit beside "19 straight weeks below cost").
  */
 export function multiplePhrase(mid: number): string {
-  if (mid >= WELL_ABOVE_MIN) return 'more than double its weekly cost';
+  if (mid > WELL_ABOVE_MIN + 0.005) return 'more than double its weekly cost';
+  if (mid >= 1.9) return 'about double its weekly cost';
   if (mid >= NEAR_MIN && mid <= 1.05) return 'close to its weekly cost';
   const pct = Math.round(Math.abs(mid - 1) * 100);
   return mid > 1 ? `about ${pct}% more than its weekly cost` : `about ${pct}% less than its weekly cost`;

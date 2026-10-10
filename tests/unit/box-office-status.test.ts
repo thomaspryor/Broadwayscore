@@ -136,6 +136,10 @@ test('v2CostBasis: floor quotes read Estimate, old sources keep Reported with es
   assert.deepEqual(v2CostBasis({ ...base, sourceText: null }), { estimated: true, halfWidth: DEFAULT_COST_HALF_WIDTH, floorQuote: false, aged: false });
   assert.equal(costSourceDate('Gordon Cox interview with producer (June 4, 2024): more than $900,000'), '2024-06-04');
   assert.equal(costSourceDate('Variety: no date'), null);
+  assert.equal(costSourceDate('Reddit r/Broadway (2026-06-30): ~$700K'), '2026-06-30', 'ISO dates age too');
+  // Harry Potter: exceeding is a floor too.
+  assert.equal(v2CostBasis({ ...base, sourceText: 'Broadway Journal (Dec 16, 2025): weekly operating expenses exceeding $1 million' }).estimated, true);
+  assert.equal(v2CostBasis({ ...base, sourceText: 'Variety (Jan 5, 2026): it turned over $2 million in sales' }).floorQuote, false);
 });
 
 test('static provider: no break-even means no cost; quality follows width', () => {
@@ -296,6 +300,8 @@ test('story wording follows the multiple, not the band', () => {
   assert.equal(multiplePhrase(1.05), 'close to its weekly cost');
   assert.equal(multiplePhrase(1.32), 'about 32% more than its weekly cost');
   assert.equal(multiplePhrase(2.4), 'more than double its weekly cost');
+  assert.equal(multiplePhrase(1.99), 'about double its weekly cost', 'not about 99% more');
+  assert.equal(multiplePhrase(2.0), 'about double its weekly cost', 'exactly 2x is not more than double');
   // Real data: a story never says close to cost while the midpoint is outside 0.95-1.05.
   for (const r of getRunningBoxOfficeV2()) {
     if (!r.story || !r.multiple) continue;
