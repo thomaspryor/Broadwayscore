@@ -44,8 +44,10 @@
  *                  configuration the same way BWW's figure did): it equals
  *                  BWW's seats-offered in 59 of the 61 rows where BWW had one
  *                  (2026-07-05, 08-02); the other 2 (one seat per show off)
- *                  fail the arithmetic check and stay null. That per-row check
- *                  keeps a wrong value out of RevPAS math.
+ *                  fail the arithmetic check and fall back to the value
+ *                  attendance ÷ % Cap implies (deriveSeatsOffered in
+ *                  grosses-history-repair.js). That per-row check keeps a
+ *                  wrong value out of RevPAS math.
  *   - grossPrevWeek / capacityPctPrevWeek  derived from the Diff $ and
  *                  Diff % cap columns (this week minus diff), which is
  *                  what BWW published directly in its prev-week columns.
@@ -66,6 +68,7 @@ const {
   parseNumber: parseCount,
   isSaneGrossesRow,
 } = require('./parse-bww-grosses-row');
+const { deriveSeatsOffered } = require('./grosses-history-repair');
 
 const PLAYBILL_GROSSES_URL = 'https://playbill.com/grosses';
 
@@ -248,6 +251,11 @@ function parsePlaybillGrossesHtml(html) {
       const offered = seatsInTheatre * performances;
       if (Math.abs((attendance / offered) * 100 - capacityPct) < 0.05) seatsOffered = offered;
     }
+    // Seats in Theatre that miss the published % Cap (often one seat off):
+    // fall back to the seats offered the published figures imply (BRO-4985).
+    if (seatsOffered == null && performances) {
+      seatsOffered = deriveSeatsOffered({ attendance, capacity: capacityPct, performances });
+    }
 
     result.rows.push({
       show,
@@ -379,7 +387,8 @@ function findMissingHistoryWeeks(historyKeys, availableWeeks, currentWeekISO, ma
 /**
  * The grosses-history.json key that already holds `week`: the week's own key,
  * else the nearest key within `toleranceDays` (the BWW-era Monday keys
- * 2026-06-22, 06-29 and 07-06 stand for the Sundays before them), else null.
+ * 2026-06-22, 06-29 and 07-06 stood for the Sundays before them until
+ * grosses-history-repair.js moved them, BRO-4985), else null.
  * Weeks are 7 days apart, so a key that close is the same week. Writers store
  * a week under this key when there is one, so none of them adds a Sunday
  * duplicate next to a Monday key (calculate-recoupment.js sums every week,

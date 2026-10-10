@@ -14,6 +14,8 @@
 // (no per-entry timestamp exists to break the tie more precisely — same
 // convention as merge-awards-json.js).
 
+const { normalizeWeekKeys } = require('./grosses-history-repair');
+
 function mergeGrossesHistory(ours, remote) {
   ours = ours || { weeks: {} };
   remote = remote || { weeks: {} };
@@ -44,7 +46,13 @@ function mergeGrossesHistory(ours, remote) {
     merged._meta = { ...(ours._meta || {}), ...(remote._meta || {}), lastUpdated: remoteT > oursT ? remote._meta.lastUpdated : ours._meta.lastUpdated };
   }
 
-  return { merged, stats: { weeksAdded, slugsAdded, totalWeeks: allWeeks.size } };
+  // A union never carries a deletion, so a remote that still has an
+  // off-Sunday key (2026-06-22) would bring it back beside the Sunday our
+  // side moved it to, and every reader that sums weeks would count it
+  // twice. Fold such keys onto their Sunday, ours winning (BRO-4985).
+  const weeksRekeyed = normalizeWeekKeys(merged).length;
+
+  return { merged, stats: { weeksAdded, slugsAdded, weeksRekeyed, totalWeeks: Object.keys(merged.weeks).length } };
 }
 
 module.exports = { mergeGrossesHistory };

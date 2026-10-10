@@ -57,6 +57,7 @@ const {
   latestPublishableWeek,
   isoWeekToMDY,
 } = require('./lib/parse-playbill-grosses');
+const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -876,13 +877,31 @@ function matchRows(rows: BWWRowData[], pastWeekISO?: string, quiet: boolean = fa
   return { matched, unmatched };
 }
 
-// Store a week's snapshot under the key history already uses for that week
-// (a BWW-era Monday key), never as a second key beside it.
+// Store a week's snapshot under its Sunday key. repairHistory() has already
+// renamed any off-Sunday key, so findHistoryKey only bridges a source date a
+// day or two off its Sunday; never a second key beside the week (BRO-4985).
 function putHistoryWeek(history: GrossesHistory, weekISO: string, snapshot: Record<string, HistoryEntry>): string {
-  const key: string = findHistoryKey(Object.keys(history.weeks), weekISO) || weekISO;
-  if (key !== weekISO) console.log(`  History already holds week ${weekISO} as ${key}; replacing that entry.`);
+  repairHistory(history);
+  const sunday: string = weekKeyFor(weekISO);
+  const key: string = findHistoryKey(Object.keys(history.weeks), sunday) || sunday;
+  if (key !== weekISO) {
+    console.log(history.weeks[key]
+      ? `  History already holds week ${weekISO} as ${key}; replacing that entry.`
+      : `  Source dated week ${weekISO}; stored under its Sunday ${key}.`);
+  }
   history.weeks[key] = snapshot;
   return key;
+}
+
+// Week keys on Sundays, seatsOffered and preview-week performances filled
+// where the published figures fix them (scripts/lib/grosses-history-repair.js).
+// Runs before every history write, so the file heals on the next run.
+function repairHistory(history: GrossesHistory): void {
+  const stats = repairGrossesHistory(history);
+  for (const [from, to] of stats.renamedKeys) console.log(`  History week key ${from} is not a Sunday; moved to ${to}.`);
+  if (stats.seatsOfferedFilled || stats.performancesFilled) {
+    console.log(`  History repair: seatsOffered filled on ${stats.seatsOfferedFilled} rows, preview-week performances on ${stats.performancesFilled}.`);
+  }
 }
 
 function snapshotOf(rows: MatchedRow[]): Record<string, HistoryEntry> {

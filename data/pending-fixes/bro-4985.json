@@ -1,0 +1,195 @@
+{
+  "issueNumber": "bro-4985",
+  "planId": "921c912f-728b-4156-95fe-76e6eac4de99",
+  "status": "applied",
+  "createdAt": "2026-10-10T16:44:48.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Box-office cost fixes: Chicago weekly cost $250K (unsourced) to a flagged ~$500K estimate; Hamilton $643K cited to Broadway Journal 2018 (2017 figure); Wicked $800K (2008 blog) to Broadway Journal 2023 \"well over $1 million\"; Great Gatsby notes reconciled with its >$900K cost.",
+    "steps": [
+      "Chicago: weeklyRunningCost 250000 -> 500000, flagged as an estimate, notes and source text say why",
+      "Hamilton: mark the $643K as trade-reported and cite it",
+      "Wicked: weeklyRunningCost 800000 -> 1000000, trade-reported, cited",
+      "Great Gatsby: notes say break-even near $1.0M from the >$900K cost; source text dated"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago-1996",
+        "field": "weeklyRunningCost",
+        "oldValue": 250000,
+        "newValue": 500000,
+        "description": "Was $250K with no source, implausible for a union musical with a full onstage orchestra. No trade or SEC figure exists; the only public figure is a BroadwayWorld forum estimate of $550-600K a week (Aug 2022, https://forum.broadwayworld.com/thread/How-much-longer-can--Chicagolast). $500K is a conservative estimate, flagged as one."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago-1996",
+        "field": "isEstimate",
+        "oldValue": {
+          "recouped": true
+        },
+        "newValue": {
+          "recouped": true,
+          "weeklyRunningCost": true
+        },
+        "description": "mark the weekly cost as an estimate so /biz prints it with \"~\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago-1996",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Estimate: no weekly cost has been reported. A BroadwayWorld forum estimate (Aug 2022) put it at $550-600K a week.",
+        "description": "name what the estimate rests on"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago-1996",
+        "field": "notes",
+        "oldValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. Weekly cost ~$250K. Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "newValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. No weekly running cost has been reported; the ~$500K figure is an estimate for a union musical with a full onstage orchestra. Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "description": "drop the unsourced $250K claim"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hamilton",
+        "showId": "hamilton-2015",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "$643K is a reported figure (Broadway Journal, verified 2026-10-10), not our estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hamilton",
+        "showId": "hamilton-2015",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Apr 25, 2018): fixed expenses averaged $643,000 a week in the year ended July 2017, excluding royalties and percentage rent",
+        "description": "cite the figure and its 2017 period (https://www.broadwayjournal.com/p/hamilton-inc-update-creators-producers-clean-up-as-muzzled-cast-waits-for-it). No newer figure found."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wicked",
+        "showId": "wicked-2003",
+        "field": "weeklyRunningCost",
+        "oldValue": 800000,
+        "newValue": 1000000,
+        "description": "$800K traced only to a 2008 blog post. Broadway Journal (Philip Boroff, Nov 6, 2023): \"Its weekly expenses are well over $1 million\" (https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases). $1.0M is that floor."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wicked",
+        "showId": "wicked-2003",
+        "field": "costMethodology",
+        "oldValue": "industry-estimate",
+        "newValue": "trade-reported",
+        "description": "reported figure, not our estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "wicked",
+        "showId": "wicked-2003",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Nov 6, 2023): weekly expenses \"well over $1 million\"",
+        "description": "cite the figure"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "showId": "the-great-gatsby-2024",
+        "field": "notes",
+        "oldValue": "First Broadway musical led by Korean producer (OD Company). BroadwayWorld: 'now appears unlikely' to recoup - grosses declined ~$250K/week in 2025 vs 2024. Break-even ~$1.0M but recent weeks at $0.9M (82% capacity). Eligible for $3M NY tax credit. Lavish Jazz Age production with 22-person cast, Tony-winning costumes. [Merged from duplicate the-great-gatsby-2024 entry: Musical capitalized at $25 million, opened April 2024, has not yet recouped investment as of January 2025 according to trade reports]",
+        "newValue": "First Broadway musical led by Korean producer (OD Company). BroadwayWorld: 'now appears unlikely' to recoup - grosses declined ~$250K/week in 2025 vs 2024. Weekly running costs of more than $900,000 put break-even near $1.0M once royalties and rent are added; recent weeks grossed about $0.9M (82% capacity). Eligible for $3M NY tax credit. Lavish Jazz Age production with 22-person cast, Tony-winning costumes. [Merged from duplicate the-great-gatsby-2024 entry: Musical capitalized at $25 million, opened April 2024, has not yet recouped investment as of January 2025 according to trade reports]",
+        "description": "reconcile with the cost figure: the model puts break-even at ~$966K on a $900K cost; the producer interview gives the cost, not a break-even"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-great-gatsby",
+        "showId": "the-great-gatsby-2024",
+        "field": "weeklyRunningCostSource",
+        "oldValue": "Producer interview (Gordon Cox): 'weekly running costs ringing in at more than $900,000'",
+        "newValue": "Gordon Cox interview with producer Chunsoo Shin (June 4, 2024): 'weekly running costs ringing in at more than $900,000 per week'",
+        "description": "the quoted wording is the writer's, in the interview piece; add the date (https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T18:16:12.860Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-great-gatsby"
+    }
+  ]
+}

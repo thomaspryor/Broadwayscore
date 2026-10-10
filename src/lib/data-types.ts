@@ -478,6 +478,7 @@ export interface ShowCommercial {
   modelRecoupmentPct?: [number, number, number] | null; // [pessimistic, central, optimistic]
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
+  modelCostBasis?: number | null;
   modelDataQuality?: 'high' | 'medium' | 'low';
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated';
   modelCategory?: string;

@@ -34,6 +34,9 @@ const { checkIdYearDrift } = require('./lib/id-year-drift');
 // before the rest of the module has evaluated — everything the summary needs
 // must already exist at that point (no TDZ on a crash path).
 const { commercialFileErrors, commercialFileWarnings } = require('./lib/commercial-record-checks');
+const { breakevenBelowCost } = require('./lib/commercial-breakeven');
+const { closedStillTbd, recoupedModelDisagreements } = require('./lib/commercial-consistency');
+const { nonSundayWeekKeys } = require('./lib/grosses-history-repair');
 const DRY_RUN = process.argv.includes('--dry-run');
 const dryRunLedger = { showsWrites: null, artifactWrites: [] };
 let dryRunSummaryPrinted = false;
@@ -3457,6 +3460,24 @@ function validateCommercialJson() {
   for (const msg of commercialFileWarnings(data, showsData?.shows)) {
     warn(msg);
   }
+  // Break-even is the weekly cost plus royalties and rent, so one below the
+  // cost means the cost changed after the model ran (BRO-4985). Warning: the
+  // write guard rescales it on the next save and Friday's model run rebuilds it.
+  for (const { slug, modelBreakeven, weeklyRunningCost } of breakevenBelowCost(data.shows)) {
+    warn(`commercial.json: "${slug}" modelBreakeven ${modelBreakeven} is below weeklyRunningCost ${weeklyRunningCost} (stale model; run scripts/merge-model-recoupment.js)`);
+  }
+
+  // Report-only (BRO-4985): neither blocks, both list rows for a person.
+  if (showsData && Array.isArray(showsData.shows)) {
+    const tbd = closedStillTbd(data.shows, showsData.shows);
+    if (tbd.length) {
+      warn(`commercial.json: ${tbd.length} show(s) closed 60+ days ago still designated TBD (scripts/classify-stale-closures.js settles researched ones): ${tbd.map(t => t.slug).join(', ')}`);
+    }
+  }
+  const disagree = recoupedModelDisagreements(data.shows);
+  if (disagree.length) {
+    warn(`commercial.json: ${disagree.length} show(s) where the recouped flag and the model disagree (reported flag stays; review): ${disagree.map(d => `${d.slug} (recouped=${d.recouped}, model=${d.modelRecouped}, ${d.modelDataQuality || 'n/a'} quality)`).join('; ')}`);
+  }
 
   if (issues === 0) {
     ok(`Commercial data valid for ${showKeys.length} shows`);
@@ -4442,6 +4463,13 @@ function validateCrossFileKeys(shows) {
   if (fs.existsSync(grossesHistFile)) {
     try {
       const history = JSON.parse(fs.readFileSync(grossesHistFile, 'utf8'));
+      // A Broadway week ends on Sunday. Every history writer repairs keys on
+      // save (scripts/lib/grosses-history-repair.js, BRO-4985).
+      const offSunday = nonSundayWeekKeys(history);
+      if (offSunday.length) {
+        warn(`grosses-history.json has week keys that are not Sundays: ${offSunday.join(', ')} (the next scrape-grosses.ts run moves them)`);
+        issues++;
+      }
       const historyKeys = Object.keys(history).filter(k => !k.startsWith('_') && k !== 'weeks');
 
       for (const key of historyKeys) {

@@ -380,6 +380,9 @@ test('P1-3: one break-even everywhere: model when it clears the floor, else week
   assert.equal(getBreakEven({ ...withModel, modelMethod: 'ai-estimated' }), 600_000);
   assert.equal(getBreakEven({ ...withModel, modelBreakeven: null }), 600_000);
   assert.equal(getBreakEven({ modelBreakeven: null, weeklyRunningCost: null }), null);
+  // BRO-4985: a model break-even below the running cost is stale (the cost
+  // changed after the model ran); the cost is shown, never the lower figure.
+  assert.equal(getBreakEven({ ...withModel, modelBreakeven: 536_585, weeklyRunningCost: 560_000 }), 560_000);
 });
 
 test('BRO-4721: a Nonprofit production never shows a modeled % recouped (no investors to repay)', () => {

@@ -138,6 +138,7 @@ function main() {
     delete comm.modelRecoupmentPct;
     delete comm.modelRecouped;
     delete comm.modelBreakeven;
+    delete comm.modelCostBasis;
     delete comm.modelCategory;
     delete comm.modelWarnings;
   };
@@ -200,6 +201,10 @@ function main() {
     comm.modelRecoupmentPct = [result.recoupmentPctLow, result.recoupmentPctCentral, result.recoupmentPctHigh];
     comm.modelRecouped = result.modelRecouped;
     comm.modelBreakeven = result.weeklyBreakeven;
+    // The cost the break-even was built on (null: the model estimated it).
+    // commercial-write-guard rescales the break-even when a writer changes
+    // weeklyRunningCost before the next model run (BRO-4985).
+    comm.modelCostBasis = comm.weeklyRunningCost || null;
     comm.modelDataQuality = result.dataQuality;
     comm.modelMethod = tier;
     comm.modelCategory = result.category;
