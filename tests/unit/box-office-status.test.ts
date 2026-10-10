@@ -1,0 +1,300 @@
+/**
+ * BRO-5007: Box Office Scorecard v2 status logic, tested against the real
+ * functions (CLAUDE.md §15). Runs in the tsx batch
+ * (tests/unit-test-manifest-tsx.txt).
+ *
+ *  - classifyMultiple: one precedence order, boundaries at 0.95/1.0/1.15/2.0.
+ *  - cost range width walks every costMethodology value in commercial.json.
+ *  - partial preview weeks and 0-performance weeks leave the 4-week window.
+ *  - the 2020-21 shutdown is a gap: never zero, never breaks a streak.
+ *  - closed runs: weekly under 104 weeks, seasons (totals only) at 104+.
+ *  - closing in the final weeks, too early, and no cost get no status.
+ *  - the story sentence is descriptive only.
+ *  - real data: a /biz At Risk show never reads Above.
+ */
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import {
+  classifyMultiple,
+  multipleFor,
+  costHalfWidth,
+  qualityForHalfWidth,
+  meetsCostQualityFloor,
+  makeStaticCostProvider,
+  statusWindowGrosses,
+  buildMultipleSeries,
+  currentStreak,
+  computeMarketMedianByWeek,
+  summarizeClosedRun,
+  computeShowStatus,
+  buildStory,
+  reconcileWithAtRisk,
+  countStatuses,
+  COST_METHOD_HALF_WIDTH,
+  DEFAULT_COST_HALF_WIDTH,
+  SEASON_VIEW_MIN_WEEKS,
+  type CostProvider,
+  type WeekRow,
+  type MultiplePoint,
+} from '../../src/lib/box-office-status';
+import { ESTIMATED_COST_METHODS } from '../../src/lib/commercial-display';
+import { getShowsAtRisk, getRunningBoxOfficeV2, getShowBoxOfficeV2 } from '../../src/lib/data-commercial';
+
+const ROOT = path.join(__dirname, '..', '..');
+
+// ---------------------------------------------------------------- bands
+
+/** A tight range around mid (±1%) so only the mid boundary decides. */
+const tight = (mid: number) => classifyMultiple(mid * 0.99, mid, mid * 1.01);
+
+test('classifyMultiple: boundaries at 0.95 / 1.0 / 1.15 / 2.0', () => {
+  assert.equal(tight(0.94), 'below');
+  assert.equal(classifyMultiple(0.94, 0.95, 0.96), 'near', '0.95 is Near');
+  assert.equal(tight(1.0), 'near');
+  assert.equal(classifyMultiple(1.13, 1.14, 1.15), 'near', 'just under 1.15 is Near');
+  assert.equal(classifyMultiple(1.14, 1.15, 1.16), 'above', '1.15 with the range clear of 1 is Above');
+  assert.equal(classifyMultiple(1.98, 1.99, 2.0), 'above');
+  assert.equal(classifyMultiple(1.9, 2.0, 2.1), 'well-above', '2.0 is Well Above');
+});
+
+test('classifyMultiple: a range that includes 1.0 is Near whatever the mid', () => {
+  assert.equal(classifyMultiple(0.8, 0.9, 1.0), 'near', 'hi touching 1 is not Below');
+  assert.equal(classifyMultiple(1.0, 1.3, 1.6), 'near', 'lo touching 1 is not Above');
+  assert.equal(classifyMultiple(0.7, 0.9, 1.1), 'near');
+});
+
+test('classifyMultiple: Below only when the whole range is under 1', () => {
+  assert.equal(classifyMultiple(0.7, 0.85, 0.99), 'below');
+  assert.equal(classifyMultiple(0.5, 0.6, 0.7), 'below');
+});
+
+test('multipleFor: range comes from the cost range applied to break-even', () => {
+  const m = multipleFor(900_000, { cost: 800_000, breakEven: 1_000_000, low: 720_000, high: 880_000, quality: 'medium' });
+  assert.ok(m);
+  assert.equal(m.mid, 0.9);
+  assert.ok(Math.abs(m.lo - 900_000 / 1_100_000) < 1e-9);
+  assert.ok(Math.abs(m.hi - 900_000 / 900_000) < 1e-9);
+  assert.equal(multipleFor(900_000, null), null);
+  assert.equal(multipleFor(900_000, { cost: 0, breakEven: 0, low: 0, high: 0, quality: 'high' }), null);
+});
+
+// ---------------------------------------------------------------- cost provider
+
+test('every costMethodology value in commercial.json maps to a range width', () => {
+  const data = JSON.parse(readFileSync(path.join(ROOT, 'data/commercial.json'), 'utf8'));
+  const values = new Set<string | null | undefined>(Object.values(data.shows).map((s: any) => s.costMethodology));
+  assert.ok(values.size >= 3, 'expected several costMethodology values; update this test');
+  for (const v of Array.from(values)) {
+    if (v == null) {
+      assert.equal(costHalfWidth(v), DEFAULT_COST_HALF_WIDTH, 'missing methodology gets the widest range');
+      continue;
+    }
+    assert.ok(v in COST_METHOD_HALF_WIDTH, `costMethodology "${v}" has no range width in COST_METHOD_HALF_WIDTH`);
+  }
+  assert.equal(costHalfWidth('trade-reported'), 0.05);
+  assert.equal(costHalfWidth('sec-filing'), 0.05);
+  assert.equal(costHalfWidth('producer-confirmed'), 0.05);
+  assert.equal(costHalfWidth('reddit-standard'), 0.15);
+  assert.equal(costHalfWidth('industry-estimate'), 0.2);
+  assert.equal(costHalfWidth('deep-research'), 0.2);
+});
+
+test('estimated cost methods never get the reported (narrowest) width', () => {
+  for (const m of Array.from(ESTIMATED_COST_METHODS)) assert.ok(costHalfWidth(m) >= 0.15, m);
+});
+
+test('static provider: no break-even means no cost; quality follows width', () => {
+  const p = makeStaticCostProvider((id) =>
+    ({ a: { breakEven: 500_000, costMethodology: 'trade-reported' }, b: { breakEven: null }, c: { breakEven: 400_000, costMethodology: 'reddit-standard' } } as Record<string, any>)[id]);
+  assert.equal(p('b', '2026-01-04'), null);
+  assert.equal(p('zzz', '2026-01-04'), null);
+  const a = p('a', '2026-01-04');
+  assert.equal(a?.quality, 'high');
+  assert.equal(a?.low, 475_000);
+  assert.equal(p('c', '2026-01-04')?.quality, 'medium');
+  assert.equal(qualityForHalfWidth(0.2), 'low');
+  assert.equal(meetsCostQualityFloor('low'), true);
+  assert.equal(meetsCostQualityFloor('estimated'), false, 'a category guess is below the floor');
+  assert.equal(meetsCostQualityFloor(null), false);
+});
+
+// ---------------------------------------------------------------- weeks
+
+/** Sunday week endings, newest first, ending at `latest`. */
+function weekKeys(latest: string, n: number): string[] {
+  const t = Date.parse(latest);
+  return Array.from({ length: n }, (_, i) => new Date(t - i * 7 * 86_400_000).toISOString().slice(0, 10));
+}
+function rows(latest: string, grosses: Array<number | null>, perfs?: Array<number | null>): WeekRow[] {
+  return weekKeys(latest, grosses.length).map((week, i) => ({
+    week,
+    gross: grosses[i],
+    performances: perfs ? perfs[i] : grosses[i] == null ? null : 8,
+    attendance: grosses[i] == null ? null : 7000,
+    seatsOffered: grosses[i] == null ? null : 8000,
+  }));
+}
+const flatCost = (be: number, hw = 0.05): CostProvider => () => ({ cost: be, breakEven: be, low: be * (1 - hw), high: be * (1 + hw), quality: qualityForHalfWidth(hw) });
+
+test('statusWindowGrosses: partial preview weeks and dark weeks leave the window', () => {
+  // newest first: wk4 (8 perfs), wk3 (8), wk2 (8), wk1 preview with 5 perfs
+  const r = rows('2026-09-27', [800, 810, 820, 300], [8, 8, 8, 5]);
+  assert.deepEqual(statusWindowGrosses(r), [800, 810, 820, null]);
+  // a later 7-show week (a play's schedule) counts
+  const later = rows('2026-09-27', [700, 800, 800, 800, 800, 800], [7, 8, 8, 8, 8, 8]);
+  assert.deepEqual(statusWindowGrosses(later), [700, 800, 800, 800]);
+  // 0 performances is not a reported week
+  const dark = rows('2026-09-27', [800, 5, 800, 800, 800], [8, 0, 8, 8, 8]);
+  assert.deepEqual(statusWindowGrosses(dark), [800, null, 800, 800]);
+});
+
+test('shutdown weeks are a gap: never zero, never break a streak', () => {
+  const series: MultiplePoint[] = [
+    { week: '2021-10-10', gross: 1, multiple: 1.2, market: null },
+    { week: '2021-10-03', gross: 1, multiple: 1.3, market: null },
+    { week: '2020-12-06', gross: null, multiple: null, market: null }, // shutdown
+    { week: '2020-03-08', gross: 1, multiple: 1.1, market: null },
+    { week: '2020-03-01', gross: 1, multiple: 0.9, market: null },
+  ];
+  assert.deepEqual(currentStreak(series), { side: 'above', weeks: 3, atLeast: false });
+  const built = buildMultipleSeries('x', [{ week: '2020-12-06', gross: 50_000, performances: 8 }], flatCost(100_000), null);
+  assert.equal(built[0].gross, null, 'a shutdown week is drawn as a gap');
+  assert.equal(built[0].multiple, null);
+});
+
+test('currentStreak: capped look-back reports "at least"', () => {
+  const series: MultiplePoint[] = weekKeys('2026-09-27', 60).map((week) => ({ week, gross: 1, multiple: 1.5, market: 1.1 }));
+  assert.deepEqual(currentStreak(series, 52), { side: 'above', weeks: 52, atLeast: true });
+  const short = series.slice(0, 30);
+  assert.deepEqual(currentStreak(short, 52), { side: 'above', weeks: 30, atLeast: false });
+  const flip = series.map((p, i) => (i === 3 ? { ...p, multiple: 0.8 } : p));
+  assert.deepEqual(currentStreak(flip, 52), { side: 'above', weeks: 3, atLeast: false });
+});
+
+test('market median excludes nonprofits and shows below the cost floor', () => {
+  const latest = '2026-09-27';
+  const cost: CostProvider = (id) => (id === 'guess' ? { cost: 1, breakEven: 1, low: 1, high: 1, quality: 'estimated' } : flatCost(100)(id, latest));
+  const med = computeMarketMedianByWeek([
+    { showId: 'a', nonprofit: false, weeks: rows(latest, [100]) },
+    { showId: 'b', nonprofit: false, weeks: rows(latest, [300]) },
+    { showId: 'np', nonprofit: true, weeks: rows(latest, [5000]) },
+    { showId: 'guess', nonprofit: false, weeks: rows(latest, [9999]) },
+  ], cost);
+  assert.equal(med.get(latest), 2);
+});
+
+// ---------------------------------------------------------------- closed runs
+
+test('summarizeClosedRun: weekly under 104 weeks, seasons with totals only at 104+', () => {
+  const short = buildMultipleSeries('x', rows('2026-09-20', [1200, 900, 900, 900]), flatCost(1000), null);
+  const s = summarizeClosedRun(short);
+  assert.equal(s.granularity, 'weekly');
+  assert.equal(s.weeksBelow, 3);
+  assert.equal(s.weeksAbove, 1);
+  assert.equal(s.series[0].week < s.series[3].week, true, 'oldest first');
+
+  const long = buildMultipleSeries('x', rows('2026-09-20', Array(SEASON_VIEW_MIN_WEEKS).fill(1000)), flatCost(500), null);
+  const l = summarizeClosedRun(long);
+  assert.equal(l.granularity, 'season');
+  assert.equal(l.weeksWithCost, 0, 'no multiples until era costs exist');
+  assert.equal(l.series.length, 0);
+  assert.equal(l.seasons.reduce((a, x) => a + x.weeks, 0), SEASON_VIEW_MIN_WEEKS);
+  assert.ok(l.seasons.every((x) => /^\d{4}-\d{4}$/.test(x.season)), 'July-June seasons');
+});
+
+test('summarizeClosedRun: shutdown weeks are not counted as zero-gross weeks', () => {
+  const r: WeekRow[] = [
+    { week: '2021-10-10', gross: 900, performances: 8 },
+    { week: '2020-12-06', gross: 0, performances: 0 },
+    { week: '2020-03-08', gross: 1100, performances: 8 },
+  ];
+  const s = summarizeClosedRun(buildMultipleSeries('x', r, flatCost(1000), null));
+  assert.equal(s.weeksReported, 2);
+  assert.equal(s.totalGross, 2000);
+});
+
+// ---------------------------------------------------------------- one show
+
+const base = {
+  showId: 'x', nonprofit: false, cost: flatCost(1_000_000), marketMedianByWeek: null, latestWeek: '2026-09-27',
+};
+
+test('computeShowStatus: ok with band, cover costs and a story', () => {
+  const s = computeShowStatus({ ...base, status: 'open', weeks: rows('2026-09-27', Array(10).fill(800_000)) });
+  assert.equal(s.availability, 'ok');
+  assert.equal(s.band, 'below');
+  assert.equal(s.cover?.shortBy, 200_000);
+  assert.ok(s.cover?.ticketNeeded && Math.abs(s.cover.ticketNeeded - 1_000_000 / 7000) < 1e-6);
+  assert.ok(s.cover?.capacityNeeded && s.cover.capacityNeeded > 100, 'needs more than full at today\'s prices');
+  assert.match(s.story ?? '', /below its estimated weekly cost/);
+  assert.equal(s.series.length, 10);
+});
+
+test('computeShowStatus: closed, closing, early, nocost get no status chip', () => {
+  const w = rows('2026-09-27', Array(10).fill(1_500_000));
+  assert.equal(computeShowStatus({ ...base, status: 'closed', weeks: w }).availability, 'closed');
+  const closing = computeShowStatus({ ...base, status: 'open', closingDate: '2026-10-18', weeks: w });
+  assert.equal(closing.availability, 'closing');
+  assert.equal(closing.band, null);
+  assert.equal(closing.story, null);
+  assert.equal(computeShowStatus({ ...base, status: 'open', closingDate: '2027-01-03', weeks: w }).availability, 'ok',
+    'a closing months away is not the final weeks');
+  assert.equal(computeShowStatus({ ...base, status: 'previews', weeks: rows('2026-09-27', [1, 1, 1]) }).availability, 'early');
+  const nocost = computeShowStatus({ ...base, status: 'open', cost: () => null, weeks: w });
+  assert.equal(nocost.availability, 'nocost');
+  assert.equal(nocost.story, null);
+  assert.equal(nocost.breakEven, null);
+  assert.deepEqual(countStatuses([nocost, closing, { availability: 'ok', band: 'near' }]), { nocost: 1, closing: 1, 'ok:near': 1 });
+});
+
+test('story is descriptive: no causal claims', () => {
+  const market = new Map(weekKeys('2026-09-27', 30).map((w) => [w, 1.2]));
+  const s = computeShowStatus({ ...base, status: 'open', marketMedianByWeek: market, weeks: rows('2026-09-27', Array(30).fill(700_000)) });
+  assert.match(s.story ?? '', /below its cost for 30 straight weeks; the typical Broadway show was at or above its cost in 30 of those weeks/);
+  assert.doesNotMatch(s.story ?? '', /\bbecause\b|\bslump\b|\bthe season's\b|\bthis show's\b|\bdue to\b/i);
+  assert.equal(buildStory({ availability: 'early', band: null, streak: null, series: [] }), null);
+});
+
+test('reconcileWithAtRisk caps an At Risk show at Near', () => {
+  assert.equal(reconcileWithAtRisk('above', true), 'near');
+  assert.equal(reconcileWithAtRisk('well-above', true), 'near');
+  assert.equal(reconcileWithAtRisk('below', true), 'below');
+  assert.equal(reconcileWithAtRisk('above', false), 'above');
+});
+
+// ---------------------------------------------------------------- real data
+
+test('real data: every /biz At Risk show reads Below or Near', () => {
+  const byslug = new Map(getRunningBoxOfficeV2().map((s) => [s.slug, s]));
+  for (const r of getShowsAtRisk()) {
+    const s = byslug.get(r.slug);
+    if (!s || s.availability !== 'ok') continue;
+    assert.ok(s.band === 'below' || s.band === 'near', `${r.slug} is At Risk on /biz but ${s.band} here`);
+  }
+});
+
+test('real data: running shows get a status or a stated reason, never a reason-less blank', () => {
+  const all = getRunningBoxOfficeV2();
+  assert.ok(all.length >= 10, `expected 10+ running Broadway shows, got ${all.length}`);
+  for (const s of all) {
+    if (s.availability === 'ok') {
+      assert.ok(s.band && s.multiple && s.breakEven, `${s.slug} ok without band/multiple/break-even`);
+      assert.ok(s.costBasis, `${s.slug} has no cost basis`);
+    } else {
+      assert.equal(s.band, null, `${s.slug} ${s.availability} still has a band`);
+      assert.equal(s.story, null, `${s.slug} ${s.availability} still has a story`);
+    }
+    // the source line must never print internal research language
+    assert.doesNotMatch(s.costSourceText ?? '', /reddit|industry[\s-]*estimate|deep[\s-]*research|gpt/i, s.slug);
+  }
+});
+
+test('real data: a closed show with a short run gets a weekly whole-run summary', () => {
+  const t = getShowBoxOfficeV2('titanique');
+  if (!t) return; // record removed: nothing to check
+  assert.equal(t.availability, 'closed');
+  assert.equal(t.closedRun?.granularity, 'weekly');
+  assert.ok((t.closedRun?.weeksWithCost ?? 0) > 0);
+});

@@ -8,8 +8,9 @@
  *
  * Run after `vercel pull --environment=production` and before
  * `vercel build --prod`, by both prod deploy paths: vercel-deploy.yml and
- * scripts/deploy-now.js. The demo deploy (vercel-demo.yml) turns every flag on
- * and does not run this.
+ * scripts/deploy-now.js. The demo deploy (vercel-demo.yml) does not run this;
+ * it builds its flag list with scripts/lib/demo-feature-flags.js, which leaves
+ * held flags off unless DEMO_HELD_ALLOWLIST names them (BRO-5007).
  *
  * Usage: node scripts/lib/prod-held-flags-guard.js [path/to/.env.production.local]
  * Exit 0 = nothing held is enabled; 1 = held feature enabled, env file missing,

@@ -208,28 +208,41 @@ export function buildMultipleSeries(
 export interface Streak {
   side: 'above' | 'below';
   weeks: number;
+  /** True when the streak runs past the look-back window: "at least `weeks`". */
+  atLeast: boolean;
 }
 
 /**
  * Consecutive weeks on the same side of cost, counted back from the newest
- * week with a multiple. Shutdown weeks are skipped (they neither break nor
- * extend it); any other week without a multiple ends it.
+ * week with a multiple, over at most `maxWeeks` weeks (today's cost figure is
+ * no guide to a long run's early years). Shutdown weeks are skipped (they
+ * neither break nor extend it); any other week without a multiple ends it.
  */
-export function currentStreak(seriesNewestFirst: MultiplePoint[]): Streak | null {
+export function currentStreak(seriesNewestFirst: MultiplePoint[], maxWeeks = Infinity): Streak | null {
   let side: Streak['side'] | null = null;
   let weeks = 0;
-  for (const p of seriesNewestFirst) {
+  let broke = false;
+  const window = seriesNewestFirst.slice(0, maxWeeks);
+  for (const p of window) {
     if (isShutdownWeek(p.week)) continue;
     if (p.multiple == null) {
       if (side == null) continue; // leading unreported weeks (a dark latest week) don't end it
+      broke = true;
       break;
     }
     const s: Streak['side'] = p.multiple < 1 ? 'below' : 'above';
     if (side == null) side = s;
-    if (s !== side) break;
+    if (s !== side) {
+      broke = true;
+      break;
+    }
     weeks++;
   }
-  return side ? { side, weeks } : null;
+  if (!side) return null;
+  // "At least" only when the week just past the window continues the streak.
+  const next = broke ? undefined : seriesNewestFirst.slice(window.length).find((p) => !isShutdownWeek(p.week));
+  const atLeast = !!next && next.multiple != null && (next.multiple < 1 ? 'below' : 'above') === side;
+  return { side, weeks, atLeast };
 }
 
 /** Median of the values, null when empty. */
@@ -439,7 +452,7 @@ export function buildStory(s: Pick<ShowBoxOfficeStatus, 'availability' | 'band' 
     .slice(0, streak.weeks);
   const withMarket = streakWeeks.filter((p) => p.market != null);
   const sideText = streak.side === 'below' ? 'below' : 'at or above';
-  let second = `It has been ${sideText} its cost for ${streak.weeks} straight weeks`;
+  let second = `It has been ${sideText} its cost for ${streak.atLeast ? "at least " : ""}${streak.weeks} straight weeks`;
   if (streakWeeks.length === streak.weeks && withMarket.length === streak.weeks) {
     const marketAbove = withMarket.filter((p) => (p.market as number) >= 1).length;
     second += `; the typical Broadway show was at or above its cost in ${marketAbove} of those weeks`;
@@ -483,7 +496,7 @@ export function computeShowStatus(input: ShowStatusInput): ShowBoxOfficeStatus {
     ...base,
     band,
     multiple,
-    streak: currentStreak(seriesAll),
+    streak: currentStreak(seriesAll, CHART_WEEKS),
     cover: computeCoverCosts(windowRows, avgGross, usableCost.breakEven),
   };
   out.story = buildStory(out);

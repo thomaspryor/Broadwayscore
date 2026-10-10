@@ -95,3 +95,45 @@ test('pages only load commercial data behind featureFlags.commercial', () => {
   }
   assert.deepEqual(offenders, [], `gate these on featureFlags.commercial:\n${offenders.join('\n')}`);
 });
+
+// BRO-5007: Box Office Scorecard v2 is not public yet (owner, 2026-10-10).
+const { PROD_HELD_FEATURES } = await import('../../src/config/feature-flags.ts');
+const { computeDemoFlags } = await import('../../scripts/lib/demo-feature-flags.js');
+
+test('boxOfficeV2 is off without the env var and held back from production', () => {
+  assert.equal(featureFlags.boxOfficeV2, false);
+  assert.ok(PROD_HELD_FEATURES.has('boxOfficeV2'), 'boxOfficeV2 must stay in PROD_HELD_FEATURES until released');
+  assert.ok(PROD_HELD_FEATURES.has('commercial'));
+});
+
+test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', () => {
+  const src = readFileSync(path.join(ROOT, 'src/config/feature-flags.ts'), 'utf8');
+  const flags = computeDemoFlags(src);
+  assert.ok(flags.length > 5, 'demo flag list unexpectedly short');
+  assert.ok(!flags.includes('boxOfficeV2'), 'boxOfficeV2 must not be enabled on demo.broadwayscorecard.com');
+  // commercial's demo behavior is pending an owner decision: unchanged (allowlisted).
+  assert.ok(flags.includes('commercial'), 'commercial stays on demo until the owner decides');
+  const wf = readFileSync(path.join(ROOT, '.github/workflows/vercel-demo.yml'), 'utf8');
+  const codeLines = wf.split('\n').filter((l) => !/^\s*#/.test(l));
+  assert.ok(codeLines.some((l) => /node\s+scripts\/lib\/demo-feature-flags\.js/.test(l)),
+    'vercel-demo.yml must compute its flags by running scripts/lib/demo-feature-flags.js');
+  assert.ok(!codeLines.some((l) => l.includes('matchAll(/get')),
+    'vercel-demo.yml must not extract flags inline (that path enables prod-held flags)');
+});
+
+test('v2 box-office data is computed only behind commercial AND boxOfficeV2', () => {
+  const v2Fns = ['getShowBoxOfficeV2', 'getRunningBoxOfficeV2'];
+  const call = new RegExp(`\\b(${v2Fns.join('|')})\\s*\\(`);
+  const offenders = [];
+  for (const file of ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))) {
+    const rel = path.relative(ROOT, file);
+    if (rel === 'src/lib/data-commercial.ts') continue;
+    readFileSync(file, 'utf8').split('\n').forEach((line, i) => {
+      if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line)
+        && !(line.includes('featureFlags.commercial') && line.includes('featureFlags.boxOfficeV2'))) {
+        offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
+      }
+    });
+  }
+  assert.deepEqual(offenders, [], `gate these on featureFlags.commercial && featureFlags.boxOfficeV2:\n${offenders.join('\n')}`);
+});
