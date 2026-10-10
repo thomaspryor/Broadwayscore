@@ -4,6 +4,7 @@ import { marketAlternates, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 import { getLegendEntries } from '@/config/commercial';
+import { FIZZLE_MIN_RETURNED_PCT } from '../../../scripts/lib/commercial-designations';
 import { methodologyOutletList } from '@/lib/methodology-tiers';
 
 // Static OG image (API routes don't work with static export)
@@ -513,7 +514,7 @@ export default function MethodologyPage() {
             </ul>
           </div>
           <p className="text-gray-400 text-xs mt-3">
-            Unless a source reports what investors got back, the line between Fizzle and Flop (about 30% returned) is our estimate.
+            {`Unless a source reports what investors got back, the line between Fizzle and Flop (about ${FIZZLE_MIN_RETURNED_PCT}% returned) is our estimate.`}
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">How often it updates</h3>

@@ -25,6 +25,15 @@ const ALLOWED_SHARED_IMAGES = {
     owner: 'kramerfauci-off-broadway-2026',
     reason: 'same production transferred from NYU Skirball to St. Ann\'s Warehouse (priorRuns carries no id link)',
   },
+  // Same production or one brand image, checked by eye; these rows record the
+  // same image source as their owner (shared-image-source.js, BRO-4996).
+  'age-is-a-feeling-off-west-end-2026': { owner: 'age-is-a-feeling-off-broadway-2024', reason: 'Haley McGee solo show, same production' },
+  'the-last-ship-west-end-2026': { owner: 'the-last-ship-off-broadway-2026', reason: 'same Sting tour production (Met Opera then Drury Lane)' },
+  'la-distance-off-west-end-2026': { owner: 'la-distance-bam-off-broadway-2026', reason: 'Tiago Rodrigues touring production' },
+  'jane-eyre-rose-kingston-off-west-end-2026': { owner: 'jane-eyre-off-west-end-2026', reason: 'Caird/Gordon production, Southwark then Rose Kingston' },
+  'les-miserables-2014': { owner: 'les-miserables-1987', reason: 'the Cosette logo is the brand art of every Mackintosh production' },
+  '1536-west-end-2026': { owner: '1536-off-west-end-2026', reason: 'Almeida production and its Ambassadors transfer' },
+  'the-pass-off-west-end-2026': { owner: 'the-pass-off-broadway-2026', reason: 'same production' },
 };
 
 const IMAGE_PATH_RE = /^\/images\/shows\/([^/]+)\//;

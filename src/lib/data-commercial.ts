@@ -20,7 +20,7 @@ import type {
 } from './data-types';
 import type { CommercialDesignation, RecoupmentTrend } from '@/config/commercial';
 import { getDesignationSortOrder } from '@/config/commercial';
-import { getShowGrosses } from './data-grosses';
+import { getShowGrosses, getGrossesWeekEnding } from './data-grosses';
 import {
   calculateWeeksToRecoup,
   computeGrossTrend,
@@ -31,6 +31,7 @@ import {
   isAtRisk,
   isApproachingRecoupment,
   DISPLAY_TREND_THRESHOLD_PCT,
+  getSeason,
 } from './commercial-metrics';
 import {
   getDisplayableModelRange,
@@ -41,7 +42,22 @@ import {
   isUnannouncedRecoupment,
   isEstimatedRunningCost,
   getNonprofitProducer,
+  getCitedSourceUrl,
+  meetsModelQualityFloor,
 } from './commercial-display';
+import {
+  computeMarketMedianByWeek,
+  computeShowStatus,
+  countStatuses,
+  makeStaticCostProvider,
+  reconcileWithAtRisk,
+  staleInputReasons,
+  v2CostBasis,
+  type CostProvider,
+  type V2CostBasis,
+  type ShowBoxOfficeStatus,
+  type WeekRow,
+} from './box-office-status';
 import commercialData from '../../data/commercial.json';
 import grossesHistoryData from '../../data/grosses-history.json';
 import showsData from '../../data/shows.json';
@@ -68,6 +84,7 @@ interface GrossesHistoryWeek {
   atp: number | null;
   attendance: number | null;
   performances: number | null;
+  seatsOffered?: number | null;
 }
 
 interface GrossesHistoryFile {
@@ -89,26 +106,9 @@ const WEEK_KEYS_NEWEST_FIRST = Object.keys(grossesHistory.weeks).sort().reverse(
 // Pure utility functions
 // ============================================
 
-/**
- * Get Broadway season for a given date
- * Broadway seasons run July 1 - June 30
- * Returns format: "2024-2025"
- */
-export function getSeason(dateString: string | null | undefined): string | null {
-  if (!dateString) return null;
-
-  const date = new Date(dateString);
-  if (isNaN(date.getTime())) return null;
-
-  const year = date.getFullYear();
-  const month = date.getMonth();
-
-  if (month >= 6) {
-    return `${year}-${year + 1}`;
-  } else {
-    return `${year - 1}-${year}`;
-  }
-}
+// getSeason lives in commercial-metrics (pure, no data imports) so the
+// box-office status logic can use it; re-exported for existing callers.
+export { getSeason };
 
 // ============================================
 // Basic commercial data queries
@@ -679,4 +679,280 @@ export function getShowsBySeasonWithCommercial(season: string): CommercialShowRo
     if (orderDiff !== 0) return orderDiff;
     return a.title.localeCompare(b.title);
   });
+}
+
+// ============================================
+// Box Office Scorecard v2 (BRO-5007): status vs weekly cost
+// ============================================
+//
+// Unreleased (owner, 2026-10-10: "Not public yet"). Callers gate every call on
+// featureFlags.commercial && featureFlags.boxOfficeV2 in the page itself, so a
+// flag-off build never computes these and the client receives nothing new.
+
+/** What the v2 card and the /box-office table receive (everything here is publishable). */
+export interface ShowBoxOfficeV2 extends ShowBoxOfficeStatus {
+  title: string;
+  slug: string;
+  /** 'reported' when the cost cites a publishable source, else 'estimate'. */
+  costBasis: 'reported' | 'estimate' | null;
+  /** Publishable source text for the cost (publicSourceText), else null. */
+  costSourceText: string | null;
+  costSourceUrl: string | null;
+  nonprofitOrg: string | null;
+  /** Final designation for a closed show (links to the Commercial Scorecard), else null. */
+  designation: CommercialDesignation | null;
+  /** Why a show has no usable cost (availability 'nocost' only), for the build report. */
+  noCostReason: string | null;
+}
+
+/**
+ * The one cost-basis answer the v2 card uses, for BOTH its Reported/Estimate
+ * label and its range width, so they cannot disagree. Starts from the "~"
+ * marker rule (isEstimatedRunningCost); a floor quote ("well over $1 million")
+ * also reads Estimate, and a reported source over 24 months old keeps its
+ * label but gets estimate width. v2 only: the existing pages keep their rule.
+ */
+export function getV2CostBasis(data: ShowCommercial, asOf: string): V2CostBasis {
+  return v2CostBasis({
+    costMethodology: data.costMethodology ?? null,
+    estimated: isEstimatedRunningCost(data),
+    sourceText: publicSourceText(data.weeklyRunningCostSource) ?? null,
+    asOf,
+  });
+}
+
+/** Why getBreakEven returns null for a record (null when it has a cost). */
+export function noCostReason(data: ShowCommercial): string | null {
+  if (getBreakEven(data) != null) return null;
+  if (data.modelBreakeven && !meetsModelQualityFloor(data)) {
+    return `no weekly cost on file; model break-even rejected by the quality floor (${data.modelDataQuality === 'low' ? 'low data quality' : `method ${data.modelMethod}`})`;
+  }
+  return 'no weekly cost or model break-even on file';
+}
+
+/** Market weeks the typical-show median covers (today's cost figures are wrong for older eras). */
+const MARKET_MEDIAN_WEEKS = 156;
+const PRODUCTION_LEAD_DAYS = 7;
+const PRODUCTION_TAIL_DAYS = 7;
+
+function isoDayOffset(date: string, days: number): string {
+  return new Date(Date.parse(date) + days * 86_400_000).toISOString().slice(0, 10);
+}
+
+/**
+ * This production's weeks, newest first, aligned to every Broadway week from
+ * the latest one back to its first preview. History is keyed by slug, and a
+ * revival can share a slug with an older production, so weeks outside this
+ * production's dates are dropped.
+ */
+function productionWeeks(show: RawShow): WeekRow[] {
+  const start = show.previewsStartDate || show.openingDate;
+  const from = start ? isoDayOffset(start, -PRODUCTION_LEAD_DAYS) : null;
+  const to = show.closingDate ? isoDayOffset(show.closingDate, PRODUCTION_TAIL_DAYS) : null;
+  const rows: WeekRow[] = [];
+  for (const week of WEEK_KEYS_NEWEST_FIRST) {
+    if (from && week < from) break;
+    const h = to && week > to ? undefined : grossesHistory.weeks[week]?.[show.slug];
+    rows.push({
+      week,
+      gross: h?.gross ?? null,
+      performances: h?.performances ?? null,
+      attendance: h?.attendance ?? null,
+      seatsOffered: h?.seatsOffered ?? null,
+      atp: h?.atp ?? null,
+      capacity: h?.capacity ?? null,
+    });
+  }
+  return rows;
+}
+
+function isNonprofitRecord(data: ShowCommercial): boolean {
+  return data.designation === 'Nonprofit' || getNonprofitProducer(data) != null;
+}
+
+interface BoxOfficeV2Context {
+  cost: CostProvider;
+  market: Map<string, number>;
+  latestWeek: string;
+}
+
+let boxOfficeV2Context: BoxOfficeV2Context | null = null;
+
+/** Built once per build (per worker): the cost provider and the typical-show median. */
+function getBoxOfficeV2Context(): BoxOfficeV2Context {
+  if (boxOfficeV2Context) return boxOfficeV2Context;
+  const latestWeek = WEEK_KEYS_NEWEST_FIRST[0];
+  const cost = makeStaticCostProvider((slug) => {
+    const data = commercial.shows[slug];
+    return data ? { breakEven: getBreakEven(data), halfWidth: getV2CostBasis(data, latestWeek).halfWidth } : null;
+  });
+  const recent = new Set(WEEK_KEYS_NEWEST_FIRST.slice(0, MARKET_MEDIAN_WEEKS));
+  const shows: Array<{ showId: string; nonprofit: boolean; weeks: WeekRow[] }> = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show || show.category !== 'broadway') continue;
+    shows.push({ showId: slug, nonprofit: isNonprofitRecord(data), weeks: productionWeeks(show).filter((r) => recent.has(r.week)) });
+  }
+  boxOfficeV2Context = { cost, market: computeMarketMedianByWeek(shows, cost), latestWeek };
+  return boxOfficeV2Context;
+}
+
+let staleInputs: string[] | null = null;
+
+/**
+ * Stale-input reasons for this build (memoized). Non-empty means every v2
+ * getter returns nothing and the build logs a loud error, so old inputs can
+ * never publish statuses.
+ */
+export function getBoxOfficeV2StaleReasons(today: string = new Date().toISOString().slice(0, 10)): string[] {
+  if (staleInputs) return staleInputs;
+  staleInputs = staleInputReasons({
+    historyNewestWeek: WEEK_KEYS_NEWEST_FIRST[0] ?? null,
+    grossesWeekEnding: getGrossesWeekEnding() ?? null,
+    commercialUpdated: commercial._meta?.lastUpdated ?? null,
+    today,
+  });
+  if (staleInputs.length) {
+    console.error(`[box-office-v2] STALE INPUTS, no statuses published this build: ${staleInputs.join('; ')}`);
+  }
+  return staleInputs;
+}
+
+/** Status for one Broadway show, or null when it has no commercial record or no grosses (or inputs are stale). */
+export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
+  if (getBoxOfficeV2StaleReasons().length) return null;
+  const data = commercial.shows[slug];
+  const show = rawShows.find((s) => s.slug === slug);
+  if (!data || !show || show.category !== 'broadway') return null;
+  const weeks = productionWeeks(show);
+  if (!weeks.some((r) => r.gross != null)) return null;
+  const ctx = getBoxOfficeV2Context();
+  const status = computeShowStatus({
+    showId: slug,
+    status: show.status,
+    closingDate: show.closingDate,
+    nonprofit: isNonprofitRecord(data),
+    weeks,
+    cost: ctx.cost,
+    marketMedianByWeek: ctx.market,
+    latestWeek: ctx.latestWeek,
+  });
+  const atRisk = isAtRisk({
+    status: show.status,
+    recouped: data.recouped,
+    recoupmentRange: getDisplayableModelRange({ ...data, status: show.status }),
+    avgGross: trailingAverageGross(getRecentGrosses(slug, 4)),
+    breakEven: getBreakEven(data),
+  });
+  status.band = reconcileWithAtRisk(status.band, atRisk);
+  const hasCost = status.breakEven != null;
+  const basis = getV2CostBasis(data, ctx.latestWeek);
+  const reportedCost = hasCost && !basis.estimated;
+  // A floor quote is an estimate but comes from a named public outlet, so it keeps its citation.
+  const cited = reportedCost || (hasCost && basis.floorQuote);
+  return {
+    ...status,
+    title: show.title,
+    slug,
+    costBasis: hasCost ? (reportedCost ? 'reported' : 'estimate') : null,
+    costSourceText: cited ? publicSourceText(data.weeklyRunningCostSource) : null,
+    costSourceUrl: cited ? getCitedSourceUrl(data.sources) : null,
+    nonprofitOrg: getNonprofitProducer(data),
+    designation: show.status === 'closed' && data.designation && data.designation !== 'TBD' ? data.designation : null,
+    noCostReason: status.availability === 'nocost' ? noCostReason(data) : null,
+  };
+}
+
+let boxOfficeV2ReportLogged = false;
+
+/**
+ * Status for every running Broadway show (open or previews) with a commercial
+ * record and grosses, title order. Logs one build-time count per
+ * availability/band plus the commercial records with no grosses history.
+ */
+export function getRunningBoxOfficeV2(): ShowBoxOfficeV2[] {
+  const out: ShowBoxOfficeV2[] = [];
+  for (const show of rawShows) {
+    if (show.category !== 'broadway' || !isRunningStatus(show.status)) continue;
+    const s = getShowBoxOfficeV2(show.slug);
+    if (s) out.push(s);
+  }
+  out.sort((a, b) => a.title.localeCompare(b.title));
+  if (!boxOfficeV2ReportLogged) {
+    boxOfficeV2ReportLogged = true;
+    const historyKeys = new Set<string>();
+    for (const w of Object.values(grossesHistory.weeks)) for (const k of Object.keys(w)) historyKeys.add(k);
+    const noHistory = Object.keys(commercial.shows).filter((k) => !historyKeys.has(k));
+    console.warn(`[box-office-v2] running shows: ${JSON.stringify(countStatuses(out))}; commercial records with no grosses history (${noHistory.length}): ${noHistory.join(', ')}`);
+  }
+  return out;
+}
+
+/** The /box-office market line: this week's Broadway total vs the same week a year earlier. */
+export interface BoxOfficeV2Market {
+  week: string;
+  gross: number;
+  shows: number;
+  lastYearWeek: string | null;
+  lastYearGross: number | null;
+  lastYearShows: number | null;
+}
+
+function weekTotal(week: string): { gross: number; shows: number } | null {
+  const rows = grossesHistory.weeks[week];
+  if (!rows) return null;
+  let gross = 0;
+  let shows = 0;
+  for (const [slug, row] of Object.entries(rows)) {
+    if (!(row?.gross && row.gross > 0)) continue;
+    const show = rawShows.find((s) => s.slug === slug);
+    if (show && show.category !== 'broadway') continue;
+    gross += row.gross;
+    shows += 1;
+  }
+  return shows ? { gross, shows } : null;
+}
+
+/** Null when inputs are stale or the latest week has no grosses. */
+export function getBoxOfficeV2Market(): BoxOfficeV2Market | null {
+  if (getBoxOfficeV2StaleReasons().length) return null;
+  const week = WEEK_KEYS_NEWEST_FIRST[0];
+  const now = week ? weekTotal(week) : null;
+  if (!week || !now) return null;
+  const lastYearWeek = isoDayOffset(week, -364);
+  // A partly backfilled year-ago week would print a confident, wrong change; Broadway's
+  // show count swings seasonally but never halves in a year, so fewer than half means incomplete.
+  const found = weekTotal(lastYearWeek);
+  const prior = found && found.shows * 2 >= now.shows ? found : null;
+  return {
+    week,
+    gross: now.gross,
+    shows: now.shows,
+    lastYearWeek: prior ? lastYearWeek : null,
+    lastYearGross: prior?.gross ?? null,
+    lastYearShows: prior?.shows ?? null,
+  };
+}
+
+/** Everything /box-office needs, in one call the page gates on both flags. Null when nothing is rated (stale inputs). */
+export function getBoxOfficeV2Listing(tableSlugs: string[]): {
+  running: ShowBoxOfficeV2[];
+  /** Running Broadway shows with no commercial record at all, so "Not rated" still names them. */
+  unrecorded: { title: string; inPreviews: boolean }[];
+  bySlug: Record<string, ShowBoxOfficeV2>;
+  market: BoxOfficeV2Market | null;
+} | null {
+  const running = getRunningBoxOfficeV2();
+  if (!running.length) return null;
+  const bySlug: Record<string, ShowBoxOfficeV2> = {};
+  for (const r of running) bySlug[r.slug] = r;
+  const unrecorded = rawShows
+    .filter((show) => show.category === 'broadway' && isRunningStatus(show.status) && !bySlug[show.slug])
+    .map((show) => ({ title: show.title, inPreviews: show.status === 'previews' }));
+  for (const slug of tableSlugs) {
+    if (bySlug[slug]) continue;
+    const s = getShowBoxOfficeV2(slug);
+    if (s) bySlug[slug] = s;
+  }
+  return { running, unrecorded, bySlug, market: getBoxOfficeV2Market() };
 }

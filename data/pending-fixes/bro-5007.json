@@ -1,0 +1,44 @@
+{
+  "issueNumber": "bro-5007",
+  "planId": "3d6cbad0-af63-4698-9376-0278e5f01b32",
+  "status": "applied",
+  "createdAt": "2026-10-10T22:06:34.697Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Maybe Happy Ending: replace the unsourced \"weekly nut of $765 K\" in notes with the published Broadway Journal break-even citation (notes only; no number fields change). Re-issue of plan e5e1fdc4, which the commercial rules validator rejected for internal wording in public notes.",
+    "steps": [
+      "Set maybe-happy-ending.notes: drop the unsourced $765K weekly nut and cite Broadway Journal (2025-06-09) reporting ~$820,000 weekly break-even"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "maybe-happy-ending",
+        "showId": "maybe-happy-ending-2024",
+        "field": "notes",
+        "oldValue": "Capitalized at $16 M with a weekly nut of $765 K; remains open with no reported recoupment as of October 2026.",
+        "newValue": "Capitalized at $16 M; remains open with no reported recoupment as of October 2026. Broadway Journal (June 9, 2025) reported a break-even of about $820,000 in weekly gross, citing a fall 2024 production document.",
+        "description": "maybe-happy-ending: notes only. The $765K weekly cost has no traceable source; cite the published Broadway Journal break-even instead (https://broadwayjournal.com/intimate-maybe-happy-ending-engineers-turnaround/)"
+      }
+    ]
+  },
+  "history": [
+    {
+      "planId": "e5e1fdc4-eb36-4952-9f78-986bb41eab96",
+      "status": "validation-failed",
+      "executedAt": "2026-10-10T22:01:14.203Z"
+    }
+  ],
+  "executedAt": "2026-10-10T22:45:38.088Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for maybe-happy-ending"
+    }
+  ]
+}

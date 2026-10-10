@@ -4,6 +4,13 @@ import { getBroadwayShows } from '@/lib/data-core';
 import { getShowGrosses, getGrossesWeekEnding, getGrossesLastUpdated } from '@/lib/data-grosses';
 import { generateBreadcrumbSchema, BASE_URL } from '@/lib/seo';
 import { ThisWeekTable, AllTimeTable } from '@/components/SortableBoxOfficeTable';
+import { featureFlags } from '@/config/feature-flags';
+import { getBoxOfficeV2Listing } from '@/lib/data-commercial';
+import { costStatusCell, costTable, marketLine, statusCounts } from '@/lib/box-office-v2-display';
+import BoxOfficeV2Overview from '@/components/BoxOfficeV2Overview';
+// Unreleased (BRO-5007): a client loader, so the tables are their own chunk and a flag-off page never fetches them.
+import BoxOfficeV2Tables from '@/components/BoxOfficeV2TablesLazy';
+
 
 export const metadata: Metadata = {
   title: 'Box Office Scorecard - Broadway Weekly Grosses & Stats',
@@ -78,6 +85,16 @@ export default function BoxOfficePage() {
     .sort((a, b) => (b.grosses?.allTime?.gross || 0) - (a.grosses?.allTime?.gross || 0))
     .slice(0, 10);
 
+  // Box Office Scorecard v2 (unreleased): computed only when both flags are on.
+  const listing = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeV2Listing(showsWithGrosses.map((i) => i.show.slug)) : null;
+  const v2 = listing
+    ? {
+        ...costTable(showsWithGrosses, listing.bySlug),
+        counts: statusCounts(listing.running, listing.unrecorded),
+        market: listing.market ? marketLine(listing.market) : null,
+      }
+    : null;
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
     { name: 'Box Office', url: `${BASE_URL}/box-office` },
@@ -102,33 +119,44 @@ export default function BoxOfficePage() {
         <div className="mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-white">Broadway Box Office</h1>
           <p className="text-gray-400 mt-2">
-            Weekly grosses and all-time statistics for every Broadway show.
+            {v2
+              ? 'Weekly grosses for every Broadway show, and how each one is doing against its own costs.'
+              : 'Weekly grosses and all-time statistics for every Broadway show.'}
           </p>
           <p className="text-sm text-gray-500 mt-1">
             Week ending {weekEnding} · Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
 
-        {/* This Week Leaderboard */}
-        <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-4">This Week&apos;s Top Grossers</h2>
-          <p className="text-gray-400 text-sm mb-4">
-            Click any column header to sort. Shows are ranked by weekly gross by default.
-          </p>
-          <ThisWeekTable data={showsWithGrosses} />
-          <p className="text-xs text-gray-500 mt-3">
-            <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
-          </p>
-        </section>
+        {v2 ? (
+          <>
+            <BoxOfficeV2Overview market={v2.market} counts={v2.counts} />
+            <BoxOfficeV2Tables thisWeek={v2.thisWeek} allTime={allTimeLeaders} cells={v2.cells} noEstimate={costStatusCell(undefined)} />
+          </>
+        ) : (
+          <>
+          {/* This Week Leaderboard */}
+          <section className="mb-12">
+            <h2 className="text-xl font-bold text-white mb-4">This Week&apos;s Top Grossers</h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Click any column header to sort. Shows are ranked by weekly gross by default.
+            </p>
+            <ThisWeekTable data={showsWithGrosses} />
+            <p className="text-xs text-gray-500 mt-3">
+              <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
+            </p>
+          </section>
 
-        {/* All-Time Leaders */}
-        <section className="mb-12">
-          <h2 className="text-xl font-bold text-white mb-4">All-Time Box Office Leaders</h2>
-          <p className="text-gray-400 text-sm mb-4">
-            Cumulative Broadway gross over entire run. The Lion King holds the all-time record at over $2 billion.
-          </p>
-          <AllTimeTable data={allTimeLeaders} />
-        </section>
+          {/* All-Time Leaders */}
+          <section className="mb-12">
+            <h2 className="text-xl font-bold text-white mb-4">All-Time Box Office Leaders</h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Cumulative Broadway gross over entire run. The Lion King holds the all-time record at over $2 billion.
+            </p>
+            <AllTimeTable data={allTimeLeaders} />
+          </section>
+          </>
+        )}
 
         {/* Data Source Note */}
         <div className="text-sm text-gray-500 border-t border-white/5 pt-6">

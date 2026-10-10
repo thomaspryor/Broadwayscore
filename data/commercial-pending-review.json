@@ -207,7 +207,7 @@
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "Buena Vista Social Club opened March 19, 2025 at the Gerald Schoenfeld Theatre with a scheduled closing of January 17, 2027. As of the September 2025 BroadwayWorld article, the show has not yet recouped but is described as not losing money and in a favorable position relative to peers. Recoupment is projected as possible within 12-18 months from that date (i.e., roughly late 2026 to early 2027) if grosses hold. No capitalization or weekly running cost figures were explicitly stated in the evidence.",
+      "notes": "Buena Vista Social Club opened March 19, 2025 at the Gerald Schoenfeld Theatre with a scheduled closing of January 17, 2027. As of a September 2025 BroadwayWorld financial analysis, the show had not yet recouped but was described as being in a strong position among current shows — not losing money, and potentially able to recoup within 12-18 months if grosses hold. No explicit capitalization figure or weekly running cost was cited in the evidence.",
       "sources": [
         {
           "type": "trade",
@@ -221,36 +221,51 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:36:25.170Z"
+      "researchedAt": "2026-10-10T21:12:41.596Z"
     },
     "death-becomes-her-2024": {
       "title": "Death Becomes Her",
       "slug": "death-becomes-her",
       "openingDate": "2024-11-21",
       "status": "closed",
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
+      "capitalization": 31500000,
+      "capitalizationSource": "BroadwayWorld article (Jan 6, 2025) states 'Death Becomes Her was capitalized at $31.5 million'; Reddit comment also cites SEC public info at $31 million (slight discrepancy, BroadwayWorld figure of $31.5M preferred as trade-reported)",
+      "weeklyRunningCost": 900000,
       "costMethodology": "trade-reported",
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Deadline, 'Death Becomes Her To End Broadway Run Next Month Without Recouping', https://deadline.com/2026/05/death-becomes-her-broadway-closing-date-1236914353/",
+      "recoupedSource": "Deadline article headline explicitly states show closed 'Without Recouping'; Reddit forum users also confirm it had not recouped as of discussion",
       "designation": "Fizzle",
-      "notes": "Death Becomes Her closed June 28, 2026 without recouping its investment per Deadline. Forbes noted its notably high production budget prior to opening. Without specific capitalization figures or return percentages available in the evidence, a precise sub-designation between Fizzle and Flop cannot be confirmed; Fizzle is used as a conservative default. The Forbes article flagged the show as an example of skyrocketing Broadway budgets.",
+      "notes": "Death Becomes Her was one of the most expensive Broadway musicals ever produced, capitalized at $31.5 million. Despite strong grosses and being described as a major commercial success of the 2024-2025 season, the show closed June 28, 2026 without recouping its investment. Weekly running costs were estimated at approximately $900K-$1.05M per week by forum analysts. The Deadline article confirms closure without recoupment. Given the show ran roughly 85-90 weeks and did not recoup its $31.5M capitalization, it likely returned a meaningful but insufficient portion of investor capital — placed as Fizzle pending confirmation of actual return percentage.",
       "sources": [
-        {
-          "type": "trade",
-          "url": "https://deadline.com/2026/05/death-becomes-her-broadway-closing-date-1236914353/",
-          "date": "2026-05-01"
-        },
         {
           "type": "trade",
           "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
           "date": "2024-10-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+          "date": "2025-01-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2026/05/death-becomes-her-broadway-closing-date-1236914353/",
+          "date": null
+        },
+        {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/1kln7u6/budget/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://forum.broadwayworld.com/thread/Broadway-GrossesWeek-Ending-10-12-25/2",
+          "date": null
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:37:33.037Z"
+      "researchedAt": "2026-10-10T21:14:10.530Z"
     },
     "maybe-happy-ending-2024": {
       "title": "Maybe Happy Ending",
@@ -265,7 +280,7 @@
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "Maybe Happy Ending opened at the Belasco Theatre on November 12, 2024 and is still running as of the evidence gathered. The show won the Tony Award for Best Musical. Capitalization is confirmed at $18.25 million via SEC Form D. No weekly running cost, recoupment data, or closing date is available in the evidence. Too early to designate beyond TBD.",
+      "notes": "Maybe Happy Ending opened at the Belasco Theatre on November 12, 2024 and is still running with no announced closing date. Capitalization of $18.25M confirmed via SEC Form D. The Broadway Journal headline references a 'turnaround,' suggesting the show overcame an early box office struggle, and a Facebook post references a $1.4M weekly gross, but no explicit recoupment has been reported. Insufficient data to determine profitability designation at this time.",
       "sources": [
         {
           "type": "trade",
@@ -274,12 +289,17 @@
         },
         {
           "type": "trade",
-          "url": "https://www.maybehappyending.com/",
+          "url": "https://www.broadwayworld.com/grosses/MAYBE-HAPPY-ENDING",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.facebook.com/MusicalsDaily/posts/maybe-happy-ending-just-pulled-in-14-million-at-the-box-office-for-its-latest-ru/1368939085235383/",
           "date": null
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:38:20.281Z"
+      "researchedAt": "2026-10-10T21:14:57.571Z"
     },
     "the-great-gatsby-2024": {
       "title": "The Great Gatsby",
@@ -287,38 +307,43 @@
       "openingDate": "2024-04-25",
       "status": "open",
       "capitalization": 25000000,
-      "capitalizationSource": "Forbes article citing The Great Gatsby at $25 million to mount on Broadway",
+      "capitalizationSource": "Forbes article citing The Great Gatsby capitalization at $25 million",
       "weeklyRunningCost": null,
       "costMethodology": "trade-reported",
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "The Great Gatsby (2024) was capitalized at $25 million according to Forbes. The show is scheduled to run through January 3, 2027, making it a multi-year open-ended commercial run. No recoupment data is available from the provided evidence. Designation is TBD pending recoupment confirmation.",
+      "notes": "The Great Gatsby (2024) was capitalized at $25 million per Forbes reporting on Broadway production budgets. The show opened April 25, 2024 and is scheduled to close March 14, 2027, indicating a planned commercial run. No recoupment data is available in the evidence provided. The show is still running and no financial outcome can yet be determined.",
       "sources": [
         {
           "type": "trade",
           "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
           "date": "2024-10-24"
+        },
+        {
+          "type": "trade",
+          "url": "https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway",
+          "date": null
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:40:11.285Z"
+      "researchedAt": "2026-10-10T21:17:01.355Z"
     },
     "harry-potter-2021": {
       "title": "Harry Potter and the Cursed Child",
       "slug": "harry-potter",
       "openingDate": "2018-04-22",
       "status": "open",
-      "capitalization": 68000000,
-      "capitalizationSource": "New York Times, April 14 2018: 'At $68 Million, the Most Expensive Broadway Nonmusical Play Ever'",
+      "capitalization": 68500000,
+      "capitalizationSource": "NYT headline 'At $68 Million, the Most Expensive Broadway Nonmusical Play Ever' and Seattle Times/Facebook post referencing '$68.5M spent bringing Harry Potter play to Broadway' and '$35.5 million to capitalize the show'",
       "weeklyRunningCost": null,
       "costMethodology": "trade-reported",
-      "recouped": null,
+      "recouped": true,
       "recoupedDate": null,
-      "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Harry Potter and the Cursed Child opened April 22, 2018 at the Lyric Theatre and is still running. It was capitalized at $68 million, making it the most expensive Broadway non-musical play ever produced. The evidence does not explicitly confirm recoupment or return any weekly running cost figure. The show remains open with no confirmed closing date, so designation is TBD pending recoupment confirmation.",
+      "recoupedSource": "Broadway News article titled 'Harry Potter and the Cursed Child recoups investment' at https://www.broadwaynews.com/harry-potter-and-the-cursed-child-recoups-investment/",
+      "designation": "Windfall",
+      "notes": "Harry Potter and the Cursed Child was capitalized at approximately $68.5 million, making it the most expensive Broadway non-musical play ever produced. The show has confirmed recoupment per Broadway News. It has been running since April 2018 as an open-ended commercial engagement. While long-running, it does not yet meet the Miracle threshold of a decade-defining, 10+ year phenomenon with extraordinary profit multiples on par with Hamilton or The Lion King.",
       "sources": [
         {
           "type": "trade",
@@ -327,12 +352,17 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/harry-potter-the-cursed-box-office-yardstick",
+          "url": "https://www.broadwaynews.com/harry-potter-and-the-cursed-child-recoups-investment/",
           "date": null
         },
         {
           "type": "trade",
           "url": "https://www.broadwayjournal.com/p/harry-potters-cursed-returns",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayjournal.com/p/harry-potter-the-cursed-box-office-yardstick",
           "date": null
         },
         {
@@ -342,7 +372,7 @@
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:48:55.639Z"
+      "researchedAt": "2026-10-10T21:25:04.738Z"
     },
     "aladdin-2014": {
       "title": "Aladdin",
@@ -357,17 +387,12 @@
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "Aladdin (2014) is a long-running Disney musical at the New Amsterdam Theatre that is still open as of the evidence date. The show is noted as 'still strong' in a September 2025 NYT article alongside The Lion King, suggesting continued commercial viability. Weekly RevPAS of $64.24 places it near the lower end of Broadway earners in the cited week, indicating modest but not alarming box office performance. No capitalization, weekly running cost, or recoupment data is explicitly stated in the evidence. As a Disney-produced show running over a decade, it may qualify as a Miracle, but without explicit recoupment confirmation or capitalization figures, TBD is the appropriate designation based solely on available evidence.",
+      "notes": "Aladdin has been running at the New Amsterdam Theatre since March 2014 and is still open as of the evidence date. The NYT piece (Sept 2025) confirms it is 'still strong' alongside The Lion King. However, no capitalization figures, weekly running costs, or explicit recoupment data are present in the provided evidence. The show is a Disney production and has run well over a decade, which would ordinarily suggest Windfall or Miracle territory, but without explicit financial data confirming recoupment and profit multiples, a definitive designation cannot be assigned from this evidence alone.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.linkedin.com/posts/brooketansley_theres-a-broadway-financing-experiment-from-activity-7496183389583114240-aZoi",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
-          "date": null
+          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+          "date": "2025-01-06"
         },
         {
           "type": "trade",
@@ -376,7 +401,7 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:53:19.465Z"
+      "researchedAt": "2026-10-10T21:28:56.222Z"
     },
     "the-lion-king-1997": {
       "title": "The Lion King",
@@ -387,30 +412,30 @@
       "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": "industry-estimate",
-      "recouped": null,
+      "recouped": true,
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "Miracle",
-      "notes": "The Lion King opened on Broadway in November 1997 and remains open at the Minskoff Theatre, making it one of the longest-running shows in Broadway history. One source references a $9 billion gross figure in metadata keywords, but this is not explicitly stated in the evidence body and cannot be confirmed as a direct citation. No capitalization, weekly running costs, or explicit recoupment data are stated in the gathered evidence. However, The Lion King's status as a decades-long mega-hit (27+ years running) with extraordinary cumulative grosses places it firmly in the Miracle designation by all industry consensus, even absent explicit financial figures in these sources.",
+      "notes": "The Lion King is one of Broadway's longest-running and highest-grossing shows, opening in November 1997 and still running. It is widely acknowledged as a mega-hit. However, none of the evidence gathered contains explicit figures for capitalization, weekly running costs, or a specific recoupment date. The theatregold.com source references a $9 billion gross figure in its keywords, but no usable financial detail was extractable from the evidence provided. Designation as Miracle is based on the show's well-known status as a decades-long phenomenon, but specific financial data cannot be cited from these sources.",
       "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.nytix.com/articles/top-10-most-expensive-broadway-shows",
-          "date": null
-        },
         {
           "type": "trade",
           "url": "https://theatregold.com/how-much-does-a-broadway-musical-cost-wicked-lion-king/",
           "date": null
         },
         {
+          "type": "reddit",
+          "url": "https://www.reddit.com/r/Broadway/comments/13p5d0p/current_broadway_shows_that_have_recouped_their/",
+          "date": null
+        },
+        {
           "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
+          "url": "https://thehustle.co/the-economics-of-broadway-shows",
           "date": null
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:56:27.614Z"
+      "researchedAt": "2026-10-10T21:32:20.394Z"
     },
     "chicago-1996": {
       "title": "Chicago",
@@ -425,21 +450,21 @@
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "Miracle",
-      "notes": "Chicago (1996 revival) is one of the longest-running shows in Broadway history, opening November 14, 1996 and still running as of 2024 — nearly 30 years. It is widely recognized as a mega-hit phenomenon. However, none of the evidence gathered contains any explicit financial data about this production's capitalization, weekly running costs, or recoupment. The Miracle designation is applied based on well-established public knowledge of its extraordinary longevity, but financial specifics cannot be confirmed from the evidence provided.",
+      "notes": "Chicago (1996) is one of the longest-running shows in Broadway history, having opened in November 1996 and still running as of this analysis. One source casually groups it with Phantom and Wicked as a show that generates extraordinary returns for investors, consistent with a Miracle designation. However, no specific capitalization, weekly running costs, or recoupment data are explicitly stated in the gathered evidence. The Miracle designation is based on the show's well-documented public record as the second longest-running Broadway show ever, not on any figures extracted from the evidence provided.",
       "sources": [
+        {
+          "type": "trade",
+          "url": "https://investinbroadway.com/",
+          "date": null
+        },
         {
           "type": "trade",
           "url": "https://www.loeb.com/en/insights/publications/2023/12/the-basics-of-investing-on-broadway",
           "date": "2023-12-01"
-        },
-        {
-          "type": "trade",
-          "url": "https://transitcosts.com/transit-costs-study-final-report/",
-          "date": null
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:57:26.211Z"
+      "researchedAt": "2026-10-10T21:33:05.879Z"
     },
     "celebrity-autobiography-2026": {
       "title": "Celebrity Autobiography",
@@ -449,65 +474,65 @@
       "capitalization": null,
       "capitalizationSource": null,
       "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": null,
+      "costMethodology": "industry-estimate",
+      "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
-      "designation": "TBD",
-      "notes": "Celebrity Autobiography ran a limited engagement at the Shubert Theatre from May 18 to June 21, 2026 (approximately 5 weeks). The evidence confirms the show existed and was playing during the early 2026-27 Broadway season, including a note that it canceled one performance during the week of Memorial Day. However, no capitalization, weekly running costs, recoupment, or financial return data are present in the gathered evidence. Given the short, closed limited run, this could qualify as an Easy Winner if recoupment is confirmed, or a Fizzle/Flop if not — but no financial data exists to make that determination.",
+      "designation": "Flop",
+      "notes": "Celebrity Autobiography ran at the Shubert Theatre from May 18 to June 21, 2026 — a short run of roughly 5 weeks. Broadway News reported it closed early, strongly suggesting it failed to recoup. No capitalization, weekly running cost, or recoupment figures were found in the evidence. Designated Flop due to early closure with no indication of recoupment, though exact return percentage is unknown.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.linkedin.com/posts/kendavenport_most-people-think-broadway-is-a-guaranteed-activity-7457457157043560448-AmHB",
+          "url": "https://www.broadwaynews.com/celebrity-autobiography-to-close-early-on-broadway/",
           "date": null
         },
         {
           "type": "trade",
           "url": "https://newyorktheater.me/2026/05/29/celebrity-autobiography-broadway-review-the-laugh-is-on-the-audience/",
           "date": "2026-05-29"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
+          "date": null
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:58:39.605Z"
+      "researchedAt": "2026-10-10T21:35:37.184Z"
     },
     "paranormal-activity-2026": {
       "title": "Paranormal Activity",
       "slug": "paranormal-activity",
       "openingDate": "2026-08-25",
       "status": "open",
-      "capitalization": null,
-      "capitalizationSource": null,
+      "capitalization": 8000000,
+      "capitalizationSource": "SEC Form D Rule 506(b) offering by Paranormal Broadway Ltd Liability Co; $7.91M sold to 114 investors against $8M cap",
       "weeklyRunningCost": null,
-      "costMethodology": "industry-estimate",
+      "costMethodology": "sec-filing",
       "recouped": null,
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "TBD",
-      "notes": "The evidence gathered contains no financial data specific to the Broadway production of 'Paranormal Activity' at the August Wilson Theatre. The Broadway League grosses page confirms the show exists in their database, but no capitalization, weekly running costs, or recoupment data are provided. The other sources discuss the film 'Paranormal Activity' (2007), which is entirely unrelated to this Broadway production. The show is scheduled to run through January 3, 2027, and is currently open, making it too early to assess financial outcome in any case.",
+      "notes": "Paranormal Activity Broadway raised $7.91M of an $8M capitalization via SEC Rule 506(b) offering. The show opened August 25, 2026 at the August Wilson Theatre with a scheduled closing of February 28, 2027, making it a limited run. No recoupment data is available in the evidence. If it recouped during its limited engagement, it would qualify as an Easy Winner, but that cannot be confirmed yet.",
       "sources": [
+        {
+          "type": "sec",
+          "url": "https://filingdossier.com/research/paranormal-broadway-sec-review-dollar8m-raise-behind-the-paranormal-activity-broadway-production",
+          "date": "2026-09-22"
+        },
         {
           "type": "trade",
           "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
           "date": null
         },
         {
-          "type": "manual",
-          "url": "https://www.quora.com/Why-isnt-the-profit-made-by-movies-equal-to-the-difference-between-the-box-office-collection-and-the-budget?top_ans=48651828",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://dokumen.pub/american-independent-cinema-second-edition-9781474416832.html",
+          "type": "trade",
+          "url": "https://www.broadwaynews.com/heres-whats-going-on-with-the-downstate-tax-credit/",
           "date": null
         }
       ],
-      "confidence": "low",
-      "researchedAt": "2026-10-03T21:03:04.808Z"
+      "confidence": "medium",
+      "researchedAt": "2026-10-10T21:36:43.105Z"
     },
     "hells-kitchen-2024": {
       "capitalization": 22000000,
@@ -574,7 +599,9 @@
       "status": "closed",
       "researchedAt": "2026-10-10T18:40:36.819Z",
       "model": "o4-mini",
-      "researchTrigger": "manual"
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "bug": {
       "recouped": true,
@@ -849,7 +876,9 @@
       "status": "closed",
       "researchedAt": "2026-10-10T18:43:13.206Z",
       "model": "o4-mini",
-      "researchTrigger": "manual"
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "the-lost-boys": {
       "capitalization": 25000000,
@@ -918,7 +947,9 @@
       "status": "closed",
       "researchedAt": "2026-10-10T18:41:29.169Z",
       "model": "o4-mini",
-      "researchTrigger": "manual"
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "the-rocky-horror-show": {
       "capitalization": null,
@@ -1024,7 +1055,9 @@
       "status": "closed",
       "researchedAt": "2026-10-10T18:44:19.884Z",
       "model": "o4-mini",
-      "researchTrigger": "manual"
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "celebrity-autobiography": {
       "capitalization": null,
@@ -1061,7 +1094,9 @@
       "status": "closed",
       "researchedAt": "2026-10-10T18:45:43.302Z",
       "model": "o4-mini",
-      "researchTrigger": "manual"
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "our-town": {
       "capitalization": null,
@@ -1093,7 +1128,9 @@
       "status": "closed",
       "researchedAt": "2026-10-03T22:22:07.713Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "backlog",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "stranger-things": {
       "capitalizationSource": "EDGE Media Network report (June 1, 2025) describing the Broadway production as capitalized at $50M.",
@@ -1259,7 +1296,9 @@
       "status": "closed",
       "researchedAt": "2026-10-03T22:09:13.583Z",
       "model": "o4-mini",
-      "researchTrigger": "backlog"
+      "researchTrigger": "backlog",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "the-great-gatsby": {
       "capitalization": 25000000,
@@ -1743,14 +1782,14 @@
       "openingDate": "2024-07-11",
       "status": "open",
       "capitalization": 4500000,
-      "capitalizationSource": "Variety article explicitly states '$4.5 Million Broadway Investment' was recouped; Playbill confirms same figure",
+      "capitalizationSource": "Variety article explicitly states '$4.5 Million Broadway Investment' recouped",
       "weeklyRunningCost": null,
       "costMethodology": "trade-reported",
       "recouped": true,
       "recoupedDate": "2024-11",
-      "recoupedSource": "Playbill article dated 2024-11-25 states 'Oh, Mary! Is Broadway Season's 1st Show to Recoup'; Variety confirms recoupment of $4.5M investment",
+      "recoupedSource": "Playbill article dated 2024-11-25 confirms recoupment; Variety article headline confirms '$4.5 Million Broadway Investment' recouped",
       "designation": "Windfall",
-      "notes": "Oh, Mary! recouped its $4.5M capitalization by late November 2024, roughly 4.5 months after its July 11, 2024 Broadway opening — making it the first show of the 2024-25 season to recoup. The show is scheduled to run through March 2027, a strong commercial run but not in the decade-long mega-hit tier required for Miracle designation. Box office records were broken at the Lyceum Theatre. The show is a comedy written by and starring Cole Escola.",
+      "notes": "Oh, Mary! recouped its $4.5 million capitalization by November 2024, roughly four months after opening on July 11, 2024. It is an open-ended commercial run scheduled through July 2027, and has broken all-time box office records at the Lyceum Theatre. The run is long but not yet in the decade-long phenomenon category required for Miracle designation.",
       "sources": [
         {
           "type": "trade",
@@ -1764,32 +1803,27 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
-          "date": "2025-01-06"
-        },
-        {
-          "type": "trade",
           "url": "https://www.facebook.com/BroadwayWorld/posts/the-broadway-production-of-oh-mary-has-broken-two-all-time-box-office-records-at/1541997100876903/",
           "date": null
         }
       ],
       "confidence": "high",
-      "researchedAt": "2026-10-03T20:39:13.099Z"
+      "researchedAt": "2026-10-10T21:15:55.492Z"
     },
     "the-outsiders-2024": {
       "title": "The Outsiders",
       "slug": "the-outsiders",
       "openingDate": "2024-04-11",
       "status": "open",
-      "capitalization": 11000000,
-      "capitalizationSource": "Deadline article states 'The Outsiders Recoups $11 Million North American Tour Capitalization' — note this appears to reference the tour capitalization, not the Broadway production capitalization. BroadwayWorld article from January 2025 notes the show had not yet recouped its initial Broadway investment as of that date.",
+      "capitalization": null,
+      "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": "trade-reported",
-      "recouped": true,
-      "recoupedDate": "2026-05",
-      "recoupedSource": "Deadline article (May 2026) reporting recoupment of $11 million North American Tour capitalization",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
       "designation": "TBD",
-      "notes": "The evidence is ambiguous. The Deadline headline references recoupment of an '$11 million North American Tour capitalization,' which may refer to the touring production rather than the Broadway show itself. As of January 2025 (BroadwayWorld), the Broadway production had not yet recouped. The show is still running through March 2027. Broadway capitalization figure is not explicitly stated in the evidence. Designation is TBD pending clarity on Broadway-specific recoupment and final run profitability.",
+      "notes": "The Deadline article headline references recoupment of an $11 million North American Tour capitalization (not the Broadway production itself). The BroadwayWorld article from January 2025 explicitly states The Outsiders had not yet recouped its Broadway capitalization as of that date. No Broadway capitalization figure, weekly running cost, or Broadway recoupment confirmation is explicitly stated in the available evidence. The show is still running (closing 2027-03-16), so designation remains TBD pending confirmed Broadway recoupment data.",
       "sources": [
         {
           "type": "trade",
@@ -1803,7 +1837,7 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:42:16.822Z"
+      "researchedAt": "2026-10-10T21:18:55.484Z"
     },
     "and-juliet-2022": {
       "title": "& Juliet",
@@ -1811,15 +1845,20 @@
       "openingDate": "2022-11-17",
       "status": "open",
       "capitalization": 17000000,
-      "capitalizationSource": "BroadwayWorld Facebook post and Playbill article both cite $17 million production capitalization",
+      "capitalizationSource": "Multiple trade sources (Deadline, BroadwayWorld, Playbill, Hollywood Reporter) all explicitly state '$17 million production capitalization'",
       "weeklyRunningCost": null,
       "costMethodology": "trade-reported",
       "recouped": true,
       "recoupedDate": "2024-06",
-      "recoupedSource": "Playbill article dated 2024-06-11 and Hollywood Reporter article confirming recoupment; BroadwayWorld Facebook post also references $17 million recoupment",
+      "recoupedSource": "Playbill article dated 2024-06-11 headlined 'Broadway's & Juliet Recoups Initial Investment'; Deadline article titled '& Juliet Recoups $17 Million Broadway Capitalization'; Hollywood Reporter and BroadwayWorld corroborate",
       "designation": "Windfall",
-      "notes": "& Juliet opened November 17, 2022 at the Stephen Sondheim Theatre and recouped its $17 million capitalization by June 2024, approximately 19 months into its open-ended commercial run. The show is a jukebox musical featuring songs by Max Martin. Still running as of the evidence gathered, with no announced closing date. Not yet at the scale or duration to qualify as a Miracle.",
+      "notes": "& Juliet opened November 2022 and recouped its $17 million capitalization by June 2024, roughly 19 months into its run. The show has a scheduled closing date of January 3, 2027, making it a long commercial run but a planned closure — not an open-ended phenomenon. Designation is Windfall: it recouped and is running profitably in an open-ended commercial engagement (closing date appears to have been announced well into the run, not a limited star-driven engagement from the outset).",
       "sources": [
+        {
+          "type": "trade",
+          "url": "https://deadline.com/2024/06/and-juliet-broadway-1235969952/",
+          "date": "2024-06-11"
+        },
         {
           "type": "trade",
           "url": "https://playbill.com/article/broadways-juliet-recoups-initial-investment",
@@ -1837,7 +1876,7 @@
         }
       ],
       "confidence": "high",
-      "researchedAt": "2026-10-03T20:43:17.200Z"
+      "researchedAt": "2026-10-10T21:20:02.395Z"
     },
     "mj-2022": {
       "title": "MJ The Musical",
@@ -1850,23 +1889,23 @@
       "costMethodology": "trade-reported",
       "recouped": true,
       "recoupedDate": "2023-05",
-      "recoupedSource": "Playbill article dated 2023-05-15 (playbill.com/article/broadways-mj-the-musical-recoups) and Deadline article from May 2023 (deadline.com/2023/05/mj-recoup-michael-jackson-broadway-musical-1235366770/)",
+      "recoupedSource": "Deadline reported MJ recouped its investment in May 2023; Broadway News also confirmed recoupment",
       "designation": "Windfall",
-      "notes": "MJ The Musical opened February 1, 2022 at the Neil Simon Theatre and recouped its production investment by May 2023, confirmed by both Playbill and Deadline. The show is an open-ended commercial run with no announced closing date. No capitalization figure or weekly running cost was explicitly stated in the available evidence. Not designated Miracle as it has not reached the decade-plus mega-hit threshold.",
+      "notes": "MJ The Musical, the Michael Jackson bio-musical at the Neil Simon Theatre, recouped its production investment as of May 2023, per Deadline and Broadway News. No capitalization figure or weekly running cost was explicitly stated in the available evidence. The show continues its open-ended commercial run.",
       "sources": [
         {
           "type": "trade",
-          "url": "https://playbill.com/article/broadways-mj-the-musical-recoups",
-          "date": "2023-05-15"
+          "url": "https://deadline.com/2023/05/mj-recoup-michael-jackson-broadway-musical-1235366770/",
+          "date": "2023-05-01"
         },
         {
           "type": "trade",
-          "url": "https://deadline.com/2023/05/mj-recoup-michael-jackson-broadway-musical-1235366770/",
+          "url": "https://www.broadwaynews.com/broadways-mj-recoups/",
           "date": null
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:44:14.690Z"
+      "researchedAt": "2026-10-10T21:20:59.797Z"
     },
     "moulin-rouge-2019": {
       "title": "Moulin Rouge! The Musical",
@@ -1874,14 +1913,14 @@
       "openingDate": "2019-07-25",
       "status": "closed",
       "capitalization": 28000000,
-      "capitalizationSource": "NYTIX article listing top 10 most expensive Broadway shows, citing $28 million capitalization for Moulin Rouge! The Musical",
+      "capitalizationSource": "nytix.com article listing top 10 most expensive Broadway shows, states '$28 Million' capitalization for Moulin Rouge! The Musical",
       "weeklyRunningCost": null,
       "costMethodology": "trade-reported",
       "recouped": true,
       "recoupedDate": "2023-07",
-      "recoupedSource": "Deadline and BroadwayWorld both reporting recoupment on Broadway (and West End and Australia) as of July 2023",
+      "recoupedSource": "BroadwayWorld article dated 2023-07-31 titled 'MOULIN ROUGE! THE MUSICAL Recoups on Broadway, in the West End & in Australia'; Deadline article from 2023-07 referencing recoupment; nytix.com also confirms recoupment",
       "designation": "Windfall",
-      "notes": "Moulin Rouge! The Musical capitalized at $28 million, won 10 Tony Awards including Best Musical, and recouped its Broadway investment in July 2023 alongside its West End and Australian productions. The show ran from July 2019 to August 2026 — a strong commercial run of roughly 7 years. While highly successful, it does not clearly meet the 10+ year threshold with massive profit multiples required for Miracle designation; Windfall is appropriate for a long open-ended run that recouped and generated solid profits.",
+      "notes": "Moulin Rouge! The Musical opened July 25, 2019 and is scheduled to close August 30, 2026 — a roughly 7-year run. It was capitalized at $28 million per trade reporting, won 10 Tony Awards including Best Musical, and recouped its Broadway investment in July 2023 (also recouping simultaneously in the West End and Australia). While a strong commercial hit, its ~7-year run falls short of the decade-plus phenomenon threshold for a Miracle designation, making Windfall the appropriate classification.",
       "sources": [
         {
           "type": "trade",
@@ -1890,17 +1929,17 @@
         },
         {
           "type": "trade",
-          "url": "https://deadline.com/2023/07/baz-luhrmann-moulin-rouge-musical-breaking-baz-1235451329/",
+          "url": "https://www.broadwayworld.com/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731",
           "date": "2023-07-31"
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/article/MOULIN-ROUGE-THE-MUSICAL-Recoups-on-Broadway-in-the-West-End-in-Australia-20230731",
-          "date": "2023-07-31"
+          "url": "https://deadline.com/2023/07/baz-luhrmann-moulin-rouge-musical-breaking-baz-1235451329/",
+          "date": "2023-07-01"
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:46:16.278Z"
+      "researchedAt": "2026-10-10T21:22:58.271Z"
     },
     "hadestown-2019": {
       "title": "Hadestown",
@@ -1908,15 +1947,20 @@
       "openingDate": "2019-04-17",
       "status": "open",
       "capitalization": 11500000,
-      "capitalizationSource": "SEC EDGAR Form D, CIK 0001701707, total offering amount $11,500,000",
+      "capitalizationSource": "SEC EDGAR Form D filing, CIK 0001701707, total offering amount $11,500,000",
       "weeklyRunningCost": null,
       "costMethodology": "sec-filing",
       "recouped": true,
       "recoupedDate": "2019-11",
-      "recoupedSource": "Playbill article dated 2019-11-11: 'Tony Award–Winning Hadestown Recoups on Broadway' — recouped its initial investment after playing six months at the Walter Kerr Theatre",
+      "recoupedSource": "Playbill article 'Tony Award-Winning Hadestown Recoups on Broadway' dated 2019-11-11, corroborated by Broadway.com report",
       "designation": "Windfall",
-      "notes": "Hadestown opened April 17, 2019 at the Walter Kerr Theatre, capitalized at $11.5M per SEC Form D. It recouped within approximately six months (by November 2019) and has continued its open-ended commercial run well past that point. While it is a significant and profitable hit, the evidence does not yet establish the decade-plus extraordinary-return profile required for a Miracle designation; it remains an open-ended Windfall.",
+      "notes": "Hadestown opened April 17, 2019 at the Walter Kerr Theatre, capitalized at $11.5M per SEC Form D. It recouped its initial investment in November 2019 after approximately six months of performances, per Playbill and Broadway.com. The show is still running as of the evidence date, making it a long-running open-ended commercial hit. It is not yet at the 10+ year threshold to qualify as a Miracle, and no weekly running cost figure was explicitly stated in the evidence.",
       "sources": [
+        {
+          "type": "sec",
+          "url": null,
+          "date": null
+        },
         {
           "type": "trade",
           "url": "https://playbill.com/article/tony-awardwinning-hadestown-recoups-on-broadway",
@@ -1924,12 +1968,12 @@
         },
         {
           "type": "trade",
-          "url": "https://forum.broadwayworld.com/thread/HADESTOWN-recoups",
+          "url": "https://www.broadway.com/buzz/197549/hadestown-is-a-hit-tony-winning-musical-recoups-broadway-investment/",
           "date": null
         }
       ],
       "confidence": "high",
-      "researchedAt": "2026-10-03T20:47:47.655Z"
+      "researchedAt": "2026-10-10T21:23:53.120Z"
     },
     "hamilton-2015": {
       "title": "Hamilton",
@@ -1944,7 +1988,7 @@
       "recoupedDate": null,
       "recoupedSource": null,
       "designation": "Miracle",
-      "notes": "Hamilton is the defining Broadway phenomenon of the 2010s, opening August 6, 2015 and still running. The evidence provided does not contain explicit capitalization figures, weekly running costs, or a specific recoupment date for the Broadway production. General budget ranges for Broadway musicals ($8–12M) are mentioned but not tied specifically to Hamilton. The Billboard article references Hamilton's financial success but the content was not fully rendered. Public Theater revenue of $10M/year is mentioned in the Broadway Journal headline. Hamilton unambiguously qualifies as a 'Miracle' based on its decade-plus open-ended run, cultural dominance, and well-documented extraordinary profit multiples — but specific financial figures cannot be confirmed from the evidence provided.",
+      "notes": "Hamilton is widely known as a generational Broadway phenomenon, but the evidence provided does not explicitly state its capitalization, weekly running costs, or recoupment date. The Broadway Journal article references the Public Theater earning $10M+ per year from the show, but does not state production budget or recoupment specifics. The Billboard and other URLs did not yield usable extracted financial data. Designation as Miracle is based on the show's well-documented decade-long run, cultural dominance, and extraordinary returns — but specific financials cannot be confirmed from this evidence set.",
       "sources": [
         {
           "type": "trade",
@@ -1963,7 +2007,7 @@
         }
       ],
       "confidence": "low",
-      "researchedAt": "2026-10-03T20:51:43.146Z"
+      "researchedAt": "2026-10-10T21:26:05.590Z"
     },
     "book-of-mormon-2011": {
       "title": "The Book of Mormon",
@@ -1976,9 +2020,9 @@
       "costMethodology": "trade-reported",
       "recouped": true,
       "recoupedDate": "2011",
-      "recoupedSource": "Hollywood Reporter: 'Book of Mormon Recoups Cost After Just Eight Months' — https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/",
+      "recoupedSource": "Hollywood Reporter article titled 'Book of Mormon Recoups Cost After Just Eight Months' at https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/",
       "designation": "Miracle",
-      "notes": "The Book of Mormon recouped its full capitalization within approximately eight months of opening (March 2011), per The Hollywood Reporter. The show has run continuously since 2011, well over a decade, making it one of Broadway's defining long-run mega-hits. Specific capitalization and weekly running cost figures are not explicitly stated in the available evidence. Designation as Miracle is supported by its extraordinary longevity (14+ years), rapid recoupment, and status as a generational phenomenon.",
+      "notes": "The Book of Mormon recouped its capitalization within just eight months of opening in March 2011, per Hollywood Reporter. The show has run continuously since 2011 and is one of the defining Broadway mega-hits of its era, qualifying as a Miracle by longevity and extraordinary returns. Specific capitalization and weekly running cost figures were not explicitly stated in the gathered evidence.",
       "sources": [
         {
           "type": "trade",
@@ -1987,12 +2031,17 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
-          "date": null
+          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+          "date": "2025-01-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://broadwayinvesting.com/articles/the-financial-lifecycle-of-a-broadway-show",
+          "date": "2025-08-02"
         }
       ],
       "confidence": "medium",
-      "researchedAt": "2026-10-03T20:54:21.493Z"
+      "researchedAt": "2026-10-10T21:29:55.093Z"
     },
     "wicked-2003": {
       "title": "Wicked",
@@ -2000,14 +2049,14 @@
       "openingDate": "2003-10-30",
       "status": "open",
       "capitalization": 14000000,
-      "capitalizationSource": "Playbill article dated 2004-12-21 states 'whopping $14 million capitalization'; corroborated by Broadway Journal",
+      "capitalizationSource": "Playbill article explicitly states '$14 million capitalization' for Wicked; corroborated by BroadwayWorld article referencing same figure",
       "weeklyRunningCost": null,
       "costMethodology": "industry-estimate",
       "recouped": true,
       "recoupedDate": "2004-12",
-      "recoupedSource": "Playbill article headline 'Wicked Within Days of Recouping Investment' dated 2004-12-21; Broadway Journal confirms 'The show announced recouping in December 2004'",
+      "recoupedSource": "Playbill article dated 2004-12-21 states Wicked 'will recoup its entire initial investment by the end of the year' and was 'within days of recouping investment'",
       "designation": "Miracle",
-      "notes": "Wicked opened October 30, 2003 at the Gershwin Theatre with a $14 million capitalization — considered risky at the time. It recouped its full investment by end of December 2004, roughly 14 months after opening. The show has run for over 20 years on Broadway, generating extraordinary long-term profits, making it a canonical Miracle alongside The Lion King and Hamilton. Weekly running costs are noted as 'well over $1 million' but no specific figure is explicitly stated.",
+      "notes": "Wicked opened October 30, 2003 at the Gershwin Theatre with a $14 million capitalization and recouped within approximately 14 months by end of December 2004. It has run continuously for over 20 years and is one of the highest-grossing Broadway shows in history, qualifying as a Miracle by any standard — extraordinary longevity, massive profit multiples, and decade-defining cultural impact.",
       "sources": [
         {
           "type": "trade",
@@ -2016,8 +2065,8 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/inside-broadways-1-million-nut-cases",
-          "date": null
+          "url": "https://www.broadwayworld.com/article/The-30-Million-Musical-Trend-20250106",
+          "date": "2025-01-06"
         },
         {
           "type": "trade",
@@ -2026,7 +2075,7 @@
         }
       ],
       "confidence": "high",
-      "researchedAt": "2026-10-03T20:55:19.970Z"
+      "researchedAt": "2026-10-10T21:31:17.012Z"
     },
     "every-brilliant-thing": {
       "capitalization": 5750000,
@@ -2103,7 +2152,9 @@
       "status": "closed",
       "researchedAt": "2026-10-10T18:47:25.647Z",
       "model": "o4-mini",
-      "researchTrigger": "manual"
+      "researchTrigger": "manual",
+      "requiresHumanReview": true,
+      "backfill": "BRO-4990"
     },
     "waitress-2021": {
       "capitalization": 10111952,
@@ -3791,7 +3842,80 @@
       "researchedAt": "2026-10-10T23:03:29.023Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog"
+    },
+    "school-girls-or-the-african-mean-girls-play-2026": {
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "slug": "school-girls-or-the-african-mean-girls-play",
+      "openingDate": "2026-09-28",
+      "status": "open",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": "industry-estimate",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "designation": "Nonprofit",
+      "notes": "School Girls; Or, The African Mean Girls Play is presented by Manhattan Theatre Club at the Samuel J. Friedman Theatre, MTC's Broadway home. As a nonprofit subscriber-funded production, there is no traditional investor recoupment structure. The show runs a limited engagement from September 28 to November 15, 2026. No capitalization, weekly running cost, or recoupment data is present in the evidence.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
+          "date": "2026-03-17"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.tdf.org/shows/23167/school-girls-or-the-african-mean-girls-play/",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
+          "date": "2026-09-29"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayleague.com/research/grosses-broadway-nyc/",
+          "date": null
+        }
+      ],
+      "confidence": "high",
+      "researchedAt": "2026-10-10T21:34:36.767Z"
+    },
+    "other-desert-cities-2026": {
+      "title": "Other Desert Cities",
+      "slug": "other-desert-cities",
+      "openingDate": "2026-10-18",
+      "status": "previews",
+      "capitalization": null,
+      "capitalizationSource": null,
+      "weeklyRunningCost": null,
+      "costMethodology": "trade-reported",
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "designation": "TBD",
+      "notes": "Other Desert Cities is a revival starring Julia Louis-Dreyfus, Ed Harris, Allison Janney, Lily Rabe, and Joe Keery at the Hudson Theatre, currently in previews ahead of a 2026-10-18 opening with a scheduled closing of 2027-01-17, indicating a limited engagement. No capitalization, weekly running costs, or recoupment data are explicitly stated in the available evidence. An SEC filing related to a Broadway operating agreement was mentioned in a LinkedIn post dated 2026-08-20, but it is not confirmed to be specifically for this production. The show is too early in its run to assess financial outcome.",
+      "sources": [
+        {
+          "type": "trade",
+          "url": "https://broadwaydirect.com/julia-louis-dreyfus-to-star-in-other-desert-cities-on-broadway-this-fall/",
+          "date": "2026-05-26"
+        },
+        {
+          "type": "reddit",
+          "url": "https://forum.broadwayworld.com/thread/Ed-Harris-Allison-Janney--Julia-Louis-Dreyfuss--OTHER-DESERT-CITIES-Revival/3",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.linkedin.com/posts/brooketansley_theres-a-broadway-financing-experiment-from-activity-7496183389583114240-aZoi",
+          "date": "2026-08-20"
+        }
+      ],
+      "confidence": "low",
+      "researchedAt": "2026-10-10T21:38:07.092Z"
     }
   },
-  "lastUpdated": "2026-10-10T01:44:31.541Z"
+  "lastUpdated": "2026-10-10T21:40:21.536Z"
 }

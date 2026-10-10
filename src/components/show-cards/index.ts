@@ -18,3 +18,4 @@ export { default as ShowSearchDropdown } from './ShowSearchDropdown';
 export { BlendedTrioDisplay } from './BlendedTrioDisplay';
 export type { BlendedTrioDisplayProps } from './BlendedTrioDisplay';
 export { AwardScoreBadge, AWARD_TIER_LABEL, getAwardTierLabelClass } from './AwardScoreBadge';
+export { CostStatusPill } from './CostStatusPill';

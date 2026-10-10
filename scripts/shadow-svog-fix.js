@@ -37,9 +37,7 @@ const ONLY = args.find((a) => a.startsWith('--show='))?.split('=')[1];
 const AT_RISK_MAX = 30; // optimistic case
 const APPROACHING_MIN = 50; // pessimistic case
 // Same contradiction rule as merge-model-recoupment.js.
-const contradiction = (pct, d) => (pct > 150 && (d === 'Fizzle' || d === 'Flop'))
-  || (pct < 0 && (d === 'Windfall' || d === 'Miracle' || d === 'Easy Winner'))
-  || (pct > 300 && d === 'Trickle');
+const { modelContradictsDesignation: contradiction } = require('./lib/commercial-designations');
 
 const load = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 
