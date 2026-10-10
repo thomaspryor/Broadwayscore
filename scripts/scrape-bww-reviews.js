@@ -30,6 +30,7 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
+const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 const { shouldSkipPreviewsShow } = require('./lib/opening-signal');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
@@ -1254,6 +1255,14 @@ async function processShow(show, showId, options = {}) {
             averageRating = null;
           }
         }
+      }
+      // BRO-4977: drop entries the roundup's JSON-LD names as another show's
+      // review ("The Stage - How Soon is Now? review" in the Soon roundup).
+      const foreign = foreignTitleEntriesFromHtml(html, show.title);
+      if (foreign.length) {
+        const kept = reviews.filter(r => !isForeignTitleReview(r, foreign));
+        if (kept.length !== reviews.length) console.log(`    ✗ Dropped ${reviews.length - kept.length} entry(ies) reviewing another title: ${foreign.map(f => f.subjectTitle).join(', ')}`);
+        reviews = kept;
       }
       stats.reviewsExtracted += reviews.length;
       const format = hasThumbImages ? 'new' : 'old';

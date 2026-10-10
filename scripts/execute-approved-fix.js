@@ -96,6 +96,10 @@ const ALLOWED_SCRIPTS = [
   // BRO-3139: refetch londontheatre.co.uk review pages once and store the critic's stars
   // (--limit chunks it inside the 5-minute run-script cap; it skips files already done).
   'backfill-london-theatre-stars.js',
+  // BRO-4977: re-extract stored review texts that have other articles glued
+  // on (refetch + same-article check in scripts/lib/page-bleed-repair.js;
+  // queues a rescore for each trimmed file).
+  'repair-page-bleed.js',
 ];
 
 // --- Helpers ---
