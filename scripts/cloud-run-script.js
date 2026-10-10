@@ -34,6 +34,7 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 const { generateKeyPair, open } = require('./lib/sealed-output');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const REPO = process.env.RUN_SCRIPT_REPO || 'thomaspryor/Broadwayscore';
 const WORKFLOW = 'run-script.yml';
@@ -106,9 +107,9 @@ function findRun(requestId, deadline) {
 
 function main() {
   const opts = parseArgs(process.argv.slice(2));
-  if (!opts.script) {
+  if (!opts.script || hasHelpFlag([opts.script])) {
     console.error('Usage: node scripts/cloud-run-script.js [--review-texts] [--timeout=MIN] <scripts/x.js> [args...]');
-    return 2;
+    return opts.script ? 0 : 2;
   }
   const bad = validateScriptPath(opts.script);
   if (bad) { console.error(bad); return 2; }

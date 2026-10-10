@@ -19,6 +19,7 @@ const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const { seal } = require('./lib/sealed-output');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { validateScriptPath, BEGIN, END } = require('./cloud-run-script');
 
 const MAX_OUTPUT = 8 * 1024 * 1024;
@@ -56,6 +57,11 @@ function parseArgsJson(raw) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: RS_SCRIPT=scripts/x.js RS_ARGS_JSON=\'[]\' RS_PUBKEY_B64=<b64 PEM> node scripts/run-script-sealed.js');
+    console.log('Runs inside run-script.yml; use scripts/cloud-run-script.js from a session.');
+    return;
+  }
   const script = process.env.RS_SCRIPT || '';
   const bad = validateScriptPath(script);
   if (bad) refuse(bad);
