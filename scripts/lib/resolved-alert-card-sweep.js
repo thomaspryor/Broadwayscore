@@ -44,6 +44,27 @@ function ledgerCandidates(ledger) {
   return out;
 }
 
+const DAY_MS = 86400000;
+
+// Opening-night routine logs ("Opening-night watch 2026-10-06"): one card per
+// night, commented on during the night, never closed by the routine. Over
+// once the night is LOG_DONE_DAYS old and nobody has touched the card since.
+const LOG_TITLE_RE = /^Opening-night (watch|audit) (\d{4}-\d{2}-\d{2})$/;
+const LOG_DONE_DAYS = 3;
+
+/** PURE. Cancel reason for a finished routine log card, or null. */
+function routineLogCancelReason(issue, now) {
+  const m = String((issue && issue.title) || '').trim().match(LOG_TITLE_RE);
+  if (!m) return null;
+  const type = issue.state && issue.state.type;
+  if (type !== 'backlog' && type !== 'unstarted') return null;
+  const night = Date.parse(`${m[2]}T23:59:59Z`);
+  const touched = Date.parse(issue.updatedAt || '');
+  if (!Number.isFinite(night) || !Number.isFinite(touched)) return null;
+  if ((now - night) / DAY_MS < LOG_DONE_DAYS || (now - touched) / DAY_MS < LOG_DONE_DAYS) return null;
+  return `Routine ${m[1]} log for ${m[2]}: the night is over and the card has had no activity for ${LOG_DONE_DAYS}+ days. Sweep (BRO-4956 follow-up).`;
+}
+
 /**
  * PURE. Given the live issue for a ledger candidate, is it safe to cancel?
  * @returns {string|null} null when eligible, else the reason it is skipped
@@ -53,7 +74,8 @@ function skipReason(issue, conditionKey) {
   const type = issue.state && issue.state.type;
   if (type !== 'backlog' && type !== 'unstarted') return `state-${type || 'unknown'}`;
   if (!String(issue.description || '').includes(`${AUTO_FILED_LINE}${conditionKey})`)) return 'not-filed-for-this-condition';
-  const comments = (issue.comments && issue.comments.nodes) || [];
+  // A repeat-filing note (linear-issue-create reuseOpenTwin) is not activity.
+  const comments = ((issue.comments && issue.comments.nodes) || []).filter((c) => !/^Filed again on /.test(String((c && c.body) || '')));
   if (comments.length > 0) return 'has-comments';
   return null;
 }
@@ -62,4 +84,4 @@ function cancelReason(conditionKey) {
   return `Alert condition ${conditionKey} has cleared (resolved in alert-ledger.json); this auto-filed card had no activity. BRO-4487 sweep.`;
 }
 
-module.exports = { AUTO_FILED_LINE, cardConditionIndex, ledgerCandidates, skipReason, cancelReason };
+module.exports = { AUTO_FILED_LINE, cardConditionIndex, ledgerCandidates, skipReason, cancelReason, routineLogCancelReason };

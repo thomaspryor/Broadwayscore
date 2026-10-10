@@ -27,6 +27,25 @@ const SAFE_FIELDS = [
 // reason can name an order): report only how many orders have a value.
 const PRESENCE_ONLY_FIELDS = ['PromoCode', 'DisputeReason', 'ReferringDomain', 'Note'];
 
+// TodayTix contract (program 20944, template 243224) promo-code blacklist:
+// orders using these earn no commission. The contract lists them bare, and
+// real codes extend them (ticket-protection vouchers are TP + random), so
+// match by prefix and report exact-vs-prefix separately.
+const TODAYTIX_PROMO_BLACKLIST = ['SV0', 'NOFEE', 'COMPTIX', 'TP', 'UPGRADE', '25PC', 'GC', 'PWY', 'SAVE', 'MAIL', 'EXCH'];
+
+/**
+ * Which blacklist entry a promo code falls under, without echoing the code.
+ * Returns '<ENTRY> (exact)', '<ENTRY>…' (prefix match, longest entry wins),
+ * or 'NOT ON LIST (starts <first 2 chars>…, <len> chars)': two characters are
+ * enough to tell a pattern apart and too few to redeem anything.
+ */
+function classifyPromoCode(code) {
+  const c = String(code).trim().toUpperCase();
+  const hit = TODAYTIX_PROMO_BLACKLIST.filter((b) => c.startsWith(b)).sort((x, y) => y.length - x.length)[0];
+  if (hit) return c === hit ? `${hit} (exact)` : `${hit}…`;
+  return `NOT ON LIST (starts ${c.slice(0, 2)}…, ${c.length} chars)`;
+}
+
 function num(v) {
   const n = parseFloat(v);
   return Number.isFinite(n) ? n : 0;
@@ -94,6 +113,9 @@ function summarizeZeroPayout(actions, ownerIds = new Set()) {
     for (const f of PRESENCE_ONLY_FIELDS) {
       fields[`${f} (presence only)`] = tally(group.map((a) => ({ v: isBlank(a[f]) ? '(empty)' : 'has value' })), 'v');
     }
+    fields['PromoCode vs contract blacklist'] = tally(
+      group.filter((a) => !isBlank(a.PromoCode)).map((a) => ({ v: classifyPromoCode(a.PromoCode) })), 'v');
+    const promoOffList = group.filter((a) => !isBlank(a.PromoCode) && classifyPromoCode(a.PromoCode).startsWith('NOT ON LIST'));
     // Was the commission $0 from the start, or reduced afterwards? A field the
     // payload lacks is '(missing)', never read as an answer.
     const sign = (a, f, neg, pos, zero) => (isBlank(a[f]) ? '(missing)' : num(a[f]) < 0 ? neg : num(a[f]) > 0 ? pos : zero);
@@ -108,6 +130,7 @@ function summarizeZeroPayout(actions, ownerIds = new Set()) {
       ordersWithoutVisitorId: noSub,
       ordersFromOwner: ownerOrders,
       ordersPerVisitorTop: perVisitor.slice(0, 5),
+      promoOffList: { orders: promoOffList.length, sales: promoOffList.reduce((s, a) => s + num(a.Amount), 0) },
       byWeek,
       fields,
     };
@@ -139,6 +162,7 @@ function renderMarkdown(summary, { windowLabel, pages, incomplete, singlePageCou
     lines.push('');
     lines.push(`- Distinct visitors (SubId1): ${g.distinctVisitors}; orders with no SubId1: ${g.ordersWithoutVisitorId}; orders from the owner's own visitor IDs: ${g.ordersFromOwner}`);
     lines.push(`- Orders per visitor, top 5: ${g.ordersPerVisitorTop.join(', ') || '(none)'}`);
+    lines.push(`- Promo codes NOT on the contract blacklist: ${g.promoOffList.orders} orders, ${fmtMoney(g.promoOffList.sales)} sales`);
     lines.push('');
     lines.push('| Week of | Orders | Sales | Commission |');
     lines.push('| --- | --- | --- | --- |');
@@ -158,4 +182,7 @@ function renderMarkdown(summary, { windowLabel, pages, incomplete, singlePageCou
   return lines.join('\n');
 }
 
-module.exports = { summarizeZeroPayout, renderMarkdown, isZeroPayout, isoWeek, SAFE_FIELDS, PRESENCE_ONLY_FIELDS };
+module.exports = {
+  summarizeZeroPayout, renderMarkdown, isZeroPayout, isoWeek, classifyPromoCode,
+  SAFE_FIELDS, PRESENCE_ONLY_FIELDS, TODAYTIX_PROMO_BLACKLIST,
+};

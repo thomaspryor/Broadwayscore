@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T16:43:41.744Z",
+  "timestamp": "2026-10-10T18:01:08.867Z",
   "stats": {
-    "totalReviews": 54101,
-    "alreadyFlagged": 19843,
-    "dateGuardCatches": 270,
-    "directorMismatch": 1680,
-    "tvFilmSignals": 1563,
-    "londonSignals": 1782,
+    "totalReviews": 54294,
+    "alreadyFlagged": 19861,
+    "dateGuardCatches": 272,
+    "directorMismatch": 1698,
+    "tvFilmSignals": 1569,
+    "londonSignals": 1787,
     "offBroadwaySignals": 513,
     "yearMismatch": 132,
-    "noPublishDate": 6017
+    "noPublishDate": 6067
   },
   "findings": [
     {
@@ -524,6 +524,20 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2020",
+      "file": "nytimes--maya-phillips.json",
+      "score": 78,
+      "publishDate": "2020-12-18",
+      "url": "https://www.nytimes.com/2020/12/18/theater/christmas-carol-review-andrew-lincoln.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2026",
       "file": "thestage--holly-o.json",
       "findings": [
@@ -761,6 +775,7 @@
     {
       "showId": "a-number-west-end-2022",
       "file": "london-theatre--mark-shenton.json",
+      "score": 82,
       "publishDate": "February 20th, 2020",
       "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
       "findings": [
@@ -774,7 +789,7 @@
     {
       "showId": "a-number-west-end-2022",
       "file": "standard--nick-curtis.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "February 19th, 2020",
       "url": "https://www.standard.co.uk/culture/theatre/a-number-review-roger-allam-and-colin-morgan-give-fine-performances-in-caryl-churchills-nature-nurture-debate-a4366481.html",
       "findings": [
@@ -1996,7 +2011,7 @@
     {
       "showId": "amelie-west-end-2021",
       "file": "london-theatre--mark-shenton.json",
-      "score": null,
+      "score": 88,
       "publishDate": "December 5th, 2019",
       "url": "https://www.londontheatre.co.uk/reviews/review-amelie-at-the-other-palace",
       "findings": [
@@ -4715,6 +4730,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "blue-mist-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 83,
+      "publishDate": "2026-07-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/blue-mist-theatre-royal-stratford-east-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"milli bhatia\" from blue-mist-west-end-2023"
         }
       ]
     },
@@ -9587,9 +9616,187 @@
       "url": "https://www.londonboxoffice.co.uk/news/post/dear-england-prince-edward-review",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "artsdesk--demetrios-matheou.json",
+      "score": 82,
+      "publishDate": "March 19th, 2025",
+      "url": "https://theartsdesk.com/theatre/dear-england-national-theatre-review-extra-time-stirring-soccer-classic",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "broadwayworld--abbie-grundy.json",
+      "score": 85,
+      "publishDate": "2025-03-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 74,
+      "publishDate": "2025-03-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 82,
+      "publishDate": "2025-03-19",
+      "url": "https://www.ft.com/content/7b46e2a1-73ef-473f-86dd-fc1a392825e1?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "guardian--mark-lawson.json",
+      "score": 76,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.theguardian.com/stage/2025/mar/19/dear-england-review-reboot-james-graham-gareth-southgate-national-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "score": 88,
+      "publishDate": "2025-03-19",
+      "url": "https://inews.co.uk/culture/arts/dear-england-review-rebooted-gareth-southgate-scores-again-3593105?srsltid=AU7gw4WvVHRGGINbzhREZ3HEwECRNzLGeQp3nn6vNRdrLbzY6ziigYHf",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "london-theatre--aliya-al-hassan.json",
+      "score": 82,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.londontheatre.co.uk/reviews/dear-england-review-olivier-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "score": 89,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-olivier-review-b1217522.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 82,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "theatrecat--libby-purves.json",
+      "score": 87,
+      "publishDate": "2025-03-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "times-uk--ben-dowell.json",
+      "score": 82,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.thetimes.com/article/6c151aec-3f01-4b5c-952a-406c16e9bf41",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 96,
+      "publishDate": "March 19th, 2025",
+      "url": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
         }
       ]
     },
@@ -9604,53 +9811,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-evan-hansen-west-end-2019",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 74,
-      "publishDate": "2019-11-22",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
-        }
-      ]
-    },
-    {
-      "showId": "dear-evan-hansen-west-end-2019",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 88,
-      "publishDate": "2019-11-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dear-evan-hansen-west-end-2019",
-      "file": "observer--susannah-clapp.json",
-      "score": 78,
-      "publishDate": "2019-11-24",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
         }
       ]
     },
@@ -9921,6 +10081,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         }
       ]
     },
@@ -10015,6 +10180,39 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
+      "file": "broadwayworld--blair-ingenthron.json",
+      "score": null,
+      "publishDate": "2022-10-09",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "dailybeast--tim-teeman.json",
+      "score": 77,
+      "publishDate": "2022-10-09T20:43:26-04:00",
+      "url": "https://www.thedailybeast.com/sharon-d-clarke-shines-in-death-of-a-salesman-on-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
       "file": "deadline--greg-evans.json",
       "score": 78,
       "publishDate": "October 3, 2022",
@@ -10024,6 +10222,34 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2022 (0x). 2026 matches production: death-of-a-salesman-2026"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "latimes--charles-mcnulty.json",
+      "score": 78,
+      "publishDate": "October 3, 2022",
+      "url": "https://www.latimes.com/entertainment-arts/story/2022-10-09/death-of-a-salesman-broadway-2022-review-wendell-pierce",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": 89,
+      "publishDate": "2022-10-09T20:43:26-04:00",
+      "url": "https://www.nysun.com/article/even-with-race-in-the-mix-this-salesman-delivers",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         }
       ]
     },
@@ -10043,6 +10269,20 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
+      "file": "nysr--frank-scheck.json",
+      "score": 55,
+      "publishDate": "2022-10-09T20:55:14",
+      "url": "https://nystagereview.com/2022/10/09/death-of-a-salesman-arthur-millers-classic-drama-needlessly-embellished/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
       "file": "nysr--steven-suskin.json",
       "score": 56,
       "publishDate": "October 3, 2022",
@@ -10054,9 +10294,28 @@
           "detail": "Mentions director \"george c. scott\" from death-of-a-salesman-1975"
         },
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        },
+        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (3x) more than 2022 (1x). 2019 matches production: death-of-a-salesman-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 47,
+      "publishDate": "2022-10-10",
+      "url": "https://newyorktheater.me/2022/10/09/death-of-a-salesman-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         }
       ]
     },
@@ -10071,6 +10330,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -10090,6 +10354,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from death-of-a-salesman-2012"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -10124,6 +10393,53 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
+      "file": "theater-scene--joseph-pisano.json",
+      "score": 80,
+      "publishDate": "October 19th, 2022",
+      "url": "http://www.theaterscene.net/plays/broadway-plays/death-of-a-salesman/joseph-pisano/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 92,
+      "publishDate": "October 3, 2022",
+      "url": "https://www.theatermania.com/broadway/reviews/review-arthur-miller-death-of-a-salesman-broadway_94401.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "vulture--jonathan-mandell.json",
+      "score": 50,
+      "publishDate": "2022-10-09T20:43:26-04:00",
+      "url": "https://www.vulture.com/2022/10/theater-review-wendell-pierce-death-salesman-broadway.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
       "file": "vulture--rob-weinert-kendt.json",
       "score": 79,
       "publishDate": "October 9th, 2022",
@@ -10138,6 +10454,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2022",
+      "file": "washpost--peter-marks.json",
+      "score": 81,
+      "publishDate": "October 3, 2022",
+      "url": "https://www.washingtonpost.com/theater-dance/2022/10/09/salesman-broadway-miller-pierce-clarke/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from death-of-a-salesman-west-end-2019"
         }
       ]
     },
@@ -14257,6 +14587,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2019",
+      "file": "timeout-london--tom-wicker.json",
+      "publishDate": "2019-12-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from girl-from-the-north-country-2022"
         }
       ]
     },
@@ -19505,7 +19848,8 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "curtain-call-reviews--unknown.json",
-      "publishDate": null,
+      "score": 78,
+      "publishDate": "2026-10-07",
       "url": "https://www.curtaincallreviews.co.uk/into-the-woods",
       "findings": [
         {
@@ -22186,6 +22530,19 @@
       ]
     },
     {
+      "showId": "leopoldstadt-west-end-2020",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2020-02-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "les-liaisons-dangereuses-2008",
       "file": "broadwayworld--michael-dale.json",
       "score": 78,
@@ -23342,6 +23699,7 @@
     {
       "showId": "lost-in-del-valle-off-broadway-2026",
       "file": "the-knockturnal--karen-snyder.json",
+      "score": 71,
       "publishDate": "2026-04-20",
       "url": "https://theknockturnal.com/a-raw-journey-from-chaos-to-redemption-in-lost-in-del-valle/",
       "findings": [
@@ -23601,6 +23959,45 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "magic-goes-wrong-west-end-2019",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2020-01-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "magic-goes-wrong-west-end-2019",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2020-01-10",
+      "url": "https://www.timeout.com/london/theatre/magic-goes-wrong-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "magic-goes-wrong-west-end-2019",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2020-01-09",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/magic-goes-wrong-vaudeville-mischief_50661.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -23869,34 +24266,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
-        }
-      ]
-    },
-    {
-      "showId": "mary-poppins-west-end-2019",
-      "file": "telegraph--fiona-mountford.json",
-      "score": 94,
-      "publishDate": "2021-08-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"richard eyre\" from mary-poppins-2006"
-        }
-      ]
-    },
-    {
-      "showId": "mary-poppins-west-end-2019",
-      "file": "times-uk--clive-davis.json",
-      "score": 76,
-      "publishDate": "2021-08-13",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"richard eyre\" from mary-poppins-2006"
         }
       ]
     },
@@ -27605,6 +27974,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "around-the-town-chicago--unknown.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/operation-mincemeat/",
       "findings": [
@@ -27646,6 +28016,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 91,
       "publishDate": "2026-10-02",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/operation-mincemeat-broadway-in-chicago/",
       "findings": [
@@ -27659,7 +28030,8 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "chicagoonstage--unknown.json",
-      "publishDate": null,
+      "score": 91,
+      "publishDate": "2026-10-02",
       "url": "https://www.chicagoonstage.com/operation-mincemeat-is-totally-worth-all-its-hype/",
       "findings": [
         {
@@ -27754,48 +28126,6 @@
       ]
     },
     {
-      "showId": "othello-2025",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 46,
-      "publishDate": "March 23, 2025",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/othello-theater-review-denzel-washington-jake-gyllenhaal-shakespeare-broadway-1236170552/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from othello-west-end-2022"
-        }
-      ]
-    },
-    {
-      "showId": "othello-2025",
-      "file": "thewrap--robert-hofler.json",
-      "score": 73,
-      "publishDate": "March 23, 2025",
-      "url": "https://www.thewrap.com/othello-broadway-review-denzel-washington-jake-gyllenhaal/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from othello-west-end-2022"
-        }
-      ]
-    },
-    {
-      "showId": "othello-2025",
-      "file": "variety--daniel-daddario.json",
-      "score": 57,
-      "publishDate": "March 23, 2025",
-      "url": "https://variety.com/2025/legit/reviews/othello-review-denzel-washington-jake-gyllenhaal-broadway-1236345962/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from othello-west-end-2022"
-        }
-      ]
-    },
-    {
       "showId": "othello-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -27806,6 +28136,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"eric tucker\" from othello-bedlam-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "othello-west-end-2025",
+      "file": "artsdesk--heather-neill.json",
+      "score": 76,
+      "publishDate": "2025-11-05",
+      "url": "https://theartsdesk.com/theatre/othello-theatre-royal-haymarket-review-surprising-mix-stateliness-and-ironic-humour",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from othello-west-end-2022"
         }
       ]
     },
@@ -32867,6 +33211,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "around-the-town-chicago--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/monty-pythons-spamalot-milwaukee-reviewed-by-ryan-kreiter/",
       "findings": [
@@ -32945,6 +33290,7 @@
     {
       "showId": "spamalot-tour-2025",
       "file": "ladue-news--mark-bretz.json",
+      "score": 87,
       "publishDate": "2026-05-11",
       "url": "https://www.laduenews.com/arts-and-culture/spamalot-fox-theatre-film-monty-python-and-the-holy-grail-stl-st-louis-performance-play/article_eb5232ee-3ed4-48f2-b56e-554bec8b0a1b.html",
       "findings": [
@@ -34684,304 +35030,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn\" from sunset-boulevard-1994"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": null,
-      "publishDate": "October 13th, 2023",
-      "url": "https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "artsdesk--mert-dilek.json",
-      "score": 97,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://theartsdesk.com/theatre/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-stuns-exceptional-production",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "bnn--sheena-oberoi.json",
-      "score": 70,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://bnn.network/arts/nicole-scherzinger-soars-in-sunset-boulevard-revival/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "british-theatre--howard-loxton.json",
-      "score": 89,
-      "publishDate": "2023-10-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "broadwayworld--aliya-al-hassan.json",
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "daily-mail--mark-cook.json",
-      "score": 97,
-      "publishDate": "2023-10-15",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 98,
-      "publishDate": "2023-10-18",
-      "url": "https://www.ft.com/content/66bbf718-db34-45eb-8ea5-74cc091c365c",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "guardian--arifa-akbar.json",
-      "score": 55,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://www.theguardian.com/stage/2023/oct/12/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-savoy-theatre?CMP=twt_a-culture_b-gdnculture",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "i-paper--fiona-mountford.json",
-      "score": 78,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://inews.co.uk/culture/arts/sunset-boulevard-savoy-theatre-review-nicole-scherzinger-2684877",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "independent--alice-saville.json",
-      "score": 82,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/sunset-boulevard-review-nicole-scherzinger-jamie-lloyd-b2429138.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 98,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://www.londontheatre.co.uk/reviews/sunset-boulevard-review-savoy-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "nytimes--matt-wolf.json",
-      "score": 82,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://www.nytimes.com/2023/10/13/theater/nicole-scherzinger-sunset-boulevard.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "observer--susannah-clapp.json",
-      "score": 60,
-      "publishDate": "2023-10-15",
-      "url": "https://www.theguardian.com/stage/2023/oct/15/the-week-in-theatre-death-of-england-closing-time-sunset-boulevard-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 82,
-      "publishDate": "October 13th, 2023",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/sunset-boulevard-savoy-theatre-review-nicole-scherzinger/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "the-jewish-chronicle--john-nathan.json",
-      "score": 91,
-      "publishDate": "2023-10-19",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "the-spectator-uk--lloyd-evans.json",
-      "score": 43,
-      "publishDate": "2023-10-21",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "theatre-weekly--greg-stewart.json",
-      "score": 77,
-      "publishDate": "2023-10-12T21:01:54-04:00",
-      "url": "https://theatreweekly.com/review-sunset-boulevard-at-the-savoy-theatre/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 97,
-      "publishDate": "October 13th, 2023",
-      "url": "https://www.timeout.com/london/theatre/sunset-boulevard-1-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "times-uk--patricia-nicol.json",
-      "score": 81,
-      "publishDate": "2023-10-15",
-      "url": "https://www.thetimes.co.uk/article/744433dc-677b-11ee-815f-31c5e4390927",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "variety--david-benedict.json",
-      "score": 63,
-      "publishDate": "2023-10-18",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-west-end-2023",
-      "file": "west-end-best-friend--lisamarie-lamb.json",
-      "score": null,
-      "publishDate": "October 14th, 2023",
-      "url": "https://www.westendbestfriend.co.uk/news/review-sunset-boulevard-savoy-theatre",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from sunset-boulevard-2024"
         }
       ]
     },
@@ -43275,6 +43323,20 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 77,
+      "publishDate": "2024-10-08",
+      "url": "https://www.islingtontribune.co.uk/article/review-the-standard-of-living-at-theatre-royal-haymarket",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 713d before show (2024-10-08 vs 2026-09-21)"
+        }
+      ]
+    },
+    {
+      "showId": "the-standard-of-living-west-end-2026",
       "file": "london-unattached--dr-adrian-york.json",
       "score": 95,
       "publishDate": "2026-09-30",
@@ -45461,6 +45523,32 @@
       ]
     },
     {
+      "showId": "uncle-vanya-west-end-2020",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2020-01-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "uncle-vanya-west-end-2020",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2020-01-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "under-milk-wood-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
       "score": 77,
@@ -45588,15 +45676,240 @@
     },
     {
       "showId": "vanya-off-broadway-2025",
+      "file": "amny--matt-windman.json",
+      "score": 65,
+      "publishDate": "2025-03-28",
+      "url": "https://www.amny.com/entertainment/theater/review-vanya-the-picture-of-dorian-gray/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "dailybeast--tim-teeman.json",
+      "score": 63,
+      "publishDate": "2025-03-19",
+      "url": "https://www.thedailybeast.com/review-andrew-scotts-one-man-vanya-is-too-subtle-to-be-great/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 90,
+      "publishDate": "March 21st, 2025",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-3S9UX4",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "score": 79,
+      "publishDate": "2025-03-19",
+      "url": "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nysr--michael-sommers.json",
+      "score": 79,
+      "publishDate": "2025-03-19",
+      "url": "https://nystagereview.com/2025/03/18/vanya-andrew-scott-goes-virtuoso-in-a-solo-show/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 62,
+      "publishDate": "2025-03-19",
+      "url": "https://newyorktheater.me/2025/03/18/vanya-review-andrew-scott-in-a-one-man-chekhov-play/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nytg--gillian-russo.json",
+      "score": 91,
+      "publishDate": "2025-03-18",
+      "url": "https://www.newyorktheatreguide.com/reviews/vanya-off-broadway-review-andrew-scott",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "nytimes--jesse-green.json",
+      "score": 95,
+      "publishDate": "2025-03-19",
+      "url": "https://www.nytimes.com/2025/03/18/theater/andrew-scott-vanya-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "theater-scene--archive.json",
+      "score": 91,
+      "publishDate": "2025-03-26",
+      "url": "https://www.theaterscene.net/plays/solo-plays/vanya/joel-benjamin/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "theatermania--dan-rubins.json",
+      "score": 91,
+      "publishDate": "2025-03-19",
+      "url": "https://www.theatermania.com/news/review-andrew-scott-creates-a-world-out-of-nothing-in-vanya_1767985/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "theatermania--unknown.json",
+      "score": 93,
+      "publishDate": "2025-03-19",
+      "url": "https://www.theatermania.com/news/review-andrew-scott-creates-a-world-out-of-nothing-in-vanya_1767985/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 92,
+      "publishDate": "2025-03-24",
+      "url": "https://www.theatrereviews.com/off-broadway-review-vanya-at-the-lucille-lortel-theatre-through-sunday-may-11-2025/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
       "file": "thewrap--robert-hofler.json",
       "score": 63,
       "publishDate": "2025-03-19",
       "url": "https://www.thewrap.com/vanya-off-broadway-review-andrew-scott/",
       "findings": [
         {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        },
+        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": 88,
+      "publishDate": "May 1st, 2025",
+      "url": "https://twi-ny.com/2025/05/01/andrew-scott-vanya-sarah-snook-the-picture-of-dorian-gray/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "timeout--adam-feldman.json",
+      "score": 97,
+      "publishDate": "2025-03-18",
+      "url": "https://www.timeout.com/newyork/theater/vanya-review-andrew-scott-solo-simon-stephens-chekhov",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "vanya-off-broadway-2025",
+      "file": "vulture--sara-holdren.json",
+      "score": 92,
+      "publishDate": "2025-03-18",
+      "url": "https://www.vulture.com/article/vanya-review-andrew-scott.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam yates\" from vanya-west-end-2023"
         }
       ]
     },
@@ -47471,6 +47784,20 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 80,
+      "publishDate": "2023-10-08",
+      "url": "https://www.islingtontribune.co.uk/article/review-whos-afraid-of-virginia-woolf-at-soho-place",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1079d before show (2023-10-08 vs 2026-09-21)"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "london-unattached--jeanne-horak.json",
       "score": 90,
       "publishDate": "2026-10-02",
@@ -48509,6 +48836,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "a-taste-of-honey-west-end-2019",
+      "file": "timeout-london--rosemary-waugh.json",
+      "publishDate": "2019-12-10",
+      "url": "https://www.timeout.com/london/theatre/a-taste-of-honey-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -51091,7 +51431,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-10-09",
       "url": "https://www.allthatdazzles.co.uk/post/review-blood-of-my-blood-royal-court-theatre",
       "findings": [
@@ -51118,6 +51458,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "guardian--unknown.json",
+      "score": 82,
       "publishDate": "2026-10-10",
       "url": "https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
       "findings": [
@@ -51130,8 +51471,21 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
+      "file": "hitthetheatre--unknown.json",
+      "publishDate": null,
+      "url": "https://hitthetheatre.co.uk/london/shows/blood-of-my-blood",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 81,
       "publishDate": "2026-10-08",
       "url": "https://www.londonboxoffice.co.uk/news/post/blood-of-my-blood-royal-court-theatre-review",
       "findings": [
@@ -53843,20 +54197,6 @@
       ]
     },
     {
-      "showId": "dear-england-west-end-2025",
-      "file": "telegraph--dominic-cavendish.json",
-      "score": 82,
-      "publishDate": "March 19th, 2025",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/dear-england-2025-national-theatre-review-gareth-southgate/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
       "showId": "dear-evan-hansen-2016",
       "file": "dc-theater-arts--richard-seff.json",
       "score": 92,
@@ -53881,6 +54221,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 88,
+      "publishDate": "2019-11-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -54287,20 +54641,6 @@
     },
     {
       "showId": "death-of-a-salesman-2022",
-      "file": "broadwayworld--blair-ingenthron.json",
-      "score": null,
-      "publishDate": "2022-10-09",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-OF-A-SALESMAN-Opens-on-Broadway--Updating-Live-20221009",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
       "file": "frontmezzjunkies--ross.json",
       "score": 92,
       "publishDate": "2022-10-30",
@@ -54324,20 +54664,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2022",
-      "file": "theater-scene--joseph-pisano.json",
-      "score": 80,
-      "publishDate": "October 19th, 2022",
-      "url": "http://www.theaterscene.net/plays/broadway-plays/death-of-a-salesman/joseph-pisano/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -58204,7 +58530,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "radio-times--olivia-garrett.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2026-10-02",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/hay-fever-review/",
       "findings": [
@@ -58301,7 +58627,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "west-end-wilma--unknown.json",
-      "score": 75,
+      "score": 73,
       "publishDate": "2026-10-02",
       "url": "https://westendwilma.com/review-hay-fever-wyndhams-theatre/?utm_source=rss&utm_medium=rss&utm_campaign=review-hay-fever-wyndhams-theatre",
       "findings": [
@@ -60610,7 +60936,7 @@
     {
       "showId": "jews-in-their-own-words-west-end-2022",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 60,
+      "score": 62,
       "publishDate": "September 29th, 2022",
       "url": "https://theartsdesk.com/theatre/jews-their-own-words-royal-court-review-calling-out-ancient-prejudice",
       "findings": [
@@ -61386,6 +61712,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "leopoldstadt-west-end-2020",
+      "file": "london-theatre--mark-shenton.json",
+      "publishDate": "2020-02-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "leopoldstadt-west-end-2020",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "2020-02-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -63280,7 +63632,7 @@
     {
       "showId": "medea-west-end-2023",
       "file": "artsdesk--mert-dilek.json",
-      "score": 78,
+      "score": 75,
       "publishDate": "February 21st, 2023",
       "url": "https://theartsdesk.com/theatre/medea-sohoplace-review-sophie-okonedo-commanding-dated-version-greek-tragedy",
       "findings": [
@@ -66942,6 +67294,19 @@
       ]
     },
     {
+      "showId": "scenes-with-girls-west-end-2020",
+      "file": "timeout-london--rosemary-waugh.json",
+      "publishDate": "2020-01-22",
+      "url": "https://www.timeout.com/london/theatre/scenes-with-girls-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "schmigadoon-2026",
       "file": "chicagotribune--chris-jones.json",
       "score": 75,
@@ -68970,6 +69335,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "sunset-boulevard-west-end-2023",
+      "file": "nytimes--matt-wolf.json",
+      "score": 82,
+      "publishDate": "2023-10-12T21:01:54-04:00",
+      "url": "https://www.nytimes.com/2023/10/13/theater/nicole-scherzinger-sunset-boulevard.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -71120,7 +71499,7 @@
     {
       "showId": "the-doctor-west-end-2022",
       "file": "guardian--arifa-akbar.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "October 9, 2022",
       "url": "https://www.theguardian.com/stage/2022/oct/10/the-doctor-review-duke-of-yorks-theatre-robert-icke-juliet-stevenson",
       "findings": [
@@ -71148,7 +71527,7 @@
     {
       "showId": "the-doctor-west-end-2022",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 100,
+      "score": 99,
       "publishDate": "2022-10-10",
       "url": "https://www.thetimes.co.uk/article/the-doctor-review-juliet-stevenson-stuns-in-the-play-of-the-decade-vgvqkn0jz",
       "findings": [
@@ -75800,6 +76179,7 @@
     {
       "showId": "touching-the-void-west-end-2019",
       "file": "observer--susannah-clapp.json",
+      "score": 90,
       "publishDate": "2019-11-24",
       "url": null,
       "findings": [
@@ -76171,34 +76551,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "vanya-off-broadway-2025",
-      "file": "nysr--melissa-rose-bernardo.json",
-      "score": 79,
-      "publishDate": "2025-03-19",
-      "url": "https://nystagereview.com/2025/03/18/vanya-one-man-nine-characters-considerable-tragicomedy/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "vanya-off-broadway-2025",
-      "file": "nytimes--jesse-green.json",
-      "score": 95,
-      "publishDate": "2025-03-19",
-      "url": "https://www.nytimes.com/2025/03/18/theater/andrew-scott-vanya-review.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

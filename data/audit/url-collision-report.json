@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-10T15:31:04.386Z",
+  "generatedAt": "2026-10-10T17:19:16.579Z",
   "summary": {
-    "total": 17,
-    "high": 6,
+    "total": 18,
+    "high": 7,
     "medium": 7,
     "low": 4
   },
@@ -411,6 +411,33 @@
       "suggestedWinner": "stereophonic-2024",
       "reason": "publishDate 2024-04-19 is 0 days from stereophonic-2024 but also 13 days from stereophonic-off-broadway-2023",
       "confidence": "medium"
+    },
+    {
+      "url": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
+      "normalizedUrl": "https://theartsdesk.com/theatre/comedy-about-spies-noel-coward-theatre-review-goes-wrong-team-hit-spot-again",
+      "candidates": [
+        {
+          "showId": "the-comedy-about-spies-west-end-2025",
+          "file": "artsdesk--veronica-lee.json",
+          "publishDate": "2025-05-15",
+          "openingDate": "2025-05-06",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        },
+        {
+          "showId": "the-comedy-about-spies-west-end-2026",
+          "file": "artsdesk--veronica-lee.json",
+          "publishDate": "May 15th, 2025",
+          "openingDate": "2026-08-06",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "artsdesk"
+        }
+      ],
+      "suggestedWinner": "the-comedy-about-spies-west-end-2025",
+      "reason": "publishDate 2025-05-15 is 9 days from the-comedy-about-spies-west-end-2025 opening (2025-05-06); next closest is 448 days from the-comedy-about-spies-west-end-2026",
+      "confidence": "high"
     },
     {
       "url": "https://theartsdesk.com/theatre/score-theatre-royal-haymarket-review-curious-beast-play-fails-engage",
