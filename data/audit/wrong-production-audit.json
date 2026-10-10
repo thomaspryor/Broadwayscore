@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T18:01:08.867Z",
+  "timestamp": "2026-10-10T18:16:05.893Z",
   "stats": {
-    "totalReviews": 54294,
-    "alreadyFlagged": 19861,
+    "totalReviews": 54337,
+    "alreadyFlagged": 19863,
     "dateGuardCatches": 272,
     "directorMismatch": 1698,
     "tvFilmSignals": 1569,
-    "londonSignals": 1787,
+    "londonSignals": 1790,
     "offBroadwaySignals": 513,
     "yearMismatch": 132,
-    "noPublishDate": 6067
+    "noPublishDate": 6069
   },
   "findings": [
     {
@@ -45526,7 +45526,7 @@
       "showId": "uncle-vanya-west-end-2020",
       "file": "telegraph--dominic-cavendish.json",
       "publishDate": "2020-01-23",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -45539,7 +45539,7 @@
       "showId": "uncle-vanya-west-end-2020",
       "file": "thestage--natasha-tripney.json",
       "publishDate": "2020-01-24",
-      "url": null,
+      "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-at-the-harold-pinter-theatre-london--toby-jones-stars-in-a-polished-and-affecting-adaptation",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -66432,6 +66432,20 @@
       ]
     },
     {
+      "showId": "pretty-woman-the-musical-west-end-2020",
+      "file": "british-theatre--philip-fisher.json",
+      "score": 71,
+      "publishDate": "2020-03-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "pride-west-end-2026",
       "file": "afridiziak-theatre-news--althyr-pivatto.json",
       "score": 89,
@@ -74256,6 +74270,19 @@
       ]
     },
     {
+      "showId": "the-prince-of-egypt-west-end-2020",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2020-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-producers-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 76,
@@ -75197,6 +75224,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-visit-or-the-old-lady-comes-to-call-west-end-2020",
+      "file": "artsdesk--matt-wolf.json",
+      "publishDate": "2020-02-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

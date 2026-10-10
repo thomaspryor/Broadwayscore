@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-10T17:55:48.666Z",
+  "generated": "2026-10-10T18:10:39.726Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 23,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -163,13 +163,6 @@
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "loserFile": "broadwayworld--aliya-al-hassan.json",
-      "targetFile": "broadwayworld--unknown.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--unknown.json was flagged invalid after broadwayworld--aliya-al-hassan.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4985",
   "planId": "921c912f-728b-4156-95fe-76e6eac4de99",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T16:44:48.151Z",
   "submitter": {
     "name": null,
@@ -133,5 +133,63 @@
         "description": "the quoted wording is the writer's, in the interview piece; add the date (https://gordoncox.substack.com/p/chunsoo-shin-interview-the-great-gatsby-broadway)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T18:16:12.860Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for wicked"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for the-great-gatsby"
+    }
+  ]
 }
