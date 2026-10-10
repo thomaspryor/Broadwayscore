@@ -153,4 +153,149 @@ function serpTextConfirms(serpResults, phrases, name, opts = {}) {
   });
 }
 
-module.exports = { ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch };
+/**
+ * Roles whose holder changes from one production of a title to the next. A
+ * play has one author across every staging; its director does not.
+ */
+const PRODUCTION_SPECIFIC_ROLES = new Set(['director', 'choreographer']);
+
+/**
+ * Lowercase tokens that name a production's venue in published coverage:
+ * "Wyndham's Theatre" -> "wyndhams", "Theatre Royal Haymarket" -> "haymarket",
+ * and a National Theatre stage also matches "national theatre". Apostrophes
+ * are dropped (snippets write both "Wyndham's" and "Wyndhams"); tokens under
+ * four characters are too common to anchor anything.
+ */
+function venueTokens(venue) {
+  const v = normalizeForMatch(venue).replace(/'/g, '');
+  if (!v) return [];
+  const core = v
+    .replace(/^the\s+/, '')
+    .replace(/^theatre royal,?\s+/, '')
+    .replace(/[,(].*$/, '')
+    .replace(/\s+(theatre|theater|playhouse)$/, '')
+    .replace(/^@/, '')
+    .trim();
+  const tokens = core.length >= 4 ? [core] : [];
+  if (/^(lyttelton|olivier|dorfman)\b/.test(core) || /national theatre/.test(v)) tokens.push('national theatre');
+  return [...new Set(tokens)];
+}
+
+/**
+ * serpTextConfirms plus a production anchor: the confirming result must also
+ * name this production's venue, in the same snippet segment or the page
+ * title. Used for production-specific roles proposed by an LLM, where the
+ * title-anchored check alone confirms the director of ANY staging of the
+ * title. BRO-4884: the West End historical backfill wrote Dominic Cooke for
+ * the 2019 Wyndham's Curtains (Paul Foster), Ivo van Hove for the 2019 Young
+ * Vic Death of a Salesman (Marianne Elliott and Miranda Cromwell) and Roger
+ * Michell for The Man in the White Suit (Sean Foley), each "SERP confirmed".
+ */
+function serpTextConfirmsProduction(serpResults, phrases, name, { title, venue } = {}) {
+  const venues = venueTokens(venue);
+  if (venues.length === 0 || !Array.isArray(serpResults)) return false;
+  const nameN = normalizeForMatch(name);
+  const wanted = phrases.map(p => `${normalizeForMatch(p)} ${nameN}`);
+  const anchors = titleTokens(title);
+  if (anchors.length === 0) return false;
+  return serpResults.some(r => {
+    const pageTitle = normalizeForMatch(r.title);
+    const pageTitleNoApos = pageTitle.replace(/'/g, '');
+    const segments = normalizeForMatch(r.snippet).split(/\.\.\.|…/);
+    return segments.some(seg => {
+      if (!wanted.some(w => seg.includes(w))) return false;
+      const namesShow = anchors.some(a => seg.includes(a) || pageTitle.includes(a));
+      const segNoApos = seg.replace(/'/g, '');
+      const namesVenue = venues.some(t => segNoApos.includes(t) || pageTitleNoApos.includes(t));
+      return namesShow && namesVenue;
+    });
+  });
+}
+
+const defaultSleep = ms => new Promise(r => setTimeout(r, ms));
+
+/**
+ * Shared SERP-verification gate for creative-team writes (moved here from
+ * auto-fix-show-data.js; discover-new-shows.js, enrich-ibdb-dates.js and
+ * backfill-playwright-credits.js already imported it from this module, where
+ * it was never exported, so each of their calls threw).
+ *
+ * Every member needs a "<verb> <name>" snippet anchored to the show title.
+ * With opts.productionAnchor (callers whose names were not taken from a
+ * production-matched source, i.e. the LLM path), a director or choreographer
+ * also needs the venue in that evidence, and the query names the venue; a
+ * show with no usable venue gets no production-specific credits from it.
+ *
+ * @param {object} show
+ * @param {Array<{name: string, role: string}>} proposed
+ * @param {string} year
+ * @param {string} sourceTag - written to each kept member's _source
+ * @param {{productionAnchor?: boolean, serpQuery?: Function, sleep?: Function}} [opts]
+ */
+async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts = {}) {
+  const serpQuery = opts.serpQuery || require('./url-discovery').serpQuery;
+  const sleep = opts.sleep || defaultSleep;
+  const verified = [];
+  const seen = new Set(); // name+role dedup — a shared gate can't assume every caller pre-dedupes
+  for (const member of proposed || []) {
+    const name = String(member.name || '').trim();
+    if (!name) {
+      console.log(`    ❌ Blank/missing name for role "${member.role}" — rejecting`);
+      continue;
+    }
+    const role = String(member.role || '').toLowerCase();
+    const dedupeKey = `${role}::${name.toLowerCase()}`;
+    if (seen.has(dedupeKey)) continue;
+    seen.add(dedupeKey);
+
+    const verb = roleVerb(role);
+    if (!verb) {
+      console.log(`    ❌ Unrecognized role "${member.role}" for ${name} — rejecting (cannot SERP-verify)`);
+      continue;
+    }
+    const canonRole = ROLE_CANON[role] || member.role;
+    // "Music & Lyrics" is published inconsistently ("music and lyrics by" vs
+    // "music & lyrics by") — accept either spelling for this one role rather
+    // than widening every role to roleVerbVariants (which would weaken the
+    // single-verb hallucination signal the other roles rely on).
+    const phrases = role === 'music & lyrics' ? [verb, 'music & lyrics by'] : [verb];
+    const anchored = !!opts.productionAnchor && PRODUCTION_SPECIFIC_ROLES.has(role);
+    if (anchored && venueTokens(show.venue).length === 0) {
+      console.log(`    ❌ No venue to tie ${name} (${member.role}) to this production — rejecting`);
+      continue;
+    }
+
+    const query = anchored
+      ? `"${show.title}" ${show.venue} "${verb} ${name}"`
+      : `"${show.title}" ${year} "${verb} ${name}"`;
+    console.log(`    🔍 Verifying: ${name} (${member.role}) via SERP...`);
+    try {
+      await sleep(500);
+      const serpResults = await serpQuery(query);
+      if (serpResults && serpResults.length > 0) {
+        // Require the full phrase "directed by [name]" in a snippet — not just
+        // the name — anchored to a segment naming this show (and, when
+        // anchored, its venue).
+        const confirmed = anchored
+          ? serpTextConfirmsProduction(serpResults, phrases, name, { title: show.title, venue: show.venue })
+          : serpTextConfirms(serpResults, phrases, name, { title: show.title });
+        if (confirmed) {
+          console.log(`    ✅ SERP confirmed: ${name} (${member.role})`);
+          verified.push({ ...member, name, role: canonRole, _source: sourceTag });
+        } else {
+          console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role})${anchored ? ' at this venue' : ''} — rejecting`);
+        }
+      } else {
+        console.log(`    ❌ No SERP results for ${member.name} (${member.role}) — rejecting`);
+      }
+    } catch (e) {
+      console.log(`    ⚠️  SERP verification failed for ${member.name}: ${e.message}`);
+    }
+  }
+  return verified;
+}
+
+module.exports = {
+  ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch,
+  PRODUCTION_SPECIFIC_ROLES, venueTokens, serpTextConfirmsProduction, verifyCreativeTeamViaSerp,
+};
