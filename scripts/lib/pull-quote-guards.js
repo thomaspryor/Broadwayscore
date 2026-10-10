@@ -146,7 +146,7 @@ const SERVICE_SECTION_HEADING_RE = /(?:who\s+should\s+(?:see|watch)|what\s+to\s+
 
 /**
  * Does `quote` sit inside a service-journalism section of `fullText`? True
- * when one of those headings occurs within 1500 chars before the quote.
+ * when one of those headings occurs within 500 chars before the quote.
  */
 function isInServiceSection(quote, fullText) {
   if (!quote || !fullText || typeof quote !== 'string' || typeof fullText !== 'string') return false;
@@ -154,7 +154,7 @@ function isInServiceSection(quote, fullText) {
   const text = norm(fullText);
   const at = text.indexOf(norm(quote).trim());
   if (at < 0) return false;
-  return SERVICE_SECTION_HEADING_RE.test(text.slice(Math.max(0, at - 1500), at));
+  return SERVICE_SECTION_HEADING_RE.test(text.slice(Math.max(0, at - 500), at));
 }
 
 function isPromoTeaser(excerpt) {

@@ -619,7 +619,9 @@ describe('isBadCandidateLength', () => {
 describe('isInServiceSection (BRO-4973)', () => {
   const body = 'Haddad’s play is intimate and engaging. As it traces parallel lives, Good Time Charlie is a flawed but heartfelt family love letter. '
     + 'What audiences are saying about Good Time Charlie Theatregoers expressed mixed reactions. '
-    + 'Who should see Good Time Charlie Fans of Haddad’s earlier work will be keen. The family play is a staple of American theatre. Audiences who appreciate the genre will want to see it.';
+    + 'Who should see Good Time Charlie Fans of Haddad’s earlier work will be keen. The family play is a staple of American theatre. Audiences who appreciate the genre will want to see it. '
+    + 'Theatregoers who appreciate a well-tuned ensemble will enjoy seeing each actor get moments in the spotlight. '
+    + 'Learn more about Good Time Charlie off Broadway. Good Time Charlie is a flawed but heartfelt family love letter. Tickets on sale now.';
 
   test('flags the GTC NYTG boilerplate sentence', () => {
     assert.strictEqual(isInServiceSection('The family play is a staple of American theatre.', body), true);
