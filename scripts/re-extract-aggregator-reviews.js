@@ -23,6 +23,7 @@ const {
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
+const { foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 
 const dataDir = path.join(__dirname, '..', 'data');
 const archiveDir = path.join(dataDir, 'aggregator-archive');
@@ -256,6 +257,12 @@ function reExtractBWW() {
         } catch (e) { /* skip */ }
       }
     }
+
+    // BRO-4977: never re-create an entry that reviews another show whose title
+    // contains this one ("How Soon is Now?" in the Soon roundup).
+    const bwwShow = (showsData.shows || showsData).find(s => s.id === showId);
+    const foreign = bwwShow ? foreignTitleEntriesFromHtml(html, bwwShow.title) : [];
+    if (foreign.length) reviews = reviews.filter(r => !isForeignTitleReview(r, foreign));
 
     for (const review of reviews) {
       const result = writeReviewFile(review);

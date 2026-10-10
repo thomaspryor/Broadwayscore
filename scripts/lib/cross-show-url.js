@@ -65,6 +65,30 @@ function getShowSlugIndex(showsPath = DEFAULT_SHOWS_PATH) {
   return index;
 }
 
+const _genericCache = new Map();
+const URL_WORD_TITLES = new Set(['broadway', 'west-end']);
+/**
+ * {id, title, slug, generic: true} for a show titled with a bare URL path
+ * word ("Broadway"), which the index leaves out; else null.
+ */
+function getGenericTitleShow(showId, showsPath = DEFAULT_SHOWS_PATH) {
+  if (!_genericCache.has(showsPath)) {
+    const m = new Map();
+    try {
+      const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+      for (const s of showsData.shows || showsData) {
+        const slug = slugify(s.title);
+        // Only titles that ARE a URL path word. Other excluded titles ("The
+        // Visit": reviews say "visit-review-...-chita-rivera") keep the old
+        // behaviour; widening to them flagged real reviews.
+        if (URL_WORD_TITLES.has(slug)) m.set(s.id, { id: s.id, title: s.title, slug, generic: true });
+      }
+    } catch {}
+    _genericCache.set(showsPath, m);
+  }
+  return _genericCache.get(showsPath).get(showId) || null;
+}
+
 /**
  * @param {string} showId   show the review is currently filed under
  * @param {string} url      the review URL
@@ -76,15 +100,25 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
   try {
     const urlPath = new URL(url).pathname.toLowerCase();
     const index = opts.index || getShowSlugIndex(opts.showsPath || DEFAULT_SHOWS_PATH);
-    const thisShow = index.find(s => s.id === showId);
+    let thisShow = index.find(s => s.id === showId);
+    // A show whose title is itself a generic URL word ("Broadway", 1987) is
+    // left out of the index, which used to switch this guard off for it
+    // entirely: seven reviews of The Heart of Rock and Roll (".../the-heart-
+    // of-rock-and-roll-broadway-review") sat live on Broadway (1987), BRO-4977.
+    // Look such a show up anyway; its own generic slug just can't vouch.
+    if (!thisShow && !opts.index) {
+      const generic = getGenericTitleShow(showId, opts.showsPath || DEFAULT_SHOWS_PATH);
+      if (generic) thisShow = generic;
+    }
     if (!thisShow) return null;
+    const ownSlugVouches = !thisShow.generic;
 
     // Check if URL contains this show's slug — if yes, no mismatch
-    if (urlPath.includes(thisShow.slug)) return null;
+    if (ownSlugVouches && urlPath.includes(thisShow.slug)) return null;
 
     // Also check the show ID slug (without year/market suffix) for partial matches
     const idSlug = showId.replace(/-(?:west-end|off-west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
-    if (idSlug.length >= 8 && urlPath.includes(idSlug)) return null;
+    if (ownSlugVouches && idSlug.length >= 8 && urlPath.includes(idSlug)) return null;
 
     // Normalize connectors (and/the/or) so "romeo-and-juliet" ≈ "romeo-juliet" and
     // "school-girls-or-the-african-mean-girls-play" ≈ "school-girls-african-mean-girls-play"
