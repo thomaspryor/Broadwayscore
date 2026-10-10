@@ -272,10 +272,10 @@ test('origin/main moves during the checks (before any push) → detected, re-reb
 });
 
 test('isInertForVerification / classifyIntervening: bot data churn is inert, code is substantive', () => {
-  for (const f of ['data/audit/stage-latency.jsonl', 'data/audit/x.json', 'public/data/shows/a.json', 'memory/foo.md', 'README.md', 'cloud-memory/MEMORY.md', 'public/opening-night-status.json']) {
+  for (const f of ['data/audit/stage-latency.jsonl', 'data/audit/x.json', 'public/data/shows/a.json', 'memory/foo.md', 'README.md', 'cloud-memory/MEMORY.md', 'public/opening-night-status.json', 'public/images/shows/annie-1977/poster.jpg']) {
     assert.equal(isInertForVerification(f), true, f);
   }
-  for (const f of ['scripts/lib/x.js', 'src/app/page.tsx', '.github/workflows/test.yml', 'package.json', 'scripts/x.sh', 'tests/unit/a.test.mjs', 'public/sitemap.xml', 'public/opening-night-status.json.bak']) {
+  for (const f of ['scripts/lib/x.js', 'src/app/page.tsx', '.github/workflows/test.yml', 'package.json', 'scripts/x.sh', 'tests/unit/a.test.mjs', 'public/sitemap.xml', 'public/opening-night-status.json.bak', 'public/images/logo.svg', 'public/favicon.ico']) {
     assert.equal(isInertForVerification(f), false, f);
   }
   assert.equal(classifyIntervening(['data/audit/a.json', 'memory/b.md']), 'inert');
