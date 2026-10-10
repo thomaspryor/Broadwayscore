@@ -10,6 +10,8 @@ tests/unit/approaching-recoupment-gate.test.ts
 tests/unit/auth-return-paths.test.ts
 tests/unit/auto-subscribe-single-post.test.ts
 tests/unit/biz-format.test.ts
+tests/unit/box-office-status.test.ts
+tests/unit/box-office-v2-display.test.ts
 tests/unit/broadway-duration-whole-months.test.ts
 tests/unit/browse-slugs.test.mjs
 tests/unit/calendar-export.test.ts
@@ -65,6 +67,7 @@ tests/unit/promo-sunset-fallback.test.ts
 tests/unit/recoupment-progress-label.test.mjs
 tests/unit/related-shows-fallback.test.ts
 tests/unit/robots-api-disallow.test.ts
+tests/unit/robots-meta-nonprod.test.ts
 tests/unit/run-age-label.test.mjs
 tests/unit/score-breakdown-tier.test.ts
 tests/unit/scoring-parity.test.ts

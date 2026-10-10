@@ -129,15 +129,35 @@ function SortIcon({ direction, active }: { direction: SortDirection | null; acti
 }
 
 // This Week's Table
-type ThisWeekColumn = 'show' | 'gross' | 'capacity' | 'atp' | 'attendance';
+type BaseColumn = 'show' | 'gross' | 'capacity' | 'atp' | 'attendance';
+type ThisWeekColumn = BaseColumn | `extra:${string}`;
+
+/** A caller-supplied column after the built-in ones (sortable by `sortValue`, nulls last). */
+export interface ExtraColumn {
+  key: string;
+  header: React.ReactNode;
+  headerClassName?: string;
+  cellClassName?: string;
+  sortValue: (slug: string) => number | null;
+  render: (slug: string) => React.ReactNode;
+}
 
 interface ThisWeekTableProps {
   data: ShowGrossesData[];
+  extraColumns?: ExtraColumn[];
+  hideColumns?: BaseColumn[];
+  /** Optional line under the title (e.g. a phone-only summary of columns that scroll off). */
+  titleNote?: (slug: string) => React.ReactNode;
 }
 
-export function ThisWeekTable({ data }: ThisWeekTableProps) {
+// Stable defaults so the live page's sort memo doesn't rerun every render.
+const NO_EXTRA_COLUMNS: ExtraColumn[] = [];
+const NO_HIDDEN_COLUMNS: BaseColumn[] = [];
+
+export function ThisWeekTable({ data, extraColumns = NO_EXTRA_COLUMNS, hideColumns = NO_HIDDEN_COLUMNS, titleNote }: ThisWeekTableProps) {
   const [sortColumn, setSortColumn] = useState<ThisWeekColumn>('gross');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const shown = (c: BaseColumn) => !hideColumns.includes(c);
 
   const handleSort = (column: ThisWeekColumn) => {
     if (sortColumn === column) {
@@ -174,6 +194,11 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
           aVal = a.grosses?.thisWeek?.attendance ?? null;
           bVal = b.grosses?.thisWeek?.attendance ?? null;
           break;
+        default: {
+          const col = extraColumns.find((c) => `extra:${c.key}` === sortColumn);
+          aVal = col ? col.sortValue(a.show.slug) : null;
+          bVal = col ? col.sortValue(b.show.slug) : null;
+        }
       }
 
       // Handle nulls - push to end
@@ -190,14 +215,14 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
       const numB = bVal as number;
       return sortDirection === 'asc' ? numA - numB : numB - numA;
     });
-  }, [data, sortColumn, sortDirection]);
+  }, [data, sortColumn, sortDirection, extraColumns]);
 
   const headerClass = "py-3 px-2 sm:px-4 text-gray-400 font-medium cursor-pointer hover:text-white transition-colors select-none group text-sm";
 
   return (
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="w-full text-sm min-w-[640px]">
+        <table className={`w-full text-sm ${extraColumns.length ? 'min-w-[860px]' : 'min-w-[640px]'}`}>
           <thead>
             <tr className="border-b border-white/10 bg-surface-overlay">
               <th className="text-left py-3 pl-3 pr-1 sm:px-4 text-gray-400 font-medium text-sm w-6 sm:w-8">#</th>
@@ -231,14 +256,26 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <span className="lg:hidden">ATP</span>
                 <SortIcon direction={sortDirection} active={sortColumn === 'atp'} />
               </th>
-              <th
-                className={`text-right whitespace-nowrap ${headerClass}`}
-                onClick={() => handleSort('attendance')}
-              >
-                <span className="hidden sm:inline">Attendance</span>
-                <span className="sm:hidden">Attend</span>
-                <SortIcon direction={sortDirection} active={sortColumn === 'attendance'} />
-              </th>
+              {shown('attendance') && (
+                <th
+                  className={`text-right whitespace-nowrap ${headerClass}`}
+                  onClick={() => handleSort('attendance')}
+                >
+                  <span className="hidden sm:inline">Attendance</span>
+                  <span className="sm:hidden">Attend</span>
+                  <SortIcon direction={sortDirection} active={sortColumn === 'attendance'} />
+                </th>
+              )}
+              {extraColumns.map((col) => (
+                <th
+                  key={col.key}
+                  className={`whitespace-nowrap ${headerClass} ${col.headerClassName ?? 'text-right'}`}
+                  onClick={() => handleSort(`extra:${col.key}`)}
+                >
+                  {col.header}
+                  <SortIcon direction={sortDirection} active={sortColumn === `extra:${col.key}`} />
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -254,9 +291,18 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <td className="py-3 px-2 sm:px-4 min-w-0 align-middle">
                   <Link href={`/show/${item.show.slug}`} className="flex items-center gap-3 group">
                     <ShowThumbnail show={item.show} />
-                    <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
-                      {item.show.title}
-                    </span>
+                    {titleNote ? (
+                      <span className="block min-w-0">
+                        <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
+                          {item.show.title}
+                        </span>
+                        {titleNote(item.show.slug)}
+                      </span>
+                    ) : (
+                      <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
+                        {item.show.title}
+                      </span>
+                    )}
                   </Link>
                 </td>
                 <td className="py-3 px-2 sm:px-4 text-right text-white font-medium whitespace-nowrap align-middle">
@@ -287,9 +333,16 @@ export function ThisWeekTable({ data }: ThisWeekTableProps) {
                 <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
                   {item.grosses?.thisWeek?.atp ? `$${item.grosses.thisWeek.atp.toFixed(0)}` : '—'}
                 </td>
-                <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
-                  {formatNumber(item.grosses?.thisWeek?.attendance)}
-                </td>
+                {shown('attendance') && (
+                  <td className="py-3 px-2 sm:px-4 text-right text-gray-300 whitespace-nowrap align-middle">
+                    {formatNumber(item.grosses?.thisWeek?.attendance)}
+                  </td>
+                )}
+                {extraColumns.map((col) => (
+                  <td key={col.key} className={`py-3 px-2 sm:px-4 align-middle ${col.cellClassName ?? 'text-right'}`}>
+                    {col.render(item.show.slug)}
+                  </td>
+                ))}
               </tr>
             ))}
           </tbody>

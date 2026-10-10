@@ -92,11 +92,13 @@ Import: `import { ComponentName } from '@/components/show-cards'`
 | `Modal` / `ModalCloseButton` | Modal dialog container — portals to `<body>` (safe inside `.card`, whose `contain: layout style` would otherwise trap `position:fixed`). `maxWidth`: `sm` \| `md` \| `lg` (520px) \| `xl` (`max-w-3xl`, added 2026-07-21 for the Review Import preview) |
 | `ShowSearchDropdown` | Search/autocomplete for shows |
 | `MustSeeCrown` | Crown icon for Critical Gold scores |
+| `CostStatusPill` | Box-office cost status (Well Above / Above / Near / Below Cost, Too early, No cost, Closing/Closed). Takes `costPill()` from `@/lib/box-office-v2-display`; tones map to `status-open`, `status-closed-bg`, `score-tepid`, dashed pending. BRO-5007, unreleased |
 
 **Other shared utilities** (not in show-cards barrel but used by it):
 - `ShowImage` from `@/components/ShowImage` — Optimized show image with fallback/loading states
 - `getOptimizedImageUrl(url, size)` from `@/lib/images` — CDN-optimized image URL builder
 - `RatingEditor` from `@/components/user/RatingEditor` — shared user rating editor (adjustable half-stars, date-seen capped to min(today, closing), 2000-char private notes, failed-save keeps draft + Retry, `'auth-gated'` onSave contract keeps editor open behind sign-in). Bottom-sheet Modal on mobile / inline card on desktop via live matchMedia. The ONLY rating editor — do not resurrect ReviewPanel/ShowPageRating (fixture-only legacy).
+- Box office (BRO-5007, behind `commercial && boxOfficeV2`): `BoxOfficeThisWeek` from `@/components/BoxOfficeStats` (the gross/capacity/avg-ticket/attendance tiles, reused by v1 and v2); `BoxOfficeMultipleChart` (SVG bars of gross ÷ weekly cost, dashed 1× line, cream typical-show line; `mode="gross"` for no-cost shows; pass `width={340}` on phones so 12px labels stay legible); `BoxOfficeScorecardV2` (the show-page card; load it with `next/dynamic` only, guarded by `commercial-unreleased.test.mjs`). All copy lives in `@/lib/box-office-v2-display`
 - `StarRating` from `@/components/user/StarRating` — half-star input/display; interactive half derived from pointer-x (keyboard Enter = whole star), `readOnly` renders role="img" display
 
 **Rule:** Before creating any new UI component, check this list. If a shared component exists, use it. If you need a new shared component, add it to `show-cards/` and export from `index.ts`.

@@ -8,10 +8,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${BASE_URL}/terms`,
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
   openGraph: {
     title: 'Terms of Service — Broadway Scorecard',
     description: 'Terms of Service for Broadway Scorecard. Guidelines for acceptable use of our aggregated Broadway review scores and data.',

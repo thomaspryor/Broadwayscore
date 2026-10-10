@@ -23,7 +23,9 @@ const DEMO_FEATURES = new Set(['showtimes']);
 // (vercel-deploy.yml, scripts/deploy-now.js) run scripts/lib/prod-held-flags-guard.js
 // and refuse to build while NEXT_PUBLIC_FEATURES enables one of these.
 // Releasing one means removing it here. BRO-4525: commercial is not to be released.
-export const PROD_HELD_FEATURES = new Set(['commercial']);
+// BRO-5007: boxOfficeV2 is not public yet (owner, 2026-10-10). vercel-demo.yml
+// also leaves held flags off the public demo build unless DEMO_HELD_ALLOWLIST names them.
+export const PROD_HELD_FEATURES = new Set(['commercial', 'boxOfficeV2']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -68,6 +70,9 @@ export const featureFlags = {
   get boxOffice() { return true; }, // launched — flag retained for cleanup
   get goldLists() { return has('goldLists'); },
   get commercial() { return has('commercial'); },
+  // Box Office Scorecard v2 (BRO-5007): status vs weekly cost. Needs commercial
+  // too. Held from prod (PROD_HELD_FEATURES) and from the public demo build.
+  get boxOfficeV2() { return has('boxOfficeV2'); },
   get awards() { return true; }, // launched 2026-05-17 — flag retained for cleanup
   get tonyPredictions() { return has('tonyPredictions'); },
   /** Reveals Our Pick % column and Predicted Winner badge on the predictions page.
