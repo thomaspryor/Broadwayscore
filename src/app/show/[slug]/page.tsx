@@ -17,7 +17,8 @@ import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
-import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
+import { getShowCommercial, getRecoupmentTrend, getShowBoxOfficeV2 } from '@/lib/data-commercial';
+import { toBoxOfficeV2Card } from '@/lib/box-office-v2-display';
 import { toPublicShowCommercial } from '@/lib/commercial-display';
 import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
@@ -334,6 +335,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // otherwise sit in the page source though the card never prints them.
   const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
   const commercial = rawCommercial ? toPublicShowCommercial(rawCommercial) : undefined;
+  // Box Office Scorecard v2 (BRO-5007, unreleased): same rule, computed only
+  // when both flags are on, so a flags-off build carries none of its data.
+  const boxOfficeV2Raw = featureFlags.commercial && featureFlags.boxOfficeV2 && show.category === 'broadway' ? getShowBoxOfficeV2(show.slug) : null;
+  const boxOfficeV2 = boxOfficeV2Raw ? toBoxOfficeV2Card(boxOfficeV2Raw) : null;
   // A tour with no ticket links of its own gets TodayTix's for the stop it
   // plays now or next (BRO-4601).
   const ticketLinks = show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show);
@@ -1026,6 +1031,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           weekEnding={weekEnding}
           boxOfficeHistory={boxOfficeHistory}
           commercial={commercial}
+          boxOfficeV2={boxOfficeV2}
           recoupmentTrend={recoupmentTrend}
           ranks={ranks}
           ranksByFormat={ranksByFormat}

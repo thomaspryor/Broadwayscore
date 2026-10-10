@@ -174,14 +174,10 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
   );
 }
 
-export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOfficeStatsProps) {
+/** The "This Week" tiles (gross, capacity, avg ticket, attendance), shared with Box Office Scorecard v2. */
+export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4' }: { grosses: ShowGrosses; history?: BoxOfficeHistoryStats | null; className?: string }) {
   const hasThisWeek = grosses.thisWeek && (grosses.thisWeek.gross !== null || grosses.thisWeek.capacity !== null);
-  const hasAllTime = grosses.allTime.gross !== null || grosses.allTime.performances !== null;
-
-  if (!hasThisWeek && !hasAllTime) {
-    return null;
-  }
-
+  if (!hasThisWeek || !grosses.thisWeek) return null;
   // Calculate WoW and YoY changes for this week's stats
   const grossWoW = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.gross, grosses.thisWeek.grossPrevWeek) : null;
   const grossYoY = grosses.thisWeek ? calcPercentChange(grosses.thisWeek.gross, grosses.thisWeek.grossYoY) : null;
@@ -203,6 +199,65 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
       ? calcPercentChange(grosses.thisWeek.attendance, history.attendanceYoY)
       : undefined;
   const hasAttendanceTile = hasThisWeek && grosses.thisWeek?.attendance != null;
+  return (
+    <div className={className}>
+      <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">
+        This Week
+      </div>
+      <div className={`grid grid-cols-2 ${hasAttendanceTile ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-2 sm:gap-3`}>
+        <StatCard
+          value={formatCurrency(grosses.thisWeek.gross)}
+          label="Gross"
+          wowChange={grossWoW}
+          yoyChange={grossYoY}
+        />
+        <StatCard
+          value={
+            (grosses.thisWeek.capacity ?? 0) > 100
+              ? formatPercentage(grosses.thisWeek.capacity) + '*'
+              : formatPercentage(grosses.thisWeek.capacity)
+          }
+          valueTitle={
+            (grosses.thisWeek.capacity ?? 0) > 100
+              ? 'Above 100% reflects extra performances or premium pricing reported by The Broadway League.'
+              : undefined
+          }
+          label="Capacity"
+          wowChange={capacityWoW}
+          yoyChange={capacityYoY}
+        />
+        <StatCard
+          value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '—'}
+          label="Avg Ticket"
+          wowChange={atpWoW}
+          yoyChange={atpYoY}
+        />
+        {hasAttendanceTile && (
+          <StatCard
+            value={(grosses.thisWeek.attendance as number).toLocaleString()}
+            label="Attendance"
+            wowChange={attendanceWoW}
+            yoyChange={attendanceYoY}
+          />
+        )}
+      </div>
+      {(grosses.thisWeek.capacity ?? 0) > 100 && (
+        <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
+          <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
+        </p>
+      )}
+    </div>
+  );
+}
+
+export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOfficeStatsProps) {
+  const hasThisWeek = grosses.thisWeek && (grosses.thisWeek.gross !== null || grosses.thisWeek.capacity !== null);
+  const hasAllTime = grosses.allTime.gross !== null || grosses.allTime.performances !== null;
+
+  if (!hasThisWeek && !hasAllTime) {
+    return null;
+  }
+
 
   // One decimal below 10% (rounded to a whole number above), and suppressed
   // entirely under 0.05% — "0.0% market share" is worse than no chip.
@@ -248,55 +303,7 @@ export default function BoxOfficeStats({ grosses, weekEnding, history }: BoxOffi
       )}
 
       {/* This Week Row */}
-      {hasThisWeek && grosses.thisWeek && (
-        <div className="mb-4">
-          <div className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500 mb-2">
-            This Week
-          </div>
-          <div className={`grid grid-cols-2 ${hasAttendanceTile ? 'sm:grid-cols-4' : 'sm:grid-cols-3'} gap-2 sm:gap-3`}>
-            <StatCard
-              value={formatCurrency(grosses.thisWeek.gross)}
-              label="Gross"
-              wowChange={grossWoW}
-              yoyChange={grossYoY}
-            />
-            <StatCard
-              value={
-                (grosses.thisWeek.capacity ?? 0) > 100
-                  ? formatPercentage(grosses.thisWeek.capacity) + '*'
-                  : formatPercentage(grosses.thisWeek.capacity)
-              }
-              valueTitle={
-                (grosses.thisWeek.capacity ?? 0) > 100
-                  ? 'Above 100% reflects extra performances or premium pricing reported by The Broadway League.'
-                  : undefined
-              }
-              label="Capacity"
-              wowChange={capacityWoW}
-              yoyChange={capacityYoY}
-            />
-            <StatCard
-              value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '—'}
-              label="Avg Ticket"
-              wowChange={atpWoW}
-              yoyChange={atpYoY}
-            />
-            {hasAttendanceTile && (
-              <StatCard
-                value={(grosses.thisWeek.attendance as number).toLocaleString()}
-                label="Attendance"
-                wowChange={attendanceWoW}
-                yoyChange={attendanceYoY}
-              />
-            )}
-          </div>
-          {(grosses.thisWeek.capacity ?? 0) > 100 && (
-            <p className="text-[10px] sm:text-xs text-gray-500 mt-2">
-              <span aria-hidden="true">*</span> Capacity above 100% reflects extra performances or premium pricing reported by The Broadway League.
-            </p>
-          )}
-        </div>
-      )}
+      {hasThisWeek && <BoxOfficeThisWeek grosses={grosses} history={history} />}
 
       {/* 12-week gross trend */}
       {hasThisWeek && history && history.sparkline.length > 0 && (
