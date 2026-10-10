@@ -127,8 +127,13 @@ function firstFailedCheck(results) {
  * commits that touch ONLY these paths keeps the verdict; anything else
  * re-runs the checks. Same judgement scripts/merge-worktree-to-main.sh and
  * memory/feedback_parallel_worktree_race.md already record.
+ *
+ * public/opening-night-status.json (BRO-4956): rewritten by the status-page
+ * workflow ~50 times a day, read by no test or check (only robots.ts names
+ * its URL). Counting it as code lost land.js three races in a row on
+ * 2026-10-10 and refused a green landing.
  */
-const INERT_FOR_VERIFICATION_RE = /^(data\/|public\/data\/|cloud-memory\/|memory\/|docs\/)|\.(md|jsonl|log|txt)$/;
+const INERT_FOR_VERIFICATION_RE = /^(data\/|public\/data\/|cloud-memory\/|memory\/|docs\/)|^public\/opening-night-status\.json$|\.(md|jsonl|log|txt)$/;
 
 function isInertForVerification(file) {
   return INERT_FOR_VERIFICATION_RE.test(String(file));
