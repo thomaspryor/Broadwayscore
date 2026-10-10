@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4953-d",
   "planId": "4b9c3a4e-ee07-4002-9eae-fb7a68aedf4e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T00:30:13.189Z",
   "submitter": {
     "name": null,
@@ -105,5 +105,73 @@
         "description": "Cached playbill-verdict page for \"The Heart\" is about a different, longer-titled show: \"Reviews: What Critics Are Saying About Broadway's The Heart of Rock and Roll | Playbill\". Deleting lets the scraper re-search; the BRO-4953 guard now rejects this page."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T01:45:30.678Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/the-pass-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/dtli/vanya-off-broadway-2025.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/nyc-theatre/cats-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/cats-1982.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/cats-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/fish-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/girls-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/hair-2011.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/once-2012.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/rain-2010.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/sea-wall-off-broadway-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/the-children-off-west-end-2026.html"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted aggregator-archive/playbill-verdict/the-heart-off-broadway-2026.html"
+    }
+  ]
 }
