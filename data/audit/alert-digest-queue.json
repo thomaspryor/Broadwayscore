@@ -34,5 +34,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T13:24:20.836Z"
+  },
+  {
+    "conditionKey": "corpus-drift:sibling-title-misroute",
+    "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
+    "description": "check-corpus-drift.js audit \"sibling-title-misroute\" (node scripts/audit-sibling-title-misroute.js --strict) has been drifting. Latest output:\n\n    water-for-elephants-tour-2025  broadwayworld--jonathan-netek.json  (tour: review date is outside every tour of this title)\n    water-for-elephants-tour-2025  observer--david-cote.json  (tour: review date is outside every tour of this title)\n    wicked-west-end-2021  timeout--david-cote.json  (cross-market: Broadway URL pattern: /newyork\\.timeout\\.com/i)\n\n✗ STRICT: 34 sibling-title misroute(s) NOT in baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/sibling-title-misroute-baseline.json):\n    [reroute] into-the-woods-noel-coward-west-end-2026 -> into-the-woods-west-end-2025  londontheatredirect--london-theatre-direct-limited.json  (sibling opening 5d from publishDate vs current 295d)\n    [reroute] into-the-woods-noel-coward-west-end-2026 -> into-the-woods-west-end-2025  observer--susannah-clapp.json  (sibling opening 8d from publishDate vs current 292d)\n    [reroute] into-the-woods-noel-coward-west-end-2026 -> into-the-woods-west-end-2025  theatremonkey--unknown.json  (sibling opening 2d from publishDate vs current 298d)\n    [reroute] school-pictures-off-broadway-2026 -> school-pictures-off-broadway-2023  theatermania--zachary-stewart.json  (sibling opening 2d from publishDate vs current 1061d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  1883magazine--nick-barr.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  all-that-dazzles-uk--all-that-dazzles.json  (sibling opening 7d from publishDate vs current 450d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  amyleighchandler--amy.json  (sibling opening 5d from publishDate vs current 452d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  elementaltheatre--thomas-levi.json  (sibling opening 6d from publishDate vs current 451d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  london-theatre--aliya-al-hussan.json  (sibling opening 7d from publishDate vs current 450d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  london-theatre--unknown.json  (sibling opening 7d from publishDate vs current 450d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  londontheatre1--chris-omaweng.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  loureviews--louise-penn.json  (sibling opening 7d from publishDate vs current 450d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  lovelondonloveculture--emma.json  (sibling opening 15d from publishDate vs current 442d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  matineemouse--unknown.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  micablackwell--unknown.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  plays-international--maryam-philpott.json  (sibling opening 9d from publishDate vs current 448d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  theatre-south-east--unknown.json  (sibling opening 10d from publishDate vs current 447d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  theatrecat--libby-purves.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  thelivereview--tanya-howard.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  therealchrisparkle--therealchrisparkle.json  (sibling opening 8d from publishDate vs current 449d)\n    [reroute] the-comedy-about-spies-west-end-2026 -> the-comedy-about-spies-west-end-2025  westendtheatre--west-end-theatre-editorial.json  (sibling opening 8d from publishDate vs current 449d)\n    [ambiguous] cruise-west-end-2022  standard--nick-curtis.json  (ambiguous-production)\n    [ambiguous] cruise-west-end-2022  telegraph--dominic-cavendish.json  (ambiguous-production)\n    [ambiguous] for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024  a-youngish-perspective--unknown.json  (ambiguous-production)\n    [ambiguous] for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2024  nytimes--unknown.json  (ambiguous-production)\n    [ambiguous] inter-alia-west-end-2025  nytimes--houman-barekat.json  (ambiguous-production)\n    [ambiguous] much-ado-about-nothing-west-end-2022  artsdesk--rachel-halliburton.json  (ambiguous-production)\n    [ambiguous] much-ado-about-nothing-west-end-2022  londonmumsmagazine--unknown.json  (ambiguous-production)\n    [ambiguous] standing-at-the-skys-edge-west-end-2023  artsdesk--jane-edwardes.json  (ambiguous-production)\n    [ambiguous] standing-at-the-skys-edge-west-end-2023  theatre-weekly--greg-stewart.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  broadwayworld--senior-franco-milazzo.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  noelcowardtheatre--unknown.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  thestage--unknown.json  (ambiguous-production)\n    [ambiguous] the-comedy-about-spies-west-end-2026  writewatchwork--abbybathurst.json  (ambiguous-production)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T12:50:04.153Z"
+  },
+  {
+    "conditionKey": "corpus-drift:autoclear-vs-ensemble",
+    "title": "Corpus drift: an auto-clear bypass silently overriding a unanimous LLM-ensemble content rejection",
+    "description": "check-corpus-drift.js audit \"autoclear-vs-ensemble\" (node scripts/audit-autoclear-vs-ensemble.js --strict) has been drifting. Latest output:\n\nautoclear-vs-ensemble audit: 54217 files scanned.\n  wrongProduction violations: 1\n    little-shop-of-horrors-off-broadway-2019/slantmagazine--jordan-cronk-jake-cole.json :: collect-review-texts: retry of this URL passed content verification (high confidence, right production)\n  wrongShow violations: 0\n\nFAIL: 1 autoclear-vs-ensemble violation(s) found.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T12:50:04.210Z"
+  },
+  {
+    "conditionKey": "express-retry-still-thin:a-ghost-in-your-ear-off-broadway-2026",
+    "title": "Opening Night Express retry still found thin review coverage for a-ghost-in-your-ear-off-broadway-2026",
+    "description": "The early auto-fire found next to nothing, and the same-night retry (still thin after retry — zero scoreable review records found) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T13:28:27.881Z"
   }
 ]
