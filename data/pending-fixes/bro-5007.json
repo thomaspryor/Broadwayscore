@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-5007",
+  "planId": "e5e1fdc4-eb36-4952-9f78-986bb41eab96",
+  "status": "validation-failed",
+  "createdAt": "2026-10-10T21:25:39.935Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Maybe Happy Ending: flag the $765K weeklyRunningCost as unsourced in notes (notes only; no number field changes). The public part of the note stops citing $765K; the warning sits in a bracketed annotation that publicSourceText strips.",
+    "steps": [
+      "Set maybe-happy-ending.notes: drop the unsourced \"weekly nut of $765 K\" from the public sentence and append a [Plausibility warning: ...] annotation naming the published ~$820K break-even (Broadway Journal, 2025-06-09) for the BRO-4989 anchor ledger"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "maybe-happy-ending",
+        "showId": "maybe-happy-ending-2024",
+        "field": "notes",
+        "oldValue": "Capitalized at $16 M with a weekly nut of $765 K; remains open with no reported recoupment as of October 2026.",
+        "newValue": "Capitalized at $16 M; remains open with no reported recoupment as of October 2026. [Plausibility warning: the $765K weeklyRunningCost has no traceable source, do not cite. Published figure: break-even of about $820,000 in weekly gross (Broadway Journal, Philip Boroff, 2025-06-09, citing a fall 2024 production document); held for the BRO-4989 anchor ledger.]",
+        "description": "maybe-happy-ending: notes only. No traceable source found for the $765K weekly cost; Broadway Journal (https://broadwayjournal.com/intimate-maybe-happy-ending-engineers-turnaround/) reports ~$820,000 break-even from an early production document"
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T22:01:14.203Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for maybe-happy-ending"
+    }
+  ]
+}
