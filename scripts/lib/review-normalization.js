@@ -2371,6 +2371,17 @@ const URL_GENERIC_SLUG_TOKENS = new Set([
 // pure numbers, and very short fragments.
 function _showSlugTokens(url) {
   if (!url) return [];
+  // A query-ID url (londontheatrereviews post.cfm?p=N, talkinbroadway
+  // d.php?id=N, LSA story.asp?ID=N) keeps the article's identity in the query:
+  // its path is the outlet's script name and can never name the show. Read as a
+  // slug, "post cfm" looked like a different show and the empty-url fill
+  // silently dropped every LTR url (BRO-4956: Affluenza's LTR review went live
+  // with no url, so the gap audit re-ingested it every hour).
+  try {
+    const { ARTICLE_ID_QUERY_KEY } = require('./review-url-clusters');
+    const u = new URL(url);
+    if ([...u.searchParams.keys()].some((k) => ARTICLE_ID_QUERY_KEY.test(k))) return [];
+  } catch { /* not a URL: fall through */ }
   const { urlSlugTokens } = require('./show-match-verifier');
   return urlSlugTokens(url).filter(
     (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
