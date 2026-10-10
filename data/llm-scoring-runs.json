@@ -721871,46 +721871,35 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-10T08:15:59.599Z",
-    "completedAt": "2026-10-10T08:16:32.957Z",
-    "totalReviews": 54126,
-    "processed": 5,
-    "skipped": 54118,
-    "errors": 2,
+    "startedAt": "2026-10-10T08:17:29.912Z",
+    "completedAt": "2026-10-10T08:17:44.921Z",
+    "totalReviews": 57,
+    "processed": 3,
+    "skipped": 54,
+    "errors": 0,
     "tokensUsed": {
-      "input": 37983,
-      "output": 1755,
-      "total": 91979
+      "input": 18094,
+      "output": 1043,
+      "total": 44812
     },
-    "costUsd": 0.16538035,
-    "runId": "38037027212",
-    "errorDetails": [
-      {
-        "showId": "an-oak-tree-off-west-end-2026",
-        "outletId": "whatsonstage",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
+    "costUsd": 0.0697486,
+    "runId": "38037193323",
+    "errorDetails": []
   },
   {
-    "startedAt": "2026-10-10T08:16:35.028Z",
-    "completedAt": "2026-10-10T08:16:52.089Z",
+    "startedAt": "2026-10-10T08:17:46.171Z",
+    "completedAt": "2026-10-10T08:17:59.690Z",
     "totalReviews": 6,
     "processed": 6,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
       "input": 16889,
-      "output": 1354,
-      "total": 18243
+      "output": 1364,
+      "total": 18253
     },
-    "costUsd": 0.04635160000000001,
-    "runId": "38037027212",
+    "costUsd": 0.0463541,
+    "runId": "38037193323",
     "errorDetails": []
   }
 ]
