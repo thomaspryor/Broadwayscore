@@ -835,8 +835,12 @@ async function updateShowStatuses() {
     // 2026-06). The threshold equals the site's score-display threshold, so this
     // only ever flips shows that are already past the "enough reviews" bar.
     // Runs only when the earlier date-based checks didn't already change status,
-    // and never before a known future openingDate (Check 2c would revert it).
-    if (!changes.status && !openingDateStillAhead(show, isDateReached)) {
+    // and not in previews ahead of a known openingDate (Check 2c would revert it).
+    const previewsAheadOfOpening = !changes.status && openingDateStillAhead(show, isDateReached);
+    if (previewsAheadOfOpening && reviewCounts[show.id] && isStuckInPreviews(show, reviewCounts[show.id])) {
+      console.log(`  ⚠️  ${show.title} (${show.id}): ${reviewCounts[show.id].count} scored reviews but openingDate ${show.openingDate} is ahead — not flipping to open (check the reviews belong to this run, or the date)`);
+    }
+    if (!changes.status && !previewsAheadOfOpening) {
       const entry = reviewCounts[show.id];
       // Two independent open-signals, in priority order:
       //  - score-threshold: enough scored reviews to display a score
