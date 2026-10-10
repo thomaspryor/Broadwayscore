@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T15:35:35.349Z",
+  "generatedAt": "2026-10-10T16:14:27.502Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -148,10 +148,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -1555,23 +1551,23 @@
       "status": "open",
       "slug": "rent-west-end",
       "thumbnail": "/images/shows/rent-west-end-2026/thumbnail.jpg",
-      "siteScore": 78.96,
+      "siteScore": 78.87,
       "liveScore": 79,
-      "scoreDrift": 0.04000000000000625,
+      "scoreDrift": 0.12999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 29,
+      "total": 30,
       "t1": 7,
-      "t2": 7,
+      "t2": 8,
       "t3": 15,
       "positive": 23,
-      "mixed": 5,
+      "mixed": 6,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 23,
+        "highConfidence": 24,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1941,6 +1937,18 @@
           "t3": 15,
           "p": 23,
           "m": 5,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T16:14:27.502Z",
+          "rc": 30,
+          "s": 78.87,
+          "t1": 7,
+          "t2": 8,
+          "t3": 15,
+          "p": 23,
+          "m": 6,
           "n": 1,
           "bc": "waiting"
         }
@@ -2577,10 +2585,6 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
@@ -2804,23 +2808,23 @@
       "status": "open",
       "slug": "into-the-woods-noel-coward-west-end",
       "thumbnail": "/images/shows/into-the-woods-noel-coward-west-end-2026/thumbnail.webp",
-      "siteScore": 85.71,
-      "liveScore": 86,
-      "scoreDrift": 0.29000000000000625,
+      "siteScore": 85.47,
+      "liveScore": 85,
+      "scoreDrift": -0.46999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 55,
+      "total": 54,
       "t1": 12,
       "t2": 8,
-      "t3": 35,
-      "positive": 50,
+      "t3": 34,
+      "positive": 49,
       "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 51,
+        "highConfidence": 50,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -3224,6 +3228,18 @@
           "m": 3,
           "n": 2,
           "bc": "overdue"
+        },
+        {
+          "t": "2026-10-10T16:14:27.502Z",
+          "rc": 54,
+          "s": 85.47,
+          "t1": 12,
+          "t2": 8,
+          "t3": 34,
+          "p": 49,
+          "m": 3,
+          "n": 2,
+          "bc": "overdue"
         }
       ]
     },
@@ -3496,10 +3512,6 @@
         },
         {
           "name": "The Globe and Mail",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Arts Desk",
           "isDualMarket": false
         },
         {

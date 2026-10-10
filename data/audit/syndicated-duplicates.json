@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-10T15:29:42.557Z",
+  "generatedAt": "2026-10-10T16:09:40.944Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 82,
+    "avgScoreDiff": 22
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Aleks Sierz",
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "primaryOutlet": "artsdesk",
+      "secondaryOutlet": "sierz-co-uk",
+      "primaryFile": "artsdesk--aleks-sierz.json",
+      "secondaryFile": "sierz-co-uk--aleks-sierz.json",
+      "similarity": 82,
+      "primaryScore": 55,
+      "secondaryScore": 77,
+      "scoreDiff": 22
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

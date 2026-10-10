@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T15:35:25.366Z",
+  "timestamp": "2026-10-10T16:14:19.422Z",
   "stats": {
-    "totalReviews": 53927,
-    "alreadyFlagged": 19814,
-    "dateGuardCatches": 270,
-    "directorMismatch": 1668,
-    "tvFilmSignals": 1559,
-    "londonSignals": 1776,
+    "totalReviews": 54007,
+    "alreadyFlagged": 19824,
+    "dateGuardCatches": 269,
+    "directorMismatch": 1674,
+    "tvFilmSignals": 1560,
+    "londonSignals": 1781,
     "offBroadwaySignals": 513,
     "yearMismatch": 131,
-    "noPublishDate": 5960
+    "noPublishDate": 5980
   },
   "findings": [
     {
@@ -8167,19 +8167,6 @@
     },
     {
       "showId": "clue-tour-2025",
-      "file": "calgary-herald--louis-b-hobson.json",
-      "publishDate": "2026-07-10",
-      "url": "https://calgaryherald.com/entertainment/theatre/broadway-across-canada-brings-campy-energetic-whodunnit-clue-to-jubilee-auditorium",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "clue-tour-2025",
       "file": "houston-chronicle--doni-wilson.json",
       "score": 63,
       "publishDate": "2026-06-10",
@@ -9617,6 +9604,50 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2019-11-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2019-11-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2019-11-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
         }
       ]
     },
@@ -18410,7 +18441,7 @@
       "file": "artsdesk--aleks-sierz.json",
       "score": 77,
       "publishDate": "2025-07-27",
-      "url": null,
+      "url": "https://www.theartsdesk.com/theatre/inter-alia-national-theatre-review-dazzling-performance-questionable-writing",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18509,7 +18540,7 @@
       "file": "financialtimes--sarah-hemming.json",
       "score": 79,
       "publishDate": "2025-07-24",
-      "url": null,
+      "url": "https://www.ft.com/content/dc12b61b-1ecb-4f3c-bbe1-819c2b4cd817?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18660,7 +18691,7 @@
       "file": "thereviewshub--richard-maguire.json",
       "score": 91,
       "publishDate": "2025-07-24",
-      "url": null,
+      "url": "https://www.thereviewshub.com/inter-alia-national-theatre-london/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19430,7 +19461,7 @@
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "broadwayworld--cheryl-markosky.json",
       "score": 91,
-      "publishDate": null,
+      "publishDate": "2026-10-08",
       "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Nol-Coward-Theatre-20261008",
       "findings": [
         {
@@ -19680,7 +19711,7 @@
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "2026-10-07",
       "url": "https://www.theatreweekly.com/review-into-the-woods-at-noel-coward-theatre/",
       "findings": [
         {
@@ -19729,6 +19760,20 @@
       "score": 99,
       "publishDate": "2026-10-08",
       "url": "https://www.thestage.co.uk/reviews/into-the-woods-review-noel-coward-theatre-london-stephen-sondheim-jordan-fein",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-noel-coward-west-end-2026",
+      "file": "timeout-london--reviewer.json",
+      "score": 91,
+      "publishDate": "2026-10-07",
+      "url": "https://www.timeout.com/london/theatre/into-the-woods-5-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -23293,6 +23338,19 @@
       ]
     },
     {
+      "showId": "lungs-west-end-2019",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2019-10-20",
+      "url": "https://www.theguardian.com/stage/2019/oct/20/lungs-review-old-vic-london-claire-foy-and-matt-smith-shine-in-climate-crisis-drama",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "lyonesse-west-end-2023",
       "file": "british-theatre--vera-liber.json",
       "score": 60,
@@ -23767,6 +23825,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-poppins-west-end-2019",
+      "file": "telegraph--fiona-mountford.json",
+      "publishDate": "2021-08-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard eyre\" from mary-poppins-2006"
+        }
+      ]
+    },
+    {
+      "showId": "mary-poppins-west-end-2019",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2021-08-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard eyre\" from mary-poppins-2006"
         }
       ]
     },
@@ -30537,7 +30621,7 @@
       "showId": "rent-west-end-2026",
       "file": "artsdesk--matt-wolf.json",
       "score": 97,
-      "publishDate": null,
+      "publishDate": "2026-10-09",
       "url": "https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
       "findings": [
         {
@@ -35407,6 +35491,19 @@
       ]
     },
     {
+      "showId": "the-antipodes-west-end-2019",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2019-10-31",
+      "url": "https://www.timeout.com/london/theatre/the-antipodes-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv\nshow\""
+        }
+      ]
+    },
+    {
       "showId": "the-assembled-parties-2013",
       "file": "ap--mark-kennedy.json",
       "score": 85,
@@ -39577,7 +39674,7 @@
       "file": "thereviewshub--phoebe-taplin.json",
       "score": 87,
       "publishDate": "2025-10-01",
-      "url": null,
+      "url": "https://www.thereviewshub.com/the-importance-of-being-earnest-noel-coward-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -44091,20 +44188,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -47902,6 +47985,32 @@
       "score": 80,
       "publishDate": "January 18th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/a-good-house-royal-court-theatre-review-b1205624.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "a-history-of-water-in-the-middle-east-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2019-10-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "a-history-of-water-in-the-middle-east-west-end-2019",
+      "file": "hulldailymail-co-uk--william-ramsey.json",
+      "publishDate": "2019-10-09",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -55408,6 +55517,7 @@
     {
       "showId": "faith-hope-and-charity-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 91,
       "publishDate": "2019-09-20",
       "url": "https://www.ft.com/content/46117a06-dad5-11e9-8f9b-77216ebe1f17",
       "findings": [
@@ -55421,6 +55531,7 @@
     {
       "showId": "faith-hope-and-charity-west-end-2019",
       "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 26,
       "publishDate": "2019-09-28",
       "url": null,
       "findings": [
@@ -56454,6 +56565,20 @@
       "score": 77,
       "publishDate": "2026-09-22",
       "url": "https://www.thejc.com/life/theatre/golden-boy-review-josh-oconnor-packs-a-punch-in-his-return-to-the-stage-after-11-years-xj70cdnu",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "theamerican--clifford.json",
+      "score": 77,
+      "publishDate": "2026-09-19",
+      "url": "https://www.theamerican.co.uk/pr/rev-th-Golden-Boy-Almeida-Theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -62642,7 +62767,7 @@
       "file": "artsdesk--matt-wolf.json",
       "score": 89,
       "publishDate": "2025-10-24",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/mary-page-marlowe-old-vic-review-starry-portrait-splintered-life",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69240,6 +69365,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "the-antipodes-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2019-10-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
