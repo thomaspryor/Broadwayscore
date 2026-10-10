@@ -169,3 +169,44 @@ test('createLinearIssue: model stamps a Model: line the dispatcher reads; a conf
     }
   }
 });
+
+test('createLinearIssue: a card whose exact title is already open is noted there, not filed again (BRO-4956)', async () => {
+  const { createLinearIssue } = require('./linear-issue-create.js');
+  const calls = { create: 0, comments: [] };
+  const twin = { id: 'u1', identifier: 'BRO-77', title: 'Dispatch watchdog is down', url: 'https://x', state: { name: 'Backlog', type: 'backlog' } };
+  const client = {
+    findOpenIssueByTitle: async (t) => (t.toLowerCase() === 'dispatch watchdog is down' ? twin : null),
+    addComment: async (id, body) => { calls.comments.push([id, body]); },
+    createIssue: async () => { calls.create++; return { identifier: 'BRO-0', id: 'i' }; },
+  };
+  const r = await createLinearIssue({ title: 'Dispatch watchdog is down', description: 'second sighting', park: 'auto-filed parked for triage', client, reuseTwin: true });
+  assert.equal(r.mode, 'reused');
+  assert.equal(r.issue.identifier, 'BRO-77');
+  assert.equal(calls.create, 0);
+  assert.equal(calls.comments.length, 1);
+  assert.match(calls.comments[0][1], /second sighting/);
+});
+
+test('createLinearIssue: a failing twin lookup never blocks filing', async () => {
+  const { reuseOpenTwin } = require('./linear-issue-create.js');
+  const r = await reuseOpenTwin({ title: 't', body: '', client: { findOpenIssueByTitle: async () => { throw new Error('network'); } } });
+  assert.equal(r, null);
+});
+
+test('twin reuse: never a started card, a parked twin only for a parked request, and only when asked (BRO-4956 review)', async () => {
+  const { twinServes, createLinearIssue } = require('./linear-issue-create.js');
+  assert.equal(twinServes({ state: { type: 'started' } }, 'park'), false);
+  assert.equal(twinServes({ state: { type: 'backlog' } }, 'dispatch'), false);
+  assert.equal(twinServes({ state: { type: 'backlog' } }, 'park'), true);
+  assert.equal(twinServes({ state: { type: 'unstarted' } }, 'dispatch'), true);
+  const linearClient = require('./linear-client.js');
+  const realGetTeam = linearClient.getTeam;
+  linearClient.getTeam = async () => ({ id: 'team-1', states: { nodes: [{ id: 's1', name: 'Backlog', type: 'backlog' }, { id: 's2', name: 'Todo', type: 'unstarted' }] } });
+  try {
+    let created = 0;
+    const client = { findOpenIssueByTitle: async () => ({ id: 'u', identifier: 'BRO-9', state: { type: 'backlog' } }), addComment: async () => {}, createIssue: async () => { created++; return { identifier: 'BRO-10', id: 'n' }; } };
+    const r = await createLinearIssue({ title: 'x', description: 'y', park: 'auto-filed parked for triage', client });
+    assert.equal(r.issue.identifier, 'BRO-10', 'no reuse unless asked (alert router, digest-autofix)');
+    assert.equal(created, 1);
+  } finally { linearClient.getTeam = realGetTeam; }
+});
