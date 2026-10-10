@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T08:14:46.953Z",
+  "generatedAt": "2026-10-10T09:18:45.313Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1292,23 +1292,23 @@
       "status": "open",
       "slug": "rent-west-end",
       "thumbnail": "/images/shows/rent-west-end-2026/thumbnail.jpg",
-      "siteScore": 79.22,
+      "siteScore": 79.16,
       "liveScore": 79,
-      "scoreDrift": -0.21999999999999886,
+      "scoreDrift": -0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 27,
+      "total": 28,
       "t1": 7,
-      "t2": 6,
+      "t2": 7,
       "t3": 14,
-      "positive": 22,
+      "positive": 23,
       "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1656,6 +1656,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T09:18:45.313Z",
+          "rc": 28,
+          "s": 79.16,
+          "t1": 7,
+          "t2": 7,
+          "t3": 14,
+          "p": 23,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1669,17 +1681,17 @@
       "status": "open",
       "slug": "an-oak-tree-off-west-end",
       "thumbnail": "/images/shows/an-oak-tree-off-west-end-2026/thumbnail.webp",
-      "siteScore": 75.11,
-      "liveScore": 75,
-      "scoreDrift": -0.10999999999999943,
+      "siteScore": 75.61,
+      "liveScore": 76,
+      "scoreDrift": 0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 1,
       "t2": 3,
-      "t3": 9,
-      "positive": 8,
+      "t3": 10,
+      "positive": 9,
       "mixed": 5,
       "negative": 0,
       "readiness": {
@@ -1687,7 +1699,7 @@
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 11,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1868,6 +1880,18 @@
           "t2": 3,
           "t3": 9,
           "p": 8,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-10T09:18:45.313Z",
+          "rc": 14,
+          "s": 75.61,
+          "t1": 1,
+          "t2": 3,
+          "t3": 10,
+          "p": 9,
           "m": 5,
           "n": 0,
           "bc": "waiting"
@@ -2505,23 +2529,23 @@
       "status": "open",
       "slug": "into-the-woods-noel-coward-west-end",
       "thumbnail": "/images/shows/into-the-woods-noel-coward-west-end-2026/thumbnail.webp",
-      "siteScore": 86,
+      "siteScore": 85.71,
       "liveScore": 86,
-      "scoreDrift": 0,
+      "scoreDrift": 0.29000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 53,
+      "total": 55,
       "t1": 12,
       "t2": 8,
-      "t3": 33,
-      "positive": 49,
-      "mixed": 2,
+      "t3": 35,
+      "positive": 50,
+      "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 48,
+        "highConfidence": 51,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2911,6 +2935,18 @@
           "t3": 33,
           "p": 49,
           "m": 2,
+          "n": 2,
+          "bc": "overdue"
+        },
+        {
+          "t": "2026-10-10T09:18:45.313Z",
+          "rc": 55,
+          "s": 85.71,
+          "t1": 12,
+          "t2": 8,
+          "t3": 35,
+          "p": 50,
+          "m": 3,
           "n": 2,
           "bc": "overdue"
         }

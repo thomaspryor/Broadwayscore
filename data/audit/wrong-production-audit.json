@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T08:14:40.680Z",
+  "timestamp": "2026-10-10T09:18:35.336Z",
   "stats": {
-    "totalReviews": 53677,
-    "alreadyFlagged": 19753,
+    "totalReviews": 53746,
+    "alreadyFlagged": 19757,
     "dateGuardCatches": 264,
-    "directorMismatch": 1669,
+    "directorMismatch": 1670,
     "tvFilmSignals": 1556,
     "londonSignals": 1770,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5856
+    "noPublishDate": 5918
   },
   "findings": [
     {
@@ -8450,7 +8450,7 @@
       "file": "artsdesk--laura-de-lisle.json",
       "score": 82,
       "publishDate": "2021-07-02",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/constellations-vaudeville-theatre-review-starry-revival",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8479,6 +8479,20 @@
       "score": 91,
       "publishDate": "2021-08-19",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "constellations-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2021/jul/02/constellations-review-a-stellar-revival-for-nick-paynes-high-concept-romance",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8553,7 +8567,7 @@
       "file": "telegraph--fiona-mountford.json",
       "score": 78,
       "publishDate": "2021-07-02",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/constellations-vaudeville-theatre-review-falling-in-love-story/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8633,7 +8647,7 @@
       "file": "whatsonstage--alun-hood.json",
       "score": 94,
       "publishDate": "2021-08-13",
-      "url": null,
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/constellations-vaudeville_54411.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19294,7 +19308,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2026-10-09",
       "url": "https://www.cityam.com/into-the-woods-london-review-magical-overwhelming-meta-musical/",
       "findings": [
@@ -19360,7 +19374,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 73,
+      "score": 74,
       "publishDate": "2026-10-07",
       "url": "https://www.londontheatre1.com/reviews/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -19459,6 +19473,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "plays-international--unknown.json",
+      "score": 79,
       "publishDate": "2026-10-09",
       "url": "https://playsinternational.org.uk/into-the-woods-noel-coward-theatre/",
       "findings": [
@@ -59802,7 +59817,7 @@
     {
       "showId": "jane-eyre-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-09-09",
       "url": "https://www.londonboxoffice.co.uk/news/post/jane-eyre-southwark-playhouse-elephant-review",
       "findings": [
@@ -59830,7 +59845,7 @@
     {
       "showId": "jane-eyre-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": 80,
+      "score": 77,
       "publishDate": "2026-09-10",
       "url": "https://theatreandtonic.co.uk/blog/jane-eyre-a-musical-southwark-playhouse-elephant-review",
       "findings": [
@@ -61807,6 +61822,20 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 82,
+      "publishDate": "2026-09-13",
+      "url": "https://www.allthatdazzles.co.uk/post/review-man-to-man-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 97,
       "publishDate": "2026-09-12",
@@ -61849,7 +61878,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -62139,7 +62168,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "the-recs--unknown.json",
-      "score": 77,
+      "score": 75,
       "publishDate": "2026-09-13",
       "url": "https://therecs.co.uk/man-to-man/",
       "findings": [
@@ -63092,19 +63121,6 @@
       "score": 82,
       "publishDate": "2026-09-15",
       "url": "https://theatreweekly.com/review-million-dollar-quartet-at-the-arts-at-marble-arch/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "million-dollar-quartet-off-west-end-2026",
-      "file": "whatsonstage--andy-plaice.json",
-      "publishDate": "2026-09-16",
-      "url": "https://www.whatsonstage.com/news/million-dollar-quartet-review-london-transfer-for-the-jukebox-extravaganza_1731572/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -68941,7 +68957,7 @@
       "file": "times-uk--clive-davis.json",
       "score": 24,
       "publishDate": "2022-06-19",
-      "url": null,
+      "url": "https://www.thetimes.co.uk/article/that-is-not-who-i-am-review-jerwood-theatre-downstairs-royal-court-london-hrsf9hlvw",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75499,7 +75515,7 @@
       "file": "independent--paul-taylor.json",
       "score": 79,
       "publishDate": "2021-06-24",
-      "url": null,
+      "url": "https://www.independent.co.uk/independentpremium/culture/under-milk-wood-review-michael-sheen-b1872028.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
