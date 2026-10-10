@@ -1,0 +1,69 @@
+{
+  "issueNumber": "bro-4953",
+  "planId": "b11bf9aa-573b-4068-8d37-7322689b3364",
+  "status": "pending",
+  "createdAt": "2026-10-10T00:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag six excerpt-only review files as wrongShow. Four NYC Theatre excerpts on The Heart (the-heart-off-broadway-2026, Laura Pels 2026) are quotes from the 2024 Broadway roundup for The Heart of Rock and Roll (heart-of-rock-and-roll-2024): the scraper took that roundup page because 'The Heart' is a word-for-word prefix of the longer title (GitHub issue #1018). The corpus sweep for the same class found two more: the Hollywood Reporter excerpt on Home (home-1970) is David Rooney's Fun Home review, and the BroadwayWorld excerpt on Titus Andronicus (titus-andronicus-off-broadway-2026) is Michael Dale's review of Gary: A Sequel to Titus Andronicus.",
+    "steps": [
+      "Set wrongShow=true on the four nyc-theatre excerpt files under the-heart-off-broadway-2026 (NYT, NY Daily News, NY Theatre Guide, TheaterMania). The fifth (nypost--unknown.json) was already rejected wrong_show by the ensemble check.",
+      "Set wrongShow=true on home-1970/hollywood-reporter--david-rooney.json (bwwExcerpt names 'the haunting musical Fun Home')",
+      "Set wrongShow=true on titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json (bwwExcerpt names 'Gary: A Sequel to Titus Andronicus')"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-heart-off-broadway-2026/nytimes--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt opens \"The Heart of Rock and Roll' is not going to be the subject of think pieces\": Jesse Green's 2024 NYT review of heart-of-rock-and-roll-2024, scraped from that show's NYC Theatre roundup. The Heart does not open until 2026-10-29."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heart-off-broadway-2026/nydailynews--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt describes 'a modestly scaled and warm-hearted jukebox show' directed by Gordon Greenberg: the 2024 Daily News review of heart-of-rock-and-roll-2024, from the same wrong NYC Theatre roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heart-off-broadway-2026/nytg--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt mentions 'an 80s kid' and Corey Cott (Bobby in heart-of-rock-and-roll-2024): Gillian Russo's 2024 NYTG review of that show, from the same wrong NYC Theatre roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heart-off-broadway-2026/theatermania--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt names 'The Heart of Rock and Roll' outright: the 2024 TheaterMania review of heart-of-rock-and-roll-2024, from the same wrong NYC Theatre roundup."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-1970/hollywood-reporter--david-rooney.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt is about 'the haunting musical Fun Home' (fun-home-2015), not David Storey's Home (1970). Excerpt-only file, url is a BWW people page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "titus-andronicus-off-broadway-2026/broadwayworld--michael-dale.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Excerpt names 'Gary: A Sequel to Titus Andronicus' (gary-a-sequel-to-titus-andronicus-2019): Michael Dale's 2019 review of that show, not the 2026 Titus Andronicus. Excerpt-only file, url is a BWW people page."
+      }
+    ]
+  }
+}
