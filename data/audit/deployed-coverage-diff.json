@@ -1,13 +1,128 @@
 {
-  "generatedAt": "2026-10-10T06:36:54.476Z",
+  "generatedAt": "2026-10-10T08:08:22.234Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 231,
-  "clean": 231,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 224,
+  "defective": 7,
+  "byType": {
+    "score-drift": 7
+  },
+  "shows": [
+    {
+      "showId": "what-the-animals-say-off-west-end-2026",
+      "title": "What The Animals Say",
+      "openingDate": "2026-10-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.52 vs local 76.17 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "title": "Hay Fever",
+      "openingDate": "2026-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.22 vs local 66.54 (Δ0.68)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 37,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "title": "Tru",
+      "openingDate": "2026-09-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.26 vs local 69.93 (Δ0.67)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    },
+    {
+      "showId": "twenty-thousand-streets-off-west-end-2026",
+      "title": "Twenty Thousand Streets",
+      "openingDate": "2026-09-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 65.61 vs local 65.04 (Δ0.57)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 19,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    },
+    {
+      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
+      "title": "BLOODSPORT: After Helen of Troy",
+      "openingDate": "2026-09-13",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 74.82 vs local 74.69 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 29,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    },
+    {
+      "showId": "jane-eyre-off-west-end-2026",
+      "title": "Jane Eyre",
+      "openingDate": "2026-09-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 66.65 vs local 67.39 (Δ0.74)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    },
+    {
+      "showId": "who-killed-marilyn-off-west-end-2026",
+      "title": "Who Killed Marilyn?",
+      "openingDate": "2026-08-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 26.64 vs local 27.55 (Δ0.91)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-10T08:08:18.405Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
