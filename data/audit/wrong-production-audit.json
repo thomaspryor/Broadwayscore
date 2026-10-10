@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T10:26:01.538Z",
+  "timestamp": "2026-10-10T10:47:15.291Z",
   "stats": {
     "totalReviews": 53806,
-    "alreadyFlagged": 19802,
-    "dateGuardCatches": 267,
+    "alreadyFlagged": 19805,
+    "dateGuardCatches": 268,
     "directorMismatch": 1671,
     "tvFilmSignals": 1557,
-    "londonSignals": 1772,
+    "londonSignals": 1773,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5889
+    "noPublishDate": 5880
   },
   "findings": [
     {
@@ -44012,6 +44012,20 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 82,
+      "publishDate": "2023-02-07",
+      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
+        }
+      ]
+    },
+    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -69032,6 +69046,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "independent--jessie-thompson.json",
+      "score": 79,
+      "publishDate": "June 20th, 2022",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/that-is-not-who-i-am-royal-court-review-dave-davidson-b2104991.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
