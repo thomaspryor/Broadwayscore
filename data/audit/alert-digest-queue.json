@@ -791,5 +791,129 @@
       }
     ],
     "queuedAt": "2026-10-10T19:49:43.716Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4956-email-dup-alert",
+    "title": "Landing blocked: race red on land/bro-4956-email-dup-alert",
+    "description": "land.yml did not land land/bro-4956-email-dup-alert: the race gate went red at f6976f2bf8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4956-email-dup-alert @ f6976f2bf8 (origin/land/bro-4956-email-dup-alert) → origin/main @ 84a6515226 [land] attempt 1/3: rebased onto 84a6515226, 3 file(s) changed — running checks [land] verified-base: main moved 608265b672 → 84a6515226 across 96 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] ch Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38080606399",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4956-email-dup-alert"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "f6976f2bf87d54e61253025fbba0335f9a3cefd7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38080606399"
+      }
+    ],
+    "queuedAt": "2026-10-10T20:21:55.631Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4996-shared-posters",
+    "title": "Landing blocked: rebase red on land/bro-4996-shared-posters",
+    "description": "land.yml did not land land/bro-4996-shared-posters: the rebase gate went red at 13a74a3bc6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4996-shared-posters @ 13a74a3bc6 (origin/land/bro-4996-shared-posters) → origin/main @ b8e9a90fdb REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b8e9a90fdb: Rebasing (1/1) error: could not apply 13a74a3bc6d... BRO-4996: one poster source, one show hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", then run \"g Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38082772893",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4996-shared-posters"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "13a74a3bc6d7ec500a9e1cfd8c33ae93b086da35"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38082772893"
+      }
+    ],
+    "queuedAt": "2026-10-10T20:40:39.569Z"
+  },
+  {
+    "conditionKey": "land:bro-4956-email-dup-alert",
+    "title": "Landing blocked: checks red on bro-4956-email-dup-alert",
+    "description": "land.yml did not land bro-4956-email-dup-alert: the checks gate went red. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38086069263",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "bro-4956-email-dup-alert"
+      },
+      {
+        "name": "gate",
+        "value": "checks"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38086069263"
+      }
+    ],
+    "queuedAt": "2026-10-10T21:03:36.099Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38089509704",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T22:02:12.776Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5008-cloud-parity",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5008-cloud-parity",
+    "description": "land.yml did not land land/bro-5008-cloud-parity: the unit-tests-node gate went red at c8f8e12108. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38087472089",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5008-cloud-parity"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c8f8e121082828998688bbf698bf30d28917adb0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38087472089"
+      }
+    ],
+    "queuedAt": "2026-10-10T21:57:47.779Z"
   }
 ]

@@ -19,6 +19,8 @@ const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment, classifyShow } = require('./lib/recoupment-model');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
 const { classifyTier } = require('./lib/model-return-v2');
+const { clearStaleModelFields, applyShadowReturnFields } = require('./lib/model-run-fields');
+const { modelContradictsDesignation } = require('./lib/commercial-designations');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -120,18 +122,6 @@ function main() {
 
   const keys = SINGLE ? [SINGLE] : Object.keys(commercial.shows);
 
-  // On any fall-back to ai-estimated, stale weekly-model fields from a prior
-  // run must not survive — a stale modelRecouped=false would sit in the
-  // model-false-negative audit metric forever.
-  const clearStaleModelFields = (comm) => {
-    delete comm.modelRecoupmentPct;
-    delete comm.modelRecouped;
-    delete comm.modelBreakeven;
-    delete comm.modelCostBasis;
-    delete comm.modelCategory;
-    delete comm.modelWarnings;
-  };
-
   for (const key of keys) {
     const comm = commercial.shows[key];
     if (!comm) continue;
@@ -199,15 +189,15 @@ function main() {
     comm.modelCategory = result.category;
     comm.modelLastRun = today;
     comm.modelWarnings = result.warnings;
+    // Shadow fields (BRO-4989 G): SVOG-denominator fix + investor multiple.
+    // Nothing reads them yet; modelRecoupmentPct above stays the live value.
+    applyShadowReturnFields(comm, result, show);
 
     // Flag designation contradictions
     if (comm.designation && result.recoupmentPctCentral != null) {
       const pct = result.recoupmentPctCentral;
       const desig = comm.designation;
-      const isContradiction =
-        (pct > 150 && (desig === 'Fizzle' || desig === 'Flop')) ||
-        (pct < 0 && (desig === 'Windfall' || desig === 'Miracle' || desig === 'Easy Winner')) ||
-        (pct > 300 && desig === 'Trickle');
+      const isContradiction = modelContradictsDesignation(pct, desig);
 
       if (isContradiction) {
         comm.modelDesignationFlag = `Model: ${pct.toFixed(0)}% vs designation: ${desig}`;

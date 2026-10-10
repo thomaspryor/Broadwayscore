@@ -63,6 +63,8 @@
 //     agree on the reason for the same slug — this is a rare edge case).
 //   * `updatedAt` becomes the newer of the two timestamps.
 
+const { syncBreakevenToCost } = require('./commercial-breakeven');
+
 const HUMAN_REVIEWED_COMMERCIAL_FIELDS = [
   'humanReviewedDesignation',
   'humanReviewedRecouped',
@@ -115,37 +117,91 @@ function sameValue(a, b) {
 // stamps describe the designation). Taking some from each side could build a
 // record neither side wrote, e.g. one side's Fizzle with the other's
 // recouped:true, so each group merges as one unit.
+//
+// Every field merge-model-recoupment.js writes is one run's output (BRO-4989
+// Step 0): a record never mixes two runs. A run only READS the cost fields,
+// so a run on a stale copy and a cost fix on the other side change different
+// units and both survive; syncBreakevenToCost below then rescales the run's
+// break-even to the merged cost, as the write guard does on every save.
+// The run's other outputs (recoupment %, modelRecouped) catch up at the next
+// run. tests/unit/merge-commercial-data.test.mjs checks this list against
+// every model field merge-model-recoupment.js assigns.
+const MODEL_RUN_FIELDS = [
+  'modelRecoupmentPct', 'modelRecouped', 'modelBreakeven', 'modelCostBasis', 'modelDataQuality',
+  'modelMethod', 'modelCategory', 'modelLastRun', 'modelWarnings', 'modelDesignationFlag',
+  // BRO-4989 shadow fields (written alongside, never read by the site yet).
+  'modelRecoupmentPctV2', 'modelInvestorMultiple',
+];
 const LINKED_FIELD_GROUPS = [
   ['designation', 'productionType', 'recouped', 'recoupedDate', 'recoupedSource', 'classifiedBy', 'classifiedAt', 'classifiedReason'],
   ['capitalization', 'capitalizationSource'],
-  ['weeklyRunningCost', 'costMethodology'],
+  ['weeklyRunningCost', 'costMethodology', 'weeklyRunningCostSource', 'weeklyRunningCostNote', 'weeklyRunningCostRange'],
+  MODEL_RUN_FIELDS,
 ];
 const GROUP_OF = new Map(LINKED_FIELD_GROUPS.flatMap(g => g.map(f => [f, g])));
+// Bookkeeping both sides bump on any write, and model output both sides
+// recomputed: a differing value is not a content conflict worth reporting.
+const isContentUnit = (unit) => unit !== MODEL_RUN_FIELDS && !(unit.length === 1 && unit[0] === 'lastUpdated');
+
+const isPlainObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 
 // Three-way merge of one record both sides kept, field by field (linked
 // fields as one unit). A unit only one side changed since base takes that
 // side's values; a unit both changed differently takes `winner`'s (the
-// pickNewer choice). Returns the merged record and the number of conflicting
-// units.
+// pickNewer choice). isEstimate holds one flag per field
+// ({ weeklyRunningCost: true, recouped: true }) and merges per flag; a flag
+// both sides changed follows the side its field came from, so a cost never
+// carries the other writer's flag.
+// Returns the merged record, the number of conflicting units, and the
+// conflicting units that hold content (not just bookkeeping).
 function mergeRecordFields(o, r, b, winner) {
   const out = {};
   let conflicts = 0;
+  const contentConflicts = [];
+  let modelRunConflict = false;
   const sourceOf = new Map();
+  const singletons = new Map();
+  const unitOf = (k) => GROUP_OF.get(k) || singletons.get(k) || singletons.set(k, [k]).get(k);
   const pick = (unit) => {
+    if (sourceOf.has(unit)) return sourceOf.get(unit);
     const same = (x, y) => unit.every(f => sameValue(x[f], y[f]));
-    if (same(o, b)) return r;
-    if (same(r, b) || same(o, r)) return o;
-    conflicts++;
-    return winner;
+    let src;
+    if (same(o, b)) src = r;
+    else if (same(r, b) || same(o, r)) src = o;
+    else {
+      conflicts++;
+      if (isContentUnit(unit)) contentConflicts.push(unit[0]);
+      else if (unit === MODEL_RUN_FIELDS) modelRunConflict = true;
+      src = winner;
+    }
+    sourceOf.set(unit, src);
+    return src;
   };
+  const splitEstimate = [o, r, b].some(x => isPlainObject(x.isEstimate))
+    && [o, r, b].every(x => x.isEstimate === undefined || isPlainObject(x.isEstimate));
   const keys = new Set([...Object.keys(o), ...Object.keys(r), ...Object.keys(b)]);
   for (const k of keys) {
-    const unit = GROUP_OF.get(k) || [k];
-    if (!sourceOf.has(unit)) sourceOf.set(unit, pick(unit));
-    const v = sourceOf.get(unit)[k];
+    if (k === 'isEstimate' && splitEstimate) continue;
+    const v = pick(unitOf(k))[k];
     if (v !== undefined) out[k] = v;
   }
-  return { record: out, conflicts };
+  if (splitEstimate) {
+    const est = {};
+    const flags = new Set([o, r, b].flatMap(x => Object.keys(x.isEstimate || {})));
+    const flagOf = (x, f) => (x.isEstimate || {})[f];
+    for (const f of flags) {
+      // Three-way per flag; only a flag both sides changed differently
+      // follows the side its field came from.
+      let src;
+      if (sameValue(flagOf(o, f), flagOf(b, f))) src = r;
+      else if (sameValue(flagOf(r, f), flagOf(b, f)) || sameValue(flagOf(o, f), flagOf(r, f))) src = o;
+      else src = pick(unitOf(f));
+      const v = flagOf(src, f);
+      if (v !== undefined) est[f] = v;
+    }
+    if (Object.keys(est).length) out.isEstimate = est;
+  }
+  return { record: out, conflicts, contentConflicts, modelRunConflict };
 }
 
 // Three parameters with no default: callers dispatch on `.length >= 3`.
@@ -158,7 +214,8 @@ function mergeCommercialJson(ours, remote, base) {
   const merged = { ...ours };
   merged.shows = { ...oursShows };
 
-  let added = 0, kept = 0, overlaid = 0, resolvedAsDeletion = 0, fieldMerged = 0, fieldConflicts = 0;
+  let added = 0, kept = 0, overlaid = 0, resolvedAsDeletion = 0, fieldMerged = 0, fieldConflicts = 0, breakevenResynced = 0, modelRunConflicts = 0;
+  const conflictSlugs = [];
   const allSlugs = new Set([...Object.keys(oursShows), ...Object.keys(remoteShows)]);
   for (const slug of allSlugs) {
     const o = oursShows[slug];
@@ -186,6 +243,11 @@ function mergeCommercialJson(ours, remote, base) {
       chosen = res.record;
       fieldMerged++;
       fieldConflicts += res.conflicts;
+      if (res.modelRunConflict) modelRunConflicts++; // both re-ran the model; the newer run kept whole
+      if (res.contentConflicts.length) conflictSlugs.push(`${slug} (${res.contentConflicts.join(', ')})`);
+      // The run's break-even and the merged cost can come from different
+      // sides; rescale it exactly as the write guard does on save (BRO-4985).
+      if (syncBreakevenToCost(chosen)) breakevenResynced++;
     } else {
       chosen = { ...winner };
     }
@@ -199,7 +261,7 @@ function mergeCommercialJson(ours, remote, base) {
     merged._meta = { ...(ours._meta || {}), ...(remote._meta || {}), ...newer };
   }
 
-  return { merged, stats: { added, kept, overlaid, resolvedAsDeletion, fieldMerged, fieldConflicts, totalSlugs: allSlugs.size } };
+  return { merged, stats: { added, kept, overlaid, resolvedAsDeletion, fieldMerged, fieldConflicts, breakevenResynced, modelRunConflicts, conflictSlugs, totalSlugs: allSlugs.size } };
 }
 // reconcile-merged-json.js: without PUSH_RECONCILE_BASE, pass no base (union)
 // rather than the post-rebase merge-base, which equals remote.
@@ -299,6 +361,8 @@ function mergeResearchQueue(ours, remote) {
 
 module.exports = {
   HUMAN_REVIEWED_COMMERCIAL_FIELDS,
+  LINKED_FIELD_GROUPS,
+  MODEL_RUN_FIELDS,
   mergeCommercialJson,
   mergePendingReview,
   mergeResearchQueue,

@@ -71,6 +71,7 @@ async function checkAspect(filePath, role) {
 const { isPlaceholderFile } = require('./lib/show-images');
 const { canReuseArchivedFile, isDownloadableSource, isRejectedImage, imagePathOwner } = require('./lib/image-source-match');
 const { IMAGE_SOURCES_PATH: SOURCES_PATH, loadImageSources, saveImageSources } = require('./lib/image-sources-store');
+const { buildSourceIndex, addToSourceIndex, sourceConflict } = require('./lib/shared-image-source');
 
 const FORMATS = ['poster', 'thumbnail', 'hero'];
 
@@ -174,6 +175,9 @@ async function main() {
 
   // Load or create image sources backup
   const imageSources = loadImageSources();
+  // Source URL -> show ids recording it: a CDN URL another unrelated show
+  // already records is that show's art, never this one's (BRO-4996).
+  const sourceIndex = buildSourceIndex(imageSources, showsData.shows);
 
   let shows = showsData.shows;
   if (showFilter) {
@@ -315,6 +319,16 @@ async function main() {
         continue;
       }
 
+      const conflict = sourceConflict(show.id, url, sourceIndex, showsData.shows);
+      if (conflict) {
+        const why = conflict.reason === 'placeholder' ? 'a known placeholder image' : `already ${conflict.owner}'s art`;
+        console.warn(`  ⚠ ${show.title} ${format}: source is ${why} — leaving null (${url})`);
+        show.images[format] = null;
+        showChanged = true;
+        totalFailed++;
+        continue;
+      }
+
       // Download the image
       const dlUrl = getDownloadUrl(url, format);
       if (!dlUrl) continue;
@@ -347,6 +361,7 @@ async function main() {
 
         show.images[format] = `/images/shows/${show.id}/${format}.${ext}`;
         imageSources[show.id][format] = url;
+        addToSourceIndex(sourceIndex, show.id, url);
         showDownloaded++;
         totalDownloaded++;
         totalBytes += size;

@@ -664,6 +664,13 @@ runs:
                 const { merged, stats } = mergeCommercialJson(ours, remote, base);
                 fs.writeFileSync("commercial.json", JSON.stringify(merged, null, 2) + "\n");
                 console.log("Reconciled commercial.json: " + JSON.stringify(stats));
+                // BRO-4989 Step 0: both sides changed the same content (not
+                // bookkeeping or a model re-run); the newer record won it.
+                if (stats.conflictSlugs && stats.conflictSlugs.length) {
+                  const msg = "commercial.json merge: both sides changed " + stats.conflictSlugs.length + " record(s), newer side kept: " + stats.conflictSlugs.slice(0, 20).join("; ");
+                  console.log("::warning::" + msg);
+                  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, "- " + msg + "\n");
+                }
               } catch (e) {
                 console.error("commercial.json reconciliation failed (non-fatal):", e.message);
               }

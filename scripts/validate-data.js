@@ -21,6 +21,8 @@ const fs = require('fs');
 const path = require('path');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
+const { findSharedSources } = require('./lib/shared-image-source');
+const { loadImageSources } = require('./lib/image-sources-store');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
 const { checkIdYearDrift } = require('./lib/id-year-drift');
@@ -1426,6 +1428,28 @@ function validateCrossShowImages(shows) {
     }
   }
   if (found.length === 0) ok('No show uses another show\'s image directory');
+}
+
+// ===========================================
+// ONE IMAGE SOURCE, ONE SHOW (BRO-4996)
+// ===========================================
+// A source URL data/image-sources.json records for two unrelated live rows
+// (or a known placeholder) means one of them shows the other's art. Warn-only
+// (CLAUDE.md §19); scripts/audit-shared-image-sources.js lists them.
+
+function validateSharedImageSources(shows) {
+  info('Checking no two unrelated shows record the same image source...');
+  let found;
+  try {
+    found = findSharedSources(loadImageSources(), shows);
+  } catch (e) {
+    warn(`Could not check shared image sources: ${e.message}`);
+    return;
+  }
+  for (const f of found) {
+    warn(`Image source ${f.placeholder ? 'is a known placeholder, used by' : 'recorded for unrelated shows'} ${f.ids.join(', ')}: ${f.source} (node scripts/audit-shared-image-sources.js)`);
+  }
+  if (found.length === 0) ok('No image source is shared by unrelated shows');
 }
 
 // ===========================================
@@ -5261,6 +5285,7 @@ function runValidation() {
   validateImageUrls(shows);
   validateImageFiles(shows);
   validateCrossShowImages(shows);
+  validateSharedImageSources(shows);
   validatePlaceholderImageHashes(shows);
   validateVenueCategory(shows);
   validateTheaterAddress(shows);

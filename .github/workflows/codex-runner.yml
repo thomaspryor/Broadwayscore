@@ -52,6 +52,22 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # The runner links data/review-texts into each card's worktree, so Codex and the
+      # reviewer can check review-text cards against real data.
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # Both clones keep REVIEW_TEXTS_TOKEN (the runner's push credential) in their remote
+      # URL, and Codex can read any file. Strip it; the runner refuses to link a clone that
+      # still carries one (scripts/lib/codex-runner.js hasCredentialRemote).
+      - name: Remove the token from the data clones
+        run: |
+          git -C data/review-texts remote set-url origin https://github.com/thomaspryor/broadway-review-texts.git
+          rm -rf /tmp/core-data-checkout
+          if grep -rqs 'x-access-token' data/review-texts/.git/config; then echo "::error::token still in data/review-texts"; exit 1; fi
+
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
