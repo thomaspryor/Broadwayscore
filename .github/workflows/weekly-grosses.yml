@@ -112,6 +112,23 @@ jobs:
         if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
         run: node scripts/validate-data.js
 
+      # BRO-4988: integrity rules over the newest 9 weeks (this week plus the
+      # 8 the scraper may have backfilled): Sunday keys, missing weeks, rows vs
+      # the League "Week's Total", dropouts, copied grosses, capped capacity,
+      # zero-performance grosses, seatsOffered, week-over-week jumps
+      # (scripts/lib/grosses-integrity.js). Each broken rule files one card
+      # via routeAlert(disposition 'auto'); clean rules resolveCondition().
+      # Advisory per CLAUDE.md §19: never fails the job.
+      - name: Grosses integrity check
+        if: always() && steps.check.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/check-grosses-integrity.js --weeks=9 --alert
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
       - name: Build site (verify no breaking changes)
         if: steps.check.outputs.skip != 'true' && steps.changes.outputs.has_changes == 'true'
         run: npm run build
@@ -171,6 +188,24 @@ jobs:
 
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+      # The integrity check's routeAlert()/resolveCondition() state lives on
+      # this runner's disk; commit it or every run re-alerts from a blank
+      # ledger (alert-ledger-commit-check.js).
+      - name: Commit alert state
+        if: always() && steps.check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: grosses integrity alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Notify on failure
         if: failure()

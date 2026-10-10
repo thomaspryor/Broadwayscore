@@ -6,7 +6,8 @@
  * Produces a JSON report at data/audit/grosses-data-audit.json.
  *
  * Checks:
- *  1. Impossible values (negative grosses, capacity >110%, ATP outliers)
+ *  1. Impossible values (negative grosses, ATP outliers). Capacity above
+ *     100% is real (standing room) and never flagged as impossible.
  *  2. Show ID mismatches / orphan entries
  *  3. Missing open shows
  *  4. Stale data detection
@@ -19,11 +20,20 @@
  * 11. Closed show data anomalies
  * 12. History data value checks
  *
+ * History rules (gaps, negative values) come from scripts/lib/grosses-integrity.js,
+ * the same rules weekly-grosses.yml runs after every ingest (BRO-4988), so the
+ * two never disagree. This script adds the grosses.json snapshot checks.
+ *
  * Usage: node scripts/audit-grosses-data.js
  */
 
 const fs = require('fs');
 const path = require('path');
+const integrity = require('./lib/grosses-integrity');
+
+// The League grosses cover Broadway only. Off-Broadway, West End, regional and
+// tour shows never have rows, so they must not count as "missing" ones.
+const broadwayShows = (showsData) => showsData.shows.filter((s) => s.category === 'broadway');
 
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
@@ -65,10 +75,8 @@ function checkImpossibleValues() {
       addIssue('impossible-value', 'high', slug, `Negative grossYoY: $${tw.grossYoY}`);
     }
 
-    // Capacity > 110% (some standing room can push above 100%, but 110%+ is suspicious)
-    if (tw.capacity !== null && tw.capacity > 110) {
-      addIssue('impossible-value', 'high', slug, `Capacity ${tw.capacity}% exceeds 110% threshold`);
-    }
+    // Capacity above 100% is real (standing room) and is kept as published;
+    // checkCapacityOutliers() lists high values for a look, never as errors.
     if (tw.capacity !== null && tw.capacity < 0) {
       addIssue('impossible-value', 'high', slug, `Negative capacity: ${tw.capacity}%`);
     }
@@ -126,7 +134,7 @@ function checkOrphanEntries() {
 // 3. Missing Open Shows
 // ==========================================================================
 function checkMissingOpenShows() {
-  const openShows = showsData.shows.filter(s => s.status === 'open');
+  const openShows = broadwayShows(showsData).filter(s => s.status === 'open');
   for (const show of openShows) {
     if (!grosses.shows[show.slug]) {
       addIssue('missing-open-show', 'high', show.slug,
@@ -138,7 +146,7 @@ function checkMissingOpenShows() {
   }
 
   // Also check preview shows
-  const previewShows = showsData.shows.filter(s => s.status === 'previews');
+  const previewShows = broadwayShows(showsData).filter(s => s.status === 'previews');
   for (const show of previewShows) {
     // Preview shows may or may not have grosses - just note as low severity
     if (grosses.shows[show.slug] && grosses.shows[show.slug].thisWeek) {
@@ -436,29 +444,10 @@ function checkHistoryGaps() {
     return;
   }
 
-  // Check for missing weeks in the sequence
-  const missingWeeks = [];
-  for (let i = 1; i < historyWeeks.length; i++) {
-    const prev = new Date(historyWeeks[i - 1] + 'T00:00:00Z');
-    const curr = new Date(historyWeeks[i] + 'T00:00:00Z');
-    const daysBetween = (curr - prev) / (1000 * 60 * 60 * 24);
-    if (daysBetween > 10) {
-      // Gap detected (more than 10 days between weekly entries)
-      const gapWeeks = Math.round(daysBetween / 7);
-      missingWeeks.push({
-        after: historyWeeks[i - 1],
-        before: historyWeeks[i],
-        gapDays: Math.round(daysBetween),
-        missingWeekCount: gapWeeks - 1
-      });
-    }
-  }
-
-  if (missingWeeks.length > 0) {
-    for (const gap of missingWeeks) {
-      addIssue('history-gap', 'medium', '_global',
-        `Missing ${gap.missingWeekCount} week(s) in history between ${gap.after} and ${gap.before} (${gap.gapDays} days)`);
-    }
+  // Missing weeks: the shared rule, which skips the known gaps (COVID and
+  // two archive holes) and folds off-Sunday keys onto their Sunday.
+  for (const f of integrity.checkMissingWeeks(history)) {
+    addIssue('history-gap', 'medium', '_global', f.detail);
   }
 
   // Check per-show continuity for shows with thisWeek data
@@ -481,7 +470,7 @@ function checkHistoryGaps() {
 // 11. Closed Show Data Anomalies
 // ==========================================================================
 function checkClosedShowData() {
-  const closedSlugs = showsData.shows.filter(s => s.status === 'closed').map(s => s.slug);
+  const closedSlugs = broadwayShows(showsData).filter(s => s.status === 'closed').map(s => s.slug);
 
   for (const slug of closedSlugs) {
     const data = grosses.shows[slug];
@@ -496,7 +485,7 @@ function checkClosedShowData() {
   }
 
   // Shows with status "previews" that have allTime but very high allTime — may have wrong status
-  const previewShows = showsData.shows.filter(s => s.status === 'previews');
+  const previewShows = broadwayShows(showsData).filter(s => s.status === 'previews');
   for (const show of previewShows) {
     const data = grosses.shows[show.slug];
     if (!data || !data.allTime) continue;
@@ -518,30 +507,6 @@ function checkHistoryDataValues() {
     for (const [slug, entry] of Object.entries(weekData)) {
       totalChecked++;
 
-      // Negative values
-      if (entry.gross !== null && entry.gross < 0) {
-        addIssue('history-negative-gross', 'high', slug,
-          `Negative gross ($${entry.gross}) in history week ${weekKey}`);
-        totalIssues++;
-      }
-      if (entry.capacity !== null && entry.capacity < 0) {
-        addIssue('history-negative-capacity', 'high', slug,
-          `Negative capacity (${entry.capacity}%) in history week ${weekKey}`);
-        totalIssues++;
-      }
-      if (entry.atp !== null && entry.atp < 0) {
-        addIssue('history-negative-atp', 'high', slug,
-          `Negative ATP ($${entry.atp}) in history week ${weekKey}`);
-        totalIssues++;
-      }
-
-      // Extreme capacity
-      if (entry.capacity !== null && entry.capacity > 110) {
-        addIssue('history-capacity-extreme', 'low', slug,
-          `Capacity ${entry.capacity}% (>110%) in history week ${weekKey}`);
-        totalIssues++;
-      }
-
       // Extreme ATP
       if (entry.atp !== null && entry.atp > 500) {
         addIssue('history-atp-extreme', 'low', slug,
@@ -556,6 +521,13 @@ function checkHistoryDataValues() {
         totalIssues++;
       }
     }
+  }
+
+  // Negative values: the shared rule (capacity above 100% is real, not flagged).
+  for (const f of integrity.checkRowShape(history, Object.keys(history.weeks))) {
+    if (f.rule !== 'negative-value') continue;
+    addIssue('history-negative-value', 'high', f.slug, `${f.detail} in history week ${f.week}`);
+    totalIssues++;
   }
 
   return { totalChecked, totalIssues };
@@ -709,9 +681,9 @@ const report = {
     },
     showsJson: {
       totalShows: showsData.shows.length,
-      openShows: showsData.shows.filter(s => s.status === 'open').length,
-      previewShows: showsData.shows.filter(s => s.status === 'previews').length,
-      closedShows: showsData.shows.filter(s => s.status === 'closed').length
+      openShows: broadwayShows(showsData).filter(s => s.status === 'open').length,
+      previewShows: broadwayShows(showsData).filter(s => s.status === 'previews').length,
+      closedShows: broadwayShows(showsData).filter(s => s.status === 'closed').length
     },
     nullDensity: {
       totalThisWeekFields: nullStats.totalFields,

@@ -45,6 +45,7 @@ const { parseBwwGrossesRow, resolveBwwColumnIndices } = require('./lib/parse-bww
 // belong ahead of Playwright, not just as review-text tiers.
 const { fetchPage, fetchWithBrightData, fetchWithScrapingdog, cleanup: cleanupScraper } = require('./lib/scraper');
 const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
+const { recordPublishedTotal } = require('./lib/grosses-integrity');
 // Pure Playbill parser + gap finder (see tests/unit/parse-playbill-grosses.test.mjs)
 const {
   playbillGrossesUrl,
@@ -152,6 +153,7 @@ interface GrossesHistory {
   _meta: {
     description: string;
     lastUpdated: string;
+    weekTotals?: Record<string, { gross: number | null; showCount: number | null; source: string; recordedAt: string }>;
   };
   weeks: Record<string, Record<string, HistoryEntry>>;
 }
@@ -177,6 +179,11 @@ interface ScrapeResult {
   // Playbill only: every week its ?week= selector offers (YYYY-MM-DD, newest
   // first). Drives the history gap fill; BWW has no per-week URL.
   availableWeeks?: string[];
+  // Playbill only: the published League "Week's Total" and how many shows the
+  // page listed, saved into history._meta.weekTotals for the integrity check
+  // (scripts/lib/grosses-integrity.js, BRO-4988).
+  weekTotalGross?: number | null;
+  publishedRowCount?: number;
 }
 
 // ============================================================
@@ -525,6 +532,8 @@ async function fetchPlaybillWeek(week?: string): Promise<ScrapeResult | null> {
     weekEnding: isoWeekToMDY(parsed.weekEnding),
     source: 'playbill',
     availableWeeks: parsed.availableWeeks,
+    weekTotalGross: parsed.weekTotalGross,
+    publishedRowCount: parsed.rows.length,
   };
 }
 
@@ -910,6 +919,14 @@ function snapshotOf(rows: MatchedRow[]): Record<string, HistoryEntry> {
   return snapshot;
 }
 
+// Save the source's published week total beside the week's rows, so the
+// integrity check can compare them after every ingest (BRO-4988). BWW pages
+// carry no total; nothing is recorded for them.
+function recordWeekTotal(history: GrossesHistory, key: string, result: ScrapeResult): void {
+  if (result.weekTotalGross == null) return;
+  recordPublishedTotal(history, key, { gross: result.weekTotalGross, showCount: result.publishedRowCount ?? null, source: result.source });
+}
+
 // Ends the run with exit code 1 after the reason has been logged. Thrown
 // rather than process.exit(1) so the runner still calls cleanupScraper(),
 // which prints the "[Scraper Summary]" spend line the cost report reads.
@@ -945,7 +962,7 @@ async function backfillMissingWeeks(history: GrossesHistory, result: ScrapeResul
       console.warn(`::warning::scrape-grosses: week ${week} matched only ${matched.length} shows (minimum ${MIN_SHOWS}); not backfilled.`);
       continue;
     }
-    putHistoryWeek(history, week, snapshotOf(matched));
+    recordWeekTotal(history, putHistoryWeek(history, week, snapshotOf(matched)), weekResult);
     filled.push(week);
     console.log(`  ✓ Backfilled ${week}: ${matched.length}/${weekResult.rows.length} shows matched` +
       (unmatched.length ? ` (unmatched: ${unmatched.join(', ')})` : ''));
@@ -1083,6 +1100,7 @@ async function scrapeGrosses(): Promise<void> {
   if (historyOnly) {
     if (history.weeks[weekISO]) console.log(`Replacing existing history week ${weekISO} (${Object.keys(history.weeks[weekISO]).length} shows)`);
     const key = putHistoryWeek(history, weekISO, snapshotOf(matchedRows));
+    recordWeekTotal(history, key, result);
     history._meta.lastUpdated = new Date().toISOString();
     if (DRY_RUN) {
       console.log(`\n[DRY RUN] Would write grosses-history.json week ${key}: ${matchedCount} shows (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
@@ -1206,7 +1224,7 @@ async function scrapeGrosses(): Promise<void> {
 
   // Save current week snapshot to history (the matched rows are exactly the
   // shows given thisWeek above; enrichment does not touch the stored fields)
-  putHistoryWeek(history, weekISO, snapshotOf(matchedRows));
+  recordWeekTotal(history, putHistoryWeek(history, weekISO, snapshotOf(matchedRows)), result);
   history._meta.lastUpdated = new Date().toISOString();
 
   // Write files (unless dry-run)

@@ -45,6 +45,10 @@ function mergeGrossesHistory(ours, remote) {
     const remoteT = Date.parse(remote._meta?.lastUpdated || 0) || 0;
     merged._meta = { ...(ours._meta || {}), ...(remote._meta || {}), lastUpdated: remoteT > oursT ? remote._meta.lastUpdated : ours._meta.lastUpdated };
   }
+  // Published League totals per week (BRO-4988): union, ours wins per week.
+  // The shallow _meta spread above would let one side's map replace the other's.
+  const weekTotals = { ...(remote._meta?.weekTotals || {}), ...(ours._meta?.weekTotals || {}) };
+  if (Object.keys(weekTotals).length) merged._meta = { ...(merged._meta || {}), weekTotals };
 
   // A union never carries a deletion, so a remote that still has an
   // off-Sunday key (2026-06-22) would bring it back beside the Sunday our
