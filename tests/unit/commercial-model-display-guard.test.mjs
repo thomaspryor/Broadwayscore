@@ -21,6 +21,9 @@ const {
 
 const now = new Date('2026-10-10');
 const running = { previewsStartDate: '2025-10-01', openingDate: '2025-11-01' }; // ~53 weeks played
+// Closed with designation TBD: the bar still shows, and the running-show launch
+// switch does not apply, so the shown-copy tests use it.
+const closedTbd = { ...running, closingDate: '2026-10-01', status: 'closed' };
 const rec = (over) => ({ designation: 'TBD', recouped: null, modelMethod: 'weekly-model', modelDataQuality: 'medium', ...over });
 
 test('Schmigadoon -169 is hidden: no number reaches the page', () => {
@@ -55,7 +58,7 @@ test('a hidden flop stays on At Risk: too few weeks or estimates disagree', () =
 });
 
 test('a small negative shows as 0% returned, losing money so far', () => {
-  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-20, -3, 15] }), running, now);
+  const out = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-20, -3, 15] }), closedTbd, now);
   assert.deepEqual(out.modelRecoupmentPct, [0, 0, 15]);
   assert.equal(out.modelBelowCosts, true);
   const l = getModelRecoupmentLabels(out.modelRecoupmentPct, { belowCosts: true });
@@ -74,7 +77,7 @@ test('fewer than 12 played weeks, or two independent estimates >25 apart, are hi
 
 test('a normal record passes through unchanged; no model is untouched', () => {
   const ok = rec({ modelRecoupmentPct: [40, 60, 80] });
-  assert.deepEqual(applyModelDisplayGuard(ok, running, now), ok);
+  assert.deepEqual(applyModelDisplayGuard(ok, closedTbd, now), ok);
   const none = rec({ modelRecoupmentPct: null });
   assert.equal(applyModelDisplayGuard(none, running, now), none);
   assert.equal(getModelRecoupmentLabels([40, 60, 80]).belowCostsNote, null);
@@ -100,7 +103,7 @@ test('displaysModel mirrors getRecoupmentDisplayMode === "model"', () => {
 // whitelist): every guard output must survive it, or the show-page bar
 // shows "~0%" without "losing money so far" (found in visual QA).
 test('guard outputs survive the public field filter', () => {
-  const below = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-40, -18, 10] }), running, now);
+  const below = applyModelDisplayGuard(rec({ modelRecoupmentPct: [-40, -18, 10] }), closedTbd, now);
   assert.equal(below.modelBelowCosts, true);
   const pub = toPublicShowCommercial(below);
   assert.equal(pub.modelBelowCosts, true);
@@ -133,4 +136,26 @@ test('the guard output feeds the hold label end to end', () => {
   );
   assert.equal(held.modelRecoupmentPct, null);
   assert.equal(getModelHoldLabel({ ...toPublicShowCommercial(held), status: 'open' }), 'Losing money so far');
+});
+
+// Launch rule in code (checker, 2026-10-10): RUNNING_MODEL_BAR_ENABLED is off,
+// so a running show that passes every other check still prints no model %.
+test('launch switch off: a running show says "Not enough reported data yet"', () => {
+  const { RUNNING_MODEL_BAR_ENABLED } = require('../../scripts/lib/model-display-guard');
+  assert.equal(RUNNING_MODEL_BAR_ENABLED, false);
+  // The Lost Boys today: 28 weeks, narrow range, would otherwise print.
+  const lostBoys = rec({ modelRecoupmentPct: [-13.9, 0.5, 14] });
+  const out = applyModelDisplayGuard(lostBoys, running, now);
+  assert.equal(out.modelRecoupmentPct, null);
+  assert.equal(out.modelDisplayHold, 'awaiting-truth');
+  assert.equal(getRecoupmentDisplayMode(out), 'none');
+  assert.equal(getModelHoldLabel({ ...out, status: 'open' }), 'Not enough reported data yet');
+  // A closing date still ahead is running too.
+  const closingLater = { ...running, closingDate: '2027-01-03', status: 'open' };
+  assert.equal(applyModelDisplayGuard(lostBoys, closingLater, now).modelDisplayHold, 'awaiting-truth');
+  // Closed and recouped displays are unaffected.
+  assert.deepEqual(applyModelDisplayGuard(lostBoys, closedTbd, now).modelRecoupmentPct, [0, 0.5, 14]);
+  const recouped = rec({ recouped: true, designation: 'Windfall', modelRecoupmentPct: [90, 110, 130] });
+  assert.notEqual(getRecoupmentDisplayMode(applyModelDisplayGuard(recouped, running, now)), 'model');
+  assert.equal(getModelHoldLabel({ ...applyModelDisplayGuard(recouped, running, now), status: 'open' }), null);
 });

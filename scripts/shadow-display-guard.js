@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { modelDisplayGuard, displaysModel, playedWeeks, independentEstimate } = require('./lib/model-display-guard');
+const { modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning } = require('./lib/model-display-guard');
 
 const args = process.argv.slice(2);
 if (require('./lib/cli-help').hasHelpFlag(args)) {
@@ -34,7 +34,7 @@ for (const [key, comm] of Object.entries(commercial)) {
   if (!displaysModel(comm, show)) continue;
   const weeks = playedWeeks(show);
   const reported = independentEstimate(comm);
-  const g = modelDisplayGuard({ pct: comm.modelRecoupmentPct, playedWeeks: weeks, independent: reported });
+  const g = modelDisplayGuard({ pct: comm.modelRecoupmentPct, playedWeeks: weeks, independent: reported, running: isRunning(show) });
   rows.push({ slug: key, status: show.status, weeks, pct: comm.modelRecoupmentPct, reported, ...g });
 }
 

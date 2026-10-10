@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { modelDisplayGuard, displaysModel, playedWeeks, independentEstimate } = require('../../scripts/lib/model-display-guard');
+const { modelDisplayGuard, displaysModel, playedWeeks, independentEstimate, isRunning } = require('../../scripts/lib/model-display-guard');
 
 describe('modelDisplayGuard', () => {
   test('Schmigadoon -169 is hidden, not printed', () => {
@@ -38,6 +38,20 @@ describe('modelDisplayGuard', () => {
     assert.equal(modelDisplayGuard({ pct: [10, 40, 70.1], playedWeeks: 49 }).reason, 'too-uncertain');
     // A disagreement is the more useful reason when both hold.
     assert.equal(modelDisplayGuard({ pct: [38, 90, 133], playedWeeks: 85, independent: [10, 30] }).reason, 'estimates-disagree');
+  });
+  test('a running show is held while the launch switch is off; other reasons win', () => {
+    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: true }).reason, 'awaiting-truth');
+    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: true, runningEnabled: true }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 28, running: false }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [-14, 1, 14], playedWeeks: 5, running: true }).reason, 'few-weeks');
+  });
+  test('isRunning: open, or closing date still ahead', () => {
+    const now = new Date('2026-10-10');
+    assert.equal(isRunning({ status: 'open' }, now), true);
+    assert.equal(isRunning({ status: 'open', closingDate: '2027-01-03' }, now), true);
+    assert.equal(isRunning({ status: 'open', closingDate: '2026-10-01' }, now), false);
+    assert.equal(isRunning({ status: 'closed' }, now), false);
+    assert.equal(isRunning(undefined, now), false);
   });
   test('missing or malformed model is no-model', () => {
     for (const pct of [null, undefined, [1, 2], [1, NaN, 3], 'x']) assert.equal(modelDisplayGuard({ pct, playedWeeks: 50 }).reason, 'no-model');
