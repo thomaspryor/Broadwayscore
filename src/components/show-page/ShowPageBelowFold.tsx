@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { featureFlags } from '@/config/feature-flags';
 import { getMarketLabel } from '@/lib/market-utils';
 import { getBroadwayDuration, getRunLength } from '@/lib/date-utils';
@@ -11,6 +12,7 @@ import VideoReviewsShelf from '@/components/VideoReviewsShelf';
 import AudienceBuzzCard from '@/components/AudienceBuzzCard';
 import AwardsCard from '@/components/AwardsCard';
 import BoxOfficeStats from '@/components/BoxOfficeStats';
+import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
 import BizBuzzCard from '@/components/BizBuzzCard';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
 import ShowtimesCard from '@/components/ShowtimesCard';
@@ -44,6 +46,10 @@ import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 
+// BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
+// so the held feature's code and copy stay out of every show page's bundle.
+const BoxOfficeScorecardV2 = dynamic(() => import('@/components/BoxOfficeScorecardV2'));
+
 export interface ShowPageBelowFoldProps {
   // Narrowed to drop criticScore.reviews — this chunk (and WhereItRanks, which it
   // renders) only reads criticScore.{score,reviewCount,tier1Count,tier2Count}.
@@ -62,6 +68,8 @@ export interface ShowPageBelowFoldProps {
   weekEnding: string | null;
   boxOfficeHistory: BoxOfficeHistoryStats | null;
   commercial: ShowCommercial | undefined;
+  /** Box Office Scorecard v2 (BRO-5007, unreleased): null unless commercial && boxOfficeV2. */
+  boxOfficeV2: BoxOfficeV2Card | null;
   recoupmentTrend: RecoupmentTrend;
   ranks: ShowRanks | null;
   ranksByFormat: ShowRanks | null;
@@ -131,6 +139,7 @@ export default function ShowPageBelowFold({
   weekEnding,
   boxOfficeHistory,
   commercial,
+  boxOfficeV2,
   recoupmentTrend,
   ranks,
   ranksByFormat,
@@ -216,7 +225,9 @@ export default function ShowPageBelowFold({
           stay stacked, mockup order preserved (facts first, then model). */}
       <div id="box-office" className="scroll-mt-20" />
       {featureFlags.boxOffice && !isWestEnd && !isOffBroadway && (
-        grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
+        featureFlags.commercial && featureFlags.boxOfficeV2 && boxOfficeV2 ? (
+          <BoxOfficeScorecardV2 card={boxOfficeV2} grosses={grosses} weekEnding={weekEnding ?? ''} history={boxOfficeHistory} />
+        ) : grosses && ((show.status !== 'previews' && show.status !== 'upcoming') || grosses.thisWeek) ? (
           <BoxOfficeStats grosses={grosses} weekEnding={weekEnding ?? ''} history={boxOfficeHistory} />
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">

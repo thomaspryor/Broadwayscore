@@ -709,8 +709,8 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 
 ## `vercel-demo.yml`
 - **Runs:** Every 8 hours (6 AM, 2 PM, 10 PM UTC), or manually
-- **Does:** Builds and deploys to `demo.broadwayscorecard.com` with ALL feature flags enabled. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
-- **Key difference from production:** Rewrites `feature-flags.ts` source at build time to enable ALL flags (auto-extracted from getter names — no manual sync needed). Deploys WITHOUT `--prod` (cannot touch production). Uses `vercel alias set` to assign `demo.broadwayscorecard.com`.
+- **Does:** Builds and deploys to `demo.broadwayscorecard.com` with every feature flag enabled except prod-held ones. For partner meetings (TodayTix, ShowScore) where feature-flagged content needs to be visible.
+- **Key difference from production:** Sets `NEXT_PUBLIC_FEATURES` from `scripts/lib/demo-feature-flags.js`: every getter in `feature-flags.ts` (no manual sync needed) minus `PROD_HELD_FEATURES`, unless `DEMO_HELD_ALLOWLIST` names one (today only `commercial`). Demo is public, so a held flag there is a leak (BRO-5007). Deploys WITHOUT `--prod` (cannot touch production). Uses `vercel alias set` to assign `demo.broadwayscorecard.com`.
 - **Concurrency:** `vercel-demo-deploy` group, `cancel-in-progress: false` (queued). **DO NOT change to `true`** — cancelling mid-build leaves the demo alias pointing at stale production content without feature flags. Queuing adds ~13min delay but guarantees the alias always points at a flag-rewritten build.
 - **Requires:** VERCEL_TOKEN, REVIEW_TEXTS_TOKEN (for checkout-core-data)
 - **Manual trigger:** `gh workflow run "Deploy Demo Site"`

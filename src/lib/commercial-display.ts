@@ -245,7 +245,7 @@ export function isEstimatedCapitalization(
 }
 
 /** costMethodology values whose weekly running cost is our estimate, not a reported figure. */
-const ESTIMATED_COST_METHODS: ReadonlySet<string> = new Set(['industry-estimate', 'deep-research', 'reddit-standard']);
+export const ESTIMATED_COST_METHODS: ReadonlySet<string> = new Set(['industry-estimate', 'deep-research', 'reddit-standard']);
 
 /**
  * True when the weekly cost reads as an estimate: an estimated method, or a

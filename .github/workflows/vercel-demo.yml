@@ -116,9 +116,13 @@ jobs:
           add_var NEXT_PUBLIC_SANITY_DATASET production
           add_var NEXT_PUBLIC_SANITY_API_VERSION 2024-10-01
 
-      - name: Compute demo feature flag list (extract from feature-flags.ts)
+      - name: Compute demo feature flag list (all flags except prod-held ones)
         id: demo-flags
         run: |
+          # scripts/lib/demo-feature-flags.js returns every `get X()` flag in
+          # feature-flags.ts EXCEPT those in PROD_HELD_FEATURES, unless its
+          # DEMO_HELD_ALLOWLIST names them (BRO-5007: demo is public, so a held
+          # flag on demo is a leak). It exits 1 on fewer than 5 flags.
           # Compute the comma-separated flag list once and expose it as a
           # step output. The Build step reads it as a shell env var
           # (NEXT_PUBLIC_FEATURES) which Next.js inlines at build time as
@@ -128,12 +132,8 @@ jobs:
           # logs "WARNING! Build not running on Vercel. System environment
           # variables will not be available." and only honors env vars in
           # the build step's `env:` block (same pattern Sanity vars use).
-          ALL=$(node -e "
-            const src = require('fs').readFileSync('src/config/feature-flags.ts', 'utf8');
-            const flags = [...src.matchAll(/get\s+(\w+)\(\)/g)].map(m => m[1]);
-            if (flags.length < 5) { console.error('Only found', flags.length, 'flags — aborting'); process.exit(1); }
-            process.stdout.write(flags.join(','));
-          ")
+          ALL=$(node scripts/lib/demo-feature-flags.js)
+          if [ -z "$ALL" ]; then echo "::error::demo flag list is empty"; exit 1; fi
           echo "flags=$ALL" >> "$GITHUB_OUTPUT"
           echo "Computed $(echo "$ALL" | tr ',' '\n' | wc -l | tr -d ' ') flags: $ALL"
 
@@ -144,13 +144,13 @@ jobs:
       - name: Clear any leftover build cache
         run: rm -rf .next/cache .vercel/output
 
-      - name: Build (all features enabled)
+      - name: Build (all features enabled except prod-held)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          # All feature flags enabled — Next.js inlines NEXT_PUBLIC_* env
-          # values at build time as string literals, so enabledFeatures Set
-          # gets populated with all flag names. Server and client components
-          # both see featureFlags.X === true. Computed by `demo-flags` step.
+          # Every flag except prod-held ones (see demo-flags step). Next.js
+          # inlines NEXT_PUBLIC_* env values at build time as string literals,
+          # so server and client components both see featureFlags.X === true
+          # for each listed flag. Computed by `demo-flags` step.
           NEXT_PUBLIC_FEATURES: ${{ steps.demo-flags.outputs.flags }}
           # Sanity public config — preview Vercel env doesn't have these,
           # /blog needs them at build time. See "Backfill Sanity" step above.

@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SITEMAP_SHARDS } from '@/config/sitemap-shards';
+import { isIndexableDeploy } from '@/lib/indexable-deploy';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -22,11 +23,9 @@ const CRAWLABLE_SURFACE = {
 };
 
 export default function robots(): MetadataRoute.Robots {
-  // Block indexing on Vercel preview/staging deployments. Read per call, not at
-  // module load, so the branch is reachable in tests.
-  const isProduction = process.env.VERCEL_ENV === 'production' || !process.env.VERCEL_ENV;
-
-  if (!isProduction) {
+  // Block indexing on Vercel preview/staging deployments. Same rule as the
+  // <meta name="robots"> tag in layout.tsx (src/lib/indexable-deploy.ts).
+  if (!isIndexableDeploy()) {
     return {
       rules: { userAgent: '*', disallow: '/' },
     };

@@ -9,10 +9,6 @@ export const metadata: Metadata = {
     description: 'Colors, fonts, and downloads for designers and developers.',
     url: 'https://broadwayscorecard.com/brand',
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
 };
 
 export default function BrandPage() {
