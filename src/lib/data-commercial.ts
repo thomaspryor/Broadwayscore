@@ -52,7 +52,9 @@ import {
   makeStaticCostProvider,
   reconcileWithAtRisk,
   staleInputReasons,
+  v2CostBasis,
   type CostProvider,
+  type V2CostBasis,
   type ShowBoxOfficeStatus,
   type WeekRow,
 } from './box-office-status';
@@ -704,12 +706,19 @@ export interface ShowBoxOfficeV2 extends ShowBoxOfficeStatus {
 }
 
 /**
- * The one "is this cost an estimate" answer the v2 card uses, for BOTH its
- * Reported/Estimate label and its range width (costHalfWidth), so they cannot
- * disagree. Same rule as the existing "~" marker (isEstimatedRunningCost).
+ * The one cost-basis answer the v2 card uses, for BOTH its Reported/Estimate
+ * label and its range width, so they cannot disagree. Starts from the "~"
+ * marker rule (isEstimatedRunningCost); a floor quote ("well over $1 million")
+ * also reads Estimate, and a reported source over 24 months old keeps its
+ * label but gets estimate width. v2 only: the existing pages keep their rule.
  */
-export function isV2CostEstimate(data: ShowCommercial): boolean {
-  return isEstimatedRunningCost(data);
+export function getV2CostBasis(data: ShowCommercial, asOf: string): V2CostBasis {
+  return v2CostBasis({
+    costMethodology: data.costMethodology ?? null,
+    estimated: isEstimatedRunningCost(data),
+    sourceText: publicSourceText(data.weeklyRunningCostSource) ?? null,
+    asOf,
+  });
 }
 
 /** Why getBreakEven returns null for a record (null when it has a cost). */
@@ -772,11 +781,10 @@ let boxOfficeV2Context: BoxOfficeV2Context | null = null;
 /** Built once per build (per worker): the cost provider and the typical-show median. */
 function getBoxOfficeV2Context(): BoxOfficeV2Context {
   if (boxOfficeV2Context) return boxOfficeV2Context;
+  const latestWeek = WEEK_KEYS_NEWEST_FIRST[0];
   const cost = makeStaticCostProvider((slug) => {
     const data = commercial.shows[slug];
-    return data
-      ? { breakEven: getBreakEven(data), costMethodology: data.costMethodology ?? null, estimated: isV2CostEstimate(data) }
-      : null;
+    return data ? { breakEven: getBreakEven(data), halfWidth: getV2CostBasis(data, latestWeek).halfWidth } : null;
   });
   const recent = new Set(WEEK_KEYS_NEWEST_FIRST.slice(0, MARKET_MEDIAN_WEEKS));
   const shows: Array<{ showId: string; nonprofit: boolean; weeks: WeekRow[] }> = [];
@@ -785,7 +793,7 @@ function getBoxOfficeV2Context(): BoxOfficeV2Context {
     if (!show || show.category !== 'broadway') continue;
     shows.push({ showId: slug, nonprofit: isNonprofitRecord(data), weeks: productionWeeks(show).filter((r) => recent.has(r.week)) });
   }
-  boxOfficeV2Context = { cost, market: computeMarketMedianByWeek(shows, cost), latestWeek: WEEK_KEYS_NEWEST_FIRST[0] };
+  boxOfficeV2Context = { cost, market: computeMarketMedianByWeek(shows, cost), latestWeek };
   return boxOfficeV2Context;
 }
 
@@ -838,7 +846,7 @@ export function getShowBoxOfficeV2(slug: string): ShowBoxOfficeV2 | null {
   });
   status.band = reconcileWithAtRisk(status.band, atRisk);
   const hasCost = status.breakEven != null;
-  const reportedCost = hasCost && !isV2CostEstimate(data);
+  const reportedCost = hasCost && !getV2CostBasis(data, ctx.latestWeek).estimated;
   return {
     ...status,
     title: show.title,

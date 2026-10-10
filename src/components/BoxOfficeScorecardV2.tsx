@@ -190,7 +190,7 @@ export default function BoxOfficeScorecardV2({ card, grosses, weekEnding, histor
 
       {card.availability !== 'early' && <Chart card={card} />}
 
-      {grosses && <BoxOfficeThisWeek grosses={grosses} history={history} className="" />}
+      {grosses && <BoxOfficeThisWeek grosses={grosses} history={history} className="" stackChanges />}
 
       {tiles.length > 0 && (
         <div className="flex flex-col gap-2.5">

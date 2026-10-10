@@ -123,21 +123,33 @@ export function coverTiles(c: CoverCosts | null): CoverTile[] {
     },
   ];
   if (c.ticketNeeded != null) {
-    const now = c.ticketNow != null ? `Now $${Math.round(c.ticketNow)}` : '';
+    const now = c.ticketNow != null ? `4-wk avg $${Math.round(c.ticketNow)}` : '';
     tiles.push({
       label: 'At today’s attendance', value: `$${Math.round(c.ticketNeeded)} avg ticket`, detail: now,
-      phoneLabel: 'Avg ticket needed', phoneDetail: `at today’s attendance${now ? ` (${now.toLowerCase()})` : ''}`, phoneValue: `$${Math.round(c.ticketNeeded)}`,
+      phoneLabel: 'Avg ticket needed', phoneDetail: `at today’s attendance${now ? ` (${now})` : ''}`, phoneValue: `$${Math.round(c.ticketNeeded)}`,
     });
   }
   if (c.capacityNeeded != null) {
     const over = c.capacityNeeded > 100;
-    const now = c.capacityNow != null ? `Now ${Math.round(c.capacityNow)}%` : '';
+    const now = c.capacityNow != null ? `4-wk avg ${Math.round(c.capacityNow)}%` : '';
     tiles.push({
-      label: 'At today’s prices', value: over ? 'more than 100% full' : `${Math.round(c.capacityNeeded)}% full`, detail: now,
-      phoneLabel: 'How full it would need to be', phoneDetail: `at today’s prices${now ? ` (${now.toLowerCase()})` : ''}`, phoneValue: over ? 'over 100%' : `${Math.round(c.capacityNeeded)}%`,
+      label: 'At today’s prices', value: over ? 'more than a full house' : `${Math.round(c.capacityNeeded)}% full`, detail: now,
+      phoneLabel: 'How full it would need to be', phoneDetail: `at today’s prices${now ? ` (${now})` : ''}`, phoneValue: over ? 'more than full' : `${Math.round(c.capacityNeeded)}%`,
     });
   }
   return tiles;
+}
+
+/**
+ * Evenly spaced y-axis ticks for the multiple chart, from 0 to `max`. Half
+ * steps up to 3×, whole steps up to 8× (so 1×, the cost line, always gets a
+ * label), then steps of 2.
+ */
+export function multipleTicks(max: number): number[] {
+  const step = max <= 3 ? 0.5 : max <= 8 ? 1 : 2;
+  const out: number[] = [];
+  for (let t = 0; t <= max + 1e-9; t += step) out.push(Math.round(t * 10) / 10);
+  return out;
 }
 
 /** Chart points with a multiple, or gross-only when the show has no cost. */

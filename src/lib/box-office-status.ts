@@ -67,6 +67,59 @@ export function costHalfWidth(costMethodology: string | null | undefined, estima
   return byMethod >= MIN_ESTIMATE_HALF_WIDTH ? byMethod : DEFAULT_COST_HALF_WIDTH;
 }
 
+/** A reported cost older than this gets estimate width (costForWeek will age costs itself). */
+export const REPORTED_SOURCE_MAX_AGE_MONTHS = 24;
+
+/** A quote that only gives a lower bound ("well over $1 million") is not a reported figure. */
+const FLOOR_QUOTE_RE = /\b(?:more than|well over|over|at least|north of|upwards of|in excess of)\s+(?:about\s+|roughly\s+)?\$/i;
+
+/** "Broadway Journal (Nov 6, 2023): ..." -> "2023-11-06"; null when the source names no parseable date. */
+export function costSourceDate(sourceText: string): string | null {
+  const head = sourceText.split(':')[0];
+  const m = head.match(/\(([^()]*\b(?:19|20)\d{2})\)/);
+  if (!m) return null;
+  const t = Date.parse(`${m[1]} 12:00 UTC`);
+  return Number.isFinite(t) ? new Date(t).toISOString().slice(0, 10) : null;
+}
+
+export interface V2CostBasis {
+  /** Drives the card's Reported/Estimate label. */
+  estimated: boolean;
+  /** Range half-width for the multiple. */
+  halfWidth: number;
+  /** The source quote is a lower bound, so the figure reads as an estimate. */
+  floorQuote: boolean;
+  /** Reported, but the source is older than REPORTED_SOURCE_MAX_AGE_MONTHS: keeps the label, gets estimate width. */
+  aged: boolean;
+}
+
+/**
+ * The one answer the v2 card uses for both its label and its range width.
+ * `estimated` is the record's own estimate flag (isEstimatedRunningCost);
+ * `sourceText` the publishable source; `asOf` the latest grosses week.
+ */
+export function v2CostBasis(input: {
+  costMethodology?: string | null;
+  estimated: boolean;
+  sourceText: string | null;
+  asOf: string;
+}): V2CostBasis {
+  if (input.estimated || !input.sourceText) {
+    return { estimated: true, halfWidth: costHalfWidth(input.costMethodology, true), floorQuote: false, aged: false };
+  }
+  const floorQuote = FLOOR_QUOTE_RE.test(input.sourceText);
+  const date = costSourceDate(input.sourceText);
+  let aged = false;
+  if (date) {
+    const limit = new Date(`${date}T12:00:00Z`);
+    limit.setUTCMonth(limit.getUTCMonth() + REPORTED_SOURCE_MAX_AGE_MONTHS);
+    aged = limit.toISOString().slice(0, 10) < input.asOf;
+  }
+  const reportedWidth = costHalfWidth(input.costMethodology, false);
+  const halfWidth = floorQuote || aged ? Math.max(reportedWidth, MIN_ESTIMATE_HALF_WIDTH) : reportedWidth;
+  return { estimated: floorQuote, halfWidth, floorQuote, aged };
+}
+
 /** Same bands as costForWeek's qualityFor(). */
 export function qualityForHalfWidth(halfWidth: number): CostQuality {
   if (halfWidth <= 0.10 + 1e-9) return 'high';
@@ -76,17 +129,17 @@ export function qualityForHalfWidth(halfWidth: number): CostQuality {
 
 /**
  * v1 provider: one break-even (getBreakEven, which already applies the model
- * quality floor) for every week, with the range width set by the record's
- * costMethodology. Swapping in costForWeek later happens behind a shadow diff.
+ * quality floor) for every week, with the range width from v2CostBasis.
+ * Swapping in costForWeek later happens behind a shadow diff.
  */
 export function makeStaticCostProvider(
-  lookup: (showId: string) => { breakEven: number | null; costMethodology?: string | null; estimated: boolean } | null | undefined,
+  lookup: (showId: string) => { breakEven: number | null; halfWidth: number } | null | undefined,
 ): CostProvider {
   return (showId) => {
     const rec = lookup(showId);
     const be = rec?.breakEven;
     if (!rec || be == null || !(be > 0)) return null;
-    const hw = costHalfWidth(rec.costMethodology, rec.estimated);
+    const hw = rec.halfWidth;
     return { cost: be, breakEven: be, low: be * (1 - hw), high: be * (1 + hw), quality: qualityForHalfWidth(hw) };
   };
 }
@@ -439,21 +492,26 @@ export function computeCoverCosts(windowRows: WeekRow[], avgGross: number, break
   };
 }
 
-const BAND_PHRASE: Record<CostBand, string> = {
-  'well-above': 'more than double its weekly cost',
-  above: 'above its weekly cost',
-  near: 'close to its weekly cost',
-  below: 'below its weekly cost',
-};
+/**
+ * How the window's gross compares with cost, from the multiple itself (the
+ * band can be Near on a range that straddles 1.0 while the midpoint is 0.86,
+ * and "close to" would then sit beside "19 straight weeks below cost").
+ */
+export function multiplePhrase(mid: number): string {
+  if (mid >= WELL_ABOVE_MIN) return 'more than double its weekly cost';
+  if (mid >= NEAR_MIN && mid <= 1.05) return 'close to its weekly cost';
+  const pct = Math.round(Math.abs(mid - 1) * 100);
+  return mid > 1 ? `about ${pct}% more than its weekly cost` : `about ${pct}% less than its weekly cost`;
+}
 
 /**
  * One or two plain descriptive sentences. Never causal ("the slump is this
  * show's"): it states the show's numbers and, when known, how the typical
  * show did over the same weeks. Null for nocost / early / closing / closed.
  */
-export function buildStory(s: Pick<ShowBoxOfficeStatus, 'availability' | 'band' | 'streak' | 'series'>): string | null {
-  if (s.availability !== 'ok' || !s.band) return null;
-  const first = `Over the last ${STATUS_WINDOW_WEEKS} weeks it grossed ${BAND_PHRASE[s.band]}.`;
+export function buildStory(s: Pick<ShowBoxOfficeStatus, 'availability' | 'band' | 'multiple' | 'streak' | 'series'>): string | null {
+  if (s.availability !== 'ok' || !s.band || !s.multiple) return null;
+  const first = `Over the last ${STATUS_WINDOW_WEEKS} weeks it grossed ${multiplePhrase(s.multiple.mid)}.`;
   const streak = s.streak;
   if (!streak || streak.weeks < 2) return first;
   const streakWeeks = s.series

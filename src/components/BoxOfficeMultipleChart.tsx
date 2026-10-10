@@ -1,5 +1,6 @@
 import type { MultiplePoint } from '@/lib/box-office-status';
 import { formatCurrency } from '@/lib/formatting';
+import { multipleTicks } from '@/lib/box-office-v2-display';
 
 /**
  * Box Office Scorecard v2 (BRO-5007): weekly gross as a multiple of the show's
@@ -31,7 +32,8 @@ function monthLabel(week: string): string {
 }
 
 function niceMax(v: number, steps: number[]): number {
-  return steps.find((s) => s >= v) ?? Math.ceil(v);
+  // Past the list, round up to an even number so multipleTicks (steps of 2 above 8x) ends on the max.
+  return steps.find((s) => s >= v) ?? Math.ceil(v / 2) * 2;
 }
 
 export default function BoxOfficeMultipleChart({ points, mode, width = DEFAULT_W, height = 190, label }: Props) {
@@ -50,9 +52,7 @@ export default function BoxOfficeMultipleChart({ points, mode, width = DEFAULT_W
   const barW = Math.max(2, Math.min(18, slot * 0.8));
   const x = (i: number) => LEFT + slot * i + (slot - barW) / 2;
 
-  const ticks = mode === 'multiple'
-    ? [0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 8].filter((t) => t <= max && (max <= 3 || t % 1 === 0))
-    : [0, max / 2, max];
+  const ticks = mode === 'multiple' ? multipleTicks(max) : [0, max / 2, max];
   const tickText = (t: number) => (mode === 'multiple' ? `${t}×` : formatCurrency(t));
 
   const months: Array<{ i: number; text: string }> = [];

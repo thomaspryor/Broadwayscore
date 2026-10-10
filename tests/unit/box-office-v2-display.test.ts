@@ -9,6 +9,7 @@ import {
   chartMode,
   costPill,
   coverTiles,
+  multipleTicks,
   shortSource,
   streakText,
   toBoxOfficeV2Card,
@@ -49,12 +50,28 @@ test('streak, trend and chart mode text', () => {
   assert.equal(chartMode([]), 'none');
 });
 
+test('multipleTicks: evenly spaced for every chart max, 1x labeled', () => {
+  assert.deepEqual(multipleTicks(8), [0, 1, 2, 3, 4, 5, 6, 7, 8], 'Hamilton: no skipped 7');
+  assert.deepEqual(multipleTicks(2.5), [0, 0.5, 1, 1.5, 2, 2.5]);
+  assert.deepEqual(multipleTicks(12), [0, 2, 4, 6, 8, 10, 12]);
+  for (const max of [1.5, 2, 2.5, 3, 4, 5, 6, 8, 10, 12]) {
+    const t = multipleTicks(max);
+    const gaps = new Set(t.slice(1).map((v, i) => Math.round((v - t[i]) * 10) / 10));
+    assert.equal(gaps.size, 1, `max ${max}: uneven ticks ${t.join(',')}`);
+    assert.equal(t[t.length - 1], max, `max ${max}: top tick is the axis max`);
+    if (max <= 8) assert.ok(t.includes(1), `max ${max}: 1x unlabeled`);
+  }
+});
+
 test('coverTiles: only when short of cost', () => {
   const base = { avgGross: 703_074, breakEven: 820_976, shortBy: 117_902, ticketNeeded: 125.97, ticketNow: 107.9, capacityNeeded: 97.8, capacityNow: 83.7 };
   const t = coverTiles(base);
   assert.deepEqual(t.map((x) => x.value), ['$118K', '$126 avg ticket', '98% full']);
   assert.deepEqual(coverTiles({ ...base, shortBy: 0 }), []);
-  assert.equal(coverTiles({ ...base, capacityNeeded: 131 })[2].value, 'more than 100% full');
+  assert.equal(coverTiles({ ...base, capacityNeeded: 131 })[2].value, 'more than a full house');
+  // The 'now' figures are 4-week averages, so they never read as this week's tiles.
+  assert.deepEqual(t.map((x) => x.detail).slice(1), ['4-wk avg $108', '4-wk avg 84%']);
+  assert.ok(t.every((x) => !/\bnow\b/i.test(x.detail + x.phoneDetail)), 'no tile says now');
   assert.deepEqual(coverTiles(null), []);
 });
 

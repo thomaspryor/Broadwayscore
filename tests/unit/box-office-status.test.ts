@@ -23,6 +23,8 @@ import {
   qualityForHalfWidth,
   meetsCostQualityFloor,
   makeStaticCostProvider,
+  v2CostBasis,
+  costSourceDate,
   statusWindowGrosses,
   buildMultipleSeries,
   currentStreak,
@@ -30,6 +32,7 @@ import {
   summarizeClosedRun,
   computeShowStatus,
   buildStory,
+  multiplePhrase,
   reconcileWithAtRisk,
   countStatuses,
   COST_METHOD_HALF_WIDTH,
@@ -43,7 +46,7 @@ import {
   type MultiplePoint,
 } from '../../src/lib/box-office-status';
 import { ESTIMATED_COST_METHODS } from '../../src/lib/commercial-display';
-import { getShowsAtRisk, getRunningBoxOfficeV2, getShowBoxOfficeV2 } from '../../src/lib/data-commercial';
+import { getShowsAtRisk, getRunningBoxOfficeV2, getShowBoxOfficeV2, getV2CostBasis } from '../../src/lib/data-commercial';
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -111,9 +114,33 @@ test('estimated cost methods never get the reported (narrowest) width', () => {
   assert.equal(costHalfWidth('producer-confirmed', true), DEFAULT_COST_HALF_WIDTH);
 });
 
+test('v2CostBasis: floor quotes read Estimate, old sources keep Reported with estimate width', () => {
+  const asOf = '2026-10-04';
+  const base = { costMethodology: 'trade-reported', estimated: false, asOf };
+  // Wicked: a lower bound is not a reported figure.
+  const wicked = v2CostBasis({ ...base, sourceText: 'Broadway Journal (Nov 6, 2023): weekly expenses "well over $1 million"' });
+  assert.deepEqual(wicked, { estimated: true, halfWidth: MIN_ESTIMATE_HALF_WIDTH, floorQuote: true, aged: true });
+  for (const q of ['more than $900,000', 'over $1.2 million', 'at least $700K', 'north of $1 million', 'upwards of $800,000', 'in excess of $1M']) {
+    assert.equal(v2CostBasis({ ...base, sourceText: `Variety (Jan 5, 2026): costs ${q}` }).floorQuote, true, q);
+  }
+  // "over" not followed by a figure is not a floor.
+  assert.equal(v2CostBasis({ ...base, sourceText: 'Variety (Jan 5, 2026): averaged $643,000 a week over the year' }).floorQuote, false);
+  // Hamilton: reported, 2018, so estimate width but still labeled reported.
+  const ham = v2CostBasis({ ...base, sourceText: 'Broadway Journal (Apr 25, 2018): fixed expenses averaged $643,000 a week' });
+  assert.deepEqual(ham, { estimated: false, halfWidth: MIN_ESTIMATE_HALF_WIDTH, floorQuote: false, aged: true });
+  // A recent exact figure keeps the method's width; 24 months exactly is not yet aged.
+  assert.equal(v2CostBasis({ ...base, sourceText: 'Forbes (Nov 17, 2025): $480,577 a week' }).halfWidth, 0.05);
+  assert.equal(v2CostBasis({ ...base, sourceText: 'Forbes (Oct 4, 2024): $480,577 a week' }).aged, false);
+  assert.equal(v2CostBasis({ ...base, sourceText: 'Forbes (Oct 3, 2024): $480,577 a week' }).aged, true);
+  // No source or an estimate flag: estimate rules unchanged.
+  assert.deepEqual(v2CostBasis({ ...base, sourceText: null }), { estimated: true, halfWidth: DEFAULT_COST_HALF_WIDTH, floorQuote: false, aged: false });
+  assert.equal(costSourceDate('Gordon Cox interview with producer (June 4, 2024): more than $900,000'), '2024-06-04');
+  assert.equal(costSourceDate('Variety: no date'), null);
+});
+
 test('static provider: no break-even means no cost; quality follows width', () => {
   const p = makeStaticCostProvider((id) =>
-    ({ a: { breakEven: 500_000, costMethodology: 'trade-reported', estimated: false }, b: { breakEven: null, estimated: true }, c: { breakEven: 400_000, costMethodology: 'reddit-standard', estimated: true } } as Record<string, any>)[id]);
+    ({ a: { breakEven: 500_000, halfWidth: 0.05 }, b: { breakEven: null, halfWidth: 0.2 }, c: { breakEven: 400_000, halfWidth: 0.15 } } as Record<string, any>)[id]);
   assert.equal(p('b', '2026-01-04'), null);
   assert.equal(p('zzz', '2026-01-04'), null);
   const a = p('a', '2026-01-04');
@@ -234,7 +261,7 @@ test('computeShowStatus: ok with band, cover costs and a story', () => {
   assert.equal(s.cover?.shortBy, 200_000);
   assert.ok(s.cover?.ticketNeeded && Math.abs(s.cover.ticketNeeded - 1_000_000 / 7000) < 1e-6);
   assert.ok(s.cover?.capacityNeeded && s.cover.capacityNeeded > 100, 'needs more than full at today\'s prices');
-  assert.match(s.story ?? '', /below its weekly cost\./);
+  assert.match(s.story ?? '', /about 20% less than its weekly cost\./);
   assert.equal(s.series.length, 10);
 });
 
@@ -260,7 +287,21 @@ test('story is descriptive: no causal claims', () => {
   const s = computeShowStatus({ ...base, status: 'open', marketMedianByWeek: market, weeks: rows('2026-09-27', Array(30).fill(700_000)) });
   assert.match(s.story ?? '', /below its cost for 30 straight weeks; the typical Broadway show was at or above its cost in 30 of those weeks/);
   assert.doesNotMatch(s.story ?? '', /\bbecause\b|\bslump\b|\bthe season's\b|\bthis show's\b|\bdue to\b/i);
-  assert.equal(buildStory({ availability: 'early', band: null, streak: null, series: [] }), null);
+  assert.equal(buildStory({ availability: 'early', band: null, multiple: null, streak: null, series: [] }), null);
+});
+
+test('story wording follows the multiple, not the band', () => {
+  assert.equal(multiplePhrase(0.86), 'about 14% less than its weekly cost', 'MHE: Near band, but the number is under cost');
+  assert.equal(multiplePhrase(0.95), 'close to its weekly cost');
+  assert.equal(multiplePhrase(1.05), 'close to its weekly cost');
+  assert.equal(multiplePhrase(1.32), 'about 32% more than its weekly cost');
+  assert.equal(multiplePhrase(2.4), 'more than double its weekly cost');
+  // Real data: a story never says close to cost while the midpoint is outside 0.95-1.05.
+  for (const r of getRunningBoxOfficeV2()) {
+    if (!r.story || !r.multiple) continue;
+    const close = /close to its weekly cost/.test(r.story);
+    assert.equal(close, r.multiple.mid >= 0.95 && r.multiple.mid <= 1.05, `${r.slug}: ${r.multiple.mid.toFixed(2)} "${r.story}"`);
+  }
 });
 
 test('reconcileWithAtRisk caps an At Risk show at Near', () => {
@@ -310,9 +351,15 @@ test('real data: a closed show with a short run gets a weekly whole-run summary'
 test('real data: the Reported/Estimate label and the range width come from one flag', () => {
   const rows = getRunningBoxOfficeV2().filter((r) => r.multiple && r.costBasis);
   assert.ok(rows.length >= 10, 'expected statuses for most running shows');
+  const shows = JSON.parse(readFileSync(path.join(ROOT, 'data/commercial.json'), 'utf8')).shows;
+  const asOf = rows.flatMap((r) => r.series.map((p) => p.week)).sort().at(-1)!;
   for (const r of rows) {
     const hw = r.multiple!.mid / r.multiple!.lo - 1;
-    if (r.costBasis === 'reported') assert.ok(hw <= 0.05 + 1e-6, `${r.slug}: Reported but range ±${hw.toFixed(3)}`);
+    const basis = getV2CostBasis(shows[r.slug], asOf);
+    assert.equal(r.costBasis === 'estimate', basis.estimated, `${r.slug}: label and helper disagree`);
+    assert.ok(Math.abs(hw - basis.halfWidth) < 1e-6, `${r.slug}: range ±${hw.toFixed(3)} but helper says ±${basis.halfWidth}`);
+    // A source older than 24 months keeps Reported but never the narrow width.
+    if (r.costBasis === 'reported') assert.ok(hw <= (basis.aged ? MIN_ESTIMATE_HALF_WIDTH : 0.05) + 1e-6, `${r.slug}: Reported but range ±${hw.toFixed(3)}`);
     else assert.ok(hw >= MIN_ESTIMATE_HALF_WIDTH - 1e-6, `${r.slug}: Estimate but range only ±${hw.toFixed(3)}`);
   }
 });

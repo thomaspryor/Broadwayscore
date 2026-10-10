@@ -97,9 +97,11 @@ interface StatCardProps {
   label: string;
   wowChange?: number | null;
   yoyChange?: number | null;
+  /** WoW above YoY in every tile, so a narrow tile never wraps one of them alone. */
+  stackChanges?: boolean;
 }
 
-function StatCard({ value, valueTitle, label, wowChange, yoyChange }: StatCardProps) {
+function StatCard({ value, valueTitle, label, wowChange, yoyChange, stackChanges = false }: StatCardProps) {
   const hasChanges = wowChange !== undefined || yoyChange !== undefined;
 
   return (
@@ -111,7 +113,7 @@ function StatCard({ value, valueTitle, label, wowChange, yoyChange }: StatCardPr
         {label}
       </div>
       {hasChanges && (
-        <div className="flex flex-row flex-wrap justify-center gap-2 mt-1 sm:mt-1.5">
+        <div className={stackChanges ? "flex flex-col items-center gap-0.5 mt-1 sm:mt-1.5" : "flex flex-row flex-wrap justify-center gap-2 mt-1 sm:mt-1.5"}>
           <ChangeIndicator change={wowChange ?? null} label="WoW" />
           <ChangeIndicator change={yoyChange ?? null} label="YoY" />
         </div>
@@ -175,7 +177,7 @@ function TrendSparkline({ points }: { points: { weekEnding: string; gross: numbe
 }
 
 /** The "This Week" tiles (gross, capacity, avg ticket, attendance), shared with Box Office Scorecard v2. */
-export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4' }: { grosses: ShowGrosses; history?: BoxOfficeHistoryStats | null; className?: string }) {
+export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4', stackChanges = false }: { grosses: ShowGrosses; history?: BoxOfficeHistoryStats | null; className?: string; stackChanges?: boolean }) {
   const hasThisWeek = grosses.thisWeek && (grosses.thisWeek.gross !== null || grosses.thisWeek.capacity !== null);
   if (!hasThisWeek || !grosses.thisWeek) return null;
   // Calculate WoW and YoY changes for this week's stats
@@ -210,6 +212,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4' }: { gr
           label="Gross"
           wowChange={grossWoW}
           yoyChange={grossYoY}
+          stackChanges={stackChanges}
         />
         <StatCard
           value={
@@ -225,12 +228,14 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4' }: { gr
           label="Capacity"
           wowChange={capacityWoW}
           yoyChange={capacityYoY}
+          stackChanges={stackChanges}
         />
         <StatCard
           value={grosses.thisWeek.atp ? `$${grosses.thisWeek.atp.toFixed(0)}` : '—'}
           label="Avg Ticket"
           wowChange={atpWoW}
           yoyChange={atpYoY}
+          stackChanges={stackChanges}
         />
         {hasAttendanceTile && (
           <StatCard
@@ -238,6 +243,7 @@ export function BoxOfficeThisWeek({ grosses, history, className = 'mb-4' }: { gr
             label="Attendance"
             wowChange={attendanceWoW}
             yoyChange={attendanceYoY}
+            stackChanges={stackChanges}
           />
         )}
       </div>
