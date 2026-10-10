@@ -1,5 +1,7 @@
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * Pure classification for scripts/triage-review-gap.js (BRO-3153).
  *
@@ -154,7 +156,7 @@ function justifiesUrlResolution(state) {
  * ("theqr"), and the hyphenated slug ("the-qr").
  */
 function outletIdCandidates(outletName, canonicalId) {
-  const name = String(outletName || '');
+  const name = foldDiacritics(String(outletName || ''));
   const ids = new Set();
   if (canonicalId) ids.add(String(canonicalId).toLowerCase());
   const compact = name.toLowerCase().replace(/[^a-z0-9]/g, '');

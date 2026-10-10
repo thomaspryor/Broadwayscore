@@ -203,3 +203,7 @@ test('display name "The QR" finds a review-texts file named theqr--<critic>.json
   const r = run({ [`${SHOW}/theqr--a-critic.json`]: { ...base, outletId: 'theqr', publishDate: '2026-09-12' } }, 'The QR');
   assert.notEqual(r.state, 'true-missed-discovery');
 });
+
+test('outletIdCandidates folds diacritics before stripping', () => {
+  assert.ok(outletIdCandidates('Théâtre Mag', 'theatre-mag').includes('theatremag'));
+});
