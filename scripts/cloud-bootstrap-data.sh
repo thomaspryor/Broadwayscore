@@ -66,6 +66,45 @@ warn_if_no_review_texts() {
   fi
 }
 
+# 0. Fresh data in a warm container (BRO-5008). The cloud environment is a
+# snapshot: $HOME/broadway-scorecard-data was cloned when the snapshot was taken
+# and the step-1 fast exit below never refreshed it, so sessions read core data
+# days old (2026-10-10 read the 10-06 snapshot). The git proxy authenticates the
+# repos attached to the session, so a fetch works whenever the owner attached
+# broadway-scorecard-data. Only our own clean clone on main is ever reset.
+CORE_HOME="$HOME/broadway-scorecard-data"
+refresh_core_data() {
+  [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] || return 0
+  [ -d "$CORE_HOME/.git" ] && [ ! -L "$CORE_HOME" ] || return 0
+  if [ "$(git -C "$CORE_HOME" branch --show-current 2>/dev/null)" != "main" ] \
+     || [ -n "$(git -C "$CORE_HOME" status --porcelain 2>/dev/null)" ]; then
+    log "core data clone has local changes or is off main; not refreshing it"
+  elif run_bounded 90 git -C "$CORE_HOME" fetch -q --depth 1 origin main 2>/dev/null \
+       && git -C "$CORE_HOME" reset -q --hard FETCH_HEAD 2>/dev/null; then
+    :
+  else
+    log "WARN: could not refresh core data (broadway-scorecard-data not attached to this session?)"
+  fi
+  log "core data as of $(git -C "$CORE_HOME" log -1 --format=%cd --date=format:'%Y-%m-%d %H:%M UTC' 2>/dev/null)"
+}
+# A session-attached broadway-review-texts clone (/home/user/<repo>, next to this
+# checkout) gives review texts with no REVIEW_TEXTS_TOKEN: setup-local-data.sh
+# copies its origin/main into data/ the same way the Mac layout has it.
+attached_review_texts() {
+  local d
+  for d in "$(dirname "$ROOT")" /home/user; do
+    [ -d "$d/broadway-review-texts/.git" ] && { echo "$d/broadway-review-texts"; return 0; }
+  done
+  return 1
+}
+refresh_core_data
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -z "$(ls -A data/review-texts 2>/dev/null)" ] \
+   && RT_SRC="$(attached_review_texts)"; then
+  log "copying review texts from the session-attached clone $RT_SRC (about a minute)"
+  REVIEW_TEXTS_SOURCE="$RT_SRC" run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" --all 2>&1 \
+    | grep -E 'ERROR|FATAL|Review texts|files copied|Setup complete' | sed 's/^/[setup-local-data] /' || true
+fi
+
 # 1. Real data already resolvable (symlink or file with content)? Nothing to do.
 if [ -s data/shows.json ]; then
   ensure_notion_client
