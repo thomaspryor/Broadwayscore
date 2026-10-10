@@ -41,17 +41,18 @@ test('every commercial writer checks --help before running', () => {
   assert.deepEqual(missing, [], `add require('./lib/cli-help').exitOnHelp(module); as the first statement of: ${missing.join(', ')}`);
 });
 
+// Only the commercial files: other unit tests in the parallel batch may
+// legitimately write elsewhere under data/.
 function dataMtimes() {
   const out = {};
   const dir = path.join(ROOT, 'data');
-  for (const f of fs.readdirSync(dir)) {
-    const p = path.join(dir, f);
-    try { const st = fs.statSync(p); if (st.isFile()) out[f] = st.mtimeMs; } catch { /* broken link */ }
+  for (const f of fs.readdirSync(dir).filter((n) => NAMES_COMMERCIAL.test(n))) {
+    try { out[f] = fs.statSync(path.join(dir, f)).mtimeMs; } catch { /* broken link */ }
   }
   return out;
 }
 
-test('--help exits 0 with usage and writes nothing under data/', () => {
+test("--help exits 0 with usage and leaves the commercial data files untouched", () => {
   const before = dataMtimes();
   for (const f of writers) {
     const out = execFileSync('node', [path.join(SCRIPTS, f), '--help'], {
