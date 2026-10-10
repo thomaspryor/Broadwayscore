@@ -1,0 +1,96 @@
+name: Affiliate Link Integrity
+
+# Link integrity probe (affiliate hardening 2026-08-03). Validates rendered
+# pxf.io links on live prod pages against src/config/affiliate-platforms.json.
+# SAFETY: the script never requests pxf.io/evyy.net/sjv.io tracking URLs (CI
+# self-clicks could read as click fraud at Impact) — destination checks hit
+# decoded todaytix.com URLs only. Failures route through owner-alert-router
+# (digest tier).
+#
+# Split out of weekly-affiliate-report.yml (BRO-4951, 2026-10-10). As a second
+# job in that workflow, this probe's push failures turned report runs red
+# while the email still went out (08-17, 08-31, 09-07), so the report could
+# not be watched by check-cron-health (it keys on the last SUCCESSFUL run).
+# Now each workflow's conclusion means one thing: here, success = the probe
+# ran and the links passed. Watched in the daily digest by
+# scripts/lib/health-digest-crons.js.
+
+on:
+  schedule:
+    # Every Monday at 9 AM ET (1 PM UTC), alongside the weekly report.
+    - cron: '0 13 * * 1'
+  workflow_dispatch: {}
+
+# Shares data-health-check.yml's concurrency group: both write the same
+# alert-ledger/digest-queue audit files, and push-with-retry's data/audit
+# conflict policy keeps one side wholesale — an overlap would silently
+# drop one job's alert/cooldown state (Codex ship-check finding). Same
+# group name across workflows = one queue; queued, never cancelled.
+concurrency:
+  group: data-health-check
+  cancel-in-progress: false
+
+jobs:
+  link-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      # owner-alert-router shells out to notion-brain.js (@notionhq/client)
+      # for card dispatch — same npm ci requirement as data-health-check.yml.
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Verify affiliate links on production
+        env:
+          CI: 'true'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+        run: node scripts/verify-affiliate-links.js
+
+      # Without this the probe's routeAlert() digest line + cooldown ledger
+      # never leave the runner, so a failure would be silently swallowed —
+      # the exact process-feedback.yml class (output must persist; if:
+      # always() so the FAIL path commits its alert too).
+      # continue-on-error (BRO-4951): a lost push race here turned delivered
+      # weeks red (08-17, 08-31, 09-07). The run's conclusion should mean
+      # "the probe ran and the links are fine" so health-digest-crons.js can
+      # key on it; a lost state push stays visible as this step's annotation.
+      - name: Commit probe result + alert state
+        if: always()
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/affiliate-link-probe.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No probe state changes"
+          else
+            git commit -m "data: affiliate link probe state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Affiliate Link Integrity Probe Failed'
+          description: 'Rendered affiliate links on production failed validation — revenue may be leaking. See run log; replay locally with node scripts/verify-affiliate-links.js'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

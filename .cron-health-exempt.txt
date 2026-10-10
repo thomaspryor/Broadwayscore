@@ -15,6 +15,12 @@
 # Claims of daily-digest coverage must be tagged [digest] and are verified by the audit.
 
 adjudicate-review-queue.yml
+# Weekly affiliate link probe (BRO-4951: split out of weekly-affiliate-report.yml so
+# the revenue email can sit in CRITICAL_CRONS). Not paged: a red week means broken
+# links, which owner-alert-router already reports, so a CRITICAL_CRONS "dead cron"
+# page plus auto-redispatch would be the wrong alarm.
+# [digest] stale-run coverage: scripts/lib/health-digest-crons.js (192h).
+affiliate-link-integrity.yml
 aggregator-url-watcher.yml
 # Self-healing image-fetch backstop (card #1456): a stale run means at-worst
 # a slower drain of the imageless-scored-shows backlog, not user-facing
@@ -155,7 +161,6 @@ ux-walkthrough.yml
 vercel-build-guard.yml
 vercel-demo.yml
 vercel-deploy.yml
-weekly-affiliate-report.yml
 weekly-geo-audit.yml
 weekly-integrity.yml
 weekly-stubhub-validate.yml
