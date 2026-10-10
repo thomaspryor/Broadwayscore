@@ -64,7 +64,12 @@ function main() {
   child.stdout.on('data', take);
   child.stderr.on('data', take);
   let timedOut = false;
-  const timer = setTimeout(() => { timedOut = true; child.kill('SIGTERM'); }, timeoutMin * 60 * 1000);
+  const timer = setTimeout(() => {
+    timedOut = true;
+    child.kill('SIGTERM');
+    // A script that traps SIGTERM must not outlive its time limit.
+    setTimeout(() => child.kill('SIGKILL'), 15000).unref();
+  }, timeoutMin * 60 * 1000);
 
   child.on('close', (code, signal) => {
     clearTimeout(timer);

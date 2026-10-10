@@ -83,6 +83,16 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # The data checkouts clone with the PAT in the remote URL; drop it so no
+      # script can read it back out of .git/config (nothing here pushes).
+      - name: Scrub checkout credentials
+        run: |
+          for d in /tmp/core-data-checkout data/review-texts; do
+            [ -d "$d/.git" ] || continue
+            git -C "$d" remote set-url origin "$(git -C "$d" remote get-url origin | sed -E 's#https://[^@/]+@#https://#')"
+            if git -C "$d" remote get-url origin | grep -q '@'; then echo "::error::credential still in $d remote"; exit 1; fi
+          done
+
       - name: Run script (output sealed to the caller's key)
         env:
           RS_SCRIPT: ${{ inputs.script }}
