@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-10T09:55:30.638Z",
-    "completedAt": "2026-10-10T09:55:42.697Z",
-    "totalReviews": 54245,
-    "processed": 2,
-    "skipped": 54240,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 14001,
-      "output": 723,
-      "total": 38299
-    },
-    "costUsd": 0.07846845000000001,
-    "runId": "38042857998",
-    "errorDetails": [
-      {
-        "showId": "be-more-chill-west-end-2021",
-        "outletId": "british-theatre",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-10T09:55:44.841Z",
-    "completedAt": "2026-10-10T09:55:48.310Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "38042857998",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-10T10:00:17.865Z",
     "completedAt": "2026-10-10T10:01:24.414Z",
     "totalReviews": 54245,
@@ -453866,6 +453823,44 @@
     },
     "costUsd": 0,
     "runId": "38085810211",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-10T21:06:46.422Z",
+    "completedAt": "2026-10-10T21:07:11.035Z",
+    "totalReviews": 55050,
+    "processed": 1,
+    "skipped": 55041,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 38689,
+      "output": 1288,
+      "total": 103180
+    },
+    "costUsd": 0.15015055,
+    "runId": "38086149180",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-10T21:07:12.376Z",
+    "completedAt": "2026-10-10T21:07:14.713Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38086149180",
     "errorDetails": []
   }
 ]
