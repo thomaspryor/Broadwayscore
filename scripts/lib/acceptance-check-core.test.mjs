@@ -86,9 +86,10 @@ test('BRO-4523: zeroPassingTests reads the last summary line, either reporter', 
   assert.equal(zeroPassingTests(''), false);
 });
 
-// BRO-4241: only the shallow clone's "can't deepen" failure falls back to a
-// standalone clone; timeouts, lock contention and pinned shas fail as before.
-test('shouldCloneAfterFetchFailure: only the unshallow failure, never pinned or timed out', () => {
+// BRO-4241: the shallow clone's "can't deepen" failure falls back to a
+// standalone clone; BRO-4956: so does a lock still held after the backoff.
+// Timeouts and pinned shas fail as before.
+test('shouldCloneAfterFetchFailure: unshallow or lock contention, never pinned or timed out', () => {
   const { shouldCloneAfterFetchFailure } = require('./acceptance-check-core.js');
   const unshallow = Object.assign(new Error('Command failed: git fetch --deepen=200 origin main'), { stderr: Buffer.from('fatal: error in object: unshallow 3d8ddac0cc42d7f7e400eafe9bc0405097075768\n') });
   assert.equal(shouldCloneAfterFetchFailure(unshallow, null), true);
@@ -96,7 +97,12 @@ test('shouldCloneAfterFetchFailure: only the unshallow failure, never pinned or 
   const timedOut = Object.assign(new Error('spawnSync git ETIMEDOUT'), { signal: 'SIGTERM', stderr: Buffer.from('unshallow') });
   assert.equal(shouldCloneAfterFetchFailure(timedOut, null), false);
   const lock = Object.assign(new Error('Command failed'), { stderr: Buffer.from("fatal: Unable to create '/x/.git/shallow.lock': File exists.") });
-  assert.equal(shouldCloneAfterFetchFailure(lock, null), false);
+  assert.equal(shouldCloneAfterFetchFailure(lock, null), true);
+  assert.equal(shouldCloneAfterFetchFailure(lock, 'abc123'), false);
+  const refLock = Object.assign(new Error('Command failed'), { stderr: Buffer.from("error: cannot lock ref 'refs/remotes/origin/main': Unable to create '/x/.git/refs/remotes/origin/main.lock': File exists.") });
+  assert.equal(shouldCloneAfterFetchFailure(refLock, null), true);
+  const offline = Object.assign(new Error('Command failed'), { stderr: Buffer.from('fatal: unable to access: Could not resolve host: github.com') });
+  assert.equal(shouldCloneAfterFetchFailure(offline, null), false);
   assert.equal(shouldCloneAfterFetchFailure(null, null), false);
 });
 
@@ -225,5 +231,28 @@ test('BRO-4830: ff-only merge failure on a known-behind clone is unsafe, unknown
     const r = refreshDataClone(f.repo, { memoize: false });
     assert.equal(r.status, 'unsafe');
     assert.match(r.detail, /ff-only merge failed/);
+  } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
+});
+
+// BRO-4956: a ref lock held by another fetch in the same clone (cloud board
+// workers run two lanes in one repo) must not refuse a Done close. After the
+// backoff an unpinned caller gets a standalone clone; a pinned one still throws.
+test('BRO-4956: a held fetch lock falls back to a standalone clone, never for a pinned sha', () => {
+  const f = fixture();
+  try {
+    const other = path.join(f.root, 'other');
+    sh(f.root, 'clone', sh(f.repo, 'remote', 'get-url', 'origin'), other);
+    fs.writeFileSync(path.join(other, 'README'), 'y');
+    sh(other, ...GIT_ID, 'commit', '-am', 'advance'); sh(other, 'push', 'origin', 'main');
+    const lock = path.join(f.repo, '.git', 'refs', 'remotes', 'origin', 'main.lock');
+    fs.writeFileSync(lock, '');
+    const co = makeFreshCheckout({ repo: f.repo, prefix: 'bro4956-co-', lockRetryDelaysMs: [0, 0] });
+    try {
+      assert.equal(co.standalone, true);
+      assert.equal(fs.readFileSync(path.join(co.wt, 'README'), 'utf8'), 'y');
+    } finally { removeCheckout(co); }
+    assert.ok(fs.existsSync(lock), 'the other process\'s lock is never removed');
+    const pinned = sh(f.repo, 'rev-parse', 'HEAD');
+    assert.throws(() => makeFreshCheckout({ repo: f.repo, prefix: 'bro4956-co-', sha: pinned, lockRetryDelaysMs: [0] }), /\.lock': File exists/);
   } finally { fs.rmSync(f.root, { recursive: true, force: true }); }
 });

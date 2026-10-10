@@ -48,6 +48,9 @@ const DEFAULT_REPO = path.join(__dirname, '..', '..');
 const GIT_TIMEOUT_MS = 120000;
 // A depth-1 clone of this repo took ~30s from a cloud session (BRO-4241).
 const CLONE_TIMEOUT_MS = 300000;
+// Backoff before re-trying a fetch whose lock another process holds (~26s
+// worst case, then the standalone clone for an unpinned caller).
+const LOCK_RETRY_DELAYS_MS = [3000, 8000, 15000];
 
 // node_modules/gitignored-core-data live at the MAIN checkout, not a git
 // WORKTREE (every code session in this repo runs from one, CLAUDE.md makes
@@ -56,6 +59,44 @@ const CLONE_TIMEOUT_MS = 300000;
 // resolveInstallRoot(), originally written HERE and promoted there so
 // land-branch.js's callers hit the same fix instead of a second copy
 // (BRO-3907, CLAUDE.md §15).
+
+/**
+ * One `git fetch origin main` in `repo`. Depth-bound the fetch when repo is a
+ * SHALLOW clone (task #420/#466). This is reachable from shallow-checkout
+ * workflows; there an unbounded fetch makes upload-pack send the whole
+ * ~2.1 GB / 165k-commit repo instead of the delta. Anchor the window on the
+ * local boundary commit so `worktree add origin/main` still resolves. A
+ * complete clone (the owner's Mac, the usual case) gets no extra flags —
+ * bounding it would truncate a full clone into a shallow one. Probed on EVERY
+ * call: the lock holder a retry waited out may have been a `fetch --unshallow`
+ * that turned this into a complete clone.
+ */
+function fetchMain(repo) {
+  let isShallow = false;
+  try {
+    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim() === 'true';
+  } catch { /* fail open — treat as complete */ }
+  let oldestCommitEpoch = 0;
+  if (isShallow) {
+    try {
+      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim().split('\n').pop();
+      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim());
+    } catch { /* helper falls back to a bounded --deepen */ }
+  }
+  const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+  // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+}
+
+/** git's "another process holds this lock" failure (shallow.lock, a ref lock). */
+function isLockContention(err) {
+  if (!err || err.signal) return false;
+  return /Unable to create '[^']*\.lock': File exists/.test(`${err.stderr || ''} ${err.message || ''}`);
+}
+
+function sleepMs(ms) {
+  if (ms > 0) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
 
 /**
  * ONE disposable worktree per run: every card verifies against the same
@@ -69,43 +110,31 @@ const CLONE_TIMEOUT_MS = 300000;
  *   "pre-existing").
  * @returns {{dir:string, wt:string, repo:string}}
  */
-function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null } = {}) {
-  // Depth-bound the fetch when repo is a SHALLOW clone (task #420/#466). This
-  // is reachable from shallow-checkout workflows; there an unbounded fetch
-  // makes upload-pack send the whole ~2.1 GB / 165k-commit repo instead of the
-  // delta. Anchor the window on the local boundary commit so
-  // `worktree add origin/main` below still resolves. A complete clone (the
-  // owner's Mac, the usual case) gets no extra flags — bounding it would
-  // truncate a full clone into a shallow one.
-  let isShallow = false;
-  try {
-    isShallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim() === 'true';
-  } catch { /* fail open — treat as complete */ }
-  let oldestCommitEpoch = 0;
-  if (isShallow) {
-    try {
-      const sha = execFileSync('git', ['rev-list', 'HEAD'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim().split('\n').pop();
-      oldestCommitEpoch = Number(execFileSync('git', ['log', '-1', '--format=%ct', sha], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim());
-    } catch { /* helper falls back to a bounded --deepen */ }
-  }
-  const depthArgs = shallowFetchArgs({ isShallow, oldestCommitEpoch });
+function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', sha: pinnedSha = null, lockRetryDelaysMs = LOCK_RETRY_DELAYS_MS } = {}) {
   // Every git call here is TIME-BOXED. A synchronous caller (notion-brain's
   // close-time check) is holding a person or a sync sweep hostage while this
   // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
   // contended lock or a stalled remote — a hang is worse than a failure,
   // because a failure fails OPEN and a hang does not (Codex ship-check P0).
-  try {
-    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-    execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
-  } catch (err) {
-    // BRO-4241: cloud clones can't deepen (`fatal: error in object: unshallow
-    // <sha>`), which made every VERIFY command unverifiable there. When the
-    // caller only needs "origin/main now", clone its tip into a SEPARATE temp
-    // repo. Never fall back to `fetch --depth=1` in `repo` itself: that
-    // rewrites .git/shallow, orphans local main from origin/main and breaks
-    // later rebases and ancestry checks (see shallow-fetch-args.js).
-    if (!shouldCloneAfterFetchFailure(err, pinnedSha)) throw err;
-    return makeStandaloneCheckout({ repo, prefix });
+  // A lock held by another fetch in the same clone (cloud board workers run
+  // the Codex and Claude lanes side by side in one repo) is retried with
+  // backoff; still locked after that, an unpinned caller gets the standalone
+  // clone below instead of a refusal (BRO-4956).
+  for (let attempt = 0; ; attempt++) {
+    try {
+      fetchMain(repo);
+      break;
+    } catch (err) {
+      if (isLockContention(err) && attempt < lockRetryDelaysMs.length) { sleepMs(lockRetryDelaysMs[attempt]); continue; }
+      // BRO-4241: cloud clones can't deepen (`fatal: error in object: unshallow
+      // <sha>`), which made every VERIFY command unverifiable there. When the
+      // caller only needs "origin/main now", clone its tip into a SEPARATE temp
+      // repo. Never fall back to `fetch --depth=1` in `repo` itself: that
+      // rewrites .git/shallow, orphans local main from origin/main and breaks
+      // later rebases and ancestry checks (see shallow-fetch-args.js).
+      if (!shouldCloneAfterFetchFailure(err, pinnedSha)) throw err;
+      return makeStandaloneCheckout({ repo, prefix });
+    }
   }
   // Pin to the SHA we just fetched, not the moving ref: between this fetch and
   // the worktree add, a parallel session's push can advance origin/main, and
@@ -152,10 +181,12 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
 }
 
 /**
- * BRO-4241: fall back to a standalone clone ONLY for the shallow-clone
- * "can't deepen" failure. A timeout, lock contention or an offline host keeps
- * failing fast as before: a 5-minute clone on every ordinary fetch hiccup
- * would stall synchronous close-time callers (Codex-style review finding).
+ * BRO-4241: fall back to a standalone clone for the shallow-clone "can't
+ * deepen" failure, and (BRO-4956) for a lock another fetch in the same clone
+ * still holds after makeFreshCheckout's backoff. A timeout or an offline host
+ * keeps failing fast as before: a 5-minute clone on every ordinary fetch
+ * hiccup would stall synchronous close-time callers (Codex-style review
+ * finding).
  * Never when the caller pinned a sha (the merge-gate baseline needs that
  * exact commit, which a depth-1 clone of main may not contain).
  */
@@ -163,7 +194,7 @@ function shouldCloneAfterFetchFailure(err, pinnedSha) {
   if (pinnedSha) return false;
   if (!err || err.signal) return false; // killed by our own timeout
   const text = `${err.stderr || ''} ${err.message || ''}`;
-  return /unshallow|error in object/i.test(text);
+  return /unshallow|error in object/i.test(text) || isLockContention(err);
 }
 
 /**
@@ -297,4 +328,4 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   return { status: 'fail', detail: last };
 }
 
-module.exports = { makeFreshCheckout, removeCheckout, runVerify, zeroPassingTests, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };
+module.exports = { makeFreshCheckout, removeCheckout, runVerify, zeroPassingTests, shouldCloneAfterFetchFailure, isLockContention, DEFAULT_REPO, CHECK_TIMEOUT_MS };
