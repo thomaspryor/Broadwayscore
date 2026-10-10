@@ -3,12 +3,12 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-09T14:51:57.722Z"
+    "at": "2026-10-10T14:13:20.711Z"
   },
   "venueReaders": {
-    "at": "2026-10-09T14:51:57.722Z",
+    "at": "2026-10-10T14:13:20.711Z",
     "readers": 54,
-    "active": 164,
+    "active": 165,
     "activeCovered": 101,
     "activeDated": 77,
     "uncovered": {
@@ -45,6 +45,11 @@
         "reason": "sells through Ludus behind a Cloudflare JS challenge; the Wix site lists shows as free text"
       },
       {
+        "venue": "The Culture Club",
+        "recentShows": 3,
+        "reason": "no public listing found"
+      },
+      {
         "venue": "St. Luke's Theatre",
         "recentShows": 3,
         "reason": "stlukestheatre.com says the venue closed in January 2021"
@@ -53,6 +58,11 @@
         "venue": "Theater 555",
         "recentShows": 3,
         "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
+      },
+      {
+        "venue": "Theaterlab",
+        "recentShows": 3,
+        "reason": "site returns an empty page to a plain fetch"
       },
       {
         "venue": "Urban Stages",
@@ -65,11 +75,6 @@
         "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
       },
       {
-        "venue": "The Culture Club",
-        "recentShows": 2,
-        "reason": "no public listing found"
-      },
-      {
         "venue": "Peter Jay Sharp Theater",
         "recentShows": 2,
         "reason": "name shared by Playwrights Horizons (read) and Symphony Space"
@@ -78,16 +83,11 @@
         "venue": "spit&vigor's Tiny Baby Blackbox Theatre",
         "recentShows": 2,
         "reason": "Wix events widget returns only the next ~8 dates"
-      },
-      {
-        "venue": "Theaterlab",
-        "recentShows": 2,
-        "reason": "site returns an empty page to a plain fetch"
       }
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-09T14:51:57.722Z",
+    "at": "2026-10-10T14:13:20.711Z",
     "readers": 23,
     "active": 92,
     "activeCovered": 31,
