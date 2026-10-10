@@ -13,6 +13,7 @@
  *   node scripts/merge-model-recoupment.js [--dry-run] [--show=SLUG]
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const os = require('os');

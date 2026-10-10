@@ -8,6 +8,7 @@
  * Usage: node scripts/migrate-fix-git-add-core-data.js [--dry-run]
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 
