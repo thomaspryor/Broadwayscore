@@ -28,6 +28,7 @@ const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./lib/
 const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { findOpeningShows } = require('./lib/find-opening-shows');
 const { findSentRecord } = require('./lib/missed-broadcasts');
 const { sendAlert } = require('./lib/discord-notify');
 
@@ -63,28 +64,6 @@ function ghJSON(cmd) {
     const out = execSync(`gh ${cmd}`, { timeout: 15000, encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
     return JSON.parse(out);
   } catch { return null; }
-}
-
-/**
- * Find shows that opened within the lookback window (includes previews with passed openingDate)
- */
-function findOpeningShows(shows, lookbackDays, showIdFilter) {
-  const now = new Date();
-  const cutoff = new Date(now);
-  cutoff.setDate(cutoff.getDate() - lookbackDays);
-  cutoff.setHours(0, 0, 0, 0);
-
-  return shows.filter(s => {
-    if (showIdFilter && s.id !== showIdFilter) return false;
-    if (!s.openingDate) return false;
-    const d = new Date(s.openingDate);
-    d.setHours(0, 0, 0, 0);
-    // Include: open shows within lookback, or previews whose opening date has passed
-    if (d < cutoff) return false;
-    if (d > now && s.status !== 'previews') return false;
-    if (s.status === 'closed') return false;
-    return true;
-  }).sort((a, b) => new Date(b.openingDate) - new Date(a.openingDate));
 }
 
 /**
