@@ -48,6 +48,7 @@ const {
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { showFormatTitle } = require('./lib/show-format');
+const { priorRunWindows, isCurrentRunReview } = require('./lib/prior-run-sibling');
 
 const USAGE = `send-opening-night-broadcast.js — Creates a Resend DRAFT broadcast when a show opens and has enough reviews.
 
@@ -216,8 +217,12 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
  *   - Negative: <55
  * Keep in sync with src/components/show-cards/ScoreBreakdownBar.tsx.
  */
-function getReviewStats(reviews, showId, market) {
+function getReviewStats(reviews, showId, market, show, shows) {
   const showReviews = (reviews || []).filter(r => r.showId === showId && Number.isFinite(r.assignedScore));
+  // BRO-4954: a returning production carries its earlier run's reviews; count the
+  // ones written about THIS run so the email can say how many are new.
+  const windows = show && Array.isArray(show.priorRuns) && show.priorRuns.length ? priorRunWindows(show, shows) : [];
+  const newReviewCount = windows.length ? showReviews.filter(r => isCurrentRunReview(r, windows)).length : null;
   const goldThreshold = isLondonMarket(market) ? 85 : 83;
   let rave = 0, positive = 0, mixed = 0, negative = 0;
 
@@ -231,6 +236,7 @@ function getReviewStats(reviews, showId, market) {
 
   return {
     reviewCount: showReviews.length,
+    newReviewCount,
     rave,
     positive,
     mixed,
@@ -422,7 +428,7 @@ async function main() {
     } else {
       console.warn(`  ⚠️  Express not used for ${showId} — proceeding with standard readiness gate (pipeline data quality unverified by Express)`);
     }
-    const stats = getReviewStats(reviewsArr, showId, MARKET);
+    const stats = getReviewStats(reviewsArr, showId, MARKET, show, showsArr);
     const showReviews = reviewsArr.filter(r => r.showId === showId && r.assignedScore != null);
     const t1Count = showReviews.filter(r => getOutletTier(r.outletId) === 1).length;
     const t2Count = showReviews.filter(r => getOutletTier(r.outletId) === 2).length;
@@ -501,6 +507,7 @@ async function main() {
       showTitle: show.title,
       score,
       reviewCount,
+      newReviewCount: stats.newReviewCount,
       rave: stats.rave,
       positive: stats.positive,
       mixed: stats.mixed,

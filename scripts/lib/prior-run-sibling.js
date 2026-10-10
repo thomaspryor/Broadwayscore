@@ -292,7 +292,69 @@ function collectCarriedFiles(show, shows, deps) {
   return out;
 }
 
+/** Date windows of every earlier run `show` declares, including dateless id links resolved through the sibling entry. */
+function priorRunWindows(show, shows) {
+  const windows = Array.isArray(show && show.priorRuns) ? show.priorRuns.filter(r => r && r.openingDate) : [];
+  for (const { window } of findPriorRunSiblings(show, shows || [])) {
+    if (window && window.openingDate) windows.push(window);
+  }
+  return windows;
+}
+
+/** True when a review on a returning show covers an earlier run: carried from it, or dated inside one of its windows. */
+function isPriorRunReview(review, windows) {
+  if (review && review.inheritedFromShowId) return true;
+  return !!findMatchingPriorRun(review && review.publishDate, windows);
+}
+
+/** Dated and outside every earlier-run window: a review of THIS run. Undated rows are neither. */
+function isCurrentRunReview(review, windows) {
+  return !!(review && review.publishDate) && !isPriorRunReview(review, windows);
+}
+
+/**
+ * BRO-4954: one review per outlet on a returning production, newest wins. When an
+ * outlet reviewed the return, its earlier-run reviews (carried, or filed on this
+ * entry and dated inside a prior-run window) are superseded. Without this an outlet
+ * that re-reviewed with a different critic counted twice: Into the Woods at the Noel
+ * Coward showed 63 reviews, 12 of them second copies from outlets that also reviewed
+ * the Bridge run. Shows without priorRuns are untouched.
+ *
+ * @param {Array<object>} reviews the rebuild's included reviews (inherited rows included)
+ * @param {Array<object>} shows shows.json entries
+ * @returns {Set<object>} the superseded review rows
+ */
+function supersededPriorRunReviews(reviews, shows) {
+  const superseded = new Set();
+  if (!Array.isArray(reviews) || !Array.isArray(shows)) return superseded;
+  const showById = new Map(shows.map(s => [s.id, s]));
+  const byShow = new Map();
+  for (const r of reviews) {
+    const show = showById.get(r.showId);
+    if (!show || !Array.isArray(show.priorRuns) || show.priorRuns.length === 0) continue;
+    if (!byShow.has(r.showId)) byShow.set(r.showId, []);
+    byShow.get(r.showId).push(r);
+  }
+  const outletKey = r => String(r.outletId || r.outlet || '').trim().toLowerCase();
+  for (const [showId, rows] of byShow) {
+    const windows = priorRunWindows(showById.get(showId), shows);
+    if (windows.length === 0) continue;
+    const currentOutlets = new Set();
+    for (const r of rows) {
+      if (outletKey(r) && isCurrentRunReview(r, windows)) currentOutlets.add(outletKey(r));
+    }
+    for (const r of rows) {
+      if (currentOutlets.has(outletKey(r)) && isPriorRunReview(r, windows)) superseded.add(r);
+    }
+  }
+  return superseded;
+}
+
 module.exports = {
+  priorRunWindows,
+  isPriorRunReview,
+  isCurrentRunReview,
+  supersededPriorRunReviews,
   isReturnOfProduction,
   matchingPriorRunFor,
   buildMultiProdDirectorGuard,
