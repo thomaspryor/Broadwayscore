@@ -3,15 +3,18 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { generateKeyPair, open } = require('./lib/sealed-output.js');
 const { extractOutput } = require('./cloud-run-script.js');
-const { parseArgsJson } = require('./run-script-sealed.js');
+const { parseArgsJson, childEnv, chunk } = require('./run-script-sealed.js');
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function runSealed(env) {
   return spawnSync(process.execPath, ['scripts/run-script-sealed.js'], {
-    encoding: 'utf8', env: { PATH: process.env.PATH, ...env },
+    cwd: ROOT, encoding: 'utf8', env: { PATH: process.env.PATH, ...env },
   });
 }
 
@@ -28,7 +31,8 @@ test('end to end: output is sealed in the log and opens only with the private ke
   const parsed = extractOutput(log);
   assert.equal(parsed.found, true);
   assert.equal(parsed.exitCode, 2);
-  assert.match(open(JSON.parse(parsed.output.trim()), privateKey), /Usage: node scripts\/cloud-run-script\.js/);
+  const blob = parsed.output.split('\n').join('');
+  assert.match(open(JSON.parse(blob), privateKey), /Usage: node scripts\/cloud-run-script\.js/);
 });
 
 test('refuses without a public key, with a bad path, or with non-array args', () => {
@@ -50,4 +54,18 @@ test('parseArgsJson accepts only arrays of strings', () => {
   assert.equal(parseArgsJson('[1]'), null);
   assert.equal(parseArgsJson('{}'), null);
   assert.equal(parseArgsJson('nope'), null);
+});
+
+test('the child never sees files Actions publishes, nor the request inputs', () => {
+  const env = childEnv({ GITHUB_STEP_SUMMARY: '/s', GITHUB_OUTPUT: '/o', GITHUB_ENV: '/e', GITHUB_PATH: '/p',
+    RS_PUBKEY_B64: 'k', RS_ARGS_JSON: '[]', POSTHOG_PERSONAL_API_KEY: 'x', PATH: '/bin' });
+  assert.deepEqual(Object.keys(env).sort(), ['PATH', 'POSTHOG_PERSONAL_API_KEY']);
+});
+
+test('chunk splits a long blob into short lines that join back losslessly', () => {
+  const s = 'a'.repeat(130001);
+  const parts = chunk(s);
+  assert.equal(parts.length, 3);
+  assert.ok(parts.every((p) => p.length <= 60000));
+  assert.equal(parts.join(''), s);
 });

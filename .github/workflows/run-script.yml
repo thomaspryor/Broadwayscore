@@ -14,7 +14,9 @@ name: Run Script (cloud sessions)
 #   interpolated into a shell line), so input text cannot inject shell.
 # - This repo is PUBLIC and so are its logs: the runner encrypts all script output
 #   to the caller's one-time public key (scripts/lib/sealed-output.js) and refuses
-#   to run without one. Nothing else the script prints reaches the log.
+#   to run without one. The child gets no GITHUB_STEP_SUMMARY/OUTPUT/ENV, so it
+#   cannot publish results around the seal. The script path and args_json are
+#   NOT secret (they show in the run): never pass private data as arguments.
 # - No pushes: contents read-only, checkout without persisted credentials. Files
 #   the script writes are discarded with the runner. Data changes go through
 #   execute-approved-fix.yml or their dedicated workflows.
@@ -63,7 +65,8 @@ jobs:
   run:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Script limit (max 55) + npm ci + data checkouts.
+    timeout-minutes: 80
     steps:
       - uses: actions/checkout@v5
         with:

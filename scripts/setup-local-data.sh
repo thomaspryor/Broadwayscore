@@ -88,6 +88,11 @@ if [ "$LINK_ONLY" = 1 ]; then
     echo "ERROR: --link-only needs an existing $CORE_DATA_DIR (run this script once without flags first)."
     exit 1
   fi
+elif [ -n "${REVIEW_TEXTS_SOURCE:-}" ] && [ -d "$CORE_DATA_DIR/.git" ]; then
+  # BRO-5008: review-texts-from-attached-clone mode. The caller (cloud bootstrap)
+  # already refreshed core data only when that clone was clean; never fetch or
+  # reset it here, and never let a failed fetch stop the review-texts copy.
+  echo "Keeping the existing core-data clone at $CORE_DATA_DIR (REVIEW_TEXTS_SOURCE mode)."
 elif [ -d "$CORE_DATA_DIR/.git" ]; then
   echo "Updating existing core-data clone at $CORE_DATA_DIR..."
   # Retry with backoff: this clone is shared across parallel local sessions, so

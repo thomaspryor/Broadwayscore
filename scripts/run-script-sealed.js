@@ -22,6 +22,25 @@ const { seal } = require('./lib/sealed-output');
 const { validateScriptPath, BEGIN, END } = require('./cloud-run-script');
 
 const MAX_OUTPUT = 8 * 1024 * 1024;
+// GitHub's log is line-based; keep each line of the sealed blob short.
+const CHUNK = 60000;
+// Files Actions publishes (step summary) or feeds back into the job: a script
+// writing its results there would bypass the sealing, so the child never sees them.
+const STRIPPED_ENV = ['GITHUB_STEP_SUMMARY', 'GITHUB_OUTPUT', 'GITHUB_ENV', 'GITHUB_PATH', 'GITHUB_STATE'];
+
+function childEnv(env) {
+  const out = { ...env };
+  for (const k of Object.keys(out)) {
+    if (STRIPPED_ENV.includes(k) || k.startsWith('RS_')) delete out[k];
+  }
+  return out;
+}
+
+function chunk(str, size = CHUNK) {
+  const parts = [];
+  for (let i = 0; i < str.length; i += size) parts.push(str.slice(i, i + size));
+  return parts;
+}
 const ROOT = path.join(__dirname, '..');
 
 function refuse(msg) {
@@ -60,15 +79,17 @@ function main() {
     chunks.push(buf.subarray(0, MAX_OUTPUT - size));
     size += buf.length;
   };
-  const child = spawn(cmd, cmdArgs, { cwd: ROOT, env: process.env, stdio: ['ignore', 'pipe', 'pipe'] });
+  // Own process group, so a timeout reaches grandchildren too (npx -> tsx -> node).
+  const child = spawn(cmd, cmdArgs, { cwd: ROOT, env: childEnv(process.env), stdio: ['ignore', 'pipe', 'pipe'], detached: true });
+  const killGroup = (sig) => { try { process.kill(-child.pid, sig); } catch { /* already gone */ } };
   child.stdout.on('data', take);
   child.stderr.on('data', take);
   let timedOut = false;
   const timer = setTimeout(() => {
     timedOut = true;
-    child.kill('SIGTERM');
+    killGroup('SIGTERM');
     // A script that traps SIGTERM must not outlive its time limit.
-    setTimeout(() => child.kill('SIGKILL'), 15000).unref();
+    setTimeout(() => killGroup('SIGKILL'), 15000).unref();
   }, timeoutMin * 60 * 1000);
 
   child.on('close', (code, signal) => {
@@ -78,7 +99,7 @@ function main() {
     if (timedOut) out += `\n[run-script] killed after ${timeoutMin} min`;
     const exitCode = code == null ? (signal ? 128 : 1) : code;
     console.log(BEGIN);
-    console.log(JSON.stringify(seal(out, pub)));
+    for (const line of chunk(JSON.stringify(seal(out, pub)))) console.log(line);
     console.log(END);
     console.log(`=== RUN-SCRIPT EXIT ${exitCode} ===`);
     process.exit(0);
@@ -88,4 +109,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgsJson };
+module.exports = { parseArgsJson, childEnv, chunk };

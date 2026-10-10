@@ -21,6 +21,9 @@
  * The repo is public, so the output travels encrypted to a key pair made for
  * this one run (scripts/lib/sealed-output.js); only this process can read it.
  *
+ * The script path and arguments are NOT encrypted: they show in the public run.
+ * Never pass reader emails, review text or other private data as arguments.
+ *
  * Limits: runs the script as it is on origin/main (land first), never pushes, and
  * discards any files it writes. No RESEND key (email goes through its dedicated
  * workflows, CLAUDE.md §17) and no outlet logins.
@@ -109,6 +112,10 @@ function main() {
   }
   const bad = validateScriptPath(opts.script);
   if (bad) { console.error(bad); return 2; }
+  if (!Number.isInteger(opts.timeoutMin) || opts.timeoutMin < 1 || opts.timeoutMin > 55) {
+    console.error('--timeout must be a whole number of minutes from 1 to 55');
+    return 2;
+  }
   if (!fs.existsSync(path.join(__dirname, '..', opts.script))) {
     console.error(`warning: ${opts.script} is not in this checkout; the run uses origin/main.`);
   }
@@ -121,7 +128,7 @@ function main() {
       '-f', `args_json=${JSON.stringify(opts.args)}`,
       '-f', `review_texts=${opts.reviewTexts}`,
       '-f', `request_id=${requestId}`,
-      '-f', `timeout_minutes=${Math.min(opts.timeoutMin, 55)}`,
+      '-f', `timeout_minutes=${opts.timeoutMin}`,
       '-f', `pubkey_b64=${Buffer.from(publicKey).toString('base64')}`]);
   } catch (err) {
     console.error(`Could not dispatch ${WORKFLOW}: ${(err.stderr || err.message || '').trim()}`);
@@ -133,7 +140,8 @@ function main() {
   if (!run) { console.error('[cloud-run-script] the run never appeared in the Actions list within 3 min.'); return 3; }
   console.error(`[cloud-run-script] run ${run.html_url}`);
 
-  const deadline = Date.now() + opts.timeoutMin * 60 * 1000;
+  // Script limit plus queueing, npm ci and the data checkouts.
+  const deadline = Date.now() + (opts.timeoutMin + 20) * 60 * 1000;
   let status = run.status;
   let conclusion = run.conclusion;
   while (status !== 'completed') {
@@ -159,8 +167,15 @@ function main() {
     console.error(`[cloud-run-script] run ended ${conclusion} before the script printed anything; see ${run.html_url}`);
     return 3;
   }
+  // The runner prints the sealed JSON in chunks; base64 never contains '*', so a
+  // '*' means Actions masked a secret value that happened to occur in it.
+  const blob = parsed.output.split('\n').join('').trim();
+  if (blob.includes('*')) {
+    console.error('[cloud-run-script] GitHub masked part of the encrypted output (a secret value occurred in it by chance); run it again.');
+    return 3;
+  }
   let text;
-  try { text = open(JSON.parse(parsed.output.trim()), privateKey); } catch (err) {
+  try { text = open(JSON.parse(blob), privateKey); } catch (err) {
     console.error(`[cloud-run-script] could not decrypt the output: ${err.message}`);
     return 3;
   }
