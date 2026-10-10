@@ -406,6 +406,46 @@ describe('mergePendingReview', () => {
     assert.equal(merged.shows.giant.confidence, 'high', 'a tie must not be treated as proof of deletion');
     assert.equal(stats.resolvedAsDeletion, 0);
   });
+
+  // BRO-4990: a CI run that checked out before a hold was added wrote a newer
+  // unheld row, and whole-row pickNewer dropped the hold on 13 rows.
+  describe('requiresHumanReview hold is sticky', () => {
+    const held = (at) => ({ designation: 'TBD', researchedAt: at, requiresHumanReview: true, backfill: 'BRO-4990', researchAttempts: 1 });
+    const plain = (at) => ({ designation: 'Flop', researchedAt: at });
+
+    it('newer unheld ours keeps the older remote hold', () => {
+      const { merged } = mergePendingReview({ shows: { x: plain('2026-10-10T23:00:00Z') } }, { shows: { x: held('2026-10-10T20:00:00Z') } });
+      assert.equal(merged.shows.x.designation, 'Flop', 'newer research still wins');
+      assert.equal(merged.shows.x.requiresHumanReview, true);
+      assert.equal(merged.shows.x.backfill, 'BRO-4990');
+    });
+
+    it('newer unheld remote keeps the older ours hold', () => {
+      const { merged } = mergePendingReview({ shows: { x: held('2026-10-10T20:00:00Z') } }, { shows: { x: plain('2026-10-10T23:00:00Z') } });
+      assert.equal(merged.shows.x.designation, 'Flop');
+      assert.equal(merged.shows.x.requiresHumanReview, true);
+    });
+
+    it('keeps the hold on a timestamp tie in both directions', () => {
+      const at = '2026-10-10T20:00:00Z';
+      assert.equal(mergePendingReview({ shows: { x: plain(at) } }, { shows: { x: held(at) } }).merged.shows.x.requiresHumanReview, true);
+      assert.equal(mergePendingReview({ shows: { x: held(at) } }, { shows: { x: plain(at) } }).merged.shows.x.requiresHumanReview, true);
+    });
+
+    it('leaves unheld rows unheld and does not mutate inputs', () => {
+      const o = plain('2026-10-10T23:00:00Z');
+      const r = held('2026-10-10T20:00:00Z');
+      mergePendingReview({ shows: { x: o } }, { shows: { x: r } });
+      assert.equal(o.requiresHumanReview, undefined, 'winner input must not be mutated');
+      const { merged } = mergePendingReview({ shows: { y: plain('2026-10-10T23:00:00Z') } }, { shows: { y: plain('2026-10-10T20:00:00Z') } });
+      assert.equal(merged.shows.y.requiresHumanReview, undefined);
+    });
+
+    it('a held row that remote applied and removed is still released', () => {
+      const { merged } = mergePendingReview({ shows: { x: held('2026-10-10T20:00:00Z') } }, { shows: {}, lastUpdated: '2026-10-10T21:00:00Z' });
+      assert.equal(merged.shows.x, undefined);
+    });
+  });
 });
 
 describe('mergeResearchQueue', () => {

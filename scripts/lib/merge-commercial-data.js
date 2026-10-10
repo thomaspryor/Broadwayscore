@@ -45,8 +45,10 @@
 // Merge rules — commercial-pending-review.json:
 //   * shape: { shows: { [slug]: pendingEntry, ... }, lastUpdated, ... }
 //   * For each slug: pick the entry whose `researchedAt` (or `detectedAt` as
-//     fallback) is newer. Manual-protection fields are not applicable here —
-//     pending entries are throwaway claims awaiting apply.
+//     fallback) is newer. One field is sticky: a requiresHumanReview hold
+//     (BRO-4990 backfill) on either side survives, since only apply removing
+//     the row may release it. A run that checked out before the hold was
+//     added must not drop it by writing a newer unheld row.
 //   * Union of slugs is kept.
 //
 // Merge rules — commercial-research-queue.json:
@@ -64,6 +66,7 @@
 //   * `updatedAt` becomes the newer of the two timestamps.
 
 const { syncBreakevenToCost } = require('./commercial-breakeven');
+const { carryHumanReviewHold } = require('./commercial-apply-gate');
 
 const HUMAN_REVIEWED_COMMERCIAL_FIELDS = [
   'humanReviewedDesignation',
@@ -308,7 +311,8 @@ function mergePendingReview(ours, remote) {
       }
       continue;
     }
-    merged.shows[slug] = pickNewer(o, r, PENDING_ENTRY_DATE_FIELDS);
+    const winner = pickNewer(o, r, PENDING_ENTRY_DATE_FIELDS);
+    merged.shows[slug] = carryHumanReviewHold(winner === o ? r : o, { ...winner });
   }
 
   // Refresh top-level lastUpdated to whichever side is newer
