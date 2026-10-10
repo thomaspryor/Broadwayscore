@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-09T16:57:05.668Z",
+  "generatedAt": "2026-10-10T01:37:51.320Z",
   "phase": "done",
   "days": 21,
   "shows": 62,
   "sources": {
     "theatermania": {
       "queries": 37,
-      "listed": 13,
+      "listed": 14,
       "errors": 0
     },
     "whatsonstage": {
@@ -16,7 +16,7 @@
     },
     "nysr": {
       "queries": 37,
-      "listed": 10,
+      "listed": 11,
       "errors": 0
     },
     "newyorktheater": {
@@ -36,7 +36,27 @@
     }
   },
   "listingTruncated": false,
-  "listed": 83,
-  "ingested": [],
-  "missing": []
+  "listed": 85,
+  "ingested": [
+    {
+      "showId": "good-time-charlie-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/",
+      "ok": false,
+      "error": "Command failed: node /home/runner/work/Broadwayscore/Broadwayscore/scripts/ingest-review-from-url.js --show=good-time-charlie-off-broadway-2026 --url=https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/ --stub-on-failure"
+    },
+    {
+      "showId": "good-time-charlie-off-broadway-2026",
+      "url": "https://nystagereview.com/2026/10/09/good-time-charlie-how-the-times-and-people-can-change/",
+      "ok": true
+    }
+  ],
+  "missing": [
+    {
+      "source": "theatermania",
+      "showId": "good-time-charlie-off-broadway-2026",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/",
+      "date": "2026-10-09"
+    }
+  ]
 }
