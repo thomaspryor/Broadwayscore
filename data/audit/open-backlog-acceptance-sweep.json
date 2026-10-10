@@ -1,18 +1,24 @@
 {
-  "generatedAt": "2026-10-09T13:56:28.634Z",
+  "generatedAt": "2026-10-10T13:10:00.838Z",
   "shadow": true,
-  "checkoutSha": "36c77904de9628a39a7a414e48248ce6489a203f",
-  "totalCandidates": 1408,
-  "eligibleCandidates": 97,
+  "checkoutSha": "3005fa7f7183b853cd015d6e3f0866e67ccf0375",
+  "totalCandidates": 1412,
+  "eligibleCandidates": 92,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 16,
-    "fail": 0,
-    "unverifiable": 14
+    "pass": 19,
+    "fail": 1,
+    "unverifiable": 10
   },
   "alreadyDone": [
+    {
+      "id": "BRO-4971",
+      "name": "Round-up-listed reviews excluded by an automated verdict are never re-checked (5 of 16 were false in BRO-4956)",
+      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-4898",
       "name": "Corpus-wide cleanup: counted reviews that break invariants + flagged-in-window recovery worklist (from the revival spot check)",
@@ -29,6 +35,18 @@
       "id": "BRO-4887",
       "name": "Into the Woods Broadway pages: wrong 2022 opening date, false flags, wrong bylines, misfiled reviews (revival promo)",
       "verifyCmd": "node --test tests/unit/revival-promo-itw-broadway.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4878",
+      "name": "National tour pages show wrong information: 1 page problem(s) (schedule-orphan)",
+      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-4877",
+      "name": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
+      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
       "detail": null
     },
     {
@@ -110,19 +128,26 @@
       "detail": null
     }
   ],
-  "failing": [],
-  "unverifiable": [
+  "failing": [
     {
       "id": "BRO-4930",
       "name": "Adopt the 8 outlet tier moves from the 2026-10 audit (owner approved)",
-      "verifyCmd": "node --test tests/unit/outlet-tiers-adopted-2026-10.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/outlet-tiers-adopted-2026-10.test.mjs"
+      "verifyCmd": "node --test scripts/verify-outlet-tiers-published.test.mjs",
+      "detail": "TAP version 13\n# Subtest: every published review from a 2026-10 moved outlet shows its adopted tier\nnot ok 1 - every published review from a 2026-10 moved outlet shows its adopted tier\n  ---\n  duration_ms: 135.010315\n  location: '/tmp/open-backlog-sweep-Jv5VjH/main/scripts/verify-outlet-tiers-published.test.mjs:26:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    6/1797 published reviews still c"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-4966",
+      "name": "push-core-data: bound each git push with a timeout so a transport hang falls into the retry loop",
+      "verifyCmd": "node --test tests/unit/push-core-data-push-timeout.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/push-core-data-push-timeout.test.mjs"
     },
     {
-      "id": "BRO-4924",
-      "name": "Dirty Dancing tour + BWW review roundup never reached the site (no Broadway parent; roundup mis-matches the West End show)",
-      "verifyCmd": "node --test scripts/test-tour-parent-upcoming.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/test-tour-parent-upcoming.test.mjs"
+      "id": "BRO-4960",
+      "name": "Critics' Take blurb outlives its reviews for up to 7 days after a wrongShow/removal (prune only runs weekly)",
+      "verifyCmd": "node --test tests/unit/critic-consensus-prune-only.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/critic-consensus-prune-only.test.mjs"
     },
     {
       "id": "BRO-4911",
@@ -155,24 +180,6 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/revival-promo-older-broadway.test.mjs"
     },
     {
-      "id": "BRO-4878",
-      "name": "National tour pages show wrong information: 1 page problem(s) (schedule-orphan)",
-      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/tour-page-audit.test.mjs"
-    },
-    {
-      "id": "BRO-4877",
-      "name": "National tour pages show wrong information: 1 page problem(s) (poster-missing)",
-      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/tour-page-audit.test.mjs"
-    },
-    {
-      "id": "BRO-4876",
-      "name": "National tour pages show wrong information: 1 page problem(s) (closed-tour-has-future-stops)",
-      "verifyCmd": "node --test scripts/lib/tour-page-audit.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/tour-page-audit.test.mjs"
-    },
-    {
       "id": "BRO-4835",
       "name": "Lane inline scoring follow-ups: lane workflow with sparse shallow checkout, CI wiring of realFetchPorts and the ensemble scorer, first live fetch check",
       "verifyCmd": "node --test scripts/lib/opening-night-lane-inline-score.test.mjs",
@@ -189,12 +196,6 @@
       "name": "P1: update-show-status closes a just-opened show via prior-production ShowScore URL + stale todaytixId",
       "verifyCmd": "node --test scripts/lib/update-show-status.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/update-show-status.test.mjs"
-    },
-    {
-      "id": "BRO-4549",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 133181ms (timeout — no verdict)"
     }
   ]
 }
