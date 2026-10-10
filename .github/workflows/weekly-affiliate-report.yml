@@ -6,9 +6,18 @@ on:
     - cron: '0 13 * * 1'
   workflow_dispatch: {}
 
+# One job only: this run's conclusion means "the email was delivered" (the
+# send step exits 1 when Resend returns no email id), so check-cron-health's
+# CRITICAL_CRONS can watch it. The link-integrity probe that used to be a
+# second job here lives in affiliate-link-integrity.yml (BRO-4951): its push
+# failures made delivered weeks look red, and the 2026-10-05 report was lost
+# to a never-started job with nothing watching.
 jobs:
   report:
     runs-on: ubuntu-latest
+    # A normal run takes under a minute. Without a cap a hung provider call or
+    # curl would hold the revenue email for GitHub's 6h default.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
 
@@ -27,7 +36,10 @@ jobs:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
         run: |
-          node scripts/affiliate-report.js --days 7 --html > /tmp/report.html 2>/tmp/report-stderr.txt
+          # stderr goes to a file to keep it out of the HTML body; print it on
+          # failure so the run log says why the email was not sent.
+          node scripts/affiliate-report.js --days 7 --html > /tmp/report.html 2>/tmp/report-stderr.txt \
+            || { cat /tmp/report-stderr.txt; exit 1; }
           node scripts/affiliate-report.js --days 7 > /tmp/report.txt 2>&1
           cat /tmp/report.txt
 
@@ -47,7 +59,7 @@ jobs:
             --arg html "$(cat /tmp/report.html)" \
             --arg text "$(cat /tmp/report.txt)" \
             '{from: $from, to: $to, subject: $subject, html: $html, text: $text}' \
-          | curl -s -X POST "https://api.resend.com/emails" \
+          | curl -s --max-time 60 -X POST "https://api.resend.com/emails" \
             -H "Authorization: Bearer $RESEND_API_KEY" \
             -H "Content-Type: application/json" \
             -d @-)
@@ -62,79 +74,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Weekly Affiliate Report Failed'
-          severity: 'warning'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-
-  # Link integrity probe (affiliate hardening 2026-08-03). ISOLATED job — the
-  # Monday report job has no `needs` on it, so a probe failure can never block
-  # the revenue email. Validates rendered pxf.io links on live prod pages
-  # against src/config/affiliate-platforms.json. SAFETY: the script never
-  # requests pxf.io/evyy.net/sjv.io tracking URLs (CI self-clicks could read
-  # as click fraud at Impact) — destination checks hit decoded todaytix.com
-  # URLs only. Failures route through owner-alert-router (digest tier).
-  link-integrity:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-    # Shares data-health-check.yml's concurrency group: both write the same
-    # alert-ledger/digest-queue audit files, and push-with-retry's data/audit
-    # conflict policy keeps one side wholesale — an overlap would silently
-    # drop one job's alert/cooldown state (Codex ship-check finding). Same
-    # group name across workflows = one queue; queued, never cancelled.
-    concurrency:
-      group: data-health-check
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Checkout core data
-        uses: ./.github/actions/checkout-core-data
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version: '20'
-
-      # owner-alert-router shells out to notion-brain.js (@notionhq/client)
-      # for card dispatch — same npm ci requirement as data-health-check.yml.
-      - name: Install dependencies
-        run: npm ci --prefer-offline --no-audit --no-fund
-
-      - name: Verify affiliate links on production
-        env:
-          CI: 'true'
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-        run: node scripts/verify-affiliate-links.js
-
-      # Without this the probe's routeAlert() digest line + cooldown ledger
-      # never leave the runner, so a failure would be silently swallowed —
-      # the exact process-feedback.yml class (output must persist; if:
-      # always() so the FAIL path commits its alert too).
-      - name: Commit probe result + alert state
-        if: always()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/affiliate-link-probe.json 2>/dev/null || true
-          git add data/audit/alert-ledger.json 2>/dev/null || true
-          git add data/audit/alert-digest-queue.json 2>/dev/null || true
-          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
-          if git diff --staged --quiet; then
-            echo "No probe state changes"
-          else
-            git commit -m "data: affiliate link probe state [skip ci]"
-            bash scripts/lib/push-with-retry.sh
-          fi
-
-      - name: Notify on failure
-        if: failure()
-        uses: ./.github/actions/notify-failure
-        with:
-          title: 'Affiliate Link Integrity Probe Failed'
-          description: 'Rendered affiliate links on production failed validation — revenue may be leaking. See run log; replay locally with node scripts/verify-affiliate-links.js'
           severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
