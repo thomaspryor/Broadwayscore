@@ -42,6 +42,7 @@ const path = require('path');
 const { discoverWetRoundupRows } = require('./wet-roundup-discover');
 const { discoverTrRoundupHtml } = require('./tr-roundup-discover');
 const { discoverLboRoundupHtml } = require('./lbo-roundup-discover');
+const { discoverBestOfTheatreRoundup, extractBestOfTheatreRows } = require('./bestoftheatre-roundup-discover');
 const { normalizeOutlet } = require('./review-normalization');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -111,6 +112,7 @@ async function getWeReferenceRows(show, opts = {}) {
     westendtheatre: { found: false, rows: 0, emptyParse: false, error: null },
     'theatre-reviews': { found: false, rows: 0, emptyParse: false, error: null },
     'lbo-roundup': { found: false, rows: 0, emptyParse: false, error: null },
+    bestoftheatre: { found: false, rows: 0, emptyParse: false, error: null },
   };
   const rows = [];
 
@@ -133,7 +135,7 @@ async function getWeReferenceRows(show, opts = {}) {
   // stats.titleMatchedPosts disambiguates — the latter is WET template drift and
   // must be flagged emptyParse (pre-mortem secondary scenario: parser drift made
   // the detector vacuously green while a real opening sat at 6/21 reviews).
-  const wetStats = {}; const trStats = {}; const lboStats = {};
+  const wetStats = {}; const trStats = {}; const lboStats = {}; const botStats = {};
   try {
     const wet = await discoverWetRoundupRows(show, { ...opts, stats: wetStats });
     if (wet) {
@@ -180,6 +182,24 @@ async function getWeReferenceRows(show, opts = {}) {
   } catch (e) {
     sources['lbo-roundup'].error = e.message;
     log(`    WE-ref LBO error: ${(e.message || '').slice(0, 80)}`);
+  }
+
+  // Best of Theatre (BRO-4956) — the fullest WE round-up: every review it
+  // found, with a direct link, reviewer and stars, small outlets included.
+  try {
+    const bot = await discoverBestOfTheatreRoundup(show, { ...opts, stats: botStats });
+    if (bot) {
+      sources.bestoftheatre.found = true;
+      const parsed = extractBestOfTheatreRows(bot.html);
+      sources.bestoftheatre.rows = parsed.length;
+      if (parsed.length === 0) sources.bestoftheatre.emptyParse = true;
+      // No post date at all = cannot prove this run: report-only, never ingested.
+      const priorRun = !bot.postDate || !isCurrentRunRoundup(bot.postDate, show);
+      for (const r of parsed) push('bestoftheatre', bot.url, priorRun, r);
+    }
+  } catch (e) {
+    sources.bestoftheatre.error = e.message;
+    log(`    WE-ref BoT error: ${(e.message || '').slice(0, 80)}`);
   }
 
   // The Stage — archive-only, `passive`: absence is expected (cookie-gated live;
@@ -231,6 +251,7 @@ async function getWeReferenceRows(show, opts = {}) {
   sources.westendtheatre.fetchErrors = wetStats.fetchErrors || 0;
   sources['theatre-reviews'].fetchErrors = trStats.fetchErrors || 0;
   sources['lbo-roundup'].fetchErrors = lboStats.fetchErrors || 0;
+  sources.bestoftheatre.fetchErrors = botStats.fetchErrors || 0;
   const allSourcesFailed = Object.values(sources).filter((s) => !s.passive).every(
     (s) => !s.found && (s.error !== null || (s.fetchErrors || 0) > 0)
   );

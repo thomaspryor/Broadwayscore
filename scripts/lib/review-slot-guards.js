@@ -169,9 +169,119 @@ function shouldRetryDatelessHoldFetch(d, nowMs = Date.now()) {
   return !Number.isFinite(last) || nowMs - last > DATELESS_HOLD_RETRY_COOLDOWN_MS;
 }
 
+// Lowercased url path with every non-alphanumeric run as one hyphen, framed by
+// hyphens so a phrase can be matched on whole-token boundaries.
+function _urlPathSlug(url) {
+  if (!url || typeof url !== 'string') return '';
+  let p;
+  try { p = new URL(url).pathname; } catch { return ''; }
+  return `-${p.toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}-`;
+}
+
+function _phraseSlug(s) {
+  if (!s || typeof s !== 'string') return '';
+  return s.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    .replace(/['’]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+// "The Other Palace - Main Theatre" -> "other-palace"; "Duke of York's Theatre" -> "duke-of-yorks".
+function _venueSlug(venue) {
+  if (!venue || typeof venue !== 'string') return '';
+  const head = venue.split(/\s[-–—]\s|,/)[0];
+  return _phraseSlug(head).replace(/^the-/, '').replace(/-(theatre|theater)$/, '');
+}
+
+// Same article under a cosmetic url variant: http/https, www, query string,
+// trailing slash, an /amp suffix, thetimes.co.uk vs thetimes.com. A query is
+// kept only where it IS the article id (post.cfm?p=29317, ?id=, ?ID=).
+function _articleKey(url) {
+  let u;
+  try { u = new URL(url); } catch { return String(url || '').toLowerCase(); }
+  const host = u.hostname.toLowerCase().replace(/^(www|amp|m)\./, '').replace(/^thetimes\.co\.uk$/, 'thetimes.com');
+  const p = u.pathname.toLowerCase().replace(/\/amp\/?$/, '').replace(/\/+$/, '');
+  const id = ['p', 'id', 'ID', 'articleid'].map((k) => u.searchParams.get(k)).find(Boolean);
+  return `${host}${p}${id ? `?${id}` : ''}`;
+}
+
+function _slugHas(pathSlug, phrase) {
+  return !!phrase && phrase.length >= 4 && pathSlug.includes(`-${phrase}-`);
+}
+
+/**
+ * True when an incoming review should take over an outlet+critic slot held by
+ * a flagged record about another show or production (BRO-4956).
+ *
+ * The slot is the filename <outlet>--<critic>.json. One critic reviewing two
+ * productions that both land in this show's folder (London Box Office's
+ * Stuart King on Juniper Blood in 2025 and Blood of my Blood in 2026) used to
+ * lose the second review for good: detectIngestCollision refused it while it
+ * was dateless, and once dated the writer merged it into the flagged file and
+ * refused with "Stale merge". The flagged file has nothing to keep for this
+ * show, so it is retired to the graveyard and the incoming review is written
+ * clean.
+ *
+ * The incoming review must be provably this production:
+ *   - dated inside opening-30d .. opening+365d (the existing in-window rule), or
+ *   - dateless, its url naming this show's full title where the flagged file's
+ *     url does not (a different show), or naming this show's venue where the
+ *     flagged file's url names neither (a different production of the title).
+ * A dated review outside the window, or any url-level other-production signal,
+ * never takes the slot, so the Beaches 2026-04-22 protection holds: a prior
+ * production's review cannot clear a flag by arriving under a new url.
+ *
+ * @param {object} existing  flagged record already on disk
+ * @param {{url: string, publishDate?: string, outletId?: string, criticNamed?: boolean}} incoming
+ *   criticNamed false = the incoming byline is unresolved (Unknown)
+ * @param {object} show      shows.json row (title, venue, openingDate, ...)
+ * @returns {boolean}
+ */
+function flaggedSlotSupersededBy(existing, incoming, show) {
+  if (!existing || typeof existing !== 'object' || !incoming || !show) return false;
+  if (existing.wrongProduction !== true && existing.wrongShow !== true) return false;
+  if (existing._locked === true || existing.urlManualOverride === true || existing.duplicateOf) return false;
+  if (existing.wrongProductionManualClear || existing.wrongShowManualClear) return false;
+  // A human confirmed this flag: never undo it by moving the file.
+  if (existing.humanReviewedWrongProduction === true || existing.wrongProductionOverride === true) return false;
+  const inUrl = incoming.url;
+  if (!inUrl || !/^https?:\/\//i.test(inUrl)) return false;
+  if (existing.url && (_sameUrl(existing.url, inUrl) || _articleKey(existing.url) === _articleKey(inUrl))) return false;
+  // Same date as the flagged record: likely the same (re-dated) article, not a second review.
+  if (incoming.publishDate && existing.publishDate && String(incoming.publishDate).slice(0, 10) === String(existing.publishDate).slice(0, 10)) return false;
+  if (_classify(inUrl).ok !== true || isAggregatorPageUrl(inUrl)) return false;
+  // A flagged non-review page keeps its own in-place url swap (BRO-4430/4431).
+  if (isStaleNonReviewSlot(existing, inUrl)) return false;
+  const { otherProductionSignal, URL_SIGNALS } = require('./other-production-signal');
+  if (otherProductionSignal({ url: inUrl, outletId: incoming.outletId }, show, { only: URL_SIGNALS })) return false;
+  if (require('./review-normalization').reviewSlugNamesDifferentShow(inUrl, show.title)) return false;
+
+  const inSlug = _urlPathSlug(inUrl);
+  const exSlug = _urlPathSlug(existing.url);
+  const title = _phraseSlug(show.title);
+
+  const openingMs = show.openingDate ? Date.parse(show.openingDate) : NaN;
+  if (incoming.publishDate) {
+    const pd = require('./date-utils').toDateMs(incoming.publishDate);
+    if (Number.isFinite(pd) && Number.isFinite(openingMs)) {
+      const inWindow = pd >= openingMs - 30 * DAY_MS && pd <= openingMs + 365 * DAY_MS;
+      // An unresolved byline proves nothing about identity (BRO-3182), so it
+      // also needs the url to name this show.
+      return inWindow && (incoming.criticNamed !== false || _slugHas(inSlug, title));
+    }
+  }
+
+  if (!_slugHas(inSlug, title)) return false;
+  // The flagged url names the show at all (even by a short title or one token):
+  // same title, so only the venue can tell the productions apart.
+  const exNamesShow = _slugHas(exSlug, title) || require('./review-normalization').urlSlugNamesShow(existing.url, show.title);
+  if (!exNamesShow) return true;
+  const venue = _venueSlug(show.venue);
+  return _slugHas(inSlug, venue) && !_slugHas(exSlug, venue);
+}
+
 module.exports = {
   isAggregatorPageUrl,
   isStaleNonReviewSlot,
+  flaggedSlotSupersededBy,
   urlOwnedByOtherCritic,
   isDatelessRevivalHold,
   shouldRetryDatelessHoldFetch,

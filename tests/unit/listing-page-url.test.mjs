@@ -159,3 +159,19 @@ test('review-guards.js is wired: explainExclusion calls listingPageUrlReason aft
   const hatch = src.indexOf('data.listingPageUrlManualClear !== true', fnStart);
   assert.ok(hatch > blocked && hatch < listingReturn, 'the escape hatch must guard the listingPageUrl return');
 });
+
+test('BRO-4956: a path ending in a reviews/press hub segment is a hub on any host', () => {
+  for (const u of [
+    'https://www.timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews',
+    'https://letterboxd.com/film/shakespeares-globe-as-you-like-it/reviews/',
+    'https://www.theaterinthenow.com/search/label/Review',
+    'https://www.example-producer.com/shows/x/press-quotes',
+  ]) assert.ok(listingPageUrlReason(u), u);
+  for (const u of [
+    'https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth',
+    'https://www.newyorkcitytheatre.com/reviews/1234',
+    'https://www.timeout.com/london/theatre/an-oak-tree-review',
+    'https://www.londontheatre1.com/reviews/rent-at-tom-stoppard-theatre-review/',
+    'https://example.com/review',
+  ]) assert.equal(listingPageUrlReason(u), null, u);
+});

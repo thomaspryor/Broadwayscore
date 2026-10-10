@@ -71,6 +71,21 @@ test('release: refetched clean body releases the flag', () => {
   assert.equal(shouldReleasePriorRunRepublish(flagged({ fullText: 'Slam Frank opened at the Orpheum.' }), show), true);
 });
 
+// BRO-4956: Time Out re-dates its evergreen review url when a show returns.
+const OAK = { id: 'an-oak-tree-off-west-end-2026', title: 'An Oak Tree', previewsStartDate: '2026-10-07', openingDate: '2026-10-08', category: 'off-west-end' };
+const TIMEOUT_CARRY = 'Review An Oak Tree 4 out of 5 stars Theatre, West End The Other Palace, Victoria 9 Oct 15 Nov 2026 Recommended Wednesday 23 September 2026 Written by Tim Bano Time Out says This review is from 2025. An Oak Tree returns yet again for 2026 as part of a season at The Other Palace.';
+
+test('Time Out "This review is from <prior year>" carry-forward is flagged', () => {
+  const r = detectPriorRunRepublish({ text: TIMEOUT_CARRY, show: OAK });
+  assert.equal(r.flag, true);
+  assert.equal(r.reason, 'review-from-prior-year');
+});
+
+test('"This review is from" the current year is not flagged', () => {
+  const t = TIMEOUT_CARRY.replace('from 2025', 'from 2026');
+  assert.equal(detectPriorRunRepublish({ text: t, show: OAK }).flag, false);
+});
+
 test('release: operator decisions and other reasons are never released', () => {
   const clean = { fullText: 'Slam Frank opened at the Orpheum.' };
   for (const extra of [{ wrongProductionManualClear: true }, { wrongProductionOverride: true }, { humanReviewedWrongProduction: true }, { allowEarlyDate: true }, { wrongProductionReason: 'dateless-revival' }]) {

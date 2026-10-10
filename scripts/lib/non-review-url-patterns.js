@@ -418,6 +418,18 @@ const LISTING_PAGE_URL_PATTERNS = [
   // and a score read off a text-pattern star. Real Express reviews sit under
   // /entertainment/theatre/<id>/<slug>, so anchor the path to the bare section.
   { host: /(^|\.)express\.co\.uk$/, path: /^\/entertainment\/theatre\/?$/i, reason: 'section-index-page' },
+  // Any host (BRO-4956): a path that ENDS in a reviews/press hub segment is a
+  // page collecting many critics, never one critic's review. Found scored live:
+  // timcrouchtheatre.co.uk/shows-2/an-oak-tree/reviews (the playwright's quote
+  // page, scored 93 as "Lyn Gardner"), letterboxd.com/film/<film>/reviews/,
+  // designmynight.com/<city>/whats-on/<show>/review. Corpus check 2026-10-10: every
+  // review-text file (52,663) matching this is a hub, listing or film page. Real reviews carry a slug
+  // or id after the segment (/reviews/<slug>), which this never matches.
+  // At least one segment before the hub word: a bare host/review is too
+  // ambiguous to call (and is every test fixture's placeholder review url).
+  { host: /./, path: /\/[^/]+\/(?:reviews?|press|press-quotes|critics-say|what-the-critics-say)\/?$/i, reason: 'review-hub-page' },
+  // Blogger label search (theaterinthenow.com/search/label/Review).
+  { host: /./, path: /\/search\/label\//i, reason: 'blog-label-index' },
 ];
 
 /**

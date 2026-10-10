@@ -11,7 +11,8 @@
  * (in-window) and every date guard passed. A date can never catch this: the page
  * really was republished. Only the body says which production it reviews.
  *
- * Fires only on explicit "this review is based on the <year> ..." basis phrases
+ * Fires only on explicit "this review is based on the <year> ..." basis phrases,
+ * a "This review is from <year>." carry-forward note (Time Out),
  * or a "<show> was at: <venue> ... through <date>" header whose year/date
  * precedes the current production. A passing mention of a past run in a genuine
  * review ("after its 2025 run at the Asylum") does not match. Shows with a
@@ -30,6 +31,11 @@ const MONTH_NUM = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug:
 const BASIS_YEAR_RE = new RegExp(
   '\\b(?:our|this|my|the)\\s+review\\s+(?:is|was)\\s+based\\s+on\\s+(?:the\\s+|a\\s+)?((?:19|20)\\d{2})\\s+' +
   '(?:[A-Za-z\\-]+\\s+){0,2}?(?:performance|production|run|staging|engagement|season|revival|premiere|presentation|showing)\\b', 'i');
+
+// Time Out keeps one evergreen url per title and re-dates it when a show
+// returns, leaving "This review is from 2025." above the old text (An Oak Tree,
+// The Other Palace 2026 carried Tim Bano's 2025 Young Vic review; BRO-4956).
+const REVIEW_FROM_YEAR_RE = /\bthis\s+review\s+(?:is|was)\s+(?:originally\s+)?(?:from|(?:first\s+)?published\s+in|written\s+in)\s+((?:19|20)\d{2})\b/i;
 
 // "reviewed/seen at the <year> ..." is too loose; only the explicit basis form above is used for years.
 // "<Title> was at: <Venue> ... through <Month D, YYYY>" / "...closing <Month D, YYYY>"
@@ -60,6 +66,11 @@ function detectPriorRunRepublish({ text, show }) {
   const basis = head.match(BASIS_YEAR_RE);
   if (basis && +basis[1] < earliestYear) {
     return { flag: true, reason: 'based-on-prior-year-production', evidence: basis[0] };
+  }
+
+  const fromYear = head.match(REVIEW_FROM_YEAR_RE);
+  if (fromYear && +fromYear[1] < earliestYear) {
+    return { flag: true, reason: 'review-from-prior-year', evidence: fromYear[0] };
   }
 
   const wasAt = head.match(WAS_AT_THROUGH_RE);

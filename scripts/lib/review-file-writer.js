@@ -37,7 +37,7 @@ const {
 const laneBypasses = (...args) => require('./opening-night-lane/trust-model').laneBypasses(...args);
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
-const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-guards');
+const { isStaleNonReviewSlot, isAggregatorPageUrl, flaggedSlotSupersededBy } = require('./review-slot-guards');
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
@@ -1072,6 +1072,43 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
+  // --- Superseded flagged slot (BRO-4956) ---
+  // The outlet+critic slot holds a flagged record about another show or
+  // production (LBO's 2025 Juniper Blood review in the Blood of my Blood
+  // folder), and the incoming review is provably this production. Merging
+  // would refuse ("Stale merge") or inherit the flag, and the real review was
+  // lost. Retire the flagged file to the graveyard and write the review clean.
+  // A manual entry carries its own clear-and-protect fields and merges onto the flagged file by design.
+  // The flagged file moves out first so the write below lands clean, and moves
+  // back if any later guard refuses the write (nothing is ever lost).
+  if (!laneRedirected && input.url && !options._supersedeRetired
+      && fields.wrongProductionManualClear !== true && fields.wrongProductionManualClear !== 'true') {
+    const _supShow = options.show || _getShowById(showId);
+    const _incoming = {
+      url: input.url, publishDate: fields.publishDate || input.publishDate, outletId,
+      criticNamed: !!(criticName && criticName.toLowerCase() !== 'unknown'),
+    };
+    const _target = existing && existing.data ? existing
+      : (fs.existsSync(filepath) ? (() => { try { return { path: filepath, data: JSON.parse(fs.readFileSync(filepath, 'utf8')) }; } catch { return null; } })() : null);
+    // Only the canonical slot: a flagged file found elsewhere leaves the canonical
+    // name to whatever already sits there.
+    if (_supShow && _target && _target.data && (_target.path === filepath || !fs.existsSync(filepath))
+        && flaggedSlotSupersededBy(_target.data, _incoming, _supShow)) {
+      if (dryRun) return { action: 'would-supersede', filepath: _target.path, supersededUrl: _target.data.url || null };
+      const grave = _retireSupersededSlot(reviewTextsDir, showId, _target, input.url);
+      let res;
+      try {
+        res = createOrMergeReviewFile(showId, input, { ...options, _supersedeRetired: true });
+      } catch (e) {
+        _restoreSupersededSlot(grave, _target);
+        throw e;
+      }
+      if (!res || res.action === 'skipped' || res.guardRefused) _restoreSupersededSlot(grave, _target);
+      else res.supersededTo = grave;
+      return res;
+    }
+  }
+
   if (!laneRedirected && existing && existing.data) {
     return _mergeIntoExisting(existing.path, existing.data, { showId, outletId, input, fields, criticName, dryRun, onMerge });
   }
@@ -1310,6 +1347,35 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   }
 
   return { action: 'new', filepath };
+}
+
+/**
+ * Move a superseded flagged record to <review-texts>/_superseded-misattributed/
+ * (the graveyard every corpus sweep skips), stamped with what replaced it.
+ * Never deletes: the record stays recoverable.
+ */
+function _retireSupersededSlot(reviewTextsDir, showId, target, byUrl) {
+  const graveyard = path.join(reviewTextsDir, '_superseded-misattributed');
+  fs.mkdirSync(graveyard, { recursive: true });
+  let dest = path.join(graveyard, `${showId}--${path.basename(target.path)}`);
+  if (fs.existsSync(dest)) dest = dest.replace(/\.json$/, `--${Date.now()}.json`);
+  const record = {
+    ...target.data,
+    supersededAt: new Date().toISOString(),
+    supersededBy: byUrl,
+    supersededReason: 'flagged-slot-superseded: flagged record about another show/production held the outlet+critic slot of a review of this production (BRO-4956)',
+  };
+  fs.writeFileSync(dest, JSON.stringify(record, null, 2) + '\n');
+  fs.unlinkSync(target.path);
+  console.warn(`  ↪ Superseded flagged slot ${showId}/${path.basename(target.path)} (${target.data.url || 'no url'}) → graveyard; writing ${byUrl}`);
+  return dest;
+}
+
+/** Undo _retireSupersededSlot when the replacing write was refused. */
+function _restoreSupersededSlot(graveyardPath, target) {
+  if (!fs.existsSync(target.path)) fs.writeFileSync(target.path, JSON.stringify(target.data, null, 2) + '\n');
+  try { fs.unlinkSync(graveyardPath); } catch { /* already gone */ }
+  console.warn(`  ↩ Replacing write refused; restored ${path.basename(target.path)}`);
 }
 
 // "Broadway World" / "The Arts Desk" read as a byline: an outlet's own name

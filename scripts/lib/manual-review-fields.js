@@ -231,7 +231,7 @@ function detectIngestCollision(opts = {}) {
 
   const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
   const { hasClearBreadcrumbValue } = require('./flag-contradiction');
-  const { isStaleNonReviewSlot } = require('./review-slot-guards');
+  const { isStaleNonReviewSlot, flaggedSlotSupersededBy } = require('./review-slot-guards');
   const normalizedOutlet = normalizeOutlet(outletId);
   const normalizedCritic = criticName && criticName.toLowerCase() !== 'unknown'
     ? normalizeCritic(criticName)
@@ -290,6 +290,12 @@ function detectIngestCollision(opts = {}) {
     // Mary TheaterMania review was refused 3x against a flagged cast-announcement
     // file. The writer replaces such a file's url (review-slot-guards.js).
     if (!urlMatches && isStaleNonReviewSlot(data, url)) continue;
+
+    // SUPERSEDED FLAGGED SLOT (BRO-4956): a flagged record about another show
+    // or production (LBO's Juniper Blood review in the Blood of my Blood
+    // folder) cannot hold the slot against a review that is provably this
+    // production. The writer retires the flagged file and writes clean.
+    if (!urlMatches && show && flaggedSlotSupersededBy(data, { url, publishDate, outletId: normalizedOutlet, criticNamed: !!normalizedCritic }, show)) continue;
 
     // OTHER-PRODUCTION CARVE-OUT (BRO-4271): an existing file that is provably
     // about a different production (London edition url, London-only outlet, a
