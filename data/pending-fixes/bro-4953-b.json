@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4953-b",
   "planId": "0be82c8c-1ce5-4653-9cb1-6f2523a17da7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T01:00:00.000Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "Excerpt reads 'In Gary, his characters succeed. Gary pulls off his Fooling.': Jesse Oxfeld's 2019 review of gary-a-sequel-to-titus-andronicus-2019, scraped from that show's BWW roundup cached under the 2026 Titus Andronicus."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T01:45:08.638Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titus-andronicus-off-broadway-2026/nysr--jesse-oxfeld.json wrongShow: null -> true"
+    }
+  ]
 }
