@@ -849,18 +849,6 @@
     "queuedAt": "2026-10-10T03:20:15.733Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38025118970",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-10T04:50:40.753Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:a-ghost-in-your-ear-off-broadway-2026",
     "title": "Review gap — \"A Ghost In Your Ear\" missing 3 cited review(s)",
     "description": "A Ghost In Your Ear (a-ghost-in-your-ear-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-ghost-in-your-ear-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1092,5 +1080,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T07:14:29.295Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38034931850",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T07:41:34.369Z"
   }
 ]
