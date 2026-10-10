@@ -1,5 +1,21 @@
 [
   {
+    "startedAt": "2026-10-10T00:32:42.325Z",
+    "completedAt": "2026-10-10T00:32:45.751Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "38009196927",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-10-10T01:20:43.123Z",
     "completedAt": "2026-10-10T01:21:22.975Z",
     "totalReviews": 53132,
@@ -697465,35 +697481,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-10T10:49:08.213Z",
-    "completedAt": "2026-10-10T10:49:23.516Z",
-    "totalReviews": 54263,
-    "processed": 1,
-    "skipped": 54258,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 17755,
-      "output": 832,
-      "total": 49677
-    },
-    "costUsd": 0.09228985,
-    "runId": "38045965213",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
-        "outletId": "london-box-office",
-        "error": "Cannot read properties of undefined (reading 'rejection')"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-10T10:49:25.566Z",
-    "completedAt": "2026-10-10T10:49:29.250Z",
+    "startedAt": "2026-10-10T10:51:23.217Z",
+    "completedAt": "2026-10-10T10:51:23.236Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -697504,7 +697493,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "38045965213",
+    "runId": "38046109413",
     "errorDetails": []
   }
 ]
