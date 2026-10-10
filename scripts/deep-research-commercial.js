@@ -74,6 +74,10 @@ const MAX_SHOWS = parseInt(flags['max-shows']) || 10;
 const BUDGET = parseFloat(flags['budget']) || 15;
 const FORCE = flags['force'] === true;
 const USE_QUEUE = flags['queue'] === true;
+// --hold-for-review (BRO-4990): treat every target like a backfill row, held
+// in pending review with commercial.json untouched, even when the show
+// already has a commercial.json record (e.g. a closed show stuck at TBD).
+const HOLD_ALL = flags['hold-for-review'] === true;
 const WEEKLY_SPEND_CAP = 50; // dollars (upgraded for deep research models)
 const MAX_RESEARCH_ATTEMPTS = 3;
 const TIME_BUDGET_MIN = parseFloat(flags['time-budget-min']) > 0 ? parseFloat(flags['time-budget-min']) : 0;
@@ -771,7 +775,7 @@ async function main() {
       continue;
     }
 
-    const isBackfill = backfillSlugSet.has(slug);
+    const isBackfill = HOLD_ALL || backfillSlugSet.has(slug);
     const priorPending = pendingAtStart[slug];
     if (isBackfill && !FORCE && !OUT_PATH && priorPending && (priorPending.researchAttempts || 0) >= MAX_RESEARCH_ATTEMPTS) {
       console.log(`  ${slug} — max backfill research attempts (${priorPending.researchAttempts}) reached, skipping`);
