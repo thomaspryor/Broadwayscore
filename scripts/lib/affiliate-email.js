@@ -190,6 +190,7 @@ function buildAffiliateReportHtml(stats) {
         <table width="100%" cellpadding="0" cellspacing="0">
           ${sr(`New (${newPct}%)`, `${m.newCount} \u00B7 ${htmlMoney(m.newPayout)} commission`)}
           ${sr(`Existing (${100 - newPct}%)`, `${m.existingCount} \u00B7 ${htmlMoney(m.existingPayout)} commission`)}
+          ${m.promoZeroCount > 0 ? sr('Promo-code orders ($0 by contract)', `${m.promoZeroCount} \u00B7 ${htmlMoney(m.promoZeroRevenue)} in sales`) : ''}
           ${m.rateBumpUplift > 0 ? sr('Rate-bump uplift vs old 2%', `+${htmlMoney(m.rateBumpUplift)}`, 'pos') : ''}
         </table>
       `);

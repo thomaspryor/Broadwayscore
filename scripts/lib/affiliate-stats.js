@@ -24,6 +24,7 @@ const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z'); // TodayTix 2% -> 5% cu
 // from what the site actually renders — `revenueReporting: true` covers the
 // StubHub case (links hidden 2026-04-11, historical clicks still affiliate).
 const AFFILIATE_PLATFORM_CONFIG = require('../../src/config/affiliate-platforms.json').platforms;
+const { isPromoCodeZeroPayout } = require('./affiliate-anomaly');
 const AFFILIATE_PLATFORMS = new Set(
   Object.entries(AFFILIATE_PLATFORM_CONFIG)
     .filter(([, cfg]) => cfg.revenueReporting)
@@ -232,6 +233,7 @@ function analyzeTodaytixMix(ttActions) {
   let newCount = 0, existingCount = 0, unknownCount = 0;
   let newRevenue = 0, existingRevenue = 0;
   let newPayout = 0, existingPayout = 0;
+  let promoZeroCount = 0, promoZeroRevenue = 0;
   let uplift = 0;
 
   const near = (r, t) => Math.abs(r - t) < 0.2;
@@ -240,6 +242,11 @@ function analyzeTodaytixMix(ttActions) {
     const amount = parseFloat(a.Amount || 0);
     const payout = parseFloat(a.Payout || 0);
     if (amount <= 0) { unknownCount++; continue; }
+    if (isPromoCodeZeroPayout(a)) {
+      promoZeroCount++;
+      promoZeroRevenue += amount;
+      continue;
+    }
     const ratePct = (payout / amount) * 100;
     const isNew = near(ratePct, 5) || near(ratePct, 2);
     const isExisting = near(ratePct, 1);
@@ -263,6 +270,7 @@ function analyzeTodaytixMix(ttActions) {
     newCount, existingCount, unknownCount,
     newRevenue, existingRevenue,
     newPayout, existingPayout,
+    promoZeroCount, promoZeroRevenue,
     rateBumpUplift: uplift,
   };
 }

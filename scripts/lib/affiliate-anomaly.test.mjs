@@ -7,6 +7,7 @@ const {
   checkHandoffBreak,
   checkBotDivergence,
   checkPayoutAnomaly,
+  isPromoCodeZeroPayout,
   checkDeadMan,
   checkZeroConversionCeiling,
   findOutlierDays,
@@ -88,6 +89,68 @@ test('payout anomaly trips on multiple $0-payout conversions', () => {
   ];
   const res = checkPayoutAnomaly({ actions, asOf: '2026-08-02', days: 7 });
   assert.equal(res.verdict, 'anomalous');
+});
+
+// BRO-4967 (readout 2026-10-10): every $0 order in 44 days carried a PromoCode
+// (contract blacklist), vs 1 of 81 paid orders. Those must not read as broken.
+test('promo-code $0 orders are explained, not anomalous, and do not drag the take-rate', () => {
+  const paid = Array.from({ length: 6 }, (_, i) => ({
+    EventDate: `2026-10-0${i + 1}T10:00:00-04:00`, SubId1: `p${i}`, Amount: 300, Payout: 9,
+  }));
+  const promo = Array.from({ length: 9 }, (_, i) => ({
+    EventDate: `2026-10-0${(i % 7) + 1}T12:00:00-04:00`, SubId1: 'bulk', Amount: 600, Payout: 0, PromoCode: 'SAVE',
+  }));
+  const res = checkPayoutAnomaly({ actions: [...paid, ...promo], asOf: '2026-10-07', days: 7 });
+  assert.equal(res.verdict, 'healthy');
+  assert.equal(res.zeroPayoutCount, 0);
+  assert.equal(res.promoZeroCount, 9);
+  assert.match(res.reason, /9 promo-code order\(s\) at \$0 by contract/);
+  assert.equal(res.takeRate, 0.03);
+});
+
+test('a $0 order WITHOUT a promo code still counts as anomalous', () => {
+  const paid = Array.from({ length: 4 }, (_, i) => ({
+    EventDate: `2026-10-0${i + 1}T10:00:00-04:00`, SubId1: `p${i}`, Amount: 300, Payout: 9,
+  }));
+  const unexplained = [1, 2].map((d) => ({ EventDate: `2026-10-0${d}T13:00:00-04:00`, SubId1: `u${d}`, Amount: 250, Payout: 0, PromoCode: '' }));
+  const promo = [{ EventDate: '2026-10-03T13:00:00-04:00', SubId1: 'x', Amount: 250, Payout: 0, PromoCode: 'NOFEE' }];
+  const res = checkPayoutAnomaly({ actions: [...paid, ...unexplained, ...promo], asOf: '2026-10-07', days: 7 });
+  assert.equal(res.verdict, 'anomalous');
+  assert.equal(res.zeroPayoutCount, 2);
+  assert.match(res.reason, /2 conversions with a real sale amount but \$0\.00 payout/);
+  assert.match(res.reason, /1 promo-code order\(s\)/);
+});
+
+test('promo-code orders do not count toward the minimum sample', () => {
+  const actions = [
+    { EventDate: '2026-10-02T10:00:00-04:00', SubId1: 'p', Amount: 300, Payout: 9 },
+    ...Array.from({ length: 9 }, (_, i) => ({ EventDate: `2026-10-0${(i % 6) + 1}T12:00:00-04:00`, SubId1: 'b', Amount: 600, Payout: 0, PromoCode: 'SAVE' })),
+  ];
+  const res = checkPayoutAnomaly({ actions, asOf: '2026-10-07', days: 7 });
+  assert.equal(res.verdict, 'not-applicable');
+  assert.match(res.reason, /only 1 conversions/);
+});
+
+test('isPromoCodeZeroPayout needs a real sale, a $0 payout and a non-blank code', () => {
+  assert.equal(isPromoCodeZeroPayout({ Amount: '100', Payout: '0', PromoCode: 'SAVE' }), true);
+  assert.equal(isPromoCodeZeroPayout({ Amount: '100', Payout: '0', PromoCode: '  ' }), false);
+  assert.equal(isPromoCodeZeroPayout({ Amount: '100', Payout: '3', PromoCode: 'SAVE' }), false);
+  assert.equal(isPromoCodeZeroPayout({ Amount: '0', Payout: '0', PromoCode: 'SAVE' }), false);
+});
+
+test('weekly report mix counts promo-code $0 orders on their own line, not as unknown', () => {
+  const { analyzeTodaytixMix } = require('./affiliate-stats.js');
+  const m = analyzeTodaytixMix([
+    { Amount: '100', Payout: '5', EventDate: '2026-10-05' },
+    { Amount: '100', Payout: '1', EventDate: '2026-10-05' },
+    { Amount: '600', Payout: '0', PromoCode: 'SAVE', EventDate: '2026-10-05' },
+    { Amount: '50', Payout: '0', EventDate: '2026-10-05' },
+  ]);
+  assert.equal(m.newCount, 1);
+  assert.equal(m.existingCount, 1);
+  assert.equal(m.promoZeroCount, 1);
+  assert.equal(m.promoZeroRevenue, 600);
+  assert.equal(m.unknownCount, 1, 'a $0 order with no promo code stays unexplained');
 });
 
 test('payout anomaly trips on a collapsed take-rate (contract change shape)', () => {
