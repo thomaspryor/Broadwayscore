@@ -149,7 +149,7 @@ function sanityCheck(slug, show, comm) {
 // that only the new side calls recouped.
 const newFalseRecouped = rows.filter((r) => r.truth[1] < 100 && r.newPct >= 100 && !(r.oldPct >= 100));
 const falseRecoupedLine = `New false recouped vs truth: ${newFalseRecouped.length}${newFalseRecouped.length ? ` (${newFalseRecouped.map((r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`).join(', ')}); blocks any switch` : ''}`;
-const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped):${insane.length}${insane.length ? ` (${insane.map((r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`).join(', ')})` : ''}`;
+const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped): ${insane.length}${insane.length ? ` (${insane.map((r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`).join(', ')})` : ''}`;
 const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported only, ${skipped.inference} inference rows left out (--truth=all adds them)` : 'reported and inference'}`;
 
 const summary = summarize(rows);
