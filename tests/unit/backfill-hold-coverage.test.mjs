@@ -61,3 +61,18 @@ describe('backfill human-review hold coverage', () => {
     assert.deepEqual(bad, [], `wrap these pending.shows[...] replacements in carryHumanReviewHold(prev, next): ${bad.join(', ')}`);
   });
 });
+
+// Owner exception 2026-10-10: closed shows already TBD in commercial.json get
+// researched with --hold-for-review. Without it the non-backfill path bumps
+// researchAttempts in commercial.json and leaves the pending row unheld.
+describe('--hold-for-review', () => {
+  it('forces the held path in the script and is wired through the workflow', () => {
+    const src = fs.readFileSync(path.join(SCRIPTS, 'deep-research-commercial.js'), 'utf8');
+    assert.match(src, /const HOLD_ALL = flags\['hold-for-review'\] === true;/);
+    assert.match(src, /const isBackfill = HOLD_ALL \|\| backfillSlugSet\.has\(slug\);/);
+    assert.match(src, /if \(!DRY_RUN && !isBackfill\) \{/, 'commercial.json writes must stay behind !isBackfill');
+    const wf = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'deep-research-commercial.yml'), 'utf8');
+    assert.match(wf, /hold_for_review:/);
+    assert.match(wf, /inputs\.hold_for_review \}\}" = "true" \]; then\s+ARGS="\$ARGS --hold-for-review"/);
+  });
+});

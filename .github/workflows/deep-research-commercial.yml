@@ -31,6 +31,11 @@ on:
         required: false
         type: boolean
         default: false
+      hold_for_review:
+        description: 'Hold every result for human review; never touch commercial.json'
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       shows:
@@ -107,6 +112,9 @@ jobs:
 
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
+          fi
+          if [ "${{ inputs.hold_for_review }}" = "true" ]; then
+            ARGS="$ARGS --hold-for-review"
           fi
 
           echo "Running: node scripts/deep-research-commercial.js $ARGS"
