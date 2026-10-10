@@ -89,7 +89,21 @@ export default function BoxOfficeV2Tables({ thisWeek, allTime, cells, noEstimate
           <p className="text-gray-400 text-sm mb-4">
             Ranked by gross. Click &ldquo;Vs. its cost&rdquo; to rank by how each show is doing against its own costs instead.
           </p>
-          <ThisWeekTable data={thisWeek} extraColumns={columns} hideColumns={['attendance']} />
+          <ThisWeekTable
+            data={thisWeek}
+            extraColumns={columns}
+            hideColumns={['attendance']}
+            titleNote={(slug) => {
+              // Phone: Status scrolls off to the right, so repeat it under the title.
+              const c = cells[slug] ?? noEstimate;
+              return (
+                <span className={`sm:hidden block mt-0.5 text-xs font-semibold ${TONE_TEXT[c.tone]}`}>
+                  {c.label}
+                  {c.multiple && <span className="text-gray-400 font-normal"> · {c.multiple}</span>}
+                </span>
+              );
+            }}
+          />
           <p className="text-xs text-gray-500 mt-3">
             Status uses each show&apos;s average over the last 4 weeks against its weekly cost; the small range reflects how solid
             that cost figure is. &ldquo;Below Cost&rdquo; only when the whole range is under 1×. The arrow is the 4-week trend.

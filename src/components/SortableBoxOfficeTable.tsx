@@ -146,9 +146,11 @@ interface ThisWeekTableProps {
   data: ShowGrossesData[];
   extraColumns?: ExtraColumn[];
   hideColumns?: BaseColumn[];
+  /** Optional line under the title (e.g. a phone-only summary of columns that scroll off). */
+  titleNote?: (slug: string) => React.ReactNode;
 }
 
-export function ThisWeekTable({ data, extraColumns = [], hideColumns = [] }: ThisWeekTableProps) {
+export function ThisWeekTable({ data, extraColumns = [], hideColumns = [], titleNote }: ThisWeekTableProps) {
   const [sortColumn, setSortColumn] = useState<ThisWeekColumn>('gross');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const shown = (c: BaseColumn) => !hideColumns.includes(c);
@@ -285,8 +287,11 @@ export function ThisWeekTable({ data, extraColumns = [], hideColumns = [] }: Thi
                 <td className="py-3 px-2 sm:px-4 min-w-0 align-middle">
                   <Link href={`/show/${item.show.slug}`} className="flex items-center gap-3 group">
                     <ShowThumbnail show={item.show} />
-                    <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
-                      {item.show.title}
+                    <span className="block min-w-0">
+                      <span className="text-white group-hover:text-brand transition-colors font-medium text-sm sm:text-base leading-tight line-clamp-2">
+                        {item.show.title}
+                      </span>
+                      {titleNote?.(item.show.slug)}
                     </span>
                   </Link>
                 </td>
