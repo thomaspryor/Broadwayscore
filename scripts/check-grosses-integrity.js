@@ -31,7 +31,7 @@ const { checkGrossesIntegrity } = require('./lib/grosses-integrity');
 
 const ALERT_RULES = new Set([
   'week-key-not-sunday', 'week-missing', 'week-overdue', 'total-mismatch', 'show-dropout', 'gross-outside-run',
-  'duplicate-gross', 'zero-perf-gross', 'negative-value', 'wow-jump',
+  'gross-unplaced', 'duplicate-gross', 'zero-perf-gross', 'negative-value', 'wow-jump',
 ]);
 const CONDITION_PREFIX = 'grosses-integrity:';
 const RULE_HINTS = {

@@ -26,6 +26,9 @@
  *                         Crystal 860) or another run of the title (Cabaret
  *                         2024 weeks on cabaret-2014, BRO-5016). Window:
  *                         scripts/lib/grosses-run-window.js
+ *   gross-unplaced        a row for the checked week set aside in
+ *                         history._unplacedRows: no listed production ran
+ *                         then (usually a stale closing or previews date)
  *   duplicate-gross       the same show's gross identical to the dollar in
  *                         two weeks
  *   flat-gross-run        3+ consecutive weeks within 0.5% of each other
@@ -256,6 +259,18 @@ function checkGrossOutsideRun(history, shows, week, nowMs = Date.now()) {
   return out;
 }
 
+/**
+ * Rows the writers set aside for `week` because no listed production's run
+ * held it (history._unplacedRows). For a recent week that is nearly always a
+ * stale shows.json date (an unrecorded extension, a provisional previews
+ * date); the row goes back on the next save once the date is fixed.
+ */
+function checkGrossUnplaced(history, week) {
+  return Object.entries((history._unplacedRows || {})[week] || {})
+    .filter(([, entry]) => isRow(entry))
+    .map(([slug]) => ({ rule: 'gross-unplaced', week, slug, detail: `row for week ending ${week} matched ${slug} but no listed production of it ran then; set aside in _unplacedRows` }));
+}
+
 /** Per-slug rows in week order: [{ week, entry }]. */
 function rowsBySlug(history) {
   const map = new Map();
@@ -405,6 +420,7 @@ function checkGrossesIntegrity(history, shows, { weeks, missingSince, now } = {}
     ...checkTotalRecorded(history, keys[keys.length - 1]),
     ...scope.flatMap((w) => checkDropouts(history, shows, w)),
     ...scope.flatMap((w) => checkGrossOutsideRun(history, shows, w, now ? new Date(now).getTime() : Date.now())),
+    ...scope.flatMap((w) => checkGrossUnplaced(history, w)),
     ...checkRepeatedGrosses(history),
     ...checkCappedCapacity(history),
     ...checkRowShape(history, scope),
@@ -426,6 +442,7 @@ module.exports = {
   checkTotalRecorded,
   checkDropouts,
   checkGrossOutsideRun,
+  checkGrossUnplaced,
   checkRepeatedGrosses,
   checkCappedCapacity,
   checkRowShape,

@@ -13,8 +13,8 @@ const { rekeyRowsToRuns, repairGrossesHistory } = require('../../scripts/lib/gro
 const NOW = Date.parse('2026-10-10');
 const t = (title) => ({ title });
 
-const cabaret2014 = { id: 'cabaret-2014', slug: 'cabaret-2014', title: 'Cabaret', category: 'broadway', previewsStartDate: '2014-03-21', openingDate: '2014-04-24', closingDate: '2015-03-29' };
-const cabaret2024 = { id: 'cabaret-2024', slug: 'cabaret-2024', title: 'Cabaret at the Kit Kat Club', category: 'broadway', previewsStartDate: '2024-04-01', openingDate: '2024-04-21', closingDate: '2025-09-21' };
+const cabaret2014 = { id: 'cabaret-2014', slug: 'cabaret-2014', title: 'Cabaret', category: 'broadway', originalProductionId: 'cabaret-1987', previewsStartDate: '2014-03-21', openingDate: '2014-04-24', closingDate: '2015-03-29' };
+const cabaret2024 = { id: 'cabaret-2024', slug: 'cabaret-2024', title: 'Cabaret at the Kit Kat Club', category: 'broadway', originalProductionId: 'cabaret-1987', previewsStartDate: '2024-04-01', openingDate: '2024-04-21', closingDate: '2025-09-21' };
 const cabaretWE = { id: 'cabaret-at-the-kit-kat-club-west-end-2021', slug: 'cabaret-at-the-kit-kat-club-west-end-2021', title: 'Cabaret at the Kit Kat Club', category: 'west-end', openingDate: '2021-12-16' };
 const romeo2013 = { id: 'romeo-and-juliet-2013', slug: 'romeo-and-juliet-2013', title: 'Romeo and Juliet', category: 'broadway', previewsStartDate: '2013-08-24', openingDate: '2013-09-19', closingDate: '2013-12-08' };
 const romeo2024 = { id: 'romeo-juliet-2024', slug: 'romeo-juliet-2024', title: 'Romeo + Juliet', category: 'broadway', previewsStartDate: '2024-09-26', openingDate: '2024-10-24', closingDate: '2025-02-16' };
@@ -22,13 +22,22 @@ const andJuliet = { id: 'and-juliet-2022', slug: 'and-juliet-2022', title: '& Ju
 const SHOWS = [cabaret2014, cabaret2024, cabaretWE, romeo2013, romeo2024, andJuliet];
 
 test('sameWork: a revival under a longer title is the same work; a fragment or a different word is not', () => {
-  assert.equal(W.sameWork(t('Cabaret'), t('Cabaret at the Kit Kat Club')), true);
-  assert.equal(W.sameWork(t("Dancin'"), t("Bob Fosse's Dancin'")), true);
+  assert.equal(W.sameWork(cabaret2014, cabaret2024), true); // linked by originalProductionId below
   assert.equal(W.sameWork(t('Porgy and Bess'), t("The Gershwins' Porgy and Bess")), true);
   assert.equal(W.sameWork(t('Romeo and Juliet'), t('Romeo + Juliet')), true);
   assert.equal(W.sameWork(t('Romeo and Juliet'), t('& Juliet')), false);
   assert.equal(W.sameWork(t('Hair'), t('Hairspray')), false);
   assert.equal(W.sameWork(t('Doubt'), t('Doubt: A Parable')), true);
+  // Ship-check false positives: one word is too weak; "on" is not noise.
+  for (const [x, y] of [['Annie', 'Annie Get Your Gun'], ['Once', 'Once Upon a Mattress'], ['Home', 'Fun Home'], ['Big', 'Big Fish'], ['Our Town', 'On the Town'], ['Play On!', 'Slave Play'], ['Mean Girls', 'School Girls; Or, The African Mean Girls Play']]) {
+    assert.equal(W.sameWork(t(x), t(y)), false, `${x} / ${y}`);
+  }
+  // Two originals are two works whatever the titles; one title is one work.
+  assert.equal(W.sameWork({ title: 'SIX', id: 'six', isRevival: false }, { title: 'Six Degrees of Separation', id: 'six-degrees', isRevival: false }), false);
+  assert.equal(W.sameWork({ title: 'Waitress', id: 'waitress-2016', isRevival: false }, { title: 'Waitress', id: 'waitress-2021', isRevival: false }), true);
+  // A one-word title still matches when the other only adds a subtitle or the link says so.
+  assert.equal(W.sameWork(t("Dancin'"), t("Bob Fosse's Dancin'")), false);
+  assert.equal(W.sameWork({ title: 'Cabaret', id: 'cabaret-2014', originalProductionId: 'cabaret-1987' }, { title: 'Cabaret at the Kit Kat Club', id: 'cabaret-2024', originalProductionId: 'cabaret-1987' }), true);
 });
 
 test('runWeekWindow: previews less 7 days to closing plus 7; opening less 4 weeks when previews are unset; running shows run to now', () => {

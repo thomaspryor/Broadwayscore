@@ -224,3 +224,14 @@ test('gross outside run: weeks after closing and years before previews are flagg
   const flagged = Object.keys(h.weeks).flatMap((w) => L.checkGrossOutsideRun(h, shows, w, now)).map((x) => `${x.week} ${x.slug}`);
   assert.deepEqual(flagged, ['2002-01-06 cabaret-2014', '2025-01-05 cabaret-2014', '2025-01-05 running']);
 });
+
+test('gross unplaced: a row set aside in _unplacedRows is an alert for its week until shows.json can place it (BRO-5016)', () => {
+  const h = { weeks: { '2026-10-04': {} }, _unplacedRows: { '2026-10-04': { 'dancin-1978': row(1) }, '2002-01-06': { 'cabaret-2014': row(2) } } };
+  const f = L.checkGrossUnplaced(h, '2026-10-04');
+  assert.deepEqual(f.map((x) => `${x.rule} ${x.slug}`), ['gross-unplaced dancin-1978']);
+  assert.ok(ALERT_RULES.has('gross-unplaced'));
+  // Scoped to the checked weeks: an old parked row does not alert every week.
+  const scoped = L.checkGrossesIntegrity(h, [], { weeks: ['2026-10-04'], now: Date.parse('2026-10-10') });
+  assert.equal(rules(scoped).filter((r) => r === 'gross-unplaced').length, 1);
+  assert.deepEqual(L.checkGrossUnplaced({ weeks: {} }, '2026-10-04'), []);
+});

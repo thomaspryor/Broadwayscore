@@ -50,17 +50,26 @@ function mergeGrossesHistory(ours, remote) {
   const weekTotals = { ...(remote._meta?.weekTotals || {}), ...(ours._meta?.weekTotals || {}) };
   if (Object.keys(weekTotals).length) merged._meta = { ...(merged._meta || {}), weekTotals };
 
-  // A union never carries a deletion, so a remote that still has an
-  // off-Sunday key (2026-06-22) would bring it back beside the Sunday our
-  // side moved it to, and every reader that sums weeks would count it
-  // twice. Fold such keys onto their Sunday, ours winning (BRO-4985).
-  // Rows the repair could not place on any production (rekeyRowsToRuns, BRO-5016).
+  // Rows the repair could not place on any production (rekeyRowsToRuns,
+  // BRO-5016). A union never carries a deletion, so a row one side already
+  // returned to a production would come back parked from the other: drop a
+  // parked row whose gross now sits on a row of that week.
   const unplacedWeeks = new Set([...Object.keys(remote._unplacedRows || {}), ...Object.keys(ours._unplacedRows || {})]);
-  if (unplacedWeeks.size) {
-    merged._unplacedRows = {};
-    for (const w of unplacedWeeks) merged._unplacedRows[w] = { ...(remote._unplacedRows?.[w] || {}), ...(ours._unplacedRows?.[w] || {}) };
+  const parked = {};
+  for (const w of unplacedWeeks) {
+    const placed = new Set(Object.values(merged.weeks[w] || {}).map((r) => r && r.gross).filter((g) => g != null));
+    for (const [slug, row] of Object.entries({ ...(remote._unplacedRows?.[w] || {}), ...(ours._unplacedRows?.[w] || {}) })) {
+      if (row && row.gross != null && placed.has(row.gross)) continue;
+      (parked[w] = parked[w] || {})[slug] = row;
+    }
   }
+  if (Object.keys(parked).length) merged._unplacedRows = parked;
+  else delete merged._unplacedRows;
 
+  // The same no-deletion union means a remote that still has an off-Sunday
+  // key (2026-06-22) would bring it back beside the Sunday our side moved it
+  // to, and every reader that sums weeks would count it twice. Fold such keys
+  // onto their Sunday, ours winning (BRO-4985).
   const weeksRekeyed = normalizeWeekKeys(merged).length;
 
   return { merged, stats: { weeksAdded, slugsAdded, weeksRekeyed, totalWeeks: Object.keys(merged.weeks).length } };

@@ -48,7 +48,8 @@ function weekInRun(show, week, nowMs = Date.now()) {
   return t >= w.startMs && t <= w.endMs;
 }
 
-const NOISE_WORDS = new Set(['the', 'a', 'an', 'musical', 'on', 'broadway']);
+// Not "on": "On the Town" must not reduce to "Town" and match "Our Town".
+const NOISE_WORDS = new Set(['the', 'a', 'an', 'musical', 'broadway']);
 const CONNECTORS = new Set(['and', 'of', 'in', 'at', 'to', 'for', 'with', 'or', 'from']);
 
 /** Title as a word list: diacritics, punctuation, "&"/"+" folded, articles and "the musical" dropped. */
@@ -64,33 +65,49 @@ function titleWords(title) {
     .filter((w) => w && !NOISE_WORDS.has(w));
 }
 
-/** True when `small` appears as a contiguous run of whole words inside `big`. */
-function containsWords(big, small) {
-  if (!small.length || small.length > big.length) return false;
-  for (let i = 0; i + small.length <= big.length; i++) {
-    if (small.every((w, j) => big[i + j] === w)) return true;
-  }
-  return false;
-}
+// The original production a show descends from, when shows.json says: its
+// originalProductionId, or itself for a non-revival. null when unknown.
+const workRoot = (s) => s.originalProductionId || (s.isRevival === false ? (s.slug || s.id) : null);
 
 /**
- * Same work, possibly another production: one title's words sit whole inside
- * the other's ("Dancin'" in "Bob Fosse's Dancin'", "Cabaret" in "Cabaret at the
- * Kit Kat Club", "Romeo and Juliet" and "Romeo + Juliet"). Loose on purpose:
- * callers only act when exactly one such production's run contains the week.
+ * Same work, possibly another production. Identical titles always are. For
+ * differing titles shows.json's originalProductionId decides when both sides
+ * have one (Cabaret 2014 and 2024 both descend from
+ * cabaret-1987; SIX and Six Degrees of Separation are two originals). Otherwise
+ * one title's words sit whole inside the other's ("Dancin'" in "Bob Fosse's
+ * Dancin'", "Romeo and Juliet" and "Romeo + Juliet"); a one-word title only
+ * as the other's first or last word. Callers still act only when exactly one
+ * such production's run contains the week.
  */
 function sameWork(a, b) {
-  const wa = titleWords(a && a.title);
-  const wb = titleWords(b && b.title);
+  if (!a || !b) return false;
+  const wa = titleWords(a.title);
+  const wb = titleWords(b.title);
   if (!wa.length || !wb.length) return false;
   const [big, small] = wa.length >= wb.length ? [wa, wb] : [wb, wa];
-  // A shorter title that opens or ends on a connector is a fragment, not the
-  // work: "& Juliet" is not "Romeo and Juliet".
-  if (small.length < big.length && (CONNECTORS.has(small[0]) || CONNECTORS.has(small[small.length - 1]))) return false;
-  return containsWords(big, small);
+  // Same title: same work (Waitress 2016 and its 2021 return are both listed
+  // as originals). The production link only settles differing titles.
+  if (small.length === big.length && small.every((w, i) => w === big[i])) return true;
+  const ra = workRoot(a);
+  const rb = workRoot(b);
+  if (ra && rb) return ra === rb;
+  if (small.length === big.length) return false;
+  // A fragment is not the work: "& Juliet" is not "Romeo and Juliet".
+  if (CONNECTORS.has(small[0]) || CONNECTORS.has(small[small.length - 1])) return false;
+  // One word is too weak alone (Annie / Annie Get Your Gun, Once / Once Upon a
+  // Mattress): only a subtitle may follow it ("Doubt: A Parable").
+  if (small.length === 1) {
+    const bigTitle = wa.length >= wb.length ? a.title : b.title;
+    const main = titleWords(String(bigTitle || '').split(/:|\s[-–—]\s/)[0]);
+    return main.length === 1 && main[0] === small[0];
+  }
+  // Longer titles must open or close the other one ("Porgy and Bess").
+  const n = small.length;
+  return small.every((w, i) => big[i] === w) || small.every((w, i) => big[big.length - n + i] === w);
 }
 
-const isBroadway = (s) => !s.category || s.category === 'broadway';
+// Same test as alltime-attribution.js: category is the tier, market the fallback.
+const isBroadway = (s) => (s.category || s.market || 'broadway') === 'broadway';
 
 /**
  * The single Broadway production of the same work whose run contains `week`,

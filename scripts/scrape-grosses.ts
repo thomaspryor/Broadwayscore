@@ -59,7 +59,7 @@ const {
   isoWeekToMDY,
 } = require('./lib/parse-playbill-grosses');
 const { weekKeyFor, repairGrossesHistory } = require('./lib/grosses-history-repair');
-const { grossesProductionFor } = require('./lib/grosses-run-window');
+const { grossesProductionFor, weekInRun } = require('./lib/grosses-run-window');
 
 const GROSSES_URL = 'https://www.broadwayworld.com/grosses.php';
 const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
@@ -326,11 +326,13 @@ function findMatchingSlug(bwwTitle: string, market: string = 'broadway', pastWee
     // The matcher's window check only sees productions with the exact title,
     // so a revival listed under a longer one ("Cabaret at the Kit Kat Club")
     // lost its weeks to an older run (BRO-5016). Re-pick by run window across
-    // the same work; a week outside every run is reported unmatched.
-    const picked = runWeekISO ? grossesProductionFor(match.show, runWeekISO, allShows) : match.show;
-    if (!picked) {
-      console.warn(`  ⚠ "${bwwTitle}" matched ${match.show.slug}, whose run does not include week ${runWeekISO}; no production of it ran then.`);
-      return null;
+    // the same work. A week outside every run stays on the matcher's pick: the
+    // save-time repair parks it in _unplacedRows (alert gross-unplaced) and puts
+    // it back once shows.json's dates are fixed. Dropping it would lose a real
+    // week whenever a closing date is stale.
+    const picked = (runWeekISO && grossesProductionFor(match.show, runWeekISO, allShows)) || match.show;
+    if (picked === match.show && runWeekISO && weekInRun(match.show, runWeekISO) === false) {
+      console.warn(`  ⚠ "${bwwTitle}" matched ${match.show.slug}, whose shows.json run does not include week ${runWeekISO}; kept for the history repair to set aside until the dates are fixed.`);
     }
     const slug = picked.slug;
     // BWW only covers Broadway — never write to West End / Off-Broadway slugs
