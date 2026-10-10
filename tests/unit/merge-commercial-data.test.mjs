@@ -236,6 +236,115 @@ describe('mergeCommercialJson with a base (field by field when both sides kept a
   });
 });
 
+// BRO-4989 Step 0: a model re-run on a stale copy racing a cost fix.
+describe('mergeCommercialJson: model-run fields and cost (BRO-4989 Step 0)', () => {
+  const { LINKED_FIELD_GROUPS, MODEL_RUN_FIELDS } = require('../../scripts/lib/merge-commercial-data');
+  const { breakevenBelowCost } = require('../../scripts/lib/commercial-breakeven');
+  const T = '2026-10-01T00:00:00.000Z';
+  // operation-mincemeat, 2026-10-06: break-even 536,585 on a 480,000 cost basis.
+  const base0 = {
+    designation: 'TBD', weeklyRunningCost: 480000, costMethodology: 'industry-estimate',
+    modelBreakeven: 536585, modelCostBasis: 480000, modelRecoupmentPct: [10, 20, 30], modelLastRun: '2026-10-05', lastUpdated: T,
+  };
+
+  it('replay: cost fix (remote) vs stale model re-run (ours) keeps the fix and break-even >= cost', () => {
+    const base = { shows: { m: base0 } };
+    // The write guard rescaled the fix side's break-even (BRO-4985).
+    const remote = { shows: { m: { ...base0, weeklyRunningCost: 560000, costMethodology: 'trade-reported', modelBreakeven: 626016, modelCostBasis: 560000, lastUpdated: '2026-10-06T00:00:00.000Z' } } };
+    const ours = { shows: { m: { ...base0, modelBreakeven: 540000, modelCostBasis: 480000, modelRecoupmentPct: [11, 21, 31], modelLastRun: '2026-10-06' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    const m = merged.shows.m;
+    assert.equal(m.weeklyRunningCost, 560000);
+    assert.equal(m.costMethodology, 'trade-reported');
+    // Both sides touched the run's fields (the guard rescaled the fix side's
+    // break-even), so one side's run is taken whole: never ours' % with
+    // remote's break-even. Either run was built on the old cost; the next
+    // run refreshes it.
+    assert.deepEqual([m.modelRecoupmentPct, m.modelLastRun], [[10, 20, 30], '2026-10-05']);
+    assert.deepEqual([m.modelBreakeven, m.modelCostBasis], [626016, 560000]);
+    assert.deepEqual(breakevenBelowCost(merged.shows), []);
+    assert.deepEqual(stats.conflictSlugs, []);
+  });
+
+  it('a cost fix that bypassed the write guard: the merge rescales the run\'s break-even', () => {
+    const base = { shows: { m: base0 } };
+    const remote = { shows: { m: { ...base0, weeklyRunningCost: 560000, lastUpdated: '2026-10-06T00:00:00.000Z' } } };
+    const ours = { shows: { m: { ...base0, modelBreakeven: 540000, modelRecoupmentPct: [11, 21, 31], modelLastRun: '2026-10-06' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    const m = merged.shows.m;
+    assert.deepEqual([m.weeklyRunningCost, m.modelRecoupmentPct], [560000, [11, 21, 31]]);
+    assert.deepEqual([m.modelBreakeven, m.modelCostBasis], [Math.round(540000 * 560000 / 480000), 560000]);
+    assert.equal(stats.breakevenResynced, 1);
+  });
+
+  it('two model runs never mix: the newer run is taken whole', () => {
+    const base = { shows: { m: base0 } };
+    const ours = { shows: { m: { ...base0, modelBreakeven: 540000, modelRecoupmentPct: [1, 2, 3], modelLastRun: '2026-10-06', lastUpdated: '2026-10-06T00:00:00.000Z' } } };
+    const remote = { shows: { m: { ...base0, modelBreakeven: 550000, modelRecoupmentPct: [4, 5, 6], modelWarnings: ['w'], modelLastRun: '2026-10-07' } } };
+    const { merged, stats } = mergeCommercialJson(ours, remote, base);
+    const m = merged.shows.m;
+    assert.deepEqual([m.modelBreakeven, m.modelRecoupmentPct, m.modelLastRun, m.modelWarnings], [540000, [1, 2, 3], '2026-10-06', undefined]);
+    assert.deepEqual(stats.conflictSlugs, [], 'two re-runs are not a content conflict');
+    assert.equal(stats.modelRunConflicts, 1);
+  });
+
+  it('an isEstimate flag follows the side its field came from', () => {
+    const b = { ...base0, recouped: false, isEstimate: { weeklyRunningCost: true } };
+    const base = { shows: { m: b } };
+    // remote: a reported cost replaces the estimate; ours (newer): marks recouped as an estimate.
+    const remote = { shows: { m: { ...b, weeklyRunningCost: 600000, isEstimate: {} } } };
+    const ours = { shows: { m: { ...b, recouped: true, designation: 'Windfall', isEstimate: { weeklyRunningCost: true, recouped: true }, lastUpdated: '2026-10-08T00:00:00.000Z' } } };
+    const m = mergeCommercialJson(ours, remote, base).merged.shows.m;
+    assert.equal(m.weeklyRunningCost, 600000);
+    assert.deepEqual(m.isEstimate, { recouped: true });
+  });
+
+  it('an isEstimate-only edit survives whichever side is ours', () => {
+    const b = { ...base0, isEstimate: { weeklyRunningCost: true } };
+    const base = { shows: { m: b } };
+    const flagSide = { shows: { m: { ...b, isEstimate: { weeklyRunningCost: false, recouped: true } } } };
+    const notesSide = { shows: { m: { ...b, notes: 'n', lastUpdated: '2026-10-09T00:00:00.000Z' } } };
+    for (const [ours, remote] of [[flagSide, notesSide], [notesSide, flagSide]]) {
+      const m = mergeCommercialJson(ours, remote, base).merged.shows.m;
+      assert.deepEqual(m.isEstimate, { weeklyRunningCost: false, recouped: true });
+      assert.equal(m.notes, 'n');
+    }
+  });
+
+  it('an ungrouped field with an isEstimate flag counts one conflict', () => {
+    const b = { foo: 1, isEstimate: { foo: true }, lastUpdated: T };
+    const base = { shows: { x: b } };
+    const ours = { shows: { x: { ...b, foo: 2, lastUpdated: '2026-10-09T00:00:00.000Z' } } };
+    const remote = { shows: { x: { ...b, foo: 3, lastUpdated: '2026-10-08T00:00:00.000Z' } } };
+    const { stats } = mergeCommercialJson(ours, remote, base);
+    assert.equal(stats.fieldConflicts, 2); // foo and lastUpdated
+    assert.deepEqual(stats.conflictSlugs, ['x (foo)']);
+  });
+
+  it('a content conflict is reported by slug and unit', () => {
+    const base = { shows: { m: base0 } };
+    const ours = { shows: { m: { ...base0, weeklyRunningCost: 500000, lastUpdated: '2026-10-07T00:00:00.000Z' } } };
+    const remote = { shows: { m: { ...base0, weeklyRunningCost: 510000 } } };
+    const { stats } = mergeCommercialJson(ours, remote, base);
+    assert.deepEqual(stats.conflictSlugs, ['m (weeklyRunningCost)']);
+  });
+
+  it('every model field merge-model-recoupment.js writes is in MODEL_RUN_FIELDS', async () => {
+    const fs = await import('node:fs');
+    const src = fs.readFileSync(new URL('../../scripts/merge-model-recoupment.js', import.meta.url), 'utf8');
+    const written = [...new Set([...src.matchAll(/comm\.(model[A-Za-z0-9]+)\s*=[^=]/g)].map((x) => x[1]))];
+    assert.ok(written.length >= 8, 'pattern still finds the writes');
+    assert.deepEqual(written.filter((f) => !MODEL_RUN_FIELDS.includes(f)), []);
+  });
+
+  it('fields commercialRecordErrors checks against each other share one group', () => {
+    const groupOf = (f) => LINKED_FIELD_GROUPS.findIndex((g) => g.includes(f));
+    for (const pair of [['designation', 'recouped'], ['recouped', 'recoupedDate'], ['designation', 'productionType'], ['weeklyRunningCost', 'costMethodology'], ['modelBreakeven', 'modelCostBasis']]) {
+      assert.ok(groupOf(pair[0]) >= 0 && groupOf(pair[0]) === groupOf(pair[1]), pair.join(' + '));
+    }
+  });
+});
+
 describe('mergePendingReview', () => {
   it('unions pending entries from both sides', () => {
     const ours = { shows: { 'giant': { confidence: 'high', researchedAt: '2026-05-24T00:00:00.000Z' } } };
