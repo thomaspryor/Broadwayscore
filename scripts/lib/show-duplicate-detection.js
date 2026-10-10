@@ -90,20 +90,29 @@ function isColonSegmentTitle(a, b) {
   const longTitle = long.title || '';
   const idx = longTitle.indexOf(':');
   const shortKey = titleKey(short.title);
-  if (idx < 0) return isPerformerPrefixTitle(shortKey, titleKey(longTitle));
+  if (idx < 0) return isPerformerPrefixTitle(short.title || '', longTitle);
   if (shortKey.length < 4 || shortKey === titleKey(longTitle)) return false;
   return shortKey === titleKey(longTitle.slice(0, idx)) || shortKey === titleKey(longTitle.slice(idx + 1));
 }
 
 // "Billy Crystal 860" vs "860" (BRO-5014): a performer's name put in front of
-// the title with no colon. The long title must be at least two words of prefix
-// plus the exact short title, and the short title must be a real title, not a
-// common word: four or more characters, or a number-bearing title like "860".
-function isPerformerPrefixTitle(shortKey, longKey) {
-  if (!shortKey || shortKey === longKey || !longKey.endsWith(` ${shortKey}`)) return false;
+// the title with no colon. The prefix must look like a person's name: exactly
+// two capitalized words and no joining words, so "Find Your Way Home", "Romeo
+// and Juliet", "Prince of Broadway" and "Sid Caesar & Company" do not match
+// "Home", "& Juliet", "Broadway" and "Company". The short title must be a real
+// title, not a common word: four or more characters, or a number-bearing title
+// like "860".
+const NAME_WORD_RE = /^\p{Lu}[\p{L}.'’-]*$/u;
+const NOT_NAME_WORDS = new Set(['the', 'a', 'an', 'and', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'my', 'your', 'our', 'his', 'her', 'their', 'new', 'all', 'one', 'two']);
+function isPerformerPrefixTitle(shortTitle, longTitle) {
+  const shortKey = titleKey(shortTitle);
+  const longWords = String(longTitle || '').trim().split(/\s+/);
+  // A short title that opens on a symbol ("& Juliet") is itself a fragment.
+  const opensOnWord = (s) => /^[\p{L}\p{N}]/u.test(String(s || '').trim());
+  if (!shortKey || longWords.length < 3 || !opensOnWord(shortTitle) || !opensOnWord(longWords[2])) return false;
   if (shortKey.length < 4 && !(shortKey.length >= 3 && /\d/.test(shortKey))) return false;
-  const prefix = longKey.slice(0, longKey.length - shortKey.length).trim();
-  return prefix.split(' ').filter(Boolean).length >= 2;
+  if (titleKey(longWords.slice(2).join(' ')) !== shortKey) return false;
+  return longWords.slice(0, 2).every((w) => NAME_WORD_RE.test(w) && !NOT_NAME_WORDS.has(w.toLowerCase()));
 }
 
 // True when one show's significant raw-title tokens are a STRICT subset of the
@@ -261,7 +270,7 @@ function titlesAgree(a, b) {
   const ta = slugifyTitle(a.title);
   const tb = slugifyTitle(b.title);
   if (!ta || !tb) return false; // a title-less entry cannot corroborate an id
-  return ta.startsWith(tb) || tb.startsWith(ta) || isColonSegmentTitle(a, b);
+  return ta.startsWith(tb) || tb.startsWith(ta);
 }
 
 /**

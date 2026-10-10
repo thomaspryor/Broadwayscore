@@ -82,6 +82,18 @@ test('Chicago: a fresh row on the 1975 original (2-year run, 11,711 shows) moves
   assert.deepEqual(g['chicago-1975'].allTime, { gross: null, performances: null, attendance: null });
 });
 
+test('a move takes one whole row, never fields mixed from two scrapes; no previews date means four weeks before opening', () => {
+  const shows = [
+    { id: 'y-1975', slug: 'y-1975', title: 'Y', category: 'broadway', previewsStartDate: '1975-05-12', closingDate: '1977-08-27' },
+    { id: 'y-1996', slug: 'y', title: 'Y', category: 'broadway', previewsStartDate: '1996-10-23', closingDate: null },
+  ];
+  const g = { 'y-1975': at(800, 11_711, 10), y: at(900, 11_000, 20) };
+  applyAllTimeAttribution(g, shows, { now: NOW });
+  assert.deepEqual(g.y.allTime, { gross: 900, performances: 11_000, attendance: 20 });
+  const opensOnly = { previewsStartDate: null, openingDate: '2020-01-29', closingDate: '2020-01-29' };
+  assert.equal(runCapacity(opensOnly, NOW.getTime()), 5 * 8);
+});
+
 test('an impossible count with no same-title run that fits is left alone; an undated or open-ended sibling is not a fit', () => {
   const shows = [
     { id: 'x-2024', slug: 'x-2024', title: 'X', category: 'broadway', previewsStartDate: '2024-03-01', closingDate: '2024-04-01' },

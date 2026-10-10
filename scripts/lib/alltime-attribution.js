@@ -40,9 +40,13 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}/;
 const isBroadway = (show) => (show.category || show.market) === 'broadway';
 const toMs = (d) => (typeof d === 'string' && ISO_DATE_RE.test(d) ? Date.parse(`${d.slice(0, 10)}T00:00:00Z`) : null);
 
+// Without a first-preview date, assume previews ran this long before opening.
+const PREVIEW_WEEKS_IF_UNKNOWN = 4;
+
 /** Most performances the show's run could hold, or null without a start date. */
 function runCapacity(show, nowMs) {
-  const start = toMs(show.previewsStartDate) ?? toMs(show.openingDate);
+  const opening = toMs(show.openingDate);
+  const start = toMs(show.previewsStartDate) ?? (opening == null ? null : opening - PREVIEW_WEEKS_IF_UNKNOWN * 7 * DAY_MS);
   if (start == null) return null;
   const end = toMs(show.closingDate) ?? nowMs;
   if (end < start) return 0;
@@ -147,11 +151,12 @@ function misplacedAllTimeMoves(grossesShows, shows, { now = new Date() } = {}) {
 }
 
 const EMPTY = () => ({ gross: null, performances: null, attendance: null });
-const maxOr = (a, b) => Math.max(a || 0, b || 0) || null;
 
 /**
- * Apply both repairs to grosses.json `shows` in place: moves first (max-merge
- * into the fitting production, clear the source), then identical-copy clears.
+ * Apply both repairs to grosses.json `shows` in place: moves first (the larger
+ * of the two rows, taken whole so fields from different scrapes never mix,
+ * lands on the fitting production and the source is cleared), then
+ * identical-copy clears.
  * @returns {{ moves: Array<{slug,to,reason}>, clears: Array<{slug,owner,reason}> }}
  */
 function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
@@ -159,11 +164,8 @@ function applyAllTimeAttribution(grossesShows, shows, opts = {}) {
   for (const m of moves) {
     const from = grossesShows[m.slug].allTime;
     const into = grossesShows[m.to] && grossesShows[m.to].allTime;
-    const moved = {
-      gross: maxOr(from.gross, into && into.gross),
-      performances: maxOr(from.performances, into && into.performances),
-      attendance: maxOr(from.attendance, into && into.attendance),
-    };
+    const row = into && (into.gross || 0) > (from.gross || 0) ? into : from;
+    const moved = { gross: row.gross ?? null, performances: row.performances ?? null, attendance: row.attendance ?? null };
     if (grossesShows[m.to]) grossesShows[m.to].allTime = moved;
     else grossesShows[m.to] = { allTime: moved };
     grossesShows[m.slug].allTime = EMPTY();

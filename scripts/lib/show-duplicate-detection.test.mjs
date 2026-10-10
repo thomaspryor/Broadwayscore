@@ -97,4 +97,11 @@ test('flags a performer-prefix title without a colon ("Billy Crystal 860" ~ "860
   assert.equal(isStrictTitleSubset({ title: 'Crystal 860' }, { title: '860' }), false);
   assert.equal(isStrictTitleSubset({ title: 'Billy Crystal Act' }, { title: 'Act' }), false);
   assert.equal(isStrictTitleSubset({ title: '860 Billy Crystal' }, { title: '860' }), false);
+  // Real titles that end in another title but whose front is not a name (review 2026-10-10).
+  const { isColonSegmentTitle } = require('./show-duplicate-detection.js');
+  for (const [long, short] of [['Romeo and Juliet', '& Juliet'], ['Drunk Romeo & Juliet', '& Juliet'], ['Sid Caesar & Company', 'Company'],
+    ['Prince of Broadway', 'Broadway'], ['Find Your Way Home', 'Home'], ['The Lion King', 'King']]) {
+    assert.equal(isColonSegmentTitle({ title: long }, { title: short }), false, `${long} ~ ${short}`);
+  }
+  assert.equal(isColonSegmentTitle({ title: "Bob Fosse's Dancin'" }, { title: "Dancin'" }), true);
 });
