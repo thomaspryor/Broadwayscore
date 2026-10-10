@@ -1,53 +1,5 @@
 [
   {
-    "startedAt": "2026-10-09T21:35:32.541Z",
-    "completedAt": "2026-10-09T21:35:32.561Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37993972208",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-09T21:44:29.831Z",
-    "completedAt": "2026-10-09T21:44:35.196Z",
-    "totalReviews": 25,
-    "processed": 1,
-    "skipped": 24,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5281,
-      "output": 358,
-      "total": 13883
-    },
-    "costUsd": 0.033889100000000005,
-    "runId": "37994890297",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-09T21:44:37.119Z",
-    "completedAt": "2026-10-09T21:44:37.127Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37994890297",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-09T21:49:26.875Z",
     "completedAt": "2026-10-09T21:49:26.884Z",
     "totalReviews": 0,
@@ -721900,6 +721852,44 @@
     },
     "costUsd": 0,
     "runId": "38037336006",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-10T08:22:41.886Z",
+    "completedAt": "2026-10-10T08:23:00.126Z",
+    "totalReviews": 54131,
+    "processed": 3,
+    "skipped": 54126,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 21864,
+      "output": 1108,
+      "total": 55971
+    },
+    "costUsd": 0.12003929999999999,
+    "runId": "38037398035",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-10T08:23:02.459Z",
+    "completedAt": "2026-10-10T08:23:41.376Z",
+    "totalReviews": 16,
+    "processed": 16,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 42576,
+      "output": 3742,
+      "total": 46318
+    },
+    "costUsd": 0.1189261,
+    "runId": "38037398035",
     "errorDetails": []
   }
 ]
