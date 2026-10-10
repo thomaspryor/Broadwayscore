@@ -35,6 +35,7 @@ const { fetchWithFallback } = require('./lib/reddit-api');
 const { decideWaltzCostWrite, waltzCostPatch, isPlausibleWeeklyCost } = require('./lib/waltz-cost-gap-fill');
 const { commercialRecordErrors } = require('./lib/commercial-record-checks');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { waltzAnchor, appendWaltzAnchors, waltzJumpFlags, castEventsFor, shouldAlertNoAnchors } = require('./lib/waltz-cost-history');
 
 // Commercial-specific aliases (same as update-commercial-data.js)
 const COMMERCIAL_ALIASES = {
@@ -65,11 +66,23 @@ const COMMERCIAL_ALIASES = {
 // ---------------------------------------------------------------------------
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
-const USAGE = `Usage: node scripts/scrape-boring-waltz-costs.js [--dry-run]
+// One-time backfill of his whole archive (BRO-4989). The weekly run reads a year.
+const BACKFILL = args.includes('--backfill');
+// costHistory writes are opt-in until the shadow rollout turns them on in the
+// workflow (BRO-4989: no commercial.json history writes before BRO-4985 lands).
+// Without it the history is computed and reported as a preview.
+const WRITE_HISTORY = args.includes('--record-history') && !DRY_RUN;
+const USAGE = `Usage: node scripts/scrape-boring-waltz-costs.js [--dry-run] [--backfill] [--record-history]
 
 Fills missing weekly operating costs in commercial.json from u/Boring_Waltz_9545's
 r/Broadway Grosses Analysis / Post-Mortem posts (never over a reported figure).
-  --dry-run   print the changes, write nothing`;
+With --record-history, every figure he posts is also appended to the show's
+costHistory as a dated anchor (deduped by post id), so his series survives
+the gap-fill; without it the history is previewed only.
+  --dry-run         print the changes, write nothing
+  --backfill        read his whole post archive, not just the last year; history
+                    only, it never changes a current weeklyRunningCost
+  --record-history  write costHistory anchors (shadow rollout, BRO-4989)`;
 
 // ---------------------------------------------------------------------------
 // Data Paths
@@ -96,7 +109,9 @@ function getCommercialPath() {
 const REDDIT_USER = 'Boring_Waltz_9545';
 const ARCHIVE_SEARCH_URL = 'https://arctic-shift.photon-reddit.com/api/posts/search';
 const LOOKBACK_DAYS = 365;
-const ARCHIVE_MAX_PAGES = 5;
+const ARCHIVE_MAX_PAGES = BACKFILL ? 30 : 5;
+// The alert window: a post this recent with no anchor landing means the parse broke.
+const ALERT_WINDOW_DAYS = 8;
 
 async function fetchArchivePage(params) {
   const url = `${ARCHIVE_SEARCH_URL}?${new URLSearchParams(params)}`;
@@ -127,7 +142,8 @@ async function fetchFromArchive() {
   const after = Math.floor(Date.now() / 1000) - LOOKBACK_DAYS * 86400;
   let before = null;
   for (let page = 1; page <= ARCHIVE_MAX_PAGES; page++) {
-    const params = { author: REDDIT_USER, subreddit: 'Broadway', after: String(after), limit: '100', sort: 'desc' };
+    const params = { author: REDDIT_USER, subreddit: 'Broadway', limit: '100', sort: 'desc' };
+    if (!BACKFILL) params.after = String(after);
     if (before) params.before = String(before);
     const batch = await fetchArchivePage(params);
     console.log(`  Archive page ${page}: ${batch.length} posts`);
@@ -262,6 +278,8 @@ async function main() {
   // Posts are returned newest-first by Reddit.
   // Extract costs, keeping only the MOST RECENT estimate per show.
   const costByShow = new Map(); // showName → { cost, postTitle, postDate, permalink }
+  // Every plausible figure in every post, for costHistory (BRO-4989).
+  const historyByName = []; // { showName, post, cost }
 
   for (const post of relevantPosts) {
     const postDate = post.created_utc ? new Date(post.created_utc * 1000).toISOString().slice(0, 10) : 'unknown';
@@ -273,6 +291,7 @@ async function main() {
         console.log(`  Ignored implausible $${entry.cost.toLocaleString()} for "${entry.showName}" in "${post.title}"`);
         continue;
       }
+      historyByName.push({ showName: entry.showName, post, cost: entry.cost });
       // Only keep the first (most recent) occurrence of each show
       if (!costByShow.has(entry.showName)) {
         costByShow.set(entry.showName, {
@@ -352,8 +371,68 @@ async function main() {
     });
     if (action === 'add') stats.added++;
     else stats.updated++;
-    if (!DRY_RUN) Object.assign(existing, patch);
+    // A backfill reads years-old posts: their figures go to cost history
+    // only, never into the current weeklyRunningCost (BRO-4989 review).
+    if (!DRY_RUN && !BACKFILL) Object.assign(existing, patch);
   }
+
+  // --- costHistory: every figure he posted, as a dated anchor ---
+  const matchCache = new Map();
+  const historyItems = [];
+  const historyUnmatched = new Set();
+  for (const { showName, post, cost } of historyByName) {
+    if (!matchCache.has(showName)) matchCache.set(showName, matchShowName(showName, lookup));
+    const show = matchCache.get(showName);
+    if (!show || !isBroadwayShow(show)) { if (!show) historyUnmatched.add(showName); continue; }
+    historyItems.push({ slug: show.slug || show.id, anchor: waltzAnchor(post, cost) });
+  }
+  // The gap-fill above may have patched records in place (not in dry-run);
+  // anchors go onto the same objects.
+  const history = appendWaltzAnchors(commercial.shows, historyItems, { apply: WRITE_HISTORY });
+  console.log('\n=== Cost history (every dated figure) ===');
+  console.log(`Figures read: ${historyItems.length} | anchors ${WRITE_HISTORY ? "added" : "that would be added (preview)"}: ${history.added} | already stored: ${history.duplicates} | refused: ${history.refused.length} | no commercial record: ${history.noRecord.length}`);
+  for (const r of history.refused.slice(0, 10)) console.log(`  REFUSED ${r.slug}: ${r.errors.join('; ')}`);
+  if (history.noRecord.length) console.log(`  No commercial record (anchors not stored): ${history.noRecord.join(', ')}`);
+
+  // Single-week jumps >15% in his series with no cast change near them may be
+  // a change in his method rather than in the show's costs.
+  let castChanges = null;
+  try { castChanges = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'cast-changes.json'), 'utf8')); } catch { /* optional */ }
+  const jumpSlugs = new Set(historyItems.map((i) => i.slug));
+  const unexplained = [];
+  for (const slug of jumpSlugs) {
+    const rec = commercial.shows?.[slug];
+    const series = !WRITE_HISTORY
+      ? [...(rec?.costHistory || []), ...historyItems.filter((i) => i.slug === slug).map((i) => i.anchor)]
+      : rec?.costHistory;
+    for (const f of waltzJumpFlags(series, castEventsFor(castChanges, slug))) {
+      if (!f.reason) unexplained.push({ slug, ...f });
+    }
+  }
+  if (unexplained.length) {
+    console.log(`\n--- Unexplained week-over-week jumps >15% in his figures (${unexplained.length}) ---`);
+    for (const f of unexplained.slice(0, 25)) {
+      console.log(`  JUMP   ${f.slug}: $${f.fromAmount.toLocaleString()} (${f.from}) -> $${f.toAmount.toLocaleString()} (${f.to}), ${f.pct > 0 ? '+' : ''}${f.pct}%`);
+    }
+  }
+
+  // Weekly alert: he posted, yet nothing landed (and nothing was already
+  // stored). That means the parse or the matching broke.
+  const windowStart = Date.now() / 1000 - ALERT_WINDOW_DAYS * 86400;
+  const relevantPostsInWindow = relevantPosts.filter((p) => (p.created_utc || 0) >= windowStart).length;
+  // A recent figure "landed" when its record now holds an anchor for its post
+  // (added this run, or already stored by an earlier one).
+  let recentStored = 0;
+  for (const it of historyItems) {
+    if (Date.parse(it.anchor.asOf) / 1000 < windowStart - 86400) continue;
+    const rec = commercial.shows?.[it.slug];
+    const stored = !WRITE_HISTORY
+      ? !!rec && !history.refused.some((r) => r.slug === it.slug)
+      : (rec?.costHistory || []).some((a) => a.postId && a.postId === it.anchor.postId);
+    if (stored) recentStored++;
+  }
+  const recentHistory = { added: recentStored, duplicates: 0 };
+  const alertNoAnchors = shouldAlertNoAnchors({ relevantPostsInWindow, ...recentHistory });
 
   // Print summary
   console.log('\n=== Summary ===');
@@ -396,14 +475,24 @@ async function main() {
   }
 
   // Write
-  if (!DRY_RUN && changes.length > 0) {
+  const costWrites = BACKFILL ? 0 : changes.length;
+  if (!DRY_RUN && (costWrites > 0 || (WRITE_HISTORY && history.added > 0))) {
     commercial._meta.lastUpdated = new Date().toISOString().slice(0, 10);
     saveCommercial(commercial);
-    console.log(`\nWrote ${changes.length} changes to ${commercialPath}`);
+    console.log(`\nWrote ${costWrites} cost changes and ${WRITE_HISTORY ? history.added : 0} cost-history anchors to ${commercialPath}`);
   } else if (DRY_RUN && changes.length > 0) {
     console.log('\n[DRY RUN] No files written.');
   } else {
     console.log('\nNo changes needed.');
+  }
+
+  if (alertNoAnchors) {
+    // Written after the save so the gap-fill's changes still land. A
+    // workflow step can fail the run on this marker file (not wired yet:
+    // scrape-waltz-costs.yml gains it with the BRO-4989 workflow change).
+    const msg = `He posted ${relevantPostsInWindow} Grosses/Post-Mortem post(s) in the last ${ALERT_WINDOW_DAYS} days but no cost-history anchor landed from them`;
+    console.log(`\n::warning::${msg}`);
+    if (process.env.WALTZ_ALERT_FILE) fs.writeFileSync(process.env.WALTZ_ALERT_FILE, msg + '\n');
   }
 }
 

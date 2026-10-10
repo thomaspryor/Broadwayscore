@@ -515,7 +515,12 @@ Return ONLY the JSON array, no other text. Example:
   // path (see verifyCreativeTeamViaSerp below) — BRO-102.
   // The model names people from memory of ANY production of the title, so a
   // director or choreographer must also be tied to this venue (BRO-4884).
-  const verified = await verifyCreativeTeamViaSerp(show, proposed, year, 'serp-verified-llm', { productionAnchor: true });
+  const verified = await verifyCreativeTeamViaSerp(show, proposed, year, 'serp-verified-llm', {
+    productionAnchor: true,
+    // ...and every proposed name, writers included, must be named in that
+    // role by search results about this production (lib/credit-grounding.js).
+    ground: { search: q => serpQuery(q, { nbResults: 8 }), judge: p => callClaudeAPI(p, 120, CLAUDE_HAIKU) },
+  });
 
   return verified.length > 0 ? verified : null;
 }

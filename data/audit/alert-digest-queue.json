@@ -492,14 +492,14 @@
   {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Run data validation, Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38079077672",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38081003649",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-10T19:21:01.069Z"
+    "queuedAt": "2026-10-10T19:50:41.420Z"
   },
   {
     "conditionKey": "review-gap:blast-radius-refused",
@@ -716,5 +716,63 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T19:50:52.673Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3359-triage-slugs",
+    "title": "Landing blocked: unit-tests-node red on land/bro-3359-triage-slugs",
+    "description": "land.yml did not land land/bro-3359-triage-slugs: the unit-tests-node gate went red at 16ab50a4f3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38078792341",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3359-triage-slugs"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "16ab50a4f3eddc5bd8eca0c1124efdcecd1f4e2d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38078792341"
+      }
+    ],
+    "queuedAt": "2026-10-10T19:45:00.536Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4995-research-marks",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4995-research-marks",
+    "description": "land.yml did not land land/bro-4995-research-marks: the unit-tests-node gate went red at 6f694c88f3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38079357528",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4995-research-marks"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6f694c88f31c2463a2a398519bf490b6a66fe61f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38079357528"
+      }
+    ],
+    "queuedAt": "2026-10-10T19:49:43.716Z"
   }
 ]

@@ -18,6 +18,7 @@ const path = require('path');
 const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment, classifyShow } = require('./lib/recoupment-model');
 const { createCommercialWriteGuard } = require('./lib/commercial-write-guard');
+const { classifyTier } = require('./lib/model-return-v2');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -99,20 +100,8 @@ function getGrossesAllTime(slug, showId) {
 // Tier Classification
 // ---------------------------------------------------------------------------
 
-const LONG_RUN_WEEKS = 520; // 10 years
-
-function classifyTier(show, comm, grossesAllTime) {
-  if (!comm.capitalization) return 'ai-estimated';
-  if (!grossesAllTime) return 'ai-estimated';
-
-  // Calculate run length
-  const open = show.openingDate ? new Date(show.openingDate) : null;
-  const close = show.closingDate ? new Date(show.closingDate) : new Date();
-  const runWeeks = open ? Math.round((close - open) / (7 * 86400000)) : 0;
-
-  if (runWeeks >= LONG_RUN_WEEKS) return 'simplified-lifetime';
-  return 'weekly-model';
-}
+// classifyTier / LONG_RUN_WEEKS live in scripts/lib/model-return-v2.js (BRO-4989:
+// one definition shared with the shadow SVOG-fix diff).
 
 // ---------------------------------------------------------------------------
 // Main
