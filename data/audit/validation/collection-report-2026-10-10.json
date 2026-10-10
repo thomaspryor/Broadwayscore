@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-10T06:39:39.298Z",
+  "runDate": "2026-10-10T07:56:30.829Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-whos-tommy-tour-2026,all-male-as-you-like-it-regional-2026",
+    "showFilter": "death-of-england-delroy-west-end-2020,death-drop-west-end-2020,a-christmas-carol-west-end-2020,the-comeback-west-end-2020",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 1,
+    "processed": 23,
+    "failed": 11,
     "skipped": 0,
-    "successRate": "66.7%"
+    "successRate": "67.6%"
   },
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
+    "playwright": 15,
+    "amp": 4,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 8,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 0,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
+    "tier1Attempts": 26,
+    "tier1Success": 15,
+    "ampAttempts": 2,
+    "ampSuccess": 2,
     "tier1_5Attempts": 1,
     "tier1_5Success": 1,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier1_9Attempts": 10,
+    "tier1_9Success": 8,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 20,
+    "tier4Attempts": 4,
+    "tier4Success": 2,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 1,
     "browserbaseMinutesUsed": 0.2,
@@ -54,10 +54,13 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 1,
+    "processed": 23,
+    "failed": 11,
     "shows": [
-      "all-male-as-you-like-it-regional-2026"
+      "a-christmas-carol-west-end-2020",
+      "death-drop-west-end-2020",
+      "death-of-england-delroy-west-end-2020",
+      "the-comeback-west-end-2020"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,38 +69,141 @@
     }
   },
   "processed": [
-    "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
-    "all-male-as-you-like-it-regional-2026/telegraph--unknown.json"
+    "the-comeback-west-end-2020/variety--unknown.json",
+    "the-comeback-west-end-2020/a-younger-theatre--unknown.json",
+    "the-comeback-west-end-2020/bestoftheatre--unknown.json",
+    "the-comeback-west-end-2020/i-paper--unknown.json",
+    "a-christmas-carol-west-end-2020/nytimes--unknown.json",
+    "a-christmas-carol-west-end-2020/variety--unknown.json",
+    "a-christmas-carol-west-end-2020/thereviewshub--unknown.json",
+    "a-christmas-carol-west-end-2020/a-younger-theatre--unknown.json",
+    "a-christmas-carol-west-end-2020/i-paper--unknown.json",
+    "a-christmas-carol-west-end-2020/london-theatre--unknown.json",
+    "a-christmas-carol-west-end-2020/the-spectator-uk--unknown.json",
+    "a-christmas-carol-west-end-2020/times-uk--unknown.json",
+    "death-drop-west-end-2020/thereviewshub--unknown.json",
+    "death-drop-west-end-2020/all-that-dazzles-uk--unknown.json",
+    "death-drop-west-end-2020/london-box-office--unknown.json",
+    "death-drop-west-end-2020/london-theatre--unknown.json",
+    "death-of-england-delroy-west-end-2020/fringereview--unknown.json",
+    "death-of-england-delroy-west-end-2020/thereviewshub--unknown.json",
+    "death-of-england-delroy-west-end-2020/a-younger-theatre--unknown.json",
+    "death-of-england-delroy-west-end-2020/all-that-dazzles-uk--unknown.json",
+    "death-of-england-delroy-west-end-2020/cultural-capital--unknown.json",
+    "death-of-england-delroy-west-end-2020/i-paper--unknown.json",
+    "death-of-england-delroy-west-end-2020/the-spectator-uk--unknown.json"
   ],
   "failed": [
-    "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json"
+    "the-comeback-west-end-2020/guardian--brian-logan.json",
+    "the-comeback-west-end-2020/londontheatre1--unknown.json",
+    "a-christmas-carol-west-end-2020/guardian--unknown.json",
+    "a-christmas-carol-west-end-2020/londontheatre1--unknown.json",
+    "a-christmas-carol-west-end-2020/sierz-co-uk--unknown.json",
+    "a-christmas-carol-west-end-2020/thestage--unknown.json",
+    "death-drop-west-end-2020/times-uk--unknown.json",
+    "death-of-england-delroy-west-end-2020/indiependent--unknown.json",
+    "death-of-england-delroy-west-end-2020/londontheatre1--unknown.json",
+    "death-of-england-delroy-west-end-2020/sierz-co-uk--unknown.json",
+    "death-of-england-delroy-west-end-2020/theatre-weekly--owain-rose.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
-      "all-male-as-you-like-it-regional-2026/telegraph--unknown.json"
+      "the-comeback-west-end-2020/variety--unknown.json",
+      "the-comeback-west-end-2020/a-younger-theatre--unknown.json",
+      "the-comeback-west-end-2020/bestoftheatre--unknown.json",
+      "the-comeback-west-end-2020/i-paper--unknown.json",
+      "a-christmas-carol-west-end-2020/nytimes--unknown.json",
+      "a-christmas-carol-west-end-2020/variety--unknown.json",
+      "a-christmas-carol-west-end-2020/thereviewshub--unknown.json",
+      "a-christmas-carol-west-end-2020/a-younger-theatre--unknown.json",
+      "a-christmas-carol-west-end-2020/i-paper--unknown.json",
+      "a-christmas-carol-west-end-2020/london-theatre--unknown.json",
+      "a-christmas-carol-west-end-2020/the-spectator-uk--unknown.json",
+      "a-christmas-carol-west-end-2020/times-uk--unknown.json",
+      "death-drop-west-end-2020/thereviewshub--unknown.json",
+      "death-drop-west-end-2020/all-that-dazzles-uk--unknown.json",
+      "death-drop-west-end-2020/london-box-office--unknown.json",
+      "death-drop-west-end-2020/london-theatre--unknown.json",
+      "death-of-england-delroy-west-end-2020/fringereview--unknown.json",
+      "death-of-england-delroy-west-end-2020/thereviewshub--unknown.json",
+      "death-of-england-delroy-west-end-2020/a-younger-theatre--unknown.json",
+      "death-of-england-delroy-west-end-2020/all-that-dazzles-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/cultural-capital--unknown.json",
+      "death-of-england-delroy-west-end-2020/i-paper--unknown.json",
+      "death-of-england-delroy-west-end-2020/the-spectator-uk--unknown.json"
     ],
     "failed": [
-      "all-male-as-you-like-it-regional-2026/times-uk--clive-davis.json"
+      "the-comeback-west-end-2020/guardian--brian-logan.json",
+      "the-comeback-west-end-2020/londontheatre1--unknown.json",
+      "a-christmas-carol-west-end-2020/guardian--unknown.json",
+      "a-christmas-carol-west-end-2020/londontheatre1--unknown.json",
+      "a-christmas-carol-west-end-2020/sierz-co-uk--unknown.json",
+      "a-christmas-carol-west-end-2020/thestage--unknown.json",
+      "death-drop-west-end-2020/times-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/indiependent--unknown.json",
+      "death-of-england-delroy-west-end-2020/londontheatre1--unknown.json",
+      "death-of-england-delroy-west-end-2020/sierz-co-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/theatre-weekly--owain-rose.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
-    "amp": [],
+    "playwright": [
+      "the-comeback-west-end-2020/bestoftheatre--unknown.json",
+      "the-comeback-west-end-2020/i-paper--unknown.json",
+      "a-christmas-carol-west-end-2020/thereviewshub--unknown.json",
+      "a-christmas-carol-west-end-2020/i-paper--unknown.json",
+      "a-christmas-carol-west-end-2020/london-theatre--unknown.json",
+      "a-christmas-carol-west-end-2020/thestage--unknown.json",
+      "death-drop-west-end-2020/thereviewshub--unknown.json",
+      "death-drop-west-end-2020/all-that-dazzles-uk--unknown.json",
+      "death-drop-west-end-2020/london-box-office--unknown.json",
+      "death-drop-west-end-2020/london-theatre--unknown.json",
+      "death-of-england-delroy-west-end-2020/fringereview--unknown.json",
+      "death-of-england-delroy-west-end-2020/thereviewshub--unknown.json",
+      "death-of-england-delroy-west-end-2020/all-that-dazzles-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/cultural-capital--unknown.json",
+      "death-of-england-delroy-west-end-2020/i-paper--unknown.json"
+    ],
+    "amp": [
+      "data/review-texts/the-comeback-west-end-2020/variety--unknown.json",
+      "the-comeback-west-end-2020/variety--unknown.json",
+      "data/review-texts/a-christmas-carol-west-end-2020/variety--unknown.json",
+      "a-christmas-carol-west-end-2020/variety--unknown.json"
+    ],
     "browserbase": [
-      "data/review-texts/all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
-      "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json"
+      "data/review-texts/a-christmas-carol-west-end-2020/nytimes--unknown.json",
+      "a-christmas-carol-west-end-2020/nytimes--unknown.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "the-comeback-west-end-2020/a-younger-theatre--unknown.json",
+      "the-comeback-west-end-2020/londontheatre1--unknown.json",
+      "a-christmas-carol-west-end-2020/a-younger-theatre--unknown.json",
+      "a-christmas-carol-west-end-2020/londontheatre1--unknown.json",
+      "a-christmas-carol-west-end-2020/sierz-co-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/a-younger-theatre--unknown.json",
+      "death-of-england-delroy-west-end-2020/londontheatre1--unknown.json",
+      "death-of-england-delroy-west-end-2020/sierz-co-uk--unknown.json"
+    ],
+    "scrapingbee": [
+      "a-christmas-carol-west-end-2020/times-uk--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "all-male-as-you-like-it-regional-2026/telegraph--unknown.json"
+      "a-christmas-carol-west-end-2020/the-spectator-uk--unknown.json",
+      "death-of-england-delroy-west-end-2020/indiependent--unknown.json",
+      "death-of-england-delroy-west-end-2020/the-spectator-uk--unknown.json"
     ]
   },
   "failuresByOutlet": {
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "The Times (UK)": {
       "count": 1,
       "domain": "thetimes.com",
