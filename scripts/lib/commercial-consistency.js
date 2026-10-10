@@ -6,8 +6,10 @@
  *   ones; the rest need deep research (22 such shows on 2026-10-10).
  * - recoupedModelDisagreements: the reported recouped flag and the model's
  *   call disagree. The reported flag stays authoritative; the row is for a
- *   person to look at (gutenberg: trade-reported recoupment, low-quality
- *   model just under 100%).
+ *   person to look at. When the model gives a [low, mid, high] recoupment
+ *   range, only a range wholly on the other side of 100% counts: gutenberg
+ *   (trade-reported recoupment, range 67.7-129.4) and frozen-2018 (not
+ *   recouped, 67.9-168.3) are consistent with what was reported (BRO-4995).
  *
  * Pure: no I/O.
  */
@@ -47,6 +49,11 @@ function recoupedModelDisagreements(records) {
   const out = [];
   for (const [slug, r] of Object.entries(records || {})) {
     if (!r || typeof r.recouped !== 'boolean' || typeof r.modelRecouped !== 'boolean') continue;
+    const range = r.modelRecoupmentPct;
+    if (Array.isArray(range) && range.length === 3 && range.every(Number.isFinite)) {
+      const [low, , high] = range;
+      if (r.recouped ? high >= 100 : low < 100) continue;
+    }
     if (r.recouped !== r.modelRecouped) {
       out.push({ slug, recouped: r.recouped, modelRecouped: r.modelRecouped, modelDataQuality: r.modelDataQuality || null });
     }
