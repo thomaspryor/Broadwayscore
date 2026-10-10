@@ -19,6 +19,7 @@
 
 const { isCitedReportedWeeklyCost, REPORTED_COST_METHODOLOGIES } = require('./waltz-cost-gap-fill');
 const { previewWeeksFromWeekly } = require('./preview-weeks');
+const { runWindow, COVID_DARK_START, COVID_DARK_END } = require('./run-window');
 
 // ---------------------------------------------------------------------------
 // Constants & Defaults
@@ -163,9 +164,7 @@ const MARKETING_SURCHARGES = {
 /** Cost escalation: annual rate applied from week 53 onward */
 const ANNUAL_COST_ESCALATION = 0.03;
 
-/** COVID shutdown: all Broadway dark from March 12, 2020 to September 14, 2021 */
-const COVID_DARK_START = new Date('2020-03-12');
-const COVID_DARK_END = new Date('2021-09-14');
+/** COVID shutdown dates live in run-window.js; re-exported below. */
 const COVID_DARK_WEEKS = 78;
 
 /**
@@ -419,6 +418,9 @@ function getPreviewGrossMultiplier(previewWeek) {
  * @param {boolean} [opts.previewsFromWeekly] - shadow only (BRO-5002): estimate
  *   only the preview weeks the weekly history does not already cover. Off
  *   (live behavior) by default.
+ * @param {boolean} [opts.playedWeeksOnly] - shadow only (BRO-5003): count a
+ *   running show's weeks to today, not to an announced closing date. Off
+ *   (live behavior) by default.
  * @returns {object} RecoupmentModelResult
  */
 function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, opts = {}) {
@@ -486,38 +488,9 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
     ? Math.max(capitalization - svogGrant, weeklyNut)
     : effectiveCap;
 
-  // --- Gross data ---
-  const openingDate = show.openingDate ? new Date(show.openingDate) : null;
-  const closingDate = show.closingDate ? new Date(show.closingDate) : null;
-  const previewsStart = show.previewsStartDate ? new Date(show.previewsStartDate) : null;
-  const isStillRunning = !closingDate || closingDate > new Date();
-
-  // Calculate preview weeks (cap at 8 — anything longer is COVID gap or data error)
-  let previewWeeks = 0;
-  if (previewsStart && openingDate) {
-    let rawPreviewWeeks = Math.round((openingDate - previewsStart) / (7 * 86400000));
-    // If preview period spans COVID shutdown, subtract dark weeks
-    if (previewsStart < COVID_DARK_END && openingDate > COVID_DARK_START) {
-      const darkStart = previewsStart < COVID_DARK_START ? COVID_DARK_START : previewsStart;
-      const darkEnd = openingDate > COVID_DARK_END ? COVID_DARK_END : openingDate;
-      rawPreviewWeeks -= Math.max(0, Math.round((darkEnd - darkStart) / (7 * 86400000)));
-    }
-    previewWeeks = Math.min(Math.max(rawPreviewWeeks, 0), 8);
-  }
-
-  // Calculate total run weeks (from previews start or opening), excluding COVID dark period
-  const runStart = previewsStart || openingDate;
-  const runEnd = closingDate || new Date();
-  let totalRunWeeks = runStart ? Math.round((runEnd - runStart) / (7 * 86400000)) : 0;
-
-  // Subtract COVID dark weeks if the show's run spans the shutdown
-  if (runStart && runStart < COVID_DARK_END && (!closingDate || closingDate > COVID_DARK_START)) {
-    const darkStart = runStart < COVID_DARK_START ? COVID_DARK_START : runStart;
-    const darkEnd = (!closingDate || closingDate > COVID_DARK_END) ? COVID_DARK_END : closingDate;
-    const darkWeeks = Math.round((darkEnd - darkStart) / (7 * 86400000));
-    totalRunWeeks -= darkWeeks;
-    if (darkWeeks > 0) warnings.push(`Excluded ${darkWeeks} COVID dark weeks`);
-  }
+  // --- Run window: preview weeks and weeks played (scripts/lib/run-window.js) ---
+  const { previewWeeks, totalRunWeeks, darkWeeks } = runWindow(show, { playedOnly: !!opts.playedWeeksOnly });
+  if (darkWeeks > 0) warnings.push(`Excluded ${darkWeeks} COVID dark weeks`);
 
   // Tax credit amount (needs run length): 25% of cap + first-year running costs.
   // notesCredit is null when the notes say nothing usable, 0 when they say the
@@ -701,7 +674,7 @@ function buildWeeklySchedule(show, grossesAllTime, grossesWeekly, previewWeeks, 
     // are the previews. Live still estimates all of them on top (counted
     // twice); the shadow option estimates only the uncovered ones (BRO-5002).
     const covers = opts.previewsFromWeekly
-      ? previewWeeksFromWeekly(weekDates, show.openingDate, previewWeeks)
+      ? previewWeeksFromWeekly(weekDates, show.openingDate, previewWeeks, show.previewsStartDate)
       : { toEstimate: previewWeeks, previewRowDates: new Set() };
 
     // Add preview weeks (estimated) before the weekly data
@@ -891,7 +864,7 @@ function parseTaxCreditFromNotes(notes) {
  *
  * The blended weekly nut is deflated to a run-average (current nut reflects end-of-run costs).
  */
-function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
+function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}) {
   const warnings = ['Simplified lifetime model (10+ year run)'];
 
   const capitalization = commercial.capitalization;
@@ -931,7 +904,10 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
 
   // Run duration
   const openDate = show.openingDate ? new Date(show.openingDate) : null;
-  const closeDate = show.closingDate ? new Date(show.closingDate) : new Date();
+  let closeDate = show.closingDate ? new Date(show.closingDate) : new Date();
+  // Shadow only (BRO-5003): the all-time gross is to date, so an announced
+  // future closing must not add unplayed weeks of cost. Live keeps it.
+  if (opts.playedWeeksOnly && closeDate > new Date()) closeDate = new Date();
   let totalWeeks = openDate ? Math.round((closeDate - openDate) / (7 * 86400000)) : 0;
 
   // Subtract COVID dark weeks
@@ -1027,6 +1003,7 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime) {
 module.exports = {
   calculateRecoupment,
   calculateLifetimeRecoupment,
+  buildWeeklySchedule,
   classifyShow,
   getBaseVariableRate,
   calcWeeklyProfit,

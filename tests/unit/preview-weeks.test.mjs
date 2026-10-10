@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { previewWeeksFromWeekly } = require('../../scripts/lib/preview-weeks');
-const { calculateRecoupment } = require('../../scripts/lib/recoupment-model');
+const { calculateRecoupment, buildWeeklySchedule } = require('../../scripts/lib/recoupment-model');
 
 // Week-ending Sundays from first preview (2025-03-02 week) through 30 weeks.
 function sundays(from, n) {
@@ -36,6 +36,25 @@ describe('previewWeeksFromWeekly', () => {
     assert.ok(long.previewRowDates.has('2025-03-23') && !long.previewRowDates.has('2025-01-05'));
   });
 
+  test('rows before the first preview (an earlier production) are not counted', () => {
+    const dates = ['2015-03-29', ...sundays('2025-03-16', 20)];
+    const r = previewWeeksFromWeekly(dates, '2025-03-27', 4, '2025-03-11');
+    assert.equal(r.covered, 2);
+    assert.ok(!r.previewRowDates.has('2015-03-29'));
+    assert.equal(previewWeeksFromWeekly(dates, '2025-03-27', 4).covered, 3, 'without a previews date the old row slips in');
+  });
+
+  test('Sunday opening and a timestamped opening date: the opening week is regular', () => {
+    assert.equal(previewWeeksFromWeekly(sundays('2025-03-02', 8), '2025-03-23', 3, '2025-03-01').covered, 3);
+    assert.equal(previewWeeksFromWeekly(sundays('2025-03-02', 8), '2025-03-23T19:00:00Z', 3, '2025-03-01').covered, 3);
+  });
+
+  test('COVID-split previews keep the rows on both sides of the shutdown', () => {
+    const dates = ['2020-02-16', '2020-02-23', '2020-03-01', '2020-03-08', '2021-09-19', '2021-09-26', '2021-10-10'];
+    const r = previewWeeksFromWeekly(dates, '2021-10-03', 6, '2020-02-13');
+    assert.deepEqual([...r.previewRowDates], ['2020-02-16', '2020-02-23', '2020-03-01', '2020-03-08', '2021-09-19', '2021-09-26']);
+  });
+
   test('no opening date or no preview weeks: nothing covered', () => {
     assert.equal(previewWeeksFromWeekly(sundays('2025-03-02', 5), null, 4).toEstimate, 4);
     assert.equal(previewWeeksFromWeekly(sundays('2025-03-02', 5), '2025-03-27', 0).toEstimate, 0);
@@ -57,6 +76,22 @@ describe('calculateRecoupment schedule', () => {
     const fixed = calculateRecoupment(show, comm, null, weekly, { previewsFromWeekly: true });
     assert.equal(fixed.totalRunWeeks, 30);
     assert.notEqual(fixed.recoupmentPctCentral, calculateRecoupment(show, comm, null, weekly).recoupmentPctCentral);
+  });
+
+  test('shadow option: covered weekly rows are flagged as previews, later rows are not', () => {
+    const sched = buildWeeklySchedule(show, null, weekly, 4, 30, [], { previewsFromWeekly: true });
+    assert.equal(sched.length, 30);
+    assert.deepEqual(sched.slice(0, 5).map((w) => !!w.isPreview), [true, true, true, true, false]);
+    assert.ok(sched.every((w) => w._source === 'weekly-history'));
+  });
+
+  test('all-time fallback (little weekly coverage) ignores the option', () => {
+    const sparse = Object.fromEntries(sundays('2025-03-02', 5).map((d) => [d, { gross: 1_200_000, performances: 8 }]));
+    const allTime = { gross: 1_200_000 * 30, performances: 240, attendance: 240_000 };
+    const a = calculateRecoupment(show, comm, allTime, sparse);
+    const b = calculateRecoupment(show, comm, allTime, sparse, { previewsFromWeekly: true });
+    assert.match(a.grossDataSource, /^alltime/);
+    assert.deepEqual(b, a);
   });
 
   test('shadow option: weekly rows starting at opening keep the estimated previews', () => {
