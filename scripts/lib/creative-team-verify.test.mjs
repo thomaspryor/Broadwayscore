@@ -185,3 +185,10 @@ test('verifyCreativeTeamViaSerp productionAnchor: director must be tied to the v
   assert.equal(none.length, 0);
   assert.equal(queries.length, before);
 });
+
+test('title anchor is whole-word: the one-letter title "G" does not anchor every snippet', () => {
+  const invented = [{ title: 'Inua Ellams on a big year', snippet: 'Barber Shop Chronicles, written by Inua Ellams, returns.' }];
+  assert.equal(serpTextConfirms(invented, ['written by'], 'Inua Ellams', { title: 'G' }), false);
+  const real = [{ title: 'G review, Royal Court', snippet: 'G, written by Tife Kusoro, follows three teenagers.' }];
+  assert.equal(serpTextConfirms(real, ['written by'], 'Tife Kusoro', { title: 'G' }), true);
+});

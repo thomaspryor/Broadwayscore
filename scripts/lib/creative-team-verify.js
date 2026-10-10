@@ -111,6 +111,18 @@ function titleTokens(title) {
 }
 
 /**
+ * Whole-word containment for a title token. A plain substring check let the
+ * one-letter title "G" (Royal Court 2024, by Tife Kusoro) anchor any snippet
+ * containing a "g", which "confirmed" an invented Inua Ellams credit
+ * (BRO-4884).
+ */
+function containsToken(text, token) {
+  if (!token) return false;
+  const esc = token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(?<![a-z0-9])${esc}(?![a-z0-9])`).test(text);
+}
+
+/**
  * Pure phrase check: does any SERP result confirm "<phrase> <name>" as an
  * attribution for THIS show?
  *
@@ -142,13 +154,13 @@ function serpTextConfirms(serpResults, phrases, name, opts = {}) {
       // No title anchor supplied — legacy loose check.
       return wanted.some(w => (pageTitle + ' ' + snippet).includes(w));
     }
-    const pageTitleNamesShow = anchors.some(a => pageTitle.includes(a));
+    const pageTitleNamesShow = anchors.some(a => containsToken(pageTitle, a));
     // Google joins unrelated page fragments with "..." or "…" — treat each
     // fragment as its own evidence unit.
     const segments = snippet.split(/\.\.\.|…/);
     return segments.some(seg =>
       wanted.some(w => seg.includes(w)) &&
-      (pageTitleNamesShow || anchors.some(a => seg.includes(a)))
+      (pageTitleNamesShow || anchors.some(a => containsToken(seg, a)))
     );
   });
 }
@@ -204,7 +216,7 @@ function serpTextConfirmsProduction(serpResults, phrases, name, { title, venue }
     const segments = normalizeForMatch(r.snippet).split(/\.\.\.|…/);
     return segments.some(seg => {
       if (!wanted.some(w => seg.includes(w))) return false;
-      const namesShow = anchors.some(a => seg.includes(a) || pageTitle.includes(a));
+      const namesShow = anchors.some(a => containsToken(seg, a) || containsToken(pageTitle, a));
       const segNoApos = seg.replace(/'/g, '');
       const namesVenue = venues.some(t => segNoApos.includes(t) || pageTitleNoApos.includes(t));
       return namesShow && namesVenue;
@@ -297,5 +309,5 @@ async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts =
 
 module.exports = {
   ROLE_CANON, roleVerb, roleVerbVariants, serpTextConfirms, titleTokens, normalizeForMatch,
-  PRODUCTION_SPECIFIC_ROLES, venueTokens, serpTextConfirmsProduction, verifyCreativeTeamViaSerp,
+  PRODUCTION_SPECIFIC_ROLES, venueTokens, serpTextConfirmsProduction, verifyCreativeTeamViaSerp, containsToken,
 };
