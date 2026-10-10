@@ -505,6 +505,7 @@ tests/unit/commercial-friday-push-timeout.test.mjs
 tests/unit/commercial-friday-refresh-cron-health.test.mjs
 tests/unit/commercial-publish-gate.test.mjs
 tests/unit/commercial-queue.test.mjs
+tests/unit/commercial-record-stamp.test.mjs
 tests/unit/commercial-rss-poll-data-commit.test.mjs
 tests/unit/commercial-rss-poll-push-timeout.test.mjs
 tests/unit/commercial-rss-poll.test.mjs
@@ -975,6 +976,7 @@ tests/unit/published-score-star-band.test.mjs
 tests/unit/published-star-capture.test.mjs
 tests/unit/pull-quote-guards.test.mjs
 tests/unit/push-content-survival-false-positive.test.mjs
+tests/unit/push-core-data-commercial-conflict-warning.test.mjs
 tests/unit/push-core-data-outlet-staging.test.mjs
 tests/unit/push-core-data-show-recovery.test.mjs
 tests/unit/push-failure-masking.test.mjs
