@@ -125,16 +125,16 @@ export function coverTiles(c: CoverCosts | null): CoverTile[] {
   if (c.ticketNeeded != null) {
     const now = c.ticketNow != null ? `4-wk avg $${Math.round(c.ticketNow)}` : '';
     tiles.push({
-      label: 'At today’s attendance', value: `$${Math.round(c.ticketNeeded)} avg ticket`, detail: now,
-      phoneLabel: 'Avg ticket needed', phoneDetail: `at today’s attendance${now ? ` (${now})` : ''}`, phoneValue: `$${Math.round(c.ticketNeeded)}`,
+      label: 'At recent attendance', value: `$${Math.round(c.ticketNeeded)} avg ticket`, detail: now,
+      phoneLabel: 'Avg ticket needed', phoneDetail: `at recent attendance${now ? ` (${now})` : ''}`, phoneValue: `$${Math.round(c.ticketNeeded)}`,
     });
   }
   if (c.capacityNeeded != null) {
     const over = c.capacityNeeded > 100;
     const now = c.capacityNow != null ? `4-wk avg ${Math.round(c.capacityNow)}%` : '';
     tiles.push({
-      label: 'At today’s prices', value: over ? 'more than a full house' : `${Math.round(c.capacityNeeded)}% full`, detail: now,
-      phoneLabel: 'How full it would need to be', phoneDetail: `at today’s prices${now ? ` (${now})` : ''}`, phoneValue: over ? 'more than full' : `${Math.round(c.capacityNeeded)}%`,
+      label: 'At recent prices', value: over ? 'more than a full house' : `${Math.round(c.capacityNeeded)}% full`, detail: now,
+      phoneLabel: 'How full it would need to be', phoneDetail: `at recent prices${now ? ` (${now})` : ''}`, phoneValue: over ? 'more than full' : `${Math.round(c.capacityNeeded)}%`,
     });
   }
   return tiles;

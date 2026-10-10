@@ -356,6 +356,8 @@ test('real data: the Reported/Estimate label and the range width come from one f
   for (const r of rows) {
     const hw = r.multiple!.mid / r.multiple!.lo - 1;
     const basis = getV2CostBasis(shows[r.slug], asOf);
+    // Aging needs a date: an unparseable source date would keep an old figure narrow forever.
+    if (r.costBasis === 'reported') assert.ok(costSourceDate(r.costSourceText ?? ''), `${r.slug}: reported source has no parseable date: "${r.costSourceText}"`);
     assert.equal(r.costBasis === 'estimate', basis.estimated, `${r.slug}: label and helper disagree`);
     assert.ok(Math.abs(hw - basis.halfWidth) < 1e-6, `${r.slug}: range ±${hw.toFixed(3)} but helper says ±${basis.halfWidth}`);
     // A source older than 24 months keeps Reported but never the narrow width.
