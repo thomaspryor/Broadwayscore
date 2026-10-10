@@ -1,0 +1,4082 @@
+{
+  "generatedAt": "2026-10-10T05:03:27.894Z",
+  "season": "2020-2021",
+  "sources": [
+    "wos-listing",
+    "wos-review",
+    "olivier-2021",
+    "olivier-2022"
+  ],
+  "counts": {
+    "listings": 186,
+    "promotable": 24,
+    "notPromotable": {
+      "run of -168 days < 14": 1,
+      "run of 2 days < 14": 3,
+      "non-theatre genre": 107,
+      "no review signal": 15,
+      "run of 0 days < 14": 19,
+      "run of 7 days < 14": 3,
+      "run of 1 days < 14": 3,
+      "run of 5 days < 14": 2,
+      "run of 12 days < 14": 1,
+      "run of 13 days < 14": 2,
+      "run of 6 days < 14": 2,
+      "run of 9 days < 14": 1,
+      "run of 3 days < 14": 2,
+      "already in shows.json": 1
+    },
+    "unlistedReviews": 4
+  },
+  "candidates": [
+    {
+      "title": "Magic Goes Wrong",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-01",
+      "closingDate": "2020-03-17",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/magic-goes-wrong_226502/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of -168 days < 14"
+      }
+    },
+    {
+      "title": "In Camera – Three Kings",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-03",
+      "closingDate": "2020-09-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/in-camera-three-kings_231572/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 2 days < 14"
+      }
+    },
+    {
+      "title": "Samantha Barks",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-06",
+      "closingDate": "2020-09-06",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/samantha-barks_227520/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Sting",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-15",
+      "closingDate": "2020-09-22",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/sting_224459/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Jimmy Buffett",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-16",
+      "closingDate": "2020-09-16",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jimmy-buffett_227880/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "John Owen Jones",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-20",
+      "closingDate": "2020-09-20",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/john-owen-jones_217942/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Van Morrison",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-23",
+      "closingDate": "2020-09-23",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/van-morrison_226268/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "My Dad Wrote a Porno",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-26",
+      "closingDate": "2020-09-26",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/my-dad-wrote-a-porno_200545/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Graham Norton",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-27",
+      "closingDate": "2020-09-27",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/graham-norton_232744/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "An Evening with Graham Norton",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-09-27",
+      "closingDate": "2020-09-27",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-graham-norton_232761/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Elizabeth Day",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-02",
+      "closingDate": "2020-10-02",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/elizabeth-day_232373/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Scott Bradlee’s Post Modern Jukebox",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-03",
+      "closingDate": "2020-10-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/scott-bradlees-post-modern-jukebox_216066/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Zeppelin Symphonic – The Music of Led Zeppelin a Rock Celebration",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-04",
+      "closingDate": "2020-10-04",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/zeppelin-symphonic-the-music-of-led-zeppelin-a-rock-celebration_227276/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Boomtown Rats",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-06",
+      "closingDate": "2020-10-06",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-boomtown-rats_218969/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Ricky Gervais – Supernature",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-07",
+      "closingDate": "2020-10-24",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/ricky-gervais-supernature_218293/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Josh Widdicombe – Bit Much…",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-11",
+      "closingDate": "2020-10-11",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/josh-widdicombe-bit-much_212676/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Songs for a New World",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-11",
+      "closingDate": "2020-10-11",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/songs-for-a-new-world_233161/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "An Evening with Arsene Wenger",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-12",
+      "closingDate": "2020-10-12",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-arsene-wenger_234550/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The James Bond Concert Spectacular",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-18",
+      "closingDate": "2020-10-18",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-james-bond-concert-spectacular_222517/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Sir Ranulph Fiennes – Living Dangerously",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-19",
+      "closingDate": "2020-10-19",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/sir-ranulph-fiennes-living-dangerously_232376/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Death of England: Delroy",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-21",
+      "closingDate": "2020-11-04",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/death-of-england-delroy_233199/",
+        "wosReview": "https://www.whatsonstage.com/news/review-death-of-england-delroy-national-theatre_52742/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Adam Kay – This is Going to Hurt (Secret Diaries of a Junior Doctor)",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-22",
+      "closingDate": "2020-11-08",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-this-is-going-to-hurt-secret-diaries-of-a-junior-doctor_232910/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Neighbours: Live in Conversation",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-25",
+      "closingDate": "2020-10-25",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/neighbours-live-in-conversation_226407/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Texas – Southside",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-27",
+      "closingDate": "2020-10-28",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/texas-southside_224920/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Welcome to Night Vale",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-28",
+      "closingDate": "2020-10-28",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/welcome-to-night-vale_216048/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Daniel Sloss – Hubris",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-30",
+      "closingDate": "2020-10-30",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/daniel-sloss-hubris_224699/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Crave",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-10-31",
+      "closingDate": "2020-11-07",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/crave_236273/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 7 days < 14"
+      }
+    },
+    {
+      "title": "Collabro – Love Like This",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-03",
+      "closingDate": "2020-11-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/collabro-love-like-this_208836/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Mozart’s Requiem",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-06",
+      "closingDate": "2020-11-07",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mozarts-requiem_234625/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Private Peaceful",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-07",
+      "closingDate": "2020-11-22",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/private-peaceful_234640/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Comedy Store Players",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-08",
+      "closingDate": "2020-11-29",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-comedy-store-players_234614/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Clannad – In a Lifetime – The Farewell Tour",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-10",
+      "closingDate": "2020-11-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/clannad-in-a-lifetime-the-farewell-tour_227277/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Paul Heaton & Jacqui Abbott",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-11",
+      "closingDate": "2020-11-12",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/paul-heaton-jacqui-abbott_213096/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Show Must Go On",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-11",
+      "closingDate": "2020-11-15",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-show-must-go-on_235969/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "[title of show]",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-12",
+      "closingDate": "2020-11-14",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/title-of-show_236573/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 2 days < 14"
+      }
+    },
+    {
+      "title": "Shalamar",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-13",
+      "closingDate": "2020-11-13",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/shalamar_219457/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Shires – Good Years",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-15",
+      "closingDate": "2020-11-15",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-shires-good-years_217025/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Secret Garden – Concert Version",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-15",
+      "closingDate": "2020-11-15",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-secret-garden-concert-version_218050/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Russell Brand – Brand-emic",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-15",
+      "closingDate": "2020-11-15",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/russell-brand-brand-emic_234493/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Debbie Harry & Chris Stein in Conversation",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-16",
+      "closingDate": "2020-11-16",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/debbie-harry-chris-stein-in-conversation_226685/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Van Der Graaf Generator",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-19",
+      "closingDate": "2020-11-19",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/van-der-graaf-generator_210426/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "An Evening with Andrew Cotter – with Olive and Mabel",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-24",
+      "closingDate": "2020-11-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-andrew-cotter-with-olive-and-mabel_235342/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Death of England: Delroy",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-27",
+      "closingDate": "2020-11-27",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/death-of-england-delroy_237653/",
+        "wosReview": "https://www.whatsonstage.com/news/review-death-of-england-delroy-national-theatre_52742/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Dawn French",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-30",
+      "closingDate": "2020-11-30",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dawn-french_236311/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – Sharon D Clarke",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-11-30",
+      "closingDate": "2020-11-30",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-sharon-d-clarke_238642/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – Cassidy Janson",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-01",
+      "closingDate": "2020-12-01",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-cassidy-janson_238637/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Three Kings",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-02",
+      "closingDate": "2020-12-04",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/three-kings_237939/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – Kerry Ellis",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-02",
+      "closingDate": "2020-12-02",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-kerry-ellis_238635/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Death Drop",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-03",
+      "closingDate": "2021-07-11",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/death-drop_234653/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – Rob Fowler and Sharon Sexton",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-03",
+      "closingDate": "2020-12-03",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-rob-fowler-and-sharon-sexton_238644/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – Carrie Hope Fletcher",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-04",
+      "closingDate": "2020-12-04",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-carrie-hope-fletcher_238638/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Les Miserables",
+      "venue": "The Sondheim Theatre (formerly Queen's Theatre)",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-05",
+      "closingDate": "2020-12-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/les-miserables_193712/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 7 days < 14"
+      }
+    },
+    {
+      "title": "SIX",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-05",
+      "closingDate": "2021-08-29",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/six_232894/",
+        "wosReview": "https://www.whatsonstage.com/news/review-six-the-musical-lyric-theatre_53014/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Potted Panto",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-05",
+      "closingDate": "2021-01-10",
+      "genres": [
+        "pantomime"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/potted-panto_234637/",
+        "wosReview": "https://www.whatsonstage.com/news/review-potted-panto-garrick-theatre_52979/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: pantomime"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – Ramin Karimloo",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-05",
+      "closingDate": "2020-12-05",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-ramin-karimloo_238641/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Roles We’ll Never Play",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-06",
+      "closingDate": "2020-12-07",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/roles-well-never-play_235640/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Tonight at The London Coliseum – After You",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-06",
+      "closingDate": "2020-12-06",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tonight-at-the-london-coliseum-after-you_238639/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Showstopper! The Improvised Musical",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-07",
+      "closingDate": "2022-03-21",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/showstopper-the-improvised-musical_234609/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-07",
+      "closingDate": "2021-01-02",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-christmas-carol_235143/",
+        "wosReview": "https://www.whatsonstage.com/news/review-a-christmas-carol-dominion-theatre_53026/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Understudy",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-07",
+      "closingDate": "2020-12-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-understudy_237006/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 1 days < 14"
+      }
+    },
+    {
+      "title": "The Comeback",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-08",
+      "closingDate": "2021-01-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-comeback_235050/",
+        "wosReview": "https://www.whatsonstage.com/news/review-the-comeback-noel-coward-theatre_53037/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Kings of Broadway",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-09",
+      "closingDate": "2020-12-09",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/kings-of-broadway_236571/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Mischief Movie Night",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-09",
+      "closingDate": "2021-02-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mischief-movie-night_237909/",
+        "wosReview": "https://www.whatsonstage.com/news/review-mischief-movie-night-vaudeville-theatre_53036/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Nutcracker",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-10",
+      "closingDate": "2021-01-03",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-nutcracker_220995/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Dick Whittington",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-11",
+      "closingDate": "2021-01-23",
+      "genres": [
+        "pantomime"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dick-whittington_235727/",
+        "wosReview": "https://www.whatsonstage.com/news/review-dick-whittington-national-theatre-online_53088/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: pantomime"
+      }
+    },
+    {
+      "title": "Adam Kay – This is Going to Hurt (Secret Diaries of a Junior Doctor)",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-11",
+      "closingDate": "2020-12-16",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-this-is-going-to-hurt-secret-diaries-of-a-junior-doctor_237024/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 5 days < 14"
+      }
+    },
+    {
+      "title": "Pantoland at the Palladium",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-12",
+      "closingDate": "2021-01-03",
+      "genres": [
+        "pantomime"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pantoland-at-the-palladium_226263/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: pantomime"
+      }
+    },
+    {
+      "title": "The Pirates of Penzance",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-12",
+      "closingDate": "2020-12-13",
+      "genres": [
+        "opera"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-pirates-of-penzance_235788/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-12",
+      "closingDate": "2020-12-24",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-christmas-carol_236316/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 12 days < 14"
+      }
+    },
+    {
+      "title": "Nutcracker Delights",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-17",
+      "closingDate": "2021-01-03",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/nutcracker-delights_234792/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Adam Kay – Twas The Nightshift Before Christmas LIVE",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-21",
+      "closingDate": "2021-01-03",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-twas-the-nightshift-before-christmas-live_235497/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 13 days < 14"
+      }
+    },
+    {
+      "title": "The Vivienne’s Christmas – Up To Snow Good!",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-21",
+      "closingDate": "2020-12-21",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-viviennes-christmas-up-to-snow-good_237766/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Bill Bailey – Christmas Larks",
+      "venue": "Lyceum Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2020-12-28",
+      "closingDate": "2021-01-10",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/bill-bailey-christmas-larks_237827/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 13 days < 14"
+      }
+    },
+    {
+      "title": "National Theatre at Home",
+      "venue": "National Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-01",
+      "closingDate": "2021-03-31",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/national-theatre-at-home_241507/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Raymonda",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-07",
+      "closingDate": "2021-01-16",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/raymonda_221009/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Hair – The Musical in Concert",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-16",
+      "closingDate": "2021-01-16",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hair-the-musical-in-concert_236309/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Luke Evans",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-18",
+      "closingDate": "1990-01-01",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/luke-evans_219475/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Trixie Mattel – Grown Up",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-19",
+      "closingDate": "2021-01-19",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/trixie-mattel-grown-up_221305/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "The Show Must Go On! – Live at the Palace Theatre",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-20",
+      "closingDate": "2021-01-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-show-must-go-on-live-at-the-palace-theatre_234534/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Faith Healer",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-20",
+      "closingDate": "2021-01-22",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/faith-healer_237941/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Monday Night at the Apollo",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-25",
+      "closingDate": "2021-01-25",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/monday-night-at-the-apollo_237714/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Lungs",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-27",
+      "closingDate": "2021-01-29",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/lungs_237940/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "The Dualers",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-29",
+      "closingDate": "2021-01-29",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-dualers_237475/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The House and Garage Orchestra",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-01-30",
+      "closingDate": "2021-01-30",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-house-and-garage-orchestra_237479/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Hawkwind",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-02-02",
+      "closingDate": "2021-02-02",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hawkwind_237480/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Midge Ure – Vienna & Visage the 1980 tour",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-02-03",
+      "closingDate": "2021-02-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/midge-ure-vienna-visage-the-1980-tour_237478/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "An Evening with Jennifer Saunders",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-02-08",
+      "closingDate": "2021-02-08",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-jennifer-saunders_235799/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "An Evening with Kevin and Joanne Clifton",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-02-09",
+      "closingDate": "2021-02-09",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-kevin-and-joanne-clifton_234275/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "An Evening with Kathy Burke",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-02-22",
+      "closingDate": "2021-02-22",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-kathy-burke_234978/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Adam Kay – This is Going to Hurt (Secret Diaries of a Junior Doctor)",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-03-01",
+      "closingDate": "2021-03-07",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-this-is-going-to-hurt-secret-diaries-of-a-junior-doctor_239947/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 6 days < 14"
+      }
+    },
+    {
+      "title": "The Woman in Black",
+      "venue": "Fortune Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-03-02",
+      "closingDate": "2021-03-27",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-woman-in-black_239980/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Welcome to Night Vale",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-03-27",
+      "closingDate": "2021-03-27",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/welcome-to-night-vale_236641/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Potted Panto",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-01",
+      "closingDate": "2021-04-18",
+      "genres": [
+        "pantomime"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/potted-panto_239687/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: pantomime"
+      }
+    },
+    {
+      "title": "Simon Sinek",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-12",
+      "closingDate": "2021-04-12",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/simon-sinek_227273/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Kidz Bop",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-14",
+      "closingDate": "2021-04-15",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/kidz-bop_227098/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Old Vic: In Camera – Dr Seuss’s The Lorax",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-14",
+      "closingDate": "2021-04-17",
+      "genres": [
+        "film"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/old-vic-in-camera-dr-seusss-the-lorax_243157/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: film"
+      }
+    },
+    {
+      "title": "Good",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-21",
+      "closingDate": "2021-07-17",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/good_232946/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Jamie Cullum",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-21",
+      "closingDate": "2021-04-22",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jamie-cullum_236821/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Bond",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-23",
+      "closingDate": "2021-04-23",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/bond_238645/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Rick Wakeman – The Even Grumpier Old Rock Star Xmas Show",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-24",
+      "closingDate": "2021-04-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rick-wakeman-the-even-grumpier-old-rock-star-xmas-show_234607/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Ministry of Sound – Classical",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-04-30",
+      "closingDate": "2021-04-30",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/ministry-of-sound-classical_238492/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Van Der Graaf Generator",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-03",
+      "closingDate": "2021-05-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/van-der-graaf-generator_238320/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Joe Satriani",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-04",
+      "closingDate": "2021-05-04",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/joe-satriani_215071/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Shires – Good Years",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-12",
+      "closingDate": "2021-05-12",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-shires-good-years_237619/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Drag Queens of Pop",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-17",
+      "closingDate": "2021-05-19",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/drag-queens-of-pop_243464/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Shagged, Married, Annoyed",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-18",
+      "closingDate": "2021-05-18",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/shagged-married-annoyed_224525/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Shagged, Married, Annoyed",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-18",
+      "closingDate": "2021-05-18",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/shagged-married-annoyed_230235/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Cruise",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-18",
+      "closingDate": "2021-06-13",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review",
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cruise_243351/",
+        "wosReview": "https://www.whatsonstage.com/news/review-cruise-duchess-theatre_54105/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2022"
+      }
+    },
+    {
+      "title": "Rick Astley – Greatest Hits",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-19",
+      "closingDate": "2021-05-19",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rick-astley-greatest-hits_227205/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Love Letters",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-19",
+      "closingDate": "2021-06-13",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/love-letters_237079/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Les Miserables – The Staged Concert",
+      "venue": "The Sondheim Theatre (formerly Queen's Theatre)",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-20",
+      "closingDate": "2021-09-05",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/les-miserables-the-staged-concert_242921/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Richard Ashcroft",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-21",
+      "closingDate": "2021-05-21",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/richard-ashcroft_239557/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "ABBA Mania",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-21",
+      "closingDate": "2021-06-06",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/abba-mania_244283/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Roles We’ll Never Play",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-22",
+      "closingDate": "2021-05-23",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/roles-well-never-play_243029/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Walden",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-22",
+      "closingDate": "2021-06-12",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/walden_244593/",
+        "wosReview": "https://www.whatsonstage.com/news/review-walden-harold-pinter-theatre_54156/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Monday Night at the Apollo",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-24",
+      "closingDate": "2021-06-14",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/monday-night-at-the-apollo_237707/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Matt Forde – The Political Party",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-24",
+      "closingDate": "2021-06-02",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/matt-forde-the-political-party_244688/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 9 days < 14"
+      }
+    },
+    {
+      "title": "Intermissions Live",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-24",
+      "closingDate": "2021-05-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/intermissions-live_245268/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "An Evening with Kathy Burke",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-24",
+      "closingDate": "2021-05-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-kathy-burke_245562/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Strictly Come Dancing – The Professionals",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-25",
+      "closingDate": "2021-05-26",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/strictly-come-dancing-the-professionals_239854/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Here Come the Boys",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-25",
+      "closingDate": "2021-06-09",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/here-come-the-boys_244295/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Public Domain",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-27",
+      "closingDate": "2021-05-30",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/public-domain_244290/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 3 days < 14"
+      }
+    },
+    {
+      "title": "Trixie Mattel – Grown Up",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-28",
+      "closingDate": "2021-05-28",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/trixie-mattel-grown-up_241854/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Shalamar",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-05-29",
+      "closingDate": "2021-05-29",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/shalamar_237518/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Van Morrison",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-01",
+      "closingDate": "2021-06-01",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/van-morrison_227889/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Texas – Southside",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-01",
+      "closingDate": "2021-06-01",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/texas-southside_236350/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Show Must Go On",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-02",
+      "closingDate": "2021-06-06",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-show-must-go-on_240623/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "After Life",
+      "venue": "Dorfman Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-02",
+      "closingDate": "2021-08-07",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/after-life_243790/",
+        "wosReview": "https://www.whatsonstage.com/news/review-after-life-national-theatre_54247/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Matt Forde – The Political Party",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-02",
+      "closingDate": "2021-06-02",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/matt-forde-the-political-party_247426/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "In Conversation with The Sopranos",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-06",
+      "closingDate": "2021-06-06",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/in-conversation-with-the-sopranos_208400/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Pride at the Palace – A Queer Concert Celebration",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-07",
+      "closingDate": "2021-06-07",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pride-at-the-palace-a-queer-concert-celebration_244226/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Alyssa, Memoirs of a Queen!",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-07",
+      "closingDate": "2021-06-17",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/alyssa-memoirs-of-a-queen_244604/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Arlene Philips – An Evening with …",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-07",
+      "closingDate": "2021-06-07",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/arlene-philips-an-evening-with_244682/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Legends of Lockdown – Live",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-09",
+      "closingDate": "2021-06-09",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/legends-of-lockdown-live_247974/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "West End Musical Celebration – Live at the Palace Theatre",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-10",
+      "closingDate": "2021-06-13",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/west-end-musical-celebration-live-at-the-palace-theatre_235144/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Lee Mead",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-10",
+      "closingDate": "2021-06-10",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/lee-mead_243948/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Phil Wang – Netflix Special",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-12",
+      "closingDate": "2021-06-12",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/phil-wang-netflix-special_243543/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Hair – In Concert",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-13",
+      "closingDate": "2021-06-13",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hair-in-concert_243330/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Oti Mabuse – I Am Here",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-14",
+      "closingDate": "2021-06-14",
+      "genres": [
+        "dance"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oti-mabuse-i-am-here_230729/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Jimmy Carr – Terribly Funny Tour",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-14",
+      "closingDate": "2021-06-20",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jimmy-carr-terribly-funny-tour_233209/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 6 days < 14"
+      }
+    },
+    {
+      "title": "West End Live Lounge – The Greats",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-14",
+      "closingDate": "2021-06-14",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/west-end-live-lounge-the-greats_242938/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Dr Ranj – Scrubs to Sparkles",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-15",
+      "closingDate": "2021-06-15",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dr-ranj-scrubs-to-sparkles_244681/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Under Milk Wood",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-16",
+      "closingDate": "2021-07-24",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/under-milk-wood_243791/",
+        "wosReview": "https://www.whatsonstage.com/news/review-under-milk-wood-with-michael-sheen-national-theatre_54347/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "J’ouvert",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-16",
+      "closingDate": "2021-07-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jouvert_244595/",
+        "wosReview": "https://www.whatsonstage.com/news/review-jouvert-harold-pinter-theatre_54360/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Seven Methods of Killing Kylie Jenner",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-16",
+      "closingDate": "2021-07-27",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/seven-methods-of-killing-kylie-jenner_247548/",
+        "wosReview": "https://www.whatsonstage.com/news/review-seven-methods-of-killing-kylie-jenner-royal-court_54336/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Amelie",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-17",
+      "closingDate": "2021-09-25",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/amelie_244103/",
+        "wosReview": "https://www.whatsonstage.com/news/review-amelie-the-musical-criterion-theatre_54176/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Constellations",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-18",
+      "closingDate": "2021-09-12",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/constellations_244289/",
+        "wosReview": "https://www.whatsonstage.com/news/constellations-at-the-vaudeville-theatre-review_54694/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Lady Chatterley’s Lover",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-18",
+      "closingDate": "2021-06-19",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/lady-chatterleys-lover_246681/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 1 days < 14"
+      }
+    },
+    {
+      "title": "Adam Kay – This is Going to Hurt (Secret Diaries of a Junior Doctor)",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-21",
+      "closingDate": "2021-06-26",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-this-is-going-to-hurt-secret-diaries-of-a-junior-doctor_242879/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 5 days < 14"
+      }
+    },
+    {
+      "title": "The Distance You Have Come",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-21",
+      "closingDate": "2021-06-28",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-distance-you-have-come_243032/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 7 days < 14"
+      }
+    },
+    {
+      "title": "Heathers – The Musical",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-21",
+      "closingDate": "2021-09-11",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/heathers-the-musical_244288/",
+        "wosReview": "https://www.whatsonstage.com/news/heathers-the-musical-at-theatre-royal-haymarket-review_54381/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "RIDE",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-21",
+      "closingDate": "2021-06-21",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/ride_248185/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Hairspray the Musical",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-22",
+      "closingDate": "2021-09-29",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hairspray-the-musical_197843/",
+        "wosReview": "https://www.whatsonstage.com/news/hairspray-the-musical-at-the-london-coliseum-review_54390/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Wonderbirds",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-28",
+      "closingDate": "2021-06-28",
+      "genres": [
+        "cabaret"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-wonderbirds_247943/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Maggie & Ted",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-28",
+      "closingDate": "2021-06-29",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/maggie-ted_248365/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 1 days < 14"
+      }
+    },
+    {
+      "title": "Be More Chill",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-06-30",
+      "closingDate": "2021-09-30",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/be-more-chill_247040/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Dumb Waiter",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-07",
+      "closingDate": "2021-07-10",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-dumb-waiter_246748/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 3 days < 14"
+      }
+    },
+    {
+      "title": "Pretty Woman: The Musical",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-08",
+      "closingDate": "2023-06-18",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pretty-woman-the-musical_243640/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Anna X",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-10",
+      "closingDate": "2021-08-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review",
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/anna-x_244594/",
+        "wosReview": "https://www.whatsonstage.com/news/anna-x-at-the-harold-pinter-theatre-review_54520/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2022"
+      }
+    },
+    {
+      "title": "The Comeback",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-10",
+      "closingDate": "2021-07-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-comeback_245460/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Joseph and the Amazing Technicolor Dreamcoat",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-12",
+      "closingDate": "2021-09-05",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/joseph-and-the-amazing-technicolor-dreamcoat_209487/",
+        "wosReview": "https://www.whatsonstage.com/news/joseph-and-the-amazing-technicolor-dreamcoat-at-the-london-palladium-review_54592/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Tiger Who Came to Tea",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-12",
+      "closingDate": "2021-09-05",
+      "genres": [
+        "children"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-tiger-who-came-to-tea_229104/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Elton John – It’s a Little Bit Funny",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-12",
+      "closingDate": "2021-07-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/elton-john-its-a-little-bit-funny_245505/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "What the Ladybird Heard",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-15",
+      "closingDate": "2021-08-29",
+      "genres": [
+        "children"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/what-the-ladybird-heard_244886/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Billionaire Boy",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-17",
+      "closingDate": "2021-08-22",
+      "genres": [
+        "children"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review",
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/billionaire-boy_243445/",
+        "wosReview": "https://www.whatsonstage.com/news/billionaire-boy-at-the-garrick-theatre-review_54559/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Keep the Receipts: Three Women, Real Talk, No Filter",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-18",
+      "closingDate": "2021-07-18",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/keep-the-receipts-three-women-real-talk-no-filter_248694/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Bagdad Cafe",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-19",
+      "closingDate": "2021-08-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/bagdad-cafe_246749/",
+        "wosReview": "https://www.whatsonstage.com/news/bagdad-cafe-at-the-old-vic-review_54591/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Dolly Alderton",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-19",
+      "closingDate": "2021-07-19",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dolly-alderton_248543/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Oleanna",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-21",
+      "closingDate": "2021-10-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oleanna_244880/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Wonderville Magic and Illusion",
+      "venue": "Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-21",
+      "closingDate": "2021-09-05",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/wonderville-magic-and-illusion_244881/",
+        "wosReview": "https://www.whatsonstage.com/news/wonderville-magic-illusion-at-the-palace-theatre-review_54617/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Tuck Shop West End",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-27",
+      "closingDate": "2021-08-08",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/tuck-shop-west-end_250903/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Jersey Boys",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2021-07-28",
+      "openingDate": null,
+      "closingDate": "2024-01-04",
+      "genres": [],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jersey-boys_236192/",
+        "wosReview": "https://www.whatsonstage.com/news/jersey-boys-at-the-trafalgar-theatre-review_54717/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Horrible Histories – Barmy Britain",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-29",
+      "closingDate": "2021-08-28",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/horrible-histories-barmy-britain_206819/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Seven Methods of Killing Kylie Jenner",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-07-31",
+      "closingDate": "2021-07-31",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/seven-methods-of-killing-kylie-jenner_251800/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "I Could Use a Drink",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-02",
+      "closingDate": "2021-08-02",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/i-could-use-a-drink_246725/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "The Windsors: Endgame",
+      "venue": "Prince of Wales Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-02",
+      "closingDate": "2021-10-09",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-windsors-endgame_248797/",
+        "wosReview": "https://www.whatsonstage.com/news/the-windsors-endgame-at-the-prince-of-wales-theatre-review_54667/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "2.22 – A Ghost Story",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-03",
+      "closingDate": "2021-10-16",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review",
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/2-22-a-ghost-story_248985/",
+        "wosReview": "https://www.whatsonstage.com/news/222-a-ghost-story-at-the-noel-coward-theatre-review_54677/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2022"
+      }
+    },
+    {
+      "title": "Paradise",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-04",
+      "closingDate": "2021-09-11",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/paradise_250154/",
+        "wosReview": "https://www.whatsonstage.com/news/paradise-at-the-national-theatre-review_54678/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Leopoldstadt",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-07",
+      "closingDate": "2021-10-30",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/leopoldstadt_239782/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Song Project",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-17",
+      "closingDate": "2021-08-28",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-song-project_247612/",
+        "wosReview": "https://www.whatsonstage.com/news/the-song-project-at-the-royal-court-review_54748/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Adam Kay – This is Going to Hurt (Secret Diaries of a Junior Doctor)",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-17",
+      "closingDate": "2021-08-17",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/adam-kay-this-is-going-to-hurt-secret-diaries-of-a-junior-doctor_250930/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Cinderella",
+      "venue": "Gillian Lynne Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-18",
+      "closingDate": "2022-06-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review",
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cinderella_219736/",
+        "wosReview": "https://www.whatsonstage.com/news/cinderella-review-andrew-lloyd-webbers-musical-opens-in-the-west-end_54726/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2022"
+      }
+    },
+    {
+      "title": "Margaret Thatcher Queen of Soho",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-19",
+      "closingDate": "2021-08-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/margaret-thatcher-queen-of-soho_251572/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 2 days < 14"
+      }
+    },
+    {
+      "title": "Back to the Future",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2021-08-20",
+      "openingDate": null,
+      "closingDate": "2026-04-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review",
+        "olivier-2022"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/back-to-the-future_232378/",
+        "wosReview": "https://www.whatsonstage.com/news/back-to-the-future-the-musical-review-the-iconic-movie-makes-its-way-to-the-west-end-stage_54896/"
+      },
+      "inShowsJson": "back-to-the-future-west-end-2021",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: back-to-the-future-west-end-2021"
+      }
+    },
+    {
+      "title": "Cirque Berserk!",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-25",
+      "closingDate": "2021-09-11",
+      "genres": [
+        "event"
+      ],
+      "season": "2020-2021",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cirque-berserk_250068/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Rockets and Blue Lights",
+      "venue": "Dorfman Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2021-08-25",
+      "closingDate": "2021-10-09",
+      "genres": [
+        "play"
+      ],
+      "season": "2020-2021",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rockets-and-blue-lights_250158/",
+        "wosReview": "https://www.whatsonstage.com/news/rockets-and-blue-lights-review-winsome-pinnocks-play-comes-to-the-national-theatre_54823/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    }
+  ],
+  "unlistedReviews": [
+    {
+      "title": "The Phantom of the Opera",
+      "venue": "Her Majesty's Theatre",
+      "date": "2021-08-11",
+      "url": "https://www.whatsonstage.com/news/the-phantom-of-the-opera-at-her-majestys-theatre-review_54675/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Everybody's Talking About Jamie",
+      "venue": "Apollo Theatre",
+      "date": "2021-05-27",
+      "url": "https://www.whatsonstage.com/news/review-everybodys-talking-about-jamie-apollo-theatre_54142/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Uncle Vanya on screen",
+      "venue": "Harold Pinter Theatre",
+      "date": "2020-10-19",
+      "url": "https://www.whatsonstage.com/news/review-uncle-vanya-on-screen-harold-pinter-theatre_52606/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Faith Healer",
+      "venue": "Old Vic",
+      "date": "2020-09-21",
+      "url": "https://www.whatsonstage.com/news/review-faith-healer-the-old-vic_52430/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    }
+  ]
+}
