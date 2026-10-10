@@ -4,7 +4,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, rangeError, category, summarize, worseGroups } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
 
@@ -64,5 +64,26 @@ describe('scoring', () => {
     assert.deepEqual(worseGroups(s).sort(), ['all', 'era:pre-2020', 'kind:failed', 'type:play']);
     // minN: one-row groups are not gated.
     assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
+  });
+});
+
+describe('formatMarkdown', () => {
+  const row = (slug, oldErr, newErr) => ({ slug, kind: 'recouped', type: 'musical', era: '2020+', truth: [100, Infinity], oldPct: 100 - oldErr, newPct: 100 - newErr, oldErr, newErr });
+  test('group table, moved rows by size of change, worse line', () => {
+    const rows = [row('a', 10, 2), row('b', 5, 5), row('c', 0, 30)];
+    const md = formatMarkdown({ title: 'T', summary: summarize(rows), rows, worse: ['all'] });
+    assert.match(md, /^### T/);
+    assert.match(md, /\| all \| 3 \| 5 \| 12\.3 \|/);
+    assert.match(md, /Error changed on 2:/);
+    assert.ok(md.indexOf('| c |') < md.indexOf('| a |'), 'biggest move first');
+    assert.ok(!md.includes('| b |'), 'unmoved row not listed');
+    assert.match(md, /\| c \| recouped \| 100\.\.\+inf \| 100 \| 70 \| 0 \| 30 \|/);
+    assert.match(md, /\*\*Worse in:\*\* all/);
+  });
+  test('nothing moved', () => {
+    const rows = [row('b', 5, 5)];
+    const md = formatMarkdown({ title: 'T', summary: summarize(rows), rows, worse: [] });
+    assert.match(md, /No row moved\./);
+    assert.match(md, /No group got worse\./);
   });
 });

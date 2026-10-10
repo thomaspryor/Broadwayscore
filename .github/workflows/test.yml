@@ -4701,6 +4701,7 @@ jobs:
         # don't need it but the install is fast (cached).
         run: npm ci --prefer-offline --no-audit
       - name: Checkout core data
+        id: core-data
         # review-guards regression tests exercise detectCrossShowUrlMismatch,
         # which reads data/shows.json to validate that Monte Cristo URLs are
         # rejected for Becky Shaw etc. Without the slug index the guard is a no-op.
@@ -5436,6 +5437,33 @@ jobs:
         # pins its rules so a change to them fails here.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: node --test scripts/lib/api-fallback-disqualifier.test.mjs
+
+      - name: Recoupment model backtest vs previous commit (advisory, BRO-4989)
+        # Scores the commercial recoupment model at the pushed-from commit and at
+        # HEAD against reported outcomes (recouped / failed / dated ranges) and
+        # writes a before/after table to the step summary; a group that got less
+        # accurate raises a ::warning::. Always runs (about 1s): the script
+        # extracts the base's scripts/lib + cost index itself, so any model
+        # input change shows up, and a base predating model-drift.js skips.
+        # Advisory first (CLAUDE.md §19); see scripts/backtest-recoupment-ground-truth.js.
+        if: always() && github.event_name == 'push' && steps.core-data.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "No pushed-from commit; skipping."; exit 0
+          fi
+          git cat-file -e "$BEFORE^{commit}" 2>/dev/null \
+            || git fetch --no-tags --depth=1 origin "$BEFORE" \
+            || { echo "Could not fetch $BEFORE; skipping."; exit 0; }
+          # stdout carries the ::warning:: line for the log; the summary gets the table only.
+          for mode in "" "--as-of-report"; do
+            node scripts/backtest-recoupment-ground-truth.js --base="$BEFORE" $mode --markdown > "$RUNNER_TEMP/bt.md"
+            cat "$RUNNER_TEMP/bt.md"
+            grep -v '^::' "$RUNNER_TEMP/bt.md" >> "$GITHUB_STEP_SUMMARY" || true
+          done
 
   data-safety-guards:
     name: Data Safety Guards

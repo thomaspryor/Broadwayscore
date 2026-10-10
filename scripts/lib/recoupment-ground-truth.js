@@ -82,7 +82,6 @@ function summarize(rows) {
   return out;
 }
 
-/** Groups where the change is less accurate (higher error or fewer inside). */
 /** Groups with at least minN rows whose mean error rose or in-range count fell. */
 function worseGroups(summary, { minN = 1 } = {}) {
   return Object.entries(summary)
@@ -90,4 +89,26 @@ function worseGroups(summary, { minN = 1 } = {}) {
     .map(([name]) => name);
 }
 
-module.exports = { groundTruth, rangeError, category, summarize, worseGroups, OWN_INFERENCE };
+const fmtTruth = (truth) => truth.map((v) => (Number.isFinite(v) ? v : (v > 0 ? '+inf' : '-inf'))).join('..');
+const r1 = (v) => Math.round(v * 10) / 10;
+
+/**
+ * GitHub-markdown before/after report (CI step summary).
+ * @param {{ title: string, summary: object, rows: object[], worse: string[], limit?: number }} r
+ * @returns {string}
+ */
+function formatMarkdown({ title, summary, rows, worse, limit = 15 }) {
+  const out = [`### ${title}`, '', '| group | n | old MAE | new MAE | old median | new median | old inside | new inside |', '|---|--:|--:|--:|--:|--:|--:|--:|'];
+  for (const [g, s] of Object.entries(summary)) out.push(`| ${g} | ${s.n} | ${s.oldMae} | ${s.newMae} | ${s.oldMedian} | ${s.newMedian} | ${s.oldInside} | ${s.newInside} |`);
+  const moved = rows.filter((r) => r.oldErr !== r.newErr).sort((a, b) => Math.abs(b.newErr - b.oldErr) - Math.abs(a.newErr - a.oldErr));
+  out.push('');
+  if (!moved.length) out.push('No row moved.');
+  else {
+    out.push(`Error changed on ${moved.length}${moved.length > limit ? ` (top ${limit})` : ''}:`, '', '| show | kind | truth | old % | new % | old error | new error |', '|---|---|---|--:|--:|--:|--:|');
+    for (const r of moved.slice(0, limit)) out.push(`| ${r.slug} | ${r.kind} | ${fmtTruth(r.truth)} | ${r.oldPct} | ${r.newPct} | ${r1(r.oldErr)} | ${r1(r.newErr)} |`);
+  }
+  out.push('', worse.length ? `**Worse in:** ${worse.join(', ')}` : 'No group got worse.', '');
+  return out.join('\n');
+}
+
+module.exports = { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown, fmtTruth, OWN_INFERENCE };
