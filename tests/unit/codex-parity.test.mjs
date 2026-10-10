@@ -114,6 +114,27 @@ test('the adapter blocks a direct broadcast call end to end through the real Cla
   assert.match(out.hookSpecificOutput.permissionDecisionReason, /BROADCAST GUARD/);
 });
 
+test('runner profile: session gates are skipped, safety guards still run', () => {
+  assert.equal(adapter.isRunnerProfile('/repo/.claude/worktrees/codex-runner'), true);
+  assert.equal(adapter.isRunnerProfile('/repo'), false);
+  assert.equal(adapter.isRunnerProfile('/repo/.claude/worktrees/codex-harness-fixes'), false);
+  assert.equal(adapter.isRunnerProfile('/elsewhere/codex-runner'), false);
+  const hook = (cmd) => ({ command: `H="$R/.claude/hooks/${cmd}"; bash "$H"` });
+  for (const ev of ['Stop', 'SessionStart', 'PreCompact', 'UserPromptSubmit']) assert.equal(adapter.runnerSkipsHook(ev, hook('verify-edits.sh')), true, ev);
+  assert.equal(adapter.runnerSkipsHook('PreToolUse', hook('pre-push-review-gate.sh')), true);
+  // What a runner attempt still gets from the real settings: every tool guard but the push/merge gates.
+  const kept = adapter.claudeHooksFor(settings, 'PreToolUse', 'Bash').filter((h) => !adapter.runnerSkipsHook('PreToolUse', h)).map((h) => h.command);
+  for (const g of ['block-resend-broadcasts.sh', 'worktree-enforce.sh', 'infra-plan-review-gate.sh', 'check-skill-redaction.sh']) {
+    assert.ok(kept.some((c) => c.includes(g)), `${g} still runs for the runner`);
+  }
+  for (const g of ['pre-push-review-gate.sh', 'pre-push-visual-gate.sh', 'pre-push-land-preflight.sh', 'pre-merge-review-gate.sh']) {
+    assert.ok(!kept.some((c) => c.includes(g)), `${g} skipped for the runner`);
+  }
+  // The default reads the adapter's own location, so it matches wherever this test runs
+  // (the runner's land checks run it from the runner worktree itself).
+  assert.equal(adapter.isRunnerProfile(), adapter.isRunnerProfile(ROOT));
+});
+
 test('an apply_patch the adapter cannot read is refused, not waved through', () => {
   const payload = { session_id: 'codex-parity-test', cwd: ROOT, hook_event_name: 'PreToolUse', tool_name: 'apply_patch',
     tool_input: { command: 'not a patch' }, tool_use_id: 't2', transcript_path: '/nonexistent' };

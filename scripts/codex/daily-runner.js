@@ -7,7 +7,7 @@
  *
  *   node scripts/codex/daily-runner.js [--limit 10] [--ids BRO-1,BRO-2]
  *        [--max-minutes 420] [--max-weekly-pct 60] [--no-land] [--dry-run]
- *        [--check-max-usd 4] [--check-budget-usd 30]
+ *        [--check-max-usd 4] [--check-budget-usd 30] [--card-max-minutes 120]
  *
  * Per card (same picker rules as the hourly Claude cloud worker, minus
  * resumes and cards Codex already bounced):
@@ -16,13 +16,18 @@
  *   2. run the card's check on fresh main (the Done gate's own executor)
  *   3. `codex exec` (high reasoning effort, scripts/codex/runner-prompt.md,
  *      secrets kept out of its shell) in .claude/worktrees/codex-runner
- *   4. commit, then the Claude check: `claude -p --model opus` with
- *      scripts/codex/check-prompt.md. Only `VERDICT: SHIP` passes.
- *   5. not SHIP: one Codex fix round with the findings, checked again;
- *      still not SHIP: card back to Todo with the findings (BOUNCED_MARKER)
+ *   4. commit, run land's unit batches + lint-workflows audits (new failures
+ *      go straight back to Codex once, same attempt), then the Claude check:
+ *      `claude -p --model opus` with scripts/codex/check-prompt.md. Only
+ *      `VERDICT: SHIP` passes.
+ *   5. not SHIP: a Codex fix round with the findings (two after a
+ *      SHIP-WITH-FIXES; a no-diff run the environment blocked retries once
+ *      without using a round), within --card-max-minutes; still not SHIP:
+ *      card back to Todo with the findings (BOUNCED_MARKER)
  *   6. SHIP: secret scan + land preflight, push land/codex-bro-N, at most
  *      2 landings in flight; landed -> Done through the Done gate (In Review
- *      if refused); refused -> stays In Progress for the resume path
+ *      if refused), or back to Todo with the reviewer's REMAINING items when
+ *      the fix is partial; refused -> stays In Progress for the resume path
  *
  * Stops early on the time budget, the Codex weekly cap, 3 REJECTs in a row,
  * or a Done refusal (scripts/lib/codex-runner.js stopReason). A crash returns
@@ -66,7 +71,11 @@ const OPTS = {
   // each review stops at --check-max-usd, the run stops picking cards at --check-budget-usd.
   checkMaxUsd: Number(arg('check-max-usd', 4)),
   checkBudgetUsd: Number(arg('check-budget-usd', 30)),
+  // One card's wall clock: a new Codex exec starts only if a whole exec (its 45-min
+  // timeout) still fits, so a card cannot run past the job's timeout on fix rounds.
+  cardMaxMinutes: Number(arg('card-max-minutes', 120)),
 };
+const CODEX_TIMEOUT_MS = 45 * 60_000;
 let checkSpentUsd = 0;
 let checkCount = 0;
 
@@ -129,12 +138,64 @@ function setupWorktree() {
   if (fs.existsSync(nm) && !fs.existsSync(path.join(WT, 'node_modules'))) fs.symlinkSync(nm, path.join(WT, 'node_modules'));
 }
 
+/**
+ * Give a freshly cleaned worktree the private data the main checkout has (R.DATA_FILES
+ * copied, data/review-texts linked), since `git clean -x` removes it. reviewTexts: false
+ * for the land-check batches: land.yml has no review texts either, and those batches run
+ * outside the Codex sandbox, so a test write must not reach the shared clone.
+ * -> { lines (for the prompts), dirs (real paths the reviewer may read) }
+ */
+function provideData(dest, { reviewTexts = true } = {}) {
+  const src = path.join(ROOT, 'data');
+  const provided = [];
+  const missing = [];
+  const present = (p) => { try { fs.lstatSync(p); return true; } catch { return false; } };
+  for (const name of R.DATA_FILES) {
+    const from = path.join(src, name);
+    const to = path.join(dest, 'data', name);
+    if (!fs.existsSync(from)) { if (['shows.json', 'reviews.json'].includes(name)) missing.push(`data/${name}`); continue; }
+    if (present(to)) continue; // tracked in this checkout, or already provided
+    fs.copyFileSync(fs.realpathSync(from), to);
+    provided.push(`data/${name}`);
+  }
+  const dirs = [];
+  const lines = [];
+  for (const name of R.DATA_DIRS) {
+    const from = path.join(src, name);
+    const to = path.join(dest, 'data', name);
+    if (!reviewTexts || !fs.existsSync(from)) { if (reviewTexts) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`); continue; }
+    const real = fs.realpathSync(from);
+    let cfg = '';
+    try { cfg = fs.readFileSync(path.join(real, '.git', 'config'), 'utf8'); } catch { /* not a clone */ }
+    if (R.hasCredentialRemote(cfg)) { log(`provideData: ${real} keeps a credential in its remote URL; not linked`); lines.push(`- data/${name}: not available in this run.`); continue; }
+    if (!present(to)) { fs.symlinkSync(real, to); provided.push(`data/${name}`); }
+    dirs.push(real);
+    lines.push(`- data/${name} -> ${real}: the private review-texts clone. Read it; never write there.`);
+  }
+  // Belt and braces: whatever we put there must be gitignored, or `git add -A` would commit it.
+  const ignored = new Set();
+  const candidates = R.DATA_FILES.map((n) => `data/${n}`).filter((p) => present(path.join(dest, p)));
+  if (candidates.length || provided.length) {
+    const ign = sh('git', ['check-ignore', ...new Set([...candidates, ...provided])], { cwd: dest });
+    for (const l of ign.stdout.split('\n')) if (l.trim()) ignored.add(l.trim());
+  }
+  for (const p of provided.filter((x) => !ignored.has(x))) {
+    log(`provideData: ${p} is not gitignored in ${dest}; removed`);
+    fs.rmSync(path.join(dest, p), { force: true });
+  }
+  const copies = candidates.filter((p) => ignored.has(p)).map((p) => p.slice('data/'.length));
+  if (copies.length) lines.unshift(`- data/{${copies.join(',')}}: copies of the private core-data repo for this card (edits stay in this checkout and are discarded afterwards; never committed).`);
+  if (missing.length) lines.unshift(`- ${missing.join(', ')}: missing on this machine, so real-data checks cannot run. Say so in your report.`);
+  return { lines, dirs };
+}
+
 function resetWorktree(branch) {
   git(['fetch', 'origin', 'main']);
   git(['checkout', '-f', '-B', branch, 'origin/main']);
   git(['reset', '--hard', 'origin/main']);
   // -x: gitignored files Codex or tests wrote must not carry into the next card.
   git(['clean', '-fdx', '-e', 'node_modules']);
+  return provideData(WT);
 }
 
 function weeklyPct() {
@@ -169,7 +230,7 @@ function runCodex(id, prompt, tag) {
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}-prompt.md`), prompt);
   const r = sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', 'workspace-write', '--color', 'never',
     '-c', 'model_reasoning_effort=high', '-o', last, '-C', WT, prompt],
-  { cwd: WT, timeoutMs: 45 * 60_000, env: scrubbedEnv(), input: '' });
+  { cwd: WT, timeoutMs: CODEX_TIMEOUT_MS, env: scrubbedEnv(), input: '' });
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}.log`), r.out);
   saveLogin(); // refresh tokens rotate: persist the newest login after every exec
   let report = '';
@@ -177,19 +238,24 @@ function runCodex(id, prompt, tag) {
   return { code: r.code, report };
 }
 
-function runCheck(card, body, codexReport, tag) {
+function runCheck(card, body, codexReport, tag, data) {
   const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/check-prompt.md'), 'utf8');
-  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)) })
-    .replace(/\{\{WORKTREE\}\}/g, WT);
+  const prompt = R.fillPrompt(tpl, { id: card.identifier, title: card.title, body, extra: fence(tail(codexReport, 6000)), data: data.lines.join('\n'), worktree: WT });
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}-prompt.md`), prompt);
   const head = git(['rev-parse', 'HEAD']);
+  // The reviewer runs tests unsandboxed: drop the review-texts link so no test writes into the
+  // shared clone (land.yml runs without it too). It reads the texts through --add-dir instead.
+  for (const d of R.DATA_DIRS) fs.rmSync(path.join(WT, 'data', d), { force: true });
   // cwd is the worktree so plain git/node commands work; --setting-sources user keeps
   // the project's session hooks out of this one-shot reviewer (CLAUDE.md still loads).
   // Prompt on stdin: --allowedTools and --add-dir are variadic and swallow a positional.
+  // --add-dir: the data the worktree links to (review texts live outside it), or the
+  // reviewer is denied every read there.
   const r = sh('claude', ['-p', '--model', 'opus', '--setting-sources', 'user', '--output-format', 'json',
     '--max-budget-usd', String(OPTS.checkMaxUsd),
-    '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
-    '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*)',
+    ...(data.dirs.length ? ['--add-dir', ...data.dirs] : []),
+    '--allowedTools', 'Read,Grep,Glob,Bash(git:*),Bash(node:*),Bash(npx tsc:*),Bash(cd:*),Bash(ls:*),Bash(find:*),Bash(rg:*),Bash(sed:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*),Bash(cat:*),Bash(sort:*),Bash(diff:*)',
+    '--disallowedTools', 'Edit,Write,NotebookEdit,Bash(git push:*),Bash(git commit:*),Bash(git reset:*),Bash(git checkout:*),Bash(git stash:*),Bash(git rebase:*),Bash(git merge:*),Bash(sed -i:*),Bash(sed --in-place:*),Bash(find * -delete*),Bash(find * -exec*),Bash(find * -execdir*),Bash(find * -ok*)',
   ], { cwd: WT, timeoutMs: 30 * 60_000, env: scrubbedEnv({ reviewer: true }), input: prompt });
   fs.writeFileSync(path.join(LOG_DIR, `${card.identifier}-${tag}.log`), r.out);
   // The verdict is about the committed HEAD. A moved HEAD means the reviewer committed or
@@ -198,6 +264,7 @@ function runCheck(card, body, codexReport, tag) {
   const tampered = git(['rev-parse', 'HEAD']) !== head;
   git(['reset', '-q', '--hard', head]);
   git(['clean', '-qfd', '-e', 'node_modules']);
+  provideData(WT);
   const out = R.parseCheckOutput(r.stdout);
   checkSpentUsd += out.costUsd;
   checkCount += 1;
@@ -212,45 +279,95 @@ function commitAttempt(card, attempt) {
   const names = git(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
+  // A staged symlink could point at the private data the runner links in (land refuses tracked symlinks too).
+  if (/^:\d+ 120000 /m.test(git(['diff', '--cached', '--raw']))) return { hasDiff: true, blocked: 'the change adds a symlink, which the runner never lands' };
   if (R.looksLikeSecretLeak(git(['diff', '--cached']))) return { hasDiff: true, blocked: 'the diff looks like it carries token material' };
   git(['-c', 'user.name=Codex runner', '-c', 'user.email=codex-runner@broadwayscorecard.com', 'commit', '-q', '-m',
     `fix(${card.identifier}): ${card.title.slice(0, 80)}${attempt > 1 ? ' (review fixes)' : ''}\n\nWorked by the daily Codex runner; passed the independent check before landing.`]);
   return { hasDiff: true, blocked: null };
 }
 
-// The node unit batch land.yml runs (tests/unit-test-manifest.txt), judged the way land.yml
-// judges it: failures the branch adds over fresh main. Only the files that fail on the branch
-// re-run on main, so the base side is cheap. Returns null when clean, else the failure text.
+// The land checks a Codex change can break without noticing (BRO-4745 follow-up): the node
+// unit batch (tests/unit-test-manifest.txt), the scripts/lib/*.test.mjs batch, and the
+// lint-workflows audit list (land-gauntlet.sh, GAUNTLET_GATES=lint-workflows), each judged the
+// way land.yml judges it: failures the branch adds over fresh main (land-gate-delta.js). Only
+// what fails on the branch re-runs on main, so the base side is cheap. Run without the review
+// texts, like land.yml. Returns null when clean, else the failure text.
 const BASE_WT = path.join(ROOT, '.claude/worktrees/codex-runner-base');
 function unitBatch(cwd, files) {
   // Same scrubbed env as Codex: the manifest and tests come from Codex's branch.
   const r = sh('node', ['--test', '--test-reporter=tap', '--test-timeout', '300000', ...files], { cwd, timeoutMs: 40 * 60_000, env: scrubbedEnv() });
   return { exit: r.code, text: r.out, root: cwd };
 }
-function newUnitFailures() {
-  const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
-  const files = fs.readFileSync(path.join(WT, 'tests/unit-test-manifest.txt'), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean);
-  const branch = unitBatch(WT, files);
-  // Some tests rewrite tracked files (data/audit/*.json). The attempt is already committed,
-  // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
-  // dirty-tree guard throws its verdict away.
-  git(['reset', '-q', '--hard', 'HEAD']);
-  git(['clean', '-qfdx', '-e', 'node_modules']);
-  if (branch.exit === 0) return null;
-  const failing = [...new Set([...D.parseGateFailures('unit-tests-node', branch.text, WT).values()].map((f) => f.file))]
-    .filter((f) => f && f !== '?');
+function lintWorkflows(cwd, gauntlet) {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-lw-'));
+  try {
+    sh('bash', [gauntlet, out], { cwd, timeoutMs: 30 * 60_000, env: { ...scrubbedEnv(), GAUNTLET_GATES: 'lint-workflows' } });
+    const exit = Number(fs.readFileSync(path.join(out, 'lint-workflows.exit'), 'utf8').trim());
+    return { exit: Number.isFinite(exit) ? exit : null, text: fs.readFileSync(path.join(out, 'lint-workflows.log'), 'utf8'), root: cwd };
+  } catch { return { exit: null, text: '', root: cwd }; } finally { fs.rmSync(out, { recursive: true, force: true }); }
+}
+function cleanTree(cwd) {
+  git(['reset', '-q', '--hard', 'HEAD'], cwd);
+  git(['clean', '-qfdx', '-e', 'node_modules'], cwd);
+}
+function prepareBase() {
   if (!fs.existsSync(path.join(BASE_WT, '.git'))) {
     git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
     if (!fs.existsSync(path.join(BASE_WT, 'node_modules'))) fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(BASE_WT, 'node_modules'));
   }
   git(['checkout', '-q', '-f', '--detach', 'origin/main'], BASE_WT);
   git(['clean', '-qfdx', '-e', 'node_modules'], BASE_WT);
-  const onBase = failing.filter((f) => fs.existsSync(path.join(BASE_WT, f)));
-  const base = onBase.length ? unitBatch(BASE_WT, onBase) : { exit: 0, text: '', root: BASE_WT };
-  const d = D.decideGateDelta({ gate: 'unit-tests-node', base, branch });
-  if (d.verdict === 'pass') return null;
-  const lines = d.newFailures.map((f) => `- ${f.file}::${f.name}${f.payload ? `\n${String(f.payload).slice(0, 600)}` : ''}`);
-  return R.redactSecrets(`${d.reason}\n${lines.join('\n') || tail(branch.text, 2000)}`, process.env);
+  provideData(BASE_WT, { reviewTexts: false });
+}
+function newLandFailures() {
+  const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
+  // The branch's own harness copy judges both trees, as land.yml does.
+  const gauntlet = path.join(os.tmpdir(), `codex-land-gauntlet-${process.pid}.sh`);
+  fs.copyFileSync(path.join(WT, 'scripts/lib/land-gauntlet.sh'), gauntlet);
+  try { return landFailuresWith(D, gauntlet); } finally { fs.rmSync(gauntlet, { force: true }); }
+}
+function landFailuresWith(D, gauntlet) {
+  for (const d of R.DATA_DIRS) fs.rmSync(path.join(WT, 'data', d), { force: true }); // a symlink: removes the link only
+  const read = (f) => { try { return fs.readFileSync(path.join(WT, f), 'utf8').split('\n').map((l) => l.trim()).filter(Boolean); } catch { return []; } };
+  const libTests = fs.readdirSync(path.join(WT, 'scripts/lib')).filter((f) => f.endsWith('.test.mjs')).map((f) => `scripts/lib/${f}`);
+  const batches = [
+    { gate: 'unit-tests-node', run: (cwd, files) => unitBatch(cwd, files), files: read('tests/unit-test-manifest.txt') },
+    { gate: 'scripts-lib-tests', run: (cwd, files) => unitBatch(cwd, files), files: libTests },
+    { gate: 'lint-workflows', run: (cwd) => lintWorkflows(cwd, gauntlet), files: null },
+  ];
+  const branch = new Map();
+  for (const b of batches) branch.set(b.gate, b.files && !b.files.length ? { exit: 0, text: '', root: WT } : b.run(WT, b.files));
+  // Some tests rewrite tracked files (data/audit/*.json). The attempt is already committed,
+  // so put the tree back: otherwise the next commit sweeps them in and the reviewer's
+  // dirty-tree guard throws its verdict away.
+  cleanTree(WT);
+  provideData(WT);
+  // actionlint is not installed in the cloud or on this job: its exit-127 failure is the same
+  // on main, so it alone is no reason to spend another lint-workflows run on the base.
+  const onlyMissingActionlint = (b) => b.gate === 'lint-workflows' && sh('actionlint', ['--version'], { timeoutMs: 30_000 }).code !== 0
+    && [...D.parseGateFailures(b.gate, branch.get(b.gate).text, WT).values()].every((f) => f.name === 'actionlint')
+    && D.parseGateFailures(b.gate, branch.get(b.gate).text, WT).size > 0;
+  const red = batches.filter((b) => branch.get(b.gate).exit !== 0 && !onlyMissingActionlint(b));
+  const report = [];
+  if (red.length) {
+    prepareBase();
+    for (const b of red) {
+      const br = branch.get(b.gate);
+      let base;
+      if (b.files) {
+        const failing = [...new Set([...D.parseGateFailures(b.gate, br.text, WT).values()].map((f) => f.file))].filter((f) => f && f !== '?');
+        const onBase = failing.filter((f) => fs.existsSync(path.join(BASE_WT, f)));
+        base = onBase.length ? b.run(BASE_WT, onBase) : { exit: 0, text: '', root: BASE_WT };
+      } else base = b.run(BASE_WT);
+      const d = D.decideGateDelta({ gate: b.gate, base, branch: br });
+      if (d.verdict === 'pass') continue;
+      const lines = d.newFailures.map((f) => `- ${f.file}::${f.name}${f.payload ? `\n${String(f.payload).slice(0, 600)}` : ''}`);
+      report.push(`${b.gate}: ${d.reason}\n${lines.join('\n') || tail(br.text, 2000)}`);
+    }
+    cleanTree(BASE_WT);
+  }
+  return report.length ? R.redactSecrets(report.join('\n\n'), process.env) : null;
 }
 
 async function landPreflight(ref) {
@@ -284,21 +401,49 @@ function landedOnMain(id, sinceMs) {
   } catch { return false; }
 }
 
+/**
+ * The one place a landed runner commit settles its card: Done through the Done gate (In
+ * Review if refused), or, for a partial fix (PARTIAL_MARKER on the card since the claim),
+ * back to Todo for the Claude worker with what is left. -> true when the card was moved.
+ */
+async function settleLanded(id, stats, { partial, remaining = [], body, countRefusal = false }) {
+  if (partial) {
+    const left = remaining.length ? `Still open on this card:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n` : 'Some card items are still open (see the runner\'s "landing a partial fix" note).\n\n';
+    const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: landed part of this card\n\n${left}${body}\n\n${R.PARTIAL_MARKER}`);
+    if (r.code === 0) stats.landedPartial.push(id);
+    return r.code === 0;
+  }
+  const done = await moveCard(id, 'Done', `## Codex runner: landed\n\n${body}`);
+  if (done.code === 0) { stats.landed.push(id); return true; }
+  if (done.code !== 5) return false;
+  // Only a card this run worked stops the run; a leftover from an earlier run just goes to review.
+  if (countRefusal) stats.doneRefusals += 1;
+  stats.inReview.push(id);
+  const rev = await moveCard(id, 'In Review', `## Codex runner: landed, but the Done gate refused\n\n${fence(tail(done.out, 1200))}\n\n${body}`);
+  return rev.code === 0;
+}
+
+/** Comments + startedAt of a card, to tell whether its pending landing is partial. */
+async function partialLanding(id, startedAtMs) {
+  let sinceMs = startedAtMs;
+  if (!Number.isFinite(sinceMs)) {
+    try { const i = (await linear.graphql('query($id: String!) { issue(id: $id) { startedAt } }', { id })).issue; sinceMs = i && i.startedAt ? Date.parse(i.startedAt) : NaN; } catch { /* unknown */ }
+  }
+  const comments = (await linear.listIssueComments([id]).catch(() => new Map())).get(id) || [];
+  return R.landingIsPartial(comments, sinceMs);
+}
+
 async function finishLanding(entry, stats) {
   const res = await waitForLand(entry.ref);
   const { card, summary } = entry;
+  const partial = entry.remaining.length > 0;
   if (res.code === 0 || landedOnMain(card.identifier, entry.claimedMs)) {
-    const done = await moveCard(card.identifier, 'Done', `## Codex runner: landed\n\n${summary}\n\nLanded via \`${entry.ref}\`.`);
-    if (done.code === 0) { stats.landed.push(card.identifier); return true; }
-    if (done.code === 5) stats.doneRefusals += 1;
-    stats.inReview.push(card.identifier);
-    const rev = await moveCard(card.identifier, 'In Review', `## Codex runner: landed, but the Done gate refused\n\n${fence(tail(done.out, 1200))}\n\n${summary}`);
-    return rev.code === 0;
+    return settleLanded(card.identifier, stats, { partial, remaining: entry.remaining, body: `${summary}\n\nLanded via \`${entry.ref}\`.`, countRefusal: true });
   }
   stats.landFailed.push(card.identifier);
   // Left In Progress on purpose: the Claude cloud worker resumes refused land/ refs, and
   // main() re-checks main for these before it exits.
-  if (!OPTS.dryRun) await linearBrain(['update', card.identifier, '--comment', `## Codex runner: landing did not finish (wait-for-land exit ${res.code})\n\nThe land ref \`${entry.ref}\` is left for the cloud worker's resume step.\n\n${fence(tail(res.out, 1200))}`]);
+  if (!OPTS.dryRun) await linearBrain(['update', card.identifier, '--comment', `## Codex runner: landing did not finish (wait-for-land exit ${res.code})\n\nThe land ref \`${entry.ref}\` is left for the cloud worker's resume step.\n\n${fence(tail(res.out, 1200))}${partial ? `\n\n${R.PARTIAL_MARKER}` : ''}`]);
   return true;
 }
 
@@ -339,7 +484,7 @@ async function workCard(pick, stats, inFlight) {
     // Record the claim in the lock, so a run that dies from here on leaves this card named.
     if (!refreshLock()) throw new Error('lost the run lock to another run');
     const branch = `codex/${id.toLowerCase()}`;
-    resetWorktree(branch);
+    const data = resetWorktree(branch);
     const cmd = verifyCommand(card);
     let onMain = 'The card has no automatic check command.';
     if (cmd) {
@@ -347,39 +492,69 @@ async function workCard(pick, stats, inFlight) {
       onMain = `\`${cmd}\` on fresh main: ${v.allowed ? 'PASSES already (the card may be fixed; confirm before changing code)' : `does not pass (${v.verdict}): ${String(v.reason).slice(0, 600)}`}`;
     }
     const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8');
+    const prompt = (extra) => R.fillPrompt(tpl, { id, title: card.title, body, extra, data: data.lines.join('\n') });
+    // A new Codex exec starts only while a whole one (its timeout) plus the review after it
+    // still fits the card budget. The land checks and review after the last exec still run, so
+    // a card can overrun the budget by those (bounded by their own timeouts).
+    const cardDeadline = claimedMs + OPTS.cardMaxMinutes * 60_000;
+    const execFits = () => cardDeadline - Date.now() >= CODEX_TIMEOUT_MS + 30 * 60_000;
     let report = '';
     let check = null;
     let attempt = 1;
+    let execs = 0;
     let step = null;
     let abort = null;
-    for (; attempt <= 2; attempt++) {
-      const extra = attempt === 1 ? onMain
-        : `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (the repo's unit tests, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
+    let envRetryUsed = false;
+    let envBlocked = null;
+    let extra = onMain;
+    for (;;) {
       keepLock();
-      const cx = runCodex(id, R.fillPrompt(tpl, { id, title: card.title, body, extra }), `codex${attempt}`);
+      const cx = runCodex(id, prompt(extra), `codex${++execs}`);
       report = cx.report;
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
       if (cx.code !== 0) { abort = `Codex exited ${cx.code}: ${tail(R.redactSecrets(report, process.env), 400)}`; break; }
-      const c = commitAttempt(card, attempt);
+      let c = commitAttempt(card, attempt);
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
-      // Land refuses new unit-test failures half an hour after the push, when the worktree has
-      // moved on; catch them here and hand them straight back without spending a Claude check.
+      // Land refuses new unit/audit failures half an hour after the push, when the worktree has
+      // moved on; catch them here and hand them straight back to Codex in the same attempt.
       keepLock();
-      const unitFails = c.hasDiff ? newUnitFailures() : null;
-      if (unitFails) {
-        check = { verdict: 'REJECT', text: `The repo's node unit batch (the one land.yml runs) has new failures on this branch that fresh main does not have:\n${unitFails}` };
-        log(`${id}: attempt ${attempt} unit tests red`);
+      let landFails = c.hasDiff ? newLandFailures() : null;
+      if (landFails && execFits()) {
+        log(`${id}: attempt ${attempt} land checks red, back to Codex`);
+        keepLock();
+        const fx = runCodex(id, prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`), `codex${++execs}`);
+        if (fx.code !== 0) { abort = `Codex exited ${fx.code}: ${tail(R.redactSecrets(fx.report, process.env), 400)}`; break; }
+        report = `${report}\n\n--- after fixing the land-check failures ---\n${fx.report}`;
+        c = commitAttempt(card, attempt);
+        if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
+        keepLock();
+        landFails = newLandFailures();
+      }
+      envBlocked = null;
+      if (landFails) {
+        check = { verdict: 'REJECT', text: `The checks land runs (node unit batch, scripts/lib tests, lint-workflows audits) have new failures on this branch that fresh main does not have:\n${landFails}` };
+        log(`${id}: attempt ${attempt} land checks red`);
         step = R.nextStep({ verdict: 'REJECT', hasDiff: true, attempt });
-        if (step !== 'fix-round') break;
+      } else {
+        keepLock();
+        check = runCheck(card, body, report, `check${execs}`, data);
+        log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
+        // No verdict means the reviewer is broken (auth, crash), not that the work is bad.
+        if (check.verdict === 'NONE') { abort = `the Claude check gave no verdict: ${tail(R.redactSecrets(check.text, process.env), 400)}`; break; }
+        envBlocked = c.hasDiff ? null : R.parseEnvBlocked(report);
+        step = R.nextStep({ verdict: check.verdict, hasDiff: c.hasDiff, attempt, envBlocked: !!envBlocked, envRetryUsed });
+      }
+      if (step !== 'fix-round' && step !== 'env-retry') break;
+      if (!execFits()) { step = 'bounce'; check.text += `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break; }
+      if (step === 'env-retry') {
+        // Not a fix round: the environment, not the work, failed. Same attempt number, once per card.
+        envRetryUsed = true;
+        log(`${id}: attempt ${attempt} blocked by the environment (${envBlocked}), retrying once`);
+        extra = `${onMain}\n\nYour last run made no change and reported that the environment blocked it: ${envBlocked}\nThe independent reviewer's notes on that run:\n${fence(check.text)}\nTry again with that in mind (the data paths above are real). If the block is real and unavoidable, report it the same way.`;
         continue;
       }
-      keepLock();
-      check = runCheck(card, body, report, `check${attempt}`);
-      log(`${id}: attempt ${attempt} verdict ${check.verdict}${c.hasDiff ? '' : ' (no diff)'}`);
-      // No verdict means the reviewer is broken (auth, crash), not that the work is bad.
-      if (check.verdict === 'NONE') { abort = `the Claude check gave no verdict: ${tail(R.redactSecrets(check.text, process.env), 400)}`; break; }
-      step = R.nextStep({ verdict: check.verdict, hasDiff: c.hasDiff, attempt });
-      if (step !== 'fix-round') break;
+      attempt += 1;
+      extra = `${onMain}\n\nYour previous attempt is committed on this branch. It did not pass the checks (land's test batches, or the independent reviewer). Fix every blocking issue below (or, if a finding is wrong, show the evidence in your report):\n${fence(check.text)}`;
     }
     if (abort) {
       stats.aborted = abort;
@@ -388,15 +563,27 @@ async function workCard(pick, stats, inFlight) {
       disposed = true;
       return 'done';
     }
-    stats.rejectStreak = check.verdict === 'REJECT' ? stats.rejectStreak + 1 : 0;
+    // An environment block is not Codex's miss, so it does not feed the REJECT streak.
+    stats.rejectStreak = check.verdict === 'REJECT' && !envBlocked ? stats.rejectStreak + 1 : 0;
     const summary = `### Codex report\n${fence(tail(report, 2500))}\n\n### Independent check (${check.verdict})\n${fence(tail(check.text, 2000))}`;
+    // Card items the reviewer found correctly left undone (SHIP with REMAINING lines).
+    const remaining = step === 'land' || step === 'close-already-fixed' ? R.parseRemaining(check.text) : [];
+    if (step === 'close-already-fixed' && remaining.length) step = 'bounce'; // nothing to land, items still open
+    let landBlocked = false;
 
     if (step === 'land') {
       if (!OPTS.land) { stats.wouldLand.push(id); handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: passed the check, not landed (--no-land run)\n\n${summary}`)).code === 0; disposed = true; return 'done'; }
       const ref = `land/codex-${id.toLowerCase()}`;
       const pre = await landPreflight(ref);
-      if (pre.decision === 'block') { step = 'bounce'; check.text = `Land preflight blocked it: ${pre.message}`; } else {
+      if (pre.decision === 'block') { step = 'bounce'; landBlocked = true; check.text = `Land preflight blocked it: ${pre.message}`; } else {
         while (inFlight.length >= MAX_IN_FLIGHT) await inFlight.shift().promise;
+        // A partial fix is recorded on the card BEFORE the push, so every path that later settles
+        // this landing (finishLanding, reconcileLanded, recoverOrphans) sends it back to Todo, not
+        // Done. No record, no push.
+        if (remaining.length) {
+          const note = await linearBrain(['update', id, '--comment', `## Codex runner: landing a partial fix\n\nThe independent check passed this change, but these card items stay open:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n${R.PARTIAL_MARKER}`]);
+          if (!note || note.code !== 0) throw new Error('could not record the partial-fix note on the card, so the landing was not pushed');
+        }
         // land/codex-* refs belong to the runner; a re-worked card's earlier ref (refused or
         // stale) must not block the new attempt. The claim keeps one runner per card.
         const sha = git(['rev-parse', 'HEAD']);
@@ -409,7 +596,7 @@ async function workCard(pick, stats, inFlight) {
           if (remote !== sha) throw e;
         }
         log(`${id}: pushed ${ref}`);
-        const entry = { ref, card, summary, claimedMs };
+        const entry = { ref, card, summary, claimedMs, remaining };
         // Unlist only once the card is settled; a failed move keeps it named for recoverOrphans.
         entry.promise = finishLanding(entry, stats).then((settled) => { if (settled) { openCards.delete(id); try { refreshLock(); } catch { /* next stamp covers it */ } } });
         inFlight.push(entry);
@@ -423,7 +610,9 @@ async function workCard(pick, stats, inFlight) {
       if (r.code === 5) stats.doneRefusals += 1;
     }
     stats.bounced.push(id);
-    handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nTwo Codex attempts did not pass the independent check, so nothing was pushed. Findings for whoever takes it next:\n\n${summary}`)).code === 0;
+    const why = remaining.length && !landBlocked ? `Nothing needed landing, but these card items are still open:\n${remaining.map((x) => `- ${x}`).join('\n')}`
+      : `${attempt} Codex attempt(s) did not pass the checks, so nothing was pushed.`;
+    handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
     disposed = true;
     return 'done';
   } finally {
@@ -570,8 +759,7 @@ async function reconcileLanded(stats) {
     const notes = ((await linear.listIssueComments([id]).catch(() => new Map())).get(id) || [])
       .filter((c) => String(c.body || '').startsWith('## Codex runner'));
     if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
-    const r = await moveCard(id, 'Done', '## Codex runner: landed\n\nThe runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.');
-    if (r.code === 0) stats.landed.push(id);
+    await settleLanded(id, stats, { partial: await partialLanding(id, NaN), body: 'The runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.' });
   }
 }
 
@@ -595,13 +783,12 @@ async function recoverOrphans(stats) {
     });
     log(`${id}: named in a stopped run's lock -> ${action}`);
     let handled = true;
+    const startedAtMs = issue && issue.startedAt ? Date.parse(issue.startedAt) : NaN;
     if (action === 'done') {
-      const r = await moveCard(id, 'Done', '## Codex runner: landed\n\nAn earlier run stopped before closing this card; its commit is on main.');
-      if (r.code === 0) stats.landed.push(id);
-      else if (r.code === 5) { stats.inReview.push(id); handled = (await moveCard(id, 'In Review', '## Codex runner: landed, but the Done gate refused\n\nAn earlier run stopped before closing this card; its commit is on main.')).code === 0; }
-      else handled = false;
+      handled = await settleLanded(id, stats, { partial: await partialLanding(id, startedAtMs), body: 'An earlier run stopped before closing this card; its commit is on main.' });
     } else if (action === 'park') {
-      handled = (await linearBrain(['update', id, '--comment', `## Codex runner: landing did not finish (an earlier run stopped)\n\nThe land ref \`${ref}\` is left for the cloud worker's resume step.`])).code === 0;
+      const partial = await partialLanding(id, startedAtMs);
+      handled = (await linearBrain(['update', id, '--comment', `## Codex runner: landing did not finish (an earlier run stopped)\n\nThe land ref \`${ref}\` is left for the cloud worker's resume step.${partial ? `\n\n${R.PARTIAL_MARKER}` : ''}`])).code === 0;
     } else if (action === 'todo') {
       stats.crashed.push(id);
       handled = (await moveCard(id, 'Todo', '## Codex runner: stopped mid-card\n\nAn earlier run ended (its session stopped) before finishing this card, and nothing reached main. Back to Todo.')).code === 0;
@@ -612,7 +799,7 @@ async function recoverOrphans(stats) {
 }
 
 async function runLocked(startedMs) {
-  const stats = { claimed: [], landed: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
+  const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
   // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
   if (!OPTS.dryRun) { await reconcileLanded(stats); await recoverOrphans(stats); }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
@@ -652,6 +839,7 @@ async function runLocked(startedMs) {
   const text = [
     `## Codex runner ${new Date().toISOString().slice(0, 10)}: ${worked} card(s) worked in ${mins} min`,
     `- Landed and Done: ${list(stats.landed)}`,
+    `- Landed part, back to Todo with what is left: ${list(stats.landedPartial)}`,
     `- Already fixed, closed: ${list(stats.alreadyFixed)}`,
     `- Did not pass the Claude check, back to Todo: ${list(stats.bounced)}`,
     `- Landed but Done gate refused (In Review): ${list(stats.inReview)}`,
@@ -666,5 +854,5 @@ async function runLocked(startedMs) {
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
 }
 
-module.exports = { newUnitFailures, takeLock, releaseLock, weeklyPct, recoverOrphans };
+module.exports = { newLandFailures, provideData, takeLock, releaseLock, weeklyPct, recoverOrphans };
 if (require.main === module) main().catch((e) => { log(`runner failed: ${e && e.stack ? e.stack : e}`); process.exit(1); });

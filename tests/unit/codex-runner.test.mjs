@@ -3,9 +3,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const r = require('../../scripts/lib/codex-runner.js');
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const AUTH = JSON.stringify({ auth_mode: 'chatgpt', last_refresh: '2026-10-05T22:26:32Z', tokens: { id_token: 'x' } });
 
@@ -68,13 +73,68 @@ test('latestWeeklyPercent: reads the real Codex rollout rate_limits shape', () =
   assert.equal(r.latestWeeklyPercent('{"no":"limits"}\nnot json rate_limits'), null);
 });
 
-test('nextStep: only a clean SHIP lands; one fix round then bounce', () => {
+test('nextStep: only a clean SHIP lands; REJECT gets one fix round, SHIP-WITH-FIXES two', () => {
   assert.equal(r.nextStep({ verdict: 'SHIP', hasDiff: true, attempt: 1 }), 'land');
   assert.equal(r.nextStep({ verdict: 'SHIP', hasDiff: false, attempt: 1 }), 'close-already-fixed');
   assert.equal(r.nextStep({ verdict: 'SHIP-WITH-FIXES', hasDiff: true, attempt: 1 }), 'fix-round');
+  assert.equal(r.nextStep({ verdict: 'SHIP-WITH-FIXES', hasDiff: true, attempt: 2 }), 'fix-round');
+  assert.equal(r.nextStep({ verdict: 'SHIP-WITH-FIXES', hasDiff: true, attempt: 3 }), 'bounce');
   assert.equal(r.nextStep({ verdict: 'NONE', hasDiff: true, attempt: 1 }), 'fix-round');
   assert.equal(r.nextStep({ verdict: 'REJECT', hasDiff: true, attempt: 2 }), 'bounce');
   assert.equal(r.nextStep({ verdict: 'SHIP', hasDiff: true, attempt: 2 }), 'land');
+});
+
+test('nextStep: a no-diff run the environment blocked retries once without using a round', () => {
+  assert.equal(r.nextStep({ verdict: 'REJECT', hasDiff: false, attempt: 1, envBlocked: true }), 'env-retry');
+  assert.equal(r.nextStep({ verdict: 'REJECT', hasDiff: false, attempt: 2, envBlocked: true }), 'env-retry');
+  assert.equal(r.nextStep({ verdict: 'REJECT', hasDiff: false, attempt: 1, envBlocked: true, envRetryUsed: true }), 'fix-round');
+  assert.equal(r.nextStep({ verdict: 'REJECT', hasDiff: false, attempt: 2, envBlocked: true, envRetryUsed: true }), 'bounce');
+  // A diff means Codex was not blocked; a SHIP needs no retry.
+  assert.equal(r.nextStep({ verdict: 'REJECT', hasDiff: true, attempt: 2, envBlocked: true }), 'bounce');
+  assert.equal(r.nextStep({ verdict: 'SHIP', hasDiff: false, attempt: 1, envBlocked: true }), 'close-already-fixed');
+});
+
+test('parseEnvBlocked / parseRemaining: line-anchored, "none" means nothing', () => {
+  assert.equal(r.parseEnvBlocked('report\nENVIRONMENT-BLOCKED: sandbox denied read of data/review-texts\n'), 'sandbox denied read of data/review-texts');
+  assert.equal(r.parseEnvBlocked('**ENVIRONMENT-BLOCKED:** none'), null);
+  assert.equal(r.parseEnvBlocked('I was not ENVIRONMENT-BLOCKED: at all, mid-sentence'), null);
+  assert.equal(r.parseEnvBlocked(''), null);
+  assert.deepEqual(r.parseRemaining('VERDICT: SHIP\nREMAINING: backfill 12 review files (needs the private repo)\n- REMAINING: rerun the audit'), ['backfill 12 review files (needs the private repo)', 'rerun the audit']);
+  assert.deepEqual(r.parseRemaining('VERDICT: SHIP\nREMAINING: none'), []);
+  assert.deepEqual(r.parseRemaining('nothing remaining: here'), []);
+});
+
+test('landingIsPartial: a partial note since the claim, never an older one', () => {
+  const since = Date.parse('2026-10-09T10:00:00Z');
+  const partial = { body: `## Codex runner: landing a partial fix\n\n${r.PARTIAL_MARKER}`, createdAt: '2026-10-09T11:00:00Z' };
+  const old = { ...partial, createdAt: '2026-10-01T11:00:00Z' };
+  assert.equal(r.landingIsPartial([partial], since), true);
+  assert.equal(r.landingIsPartial([old], since), false);
+  assert.equal(r.landingIsPartial([partial], NaN), false);
+  assert.equal(r.landingIsPartial([{ body: '## Codex runner: landed', createdAt: '2026-10-09T11:00:00Z' }], since), false);
+});
+
+test('data allow-list: core files and review-texts only; credentialed clones are refused', () => {
+  assert.ok(r.DATA_FILES.includes('shows.json') && r.DATA_FILES.includes('reviews.json'));
+  for (const bad of ['subscribers.json', 'followers.json', 'finances', 'aggregator-archive', 'audit']) {
+    assert.ok(!r.DATA_FILES.includes(bad) && !r.DATA_DIRS.includes(bad), bad);
+  }
+  assert.deepEqual(r.DATA_DIRS, ['review-texts']);
+  assert.equal(r.hasCredentialRemote('[remote "origin"]\n\turl = https://x-access-token:ghp_abc@github.com/o/r.git'), true);
+  assert.equal(r.hasCredentialRemote('[remote "origin"]\n\turl = https://github.com/o/r.git'), false);
+  assert.equal(r.hasCredentialRemote('[remote "origin"]\n\turl = git@github.com:o/r.git'), false);
+  // Every allow-listed file is gitignored, so a provided copy can never be committed.
+  const ign = spawnSync('git', ['check-ignore', '--no-index', ...r.DATA_FILES.map((f) => `data/${f}`), 'data/review-texts'], { cwd: ROOT, encoding: 'utf8' });
+  assert.deepEqual(ign.stdout.split('\n').filter(Boolean).sort(), [...r.DATA_FILES.map((f) => `data/${f}`), 'data/review-texts'].sort());
+});
+
+test('land-gauntlet GAUNTLET_GATES: unset runs every gate, a list runs exactly those', () => {
+  const fn = readFileSync(join(ROOT, 'scripts/lib/land-gauntlet.sh'), 'utf8').split('\n').find((l) => l.startsWith('want_gate()'));
+  assert.ok(fn, 'want_gate() is defined on one line in land-gauntlet.sh');
+  const probe = (env) => spawnSync('bash', ['-c', `${fn}\nfor g in tsc unit-tests-node lint-workflows lint; do want_gate "$g" && echo "$g"; done`], { encoding: 'utf8', env: { PATH: process.env.PATH, ...env } }).stdout.trim().split('\n');
+  assert.deepEqual(probe({}), ['tsc', 'unit-tests-node', 'lint-workflows', 'lint']);
+  assert.deepEqual(probe({ GAUNTLET_GATES: 'lint-workflows' }), ['lint-workflows']);
+  assert.deepEqual(probe({ GAUNTLET_GATES: 'tsc,unit-tests-node' }), ['tsc', 'unit-tests-node']);
 });
 
 test('looksLikeSecretLeak: added token lines block, removed lines and prose do not', () => {
@@ -87,9 +147,15 @@ test('looksLikeSecretLeak: added token lines block, removed lines and prose do n
   assert.equal(r.looksLikeSecretLeak('+++ b/"refresh_token":'), false);
 });
 
-test('fillPrompt fills every placeholder, repeatedly', () => {
+test('fillPrompt fills every placeholder, repeatedly, and never expands one inside a value', () => {
   const out = r.fillPrompt('{{ID}} {{TITLE}}\n{{BODY}}\n{{EXTRA}} {{ID}}', { id: 'BRO-1', title: 'T', body: 'B' });
   assert.equal(out, 'BRO-1 T\nB\n BRO-1');
+  assert.equal(r.fillPrompt('{{DATA}}|{{WORKTREE}}|{{BODY}}', { id: 'x', data: 'D', worktree: '/wt', body: 'card says {{EXTRA}}' }), 'D|/wt|card says {{EXTRA}}');
+  // The real prompts carry no placeholder the runner does not fill.
+  for (const f of ['scripts/codex/runner-prompt.md', 'scripts/codex/check-prompt.md']) {
+    const left = r.fillPrompt(readFileSync(join(ROOT, f), 'utf8'), { id: 'BRO-1', title: 't', body: 'b', extra: 'e', data: 'd', worktree: '/w' });
+    assert.doesNotMatch(left, /\{\{[A-Z]+\}\}/, f);
+  }
 });
 
 test('stopReason: time, weekly cap, reject streak, Done refusal', () => {

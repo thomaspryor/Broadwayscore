@@ -41,6 +41,10 @@
 #     regression the same way). The file list is DERIVED from test.yml's own
 #     `run:` text (bash-integration-test-list.js), not hardcoded here, so a
 #     bash test added to test.yml is covered automatically — no second edit.
+# Env: GAUNTLET_GATES — optional comma list (e.g. "lint-workflows" or
+#   "unit-tests-node,scripts-lib-tests"): run only those gates, skipping the
+#   gold-lists prep unless a unit gate is listed. Unset = every gate (land.yml
+#   never sets it; the Codex runner's pre-review check does).
 # Env: LAND_BASE — the origin/main sha the tree was rebased onto (tony-loso
 #   gate diffs against it; unset/empty → that gate is skipped with a note).
 #   GH_TOKEN — for the audits that read the API. BSC_STAGE_LATENCY_MUTE=1 set
@@ -81,8 +85,10 @@ export BSC_STAGE_LATENCY_MUTE=1
 
 # gate <name> <cmd…>: capture the command's stdout+stderr to <name>.log (and
 # echo it into a collapsed log group), record the exit code, never abort.
+want_gate() { [ -z "${GAUNTLET_GATES:-}" ] || [[ ",${GAUNTLET_GATES}," == *",$1,"* ]]; }
 gate() {
   local name="$1"; shift
+  if ! want_gate "$name"; then echo "gate $name: skipped (GAUNTLET_GATES=${GAUNTLET_GATES})"; return 0; fi
   echo "::group::gate $name — $*"
   "$@" 2>&1 | tee "$OUT/$name.log"
   local rc=${PIPESTATUS[0]}
@@ -92,7 +98,9 @@ gate() {
 }
 
 # ── prep (not gates): gold lists + gitignored manifests ────────────────────
-node scripts/compute-gold-lists.js > "$OUT/prep-gold-lists.log" 2>&1 || echo "::warning::compute-gold-lists.js failed (see $OUT/prep-gold-lists.log) — data-dependent tests may fail"
+if want_gate unit-tests-node || want_gate unit-tests-tsx || want_gate scripts-lib-tests || want_gate bash-integration; then
+  node scripts/compute-gold-lists.js > "$OUT/prep-gold-lists.log" 2>&1 || echo "::warning::compute-gold-lists.js failed (see $OUT/prep-gold-lists.log) — data-dependent tests may fail"
+fi
 
 # ── TypeScript Check ───────────────────────────────────────────────────────
 gate tsc npx tsc --noEmit
