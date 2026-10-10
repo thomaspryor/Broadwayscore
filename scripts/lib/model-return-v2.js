@@ -30,6 +30,8 @@
  */
 
 const LONG_RUN_WEEKS = 520; // 10 years
+/** Every value classifyTier returns. */
+const TIERS = Object.freeze(['ai-estimated', 'simplified-lifetime', 'weekly-model']);
 const INVESTOR_SHARE_ABOVE_CAP = 0.5;
 
 /** Which live calculation a record gets (moved verbatim from merge-model-recoupment.js). */
@@ -81,4 +83,4 @@ function modelReturnV2(result, show, now = Date.now()) {
   return { recoupmentPctV2: pct, investorMultiple: mult, recouped, denominator };
 }
 
-module.exports = { modelReturnV2, classifyTier, isClosed, LONG_RUN_WEEKS, INVESTOR_SHARE_ABOVE_CAP };
+module.exports = { modelReturnV2, classifyTier, isClosed, LONG_RUN_WEEKS, TIERS, INVESTOR_SHARE_ABOVE_CAP };

@@ -820,6 +820,7 @@ tests/unit/mobile-shows.test.mjs
 tests/unit/mobile-watchlist-delete-icon.test.mjs
 tests/unit/mobile-watchlist-grid-feedback.test.mjs
 tests/unit/model-default-guard.test.mjs
+tests/unit/model-drift.test.mjs
 tests/unit/model-return-v2.test.mjs
 tests/unit/model-run-fields.test.mjs
 tests/unit/model-table-single-source.test.mjs
@@ -954,6 +955,7 @@ tests/unit/precursor-category-parser.test.mjs
 tests/unit/predictions-page.test.mjs
 tests/unit/preview-article-tier-gate.test.mjs
 tests/unit/preview-placeholder-merge.test.mjs
+tests/unit/preview-weeks.test.mjs
 tests/unit/prior-run-discovery-window.test.mjs
 tests/unit/prior-run-review-display.test.mjs
 tests/unit/prior-run-supersede.test.mjs
@@ -1003,6 +1005,7 @@ tests/unit/reconcile-bww-roundup-ledger.test.mjs
 tests/unit/reconcile-merged-json-jsonl-hardening.test.mjs
 tests/unit/reconcile-retired-ids.test.mjs
 tests/unit/recoupment-classify.test.mjs
+tests/unit/recoupment-ground-truth.test.mjs
 tests/unit/recoupment-model.test.mjs
 tests/unit/recoupment-reconcile-gate.test.mjs
 tests/unit/recover-manual-review-score.test.mjs
@@ -1075,6 +1078,7 @@ tests/unit/roundup-rebuild-guard.test.mjs
 tests/unit/rss-opening-window-identity.test.mjs
 tests/unit/rss-poller-state.test.mjs
 tests/unit/rss-wrongshow-guard.test.mjs
+tests/unit/run-window.test.mjs
 tests/unit/safari-cookie-extraction.test.mjs
 tests/unit/same-title-venue-carveout.test.mjs
 tests/unit/same-url-byline-dedup.test.mjs
