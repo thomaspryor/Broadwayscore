@@ -90,6 +90,9 @@ const ALLOWED_SCRIPTS = [
   // pair it with a data-edit on commercial.json in the same plan so the
   // executor's commercial-record check runs on the touched keys.
   'dedupe-commercial-id-keys.js',
+  // BRO-4947: move review files from a wrong or duplicate outlet id to the canonical one
+  // (rules are code, in scripts/lib/outlet-id-migrations.js; conflicts are left in place).
+  'migrate-outlet-ids.js',
 ];
 
 // --- Helpers ---

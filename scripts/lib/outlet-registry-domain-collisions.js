@@ -27,7 +27,7 @@ const EDITION_PAIRS = [
 // inclusive scan of the live registry (2026-08-11) found 4 such pairs; each
 // was individually investigated against reviews.json/review-texts before
 // being declared here. One of the four (chicago-sun-times/suntimes) was
-// MERGED on 2026-09-07 and removed, leaving 3:
+// MERGED on 2026-09-07 and removed; BRO-4947 removed two more, leaving 1:
 const DECLARED_ALIAS_OVERLAPS = [
   // AP wire copy syndicates on abcnews.go.com. 'ap' is in
   // review-normalization.js's WIRE_SERVICE_OUTLETS set, so the cross-outlet
@@ -36,22 +36,14 @@ const DECLARED_ALIAS_OVERLAPS = [
   // deterministically resolves the host to abc-news (its primary owner) —
   // genuinely ambiguous by URL alone, but already safe at runtime.
   ['ap', 'abc-news'],
-  // Critic Robert Sholiton runs two blogs — Gotham Playgoer
-  // (gotham-playgoer.blogspot.com) and Bob's Theater Blog
-  // (bobstheaterblog.com) — and has cross-posted a handful of reviews onto
-  // the other blog's blogspot host. Verified in reviews.json: both outlets
-  // carry real, distinct reviews with URLs on bobs-theater-blog.blogspot.com.
-  ['gotham-playgoer', 'bobs-theater-blog'],
-  // CONFIRMED accidental registry duplicate, not yet merged. dctheatrescene
-  // and dc-metro-theater-arts are the same real publication (DC Theatre
-  // Scene rebranded to DC Metro Theater Arts): same critics (Richard Seff,
-  // Deb Miller), same host (dcmetrotheaterarts.com); 16
-  // dc-metro-theater-arts--*.json review-text files duplicate an identity
-  // dctheatrescene already owns. Declared (not merged) because
-  // data/review-texts carried another live session's uncommitted WIP when
-  // this was found, making a same-repo file rename unsafe to attempt here —
-  // see Notion card for the follow-up merge.
-  ['dctheatrescene', 'dc-metro-theater-arts'],
+  // BRO-4947 (2026-10-10): two more declarations were MERGED and removed.
+  //  - gotham-playgoer / bobs-theater-blog: one Blogspot blog, renamed in 2017
+  //    (bobs-theater-blog.blogspot.com rows run 2015-2017, gotham-playgoer.blogspot.com
+  //    rows 2017 onward). gotham-playgoer is now an alias of bobs-theater-blog.
+  //  - dctheatrescene / dc-metro-theater-arts: NOT one publication. dcmetrotheaterarts.com
+  //    is DC Theater Arts' former name (now dc-theater-arts); dctheatrescene.com is the
+  //    separate DC Theatre Scene. dc-metro-theater-arts is merged into dc-theater-arts
+  //    and dcmetrotheaterarts.com is now a domain alias of dc-theater-arts only.
   // chicago-sun-times / suntimes was the fourth entry here. MERGED and removed
   // 2026-09-07 (BRO-2921): the blocker this declaration recorded (review-texts
   // carrying another session's uncommitted WIP) was gone, so the duplicate was

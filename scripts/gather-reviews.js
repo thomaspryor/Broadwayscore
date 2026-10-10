@@ -4148,7 +4148,8 @@ function createReviewFile(showId, reviewData, options = {}) {
 // Outlets that use letter grade scoring (from src/config/scoring.ts scoreFormat: 'letter').
 // Letter grades from other outlets are rejected to prevent cross-contamination
 // (e.g., BWW roundup leaking EW's grade into a text_bucket outlet like NYDN).
-const LETTER_GRADE_OUTLETS = new Set(['ew', 'jks-theatre-scene', 'gotham-playgoer']);
+// BRO-4947: gotham-playgoer was merged into bobs-theater-blog (one blog, renamed 2017); both ids stay so old and new rows parse alike.
+const LETTER_GRADE_OUTLETS = new Set(['ew', 'jks-theatre-scene', 'gotham-playgoer', 'bobs-theater-blog']);
 
 function parseRating(rating, outletId) {
   if (!rating) return null;
