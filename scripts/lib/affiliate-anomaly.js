@@ -27,6 +27,20 @@
 
 const { dayToMs, toDayKey, MS_PER_DAY } = require('./arm-yield');
 
+/**
+ * A real sale that paid $0 because the buyer used a promo code. The TodayTix
+ * contract (program 20944, template 243224) has a promo-code blacklist (SV0,
+ * NOFEE, COMPTIX, TP, UPGRADE, 25PC, GC, PWY, SAVE, MAIL, EXCH): those orders
+ * earn nothing by design. BRO-4967 readout, 2026-10-10: all 13 $0 orders in
+ * 44 days carried a PromoCode with IntendedPayout 0, vs 1 of 81 paid orders.
+ * Expected, not a tracking fault, so reports and the monitor label it as such.
+ */
+function isPromoCodeZeroPayout(a) {
+  const amount = parseFloat(a.Amount || 0);
+  const payout = parseFloat(a.Payout || 0);
+  return amount > 0 && payout === 0 && Boolean(String(a.PromoCode || '').trim());
+}
+
 /** Sum map values over the `days` calendar days ending at asOf (inclusive). */
 function sumWindow(byDay, asOf, days) {
   const map = byDay instanceof Map ? byDay : new Map(Object.entries(byDay || {}));
@@ -117,13 +131,21 @@ function checkPayoutAnomaly({ actions, asOf, days = 7, minTakeRate = 0.008, maxZ
     const ms = dayToMs(String(a.EventDate || '').slice(0, 10));
     return Number.isFinite(ms) && ms >= startMs && ms <= dayToMs(asOf);
   });
-  const sales = inWindow.reduce((s, a) => s + (parseFloat(a.Amount) || 0), 0);
-  const payout = inWindow.reduce((s, a) => s + (parseFloat(a.Payout) || 0), 0);
-  const zeroPayout = inWindow.filter((a) => (parseFloat(a.Amount) || 0) > 0 && (parseFloat(a.Payout) || 0) === 0);
+  // Promo-code orders pay $0 by contract (affiliate-stats isPromoCodeZeroPayout,
+  // BRO-4967). Left in, a promo surge read as a broken payout and dragged the
+  // take-rate down. Only unexplained $0 orders count against the thresholds.
+  const promoZero = inWindow.filter(isPromoCodeZeroPayout);
+  const judged = inWindow.filter((a) => !isPromoCodeZeroPayout(a));
+  const sales = judged.reduce((s, a) => s + (parseFloat(a.Amount) || 0), 0);
+  const payout = judged.reduce((s, a) => s + (parseFloat(a.Payout) || 0), 0);
+  const zeroPayout = judged.filter((a) => (parseFloat(a.Amount) || 0) > 0 && (parseFloat(a.Payout) || 0) === 0);
   const takeRate = sales > 0 ? payout / sales : null;
+  const promoNote = promoZero.length ? `; ${promoZero.length} promo-code order(s) at $0 by contract, not counted` : '';
 
-  if (inWindow.length < minConversions) {
-    return { verdict: 'not-applicable', reason: `only ${inWindow.length} conversions in ${days}d (need ${minConversions} to judge economics)`, conversions: inWindow.length, sales, payout, takeRate, zeroPayoutCount: zeroPayout.length };
+  // Sample size counts only the orders the rules judge: a week of 9 promo
+  // orders and 1 paid one is not enough to call the economics either way.
+  if (judged.length < minConversions) {
+    return { verdict: 'not-applicable', reason: `only ${judged.length} conversions in ${days}d (need ${minConversions} to judge economics)${promoNote}`, conversions: inWindow.length, sales, payout, takeRate, zeroPayoutCount: zeroPayout.length, promoZeroCount: promoZero.length };
   }
   const problems = [];
   if (takeRate !== null && takeRate < minTakeRate) {
@@ -133,9 +155,9 @@ function checkPayoutAnomaly({ actions, asOf, days = 7, minTakeRate = 0.008, maxZ
     problems.push(`${zeroPayout.length} conversions with a real sale amount but $0.00 payout in ${days}d (allowed ${maxZeroPayout})`);
   }
   if (problems.length) {
-    return { verdict: 'anomalous', reason: problems.join('; '), conversions: inWindow.length, sales, payout, takeRate, zeroPayoutCount: zeroPayout.length };
+    return { verdict: 'anomalous', reason: problems.join('; ') + promoNote, conversions: inWindow.length, sales, payout, takeRate, zeroPayoutCount: zeroPayout.length, promoZeroCount: promoZero.length };
   }
-  return { verdict: 'healthy', reason: `take-rate ${takeRate === null ? 'n/a' : (takeRate * 100).toFixed(2) + '%'}, ${zeroPayout.length} zero-payout`, conversions: inWindow.length, sales, payout, takeRate, zeroPayoutCount: zeroPayout.length };
+  return { verdict: 'healthy', reason: `take-rate ${takeRate === null ? 'n/a' : (takeRate * 100).toFixed(2) + '%'}, ${zeroPayout.length} zero-payout${promoNote}`, conversions: inWindow.length, sales, payout, takeRate, zeroPayoutCount: zeroPayout.length, promoZeroCount: promoZero.length };
 }
 
 /**
@@ -271,6 +293,7 @@ module.exports = {
   checkHandoffBreak,
   checkBotDivergence,
   checkPayoutAnomaly,
+  isPromoCodeZeroPayout,
   checkDeadMan,
   checkZeroConversionCeiling,
   findOutlierDays,

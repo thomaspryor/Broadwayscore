@@ -144,6 +144,7 @@ async function main() {
           console.log('TodayTix customer mix (inferred from payout rate):');
           console.log(`  New: ${m.newCount} (${newPct}%), $${m.newPayout.toFixed(2)} commission ($${m.newRevenue.toFixed(2)} attributed)`);
           console.log(`  Existing: ${m.existingCount} (${100 - newPct}%), $${m.existingPayout.toFixed(2)} commission ($${m.existingRevenue.toFixed(2)} attributed)`);
+          if (m.promoZeroCount > 0) console.log(`  Promo-code orders (TodayTix pays $0 on these by contract): ${m.promoZeroCount} ($${m.promoZeroRevenue.toFixed(2)} attributed)`);
           if (m.unknownCount > 0) console.log(`  Unknown rate: ${m.unknownCount}`);
           if (m.rateBumpUplift > 0) {
             console.log(`  Rate-bump uplift (vs old 2%/1% contract): +$${m.rateBumpUplift.toFixed(2)} commission this period`);
