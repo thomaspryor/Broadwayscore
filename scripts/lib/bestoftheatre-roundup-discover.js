@@ -142,8 +142,8 @@ function venueMatchesSlugTail(tailWords, show) {
   const tail = new Set(tailWords.flatMap((w) => _venueTokens(w)));
   if (!tail.size) return true;
   if (!show.venue || /^tba$/i.test(String(show.venue).trim())) return false;
-  const { otherVenueNames } = require('./venue-renames');
-  const names = [show.venue, ...otherVenueNames(show.venue)];
+  const { otherVenueNames } = require('./venue-aliases');
+  const names = [show.venue, ...otherVenueNames(show.venue, show.category)];
   // Squashed too: the slug writes "Soho Place" as "sohoplace".
   const tailJoined = [...tail].join('');
   return names.some((n) => {

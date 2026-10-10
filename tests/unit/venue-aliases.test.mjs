@@ -18,6 +18,7 @@ const {
   getVenueAliases,
   findCanonical,
   hasAliases,
+  otherVenueNames,
   buildVenueContext,
 } = require('../../scripts/lib/venue-aliases.js');
 
@@ -144,4 +145,24 @@ test('content-verifier imports venue-aliases without breaking', () => {
   // network for a real call, but the module load is testable.
   const cv = require('../../scripts/lib/content-verifier.js');
   assert.ok(typeof cv.verifyContent === 'function');
+});
+
+test('a show filed under the OLD name still gets the new name (BRO-4956: Rent at the Duke of York\'s / Tom Stoppard)', () => {
+  assert.deepEqual(otherVenueNames("Duke of York's Theatre", 'west-end'), ['Tom Stoppard Theatre']);
+  assert.deepEqual(otherVenueNames('Tom Stoppard Theatre', 'west-end'), ["Duke of York's Theatre"]);
+  const ctx = buildVenueContext("Duke of York's Theatre", 'west-end');
+  assert.match(ctx, /same building as Tom Stoppard Theatre/);
+});
+
+test('a named auditorium inside a venue is the same venue (BRO-4956: Darkling at the Bush / Holloway Theatre)', () => {
+  assert.deepEqual(otherVenueNames('Bush Theatre', 'off-west-end'), ['Holloway Theatre']);
+  const ctx = buildVenueContext('Bush Theatre', 'off-west-end');
+  assert.match(ctx, /its main auditorium is the Holloway Theatre/);
+  assert.doesNotMatch(ctx, /formerly/);
+});
+
+test('otherVenueNames respects region and unknown venues', () => {
+  assert.deepEqual(otherVenueNames('Lyric Theatre', 'west-end'), [], 'London Lyric never inherits Broadway history');
+  assert.deepEqual(otherVenueNames('Garrick Theatre', 'west-end'), []);
+  assert.deepEqual(otherVenueNames('', 'west-end'), []);
 });

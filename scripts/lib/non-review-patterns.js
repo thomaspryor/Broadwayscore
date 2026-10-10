@@ -79,6 +79,9 @@ const REVIEW_INDICATORS = [
   /(?:stars?|rating):\s*\d/i,
 ];
 
+const LEAD_STAR_RATING = /★{1,5}[☆½]*/;
+const STAR_VETOED_TYPES = new Set(['awards_coverage', 'obituary']);
+
 /**
  * Heuristic non-review classification.
  * Returns { isNonReview, type, confidence: 'high'|'medium', evidence } or null.
@@ -115,6 +118,13 @@ function heuristicClassify(text) {
   }
   if (matches.length === 0) return null;
   if (reviewSignals >= 2) return null;
+  // A star-glyph rating in the opening ("★★★★☆" under the headline) is the
+  // critic's verdict when the only signal is a TOPIC a review can mention: the
+  // show's past awards or a death (BRO-4956: a 4-star Plays International review
+  // of Jane Eyre was flagged awards_coverage for recalling its "Tony
+  // nominations"). Press releases and casting news quote other outlets' stars
+  // ("★★★★★ The Times"), so those types are never vetoed.
+  if (LEAD_STAR_RATING.test(opening) && matches.every((m) => STAR_VETOED_TYPES.has(m.type))) return null;
 
   if (matches.length >= 2 && reviewSignals === 0) {
     return { isNonReview: true, type: matches[0].type, confidence: 'high', evidence: matches.map(m => m.evidence).join('; ') };
