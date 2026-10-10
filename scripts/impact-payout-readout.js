@@ -18,6 +18,15 @@
 const fs = require('fs');
 const { summarizeZeroPayout, renderMarkdown } = require('./lib/impact-payout-readout');
 const { IMPACT_MAX_DAYS, fetchImpactActionsWindow } = require('./lib/affiliate-stats');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+const USAGE = `impact-payout-readout.js — why do some TodayTix orders pay $0 commission?
+
+Read-only. Prints aggregate breakdowns of $0-commission vs paid Impact orders.
+
+Options:
+  --days=N   Days back to read (default and max 44)
+  --help     Show this message`;
 
 const MAX_PAGES = 50;
 
@@ -86,6 +95,10 @@ async function singlePageCount(days) {
 const MAX_READOUT_DAYS = IMPACT_MAX_DAYS - 1;
 
 async function main() {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log(USAGE);
+    return;
+  }
   const days = Math.min(Math.max(parseInt(arg('days', String(MAX_READOUT_DAYS)), 10) || MAX_READOUT_DAYS, 1), MAX_READOUT_DAYS);
   const [{ actions, pages, incomplete }, owner, single] = await Promise.all([
     fetchAllActions(days),
