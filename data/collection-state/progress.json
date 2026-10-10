@@ -383,7 +383,11 @@
     "paranormal-activity-2026/nytimes--helen-shaw.json",
     "paranormal-activity-2026/the-interested-bystander--cary-wong.json",
     "as-you-like-it-globe-west-end-2026/telegraph--unknown.json",
-    "abba-voyage-off-west-end-2026/times-uk--unknown.json"
+    "abba-voyage-off-west-end-2026/times-uk--unknown.json",
+    "good-time-charlie-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/wsj--charles-isherwood.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "sting-west-end-2026/ew--unknown.json",
@@ -494,7 +498,6 @@
     "les-miserables-west-end-2021/nysr--unknown.json",
     "from-the-heart-west-end-2026/thestage--neil-norman.json",
     "the-hungry-ghost-off-west-end-2026/guardian--kate-wyver.json",
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/wsj--charles-isherwood.json",
     "oh-mary-tour-2026/nytimes--laura-collins-hughes.json",
     "evita-2026/thestage--sam-marlowe.json",
     "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json",
@@ -612,7 +615,17 @@
     "as-you-like-it-globe-west-end-2026/guardian--unknown.json",
     "oh-mary-west-end-2025/bachtrack--unknown.json",
     "oh-mary-west-end-2025/micablackwell--unknown.json",
-    "stranger-things-the-first-shadow-west-end-2023/standard--unknown.json"
+    "stranger-things-the-first-shadow-west-end-2023/standard--unknown.json",
+    "soon-off-broadway-2026/nick-blaemire--unknown.json",
+    "soon-off-broadway-2026/playbill--unknown.json",
+    "soon-off-broadway-2026/thestage--matt-barton.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/talkinbroadway--unknown.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -848,7 +861,10 @@
       "from-the-heart-west-end-2026/north-west-end--alan-stuart-malin.json",
       "darkling-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "paranormal-activity-2026/the-interested-bystander--cary-wong.json"
+      "paranormal-activity-2026/the-interested-bystander--cary-wong.json",
+      "good-time-charlie-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -860,7 +876,9 @@
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json"
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "data/review-texts/the-hairy-ape-irish-repertory-theatre-off-broadway-2026/wsj--charles-isherwood.json",
+      "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/wsj--charles-isherwood.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -900,7 +918,8 @@
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
       "becky-shaw-2026/cote-notices--david-cote.json",
       "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-      "the-weir-west-end-2025/hampstead-highgate-express--charlotte-l-rose.json"
+      "the-weir-west-end-2025/hampstead-highgate-express--charlotte-l-rose.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/theater-life--unknown.json"
     ],
     "scrapingbee": [
       "all-male-as-you-like-it-regional-2026/nytimes--helen-shaw.json",
@@ -1026,7 +1045,7 @@
     ]
   },
   "startTime": "2026-10-09T20:15:34.857Z",
-  "lastProcessed": "all-my-sons-west-end-2025/dailybeast--tim-teeman.json",
+  "lastProcessed": "midnight-off-broadway-2026/eventsfy--unknown.json",
   "log": [
     {
       "t": "2026-10-10T01:05:35.744Z",
@@ -1107,11 +1126,57 @@
       "t": "2026-10-10T01:23:47.078Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-10T02:27:37.402Z",
+      "event": "bb-session",
+      "session": "a90b7832",
+      "url": "https://www.wsj.com/articles/the-hairy-ape-review-a-drama-of-dehumanization-at-i"
+    },
+    {
+      "t": "2026-10-10T02:27:38.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-10T02:29:39.723Z",
+      "event": "bb-session",
+      "session": "f1777955",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T02:29:40.369Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T02:29:57.914Z",
+      "event": "bb-session",
+      "session": "ab41bda3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2654246"
+    },
+    {
+      "t": "2026-10-10T02:29:58.519Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-10T02:31:31.621Z",
+      "event": "bb-session",
+      "session": "4c8900a6",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-10T02:31:49.958Z",
+      "event": "bb-session",
+      "session": "ab26fc1d",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
     }
   ],
   "recoveredAfterFailure": [
     "the-story-west-end-2026/times-uk--clive-davis.json",
     "paranormal-activity-2026/the-interested-bystander--cary-wong.json",
-    "abba-voyage-off-west-end-2026/times-uk--unknown.json"
+    "abba-voyage-off-west-end-2026/times-uk--unknown.json",
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/wsj--charles-isherwood.json"
   ]
 }
