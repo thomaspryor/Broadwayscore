@@ -596,3 +596,11 @@ test('isNonReviewDemotedByFreshCV: manual (not a review) flag is never demoted b
   delete classifierSet.manualReviewedBy;
   assert.equal(isNonReviewDemotedByFreshCV(classifierSet), true);
 });
+
+test('isNonReviewDemotedByFreshCV: manual provenance fields alone protect the flag, whatever the reason text (BRO-3415)', () => {
+  const cv = { articleType: 'review', articleTypeConfidence: 'high', verifiedAt: '2026-09-15T17:00:00Z' };
+  for (const prov of [{ manualReviewedBy: 'monitor' }, { manualNonReviewSet: true }, { manualNonReviewBy: 'tom' }]) {
+    const data = { isNonReview: true, isNonReviewReason: 'Forum thread, not a review', contentVerification: cv, ...prov };
+    assert.equal(isNonReviewDemotedByFreshCV(data), false, JSON.stringify(prov));
+  }
+});
