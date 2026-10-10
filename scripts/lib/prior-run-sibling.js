@@ -301,15 +301,42 @@ function priorRunWindows(show, shows) {
   return windows;
 }
 
-/** True when a review on a returning show covers an earlier run: carried from it, or dated inside one of its windows. */
-function isPriorRunReview(review, windows) {
-  if (review && review.inheritedFromShowId) return true;
-  return !!findMatchingPriorRun(review && review.publishDate, windows);
+/** Earliest of the show's first preview and opening, as ms (NaN when neither is set). */
+function runStartMs(show) {
+  const starts = [show && show.previewsStartDate, show && show.openingDate]
+    .map(toDateMs).filter(Number.isFinite);
+  return starts.length ? Math.min(...starts) : NaN;
 }
 
-/** Dated and outside every earlier-run window: a review of THIS run. Undated rows are neither. */
-function isCurrentRunReview(review, windows) {
-  return !!(review && review.publishDate) && !isPriorRunReview(review, windows);
+/**
+ * Sorts a returning show's reviews into earlier-run and this-run. A review dated
+ * on or after this run's first preview/opening is this run's, whatever the prior
+ * window's 7-day review-lag grace says: a tour that closes the day before the
+ * West End previews would otherwise claim the opening-night reviews (The Car Man,
+ * Allegra). A dated review that is neither in a prior window nor after this run
+ * started (an announcement-era piece) is neither, like an undated one.
+ *
+ * @returns {{windows: Array<object>, isPrior: function(object): boolean, isCurrent: function(object): boolean}}
+ */
+function priorRunClassifier(show, shows) {
+  const windows = priorRunWindows(show, shows);
+  const startMs = runStartMs(show);
+  const afterStart = ms => Number.isFinite(startMs) && ms >= startMs;
+  const isPrior = (review) => {
+    if (!review) return false;
+    if (review.inheritedFromShowId) return true;
+    const ms = toDateMs(review.publishDate);
+    if (!Number.isFinite(ms) || afterStart(ms)) return false;
+    return !!findMatchingPriorRun(review.publishDate, windows);
+  };
+  const isCurrent = (review) => {
+    if (!review || review.inheritedFromShowId) return false;
+    const ms = toDateMs(review.publishDate);
+    if (!Number.isFinite(ms)) return false;
+    if (Number.isFinite(startMs)) return ms >= startMs;
+    return !findMatchingPriorRun(review.publishDate, windows);
+  };
+  return { windows, isPrior, isCurrent };
 }
 
 /**
@@ -337,14 +364,14 @@ function supersededPriorRunReviews(reviews, shows) {
   }
   const outletKey = r => String(r.outletId || r.outlet || '').trim().toLowerCase();
   for (const [showId, rows] of byShow) {
-    const windows = priorRunWindows(showById.get(showId), shows);
+    const { windows, isPrior, isCurrent } = priorRunClassifier(showById.get(showId), shows);
     if (windows.length === 0) continue;
     const currentOutlets = new Set();
     for (const r of rows) {
-      if (outletKey(r) && isCurrentRunReview(r, windows)) currentOutlets.add(outletKey(r));
+      if (outletKey(r) && isCurrent(r)) currentOutlets.add(outletKey(r));
     }
     for (const r of rows) {
-      if (currentOutlets.has(outletKey(r)) && isPriorRunReview(r, windows)) superseded.add(r);
+      if (currentOutlets.has(outletKey(r)) && isPrior(r)) superseded.add(r);
     }
   }
   return superseded;
@@ -352,8 +379,7 @@ function supersededPriorRunReviews(reviews, shows) {
 
 module.exports = {
   priorRunWindows,
-  isPriorRunReview,
-  isCurrentRunReview,
+  priorRunClassifier,
   supersededPriorRunReviews,
   isReturnOfProduction,
   matchingPriorRunFor,

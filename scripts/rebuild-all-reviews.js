@@ -1323,6 +1323,9 @@ const showDirs = listShowDirs(reviewTextsDir)
 console.log(`Found ${showDirs.length} show directories\n`);
 
 const allReviews = [];
+// Built row -> its review-text filename, for passes that exclude a row after the
+// file loop (BRO-4954 prior-run supersede) and must still log which file it was.
+const reviewSourceFile = new WeakMap();
 
 // Load failed-fetches map for incompleteReason classification
 const failedFetchesPath = path.join(reviewTextsDir, 'failed-fetches.json');
@@ -5279,6 +5282,7 @@ showDirs.forEach(showId => {
       }
 
       allReviews.push(review);
+      reviewSourceFile.set(review, file);
       if (!/^(unknown|unnamed)$/.test(criticKey)) {
         if (!keptNamedByOutlet.has(outletKey)) keptNamedByOutlet.set(outletKey, []);
         keptNamedByOutlet.get(outletKey).push({ review, fullText: data.fullText, file });
@@ -5333,9 +5337,21 @@ for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
   for (const l of links) {
     console.log(`  [PRIOR-RUN INHERIT] ${l.newerId} <- ${l.olderId}: ${l.count} review(s)`);
   }
+}
 
-  // BRO-4954: one review per outlet on a returning show, newest wins. An outlet that
-  // reviewed the return drops its earlier-run review(s), carried or filed here.
+if (leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
+  const carried = (JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || []).filter(r => leasedShowIds.has(r.showId));
+  for (const r of carried) allReviews.push(r);
+  console.log(`  [LEASE CARRY-OVER] ${carried.length} existing review row(s) kept for leased show(s)`);
+}
+
+// BRO-4954: one review per outlet on a returning show, newest wins. An outlet that
+// reviewed the return drops its earlier-run review(s), carried or filed here. Runs
+// after the lease carry-over: a leased show's own folder is skipped above, so its
+// current-run rows only arrive with the carry-over and must be present to supersede
+// the rows just re-inherited. Rows filed on this show get a logged exclusion
+// (priorRunSuperseded) so review-count-match does not read them as silent drops.
+{
   const superseded = supersededPriorRunReviews(allReviews, showsData.shows);
   if (superseded.size) {
     const perShow = {};
@@ -5344,18 +5360,19 @@ for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
       if (!superseded.has(r)) continue;
       allReviews.splice(i, 1);
       perShow[r.showId] = (perShow[r.showId] || 0) + 1;
+      const file = reviewSourceFile.get(r);
+      if (file) logExclusion('priorRunSuperseded', r.showId, file, r);
     }
     for (const [sid, n] of Object.entries(perShow)) {
       console.log(`  [PRIOR-RUN SUPERSEDED] ${sid}: ${n} earlier-run review(s) replaced by the same outlet's review of this run`);
+      // The per-show exclusions file was flushed above; rewrite it with these rows.
+      const showStats = stats.byShow[sid];
+      if (showStats && showStats.exclusions && showStats.exclusions.length > 0) {
+        writeShowExclusionsFile(sid, showStats.exclusions);
+      }
     }
   }
   stats.priorRunSuperseded = superseded.size;
-}
-
-if (leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
-  const carried = (JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || []).filter(r => leasedShowIds.has(r.showId));
-  for (const r of carried) allReviews.push(r);
-  console.log(`  [LEASE CARRY-OVER] ${carried.length} existing review row(s) kept for leased show(s)`);
 }
 
 if (SHOW_FILTER) {

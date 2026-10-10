@@ -4,12 +4,12 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { supersededPriorRunReviews, isCurrentRunReview, priorRunWindows } = require('../../scripts/lib/prior-run-sibling.js');
+const { supersededPriorRunReviews, priorRunClassifier } = require('../../scripts/lib/prior-run-sibling.js');
 const { broadcastReviewSubtitle } = require('../../scripts/lib/email-templates.js');
 
 const bridge = { id: 'itw-bridge', title: 'Into the Woods', openingDate: '2025-12-11', closingDate: '2026-05-30', venue: 'Bridge Theatre' };
 const transfer = {
-  id: 'itw-nc', title: 'Into the Woods', openingDate: '2026-10-07', venue: 'Noel Coward Theatre',
+  id: 'itw-nc', title: 'Into the Woods', previewsStartDate: '2026-09-22', openingDate: '2026-10-07', venue: 'Noel Coward Theatre',
   priorRuns: [{ id: 'itw-bridge', venue: 'Bridge Theatre', openingDate: '2025-12-11', closingDate: '2026-05-30' }],
 };
 const plain = { id: 'other', title: 'Other Show', openingDate: '2026-10-01' };
@@ -52,12 +52,38 @@ test('shows without priorRuns are untouched, and other shows do not interfere', 
   assert.equal(supersededPriorRunReviews([a, b, bridgeOwn, nc], shows).size, 0);
 });
 
-test('current-run test uses the declared windows (7-day review-lag grace after close)', () => {
-  const windows = priorRunWindows(transfer, shows);
-  assert.equal(isCurrentRunReview({ publishDate: '2026-06-02' }, windows), false);
-  assert.equal(isCurrentRunReview({ publishDate: '2026-09-25' }, windows), true);
-  assert.equal(isCurrentRunReview({ publishDate: '2026-10-08', inheritedFromShowId: 'itw-bridge' }, windows), false);
-  assert.equal(isCurrentRunReview({ publishDate: null }, windows), false);
+test('classifier: prior windows, this run from its first preview, announcement-era pieces are neither', () => {
+  const { isPrior, isCurrent } = priorRunClassifier(transfer, shows);
+  assert.equal(isPrior({ publishDate: '2026-06-02' }), true); // inside the 7-day grace after the Bridge close
+  assert.equal(isCurrent({ publishDate: '2026-06-02' }), false);
+  assert.equal(isCurrent({ publishDate: '2026-09-25' }), true); // a preview review
+  assert.equal(isCurrent({ publishDate: '2026-08-15' }), false); // after the close, before previews
+  assert.equal(isPrior({ publishDate: '2026-08-15' }), false);
+  assert.equal(isCurrent({ publishDate: '2026-10-08', inheritedFromShowId: 'itw-bridge' }), false);
+  assert.equal(isCurrent({ publishDate: null }), false);
+  assert.equal(isPrior({ publishDate: null }), false);
+});
+
+test('a tour closing the day before previews does not claim the opening reviews (grace overlap)', () => {
+  const carMan = {
+    id: 'car-man', title: 'The Car Man', previewsStartDate: '2026-07-28', openingDate: '2026-07-28',
+    priorRuns: [{ venue: 'UK Tour', openingDate: '2026-06-15', closingDate: '2026-07-27' }],
+  };
+  const { isPrior, isCurrent } = priorRunClassifier(carMan, [carMan]);
+  assert.equal(isCurrent({ publishDate: '2026-07-31' }), true);
+  assert.equal(isPrior({ publishDate: '2026-07-31' }), false);
+  const tour = row('car-man', 'british-theatre', 'A', '2026-07-22');
+  const opening = row('car-man', 'british-theatre', 'B', '2026-08-03');
+  assert.deepEqual([...supersededPriorRunReviews([tour, opening], [carMan])], [tour]);
+  // the opening review is never the one dropped, even with a later follow-up from the same outlet
+  const followUp = row('car-man', 'british-theatre', 'C', '2026-09-10');
+  assert.deepEqual([...supersededPriorRunReviews([tour, opening, followUp], [carMan])], [tour]);
+});
+
+test('a pre-start piece from the same outlet does not supersede the earlier-run review', () => {
+  const old = row('itw-nc', 'timeout', 'X', '2025-12-12', { inheritedFromShowId: 'itw-bridge' });
+  const announcement = row('itw-nc', 'timeout', 'Y', '2026-08-15');
+  assert.equal(supersededPriorRunReviews([old, announcement], shows).size, 0);
 });
 
 test('broadcast subtitle says how many reviews are new, only when some are carried', () => {
