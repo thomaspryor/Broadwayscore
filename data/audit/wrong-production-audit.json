@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T06:51:38.265Z",
+  "timestamp": "2026-10-10T07:53:49.497Z",
   "stats": {
-    "totalReviews": 53569,
-    "alreadyFlagged": 19720,
+    "totalReviews": 53661,
+    "alreadyFlagged": 19724,
     "dateGuardCatches": 264,
     "directorMismatch": 1661,
-    "tvFilmSignals": 1554,
-    "londonSignals": 1764,
+    "tvFilmSignals": 1557,
+    "londonSignals": 1770,
     "offBroadwaySignals": 512,
     "yearMismatch": 128,
-    "noPublishDate": 5830
+    "noPublishDate": 5875
   },
   "findings": [
     {
@@ -4612,7 +4612,7 @@
       "file": "artsdesk--helen-hawkins.json",
       "score": 77,
       "publishDate": "2026-09-15",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/bloodsport-stratford-east-review-1536-author-pits-more-essex-girls-against-bellicose-englishmen",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -16133,6 +16133,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 62,
+      "publishDate": "2024-10-08",
+      "url": "https://www.islingtontribune.co.uk/article/review-hay-fever-at-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 714d before show (2024-10-08 vs 2026-09-22)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -43821,20 +43840,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
       "showId": "tootsie-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 77,
@@ -44379,7 +44384,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
-      "score": 62,
+      "score": 60,
       "publishDate": "2026-09-28",
       "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2?syn-25a6b1a6=1",
       "findings": [
@@ -44576,7 +44581,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2026-09-28",
       "url": "https://www.standard.co.uk/culture/theatre/tru-at-menier-chocolate-factory-review-b1298631.html",
       "findings": [
@@ -44684,7 +44689,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
-      "score": 54,
+      "score": 53,
       "publishDate": "2026-09-28",
       "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
       "findings": [
@@ -44703,7 +44708,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 67,
+      "score": 65,
       "publishDate": "2026-09-28",
       "url": "https://www.timeout.com/london/theatre/tru-review",
       "findings": [
@@ -44727,7 +44732,7 @@
     {
       "showId": "tru-off-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 65,
+      "score": 62,
       "publishDate": "2026-09-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
       "findings": [
@@ -47275,6 +47280,50 @@
       "score": 82,
       "publishDate": "2026-09-09",
       "url": "https://www.theguardian.com/stage/2026/sep/09/youre-so-special-review-soho-theatre-julia-grogan",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "youre-so-special-off-west-end-2026",
+      "file": "theatreandtonic--chiara.json",
+      "publishDate": "2026-09-10",
+      "url": "https://theatreandtonic.co.uk/blog/youre-so-special-at-soho-theatre-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "youre-so-special-off-west-end-2026",
+      "file": "thereviewshub--scott-matthewman.json",
+      "publishDate": "2026-09-09",
+      "url": "https://www.thereviewshub.com/youre-so-special-soho-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "youre-so-special-off-west-end-2026",
+      "file": "west-end-best-friend--oli-burgin.json",
+      "publishDate": "2026-09-09",
+      "url": "https://www.westendbestfriend.co.uk/news/review-youre-so-special-soho-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -55294,6 +55343,19 @@
       ]
     },
     {
+      "showId": "fire-fire-off-west-end-2026",
+      "file": "north-west-end--gaurav-singh-nijjer.json",
+      "publishDate": "2026-09-14",
+      "url": "https://northwestend.com/fire-fire-arcola-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "flyby-off-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": null,
@@ -55995,6 +56057,19 @@
       "score": 60,
       "publishDate": "2026-09-16",
       "url": "https://www.theguardian.com/stage/2026/sep/16/golden-boy-review-almeida-theatre-london-josh-oconnor",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "hackneycitizen--gabriel-wilding.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.hackneycitizen.co.uk/2026/09/22/golden-boy-almeida-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -57483,6 +57558,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "artshub--dr-diana-carroll.json",
+      "score": 94,
       "publishDate": "2026-10-07",
       "url": "https://www.artshub.co.uk/news/reviews/richard-e-grant-and-christine-baranski-sparkle-in-noel-cowards-hay-fever-2636769/",
       "findings": [
@@ -57554,19 +57630,6 @@
       "score": 56,
       "publishDate": "2026-10-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hay-fever-review-richard-e-grant-christine-baranski-b3060249.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "hay-fever-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "publishDate": null,
-      "url": "https://www.islingtontribune.co.uk/article/review-hay-fever-at-wyndhams-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -61862,6 +61925,19 @@
       "score": 77,
       "publishDate": "2026-09-29",
       "url": "https://loureviews.blog/2026/09/29/play-review-man-to-man-at-royal-court/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "man-to-man-west-end-2026",
+      "file": "north-west-end--phil-meikle.json",
+      "publishDate": "2026-09-16",
+      "url": "https://northwestend.com/man-to-man-the-royal-court/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74084,6 +74160,19 @@
       ]
     },
     {
+      "showId": "the-turn-of-the-screw-off-west-end-2026",
+      "file": "theatreandtonic--eleanor-bywater.json",
+      "publishDate": "2026-09-19",
+      "url": "https://theatreandtonic.co.uk/blog/turn-of-the-screw-at-arcola-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "the-unbelievers-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 38,
@@ -76061,6 +76150,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "who-killed-marilyn-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "publishDate": "2026-08-21",
+      "url": "https://theatreandtonic.co.uk/blog/who-killed-marilyn-at-emerald-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
