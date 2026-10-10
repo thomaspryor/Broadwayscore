@@ -4,18 +4,63 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { groundTruth, rangeError, category, summarize, worseGroups } = require('../../scripts/lib/recoupment-ground-truth');
+const { groundTruth, rangeError, category, summarize, worseGroups, formatMarkdown } = require('../../scripts/lib/recoupment-ground-truth');
 
 const closed = { closingDate: '2020-01-01', openingDate: '2019-01-01', type: 'musical' };
+
+// Checker 2026-10-10: only trade, producer, SEC or NYT/Deadline/Variety/
+// Broadway Journal statements are truth; the strings are real source texts.
+describe('truthClass', () => {
+  const cls = (comm, show = closed) => groundTruth(comm, show).truthClass;
+  const pct = (src) => ({ estimatedRecoupmentPct: [10, 20], estimatedRecoupmentSource: src });
+  test('Reddit, deep research and our own arithmetic are inference', () => {
+    for (const src of [
+      "Section C: Reddit Grosses Analysis post states 'recoup=60-60%'",
+      'Deep Research: 0% investor recovery per lawsuit filings',
+      "GPT DR: 'Nearly total loss for investors (0-10% returned).'",
+      'Low end: ~5% from operating profit alone ($6.97M gross over 15 weeks).',
+      'Section C: Grosses Analysis Post confirms 10-20% recoupment estimate',
+    ]) assert.equal(cls(pct(src)), 'inference', src);
+  });
+  test('a trade or producer statement is reported, even inside long notes', () => {
+    assert.equal(cls(pct("Deadline: 'among this season's largest investment losses.'")), 'reported');
+    assert.equal(cls({ estimatedRecoupmentPct: [55, 65], notes: '$15M capitalization. Producer J.J. Powell confirmed $6M loss (~40% of cap). Lloyd likely recouped via royalties.' }), 'reported');
+  });
+  test('an admission that nobody announced it is inference wherever it sits', () => {
+    assert.equal(cls({ recouped: true, recoupedSource: 'Disney does not announce recoupments. Grosses passed $561M (Broadway Journal).' }), 'inference');
+    assert.equal(cls({ recouped: true, recoupedSource: 'No producer announcement. Broadway Journal (Aug 2023) projected recoupment by fall.' }), 'inference');
+  });
+  test('an estimated date beside a reported recoupment stays reported', () => {
+    assert.equal(cls({ recouped: true, recoupedSource: 'New York Theatre Guide: earned back its cost "faster than any other musical in history." No public report gives the date; March 1997 is our estimate.' }), 'reported');
+  });
+  test('failed rows use the record source types', () => {
+    const flop = (types) => ({ recouped: false, designation: 'Flop', sources: types.map((type) => ({ type })) });
+    assert.equal(cls(flop(['reddit', 'trade'])), 'reported');
+    assert.equal(cls(flop(['sec'])), 'reported');
+    assert.equal(cls(flop(['reddit', 'manual'])), 'inference');
+    assert.equal(cls(flop([])), 'inference');
+  });
+  test('an explicit field on the record wins over the classifier', () => {
+    const t = groundTruth({ ...pct('Reddit grosses analysis'), estimatedRecoupmentTruthClass: 'reported' }, closed);
+    assert.deepEqual([t.truthClass, t.truthClassFrom], ['reported', 'field']);
+    assert.equal(cls({ recouped: true, recoupedSource: 'Variety', recoupedTruthClass: 'inference' }), 'inference');
+    assert.equal(cls({ recouped: false, designation: 'Flop', sources: [{ type: 'trade' }], designationTruthClass: 'inference' }), 'inference');
+  });
+});
 
 describe('groundTruth', () => {
   test('a reported range counts; our own inference does not', () => {
     assert.deepEqual(
       groundTruth({ estimatedRecoupmentPct: [20, 10], estimatedRecoupmentSource: 'NYT: part way there' }, closed),
-      { kind: 'reported-pct', lo: 10, hi: 20, source: 'NYT: part way there' },
+      { kind: 'reported-pct', lo: 10, hi: 20, source: 'NYT: part way there', truthClass: 'reported', truthClassFrom: 'source-text' },
     );
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], estimatedRecoupmentSource: 'Inferred: ~9 months run' }, {}), null);
     assert.equal(groundTruth({ estimatedRecoupmentPct: [30, 45], notes: 'Estimated: weekly profit x weeks' }, {}), null);
+  });
+  test('carries a dated report as asOf (for --as-of-report)', () => {
+    const c = { estimatedRecoupmentPct: [10, 30], estimatedRecoupmentSource: 'Reddit grosses analysis' };
+    assert.equal(groundTruth({ ...c, estimatedRecoupmentDate: '2026-02-18' }, closed).asOf, '2026-02-18');
+    assert.equal('asOf' in groundTruth({ ...c, estimatedRecoupmentDate: 'Feb 2026' }, closed), false);
   });
   test('falls back to notes for the basis', () => {
     assert.equal(groundTruth({ estimatedRecoupmentPct: [10, 20], notes: 'Produced by X; NYT says part way' }, closed).kind, 'reported-pct');
@@ -57,5 +102,28 @@ describe('scoring', () => {
     assert.equal(s['kind:reported-pct'].newMedian, 5);
     // all: mean 10 -> 4 but inside 2 -> 1, so it counts as worse too.
     assert.deepEqual(worseGroups(s).sort(), ['all', 'era:pre-2020', 'kind:failed', 'type:play']);
+    // minN: one-row groups are not gated.
+    assert.deepEqual(worseGroups(s, { minN: 2 }).sort(), ['all']);
+  });
+});
+
+describe('formatMarkdown', () => {
+  const row = (slug, oldErr, newErr) => ({ slug, kind: 'recouped', type: 'musical', era: '2020+', truth: [100, Infinity], oldPct: 100 - oldErr, newPct: 100 - newErr, oldErr, newErr });
+  test('group table, moved rows by size of change, worse line', () => {
+    const rows = [row('a', 10, 2), row('b', 5, 5), row('c', 0, 30)];
+    const md = formatMarkdown({ title: 'T', summary: summarize(rows), rows, worse: ['all'] });
+    assert.match(md, /^### T/);
+    assert.match(md, /\| all \| 3 \| 5 \| 12\.3 \|/);
+    assert.match(md, /Error changed on 2:/);
+    assert.ok(md.indexOf('| c |') < md.indexOf('| a |'), 'biggest move first');
+    assert.ok(!md.includes('| b |'), 'unmoved row not listed');
+    assert.match(md, /\| c \| recouped \| 100\.\.\+inf \| 100 \| 70 \| 0 \| 30 \|/);
+    assert.match(md, /\*\*Worse in:\*\* all/);
+  });
+  test('nothing moved', () => {
+    const rows = [row('b', 5, 5)];
+    const md = formatMarkdown({ title: 'T', summary: summarize(rows), rows, worse: [] });
+    assert.match(md, /No row moved\./);
+    assert.match(md, /No group got worse\./);
   });
 });

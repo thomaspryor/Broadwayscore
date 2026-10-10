@@ -34,6 +34,7 @@
  *   node scripts/sweep-pending-commercial.js --requeue-cap=20 --archive-cap=50
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');

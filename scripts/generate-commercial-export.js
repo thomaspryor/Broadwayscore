@@ -11,6 +11,7 @@
  * Or via: npm run prebuild
  */
 
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 
