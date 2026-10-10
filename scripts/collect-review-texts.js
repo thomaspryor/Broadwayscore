@@ -105,7 +105,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -2384,6 +2384,17 @@ async function _fetchWithBrowserbaseAttempt(url, review) {
 
     // Extract text using same method as Playwright (full selector list)
     const text = await bbPage.evaluate(() => {
+      // Zox News theme (t2conline.com, BRO-4977): the next stories auto-load
+      // inside the same <article>, and the longest-match loop below would keep
+      // them. Drop that chrome and take the body container when present.
+      document.querySelectorAll('#mvp-author-box-wrap, #mvp-prev-next-wrap, #mvp-related-posts, #mvp-post-add-box, #mvp-post-add-wrap, .mvp-post-add-story, #mvp-post-more-wrap, #mvp-content-bot')
+        .forEach(el => el.remove());
+      const zoxBody = document.querySelector('#mvp-content-main');
+      if (zoxBody) {
+        const zoxText = Array.from(zoxBody.querySelectorAll('p'))
+          .map(p => p.textContent.trim()).filter(t => t.length > 30).join('\n\n');
+        if (zoxText.length > 500) return zoxText.replace(/\s+/g, ' ').trim();
+      }
       const selectors = [
         // NYT
         '[data-testid="article-body"]', 'section[name="articleBody"]',
@@ -4059,6 +4070,11 @@ function extractTextFromHtml(html, url) {
     const nyText = extractNewYorkerFromHtml(html);
     if (nyText && nyText.length > 500) return nyText;
   }
+
+  // Zox News theme (t2conline.com): body container only, never the
+  // auto-loaded next stories (BRO-4977). Detected by markup, not host.
+  const zoxText = extractZoxNewsBody(html);
+  if (zoxText && zoxText.length > 500) return zoxText;
 
   // Try JSON-LD extraction — reliable when available, avoids CSS selector fragility
   const jsonLdText = extractFromJsonLd(html);

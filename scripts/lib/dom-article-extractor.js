@@ -76,6 +76,12 @@ function extractArticleTextFromDocument(document, url) {
     // generic `article` fallback below picks the first of 8 sidebar teaser
     // cards (Joe Turner 2026-04-26 incident).
     '.article-wrapper',
+    // Zox News WordPress theme (t2conline.com / Times Square Chronicles):
+    // no entry-content class, and the page auto-loads the NEXT articles
+    // inside the same <article>, so the generic fallback kept 3-4 other
+    // reviews glued onto this one (BRO-4977: Soon's pull quote praised
+    // Linda Purl in a different show). #mvp-content-main is the body alone.
+    '#mvp-content-main',
     // Generic (ordered by specificity)
     'article .entry-content',
     'article .post-content',
@@ -116,7 +122,9 @@ function extractArticleTextFromDocument(document, url) {
   // these selectors do NOT match wrapper elements on newyorktheater.me,
   // artsfuse.org, nystagereview.com — only actual chrome blocks. The
   // theoretical Genesis Framework risk did not materialize.
-  const CHROME_SELECTORS = '.sharedaddy, .jp-relatedposts, #jp-post-flair, .sd-sharing, .sd-like, .wpcnt, .related-posts, [class*="related-posts"], .author-bio, .post-tags, .post-meta, .social-share';
+  // Zox News (BRO-4977): author box, prev/next titles, "You may like", the
+  // auto-loaded next stories and the Trending rail all sit inside <article>.
+  const CHROME_SELECTORS = '.sharedaddy, .jp-relatedposts, #jp-post-flair, .sd-sharing, .sd-like, .wpcnt, .related-posts, [class*="related-posts"], .author-bio, .post-tags, .post-meta, .social-share, #mvp-author-box-wrap, #mvp-prev-next-wrap, #mvp-related-posts, #mvp-post-add-box, #mvp-post-add-wrap, .mvp-post-add-story, #mvp-post-more-wrap, #mvp-content-bot';
 
   let bestText = '';
 
