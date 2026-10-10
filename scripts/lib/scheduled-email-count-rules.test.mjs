@@ -256,3 +256,16 @@ test('real-world regression fixture: 2026-07-26 had 3+ distinct scheduled sender
   assert.equal(decision.violation, true);
   assert.equal(decision.senderCount, 4);
 });
+
+// BRO-4956: reddit-post-ready is event-driven (one email per new draft), so
+// two DIFFERENT drafts on one day are legitimate; only an identical subject
+// twice is a duplicate. Counting every second send filed 8 daily cards.
+test('decideDayViolation: an event-driven sender flags only a repeated identical subject', () => {
+  const two = (subjects) => ({ senders: new Map([['reddit-post-ready', { label: 'Reddit opening-post draft', subjects }]]), other: [] });
+  const distinct = decideDayViolation(two(['Reddit post ready: Show A (80/100) for r/Broadway', 'Still ready to post: Show B (71/100) for r/Broadway']), '2026-10-08');
+  assert.equal(distinct.violation, false);
+  assert.deepEqual(distinct.duplicateKeys, []);
+  const repeated = decideDayViolation(two(['Reddit post ready: Show A (80/100) for r/Broadway', 'Reddit post ready: Show A (80/100) for r/Broadway']), '2026-10-08');
+  assert.equal(repeated.violation, true);
+  assert.deepEqual(repeated.duplicateKeys, ['reddit-post-ready']);
+});
