@@ -15,7 +15,6 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/partners`,
     images: [{ url: `${BASE_URL}/og/home.png`, width: 1200, height: 630 }],
   },
-  robots: { index: true, follow: true },
 };
 
 export interface PartnerShowOption {

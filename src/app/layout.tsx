@@ -10,6 +10,7 @@ import { isCategoryEnabled } from '@/lib/markets';
 import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL } from '@/lib/seo';
+import { siteRobots } from '@/lib/indexable-deploy';
 import { getDataStats, getMarketStats } from '@/lib/data-core';
 import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
@@ -62,10 +63,7 @@ export const metadata: Metadata = {
       alt: 'Broadway Scorecard - Aggregated Broadway Show Ratings',
     }],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: siteRobots(),
   alternates: {
     canonical: BASE_URL,
     types: {
