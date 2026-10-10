@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T01:51:59.845Z",
+  "timestamp": "2026-10-10T02:14:40.767Z",
   "stats": {
-    "totalReviews": 52878,
-    "alreadyFlagged": 19537,
+    "totalReviews": 53054,
+    "alreadyFlagged": 19553,
     "dateGuardCatches": 259,
-    "directorMismatch": 1661,
-    "tvFilmSignals": 1510,
-    "londonSignals": 1690,
+    "directorMismatch": 1686,
+    "tvFilmSignals": 1526,
+    "londonSignals": 1704,
     "offBroadwaySignals": 511,
     "yearMismatch": 127,
-    "noPublishDate": 5863
+    "noPublishDate": 5787
   },
   "findings": [
     {
@@ -7781,6 +7781,110 @@
       ]
     },
     {
+      "showId": "clue-tour-2025",
+      "file": "broadwayworld--anikatrina-fageol.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.broadwayworld.com/memphis/article/Review-CLUE-LIVE-ON-STAGE-at-Orpheum-Theatre-Memphis-20260917",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "broadwayworld--brett-cullum.json",
+      "publishDate": "2026-06-11",
+      "url": "https://www.broadwayworld.com/houston/article/Review-CLUE-from-BROADWAY-AT-THE-HOBBY-CENTER-20260611",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "broadwayworld--rob-levy.json",
+      "publishDate": "2026-09-28",
+      "url": "https://www.broadwayworld.com/st-louis/article/Review-CLUE-at-Fox-Theatre-St-Louis-20260928",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "broadwayworld--sarah-dussome.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.broadwayworld.com/edmonton/article/Review-CLUE-Takes-Centre-Stage-at-Edmontons-Northern-Alberta-Jubilee-Auditorium-20260715",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "calgary-herald--unknown.json",
+      "publishDate": "2026-07-10",
+      "url": "https://calgaryherald.com/entertainment/theatre/broadway-across-canada-brings-campy-energetic-whodunnit-clue-to-jubilee-auditorium",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "houston-chronicle--doni-wilson.json",
+      "publishDate": "2026-06-10",
+      "url": "https://www.houstonchronicle.com/entertainment/movies_tv/article/clue-hobby-center-review-22299428.php",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "minneapolis-star-tribune--star-tribune-staff.json",
+      "publishDate": "2026-10-07",
+      "url": "https://www.startribune.com/sting-buddy-guy-beck-muna-tiffany-chung-mystic-pizza-clue-ordway-zach-top-st-paul-chamber-orchestra/601889897",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "clue-tour-2025",
+      "file": "the-spokesman-review--azaria-podplesky.json",
+      "publishDate": "2026-07-02",
+      "url": "https://www.spokesman.com/stories/2026/jul/02/clue-brings-silliness-spookiness-of-board-game-fil/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "clybourne-park-2012",
       "file": "playbill--robert-simonson.json",
       "score": 84,
@@ -8374,6 +8478,19 @@
       "file": "financialtimes--sarah-hemming.json",
       "publishDate": "2022-02-17",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2022",
+      "file": "standard--unknown.json",
+      "publishDate": "February 14th, 2022",
+      "url": "https://www.standard.co.uk/culture/theatre/cyrano-de-bergerac-review-james-mcavoy-harold-pinter-theatre-b982070.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19642,7 +19759,7 @@
       "showId": "jerusalem-west-end-2022",
       "file": "whatsonstage--sarah-crompton.json",
       "publishDate": "2022-04-29",
-      "url": null,
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/jerusalem-mark-rylance-west-end_56412.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22645,6 +22762,47 @@
       ]
     },
     {
+      "showId": "mad-house-west-end-2022",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-07-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mad-house-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "June 27th, 2022",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/stranger-thingss-david-harbour-stars-darkly-comic-play-mental/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mad-house-west-end-2022",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "June 27th, 2022",
+      "url": "https://www.thetimes.co.uk/article/mad-house-review-bill-pullman-and-david-harbour-excel-in-a-twisty-family-drama-mshpt8pj5",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "mamma-mia-2025",
       "file": "amny--unknown.json",
       "score": 82,
@@ -24479,6 +24637,43 @@
       ]
     },
     {
+      "showId": "much-ado-about-nothing-west-end-2022",
+      "file": "guardian--arifa-akbar.json",
+      "score": null,
+      "publishDate": "2022-07-19",
+      "url": "https://www.theguardian.com/stage/2025/feb/19/much-ado-about-nothing-review-theatre-royal-tom-hiddleston-hayley-atwell",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2022",
+      "file": "whatsonstage--mickey-jo-boucher.json",
+      "publishDate": "2022-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "much-ado-about-nothing-west-end-2025",
       "file": "british-theatre--howard-loxton.json",
       "score": 81,
@@ -24832,6 +25027,175 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2022-05-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "express-uk--stefan-kyriazis.json",
+      "publishDate": "2022-05-24",
+      "url": "https://www.express.co.uk/entertainment/theatre/1614753/My-Fair-Lady-musical-review-London-Coliseum-theatre-2022-black-Eliza-Audrey-Hepburn",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2022-05-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2022-05-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2022-05-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2022-05-19",
+      "url": "https://www.standard.co.uk/culture/theatre/my-fair-lady-london-coliseum-amara-okereke-bartlett-sher-lincoln-center-b1000979.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2022-05-18",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/fair-lady-coliseum-review-watershed-production-not-benchmark/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2022-05-18",
+      "url": "https://theatreweekly.com/review-my-fair-lady-at-the-london-coliseum/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "thestage--david-benedict.json",
+      "publishDate": "2022-05-19",
+      "url": "https://www.thestage.co.uk/reviews/my-fair-lady-review-london-coliseum-2022-amara-okereke-and-harry-hadden-paton-vanessa-redgrave-bartlett-sher-stephen-k-amos",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "timeout-london--alice-saville.json",
+      "publishDate": "2022-05-19",
+      "url": "https://www.timeout.com/london/theatre/my-fair-lady-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2022-05-19",
+      "url": "https://www.thetimes.co.uk/article/my-fair-lady-review-a-bit-more-power-and-it-would-be-really-lovely-gr3sdmnnv",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2022-05-22",
+      "url": "https://www.thetimes.co.uk/article/my-fair-lady-reminded-me-why-we-go-to-west-end-shows-ztplmscr0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
+        }
+      ]
+    },
+    {
+      "showId": "my-fair-lady-west-end-2022",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2022-05-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from my-fair-lady-2018"
         }
       ]
     },
@@ -26817,7 +27181,7 @@
       "showId": "our-generation-west-end-2022",
       "file": "whatsonstage--theo-bosanquet.json",
       "publishDate": "2022-03-02",
-      "url": null,
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/our-generation-at-the-national-review_56024.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -31974,6 +32338,19 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2026-05-21",
+      "url": "https://www.chicagotribune.com/2026/05/21/review-spamalot-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "hartford-courant--christopher-arnott.json",
       "score": 75,
       "publishDate": "2025-12-11",
@@ -32045,6 +32422,19 @@
     },
     {
       "showId": "spamalot-tour-2025",
+      "file": "rachelweinbergreviews--rachelrweinberg.json",
+      "publishDate": "2026-06-01",
+      "url": "https://rachelweinbergreviews.com/2026/06/01/review-monty-pythons-spamalot-presented-by-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
       "file": "roc-city-mag--david-andreatta.json",
       "score": 78,
       "publishDate": "2026-01-14",
@@ -32077,6 +32467,19 @@
       "score": 89,
       "publishDate": "2026-03-31",
       "url": "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "splash-magazines--susan-lillis.json",
+      "publishDate": "2026-05-21",
+      "url": "https://splashmags.com/2026/05/gallop-up-to-the-cibc-theatre-laugh-your-coconuts-off-at-tony-best-musical-monty-pythons-spamalot/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34456,6 +34859,45 @@
       "score": 38,
       "publishDate": "March 6, 2011",
       "url": "https://www.hollywoodreporter.com/review/championship-season-theater-review-164815",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "artsdesk--aleks-sierz.json",
+      "publishDate": "2022-06-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "guardian--kate-wyver.json",
+      "publishDate": "2022-06-19",
+      "url": "https://www.theguardian.com/stage/2022/jun/19/that-is-not-who-i-am-review-royal-court-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2022-06-25",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -37538,6 +37980,55 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "cleveland-plain-dealer--joey-morona.json",
+      "publishDate": "2026-06-11",
+      "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "clevescene--gwendolyn-kocher.json",
+      "publishDate": "2026-06-12",
+      "url": "https://www.clevescene.com/arts/the-great-gatsby-gets-the-broadway-treatment-at-playhouse-square/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "dc-theater-arts--zoe-winsky.json",
+      "publishDate": "2026-05-14",
+      "url": "https://dctheaterarts.org/2026/05/14/the-great-gatsby-musical-is-a-grand-spectacle-on-tour-at-the-national/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "hartford-courant--christopher-arnott.json",
       "score": 78,
       "publishDate": "2026-10-01",
@@ -37561,6 +38052,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-05-14",
+      "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -40770,6 +41279,20 @@
     },
     {
       "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "broadwayworld--shelley-dean.json",
+      "score": 85,
+      "publishDate": "2026-05-18",
+      "url": "https://www.broadwayworld.com/seattle/article/Review-THE-PHANTOM-OF-THE-OPERA-at-Paramount-Theatre-20260518",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "broadwayworld--tyler-hinton.json",
       "score": 86,
       "publishDate": null,
@@ -41749,6 +42272,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 679d before show (2025-03-07 vs 2027-01-15)"
+        }
+      ]
+    },
+    {
+      "showId": "the-seagull-west-end-2022",
+      "file": "theatre-weekly--nicola-barrett.json",
+      "publishDate": "2022-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -42872,7 +43408,7 @@
       "file": "london-theatre--matt-wolf.json",
       "score": 81,
       "publishDate": "2022-04-04",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/to-kill-a-mockingbird-west-end-review-aaron-sorkin-rafe-spall",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42955,7 +43491,7 @@
       "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "whatsonstage--sarah-crompton.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "March 31st, 2022",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
       "findings": [
         {
@@ -45064,6 +45600,19 @@
       "score": 79,
       "publishDate": "2026-08-20",
       "url": "https://timesofsandiego.com/arts/2026/08/20/musical-tour-circus-water-for-elephants/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "wkrn--colleen-guerry.json",
+      "publishDate": "2026-05-14",
+      "url": "https://www.wkrn.com/news/local-news/nashville/water-for-elephants-fills-tpac-with-music-circus-spectacles/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -47556,6 +48105,7 @@
     {
       "showId": "all-male-as-you-like-it-regional-2026",
       "file": "boycotting-trends--alex-ramon.json",
+      "score": 94,
       "publishDate": null,
       "url": "http://boycottingtrends.blogspot.com/2026/10/theatre-review-as-you-like-it-rsc-2026.html",
       "findings": [
@@ -52892,6 +53442,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "dc-theater-arts--isabella-artino.json",
+      "publishDate": "2026-10-02",
+      "url": "https://dctheaterarts.org/2026/10/01/dirty-dancing-is-on-tour-at-the-national-to-give-us-the-time-of-our-lives/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -58378,6 +58941,45 @@
       ]
     },
     {
+      "showId": "jack-absolute-flies-again-west-end-2022",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-07-15",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11015325/The-Guvnors-bawdy-romp-PATRICK-MARMION-reviews-Jack-Absolute-Flies-Again.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "jack-absolute-flies-again-west-end-2022",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2022-07-15",
+      "url": "https://www.theguardian.com/stage/2022/jul/15/jack-absolute-flies-again-review-wartime-comedy-of-manners-fails-to-take-off",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "jack-absolute-flies-again-west-end-2022",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2022-07-14",
+      "url": "https://theatreweekly.com/review-jack-absolute-flies-again-at-the-national-theatre-olivier/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "jajas-african-hair-braiding-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
       "score": 79,
@@ -61783,6 +62385,45 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2022",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-07-22",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-11037873/Guaranteed-pep-step-PATRICK-MARMION-reviews-Crazy-You.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2022",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2022-07-21",
+      "url": "https://www.ft.com/content/8f1dff98-569a-4e1e-ba19-edc812223ce1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-west-end-2022",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2022-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -67273,6 +67914,32 @@
       ]
     },
     {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "metro-uk--john-nathan.json",
+      "publishDate": "2022-06-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "that-is-not-who-i-am-west-end-2022",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2022-06-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-39-steps-2008",
       "file": "newsday--linda-winer.json",
       "score": 74,
@@ -69265,6 +69932,19 @@
       ]
     },
     {
+      "showId": "the-father-and-the-assassin-west-end-2022",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2022-05-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-fear-of-13-2026",
       "file": "nytimes--helen-shaw.json",
       "score": 58,
@@ -69478,7 +70158,7 @@
       "showId": "the-glow-west-end-2022",
       "file": "artsdesk--aleks-sierz.json",
       "publishDate": "2022-01-31",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/glow-royal-court-review-%E2%80%93-bizarre-beautiful-and-breathtaking",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -69491,7 +70171,7 @@
       "showId": "the-glow-west-end-2022",
       "file": "telegraph--dominic-cavendish.json",
       "publishDate": "2022-01-29",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/glow-review-confusing-time-travelling-drama-tinkers-sci-fi-history/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
