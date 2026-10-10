@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5006",
   "planId": "0509b9d3-3109-4b4f-b04b-38e91ea7e3ca",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T20:16:23.631Z",
   "submitter": {
     "name": null,
@@ -116,5 +116,43 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T20:53:57.822Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for paranormal-activity"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for paranormal-activity"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added dolly-an-original-musical (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added damn-yankees (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-few-good-men (TBD)"
+    }
+  ]
 }
