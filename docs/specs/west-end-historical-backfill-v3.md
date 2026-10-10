@@ -435,6 +435,16 @@ Lessons, each fixed in code:
   disagreements were checked by hand before removal. The move also exported
   verifyCreativeTeamViaSerp, which three Broadway scripts imported from that
   module although it was never exported there (their tests mocked it).
+  Writers were wrong the same way (Lucy Kirkwood for The Glow and Middle,
+  Will Butler as Stereophonic's playwright), and outside London too (Adam
+  Guettel for The Outsiders' lyrics, Rodgers and Hammerstein as The Sound of
+  Music's book writers). Every model-proposed credit now also needs search
+  results about this production that name the person in that role
+  (lib/credit-grounding.js, Haiku judge, only SUPPORTED keeps it; GPT-4o and
+  Gemini stand-ins 8/8 on the fixtures). Site-wide check of the 266
+  model-path credits outside the London rows found 14 wrong (fixed) and 18
+  directors to hand-check (BRO-4993). A random 100 of the 15,245 older
+  untagged credits matched at about 98%, so those were left.
 
 ## Side benefit (separate card)
 

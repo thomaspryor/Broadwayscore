@@ -267,7 +267,8 @@ const defaultSleep = ms => new Promise(r => setTimeout(r, ms));
  * @param {Array<{name: string, role: string}>} proposed
  * @param {string} year
  * @param {string} sourceTag - written to each kept member's _source
- * @param {{productionAnchor?: boolean, serpQuery?: Function, sleep?: Function}} [opts]
+ * @param {{productionAnchor?: boolean, ground?: {search: Function, judge: Function}, serpQuery?: Function, sleep?: Function}} [opts]
+ *   ground: also require lib/credit-grounding.js to SUPPORT each confirmed member.
  */
 async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts = {}) {
   const serpQuery = opts.serpQuery || require('./url-discovery').serpQuery;
@@ -317,11 +318,19 @@ async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts =
           // venue-write-guard-ok: read-only, the venue is matched against snippets, never written
           ? serpTextConfirmsProduction(serpResults, phrases, name, { title: show.title, venue: show.venue })
           : serpTextConfirms(serpResults, phrases, name, { title: show.title });
-        if (confirmed) {
+        let grounded = { supported: true };
+        if (confirmed && opts.ground) {
+          // The phrase check cannot tell similarly titled works or stagings
+          // apart; a model-proposed credit also needs search results about
+          // this production that name this person in this role (BRO-4884).
+          grounded = await require('./credit-grounding').groundCredit(show, { name, role: canonRole }, opts.ground);
+          if (!grounded.supported) console.log(`    ❌ ${name} (${member.role}) dropped, production search ${grounded.verdict}: ${grounded.reason}`);
+        }
+        if (!confirmed) {
+          console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role})${anchored ? ' at this venue' : ''} — rejecting`);
+        } else if (grounded.supported) {
           console.log(`    ✅ SERP confirmed: ${name} (${member.role})`);
           verified.push({ ...member, name, role: canonRole, _source: sourceTag });
-        } else {
-          console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role})${anchored ? ' at this venue' : ''} — rejecting`);
         }
       } else {
         console.log(`    ❌ No SERP results for ${member.name} (${member.role}) — rejecting`);
