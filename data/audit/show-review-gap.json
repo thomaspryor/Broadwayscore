@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-10T19:50:52.203Z",
+  "generatedAt": "2026-10-10T23:14:28.891Z",
   "windowDays": 1095,
-  "targets": 603,
-  "auditedThisRun": 4,
-  "carriedForward": 647,
+  "targets": 625,
+  "auditedThisRun": 13,
+  "carriedForward": 638,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 380,
-    "missingCurrentRun": 864,
+    "missingCurrentRun": 856,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 908,
+    "totalFlaggedMisses": 910,
     "totalRecoverable": 7,
     "totalRecovered": 11,
     "priorProductionCitations": 3425
@@ -426,12 +426,10 @@
         "https://www.theatermania.com/news/interview-writer-director-jamie-armitage-wants-to-put-a-ghost-in-your-ear_1855461/",
         "https://audiblexminetta.com/shows/a-ghost-in-your-ear",
         "https://variety.com/2026/legit/news/ghost-in-your-ear-horror-play-minetta-lane-audible-theater-1236827653/",
-        "https://www.show-score.com/off-broadway-shows/a-ghost-in-your-ear-audible-theater",
         "https://www.voiceoverherald.com/a-ghost-in-your-ear-audiobook-horror-play-off-broadway-audible/",
-        "https://www.allthatdazzles.co.uk/post/review-a-ghost-in-your-ear-hampstead-theatre",
-        "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear"
+        "https://www.allthatdazzles.co.uk/post/review-a-ghost-in-your-ear-hampstead-theatre"
       ],
-      "dirFiles": 4,
+      "dirFiles": 5,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -442,21 +440,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.show-score.com/off-broadway-shows/a-ghost-in-your-ear-audible-theater",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.allthatdazzles.co.uk/post/review-a-ghost-in-your-ear-hampstead-theatre",
           "host": "allthatdazzles.co.uk",
           "knownOutletId": "all-that-dazzles-uk",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
           "serpCensus": true
         }
       ],
@@ -540,7 +526,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -561,7 +547,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -571,24 +557,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 43,
         "byReason": {
-          "non-review-host": 28,
-          "aggregator-internal-nav": 2,
-          "ticketing-reseller": 1,
-          "non-review-path": 1,
-          "ticketing-listing": 3,
+          "non-review-host": 33,
+          "aggregator-internal-nav": 3,
+          "ticketing-reseller": 2,
           "venue-production-page": 1,
+          "non-review-path": 1,
+          "ticketing-listing": 2,
           "news-article": 1
         }
       },
@@ -609,19 +595,6 @@
           "reason": "Fetch failed: All scraping methods failed"
         },
         {
-          "url": "https://www.show-score.com/off-broadway-shows/a-ghost-in-your-ear-audible-theater",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        },
-        {
           "url": "https://www.allthatdazzles.co.uk/post/review-a-ghost-in-your-ear-hampstead-theatre",
           "host": "allthatdazzles.co.uk",
           "outletId": "all-that-dazzles-uk",
@@ -633,19 +606,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Cross-market reroute: a-ghost-in-your-ear-off-broadway-2026 → a-ghost-in-your-ear-off-west-end-2"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -660,25 +620,11 @@
             "url": "https://audiblexminetta.com/shows/a-ghost-in-your-ear"
           },
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/off-broadway-shows/a-ghost-in-your-ear-audible-theater"
-          },
-          {
             "outletId": "all-that-dazzles-uk",
             "outlet": "all-that-dazzles-uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.allthatdazzles.co.uk/post/review-a-ghost-in-your-ear-hampstead-theatre"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear"
           },
           {
             "outletId": "theatermania",
@@ -712,25 +658,11 @@
             "firstSeenAt": "2026-10-09T09:56:11.612Z"
           },
           {
-            "url": "https://www.show-score.com/off-broadway-shows/a-ghost-in-your-ear-audible-theater",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-a-ghost-in-your-ear-hampstead-theatre",
             "outletId": "all-that-dazzles-uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-09T09:56:11.612Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/a-ghost-in-your-ear",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
             "url": "https://www.theatermania.com/news/interview-writer-director-jamie-armitage-wants-to-put-a-ghost-in-your-ear_1855461/",
@@ -756,14 +688,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "a-life-in-four-seasons-west-end-2026",
@@ -5265,19 +5192,21 @@
         "https://www.nytimes.com/2026/10/07/theater/as-you-like-it-review-jonathan-groff.html",
         "https://www.theguardian.com/stage/2026/oct/07/as-you-like-it-review-rsc",
         "https://www.elementaltheatre.com/post/as-you-like-it-rsc-review",
-        "https://www.telegraph.co.uk/theatre/what-to-see/all-male-as-you-like-it-at-royal-shakespeare-theatre-review/",
         "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre",
         "http://boycottingtrends.blogspot.com/2026/10/theatre-review-as-you-like-it-rsc-2026.html",
         "https://www.rsc.org.uk/as-you-like-it/about-the-play",
         "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
-        "https://www.theatretradge.com/post/review-as-you-like-it-rsc-theatre-06-10-26",
-        "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
-        "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
-        "https://twilightdawning.com/tag/as-you-like-it/"
+        "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html",
+        "https://www.whatsonlive.co.uk/birmingham/news/review-as-you-like-it-at-the-royal-shakespeare-theatre/66308",
+        "https://artsfuse.org/314742/theater-review-as-you-like-it-the-comic-comforts-of-a-green-world/",
+        "https://www.quora.com/Jonathan-Groff-to-lead-all-male-As-You-Like-It-staging-by-Royal-Shakespeare-Company-Have-you-seen-any-other-all-male-staging-of-a-Shakespeare-play-What-did-you-think-of-it",
+        "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre-rsc",
+        "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-8814",
+        "https://rvamag.com/art/theatre/review-as-you-like-it-is-just-how-i-like-it.html"
       ],
-      "dirFiles": 15,
-      "dirClean": 11,
-      "inReviewsJson": 12,
+      "dirFiles": 22,
+      "dirClean": 13,
+      "inReviewsJson": 14,
       "missing": [
         {
           "url": "https://cititour.com/NYC_News/Review-A-Likeable-As-You-Like-It/6684",
@@ -5350,43 +5279,61 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
-          "host": "marquee.tv",
-          "knownOutletId": "marquee",
+          "url": "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html",
+          "host": "beyondthecurtain.co.uk",
+          "knownOutletId": "beyondthecurtain",
           "serpCensus": true
         },
         {
-          "url": "https://www.theatretradge.com/post/review-as-you-like-it-rsc-theatre-06-10-26",
-          "host": "theatretradge.com",
+          "url": "https://www.whatsonlive.co.uk/birmingham/news/review-as-you-like-it-at-the-royal-shakespeare-theatre/66308",
+          "host": "whatsonlive.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
-          "host": "weekendnotes.co.uk",
+          "url": "https://artsfuse.org/314742/theater-review-as-you-like-it-the-comic-comforts-of-a-green-world/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.quora.com/Jonathan-Groff-to-lead-all-male-As-You-Like-It-staging-by-Royal-Shakespeare-Company-Have-you-seen-any-other-all-male-staging-of-a-Shakespeare-play-What-did-you-think-of-it",
+          "host": "quora.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
+          "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-8814",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true
         },
         {
-          "url": "https://twilightdawning.com/tag/as-you-like-it/",
-          "host": "twilightdawning.com",
+          "url": "https://rvamag.com/art/theatre/review-as-you-like-it-is-just-how-i-like-it.html",
+          "host": "rvamag.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
       "dirOnly": [
         {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
           "host": "ft.com",
           "count": 1
         },
         {
           "host": "stagetalkmagazine.com",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatretradge.com",
           "count": 1
         }
       ],
@@ -5426,6 +5373,24 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
+          "host": "marquee.tv",
+          "knownOutletId": "marquee",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "marquee--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -5442,7 +5407,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -5452,7 +5417,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -5471,7 +5436,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 1,
             "error": null
           },
@@ -5482,7 +5447,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -5498,18 +5463,18 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 15,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 962,
+        "count": 961,
         "byReason": {
-          "not-http-url": 142,
-          "non-review-host": 109,
+          "non-review-host": 108,
           "aggregator-internal-nav": 680,
+          "not-http-url": 142,
           "aggregator-section-root": 23,
-          "ticketing-listing": 1,
-          "roundup-page": 7
+          "roundup-page": 7,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -5592,9 +5557,9 @@
       ],
       "ingestResults": [
         {
-          "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
-          "host": "marquee.tv",
-          "outletId": "marquee",
+          "url": "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html",
+          "host": "beyondthecurtain.co.uk",
+          "outletId": "beyondthecurtain",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -5605,9 +5570,9 @@
           "reason": null
         },
         {
-          "url": "https://www.theatretradge.com/post/review-as-you-like-it-rsc-theatre-06-10-26",
-          "host": "theatretradge.com",
-          "outletId": "theatretradge",
+          "url": "https://www.whatsonlive.co.uk/birmingham/news/review-as-you-like-it-at-the-royal-shakespeare-theatre/66308",
+          "host": "whatsonlive.co.uk",
+          "outletId": "whatsonlive",
           "provisional": true,
           "ok": true,
           "noop": false,
@@ -5618,83 +5583,96 @@
           "reason": null
         },
         {
-          "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
-          "host": "weekendnotes.co.uk",
-          "outletId": "weekendnotes",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
-          "host": "thereviewshub.com",
-          "outletId": "thereviewshub",
+          "url": "https://artsfuse.org/314742/theater-review-as-you-like-it-the-comic-comforts-of-a-green-world/",
+          "host": "artsfuse.org",
+          "outletId": "artsfuse",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+          "zeroChar": false,
+          "reason": "[review-write-guard] date-implausible: all-male-as-you-like-it-regional-2026/artsfuse--bill-marx.jso"
         },
         {
-          "url": "https://twilightdawning.com/tag/as-you-like-it/",
-          "host": "twilightdawning.com",
-          "outletId": "twilightdawning",
+          "url": "https://www.quora.com/Jonathan-Groff-to-lead-all-male-As-You-Like-It-staging-by-Royal-Shakespeare-Company-Have-you-seen-any-other-all-male-staging-of-a-Shakespeare-play-What-did-you-think-of-it",
+          "host": "quora.com",
+          "outletId": "quora",
           "provisional": true,
-          "ok": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"quora\" (not in registry) — onboard to outlet-registry.json after review.\nArt"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-8814",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "[review-write-guard] date-implausible: all-male-as-you-like-it-regional-2026/british-theatre--steve-"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://rvamag.com/art/theatre/review-as-you-like-it-is-just-how-i-like-it.html",
+          "host": "rvamag.com",
+          "outletId": "rvamag"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "marquee",
-            "outlet": "marquee",
+            "outletId": "beyondthecurtain",
+            "outlet": "beyondthecurtain",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company"
+            "url": "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html"
           },
           {
-            "outletId": "theatretradge.com",
-            "outlet": "theatretradge.com",
+            "outletId": "whatsonlive.co.uk",
+            "outlet": "whatsonlive.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatretradge.com/post/review-as-you-like-it-rsc-theatre-06-10-26"
+            "url": "https://www.whatsonlive.co.uk/birmingham/news/review-as-you-like-it-at-the-royal-shakespeare-theatre/66308"
           },
           {
-            "outletId": "weekendnotes.co.uk",
-            "outlet": "weekendnotes.co.uk",
+            "outletId": "artsfuse",
+            "outlet": "artsfuse",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/"
+            "url": "https://artsfuse.org/314742/theater-review-as-you-like-it-the-comic-comforts-of-a-green-world/"
           },
           {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
+            "outletId": "quora.com",
+            "outlet": "quora.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/"
+            "url": "https://www.quora.com/Jonathan-Groff-to-lead-all-male-As-You-Like-It-staging-by-Royal-Shakespeare-Company-Have-you-seen-any-other-all-male-staging-of-a-Shakespeare-play-What-did-you-think-of-it"
           },
           {
-            "outletId": "twilightdawning.com",
-            "outlet": "twilightdawning.com",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://twilightdawning.com/tag/as-you-like-it/"
+            "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-8814"
+          },
+          {
+            "outletId": "rvamag.com",
+            "outlet": "rvamag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rvamag.com/art/theatre/review-as-you-like-it-is-just-how-i-like-it.html"
           },
           {
             "outletId": "thestage",
@@ -5709,6 +5687,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.rsc.org.uk/as-you-like-it/about-the-play"
+          },
+          {
+            "outletId": "marquee",
+            "outlet": "marquee",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company"
           }
         ],
         "suppressedMissing": [],
@@ -5762,12 +5747,6 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/all-male-as-you-like-it-at-royal-shakespeare-theatre-review/",
-            "outletId": "telegraph.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -5780,39 +5759,52 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
-            "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
-            "outletId": "marquee",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+            "url": "https://www.allthatdazzles.co.uk/post/review-as-you-like-it-royal-shakespeare-theatre-rsc",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
-            "url": "https://www.theatretradge.com/post/review-as-you-like-it-rsc-theatre-06-10-26",
-            "outletId": "theatretradge.com",
+            "url": "https://www.beyondthecurtain.co.uk/2026/10/as-you-like-it-royal-shakespeare.html",
+            "outletId": "beyondthecurtain",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
-            "url": "https://www.weekendnotes.co.uk/rsc-as-you-like-it-royal-shakespeare-theatre/",
-            "outletId": "weekendnotes.co.uk",
+            "url": "https://www.whatsonlive.co.uk/birmingham/news/review-as-you-like-it-at-the-royal-shakespeare-theatre/66308",
+            "outletId": "whatsonlive.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
-            "url": "https://www.thereviewshub.com/draft-as-you-like-it-the-royal-shakespeare-theatre-stratford-upon-avon/",
-            "outletId": "thereviewshub",
+            "url": "https://artsfuse.org/314742/theater-review-as-you-like-it-the-comic-comforts-of-a-green-world/",
+            "outletId": "artsfuse",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
-            "url": "https://twilightdawning.com/tag/as-you-like-it/",
-            "outletId": "twilightdawning.com",
+            "url": "https://www.quora.com/Jonathan-Groff-to-lead-all-male-As-You-Like-It-staging-by-Royal-Shakespeare-Company-Have-you-seen-any-other-all-male-staging-of-a-Shakespeare-play-What-did-you-think-of-it",
+            "outletId": "quora.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/as-you-like-it-royal-shakespea-8814",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
+          },
+          {
+            "url": "https://rvamag.com/art/theatre/review-as-you-like-it-is-just-how-i-like-it.html",
+            "outletId": "rvamag.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/as-you-like-it-review-royal-shakespeare-theatre-stratford-upon-avon-daniel-evans-jonathan-groff",
@@ -5827,18 +5819,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
+          },
+          {
+            "url": "https://marquee.tv/videos/as-you-like-it-royal-shakespeare-company",
+            "outletId": "marquee",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T01:33:56.739Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
-        "candidateCount": 16
+        "liveCount": 8,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "incomplete:5:6",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "all-my-sons-west-end-2025",
@@ -57786,32 +57780,31 @@
         "https://www.newyorktheatreguide.com/reviews/good-time-charlie-off-broadway-review",
         "https://newyorktheater.me/2026/10/09/good-time-charlie-review/",
         "https://culturesauce.com/good-time-charlie-off-broadway-review/",
-        "https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/",
+        "https://pagesonstages.com/2026/10/09/good-time-charlie/",
         "https://www.nytimes.com/2026/10/08/theater/ryan-j-haddad-good-time-charlie.html",
         "https://thefrontrowcenter.com/2026/10/good-time-charlie/",
-        "https://www.theatermania.com/news/beth-malone-jonathan-raviv-and-more-cast-in-ryan-j-haddads-good-time-charlie_1848389/",
-        "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103"
+        "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103",
+        "https://gaytravelr.com/usa/new-york/events/good-time-charlie"
       ],
-      "dirFiles": 9,
-      "dirClean": 7,
-      "inReviewsJson": 7,
-      "missing": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/10/good-time-charlie/",
-          "host": "thefrontrowcenter.com",
-          "knownOutletId": "front-row-center",
-          "serpCensus": true
-        },
-        {
-          "url": "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "serpCensus": true
-        }
-      ],
+      "dirFiles": 16,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [],
       "dirOnly": [
         {
-          "host": "pagesonstages.com",
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
           "count": 1
         }
       ],
@@ -57833,6 +57826,24 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://gaytravelr.com/usa/new-york/events/good-time-charlie",
+          "host": "gaytravelr.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "gaytravelr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://gaytravelr.com/usa/new-york/events/good-time-charlie"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -57848,8 +57859,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 4,
+            "results": 8,
+            "accepted": 5,
             "error": null
           },
           {
@@ -57868,8 +57879,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -57889,7 +57900,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -57899,72 +57910,37 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 328,
+        "count": 322,
         "byReason": {
-          "not-http-url": 66,
-          "non-review-host": 32,
-          "aggregator-internal-nav": 217,
+          "non-review-host": 28,
+          "aggregator-internal-nav": 212,
+          "ticketing-reseller": 1,
+          "not-http-url": 68,
           "aggregator-section-root": 6,
-          "ticketing-reseller": 2,
+          "roundup-page": 2,
+          "census-junk-host": 3,
           "production-database-listing": 1,
-          "non-review-path": 1,
-          "census-junk-host": 3
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://thefrontrowcenter.com/2026/10/good-time-charlie/",
-          "host": "thefrontrowcenter.com",
-          "outletId": "front-row-center",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "front-row-center",
-            "outlet": "front-row-center",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thefrontrowcenter.com/2026/10/good-time-charlie/"
-          },
-          {
-            "outletId": "cititour",
-            "outlet": "cititour",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103"
-          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nytimes.com/2026/10/08/theater/ryan-j-haddad-good-time-charlie.html"
+          },
+          {
+            "outletId": "gaytravelr.com",
+            "outlet": "gaytravelr.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://gaytravelr.com/usa/new-york/events/good-time-charlie"
           }
         ],
         "suppressedMissing": [],
@@ -58000,29 +57976,21 @@
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-good-time-charlie-ryan-j-haddads-tribute-to-a-favorite-gay-uncle_1856609/",
-            "outletId": "theatermania.com",
+            "url": "https://pagesonstages.com/2026/10/09/good-time-charlie/",
+            "outletId": "pagesonstages.com",
             "state": "live",
-            "firstSeenAt": "2026-10-10T15:03:21.770Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/beth-malone-jonathan-raviv-and-more-cast-in-ryan-j-haddads-good-time-charlie_1848389/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-09T09:56:11.612Z"
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
             "url": "https://thefrontrowcenter.com/2026/10/good-time-charlie/",
-            "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
             "url": "https://cititour.com/NYC_News/Good-Time-Charlie-Really-Means-Well/11103",
-            "outletId": "cititour",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "cititour.com",
+            "state": "live",
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
@@ -58031,18 +57999,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-09T09:56:11.612Z"
+          },
+          {
+            "url": "https://gaytravelr.com/usa/new-york/events/good-time-charlie",
+            "outletId": "gaytravelr.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 6,
-        "candidateCount": 9
+        "liveCount": 8,
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "complete:3:3",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "gotta-dance-off-broadway-2026",
@@ -66507,20 +66477,20 @@
         "http://www.mugglenet.com/2019/12/theater-review-harry-potter-and-the-cursed-child-opens-in-san-francisco/",
         "http://www.nytimes.com/2016/06/08/arts/international/harry-potter-and-the-cursed-child-tonight-secrets-may-be-revealed.html",
         "https://sueinthestalls.wordpress.com/2016/10/09/review-harry-potter-and-the-cursed-child/",
-        "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
-        "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
         "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
-        "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
+        "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
+        "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
+        "https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review",
         "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london",
-        "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
+        "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
         "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
         "https://www.thebooksmugglers.com/2016/08/harry-potter-and-the-cursed-child-parts-i-and-ii-by-j-k-rowling-jack-thorne-and-john-tiffany.html",
         "https://theblogoftheatrethings.com/2016/08/08/review-harry-potter-and-the-cursed-child-at-palace-theatre-no-spoilers/",
         "https://andrewrcameron.com/2016/08/04/review-harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-and-jack-thorne/",
-        "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
         "https://snowwhitehatesapples.wordpress.com/2016/08/16/harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-jack-thorne/",
+        "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+        "http://www.jonathanbaz.com/2016/07/harry-potter-and-cursed-child-review.html",
         "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
-        "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
         "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
         "https://www.inkpellet.co.uk/2016/10/theatre-review-harry-potter-and-the-cursed-child-palace-theatre-london/",
         "http://www.pagetostagereviews.com/2016/12/harry-potter-and-cursed-child-at-palace.html",
@@ -66748,21 +66718,21 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
-          "host": "artsbeatla.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
           "host": "tanstopics.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
-          "host": "lovelondonloveculture.com",
-          "knownOutletId": "lovelondonloveculture",
+          "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
+          "host": "artsbeatla.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
+          "host": "show-score.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -66772,9 +66742,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
           "serpCensus": true
         },
         {
@@ -66802,26 +66772,26 @@
           "serpCensus": true
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true
-        },
-        {
           "url": "https://snowwhitehatesapples.wordpress.com/2016/08/16/harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-jack-thorne/",
           "host": "snowwhitehatesapples.wordpress.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
-          "host": "jigsaw-arts.co.uk",
-          "knownOutletId": null,
+          "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
           "serpCensus": true
         },
         {
-          "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
-          "host": "show-score.com",
+          "url": "http://www.jonathanbaz.com/2016/07/harry-potter-and-cursed-child-review.html",
+          "host": "jonathanbaz.com",
+          "knownOutletId": "jonathan-baz",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
+          "host": "jigsaw-arts.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -67001,7 +66971,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 8,
             "error": null
           },
           {
@@ -67021,7 +66991,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -67041,16 +67011,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 1747,
+        "count": 1744,
         "byReason": {
-          "not-http-url": 283,
-          "non-review-host": 160,
+          "non-review-host": 159,
           "aggregator-internal-nav": 1161,
+          "not-http-url": 283,
           "aggregator-section-root": 34,
+          "roundup-page": 104,
           "census-junk-host": 1,
           "ticketing-listing": 1,
-          "roundup-page": 104,
-          "ugc-platform": 3
+          "ugc-platform": 1
         }
       },
       "dedupedVariants": [
@@ -67127,7 +67097,7 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=ew.com): Scrapingdog HTTP 400: Oops! Something went wr"
+          "reason": "[review-write-guard] date-implausible: harry-potter-and-the-cursed-child-one-part-west-end-2026/ew--"
         }
       ],
       "ingestSkippedByCap": [
@@ -67317,19 +67287,19 @@
           "outletId": "sueinthestalls"
         },
         {
-          "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
-          "host": "artsbeatla.com",
-          "outletId": "artsbeatla"
-        },
-        {
           "url": "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
           "host": "tanstopics.com",
           "outletId": "tanstopics"
         },
         {
-          "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
-          "host": "lovelondonloveculture.com",
-          "outletId": "lovelondonloveculture"
+          "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
+          "host": "artsbeatla.com",
+          "outletId": "artsbeatla"
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
+          "host": "show-score.com",
+          "outletId": null
         },
         {
           "url": "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london",
@@ -67337,9 +67307,9 @@
           "outletId": "londonforkidz"
         },
         {
-          "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
-          "host": "theguardian.com",
-          "outletId": "guardian"
+          "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
+          "host": "lovelondonloveculture.com",
+          "outletId": "lovelondonloveculture"
         },
         {
           "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
@@ -67362,24 +67332,24 @@
           "outletId": "andrewrcameron"
         },
         {
-          "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine"
-        },
-        {
           "url": "https://snowwhitehatesapples.wordpress.com/2016/08/16/harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-jack-thorne/",
           "host": "snowwhitehatesapples.wordpress.com",
           "outletId": "snowwhitehatesapples"
         },
         {
+          "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine"
+        },
+        {
+          "url": "http://www.jonathanbaz.com/2016/07/harry-potter-and-cursed-child-review.html",
+          "host": "jonathanbaz.com",
+          "outletId": "jonathan-baz"
+        },
+        {
           "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
           "host": "jigsaw-arts.co.uk",
           "outletId": "jigsaw-arts"
-        },
-        {
-          "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
-          "host": "show-score.com",
-          "outletId": null
         },
         {
           "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
@@ -67713,13 +67683,6 @@
             "url": "https://sueinthestalls.wordpress.com/2016/10/09/review-harry-potter-and-the-cursed-child/"
           },
           {
-            "outletId": "artsbeatla.com",
-            "outlet": "artsbeatla.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/"
-          },
-          {
             "outletId": "tanstopics.com",
             "outlet": "tanstopics.com",
             "critic": "Unknown",
@@ -67727,11 +67690,18 @@
             "url": "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/"
           },
           {
-            "outletId": "lovelondonloveculture",
-            "outlet": "lovelondonloveculture",
+            "outletId": "artsbeatla.com",
+            "outlet": "artsbeatla.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/"
+            "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london"
           },
           {
             "outletId": "londonforkidz.com",
@@ -67741,11 +67711,11 @@
             "url": "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre"
+            "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/"
           },
           {
             "outletId": "stage-left",
@@ -67776,13 +67746,6 @@
             "url": "https://andrewrcameron.com/2016/08/04/review-harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-and-jack-thorne/"
           },
           {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/"
-          },
-          {
             "outletId": "snowwhitehatesapples.wordpress.com",
             "outlet": "snowwhitehatesapples.wordpress.com",
             "critic": "Unknown",
@@ -67790,18 +67753,25 @@
             "url": "https://snowwhitehatesapples.wordpress.com/2016/08/16/harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-jack-thorne/"
           },
           {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/"
+          },
+          {
+            "outletId": "jonathan-baz",
+            "outlet": "jonathan-baz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.jonathanbaz.com/2016/07/harry-potter-and-cursed-child-review.html"
+          },
+          {
             "outletId": "jigsaw-arts.co.uk",
             "outlet": "jigsaw-arts.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review"
-          },
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london"
           },
           {
             "outletId": "whatsonstage",
@@ -68197,13 +68167,6 @@
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
-            "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
-            "outletId": "artsbeatla.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
             "url": "https://tanstopics.com/2021/12/11/theatre-review-harry-potter-and-the-cursed-child/",
             "outletId": "tanstopics.com",
             "state": "IN_FLIGHT",
@@ -68211,11 +68174,18 @@
             "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
-            "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
-            "outletId": "lovelondonloveculture",
+            "url": "https://www.artsbeatla.com/2025/02/review-harry-potter-cursed-child/",
+            "outletId": "artsbeatla.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
+          },
+          {
+            "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
+            "outletId": "show-score.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
             "url": "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london",
@@ -68225,8 +68195,8 @@
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
-            "outletId": "guardian",
+            "url": "https://lovelondonloveculture.com/2017/02/04/review-harry-potter-and-the-cursed-child-palace-theatre/",
+            "outletId": "lovelondonloveculture",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
@@ -68260,13 +68230,6 @@
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
-            "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
-            "outletId": "exeunt-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
             "url": "https://snowwhitehatesapples.wordpress.com/2016/08/16/harry-potter-and-the-cursed-child-by-j-k-rowling-john-tiffany-jack-thorne/",
             "outletId": "snowwhitehatesapples.wordpress.com",
             "state": "IN_FLIGHT",
@@ -68274,18 +68237,25 @@
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
+            "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+            "outletId": "exeunt-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-09T16:54:53.545Z"
+          },
+          {
+            "url": "http://www.jonathanbaz.com/2016/07/harry-potter-and-cursed-child-review.html",
+            "outletId": "jonathan-baz",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
+          },
+          {
             "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
             "outletId": "jigsaw-arts.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
-          },
-          {
-            "url": "https://www.show-score.com/uk/london/west-end-shows/harry-potter-and-the-cursed-child-london",
-            "outletId": "show-score.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-10T01:33:56.739Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
@@ -68360,14 +68330,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 2,
-        "candidateCount": 56
+        "candidateCount": 57
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "incomplete:2:35",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "harry-potter-tour-2024",
@@ -74414,39 +74379,25 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://everything-theatre.co.uk/2026/10/review-the-hound-of-the-baskervilles-kings-head-theatre/",
         "https://www.westerntelegraph.co.uk/news/26621738.torch-theatre-milford-havens-hound-baskervilles-review/",
         "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/the-hound-of-the-baskervilles_1731944/",
-        "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html",
         "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/",
-        "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/",
-        "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
         "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
-        "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
+        "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
         "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
         "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
         "https://quayslife.com/reviews/the-hound-of-the-baskervilles-review/",
         "https://www.londontheatre.co.uk/reviews/hound-of-the-baskervilles",
         "https://northernartsreview.co.uk/north-west/review-the-hound-of-the-baskervilles-theatre-by-the-lake/"
       ],
-      "dirFiles": 4,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 6,
+      "dirClean": 1,
+      "inReviewsJson": 1,
       "missing": [
         {
           "url": "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/",
           "host": "eventsforlondon.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/",
-          "host": "pembrokeshire-herald.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
-          "host": "eastbournereporter.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -74457,15 +74408,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
+          "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
+          "host": "eastbournereporter.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -74512,24 +74457,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html",
-          "host": "evans-crittens.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "evans-crittens--claire-evans.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -74548,7 +74475,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -74598,8 +74525,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -74608,8 +74535,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -74635,14 +74562,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 24,
+        "count": 21,
         "byReason": {
-          "aggregator-internal-nav": 1,
-          "non-review-host": 23
+          "non-review-host": 20,
+          "aggregator-internal-nav": 1
         }
       },
       "dedupedVariants": [],
@@ -74653,6 +74580,13 @@
           "knownOutletId": "whatsonstage",
           "serpCensus": true,
           "zeroCharAttempts": 4
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
+          "host": "uktw.co.uk",
+          "knownOutletId": "uktw",
+          "serpCensus": true,
+          "zeroCharAttempts": 3
         }
       ],
       "ingestResults": [
@@ -74670,17 +74604,17 @@
           "reason": "⚠️  provisional outlet \"eventsforlondon\" (not in registry) — onboard to outlet-registry.json after r"
         },
         {
-          "url": "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/",
-          "host": "pembrokeshire-herald.com",
-          "outletId": "pembrokeshire-herald",
+          "url": "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
+          "host": "yeahlifestyle.com",
+          "outletId": "yeahlifestyle",
           "provisional": true,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "⚠️  provisional outlet \"yeahlifestyle\" (not in registry) — onboard to outlet-registry.json after rev"
         },
         {
           "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
@@ -74696,9 +74630,22 @@
           "reason": "⚠️  provisional outlet \"eastbournereporter\" (not in registry) — onboard to outlet-registry.json afte"
         },
         {
-          "url": "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
-          "host": "yeahlifestyle.com",
-          "outletId": "yeahlifestyle",
+          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
+        {
+          "url": "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
+          "host": "brawtheatre.com",
+          "outletId": "brawtheatre",
           "provisional": true,
           "ok": false,
           "noop": false,
@@ -74706,33 +74653,10 @@
           "conflictReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"yeahlifestyle\" (not in registry) — onboard to outlet-registry.json after rev"
-        },
-        {
-          "url": "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
-          "host": "fairypoweredproductions.com",
-          "outletId": "fairypoweredproductions",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": "⚠️  provisional outlet \"brawtheatre\" (not in registry) — onboard to outlet-registry.json after revie"
         }
       ],
       "ingestSkippedByCap": [
-        {
-          "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw"
-        },
-        {
-          "url": "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
-          "host": "brawtheatre.com",
-          "outletId": "brawtheatre"
-        },
         {
           "url": "https://quayslife.com/reviews/the-hound-of-the-baskervilles-review/",
           "host": "quayslife.com",
@@ -74760,20 +74684,6 @@
             "url": "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/"
           },
           {
-            "outletId": "pembrokeshire-herald.com",
-            "outlet": "pembrokeshire-herald.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/"
-          },
-          {
-            "outletId": "eastbournereporter.co.uk",
-            "outlet": "eastbournereporter.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/"
-          },
-          {
             "outletId": "yeahlifestyle.com",
             "outlet": "yeahlifestyle.com",
             "critic": "Unknown",
@@ -74781,18 +74691,11 @@
             "url": "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/"
           },
           {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
+            "outletId": "eastbournereporter.co.uk",
+            "outlet": "eastbournereporter.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/"
-          },
-          {
-            "outletId": "uktw",
-            "outlet": "uktw",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/"
+            "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/"
           },
           {
             "outletId": "brawtheatre.com",
@@ -74828,37 +74731,22 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.westerntelegraph.co.uk/news/26621738.torch-theatre-milford-havens-hound-baskervilles-review/"
-          },
-          {
-            "outletId": "evans-crittens.com",
-            "outlet": "evans-crittens.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-the-hound-of-the-baskervilles-kings-head-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
+          },
           {
             "url": "https://eventsforlondon.co.uk/event/the-hound-of-the-baskervilles-kings-head-theatre/2026-10-09/",
             "outletId": "eventsforlondon.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
-          },
-          {
-            "url": "https://pembrokeshire-herald.com/150478/review-the-hound-of-the-baskervilles-at-the-torch-theatre/",
-            "outletId": "pembrokeshire-herald.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
-          },
-          {
-            "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
-            "outletId": "eastbournereporter.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-07T02:08:49.830Z"
           },
           {
             "url": "https://www.yeahlifestyle.com/review-the-hound-of-the-baskervilles/",
@@ -74868,18 +74756,11 @@
             "firstSeenAt": "2026-10-06T17:49:47.573Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/the-hound-of-the-baskervilles-review-2/",
-            "outletId": "fairypoweredproductions",
+            "url": "https://www.eastbournereporter.co.uk/review-hound-of-the-baskervilles/",
+            "outletId": "eastbournereporter.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
-          },
-          {
-            "url": "https://www.uktw.co.uk/London/The-Kings-Head-Theatre/Play/The-Hound-of-the-Baskervilles/L632393166/",
-            "outletId": "uktw",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
+            "firstSeenAt": "2026-10-07T02:08:49.830Z"
           },
           {
             "url": "https://www.brawtheatre.com/review-hound-of-the-baskervilles-perth-theatre/",
@@ -74915,25 +74796,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
-          },
-          {
-            "url": "https://www.evans-crittens.com/2026/10/the-hound-of-the-baskervilles-at-the-torch-theatre-milford-haven.html",
-            "outletId": "evans-crittens.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 12
+        "liveCount": 1,
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-10T08:06:08.996Z",
-      "quarantine": {
-        "nextState": "incomplete:0:10",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
@@ -87470,11 +87339,11 @@
         "https://exeuntnyc.com/reviews/kramer-fauci-at-nyu-skirball/",
         "https://www.theguardian.com/stage/2026/oct/03/kramer-fauci-aids-play-brookyn-new-york",
         "https://www.theatlantic.com/culture/2026/02/kramer-fauci-theater-review-buckley-vidal-debate/686080/",
-        "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
         "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
+        "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
         "https://www.show-score.com/off-broadway-shows/kramer-fauci",
-        "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/",
-        "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse"
+        "https://news.frombroadway.com/post/review-roundup-kramer-fauci-st-anns-warehouse",
+        "https://1minutecritic.com/kramer-fauci-review-daniel-fish-ny-skirball/"
       ],
       "dirFiles": 21,
       "dirClean": 15,
@@ -87559,7 +87428,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -87569,7 +87438,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -87599,7 +87468,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -87609,7 +87478,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -87621,12 +87490,13 @@
       "candidatesRejected": {
         "count": 408,
         "byReason": {
-          "aggregator-internal-nav": 268,
+          "non-review-host": 56,
+          "aggregator-internal-nav": 267,
           "not-http-url": 67,
           "aggregator-section-root": 11,
-          "non-review-host": 56,
           "roundup-page": 5,
-          "venue-production-page": 1
+          "venue-production-page": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -87761,16 +87631,16 @@
             "firstSeenAt": "2026-10-08T02:35:40.501Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-05T23:42:11.061Z"
-          },
-          {
             "url": "https://www.nytimes.com/2026/02/12/theater/larry-kramer-anthony-fauci-daniel-fish-aids.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-10T16:31:40.157Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/kramer-fauci",
@@ -87805,12 +87675,7 @@
         "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-10T16:31:40.157Z",
-      "quarantine": {
-        "nextState": "complete:8:8",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -109671,20 +109536,13 @@
         "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)",
         "https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b",
         "https://www.newjerseystage.com/articles2/2026/03/02/who-is-karen-andre-ruth-stage-brings-ayn-rands-night-of-january-16th-to-asbury-park/",
-        "https://ctxlivetheatre.com/auditions/20190205-auditions-for-night-of-january-16th-by-ma/",
         "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/",
         "https://aynrandanalyzed.com/night-of-january-16th/"
       ],
-      "dirFiles": 4,
-      "dirClean": 0,
+      "dirFiles": 6,
+      "dirClean": 1,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b",
-          "host": "theatricalia.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.newjerseystage.com/articles2/2026/03/02/who-is-karen-andre-ruth-stage-brings-ayn-rands-night-of-january-16th-to-asbury-park/",
           "host": "newjerseystage.com",
@@ -109714,24 +109572,6 @@
               "file": "fandom--unknown.json",
               "flag": "clean",
               "urlInDir": "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://ctxlivetheatre.com/auditions/20190205-auditions-for-night-of-january-16th-by-ma/",
-          "host": "ctxlivetheatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "ctxlivetheatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://ctxlivetheatre.com/auditions/20190205-auditions-for-night-of-january-16th-by-ma/"
             }
           ],
           "serpCensus": true
@@ -109809,42 +109649,29 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 33,
         "byReason": {
           "non-review-host": 21,
-          "aggregator-internal-nav": 5,
+          "aggregator-internal-nav": 6,
           "ticketing-reseller": 2,
+          "venue-production-page": 2,
           "census-junk-host": 1,
-          "ticketing-listing": 1,
-          "venue-production-page": 2
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b",
-          "host": "theatricalia.com",
-          "outletId": "theatricalia",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.newjerseystage.com/articles2/2026/03/02/who-is-karen-andre-ruth-stage-brings-ayn-rands-night-of-january-16th-to-asbury-park/",
           "host": "newjerseystage.com",
@@ -109877,13 +109704,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatricalia.com",
-            "outlet": "theatricalia.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b"
-          },
-          {
             "outletId": "newjerseystage",
             "outlet": "newjerseystage",
             "critic": "Unknown",
@@ -109905,13 +109725,6 @@
             "url": "https://theatre.fandom.com/wiki/Ayn_Rand%27s_Night_of_January_16th_(_1935_)"
           },
           {
-            "outletId": "ctxlivetheatre.com",
-            "outlet": "ctxlivetheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ctxlivetheatre.com/auditions/20190205-auditions-for-night-of-january-16th-by-ma/"
-          },
-          {
             "outletId": "rochestermedia.com",
             "outlet": "rochestermedia.com",
             "critic": "Unknown",
@@ -109924,8 +109737,7 @@
           {
             "url": "https://theatricalia.com/play/39r/night-of-january-16th/production/1b3b",
             "outletId": "theatricalia.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "live",
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
@@ -109950,13 +109762,6 @@
             "firstSeenAt": "2026-10-10T15:03:21.770Z"
           },
           {
-            "url": "https://ctxlivetheatre.com/auditions/20190205-auditions-for-night-of-january-16th-by-ma/",
-            "outletId": "ctxlivetheatre.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-09T16:54:53.545Z"
-          },
-          {
             "url": "https://rochestermedia.com/review-avon-players-night-of-january-16th-delivers-courtroom-drama-and-a-surprise-ending/",
             "outletId": "rochestermedia.com",
             "state": "IN_FLIGHT",
@@ -109965,15 +109770,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 6
+        "liveCount": 1,
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "night-side-songs-off-broadway-2026",
@@ -140139,17 +139939,17 @@
         "https://www.thestage.co.uk/reviews/how-soon-is-now-review",
         "https://pagesonstages.com/2026/10/05/soon/",
         "https://www.theatermania.com/news/review-quirky-new-musical-soon-explores-global-and-personal-apocalypses_1856293/",
-        "https://www.show-score.com/theatre-shows/soon",
+        "https://openingnight.online/soon-off-broadway-review-when-the-end-of-life-meets-the-beginning-of-love-new-york-theatre-guide/",
         "https://www.ticketnews.com/2026/07/nick-blaemires-soon-musical-sets-off-broadway-run/"
       ],
       "dirFiles": 14,
-      "dirClean": 9,
-      "inReviewsJson": 8,
+      "dirClean": 8,
+      "inReviewsJson": 7,
       "missing": [
         {
-          "url": "https://www.show-score.com/theatre-shows/soon",
-          "host": "show-score.com",
-          "knownOutletId": null,
+          "url": "https://openingnight.online/soon-off-broadway-review-when-the-end-of-life-meets-the-beginning-of-love-new-york-theatre-guide/",
+          "host": "openingnight.online",
+          "knownOutletId": "openingnight",
           "serpCensus": true
         }
       ],
@@ -140181,6 +139981,23 @@
             }
           ],
           "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/how-soon-is-now-review",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--matt-barton.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.thestage.co.uk/reviews/how-soon-is-now-review"
+            }
+          ]
         },
         {
           "url": "https://www.ticketnews.com/2026/07/nick-blaemires-soon-musical-sets-off-broadway-run/",
@@ -140245,7 +140062,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -140255,7 +140072,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -140265,18 +140082,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 404,
+        "count": 409,
         "byReason": {
-          "aggregator-internal-nav": 266,
+          "non-review-host": 48,
+          "aggregator-internal-nav": 269,
           "not-http-url": 68,
           "aggregator-section-root": 11,
-          "non-review-host": 44,
-          "roundup-page": 8,
+          "roundup-page": 3,
+          "venue-production-page": 2,
+          "census-junk-host": 5,
           "non-review-path": 1,
-          "census-junk-host": 1,
           "ticketing-listing": 1,
-          "ticketing-reseller": 2,
-          "venue-production-page": 1,
           "news-article": 1
         }
       },
@@ -140284,17 +140100,17 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.show-score.com/theatre-shows/soon",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
+          "url": "https://openingnight.online/soon-off-broadway-review-when-the-end-of-life-meets-the-beginning-of-love-new-york-theatre-guide/",
+          "host": "openingnight.online",
+          "outletId": "openingnight",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         }
       ],
       "ingestSkippedByCap": [],
@@ -140302,11 +140118,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "openingnight",
+            "outlet": "openingnight",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/theatre-shows/soon"
+            "url": "https://openingnight.online/soon-off-broadway-review-when-the-end-of-life-meets-the-beginning-of-love-new-york-theatre-guide/"
           },
           {
             "outletId": "ootbtheatrics.com",
@@ -140314,6 +140130,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.ootbtheatrics.com/soon"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/how-soon-is-now-review"
           },
           {
             "outletId": "ticketnews.com",
@@ -140350,12 +140173,6 @@
             "firstSeenAt": "2026-10-06T17:49:47.573Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/how-soon-is-now-review",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-06T17:49:47.573Z"
-          },
-          {
             "url": "https://pagesonstages.com/2026/10/05/soon/",
             "outletId": "pagesonstages.com",
             "state": "live",
@@ -140368,11 +140185,11 @@
             "firstSeenAt": "2026-10-07T02:08:49.830Z"
           },
           {
-            "url": "https://www.show-score.com/theatre-shows/soon",
-            "outletId": "show-score.com",
+            "url": "https://openingnight.online/soon-off-broadway-review-when-the-end-of-life-meets-the-beginning-of-love-new-york-theatre-guide/",
+            "outletId": "openingnight",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T16:31:40.157Z"
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
             "url": "https://www.ootbtheatrics.com/soon",
@@ -140380,6 +140197,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/how-soon-is-now-review",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-06T17:49:47.573Z"
           },
           {
             "url": "https://www.ticketnews.com/2026/07/nick-blaemires-soon-musical-sets-off-broadway-run/",
@@ -140390,15 +140214,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 7,
+        "liveCount": 6,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-10T16:31:40.157Z",
-      "quarantine": {
-        "nextState": "incomplete:5:7",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "space-dogs-off-west-end-2026",
@@ -151670,6 +151489,7 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.lbilondon.ac.uk/events/external-events/banality-evil-hannah-arendt-france-1940-arcola-theatre",
+        "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267",
         "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
         "https://www.show-score.com/uk/london/off-west-end-shows/the-banality-of-evil-hannah-arendt-france-1940",
         "https://www.londontheatregeek.co.uk/shows/the-banality-of-evil-hannah-arendt-france-1940",
@@ -151702,6 +151522,24 @@
               "file": "lbilondon--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.lbilondon.ac.uk/events/external-events/banality-evil-hannah-arendt-france-1940-arcola-theatre"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267",
+          "host": "broadwaybaby.com",
+          "knownOutletId": "broadway-baby",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadway-baby--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267"
             }
           ],
           "serpCensus": true
@@ -151777,7 +151615,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -151848,7 +151686,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -151864,17 +151702,16 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 28,
         "byReason": {
           "non-review-host": 20,
           "aggregator-internal-nav": 1,
           "ticketing-reseller": 2,
           "non-review-path": 1,
-          "census-junk-host": 1,
           "ticketing-listing": 1,
           "event-listing": 2,
           "event-listings-page": 1
@@ -151916,6 +151753,13 @@
             "url": "https://www.lbilondon.ac.uk/events/external-events/banality-evil-hannah-arendt-france-1940-arcola-theatre"
           },
           {
+            "outletId": "broadway-baby",
+            "outlet": "broadway-baby",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -151954,6 +151798,13 @@
             "firstSeenAt": "2026-10-08T17:15:22.095Z"
           },
           {
+            "url": "https://broadwaybaby.com/shows/the-banality-of-evil-hannah-arendt-france-1940/839267",
+            "outletId": "broadway-baby",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
             "outletId": "timeout-london",
             "state": "IN_FLIGHT",
@@ -151977,14 +151828,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "the-bathroom-attendant-off-broadway-2026",
@@ -157455,9 +157301,8 @@
         "https://pagesonstages.com/2026/10/04/hairy-ape/",
         "https://www.wsj.com/articles/the-hairy-ape-review-a-drama-of-dehumanization-at-irish-rep-c7bded03",
         "https://www.irishcentral.com/opinion/others/the-hairy-ape-irish-rep",
-        "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
         "https://thefrontrowcenter.com/2026/10/the-hairy-ape/",
-        "https://www.offoffonline.com/offoffonline/2026/9/30/the-hairy-ape",
+        "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
         "https://www.theatrereviews.com/tag/hairy-ape/"
       ],
       "dirFiles": 27,
@@ -157502,6 +157347,10 @@
       "dirOnly": [
         {
           "host": "lightingandsoundamerica.com",
+          "count": 1
+        },
+        {
+          "host": "offoffonline.com",
           "count": 1
         }
       ],
@@ -157577,7 +157426,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -157627,24 +157476,25 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 803,
+        "count": 804,
         "byReason": {
+          "non-review-host": 90,
           "aggregator-internal-nav": 569,
           "not-http-url": 114,
           "aggregator-section-root": 19,
-          "non-review-host": 92,
-          "roundup-page": 7,
-          "census-junk-host": 2
+          "roundup-page": 10,
+          "venue-production-page": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -157812,12 +157662,6 @@
             "firstSeenAt": "2026-10-08T09:47:49.209Z"
           },
           {
-            "url": "https://www.offoffonline.com/offoffonline/2026/9/30/the-hairy-ape",
-            "outletId": "offoffonline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
-          },
-          {
             "url": "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
             "outletId": "show-score.com",
             "state": "GAP",
@@ -157833,15 +157677,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 14,
-        "candidateCount": 16
+        "liveCount": 13,
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-10T08:06:08.996Z",
-      "quarantine": {
-        "nextState": "incomplete:13:15",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "the-harder-they-come-off-west-end-2026",
@@ -177552,19 +177391,12 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.axios.com/local/cleveland/2026/10/05/the-who-tommy-concerts-james-gang",
-        "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
         "https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html"
       ],
-      "dirFiles": 2,
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html",
           "host": "vulture.com",
@@ -177637,7 +177469,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -177663,34 +177495,20 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 33,
         "byReason": {
-          "aggregator-internal-nav": 3,
-          "non-review-host": 24,
-          "roundup-page": 1,
+          "non-review-host": 26,
+          "aggregator-internal-nav": 6,
           "ticketing-reseller": 1
         }
       },
       "dedupedVariants": [],
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        },
         {
           "url": "https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html",
           "host": "vulture.com",
@@ -177710,13 +177528,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway"
-          },
-          {
             "outletId": "vulture",
             "outlet": "vulture",
             "critic": "Unknown",
@@ -177734,13 +177545,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.show-score.com/broadway-shows/the-who-s-tommy-broadway",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-10T08:06:08.996Z"
-          },
-          {
             "url": "https://www.vulture.com/article/theater-review-the-who-tommy-broadway-revival.html",
             "outletId": "vulture",
             "state": "GAP",
@@ -177757,14 +177561,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-10T08:06:08.996Z",
-      "quarantine": {
-        "nextState": "incomplete:0:2",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
@@ -182855,10 +182654,10 @@
         "https://www.nytimes.com/2026/10/08/theater/tom-at-the-farm-nyu-skirball.html",
         "https://www.britishtheatreguide.info/reviews/tom-at-the-farm-pleasance-at-th-24729",
         "https://www.burnhamdramaturgy.com/non-place/review-tom-at-the-farm",
-        "https://www.timeout.com/newyork/theater/tom-at-the-farm",
-        "https://www.ioncinema.com/reviews/tom-at-the-farm-review",
         "https://thefilmstage.com/review-tom-at-the-farm/",
         "https://www.metacritic.com/movie/tom-at-the-farm/",
+        "https://www.timeout.com/newyork/theater/tom-at-the-farm",
+        "http://shawnlunn2002.blogspot.com/2026/06/my-review-of-tom-at-farm-2013.html",
         "https://letterboxd.com/film/tom-at-the-farm/"
       ],
       "dirFiles": 2,
@@ -182878,12 +182677,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.ioncinema.com/reviews/tom-at-the-farm-review",
-          "host": "ioncinema.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://thefilmstage.com/review-tom-at-the-farm/",
           "host": "thefilmstage.com",
           "knownOutletId": null,
@@ -182892,6 +182685,12 @@
         {
           "url": "https://www.metacritic.com/movie/tom-at-the-farm/",
           "host": "metacritic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "http://shawnlunn2002.blogspot.com/2026/06/my-review-of-tom-at-farm-2013.html",
+          "host": "shawnlunn2002.blogspot.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -182974,7 +182773,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -182995,7 +182794,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -183005,7 +182804,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -183015,12 +182814,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 28,
         "byReason": {
-          "non-review-host": 26,
-          "aggregator-internal-nav": 1,
-          "census-junk-host": 2,
-          "institutional-press-release": 1
+          "non-review-host": 22,
+          "aggregator-internal-nav": 2,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "institutional-press-release": 2
         }
       },
       "dedupedVariants": [],
@@ -183053,19 +182853,6 @@
           "reason": "[review-write-guard] date-implausible: tom-at-the-farm-off-broadway-2026/burnham-dramaturgy--burnham"
         },
         {
-          "url": "https://www.ioncinema.com/reviews/tom-at-the-farm-review",
-          "host": "ioncinema.com",
-          "outletId": "ioncinema",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  provisional outlet \"ioncinema\" (not in registry) — onboard to outlet-registry.json after review."
-        },
-        {
           "url": "https://thefilmstage.com/review-tom-at-the-farm/",
           "host": "thefilmstage.com",
           "outletId": "thefilmstage",
@@ -183090,6 +182877,19 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  provisional outlet \"metacritic\" (not in registry) — onboard to outlet-registry.json after review"
+        },
+        {
+          "url": "http://shawnlunn2002.blogspot.com/2026/06/my-review-of-tom-at-farm-2013.html",
+          "host": "shawnlunn2002.blogspot.com",
+          "outletId": "shawnlunn2002",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (junk-outlet)"
         }
       ],
       "ingestSkippedByCap": [
@@ -183117,13 +182917,6 @@
             "url": "https://www.burnhamdramaturgy.com/non-place/review-tom-at-the-farm"
           },
           {
-            "outletId": "ioncinema.com",
-            "outlet": "ioncinema.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ioncinema.com/reviews/tom-at-the-farm-review"
-          },
-          {
             "outletId": "thefilmstage.com",
             "outlet": "thefilmstage.com",
             "critic": "Unknown",
@@ -183136,6 +182929,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.metacritic.com/movie/tom-at-the-farm/"
+          },
+          {
+            "outletId": "shawnlunn2002.blogspot.com",
+            "outlet": "shawnlunn2002.blogspot.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://shawnlunn2002.blogspot.com/2026/06/my-review-of-tom-at-farm-2013.html"
           },
           {
             "outletId": "letterboxd",
@@ -183176,13 +182976,6 @@
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
-            "url": "https://www.ioncinema.com/reviews/tom-at-the-farm-review",
-            "outletId": "ioncinema.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-08T17:15:22.095Z"
-          },
-          {
             "url": "https://thefilmstage.com/review-tom-at-the-farm/",
             "outletId": "thefilmstage.com",
             "state": "IN_FLIGHT",
@@ -183195,6 +182988,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-08T17:15:22.095Z"
+          },
+          {
+            "url": "http://shawnlunn2002.blogspot.com/2026/06/my-review-of-tom-at-farm-2013.html",
+            "outletId": "shawnlunn2002.blogspot.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-10T23:14:28.891Z"
           },
           {
             "url": "https://letterboxd.com/film/tom-at-the-farm/",
@@ -183222,12 +183022,7 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "topdog-underdog-regional-2026",
@@ -184485,11 +184280,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 36,
+        "count": 37,
         "byReason": {
-          "non-review-host": 29,
+          "non-review-host": 30,
           "aggregator-internal-nav": 4,
-          "merch-store": 3
+          "non-review-path": 1,
+          "merch-store": 2
         }
       },
       "dedupedVariants": [],
@@ -184519,12 +184315,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-10T15:03:21.770Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-10-10T19:50:52.253Z",
-        "lastAt": "2026-10-10T19:50:52.253Z"
-      }
+      "computedAt": "2026-10-10T23:14:28.891Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
