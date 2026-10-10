@@ -1068,5 +1068,29 @@
       }
     ],
     "queuedAt": "2026-10-10T07:02:29.878Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:from-the-heart-west-end-2026",
+    "title": "Auto-remediation gave up on from-the-heart-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"from-the-heart-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T07:14:29.282Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-from-the-heart-west-end-2026",
+    "title": "Review URL cross-show mismatch on From The Heart",
+    "description": "Review URL for london-theatre-reviews/Ltr does not mention show slug (checked: from-the-heart-west-end, from-the-heart, from, heart, fromheart): https://www.londontheatrereviews.co.uk/post.cfm?p=29339",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T07:14:29.295Z"
   }
 ]
