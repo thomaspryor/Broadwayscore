@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4953-e",
   "planId": "f8af26e0-2051-4e7c-86b7-4ec7ff4198bc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T01:35:00.000Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,13 @@
         "description": "openingDate 2026-10-29 is in the future and previews began 2026-10-08: the state update-show-status.js Check 2c maps to 'previews'. The 'open' came from wrong-show reviews (BRO-4953)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T02:22:57.654Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-heart-off-broadway-2026"
+    }
+  ]
 }
