@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-10T06:38:52.865Z",
+  "generated": "2026-10-10T06:46:15.843Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 25,
+  "count": 23,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -22,20 +22,6 @@
       "loserFile": "guardian--charles-isherwood.json",
       "targetFile": "guardian--adrian-horton.json",
       "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "blithe-spirit-west-end-2021",
-      "loserFile": "independent--unknown.json",
-      "targetFile": "independent--anya-ryan.json",
-      "reason": "orphaned-duplicate-heal: independent--anya-ryan.json was flagged invalid after independent--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "blithe-spirit-west-end-2021",
-      "loserFile": "timeout-london--unknown.json",
-      "targetFile": "timeout-london--tom-wicker.json",
-      "reason": "orphaned-duplicate-heal: timeout-london--tom-wicker.json was flagged invalid after timeout-london--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
