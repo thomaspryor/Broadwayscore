@@ -50,7 +50,7 @@ const { execFileSync } = require('child_process');
 const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
-const { classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl } = require('./lib/review-gap-triage');
+const { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--json]';
@@ -184,10 +184,16 @@ function toReviewList(doc) {
 
 // ── Stage 1: review-texts file (local + data-repo origin/main, show dir + _pending) ──
 
+// outletId is a string or an array of candidate ids (BRO-3359).
+function hasOutletPrefix(filename, outletId) {
+  const lower = filename.toLowerCase();
+  return [].concat(outletId).some((id) => lower.startsWith(`${id}--`));
+}
+
 function localMatchesInDir(dir, outletId) {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir)
-    .filter((f) => f.toLowerCase().startsWith(`${outletId}--`) && f.endsWith('.json'))
+    .filter((f) => hasOutletPrefix(f, outletId) && f.endsWith('.json'))
     .map((f) => path.join(dir, f));
 }
 
@@ -196,7 +202,7 @@ function originMatchesUnderPrefix(entries, prefix, outletId) {
     if (!entry.startsWith(prefix)) return false;
     const rest = entry.slice(prefix.length);
     // must be a direct child (no further '/'), not a deeper nested path
-    return !rest.includes('/') && rest.toLowerCase().startsWith(`${outletId}--`) && rest.endsWith('.json');
+    return !rest.includes('/') && hasOutletPrefix(rest, outletId) && rest.endsWith('.json');
   });
 }
 
@@ -305,7 +311,7 @@ function resolveExclusion(files, showRecord) {
 function reviewJsonMatches(list, showId, outletId, url) {
   const forShow = list.filter((r) => r.showId === showId);
   if (url) return filterByUrl(forShow.filter((r) => r.url), url, (r) => r.url, normalizeUrl).length > 0;
-  return forShow.some((r) => r.outletId === outletId);
+  return forShow.some((r) => [].concat(outletId).includes(r.outletId));
 }
 
 function checkReviewsJson(showId, outletId, url) {
@@ -365,7 +371,7 @@ async function fetchLiveShowJson(showId) {
 // an outletId — generate-mobile-show-details.js never emits one. Re-deriving
 // an id via normalizeOutlet is the same canonical function every write path
 // (filenames, reviews.json) already uses, so it's the best available signal,
-// but a display-name collision in outlet-registry.json's alias map (a bare
+// (BRO-3359: the compact and hyphenated slugs of the live display name are also tried) but a display-name collision in outlet-registry.json's alias map (a bare
 // `Map.set`, last-write-wins) or an unregistered outlet falling through to
 // the bare-slug fallback could in principle mismatch. No existing consumer
 // does this same round-trip today (ship-check review finding) — flagged here
@@ -373,20 +379,25 @@ async function fetchLiveShowJson(showId) {
 function checkLiveProd(json, outletId, url) {
   if (!json || !Array.isArray(json.rv)) return false;
   if (url) return filterByUrl(json.rv.filter((r) => r.u), url, (r) => r.u, normalizeUrl).length > 0;
-  return json.rv.some((r) => normalizeOutlet(r.o || '') === outletId);
+  const ids = [].concat(outletId);
+  return json.rv.some((r) => {
+    const o = r.o || '';
+    return outletIdCandidates(o, normalizeOutlet(o)).some((id) => ids.includes(id));
+  });
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────
 
 (async () => {
   const outletId = normalizeOutlet(outletName);
+  const outletIds = outletIdCandidates(outletName, outletId);
 
   const show = readJsonFromFirstRoot(path.join('data', 'shows.json'));
   const showRecord = Array.isArray(show)
     ? show.find((s) => s.id === showId)
     : (show && (show.shows || []).find((s) => s.id === showId));
 
-  const reviewText = findReviewTextFiles(outletId, showId);
+  const reviewText = findReviewTextFiles(outletIds, showId);
   // With --url, only files whose own url matches count; the rest are reported
   // as outlet-only look-alikes (never evidence the review was ingested).
   const outletOnlyFiles = [];
@@ -397,9 +408,9 @@ function checkLiveProd(json, outletId, url) {
     reviewText.anyPending = reviewText.files.some((f) => f.pending);
   }
   const matchedBy = reviewUrl ? 'url' : 'outlet';
-  const reviewsJson = checkReviewsJson(showId, outletId, reviewUrl);
+  const reviewsJson = checkReviewsJson(showId, outletIds, reviewUrl);
   const live = await fetchLiveShowJson(showId);
-  const inLiveProd = live.checked ? checkLiveProd(live.json, outletId, reviewUrl) : false;
+  const inLiveProd = live.checked ? checkLiveProd(live.json, outletIds, reviewUrl) : false;
 
   // BRO-4098: files belonging to a different production of the same title do
   // not count as "ingested" for THIS production.

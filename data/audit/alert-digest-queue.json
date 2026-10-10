@@ -791,5 +791,34 @@
       }
     ],
     "queuedAt": "2026-10-10T19:49:43.716Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4956-email-dup-alert",
+    "title": "Landing blocked: race red on land/bro-4956-email-dup-alert",
+    "description": "land.yml did not land land/bro-4956-email-dup-alert: the race gate went red at f6976f2bf8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4956-email-dup-alert @ f6976f2bf8 (origin/land/bro-4956-email-dup-alert) → origin/main @ 84a6515226 [land] attempt 1/3: rebased onto 84a6515226, 3 file(s) changed — running checks [land] verified-base: main moved 608265b672 → 84a6515226 across 96 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] ch Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38080606399",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4956-email-dup-alert"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "f6976f2bf87d54e61253025fbba0335f9a3cefd7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/38080606399"
+      }
+    ],
+    "queuedAt": "2026-10-10T20:21:55.631Z"
   }
 ]

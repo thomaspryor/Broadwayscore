@@ -1,5 +1,7 @@
 'use strict';
 
+const { foldDiacritics } = require('./title-match');
+
 /**
  * Pure classification for scripts/triage-review-gap.js (BRO-3153).
  *
@@ -144,4 +146,24 @@ function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl };
+/**
+ * BRO-3359: the outlet an operator types ("The QR") and the outletId a review
+ * was ingested under ("theqr", a provisional outlet with no hyphen) can be
+ * different slugs of the same name. Matching on one slugification made every
+ * lookup layer miss at once and reported a live review as true-missed-discovery.
+ * Returns the set of ids any layer may legitimately have used: the canonical
+ * normalizeOutlet() id, the display name with every non-alphanumeric stripped
+ * ("theqr"), and the hyphenated slug ("the-qr").
+ */
+function outletIdCandidates(outletName, canonicalId) {
+  const name = foldDiacritics(String(outletName || ''));
+  const ids = new Set();
+  if (canonicalId) ids.add(String(canonicalId).toLowerCase());
+  const compact = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (compact) ids.add(compact);
+  const hyphen = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (hyphen) ids.add(hyphen);
+  return [...ids];
+}
+
+module.exports = { outletIdCandidates, classifyGap, justifiesUrlResolution, isOtherProductionFile, isPreRunFile, filterByUrl };
