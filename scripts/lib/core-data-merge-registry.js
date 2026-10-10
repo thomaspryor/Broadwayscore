@@ -1303,8 +1303,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (weekly-affiliate-report.yml), group data-health-check (cancel-in-progress: false).',
-    note: 'job-level group on the link-integrity job (shared with data-health-check.yml by design, see that job\'s own comment) — not a workflow-level group, verified by direct read',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (weekly-affiliate-report.yml), group data-health-check (cancel-in-progress: false). 2026-10-10 (BRO-4951): the writer job moved to its own workflow, affiliate-link-integrity.yml, still 1 writer, now a workflow-level group data-health-check (cancel-in-progress: false).',
   },
   {
     file: 'audit/deploy-watermark.json',

@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (269 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (270 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -287,7 +287,7 @@ Groups shared by 2+ workflows:
 | `auto-fix-feedback-bug-*` | false | `auto-fix-feedback-bug.yml`, `execute-approved-fix.yml` |
 | `commercial-data-write` | false | `commercial-friday.yml`, `commercial-rss-poll.yml`, `commercial-stale-closures.yml`, `commercial-weekly.yml`, `deep-research-commercial.yml`, `scrape-waltz-costs.yml`, `update-commercial.yml` |
 | `data-grosses-writers` | false | `backfill-grosses.yml`, `scrape-alltime-grosses.yml`, `weekly-grosses.yml` |
-| `data-health-check` | false | `data-health-check.yml`, `weekly-affiliate-report.yml` |
+| `data-health-check` | false | `affiliate-link-integrity.yml`, `data-health-check.yml` |
 | `landing` | false | `autonomous-merge.yml`, `land.yml` |
 | `newsletter-draft` | false | `newsletter-draft-refresh.yml`, `newsletter-draft.yml` |
 | `rebuild-reviews` | false | `gather-reviews.yml`, `rebuild-reviews.yml`, `scoring-audit.yml` |
@@ -299,7 +299,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 
 - **scoring** (4): `llm-evaluate.yml`, `scoring-experiment.yml`, `snapshot-audience-grades.yml`, `snapshot-award-scores.yml`
 - **scraping** (2): `diag-fetch-timing.yml`, `scraper-cost-report.yml`
-- **other** (30): `batch-commercial-research.yml`, `check-cookie-health.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `critique-plan-v2.yml`, `dependabot-auto-merge.yml`, `generate-related-shows.yml`, `generate-theater-tips.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-monday.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`
+- **other** (31): `batch-commercial-research.yml`, `check-cookie-health.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `critique-plan-v2.yml`, `dependabot-auto-merge.yml`, `generate-related-shows.yml`, `generate-theater-tips.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-monday.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`, `weekly-affiliate-report.yml`
 
 ## Secrets used by cross-repo writers
 

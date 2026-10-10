@@ -39,6 +39,10 @@ const DIGEST_CRONS = [
   // scheduled runs concluded `failure`, so a success-based row would be a permanent
   // fix-now "Cron failed" digest entry. Any completed run inside the window is liveness.
   { workflow: 'check-cron-health.yml', maxHours: 36, name: 'Cron Health Watchdog', livenessOnly: true },
+  // BRO-4951: weekly affiliate link probe, split out of weekly-affiliate-report.yml.
+  // Success-keyed: its state-push step is continue-on-error, so a red or cancelled
+  // run means the probe failed or never ran, both worth a digest row.
+  { workflow: 'affiliate-link-integrity.yml', maxHours: 192, name: 'Affiliate Link Integrity' },
 ];
 
 // Digest entries that are intentionally NOT in check-cron-health.yml
@@ -46,6 +50,7 @@ const DIGEST_CRONS = [
 const DIGEST_ONLY = {
   'audit-reverse-discovery.yml': 'digest-only by design: candidates surface in the daily digest, a 1-day-late detection is acceptable (.cron-health-exempt.txt)',
   'check-cron-health.yml': 'a watchdog cannot page on itself; the digest (data-health-check.yml, which IS paged) is the independent watcher',
+  'affiliate-link-integrity.yml': 'a red probe week means broken links, which owner-alert-router already reports; paging it as a dead cron would be the wrong alarm (.cron-health-exempt.txt)',
 };
 
 module.exports = { DIGEST_CRONS, DIGEST_ONLY };
