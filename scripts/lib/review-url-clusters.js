@@ -196,4 +196,4 @@ function decideSameUrlDifferentFileGuard({ currentFile, newFilename, existingSam
   return { duplicateOf: existingSameUrl, duplicateReason: 'same-url-different-byline-extraction' };
 }
 
-module.exports = { canonicalReviewUrl, findUrlClusters, outletOf, resolveTerminalCanonical, findExistingFileForUrl, decideSameUrlDifferentFileGuard };
+module.exports = { ARTICLE_ID_QUERY_KEY, canonicalReviewUrl, findUrlClusters, outletOf, resolveTerminalCanonical, findExistingFileForUrl, decideSameUrlDifferentFileGuard };

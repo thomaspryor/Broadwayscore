@@ -268,17 +268,19 @@ const { parseHistoricalDate } = require('./lib/date-utils');
 // un-ingestable bare URL — so genuine LSA reviews were never recovered across
 // the whole catalogue (2026-06-21). Preserve the ID so a real LSA review keeps a
 // distinct, ingestable URL. Discovery-layer cousin of the LSA extractor fix.
+//
+// The same holds for every query-ID host, not only LSA (BRO-4956): London
+// Theatre Reviews is post.cfm?p=N, Talkin' Broadway d.php?id=N. Stripped, the
+// audit fed --ingest-missing a bare post.cfm (0-char extraction, so every LTR
+// gap failed to ingest) and let ANY LTR file vouch for any LTR listing. Article
+// id keys are the shared review-url-clusters.js set; tracking params still go.
+const { ARTICLE_ID_QUERY_KEY } = require('./lib/review-url-clusters');
 function normalizeReviewUrl(href) {
-  try {
-    const u = new URL(href);
-    // Registrable-host equality (matches the isReviewUrl LSA guard) so a lookalike
-    // like notlightingandsoundamerica.com can't trip the special-case.
-    if (hostOf(href) === 'lightingandsoundamerica.com') {
-      const id = u.searchParams.get('ID');
-      if (id) return `${u.origin}${u.pathname}?ID=${id}`;
-    }
-  } catch { /* fall through to plain strip */ }
-  return href.split('?')[0].split('#')[0];
+  const noHash = String(href).split('#')[0];
+  const qi = noHash.indexOf('?');
+  if (qi === -1) return noHash;
+  const kept = noHash.slice(qi + 1).split('&').filter((kv) => kv && ARTICLE_ID_QUERY_KEY.test(kv.split('=')[0]));
+  return noHash.slice(0, qi) + (kept.length ? `?${kept.join('&')}` : '');
 }
 
 // Candidate-URL gate: delegates to the CANONICAL classifier in
