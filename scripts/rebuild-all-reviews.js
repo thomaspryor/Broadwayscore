@@ -61,7 +61,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings } = require('./lib/prior-run-sibling');
+const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSiblings, supersededPriorRunReviews } = require('./lib/prior-run-sibling');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -5333,6 +5333,23 @@ for (const [excludedShowId, showStats] of Object.entries(stats.byShow)) {
   for (const l of links) {
     console.log(`  [PRIOR-RUN INHERIT] ${l.newerId} <- ${l.olderId}: ${l.count} review(s)`);
   }
+
+  // BRO-4954: one review per outlet on a returning show, newest wins. An outlet that
+  // reviewed the return drops its earlier-run review(s), carried or filed here.
+  const superseded = supersededPriorRunReviews(allReviews, showsData.shows);
+  if (superseded.size) {
+    const perShow = {};
+    for (let i = allReviews.length - 1; i >= 0; i--) {
+      const r = allReviews[i];
+      if (!superseded.has(r)) continue;
+      allReviews.splice(i, 1);
+      perShow[r.showId] = (perShow[r.showId] || 0) + 1;
+    }
+    for (const [sid, n] of Object.entries(perShow)) {
+      console.log(`  [PRIOR-RUN SUPERSEDED] ${sid}: ${n} earlier-run review(s) replaced by the same outlet's review of this run`);
+    }
+  }
+  stats.priorRunSuperseded = superseded.size;
 }
 
 if (leasedShowIds.size && !SHOW_FILTER && fs.existsSync(reviewsJsonPath)) {
