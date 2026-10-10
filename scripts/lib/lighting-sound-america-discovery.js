@@ -81,4 +81,17 @@ async function discoverLightingSoundAmerica(showTitle, show, fetchImpl) {
   return [...found.values()];
 }
 
-module.exports = { parseLightingSoundAmericaIndex, discoverLightingSoundAmerica };
+// Each gather costs up to 4 paid fetches (index + 3 archive months), so only
+// fire for shows whose review window is open: previews/opening within the
+// last 60 days or the next 21. Older shows' reviews were found at the time.
+const DAY = 86400000;
+function appliesToShow(show, now = Date.now()) {
+  if (!show || show.type === 'opera') return false;
+  const opening = Date.parse(show.openingDate);
+  if (!Number.isFinite(opening)) return false;
+  const previews = Date.parse(show.previewsStartDate);
+  const start = Number.isFinite(previews) ? Math.min(previews, opening) : opening;
+  return now >= start - 21 * DAY && now <= opening + 60 * DAY;
+}
+
+module.exports = { parseLightingSoundAmericaIndex, discoverLightingSoundAmerica, appliesToShow };

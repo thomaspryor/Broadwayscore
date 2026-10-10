@@ -1,10 +1,13 @@
-import { test, mock } from 'node:test';
+import { test, mock, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const scraper = require('../../scripts/lib/scraper');
 const { searchOutletSites, selectApplicableSiteSearchOutlets } = require('../../scripts/lib/site-search-discovery');
 const { classifyGap } = require('../../scripts/lib/review-gap-triage');
+// The applies() gate is time-based; pin the clock inside the 2024 fixtures' review window.
+beforeEach(() => mock.timers.enable({ apis: ['Date'], now: new Date('2024-11-02T12:00:00Z') }));
+afterEach(() => mock.timers.reset());
 const outletId = 'lighting-and-sound-america';
 const title = 'Mrs. Stern Wanders the Prussian State Library';
 const url = 'http://www.lightingandsoundamerica.com/news/story.asp?ID=2PK89K';
@@ -79,4 +82,22 @@ test('archive failure does not discard a discovered review', async () => {
     assert.equal(results[0].url, url);
     assert.equal(warn.mock.callCount(), 2);
   } finally { fetch.mock.restore(); warn.mock.restore(); }
+});
+test('applies() gate: only shows inside their review window trigger paid fetches', () => {
+  const { appliesToShow } = require('../../scripts/lib/lighting-sound-america-discovery');
+  const now = Date.parse('2026-10-10T00:00:00Z');
+  assert.equal(appliesToShow({ openingDate: '2026-09-12' }, now), true);
+  assert.equal(appliesToShow({ openingDate: '2026-10-20' }, now), true);
+  assert.equal(appliesToShow({ openingDate: '2024-10-24' }, now), false, 'long-closed show');
+  assert.equal(appliesToShow({ openingDate: '2027-03-01' }, now), false, 'far-future show');
+  assert.equal(appliesToShow({ openingDate: '2026-09-12', type: 'opera' }, now), false);
+  assert.equal(appliesToShow({}, now), false);
+});
+test('a closed show makes no fetches through the dispatcher', async () => {
+  const fetch = mock.method(scraper, 'fetchPage', async () => ({ content: '' }));
+  try {
+    const show = { id: 'old', title, category: 'off-broadway', openingDate: '2020-10-24' };
+    assert.deepEqual(selectApplicableSiteSearchOutlets('broadway', show, new Set(), false).filter(id => id === outletId), []);
+    assert.equal(fetch.mock.callCount(), 0);
+  } finally { fetch.mock.restore(); }
 });

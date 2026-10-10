@@ -589,6 +589,7 @@ const SITE_SEARCH_ENDPOINTS = {
     market: 'broadway',
     requiresJs: false,
     skipUrlFilter: true, // Opaque story IDs; the index parser checks title and date.
+    applies: (show) => require('./lighting-sound-america-discovery').appliesToShow(show),
     fetchAndParse: async (showTitle, market, openingDate, showId, show) => {
       const { discoverLightingSoundAmerica } = require('./lighting-sound-america-discovery');
       const { fetchPage } = require('./scraper');
