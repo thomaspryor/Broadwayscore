@@ -113,15 +113,111 @@
     "queuedAt": "2026-10-10T14:06:26.628Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38060291303",
+    "conditionKey": "review-gap:opening-window:a-small-and-quiet-light-off-west-end-2026",
+    "title": "Review gap — \"A Small And Quiet Light\" missing 5 cited review(s)",
+    "description": "A Small And Quiet Light (a-small-and-quiet-light-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-small-and-quiet-light-off-west-end-2026 --checkpoint --ingest-missing",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-10T14:42:43.588Z"
+    "queuedAt": "2026-10-10T15:03:21.882Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:alice-in-wonderland-off-broadway-2026",
+    "title": "Review gap — \"Alice in Wonderland\" missing 13 cited review(s)",
+    "description": "Alice in Wonderland (alice-in-wonderland-off-broadway-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alice-in-wonderland-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:21.898Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:measure-for-measure-off-west-end-2026",
+    "title": "Review gap — \"Measure for Measure\" missing 16 cited review(s)",
+    "description": "Measure for Measure (measure-for-measure-off-west-end-2026): 16 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=measure-for-measure-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:21.993Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:motherfucker-off-broadway-2026",
+    "title": "Review gap — \"Motherfucker\" missing 1 cited review(s)",
+    "description": "Motherfucker (motherfucker-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=motherfucker-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:22.004Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:north-by-northwest-regional-2026",
+    "title": "Review gap — \"North by Northwest\" missing 4 cited review(s)",
+    "description": "North by Northwest (north-by-northwest-regional-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=north-by-northwest-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:22.009Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:operation-mincemeat-tour-2026",
+    "title": "Review gap — \"Operation Mincemeat\" missing 8 cited review(s)",
+    "description": "Operation Mincemeat (operation-mincemeat-tour-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=operation-mincemeat-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:22.015Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+    "title": "Review gap — \"The Hairy Ape\" missing 1 cited review(s)",
+    "description": "The Hairy Ape (the-hairy-ape-irish-repertory-theatre-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hairy-ape-irish-repertory-theatre-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:22.042Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
+    "title": "Review gap — \"The Standard Of Living\" missing 4 cited review(s)",
+    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:22.068Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:what-the-animals-say-off-west-end-2026",
+    "title": "Review gap — \"What The Animals Say\" missing 2 cited review(s)",
+    "description": "What The Animals Say (what-the-animals-say-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=what-the-animals-say-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T15:03:22.106Z"
   }
 ]

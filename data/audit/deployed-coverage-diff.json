@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-10T10:36:50.948Z",
+  "generatedAt": "2026-10-10T15:05:40.784Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 231,
+  "checked": 232,
   "clean": 231,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "title": "Flamenc Oh!!",
+      "openingDate": "2026-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.25 vs local 68.08 (Δ0.17)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-10T15:05:36.837Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
