@@ -22,7 +22,7 @@ const { groundSynopsis } = require('./lib/synopsis-grounding');
 const { gateScrapedSynopsis } = require('./lib/synopsis-fact-check');
 const { isValidCreativeTeamName, lookupIBDBDates } = require('./lib/ibdb-dates');
 const { serpQuery } = require('./lib/url-discovery');
-const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-verify');
+const { verifyCreativeTeamViaSerp: verifyCreativeTeamViaSerpLib } = require('./lib/creative-team-verify');
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { cleanup: cleanupScraper } = require('./lib/scraper');
@@ -513,7 +513,9 @@ Return ONLY the JSON array, no other text. Example:
 
   // Step 2: SERP-verify each proposed member. Shared with the IBDB scrape
   // path (see verifyCreativeTeamViaSerp below) — BRO-102.
-  const verified = await verifyCreativeTeamViaSerp(show, proposed, year, 'serp-verified-llm');
+  // The model names people from memory of ANY production of the title, so a
+  // director or choreographer must also be tied to this venue (BRO-4884).
+  const verified = await verifyCreativeTeamViaSerp(show, proposed, year, 'serp-verified-llm', { productionAnchor: true });
 
   return verified.length > 0 ? verified : null;
 }
@@ -549,59 +551,15 @@ Return ONLY the JSON array, no other text. Example:
 // production-year gate (lib/ibdb-dates.js) already rejects ibdb.creativeTeam
 // entirely when the IBDB page's year doesn't match the show's openingYear, so
 // only same-production entries ever reach this function. Callers without an
-// equivalent upstream year gate should not assume this function verifies
-// production identity, only name+role attribution.
-async function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag) {
-  const verified = [];
-  const seen = new Set(); // name+role dedup — a shared gate can't assume every caller pre-dedupes
-  for (const member of proposed) {
-    const name = String(member.name || '').trim();
-    if (!name) {
-      console.log(`    ❌ Blank/missing name for role "${member.role}" — rejecting`);
-      continue;
-    }
-    const role = String(member.role || '').toLowerCase();
-    const dedupeKey = `${role}::${name.toLowerCase()}`;
-    if (seen.has(dedupeKey)) continue;
-    seen.add(dedupeKey);
-
-    const verb = roleVerb(role);
-    if (!verb) {
-      console.log(`    ❌ Unrecognized role "${member.role}" for ${name} — rejecting (cannot SERP-verify)`);
-      continue;
-    }
-    const canonRole = ROLE_CANON[role] || member.role;
-    // "Music & Lyrics" is published inconsistently ("music and lyrics by" vs
-    // "music & lyrics by") — accept either spelling for this one role rather
-    // than widening every role to roleVerbVariants (which would weaken the
-    // single-verb hallucination signal the other roles rely on).
-    const phrases = role === 'music & lyrics' ? [verb, 'music & lyrics by'] : [verb];
-
-    const query = `"${show.title}" ${year} "${verb} ${name}"`;
-    console.log(`    🔍 Verifying: ${name} (${member.role}) via SERP...`);
-    try {
-      await sleep(500);
-      const serpResults = await serpQuery(query);
-      if (serpResults && serpResults.length > 0) {
-        // Require the full phrase "directed by [name]" in a snippet — not just
-        // the name — anchored to a segment naming this show (see
-        // lib/creative-team-verify.js for the snippet-stitching failure mode).
-        const confirmed = serpTextConfirms(serpResults, phrases, name, { title: show.title });
-        if (confirmed) {
-          console.log(`    ✅ SERP confirmed: ${name} (${member.role})`);
-          verified.push({ ...member, name, role: canonRole, _source: sourceTag });
-        } else {
-          console.log(`    ❌ SERP did not confirm: ${member.name} (${member.role}) — rejecting`);
-        }
-      } else {
-        console.log(`    ❌ No SERP results for ${member.name} (${member.role}) — rejecting`);
-      }
-    } catch (e) {
-      console.log(`    ⚠️  SERP verification failed for ${member.name}: ${e.message}`);
-    }
-  }
-
-  return verified;
+// equivalent upstream year gate pass { productionAnchor: true }, which makes
+// director/choreographer evidence name the venue too (the LLM path does,
+// BRO-4884); writer roles are the same across productions.
+//
+// The gate itself lives in lib/creative-team-verify.js (shared with
+// discover-new-shows.js, enrich-ibdb-dates.js, backfill-playwright-credits.js);
+// this wrapper binds the serpQuery imported above so tests can mock it.
+function verifyCreativeTeamViaSerp(show, proposed, year, sourceTag, opts = {}) {
+  return verifyCreativeTeamViaSerpLib(show, proposed, year, sourceTag, { serpQuery, sleep, ...opts });
 }
 
 // Fix creative team - fetch from TodayTix, IBDB (Broadway), or SERP-verified LLM (OB/WE)

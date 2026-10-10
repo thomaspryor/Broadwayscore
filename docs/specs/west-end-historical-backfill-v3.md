@@ -421,6 +421,20 @@ Lessons, each fixed in code:
   (data/pending-fixes/bro-4884-c.json). When the audit or validate-data shows
   a held row on a recast run, check whether the text and the url describe the
   same staging before flagging either way.
+- **Model-proposed directors were the wrong production's.** The metadata
+  step asks a model for the creative team and keeps a name when a search
+  snippet says "<title> ... directed by <name>". For a revival that confirms
+  whoever directed any staging: Dominic Cooke for the 2019 Wyndham's Curtains
+  (Paul Foster), Ivo van Hove for the 2019 Death of a Salesman (Marianne
+  Elliott and Miranda Cromwell), Roger Michell for The Man in the White Suit
+  (Sean Foley), and others across every season. Directors and choreographers
+  from that path now also need the venue in the confirming evidence
+  (`productionAnchor` in lib/creative-team-verify.js); writer roles are the
+  same in every production and keep the old check. The historical rows'
+  existing directors were re-checked with search-grounded Gemini and the
+  disagreements were checked by hand before removal. The move also exported
+  verifyCreativeTeamViaSerp, which three Broadway scripts imported from that
+  module although it was never exported there (their tests mocked it).
 
 ## Side benefit (separate card)
 

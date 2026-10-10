@@ -320,3 +320,42 @@ test('generateSynopsisWithLLM keeps an Opus fallback plot that search results su
   const { out, invented } = await runFallback('SUPPORTED: same premise');
   assert.equal(out, invented);
 });
+
+// BRO-4884: the LLM creative-team path must tie a director to the venue.
+// Fake the model's proposal at https.request and record the SERP queries.
+test('generateCreativeTeamWithSerpVerification anchors directors to the venue', async () => {
+  const https = require('https');
+  const { EventEmitter } = require('events');
+  const realRequest = https.request;
+  const prevKey = process.env.ANTHROPIC_API_KEY;
+  process.env.ANTHROPIC_API_KEY = 'test-key';
+  https.request = (_opts, onRes) => {
+    const req = new EventEmitter();
+    req.write = () => {};
+    req.end = () => {
+      const res = new EventEmitter();
+      res.statusCode = 200;
+      onRes(res);
+      res.emit('data', JSON.stringify({ content: [{ text: '[{"name": "Dominic Cooke", "role": "Director"}, {"name": "Rupert Holmes", "role": "Book"}]' }] }));
+      res.emit('end');
+    };
+    return req;
+  };
+  const queries = [];
+  const serpQueryImpl = async q => {
+    queries.push(q);
+    return [
+      { title: 'Curtains review', snippet: 'Curtains, directed by Dominic Cooke, is a backstage murder mystery.' },
+      { title: 'Curtains musical', snippet: 'Curtains, book by Rupert Holmes, music by John Kander.' },
+    ];
+  };
+  try {
+    const { generateCreativeTeamWithSerpVerification } = loadWithMocks({ serpQueryImpl, ibdbCreativeTeam: [] });
+    const team = await generateCreativeTeamWithSerpVerification({ id: 'curtains-west-end-2019', title: 'Curtains', type: 'musical', venue: "Wyndham's Theatre", openingDate: '2019-12-13' });
+    assert.deepEqual((team || []).map(m => m.name), ['Rupert Holmes']);
+    assert.ok(queries.some(q => /Wyndham's Theatre/.test(q)), queries.join('\n'));
+  } finally {
+    https.request = realRequest;
+    if (prevKey === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = prevKey;
+  }
+});

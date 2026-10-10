@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-10T08:00:09.388Z",
-    "completedAt": "2026-10-10T08:00:18.487Z",
-    "totalReviews": 3,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 6814,
-      "output": 694,
-      "total": 7508
-    },
-    "costUsd": 0.0194263,
-    "runId": "38036045428",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-10T08:04:44.125Z",
-    "completedAt": "2026-10-10T08:05:37.660Z",
-    "totalReviews": 54120,
-    "processed": 0,
-    "skipped": 54102,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 69379,
-      "output": 2797,
-      "total": 200171
-    },
-    "costUsd": 0.30647645,
-    "runId": "38036441240",
-    "errorDetails": [
-      {
-        "showId": "diana-the-musical-2021",
-        "outletId": "nytimes",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "two-strangers-carry-a-cake-across-new-york-west-end-2024",
-        "outletId": "london-box-office",
-        "error": "Cannot read properties of undefined (reading 'rejection')"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-10T08:05:39.002Z",
     "completedAt": "2026-10-10T08:05:41.148Z",
     "totalReviews": 0,
@@ -452576,6 +452533,44 @@
     },
     "costUsd": 0.0423129,
     "runId": "38077411236",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-10T19:00:38.775Z",
+    "completedAt": "2026-10-10T19:02:15.594Z",
+    "totalReviews": 54987,
+    "processed": 8,
+    "skipped": 54961,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 106100,
+      "output": 5139,
+      "total": 301522
+    },
+    "costUsd": 0.45289145000000003,
+    "runId": "38077827228",
+    "errorDetails": [
+      {
+        "showId": "diana-the-musical-2021",
+        "outletId": "nytimes",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-10T19:02:17.273Z",
+    "completedAt": "2026-10-10T19:02:34.842Z",
+    "totalReviews": 8,
+    "processed": 8,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 12320,
+      "output": 1635,
+      "total": 13955
+    },
+    "costUsd": 0.03952,
+    "runId": "38077827228",
     "errorDetails": []
   }
 ]

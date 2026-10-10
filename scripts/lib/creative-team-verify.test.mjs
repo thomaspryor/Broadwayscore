@@ -128,3 +128,92 @@ test('serpTextConfirms requires full attribution phrase, not just the name', () 
   assert.equal(serpTextConfirms([], ['directed by'], 'X'), false);
   assert.equal(serpTextConfirms(null, ['directed by'], 'X'), false);
 });
+
+// BRO-4884: discover-new-shows.js, enrich-ibdb-dates.js and
+// backfill-playwright-credits.js import verifyCreativeTeamViaSerp from this
+// module; their own tests mock it, which hid that it was never exported.
+test('verifyCreativeTeamViaSerp is exported for the scripts that import it', async () => {
+  const mod = require('./creative-team-verify.js');
+  assert.equal(typeof mod.verifyCreativeTeamViaSerp, 'function');
+  for (const f of ['../discover-new-shows.js', '../enrich-ibdb-dates.js', '../backfill-playwright-credits.js']) {
+    const src = (await import('node:fs')).readFileSync(new URL(f, import.meta.url), 'utf8');
+    assert.match(src, /verifyCreativeTeamViaSerp\s*\}\s*=\s*require\('\.\/lib\/creative-team-verify'\)/, f);
+  }
+});
+
+test('venueTokens: core venue name, apostrophes dropped, NT stages also match "national theatre"', () => {
+  const { venueTokens } = require('./creative-team-verify.js');
+  assert.deepEqual(venueTokens("Wyndham's Theatre"), ['wyndhams']);
+  assert.deepEqual(venueTokens('Theatre Royal Haymarket'), ['haymarket']);
+  assert.deepEqual(venueTokens('Lyttelton Theatre'), ['lyttelton', 'national theatre']);
+  assert.deepEqual(venueTokens('Royal Court'), ['royal court']);
+  assert.deepEqual(venueTokens(''), []);
+  // Generic one-word names anchor only with "theatre"; compound names split.
+  assert.deepEqual(venueTokens('Lyric Theatre'), ['lyric theatre']);
+  assert.deepEqual(venueTokens('Theatre Royal, Haymarket'), ['haymarket']);
+  assert.deepEqual(venueTokens('Lyttelton Theatre (National Theatre)'), ['lyttelton', 'national theatre']);
+  assert.deepEqual(venueTokens('Lincoln Center Theater - Mitzi E. Newhouse'), ['lincoln center', 'mitzi e. newhouse']);
+  assert.deepEqual(venueTokens('MCC Theater'), ['mcc theater']);
+});
+
+test('serpTextConfirmsProduction: venue tokens match whole words only', () => {
+  const { serpTextConfirmsProduction } = require('./creative-team-verify.js');
+  const lyric = { title: 'Curtains', venue: 'Lyric Theatre' };
+  const lyricsBy = [{ title: 'Curtains', snippet: 'Curtains, directed by Dominic Cooke, music by Kander, lyrics by Ebb.' }];
+  assert.equal(serpTextConfirmsProduction(lyricsBy, ['directed by'], 'Dominic Cooke', lyric), false, '"lyrics by" is not the Lyric Theatre');
+  const nt = { title: 'Curtains', venue: 'National Theatre' };
+  const tour = [{ title: 'Curtains', snippet: 'The international tour of Curtains, directed by Dominic Cooke.' }];
+  assert.equal(serpTextConfirmsProduction(tour, ['directed by'], 'Dominic Cooke', nt), false);
+});
+
+test('serpTextConfirmsProduction: venue in the same snippet segment, choreographer role', async () => {
+  const { serpTextConfirmsProduction, verifyCreativeTeamViaSerp } = require('./creative-team-verify.js');
+  const seg = [{ title: 'Review roundup', snippet: "At Wyndham's, Curtains, directed by Paul Foster, is a delight." }];
+  assert.equal(serpTextConfirmsProduction(seg, ['directed by'], 'Paul Foster', curtains), true);
+  const serpQuery = async () => [{ title: 'Curtains', snippet: 'Curtains, choreographed by Alistair David on tour.' }];
+  const out = await verifyCreativeTeamViaSerp(curtains, [{ name: 'Alistair David', role: 'Choreographer' }], '2019', 'serp-verified-llm', { productionAnchor: true, serpQuery, sleep: async () => {} });
+  assert.equal(out.length, 0, 'choreographer is production-specific too');
+});
+
+// The real failure: the title-anchored check confirms a director of ANY
+// staging. Curtains 2019 at Wyndham's was directed by Paul Foster.
+const curtains = { title: 'Curtains', venue: "Wyndham's Theatre" };
+const otherStaging = [{ title: 'Curtains review', snippet: 'Curtains, directed by Dominic Cooke, is a backstage murder mystery.' }];
+const thisStaging = [{ title: "Curtains review, Wyndham's Theatre", snippet: 'Jason Manford leads Curtains, directed by Paul Foster, for a Christmas run.' }];
+
+test('serpTextConfirmsProduction needs the venue in the confirming evidence', () => {
+  const { serpTextConfirmsProduction } = require('./creative-team-verify.js');
+  assert.equal(serpTextConfirms(otherStaging, ['directed by'], 'Dominic Cooke', { title: 'Curtains' }), true, 'title-only check passes it (the bug)');
+  assert.equal(serpTextConfirmsProduction(otherStaging, ['directed by'], 'Dominic Cooke', curtains), false);
+  assert.equal(serpTextConfirmsProduction(thisStaging, ['directed by'], 'Paul Foster', curtains), true);
+  const stitched = [{ title: 'What’s on', snippet: "Tickets for Wyndhams Theatre … Curtains, directed by Dominic Cooke" }];
+  assert.equal(serpTextConfirmsProduction(stitched, ['directed by'], 'Dominic Cooke', curtains), false, 'venue in another fragment does not count');
+});
+
+test('verifyCreativeTeamViaSerp productionAnchor: director must be tied to the venue, writers need not be', async () => {
+  const { verifyCreativeTeamViaSerp } = require('./creative-team-verify.js');
+  const queries = [];
+  const serpQuery = async q => { queries.push(q); return [...otherStaging, { title: 'Curtains musical', snippet: 'Curtains, book by Rupert Holmes, music by John Kander.' }]; };
+  const opts = { productionAnchor: true, serpQuery, sleep: async () => {} };
+  const out = await verifyCreativeTeamViaSerp(curtains, [
+    { name: 'Dominic Cooke', role: 'Director' },
+    { name: 'Rupert Holmes', role: 'Book' },
+  ], '2019', 'serp-verified-llm', opts);
+  assert.deepEqual(out.map(m => m.name), ['Rupert Holmes']);
+  assert.match(queries[0], /Wyndham's Theatre/);
+  // Without the anchor (IBDB callers, already production-matched) the old check applies.
+  const loose = await verifyCreativeTeamViaSerp(curtains, [{ name: 'Dominic Cooke', role: 'Director' }], '2019', 'x', { serpQuery, sleep: async () => {} });
+  assert.equal(loose.length, 1);
+  // No venue on the record: no production-specific credit, and no SERP call spent.
+  const before = queries.length;
+  const none = await verifyCreativeTeamViaSerp({ title: 'Curtains', venue: '' }, [{ name: 'Paul Foster', role: 'Director' }], '2019', 'serp-verified-llm', opts);
+  assert.equal(none.length, 0);
+  assert.equal(queries.length, before);
+});
+
+test('title anchor is whole-word: the one-letter title "G" does not anchor every snippet', () => {
+  const invented = [{ title: 'Inua Ellams on a big year', snippet: 'Barber Shop Chronicles, written by Inua Ellams, returns.' }];
+  assert.equal(serpTextConfirms(invented, ['written by'], 'Inua Ellams', { title: 'G' }), false);
+  const real = [{ title: 'G review, Royal Court', snippet: 'G, written by Tife Kusoro, follows three teenagers.' }];
+  assert.equal(serpTextConfirms(real, ['written by'], 'Tife Kusoro', { title: 'G' }), true);
+});
