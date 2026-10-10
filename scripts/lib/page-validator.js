@@ -26,6 +26,7 @@
 const https = require('https');
 const cheerio = require('cheerio');
 const { titleWordsMatchWithConfidence } = require('./show-matching');
+const { findContainingTitleSibling } = require('./title-containment');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 // Confidence threshold below which the LLM tiebreaker fires
@@ -241,6 +242,7 @@ function extractYearFromUrl(url) {
  * @param {string} [options.pageUrl] - URL of the fetched page for URL-based date extraction
  * @param {string} [options.pageType] - 'audience-aggregator' broadens the LLM's page-type framing beyond "review" (e.g. Show Score ratings pages)
  * @param {string} [options.category] - Target show's shows.json `category` ('broadway'/'off-broadway'/'west-end'/'off-west-end'/'regional'). When set and not 'broadway', rejects headings that explicitly say "on Broadway" (same-title Broadway-transfer mismatch, #1650)
+ * @param {object[]} [options.shows] - shows.json entries for the containing-title guard (Layer 0d); defaults to data/shows.json
  * @returns {Promise<{ valid: boolean, confidence: number, reason: string, provider?: string }>}
  */
 async function validatePageMatchesShow(html, showTitle, options = {}) {
@@ -301,6 +303,18 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
   // match alone.
   if (options.category && options.category !== 'broadway' && /\bon broadway\b/i.test(headingText)) {
     return { valid: false, confidence: 0, reason: `production-category mismatch: headings mention "on Broadway" but target show category is "${options.category}"` };
+  }
+
+  // Layer 0d: containing-title sibling (BRO-4953). The headings name a
+  // DIFFERENT, longer show whose title contains the target's ("Broadway's The
+  // Heart of Rock and Roll" for "The Heart", "Once Upon a Mattress" for
+  // "Once"). Layer 1's word match accepts these, since every target word is
+  // present, and the LLM tiebreaker said YES for The Heart: four 2024 excerpts
+  // went live on a show still in previews (GitHub #1018). Deterministic, so it
+  // runs before both. options.shows overrides data/shows.json (tests).
+  const containing = findContainingTitleSibling(headingText, showTitle, { shows: options.shows });
+  if (containing) {
+    return { valid: false, confidence: 0, reason: `containing-title sibling: headings name "${containing.sibling}", a different show containing "${showTitle}"` };
   }
 
   // Layer 1: Word-match with confidence

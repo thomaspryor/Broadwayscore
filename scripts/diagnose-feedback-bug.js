@@ -170,7 +170,7 @@ function loadFile(relPath, budgetRemaining) {
  * gets the same depth of data for each one, not just the one resolveShow()
  * happens to pick.
  */
-function buildFullShowData(show) {
+export function buildFullShowData(show) {
   const result = {
     // buildShowSnapshot() exposes every field FEEDBACK_EDITABLE_FIELDS allows
     // the pipeline to edit — a field missing here starves the diagnosis LLM,
@@ -188,12 +188,18 @@ function buildFullShowData(show) {
     const reviewsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'));
     const allReviews = reviewsRaw.reviews || reviewsRaw;
     const showReviews = allReviews.filter(r => r.showId === show.id);
+    // url/date/quote are what show a review belongs to another show: BRO-4953's
+    // diagnosis saw only outlet+score+scoreSource, missed that the quotes named
+    // "The Heart of Rock and Roll", and blamed "AI-generated" llm-v6 scores.
     result.reviews = showReviews.map(r => ({
       outlet: r.outlet,
       critic: r.criticName,
       score: r.assignedScore,
       tier: r.tier,
       scoreSource: r.scoreSource,
+      url: r.url || null,
+      publishDate: r.publishDate || null,
+      quote: r.pullQuote ? String(r.pullQuote).slice(0, 120) : null,
     }));
   } catch { /* skip */ }
 
@@ -445,7 +451,8 @@ ${codeContext ? `## Relevant Source Code\n${codeContext}` : ''}
 4. If the user seems to be confused about how the site works (not actually a bug), say so kindly
 5. Propose a concrete fix in 1-2 sentences, or say "no fix needed" if it's working as designed
 6. Rate your confidence: high (obvious cause found), medium (likely but uncertain), low (speculative)
-7. CRITICAL: Do NOT assert specific production years, revival numbers, or historical Broadway facts unless you can verify them from the Show Data provided above. If no show data was loaded, say "the show's data file" without guessing years or production details. Getting production details wrong (e.g., saying "2005 original" when it was a "2015 revival") undermines trust in the diagnosis.
+7. Review fields: every review is a real published critic review. "scoreSource" only says how its 0-100 score was derived from the critic's own text ("llm-*" / "anchored-*" = a model read the critic's text; "human-review" = set by hand); it never means the review itself was generated. To judge whether a review belongs to this show, compare its "quote", "url" and "publishDate" against the show's title, venue and dates.
+8. CRITICAL: Do NOT assert specific production years, revival numbers, or historical Broadway facts unless you can verify them from the Show Data provided above. If no show data was loaded, say "the show's data file" without guessing years or production details. Getting production details wrong (e.g., saying "2005 original" when it was a "2015 revival") undermines trust in the diagnosis.
 ${awardsInstructions}
 
 Respond with ONLY a JSON object in this exact format:

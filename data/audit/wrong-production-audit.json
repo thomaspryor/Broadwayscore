@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T00:12:01.852Z",
+  "timestamp": "2026-10-10T01:42:19.073Z",
   "stats": {
-    "totalReviews": 52234,
-    "alreadyFlagged": 19493,
+    "totalReviews": 52870,
+    "alreadyFlagged": 19535,
     "dateGuardCatches": 259,
-    "directorMismatch": 1609,
-    "tvFilmSignals": 1502,
-    "londonSignals": 1666,
+    "directorMismatch": 1661,
+    "tvFilmSignals": 1510,
+    "londonSignals": 1689,
     "offBroadwaySignals": 511,
     "yearMismatch": 127,
-    "noPublishDate": 5604
+    "noPublishDate": 5863
   },
   "findings": [
     {
@@ -8075,7 +8075,7 @@
       "file": "artsdesk--matt-wolf.json",
       "score": 92,
       "publishDate": "2023-07-05",
-      "url": null,
+      "url": "https://theartsdesk.com/theatre/crazy-you-gillian-lynne-theatre-review-high-kicking-heaven",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8366,6 +8366,45 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2022",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2022-02-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2022",
+      "file": "telegraph--marianka-swain.json",
+      "publishDate": "2022-02-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cyrano-de-bergerac-harold-pinter-theatre-review-prepare-dazzled/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-west-end-2022",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2022-02-13",
+      "url": "https://www.thestage.co.uk/reviews/cyrano-de-bergerac-review-harold-pinter-theatre-london-james-mcavoy-martin-crimp-jamie-lloyd",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from cyrano-de-bergerac-2012"
         }
       ]
     },
@@ -12501,7 +12540,7 @@
       "showId": "frozen-west-end-2021",
       "file": "artsdesk--marianka-swain.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "September 9th, 2021",
       "url": "https://theartsdesk.com/theatre/frozen-theatre-royal-drury-lane-review-twinkling-spectacle-sincere-drama-its-heart",
       "findings": [
         {
@@ -12529,7 +12568,7 @@
       "showId": "frozen-west-end-2021",
       "file": "telegraph--marianka-swain.json",
       "score": 96,
-      "publishDate": null,
+      "publishDate": "November 16th, 2023",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/frozen-theatre-royal-drury-lane-review/",
       "findings": [
         {
@@ -16948,7 +16987,7 @@
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "lost-in-theatreland--amy-rye.json",
       "score": 62,
-      "publishDate": null,
+      "publishDate": "June 15th, 2023",
       "url": "https://lostintheatreland.co.uk/idiots-assemble-spitting-image-the-musical-review-phoenix-theatre/",
       "findings": [
         {
@@ -16976,7 +17015,7 @@
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "west-end-best-friend--emma-rooney.json",
       "score": 74,
-      "publishDate": null,
+      "publishDate": "June 15th, 2023",
       "url": "https://www.westendbestfriend.co.uk/news/review-idiots-assemble-spitting-image-the-musical-phoenix-theatre",
       "findings": [
         {
@@ -19489,6 +19528,123 @@
       ]
     },
     {
+      "showId": "jerusalem-west-end-2022",
+      "file": "artsdesk--mert-dilek.json",
+      "publishDate": "2022-04-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2022-04-30",
+      "url": "https://www.theguardian.com/stage/2022/apr/30/jerusalem-review-rylance-apollo-theatre-jez-butterworth-london-drama",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2022-04-30",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/jerusalem-review-west-end-mark-rylance-b2068576.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2022-04-30",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2022-04-30",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/jerusalem-apollo-theatre-review-mark-rylance-still-rules-kingdom/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2022-04-30",
+      "url": "https://www.timeout.com/london/theatre/jerusalem-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2022-04-30",
+      "url": "https://www.thetimes.co.uk/article/jerusalem-review-mark-rylance-apollo-theatre-london-d8zl3xgr8",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2022-05-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-west-end-2022",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2022-04-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ian rickson\" from jerusalem-2011"
+        }
+      ]
+    },
+    {
       "showId": "jesa-off-broadway-2026",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -21780,6 +21936,110 @@
       ]
     },
     {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2021-12-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "daily-mail--robert-gore-langton.json",
+      "publishDate": "2021-12-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2021-12-02",
+      "url": "https://www.theguardian.com/stage/2021/dec/02/life-of-pi-review-star-animals-steal-show-yann-martel",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2021-12-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2021-12-03",
+      "url": "https://www.standard.co.uk/culture/theatre/life-of-pi-review-wyndhams-theatre-west-end-b969800.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2021-12-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2021-12-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2021-12-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"max webster\" from life-of-pi-2023"
+        }
+      ]
+    },
+    {
       "showId": "linda-vista-2019",
       "file": "broadwayworld--michael-dale.json",
       "score": 47,
@@ -22558,6 +22818,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "manor-west-end-2021",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2021-11-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -26506,6 +26779,47 @@
       ]
     },
     {
+      "showId": "our-generation-west-end-2022",
+      "file": "london-theatre--lizzie-akita.json",
+      "score": 78,
+      "publishDate": "2022-03-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "our-generation-west-end-2022",
+      "file": "timeout-london--dave-calhoun.json",
+      "score": 89,
+      "publishDate": "2022-03-02",
+      "url": "https://www.timeout.com/london/theatre/our-generation-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "our-generation-west-end-2022",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "publishDate": "2022-03-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "our-mothers-brief-affair-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 51,
@@ -28563,6 +28877,149 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "artsdesk--mert-dilek.json",
+      "publishDate": "2022-04-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2022-04-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2022-05-05",
+      "url": "https://www.ft.com/content/ebb2f872-f371-473c-8f25-3521cd53322d",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2022-04-28",
+      "url": "https://www.theguardian.com/stage/2022/apr/27/prima-facie-review-jodie-comer-on-formidable-form-in-roaring-drama",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "independent--ava-wong-davies.json",
+      "publishDate": "2022-04-28",
+      "url": "https://www.independent.co.uk/independentpremium/culture/prima-facie-jodie-comer-review-west-end-b2067296.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2022-04-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "observer--susannah-clapp.json",
+      "publishDate": "2022-05-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2022-04-28",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/prima-facie-review-jodie-comers-brilliant-west-end-debut-like/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2022-04-28",
+      "url": "https://www.thestage.co.uk/reviews/prima-facie-review-harold-pinter-jodie-comer",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2022-04-27",
+      "url": "https://www.timeout.com/london/theatre/prima-facie-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
+        }
+      ]
+    },
+    {
+      "showId": "prima-facie-west-end-2022",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2022-04-27",
+      "url": "https://www.whatsonstage.com/news/prima-facie-with-jodie-comer-review-the-killing-eve-star-makes-her-west-end-debut_56398/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from prima-facie-2023"
         }
       ]
     },
@@ -30665,6 +31122,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "small-island-west-end-2022",
+      "file": "guardian--arifa-akbar.json",
+      "score": 86,
+      "publishDate": "2022-03-04",
+      "url": "https://www.theguardian.com/stage/2022/mar/04/small-island-review-enthralling-windrush-drama-makes-stylish-return",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -38460,6 +38936,34 @@
       ]
     },
     {
+      "showId": "the-mirror-and-the-light-west-end-2021",
+      "file": "artsdesk--ismene-brown.json",
+      "score": 44,
+      "publishDate": "2021-10-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mirror-and-the-light-west-end-2021",
+      "file": "thereviewshub--karl-odoherty.json",
+      "score": 65,
+      "publishDate": "2021-10-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-mongol-khan-west-end-2023",
       "file": "standard--nick-curtis.json",
       "score": 14,
@@ -38685,6 +39189,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-normal-heart-west-end-2021",
+      "file": "guardian--arifa-akbar.json",
+      "score": 82,
+      "publishDate": "2021-10-01",
+      "url": "https://www.theguardian.com/stage/2021/oct/01/the-normal-heart-review-larry-kramer",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -41256,6 +41774,175 @@
       ]
     },
     {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "artsdesk--rachel-halliburton.json",
+      "publishDate": "2021-10-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "british-theatre--howard-loxton.json",
+      "publishDate": "2021-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "daily-mail--georgina-brown.json",
+      "publishDate": "2021-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2021-10-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "financialtimes--alice-saville.json",
+      "publishDate": "2021-10-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "guardian--ryan-gilbey.json",
+      "publishDate": "2021-10-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2021-10-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "standard--jessie-thompson.json",
+      "publishDate": "2021-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2021-10-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "theatre-weekly--theatre-weekly-press.json",
+      "publishDate": "2021-10-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2021-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2021-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "file": "whatsonstage--alun-hood.json",
+      "publishDate": "2021-10-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"guy masterson\" from the-shark-is-broken-2023"
+        }
+      ]
+    },
+    {
       "showId": "the-smile-of-her-off-west-end-2026",
       "file": "artsdesk--helen-hawkins.json",
       "score": 59,
@@ -42114,6 +42801,34 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 77,
+      "publishDate": "2022-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "daily-mail--patrick-marmion.json",
+      "score": 94,
+      "publishDate": "2022-04-01",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "guardian--arifa-akbar.json",
       "score": 82,
       "publishDate": "2022-04-01",
@@ -42147,10 +42862,94 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "london-theatre--matt-wolf.json",
+      "score": 81,
+      "publishDate": "2022-04-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "observer--susannah-clapp.json",
+      "score": 44,
+      "publishDate": "2022-04-03",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "standard--nick-curtis.json",
+      "score": 95,
+      "publishDate": "2022-04-01",
+      "url": "https://www.standard.co.uk/culture/theatre/to-kill-a-mockingbird-gielgud-theatre-review-aaron-sorkin-rafe-spall-london-b991748.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 92,
+      "publishDate": "2022-03-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 78,
+      "publishDate": "2022-03-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "times-uk--clive-davis.json",
       "score": 79,
       "publishDate": "2022-04-01",
       "url": "https://www.thetimes.co.uk/article/to-kill-a-mockingbird-review-rafe-spall-is-stunning-in-new-take-on-classic-70smwnd0z",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2022",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/to-kill-a-mockingbird-review-rafe-spall-finch_56225.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46313,6 +47112,45 @@
       "score": 77,
       "publishDate": "2007-05-07T17:50:00",
       "url": "https://theaterlife.com/a-moon-for-the-misbegotten/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "artsdesk--matt-wolf.json",
+      "publishDate": "2022-02-03",
+      "url": "https://theartsdesk.com/theatre/number-old-vic-review-revelatory-yet-again",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "thereviewshub--scott-matthewman.json",
+      "publishDate": "2022-02-02",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-number-west-end-2022",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2022-02-06",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -50785,6 +51623,20 @@
       ]
     },
     {
+      "showId": "cock-west-end-2022",
+      "file": "observer--kate-kellaway.json",
+      "score": 76,
+      "publishDate": "2022-03-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "collected-stories-2010",
       "file": "variety--charles-isherwood.json",
       "score": 48,
@@ -53365,6 +54217,32 @@
       ]
     },
     {
+      "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022",
+      "file": "artsdesk--laura-de-lisle.json",
+      "publishDate": "2022-04-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022",
+      "file": "thestage--jn-benjamin.json",
+      "publishDate": "2022-04-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2023",
       "file": "timeout-london--alice-saville.json",
       "score": 85,
@@ -54294,6 +55172,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-west-end-2022",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2022-05-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-west-end-2022",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2022-05-18",
+      "url": "https://www.timeout.com/london/theatre/grease-the-musical-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -59900,6 +60804,45 @@
       ]
     },
     {
+      "showId": "manor-west-end-2021",
+      "file": "artsdesk--aleks-sierz.json",
+      "publishDate": "2021-11-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "manor-west-end-2021",
+      "file": "independent--ava-wong-davies.json",
+      "publishDate": "2021-11-24",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/manor-review-national-theatre-b1963431.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "manor-west-end-2021",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2021-11-24",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/manor-review-moira-buffini-s-improbable-satire-is-breathtakingly-inept-cljd6qhdg",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
       "showId": "marie-and-rosetta-west-end-2026",
       "file": "whatsonstage--maygan-forbes.json",
       "score": 61,
@@ -60484,6 +61427,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"minetta lane\""
+        }
+      ]
+    },
+    {
+      "showId": "middle-west-end-2022",
+      "file": "thereviewshub--maryam-philpott.json",
+      "publishDate": "2022-05-05",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -63386,6 +64342,19 @@
       ]
     },
     {
+      "showId": "rare-earth-mettle-west-end-2021",
+      "file": "everything-theatre--gabriel-wilding.json",
+      "publishDate": "2021-11-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "relatively-speaking-2011",
       "file": "wsj--terry-teachout.json",
       "score": 25,
@@ -64665,6 +65634,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "small-island-west-end-2022",
+      "file": "telegraph--claire-allfree.json",
+      "score": 85,
+      "publishDate": "2022-03-04",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/small-island-review-terrific-tragi-comic-dance-pivotal-moment/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -66281,6 +67264,19 @@
       ]
     },
     {
+      "showId": "the-47th-west-end-2022",
+      "file": "variety--david-benedict.json",
+      "publishDate": "2022-04-13",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-addams-family-2010",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 72,
@@ -67641,6 +68637,19 @@
       ]
     },
     {
+      "showId": "the-corn-is-green-west-end-2022",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2022-04-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-cripple-of-inishmaan-2014",
       "file": "theater-life--eric-march.json",
       "score": 83,
@@ -68439,6 +69448,45 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "the-glow-west-end-2022",
+      "file": "artsdesk--aleks-sierz.json",
+      "publishDate": "2022-01-31",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-glow-west-end-2022",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2022-01-29",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-glow-west-end-2022",
+      "file": "thereviewshub--richard-maguire.json",
+      "publishDate": "2022-01-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -69557,6 +70605,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 88d before show (2010-07-23 vs 2010-10-19)"
+        }
+      ]
+    },
+    {
+      "showId": "the-mirror-and-the-light-west-end-2021",
+      "file": "nytimes--matt-wolf.json",
+      "score": 48,
+      "publishDate": "2021-10-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -72573,6 +73635,19 @@
       ]
     },
     {
+      "showId": "two-palestinians-go-dogging-west-end-2022",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2022-06-04",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "two-strangers-bway-2025",
       "file": "theverdictnyc--the-verdict.json",
       "score": 91,
@@ -73489,6 +74564,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-west-end-2022",
+      "file": "thereviewshub--scott-matthewman.json",
+      "publishDate": "2022-02-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
