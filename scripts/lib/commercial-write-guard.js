@@ -30,6 +30,7 @@ const { createJsonWriteGuard } = require('./json-write-guard');
 const { canonicalDesignation } = require('./commercial-designations');
 const { syncBreakevenToCost } = require('./commercial-breakeven');
 const { buildShowKeyIndex, canonicalizeCommercialKeys } = require('./commercial-slug-key');
+const { stampContentChanges } = require('./commercial-record-stamp');
 
 const COMMERCIAL_PATH = path.join(__dirname, '..', '..', 'data', 'commercial.json');
 
@@ -48,6 +49,14 @@ function showKeyIndexFor(commercialPath) {
     return index;
   } catch {
     return null;
+  }
+}
+
+function readShowsOnDisk(commercialPath) {
+  try {
+    return JSON.parse(fs.readFileSync(commercialPath, 'utf8')).shows || null;
+  } catch {
+    return null; // missing or unreadable: nothing to compare, no stamps
   }
 }
 
@@ -83,6 +92,13 @@ function createCommercialWriteGuard(commercialPath) {
         for (const { from, to } of rekeyed) {
           console.warn(`commercial-write-guard: re-keyed commercial.json "${from}" (a show id) to its slug "${to}"`);
         }
+      }
+      // A record whose content changed gets a fresh lastUpdated; a
+      // model-only re-run does not (BRO-5005). Runs under the lock, so the
+      // on-disk copy is the version this write replaces.
+      const { staleOverwrites } = stampContentChanges(finalData.shows, readShowsOnDisk(commercialPath));
+      for (const slug of staleOverwrites) {
+        console.warn(`commercial-write-guard: "${slug}" was saved from a copy older than the one on disk; another writer's newer edit to it may be overwritten (lastUpdated left unstamped)`);
       }
     },
   });

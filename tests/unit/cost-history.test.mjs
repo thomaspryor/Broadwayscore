@@ -87,6 +87,16 @@ describe('migrating today\'s single weeklyRunningCost', () => {
     assert.strictEqual(closed.sourceType, 'industry-estimate', 'an unnamed method is never a reported tier');
   });
 
+  it('dates an undated figure by firstAdded before lastUpdated, which moves on every edit (BRO-5005)', () => {
+    const r = { weeklyRunningCost: 700_000, costMethodology: 'trade-reported', firstAdded: '2025-03-02T10:00:00Z', lastUpdated: '2026-10-10T12:00:00Z' };
+    const a = legacyCostAnchor(r, { openingDate: '2024-01-01' });
+    assert.strictEqual(a.asOf, '2025-03-02');
+    assert.strictEqual(a.dateFrom, 'record-added');
+    const b = legacyCostAnchor({ weeklyRunningCost: 700_000, costMethodology: 'trade-reported', lastUpdated: '2026-01-05' }, { openingDate: '2024-01-01' });
+    assert.strictEqual(b.asOf, '2026-01-05');
+    assert.strictEqual(b.dateFrom, 'record-updated');
+  });
+
   it('returns null with no figure', () => {
     assert.strictEqual(legacyCostAnchor({ weeklyRunningCost: null }), null);
   });
