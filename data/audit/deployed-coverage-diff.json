@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-10-10T01:38:06.250Z",
+  "generatedAt": "2026-10-10T06:36:54.476Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 232,
-  "clean": 230,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "into-the-woods-noel-coward-west-end-2026",
-      "title": "Into the Woods",
-      "openingDate": "2026-10-07",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.97 vs local 85.33 (Δ0.64)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 52,
-      "deployedCount": 52,
-      "firstDefectAt": "2026-10-10T01:38:00.434Z"
-    },
-    {
-      "showId": "kramerfauci-st-anns-off-broadway-2026",
-      "title": "Kramer/Fauci",
-      "openingDate": "2026-10-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.05 vs local 77.73 (Δ2.32)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-10-10T01:38:00.434Z"
-    }
-  ],
+  "checked": 231,
+  "clean": 231,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
