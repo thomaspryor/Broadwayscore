@@ -5,7 +5,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { modelReturnV2, classifyTier, isClosed, LONG_RUN_WEEKS } = require('../../scripts/lib/model-return-v2');
+const { modelReturnV2, classifyTier, isClosed, LONG_RUN_WEEKS, TIERS } = require('../../scripts/lib/model-return-v2');
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('../../scripts/lib/recoupment-model');
 
 const NOW = Date.parse('2026-10-01');
@@ -90,6 +90,18 @@ describe('classifyTier', () => {
     const close = new Date(Date.parse(open) + LONG_RUN_WEEKS * 7 * 86400000).toISOString();
     assert.strictEqual(classifyTier({ openingDate: open, closingDate: close }, { capitalization: 1 }, { gross: 1 }), 'simplified-lifetime');
     assert.strictEqual(classifyTier({ openingDate: open, closingDate: '2005-01-01' }, { capitalization: 1 }, { gross: 1 }), 'weekly-model');
+  });
+  it('TIERS lists exactly the values it returns, and every tier name the scripts compare against', async () => {
+    const fs = await import('node:fs');
+    assert.deepStrictEqual([...TIERS].sort(), ['ai-estimated', 'simplified-lifetime', 'weekly-model']);
+    // A misspelt tier silently skips a whole tier (shadow-model-fix once misnamed the lifetime tier).
+    for (const f of ['scripts/merge-model-recoupment.js', 'scripts/shadow-model-fix.js']) {
+      const src = fs.readFileSync(new URL(`../../${f}`, import.meta.url), 'utf8');
+      for (const m of src.matchAll(/'([a-z]+-(?:model|lifetime|estimated))'/g)) {
+        if (/^(alltime|gap|preview)-/.test(m[1])) continue; // gross-source labels, not tiers
+        assert.ok(TIERS.includes(m[1]), `${f}: '${m[1]}' is not a classifyTier value`);
+      }
+    }
   });
 });
 

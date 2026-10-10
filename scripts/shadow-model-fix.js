@@ -21,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { calculateRecoupment, calculateLifetimeRecoupment } = require('./lib/recoupment-model');
-const { classifyTier } = require('./lib/model-return-v2');
+const { classifyTier, TIERS } = require('./lib/model-return-v2');
 const { previewWeeksFromWeekly } = require('./lib/preview-weeks');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { modelContradictsDesignation: contradiction } = require('./lib/commercial-designations');
@@ -48,11 +48,16 @@ const FIXES = {
   },
   'played-weeks': {
     opts: { playedWeeksOnly: true },
-    tiers: ['weekly-model', 'lifetime-model'],
+    tiers: ['weekly-model', 'simplified-lifetime'],
     affected: (show) => futureClosing(show),
     why: (show) => `closing ${String(show.closingDate).slice(0, 10)} counted as played`,
   },
 };
+
+// A misspelt tier silently skips every show in it (a misnamed lifetime tier once did).
+for (const [name, fix] of Object.entries(FIXES)) {
+  for (const t of fix.tiers) if (!TIERS.includes(t)) throw new Error(`--fix=${name}: unknown tier "${t}" (classifyTier returns ${TIERS.join(', ')})`);
+}
 
 const DATA = path.join(__dirname, '..', 'data');
 const COMMERCIAL_PATH = fs.existsSync(path.join(DATA, 'commercial.json'))
