@@ -137,6 +137,26 @@ const PROMO_TEASER_PATTERNS = [
   /^[\s"'“”‘’«»`(\[]*(?:follow\s+us|click\s+here|learn\s+more\s+about)\b/i,
 ];
 
+// Service-journalism sections some outlets (New York Theatre Guide, London
+// Theatre) append after the critic's prose: "Who should see X", "What to
+// expect at X", "What audiences are saying about X". Sentences there are
+// genre boilerplate, not the critic's verdict (GTC NYTG picked "The family
+// play is a staple of American theatre.", BRO-4973).
+const SERVICE_SECTION_HEADING_RE = /(?:who\s+should\s+(?:see|watch)|what\s+to\s+expect\s+(?:at|from)|what\s+(?:audiences|theatregoers|theatergoers)\s+are\s+saying|good\s+to\s+know|should\s+you\s+(?:see|go))\b/i;
+
+/**
+ * Does `quote` sit inside a service-journalism section of `fullText`? True
+ * when one of those headings occurs within 1500 chars before the quote.
+ */
+function isInServiceSection(quote, fullText) {
+  if (!quote || !fullText || typeof quote !== 'string' || typeof fullText !== 'string') return false;
+  const norm = (t) => t.replace(/[\u2018\u2019\u201c\u201d'"]/g, '').replace(/\s+/g, ' ');
+  const text = norm(fullText);
+  const at = text.indexOf(norm(quote).trim());
+  if (at < 0) return false;
+  return SERVICE_SECTION_HEADING_RE.test(text.slice(Math.max(0, at - 1500), at));
+}
+
 function isPromoTeaser(excerpt) {
   if (!excerpt || typeof excerpt !== 'string') return false;
   return PROMO_TEASER_PATTERNS.some(re => re.test(excerpt));
@@ -609,6 +629,8 @@ module.exports = {
   isInternalNote,
   hasCopyrightChrome,
   isPromoTeaser,
+  isInServiceSection,
+  SERVICE_SECTION_HEADING_RE,
   PROMO_TEASER_PATTERNS,
   isOffTopicExcerpt,
   COPYRIGHT_CHROME_PATTERNS,

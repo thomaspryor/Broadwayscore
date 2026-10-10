@@ -24,6 +24,7 @@ const {
   hasCopyrightChrome,
   isOffTopicExcerpt,
   isPromoTeaser,
+  isInServiceSection,
   isBadCandidateLength,
   MIN_QUOTE_LENGTH,
   MAX_QUOTE_LENGTH,
@@ -612,5 +613,23 @@ describe('isBadCandidateLength', () => {
   test('empty/null-ish input is not flagged as a length problem (caller rejects it earlier)', () => {
     assert.strictEqual(isBadCandidateLength(''), false);
     assert.strictEqual(isBadCandidateLength(null), false);
+  });
+});
+
+describe('isInServiceSection (BRO-4973)', () => {
+  const body = 'Haddad’s play is intimate and engaging. As it traces parallel lives, Good Time Charlie is a flawed but heartfelt family love letter. '
+    + 'What audiences are saying about Good Time Charlie Theatregoers expressed mixed reactions. '
+    + 'Who should see Good Time Charlie Fans of Haddad’s earlier work will be keen. The family play is a staple of American theatre. Audiences who appreciate the genre will want to see it.';
+
+  test('flags the GTC NYTG boilerplate sentence', () => {
+    assert.strictEqual(isInServiceSection('The family play is a staple of American theatre.', body), true);
+  });
+  test('does not flag the critic verdict line', () => {
+    assert.strictEqual(isInServiceSection('Good Time Charlie is a flawed but heartfelt family love letter.', body), false);
+  });
+  test('quote not in text or empty input is not flagged', () => {
+    assert.strictEqual(isInServiceSection('absent sentence here', body), false);
+    assert.strictEqual(isInServiceSection('', body), false);
+    assert.strictEqual(isInServiceSection('x', null), false);
   });
 });
