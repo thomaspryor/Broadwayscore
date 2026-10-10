@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-10T18:10:39.726Z",
+  "generated": "2026-10-10T19:03:15.325Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 23,
+  "count": 25,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -64,6 +64,13 @@
       "loserFile": "newsday--unknown.json",
       "targetFile": "newsday--linda-winer.json",
       "reason": "orphaned-duplicate-heal: newsday--linda-winer.json was flagged invalid after newsday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "mary-poppins-west-end-2019",
+      "loserFile": "london-theatre--unknown.json",
+      "targetFile": "london-theatre--mark-shenton.json",
+      "reason": "orphaned-duplicate-heal: london-theatre--mark-shenton.json was flagged invalid after london-theatre--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -162,6 +169,13 @@
       "loserFile": "daily-mail--georgina-brown.json",
       "targetFile": "daily-mail--joanna-crawley.json",
       "reason": "orphaned-duplicate-heal: daily-mail--joanna-crawley.json was flagged invalid after daily-mail--georgina-brown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "translations-west-end-2019",
+      "loserFile": "timeout-london--unknown.json",
+      "targetFile": "timeout-london--tom-wicker.json",
+      "reason": "orphaned-duplicate-heal: timeout-london--tom-wicker.json was flagged invalid after timeout-london--unknown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]

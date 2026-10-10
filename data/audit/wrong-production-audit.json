@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T18:16:05.893Z",
+  "timestamp": "2026-10-10T19:08:52.672Z",
   "stats": {
-    "totalReviews": 54337,
-    "alreadyFlagged": 19863,
-    "dateGuardCatches": 272,
-    "directorMismatch": 1698,
-    "tvFilmSignals": 1569,
-    "londonSignals": 1790,
-    "offBroadwaySignals": 513,
-    "yearMismatch": 132,
-    "noPublishDate": 6069
+    "totalReviews": 54532,
+    "alreadyFlagged": 19941,
+    "dateGuardCatches": 271,
+    "directorMismatch": 1658,
+    "tvFilmSignals": 1522,
+    "londonSignals": 1799,
+    "offBroadwaySignals": 504,
+    "yearMismatch": 129,
+    "noPublishDate": 6161
   },
   "findings": [
     {
@@ -1156,20 +1156,6 @@
       ]
     },
     {
-      "showId": "a-walk-on-the-moon-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 75,
-      "publishDate": "2026-06-30",
-      "url": "https://t2conline.com/a-walk-on-the-moon-explores-love-liberation-and-longing-during-a-summer-that-changed-america/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "a-woman-among-women-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 44,
@@ -1948,20 +1934,6 @@
       ]
     },
     {
-      "showId": "allegiance-2015",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 89,
-      "publishDate": "November 16th, 2015",
-      "url": "http://t2conline.com/allegiance-so-timely-flys-higher/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "allegra-west-end-2026",
       "file": "theupcoming--jim-compton.json",
       "score": 78,
@@ -2385,7 +2357,7 @@
     {
       "showId": "an-american-daughter-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 45,
+      "score": 46,
       "publishDate": "2026-08-12",
       "url": "https://t2conline.com/an-american-daughter-a-political-drama-that-hasnt-quite-survived-the-politics/",
       "findings": [
@@ -2866,20 +2838,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george c. wolfe\" from angels-in-america-perestroika-1993"
-        }
-      ]
-    },
-    {
-      "showId": "animal-wisdom-off-broadway-2022",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 91,
-      "publishDate": "2026-05-20",
-      "url": "https://t2conline.com/heather-christians-animal-wisdom-turns-signature-theatre-into-something-holy/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -3784,25 +3742,6 @@
       ]
     },
     {
-      "showId": "becoming-hamlet-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 53,
-      "publishDate": "2026-09-11",
-      "url": "https://t2conline.com/becoming-hamlet-to-participate-or-not-to-participate-that-is-the-question/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "beetlejuice-tour-2022",
       "file": "broadwayworld--kelsey-lawler.json",
       "score": 87,
@@ -4650,20 +4589,6 @@
       ]
     },
     {
-      "showId": "bigfoot-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 89,
-      "publishDate": "2026-03-02",
-      "url": "https://t2conline.com/bigfoot-camp-conspiracies-and-a-surprisingly-sharp-political-satire/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "birthright-off-broadway-2026",
       "file": "newyorker--emily-nussbaum.json",
       "score": 67,
@@ -5140,25 +5065,6 @@
       ]
     },
     {
-      "showId": "broadway-magic-hour-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 91,
-      "publishDate": "2026-09-28",
-      "url": "https://t2conline.com/broadway-magic-hour-conjures-something-rarer-than-illusion-shared-joy/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
       "showId": "buena-vista-social-club-2025",
       "file": "nytg--gillian-russo.json",
       "score": 78,
@@ -5546,20 +5452,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "burn-this-2019",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 72,
-      "publishDate": "April 17th, 2019",
-      "url": "https://t2conline.com/burn-this-has-star-wattage/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -6846,20 +6738,6 @@
       ]
     },
     {
-      "showId": "cats-the-jellicle-ball-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 79,
-      "publishDate": "2026-04-10",
-      "url": "https://t2conline.com/cats-the-jellicle-ball-roars-back-reinvented-rewired-and-voguing-its-way-into-broadway-history/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "chicagotribune--chris-jones.json",
       "score": 85,
@@ -7448,20 +7326,6 @@
       ]
     },
     {
-      "showId": "charlie-and-the-chocolate-factory-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 45,
-      "publishDate": "April 27, 2017",
-      "url": "https://t2conline.com/she-says-charlie-and-the-chocolate-factory-misses-the-oomph-factor/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "chess-2025",
       "file": "nysr--melissa-rose-bernardo.json",
       "score": 79,
@@ -7775,20 +7639,6 @@
       ]
     },
     {
-      "showId": "children-of-a-lesser-god-2018",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 61,
-      "publishDate": null,
-      "url": "https://t2conline.com/children-of-a-lesser-god-explores-the-sounds-of-silence/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "china-doll-2015",
       "file": "variety--marilyn-stasio.json",
       "score": 41,
@@ -7855,25 +7705,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (2x) more than 2019 (0x). 2026 matches production: choir-boy-off-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "choir-boy-2019",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 90,
-      "publishDate": "January 13th, 2019",
-      "url": "https://t2conline.com/choir-boy-grabs-you-musically-and-emotionally/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (5x) more than 2019 (0x). 2026 matches production: choir-boy-off-west-end-2026"
         }
       ]
     },
@@ -8377,20 +8208,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
-        }
-      ]
-    },
-    {
-      "showId": "come-from-away-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 89,
-      "publishDate": "March 18th, 2017",
-      "url": "https://t2conline.com/she-says-come-from-away-is-where-humanity-is-redeemed/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -9811,6 +9628,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-west-end-2019",
+      "file": "london-box-office--john-yap.json",
+      "score": 99,
+      "publishDate": "2021-11-19",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-dear-evan-hansen",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2019 (0x). 2016 matches production: dear-evan-hansen-2016"
         }
       ]
     },
@@ -12018,20 +11849,6 @@
       ]
     },
     {
-      "showId": "escape-to-margaritaville-2018",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 49,
-      "publishDate": "March 18, 2018",
-      "url": "https://t2conline.com/she-says-escape-or-run-to-margaritaville/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "eurydice-off-broadway-2026",
       "file": "playbill--diep-tran.json",
       "score": null,
@@ -13749,20 +13566,6 @@
       ]
     },
     {
-      "showId": "fool-for-love-2015",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 92,
-      "publishDate": "October 12th, 2015",
-      "url": "http://t2conline.com/fool-for-love-the-incarnation-of-twin-flames/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
       "file": "amny--matt-windman.json",
       "score": 77,
@@ -14194,20 +13997,6 @@
       ]
     },
     {
-      "showId": "gary-a-sequel-to-titus-andronicus-2019",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 60,
-      "publishDate": "April 27th, 2019",
-      "url": "https://t2conline.com/gary-a-sequel-to-titus-andronicus-has-some-wonderful-tidbits-if-you-can-get-past-what-is-suppose-to-pass-as-humor/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "ghetto-klown-2011",
       "file": "variety--marilyn-stasio.json",
       "score": 72,
@@ -14593,6 +14382,7 @@
     {
       "showId": "girl-from-the-north-country-west-end-2019",
       "file": "timeout-london--tom-wicker.json",
+      "score": 88,
       "publishDate": "2019-12-17",
       "url": null,
       "findings": [
@@ -15366,7 +15156,7 @@
     {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-01-13",
       "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/",
       "findings": [
@@ -15379,11 +15169,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -15450,20 +15235,6 @@
       "score": 78,
       "publishDate": "April 3, 2025",
       "url": "https://www.thewrap.com/good-night-and-good-luck-broadway-review-george-clooney/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "good-night-and-good-luck-2025",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 93,
-      "publishDate": "April 4, 2025",
-      "url": "https://t2conline.com/good-night-and-good-luck-george-clooney-reignites-the-fight-for-truth-on-broadway/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -15642,20 +15413,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "groundhog-day-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 46,
-      "publishDate": null,
-      "url": "https://t2conline.com/she-says-andy-karl-makes-groundhog-day/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -16648,20 +16405,6 @@
       ]
     },
     {
-      "showId": "harmony-2023",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 90,
-      "publishDate": null,
-      "url": "https://t2conline.com/barry-manilows-harmony-satisfies-as-it-remembers-the-past/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "harry-clarke-west-end-2024",
       "file": "daily-mail--patrick-marmion.json",
       "score": 16,
@@ -17497,20 +17240,6 @@
       ]
     },
     {
-      "showId": "heisenberg-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 19,
-      "publishDate": "October 16th, 2016",
-      "url": "https://t2conline.com/heisenberg-on-broadway-brings-out-bad-vocal-inflections/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "hello-dolly-1978",
       "file": "theatermania--pete-hempstead.json",
       "score": 86,
@@ -17535,20 +17264,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "hello-dolly-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 92,
-      "publishDate": "April 27th, 2017",
-      "url": "https://t2conline.com/she-say-bette-midler-and-hello-dolly-is-divine/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -18686,20 +18401,6 @@
     },
     {
       "showId": "in-transit-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 45,
-      "publishDate": null,
-      "url": "https://t2conline.com/in-transit-where-a-cappella-becomes-monotonous/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "in-transit-2016",
       "file": "variety--frank-rizzo.json",
       "score": 79,
       "publishDate": "December 11th, 2016",
@@ -18727,20 +18428,6 @@
       ]
     },
     {
-      "showId": "indecent-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 79,
-      "publishDate": "April 18th, 2017",
-      "url": "http://t2conline.com/she-says-indecent-one-of-the-best-plays-of-the-year/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "ink-2019",
       "file": "nysr--steven-suskin.json",
       "score": 96,
@@ -18751,20 +18438,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "ink-2019",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 78,
-      "publishDate": "May 4th, 2019",
-      "url": "https://t2conline.com/ink-an-intelligent-person-play/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -21925,20 +21598,6 @@
     },
     {
       "showId": "kenrex-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 78,
-      "publishDate": "2026-04-27",
-      "url": "https://t2conline.com/mob-silence-kenrex-turns-true-crime-into-a-chilling-act-of-collective-complicity/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "kenrex-off-broadway-2026",
       "file": "times-square-chronicles--suzannah-bowling.json",
       "publishDate": "2026-04-27",
       "url": "https://t2conline.com/mob-silence-kenrex-turns-true-crime-into-a-chilling-act-of-collective-complicity/",
@@ -22035,20 +21694,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
-        }
-      ]
-    },
-    {
-      "showId": "king-charles-iii-2015",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 48,
-      "publishDate": "November 5th, 2015",
-      "url": "https://t2conline.com/king-charles-iii-the-dr-seuss-of-plays/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -22278,20 +21923,6 @@
       "score": 44,
       "publishDate": "2019-03-15",
       "url": "https://www.nj.com/entertainment/2019/03/kiss-me-kate-never-gets-out-of-first-gear-but-be-more-chill-has-charm-broadway-reviews.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "kiss-me-kate-2019",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 72,
-      "publishDate": "March 23rd, 2019",
-      "url": "https://t2conline.com/kiss-me-kate-where-the-hell-cat-has-been-tamed-into-a-beautiful-sophisticated-songbird/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -22532,6 +22163,7 @@
     {
       "showId": "leopoldstadt-west-end-2020",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 88,
       "publishDate": "2020-02-12",
       "url": null,
       "findings": [
@@ -22633,25 +22265,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"howard davies\" from les-liaisons-dangereuses-1987"
-        }
-      ]
-    },
-    {
-      "showId": "les-liaisons-dangereuses-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 25,
-      "publishDate": "November 3, 2016",
-      "url": "https://t2conline.com/liev-schrieber-in-les-liaisons-dangereuses-is-anemic/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (5x) more than 2016 (0x). 2026 matches production: les-liaisons-dangereuses-west-end-2026"
         }
       ]
     },
@@ -23559,19 +23172,6 @@
     },
     {
       "showId": "little-shop-of-horrors-off-broadway-2019",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "publishDate": "2026-08-04",
-      "url": "https://t2conline.com/theatre-news-little-shop-of-horrors-ragtime-the-whoopi-monologues-cats-the-jellicle-ball-hadestown-and-just-in-time/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "little-shop-of-horrors-off-broadway-2019",
       "file": "variety--ad-amorosi.json",
       "score": 88,
       "publishDate": "2019-10-18",
@@ -23740,6 +23340,25 @@
     },
     {
       "showId": "lungs-west-end-2019",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 81,
+      "publishDate": "2019-10-25",
+      "url": "https://www.ft.com/content/d999fc08-f650-11e9-a79c-bc9acae3b654",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "lungs-west-end-2019",
       "file": "guardian--arifa-akbar.json",
       "score": 82,
       "publishDate": "2019-10-20",
@@ -23749,6 +23368,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "lungs-west-end-2019",
+      "file": "nytimes--matt-wolf.json",
+      "score": 88,
+      "publishDate": "2019-11-07",
+      "url": "https://www.nytimes.com/2019/11/07/theater/lungs-old-vic-claire-foy-matt-smith.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -23965,6 +23603,7 @@
     {
       "showId": "magic-goes-wrong-west-end-2019",
       "file": "the-jewish-chronicle--john-nathan.json",
+      "score": 76,
       "publishDate": "2020-01-24",
       "url": null,
       "findings": [
@@ -23978,6 +23617,7 @@
     {
       "showId": "magic-goes-wrong-west-end-2019",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 55,
       "publishDate": "2020-01-10",
       "url": "https://www.timeout.com/london/theatre/magic-goes-wrong-review",
       "findings": [
@@ -23991,6 +23631,7 @@
     {
       "showId": "magic-goes-wrong-west-end-2019",
       "file": "whatsonstage--alex-wood.json",
+      "score": 58,
       "publishDate": "2020-01-09",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/magic-goes-wrong-vaudeville-mischief_50661.html",
       "findings": [
@@ -26781,20 +26422,6 @@
       ]
     },
     {
-      "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 76,
-      "publishDate": "December 11th, 2016",
-      "url": "https://t2conline.com/josh-groban-shines-in-the-visually-stunning-natasha-pierre-the-great-comet-of-1812/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "new-born-off-broadway-2026",
       "file": "nytimes--laura-collins-hughes.json",
       "score": 81,
@@ -26861,25 +26488,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "nicole-travolta-is-doing-alright-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 84,
-      "publishDate": "2026-04-06",
-      "url": "https://t2conline.com/nicole-travolta-is-doing-alright-and-owning-every-messy-second-of-it/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
@@ -28582,30 +28190,6 @@
     },
     {
       "showId": "paranormal-activity-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 60,
-      "publishDate": "2026-08-26",
-      "url": "https://t2conline.com/paranormal-activity-plenty-of-things-go-bump-in-the-night-including-the-plot/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-2026",
       "file": "vulture--jackson-mchenry.json",
       "score": 71,
       "publishDate": "2026-08-25T20:51:56-04:00",
@@ -30027,25 +29611,6 @@
       ]
     },
     {
-      "showId": "pre-existing-condition-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 63,
-      "publishDate": "2026-09-15",
-      "url": "https://t2conline.com/pre-existing-condition-lupita-nyongo-gives-voice-to-what-the-play-leaves-unsaid/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
-        }
-      ]
-    },
-    {
       "showId": "present-laughter-2010",
       "file": "nytimes--ben-brantley.json",
       "score": 84,
@@ -30309,20 +29874,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
-        }
-      ]
-    },
-    {
-      "showId": "prince-of-broadway-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 74,
-      "publishDate": "August 27th, 2017",
-      "url": "https://t2conline.com/the-prince-of-broadway-misses-showcasing-its-principality/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -31561,25 +31112,6 @@
       ]
     },
     {
-      "showId": "safe-house-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 60,
-      "publishDate": "2026-09-11T12:19:28-04:00",
-      "url": "https://t2conline.com/safe-house-when-protection-becomes-another-kind-of-prison/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "saint-joan-2018",
       "file": "ew--leah-greenblatt.json",
       "score": 73,
@@ -31839,20 +31371,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "she-loves-me-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 90,
-      "publishDate": "March 17th, 2016",
-      "url": "https://t2conline.com/she-loves-me-grand-knowing-you-and-seeing-you-again/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -32383,20 +31901,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from skylight-1996"
-        }
-      ]
-    },
-    {
-      "showId": "slam-frank-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 78,
-      "publishDate": "2026-10-05",
-      "url": "https://t2conline.com/slam-frank-brilliant-offensive-confusing-and-impossible-to-stop-talking-about/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -33196,61 +32700,14 @@
     },
     {
       "showId": "spamalot-tour-2025",
-      "file": "albany-times-union--katherine-kiessling.json",
-      "score": 75,
-      "publishDate": "2026-01-07",
-      "url": "https://www.timesunion.com/theater/article/spamalot-review-proctors-21268648.php",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "around-the-town-chicago--unknown.json",
-      "score": 91,
-      "publishDate": null,
-      "url": "https://aroundthetownchicago.com/theatre-reviews/monty-pythons-spamalot-milwaukee-reviewed-by-ryan-kreiter/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
       "file": "broadwayworld--aa-cristi.json",
       "publishDate": "2026-07-17",
       "url": "https://www.broadwayworld.com/kansas-city/article/MONTY-PYTHONS-SPAMALOT-to-Return-to-Starlight-Theatre-in-Kansas-City-20260717",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        },
-        {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2005 (2x) more than 2025 (0x). 2005 matches production: spamalot-2005"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "chicago-reader--justin-hayford.json",
-      "score": 78,
-      "publishDate": "2026-05-21",
-      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/spamalot-broadway-in-chicago/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
         }
       ]
     },
@@ -33264,7 +32721,21 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "funfandomblog--audra-miller.json",
+      "score": 88,
+      "publishDate": "2026-07-20",
+      "url": "https://funfandomblog.wordpress.com/2026/07/20/spamalot-mini-book-review-and-national-tour-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         }
       ]
     },
@@ -33278,7 +32749,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -33294,11 +32765,6 @@
       "publishDate": "2026-05-11",
       "url": "https://www.laduenews.com/arts-and-culture/spamalot-fox-theatre-film-monty-python-and-the-holy-grail-stl-st-louis-performance-play/article_eb5232ee-3ed4-48f2-b56e-554bec8b0a1b.html",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -33321,7 +32787,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         }
       ]
     },
@@ -33335,7 +32801,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
         },
         {
           "type": "YEAR_MISMATCH",
@@ -33352,130 +32818,9 @@
       "url": "https://www.twincities.com/2026/06/11/theater-review-spamalot-at-the-ordway-might-be-the-funny-fluff-you-need/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        },
-        {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "rachelweinbergreviews--rachelrweinberg.json",
-      "score": 90,
-      "publishDate": "2026-06-01",
-      "url": "https://rachelweinbergreviews.com/2026/06/01/review-monty-pythons-spamalot-presented-by-broadway-in-chicago/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "roc-city-mag--david-andreatta.json",
-      "score": 78,
-      "publishDate": "2026-01-14",
-      "url": "https://www.roccitymag.com/arts-entertainment/theater/review-monty-pythons-spamalot-is-not-dead-yet/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "san-jose-mercury-news--jim-harrington.json",
-      "score": 90,
-      "publishDate": "2026-03-07",
-      "url": "https://www.mercurynews.com/2026/03/06/review-new-spamalot-broadway-tour-proves-to-be-a-huge-winner/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "splash-magazines--beverly-cohn.json",
-      "score": 89,
-      "publishDate": "2026-03-31",
-      "url": "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "splash-magazines--susan-lillis.json",
-      "score": 91,
-      "publishDate": "2026-05-21",
-      "url": "https://splashmags.com/2026/05/gallop-up-to-the-cibc-theatre-laugh-your-coconuts-off-at-tony-best-musical-monty-pythons-spamalot/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "the-spokesman-review--azaria-podplesky.json",
-      "publishDate": "2026-08-20",
-      "url": "https://www.spokesman.com/stories/2026/aug/20/actor-major-attaway-leads-seriously-silly-spamalot/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-tour-2025",
-      "file": "trinitytripod--unknown.json",
-      "score": 74,
-      "publishDate": "2025-12-11",
-      "url": "https://trinitytripod.com/arts/theatre-review-the-national-tour-of-spamalot-brings-nostalgia-and-whimsy-aplenty-to-the-bushnell/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
-        }
-      ]
-    },
-    {
-      "showId": "spellbound-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 91,
-      "publishDate": "2026-09-05",
-      "url": "https://t2conline.com/spellbound-indeed-suhani-shah-reads-minds-and-steals-hearts-at-soho-playhouse/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -34922,11 +34267,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -35716,25 +35056,6 @@
       ]
     },
     {
-      "showId": "the-balusters-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 90,
-      "publishDate": "2026-04-22",
-      "url": "https://t2conline.com/the-balusters-polite-society-brutal-truths/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"classic stage\""
-        }
-      ]
-    },
-    {
       "showId": "the-bands-visit-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 93,
@@ -36502,25 +35823,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-children-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 78,
-      "publishDate": "December 17th, 2017",
-      "url": "https://t2conline.com/she-says-the-children-an-apocalyptic-premonition-into-the-future/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2017 (0x). 2026 matches production: the-children-off-west-end-2026"
         }
       ]
     },
@@ -37958,20 +37260,6 @@
     },
     {
       "showId": "the-father-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 90,
-      "publishDate": "April 16th, 2016",
-      "url": "https://t2conline.com/frank-langella-allows-you-to-peer-inside-a-failing-mind-in-the-father/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-father-2016",
       "file": "variety--marilyn-stasio.json",
       "score": 81,
       "publishDate": "April 14, 2016",
@@ -37995,20 +37283,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-2018",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 89,
-      "publishDate": "October 30th, 2018",
-      "url": "https://t2conline.com/she-says-jez-butterworths-the-ferryman-grabs-you-and-lets-you-know-how-deep-seeded-hate-sprouts/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -38069,25 +37343,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-front-page-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 74,
-      "publishDate": "October 24th, 2016",
-      "url": "https://t2conline.com/the-front-page-is-above-the-fold/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (6x) more than 2016 (0x). 2026 matches production: the-front-page-regional-2026"
         }
       ]
     },
@@ -39715,20 +38970,6 @@
     },
     {
       "showId": "the-humans-2016",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 39,
-      "publishDate": "March 6th, 2016",
-      "url": "https://t2conline.com/the-humans-a-broadway-character-study/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "the-humans-2016",
       "file": "vulture--jesse-green.json",
       "score": 91,
       "publishDate": "2016-02-18",
@@ -39906,25 +39147,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2026 (0x). 2001 matches production: the-invention-of-love-2001"
-        }
-      ]
-    },
-    {
-      "showId": "the-invention-of-love-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 69,
-      "publishDate": "2026-09-22",
-      "url": "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
@@ -42415,25 +41637,6 @@
       ]
     },
     {
-      "showId": "the-present-2017",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 67,
-      "publishDate": "2017-01-13",
-      "url": "http://t2conline.com/even-cate-blanchett-cant-save-the-present/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new world stages\""
-        }
-      ]
-    },
-    {
       "showId": "the-price-2017",
       "file": "out-magazine--michael-musto.json",
       "score": 80,
@@ -43700,20 +42903,6 @@
       ]
     },
     {
-      "showId": "the-waverly-gallery-2018",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 87,
-      "publishDate": null,
-      "url": "https://t2conline.com/the-waverly-gallery-is-chilling-look-at-dementia/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "the-wedding-singer-2006",
       "file": "variety--charles-isherwood.json",
       "score": 66,
@@ -43780,20 +42969,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "the-whoopi-monologues-off-broadway-2026",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 92,
-      "publishDate": "2026-07-30",
-      "url": "https://t2conline.com/the-whoopi-monologues-review-five-extraordinary-women-prove-whoopi-goldbergs-words-are-timeless/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -44017,20 +43192,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 93,
-      "publishDate": null,
-      "url": "https://t2conline.com/three-tall-women-a-masterclass-in-acting/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -44368,20 +43529,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1547d before show (2022-03-31 vs 2026-06-25)"
-        }
-      ]
-    },
-    {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 82,
-      "publishDate": "2023-02-07",
-      "url": "https://www.timeout.com/london/theatre/to-kill-a-mockingbird-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1234d before show (2023-02-07 vs 2026-06-25)"
         }
       ]
     },
@@ -45525,6 +44672,7 @@
     {
       "showId": "uncle-vanya-west-end-2020",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 90,
       "publishDate": "2020-01-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/uncle-vanya-review-harold-pinter-theatre-toby-jones-stunning/",
       "findings": [
@@ -45538,6 +44686,7 @@
     {
       "showId": "uncle-vanya-west-end-2020",
       "file": "thestage--natasha-tripney.json",
+      "score": 86,
       "publishDate": "2020-01-24",
       "url": "https://www.thestage.co.uk/reviews/uncle-vanya-review-at-the-harold-pinter-theatre-london--toby-jones-stars-in-a-polished-and-affecting-adaptation",
       "findings": [
@@ -46261,20 +45410,6 @@
     },
     {
       "showId": "water-for-elephants-2024",
-      "file": "nypost--johnny-oleksinski.json",
-      "score": 51,
-      "publishDate": "March 21, 2024",
-      "url": "https://nypost.com/2024/03/21/entertainment/water-for-elephants-review-acrobats-cant-save-broadway-circus/?utm_source=twitter&utm_campaign=nypost&utm_medium=social",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from water-for-elephants-tour-2025"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-2024",
       "file": "variety--aramide-tinubu.json",
       "score": 88,
       "publishDate": "March 21, 2024",
@@ -46284,392 +45419,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-2024",
-      "file": "washpost--elisabeth-vincentelli.json",
-      "score": 77,
-      "publishDate": "March 21, 2024",
-      "url": "https://www.washingtonpost.com/entertainment/theater/2024/03/21/water-for-elephants-broadway-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from water-for-elephants-tour-2025"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "albany-times-union--katherine-kiessling.json",
-      "score": 78,
-      "publishDate": "2026-04-08",
-      "url": "https://www.timesunion.com/theater/article/water-for-elephants-review-proctors-schenectady-22191760.php",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--christina-mancuso.json",
-      "score": 57,
-      "publishDate": "2026-06-10",
-      "url": "https://www.broadwayworld.com/columbus/article/Review-WATER-FOR-ELEPHANTS-at-Ohio-Theatre-A-Spectacle-in-Search-of-a-Soul-20260610",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--jeffrey-kare.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/raleigh/article/Review-WATER-FOR-ELEPHANTS-National-Tour-at-Durham-Performing-Arts-Center-20251217",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--jonathan-netek.json",
-      "score": 81,
-      "publishDate": "2025-01-30",
-      "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 240d before show (2025-01-30 vs 2025-09-27)"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--marie-reiter.json",
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/louisville/article/Review-WATER-FOR-ELEPHANTS-Presented-by-Broadway-Across-America-at-Kentucky-Performing-Arts-20251017",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--michael-rabice.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/buffalo/article/Review-WATER-FOR-ELEPHANTS-at-Sheas-Buffalo-Theatre-20260415",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--rachel-weinberg.json",
-      "score": 76,
-      "publishDate": "2026-06-25",
-      "url": "https://www.broadwayworld.com/chicago/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-In-Chicago-20260625",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--scott-rawson.json",
-      "score": 76,
-      "publishDate": "2026-06-17",
-      "url": "https://www.broadwayworld.com/madison/article/Review-WATER-FOR-ELEPHANTS-at-The-Overture-Center-20260617",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "broadwayworld--taylor-clemons.json",
-      "score": 78,
-      "publishDate": "2025-10-17",
-      "url": "https://www.broadwayworld.com/louisville/article/Review-WATER-FOR-ELEPHANTS-Presented-by-Broadway-Across-America-at-Kentucky-Performing-Arts-20251017",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "chicago-reader--kimzyn-campbell.json",
-      "score": 88,
-      "publishDate": "2026-06-26",
-      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/water-for-elephants-broadway-in-chicago/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 66,
-      "publishDate": "2026-06-25",
-      "url": "https://www.chicagotribune.com/2026/06/25/review-water-elephants-chicago/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "dc-theater-arts--constance-beulah.json",
-      "score": 79,
-      "publishDate": "2025-10-02",
-      "url": "https://dctheaterarts.org/2025/10/02/the-awe-and-wonder-of-water-for-elephants-at-the-hippodrome-in-baltimore/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "hartford-courant--christopher-arnott.json",
-      "score": 88,
-      "publishDate": "2026-06-04",
-      "url": "https://www.courant.com/2026/06/04/theater-review-a-gritty-and-moody-water-for-elephants-produces-magic-at-the-bushnell/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "latimes--jenelle-riley.json",
-      "publishDate": "2026-09-14",
-      "url": "https://www.latimes.com/entertainment-arts/story/2026-09-14/water-for-elephants-at-pantages-is-circus-in-play",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "ludwig-van-toronto--paula-citron.json",
-      "score": 93,
-      "publishDate": "2025-10-08T10:39:26-04:00",
-      "url": "https://www.ludwig-van.com/toronto/2026/07/14/scrutiny-mirvishs-water-elephants-marvel-creative-staging-design-direction/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "rachelweinbergreviews--rachelrweinberg.json",
-      "score": 75,
-      "publishDate": "2026-06-25",
-      "url": "https://rachelweinbergreviews.com/2026/06/25/review-water-for-elephants-musical-tour-in-chicago-offers-dazzling-circus-tricks/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "revue--marin-heinritz.json",
-      "score": 92,
-      "publishDate": "2025-10-10",
-      "url": "https://revuewm.com/arts/review-water-for-elephants-is-a-spectacular-balancing-act-of-love-and-wonder",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "san-diego-union-tribune--pam-kragen.json",
-      "score": 74,
-      "publishDate": "2026-08-20",
-      "url": "https://www.sandiegouniontribune.com/2026/08/20/review-water-for-elephants-musical-delivers-on-spectacle/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "south-florida-sun-sentinel--rod-stafford-hagwood.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.sun-sentinel.com/2025/11/13/review-how-broadway-tour-of-water-for-elephants-at-broward-center-sticks-its-landing/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "splash-magazines--susan-lillis.json",
-      "score": 81,
-      "publishDate": "2026-06-27",
-      "url": "https://splashmags.com/2026/06/water-for-elephants-at-the-nederlander-theatre-is-an-astounding-wonderment/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "stage-raw--steven-morris.json",
-      "score": 76,
-      "publishDate": "2026-09-16",
-      "url": "https://stageraw.com/stage-raw-review-water-for-elephants/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "stagescenela--unknown.json",
-      "score": 90,
-      "publishDate": "2026-09-10",
-      "url": "https://stagescenela.com/2026/09/water-for-elephants/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "the-cap-times--lindsay-christians.json",
-      "score": 74,
-      "publishDate": "2026-06-18",
-      "url": "https://captimes.com/entertainment/arts-and-theatre/souls-and-songs-take-flight-in-circus-musical-water-for-elephants/article_babf05f8-a5af-4b3c-8ae0-2db1c1f8c721.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "timesofsandiego--drew-sitton.json",
-      "score": 79,
-      "publishDate": "2026-08-20",
-      "url": "https://timesofsandiego.com/arts/2026/08/20/musical-tour-circus-water-for-elephants/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "wkrn--colleen-guerry.json",
-      "score": 82,
-      "publishDate": "2026-05-14",
-      "url": "https://www.wkrn.com/news/local-news/nashville/water-for-elephants-fills-tpac-with-music-circus-spectacles/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
-        }
-      ]
-    },
-    {
-      "showId": "water-for-elephants-tour-2025",
-      "file": "wypr--rob-sivak.json",
-      "score": 77,
-      "publishDate": "2025-10-08T10:39:26-04:00",
-      "url": "https://www.wypr.org/show/midday/2025-10-01/rousucks-review-water-for-elephants-at-the-hippodrome",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
         }
       ]
     },
@@ -48841,7 +47590,36 @@
     },
     {
       "showId": "a-taste-of-honey-west-end-2019",
+      "file": "london-box-office--stuart-king.json",
+      "score": 82,
+      "publishDate": "2019-12-06",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-a-taste-of-honey",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-taste-of-honey-west-end-2019",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 82,
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/review-a-taste-of-honey-at-trafalgar-studios",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "a-taste-of-honey-west-end-2019",
       "file": "timeout-london--rosemary-waugh.json",
+      "score": 77,
       "publishDate": "2019-12-10",
       "url": "https://www.timeout.com/london/theatre/a-taste-of-honey-review",
       "findings": [
@@ -54682,6 +53460,20 @@
       ]
     },
     {
+      "showId": "death-of-a-salesman-west-end-2019",
+      "file": "british-theatre--paul-t-davies.json",
+      "score": 96,
+      "publishDate": "2019-11-05",
+      "url": "https://www.britishtheatre.com/posts/review-death-of-a-salesman-piccadilly-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "death-of-england-delroy-west-end-2020",
       "file": "artsdesk--matt-wolf.json",
       "score": 78,
@@ -56686,6 +55478,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "girl-from-the-north-country-west-end-2019",
+      "file": "london-box-office--josephine-balfour-oatts.json",
+      "score": 79,
+      "publishDate": "2019-12-20",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-2-girl-from-the-north-country",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -61718,6 +60524,7 @@
     {
       "showId": "leopoldstadt-west-end-2020",
       "file": "london-theatre--mark-shenton.json",
+      "score": 86,
       "publishDate": "2020-02-13",
       "url": null,
       "findings": [
@@ -61731,6 +60538,7 @@
     {
       "showId": "leopoldstadt-west-end-2020",
       "file": "nytimes--ben-brantley.json",
+      "score": 87,
       "publishDate": "2020-02-12",
       "url": null,
       "findings": [
@@ -62303,6 +61111,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
+        }
+      ]
+    },
+    {
+      "showId": "lungs-west-end-2019",
+      "file": "artsdesk--sam-marlowe.json",
+      "score": 55,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/lungs-old-vic-review-deluxe-casting-and-slick-delivery",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "lungs-west-end-2019",
+      "file": "british-theatre--philip-fisher.json",
+      "score": 88,
+      "publishDate": "2019-10-20",
+      "url": "https://www.britishtheatreguide.info/reviews/lungs-old-vic-18313",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -63346,6 +62182,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "mary-poppins-west-end-2019",
+      "file": "british-theatre--mark-ludmon.json",
+      "score": 88,
+      "publishDate": "2019-11-15",
+      "url": "https://www.britishtheatre.com/posts/review-mary-poppins-prince-edward-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Contains TV/film keyword: \"episode 3\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -67310,6 +66165,7 @@
     {
       "showId": "scenes-with-girls-west-end-2020",
       "file": "timeout-london--rosemary-waugh.json",
+      "score": 89,
       "publishDate": "2020-01-22",
       "url": "https://www.timeout.com/london/theatre/scenes-with-girls-review",
       "findings": [
@@ -74272,6 +73128,7 @@
     {
       "showId": "the-prince-of-egypt-west-end-2020",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 75,
       "publishDate": "2020-02-25",
       "url": null,
       "findings": [
@@ -75230,6 +74087,7 @@
     {
       "showId": "the-visit-or-the-old-lady-comes-to-call-west-end-2020",
       "file": "artsdesk--matt-wolf.json",
+      "score": 45,
       "publishDate": "2020-02-15",
       "url": null,
       "findings": [
@@ -75882,6 +74740,20 @@
       ]
     },
     {
+      "showId": "three-sisters-west-end-2019",
+      "file": "london-theatre--mark-shenton.json",
+      "score": 82,
+      "publishDate": "2019-12-11",
+      "url": "https://www.londontheatre.co.uk/reviews/review-three-sisters-at-the-national-theatre-lyttelton",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "three-tall-women-2018",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 90,
@@ -76255,6 +75127,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "translations-west-end-2019",
+      "file": "loureviews--louise-penn.json",
+      "score": 88,
+      "publishDate": "2019-10-22",
+      "url": "https://loureviews.blog/2019/10/22/translations-national-theatre-olivier/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -76941,6 +75827,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--jonathan-netek.json",
+      "score": 81,
+      "publishDate": "2025-01-30",
+      "url": "https://www.broadwayworld.com/houston/article/Review-WATER-FOR-ELEPHANTS-at-Broadway-At-The-Hobby-Center-20260128",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 240d before show (2025-01-30 vs 2025-09-27)"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "dc-theater-arts--constance-beulah.json",
+      "score": 79,
+      "publishDate": "2025-10-02",
+      "url": "https://dctheaterarts.org/2025/10/02/the-awe-and-wonder-of-water-for-elephants-at-the-hippodrome-in-baltimore/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
