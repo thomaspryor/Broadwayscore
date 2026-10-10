@@ -859,5 +859,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-10T04:50:40.753Z"
+  },
+  {
+    "conditionKey": "star-band:regressions",
+    "title": "Star-band detector: 85 review(s) flagged for anchored re-score",
+    "description": "{\"unanchored\":78,\"false-truncation\":7} across the whole corpus, by market {\"west-end\":82,\"broadway\":3}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] hope-has-a-happy-meal-west-end-2023/timeout-london--tom-wicker.json 3/5 band 51-70\n- [unanchored] hope-has-a-happy-meal-west-end-2023/broadwayworld--alexander-cohen.json 3/5 band 51-70\n- [unanchored] hope-has-a-happy-meal-west-end-2023/artsdesk--aleks-sierz.json 4/5 band 71-90\n- [unanchored] crazy-for-you-west-end-2023/theatre-weekly--greg-stewart.json 5/5 band 91-100\n- [unanchored] crazy-for-you-west-end-2023/london-theatre--marianka-swain.json 5/5 band 91-100\n- [unanchored] crazy-for-you-west-end-2023/artsdesk--matt-wolf.json 4/5 band 71-90\n- [unanchored] the-crown-jewels-west-end-2023/whatsonstage--julia-rank.json 2/5 band 31-50\n- [unanchored] the-crown-jewels-west-end-2023/theatre-weekly--theatre-weekly-uk.json 2/5 band 31-50\n- [unanchored] the-crown-jewels-west-end-2023/london-theatre--marianka-swain.json 3/5 band 51-70\n- [unanchored] the-crown-jewels-west-end-2023/guardian--arifa-akbar.json 1/5 band 0-30",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T06:28:49.444Z"
   }
 ]
