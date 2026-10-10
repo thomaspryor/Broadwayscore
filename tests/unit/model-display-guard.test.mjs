@@ -22,13 +22,22 @@ describe('modelDisplayGuard', () => {
   });
   test('two independent estimates more than 25 points apart: hidden', () => {
     assert.equal(modelDisplayGuard({ pct: [38, 90, 133], playedWeeks: 85, independent: [10, 30] }).reason, 'estimates-disagree');
-    assert.equal(modelDisplayGuard({ pct: [0, 55, 90], playedWeeks: 85, independent: [10, 30] }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [30, 55, 80], playedWeeks: 85, independent: [10, 30] }).show, true);
     assert.equal(modelDisplayGuard({ pct: [0, 0, 10], playedWeeks: 85, independent: [30, 40] }).show, false);
   });
   test('negative values display as 0 and flag below-costs', () => {
-    const g = modelDisplayGuard({ pct: [-42, -3, 33], playedWeeks: 49 });
-    assert.deepEqual(g, { show: true, reason: null, shown: [0, 0, 33], belowCosts: true });
-    assert.equal(modelDisplayGuard({ pct: [-3, 64, 120], playedWeeks: 132 }).belowCosts, false);
+    const g = modelDisplayGuard({ pct: [-20, -3, 15], playedWeeks: 49 });
+    assert.deepEqual(g, { show: true, reason: null, shown: [0, 0, 15], belowCosts: true });
+    assert.equal(modelDisplayGuard({ pct: [30, 64, 85], playedWeeks: 132 }).belowCosts, false);
+  });
+  test('a range more than 60 points wide is too uncertain to print', () => {
+    // Gatsby today: one 64% over a -3..120 range overclaims.
+    assert.equal(modelDisplayGuard({ pct: [-2.7, 63.6, 120.1], playedWeeks: 132 }).reason, 'too-uncertain');
+    assert.equal(modelDisplayGuard({ pct: [-42, -3, 33], playedWeeks: 49 }).reason, 'too-uncertain');
+    assert.equal(modelDisplayGuard({ pct: [10, 40, 70], playedWeeks: 49 }).show, true);
+    assert.equal(modelDisplayGuard({ pct: [10, 40, 70.1], playedWeeks: 49 }).reason, 'too-uncertain');
+    // A disagreement is the more useful reason when both hold.
+    assert.equal(modelDisplayGuard({ pct: [38, 90, 133], playedWeeks: 85, independent: [10, 30] }).reason, 'estimates-disagree');
   });
   test('missing or malformed model is no-model', () => {
     for (const pct of [null, undefined, [1, 2], [1, NaN, 3], 'x']) assert.equal(modelDisplayGuard({ pct, playedWeeks: 50 }).reason, 'no-model');
@@ -47,6 +56,10 @@ describe('inputs', () => {
     assert.deepEqual(independentEstimate({ estimatedRecoupmentPct: [30, 10], estimatedRecoupmentSource: 'Reddit analysis' }), [10, 30]);
     assert.equal(independentEstimate({ estimatedRecoupmentPct: [70, 85], estimatedRecoupmentSource: 'Estimated: ~$24M cumulative' }), null);
     assert.equal(independentEstimate({ estimatedRecoupmentPct: [70, 85] }), null);
+    // Notes stand in only when they state the money returned or lost (checker (c)).
+    assert.deepEqual(independentEstimate({ estimatedRecoupmentPct: [55, 65], notes: 'Producer J.J. Powell confirmed $6M loss (~40% of cap).' }), [55, 65]);
+    assert.equal(independentEstimate({ estimatedRecoupmentPct: [20, 30], notes: 'No trade report of the capitalization. Avg 61.6% capacity made recoupment impossible.' }), null);
+    assert.equal(independentEstimate({ estimatedRecoupmentPct: [10, 20], notes: 'Produced by two investors only.' }), null);
     assert.equal(independentEstimate({ estimatedRecoupmentPct: [70], estimatedRecoupmentSource: 'x' }), null);
     assert.equal(independentEstimate(null), null);
   });

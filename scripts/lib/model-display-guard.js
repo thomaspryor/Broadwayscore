@@ -13,6 +13,8 @@
 //                   an outside range (trade, producer or a Reddit analysis;
 //                   anything but our own inference) and the model central is
 //                   more than 25 points outside it (checker decision (c))
+//   too-uncertain   the model range is more than 60 points wide: one printed
+//                   number would overclaim (checker, 2026-10-10)
 // Otherwise shown. An investor cannot get back less than nothing, so a
 // negative value displays as 0 with "losing money so far"; the negative
 // number stays internal.
@@ -25,6 +27,11 @@ const MIN_PLAYED_WEEKS = 12;
 const CENTRAL_MIN = -25;
 const CENTRAL_MAX = 150;
 const MAX_DISAGREEMENT = 25;
+const MAX_RANGE_WIDTH = 60;
+// Notes stand in for a source only when they state a figure for the money
+// returned or lost ("$6M loss (~40% of cap)"); notes without one ("No trade
+// report of the capitalization") are no estimate (checker (c), 2026-10-10).
+const STATED_PCT = /\b(recoup\w*|returned|paid back|earned back|loss|lost)\b[^.;]{0,60}?\d+(?:\.\d+)?\s*(?:%|percent)|\d+(?:\.\d+)?\s*(?:%|percent)\s*(?:of|on)\s*(?:its |the )?(?:cap|capitali[sz]ation|investment)\b/i;
 
 /**
  * Does the site show the model bar for this record today? Mirrors
@@ -53,7 +60,7 @@ function playedWeeks(show, now = new Date()) {
  */
 function independentEstimate(comm) {
   const est = comm && comm.estimatedRecoupmentPct;
-  const basis = comm && (comm.estimatedRecoupmentSource || comm.notes);
+  const basis = comm && (comm.estimatedRecoupmentSource || (STATED_PCT.test(comm.notes || '') ? comm.notes : null));
   if (!Array.isArray(est) || est.length !== 2 || !est.every((v) => typeof v === 'number' && Number.isFinite(v))) return null;
   if (!basis || OWN_INFERENCE.test(basis)) return null;
   return /** @type {[number, number]} */ ([Math.min(...est), Math.max(...est)]);
@@ -61,7 +68,7 @@ function independentEstimate(comm) {
 
 /**
  * @param {{ pct: [number, number, number] | null | undefined, playedWeeks: number, independent?: [number, number] | null }} input
- * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree', shown: [number, number, number] | null, belowCosts: boolean }}
+ * @returns {{ show: boolean, reason: null | 'no-model' | 'few-weeks' | 'out-of-bounds' | 'estimates-disagree' | 'too-uncertain', shown: [number, number, number] | null, belowCosts: boolean }}
  */
 function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null }) {
   const hide = (reason) => ({ show: false, reason, shown: null, belowCosts: false });
@@ -73,10 +80,11 @@ function modelDisplayGuard({ pct, playedWeeks: weeks, independent = null }) {
     const off = central < independent[0] ? independent[0] - central : central > independent[1] ? central - independent[1] : 0;
     if (off > MAX_DISAGREEMENT) return hide('estimates-disagree');
   }
+  if (pct[2] - pct[0] > MAX_RANGE_WIDTH) return hide('too-uncertain');
   return { show: true, reason: null, shown: pct.map((v) => Math.max(0, v)), belowCosts: central < 0 };
 }
 
 module.exports = {
   modelDisplayGuard, displaysModel, playedWeeks, independentEstimate,
-  MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT,
+  MIN_PLAYED_WEEKS, CENTRAL_MIN, CENTRAL_MAX, MAX_DISAGREEMENT, MAX_RANGE_WIDTH,
 };
