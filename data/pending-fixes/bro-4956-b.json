@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4956-b",
   "planId": "9c62f9fb-6097-434f-92f2-c489dcf69f0b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-10T03:10:00.000Z",
   "submitter": {
     "name": null,
@@ -31,5 +31,18 @@
         "description": "Byline on The Stage page and in the Best of Theatre round-up"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-10T03:44:15.040Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved blood-of-my-blood-west-end-2026/london-box-office--stuart-king.json → _superseded-misattributed/blood-of-my-blood-west-end-2026--london-box-office--stuart-king--contaminated-2026-10-10.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/thestage--unknown.json criticName: \"Unknown\" -> \"Dave Fargnoli\""
+    }
+  ]
 }
