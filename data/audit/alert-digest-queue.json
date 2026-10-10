@@ -783,18 +783,6 @@
     "queuedAt": "2026-10-10T01:41:06.311Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38017742336",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-10T02:44:33.127Z"
-  },
-  {
     "conditionKey": "llm-scoring:cost-breach",
     "title": "LLM scoring spend over budget",
     "description": "GitHub run 38016367624: cumulative LLM scoring cost $8.11 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
@@ -859,5 +847,17 @@
       }
     ],
     "queuedAt": "2026-10-10T03:20:15.733Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run autoclear-vs-ensemble corpus test (needs review-texts), Run BRO-1397 prior-run former-cast sweep (needs review-texts), Audit review contamination, Audit outlet-registry gaps",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/38021411922",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-10T03:46:07.824Z"
   }
 ]
