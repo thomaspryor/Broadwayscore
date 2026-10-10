@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-10T04:56:26.343Z",
+  "timestamp": "2026-10-10T05:17:10.029Z",
   "stats": {
-    "totalReviews": 53188,
-    "alreadyFlagged": 19583,
+    "totalReviews": 53222,
+    "alreadyFlagged": 19588,
     "dateGuardCatches": 258,
     "directorMismatch": 1637,
     "tvFilmSignals": 1536,
-    "londonSignals": 1737,
+    "londonSignals": 1740,
     "offBroadwaySignals": 512,
-    "yearMismatch": 127,
-    "noPublishDate": 5840
+    "yearMismatch": 128,
+    "noPublishDate": 5858
   },
   "findings": [
     {
@@ -501,6 +501,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2020 (2x) more than 2022 (0x). 2020 matches production: a-christmas-carol-west-end-2020"
         }
       ]
     },
@@ -37184,7 +37189,7 @@
     {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": null,
+      "score": 60,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-the-grapes-of-wrath-lyttlelton-theatre",
       "findings": [
@@ -41902,7 +41907,7 @@
       "file": "theatre-weekly--nicola-barrett.json",
       "score": 75,
       "publishDate": "2022-07-08",
-      "url": null,
+      "url": "https://theatreweekly.com/review-the-seagull-at-the-harold-pinter-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -48019,7 +48024,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "standard--tim-bano.json",
-      "score": null,
+      "score": 82,
       "publishDate": "February 28th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/alterations-national-theatre-review-b1213879.html",
       "findings": [
@@ -48033,7 +48038,7 @@
     {
       "showId": "alterations-west-end-2025",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "February 28th, 2025",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/alterations-national-theatre-review/",
       "findings": [
@@ -60264,6 +60269,48 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": null,
+      "publishDate": "2021-12-02",
+      "url": "https://www.allthatdazzles.co.uk/post/review-life-of-pi-wyndham-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "london-box-office--stuart-king.json",
+      "score": 71,
+      "publishDate": "2022-01-07",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-life-of-pi",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "life-of-pi-west-end-2021",
+      "file": "shy-strange-manic--kariss-ainsworth.json",
+      "score": null,
+      "publishDate": "2022-10-07",
+      "url": "https://shystrangemanic.com/2022/10/life-of-pi-at-the-wyndhams-theatre.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
