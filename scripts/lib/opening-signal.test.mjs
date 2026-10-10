@@ -409,7 +409,10 @@ test('openingDateStillAhead: a known future opening blocks review-driven open (B
   const isReached = (d) => d <= '2026-10-10';
   // The Heart: previews 2026-10-08, opening 2026-10-29, four dateless wrong-show reviews.
   assert.equal(openingDateStillAhead({ openingDate: '2026-10-29', previewsStartDate: '2026-10-08' }, isReached), true);
-  assert.equal(openingDateStillAhead({ openingDate: '2026-10-10' }, isReached), false);
+  assert.equal(openingDateStillAhead({ openingDate: '2026-10-10', previewsStartDate: '2026-10-01' }, isReached), false);
+  // Future opening but previews not started: Check 2c wouldn't revert, so not blocked.
+  assert.equal(openingDateStillAhead({ openingDate: '2026-11-20', previewsStartDate: '2026-11-01' }, isReached), false);
+  assert.equal(openingDateStillAhead({ openingDate: '2026-11-20' }, isReached), false);
   // Null openingDate is exactly the case Check 2d exists for: never blocked.
   assert.equal(openingDateStillAhead({ openingDate: null }, isReached), false);
   assert.equal(openingDateStillAhead(null, isReached), false);

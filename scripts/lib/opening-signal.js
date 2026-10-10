@@ -197,15 +197,17 @@ function reviewsPredateRun(show, entry, isDateReached) {
 }
 
 /**
- * A known openingDate that hasn't arrived yet. Review-driven "it opened"
- * signals must not fire then: update-show-status Check 2c reverts open ->
- * previews whenever openingDate is in the future, so a flip just oscillates.
- * BRO-4953: four dateless wrong-show reviews (reviewsPredateRun can't judge
- * dateless ones) flipped The Heart to "Now Playing" three weeks before its
- * 2026-10-29 opening.
+ * In previews with a known openingDate that hasn't arrived yet: exactly the
+ * state update-show-status Check 2c reverts open -> previews, so a
+ * review-driven "it opened" flip (Check 2d) would only oscillate. BRO-4953:
+ * four dateless wrong-show reviews (reviewsPredateRun can't judge dateless
+ * ones) flipped The Heart to "Now Playing" three weeks before its 2026-10-29
+ * opening. A future openingDate with no started previews is left alone: 2c
+ * would not revert that flip, and dated reviews may be correcting a stale date.
  */
 function openingDateStillAhead(show, isDateReached) {
-  return !!(show && show.openingDate && !isDateReached(show.openingDate));
+  return !!(show && show.openingDate && !isDateReached(show.openingDate)
+    && show.previewsStartDate && isDateReached(show.previewsStartDate));
 }
 
 /**
